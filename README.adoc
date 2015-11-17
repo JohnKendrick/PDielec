@@ -1,4 +1,4 @@
-= PDielec package for calculate of solid state infrared absorption
+= PDielec package
 John Kendrick and Andrew Burnett
 v1.0, 2015-11-17
 :page-layout: base
