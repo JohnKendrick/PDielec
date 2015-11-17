@@ -34,7 +34,7 @@ Where python3 and python2 have been installed, it is important to ensure that th
 === Windows
 Install a version of Python 2.7 which incorporates SciPy.  The program has been tested with the Anaconda system which is available from https://www.continuum.io/why-anaconda
 Anaconda includes all of the Python packages required by PDielec.  
-On Windows install a version of Git.  www.git-scm.com has a version of git based on mingw once this has been installed, the git bas shell can be used to clone a copy of PDielec from GitHub.
+On Windows install a version of Git.  www.git-scm.com has a version of git based on mingw once this has been installed, a git shell can be used to clone a copy of PDielec from GitHub.
 
 == Directory structure
 
