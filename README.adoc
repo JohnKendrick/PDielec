@@ -1,35 +1,79 @@
-= PDielec package
-John Kendrick and Andrew Burnett
-v1.0, 2015-11-17
-:page-layout: base
 :description: A description of PDielec package
 :keywords: PDielec, CASTEP, VASP, Gulp, Infrared, Terahertz, spectroscopy
+= The PDielec package
+John Kendrick and Andrew Burnett
+v1.0, 2015-11-17
+
+Authors: John Kendrick and Andrew Burnett
 
 The Python package PDielec calculates the infrared absorption characteristics of a crystalline material supported in a non absorbing medium by post processesing the output of solid state quantum mechanical and molecular mechanical calculations of the phonons or dielectric response of the crystalline material.
 The package calculates the internal electric field arising from different particle morphologies and calculates the resulting shift in absorption frequency and intensity arising from the coupling between a phonon and the internal field.  The theory of the approach is about to be submitted for publication.
 
-The quantum mechanical (QM) and molecular mechanics (MM) codes which are supported are CASTEP, VASP and GULP.  The python code is modular and it should be straightforward to include other packages.
-
 == Introduction
 The molecular and solid state quantum mechanical calculations of response properties such as the frequencies and intensities of infrared (IR) and terahertz (THz) radiation absorption has become generally available in many molecular and solid state computer programs.  A common approach is to assume the harmonic approximation and calculate the mass weighted force constant matrix (for molecules) or the dynamical matrix at the gamma point (for periodic solids).  Diagonalisation of the matrix gives the frequencies for absorption and the normal modes (molecules) or phonon displacements (periodic solids).  
-The calculation of the absorption intensity for each mode requires the calculation of the change in dipole moment caused by the displacement of the atoms for that mode.  For solids where there is a large separation of charge, there can be a large coupling between a phonon mode and the internal field within a particle resulting from its morphology.  The PDielec program is written in Python and post processes the output of solid state QM and molecular mechanics (MM) based codes such as VASP CASTEP and GULP to predict the infrared absorption of crystalline insulator materials whose crystal size is small compared with the wavelength of the absorbing radiation. 
+The calculation of the absorption intensity for each mode requires the calculation of the change in dipole moment caused by the displacement of the atoms for that mode.  For solids where there is a large separation of charge, there can be a large coupling between a phonon mode and the internal field within a particle resulting from its morphology.  The PDielec program is written in Python and post processes the output of solid state quantum mechanical (QM) and molecular mechanics (MM) based codes such as VASP CASTEP and GULP to predict the infrared absorption of crystalline insulator materials whose crystal size is small compared with the wavelength of the absorbing radiation. 
 The package is suited for the calculation of the complex, frequency dependent permittivity and its associated absorption of infrared radiation for a finely ground crystalline material dispersed in a low loss dielectric medium such KBr or PTFE.  A particular feature of the program is its ability to take into account the constant permittivity of the supporting medium and the particle shape through an effective medium theory.  
 
 == Installation
 The pdielec package is written in Python 2 and has been tested using python 2.7 on Linux.
 The package is available on GitHub and can be downloaded from https://github.com/JohnKendrick/PDielec
-'git clone https://github.com/JohnKendrick/PDielec.git'
+
+ git clone https://github.com/JohnKendrick/PDielec.git
 
 === Linux
 Install Python 2 using the package manager for your version of Linux.  In addition install python2 versions of numpy, scipy and matplotlib.  In Ubuntu they are installed by;
-'sudo apt-get install python-dev python-numpy python-scipy python-matplotlib'
+
+ sudo apt-get install python-dev python-numpy python-scipy python-matplotlib
 
 Put the PDielec directory in your executable path, eg;
-'export PATH=~/PDielec;$PATH'
+
+ export PATH=~/PDielec;$PATH
 
 === Windows
 To be written
 
-== Testing 
+== Directory structure
+
+* PDielec/ is the home directory and contains the `pdielec` command
+* PDielec/Python holds the source for the modules used by the pdielec command
+* PDielec/Examples a set of examples are available for CASTEP, GULP and VASP.  Each example directory holds the input files to the QM/MM program and the relevant output files which are post processed by PDielec
+
+== Examples
+Each example directory has the relevant input data sets use to run the QM/MM program and the output files from that run which are post-processed by PDielec.  There is a file `command.sh` which contains a typical example of a PDielec command line and which has been used to create the reference output files `command.ref.out` and `csvfile.ref.csv`.  The example can be run
+
+ bash command.sh
+
+The output can be compared with the reference data to see if the program is working correctly.
+
+The main Examples/ directory also has a  Makefile file which can be used to verify the correct working of the package.  Simply by typing `make` in the Examples directory each example will be run automatically and the output compared with the reference files.  To remove the intermediate files after running the tests automatically, type `make clean`.
+
+== Command line options
+
+.Table Command line options
+|===
+| Option | Default | Purpose | Repeatable? 
+
+| -method s | *maxwell* | The method is given by the string s and may be either *ap*, *maxwell* or *bruggeman*| Yes 
+| -sphere | | The inclusion is a sphere, the default if no other shape is given | No
+| -needle h k l | | The inclusion is a needle whose unique direction is given by [hkl] | Yes 
+| -plate h k l | | The inclusion is a plate whose surface is defined by (hkl) | Yes
+| -ellipse h k l z | | The inclusion is an ellipsoid whose unique direction is given by [hkl] and the eccentricity is given by z | Yes
+| -vf z | 0.1 | z specifies the volume fraction | Yes
+| -mf z | 0.0 | z specifies the mass fraction | Yes
+| -matrix s | *ptfe* | The supporting matrix is defined by the string s.  Options are *ptfe*, *kbr*, *nujol*, *air*, *vacuum*, *ldpe*, *mdpe*, *hdpe* | Yes
+| -density z | 2.2 | z defines the density of the supporting matrix | No
+| -dielectric z | 2.0 | z defines the dielectric of the supporting matrix | No
+| -sigma z | 5.0 | z specifies the damping factor (or width) of the Lorentzian in cm-1 | No
+| -mode_sigma k z | | The kth mode is assigned a width of z cm-1 | Yes
+| -vmin z | 0.0 | The starting wavenumber for the frequency range | No
+| -vm z | 300.0 | The final wavenumber for the frequency range | No
+| -i z | 0.2 | The increment wavenumber used to cover the frequency range | No
+| -plot s | | A plot is requested the string s can be *absorption*, *molar_absorption*, *real*, or *imaginary* | Yes
+| -csv s | | Output is sent to a comma delimited file specified by the string s | No
+| -print | | Additional output is printed regarding the QM/MM program | No
+| -ignore k | | Ignore the k'th mode.  Any mode less than 5 cm-1 is ignored automatically | Yes
+| -mode k | | Only using the kth mode in the calculation | Yes
+| -optical z1 z2 z3 | | z1, z2 and z3 are the diagonal elements of the optical permittivity tensor | No
+| -optical_tensor z1 z2 ..z9 | | z1, z2 .. Z9 define the full optical permittivity tensor | No
 
 

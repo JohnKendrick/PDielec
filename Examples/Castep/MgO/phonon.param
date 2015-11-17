@@ -1,0 +1,40 @@
+task                   = phonon+efield
+charge                 = 0
+xc_functional          = PBE
+spin_polarized         = false
+sedc_apply             = false
+electronic_minimizer   = CG
+elec_method            = DM
+opt_strategy           = speed
+grid_scale             = 2.0
+page_wvfns             = 0
+max_scf_cycles         = 100
+cutoff_energy          = 1000.0
+fix_occupancy          = true
+mixing_scheme          = pulay
+mix_charge_amp         = 0.8
+mix_history_length     = 8
+nextra_bands           = 96
+geom_energy_tol        = 2.0e-6
+geom_force_tol         = 0.008
+geom_stress_tol        = 0.005
+geom_disp_tol          = 1.0e-3
+geom_max_iter          = 50
+elec_energy_tol        = 1.0e-8
+geom_method            = BFGS
+!
+! Properties
+!
+calculate_stress        = true
+calculate_densdiff      = false
+pdos_calculate_weights  = false
+num_dump_cycles         = 0
+popn_calculate          = true
+phonon_calc_lo_to_splitting  = false
+calculate_born_charges  = true
+phonon_sum_rule         = true
+born_charge_sum_rule    = true
+calculate_raman         = false
+phonon_max_cycles       = 200
+efield_max_cycles       = 200
+bs_max_iter             = 200
