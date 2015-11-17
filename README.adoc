@@ -18,14 +18,14 @@ The package is suited for the calculation of the complex, frequency dependent pe
 == Installation
 The pdielec package is written in Python 2 and has been tested using python 2.7 on Linux.
 The package is available on GitHub and can be downloaded from https://github.com/JohnKendrick/PDielec
-`git clone https://github.com/JohnKendrick/PDielec.git` 
+'git clone https://github.com/JohnKendrick/PDielec.git'
 
 === Linux
 Install Python 2 using the package manager for your version of Linux.  In addition install python2 versions of numpy, scipy and matplotlib.  In Ubuntu they are installed by;
-`sudo apt-get install python-dev python-numpy python-scipy python-matplotlib`
+'sudo apt-get install python-dev python-numpy python-scipy python-matplotlib'
 
 Put the PDielec directory in your executable path, eg;
-`export PATH=~/PDielec;$PATH`
+'export PATH=~/PDielec;$PATH'
 
 === Windows
 To be written
