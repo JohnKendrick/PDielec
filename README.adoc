@@ -29,6 +29,8 @@ Put the PDielec directory in your executable path, eg;
 
  export PATH=~/PDielec;$PATH
 
+Where python3 and python2 have been installed, it is important to ensure that the `python` command runs python2.
+
 === Windows
 Install a version of Python 2.7 which incorporates SciPy.  The program has been tested with the Anaconda system which is available from https://www.continuum.io/why-anaconda
 Anaconda includes all of the Python packages required by PDielec.  
@@ -110,6 +112,6 @@ The supporting matrix is often selected from a small range of materials which ha
 | kbr     | 2.75    | 2.25         | Potassium bromide
 | nujol   | 0.838   | 2.155        | Nujol
 | hdpe    | 0.955   | 2.25         | High density polyethylene
-| mdpe    | 0.935   | 2.25         | Medium density polyethylene
+| mdpe    | 0.933   | 2.25         | Medium density polyethylene
 | ldpe    | 0.925   | 2.25         | Low density polyethylene
 |===
