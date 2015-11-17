@@ -15,7 +15,7 @@ The calculation of the absorption intensity for each mode requires the calculati
 The package is suited for the calculation of the complex, frequency dependent permittivity and its associated absorption of infrared radiation for a finely ground crystalline material dispersed in a low loss dielectric medium such KBr or PTFE.  A particular feature of the program is its ability to take into account the constant permittivity of the supporting medium and the particle shape through an effective medium theory.  
 
 == Installation
-The pdielec package is written in Python 2 and has been tested using python 2.7 on Linux.
+The pdielec package is written in Python 2 and has been tested using python 2.7 on Linux and in Windows 10.
 The package is available on GitHub and can be downloaded from https://github.com/JohnKendrick/PDielec
 
  git clone https://github.com/JohnKendrick/PDielec.git
@@ -30,7 +30,9 @@ Put the PDielec directory in your executable path, eg;
  export PATH=~/PDielec;$PATH
 
 === Windows
-To be written
+Install a version of Python 2.7 which incorporates SciPy.  The program has been tested with the Anaconda system which is available from https://www.continuum.io/why-anaconda
+Anaconda includes all of the Python packages required by PDielec.  
+On Windows install a version of Git.  www.git-scm.com has a version of git based on mingw once this has been installed, the git bas shell can be used to clone a copy of PDielec from GitHub.
 
 == Directory structure
 
@@ -47,10 +49,30 @@ The output can be compared with the reference data to see if the program is work
 
 The main Examples/ directory also has a  Makefile file which can be used to verify the correct working of the package.  Simply by typing `make` in the Examples directory each example will be run automatically and the output compared with the reference files.  To remove the intermediate files after running the tests automatically, type `make clean`.
 
+== Examples of usage
+
+ pdielec -method ap -method maxwell -sphere -plate 0 0 1 -needle 0 0 1 .
+
+Performs a calculation using the Averaged-Permittivity and Maxwell-Garnett mixing rules for spherical particles,  plate-like particles with a surface (001) and needle-like particles with a unique direction lying along the [001] direction.  The supporting matrix is taken to be PTFE and the default volume fraction (10%) is used.  The results of a VASP calculation are stored in the current directory. 
+There is no absorption output from this command as neither the -plot nor the -csv options were specified.
+
+ pdielec  -vmin 300 -vmax 800 -sphere -dielectric 3 -vf 0.1 -vf 0.2 -sigma 10 -csv mgo.csv phonon
+
+Performs a calculation for spherical particles varying the frequency from 300 to 800 cm 1,  the permittivity of the supporting media is 3, two volume fractions are considered and a damping factor of 10 cm-1 is used.  The results of a CASTEP calculation with the seed-name “phonon” are analysed and the results stored in mgo.csv for further analysis using a spreadsheet.  In this example a Maxwell-Garnett mixing rule is used by default.
+If visual inspection of the results is required then the following
+will perform the same calculation but a graph shown the molar absorption coefficients will be displayed.
+
+ pdielec  -vmin 300 -vmax 800 -sphere -kbr 3 -vf 0.1 -vf 0.2 -sigma 10 -csv mgo.csv -plot molar_absorption phonon
+
+The followng command performs a calculation of the absorption spectrum resulting from a GULP calculation.  The supporting matrix density and permittivity are those of high density polyethylene, the frequency range is 0 to 2000 cm-1, the volume fraction considered is 10%, the mixing rules used are Averaged-Permittivity and Maxwell-Garnett.  Spheres and plates with the (1 ̅1 ̅2 ̅) surface are considered.
+
+ pdielec -matrix hdpe -method ap -method maxwell -sphere -plate -1 -1 -2 -vmax 2000 -vf 0.1 calcite.gout  -csv calcite.csv
+
 == Command line options
 
 .Table Command line options
 |===
+
 | Option | Default | Purpose | Repeatable? 
 
 | -method s | *maxwell* | The method is given by the string s and may be either *ap*, *maxwell* or *bruggeman*| Yes 
@@ -75,5 +97,19 @@ The main Examples/ directory also has a  Makefile file which can be used to veri
 | -mode k | | Only using the kth mode in the calculation | Yes
 | -optical z1 z2 z3 | | z1, z2 and z3 are the diagonal elements of the optical permittivity tensor | No
 | -optical_tensor z1 z2 ..z9 | | z1, z2 .. Z9 define the full optical permittivity tensor | No
+|===
 
+The supporting matrix is often selected from a small range of materials which have little or no absorption in the frequency range of interest.  The properties of the materials known to the program are summarised in the table below.
 
+.Table Physical properties of matrix materials
+|===
+| Name    | Density | Permittivity | Description
+| ptfe    | 2.2     | 2.0          | Polytetrafluoroethylene
+| air     | 0.0     | 1.0          | Air
+| vacuum  | 0.0     | 1.0          | Vacuum
+| kbr     | 2.75    | 2.25         | Potassium bromide
+| nujol   | 0.838   | 2.155        | Nujol
+| hdpe    | 0.955   | 2.25         | High density polyethylene
+| mdpe    | 0.935   | 2.25         | Medium density polyethylene
+| ldpe    | 0.925   | 2.25         | Low density polyethylene
+|===

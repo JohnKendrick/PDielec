@@ -153,9 +153,9 @@ matrix["vacuum"] =  (0.0  ,1.0)
 matrix["ptfe"]   =  (2.2  ,2.0)
 matrix["kbr"]    =  (2.75 ,2.25)
 matrix["nujol"]  =  (0.838,2.155)
-matrix["hdpe"]   =  (0.925,2.25)
+matrix["ldpe"]   =  (0.925,2.25)
 matrix["mdpe"]   =  (0.933,2.25)
-matrix["ldpe"]   =  (0.955,2.25)
+matrix["hdpe"]   =  (0.955,2.25)
 
 # Establish the calculator function which will be used for the majority of calculations
 calculator = DielectricConstant()
