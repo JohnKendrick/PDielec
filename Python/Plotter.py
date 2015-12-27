@@ -1,18 +1,4 @@
 #!/usr/bin/python
-#
-# Copyright 2015 John Kendrick
-#
-# This file is part of PDielec
-#
-# This program is free software; you can redistribute it and/or modify
-# it under the terms of the MIT License 
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. 
-#
-# You should have received a copy of the MIT License
-# along with this program, if not see https://opensource.org/licenses/MIT
 import string
 import re
 import numpy as np
@@ -133,7 +119,7 @@ class Plotter:
            plot_list.append(plot)
            plot_labels.append(label)
         # end loop over method
-        pl.legend(plot_list,  plot_labels, 'best', numpoints=1)
+        pl.legend(plot_list,  plot_labels, loc='best', numpoints=1)
         pl.show()
         return
 
@@ -163,7 +149,7 @@ class Plotter:
            plot_list.append(plot)
            plot_labels.append(label)
         # end loop over method
-        pl.legend(plot_list,  plot_labels, 'best', numpoints=1)
+        pl.legend(plot_list,  plot_labels, loc='best', numpoints=1)
         pl.show()
         return
 
@@ -194,7 +180,7 @@ class Plotter:
            plot_list.append(plot)
            plot_labels.append(label)
         # end loop over method
-        pl.legend(plot_list,  plot_labels, 'best', numpoints=1)
+        pl.legend(plot_list,  plot_labels, loc='best', numpoints=1)
         pl.show()
         return
 
@@ -225,7 +211,7 @@ class Plotter:
            plot_list.append(plot)
            plot_labels.append(label)
         # end loop over method
-        pl.legend(plot_list,  plot_labels, 'best', numpoints=1)
+        pl.legend(plot_list,  plot_labels, loc='best', numpoints=1)
         pl.show()
         return
 
