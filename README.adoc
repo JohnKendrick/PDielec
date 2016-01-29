@@ -89,6 +89,7 @@ The followng command performs a calculation of the absorption spectrum resulting
 | -dielectric z | 2.0 | z defines the dielectric of the supporting matrix | No
 | -sigma z | 5.0 | z specifies the damping factor (or width) of the Lorentzian in cm-1 | No
 | -mode_sigma k z | | The kth mode is assigned a width of z cm-1 | Yes
+| -LO h k l  | | The longitudinal optic frequencies are calculated for (hkl) | Yes
 | -vmin z | 0.0 | The starting wavenumber for the frequency range | No
 | -vm z | 300.0 | The final wavenumber for the frequency range | No
 | -i z | 0.2 | The increment wavenumber used to cover the frequency range | No
