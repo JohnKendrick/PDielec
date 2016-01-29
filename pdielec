@@ -114,6 +114,10 @@ def showUsage():
     print"         -mode  index  only include this mode in the sum"
     print"             This option can be included several times"
     print"             By default all frequencies are included"
+    print"         -LO h k l "
+    print"             Define a wavector direction (hkl) for which the LO frequencies "
+    print"             will be calculated using the nonanalytical correction"
+    print"             This option can be included several times"
     return
 
 # define some constants which may change due to the parameters on the command line
@@ -124,6 +128,8 @@ requests       = []
 optical        = []
 optical_tensor = []
 my_modes       = []
+qlist          = []
+qdata          = []
 ignore_modes   = []
 mode_sigmas    = {}
 vmax           = 300.0
@@ -253,6 +259,14 @@ while itoken < ntokens:
             data = "["+token+","+tokens[itoken+1]+","+tokens[itoken+2]+"]"
             itoken += 2
         shape_data.append(data)
+    elif token == "-LO":
+        itoken += 1; token = tokens[itoken]
+        if token[0] == "[" or token[0] =="(" or token[0] == "{" :
+            data = token
+        else :
+            data = "("+token+","+tokens[itoken+1]+","+tokens[itoken+2]+")"
+            itoken += 2
+        qdata.append(data)
     elif token[0] == "-":
         print "Error on input unkown option",token
         exit(1)
@@ -305,6 +319,13 @@ if len(my_modes) > 0:
    print "Only consider contributions from modes:", my_modes
 else:
    print "Considering all modes"
+if len(qdata) > 0:
+    print "Calculating LO frequencies for the following q directions"
+    for q in qdata:
+        print q
+    # end for
+    print " "
+# end if
 #
 # Arrays will be used where possible from now on, also some arrays will contain complex numbers
 #
@@ -428,6 +449,21 @@ for name in names:
     oscillator_strengths = calculator.OscillatorStrengths(normal_modes, born_charges )
     # calculate the intensities from the trace of the oscillator strengths
     intensities = calculator.IRIntensities(oscillator_strengths)
+    #
+    # If LO frequencies have been requested lets calculate them now
+    if len(qdata) > 0:
+        for data in qdata:
+            qlist.append(calculator.directionFromShape(data))
+        # end for data
+        lo_freqs = calculator.LongitudinalModes(frequencies, mass_weighted_normal_modes, born_charges, masses, epsilon_inf, volume, qlist)
+        print "Transverse frequencies (cm-1)"
+        print np.real(frequencies_cm1)
+        for q,lo in zip(qdata, lo_freqs):
+            lo = lo / wavenumber
+            print "Longitudinal frequencies (cm-1) for q->0 along ",q
+            print lo
+         # end for q,lo
+    # end if
     # Only modes with non-zero oscillator strengths contribute to the dielectric
     # so calculate those modes which we can safely ignore and store them in ignore_modes
     if len(ignore_modes) == 0:
@@ -482,6 +518,7 @@ for name in names:
     # the concentration of unit cells per 1000 cc can be calculated in moles / L
     concentration = 1000.0 / ( avogadro_si * r.volume * 1.0e-24 )
     print "Concentration for unit volume fraction in moles / Litre", concentration
+    #
     # Create a dictionary to hold the last solution for a given method/volume/fraction
     previous_solution={}
     # Create a plotter to plot/print the final data
