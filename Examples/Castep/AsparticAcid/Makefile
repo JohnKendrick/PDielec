@@ -5,6 +5,7 @@ test:
 	@diff command.ref.out command.out
 	@echo "Comparing csv file with reference...."
 	@diff command.ref.csv command.csv
+	@echo "OK"
 
 regenerate:
 	@echo "Regenerating reference files for L-Aspartic acid from CASTEP...."

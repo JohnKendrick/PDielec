@@ -9,6 +9,9 @@ Density of the medium (-density) has been set to  2.2
 Vmin is:  300.0
 Vmax is:  800.0
 Considering all modes
+Calculating LO frequencies for the following q directions
+(1,0,0)
+ 
 Castep file  phonon.castep
 Shape depolarisation matrix:  sphere   
 [[ 0.33333333  0.          0.        ]
@@ -26,6 +29,12 @@ Total unit cell mass is:  40.3044  g/mol
 Crystal density is:  3.49492056402  g/cc
 Complete mode list is:  [0, 1, 2, 3, 4, 5]
 Sigmas are  :  [10.0, 10.0, 10.0, 10.0, 10.0, 10.0]
+The miller indices for the surface  (1,0,0) has a normal [ 0.57735027  0.57735027 -0.57735027] in xyz
+Transverse frequencies (cm-1)
+[   0.          0.          0.        388.282104  388.282104  388.282104]
+Longitudinal frequencies (cm-1) for q->0 along  (1,0,0)
+[   0.            0.           19.36680876  388.282104    388.282104
+  693.66038432]
 Selected mode list is:  [3, 4, 5]
 Calculated Integrated IR band intensities (espilon_max assumes a fwhm line width)
 mode,Freq(cm-1),Intensity(Debye2/Angstrom2/amu),Integrated_Molar_Absorption_Coefficient(L/mole/cm/cm),epsilon_max(L/mole/cm), FWHM(cm-1)

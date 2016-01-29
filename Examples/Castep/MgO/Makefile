@@ -5,8 +5,10 @@ test:
 	@diff command.ref.out command.out
 	@echo "Comparing csv files with reference"
 	@diff command.ref.csv command.csv
+	@echo "OK"
 
 regenerate:
 	@echo "Regenerating reference files for MgO from CASTEP...."
 	@bash command.sh > command.ref.out
 	@mv command.csv command.ref.csv
+
