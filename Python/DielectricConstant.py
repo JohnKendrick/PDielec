@@ -174,6 +174,90 @@ class DielectricConstant:
         intensities = intensities / convert
         return intensities
     
+    def LongitudinalModes(self, frequencies, normal_modes, born_charges, masses, epsilon_inf, volume, qlist):
+        """Apply the nonanalytic correction to the dynamical matrix and calculate the LO frequencies
+           frequencies are the frequencies (f) in atomic units
+           normal_modes are the mass weighted normal modes (U)
+           born_charges are the born charges (Z) stored as 
+              [ Z1x Z1y Z1z ] [ Z2x Z2y Z2z ] [ Z3x Z3y Z3z ] ]
+              where 1, 2, 3 are the directions of the field and x, y, z are the coordinates of the atom
+           qlist is a list of direction vectors
+           The subroutine returns a list of (real) frequencies in atomic units
+           Any imaginary frequencies are set to 0"""
+        # Use a sqrt that returns a complex number
+        #from numpy.lib.scimath import sqrt
+        # First step is to reconstruct the dynamical matrix (D) from the frequencies and the eigenvectors
+        # f^2 = UT . D . U
+	# and U is a hermitian matrix so U-1 = UT
+        # D = (UT)-1 f^2 U-1 = U f UT
+        # Construct UT from the normal modes
+	n = np.size(normal_modes,0)
+	m = np.size(normal_modes,1)*3
+        UT=np.zeros( (n,m) )
+        for imode,mode in enumerate(normal_modes) :
+           n = 0
+           for atom in mode :
+                # in python the first index is the row of the matrix, the second is the column
+		UT[imode,n+0] = atom[0]
+		UT[imode,n+1] = atom[1]
+		UT[imode,n+2] = atom[2]
+                n = n + 3
+           #end for atom
+        #end for imode
+        Z = born_charges
+        # zero the nonanalytical correction
+        W  = np.zeros( (n,n) )
+        Wm = np.zeros( (n,n) )
+        D  = np.zeros( (n,n) )
+        # convert the frequencies^2 to a real diagonal array
+        f2 = np.diag( np.real(frequencies*frequencies) )
+        Dm = np.dot( np.dot(UT.T, f2), UT )
+        # Make sure the dynamical matrix is real
+        Dm = np.real(Dm)
+        # Find its eigenvalues
+        eig_val, eig_vec = np.linalg.eig(Dm)
+        # Store the results for returning to the main program
+        results = []
+        # Loop over q values
+        for q in qlist:
+            # Now calculate the nonanalytic part
+            constant = 4.0 * PI / ( np.dot(np.dot(q, epsilon_inf), q) * volume )
+            # Loop over atom a
+            for a, Za in enumerate(born_charges):
+                # atom is the atom index
+                # born contains the polarisability tensor [ z1x z1y z1z ] [ z2x z2y z2z ] [ z3x z3y z3z ] ]
+                # where 1, 2, 3 are the directions of the field and x, y, z are the coordinates of the atom
+                Za = np.dot(q, Za)
+                # Loop over atom b
+                for b, Zb in enumerate(born_charges):
+                    Zb = np.dot(q, Zb)  
+                    terms = np.outer(Za, Zb) * constant / math.sqrt(masses[a]*masses[b])
+                    i = a*3
+                    for termi in terms:
+                        j = b*3
+                        for term in termi:
+                           Wm[i,j] = term   
+                           j = j + 1
+                        # end for term
+                        i = i + 1
+                    #end for i
+                # end loop over b
+            # end loop over a
+            # Construct the full dynamical matrix with the correction
+            Dmq = Dm + Wm
+            eig_val, eig_vec = np.linalg.eig(Dmq)
+            # If eig_val less than zero we set it to zero
+            values = []
+            for eig in eig_val:
+                if eig < 0:
+                   eig = 0
+                values.append(math.sqrt(eig))
+            # end of for eig
+            # Sort the eigen values in ascending order and append to the results
+            results.append(np.sort(values))
+        # end loop over q
+        return results
+
     def OscillatorStrengths(self, normal_modes, born_charges):
         """Calculate oscillator strengths from the normal modes and the born charges
            normal_modes are in the mass weighted coordinate system and normalised
