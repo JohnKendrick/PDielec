@@ -67,7 +67,7 @@ class CastepOutputReader:
         self._ion_index_type         = {}
         self._ReadCastep() 
         if os.path.isfile(self._phononfile):
-            print >> sys.stderr, "Reading phonon file"
+            #JK print >> sys.stderr, "Reading phonon file"
             self._ReadPhonon() 
 
     def printInfo (self):
