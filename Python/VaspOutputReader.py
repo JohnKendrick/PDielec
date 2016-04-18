@@ -289,7 +289,7 @@ class VaspOutputReader:
     def _read_fractional_coordinates(self,line):
         n = 0
         ions = []
-        while n <= natoms :
+        while n <= self.nions :
             line = self.fd.readline()
             ions.lappend [ float(line.split()[0]), float(line.split()[1]), float(line.split()[2]) ]
             line = self.fd.readline()
