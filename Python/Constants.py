@@ -45,3 +45,4 @@ joule = 1.0 / ( fine_structure_si*fine_structure_si * electron_mass_si * speed_l
 hertz = planck_si*joule
 wavenumber = hertz*speed_light_si*100.0
 strength_conv  =  1.0 / d2byamuang2
+angs2bohr = 1.0 / 0.5291772083
