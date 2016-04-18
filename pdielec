@@ -118,6 +118,11 @@ def showUsage():
     print"             Define a wavector direction (hkl) for which the LO frequencies "
     print"             will be calculated using the nonanalytical correction"
     print"             This option can be included several times"
+    print"         -drude drude_input_plasma drude_input_sigma"
+    print"             Tells the program to include a Drude for metals in the calculation"
+    print"             of the dielectric."
+    print"             drude_input_plasma is the plasma frequency and "
+    print"             drude_input_sigma is its sigma parameter"
     return
 
 # define some constants which may change due to the parameters on the command line
@@ -162,6 +167,9 @@ matrix["nujol"]  =  (0.838,2.155)
 matrix["ldpe"]   =  (0.925,2.25)
 matrix["mdpe"]   =  (0.933,2.25)
 matrix["hdpe"]   =  (0.955,2.25)
+drude = False
+drude_input_plasma = 0
+drude_input_sigma = 0
 
 # Establish the calculator function which will be used for the majority of calculations
 calculator = DielectricConstant()
@@ -267,6 +275,10 @@ while itoken < ntokens:
             data = "("+token+","+tokens[itoken+1]+","+tokens[itoken+2]+")"
             itoken += 2
         qdata.append(data)
+    elif token == "-drude":
+        drude = True
+        itoken += 1; drude_input_plasma = float(tokens[itoken])
+        itoken += 1; drude_input_sigma  = float(tokens[itoken])
     elif token[0] == "-":
         print "Error on input unkown option",token
         exit(1)
@@ -325,6 +337,13 @@ if len(qdata) > 0:
         print q
     # end for
     print " "
+if drude:
+    print "A Drude model will be used as well as the phonon modes"
+    print "The Drude sigma parameter is (cm-1)", drude_input_sigma
+    print "The Drude plasma frequency is (cm-1)", drude_input_plasma
+    drude_frequency = complex(drude_input_plasma,0) * wavenumber
+    drude_sigma = drude_input_sigma * wavenumber
+    drude_plasma = drude_input_plasma * wavenumber
 # end if
 #
 # Arrays will be used where possible from now on, also some arrays will contain complex numbers
@@ -528,6 +547,8 @@ for name in names:
         # loop over all modes and calculate the contribution to the dielectric
         vau = v * wavenumber
         ionicv = calculator.dielectricContribution(vau,mode_set,frequencies,sigmas,oscillator_strengths,volume)
+        if drude:
+          ionicv = ionicv + calculator.drudeContribution(vau,drude_plasma,drude_sigma,volume)
         # absorption units here are L/mole/cm-1
         molar_absorption_coefficient_from_mode_intensities_Lpmolpcm = calculator.absorptionFromModeIntensities(v,mode_set,frequencies_cm1,sigmas_cm1,intensities)
         # Now the units are cm-1
