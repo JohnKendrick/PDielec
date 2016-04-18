@@ -406,6 +406,19 @@ class DielectricConstant:
             dielectric = dielectric + s / np.complex( (v*v - f*f), -sigma*f )
         return dielectric * (4.0*PI/volume)
             
+    def drudeContribution(self,f,frequency,sigma,volume) :
+        """Calculate the dielectric function for a set of a Drude oscillator
+           f is the frequency of the dielectric response in au
+           frequency(au), sigmas(au) are the plasma frequency and the width
+           The output from this calculation is a complex dielectric tensor"""
+        dielectric = np.zeros( (3,3) , dtype=complex)
+        # Avoid a divide by zero if f is small
+        if f <= 1.0e-8:
+            f = 1.0e-8
+        # Assume that the drude contribution is isotropic
+        dielectric = dielectric - self.unit * frequency*frequency / np.complex( -f*f , -sigma*f )
+        return dielectric * (4.0*PI/volume)
+            
 
     def averagedPermittivity(self,dielectric_medium,dielecv,shape,L,vf) :
         """Calculate the effective constant permittivity using the averaged permittivity method
