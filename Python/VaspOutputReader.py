@@ -100,7 +100,7 @@ class VaspOutputReader:
         self.manage['epsilon']  = (re.compile('   LEPSILON= '),self._read_epsilon)
         self.manage['lattice']  = (re.compile('  volume of cell :'),self._read_lattice_vectors)
         self.manage['fractional']  = (re.compile('  positions of ions in fractional coordinates :'),self._read_fractional_coordinates)
-        self.manage['energy']  = (re.compile('  FREE ENERGIE OF THE ION '),self._read_energy)
+        self.manage['energy']  = (re.compile('  FREE ENERGIE OF THE ION'),self._read_energy)
         self.manage['pressure']  = (re.compile('  external pressure ='),self._read_external_pressure)
         self.manage['skip1']  = (re.compile(' old parameters found'),self._read_skip4)
         self.manage['staticDielectric']  = (re.compile(' MACROSCOPIC STATIC DIELECTRIC TENSOR .including'),self._read_static_dielectric)
