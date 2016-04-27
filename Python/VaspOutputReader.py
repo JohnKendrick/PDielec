@@ -43,8 +43,8 @@ class VaspOutputReader:
         self.nkpts                   = 0
         self.nbands                  = 0
         self.nions                   = 0
-        self.electrons               = 0
-        self.magnetization           = 0
+        self.electrons               = 0.0
+        self.magnetization           = 0.0
         self.nspecies                = 0
         self.final_energy_without_entropy = 0
         self.final_free_energy       = 0
@@ -328,8 +328,8 @@ class VaspOutputReader:
         return
 
     def _read_magnet(self,line):
-        self.electrons     = float(line.split()[3]
-        self.magnetization = float(line.split()[5]
+        self.electrons     = float(line.split()[3])
+        self.magnetization = float(line.split()[5])
 
     def _read_energy(self,line):
         line = self.fd.readline()
