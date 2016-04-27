@@ -25,6 +25,7 @@ from Python.DielectricConstant import *
 from Python.VaspOutputReader import *
 from Python.CastepOutputReader import *
 from Python.GulpOutputReader import *
+from Python.CrystalOutputReader import *
 from Python.Plotter import *
 
 
@@ -352,7 +353,7 @@ if drude:
 # Loop over the names from the command line
 for name in names:
     #  If name is a directory then we will use a vaspoutputreader
-    #  Otherwise it is a seedname for castep, or a gulp output file
+    #  Otherwise it is a seedname for castep, or a gulp output file, or a crystal output file
     if os.path.isdir(name):
       print 'Analysing VASP directory: ',name
       outcarfile = os.path.join(name,"OUTCAR")
@@ -363,6 +364,9 @@ for name in names:
       calculator.setReader(r)
     elif name.find(".gout") >= 0:
       r = GulpOutputReader(name)
+      calculator.setReader(r)
+    elif name.find(".out") >= 0:
+      r = CrystalOutputReader(name)
       calculator.setReader(r)
     else:
       if name.find(".castep") >= 0:
