@@ -55,3 +55,7 @@ docs/_build/
 
 # PyBuilder
 target/
+
+# John Kendrick
+command.csv
+command.out
