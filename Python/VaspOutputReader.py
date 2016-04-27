@@ -43,6 +43,8 @@ class VaspOutputReader:
         self.nkpts                   = 0
         self.nbands                  = 0
         self.nions                   = 0
+        self.electrons               = 0
+        self.magnetization           = 0
         self.nspecies                = 0
         self.final_energy_without_entropy = 0
         self.final_free_energy       = 0
@@ -101,6 +103,7 @@ class VaspOutputReader:
         self.manage['lattice']  = (re.compile('  volume of cell :'),self._read_lattice_vectors)
         self.manage['fractional']  = (re.compile('  positions of ions in fractional coordinates :'),self._read_fractional_coordinates)
         self.manage['energy']  = (re.compile('  FREE ENERGIE OF THE ION'),self._read_energy)
+        self.manage['magnet']  = (re.compile(' number of electron '),self._read_magnet)
         self.manage['pressure']  = (re.compile('  external pressure ='),self._read_external_pressure)
         self.manage['skip1']  = (re.compile(' old parameters found'),self._read_skip4)
         self.manage['staticDielectric']  = (re.compile(' MACROSCOPIC STATIC DIELECTRIC TENSOR .including'),self._read_static_dielectric)
@@ -323,6 +326,10 @@ class VaspOutputReader:
         if var == '.true.' or var == 't' or var == 'true' :
           self.epsilon = True
         return
+
+    def _read_magnet(self,line):
+        self.electrons     = float(line.split()[3]
+        self.magnetization = float(line.split()[5]
 
     def _read_energy(self,line):
         line = self.fd.readline()
