@@ -329,7 +329,10 @@ class VaspOutputReader:
 
     def _read_magnet(self,line):
         self.electrons     = float(line.split()[3])
-        self.magnetization = float(line.split()[5])
+        if len( line.split() ) > 5:
+            self.magnetization = float(line.split()[5])
+        else:
+            self.magnetization = 0.0
 
     def _read_energy(self,line):
         line = self.fd.readline()
