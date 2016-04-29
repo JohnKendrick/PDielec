@@ -1,0 +1,14 @@
+Thanks to Tim Kortner's group for providing the example for CRYSTAL14
+
+The files in this directory are as follows;
+
+LEUCINE_FREQUENCY_PBED3_631Gdp_FULLOPTIMIZATON.out
+A 631G basis calculation of the frequencies and phonon modes of Leucine
+
+LEUCINE_DIELECTRC_PBED_6311Gdp.out
+A calculation of epsilon infinity, which is supplied to PDielec on the command line
+
+LEUCINE_HP_DIELTENS_FREQUENCY_PBED_6311Gdp.out
+A 6311G calculation of the frequencies and phonon modes of Leucine. 
+This is the example used in command.sh to test the CRYSTAL functionality in PDielec.  
+
