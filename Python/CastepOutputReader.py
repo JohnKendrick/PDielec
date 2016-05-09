@@ -79,6 +79,7 @@ class CastepOutputReader:
         print "Epsilon inf: ", self.zerof_optical_dielectric
         print "Volume of cell: ", self.volume
         print "Unit cell: ", self.unitCells[-1].lattice
+        print "Fractional Coordinates: ", self.unitCells[-1].fractional_coordinates
         mtotal = 0.0
         for m in self.masses :
            mtotal = mtotal + m
@@ -255,6 +256,7 @@ class CastepOutputReader:
                 n = ions_per_type[species]
                 # self.ions_per_type is a list
                 self.ions_per_type.append(n)
+        self.unitCells[-1].fractionalCoordinates(fractional_coordinates)
         return
 
     def _read_masses(self,line):
