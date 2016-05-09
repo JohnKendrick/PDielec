@@ -23,14 +23,16 @@ import os, sys
 class UnitCell:
     """Hold unit cell information and its associated calculated properties"""
     def __init__(self,a=None,b=None,c=None,alpha=None,beta=None,gamma=None):
-        lattice            = [[1.0,0.0,0.0], [0.0,1.0,0.0], [0.0,0.0,1.0] ]
+        self.fractional_coordinates = []
+        self.xyz_coordinates = []
+        self.lattice            = [[1.0,0.0,0.0], [0.0,1.0,0.0], [0.0,0.0,1.0] ]
         if gamma != None :
-            lattice = ABCAlphaBetaGamma2UnitCell(a,b,c,alpha,beta,gamma)
+            self.lattice = ABCAlphaBetaGamma2UnitCell(a,b,c,alpha,beta,gamma)
         else :
-            lattice[0] = a
-            lattice[1] = b
-            lattice[2] = c
-        self._calculateReciprocalLattice(lattice)
+            self.lattice[0] = a
+            self.lattice[1] = b
+            self.lattice[2] = c
+        self._calculateReciprocalLattice(self.lattice)
 
     def CalculateABCAlphaBetaGamma(self) :
         """Convert a unit cell to the equivalent a,b,c,alpha,beta,gamma designation"""
@@ -62,7 +64,7 @@ class UnitCell:
         self.a, self.b, self.c, self.alpha, self.beta, self.gamma = self.CalculateABCAlphaBetaGamma()
         self.volume  = self.calculateVolume()
         self.inverse_lattice = np.linalg.inv(self.lattice)
-        self.reciprocal_lattice = self.inverse_lattice.T
+        self.reciprocal_lattice = self.inverse_lattice
 
     def calculateVolume(self) :
       volume = np.abs( np.dot(self.lattice[0], np.cross(self.lattice[1],self.lattice[2])) )
@@ -75,7 +77,7 @@ class UnitCell:
 
     def convertHkl2Xyz(self, hkl) :
       hkl = np.array(hkl)
-      xyz = np.dot(hkl,self.reciprocal_lattice)
+      xyz = np.dot(hkl,self.reciprocal_lattice.T)
       return xyz
 
     def convertAbc2Xyz(self, abc) :
@@ -109,3 +111,18 @@ class UnitCell:
         return normal
 
 
+    def fractionalCoordinates(self, coords) :
+      self.fractional_coordinates = coords
+      self.xyz_coordinates = []
+      for abc in coords:
+          xyz = self.convertAbc2Xyz(abc)
+          self.xyz_coordinates.append(xyz)
+      return 
+
+    def xyzCoordinates(self, coords) :
+      self.xyz_coordinates = coords
+      self.fractional_coordinates = []
+      for xyz in coords:
+          abc = self.convertXyz2Abc(xyz)
+          self.fractional_coordinates.append(abc)
+      return 
