@@ -76,6 +76,7 @@ class VaspOutputReader:
         print "Epsilon inf: ", self.zerof_optical_dielectric
         print "Volume of cell: ", self.volume
         print "Unit cell: ", self.unitCells[-1].lattice
+        print "Fractional Coordinates: ", self.unitCells[-1].fractional_coordinates
         mtotal = 0.0
         for m in self.masses :
            mtotal = mtotal + m
@@ -101,7 +102,7 @@ class VaspOutputReader:
         self.manage['nelect']   = (re.compile('   NELECT = '),self._read_nelect)
         self.manage['epsilon']  = (re.compile('   LEPSILON= '),self._read_epsilon)
         self.manage['lattice']  = (re.compile('  volume of cell :'),self._read_lattice_vectors)
-        self.manage['fractional']  = (re.compile('  positions of ions in fractional coordinates :'),self._read_fractional_coordinates)
+        self.manage['fractional']  = (re.compile(' position of ions in fractional coordinates'),self._read_fractional_coordinates)
         self.manage['energy']  = (re.compile('  FREE ENERGIE OF THE ION'),self._read_energy)
         self.manage['magnet']  = (re.compile(' number of electron '),self._read_magnet)
         self.manage['pressure']  = (re.compile('  external pressure ='),self._read_external_pressure)
@@ -285,23 +286,22 @@ class VaspOutputReader:
         bVector = [ float(line.split()[0]), float(line.split()[1]), float(line.split()[2]) ]
         line = self.fd.readline()
         cVector = [ float(line.split()[0]), float(line.split()[1]), float(line.split()[2]) ]
-        self.unitCells.append(UnitCell(aVector, bVector, cVector))
+        cell = UnitCell(aVector, bVector, cVector)
+        if self.ncells > 0:
+            cell.fractionalCoordinates(self.unitCells[-1].fractional_coordinates)
+        self.unitCells.append(cell)
         self.ncells = len(self.unitCells)
         return
 
     def _read_fractional_coordinates(self,line):
         n = 0
         ions = []
-        while n <= self.nions :
+        for n in range(self.nions) :
             line = self.fd.readline()
-            ions.lappend [ float(line.split()[0]), float(line.split()[1]), float(line.split()[2]) ]
-            line = self.fd.readline()
-            ions.lappend [ float(line.split()[0]), float(line.split()[1]), float(line.split()[2]) ]
-            line = self.fd.readline()
-            ions.lappend [ float(line.split()[0]), float(line.split()[1]), float(line.split()[2]) ]
-            n += 1
-            
+            ions.append( [ float(f) for f in line.split()[0:3] ] )
+        self.unitCells[-1].fractionalCoordinates(ions)
         return
+
     def _read_spin(self,line):
         self.spin = int(line.split()[2]) 
         return
