@@ -117,6 +117,7 @@ class GulpOutputReader:
         print "Epsilon inf: ", self.zerof_optical_dielectric
         print "Volume of cell: ", self.volume
         print "Unit cell: ", self.unitCells[-1].lattice
+        print "Fractional coordinates: ", self.unitCells[-1].fractional_coordinates
         mtotal = 0.0
         for m in self.masses :
            mtotal = mtotal + m
@@ -225,6 +226,7 @@ class GulpOutputReader:
                 self.cartesian_coordinates.append(atom_cart)
              # end for
         # end if
+        self.unitCells[-1].fractionalCoordinates(self.fractional_coordinates)
 
     def _read_cellcontents(self,line):
         self.atom_types=[]
