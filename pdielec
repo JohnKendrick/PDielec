@@ -444,6 +444,9 @@ for name in names:
     # Initialise the zero frequency optical tensor if it was supplied on the command
     if len(optical_tensor) > 0:
         epsilon_inf = np.array(optical_tensor)
+    if np.max(epsilon_inf) < 0.001:
+        print "WARNING! no epsilon infinity has been provided"
+        print "WARNING! Please supply with -optical or -optical_tensor"
     # Get the born charges
     born_charges = np.array(r.born_charges)
     mode_set = []
