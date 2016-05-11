@@ -51,8 +51,9 @@ class CrystalOutputReader:
         self.frequencies             = []
         self.mass_weighted_normal_modes = []
         self.masses                  = []
-        self.ions_per_type             = []
-        self.epsilon                = None
+        self.ions_per_type           = []
+        self.ions                    = []
+        self.eckart                  = True
         self._ReadOutputFile() 
 
     def printInfo (self):
@@ -83,7 +84,8 @@ class CrystalOutputReader:
         self.manage['bornCharges']  = (re.compile(' ATOMIC BORN CHARGE TENSOR'),self._read_born_charges)
         self.manage['eigenvectors']  = (re.compile(' NORMAL MODES NORMALIZ'),self._read_eigenvectors)
         self.manage['staticIonic']  = (re.compile(' SUM TENSOR OF THE VIBRATIONAL CONTRIBUTIONS TO '),self._read_ionic_dielectric)
- 
+        self.manage['noeckart']  = (re.compile('.* REMOVING ECKART CONDITIONS'),self._read_eckart)
+        self.manage['epsilon']  = (re.compile(' SUSCEPTIBILITY '),self._read_epsilon)
         # Loop through the contents of the file a line at a time and parse the contents
         line = self.fd.readline()
         while line != '' :
@@ -100,6 +102,27 @@ class CrystalOutputReader:
             line = self.fd.readline()
         #end while
         self.fd.close()
+        return
+
+    def _read_epsilon(self,line):
+        line = self.fd.readline()
+        line = self.fd.readline()
+        optical_dielectric= [ [0, 0, 0], [0, 0, 0], [0, 0, 0] ]
+        optical_dielectric[0][0] = float(self.fd.readline().split()[3])
+        optical_dielectric[0][1] = float(self.fd.readline().split()[3])
+        optical_dielectric[0][2] = float(self.fd.readline().split()[3])
+        optical_dielectric[1][1] = float(self.fd.readline().split()[3])
+        optical_dielectric[1][2] = float(self.fd.readline().split()[3])
+        optical_dielectric[2][2] = float(self.fd.readline().split()[3])
+        optical_dielectric[1][0] = optical_dielectric[0][1]
+        optical_dielectric[2][0] = optical_dielectric[0][2] 
+        optical_dielectric[2][1] = optical_dielectric[1][2] 
+        self.zerof_optical_dielectric = optical_dielectric
+        return
+
+    def _read_eckart(self,line):
+        self.eckart = False
+        return
 
     def _read_masses(self,line):
         line = self.fd.readline()
@@ -132,17 +155,12 @@ class CrystalOutputReader:
         n = 0
         massweight = np.zeros( nmodes )
         frequencies = np.zeros( nmodes )
-        print "MASSES", self.masses
-        print "NIONS", self.nions
         for a in range(self.nions):
             for j in range(3):
-                massweight[n] = 1.0 / math.sqrt(amu*self.masses[a])
+                massweight[n] = 1.0 / math.sqrt(self.masses[a]*amu)
                 n = n + 1
-        print "Mass weighting"
-        print massweight
         # We read the hessian and store the mass weighted matrix
         hessian = np.zeros( (nmodes,nmodes) )
-        self.born_charges = []
         line = fd2.readline()
         pos = 0 
         for i in range(nmodes) :
@@ -157,32 +175,7 @@ class CrystalOutputReader:
         # end for i
         # Symmetrise the hessian
         hessian = 0.5 * ( hessian + hessian.T )
-        # Find the eigen vectors and normal modes
-        eig_val1, eig_vec1 = np.linalg.eigh(hessian)
-        print "Eigenvalues before projection"
-        print eig_val1
-        # Look at the sum rule for the hessian, taken from equation 2 of 
-        # Practical methods in abinitio  Lattice Dynamics by G J Ackland, M C Warren and S J Clark
-        # J. Phys. Condens. Natter 9 (1997) 7861-7872.
-        for i in range(self.nions):
-            for alpha in range(3):
-                ialpha = i*3 + alpha
-                for beta in range(3):
-                    ibeta = i*3 + beta 
-                    sum = 0.0
-                    for j in range(self.nions):
-                        jbeta = j*3 + beta 
-                        sum = sum + hessian[ialpha][jbeta]
-                    #end for j
-                hessian[ialpha,ibeta] = hessian[ialpha,ibeta]-sum
-                #end for beta
-            #end for alpha
-        #end for i 
-        # Find the eigen vectors and normal modes
-        eig_val3, eig_vec3 = np.linalg.eigh(hessian)
-        print "Eigenvalues after sum rule"
-        print eig_val3
-        # Project out the translational modes
+        # Project out the translational modes if eckart (default) is used in crystal
         unit = np.eye( nmodes )
         p1 = np.zeros( nmodes )
         p2 = np.zeros( nmodes )
@@ -196,39 +189,44 @@ class CrystalOutputReader:
         p1 = p1 / math.sqrt(np.dot(p1,p1))
         p2 = p2 / math.sqrt(np.dot(p2,p2))
         p3 = p3 / math.sqrt(np.dot(p3,p3))
+        # Form the projection operators
         P1 = unit - np.outer(p1,p1)
         P2 = unit - np.outer(p2,p2)
         P3 = unit - np.outer(p3,p3)
-        # Now project out
-        hessian = np.dot ( np.dot(P1.T, hessian), P1)
-        hessian = np.dot ( np.dot(P2.T, hessian), P2)
-        hessian = np.dot ( np.dot(P3.T, hessian), P3)
+        if self.eckart:
+            # Now project out
+            print "Hessian will be modified by projecting out pure translation"
+            hessian = np.dot ( np.dot(P1.T, hessian), P1)
+            hessian = np.dot ( np.dot(P2.T, hessian), P2)
+            hessian = np.dot ( np.dot(P3.T, hessian), P3)
+        else:
+            print "No projection of the hessian has been performed (NOECKART)"
         # Find the eigen vectors and normal modes
-        eig_val2, eig_vec2 = np.linalg.eigh(hessian)
-        eig_val2 = eig_val2 
+        eig_val, eig_vec = np.linalg.eigh(hessian)
         # If eig_val has negative values then we store the negative frequency
         # convert to cm-1
-        for i,eig in enumerate(eig_val1):
+        for i,eig in enumerate(eig_val):
             if eig < 0 :
                 frequencies[i] = -math.sqrt(-eig) / wavenumber
             else :
                 frequencies[i] = math.sqrt( eig) / wavenumber
             # end if
         #end for
-        print "Eigenvalues after projection", eig_val2
-        print "Eigenvalues changes projection", eig_val1-eig_val2
-        print "Frequencies", frequencies
+        #jk print "Eigenvalues"
+        #jk print ( ''.join('{:15.8}'.format(e) for e in eig_val) )
+        #jk print "Frequencies"
+        #jk print ( ''.join('{:15.8}'.format(f) for f in frequencies) )
         self.mass_weighted_normal_modes = []
         self.frequencies = frequencies.tolist()
+        # Store the mass weighted normal modes
         for i in range(nmodes):
            mode = []
            n = 0
            for j in range(self.nions):
-             ma = [ eig_vec1[i][n], eig_vec1[i][n+1], eig_vec1[i][n+2] ]
+             ma = [ eig_vec[n][i], eig_vec[n+1][i], eig_vec[n+2][i] ]
              n = n + 3
              mode.append(ma)
            self.mass_weighted_normal_modes.append(mode)
-        print "Frequencies", self.frequencies
         # end for i
         fd2.close()
 
@@ -287,7 +285,7 @@ class CrystalOutputReader:
                                        [ a3x a3y a3z ]]
            where 1,2,3 are the field directions and x, y, z are the atomic displacements"""
         if os.path.isfile("BORN.DAT"):
-            print "Reading Born Charge Tensor from BORN.DAT"
+            print "Reading Born charge tensor from BORN.DAT"
             self._read_born_charges_from_born_dat();
         else:
             print "Reading Born Charge Tensor from output file"
@@ -358,17 +356,18 @@ class CrystalOutputReader:
         self.unitCells.append(UnitCell(aVector, bVector, cVector))
         self.ncells = len(self.unitCells)
         self.volume = self.unitCells[-1].volume
+        # The fractional coordinates are specified before the lattice vectors
+        self.unitCells[-1].fractionalCoordinates(self.ions)
         return
 
     def _read_fractional_coordinates(self,line):
         self.nions = int(line.split()[12])
         line = self.fd.readline()
         line = self.fd.readline()
-        ions = []
+        self.ions = []
         for i in range(self.nions) :
             line = self.fd.readline()
             self.species.append( line.split()[3] )
-            ions.append( [ float(line.split()[4]), float(line.split()[5]), float(line.split()[6]) ] )
-        self.unitCells[-1].fractionalCoordinates(ions)
+            self.ions.append( [ float(line.split()[4]), float(line.split()[5]), float(line.split()[6]) ] )
         return
 
