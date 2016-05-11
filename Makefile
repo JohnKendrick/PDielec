@@ -18,6 +18,11 @@ install:
 		cp -r Python/*.py $(SCRIPTS)/Python
 
 test:		
+		@echo "The tests take a while to run."
+		@echo "Verification is done by a simple diff with a reference file"
+		@echo "Unfortunately just running on a different machine can cause small"
+		@echo "and insignificant changes to the output files."
+		@echo "If you see a change you must check if it is significant or not by hand."
 		@( cd Examples; make --no-print-directory test )
 
 clean:		

@@ -10,6 +10,14 @@ Optical permitivity tensor specified:  [[2.018, 0.0, 0.0], [0.0, 2.018, 0.0], [0
 Vmin is:  0.0
 Vmax is:  300.0
 Considering all modes
+Reading Born Charge Tensor from output file
+WARNING! WARNING! WARNING! WARNING! WARNING!
+The numerical precision of the input is limited
+WARNING! WARNING! WARNING! WARNING! WARNING!
+Reading Normal Modes from output file
+WARNING! WARNING! WARNING! WARNING! WARNING!
+The numerical precision of the input is limited
+WARNING! WARNING! WARNING! WARNING! WARNING!
 Shape depolarisation matrix:  needle [0,0,1] 
 The miller direction  [0,0,1] is  [ 0.  0.  1.] in xyz
 [[ 0.5  0.   0. ]

@@ -4,6 +4,11 @@ test:
 	@$(MAKE) --no-print-directory -C Vasp/F-Apatite test
 	@$(MAKE) --no-print-directory -C Vasp/ZnO test
 	@$(MAKE) --no-print-directory -C Gulp/calcite test
+	@$(MAKE) --no-print-directory -C Crystal/Leucine test
+	@$(MAKE) --no-print-directory -C Crystal/Quartz test
+	@$(MAKE) --no-print-directory -C Crystal/ZnO/Default test
+	@$(MAKE) --no-print-directory -C Crystal/ZnO/CPHF test
+	@$(MAKE) --no-print-directory -C Crystal/ZnO/NoEckart test
 
 clean:
 	@echo "Cleaning old command.out files"
