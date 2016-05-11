@@ -1,0 +1,56 @@
+appending to names  ZnO_noeckart.out
+The following methods will be used:  ['maxwell']
+Creating a csv file:  command.csv
+No plotting requested
+The frequency increment is  0.2  cm-1
+The default width factor (-sigma) has been set to  5.0  cm-1
+Permittivity of the medium (-dielectric) has been set to  2.0
+Density of the medium (-density) has been set to  2.2
+Optical permitivity diagonal elements specified:  [5.73897, 5.73897, 5.67346]
+Vmin is:  300.0
+Vmax is:  800.0
+Considering all modes
+Reading Born charge tensor from BORN.DAT
+Reading Hessian from HESSFREQ.DAT
+No projection of the hessian has been performed (NOECKART)
+Shape depolarisation matrix:  sphere   
+[[ 0.33333333  0.          0.        ]
+ [ 0.          0.33333333  0.        ]
+ [ 0.          0.          0.33333333]]
+
+Shape depolarisation matrix:  needle [0,0,1] 
+The miller direction  [0,0,1] is  [ 0.  0.  1.] in xyz
+[[ 0.5  0.   0. ]
+ [ 0.   0.5  0. ]
+ [ 0.   0.   0. ]]
+
+Shape depolarisation matrix:  plate (1,0,0) 
+The miller indices for the surface  (1,0,0) has a normal [ 1.  0.  0.] in xyz
+[[ 1.  0.  0.]
+ [ 0.  0.  0.]
+ [ 0.  0.  0.]]
+
+Volume of unit cell is  49.1647060245  Angstrom^3
+Total unit cell mass is:  159.848  g/mol
+Crystal density is:  5.39886892192  g/cc
+Complete mode list is:  [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
+Sigmas are  :  [5.0, 5.0, 5.0, 5.0, 5.0, 5.0, 5.0, 5.0, 5.0, 5.0, 5.0, 5.0]
+Selected mode list is:  [6, 7, 8]
+Calculated Integrated IR band intensities (espilon_max assumes a fwhm line width)
+mode,Freq(cm-1),Intensity(Debye2/Angstrom2/amu),Integrated_Molar_Absorption_Coefficient(L/mole/cm/cm),epsilon_max(L/mole/cm), FWHM(cm-1)
+6 , 373.577031918 , 16.2223846423 , 68549.3085446 , 8727.96904033 , 5.0
+7 , 398.071436763 , 15.5592985036 , 65747.3717569 , 8371.21536833 , 5.0
+8 , 398.071436763 , 15.5592985036 , 65747.3717569 , 8371.21536833 , 5.0
+Permittivity contribution from ionic displacements
+[[  4.25965309e+00  -1.78607394e-16   8.81503956e-16]
+ [ -1.78607394e-16   4.25965309e+00   1.65774802e-15]
+ [  8.81503956e-16   1.65774802e-15   5.04267073e+00]]
+Optical permittivity at zero frequency
+[[ 5.73897  0.       0.     ]
+ [ 0.       5.73897  0.     ]
+ [ 0.       0.       5.67346]]
+Total permittivity
+[[  9.99862309e+00  -1.78607394e-16   8.81503956e-16]
+ [ -1.78607394e-16   9.99862309e+00   1.65774802e-15]
+ [  8.81503956e-16   1.65774802e-15   1.07161307e+01]]
+Concentration for unit volume fraction in moles / Litre 33.7750170282

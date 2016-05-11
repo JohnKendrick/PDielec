@@ -1,0 +1,16 @@
+Examples in this directory include;
+
+Leucine
+Only the output file is analysed.  Because of the limited number of significant figures for the normal modes, the results may suffer from rounding errors.
+
+Quartz
+Only the output file is analysed.  Because of the limited number of significant figures for the normal modes, the results may suffer from rounding errors.
+
+ZnO/Default
+A standard intensity run using Crystal14.  The files BORN.DAT and HESSFREQ.DAT have been kept and the normal modes calculated to full precision from these files.  Because epsilon infinity is not calculated, it must be supplied on the command line.
+
+ZnO/NoEckart
+A standard intensity run using Crystal14 but with no imposition of the Eckart conditions on the hessian.  The files BORN.DAT and HESSFREQ.DAT have been kept and the normal modes calculated to full precision from these files.  Because epsilon infinity is not calculated, it must be supplied on the command line.
+
+ZnO/CPHF
+A CPHF intensity run using Crystal14 with no imposition of Eckart conditions on the hessian.  The files BORN.DAT and HESSFREQ.DAT have been kept and the normal modes calculated to full precision from these files.  Epsilon infinity is read from the output file.
