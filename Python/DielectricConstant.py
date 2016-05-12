@@ -215,7 +215,7 @@ class DielectricConstant:
         # Make sure the dynamical matrix is real
         Dm = np.real(Dm)
         # Find its eigenvalues
-        eig_val, eig_vec = np.linalg.eig(Dm)
+        eig_val, eig_vec = np.linalg.eigh(Dm)
         # Store the results for returning to the main program
         results = []
         # Loop over q values
@@ -245,7 +245,7 @@ class DielectricConstant:
             # end loop over a
             # Construct the full dynamical matrix with the correction
             Dmq = Dm + Wm
-            eig_val, eig_vec = np.linalg.eig(Dmq)
+            eig_val, eig_vec = np.linalg.eigh(Dmq)
             # If eig_val less than zero we set it to zero
             values = []
             for eig in eig_val:
