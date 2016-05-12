@@ -6,6 +6,6 @@ LEUCINE_FREQUENCY_PBED3_631Gdp_FULLOPTIMIZATON.out
 A 631G basis calculation of the frequencies and phonon modes of Leucine
 
 LEUCINE_DIELECTRC_PBED_6311Gdp.out
-A calculation of epsilon infinity, which is supplied to PDielec on the command line
+A CPHF/CPKS calculation of epsilon infinity, which is supplied to PDielec on the command line
 
 
