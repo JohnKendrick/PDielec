@@ -9,6 +9,9 @@ test:
 	@$(MAKE) --no-print-directory -C Crystal/ZnO/Default test
 	@$(MAKE) --no-print-directory -C Crystal/ZnO/CPHF test
 	@$(MAKE) --no-print-directory -C Crystal/ZnO/NoEckart test
+	@$(MAKE) --no-print-directory -C AbInit/AlAs test
+	@$(MAKE) --no-print-directory -C AbInit/BaTiO3 test
+	@$(MAKE) --no-print-directory -C QE/ZnO test
 
 clean:
 	@echo "Cleaning old command.out files"
@@ -22,4 +25,11 @@ regenerate:
 	@$(MAKE) --no-print-directory -C Vasp/F-Apatite regenerate
 	@$(MAKE) --no-print-directory -C Vasp/ZnO regenerate
 	@$(MAKE) --no-print-directory -C Gulp/calcite regenerate
-
+	@$(MAKE) --no-print-directory -C Crystal/Leucine regenerate
+	@$(MAKE) --no-print-directory -C Crystal/Quartz regenerate
+	@$(MAKE) --no-print-directory -C Crystal/ZnO/Default regenerate
+	@$(MAKE) --no-print-directory -C Crystal/ZnO/CPHF regenerate
+	@$(MAKE) --no-print-directory -C Crystal/ZnO/NoEckart regenerate
+	@$(MAKE) --no-print-directory -C AbInit/AlAs regenerate
+	@$(MAKE) --no-print-directory -C AbInit/BaTiO3 regenerate
+	@$(MAKE) --no-print-directory -C QE/ZnO regenerate
