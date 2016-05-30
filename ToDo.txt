@@ -1,0 +1,2 @@
+Vasp transverse modes need ordering correctly
+Why do the format of the LO frequencies change from F to E?
