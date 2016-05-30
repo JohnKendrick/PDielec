@@ -21,62 +21,19 @@ import math
 import os, sys
 from Python.Constants import *
 from Python.UnitCell import *
+from Python.GenericOutputReader import *
     
-class CrystalOutputReader:
-    """Read the contents of a directory containg Crystal input and output files"""
+class CrystalOutputReader(GenericOutputReader):
+    """Read contents of a directory containing Crystal input and output files"""
 
-    def __init__(self,filename):
-        self._outputfile             = filename
-        self.name                    = os.path.abspath(self._outputfile)
-        self.debug                   = False
-        self.title                   = None
+    def __init__(self,filenames):
+        GenericOutputReader.__init__(self, filenames)
         self.type                    = 'Crystal output'
-        self.ncells                  = 0
-        self.nsteps                  = 0
-        self.formula                 = None
-        self.nelect                  = 0
-        self.volume                  = 0.0
-        self.nions                   = 0
-        self.nspecies                = 0
-        self.final_energy_without_entropy = 0
-        self.final_free_energy       = 0
-        self.unitCells               = []
-        self.born_charges            = []
         self.species                 = []
-        # this in epsilon infinity
-        self.zerof_optical_dielectric= [ [0, 0, 0], [0, 0, 0], [0, 0, 0] ]
-        # this is the zero frequency static dielectric constant
-        self.zerof_static_dielectric = [ [0, 0, 0], [0, 0, 0], [0, 0, 0] ]
-        self.elastic_constants       = [ [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0] ]
-        self.frequencies             = []
-        self.mass_weighted_normal_modes = []
-        self.masses                  = []
-        self.ions_per_type           = []
-        self.ions                    = []
-        self.eckart                  = True
-        self._ReadOutputFile() 
+        self._ReadOutputFiles() 
 
-    def printInfo (self):
-        print "Number of atoms: ", self.nions
-        print "Number of species: ", self.nspecies
-        print "Frequencies: ", self.frequencies
-        print "Masses: ", self.masses
-        print "Born Charge: ", self.born_charges
-        print "Epsilon inf: ", self.zerof_optical_dielectric
-        print "Volume of cell: ", self.volume
-        print "Unit cell: ", self.unitCells[-1].lattice
-        print "Fractional Coordinates: ", self.unitCells[-1].fractional_coordinates
-        mtotal = 0.0
-        for m in self.masses :
-           mtotal = mtotal + m
-        print "Total mass is: ", mtotal, " g/mol"
-        print "Density is: ", mtotal/( avogadro_si * self.volume * 1.0e-24) , " g/cc"
-        return
-
-
-    def _ReadOutputFile(self):
+    def _ReadOutputFiles(self):
         """Read the Crystal files in the directory"""
-        self.fd = open(self._outputfile,'r')
         self.manage = {}   # Empty the dictionary matching phrases
         self.manage['masses']   = (re.compile(' ATOMS ISOTOPIC MASS'),self._read_masses)
         self.manage['lattice']  = (re.compile(' DIRECT LATTICE VECTORS CARTESIAN COMPONENTS'),self._read_lattice_vectors)
@@ -86,22 +43,8 @@ class CrystalOutputReader:
         self.manage['staticIonic']  = (re.compile(' SUM TENSOR OF THE VIBRATIONAL CONTRIBUTIONS TO '),self._read_ionic_dielectric)
         self.manage['noeckart']  = (re.compile('.* REMOVING ECKART CONDITIONS'),self._read_eckart)
         self.manage['epsilon']  = (re.compile(' SUSCEPTIBILITY '),self._read_epsilon)
-        # Loop through the contents of the file a line at a time and parse the contents
-        line = self.fd.readline()
-        while line != '' :
-            for k in self.manage.keys():
-                if self.manage[k][0].match(line): 
-                    method   = self.manage[k][1]
-                    if self.debug:
-                        print 'Match found %s' % k
-                        print self.manage[k]
-                    method(line)
-                    break
-                #end if
-            #end for
-            line = self.fd.readline()
-        #end while
-        self.fd.close()
+        for f in self._outputfiles:
+            self._ReadOutputFile(f)
         return
 
     def _read_epsilon(self,line):
@@ -173,62 +116,10 @@ class CrystalOutputReader:
               # end if pos
             # end for j
         # end for i
-        # Symmetrise the hessian
-        hessian = 0.5 * ( hessian + hessian.T )
-        # Project out the translational modes if eckart (default) is used in crystal
-        unit = np.eye( nmodes )
-        p1 = np.zeros( nmodes )
-        p2 = np.zeros( nmodes )
-        p3 = np.zeros( nmodes )
-        for i in range(self.nions):
-            p1[i*3+0] = math.sqrt(self.masses[i])
-            p2[i*3+1] = math.sqrt(self.masses[i])
-            p3[i*3+2] = math.sqrt(self.masses[i])
-        # end for i
-        # Normalise
-        p1 = p1 / math.sqrt(np.dot(p1,p1))
-        p2 = p2 / math.sqrt(np.dot(p2,p2))
-        p3 = p3 / math.sqrt(np.dot(p3,p3))
-        # Form the projection operators
-        P1 = unit - np.outer(p1,p1)
-        P2 = unit - np.outer(p2,p2)
-        P3 = unit - np.outer(p3,p3)
-        if self.eckart:
-            # Now project out
-            print "Hessian will be modified by projecting out pure translation"
-            hessian = np.dot ( np.dot(P1.T, hessian), P1)
-            hessian = np.dot ( np.dot(P2.T, hessian), P2)
-            hessian = np.dot ( np.dot(P3.T, hessian), P3)
-        else:
-            print "No projection of the hessian has been performed (NOECKART)"
-        # Find the eigen vectors and normal modes
-        eig_val, eig_vec = np.linalg.eigh(hessian)
-        # If eig_val has negative values then we store the negative frequency
-        # convert to cm-1
-        for i,eig in enumerate(eig_val):
-            if eig < 0 :
-                frequencies[i] = -math.sqrt(-eig) / wavenumber
-            else :
-                frequencies[i] = math.sqrt( eig) / wavenumber
-            # end if
-        #end for
-        #jk print "Eigenvalues"
-        #jk print ( ''.join('{:15.8}'.format(e) for e in eig_val) )
-        #jk print "Frequencies"
-        #jk print ( ''.join('{:15.8}'.format(f) for f in frequencies) )
-        self.mass_weighted_normal_modes = []
-        self.frequencies = frequencies.tolist()
-        # Store the mass weighted normal modes
-        for i in range(nmodes):
-           mode = []
-           n = 0
-           for j in range(self.nions):
-             ma = [ eig_vec[n][i], eig_vec[n+1][i], eig_vec[n+2][i] ]
-             n = n + 3
-             mode.append(ma)
-           self.mass_weighted_normal_modes.append(mode)
-        # end for i
         fd2.close()
+        # symmetrise, project, diagonalise and store the frequencies and normal modes
+        self._DynamicalMatrix(hessian)
+        return
 
     def _read_output_eigenvectors(self,line):
         line = self.fd.readline()

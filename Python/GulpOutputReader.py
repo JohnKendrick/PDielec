@@ -21,8 +21,9 @@ import math
 import os, sys
 from Python.UnitCell import *
 from Python.Constants import *
+from Python.GenericOutputReader import *
 
-class GulpOutputReader:
+class GulpOutputReader(GenericOutputReader):
     """Read the contents of a Gulp output file
        It is quite difficult to work out what is a suitable set of commands for gulp
        The following seems to work OK, important are 
@@ -34,45 +35,25 @@ class GulpOutputReader:
        qeq molq optimise conp qok nomodcoord prop phon intens eigen cart
     """
 
-    def __init__(self,name):
-        self._gulpfile               = name
+    def __init__(self,names):
+        GenericOutputReader.__init__(self,names)
+        self._gulpfile               = names[0]
         self.name                    = os.path.abspath(self._gulpfile)
-        self.debug                   = False
-        self.title                   = None
         self.type                    = 'Gulp output'
-        self.ncells                  = 0
         self.nsteps                  = 0
         self.formula                 = None
-        self.volume                  = 0.0
-        self.nions                   = 0
         self.shells                  = 0
         self.ncores                  = 0
         self.nspecies                = 0
         self.species                 = []
         self.cartesian_coordinates   = []
         self.fractional_coordinates  = []
-        self.final_energy_without_entropy = 0.0
-        self.final_free_energy       = 0.0
         self.pressure                = None
-        self._pulay                   = None
-        self.unitCells               = []
-        self.born_charges            = []
-        # this is epsilon infinity
-        self.zerof_optical_dielectric= [ [1,0,0], [0,1,0], [0,0,1] ]
-        # this is the zero frequency static dielectric constant
-        self.zerof_static_dielectric = []
-        self.frequencies             = []
-        self.mass_weighted_normal_modes = []
         self.masses                  = []
-        self.mass_dictionary         = {}
-        self.ions_per_type           = []
-        self._ion_type_index         = {}
-        self._ion_index_type         = {}
-        self._ReadGulpOutput() 
+        self._ReadOutputFiles() 
 
-    def _ReadGulpOutput(self):
+    def _ReadOutputFiles(self):
         """Read the .gout file"""
-        self.fd = open(self._gulpfile,'r')
         self.manage = {}   # Empty the dictionary matching phrases
         self.manage['formula']  = (re.compile(' *Formula'),self._read_formula)
         self.manage['nions']  = (re.compile(' *Total number atoms'),self._read_total_number_of_atoms)
@@ -89,41 +70,7 @@ class GulpOutputReader:
         self.manage['bornCharges']  = (re.compile(' *Born effective charge'),self._read_born_charges)
         self.manage['elasticConstants']  = (re.compile(' *Elastic Constant Matrix'),self._read_elastic_constants)
         self.manage['frequencies']  = (re.compile(' *Frequencies .cm-1.'),self._read_frequencies)
-        # Loop through the contents of the file a line at a time and parse the contents
-        line = self.fd.readline()
-        while line != '' :
-            for k in self.manage.keys():
-                if self.manage[k][0].match(line): 
-                    method   = self.manage[k][1]
-                    if self.debug:
-                        print >> sys.stderr, 'Match found %s' % k
-                        print >> sys.stderr, self.manage[k]
-                    method(line)
-                    break
-                #end if
-            #end for
-            line = self.fd.readline()
-        #end while
-        self.fd.close()
-
-    def printInfo (self):
-        print "Number of ions: ", self.nions
-        print "Number of cores: ", self.ncores
-        print "Number of shells: ", self.nshells
-        print "Number of species: ", self.nspecies
-        print "Frequencies: ", self.frequencies
-        print "Masses: ", self.masses
-        print "Born Charge: ", self.born_charges
-        print "Epsilon inf: ", self.zerof_optical_dielectric
-        print "Volume of cell: ", self.volume
-        print "Unit cell: ", self.unitCells[-1].lattice
-        print "Fractional coordinates: ", self.unitCells[-1].fractional_coordinates
-        mtotal = 0.0
-        for m in self.masses :
-           mtotal = mtotal + m
-        print "Total mass is: ", mtotal, " g/mol"
-        print "Density is: ", mtotal/( avogadro_si * self.volume * 1.0e-24) , " g/cc"
-        return
+        self._ReadOutputFile(self._gulpfile)
 
     def _read_formula(self,line):
         self.formula = line.split()[2]

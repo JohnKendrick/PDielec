@@ -1,0 +1,9 @@
+Phonons at Gamma Point with IR & Raman
+ &inputph
+  tr2_ph=1.0d-14,
+  epsil=.true.,
+  lraman=.false.,
+ outdir = '/tmp/1075.1.all.q/pwscf' ,
+  fildyn='cocaine.dynG',
+ /
+0.0 0.0 0.0

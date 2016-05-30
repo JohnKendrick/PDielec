@@ -1,0 +1,93 @@
+  ndtset  3
+
+#Ground state calculation
+  kptopt1   1             # Automatic generation of k points, taking
+                          # into account the symmetry
+  tolvrs1   1.0d-14       # SCF stopping criterion
+    iscf1   5             # Self-consistent calculation, using algorithm 5
+
+#Response Function calculation : d/dk
+  rfelfd2   2             # Activate the calculation of the d/dk perturbation
+   rfdir2   1 1 1         # Need to consider the perturbation in the x-direction only
+                          # This is rather specific, due to the high symmetry of the AlAs crystal
+                          # In general, just use rfdir 1 1 1
+                          # In the present version of ABINIT (v4.6), symmetry cannot be used
+                          # to reduce the number of ddk perturbations
+npfft 1
+    nqpt2   1
+     qpt2   0.0 0.0 0.0   # This is a calculation at the Gamma point
+
+  getwfk2   1           # Uses as input the output wf of the previous dataset
+
+  kptopt2   2             # Automatic generation of k points,
+                          # using only the time-reversal symmetry to decrease
+                          # the size of the k point set.
+
+    iscf2  -3             # The d/dk perturbation must be treated 
+                          # in a non-self-consistent way
+  tolwfr2   1.0d-18       # Must use tolwfr for non-self-consistent calculations
+                          # Here, the value of tolwfr is very low.
+
+#Response Function calculation : electric field perturbation and phonons
+  rfphon3   1             # Activate the calculation of the atomic dispacement perturbations
+ rfatpol3   1 5           # All the atoms will be displaced
+  rfelfd3   3             # Activate the calculation of the electric field perturbation
+   rfdir3   1 1 1         # All directions are selected. However, symmetries will be used to decrease
+                          # the number of perturbations, so only the x electric field is needed
+                          # (and this explains why in the second dataset, rfdir was set to 1 0 0).
+
+    nqpt3   1
+     qpt3   0.0 0.0 0.0   # This is a calculation at the Gamma point
+
+  getwfk3   1            # Uses as input wfs the output wfs of the dataset 1
+  getddk3   2          # Uses as input ddk wfs the output of the dataset 2
+
+  kptopt3   2             # Automatic generation of k points,
+                          # using only the time-reversal symmetry to decrease
+                          # the size of the k point set.
+  tolvrs3   1.0d-14
+    iscf3   5             # Self-consistent calculation, using algorithm 5
+
+
+#######################################################################
+   acell 3*1.0
+ rprim 
+       7.90086702951612E+00       0.000000000000000       0.000000000000000
+       0.000000000000000      7.90086702951612E+00      0.000000000000000
+       0.000000000000000       0.000000000000000       7.90086702951612E+00
+ ntypat   3 
+  znucl   8  56 22
+  natom   5
+  typat   3*1 2 3
+   xred   
+     0.500000000000000   0.500000000000000   0
+     0.500000000000000   0.0000000000000000  0.5
+     0.0000000000000000   0.500000000000000   0.5
+     0.0000000000000000   0.0000000000000000   0
+     0.500000000000000   0.500000000000000   0.5000000000000000
+
+#Gives the number of band, explicitely (do not take the default)
+nband  18               # For an insulator (if described correctly as an insulator 
+                       # by DFT), there is no need to include conduction bands 
+                       # in response-function calculations
+
+#Exchange-correlation functional
+ixc 1             # LDA Teter Pade parametrization
+
+#Definition of the planewave basis set
+ecut    40.0           # Maximal kinetic energy cut-off, in Hartree
+nshiftk 1
+shiftk 0.0 0.0 0.0
+ngkpt   4 4 4
+
+occopt 7 # Fermi-Dirac
+tsmear 0.02 # ~0.2 eV, Default 0.04Ha
+#Definition of the SCF procedure
+nstep 150              # Maximal number of SCF cycles
+diemac 9.0             # Although this is not mandatory, it is worth to
+                       # precondition the SCF cycle. The model dielectric
+                       # function used as the standard preconditioner
+                       # is described in the "dielng" input variable section.
+                       # The dielectric constant of AlAs is smaller that the one of Si (=12).
+# add to conserve old < 6.7.2 behavior for calculating forces at each SCF step
+ optforces 1

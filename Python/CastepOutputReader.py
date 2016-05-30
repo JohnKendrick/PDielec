@@ -21,95 +21,68 @@ import math
 import os, sys
 from Python.UnitCell import *
 from Python.Constants import *
+from Python.GenericOutputReader import *
 
-class CastepOutputReader:
-    """Read the contents of a Castep output file"""
+class CastepOutputReader(GenericOutputReader):
+    """Read the contents of a Castep output file
+       Inherit the following from the GenericOutputReader
+       __init__
+       printInfo
+       _ReadOutputFile
+       _dyanmicalMatrix
+"""
 
-    def __init__(self,seedname):
+    def __init__(self,filenames):
+        GenericOutputReader.__init__(self, filenames)
+        if filenames[0].find(".castep"):
+            seedname,ext = os.path.splitext(filenames[0])
+        elif filenames[0].find(".phonon"):
+            seedname,ext = os.path.splitext(filenames[0])
         self._castepfile             = seedname+".castep"
         self._phononfile             = seedname+".phonon"
-        self.name                    = os.path.abspath(self._castepfile)
-        self.debug                   = False
-        self.title                   = None
+        self.names                   = [ self._castepfile, self._phononfile ]
+        self._outputfiles            = [ self._castepfile, self._phononfile ]
         self.type                    = 'Castep output'
-        self.ncells                  = 0
-        self.nsteps                  = 0
-        self.formula                 = None
+        # Specific Castep Reader Variables
         self.pspots                  = {}
         self.spin                    = 0
         self.encut                   = 0.0
         self.ediff                   = 0.0
-        self.nelect                  = 0
         self.epsilon                 = None
-        self.volume                  = 0.0
         self.nkpts                   = 0
         self.nbands                  = 0
-        self.nions                   = 0
-        self.nspecies                = 0
         self._nbranches              = 0
         self.species                 = []
         self.final_energy_without_entropy = 0.0
-        self.final_free_energy       = 0.0
         self.pressure                = None
         self._pulay                   = None
-        self.unitCells               = []
-        self.born_charges            = []
-        # this is epsilon infinity
-        self.zerof_optical_dielectric= []
-        # this is the zero frequency static dielectric constant
-        self.zerof_static_dielectric = []
-        self.frequencies             = []
-        self.mass_weighted_normal_modes = []
         self.masses_dictionary       = {}
-        self.masses                  = []
         self.ions_per_type           = []
         self._ion_type_index         = {}
         self._ion_index_type         = {}
-        self._ReadCastep() 
-        if os.path.isfile(self._phononfile):
-            #JK print >> sys.stderr, "Reading phonon file"
-            self._ReadPhonon() 
+        self._ReadOutputFiles() 
 
-    def printInfo (self):
-        print "Number of atoms: ", self.nions
-        print "Number of species: ", self.nspecies
-        print "Frequencies: ", self.frequencies
-        print "Masses: ", self.masses
-        print "Born Charge: ", self.born_charges
-        print "Epsilon inf: ", self.zerof_optical_dielectric
-        print "Volume of cell: ", self.volume
-        print "Unit cell: ", self.unitCells[-1].lattice
-        print "Fractional Coordinates: ", self.unitCells[-1].fractional_coordinates
-        mtotal = 0.0
-        for m in self.masses :
-           mtotal = mtotal + m
-        print "Total mass is: ", mtotal, " g/mol"
-        print "Density is: ", mtotal/( avogadro_si * self.volume * 1.0e-24) , " g/cc"
-        return
-
-
-    def _ReadPhonon(self):
-        """Read the .phonon file"""
-        self.fd = open(self._phononfile,'r')
+    def _ReadOutputFiles(self):
+        """For the .castep file"""
         self.manage = {}   # Empty the dictionary matching phrases
+        self.manage['spin']          = (re.compile(' *net spin   of'),       self._read_spin)
+        self.manage['nelect']        = (re.compile(' *number of  electrons'),self._read_nelect)
+        self.manage['cellcontents']  = (re.compile(' *Unit Cell'),self._read_cellcontents)
+        self.manage['pspots']        = (re.compile(' *Files used for pseudopotentials:'),self._read_pspot)
+        self.manage['masses']        = (re.compile(' *Mass of species in AMU'),self._read_masses)
+        self.manage['kpts']          = (re.compile(' *Number of kpoints used'),self._read_kpoints)
+        self.manage['finalenergy']   = (re.compile(' *Final energy, E'),self._read_energies)
+        self.manage['encut']         = (re.compile(' *plane wave basis set cut'),self._read_encut)
+        self.manage['nbands']        = (re.compile(' *number of bands'),self._read_nbands)
+        self.manage['pressure']      = (re.compile(' *\* Pressure: '),self._read_external_pressure)
+        self.manage['opticalDielectric']  = (re.compile(' *Optical Permittivity'),self._read_dielectric)
+        self.manage['bornCharges']  = (re.compile(' *Born Effective Charges'),self._read_born_charges)
+        """For the .phonon file"""
         self.manage['frequency']  = (re.compile('     q-pt=    1    0.000000  0.000000  0.000000      1.0000000000 *$'),self._read_frequencies)
         self.manage['nbranches']  = (re.compile(' Number of branches'),self._read_nbranches)
-        # Loop through the contents of the file a line at a time and parse the contents
-        line = self.fd.readline()
-        while line != '' :
-            for k in self.manage.keys():
-                if self.manage[k][0].match(line): 
-                    method   = self.manage[k][1]
-                    if self.debug:
-                        print >> sys.stderr, 'Match found %s' % k
-                        print >> sys.stderr, self.manage[k]
-                    method(line)
-                    break
-                #end if
-            #end for
-            line = self.fd.readline()
-        #end while
-        self.fd.close()
+        for f in self._outputfiles:
+            self._ReadOutputFile(f)
+        return
 
     def _read_nbranches(self,line):
         # phonon file being read

@@ -21,73 +21,43 @@ import math
 import os, sys
 from Python.Constants import *
 from Python.UnitCell import *
+from Python.GenericOutputReader import *
     
-class VaspOutputReader:
+class VaspOutputReader(GenericOutputReader):
     """Read the contents of a directory containg VASP input and output files"""
 
-    def __init__(self,directory):
-        self._outcarfile             = os.path.join(directory,'OUTCAR')
+    def __init__(self,names):
+        GenericOutputReader.__init__(self,names)
+        if names[0] == "OUTCAR":
+            directory = "."
+        else:
+            directory = names[0]
+        self._outputfiles            = [ os.path.join(directory,'OUTCAR') ]
         self.name                    = os.path.abspath(directory)
-        self.debug                   = False
-        self.title                   = None
         self.type                    = 'Vasp output'
-        self.ncells                  = 0
-        self.nsteps                  = 0
-        self.formula                 = None
         self.pspots                  = {}
         self.spin                    = 0
         self.encut                   = 0.0
         self.ediff                   = 0.0
         self.nelect                  = 0
-        self.volume                  = 0.0
         self.nkpts                   = 0
         self.nbands                  = 0
-        self.nions                   = 0
         self.electrons               = 0.0
         self.magnetization           = 0.0
-        self.nspecies                = 0
         self.final_energy_without_entropy = 0
         self.final_free_energy       = 0
         self.pressure                = None
         self._pulay                   = None
-        self.unitCells               = []
-        self.born_charges            = []
-        # this in epsilon infinity
-        self.zerof_optical_dielectric= [ [0, 0, 0], [0, 0, 0], [0, 0, 0] ]
-        # this is the zero frequency static dielectric constant
-        self.zerof_static_dielectric = [ [0, 0, 0], [0, 0, 0], [0, 0, 0] ]
         self.elastic_constants       = [ [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0] ]
-        self.frequencies             = []
-        self.mass_weighted_normal_modes = []
         self.masses_list         = []
-        self.masses                  = []
         self.ions_per_type             = []
         self.ibrion                 = 0
         self.potim                  = 0.0
         self.epsilon                = None
-        self._ReadOUTCAR() 
+        self._ReadOutputFiles() 
 
-    def printInfo (self):
-        print "Number of atoms: ", self.nions
-        print "Number of species: ", self.nspecies
-        print "Frequencies: ", self.frequencies
-        print "Masses: ", self.masses
-        print "Born Charge: ", self.born_charges
-        print "Epsilon inf: ", self.zerof_optical_dielectric
-        print "Volume of cell: ", self.volume
-        print "Unit cell: ", self.unitCells[-1].lattice
-        print "Fractional Coordinates: ", self.unitCells[-1].fractional_coordinates
-        mtotal = 0.0
-        for m in self.masses :
-           mtotal = mtotal + m
-        print "Total mass is: ", mtotal, " g/mol"
-        print "Density is: ", mtotal/( avogadro_si * self.volume * 1.0e-24) , " g/cc"
-        return
-
-
-    def _ReadOUTCAR(self):
+    def _ReadOutputFiles(self):
         """Read the vasp files in the directory"""
-        self.fd = open(self._outcarfile,'r')
         self.manage = {}   # Empty the dictionary matching phrases
         self.manage['ionspertype']  = (re.compile('   ions per type ='),self._read_ionspertype)
         self.manage['masses_skip']   = (re.compile('  Mass of Ions in am'),self._read_skip4)
@@ -113,23 +83,10 @@ class VaspOutputReader:
         self.manage['eigenvectors']  = (re.compile(' Eigenvectors and eige'),self._read_eigenvectors)
         self.manage['eigenskip']  = (re.compile(' Eigenvectors after division'),self._read_skip4)
         self.manage['elastic']  = (re.compile(' TOTAL ELASTIC MODULI'),self._read_elastic_constants)
- 
-        # Loop through the contents of the file a line at a time and parse the contents
-        line = self.fd.readline()
-        while line != '' :
-            for k in self.manage.keys():
-                if self.manage[k][0].match(line): 
-                    method   = self.manage[k][1]
-                    if self.debug:
-                        print 'Match found %s' % k
-                        print self.manage[k]
-                    method(line)
-                    break
-                #end if
-            #end for
-            line = self.fd.readline()
-        #end while
-        self.fd.close()
+        for f in self._outputfiles:
+            self._ReadOutputFile(f)
+        return
+
 
     def _read_ionspertype(self,line):
         self.ions_per_type=[ int(i) for i in line.split()[4:] ]
