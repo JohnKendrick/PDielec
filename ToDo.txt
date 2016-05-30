@@ -1,2 +1,3 @@
 Vasp transverse modes need ordering correctly
-Why do the format of the LO frequencies change from F to E?
+Why do the format of abinit LO frequencies change from F to E?
+
