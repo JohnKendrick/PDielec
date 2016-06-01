@@ -62,35 +62,24 @@ class QEOutputReader(GenericOutputReader):
         self.zerof_optical_dielectric.append( [float(f) for f in linea[0:3] ])
         return
 
-    def _read_masses(self,line):
+    def _read_masses(self):
         self.mass_species = []
         self.species      = []
         for i in range(self.nspecies):
-            linea = self.fd.readline().replace('\'').split()
+            linea = self.fd.readline().replace('\'','').split()
             self.species.append(linea[1])
-            self.mass_species.append(float(linea[2])/amu)
+            # The factor of two is because au in pwscf are half mass of electron
+            self.mass_species.append(float(linea[2])*2/amu)
         self._read_cartesian_coordinates()
         return
 
-    def _read_eigenvectors(self,line):
-        if os.path.isfile("HESSFREQ.DAT"):
-            print "Reading Hessian from HESSFREQ.DAT"
-            self._read_hessfreq_dat();
-        else:
-            print "Reading Normal Modes from output file"
-            print "WARNING! WARNING! WARNING! WARNING! WARNING!"
-            print "The numerical precision of the input is limited"
-            print "WARNING! WARNING! WARNING! WARNING! WARNING!"
-            self._read_output_eigenvectors(line)
-        return
-
-    def _read_dynamical(self):
+    def _read_dynamical(self,line):
         nmodes = self.nions*3
-        hessian = np.zeros( (nmodes,nmodes)
+        hessian = np.zeros( (nmodes,nmodes) )
         line = self.fd.readline()
         linea = self.fd.readline().split()
         # We only want to read the hessian at gamma
-        q = [ q for q in linea[3:6] ]
+        q = [ float(q) for q in linea[3:6] ]
         qsum = q[0]*q[0] + q[1]*q[1] + q[2]*q[2]
         if qsum > 0.0001:
             return
@@ -98,23 +87,26 @@ class QEOutputReader(GenericOutputReader):
         linea = self.fd.readline().split()
         for a in range(self.nions) :
             for b in range(self.nions) :
-               linea = self.fd.readline().split()
+               line = self.fd.readline()
                for ixyz in range(3):
-                   ipos = (a-1)*3 + ixyz
+                   ipos = a*3 + ixyz
+                   linea = self.fd.readline().split()
                    for jxyz in range(3):
-                       ipos = (b-1)*3 + jxyz
-                       linea = self.fd.readline().split()
-                       hessian[ipos,jpos] = self.masses[a]*self.masses[b]*float(linea[2*jxyz])
+                       jpos = b*3 + jxyz
+                       # factor of 0.5 'cos of au units in pwscf
+                       hessian[ipos,jpos] = 0.5*float(linea[2*jxyz])/(amu*math.sqrt(self.masses[a]*self.masses[b]))
                    # end for jxyz
                # end for ixyz
             # end for b
         # end for a
         self._DynamicalMatrix(hessian)
 
-    def _read_born_charges(self):
+    def _read_born_charges(self,line):
         self.born_charges = []
+        line = self.fd.readline()
         for i in range(self.nions) :
           b = []
+          line = self.fd.readline()
           line = self.fd.readline()
           b.append( [ float(line.split()[0]), float(line.split()[1]), float(line.split()[2]) ] )
           line = self.fd.readline()
@@ -126,25 +118,26 @@ class QEOutputReader(GenericOutputReader):
 
 
     def _read_lattice_vectors(self,line):
-        line = self.fd.readline()
-        aVector = [ float(f)*alat for f in linea[0:3] ]
         linea = self.fd.readline().split()
-        bVector = [ float(f)*alat for f in linea[0:3] ]
+        aVector = [ float(f)*self.alat/angs2bohr for f in linea[0:3] ]
         linea = self.fd.readline().split()
-        cVector = [ float(f)*alat for f in linea[0:3] ]
+        bVector = [ float(f)*self.alat/angs2bohr for f in linea[0:3] ]
+        linea = self.fd.readline().split()
+        cVector = [ float(f)*self.alat/angs2bohr for f in linea[0:3] ]
         self.unitCells.append(UnitCell(aVector, bVector, cVector))
         self.ncells = len(self.unitCells)
         self.volume = self.unitCells[-1].volume
         self._read_masses()
         return
 
-    def _read_cartesian_coordinates(self,line):
+    def _read_cartesian_coordinates(self):
         self.ions = []
         self.masses = []
         for i in range(self.nions) :
             linea = self.fd.readline().split()
             species = int(linea[1])
             self.ions.append( [ float(linea[2]), float(linea[3]), float(linea[4]) ] )
-            self.masses.append(mass_species[species-1])
+            self.masses.append(self.mass_species[species-1])
+        print "MASSES:",self.masses
         return
 
