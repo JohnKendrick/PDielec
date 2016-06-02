@@ -51,7 +51,8 @@ class GenericOutputReader:
         self.mass_weighted_normal_modes = []
         self.masses                  = []
         self.ions                    = []
-        self.eckart = True
+        self.eckart = False
+        self.neutral = False
         # The child will issue a call to _ReadOutputfiles
 
     def PrintInfo (self):
@@ -111,8 +112,8 @@ class GenericOutputReader:
         hessian = 0.5 * (hessian + hessian.T)
         # diagonalise
         eig_val, eig_vec = np.linalg.eigh(hessian)
-        print "Eigen values of hessian"
-        print eig_val
+        #jk print "Eigen values of hessian"
+        #jk print eig_val
         # Project out the translational modes if requested
         unit = np.eye( nmodes )
         p1 = np.zeros( nmodes )
@@ -142,8 +143,8 @@ class GenericOutputReader:
 
         # diagonalise
         eig_val, eig_vec = np.linalg.eigh(hessian)
-        print "Eigen values after projection"
-        print eig_val
+        #jk print "Eigen values after projection"
+        #jk print eig_val
         # If eig_val has negative values then we store the negative frequency
         # convert to cm-1
         frequencies = np.zeros( nmodes )
@@ -172,4 +173,15 @@ class GenericOutputReader:
         # end for i
         return
  
+
+    def _BornChargeSumRule(self):
+        """Apply a simple charge sum rule to all the elements of the born matrices"""
+        total = np.zeros( (3,3) )
+        born_charges = np.array(self.born_charges)
+        new_born_charges = np.zeros_like(self.born_charges)
+        total = np.sum(born_charges) / self.nions
+        #jk print >> sys.stderr, "Born charge sum, total = ", total
+        new_born_charges = born_charges - total
+        self.born_charges = new_born_charges.tolist()
+        return 
 

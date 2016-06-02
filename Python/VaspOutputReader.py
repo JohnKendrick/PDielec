@@ -154,6 +154,8 @@ class VaspOutputReader(GenericOutputReader):
           b.append( [ float(line.split()[1]), float(line.split()[2]), float(line.split()[3]) ] )
           line = self.fd.readline()
           self.born_charges.append(b)
+        if self.neutral:
+            self._BornChargeSumRule()
         return
 
     def _read_elastic_constants(self,line):

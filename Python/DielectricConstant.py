@@ -279,17 +279,6 @@ class DielectricConstant:
         # end for
         return oscillator_strengths
     
-    def BornChargeSumRule(self, born_charges):
-        """Apply a simple charge sume rule to all the elements of the born matrices"""
-        total = np.zeros( (3,3) )
-        born_charges = np.array(born_charges)
-        new_born_charges = np.zeros_like(born_charges)
-        nions = np.size(born_charges,0)
-        total = np.sum(born_charges) / nions
-        #jk print >> sys.stderr, "Born charge sum, total = ", total
-        new_born_charges = born_charges - total
-        return new_born_charges
-
     def NormalModes(self, masses,mass_weighted_normal_modes):
         """ Transform from mass weighted coordinates to xyz. Note this returns an array object.
             The returned normal modes have NOT been renormalised.

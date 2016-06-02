@@ -184,6 +184,8 @@ class CrystalOutputReader(GenericOutputReader):
             print "The numerical precision of the input is limited"
             print "WARNING! WARNING! WARNING! WARNING! WARNING!"
             self._read_born_charges_from_output(line)
+        if self.neutral:
+            self._BornChargeSumRule()
         return
 
     def _read_born_charges_from_born_dat(self):

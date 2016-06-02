@@ -268,6 +268,8 @@ class CastepOutputReader(GenericOutputReader):
           B = np.array(b)
           C = B.T
           self.born_charges.append(C.tolist())
+        if self.neutral:
+            self._BornChargeSumRule()
         return
 
     def _read_dielectric(self,line):

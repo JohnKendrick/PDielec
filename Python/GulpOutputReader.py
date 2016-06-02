@@ -210,6 +210,8 @@ class GulpOutputReader(GenericOutputReader):
                 self.born_charges.append(a)
             # end loop over charges
         # end if len()
+        if self.neutral:
+            self._BornChargeSumRule()
         return
 
     def _read_cellcontentsf(self,line):
@@ -245,6 +247,8 @@ class GulpOutputReader(GenericOutputReader):
                 self.born_charges.append(a)
             # end loop over charges
         # end if len()
+        if self.neutral:
+            self._BornChargeSumRule()
         return
 
     def _read_species(self,line):
@@ -289,6 +293,8 @@ class GulpOutputReader(GenericOutputReader):
           line = self.fd.readline()
           line = self.fd.readline()
         #jk print self.born_charges
+        if self.neutral:
+            self._BornChargeSumRule()
         return
 
     def _read_optical_dielectric(self,line):

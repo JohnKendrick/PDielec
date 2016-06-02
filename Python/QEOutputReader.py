@@ -37,6 +37,7 @@ class QEOutputReader(GenericOutputReader):
         self.manage = {}   # Empty the dictionary matching phrases
         self.manage['header']   = (re.compile('Dynamical matrix file'),self._read_header)
         self.manage['lattice']  = (re.compile('Basis vectors'),self._read_lattice_vectors)
+        self.manage['lattice2']  = (re.compile('cubic'),self._read_lattice_vectors)
         self.manage['dynamical']  = (re.compile(' *Dynamical  Matrix in c'),self._read_dynamical)
         self.manage['epsilon']  = (re.compile(' *Dielectric Tensor:'),self._read_epsilon)
         self.manage['charges']  = (re.compile(' *Effective Charges E-U:'),self._read_born_charges)
@@ -114,6 +115,8 @@ class QEOutputReader(GenericOutputReader):
           line = self.fd.readline()
           b.append( [ float(line.split()[0]), float(line.split()[1]), float(line.split()[2]) ] )
           self.born_charges.append(b)
+        if self.neutral:
+            self._BornChargeSumRule()
         return
 
 

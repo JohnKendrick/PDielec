@@ -40,7 +40,9 @@ def showUsage():
     print"        [-mf %f] " % (mass_fraction)
     print"        [-dielectric %f] [-density %f] " % (matrix_dielectric,matrix_density)
     print"        [-matrix nujol/ptfe/kbr/ldpe/mdpe/hdpe] "
+    print"        [-LO h k l ]"
     print"        [-mode index] [-csv file]"
+    print"        [-eckart] [-neutral]"
     print"        [-program name] file1 [file2]"
     print"pdielec: Calculates a spectrum from VASP, CASTEP or GULP"
     print"             At least one shape must be specified ( -sphere -needle -plate )"
@@ -125,6 +127,12 @@ def showUsage():
     print"         -mode  index  only include this mode in the sum"
     print"             This option can be included several times"
     print"             By default all frequencies are included"
+    print"         -eckart"
+    print"             The translational modes will be projected from the dynamical matrix"
+    print"             This option only applies when the dynmical matrix is read and used"
+    print"             to calculate the frequencies and normal modes."
+    print"         -neutral"
+    print"             Charge neutrality of the Born charges is enforced"
     print"         -LO h k l "
     print"             Define a wavector direction (hkl) for which the LO frequencies "
     print"             will be calculated using the nonanalytical correction"
@@ -163,6 +171,8 @@ plot_types      = []
 volume_fraction = 0.1
 mass_fraction = 0.0
 sigma          = 5
+eckart = False
+neutral = False
 matrix_dielectric  = 1.00  # air
 matrix_dielectric  = 2.25  # kbr
 matrix_dielectric  = 2.0   # ptfe
@@ -282,6 +292,10 @@ while itoken < ntokens:
             data = "["+token+","+tokens[itoken+1]+","+tokens[itoken+2]+"]"
             itoken += 2
         shape_data.append(data)
+    elif token == "-eckart":
+         eckart = True
+    elif token == "-neutral":
+         neutral = True
     elif token == "-LO":
         itoken += 1; token = tokens[itoken]
         if token[0] == "[" or token[0] =="(" or token[0] == "{" :
@@ -434,6 +448,17 @@ else:
       reader = QEOutputReader(names)
     #endif
 # end if
+if eckart:
+    print "The translational modes will be projected from the Dynamical matrix where possible"
+else:
+    print "No projection of the dynamical matrix will be performed"
+if neutral:
+    print "The charge neutrality of the Born atomic charges will be enforced"
+else:
+    print "The charge neutrality of the Born atomic charges will not be enforced"
+# Modify the default settings of the reader
+reader.eckart = eckart
+reader.neutral = neutral
 calculator.setReader(reader)
 if printInfo:
     reader.PrintInfo()

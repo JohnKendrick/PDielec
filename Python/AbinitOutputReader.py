@@ -149,6 +149,8 @@ class AbinitOutputReader(GenericOutputReader):
                 b = self.charges[i][ifield][:].tolist()
                 atom.append(b)
             self.born_charges.append(atom)
+        if self.neutral:
+            self._BornChargeSumRule()
         return
 
     def _read_lattice_vectors(self,line):
