@@ -1,0 +1,97 @@
+appending to names  BaTiO3.out
+appending to names  BaTiO3.out
+The following methods will be used:  ['maxwell']
+Creating a csv file:  command.csv
+No plotting requested
+The frequency increment is  0.2  cm-1
+The default width factor (-sigma) has been set to  5.0  cm-1
+Permittivity of the medium (-dielectric) has been set to  2.0
+Density of the medium (-density) has been set to  2.2
+Vmin is:  0.0
+Vmax is:  300.0
+Considering all modes
+Calculating LO frequencies for the following q directions
+(1,0,0)
+(0,1,0)
+(0,0,1)
+ 
+Program specified is:  abinit
+Output file:  BaTiO3.out
+Output file:  BaTiO3.out
+No projection of the hessian has been performed (NOECKART)
+No projection of the hessian has been performed (NOECKART)
+No projection of the dynamical matrix will be performed
+The charge neutrality of the Born atomic charges will not be enforced
+Shape depolarisation matrix:  plate (0,0,1) 
+The miller indices for the surface  (0,0,1) has a normal [ 0.  0.  1.] in xyz
+[[ 0.  0.  0.]
+ [ 0.  0.  0.]
+ [ 0.  0.  1.]]
+
+Shape depolarisation matrix:  ellipsoid [0,0,1] 0.5
+The miller direction  [0,0,1] is  [ 0.  0.  1.] in xyz
+[[ 0.23639986  0.          0.        ]
+ [ 0.          0.23639986  0.        ]
+ [ 0.          0.          0.52720028]]
+
+Shape depolarisation matrix:  plate (1,0,0) 
+The miller indices for the surface  (1,0,0) has a normal [ 1.  0.  0.] in xyz
+[[ 1.  0.  0.]
+ [ 0.  0.  0.]
+ [ 0.  0.  0.]]
+
+Volume of unit cell is  73.0848989283  Angstrom^3
+Total unit cell mass is:  233.2052  g/mol
+Crystal density is:  5.29858130358  g/cc
+Complete mode list is:  [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
+Sigmas are  :  [5.0, 5.0, 5.0, 5.0, 5.0, 5.0, 5.0, 5.0, 5.0, 5.0, 5.0, 5.0, 5.0, 5.0, 5.0]
+The miller indices for the surface  (1,0,0) has a normal [ 1.  0.  0.] in xyz
+The miller indices for the surface  (0,1,0) has a normal [ 0.  1.  0.] in xyz
+The miller indices for the surface  (0,0,1) has a normal [ 0.  0.  1.] in xyz
+Transverse frequencies (cm-1)
+[  65.73941301   65.73941301   65.75406422  198.0066865   198.0066865
+  198.01500944  270.58721304  270.58721305  270.58721305  279.35226968
+  279.35277827  279.35277827  493.62666128  493.63166346  493.63166346]
+Longitudinal frequencies (cm-1) for q->0 along  (1,0,0)
+[  65.73941301   65.75406422   73.07003701  198.0066865   198.01500944
+  240.6695498   270.58721304  270.58721305  270.58721306  279.35226968
+  279.35277827  425.60533192  493.62666128  493.63166346  685.80640968]
+Longitudinal frequencies (cm-1) for q->0 along  (0,1,0)
+[  65.73941301   65.75406422   73.070037    198.0066865   198.01500944
+  240.66954985  270.58721304  270.58721305  270.58721305  279.35226968
+  279.35277827  425.60533183  493.62666128  493.63166346  685.80640947]
+Longitudinal frequencies (cm-1) for q->0 along  (0,0,1)
+[  65.73941301   65.73941301   73.08042968  198.0066865   198.0066865
+  240.68555029  270.58721304  270.58721305  270.58721305  279.35277827
+  279.35277827  425.6070963   493.63166346  493.63166346  685.8049184 ]
+Selected mode list is:  [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
+Calculated Integrated IR band intensities (espilon_max assumes a fwhm line width)
+mode,Freq(cm-1),Intensity(Debye2/Angstrom2/amu),Integrated_Molar_Absorption_Coefficient(L/mole/cm/cm),epsilon_max(L/mole/cm), FWHM(cm-1)
+0 , 65.7394130119 , 1.93515989349 , 8177.21164592 , 1041.15492332 , 5.0
+1 , 65.7394130119 , 1.93508265119 , 8176.88525086 , 1041.11336542 , 5.0
+2 , 65.7540642214 , 1.93457089442 , 8174.72277147 , 1040.83802999 , 5.0
+3 , 198.0066865 , 37.1124914941 , 156822.544058 , 19967.26646 , 5.0
+4 , 198.0066865 , 37.1122806005 , 156821.652905 , 19967.152995 , 5.0
+5 , 198.015009443 , 37.1256022755 , 156877.944975 , 19974.3203239 , 5.0
+6 , 270.587213043 , 3.33506417682e-08 , 0.000140926471856 , 1.79433156866e-05 , 5.0
+7 , 270.587213047 , 2.99720541838e-08 , 0.000126649912159 , 1.61255676498e-05 , 5.0
+8 , 270.587213047 , 6.25978343178e-10 , 2.64513408693e-06 , 3.36788932061e-07 , 5.0
+9 , 279.352269677 , 33.0550236763 , 139677.308047 , 17784.2672107 , 5.0
+10 , 279.352778273 , 33.063565598 , 139713.402791 , 17788.8629363 , 5.0
+11 , 279.352778273 , 33.0635899357 , 139713.505632 , 17788.8760304 , 5.0
+12 , 493.626661279 , 20.5137097558 , 86682.7319441 , 11036.7882157 , 5.0
+13 , 493.631663462 , 20.5155216792 , 86690.3884076 , 11037.7630669 , 5.0
+14 , 493.631663462 , 20.5155216787 , 86690.3884055 , 11037.7630666 , 5.0
+Permittivity contribution from ionic displacements
+[[  5.55131785e+01  -8.04423144e-04  -8.68895389e-04]
+ [ -8.04423144e-04   5.55131785e+01  -1.70198686e-13]
+ [ -8.68895389e-04  -1.70198686e-13   5.55078342e+01]]
+Optical permittivity at zero frequency
+[[  7.73445059e+00   1.77761000e-05  -1.15000000e-08]
+ [  1.77761000e-05   7.73445059e+00   0.00000000e+00]
+ [ -1.15000000e-08   0.00000000e+00   7.73445059e+00]]
+Total permittivity
+[[  6.32476291e+01  -7.86647044e-04  -8.68906889e-04]
+ [ -7.86647044e-04   6.32476290e+01  -1.70198686e-13]
+ [ -8.68906889e-04  -1.70198686e-13   6.32422848e+01]]
+Concentration for unit volume fraction in moles / Litre 22.7206824873
