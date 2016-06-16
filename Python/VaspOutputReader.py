@@ -54,7 +54,7 @@ class VaspOutputReader(GenericOutputReader):
         self.ibrion                 = 0
         self.potim                  = 0.0
         self.epsilon                = None
-        self._ReadOutputFiles() 
+        return
 
     def _ReadOutputFiles(self):
         """Read the vasp files in the directory"""
@@ -117,7 +117,8 @@ class VaspOutputReader(GenericOutputReader):
           line = self.fd.readline()
           imaginary = ( line.split()[1] == "f/i=" )
           if imaginary :
-            freq = complex(0.0,float(line.split()[6]))
+            # represent imaginary by negative real 
+            freq = -float(line.split()[6])
             # print "Found imaginary frequency ",line.split()[6]+"i"
           else :
             freq = float(line.split()[7])
