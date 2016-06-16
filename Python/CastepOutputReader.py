@@ -29,7 +29,7 @@ class CastepOutputReader(GenericOutputReader):
        __init__
        printInfo
        _ReadOutputFile
-       _dyanmicalMatrix
+       _DyanmicalMatrix
 """
 
     def __init__(self,filenames):
@@ -60,7 +60,7 @@ class CastepOutputReader(GenericOutputReader):
         self.ions_per_type           = []
         self._ion_type_index         = {}
         self._ion_index_type         = {}
-        self._ReadOutputFiles() 
+        return
 
     def _ReadOutputFiles(self):
         """For the .castep file"""
@@ -114,11 +114,9 @@ class CastepOutputReader(GenericOutputReader):
         self.intensities = []
         self.mass_weighted_normal_modes = []
         # now reads all frequencies imaginary or not
+        # imaginary frequencies are indicated by real negative values
         for i,freq in enumerate(frequencies):
-             if freq < 0.0 :
-                 self.frequencies.append(complex(0,-freq))
-             else:
-                 self.frequencies.append(freq)
+             self.frequencies.append(freq)
              self.intensities.append(intensities[i])
              self.mass_weighted_normal_modes.append(normal_modes[i])
             # end of if freq
