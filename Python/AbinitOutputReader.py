@@ -29,13 +29,11 @@ class AbinitOutputReader(GenericOutputReader):
        __init__
        printInfo
        _ReadOutputFile
-       _dyanmicalMatrix
 """
 
     def __init__(self, filenames):
         GenericOutputReader.__init__(self,filenames)
         self.type = 'Abinit output files'
-        self._ReadOutputFiles()
         return
 
     def _ReadOutputFiles(self):
