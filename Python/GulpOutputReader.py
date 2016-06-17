@@ -50,7 +50,7 @@ class GulpOutputReader(GenericOutputReader):
         self.fractional_coordinates  = []
         self.pressure                = None
         self.masses                  = []
-        self._ReadOutputFiles() 
+        return
 
     def _ReadOutputFiles(self):
         """Read the .gout file"""
