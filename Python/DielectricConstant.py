@@ -174,7 +174,7 @@ class DielectricConstant:
         intensities = intensities / convert
         return intensities
     
-    def LongitudinalModes(self, frequencies, normal_modes, born_charges, masses, epsilon_inf, volume, qlist):
+    def LongitudinalModes(self, frequencies, normal_modes, born_charges, masses, epsilon_inf, volume, qlist, reader):
         """Apply the nonanalytic correction to the dynamical matrix and calculate the LO frequencies
            frequencies are the frequencies (f) in atomic units
            normal_modes are the mass weighted normal modes (U)
@@ -183,7 +183,8 @@ class DielectricConstant:
               where 1, 2, 3 are the directions of the field and x, y, z are the coordinates of the atom
            qlist is a list of direction vectors
            The subroutine returns a list of (real) frequencies in atomic units
-           Any imaginary frequencies are set to 0"""
+           Any imaginary frequencies are set to 0
+           If projection was requested in the reader, the correction is modified ensure translational invariance"""
         # Use a sqrt that returns a complex number
         #from numpy.lib.scimath import sqrt
         # First step is to reconstruct the dynamical matrix (D) from the frequencies and the eigenvectors
@@ -210,7 +211,8 @@ class DielectricConstant:
         Wm = np.zeros( (n,n) )
         D  = np.zeros( (n,n) )
         # convert the frequencies^2 to a real diagonal array
-        f2 = np.diag( np.real(frequencies*frequencies) )
+        # Warning we have to make sure the sign is correct here
+        f2 = np.diag( np.sign(frequencies)*np.real(frequencies*frequencies) )
         Dm = np.dot( np.dot(UT.T, f2), UT )
         # Make sure the dynamical matrix is real
         Dm = np.real(Dm)
@@ -245,13 +247,18 @@ class DielectricConstant:
             # end loop over a
             # Construct the full dynamical matrix with the correction
             Dmq = Dm + Wm
+            # If projection was requested when the matrix was read, project out translation
+            if reader.eckart:
+              reader.project(Dmq)
             eig_val, eig_vec = np.linalg.eigh(Dmq)
             # If eig_val less than zero we set it to zero
             values = []
             for eig in eig_val:
-                if eig < 0:
-                   eig = 0
-                values.append(math.sqrt(eig))
+                if eig >= 0:
+                    val = math.sqrt(eig)
+                else:
+                    val = -math.sqrt(-eig)
+                values.append(val)
             # end of for eig
             # Sort the eigen values in ascending order and append to the results
             results.append(np.sort(values))
