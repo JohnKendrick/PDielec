@@ -7,7 +7,11 @@ v2.0, 2015-11-17
 Authors: John Kendrick and Andrew Burnett
 
 The Python package PDielec calculates the infrared absorption characteristics of a crystalline material supported in a non absorbing medium by post processesing the output of solid state quantum mechanical and molecular mechanical calculations of the phonons or dielectric response of the crystalline material.
-The package calculates the internal electric field arising from different particle morphologies and calculates the resulting shift in absorption frequency and intensity arising from the coupling between a phonon and the internal field.  The theory of the approach is about to be submitted for publication.
+The package calculates the internal electric field arising from different particle morphologies and calculates the resulting shift in absorption frequency and intensity arising from the coupling between a phonon and the internal field.  The theory of the approach has been published.  Any use of the package should cite;
+PDielec: The calculation of infrared and terahertz absorption for powdered crystals
+John Kendrick and Andrew D. Burnett
+Journal of Computational Chemistry 2016, vol 27, 1491-1504
+DOI: 10.1002/jcc.24344
 
 == Introduction
 The molecular and solid state quantum mechanical calculations of response properties such as the frequencies and intensities of infrared (IR) and terahertz (THz) radiation absorption has become generally available in many molecular and solid state computer programs.  A common approach is to assume the harmonic approximation and calculate the mass weighted force constant matrix (for molecules) or the dynamical matrix at the gamma point (for periodic solids).  Diagonalisation of the matrix gives the frequencies for absorption and the normal modes (molecules) or phonon displacements (periodic solids).  
@@ -77,6 +81,7 @@ The followng command performs a calculation of the absorption spectrum resulting
 
 | Option | Default | Purpose | Repeatable? 
 
+| -program s |  | Specifies the program used in generating the output which will be analysed| No 
 | -method s | *maxwell* | The method is given by the string s and may be either *ap*, *maxwell* or *bruggeman*| Yes 
 | -sphere | | The inclusion is a sphere, the default if no other shape is given | No
 | -needle h k l | | The inclusion is a needle whose unique direction is given by [hkl] | Yes 
@@ -90,6 +95,7 @@ The followng command performs a calculation of the absorption spectrum resulting
 | -sigma z | 5.0 | z specifies the damping factor (or width) of the Lorentzian in cm-1 | No
 | -mode_sigma k z | | The kth mode is assigned a width of z cm-1 | Yes
 | -LO h k l  | | The longitudinal optic frequencies are calculated for (hkl) | Yes
+| -LO_cart x y z  | | The longitudinal optic frequencies are calculated for the cartesian direction x, y, z  | Yes
 | -vmin z | 0.0 | The starting wavenumber for the frequency range | No
 | -vm z | 300.0 | The final wavenumber for the frequency range | No
 | -i z | 0.2 | The increment wavenumber used to cover the frequency range | No
@@ -100,6 +106,9 @@ The followng command performs a calculation of the absorption spectrum resulting
 | -mode k | | Only using the kth mode in the calculation | Yes
 | -optical z1 z2 z3 | | z1, z2 and z3 are the diagonal elements of the optical permittivity tensor | No
 | -optical_tensor z1 z2 ..z9 | | z1, z2 .. Z9 define the full optical permittivity tensor | No
+| -eckart | | The translationa modes will be projected from the hessian | No
+| -neutral | | The Born charge matrices will be modified to make the system overall charge neutral | No
+| -hessian s | | If the string "s" is "crystal" symmetrisation of the hessian will be performed using the Crystal14 convention.  Otherwise if the string is "symm" the default method will be used| No
 |===
 
 The supporting matrix is often selected from a small range of materials which have little or no absorption in the frequency range of interest.  The properties of the materials known to the program are summarised in the table below.
