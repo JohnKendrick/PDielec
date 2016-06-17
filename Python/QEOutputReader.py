@@ -29,7 +29,7 @@ class QEOutputReader(GenericOutputReader):
     def __init__(self,filenames):
         GenericOutputReader.__init__(self,filenames)
         self.type                    = 'QE output'
-        self._ReadOutputFiles() 
+        return
 
     def _ReadOutputFiles(self):
         """Read the AbInit file names"""
