@@ -1,0 +1,25 @@
+Version 1.3
+
+Added interfaces to Abinit and Quantum Espresso
+
+There is now a -program castep/vasp/qe etc option
+It was getting too hard to think of a unique identifier for the output file!
+
+There is a new, Na2(SO4)2 example which was important because it has very asymmetric born charge matrices.  
+
+I have added an option to use Crystal's symmetrising algorithm, so provided 
+the HESSFREQ.DAT and the BORN.DAT files are present and
+the "-hessian crystal" option is used, the Crystal frequencies should now agree with Crystal14 output.
+
+There is -eckart flag, which forces PDielec to project out the translational modes.  
+The flag works for any package.  It also applies projection to the LO modes.
+
+There is a -LO_cart flag which gives the LO directions in cartesian directions.
+This is the same as Abinit, so I was able to test the output against Abinit output.
+
+There are changes in the output, as I now force the mass weighted normal modes to be unitary. 
+This improves the Crystal results, but it did change all the other interfaces too. 
+The results should still agree to between 4 and 5 significant figures with the old results.
+
+Version 1.2
+Added interface to Crystal14
