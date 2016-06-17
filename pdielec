@@ -40,9 +40,10 @@ def showUsage():
     print"        [-mf %f] " % (mass_fraction)
     print"        [-dielectric %f] [-density %f] " % (matrix_dielectric,matrix_density)
     print"        [-matrix nujol/ptfe/kbr/ldpe/mdpe/hdpe] "
-    print"        [-LO h k l ]"
+    print"        [-LO h k l ] [-LO_cart x y z ]"
     print"        [-mode index] [-csv file]"
     print"        [-eckart] [-neutral]"
+    print"        [-hessian crystal/symm]"
     print"        [-program name] file1 [file2]"
     print"pdielec: Calculates a spectrum from VASP, CASTEP or GULP"
     print"             At least one shape must be specified ( -sphere -needle -plate )"
@@ -133,10 +134,16 @@ def showUsage():
     print"             to calculate the frequencies and normal modes."
     print"         -neutral"
     print"             Charge neutrality of the Born charges is enforced"
+    print"         -hessian [crystal|symm]"
+    print"             By default the hessian is symmetrised by forming 0.5 * ( Ht + H )"
+    print"             however the crystal package symmetrises by making the upper triangle the same as the lower"
+    print"             For compatibility -hessian crystal will symmetrise in the same way as the Crystal package"
     print"         -LO h k l "
     print"             Define a wavector direction (hkl) for which the LO frequencies "
     print"             will be calculated using the nonanalytical correction"
     print"             This option can be included several times"
+    print"         -LO_cart x y z "
+    print"             As above but the directions are defined in cartesian coordinates"
     print"         -drude drude_input_plasma drude_input_sigma"
     print"             Tells the program to include a Drude for metals in the calculation"
     print"             of the dielectric."
@@ -154,6 +161,7 @@ optical        = []
 optical_tensor = []
 my_modes       = []
 qlist          = []
+qlist_input    = []
 qdata          = []
 ignore_modes   = []
 mode_sigmas    = {}
@@ -192,6 +200,7 @@ matrix["hdpe"]   =  (0.955,2.25)
 drude = False
 drude_input_plasma = 0
 drude_input_sigma = 0
+hessian_symmetrisation = "symm"
 
 # Establish the calculator function which will be used for the majority of calculations
 calculator = DielectricConstant()
@@ -294,8 +303,21 @@ while itoken < ntokens:
         shape_data.append(data)
     elif token == "-eckart":
          eckart = True
+    elif token == "-hessian":
+        itoken += 1; token = tokens[itoken]
+        if token == "crystal":
+            hessian_symmetrisation = token
+        elif tokenn == "symm":
+            hessian_symmetrisation = token
+        else:
+            print "The -hessian directive must be qualified with \"symm\" or \"crystal\"", token
+            exit(1)
     elif token == "-neutral":
          neutral = True
+    elif token == "-LO_cart":
+        itoken += 1
+        qlist_input.append( [ float(q) for q in tokens[itoken:itoken+3] ] )
+        itoken += 2
     elif token == "-LO":
         itoken += 1; token = tokens[itoken]
         if token[0] == "[" or token[0] =="(" or token[0] == "{" :
@@ -366,12 +388,6 @@ if len(my_modes) > 0:
    print "Only consider contributions from modes:", my_modes
 else:
    print "Considering all modes"
-if len(qdata) > 0:
-    print "Calculating LO frequencies for the following q directions"
-    for q in qdata:
-        print q
-    # end for
-    print " "
 if drude:
     print "A Drude model will be used as well as the phonon modes"
     print "The Drude sigma parameter is (cm-1)", drude_input_sigma
@@ -459,6 +475,9 @@ else:
 # Modify the default settings of the reader
 reader.eckart = eckart
 reader.neutral = neutral
+reader.hessian_symmetrisation = hessian_symmetrisation
+# Initiate reading of the files
+reader.ReadOutput()
 calculator.setReader(reader)
 if printInfo:
     reader.PrintInfo()
@@ -488,10 +507,6 @@ for shape, data in zip(shapes,shape_data):
 dielectric_medium = calculator.tensorInitialiseDiagonal( [ matrix_dielectric, matrix_dielectric, matrix_dielectric ] )
 # access the information as numpy arrays.  Use atomic units for these arrays
 masses = np.array(reader.masses) * amu
-mass_weighted_normal_modes = np.array(reader.mass_weighted_normal_modes)
-frequencies = np.array(reader.frequencies) * wavenumber
-frequencies_cm1 = np.array(reader.frequencies) 
-volume = reader.volume*angstrom*angstrom*angstrom
 print "Volume of unit cell is ",reader.volume, " Angstrom^3"
 mtotal = 0.0
 for m in reader.masses :
@@ -528,6 +543,15 @@ if np.max(epsilon_inf) < 0.001:
     exit()
 # Get the born charges
 born_charges = np.array(reader.born_charges)
+#
+# Ask the reader to calculate the massweighted normal modes
+# This call allows the projection to be performed if necessary
+# 
+mass_weighted_normal_modes = reader.calculateMassWeightedNormalModes()
+#mass_weighted_normal_modes = reader.mass_weighted_normal_modes
+frequencies_cm1 = np.array(reader.frequencies) 
+frequencies = frequencies_cm1 * wavenumber
+volume = reader.volume*angstrom*angstrom*angstrom
 mode_set = []
 sigmas = []
 # set the widths and define the list of modes to me considered
@@ -544,9 +568,7 @@ print "Sigmas are  : ", sigmas
 sigmas_cm1 = np.array(sigmas)
 sigmas = np.array(sigmas)*wavenumber
 
-#born_charges = calculator.BornChargeSumRule(born_charges)
-#print "New Born Charges"
-#print born_charges
+#
 # calculate normal modes in xyz coordinate space
 # should they be re-normalised or not?  According to Balan the mass weighted coordinates should be normalised
 normal_modes = calculator.NormalModes(masses,mass_weighted_normal_modes)
@@ -556,18 +578,30 @@ oscillator_strengths = calculator.OscillatorStrengths(normal_modes, born_charges
 intensities = calculator.IRIntensities(oscillator_strengths)
 #
 # If LO frequencies have been requested lets calculate them now
-if len(qdata) > 0:
-    for data in qdata:
-        qlist.append(calculator.directionFromShape(data))
-    # end for data
-    lo_freqs = calculator.LongitudinalModes(frequencies, mass_weighted_normal_modes, born_charges, masses, epsilon_inf, volume, qlist)
+# First calculate the cartesian directions from any wavevectors
+if qdata:
+    for q in qdata:
+        qlist.append(calculator.directionFromShape(q))
+    # end for
+    print " "
+# No add any cartesian directions which were specified
+if qlist_input:
+    qlist.extend(qlist_input)
+# Loop over all the cartesian directions to find the splitting
+if qlist:
+    lo_freqs = calculator.LongitudinalModes(frequencies, mass_weighted_normal_modes, born_charges, masses, epsilon_inf, volume, qlist, reader)
     print "Transverse frequencies (cm-1)"
     print np.real(frequencies_cm1)
-    for q,lo in zip(qdata, lo_freqs):
+    index = 0
+    for lo,qxyz in zip(lo_freqs,qlist):
         lo = lo / wavenumber
-        print "Longitudinal frequencies (cm-1) for q->0 along ",q
+        qstring = " "
+        if index < len(qdata):
+          qstring = " "+qdata[index]
+        index += 1
+        print "Longitudinal frequencies (cm-1) for q->0 along cartesian ",qxyz, qstring
         print lo
-     # end for q,lo
+     # end for qxyz,lo
 # end if
 # Only modes with non-zero oscillator strengths contribute to the dielectric
 # so calculate those modes which we can safely ignore and store them in ignore_modes
