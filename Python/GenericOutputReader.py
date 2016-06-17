@@ -53,7 +53,12 @@ class GenericOutputReader:
         self.ions                    = []
         self.eckart = False
         self.neutral = False
-        # The child will issue a call to _ReadOutputfiles
+        self.hessian_symmetrisation = "symm"
+        return
+        
+    def ReadOutput(self):
+        self._ReadOutputFiles()
+        return
 
     def PrintInfo (self):
         # Generic printing of information
@@ -100,21 +105,91 @@ class GenericOutputReader:
         self.fd.close()
         return
 
-    def _DynamicalMatrix(self,hessian):
-        # Process the diagonal matrix
-        # Hessian is a nxn matrix of the mass weighted force constants
-        # The hessian is symmetrised
-        # Translational modes are projected out
-        # The hessian is diagonalised
-        # Finally the frequencies and normal modes are stored
-        nmodes = self.nions*3
-        # symmetrise
-        hessian = 0.5 * (hessian + hessian.T)
-        # diagonalise
-        eig_val, eig_vec = np.linalg.eigh(hessian)
-        #jk print "Eigen values of hessian"
-        #jk print eig_val
+    def _SymmetricOrthogonalisation(self, A):
+        # The matrix A is only approximately orthogonal
+	n = np.size(A,0)
+        I = np.eye( n )
+        Ak = A 
+        for k in range(3):
+             Bk = np.dot(Ak,Ak.T)
+             Error = I - Bk
+             Ck = np.linalg.inv( I + Bk )
+             Kk = np.dot( Error, Ck)
+             Ak = np.dot( (I + Kk), Ak)
+             error  = np.sum(np.abs(Error))
+             print "Orthogonalisation iteration: ", error
+        # end for k
+        return Ak
+
+    def calculateMassWeightedNormalModes(self):
+        # 
+        # Reconstruct the massweighted hessian
+        # If necessary diagonalise it and extract the frequencies and normal modes
+        # Any projection can be performed here
+        #
+        # First step is to reconstruct the dynamical matrix (D) from the frequencies and the eigenvectors
+        # f^2 = UT . D . U
+	# and U is a hermitian matrix so U-1 = UT
+        # D = (UT)-1 f^2 U-1 = U f UT
+        # Construct UT from the normal modes
+	n = np.size(self.mass_weighted_normal_modes,0)
+	m = np.size(self.mass_weighted_normal_modes,1)*3
+        nmodes = 3*self.nions
+        UT=np.zeros( (n,m) )
+        for imode,mode in enumerate(self.mass_weighted_normal_modes) :
+           n = 0
+           for atom in mode:
+                # in python the first index is the row of the matrix, the second is the column
+		UT[imode,n+0] = atom[0]
+		UT[imode,n+1] = atom[1]
+		UT[imode,n+2] = atom[2]
+                n = n + 3
+           #end for atom
+        #end for imode
+        # convert the frequencies^2 to a real diagonal array
+        # Warning we have to make sure the sign is correct here
+        # The convention is that if the frequency is negative 
+        # then it is really imaginary, so the square of the frequency 
+        # will be negative too.
+        frequencies = np.array(self.frequencies)
+        f2 = np.diag( np.sign(frequencies)*np.real(frequencies*frequencies) )
+        # The back transformation uses approximately orthogonal (unitary) matrices
+        # So before that lets orthogonalise them
+        UT = self._SymmetricOrthogonalisation(UT)
+        hessian = np.dot( np.dot(UT.T, f2), UT )
+        # Make sure the dynamical matrix is real
+        hessian = np.real(hessian)
         # Project out the translational modes if requested
+        if self.eckart:
+           hessian = self.project(hessian)
+        # Find its eigenvalues and eigen vectors
+        eig_val, eig_vec = np.linalg.eigh(hessian)
+        self.mass_weighted_normal_modes = []
+        # Store the new frequencies, using the negative convention for imaginary modes
+        for i in range(nmodes):
+            if eig_val[i] < 0:
+                frequencies[i] = -math.sqrt(-eig_val[i])
+            else:
+                frequencies[i] = math.sqrt(eig_val[i])
+        self.frequencies = frequencies.tolist()
+        # Store the mass weighted normal modes
+        for i in range(nmodes):
+           mode = []
+           n = 0
+           for j in range(self.nions):
+             ma = [ eig_vec[n][i], eig_vec[n+1][i], eig_vec[n+2][i] ]
+             n = n + 3
+             mode.append(ma)
+           self.mass_weighted_normal_modes.append(mode)
+        # end for i
+        return self.mass_weighted_normal_modes
+
+    def project(self,hessian):
+        #
+        # Take the given matrix (np.array)
+        # Project out the translational modes
+        #
+        nmodes = self.nions*3
         unit = np.eye( nmodes )
         p1 = np.zeros( nmodes )
         p2 = np.zeros( nmodes )
@@ -132,19 +207,34 @@ class GenericOutputReader:
         P1 = unit - np.outer(p1,p1)
         P2 = unit - np.outer(p2,p2)
         P3 = unit - np.outer(p3,p3)
-        if self.eckart:
-            # Now project out
-            print "Hessian will be modified by projecting out pure translation"
-            hessian = np.dot ( np.dot(P1.T, hessian), P1)
-            hessian = np.dot ( np.dot(P2.T, hessian), P2)
-            hessian = np.dot ( np.dot(P3.T, hessian), P3)
-        else:
-            print "No projection of the hessian has been performed (NOECKART)"
+        # Now project out
+        hessian = np.dot ( np.dot(P1.T, hessian), P1)
+        hessian = np.dot ( np.dot(P2.T, hessian), P2)
+        hessian = np.dot ( np.dot(P3.T, hessian), P3)
+        return hessian
 
+
+    def _DynamicalMatrix(self,hessian):
+        # Process the Dynamical matrix
+        # Hessian is a nxn matrix of the mass weighted force constants
+        # The hessian is symmetrised
+        # Translational modes are projected out
+        # The hessian is diagonalised
+        # Finally the frequencies and normal modes are stored
+        nmodes = self.nions*3
+        # symmetrise
+        uplo = 'U'
+        if self.hessian_symmetrisation == "symm":
+            hessian = 0.5 * (hessian + hessian.T)
+            uplo = 'L'
+        else:
+            uplo = 'U'
+        # Project out the translational modes if requested
+        if self.eckart:
+            hessian = self.project(hessian)
         # diagonalise
-        eig_val, eig_vec = np.linalg.eigh(hessian)
-        #jk print "Eigen values after projection"
-        #jk print eig_val
+        eig_val, eig_vec = np.linalg.eigh(hessian,UPLO=uplo)
+        #
         # If eig_val has negative values then we store the negative frequency
         # convert to cm-1
         frequencies = np.zeros( nmodes )
@@ -161,6 +251,7 @@ class GenericOutputReader:
         #jk print ( ''.join('{:15.8}'.format(f) for f in frequencies) )
         self.mass_weighted_normal_modes = []
         self.frequencies = frequencies.tolist()
+        print "FREQS: ", frequencies
         # Store the mass weighted normal modes
         for i in range(nmodes):
            mode = []
@@ -172,7 +263,7 @@ class GenericOutputReader:
            self.mass_weighted_normal_modes.append(mode)
         # end for i
         return
- 
+
 
     def _BornChargeSumRule(self):
         """Apply a simple charge sum rule to all the elements of the born matrices"""
