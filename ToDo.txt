@@ -1,8 +1,12 @@
-Vasp transverse modes need ordering correctly
-Why do the format of abinit LO frequencies change from F to E?
+DONE: Vasp transverse modes need ordering correctly
+DONE: Why do the format of abinit LO frequencies change from F to E?
 Use Panda to store the output data and write a spreadsheet
 Write a .pdielec file to store useful settings
 Write a gui to drive the package 
-Convert to python 3
+Convert to python 2/3
 Add projection and charge neutralisation options
+Add Elk interface
+Add Siesta interface
+Add CPMD interface
+Add Wien2k interface
 
