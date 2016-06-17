@@ -8,6 +8,6 @@ test:
 	@echo "OK"
 
 regenerate:
-	@echo "Regenerating reference files for Quartz from Crystal CASTEP...."
+	@echo "Regenerating reference files for Quartz from Crystal...."
 	@bash command.sh > command.ref.out
 	@mv command.csv command.ref.csv

@@ -9,10 +9,8 @@ Density of the medium (-density) has been set to  2.2
 Vmin is:  300.0
 Vmax is:  800.0
 Considering all modes
-Calculating LO frequencies for the following q directions
-(1,0,0)
- 
-Castep file  phonon.castep
+No projection of the dynamical matrix will be performed
+The charge neutrality of the Born atomic charges will not be enforced
 Shape depolarisation matrix:  sphere   
 [[ 0.33333333  0.          0.        ]
  [ 0.          0.33333333  0.        ]
@@ -27,14 +25,19 @@ The miller direction  [0,0,1] is  [ 0.          0.70710678  0.70710678] in xyz
 Volume of unit cell is  19.149797  Angstrom^3
 Total unit cell mass is:  40.3044  g/mol
 Crystal density is:  3.49492056402  g/cc
+Orthogonalisation iteration:  7.92348478496e-12
+Orthogonalisation iteration:  1.68937380922e-15
+Orthogonalisation iteration:  1.43913422318e-15
 Complete mode list is:  [0, 1, 2, 3, 4, 5]
 Sigmas are  :  [10.0, 10.0, 10.0, 10.0, 10.0, 10.0]
 The miller indices for the surface  (1,0,0) has a normal [ 0.57735027  0.57735027 -0.57735027] in xyz
+ 
 Transverse frequencies (cm-1)
-[   0.          0.          0.        388.282104  388.282104  388.282104]
-Longitudinal frequencies (cm-1) for q->0 along  (1,0,0)
-[   0.            0.           19.36680876  388.282104    388.282104
-  693.66038432]
+[ -3.11069997e-02  -3.11069995e-02  -3.11069993e-02   3.88282104e+02
+   3.88282104e+02   3.88282104e+02]
+Longitudinal frequencies (cm-1) for q->0 along cartesian  [ 0.57735027  0.57735027 -0.57735027]  (1,0,0)
+[ -3.11069997e-02  -3.11069984e-02   1.93668088e+01   3.88282104e+02
+   3.88282104e+02   6.93660384e+02]
 Selected mode list is:  [3, 4, 5]
 Calculated Integrated IR band intensities (espilon_max assumes a fwhm line width)
 mode,Freq(cm-1),Intensity(Debye2/Angstrom2/amu),Integrated_Molar_Absorption_Coefficient(L/mole/cm/cm),epsilon_max(L/mole/cm), FWHM(cm-1)
@@ -42,15 +45,15 @@ mode,Freq(cm-1),Intensity(Debye2/Angstrom2/amu),Integrated_Molar_Absorption_Coef
 4 , 388.282104 , 9.29077121673 , 39259.0828534 , 2499.31083895 , 10.0
 5 , 388.282104 , 9.29077121673 , 39259.0828534 , 2499.31083895 , 10.0
 Permittivity contribution from ionic displacements
-[[ 6.86360909+0.j  0.00000000+0.j  0.00000000+0.j]
- [ 0.00000000+0.j  6.86360909+0.j  0.00000000+0.j]
- [ 0.00000000+0.j  0.00000000+0.j  6.86360909+0.j]]
+[[  6.86360909e+00   2.04305970e-15   7.66364653e-15]
+ [  2.04305970e-15   6.86360909e+00  -1.34163454e-13]
+ [  7.66364653e-15  -1.34163454e-13   6.86360909e+00]]
 Optical permittivity at zero frequency
 [[ 3.13969  0.       0.     ]
  [ 0.       3.13969  0.     ]
  [ 0.       0.       3.13969]]
 Total permittivity
-[[ 10.00329909+0.j   0.00000000+0.j   0.00000000+0.j]
- [  0.00000000+0.j  10.00329909+0.j   0.00000000+0.j]
- [  0.00000000+0.j   0.00000000+0.j  10.00329909+0.j]]
+[[  1.00032991e+01   2.04305970e-15   7.66364653e-15]
+ [  2.04305970e-15   1.00032991e+01  -1.34163454e-13]
+ [  7.66364653e-15  -1.34163454e-13   1.00032991e+01]]
 Concentration for unit volume fraction in moles / Litre 86.7131272025

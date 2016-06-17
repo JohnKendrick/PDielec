@@ -1,9 +1,12 @@
 test:
 	@$(MAKE) --no-print-directory -C Castep/AsparticAcid test
 	@$(MAKE) --no-print-directory -C Castep/MgO test
+	@$(MAKE) --no-print-directory -C Castep/Na2SO42 test
 	@$(MAKE) --no-print-directory -C Vasp/F-Apatite test
 	@$(MAKE) --no-print-directory -C Vasp/ZnO test
+	@$(MAKE) --no-print-directory -C Vasp/Na2SO42 test
 	@$(MAKE) --no-print-directory -C Gulp/calcite test
+	@$(MAKE) --no-print-directory -C Crystal/Na2SO42 test
 	@$(MAKE) --no-print-directory -C Crystal/Leucine test
 	@$(MAKE) --no-print-directory -C Crystal/Quartz test
 	@$(MAKE) --no-print-directory -C Crystal/ZnO/Default test
@@ -11,7 +14,10 @@ test:
 	@$(MAKE) --no-print-directory -C Crystal/ZnO/NoEckart test
 	@$(MAKE) --no-print-directory -C AbInit/AlAs test
 	@$(MAKE) --no-print-directory -C AbInit/BaTiO3 test
+	@$(MAKE) --no-print-directory -C AbInit/Na2SO42 test
 	@$(MAKE) --no-print-directory -C QE/ZnO test
+	@$(MAKE) --no-print-directory -C QE/Na2SO42 test
+	@$(MAKE) --no-print-directory -C QE/Cocaine test
 
 clean:
 	@echo "Cleaning old command.out files"
@@ -22,9 +28,12 @@ clean:
 regenerate:
 	@$(MAKE) --no-print-directory -C Castep/AsparticAcid regenerate
 	@$(MAKE) --no-print-directory -C Castep/MgO regenerate
+	@$(MAKE) --no-print-directory -C Castep/Na2SO42 regenerate
 	@$(MAKE) --no-print-directory -C Vasp/F-Apatite regenerate
 	@$(MAKE) --no-print-directory -C Vasp/ZnO regenerate
+	@$(MAKE) --no-print-directory -C Vasp/Na2SO42 regenerate
 	@$(MAKE) --no-print-directory -C Gulp/calcite regenerate
+	@$(MAKE) --no-print-directory -C Crystal/Na2SO42 regenerate
 	@$(MAKE) --no-print-directory -C Crystal/Leucine regenerate
 	@$(MAKE) --no-print-directory -C Crystal/Quartz regenerate
 	@$(MAKE) --no-print-directory -C Crystal/ZnO/Default regenerate
@@ -32,4 +41,7 @@ regenerate:
 	@$(MAKE) --no-print-directory -C Crystal/ZnO/NoEckart regenerate
 	@$(MAKE) --no-print-directory -C AbInit/AlAs regenerate
 	@$(MAKE) --no-print-directory -C AbInit/BaTiO3 regenerate
+	@$(MAKE) --no-print-directory -C AbInit/Na2SO42 regenerate
 	@$(MAKE) --no-print-directory -C QE/ZnO regenerate
+	@$(MAKE) --no-print-directory -C QE/Na2SO42 regenerate
+	@$(MAKE) --no-print-directory -C QE/Cocaine regenerate

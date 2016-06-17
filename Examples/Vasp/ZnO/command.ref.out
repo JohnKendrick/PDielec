@@ -10,6 +10,8 @@ Vmin is:  0.0
 Vmax is:  1000.0
 Considering all modes
 Analysing VASP directory:  .
+No projection of the dynamical matrix will be performed
+The charge neutrality of the Born atomic charges will not be enforced
 Shape depolarisation matrix:  sphere   
 [[ 0.33333333  0.          0.        ]
  [ 0.          0.33333333  0.        ]
@@ -33,27 +35,29 @@ Crystal density is:  5.43977667787  g/cc
 The density of the supporting matrix is  2.2  g/cc
 Converting the following mass fractions to volume fractions
  The volume fraction for mass fraction  0.01  is  0.00406851459122
+Orthogonalisation iteration:  1.59120319999e-05
+Orthogonalisation iteration:  5.64097900335e-12
+Orthogonalisation iteration:  2.44249065418e-15
 Complete mode list is:  [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
 Sigmas are  :  [5.0, 5.0, 5.0, 5.0, 5.0, 5.0, 5.0, 5.0, 5.0, 5.0, 5.0, 5.0]
-Selected mode list is:  [1, 2, 3, 4, 5, 8]
+Selected mode list is:  [3, 6, 7, 8, 10]
 Calculated Integrated IR band intensities (espilon_max assumes a fwhm line width)
 mode,Freq(cm-1),Intensity(Debye2/Angstrom2/amu),Integrated_Molar_Absorption_Coefficient(L/mole/cm/cm),epsilon_max(L/mole/cm), FWHM(cm-1)
-1 , 402.053725 , 2.21708288979e-09 , 9.36850545909e-06 , 1.19283516256e-06 , 5.0
-2 , 402.053725 , 2.111674151e-10 , 8.92309029247e-07 , 1.13612314216e-07 , 5.0
-3 , 372.078531 , 16.4255512358 , 69407.8093019 , 8837.27675166 , 5.0
-4 , 372.078531 , 16.4256221558 , 69408.1089814 , 8837.31490805 , 5.0
-5 , 349.981672 , 17.1178412166 , 72333.149845 , 9209.74267778 , 5.0
-8 , 91.240848 , 1.7392771202e-09 , 7.3494893991e-06 , 9.35766053655e-07 , 5.0
+3 , 91.240848 , 1.77299138332e-09 , 7.49195238937e-06 , 9.53905004942e-07 , 5.0
+6 , 349.981672 , 17.1178553859 , 72333.2097188 , 9209.75030116 , 5.0
+7 , 372.078531 , 16.4255668357 , 69407.875221 , 8837.28514474 , 5.0
+8 , 372.078531 , 16.4256610361 , 69408.2732742 , 8837.33582645 , 5.0
+10 , 402.053725 , 2.42430140253e-09 , 1.02441280066e-05 , 1.30432288793e-06 , 5.0
 Permittivity contribution from ionic displacements
-[[  5.09261825e+00+0.j  -2.12987444e-09+0.j  -1.18180783e-04+0.j]
- [ -2.12987444e-09+0.j   5.09264749e+00+0.j  -1.04446410e-04+0.j]
- [ -1.18180783e-04+0.j  -1.04446410e-04+0.j   5.99858879e+00+0.j]]
+[[  5.09262670e+00  -2.21806808e-09  -1.18180881e-04]
+ [ -2.21806808e-09   5.09265594e+00  -1.04446496e-04]
+ [ -1.18180881e-04  -1.04446496e-04   5.99859375e+00]]
 Optical permittivity at zero frequency
 [[ 5.738971  0.        0.      ]
  [ 0.        5.738971  0.      ]
  [-0.        0.        5.673464]]
 Total permittivity
-[[  1.08315893e+01+0.j  -2.12987444e-09+0.j  -1.18180783e-04+0.j]
- [ -2.12987444e-09+0.j   1.08316185e+01+0.j  -1.04446410e-04+0.j]
- [ -1.18180783e-04+0.j  -1.04446410e-04+0.j   1.16720528e+01+0.j]]
+[[  1.08315977e+01  -2.21806808e-09  -1.18180881e-04]
+ [ -2.21806808e-09   1.08316269e+01  -1.04446496e-04]
+ [ -1.18180881e-04  -1.04446496e-04   1.16720578e+01]]
 Concentration for unit volume fraction in moles / Litre 33.417967059

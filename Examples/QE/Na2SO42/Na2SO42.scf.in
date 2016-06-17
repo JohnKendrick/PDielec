@@ -1,0 +1,48 @@
+&CONTROL
+      calculation = 'scf' 
+      outdir = '.' 
+      pseudo_dir = '/home/software/PseudoPotentials/QE' 
+      disk_io = 'minimal' 
+      nstep = 1000
+      etot_conv_thr = 1.0d-7
+      forc_conv_thr = 1.0d-6
+/
+&SYSTEM
+  ibrav = 0
+  A =    4.780
+  nat = 12
+  ntyp = 3
+  ecutwfc = 30.0D0
+  input_dft = 'pbe'
+/
+&ELECTRONS
+  conv_thr = 1.0D-10
+  mixing_beta = 0.3D0
+/
+&IONS
+  ion_dynamics = 'bfgs'
+  pot_extrapolation = 'second_order'
+/
+CELL_PARAMETERS {alat}
+  1.000000000000000   0.000000000000000   0.000000000000000 
+ -0.150579971949830   1.156556669451014   0.000000000000000 
+ -0.293945722767960  -0.302611362049708   1.202406194659567 
+ATOMIC_SPECIES
+  Na   22.98900  Na.pbe-sp-van_ak.UPF
+   S   32.06750  S.pbe-n-rrkjus_psl.0.1.UPF
+   O   15.99900  O.pbe-van_ak.UPF
+ATOMIC_POSITIONS {crystal}
+S        0.612052373   0.777101049   0.243900071
+S        0.387947627   0.222898951   0.756099929
+Na       0.035808557   0.314183542   0.210035587
+Na       0.964191443   0.685816458   0.789964413
+O        0.581864594   0.039115313   0.417186937
+O        0.418135406   0.960884687   0.582813063
+O        0.773908849   0.896225119   0.106490248
+O        0.226091151   0.103774881   0.893509752
+O        0.313507635   0.647584107   0.121579418
+O        0.686492365   0.352415893   0.878420582
+O        0.773636931   0.637358272   0.391942488
+O        0.226363069   0.362641728   0.608057512
+K_POINTS automatic
+7 6 5 0 0 0
