@@ -30,7 +30,7 @@ class CrystalOutputReader(GenericOutputReader):
         GenericOutputReader.__init__(self, filenames)
         self.type                    = 'Crystal output'
         self.species                 = []
-        self._ReadOutputFiles() 
+        return
 
     def _ReadOutputFiles(self):
         """Read the Crystal files in the directory"""
