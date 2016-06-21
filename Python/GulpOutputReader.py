@@ -84,8 +84,9 @@ class GulpOutputReader(GenericOutputReader):
              elastic.append( [ float(f) for f in  line.split()[1:] ] )
              line = self.fd.readline()
         self.elastic_constant_tensor = np.array(elastic)
-        print "Elastic constant tensor"
-        print self.elastic_constant_tensor
+        if self.debug:
+            print("Elastic constant tensor")
+            print(self.elastic_constant_tensor)
         return
  
     def _read_frequencies(self,line):
@@ -125,21 +126,16 @@ class GulpOutputReader(GenericOutputReader):
                     n += 1
                  # end for mx,my,mz (columns)
             # end loop over atoms
-            #print columns
             for mode in columns:
                  self.mass_weighted_normal_modes.append(mode)
             line = self.fd.readline()
             line = self.fd.readline()
-        #jk print "Normal modes"
-        #jk print self.mass_weighted_normal_modes
  
     def _read_total_number_of_atoms(self,line):
         self.nions = int(line.split()[4])
-        #jk print "Nions",self.nions
  
     def _read_number_of_irreducible_atoms(self,line):
         self.nions_irreducible = int(line.split()[5])
-        #jk print "Nions irreducible",self.nions_irreducible
  
     def _read_lattice(self,line):
         line = self.fd.readline()
@@ -162,11 +158,10 @@ class GulpOutputReader(GenericOutputReader):
         self.unitCells.append(cell)
         self.volume = cell.volume
         self.ncells = len(self.unitCells)
-        print "GULP: volume = ", self.volume
         # Convert fractional coordinates to cartesians
         if len(self.cartesian_coordinates) == 0:
             if len(self.fractional_coordinates) == 0:
-                print "Error no coordinates fraction or cartesian found"
+                print("Error no coordinates fraction or cartesian found")
                 exit()
             for atom_frac in self.fractional_coordinates:
                 atom_cart = cell.convertAbc2Xyz(atom_frac)
@@ -198,8 +193,6 @@ class GulpOutputReader(GenericOutputReader):
                 self.masses.append(self.mass_dictionary[atom_type])
                 self.atomic_charges.append(q)
                 self.cartesian_coordinates.append(atom_frac)
-        #jk print "Number of cores: ", self.ncores
-        #jk print "Masses ", self.masses
         self.nions = self.ncores
         if len(self.born_charges) == 0:
             for q in self.atomic_charges:
@@ -235,8 +228,6 @@ class GulpOutputReader(GenericOutputReader):
                 self.atom_types.append(atom_type)
                 self.masses.append(self.mass_dictionary[atom_type])
                 self.fractional_coordinates.append(atom_frac)
-        #jk print "Number of cores: ", self.ncores
-        #jk print "Masses ", self.masses
         self.nions = self.ncores
         if len(self.born_charges) == 0:
             for q in self.atomic_charges:
@@ -275,7 +266,6 @@ class GulpOutputReader(GenericOutputReader):
                                                        [ a3x a3y a3z ]]
            The output tensor needs them arranged     [ [ a1x a1y a1z ] [ a2x a2y a2z ] [ a3x a3y a3z ]]
            where 1,2,3 are the field directions and x, y, z are the atomic displacements"""
-        #jk print "Born Charges no. of ions " ,self.nions
         self.born_charges = []
         for skip in range(0,5):
             line = self.fd.readline()
@@ -292,7 +282,6 @@ class GulpOutputReader(GenericOutputReader):
           self.born_charges.append(b)
           line = self.fd.readline()
           line = self.fd.readline()
-        #jk print self.born_charges
         if self.neutral:
             self._BornChargeSumRule()
         return
