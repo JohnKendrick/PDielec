@@ -14,6 +14,7 @@
 # You should have received a copy of the MIT License
 # along with this program, if not see https://opensource.org/licenses/MIT
 """Read the VASP OUTCAR and other files"""
+from __future__ import print_function
 import string
 import re
 import cmath
@@ -48,7 +49,7 @@ class DielectricConstant:
 
     def tensorInitialiseRandom( self, scale ) :
         '''Initialise a 3x3 complex tensor, the argument gives the maximum absolute value'''
-        print >> sys.stderr, "Error tensorInitialiseRandom not working"
+        print("Error tensorInitialiseRandom not working", file=sys.stderr)
         exit(1)
         return
 
@@ -140,10 +141,7 @@ class DielectricConstant:
         
         # compute the tensors from the outer product of each direction
         tensor = Nz*np.outer(unique,unique) + Nxy*np.outer(dir1, dir1) + Nxy*np.outer(dir2, dir2)
-        #jk print 'Ellipsoid depolarisation tensor'
-        #jk print tensor
         tensor = tensor / np.trace(tensor)
-        #jk print tensor
         return tensor
 
     def IonicPermittivity(self, mode_list,oscillator_strengths, frequencies, volume):
@@ -189,19 +187,19 @@ class DielectricConstant:
         #from numpy.lib.scimath import sqrt
         # First step is to reconstruct the dynamical matrix (D) from the frequencies and the eigenvectors
         # f^2 = UT . D . U
-	# and U is a hermitian matrix so U-1 = UT
+        # and U is a hermitian matrix so U-1 = UT
         # D = (UT)-1 f^2 U-1 = U f UT
         # Construct UT from the normal modes
-	n = np.size(normal_modes,0)
-	m = np.size(normal_modes,1)*3
+        n = np.size(normal_modes,0)
+        m = np.size(normal_modes,1)*3
         UT=np.zeros( (n,m) )
         for imode,mode in enumerate(normal_modes) :
            n = 0
            for atom in mode :
                 # in python the first index is the row of the matrix, the second is the column
-		UT[imode,n+0] = atom[0]
-		UT[imode,n+1] = atom[1]
-		UT[imode,n+2] = atom[2]
+                UT[imode,n+0] = atom[0]
+                UT[imode,n+1] = atom[1]
+                UT[imode,n+2] = atom[2]
                 n = n + 3
            #end for atom
         #end for imode
@@ -331,7 +329,7 @@ class DielectricConstant:
                 # end for
                 return np.array(proj_field)
         else :
-            print >> sys.stderr, "Error in projectField, projection unkown: ",projection
+            print("Error in projectField, projection unkown: ",projection, file=sys.stderr)
             exit(1)
         return
 
@@ -367,8 +365,6 @@ class DielectricConstant:
             rotation[2,0] =       (1-cos)*e1*e3 + sin*e2
             rotation[2,1] =       (1-cos)*e2*e3 - sin*e1
             rotation[2,2] = cos + (1-cos)*e3*e3 
-            #jk test = np.dot(rotation.T,rotation)
-            #jk print "This array should be unit", test
             rotations.append(rotation)
         return rotations
 
@@ -548,7 +544,7 @@ class DielectricConstant:
                     'ftol' : 1.0E-4 }
         sol = sc.optimize.minimize(self._brug_minimise_tensor,variables,method='Powell',args=(eps1,eps2,shape,L,f1),options=options)
         if not sol.success:
-            print "A Bruggeman solution was not found at this frequency"
+            print("A Bruggeman solution was not found at this frequency")
         variables = sol.x
         # transform the imaginary variable back
         trace = complex(variables[0],np.exp(variables[1])-1.0)
@@ -573,13 +569,10 @@ class DielectricConstant:
         while not converged:
             niters += 1
             epsbr,error = self._brug_iter_error(epsbr,eps1,eps2,shape,L,f1)
-            # print "Bruggeman"
-            # print "epsbr = ",epsbr
-            # print "error = ",niters,error
             if abs(error) < 1.0E-8 :
                 converged = True
             if niters > 3000:
-                print "Bruggeman iterations failed, error=", error
+                print("Bruggeman iterations failed, error=", error)
                 converged = True
         epsbr = self.average_tensor(epsbr)
         return epsbr
@@ -691,12 +684,12 @@ class DielectricConstant:
         else:
             sq = sq2
         if np.abs(sq*sq-trace)/(1+np.abs(trace)) > 1.0E-8 or debug :
-            print "There is an error in refractive index"
-            print "trace = ", trace
-            print "sq*sq = ", sq*sq, np.abs(sq*sq-trace)
-            print "sq    = ", sq , sq*sq
-            print "sq1   = ", sq1, sq1*sq1
-            print "sq2   = ", sq2, sq2*sq2
+            print("There is an error in refractive index")
+            print("trace = ", trace)
+            print("sq*sq = ", sq*sq, np.abs(sq*sq-trace))
+            print("sq    = ", sq , sq*sq)
+            print("sq1   = ", sq1, sq1*sq1)
+            print("sq2   = ", sq2, sq2*sq2)
         return sq 
 
     def directionFromShape(self, data) :
@@ -722,7 +715,7 @@ class DielectricConstant:
             data = data.replace("[","")
             data = data.replace("]","")
         else:
-            print "Error encountered in interpretting the miller surface / vector", data
+            print("Error encountered in interpretting the miller surface / vector", data)
             exit(1)
         if commas:
             data = data.replace(",", " ")
@@ -739,7 +732,7 @@ class DielectricConstant:
               i += 1
         # end of handling no commas
         if not len(hkl) == 3:
-            print "Error encountered in interpretting the miller surface / vector", data
+            print("Error encountered in interpretting the miller surface / vector", data)
             exit(1)
         cell = self.reader.unitCells[-1]
         if surface:
@@ -749,10 +742,10 @@ class DielectricConstant:
         direction = direction / np.linalg.norm(direction)
         data = data.replace('"','')    
         data = data.replace("",'') 
-        if surface:
-            print "The miller indices for the surface ", original, "has a normal", direction, "in xyz"
-        else:
-            print "The miller direction ", original, "is ", direction, "in xyz"
+        #if surface:
+        #    print("The miller indices for the surface ", original, "has a normal", direction, "in xyz")
+        #else:
+        #    print("The miller direction ", original, "is ", direction, "in xyz")
         return direction
 
 
