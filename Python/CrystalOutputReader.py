@@ -81,13 +81,14 @@ class CrystalOutputReader(GenericOutputReader):
 
     def _read_eigenvectors(self,line):
         if os.path.isfile("HESSFREQ.DAT"):
-            print "Reading Hessian from HESSFREQ.DAT"
+            print("Reading Hessian from HESSFREQ.DAT")
             self._read_hessfreq_dat();
         else:
-            print "Reading Normal Modes from output file"
-            print "WARNING! WARNING! WARNING! WARNING! WARNING!"
-            print "The numerical precision of the input is limited"
-            print "WARNING! WARNING! WARNING! WARNING! WARNING!"
+            print("Reading Normal Modes from output file")
+            print("WARNING! WARNING! WARNING! WARNING! WARNING!")
+            print("The numerical precision of the input is limited")
+            print("If possible proved a HESSFREQ.DAT from the calculation")
+            print("WARNING! WARNING! WARNING! WARNING! WARNING!")
             self._read_output_eigenvectors(line)
         return
 
@@ -176,13 +177,14 @@ class CrystalOutputReader(GenericOutputReader):
                                        [ a3x a3y a3z ]]
            where 1,2,3 are the field directions and x, y, z are the atomic displacements"""
         if os.path.isfile("BORN.DAT"):
-            print "Reading Born charge tensor from BORN.DAT"
+            print("Reading Born charge tensor from BORN.DAT")
             self._read_born_charges_from_born_dat();
         else:
-            print "Reading Born Charge Tensor from output file"
-            print "WARNING! WARNING! WARNING! WARNING! WARNING!"
-            print "The numerical precision of the input is limited"
-            print "WARNING! WARNING! WARNING! WARNING! WARNING!"
+            print("Reading Born Charge Tensor from output file")
+            print("WARNING! WARNING! WARNING! WARNING! WARNING!")
+            print("The numerical precision of the input is limited")
+            print("If possible proved a BORN.DAT from the calculation")
+            print("WARNING! WARNING! WARNING! WARNING! WARNING!")
             self._read_born_charges_from_output(line)
         if self.neutral:
             self._BornChargeSumRule()
