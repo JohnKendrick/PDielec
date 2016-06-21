@@ -141,6 +141,5 @@ class QEOutputReader(GenericOutputReader):
             species = int(linea[1])
             self.ions.append( [ float(linea[2]), float(linea[3]), float(linea[4]) ] )
             self.masses.append(self.mass_species[species-1])
-        print "MASSES:",self.masses
         return
 
