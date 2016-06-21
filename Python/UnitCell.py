@@ -105,7 +105,7 @@ class UnitCell:
         normal = np.cross(p12,p13)
         norm = np.linalg.norm(normal)
         if norm < 1.0e-8 :
-            print "Error in unit cell, calculation of normal to miller index failed"
+            print("Error in unit cell, calculation of normal to miller index failed")
             exit(1)
         normal = normal / norm
         return normal
