@@ -119,7 +119,6 @@ class VaspOutputReader(GenericOutputReader):
           if imaginary :
             # represent imaginary by negative real 
             freq = -float(line.split()[6])
-            # print "Found imaginary frequency ",line.split()[6]+"i"
           else :
             freq = float(line.split()[7])
           self.frequencies.append(freq)
