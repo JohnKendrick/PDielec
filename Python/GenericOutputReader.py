@@ -14,6 +14,7 @@
 # You should have received a copy of the MIT License
 # along with this program, if not see https://opensource.org/licenses/MIT
 """Generic reader for output files"""
+from __future__ import print_function
 import string
 import re
 import numpy as np
@@ -21,6 +22,7 @@ import math
 import os, sys
 from Python.Constants import *
 from Python.UnitCell import *
+from Python.Plotter import print3x3, printReals
     
 class GenericOutputReader:
     """Generic reader of output files.  Actual reader should inherit from this class"""
@@ -62,26 +64,30 @@ class GenericOutputReader:
 
     def PrintInfo (self):
         # Generic printing of information
-        print "Number of atoms: ", self.nions
-        print "Number of species: ", self.nspecies
-        print "Frequencies: ", self.frequencies
-        print "Masses: ", self.masses
-        print "Born Charge: ", self.born_charges
-        print "Epsilon inf: ", self.zerof_optical_dielectric
-        print "Volume of cell: ", self.volume
-        print "Unit cell: ", self.unitCells[-1].lattice
+        print("Number of atoms: {:5d}".format(self.nions) )
+        print("Number of species: {:5d}".format(self.nspecies) )
+        printReals("Frequencies (cm-1):", self.frequencies)
+        printReals("Masses (amu):", self.masses)
+        for i,charges in enumerate(self.born_charges):
+            title = "Born Charges for Atom {:d}".format(i)
+            print3x3(title,charges)
+        print3x3("Epsilon inf: ", self.zerof_optical_dielectric)
+        print3x3("Unit cell: ", self.unitCells[-1].lattice)
+        print(" ")
+        print("Volume of cell: {:f}".format(self.volume))
         mtotal = 0.0
         for m in self.masses :
            mtotal = mtotal + m
-        print "Total mass is: ", mtotal, " g/mol"
-        print "Density is: ", mtotal/( avogadro_si * self.volume * 1.0e-24) , " g/cc"
+        print("Total mass is: {:f} g/mol".format(mtotal) )
+        print("Density is: {:f} g/cc".format(mtotal/( avogadro_si * self.volume * 1.0e-24) ) )
+        print(" ")
         return
 
 
     def _ReadOutputFiles(self):
         """Read the file names"""
         # Define the search keys to be looked for in the files
-        print "Error _ReadOutputFiles must be defined by the actual file reader"
+        print("Error _ReadOutputFiles must be defined by the actual file reader")
         return
 
     def _ReadOutputFile(self,name):
@@ -94,8 +100,7 @@ class GenericOutputReader:
                 if self.manage[k][0].match(line): 
                     method   = self.manage[k][1]
                     if self.debug:
-                        print 'Match found %s' % k
-                        print self.manage[k]
+                        print('_ReadOutputFile: Match found {}'.format(k))
                     method(line)
                     break
                 #end if
@@ -107,7 +112,7 @@ class GenericOutputReader:
 
     def _SymmetricOrthogonalisation(self, A):
         # The matrix A is only approximately orthogonal
-	n = np.size(A,0)
+        n = np.size(A,0)
         I = np.eye( n )
         Ak = A 
         for k in range(3):
@@ -117,7 +122,8 @@ class GenericOutputReader:
              Kk = np.dot( Error, Ck)
              Ak = np.dot( (I + Kk), Ak)
              error  = np.sum(np.abs(Error))
-             print "Orthogonalisation iteration: ", error
+             if self.debug:
+                 print("Orthogonalisation iteration: ", error)
         # end for k
         return Ak
 
@@ -129,20 +135,20 @@ class GenericOutputReader:
         #
         # First step is to reconstruct the dynamical matrix (D) from the frequencies and the eigenvectors
         # f^2 = UT . D . U
-	# and U is a hermitian matrix so U-1 = UT
+        # and U is a hermitian matrix so U-1 = UT
         # D = (UT)-1 f^2 U-1 = U f UT
         # Construct UT from the normal modes
-	n = np.size(self.mass_weighted_normal_modes,0)
-	m = np.size(self.mass_weighted_normal_modes,1)*3
+        n = np.size(self.mass_weighted_normal_modes,0)
+        m = np.size(self.mass_weighted_normal_modes,1)*3
         nmodes = 3*self.nions
         UT=np.zeros( (n,m) )
         for imode,mode in enumerate(self.mass_weighted_normal_modes) :
            n = 0
            for atom in mode:
                 # in python the first index is the row of the matrix, the second is the column
-		UT[imode,n+0] = atom[0]
-		UT[imode,n+1] = atom[1]
-		UT[imode,n+2] = atom[2]
+                UT[imode,n+0] = atom[0]
+                UT[imode,n+1] = atom[1]
+                UT[imode,n+2] = atom[2]
                 n = n + 3
            #end for atom
         #end for imode
@@ -245,13 +251,8 @@ class GenericOutputReader:
                 frequencies[i] = math.sqrt( eig) / wavenumber
             # end if
         #end for
-        #jk print "Eigenvalues"
-        #jk print ( ''.join('{:15.8}'.format(e) for e in eig_val) )
-        #jk print "Frequencies"
-        #jk print ( ''.join('{:15.8}'.format(f) for f in frequencies) )
         self.mass_weighted_normal_modes = []
         self.frequencies = frequencies.tolist()
-        print "FREQS: ", frequencies
         # Store the mass weighted normal modes
         for i in range(nmodes):
            mode = []
@@ -271,7 +272,6 @@ class GenericOutputReader:
         born_charges = np.array(self.born_charges)
         new_born_charges = np.zeros_like(self.born_charges)
         total = np.sum(born_charges) / self.nions
-        #jk print >> sys.stderr, "Born charge sum, total = ", total
         new_born_charges = born_charges - total
         self.born_charges = new_born_charges.tolist()
         return 
