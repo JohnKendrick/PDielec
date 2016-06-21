@@ -123,40 +123,6 @@ class CastepOutputReader(GenericOutputReader):
         # end of for freq
         return
 
-    def _ReadCastep(self):
-        """Read the .castep file"""
-        self.fd = open(self._castepfile,'r')
-        self.manage = {}   # Empty the dictionary matching phrases
-        #jk self.manage['pseudoatom']    = (re.compile(' Pseudo atomic calculation'),  self._read_pseudoatom)
-        self.manage['spin']          = (re.compile(' *net spin   of'),       self._read_spin)
-        self.manage['nelect']        = (re.compile(' *number of  electrons'),self._read_nelect)
-        self.manage['cellcontents']  = (re.compile(' *Unit Cell'),self._read_cellcontents)
-        self.manage['pspots']        = (re.compile(' *Files used for pseudopotentials:'),self._read_pspot)
-        self.manage['masses']        = (re.compile(' *Mass of species in AMU'),self._read_masses)
-        self.manage['kpts']          = (re.compile(' *Number of kpoints used'),self._read_kpoints)
-        self.manage['finalenergy']   = (re.compile(' *Final energy, E'),self._read_energies)
-        self.manage['encut']         = (re.compile(' *plane wave basis set cut'),self._read_encut)
-        self.manage['nbands']        = (re.compile(' *number of bands'),self._read_nbands)
-        self.manage['pressure']      = (re.compile(' *\* Pressure: '),self._read_external_pressure)
-        self.manage['opticalDielectric']  = (re.compile(' *Optical Permittivity'),self._read_dielectric)
-        self.manage['bornCharges']  = (re.compile(' *Born Effective Charges'),self._read_born_charges)
-        # Loop through the contents of the file a line at a time and parse the contents
-        line = self.fd.readline()
-        while line != '' :
-            for k in self.manage.keys():
-                if self.manage[k][0].match(line): 
-                    method   = self.manage[k][1]
-                    if self.debug:
-                        print >> sys.stderr, 'Match found %s' % k
-                        print >> sys.stderr, self.manage[k]
-                    method(line)
-                    break
-                #end if
-            #end for
-            line = self.fd.readline()
-        #end while
-        self.fd.close()
-
     def _read_kpoints(self,line):
         self.nkpts = int(line.split()[5])
         return
