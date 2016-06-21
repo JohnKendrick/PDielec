@@ -1,4 +1,5 @@
 #!/usr/bin/python
+from __future__ import print_function, division
 import string
 import re
 import numpy as np
@@ -55,20 +56,20 @@ class Plotter:
              output += ","+method+"_"+shape+strdata+"_molar_absorption_coeficient_cm-1.L.mole-1"+"("+vf_type+")"
             # end loop over shape
         #end loop over method
-        print >> fd_csvfile, output
+        print(output, file=fd_csvfile)
         # Use the first frequency list
         for iv,v in enumerate(self.frequencies[0]):
             thz = v * 0.0299792458
-            output = ",,,,,%f,%f" % (v,thz)
+            output = ",,,,,{:12f},{:12f}".format(v,thz)
             for dri,absorption,molar_absorption in zip(self.traces,self.absorption_coefficients,self.molar_absorption_coefficients):
-                    dr = np.real(dri[iv])
-                    di = np.imag(dri[iv])
+                    dr = float(np.real(dri[iv]))
+                    di = float(np.imag(dri[iv]))
                     K1 = absorption[iv]
                     K2 = molar_absorption[iv]
-                    output += "," + str(dr) + "," + str(di) + "," + str(K1) + "," + str(K2)
+                    output += "," + ",".join("{:20.8f}".format(p) for p in [dr, di, K1, K2] )
                 # end loop over shape
             # end loop over method
-            print >> fd_csvfile, output
+            print(output, file=fd_csvfile)
         # end loop over frequency
         return
 
@@ -87,7 +88,7 @@ class Plotter:
             elif plot == 'molarabsorption':
                 self.plotMolarAbsorption()
             else:
-                print 'Unkown plot type',plot
+                print('Unkown plot type {}'.format(plot))
                 exit(1)
             # endif
         #endfor
@@ -215,3 +216,32 @@ class Plotter:
         pl.show()
         return
 
+def printReals(title, reals, no_per_line=8, format="{:9.2f}", file=sys.stdout, separator= " "):
+    # 
+    # Print out a list of reals prettily
+    #
+    len_reals = len(reals)
+    print(" ",file=file)
+    if title != "":
+        print(title,file=file)
+    nlines = int( (len_reals - 1 ) / no_per_line) + 1
+    start = 0
+    for i in range(nlines):
+        end = start + no_per_line
+        if end > len_reals: end = len_reals
+        print(" "+ separator.join(format.format(r) for r in reals[start:end] ), file=file)
+        start = start + no_per_line
+    #end for i
+    return
+
+def print3x3(title, array, format="{:14.6f}", file=sys.stdout, separator= " "):
+    # 
+    # Print out a 3x3 tensor matrix
+    #
+    print(" ",file=file)
+    if title != "":
+        print(title,file=file)
+    for i in range(3):
+        print("      "+" ".join(format.format(p) for p in array[i]), file=file )
+    # end for i
+    return
