@@ -1,0 +1,27 @@
+data_Na2(SO4)2 Abinit optimised
+_space_group_IT_number           2
+_symmetry_cell_setting           triclinic
+_symmetry_space_group_name_Hall  '-P 1'
+_symmetry_space_group_name_H-M   'P -1'
+_cell_length_a                   4.780
+_cell_length_b                   5.575
+_cell_length_c                   6.091
+_cell_angle_alpha                101.871
+_cell_angle_beta                 103.337
+_cell_angle_gamma                97.418
+_cell_formula_units_Z            1
+loop_
+_symmetry_equiv_pos_as_xyz
+x,y,z
+-x,-y,-z
+loop_
+_atom_site_label
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+S1     0.606730770694      0.778166429343      0.239929670135
+Na     0.044680569463      0.313002895424      0.217300094618
+O1     0.584963974087      0.039653908578      0.416717516834
+O2     0.767254565736      0.895296506671      0.102658857937
+O3     0.308403164563      0.654539706510      0.120799865737
+O4     0.765194188370      0.633799313216      0.382018765638

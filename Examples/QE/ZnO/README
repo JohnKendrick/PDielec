@@ -1,0 +1,7 @@
+zno.scf.in   Input to a single point SCF at the optimised geometry
+zno.scf.out  This is the scf output file
+zno.ph.in    Input to a phonon calculation
+zno.ph.out   This is a phonon calculation output
+dmat.zno     This is the dynamical matrix from the phonon calculation
+
+dmat.zno is used by PDielec to generate the absorption spectrum.

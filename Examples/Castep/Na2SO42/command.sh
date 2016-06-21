@@ -1,1 +1,4 @@
-python2 ../../../pdielec  -LO 1 0 0 -LO 1 0 0  -LO 0 1 0 -LO 0 0 1 -LO_cart 1 0 0 -LO_cart 0 1 0 -needle 0 0 1 -dielectric 3  -vf 0.1 -vf 0.2 -method maxwell -method bruggeman  -method ap -sigma 10 -csv command.csv -program castep phonon
+python ../../../pdielec  -matrix ptfe -sigma 5 -method maxwell -method bruggeman -method ap -vf 0.1\
+                         -needle 0 0 1 -ellipsoid 0 0 1 0.5 -plate 1 0 0 \
+                         -LO 1 1 1 \
+                         -csv command.csv -program castep phonon  $*

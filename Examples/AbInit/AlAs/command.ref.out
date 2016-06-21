@@ -1,62 +1,62 @@
-appending to names  AlAs.out
-The following methods will be used:  ['maxwell']
-Creating a csv file:  command.csv
-No plotting requested
-The frequency increment is  0.2  cm-1
-The default width factor (-sigma) has been set to  5.0  cm-1
-Permittivity of the medium (-dielectric) has been set to  2.0
-Density of the medium (-density) has been set to  2.2
-Vmin is:  0.0
-Vmax is:  300.0
-Considering all modes
-Program specified is:  abinit
-Output file:  AlAs.out
+The following methods will be used: ap maxwell
+Creating a csv file: command.csv
+No plotting has been requested
+The frequency increment is 0.20 cm-1
+The default width factor (-sigma) has been set to 5.000000 cm-1
+The permittivity of the medium (-dielectric) has been set to 2.0000
+The density of the medium (-density) has been set to 2.2000 g/cc
+Vmin is:     0.0 cm-1
+Vmax is:   300.0 cm-1
+All phonon modes will be considered
+
+Program used to perform the phonon calculation was: abinit
+The file containing the output is: AlAs.out
 No projection of the dynamical matrix will be performed
 The charge neutrality of the Born atomic charges will not be enforced
-FREQS:  [   0.56979814    0.57010307    0.57183797  344.25902253  344.25902513
-  344.25902554]
-Shape depolarisation matrix:  plate (0,0,1) 
-The miller indices for the surface  (0,0,1) has a normal [ 0.57735027  0.57735027 -0.57735027] in xyz
-[[ 0.33333333  0.33333333 -0.33333333]
- [ 0.33333333  0.33333333 -0.33333333]
- [-0.33333333 -0.33333333  0.33333333]]
+ 
+Shape depolarisation matrix: plate (0,0,1) xyz=[0.577350,0.577350,-0.577350]
+            0.333333       0.333333      -0.333333
+            0.333333       0.333333      -0.333333
+           -0.333333      -0.333333       0.333333
+ 
+Shape depolarisation matrix: ellipsoid [0,0,1] 0.5xyz=[0.707107,0.707107,0.000000]
+            0.381800       0.145400       0.000000
+            0.145400       0.381800       0.000000
+            0.000000       0.000000       0.236400
+ 
+Shape depolarisation matrix: plate (1,0,0) xyz=[-0.577350,0.577350,0.577350]
+            0.333333      -0.333333      -0.333333
+           -0.333333       0.333333       0.333333
+           -0.333333       0.333333       0.333333
 
-Shape depolarisation matrix:  ellipsoid [0,0,1] 0.5
-The miller direction  [0,0,1] is  [ 0.70710678  0.70710678  0.        ] in xyz
-[[ 0.38180007  0.14540021  0.        ]
- [ 0.14540021  0.38180007  0.        ]
- [ 0.          0.          0.23639986]]
+Volume of unit cell is    44.24758303 Angstrom^3
+Total unit cell mass is:   101.90312900 g/mol
+Crystal density is:   3.82426 g/cc
 
-Shape depolarisation matrix:  plate (1,0,0) 
-The miller indices for the surface  (1,0,0) has a normal [-0.57735027  0.57735027  0.57735027] in xyz
-[[ 0.33333333 -0.33333333 -0.33333333]
- [-0.33333333  0.33333333  0.33333333]
- [-0.33333333  0.33333333  0.33333333]]
 
-Volume of unit cell is  44.247583027  Angstrom^3
-Total unit cell mass is:  101.903129  g/mol
-Crystal density is:  3.82425629276  g/cc
-Orthogonalisation iteration:  5.36237473153e-15
-Orthogonalisation iteration:  1.54464475509e-15
-Orthogonalisation iteration:  1.01728882667e-15
-Complete mode list is:  [0, 1, 2, 3, 4, 5]
-Sigmas are  :  [5.0, 5.0, 5.0, 5.0, 5.0, 5.0]
-Selected mode list is:  [3, 4, 5]
+Concentration for unit volume fraction   37.5284 moles/Litre
 Calculated Integrated IR band intensities (espilon_max assumes a fwhm line width)
-mode,Freq(cm-1),Intensity(Debye2/Angstrom2/amu),Integrated_Molar_Absorption_Coefficient(L/mole/cm/cm),epsilon_max(L/mole/cm), FWHM(cm-1)
-3 , 344.259022526 , 5.17977367888 , 21887.6516575 , 2786.82236317 , 5.0
-4 , 344.259025127 , 5.17977380125 , 21887.6521746 , 2786.82242901 , 5.0
-5 , 344.259025543 , 5.179773581 , 21887.6512439 , 2786.82231051 , 5.0
+Only IR active modes are shown
+
+Mode Frequency Intensity         Integrated Molar Absorption Epsilon_max   FWHM  
+     cm-1      Debye2/Angs2/amu   Coefficient L/mole/cm/cm    L/mole/cm    cm-1  
+---- --------- ----------------  --------------------------- -----------   ----  
+   3   344.26          5.179774                21887.651657   2786.8224      5.0
+   4   344.26          5.179774                21887.652175   2786.8224      5.0
+   5   344.26          5.179774                21887.651244   2786.8223      5.0
+ 
+ 
 Permittivity contribution from ionic displacements
-[[  2.10673671e+00   1.91805135e-08  -3.26289740e-08]
- [  1.91805135e-08   2.10673675e+00  -8.45584536e-10]
- [ -3.26289740e-08  -8.45584536e-10   2.10673667e+00]]
+            2.106737       0.000000      -0.000000
+            0.000000       2.106737      -0.000000
+           -0.000000      -0.000000       2.106737
+ 
 Optical permittivity at zero frequency
-[[ 9.76060476  0.          0.        ]
- [ 0.          9.7606048   0.        ]
- [ 0.          0.          9.76060477]]
+            9.760605       0.000000       0.000000
+            0.000000       9.760605       0.000000
+            0.000000       0.000000       9.760605
+ 
 Total permittivity
-[[  1.18673415e+01   1.91805135e-08  -3.26289740e-08]
- [  1.91805135e-08   1.18673416e+01  -8.45584536e-10]
- [ -3.26289740e-08  -8.45584536e-10   1.18673414e+01]]
-Concentration for unit volume fraction in moles / Litre 37.5283500152
+           11.867341       0.000000      -0.000000
+            0.000000      11.867342      -0.000000
+           -0.000000      -0.000000      11.867341
