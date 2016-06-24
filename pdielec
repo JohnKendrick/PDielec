@@ -151,6 +151,10 @@ def showUsage():
     print("             This option can be included several times")
     print("         -LO_cart x y z ")
     print("             As above but the directions are defined in cartesian coordinates")
+    print("         -thresholds 1.0E-10 5")
+    print("             Set the thresholds for treating a phonon mode")
+    print("             Only modes with an intensity > 1.0E-10 and a frequency above 5cm-1")
+    print("             Will be conidered in the calcualtion of the absorption spectrum")
     print("         -drude drude_input_plasma drude_input_sigma")
     print("             Tells the program to include a Drude for metals in the calculation")
     print("             of the dielectric.")
@@ -162,6 +166,7 @@ def showUsage():
 
 # define some constants which may change due to the parameters on the command line
 debug          = False
+ignore_none    = False
 ahalf          = 1.0/2.0
 athird         = 1.0/3.0
 increment      = 0.2
@@ -211,6 +216,7 @@ matrix["hdpe"]   =  (0.955,2.25)
 drude = False
 drude_input_plasma = 0
 drude_input_sigma = 0
+threshold = {'intensity':1.0E-10, 'frequency':5}
 hessian_symmetrisation = "symm"
 
 # Establish the calculator function which will be used for the majority of calculations
@@ -353,6 +359,9 @@ while itoken < ntokens:
         itoken += 1; drude_input_sigma  = float(tokens[itoken])
     elif token == "-debug":
         debug = True
+    elif token == "-thresholds":
+        itoken += 1; threshold['intensity'] = float(tokens[itoken])
+        itoken += 1; threshold['frequency'] = float(tokens[itoken])
     elif token[0] == "-":
         print("Error on input unkown option: {:s}".format(token))
         exit(1)
@@ -663,10 +672,10 @@ if qlist:
 if len(ignore_modes) == 0:
     for mode,intensity in enumerate(intensities):
         # ignore modes with a low oscillator strength
-        if intensity < 1.0E-10:
+        if intensity < threshold['intensity']:
           ignore_modes.append(mode)
         # ignore modes with low real frequency
-        elif np.real(frequencies[mode])/wavenumber < 5.0 :
+        elif np.real(frequencies[mode])/wavenumber < threshold['frequency'] :
           ignore_modes.append(mode)
         # ignore modes with imaginary frequency
         elif abs(np.imag(frequencies[mode]))/wavenumber > 1.0e-6:
@@ -799,8 +808,9 @@ for v in np.arange(float(vmin),float(vmax)+0.5*float(increment),float(increment)
     # absorption_coefficient_from_mode_intensities_pcm *= vf
     # plotter.addDielectric(nplot,'TOs_from_intensities',vf,'noshape','',v,trace_pure,absorption_coefficient_from_mode_intensities_pcm,molar_absorption_coefficient_from_mode_intensities_Lpmolpcm)
 # end of look over frequencies
-fd_csvfile = fd_csvfiles[2]
-plotter.printout(fd_csvfile)
+if fd_csvfile != None :
+    fd_csvfile = fd_csvfiles[2]
+    plotter.printout(fd_csvfile)
 if fd_csvfile != None:
     for fd in fd_csvfiles:
         fd.close()
