@@ -64,7 +64,8 @@ class CrystalOutputReader(GenericOutputReader):
         return
 
     def _read_eckart(self,line):
-        self.eckart = False
+        # We are going to ignore this in the input, as it is now handled by PDielec
+        # self.eckart = False
         return
 
     def _read_masses(self,line):
