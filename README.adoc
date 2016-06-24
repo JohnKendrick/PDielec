@@ -106,7 +106,7 @@ The followng command performs a calculation of the absorption spectrum resulting
 | -mode k | | Only using the kth mode in the calculation | Yes
 | -optical z1 z2 z3 | | z1, z2 and z3 are the diagonal elements of the optical permittivity tensor | No
 | -optical_tensor z1 z2 ..z9 | | z1, z2 .. Z9 define the full optical permittivity tensor | No
-| -eckart | | The translationa modes will be projected from the hessian | No
+| -eckart | | The translational modes will be projected from the hessian | No
 | -neutral | | The Born charge matrices will be modified to make the system overall charge neutral | No
 | -hessian s | | If the string "s" is "crystal" symmetrisation of the hessian will be performed using the Crystal14 convention.  Otherwise if the string is "symm" the default method will be used| No
 |===
