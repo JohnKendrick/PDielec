@@ -2,7 +2,7 @@
 :keywords: PDielec, CASTEP, VASP, Gulp, Crystal, Abinit, QuantumEspresso, Infrared, Terahertz, spectroscopy
 = The PDielec package
 John Kendrick and Andrew Burnett
-v2.0, 2015-11-17
+v2.0.1, 2016-06-24
 
 Authors: John Kendrick and Andrew Burnett
 
@@ -19,7 +19,7 @@ The calculation of the absorption intensity for each mode requires the calculati
 The package is suited for the calculation of the complex, frequency dependent permittivity and its associated absorption of infrared radiation for a finely ground crystalline material dispersed in a low loss dielectric medium such KBr or PTFE.  A particular feature of the program is its ability to take into account the constant permittivity of the supporting medium and the particle shape through an effective medium theory.  
 
 == Installation
-The pdielec package is written in Python 2 and has been tested using python 2.7 on Linux and in Windows 10.
+The pdielec package is written in Python and has been tested using Python 2.7 and Python 3.5.1 on Linux and in Windows 10.
 The package is available on GitHub and can be downloaded from https://github.com/JohnKendrick/PDielec
 
  git clone https://github.com/JohnKendrick/PDielec.git
@@ -36,7 +36,7 @@ Put the PDielec directory in your executable path, eg;
 Where python3 and python2 have been installed, it is important to ensure that the `python` command runs python2.
 
 === Windows
-Install a version of Python 2.7 which incorporates SciPy.  The program has been tested with the Anaconda system which is available from https://www.continuum.io/why-anaconda
+Install a version of Python which incorporates SciPy.  The program has been tested with the Anaconda system which is available from https://www.continuum.io/why-anaconda.  The package is compatible with both Python 2 and 3.
 Anaconda includes all of the Python packages required by PDielec.  
 On Windows install a version of Git.  www.git-scm.com has a version of git based on mingw once this has been installed, a git shell can be used to clone a copy of PDielec from GitHub.
 
@@ -101,6 +101,7 @@ The followng command performs a calculation of the absorption spectrum resulting
 | -i z | 0.2 | The increment wavenumber used to cover the frequency range | No
 | -plot s | | A plot is requested the string s can be *absorption*, *molar_absorption*, *real*, or *imaginary* | Yes
 | -csv s | | Output is sent to a comma delimited file specified by the string s | No
+| -csv_ext s | | Output is sent to 3 comma delimited files specified by the string s_frequencies.csv s_spectrum.csv and s_command.csv | No
 | -print | | Additional output is printed regarding the QM/MM program | No
 | -ignore k | | Ignore the k'th mode.  Any mode less than 5 cm-1 is ignored automatically | Yes
 | -mode k | | Only using the kth mode in the calculation | Yes
@@ -109,6 +110,7 @@ The followng command performs a calculation of the absorption spectrum resulting
 | -eckart | | The translational modes will be projected from the hessian | No
 | -neutral | | The Born charge matrices will be modified to make the system overall charge neutral | No
 | -hessian s | | If the string "s" is "crystal" symmetrisation of the hessian will be performed using the Crystal14 convention.  Otherwise if the string is "symm" the default method will be used| No
+| -threshold z1 z2 | | The modes which are included in the absorption calculation are chosed to have intensities above z1 and have frequencies greater than z2| No
 |===
 
 The supporting matrix is often selected from a small range of materials which have little or no absorption in the frequency range of interest.  The properties of the materials known to the program are summarised in the table below.
