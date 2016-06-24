@@ -110,7 +110,7 @@ The followng command performs a calculation of the absorption spectrum resulting
 | -eckart | | The translational modes will be projected from the hessian | No
 | -neutral | | The Born charge matrices will be modified to make the system overall charge neutral | No
 | -hessian s | | If the string "s" is "crystal" symmetrisation of the hessian will be performed using the Crystal14 convention.  Otherwise if the string is "symm" the default method will be used| No
-| -threshold z1 z2 | | The modes which are included in the absorption calculation are chosed to have intensities above z1 and have frequencies greater than z2| No
+| -threshold z1 z2 | | The modes which are included in the absorption calculation are chosen to have intensities above z1 and have frequencies greater than z2| No
 |===
 
 The supporting matrix is often selected from a small range of materials which have little or no absorption in the frequency range of interest.  The properties of the materials known to the program are summarised in the table below.
