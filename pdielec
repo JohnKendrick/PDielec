@@ -166,12 +166,8 @@ def showUsage():
 
 # define some constants which may change due to the parameters on the command line
 debug          = False
-ignore_none    = False
-ahalf          = 1.0/2.0
-athird         = 1.0/3.0
 increment      = 0.2
 program        = ""
-requests       = []
 optical        = []
 optical_tensor = []
 my_modes       = []
@@ -439,7 +435,6 @@ if drude:
     print("A Drude model will be used as well as the phonon modes")
     print("The Drude sigma parameter  is; {:6.1f} cm-1".format(drude_input_sigma))
     print("The Drude plasma frequency is; {:6.1f} cm-1".format(drude_input_plasma))
-    drude_frequency = complex(drude_input_plasma,0) * wavenumber
     drude_sigma = drude_input_sigma * wavenumber
     drude_plasma = drude_input_plasma * wavenumber
 # end if
