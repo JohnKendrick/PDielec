@@ -25,6 +25,9 @@ test:
 		@echo "If you see a change you must check if it is significant or not by hand."
 		@( cd Examples; make --no-print-directory test )
 
+check:		
+		@pylama -i E501,E221,C901 pdielec Python
+
 clean:		
 		@( cd Examples; make --no-print-directory clean )
 

@@ -5,28 +5,26 @@
 # This file is part of PDielec
 #
 # This program is free software; you can redistribute it and/or modify
-# it under the terms of the MIT License 
+# it under the terms of the MIT License
 #
 # This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. 
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 #
 # You should have received a copy of the MIT License
 # along with this program, if not see https://opensource.org/licenses/MIT
-"""Read the contents Gulp output and create a csv style file of information"""
-import string
+#
 import re
 import numpy as np
-import math 
-import os, sys
-from Python.UnitCell import *
-from Python.Constants import *
-from Python.GenericOutputReader import *
+import os
+from Python.UnitCell import UnitCell
+from Python.GenericOutputReader import GenericOutputReader
+
 
 class GulpOutputReader(GenericOutputReader):
     """Read the contents of a Gulp output file
        It is quite difficult to work out what is a suitable set of commands for gulp
-       The following seems to work OK, important are 
+       The following seems to work OK, important are
        phon - a phonon calculation
        intens - calculate the IR intensities
        eigen - print the eigen vectors of the dynamical matrix
@@ -35,8 +33,8 @@ class GulpOutputReader(GenericOutputReader):
        qeq molq optimise conp qok nomodcoord prop phon intens eigen cart
     """
 
-    def __init__(self,names):
-        GenericOutputReader.__init__(self,names)
+    def __init__(self, names):
+        GenericOutputReader.__init__(self, names)
         self._gulpfile               = names[0]
         self.name                    = os.path.abspath(self._gulpfile)
         self.type                    = 'Gulp output'
@@ -55,89 +53,89 @@ class GulpOutputReader(GenericOutputReader):
     def _ReadOutputFiles(self):
         """Read the .gout file"""
         self.manage = {}   # Empty the dictionary matching phrases
-        self.manage['formula']  = (re.compile(' *Formula'),self._read_formula)
-        self.manage['nions']  = (re.compile(' *Total number atoms'),self._read_total_number_of_atoms)
-        self.manage['nions_irreducible']  = (re.compile(' *Number of irreducible atoms'),self._read_number_of_irreducible_atoms)
-        self.manage['cellcontents']  = (re.compile(' *Final Cartesian coor'),self._read_cellcontents)
-        self.manage['cellcontentsf']  = (re.compile(' *Final fractional coor'),self._read_cellcontentsf)
-        self.manage['species']        = (re.compile(' *Species output for all configurations'),self._read_species)
-        self.manage['lattice']          = (re.compile(' *Final Cartesian lattice'),self._read_lattice)
-        self.manage['finalenergy']   = (re.compile(' *Total lattice energy'),self._read_energies)
-        self.manage['pressure']      = (re.compile(' *Pressure of configuration'),self._read_external_pressure)
-        self.manage['temperature']      = (re.compile(' *Temperature of configuration'),self._read_temperature)
-        self.manage['staticDielectric']  = (re.compile(' *Static dielectric c'),self._read_static_dielectric)
-        self.manage['opticalDielectric']  = (re.compile(' *High frequency diel'),self._read_optical_dielectric)
-        self.manage['bornCharges']  = (re.compile(' *Born effective charge'),self._read_born_charges)
-        self.manage['elasticConstants']  = (re.compile(' *Elastic Constant Matrix'),self._read_elastic_constants)
-        self.manage['frequencies']  = (re.compile(' *Frequencies .cm-1.'),self._read_frequencies)
+        self.manage['formula']  = (re.compile(' *Formula'), self._read_formula)
+        self.manage['nions']  = (re.compile(' *Total number atoms'), self._read_total_number_of_atoms)
+        self.manage['nions_irreducible']  = (re.compile(' *Number of irreducible atoms'), self._read_number_of_irreducible_atoms)
+        self.manage['cellcontents']  = (re.compile(' *Final Cartesian coor'), self._read_cellcontents)
+        self.manage['cellcontentsf']  = (re.compile(' *Final fractional coor'), self._read_cellcontentsf)
+        self.manage['species']        = (re.compile(' *Species output for all configurations'), self._read_species)
+        self.manage['lattice']          = (re.compile(' *Final Cartesian lattice'), self._read_lattice)
+        self.manage['finalenergy']   = (re.compile(' *Total lattice energy'), self._read_energies)
+        self.manage['pressure']      = (re.compile(' *Pressure of configuration'), self._read_external_pressure)
+        self.manage['temperature']      = (re.compile(' *Temperature of configuration'), self._read_temperature)
+        self.manage['staticDielectric']  = (re.compile(' *Static dielectric c'), self._read_static_dielectric)
+        self.manage['opticalDielectric']  = (re.compile(' *High frequency diel'), self._read_optical_dielectric)
+        self.manage['bornCharges']  = (re.compile(' *Born effective charge'), self._read_born_charges)
+        self.manage['elasticConstants']  = (re.compile(' *Elastic Constant Matrix'), self._read_elastic_constants)
+        self.manage['frequencies']  = (re.compile(' *Frequencies .cm-1.'), self._read_frequencies)
         self._ReadOutputFile(self._gulpfile)
 
-    def _read_formula(self,line):
+    def _read_formula(self, line):
         self.formula = line.split()[2]
         return
- 
-    def _read_elastic_constants(self,line):
-        for skip in range(0,5):
+
+    def _read_elastic_constants(self, line):
+        for skip in range(0, 5):
             line = self.fd.readline()
         elastic = []
-        for skip in range(0,6):
-             elastic.append( [ float(f) for f in  line.split()[1:] ] )
-             line = self.fd.readline()
+        for skip in range(0, 6):
+            elastic.append([float(f) for f in line.split()[1:]])
+            line = self.fd.readline()
         self.elastic_constant_tensor = np.array(elastic)
         if self.debug:
             print("Elastic constant tensor")
             print(self.elastic_constant_tensor)
         return
- 
-    def _read_frequencies(self,line):
+
+    def _read_frequencies(self, line):
         self.frequencies = []
         self.mass_weighted_normal_modes = []
         line = self.fd.readline()
         nmodes = 0
         nions = self.ncores
-        while nmodes < 3*nions :
+        while nmodes < 3*nions:
             line = self.fd.readline()
             if line.split()[0] == "Note:":
                 line = self.fd.readline()
                 line = self.fd.readline()
-            freq = [ float(f) for f in (line.split()[1:]) ]
+            freq = [float(f) for f in (line.split()[1:])]
             ncolumns = len(freq)
             nmodes = nmodes + ncolumns
             self.frequencies += freq
-            line = self.fd.readline() # IR
-            line = self.fd.readline() # IR x
-            line = self.fd.readline() # IR y
-            line = self.fd.readline() # IR z
-            line = self.fd.readline() # Raman
-            line = self.fd.readline() 
+            line = self.fd.readline()  # IR
+            line = self.fd.readline()  # IR x
+            line = self.fd.readline()  # IR y
+            line = self.fd.readline()  # IR z
+            line = self.fd.readline()  # Raman
+            line = self.fd.readline()
             columns = []
-            for n in range(0,ncolumns):
-                columns.append( [] )
-            for i in range(0,nions):
-                line = self.fd.readline() 
-                modex = [ float(f) for f in  line.split()[2:] ]
-                line = self.fd.readline() 
-                modey = [ float(f) for f in  line.split()[2:] ]
-                line = self.fd.readline() 
-                modez = [ float(f) for f in  line.split()[2:] ]
+            for n in range(0, ncolumns):
+                columns.append([])
+            for i in range(0, nions):
+                line = self.fd.readline()
+                modex = [float(f) for f in line.split()[2:]]
+                line = self.fd.readline()
+                modey = [float(f) for f in line.split()[2:]]
+                line = self.fd.readline()
+                modez = [float(f) for f in line.split()[2:]]
                 n = 0
-                for mx,my,mz in zip(modex,modey,modez):
-                    columns[n].append( [mx, my, mz] )
+                for mx, my, mz in zip(modex, modey, modez):
+                    columns[n].append([mx, my, mz])
                     n += 1
-                 # end for mx,my,mz (columns)
+                # end for mx, my, mz (columns)
             # end loop over atoms
             for mode in columns:
-                 self.mass_weighted_normal_modes.append(mode)
+                self.mass_weighted_normal_modes.append(mode)
             line = self.fd.readline()
             line = self.fd.readline()
- 
-    def _read_total_number_of_atoms(self,line):
+
+    def _read_total_number_of_atoms(self, line):
         self.nions = int(line.split()[4])
- 
-    def _read_number_of_irreducible_atoms(self,line):
+
+    def _read_number_of_irreducible_atoms(self, line):
         self.nions_irreducible = int(line.split()[5])
- 
-    def _read_lattice(self,line):
+
+    def _read_lattice(self, line):
         line = self.fd.readline()
         line = self.fd.readline()
         ax = float(line.split()[0])
@@ -151,9 +149,9 @@ class GulpOutputReader(GenericOutputReader):
         cx = float(line.split()[0])
         cy = float(line.split()[1])
         cz = float(line.split()[2])
-        aVector = [ ax, ay, az ]
-        bVector = [ bx, by, bz ]
-        cVector = [ cx, cy, cz ]
+        aVector = [ax, ay, az]
+        bVector = [bx, by, bz]
+        cVector = [cx, cy, cz]
         cell = UnitCell(aVector, bVector, cVector)
         self.unitCells.append(cell)
         self.volume = cell.volume
@@ -166,18 +164,18 @@ class GulpOutputReader(GenericOutputReader):
             for atom_frac in self.fractional_coordinates:
                 atom_cart = cell.convertAbc2Xyz(atom_frac)
                 self.cartesian_coordinates.append(atom_cart)
-             # end for
+            # end for
         # end if
         self.unitCells[-1].fractionalCoordinates(self.fractional_coordinates)
 
-    def _read_cellcontents(self,line):
-        self.atom_types=[]
-        self.masses=[]
-        self.cartesian_coordinates=[]
-        self.atomic_charges=[]
+    def _read_cellcontents(self, line):
+        self.atom_types = []
+        self.masses = []
+        self.cartesian_coordinates = []
+        self.atomic_charges = []
         self.ncores = 0
         self.nshells = 0
-        for skip in range(0,5):
+        for skip in range(0, 5):
             line = self.fd.readline()
         for ion in range(0, self.nions):
             line = self.fd.readline()
@@ -187,7 +185,7 @@ class GulpOutputReader(GenericOutputReader):
                 self.nshells += 1
             else:
                 self.ncores += 1
-                atom_frac = [ float(f) for f in (line.split()[3:6]) ]
+                atom_frac = [float(f) for f in (line.split()[3:6])]
                 q = float(line.split()[6])
                 self.atom_types.append(atom_type)
                 self.masses.append(self.mass_dictionary[atom_type])
@@ -196,10 +194,10 @@ class GulpOutputReader(GenericOutputReader):
         self.nions = self.ncores
         if len(self.born_charges) == 0:
             for q in self.atomic_charges:
-                a = np.zeros( (3,3) )
-                a[0,0] = q
-                a[1,1] = q
-                a[2,2] = q
+                a = np.zeros((3, 3))
+                a[0, 0] = q
+                a[1, 1] = q
+                a[2, 2] = q
                 self.born_charges.append(a)
             # end loop over charges
         # end if len()
@@ -207,14 +205,14 @@ class GulpOutputReader(GenericOutputReader):
             self._BornChargeSumRule()
         return
 
-    def _read_cellcontentsf(self,line):
-        self.atom_types=[]
-        self.masses=[]
-        self.fractional_coordinates=[]
-        self.atomic_charges=[]
+    def _read_cellcontentsf(self, line):
+        self.atom_types = []
+        self.masses = []
+        self.fractional_coordinates = []
+        self.atomic_charges = []
         self.ncores = 0
         self.nshells = 0
-        for skip in range(0,5):
+        for skip in range(0, 5):
             line = self.fd.readline()
         for ion in range(0, self.nions):
             line = self.fd.readline()
@@ -224,17 +222,17 @@ class GulpOutputReader(GenericOutputReader):
                 self.nshells += 1
             else:
                 self.ncores += 1
-                atom_frac = [ float(f) for f in (line.split()[3:6]) ]
+                atom_frac = [float(f) for f in (line.split()[3:6])]
                 self.atom_types.append(atom_type)
                 self.masses.append(self.mass_dictionary[atom_type])
                 self.fractional_coordinates.append(atom_frac)
         self.nions = self.ncores
         if len(self.born_charges) == 0:
             for q in self.atomic_charges:
-                a = np.zeros( (3,3) )
-                a[0,0] = q
-                a[1,1] = q
-                a[2,2] = q
+                a = np.zeros((3, 3))
+                a[0, 0] = q
+                a[1, 1] = q
+                a[2, 2] = q
                 self.born_charges.append(a)
             # end loop over charges
         # end if len()
@@ -242,87 +240,86 @@ class GulpOutputReader(GenericOutputReader):
             self._BornChargeSumRule()
         return
 
-    def _read_species(self,line):
+    def _read_species(self, line):
         self.mass_dictionary = {}
-        for skip in range(0,6):
+        for skip in range(0, 6):
             line = self.fd.readline()
         n = len(line.split())
-        while n > 1 :
-          species = line.split()[0]
-          coreshell = line.split()[1]
-          if coreshell == "Core":
-              self.mass_dictionary[species] = (float(line.split()[3]))
-          line = self.fd.readline()
-          n = len(line.split())
+        while n > 1:
+            species = line.split()[0]
+            coreshell = line.split()[1]
+            if coreshell == "Core":
+                self.mass_dictionary[species] = (float(line.split()[3]))
+            line = self.fd.readline()
+            n = len(line.split())
         return
 
-
-    def _read_born_charges(self,line):
-        """Read the born charges from the gulp file.  
+    def _read_born_charges(self, line):
+        """Read the born charges from the gulp file.
            Each column of the output refers to a given field direction
-           Each row in the row refers the atomic displacement 
-           So the numbers in the output are arrange  [ [ a1x a1y a1z ]  
-                                                       [ a2x a2y a3z ] 
-                                                       [ a3x a3y a3z ]]
-           The output tensor needs them arranged     [ [ a1x a1y a1z ] [ a2x a2y a2z ] [ a3x a3y a3z ]]
+           Each row in the row refers the atomic displacement
+           So the numbers in the output are arrange  [[a1x a1y a1z]
+                                                      [a2x a2y a3z]
+                                                      [a3x a3y a3z]]
+           The output tensor needs them arranged     [[a1x a1y a1z] [a2x a2y a2z] [a3x a3y a3z]]
            where 1,2,3 are the field directions and x, y, z are the atomic displacements"""
         self.born_charges = []
-        for skip in range(0,5):
+        for skip in range(0, 5):
             line = self.fd.readline()
-        for i in range(self.nions) :
-          b = []
-          b.append( [ float(f) for f in line.split()[3:6] ] )
-          line = self.fd.readline()
-          b.append( [ float(f) for f in line.split()[1:4] ] )
-          line = self.fd.readline()
-          b.append( [ float(f) for f in line.split()[1:4] ] )
-          #jk B = np.array(b)
-          #jk C = B.T
-          #jk self.born_charges.append(B.tolist())
-          self.born_charges.append(b)
-          line = self.fd.readline()
-          line = self.fd.readline()
+        for i in range(self.nions):
+            b = []
+            b.append([float(f) for f in line.split()[3:6]])
+            line = self.fd.readline()
+            b.append([float(f) for f in line.split()[1:4]])
+            line = self.fd.readline()
+            b.append([float(f) for f in line.split()[1:4]])
+            # jk B = np.array(b)
+            # jk C = B.T
+            # jk self.born_charges.append(B.tolist())
+            self.born_charges.append(b)
+            line = self.fd.readline()
+            line = self.fd.readline()
         if self.neutral:
             self._BornChargeSumRule()
         return
 
-    def _read_optical_dielectric(self,line):
-        for skip in range(0,5):
+    def _read_optical_dielectric(self, line):
+        for skip in range(0, 5):
             line = self.fd.readline()
         # this is the zero frequency optical dielectric constant
         self.zerof_optical_dielectric = []
-        self.zerof_optical_dielectric.append(  [ float(f) for f in line.split()[1:4] ] )
+        self.zerof_optical_dielectric.append([float(f) for f in line.split()[1:4]])
         line = self.fd.readline()
-        self.zerof_optical_dielectric.append(  [ float(f) for f in line.split()[1:4] ] )
+        self.zerof_optical_dielectric.append([float(f) for f in line.split()[1:4]])
         line = self.fd.readline()
-        self.zerof_optical_dielectric.append(  [ float(f) for f in line.split()[1:4] ] )
+        self.zerof_optical_dielectric.append([float(f) for f in line.split()[1:4]])
         return
 
-    def _read_static_dielectric(self,line):
-        for skip in range(0,5):
+    def _read_static_dielectric(self, line):
+        for skip in range(0, 5):
             line = self.fd.readline()
         # this is the zero frequency static dielectric constant
         self.zerof_static_dielectric = []
-        self.zerof_static_dielectric.append(  [ float(f) for f in line.split()[1:4] ] )
+        self.zerof_static_dielectric.append([float(f) for f in line.split()[1:4]])
         line = self.fd.readline()
-        self.zerof_static_dielectric.append(  [ float(f) for f in line.split()[1:4] ] )
+        self.zerof_static_dielectric.append([float(f) for f in line.split()[1:4]])
         line = self.fd.readline()
-        self.zerof_static_dielectric.append(  [ float(f) for f in line.split()[1:4] ] )
+        self.zerof_static_dielectric.append([float(f) for f in line.split()[1:4]])
         return
 
-    def _read_temperature(self,line):
+    def _read_temperature(self, line):
         self.temperature = float(line.split()[4])
         return
 
-    def _read_external_pressure(self,line):
+    def _read_external_pressure(self, line):
         self.pressure = float(line.split()[4])
         return
 
-    def _read_energies(self,line):
-        #self.final_energy_without_entropy = unkown
-        #line = self.fd.readline()
-        #self.final_free_energy = float(line.split()[5])
-        #jk line = self.fd.readline()
-        #jk line = self.fd.readline()
-        #jk self.final_0K_energy = float(line.split()[5])
+    def _read_energies(self, line):
+        # self.final_energy_without_entropy = unkown
+        # line = self.fd.readline()
+        # self.final_free_energy = float(line.split()[5])
+        # jk line = self.fd.readline()
+        # jk line = self.fd.readline()
+        # jk self.final_0K_energy = float(line.split()[5])
         return
