@@ -5,52 +5,52 @@
 # This file is part of PDielec
 #
 # This program is free software; you can redistribute it and/or modify
-# it under the terms of the MIT License 
+# it under the terms of the MIT License
 #
 # This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. 
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 #
 # You should have received a copy of the MIT License
 # along with this program, if not see https://opensource.org/licenses/MIT
-"""Read the contents of a directory containing VASP/Gulp/Castep output and create a csv style file of information"""
+#
+"""PDielec driver program to calculate dielectric response at infrared and THz frequencies"""
 from __future__ import print_function
-import string
-import re
+import math
+import os
+import sys
 import numpy as np
-import math 
-import os, sys
-from Python.Constants import *
-from Python.UnitCell import *
-from Python.DielectricConstant import *
-from Python.VaspOutputReader import *
-from Python.CastepOutputReader import *
-from Python.GulpOutputReader import *
-from Python.CrystalOutputReader import *
-from Python.AbinitOutputReader import *
-from Python.QEOutputReader import *
-from Python.Plotter import *
+from Python.Constants import amu, PI, avogadro_si, wavenumber, angstrom
+from Python.DielectricConstant import DielectricConstant
+from Python.VaspOutputReader import VaspOutputReader
+from Python.CastepOutputReader import CastepOutputReader
+from Python.GulpOutputReader import GulpOutputReader
+from Python.CrystalOutputReader import CrystalOutputReader
+from Python.AbinitOutputReader import AbinitOutputReader
+from Python.QEOutputReader import QEOutputReader
+from Python.Plotter import Plotter, print3x3, print_reals
 # Create a plotter to plot/print the final data
 plotter = Plotter()
 
 
-def showUsage():
+def show_usage():
+    """Show pdielec usage"""
     print("pdielec [-method ap/balan/maxwell/bruggeman] [-plot molar_absorption]")
-    print("        [-sphere] [-needle h k l] [-plate h k l] [-ellipsoid h k l aoverb ]")
-    print("        [-print] [-sigma {:.1f} ] [-mode_sigma mode {:.1f} ] ".format(sigma,sigma))
-    print("        [-optical xx yy zz] [-optical_tensor xx yy zz xy xz yz] [-vmin {:.1f}] [-vmax {:.1f}]".format(vmin,vmax) )
+    print("        [-sphere] [-needle h k l] [-plate h k l] [-ellipsoid h k l aoverb]")
+    print("        [-print] [-sigma {:.1f}] [-mode_sigma mode {:.1f}] ".format(sigma, sigma))
+    print("        [-optical xx yy zz] [-optical_tensor xx yy zz xy xz yz] [-vmin {:.1f}] [-vmax {:.1f}]".format(vmin, vmax))
     print("        [-vf {:.3f}] ".format(volume_fraction))
     print("        [-mf {:.3f}] ".format(mass_fraction))
-    print("        [-dielectric {:.4f}] [-density {:.4f}] ".format(matrix_dielectric,matrix_density))
+    print("        [-dielectric {:.4f}] [-density {:.4f}] ".format(matrix_dielectric, matrix_density))
     print("        [-matrix nujol/ptfe/kbr/ldpe/mdpe/hdpe] ")
-    print("        [-LO h k l ] [-LO_cart x y z ]")
+    print("        [-LO h k l] [-LO_cart x y z]")
     print("        [-mode index] [-csv file] [-csv_ext file")
     print("        [-eckart] [-neutral]")
     print("        [-hessian crystal/symm]")
     print("        [-h -help]")
     print("        [-program name] file1 [file2]")
     print("pdielec: Calculates a spectrum from VASP, CASTEP or GULP")
-    print("             At least one shape must be specified ( -sphere -needle -plate )")
+    print("             At least one shape must be specified (-sphere -needle -plate)")
     print("         -program castep/crystal/vasp/abinit/qe/gulp")
     print("             Specifies the program that created the files to be processed")
     print("             some programs require two or more files to be specified")
@@ -93,7 +93,7 @@ def showUsage():
     print("             Possible materials are;")
     for f in matrix:
         (rho, eps) = matrix[f]
-        print("                 "+"{:6s} density ".format(f)+"{:.4f}".format(rho)+ " permittivity "+"{:.4f}".format(eps))
+        print("                 " + "{:6s} density ".format(f) + "{:.4f}".format(rho) + " permittivity " + " {:.4f}".format(eps))
     print("         -dielectric is the dielectric constant of the medium")
     print("             For kbr the value is 2.25")
     print("             For ptfe the value is 2.0")
@@ -108,12 +108,12 @@ def showUsage():
     print("             Adds the needle shape to the shapes to be processed")
     print("             hkl (integers) define the unique needle direction as [hkl]")
     print("             The option can be used more than once")
-    print("         -plate h k l" )
+    print("         -plate h k l")
     print("             Adds the plate shape to the shapes to be processed")
     print("             hkl (integers) are miller indices, the plate lies in the (hkl) plane")
     print("             for non-orthogonal cells [hkl] and the normal to (hkl) are not necessarily the same")
     print("             The option can be used more than once")
-    print("         -ellipsoid h k l aoverb" )
+    print("         -ellipsoid h k l aoverb")
     print("             Adds the ellipsoid shape to the list of shapes to be processed")
     print("             the unique ellipsoid direction is [hkl] ")
     print("             aoverb (a/b) is the eccentricity of the ellipsoid")
@@ -164,6 +164,7 @@ def showUsage():
     print("         -h    to print out this help information")
     return
 
+
 # define some constants which may change due to the parameters on the command line
 debug          = False
 increment      = 0.2
@@ -189,175 +190,202 @@ fractional_types = []
 plot_types      = []
 volume_fraction = 0.1
 mass_fraction = 0.0
-sigma          = 5
+sigma          = 5.0
 eckart = False
 neutral = False
 matrix_dielectric  = 1.00  # air
 matrix_dielectric  = 2.25  # kbr
 matrix_dielectric  = 2.0   # ptfe
 matrix_density = 2.2
-printInfo      = False
+print_info      = False
 csvfile        = ""
 csv_extended   = False
 # Define materials as (density, permittivity)
-matrix         =  {}
-matrix["air"]    =  (0.0  ,1.0)
-matrix["vacuum"] =  (0.0  ,1.0)
-matrix["ptfe"]   =  (2.2  ,2.0)
-matrix["kbr"]    =  (2.75 ,2.25)
-matrix["nujol"]  =  (0.838,2.155)
-matrix["ldpe"]   =  (0.925,2.25)
-matrix["mdpe"]   =  (0.933,2.25)
-matrix["hdpe"]   =  (0.955,2.25)
+matrix           = {}
+matrix["air"]    = (0.000, 1.000)
+matrix["vacuum"] = (0.000, 1.000)
+matrix["ptfe"]   = (2.200, 2.000)
+matrix["kbr"]    = (2.750, 2.250)
+matrix["nujol"]  = (0.838, 2.155)
+matrix["ldpe"]   = (0.925, 2.250)
+matrix["mdpe"]   = (0.933, 2.250)
+matrix["hdpe"]   = (0.955, 2.250)
 drude = False
-drude_input_plasma = 0
-drude_input_sigma = 0
-threshold = {'intensity':1.0E-10, 'frequency':5}
+drude_input_plasma = 0.0
+drude_input_sigma = 0.0
+threshold = {'intensity': 1.0E-10, 'frequency': 5}
 hessian_symmetrisation = "symm"
 
 # Establish the calculator function which will be used for the majority of calculations
 calculator = DielectricConstant()
 
 # check usage
-if len(sys.argv) <=1:
-    showUsage()
+if len(sys.argv) <= 1:
+    show_usage()
     exit()
 
 # Begin processing of command line
-commandLine = ' '.join(sys.argv)
+command_line = ' '.join(sys.argv)
 tokens = sys.argv[1:]
 ntokens = len(tokens)
 itoken = 0
-#for itoken in range(ntokens):
 while itoken < ntokens:
     token = tokens[itoken]
 
     if token == "-program":
-        itoken += 1; program = tokens[itoken]
+        itoken += 1
+        program = tokens[itoken]
     elif token == "-sigma":
-        itoken += 1; sigma = float(tokens[itoken])
+        itoken += 1
+        sigma = float(tokens[itoken])
     elif token == "-print":
-        printInfo = True
+        print_info = True
     elif token == "-mode_sigma":
-        itoken += 1; mode = int(tokens[itoken])
-        itoken += 1; mode_sigmas[mode] = int(tokens[itoken])
+        itoken += 1
+        mode = int(tokens[itoken])
+        itoken += 1
+        mode_sigmas[mode] = int(tokens[itoken])
     elif token == "-method":
-        itoken += 1; methods.append(tokens[itoken])
+        itoken += 1
+        methods.append(tokens[itoken])
     elif token == "-plot":
-        itoken += 1; plot_types.append(tokens[itoken])
+        itoken += 1
+        plot_types.append(tokens[itoken])
     elif token == "-vf":
-        itoken += 1; volume_fractions.append(float(tokens[itoken]))
-        fractional_types.append("vf=%s" % (tokens[itoken]) )
+        itoken += 1
+        volume_fractions.append(float(tokens[itoken]))
+        fractional_types.append("vf=%s" % (tokens[itoken]))
     elif token == "-mf":
-        itoken += 1; mass_fractions.append(float(tokens[itoken]))
+        itoken += 1
+        mass_fractions.append(float(tokens[itoken]))
         mass_fractions_string.append(tokens[itoken])
     elif token == "-dielectric":
-        itoken += 1; matrix_dielectric = float(tokens[itoken])
+        itoken += 1
+        matrix_dielectric = float(tokens[itoken])
     elif token == "-density":
-        itoken += 1; matrix_density = float(tokens[itoken])
+        itoken += 1
+        matrix_density = float(tokens[itoken])
     elif token == "-matrix":
-        itoken += 1; token = tokens[itoken]
+        itoken += 1
+        token = tokens[itoken]
         if token in matrix:
-            (matrix_density,matrix_dielectric) = matrix[token]
+            (matrix_density, matrix_dielectric) = matrix[token]
         else:
             print("Error, unkown material {:s}", token)
             exit(1)
     elif token == "-optical":
-        optical = [ float(f) for f in tokens[itoken+1:itoken+4] ]
+        optical = [float(f) for f in tokens[itoken+1:itoken+4]]
         itoken = itoken + 3
     elif token == "-optical_tensor":
-        temp = [ float(f) for f in tokens[itoken+1:itoken+10] ]
+        temp = [float(f) for f in tokens[itoken+1:itoken+10]]
         itoken = itoken + 9
         optical_tensor.append(temp[0:3])
         optical_tensor.append(temp[3:6])
         optical_tensor.append(temp[6:9])
     elif token == "-i":
-        itoken += 1; increment = float(tokens[itoken])
+        itoken += 1
+        increment = float(tokens[itoken])
     elif token == "-mode":
-        itoken += 1; my_modes.append(int(tokens[itoken]))
+        itoken += 1
+        my_modes.append(int(tokens[itoken]))
     elif token == "-ignore":
-        itoken += 1; ignore_modes.append(int(tokens[itoken]))
+        itoken += 1
+        ignore_modes.append(int(tokens[itoken]))
     elif token == "-vmin":
-        itoken += 1; vmin = float(tokens[itoken])
+        itoken += 1
+        vmin = float(tokens[itoken])
     elif token == "-vmax":
-        itoken += 1; vmax = float(tokens[itoken])
+        itoken += 1
+        vmax = float(tokens[itoken])
     elif token == "-csv_ext":
-        itoken += 1; csvfile = tokens[itoken]
+        itoken += 1
+        csvfile = tokens[itoken]
         csv_extended = True
     elif token == "-csv":
-        itoken += 1; csvfile = tokens[itoken]
+        itoken += 1
+        csvfile = tokens[itoken]
         csv_extended = False
     elif token == "-sphere":
         shapes.append("sphere")
         shape_data.append(" ")
     elif token == "-plate":
         shapes.append("plate")
-        itoken += 1; token = tokens[itoken]
-        if token[0] == "[" or token[0] =="(" or token[0] == "{" :
+        itoken += 1
+        token = tokens[itoken]
+        if token[0] == "[" or token[0] == "(" or token[0] == "{":
             data = token
-        else :
-            data = "("+token+","+tokens[itoken+1]+","+tokens[itoken+2]+")"
+        else:
+            data = "(" + token + "," + tokens[itoken+1] + "," + tokens[itoken+2] + ")"
             itoken += 2
         shape_data.append(data)
     elif token == "-ellipsoid":
         shapes.append("ellipsoid")
-        itoken += 1; token = tokens[itoken]
-        if token[0] == "[" or token[0] =="(" or token[0] == "{" :
+        itoken += 1
+        token = tokens[itoken]
+        if token[0] == "[" or token[0] == "(" or token[0] == "{":
             data = token
-        else :
-            data = "["+token+","+tokens[itoken+1]+","+tokens[itoken+2]+"]"
+        else:
+            data = "[" + token + "," + tokens[itoken+1] + "," + tokens[itoken+2] + "]"
             itoken += 2
-        itoken += 1; aoverb = float(tokens[itoken])
-        shape_data.append( (data,aoverb) )
+        itoken += 1
+        aoverb = float(tokens[itoken])
+        shape_data.append((data, aoverb))
     elif token == "-needle":
         shapes.append("needle")
-        itoken += 1; token = tokens[itoken]
-        if token[0] == "[" or token[0] =="(" or token[0] == "{" :
+        itoken += 1
+        token = tokens[itoken]
+        if token[0] == "[" or token[0] == "(" or token[0] == "{":
             data = token
-        else :
-            data = "["+token+","+tokens[itoken+1]+","+tokens[itoken+2]+"]"
+        else:
+            data = "[" + token + "," + tokens[itoken+1] + "," + tokens[itoken+2] + "]"
             itoken += 2
         shape_data.append(data)
     elif token == "-eckart":
-         eckart = True
+        eckart = True
     elif token == "-hessian":
-        itoken += 1; token = tokens[itoken]
+        itoken += 1
+        token = tokens[itoken]
         if token == "crystal":
             hessian_symmetrisation = token
-        elif tokenn == "symm":
+        elif token == "symm":
             hessian_symmetrisation = token
         else:
             print("The -hessian directive must be qualified with \"symm\" or \"crystal\" {:s}".format(token))
             exit(1)
     elif token == "-neutral":
-         neutral = True
+        neutral = True
     elif token == "-LO_cart":
         itoken += 1
-        qlist_input.append( [ float(q) for q in tokens[itoken:itoken+3] ] )
+        qlist_input.append([float(q) for q in tokens[itoken:itoken+3]])
         itoken += 2
     elif token == "-LO":
-        itoken += 1; token = tokens[itoken]
-        if token[0] == "[" or token[0] =="(" or token[0] == "{" :
+        itoken += 1
+        token = tokens[itoken]
+        if token[0] == "[" or token[0] == "(" or token[0] == "{":
             data = token
-        else :
-            data = "("+token+","+tokens[itoken+1]+","+tokens[itoken+2]+")"
+        else:
+            data = "(" + token + "," + tokens[itoken+1] + "," + tokens[itoken+2] + ")"
             itoken += 2
         qdata.append(data)
     elif token == "-h":
-        showUsage()
+        show_usage()
         exit()
     elif token == "-help":
-        showUsage()
+        show_usage()
         exit()
     elif token == "-drude":
         drude = True
-        itoken += 1; drude_input_plasma = float(tokens[itoken])
-        itoken += 1; drude_input_sigma  = float(tokens[itoken])
+        itoken += 1
+        drude_input_plasma = float(tokens[itoken])
+        itoken += 1
+        drude_input_sigma  = float(tokens[itoken])
     elif token == "-debug":
         debug = True
     elif token == "-thresholds":
-        itoken += 1; threshold['intensity'] = float(tokens[itoken])
-        itoken += 1; threshold['frequency'] = float(tokens[itoken])
+        itoken += 1
+        threshold['intensity'] = float(tokens[itoken])
+        itoken += 1
+        threshold['frequency'] = float(tokens[itoken])
     elif token[0] == "-":
         print("Error on input unkown option: {:s}".format(token))
         exit(1)
@@ -367,34 +395,34 @@ while itoken < ntokens:
     # end loop over tokens
 
 # Look for obvious errors
-programs = [ "castep", "abinit", "qe", "castep", "vasp", "crystal", "gulp" ]
-if program != "":
-      if program not in programs:
-          print("program specified is: {:s}".format(program) )
-          print("Needs to be one of: "+ " ".join(p for p in programs) )
-          exit(1)
+programs = ["castep", "abinit", "qe", "castep", "vasp", "crystal", "gulp"]
+if program is not "":
+    if program not in programs:
+        print("program specified is: {:s}".format(program))
+        print("Needs to be one of: " + " ".join(p for p in programs))
+        exit(1)
 if len(names) <= 0:
-      print("No files were specified")
-      showUsage()
-      exit(1)
+    print("No files were specified")
+    show_usage()
+    exit(1)
 if len(shapes) <= 0:
-      shapes.append("sphere")
-      shape_data.append(" ")
-      print("No shapes were specified, using a sphere")
+    shapes.append("sphere")
+    shape_data.append(" ")
+    print("No shapes were specified, using a sphere")
 
 # Set default method
 if len(methods) == 0:
     methods.append('maxwell')
 
 # print out information
-print("The following methods will be used: "+" ".join(m for m in methods) )
+print("The following methods will be used: " + " ".join(m for m in methods))
 
 fd_csvfile = None
 fd_csvfiles = [None, None, None]
-if not csvfile == "":
+if csvfile != "":
     if csv_extended:
-        head = csvfile.replace(".csv","")
-        print("Creating three csv files: \n   {}, \n   {} \n   {}".format(head+"_command.csv", head+"_frequencies.csv", head+"_spectrum.csv") )
+        head = csvfile.replace(".csv", "")
+        print("Creating three csv files: \n   {}, \n   {} \n   {}".format(head+"_command.csv", head+"_frequencies.csv", head+"_spectrum.csv"))
         fd_csvfiles[0] = open(head+"_command.csv", 'w')
         fd_csvfiles[1] = open(head+"_frequencies.csv", 'w')
         fd_csvfiles[2] = open(head+"_spectrum.csv", 'w')
@@ -407,30 +435,30 @@ if not csvfile == "":
 if len(plot_types) == 0:
     print("No plotting has been requested")
 else:
-    print("Plotting types requested are: "+" ".join(p for p in plot_types) )
-print("The frequency increment is {:.2f} cm-1".format(increment) )
-print("The default width factor (-sigma) has been set to {:3f} cm-1".format(sigma) )
+    print("Plotting types requested are: " + " ".join(p for p in plot_types))
+print("The frequency increment is {:.2f} cm-1".format(increment))
+print("The default width factor (-sigma) has been set to {:3f} cm-1".format(sigma))
 if len(mode_sigmas.keys()) > 0:
-  for mode in mode_sigmas.keys():
-    print("Mode {:3d} has a width factor of: {:5.2f}".format(mode,mode_sigmas[mode]) )
+    for mode in mode_sigmas.keys():
+        print("Mode {:3d} has a width factor of: {:5.2f}".format(mode, mode_sigmas[mode]))
 print("The permittivity of the medium (-dielectric) has been set to {:.4f}".format(matrix_dielectric))
 print("The density of the medium (-density) has been set to {:.4f} g/cc".format(matrix_density))
 if len(optical_tensor) > 0:
-  print3x3("The optical permitivity tensor has been specified: ", optical_tensor )
+    print3x3("The optical permitivity tensor has been specified: ", optical_tensor)
 if len(optical) > 0:
-  print(" ")
-  print("Optical permitivity diagonal elements specified: " + " ".join("{:.4f}".format(p) for p in optical) )
-  optical_tensor = calculator.tensorInitialiseDiagonal( optical )
-print("Vmin is: {:7.1f} cm-1".format(vmin) )
-print("Vmax is: {:7.1f} cm-1".format(vmax) )
+    print(" ")
+    print("Optical permitivity diagonal elements specified: " + " ".join("{:.4f}".format(p) for p in optical))
+    optical_tensor = calculator.initialise_diagonal_tensor(optical)
+print("Vmin is: {:7.1f} cm-1".format(vmin))
+print("Vmax is: {:7.1f} cm-1".format(vmax))
 if len(my_modes) > 0:
-   print("Only consider contributions from phonon modes:"+" ".join(str(m) for m in my_modes) )
+    print("Only consider contributions from phonon modes:" + " ".join(str(m) for m in my_modes))
 else:
-   if len(ignore_modes) > 0:
-       print( "Ignoring the following phonon modes:")
-       print( "     "+" ".join("{:d}".format(m) for m in ignore_modes))
-   else:
-       print("All phonon modes will be considered")
+    if len(ignore_modes) > 0:
+        print("Ignoring the following phonon modes:")
+        print("     " + " ".join("{:d}".format(m) for m in ignore_modes))
+    else:
+        print("All phonon modes will be considered")
 if drude:
     print("A Drude model will be used as well as the phonon modes")
     print("The Drude sigma parameter  is; {:6.1f} cm-1".format(drude_input_sigma))
@@ -448,18 +476,18 @@ if program == "":
     #  If names[0] is a directory then we will use a vaspoutputreader
     #  Otherwise it is a seedname for castep, or a gulp output file, or a crystal output file
     if os.path.isdir(names[0]):
-      print('Analysing VASP directory: {} '.format(names[0]) )
-      outcarfile = os.path.join(names[0],"OUTCAR")
-      if not os.path.isfile(outcarfile):
-        print("Error: NO OUTCAR FILE IN DIRECTORY")
-        exit()
-      reader = VaspOutputReader(names)
+        print('Analysing VASP directory: {} '.format(names[0]))
+        outcarfile = os.path.join(names[0], "OUTCAR")
+        if not os.path.isfile(outcarfile):
+            print("Error: NO OUTCAR FILE IN DIRECTORY")
+            exit()
+        reader = VaspOutputReader(names)
     elif names[0].find("OUTCAR") >= 0 and os.path.isfile("OUTCAR"):
-      reader = VaspOutputReader(names)
+        reader = VaspOutputReader(names)
     elif names[0].find(".gout") >= 0 and os.path.isfile(names[0]):
-      reader = GulpOutputReader(names)
+        reader = GulpOutputReader(names)
     elif names[0].find(".out") >= 0 and os.path.isfile(names[0]):
-      reader = CrystalOutputReader(names)
+        reader = CrystalOutputReader(names)
     elif names[0].find(".castep") >= 0 and os.path.isfile(names[0]):
         reader = CastepOutputReader(names)
     elif os.path.isfile(names[0]+".castep") and os.path.isfile(names[0]+".castep"):
@@ -477,35 +505,35 @@ else:
     #
     checkfiles = []
     if program == "castep":
-      if names[0].find(".castep") >= 0:
-        seedname,ext = os.path.splitext(names[0])
-      else:
-        seedname=names[0]
-      checkfiles.append(seedname+".castep")
+        if names[0].find(".castep") >= 0:
+            seedname, ext = os.path.splitext(names[0])
+        else:
+            seedname = names[0]
+        checkfiles.append(seedname+".castep")
     else:
-      checkfiles = names
+        checkfiles = names
     print("")
-    print("Program used to perform the phonon calculation was: {}".format(program) )
+    print("Program used to perform the phonon calculation was: {}".format(program))
     for f in checkfiles:
-      print("The file containing the output is: {}".format(f) )
-      if not os.path.isfile(f):
-        print("Output files created by program: {}".format(program) )
-        print("Error: file not available: {}".format(f) )
-        exit()
+        print("The file containing the output is: {}".format(f))
+        if not os.path.isfile(f):
+            print("Output files created by program: {}".format(program))
+            print("Error: file not available: {}".format(f))
+            exit()
     # The files requested are available so read them
     if program == "castep":
-      reader = CastepOutputReader(names)
+        reader = CastepOutputReader(names)
     elif program == "vasp":
-      reader = VaspOutputReader(names)
+        reader = VaspOutputReader(names)
     elif program == "gulp":
-      reader = GulpOutputReader(names)
+        reader = GulpOutputReader(names)
     elif program == "crystal":
-      reader = CrystalOutputReader(names)
+        reader = CrystalOutputReader(names)
     elif program == "abinit":
-      reader = AbinitOutputReader(names)
+        reader = AbinitOutputReader(names)
     elif program == "qe":
-      reader = QEOutputReader(names)
-    #endif
+        reader = QEOutputReader(names)
+    # endif
 # end if
 if eckart:
     print("The translational modes will be projected from the Dynamical matrix where possible")
@@ -521,72 +549,72 @@ reader.neutral = neutral
 reader.hessian_symmetrisation = hessian_symmetrisation
 reader.debug = debug
 # Initiate reading of the files
-reader.ReadOutput()
-calculator.setReader(reader)
-if printInfo:
-    reader.PrintInfo()
+reader.read_output()
+calculator.set_reader(reader)
+if print_info:
+    reader.print_info()
 # Calculate the depolarisation matrices.  Put here because we need the lattice vectors
 depolarisations = []
-for shape, data in zip(shapes,shape_data):
+for shape, data in zip(shapes, shape_data):
     label = ""
     printd = data
     if shape == "ellipsoid":
         (printd, label) = data
-    title =  "Shape depolarisation matrix: {} {} {}".format(shape, printd, label)
+    title = "Shape depolarisation matrix: {} {} {}".format(shape, printd, label)
     if shape == "sphere":
         direction = []
-        depolarisations.append( calculator.initialiseSphereDepolarisationMatrix() )
+        depolarisations.append(calculator.initialise_sphere_depolarisation_matrix())
     if shape == "plate":
-        direction = calculator.directionFromShape(data)
-        depolarisations.append( calculator.initialisePlateDepolarisationMatrix(direction) )
+        direction = calculator.direction_from_shape(data)
+        depolarisations.append(calculator.initialise_plate_depolarisation_matrix(direction))
     if shape == "needle":
-        direction = calculator.directionFromShape(data)
-        depolarisations.append( calculator.initialiseNeedleDepolarisationMatrix(direction) )
+        direction = calculator.direction_from_shape(data)
+        depolarisations.append(calculator.initialise_needle_depolarisation_matrix(direction))
     if shape == "ellipsoid":
-        ellipsez,aoverb = data
-        direction = calculator.directionFromShape(ellipsez)
-        depolarisations.append( calculator.initialiseEllipsoidDepolarisationMatrix(direction,aoverb) )
+        ellipsez, aoverb = data
+        direction = calculator.direction_from_shape(ellipsez)
+        depolarisations.append(calculator.initialise_ellipsoid_depolarisation_matrix(direction, aoverb))
     # Print out the depolarisation matrix
-    if len(direction)>0:
-        title = title + "xyz=["+",".join("{:f}".format(d) for d in direction) + "]"
-    print3x3(title, depolarisations[-1] )
+    if len(direction) > 0:
+        title = title + "xyz=[" + ",".join("{:f}".format(d) for d in direction) + "]"
+    print3x3(title, depolarisations[-1])
 if len(optical) > 0:
     print()
 # Define some of the constants
-dielectric_medium = calculator.tensorInitialiseDiagonal( [ matrix_dielectric, matrix_dielectric, matrix_dielectric ] )
+dielectric_medium = calculator.initialise_diagonal_tensor([matrix_dielectric, matrix_dielectric, matrix_dielectric])
 # access the information as numpy arrays.  Use atomic units for these arrays
 masses = np.array(reader.masses) * amu
 print("")
-print("Volume of unit cell is {:14.8f} Angstrom^3".format(reader.volume) )
+print("Volume of unit cell is {:14.8f} Angstrom^3".format(reader.volume))
 mtotal = 0.0
-for m in reader.masses :
-  mtotal = mtotal + m
-print("Total unit cell mass is: {:14.8f} g/mol".format(mtotal) )
-crystal_density = mtotal/( avogadro_si * reader.volume * 1.0e-24)
-print("Crystal density is: {:9.5f} g/cc".format(crystal_density) )
+for m in reader.masses:
+    mtotal = mtotal + m
+print("Total unit cell mass is: {:14.8f} g/mol".format(mtotal))
+crystal_density = mtotal/(avogadro_si * reader.volume * 1.0e-24)
+print("Crystal density is: {:9.5f} g/cc".format(crystal_density))
 rho1 = crystal_density
 rho2 = matrix_density
 print("")
 # Convert any mass fractions to volume fractions
 if len(mass_fractions) > 0:
-    print("The density of the supporting matrix is {:9.4f} g/cc".format(matrix_density) )
+    print("The density of the supporting matrix is {:9.4f} g/cc".format(matrix_density))
     print("Converting the following mass fractions to volume fractions:")
-    for mf1,string in zip(mass_fractions,mass_fractions_string):
+    for mf1, string in zip(mass_fractions, mass_fractions_string):
         mf2 = 1.0 - mf1
-        vf1 = 1.0 / ( 1 + (mf2/mf1) * ( rho1/rho2) )
-        volume_fractions.append( vf1 )
-        fractional_types.append("mf={}".format(string) )
-        print("   The equivalent volume fraction for mass fraction {:7.4f} is {:9.6f}".format(mf1,vf1) )
+        vf1 = 1.0 / (1 + (mf2/mf1) * (rho1/rho2))
+        volume_fractions.append(vf1)
+        fractional_types.append("mf={}".format(string))
+        print("   The equivalent volume fraction for mass fraction {:7.4f} is {:9.6f}".format(mf1, vf1))
 
 # Set default volume fraction if we need to
 if len(volume_fractions) == 0:
     volume_fractions.append(volume_fraction)
-    fractional_types.append("vf={:f}".format(volume_fraction) )
+    fractional_types.append("vf={:f}".format(volume_fraction))
 
 # the concentration of unit cells per 1000 cc can be calculated in moles / L
-concentration = 1000.0 / ( avogadro_si * reader.volume * 1.0e-24 )
+concentration = 1000.0 / (avogadro_si * reader.volume * 1.0e-24)
 print("")
-print("Concentration for unit volume fraction {:9.4f} moles/Litre".format(concentration) )
+print("Concentration for unit volume fraction {:9.4f} moles/Litre".format(concentration))
 
 # Get the zero frequency optical tensor from the output
 epsilon_inf = np.array(reader.zerof_optical_dielectric)
@@ -602,23 +630,23 @@ born_charges = np.array(reader.born_charges)
 #
 # Ask the reader to calculate the massweighted normal modes
 # This call allows the projection to be performed if necessary
-# 
-mass_weighted_normal_modes = reader.calculateMassWeightedNormalModes()
-frequencies_cm1 = np.array(reader.frequencies) 
+#
+mass_weighted_normal_modes = reader.calculate_mass_weighted_normal_modes()
+frequencies_cm1 = np.array(reader.frequencies)
 frequencies = frequencies_cm1 * wavenumber
 volume = reader.volume*angstrom*angstrom*angstrom
-mode_set = []
+mode_list = []
 sigmas = []
 # set the widths and define the list of modes to me considered
-for imode,frequency in enumerate(reader.frequencies):
-    mode_set.append(imode)
+for imode, frequency in enumerate(reader.frequencies):
+    mode_list.append(imode)
     sigmas.append(sigma)
 for mode in mode_sigmas.keys():
     sigmas[mode] = mode_sigmas[mode]
 
 if debug:
-    print("Complete mode list is: "+",".join("{:4d}".format(m) for m in mode_set) )
-    print("Sigmas are:            "+",".join("{:4d}".format(s) for s in sigmas) )
+    print("Complete mode list is: " + ",".join("{:4d}".format(m) for m in mode_list))
+    print("Sigmas are:            " + ",".join("{:4d}".format(s) for s in sigmas))
 
 # convert sigmas to wavenumbers
 sigmas_cm1 = np.array(sigmas)
@@ -627,17 +655,17 @@ sigmas = np.array(sigmas)*wavenumber
 #
 # calculate normal modes in xyz coordinate space
 # should they be re-normalised or not?  According to Balan the mass weighted coordinates should be normalised
-normal_modes = calculator.NormalModes(masses,mass_weighted_normal_modes)
+normal_modes = calculator.normal_modes(masses, mass_weighted_normal_modes)
 # from the normal modes and the born charges calculate the oscillator strengths of each mode
-oscillator_strengths = calculator.OscillatorStrengths(normal_modes, born_charges )
+oscillator_strengths = calculator.oscillator_strengths(normal_modes, born_charges)
 # calculate the intensities from the trace of the oscillator strengths
-intensities = calculator.IRIntensities(oscillator_strengths)
+intensities = calculator.infrared_intensities(oscillator_strengths)
 #
 # If LO frequencies have been requested lets calculate them now
 # First calculate the cartesian directions from any wavevectors
 if qdata:
     for q in qdata:
-        qlist.append(calculator.directionFromShape(q))
+        qlist.append(calculator.direction_from_shape(q))
     # end for
     print(" ")
 # No add any cartesian directions which were specified
@@ -645,168 +673,169 @@ if qlist_input:
     qlist.extend(qlist_input)
 # Loop over all the cartesian directions to find the splitting
 if qlist:
-    lo_freqs = calculator.LongitudinalModes(frequencies, mass_weighted_normal_modes, born_charges, masses, epsilon_inf, volume, qlist, reader)
-    printReals("Transverse frequencies (cm-1)", np.real(frequencies_cm1))
+    lo_freqs = calculator.logitudinal_mores(frequencies, mass_weighted_normal_modes, born_charges, masses, epsilon_inf, volume, qlist, reader)
+    print_reals("Transverse frequencies (cm-1)", np.real(frequencies_cm1))
     print(" ")
     index = 0
-    for lo,qxyz in zip(lo_freqs,qlist):
+    for lo, qxyz in zip(lo_freqs, qlist):
         lo = lo / wavenumber
         qstring = " "
         if index < len(qdata):
-          qstring = " "+qdata[index]
+            qstring = " " + qdata[index]
         index += 1
-        qxyz_string="[" + ",".join("{:7.4f}".format(xyz) for xyz in qxyz) + "]"
-        printReals("Longitudinal frequencies (cm-1) q->0 q(cart)="+qxyz_string+qstring, np.real(lo))
+        qxyz_string = "[" + ",".join("{:7.4f}".format(xyz) for xyz in qxyz) + "]"
+        print_reals("Longitudinal frequencies (cm-1) q->0 q(cart)=" + qxyz_string + qstring, np.real(lo))
         print(" ")
-     # end for qxyz,lo
+    # end for qxyz, lo
 # end if qlist
 #
 # Only modes with non-zero oscillator strengths contribute to the dielectric
 # so calculate those modes which we can safely ignore and store them in ignore_modes
 #
 if len(ignore_modes) == 0:
-    for mode,intensity in enumerate(intensities):
+    for mode, intensity in enumerate(intensities):
         # ignore modes with a low oscillator strength
         if intensity < threshold['intensity']:
-          ignore_modes.append(mode)
+            ignore_modes.append(mode)
         # ignore modes with low real frequency
-        elif np.real(frequencies[mode])/wavenumber < threshold['frequency'] :
-          ignore_modes.append(mode)
+        elif np.real(frequencies[mode])/wavenumber < threshold['frequency']:
+            ignore_modes.append(mode)
         # ignore modes with imaginary frequency
         elif abs(np.imag(frequencies[mode]))/wavenumber > 1.0e-6:
-          ignore_modes.append(mode)
-        #end if intensity
-    #end for 
+            ignore_modes.append(mode)
+        # end if intensity
+    # end for
 # end if len()
 # Remove any unwanted modes
-ignore_modes = set(ignore_modes)
+ignore_modes = list(set(ignore_modes))
 if len(ignore_modes) > 0:
     for mode in ignore_modes:
-        if mode in mode_set:
-            mode_set.remove(mode)
+        if mode in mode_list:
+            mode_list.remove(mode)
     # end loop over modes to be ignored
 # end of if ignore_modes
 # If a selected list of frequencies has been selected then use these
 if len(my_modes) > 0:
-    mode_set = set(my_modes)
+    mode_list = list(set(my_modes))
 if debug:
-    print("Selected mode list is: "+",".join("{:4d}".format(m) for m in mode_set) )
+    print("Selected mode list is: " + ",".join("{:4d}".format(m) for m in mode_list))
     print("")
 #
 print('Calculated Integrated IR band intensities (espilon_max assumes a fwhm line width)')
 print('Only IR active modes are shown')
 print()
 #      mode
-print("{:^4s} {:^8s} {:^17s} {:^27s} {:^11s} {:^8s}".format("Mode","Frequency","Intensity       ","Integrated Molar Absorption","Epsilon_max","FWHM") )
-print("{:^4s} {:^8s} {:^17s} {:^27s} {:^11s} {:^8s}".format("    ","cm-1     ","Debye2/Angs2/amu","Coefficient L/mole/cm/cm",   "L/mole/cm","cm-1") )
-print("{:^4s} {:^8s} {:^17s} {:^27s} {:^11s} {:^8s}".format("----","---------","----------------","---------------------------","-----------","----") )
-if fd_csvfile != None :
-    print(commandLine, file=fd_csvfile)
+print("{:^4s} {:^8s} {:^17s} {:^27s} {:^11s} {:^8s}".format("Mode", "Frequency", "Intensity       ", "Integrated Molar Absorption", "Epsilon_max", "FWHM"))
+print("{:^4s} {:^8s} {:^17s} {:^27s} {:^11s} {:^8s}".format("    ", "cm-1     ", "Debye2/Angs2/amu", "Coefficient L/mole/cm/cm", "L/mole/cm", "cm-1"))
+print("{:^4s} {:^8s} {:^17s} {:^27s} {:^11s} {:^8s}".format("----", "---------", "----------------", "---------------------------", "-----------", "----"))
+if fd_csvfile is not None:
+    print(command_line, file=fd_csvfile)
 fd_csvfile = fd_csvfiles[1]
-if fd_csvfile != None :
-    print("{:^4s},{:^8s},{:^17s},{:^27s},{:^11s},{:^8s}".format("Mode","Frequency","Intensity       ","Integrated Molar Absorption","Epsilon_max", "FWHM") ,file=fd_csvfile)
-    print("{:^4s},{:^8s},{:^17s},{:^27s},{:^11s},{:^8s}".format("    ","cm-1     ","Debye2/Angs2/amu","Coefficient L/mole/cm/cm","L/mole/cm","cm-1") ,file=fd_csvfile)
-    print("{:^4s},{:^8s},{:^17s},{:^27s},{:^11s},{:^8s}".format("----","---------","----------------","---------------------------","---------","----") ,file=fd_csvfile)
-for m in mode_set :
+if fd_csvfile is not None:
+    print("{:^4s},{:^8s},{:^17s},{:^27s},{:^11s},{:^8s}".format("Mode", "Frequency", "Intensity       ", "Integrated Molar Absorption", "Epsilon_max", "FWHM"), file=fd_csvfile)
+    print("{:^4s},{:^8s},{:^17s},{:^27s},{:^11s},{:^8s}".format("    ", "cm-1     ", "Debye2/Angs2/amu", "Coefficient L/mole/cm/cm", "L/mole/cm", "cm-1"), file=fd_csvfile)
+    print("{:^4s},{:^8s},{:^17s},{:^27s},{:^11s},{:^8s}".format("----", "---------", "----------------", "---------------------------", "---------", "----"), file=fd_csvfile)
+for m in mode_list:
     f = reader.frequencies[m]
     i = intensities[m]
     w = sigmas_cm1[m]
-    print("{:>4d} {:>8.2f} {:>17.6f} {:>27.6f} {:>11.4f} {:>8.1f}".format(m,f,i,4225.6*i,2*4225.6*i/w/PI,w) )
-    if fd_csvfile != None :
-         print("{:>4d},{:>8.2f},{:>17.6f},{:>27.6f},{:>11.4f},{:>8.1f}".format(m,f,i,4225.6*i,2*4225.6*i/w/PI,w) ,file=fd_csvfile)
+    print("{:>4d} {:>8.2f} {:>17.6f} {:>27.6f} {:>11.4f} {:>8.1f}".format(m, f, i, 4225.6*i, 2*4225.6*i/w/PI, w))
+    if fd_csvfile is not None:
+        print("{:>4d},{:>8.2f},{:>17.6f},{:>27.6f},{:>11.4f},{:>8.1f}".format(m, f, i, 4225.6*i, 2*4225.6*i/w/PI, w), file=fd_csvfile)
 # from the oscillator strengths calculate the low frequency permittivity
-epsilon_ionic = calculator.IonicPermittivity(mode_set, oscillator_strengths, frequencies, volume )
+epsilon_ionic = calculator.ionic_permittivity(mode_list, oscillator_strengths, frequencies, volume)
 print(" ")
 print3x3('Permittivity contribution from ionic displacements', epsilon_ionic)
 print3x3('Optical permittivity at zero frequency', epsilon_inf)
 epsilon_total = epsilon_inf + epsilon_ionic
-print3x3('Total permittivity',epsilon_total)
+print3x3('Total permittivity', epsilon_total)
 #
 # Create a dictionary to hold the last solution for a given method/volume/fraction
-previous_solution={}
+previous_solution = {}
 # Loop over frequencies
-for v in np.arange(float(vmin),float(vmax)+0.5*float(increment),float(increment)):
+for v in np.arange(float(vmin), float(vmax)+0.5*float(increment), float(increment)):
     # loop over all modes and calculate the contribution to the dielectric
     vau = v * wavenumber
-    ionicv = calculator.dielectricContribution(vau,mode_set,frequencies,sigmas,oscillator_strengths,volume)
+    ionicv = calculator.dielectric_contribution(vau, mode_list, frequencies, sigmas, oscillator_strengths, volume)
     if drude:
-      ionicv = ionicv + calculator.drudeContribution(vau,drude_plasma,drude_sigma,volume)
+        ionicv = ionicv + calculator.drude_contribution(vau, drude_plasma, drude_sigma, volume)
     # absorption units here are L/mole/cm-1
-    molar_absorption_coefficient_from_mode_intensities_Lpmolpcm = calculator.absorptionFromModeIntensities(v,mode_set,frequencies_cm1,sigmas_cm1,intensities)
+    molar_absorption_coefficient_from_mode_intensities_Lpmolpcm = calculator.absorption_from_mode_intensities(v, mode_list, frequencies_cm1, sigmas_cm1, intensities)
     # Now the units are cm-1
     absorption_coefficient_from_mode_intensities_pcm = concentration * molar_absorption_coefficient_from_mode_intensities_Lpmolpcm
     dielecv = ionicv + epsilon_inf
     nplot = -1
     # Loop over methods
     for method in methods:
-      # Loop over volume_fractions
-      for vf,vf_type in zip(volume_fractions,fractional_types):
-        # Loop over shapes
-        apCount = 0 # Use a counter to only calculate the AveragedPermittivity once for all shapes
-        for shape,data,L in zip(shapes,shape_data,depolarisations):
-            nplot += 1
-            if method == "balan":
-                effdielec = calculator.balan(dielectric_medium,dielecv, shape, L, vf )
-            elif method == "ap" or method == "averagedpermittivity" :
-                if apCount == 0:
-                    effdielec = calculator.averagedPermittivity(dielectric_medium,dielecv, shape, L, vf  )
-                    shape = "noshape"
-                    apCount += 1
+        # Loop over volume_fractions
+        for vf, vf_type in zip(volume_fractions, fractional_types):
+            # Loop over shapes
+            apCount = 0  # Use a counter to only calculate the AveragedPermittivity once for all shapes
+            for shape, data, L in zip(shapes, shape_data, depolarisations):
+                nplot += 1
+                if method == "balan":
+                    effdielec = calculator.balan(dielectric_medium, dielecv, shape, L, vf)
+                elif method == "ap" or method == "averagedpermittivity":
+                    if apCount == 0:
+                        effdielec = calculator.averaged_permittivity(dielectric_medium, dielecv, shape, L, vf)
+                        shape = "noshape"
+                        apCount += 1
+                    else:
+                        nplot -= 1
+                        continue
+                elif method == "maxwell":
+                    effdielec = calculator.maxwell(dielectric_medium, dielecv, shape, L, vf)
+                elif method == "maxwell_sihvola":
+                    effdielec = calculator.maxwell_sihvola(dielectric_medium, dielecv, shape, L, vf)
+                elif method == "coherent":
+                    if (method, vf, shape) in previous_solution:
+                        eff = previous_solution[method, vf, shape]
+                    else:
+                        eff = calculator.maxwell(dielectric_medium, dielecv, shape, L, vf)
+                    effdielec = calculator.coherent(dielectric_medium, dielecv, shape, L, vf, eff)
+                elif method == "bruggeman_minimise":
+                    if (method, vf, shape) in previous_solution:
+                        eff = previous_solution[method, vf, shape]
+                    else:
+                        eff = calculator.maxwell(dielectric_medium, dielecv, shape, L, vf)
+                    effdielec = calculator.bruggeman_minimise(dielectric_medium, dielecv, shape, L, vf, eff)
+                    previous_solution[(method, vf, shape)] = effdielec
+                elif method == "bruggeman" or method == "bruggeman_iter":
+                    if (method, vf, shape) in previous_solution:
+                        eff = previous_solution[method, vf, shape]
+                    else:
+                        eff = calculator.maxwell(dielectric_medium, dielecv, shape, L, vf)
+                    effdielec = calculator.bruggeman_iter(dielectric_medium, dielecv, shape, L, vf, eff)
+                    previous_solution[(method, vf, shape)] = effdielec
                 else:
-                    nplot -= 1
-                    continue
-            elif method == "maxwell":
-                effdielec = calculator.maxwell(dielectric_medium, dielecv, shape, L, vf)
-            elif method == "maxwell_sihvola":
-                effdielec = calculator.maxwell_sihvola(dielectric_medium, dielecv, shape, L, vf)
-            elif method == "coherent":
-                if (method,vf,shape) in previous_solution:
-                    eff = previous_solution[method,vf,shape]
-                else:
-                    eff = calculator.maxwell(dielectric_medium, dielecv, shape, L, vf)
-                effdielec = calculator.coherent(dielectric_medium, dielecv, shape, L, vf,eff)
-            elif method == "bruggeman_minimise":
-                if (method,vf,shape) in previous_solution:
-                    eff = previous_solution[method,vf,shape]
-                else:
-                    eff = calculator.maxwell(dielectric_medium, dielecv, shape, L, vf)
-                effdielec = calculator.bruggeman_minimise(dielectric_medium, dielecv, shape, L, vf,eff)
-                previous_solution[(method,vf,shape)] = effdielec
-            elif method == "bruggeman" or method == "bruggeman_iter":
-                if (method,vf,shape) in previous_solution:
-                    eff = previous_solution[method,vf,shape]
-                else:
-                    eff = calculator.maxwell(dielectric_medium, dielecv, shape, L, vf)
-                effdielec = calculator.bruggeman_iter(dielectric_medium, dielecv, shape, L, vf,eff)
-                previous_solution[(method,vf,shape)] = effdielec
-            else:
-                print('Unkown dielectric method {}'.format(method))
-                exit(1)
-            # Average over all directions by taking the trace
-            trace = (effdielec[0,0] + effdielec[1,1] + effdielec[2,2] ) / 3.0
-            refractive_index=calculator.refractive_index(effdielec)
-            # absorption coefficient is calculated from the imaginary refractive index
-            # see H.C. van de Hulst Light Scattering by Small Particles , page 267
-            # This is different but related to Genzel and Martin Equation 16, Phys. Stat. Sol. 51(1972) 91-
-            # I've add a factor of log10(e) because we need to assume a decadic Beer's law
-            # units are cm-1
-            absorption_coefficient = v * 4*PI * np.imag(refractive_index) * math.log10(math.e)
-            # units are cm-1 L moles-1
-            molar_absorption_coefficient = absorption_coefficient / concentration / vf
-            plotter.addDielectric(nplot,method,vf_type,shape,data,v,trace,absorption_coefficient,molar_absorption_coefficient)
-        # end of loop over shapes
-      # end of loop over volume fractions
+                    print('Unkown dielectric method {}'.format(method))
+                    exit(1)
+                # Average over all directions by taking the trace
+                trace = (effdielec[0, 0] + effdielec[1, 1] + effdielec[2, 2]) / 3.0
+                refractive_index = calculator.refractive_index(effdielec)
+                # absorption coefficient is calculated from the imaginary refractive index
+                # see H.C. van de Hulst Light Scattering by Small Particles , page 267
+                # This is different but related to Genzel and Martin Equation 16, Phys. Stat. Sol. 51(1972) 91-
+                # I've add a factor of log10(e) because we need to assume a decadic Beer's law
+                # units are cm-1
+                absorption_coefficient = v * 4*PI * np.imag(refractive_index) * math.log10(math.e)
+                # units are cm-1 L moles-1
+                molar_absorption_coefficient = absorption_coefficient / concentration / vf
+                plotter.add_dielectric(nplot, method, vf_type, shape, data, v, trace, absorption_coefficient, molar_absorption_coefficient)
+            # end of loop over shapes
+        # end of loop over volume fractions
     # end of loops over methods
     # Calculate TO contribution to loss
-    trace = (dielecv[0,0] + dielecv[1,1] + dielecv[2,2] ) / 3.0
+    trace = (dielecv[0, 0] + dielecv[1, 1] + dielecv[2, 2]) / 3.0
     #  Scale the output to use a volume fraction so plots are comparable
     # absorption_coefficient_from_mode_intensities_pcm *= vf
-    # plotter.addDielectric(nplot,'TOs_from_intensities',vf,'noshape','',v,trace_pure,absorption_coefficient_from_mode_intensities_pcm,molar_absorption_coefficient_from_mode_intensities_Lpmolpcm)
+    # plotter.add_dielectric(nplot, 'TOs_from_intensities', vf, 'noshape', '', v, trace_pure, absorption_coefficient_from_mode_intensities_pcm, \
+    #                       molar_absorption_coefficient_from_mode_intensities_Lpmolpcm)
 # end of look over frequencies
-if fd_csvfile != None :
+if fd_csvfile is not None:
     fd_csvfile = fd_csvfiles[2]
     plotter.printout(fd_csvfile)
-if fd_csvfile != None:
+if fd_csvfile is not None:
     for fd in fd_csvfiles:
         fd.close()
 plotter.plot(plot_types)

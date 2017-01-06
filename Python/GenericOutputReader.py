@@ -14,12 +14,13 @@
 # You should have received a copy of the MIT License
 # along with this program, if not see https://opensource.org/licenses/MIT
 #
+"""Generic reader of output files.  Actual reader should inherit from this class"""
 from __future__ import print_function
-import numpy as np
 import math
 import os
+import numpy as np
 from Python.Constants import wavenumber, avogadro_si
-from Python.Plotter import print3x3, printReals
+from Python.Plotter import print3x3, print_reals
 
 
 class GenericOutputReader:
@@ -38,7 +39,7 @@ class GenericOutputReader:
         self.nions                      = 0
         self.nspecies                   = 0
         self.final_free_energy          = 0
-        self.unitCells                  = []
+        self.unit_cells                  = []
         self.born_charges               = []
         self.species                    = []
         self.manage                     = {}
@@ -56,21 +57,21 @@ class GenericOutputReader:
         self.hessian_symmetrisation    = "symm"
         return
 
-    def ReadOutput(self):
-        self._ReadOutputFiles()
+    def read_output(self):
+        self._read_output_files()
         return
 
-    def PrintInfo(self):
+    def print_info(self):
         # Generic printing of information
         print("Number of atoms: {:5d}".format(self.nions))
         print("Number of species: {:5d}".format(self.nspecies))
-        printReals("Frequencies (cm-1):", self.frequencies)
-        printReals("Masses (amu):", self.masses)
+        print_reals("Frequencies (cm-1):", self.frequencies)
+        print_reals("Masses (amu):", self.masses)
         for i, charges in enumerate(self.born_charges):
             title = "Born Charges for Atom {:d}".format(i)
             print3x3(title, charges)
         print3x3("Epsilon inf: ", self.zerof_optical_dielectric)
-        print3x3("Unit cell: ", self.unitCells[-1].lattice)
+        print3x3("Unit cell: ", self.unit_cells[-1].lattice)
         print(" ")
         print("Volume of cell: {:f}".format(self.volume))
         mtotal = 0.0
@@ -81,50 +82,50 @@ class GenericOutputReader:
         print(" ")
         return
 
-    def _ReadOutputFiles(self):
+    def _read_output_files(self):
         """Read the file names"""
         # Define the search keys to be looked for in the files
-        print("Error _ReadOutputFiles must be defined by the actual file reader")
+        print("Error _read_output_files must be defined by the actual file reader")
         return
 
-    def _ReadOutputFile(self, name):
-        """Read through the files for key words.  The keywords are established in _ReadOutputFiles"""
-        self.fd = open(name, 'r')
+    def _read_output_file(self, name):
+        """Read through the files for key words.  The keywords are established in _read_output_files"""
+        self.file_descriptor = open(name, 'r')
         # Loop through the contents of the file a line at a time and parse the contents
-        line = self.fd.readline()
+        line = self.file_descriptor.readline()
         while line != '':
             for k in self.manage.keys():
                 if self.manage[k][0].match(line):
                     method   = self.manage[k][1]
                     if self.debug:
-                        print('_ReadOutputFile: Match found {}'.format(k))
+                        print('_read_output_file: Match found {}'.format(k))
                     method(line)
                     break
                 # end if
             # end for
-            line = self.fd.readline()
+            line = self.file_descriptor.readline()
         # end while
-        self.fd.close()
+        self.file_descriptor.close()
         return
 
-    def _SymmetricOrthogonalisation(self, A):
+    def _symmetric_orthogonalisation(self, A):
         # The matrix A is only approximately orthogonal
         n = np.size(A, 0)
-        Unity = np.eye(n)
+        unity = np.eye(n)
         Ak = A
         for k in range(3):
             Bk = np.dot(Ak, Ak.T)
-            Error = Unity - Bk
-            Ck = np.linalg.inv(Unity + Bk)
-            Kk = np.dot(Error, Ck)
-            Ak = np.dot((Unity + Kk), Ak)
-            error  = np.sum(np.abs(Error))
+            error = unity - Bk
+            Ck = np.linalg.inv(unity + Bk)
+            Kk = np.dot(error, Ck)
+            Ak = np.dot((unity + Kk), Ak)
+            error  = np.sum(np.abs(error))
             if self.debug:
                 print("Orthogonalisation iteration: ", error)
         # end for k
         return Ak
 
-    def calculateMassWeightedNormalModes(self):
+    def calculate_mass_weighted_normal_modes(self):
         #
         # Reconstruct the massweighted hessian
         # If necessary diagonalise it and extract the frequencies and normal modes
@@ -158,7 +159,7 @@ class GenericOutputReader:
         f2 = np.diag(np.sign(frequencies)*np.real(frequencies*frequencies))
         # The back transformation uses approximately orthogonal (unitary) matrices
         # So before that lets orthogonalise them
-        UT = self._SymmetricOrthogonalisation(UT)
+        UT = self._symmetric_orthogonalisation(UT)
         hessian = np.dot(np.dot(UT.T, f2), UT)
         # Make sure the dynamical matrix is real
         hessian = np.real(hessian)
@@ -180,9 +181,9 @@ class GenericOutputReader:
             mode = []
             n = 0
             for j in range(self.nions):
-                ma = [eig_vec[n][i], eig_vec[n+1][i], eig_vec[n+2][i]]
+                modea = [eig_vec[n][i], eig_vec[n+1][i], eig_vec[n+2][i]]
                 n = n + 3
-                mode.append(ma)
+                mode.append(modea)
             self.mass_weighted_normal_modes.append(mode)
         # end for i
         return self.mass_weighted_normal_modes
@@ -216,7 +217,7 @@ class GenericOutputReader:
         hessian = np.dot(np.dot(P3.T, hessian), P3)
         return hessian
 
-    def _DynamicalMatrix(self, hessian):
+    def _dynamical_matrix(self, hessian):
         # Process the Dynamical matrix
         # Hessian is a nxn matrix of the mass weighted force constants
         # The hessian is symmetrised
@@ -254,14 +255,14 @@ class GenericOutputReader:
             mode = []
             n = 0
             for j in range(self.nions):
-                ma = [eig_vec[n][i], eig_vec[n+1][i], eig_vec[n+2][i]]
+                modea = [eig_vec[n][i], eig_vec[n+1][i], eig_vec[n+2][i]]
                 n = n + 3
-                mode.append(ma)
+                mode.append(modea)
             self.mass_weighted_normal_modes.append(mode)
         # end for i
         return
 
-    def _BornChargeSumRule(self):
+    def _born_charge_sum_rule(self):
         """Apply a simple charge sum rule to all the elements of the born matrices"""
         total = np.zeros((3, 3))
         born_charges = np.array(self.born_charges)

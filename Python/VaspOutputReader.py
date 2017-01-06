@@ -14,9 +14,10 @@
 # You should have received a copy of the MIT License
 # along with this program, if not see https://opensource.org/licenses/MIT
 #
+"""Read the contents of a directory containg VASP input and output files"""
 import re
-import numpy as np
 import os
+import numpy as np
 from Python.UnitCell import UnitCell
 from Python.GenericOutputReader import GenericOutputReader
 
@@ -54,7 +55,7 @@ class VaspOutputReader(GenericOutputReader):
         self.epsilon                 = None
         return
 
-    def _ReadOutputFiles(self):
+    def _read_output_files(self):
         """Read the vasp files in the directory"""
         self.manage = {}   # Empty the dictionary matching phrases
         self.manage['ionspertype']  = (re.compile('   ions per type ='), self._read_ionspertype)
@@ -82,7 +83,7 @@ class VaspOutputReader(GenericOutputReader):
         self.manage['eigenskip']    = (re.compile(' Eigenvectors after division'), self._read_skip4)
         self.manage['elastic']      = (re.compile(' TOTAL ELASTIC MODULI'), self._read_elastic_constants)
         for f in self._outputfiles:
-            self._ReadOutputFile(f)
+            self._read_output_file(f)
         return
 
     def _read_ionspertype(self, line):
@@ -104,14 +105,14 @@ class VaspOutputReader(GenericOutputReader):
         return
 
     def _read_eigenvectors(self, line):
-        line = self.fd.readline()
-        line = self.fd.readline()
+        line = self.file_descriptor.readline()
+        line = self.file_descriptor.readline()
         self.frequencies = []
         self.mass_weighted_normal_modes = []
         n = 3 * self.nions
         for i in range(n):
-            line = self.fd.readline()
-            line = self.fd.readline()
+            line = self.file_descriptor.readline()
+            line = self.file_descriptor.readline()
             imaginary = (line.split()[1] == "f/i=")
             if imaginary:
                 # represent imaginary by negative real
@@ -120,10 +121,10 @@ class VaspOutputReader(GenericOutputReader):
                 freq = float(line.split()[7])
             # end if
             self.frequencies.append(freq)
-            line = self.fd.readline()
+            line = self.file_descriptor.readline()
             a = []
             for j in range(self.nions):
-                line = self.fd.readline()
+                line = self.file_descriptor.readline()
                 a.append([float(line.split()[3]), float(line.split()[4]), float(line.split()[5])])
             # end for j
             self.mass_weighted_normal_modes.append(a)
@@ -138,81 +139,81 @@ class VaspOutputReader(GenericOutputReader):
                                       [ a2x a2y a2z]
                                       [ a3x a3y a3z]]
            where 1,2,3 are the field directions and x, y, z are the atomic displacements"""
-        line = self.fd.readline()
-        line = self.fd.readline()
+        line = self.file_descriptor.readline()
+        line = self.file_descriptor.readline()
         self.born_charges = []
         for i in range(self.nions):
-            line = self.fd.readline()
+            line = self.file_descriptor.readline()
             b = []
             b.append([float(line.split()[1]), float(line.split()[2]), float(line.split()[3])])
-            line = self.fd.readline()
+            line = self.file_descriptor.readline()
             b.append([float(line.split()[1]), float(line.split()[2]), float(line.split()[3])])
-            line = self.fd.readline()
+            line = self.file_descriptor.readline()
             b.append([float(line.split()[1]), float(line.split()[2]), float(line.split()[3])])
-            line = self.fd.readline()
+            line = self.file_descriptor.readline()
             self.born_charges.append(b)
         if self.neutral:
-            self._BornChargeSumRule()
+            self._born_charge_sum_rule()
         return
 
     def _read_elastic_constants(self, line):
         # Read the total elastic constants
         elastic_constants = []
-        line = self.fd.readline()
-        line = self.fd.readline()
-        line = self.fd.readline()
+        line = self.file_descriptor.readline()
+        line = self.file_descriptor.readline()
+        line = self.file_descriptor.readline()
         elastic_constants.append([float(f) for f in line.split()[1:7]])
-        line = self.fd.readline()
+        line = self.file_descriptor.readline()
         elastic_constants.append([float(f) for f in line.split()[1:7]])
-        line = self.fd.readline()
+        line = self.file_descriptor.readline()
         elastic_constants.append([float(f) for f in line.split()[1:7]])
-        line = self.fd.readline()
+        line = self.file_descriptor.readline()
         elastic_constants.append([float(f) for f in line.split()[1:7]])
-        line = self.fd.readline()
+        line = self.file_descriptor.readline()
         elastic_constants.append([float(f) for f in line.split()[1:7]])
-        line = self.fd.readline()
+        line = self.file_descriptor.readline()
         elastic_constants.append([float(f) for f in line.split()[1:7]])
-        a1 = np.array(elastic_constants)
+        econs = np.array(elastic_constants)
         # convert from kBar to GPa
-        a1 = a1 / 10.0
-        self.elastic_constants = a1.tolist()
+        econs = econs / 10.0
+        self.elastic_constants = econs.tolist()
         return
 
     def _read_ionic_dielectric(self, line):
         # Read the ionic contribution to the static dielectric and use it to computet
         # the full static dielectric constant
-        line = self.fd.readline()
-        line = self.fd.readline()
+        line = self.file_descriptor.readline()
+        line = self.file_descriptor.readline()
         # the is zero frequency ionic contribution to the static dielectric
         ionic_dielectric = []
         ionic_dielectric.append([float(f) for f in line.split()[0:3]])
-        line = self.fd.readline()
+        line = self.file_descriptor.readline()
         ionic_dielectric.append([float(f) for f in line.split()[0:3]])
-        line = self.fd.readline()
+        line = self.file_descriptor.readline()
         ionic_dielectric.append([float(f) for f in line.split()[0:3]])
-        a1 = np.array(self.zerof_optical_dielectric)
-        a2 = np.array(ionic_dielectric)
-        a3 = a1 + a2
-        self.zerof_static_dielectric = a3.tolist()
+        array1 = np.array(self.zerof_optical_dielectric)
+        array2 = np.array(ionic_dielectric)
+        array3 = array1 + array2
+        self.zerof_static_dielectric = array3.tolist()
         return
 
     def _read_static_dielectric(self, line):
-        line = self.fd.readline()
-        line = self.fd.readline()
+        line = self.file_descriptor.readline()
+        line = self.file_descriptor.readline()
         # the is epsilon infinity
         self.zerof_optical_dielectric = []
         self.zerof_optical_dielectric.append([float(f) for f in line.split()[0:3]])
-        line = self.fd.readline()
+        line = self.file_descriptor.readline()
         self.zerof_optical_dielectric.append([float(f) for f in line.split()[0:3]])
-        line = self.fd.readline()
+        line = self.file_descriptor.readline()
         self.zerof_optical_dielectric.append([float(f) for f in line.split()[0:3]])
         return
 
     def _read_skip4(self, line):
-        self.fd.readline()
-        self.fd.readline()
-        self.fd.readline()
-        self.fd.readline()
+        self.file_descriptor.readline()
+        self.file_descriptor.readline()
+        self.file_descriptor.readline()
+        self.file_descriptor.readline()
         return
 
     def _read_external_pressure(self, line):
@@ -225,36 +226,36 @@ class VaspOutputReader(GenericOutputReader):
         return
 
     def _read_array_dimensions(self, line):
-        line = self.fd.readline()
+        line = self.file_descriptor.readline()
         self.nkpts = int(line.split()[3])
         self.nbands = int(line.split()[14])
-        line = self.fd.readline()
+        line = self.file_descriptor.readline()
         self.nions = int(line.split()[11])
         return
 
     def _read_lattice_vectors(self, line):
         self.volume = float(line.split()[4])
-        line = self.fd.readline()
-        line = self.fd.readline()
-        aVector = [float(line.split()[0]), float(line.split()[1]), float(line.split()[2])]
-        line = self.fd.readline()
-        bVector = [float(line.split()[0]), float(line.split()[1]), float(line.split()[2])]
-        line = self.fd.readline()
-        cVector = [float(line.split()[0]), float(line.split()[1]), float(line.split()[2])]
-        cell = UnitCell(aVector, bVector, cVector)
+        line = self.file_descriptor.readline()
+        line = self.file_descriptor.readline()
+        avector = [float(line.split()[0]), float(line.split()[1]), float(line.split()[2])]
+        line = self.file_descriptor.readline()
+        bvector = [float(line.split()[0]), float(line.split()[1]), float(line.split()[2])]
+        line = self.file_descriptor.readline()
+        cvector = [float(line.split()[0]), float(line.split()[1]), float(line.split()[2])]
+        cell = UnitCell(avector, bvector, cvector)
         if self.ncells > 0:
-            cell.fractionalCoordinates(self.unitCells[-1].fractional_coordinates)
-        self.unitCells.append(cell)
-        self.ncells = len(self.unitCells)
+            cell.set_fractional_coordinates(self.unit_cells[-1].fractional_coordinates)
+        self.unit_cells.append(cell)
+        self.ncells = len(self.unit_cells)
         return
 
     def _read_fractional_coordinates(self, line):
         n = 0
         ions = []
         for n in range(self.nions):
-            line = self.fd.readline()
+            line = self.file_descriptor.readline()
             ions.append([float(f) for f in line.split()[0:3]])
-        self.unitCells[-1].fractionalCoordinates(ions)
+        self.unit_cells[-1].set_fractional_coordinates(ions)
         return
 
     def _read_spin(self, line):
@@ -296,10 +297,10 @@ class VaspOutputReader(GenericOutputReader):
             self.magnetization = 0.0
 
     def _read_energy(self, line):
-        line = self.fd.readline()
-        line = self.fd.readline()
+        line = self.file_descriptor.readline()
+        line = self.file_descriptor.readline()
         self.final_free_energy = float(line.split()[4])
-        line = self.fd.readline()
-        line = self.fd.readline()
+        line = self.file_descriptor.readline()
+        line = self.file_descriptor.readline()
         self.final_energy_without_entropy = float(line.split()[3])
         return

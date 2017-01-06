@@ -14,10 +14,13 @@
 # You should have received a copy of the MIT License
 # along with this program, if not see https://opensource.org/licenses/MIT
 #
+
+"""Read contents of a directory containing Crystal input and output files"""
+
 import re
-import numpy as np
 import math
 import os
+import numpy as np
 from Python.Constants import amu
 from Python.UnitCell import UnitCell
 from Python.GenericOutputReader import GenericOutputReader
@@ -32,7 +35,7 @@ class CrystalOutputReader(GenericOutputReader):
         self.species                 = []
         return
 
-    def _ReadOutputFiles(self):
+    def _read_output_files(self):
         """Read the Crystal files in the directory"""
         self.manage = {}   # Empty the dictionary matching phrases
         self.manage['masses']   = (re.compile(' ATOMS ISOTOPIC MASS'), self._read_masses)
@@ -44,19 +47,19 @@ class CrystalOutputReader(GenericOutputReader):
         self.manage['noeckart']  = (re.compile('.* REMOVING ECKART CONDITIONS'), self._read_eckart)
         self.manage['epsilon']  = (re.compile(' SUSCEPTIBILITY '), self._read_epsilon)
         for f in self._outputfiles:
-            self._ReadOutputFile(f)
+            self._read_output_file(f)
         return
 
     def _read_epsilon(self, line):
-        self.fd.readline()
-        self.fd.readline()
+        self.file_descriptor.readline()
+        self.file_descriptor.readline()
         optical_dielectric = [[0, 0, 0], [0, 0, 0], [0, 0, 0]]
-        optical_dielectric[0][0] = float(self.fd.readline().split()[3])
-        optical_dielectric[0][1] = float(self.fd.readline().split()[3])
-        optical_dielectric[0][2] = float(self.fd.readline().split()[3])
-        optical_dielectric[1][1] = float(self.fd.readline().split()[3])
-        optical_dielectric[1][2] = float(self.fd.readline().split()[3])
-        optical_dielectric[2][2] = float(self.fd.readline().split()[3])
+        optical_dielectric[0][0] = float(self.file_descriptor.readline().split()[3])
+        optical_dielectric[0][1] = float(self.file_descriptor.readline().split()[3])
+        optical_dielectric[0][2] = float(self.file_descriptor.readline().split()[3])
+        optical_dielectric[1][1] = float(self.file_descriptor.readline().split()[3])
+        optical_dielectric[1][2] = float(self.file_descriptor.readline().split()[3])
+        optical_dielectric[2][2] = float(self.file_descriptor.readline().split()[3])
         optical_dielectric[1][0] = optical_dielectric[0][1]
         optical_dielectric[2][0] = optical_dielectric[0][2]
         optical_dielectric[2][1] = optical_dielectric[1][2]
@@ -69,12 +72,12 @@ class CrystalOutputReader(GenericOutputReader):
         return
 
     def _read_masses(self, line):
-        line = self.fd.readline()
-        line = self.fd.readline()
+        line = self.file_descriptor.readline()
+        line = self.file_descriptor.readline()
         n = 2
         for i in range(self.nions):
             if n > 11:
-                line = self.fd.readline()
+                line = self.file_descriptor.readline()
                 n = 2
             self.masses.append(float(line.split()[n]))
             n = n + 3
@@ -119,11 +122,11 @@ class CrystalOutputReader(GenericOutputReader):
         # end for i
         fd2.close()
         # symmetrise, project, diagonalise and store the frequencies and normal modes
-        self._DynamicalMatrix(hessian)
+        self._dynamical_matrix(hessian)
         return
 
     def _read_output_eigenvectors(self, line):
-        self.fd.readline()
+        self.file_descriptor.readline()
         self.frequencies = []
         self.mass_weighted_normal_modes = []
         n = 6
@@ -135,9 +138,9 @@ class CrystalOutputReader(GenericOutputReader):
             n = n + 1
             if n >= 6:
                 n = 0
-                linef = self.fd.readline().split()[1:]
+                linef = self.file_descriptor.readline().split()[1:]
                 linef = [float(f) for f in linef]
-                self.fd.readline()
+                self.file_descriptor.readline()
                 atoms = []
                 for f in linef:
                     self.frequencies.append(f)
@@ -145,9 +148,9 @@ class CrystalOutputReader(GenericOutputReader):
                 # Read through the XYZ components for each atom and store the mode in atoms
                 for i in range(self.nions):
                     mass = np.sqrt(self.masses[i])
-                    linex = self.fd.readline().split()[4:]
-                    liney = self.fd.readline().split()[1:]
-                    linez = self.fd.readline().split()[1:]
+                    linex = self.file_descriptor.readline().split()[4:]
+                    liney = self.file_descriptor.readline().split()[1:]
+                    linez = self.file_descriptor.readline().split()[1:]
                     for a, x, y, z in zip(atoms, linex, liney, linez):
                         x = float(x) * mass
                         y = float(y) * mass
@@ -155,15 +158,15 @@ class CrystalOutputReader(GenericOutputReader):
                         a.append([x, y, z])
                 for a in atoms:
                     self.mass_weighted_normal_modes.append(a)
-                self.fd.readline()
+                self.file_descriptor.readline()
             # end of if n >= 6
         for i, mode in enumerate(self.mass_weighted_normal_modes):
             marray = np.array(mode)
-            sum = 0.0
+            sumxyz = 0.0
             for atoms in marray:
                 for xyz in atoms:
-                    sum = sum + xyz*xyz
-            marray = marray / np.sqrt(sum)
+                    sumxyz = sumxyz + xyz*xyz
+            marray = marray / np.sqrt(sumxyz)
             self.mass_weighted_normal_modes[i] = marray.tolist()
         return
 
@@ -186,7 +189,7 @@ class CrystalOutputReader(GenericOutputReader):
             print("WARNING! WARNING! WARNING! WARNING! WARNING!")
             self._read_born_charges_from_output(line)
         if self.neutral:
-            self._BornChargeSumRule()
+            self._born_charge_sum_rule()
         return
 
     def _read_born_charges_from_born_dat(self):
@@ -205,61 +208,61 @@ class CrystalOutputReader(GenericOutputReader):
         return
 
     def _read_born_charges_from_output(self, line):
-        line = self.fd.readline()
-        line = self.fd.readline()
-        line = self.fd.readline()
+        line = self.file_descriptor.readline()
+        line = self.file_descriptor.readline()
+        line = self.file_descriptor.readline()
         self.born_charges = []
         for i in range(self.nions):
-            line = self.fd.readline()
-            line = self.fd.readline()
-            line = self.fd.readline()
+            line = self.file_descriptor.readline()
+            line = self.file_descriptor.readline()
+            line = self.file_descriptor.readline()
             b = []
             b.append([float(line.split()[1]), float(line.split()[2]), float(line.split()[3])])
-            line = self.fd.readline()
+            line = self.file_descriptor.readline()
             b.append([float(line.split()[1]), float(line.split()[2]), float(line.split()[3])])
-            line = self.fd.readline()
+            line = self.file_descriptor.readline()
             b.append([float(line.split()[1]), float(line.split()[2]), float(line.split()[3])])
-            line = self.fd.readline()
+            line = self.file_descriptor.readline()
             self.born_charges.append(b)
-            line = self.fd.readline()
+            line = self.file_descriptor.readline()
         return
 
     def _read_ionic_dielectric(self, line):
         # Read the ionic contribution to the static dielectric
-        line = self.fd.readline()
-        line = self.fd.readline()
+        line = self.file_descriptor.readline()
+        line = self.file_descriptor.readline()
         ionic_dielectric = []
         ionic_dielectric.append([float(f) for f in line.split()[0:3]])
-        line = self.fd.readline()
+        line = self.file_descriptor.readline()
         ionic_dielectric.append([float(f) for f in line.split()[0:3]])
-        line = self.fd.readline()
+        line = self.file_descriptor.readline()
         ionic_dielectric.append([float(f) for f in line.split()[0:3]])
-        a2 = np.array(ionic_dielectric)
-        self.zerof_static_dielectric = a2.tolist()
+        a = np.array(ionic_dielectric)
+        self.zerof_static_dielectric = a.tolist()
         return
 
     def _read_lattice_vectors(self, line):
-        line = self.fd.readline()
-        line = self.fd.readline()
-        aVector = [float(line.split()[0]), float(line.split()[1]), float(line.split()[2])]
-        line = self.fd.readline()
-        bVector = [float(line.split()[0]), float(line.split()[1]), float(line.split()[2])]
-        line = self.fd.readline()
-        cVector = [float(line.split()[0]), float(line.split()[1]), float(line.split()[2])]
-        self.unitCells.append(UnitCell(aVector, bVector, cVector))
-        self.ncells = len(self.unitCells)
-        self.volume = self.unitCells[-1].volume
+        line = self.file_descriptor.readline()
+        line = self.file_descriptor.readline()
+        avector = [float(line.split()[0]), float(line.split()[1]), float(line.split()[2])]
+        line = self.file_descriptor.readline()
+        bvector = [float(line.split()[0]), float(line.split()[1]), float(line.split()[2])]
+        line = self.file_descriptor.readline()
+        cvector = [float(line.split()[0]), float(line.split()[1]), float(line.split()[2])]
+        self.unit_cells.append(UnitCell(avector, bvector, cvector))
+        self.ncells = len(self.unit_cells)
+        self.volume = self.unit_cells[-1].volume
         # The fractional coordinates are specified before the lattice vectors
-        self.unitCells[-1].fractionalCoordinates(self.ions)
+        self.unit_cells[-1].set_fractional_coordinates(self.ions)
         return
 
     def _read_fractional_coordinates(self, line):
         self.nions = int(line.split()[12])
-        line = self.fd.readline()
-        line = self.fd.readline()
+        line = self.file_descriptor.readline()
+        line = self.file_descriptor.readline()
         self.ions = []
         for i in range(self.nions):
-            line = self.fd.readline()
+            line = self.file_descriptor.readline()
             self.species.append(line.split()[3])
             self.ions.append([float(line.split()[4]), float(line.split()[5]), float(line.split()[6])])
         return

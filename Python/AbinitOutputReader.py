@@ -14,9 +14,16 @@
 # You should have received a copy of the MIT License
 # along with this program, if not see https://opensource.org/licenses/MIT
 #
+"""Read the contents of a directory containing Abinit input and output files
+   Inherit the following from the GenericOutputReader
+   __init__
+   printInfo
+   _read_output_file
+"""
+
 import re
-import numpy as np
 import math
+import numpy as np
 from Python.Constants import amu, angs2bohr
 from Python.UnitCell import UnitCell
 from Python.GenericOutputReader import GenericOutputReader
@@ -27,7 +34,7 @@ class AbinitOutputReader(GenericOutputReader):
        Inherit the following from the GenericOutputReader
        __init__
        printInfo
-       _ReadOutputFile
+       _read_output_file
 """
 
     def __init__(self, filenames):
@@ -35,7 +42,7 @@ class AbinitOutputReader(GenericOutputReader):
         self.type = 'Abinit output files'
         return
 
-    def _ReadOutputFiles(self):
+    def _read_output_files(self):
         """Read the Abinit file names"""
         # Define the search keys to be looked for in the files
         self.manage = {}   # Empty the dictionary matching phrases
@@ -49,7 +56,7 @@ class AbinitOutputReader(GenericOutputReader):
         self.manage['ntypat']   = (re.compile('           ntypat '), self._read_ntypat)
         self.manage['acell']    = (re.compile('            acell '), self._read_acell)
         for f in self._outputfiles:
-            self._ReadOutputFile(f)
+            self._read_output_file(f)
         return
 
     def _read_acell(self, line):
@@ -70,12 +77,12 @@ class AbinitOutputReader(GenericOutputReader):
 
     def _read_epsilon(self, line):
         for i in range(3):
-            linea = self.fd.readline().split()
+            linea = self.file_descriptor.readline().split()
         nlines = 9
         for i in range(nlines):
-            linea = self.fd.readline().split()
+            linea = self.file_descriptor.readline().split()
             if not linea:
-                linea = self.fd.readline().split()
+                linea = self.file_descriptor.readline().split()
             j = int(linea[0])
             k = int(linea[2])
             self.zerof_optical_dielectric[j-1][k-1] = float(linea[4])
@@ -96,12 +103,12 @@ class AbinitOutputReader(GenericOutputReader):
         nmodes = self.nions*3
         hessian = np.zeros((nmodes, nmodes))
         for i in range(4):
-            self.fd.readline()
+            self.file_descriptor.readline()
         nlines = nmodes*nmodes
         for i in range(nlines):
-            linea = self.fd.readline().split()
+            linea = self.file_descriptor.readline().split()
             if not linea:
-                linea = self.fd.readline().split()
+                linea = self.file_descriptor.readline().split()
             diri  = int(linea[0])
             atomi = int(linea[1])
             dirj  = int(linea[2])
@@ -111,7 +118,7 @@ class AbinitOutputReader(GenericOutputReader):
             # store the massweighted matrix
             hessian[ipos][jpos] = float(linea[4])/(amu*math.sqrt(self.masses[atomi-1]*self.masses[atomj-1]))
         # symmetrise, project diagonalise and store frequencies and normal modes
-        self._DynamicalMatrix(hessian)
+        self._dynamical_matrix(hessian)
         return
 
     def _read_born_charges(self, line):
@@ -123,13 +130,13 @@ class AbinitOutputReader(GenericOutputReader):
                                       [a3x a3y a3z]]
            where 1,2,3 are the field directions and x, y, z are the atomic displacements"""
         for i in range(5):
-            self.fd.readline()
+            self.file_descriptor.readline()
         #  The charges are calculated in two ways, we take the mean of the phonon and the field
         nlines = 9*self.nions
         for i in range(nlines):
-            linea = self.fd.readline().split()
+            linea = self.file_descriptor.readline().split()
             if not linea:
-                linea = self.fd.readline().split()
+                linea = self.file_descriptor.readline().split()
             if int(linea[3]) > self.nions:
                 ifield = int(linea[2])
                 ixyz   = int(linea[0])
@@ -148,20 +155,20 @@ class AbinitOutputReader(GenericOutputReader):
                 atom.append(b)
             self.born_charges.append(atom)
         if self.neutral:
-            self._BornChargeSumRule()
+            self._born_charge_sum_rule()
         return
 
     def _read_lattice_vectors(self, line):
         linea = line.split()
-        aVector = [float(linea[1]), float(linea[2]), float(linea[3])]
-        linea = self.fd.readline().split()
-        bVector = [float(linea[0]), float(linea[1]), float(linea[2])]
-        linea = self.fd.readline().split()
-        cVector = [float(linea[0]), float(linea[1]), float(linea[2])]
-        aVector = [f * self.acell[0] for f in aVector]
-        bVector = [f * self.acell[1] for f in bVector]
-        cVector = [f * self.acell[2] for f in cVector]
-        self.unitCells.append(UnitCell(aVector, bVector, cVector))
-        self.ncells = len(self.unitCells)
-        self.volume = self.unitCells[-1].volume
+        avector = [float(linea[1]), float(linea[2]), float(linea[3])]
+        linea = self.file_descriptor.readline().split()
+        bvector = [float(linea[0]), float(linea[1]), float(linea[2])]
+        linea = self.file_descriptor.readline().split()
+        cvector = [float(linea[0]), float(linea[1]), float(linea[2])]
+        avector = [f * self.acell[0] for f in avector]
+        bvector = [f * self.acell[1] for f in bvector]
+        cvector = [f * self.acell[2] for f in cvector]
+        self.unit_cells.append(UnitCell(avector, bvector, cvector))
+        self.ncells = len(self.unit_cells)
+        self.volume = self.unit_cells[-1].volume
         return

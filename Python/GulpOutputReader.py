@@ -50,7 +50,7 @@ class GulpOutputReader(GenericOutputReader):
         self.masses                  = []
         return
 
-    def _ReadOutputFiles(self):
+    def _read_output_files(self):
         """Read the .gout file"""
         self.manage = {}   # Empty the dictionary matching phrases
         self.manage['formula']  = (re.compile(' *Formula'), self._read_formula)
@@ -68,7 +68,7 @@ class GulpOutputReader(GenericOutputReader):
         self.manage['bornCharges']  = (re.compile(' *Born effective charge'), self._read_born_charges)
         self.manage['elasticConstants']  = (re.compile(' *Elastic Constant Matrix'), self._read_elastic_constants)
         self.manage['frequencies']  = (re.compile(' *Frequencies .cm-1.'), self._read_frequencies)
-        self._ReadOutputFile(self._gulpfile)
+        self._read_output_file(self._gulpfile)
 
     def _read_formula(self, line):
         self.formula = line.split()[2]
@@ -76,11 +76,11 @@ class GulpOutputReader(GenericOutputReader):
 
     def _read_elastic_constants(self, line):
         for skip in range(0, 5):
-            line = self.fd.readline()
+            line = self.file_descriptor.readline()
         elastic = []
         for skip in range(0, 6):
             elastic.append([float(f) for f in line.split()[1:]])
-            line = self.fd.readline()
+            line = self.file_descriptor.readline()
         self.elastic_constant_tensor = np.array(elastic)
         if self.debug:
             print("Elastic constant tensor")
@@ -90,44 +90,44 @@ class GulpOutputReader(GenericOutputReader):
     def _read_frequencies(self, line):
         self.frequencies = []
         self.mass_weighted_normal_modes = []
-        line = self.fd.readline()
+        line = self.file_descriptor.readline()
         nmodes = 0
         nions = self.ncores
         while nmodes < 3*nions:
-            line = self.fd.readline()
+            line = self.file_descriptor.readline()
             if line.split()[0] == "Note:":
-                line = self.fd.readline()
-                line = self.fd.readline()
-            freq = [float(f) for f in (line.split()[1:])]
+                line = self.file_descriptor.readline()
+                line = self.file_descriptor.readline()
+            freq = [float(f) for f in line.split()[1:]]
             ncolumns = len(freq)
             nmodes = nmodes + ncolumns
             self.frequencies += freq
-            line = self.fd.readline()  # IR
-            line = self.fd.readline()  # IR x
-            line = self.fd.readline()  # IR y
-            line = self.fd.readline()  # IR z
-            line = self.fd.readline()  # Raman
-            line = self.fd.readline()
+            line = self.file_descriptor.readline()  # IR
+            line = self.file_descriptor.readline()  # IR x
+            line = self.file_descriptor.readline()  # IR y
+            line = self.file_descriptor.readline()  # IR z
+            line = self.file_descriptor.readline()  # Raman
+            line = self.file_descriptor.readline()
             columns = []
             for n in range(0, ncolumns):
                 columns.append([])
             for i in range(0, nions):
-                line = self.fd.readline()
+                line = self.file_descriptor.readline()
                 modex = [float(f) for f in line.split()[2:]]
-                line = self.fd.readline()
+                line = self.file_descriptor.readline()
                 modey = [float(f) for f in line.split()[2:]]
-                line = self.fd.readline()
+                line = self.file_descriptor.readline()
                 modez = [float(f) for f in line.split()[2:]]
                 n = 0
-                for mx, my, mz in zip(modex, modey, modez):
-                    columns[n].append([mx, my, mz])
+                for x, y, z in zip(modex, modey, modez):
+                    columns[n].append([x, y, z])
                     n += 1
-                # end for mx, my, mz (columns)
+                # end for x, y, z (columns)
             # end loop over atoms
             for mode in columns:
                 self.mass_weighted_normal_modes.append(mode)
-            line = self.fd.readline()
-            line = self.fd.readline()
+            line = self.file_descriptor.readline()
+            line = self.file_descriptor.readline()
 
     def _read_total_number_of_atoms(self, line):
         self.nions = int(line.split()[4])
@@ -136,37 +136,37 @@ class GulpOutputReader(GenericOutputReader):
         self.nions_irreducible = int(line.split()[5])
 
     def _read_lattice(self, line):
-        line = self.fd.readline()
-        line = self.fd.readline()
-        ax = float(line.split()[0])
-        ay = float(line.split()[1])
-        az = float(line.split()[2])
-        line = self.fd.readline()
-        bx = float(line.split()[0])
-        by = float(line.split()[1])
-        bz = float(line.split()[2])
-        line = self.fd.readline()
-        cx = float(line.split()[0])
-        cy = float(line.split()[1])
-        cz = float(line.split()[2])
-        aVector = [ax, ay, az]
-        bVector = [bx, by, bz]
-        cVector = [cx, cy, cz]
-        cell = UnitCell(aVector, bVector, cVector)
-        self.unitCells.append(cell)
+        line = self.file_descriptor.readline()
+        line = self.file_descriptor.readline()
+        x = float(line.split()[0])
+        y = float(line.split()[1])
+        z = float(line.split()[2])
+        avector = [x, y, z]
+        line = self.file_descriptor.readline()
+        x = float(line.split()[0])
+        y = float(line.split()[1])
+        z = float(line.split()[2])
+        bvector = [x, y, z]
+        line = self.file_descriptor.readline()
+        x = float(line.split()[0])
+        y = float(line.split()[1])
+        z = float(line.split()[2])
+        cvector = [x, y, z]
+        cell = UnitCell(avector, bvector, cvector)
+        self.unit_cells.append(cell)
         self.volume = cell.volume
-        self.ncells = len(self.unitCells)
+        self.ncells = len(self.unit_cells)
         # Convert fractional coordinates to cartesians
         if len(self.cartesian_coordinates) == 0:
             if len(self.fractional_coordinates) == 0:
                 print("Error no coordinates fraction or cartesian found")
                 exit()
             for atom_frac in self.fractional_coordinates:
-                atom_cart = cell.convertAbc2Xyz(atom_frac)
+                atom_cart = cell.convert_abc_to_xyz(atom_frac)
                 self.cartesian_coordinates.append(atom_cart)
             # end for
         # end if
-        self.unitCells[-1].fractionalCoordinates(self.fractional_coordinates)
+        self.unit_cells[-1].set_fractional_coordinates(self.fractional_coordinates)
 
     def _read_cellcontents(self, line):
         self.atom_types = []
@@ -176,16 +176,16 @@ class GulpOutputReader(GenericOutputReader):
         self.ncores = 0
         self.nshells = 0
         for skip in range(0, 5):
-            line = self.fd.readline()
+            line = self.file_descriptor.readline()
         for ion in range(0, self.nions):
-            line = self.fd.readline()
+            line = self.file_descriptor.readline()
             atom_type = line.split()[1]
             coreshell = line.split()[2]
             if coreshell == 's':
                 self.nshells += 1
             else:
                 self.ncores += 1
-                atom_frac = [float(f) for f in (line.split()[3:6])]
+                atom_frac = [float(f) for f in line.split()[3:6]]
                 q = float(line.split()[6])
                 self.atom_types.append(atom_type)
                 self.masses.append(self.mass_dictionary[atom_type])
@@ -202,7 +202,7 @@ class GulpOutputReader(GenericOutputReader):
             # end loop over charges
         # end if len()
         if self.neutral:
-            self._BornChargeSumRule()
+            self._born_charge_sum_rule()
         return
 
     def _read_cellcontentsf(self, line):
@@ -213,16 +213,16 @@ class GulpOutputReader(GenericOutputReader):
         self.ncores = 0
         self.nshells = 0
         for skip in range(0, 5):
-            line = self.fd.readline()
+            line = self.file_descriptor.readline()
         for ion in range(0, self.nions):
-            line = self.fd.readline()
+            line = self.file_descriptor.readline()
             atom_type = line.split()[1]
             coreshell = line.split()[2]
             if coreshell == 's':
                 self.nshells += 1
             else:
                 self.ncores += 1
-                atom_frac = [float(f) for f in (line.split()[3:6])]
+                atom_frac = [float(f) for f in line.split()[3:6]]
                 self.atom_types.append(atom_type)
                 self.masses.append(self.mass_dictionary[atom_type])
                 self.fractional_coordinates.append(atom_frac)
@@ -237,20 +237,20 @@ class GulpOutputReader(GenericOutputReader):
             # end loop over charges
         # end if len()
         if self.neutral:
-            self._BornChargeSumRule()
+            self._born_charge_sum_rule()
         return
 
     def _read_species(self, line):
         self.mass_dictionary = {}
         for skip in range(0, 6):
-            line = self.fd.readline()
+            line = self.file_descriptor.readline()
         n = len(line.split())
         while n > 1:
             species = line.split()[0]
             coreshell = line.split()[1]
             if coreshell == "Core":
                 self.mass_dictionary[species] = (float(line.split()[3]))
-            line = self.fd.readline()
+            line = self.file_descriptor.readline()
             n = len(line.split())
         return
 
@@ -265,45 +265,45 @@ class GulpOutputReader(GenericOutputReader):
            where 1,2,3 are the field directions and x, y, z are the atomic displacements"""
         self.born_charges = []
         for skip in range(0, 5):
-            line = self.fd.readline()
+            line = self.file_descriptor.readline()
         for i in range(self.nions):
             b = []
             b.append([float(f) for f in line.split()[3:6]])
-            line = self.fd.readline()
+            line = self.file_descriptor.readline()
             b.append([float(f) for f in line.split()[1:4]])
-            line = self.fd.readline()
+            line = self.file_descriptor.readline()
             b.append([float(f) for f in line.split()[1:4]])
             # jk B = np.array(b)
             # jk C = B.T
             # jk self.born_charges.append(B.tolist())
             self.born_charges.append(b)
-            line = self.fd.readline()
-            line = self.fd.readline()
+            line = self.file_descriptor.readline()
+            line = self.file_descriptor.readline()
         if self.neutral:
-            self._BornChargeSumRule()
+            self._born_charge_sum_rule()
         return
 
     def _read_optical_dielectric(self, line):
         for skip in range(0, 5):
-            line = self.fd.readline()
+            line = self.file_descriptor.readline()
         # this is the zero frequency optical dielectric constant
         self.zerof_optical_dielectric = []
         self.zerof_optical_dielectric.append([float(f) for f in line.split()[1:4]])
-        line = self.fd.readline()
+        line = self.file_descriptor.readline()
         self.zerof_optical_dielectric.append([float(f) for f in line.split()[1:4]])
-        line = self.fd.readline()
+        line = self.file_descriptor.readline()
         self.zerof_optical_dielectric.append([float(f) for f in line.split()[1:4]])
         return
 
     def _read_static_dielectric(self, line):
         for skip in range(0, 5):
-            line = self.fd.readline()
+            line = self.file_descriptor.readline()
         # this is the zero frequency static dielectric constant
         self.zerof_static_dielectric = []
         self.zerof_static_dielectric.append([float(f) for f in line.split()[1:4]])
-        line = self.fd.readline()
+        line = self.file_descriptor.readline()
         self.zerof_static_dielectric.append([float(f) for f in line.split()[1:4]])
-        line = self.fd.readline()
+        line = self.file_descriptor.readline()
         self.zerof_static_dielectric.append([float(f) for f in line.split()[1:4]])
         return
 
@@ -317,9 +317,9 @@ class GulpOutputReader(GenericOutputReader):
 
     def _read_energies(self, line):
         # self.final_energy_without_entropy = unkown
-        # line = self.fd.readline()
+        # line = self.file_descriptor.readline()
         # self.final_free_energy = float(line.split()[5])
-        # jk line = self.fd.readline()
-        # jk line = self.fd.readline()
+        # jk line = self.file_descriptor.readline()
+        # jk line = self.file_descriptor.readline()
         # jk self.final_0K_energy = float(line.split()[5])
         return

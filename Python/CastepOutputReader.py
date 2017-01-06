@@ -14,6 +14,13 @@
 # You should have received a copy of the MIT License
 # along with this program, if not see https://opensource.org/licenses/MIT
 #
+"""Read the contents of a Castep output file
+   Inherit the following from the GenericOutputReader
+   __init__
+   printInfo
+   _read_output_file
+   _DyanmicalMatrix
+"""
 import re
 import numpy as np
 import os
@@ -26,7 +33,7 @@ class CastepOutputReader(GenericOutputReader):
        Inherit the following from the GenericOutputReader
        __init__
        printInfo
-       _ReadOutputFile
+       _read_output_file
        _DyanmicalMatrix
 """
 
@@ -60,7 +67,7 @@ class CastepOutputReader(GenericOutputReader):
         self._ion_index_type         = {}
         return
 
-    def _ReadOutputFiles(self):
+    def _read_output_files(self):
         """For the .castep file"""
         self.manage = {}   # Empty the dictionary matching phrases
         self.manage['spin']          = (re.compile(' *net spin   of'), self._read_spin)
@@ -79,7 +86,7 @@ class CastepOutputReader(GenericOutputReader):
         self.manage['frequency']      = (re.compile('     q-pt=    1    0.000000  0.000000  0.000000      1.0000000000 *$'), self._read_frequencies)
         self.manage['nbranches']      = (re.compile(' Number of branches'), self._read_nbranches)
         for f in self._outputfiles:
-            self._ReadOutputFile(f)
+            self._read_output_file(f)
         return
 
     def _read_nbranches(self, line):
@@ -94,16 +101,16 @@ class CastepOutputReader(GenericOutputReader):
         intensities = []
         normal_modes = []
         for imode in range(self._nbranches):
-            line = self.fd.readline()
+            line = self.file_descriptor.readline()
             frequencies.append(float(line.split()[1]))
             intensities.append(float(line.split()[2]))
 
-        line = self.fd.readline()
-        line = self.fd.readline()
+        line = self.file_descriptor.readline()
+        line = self.file_descriptor.readline()
         for imode in range(self._nbranches):
             a = []
             for ion in range(self.nions):
-                line = self.fd.readline()
+                line = self.file_descriptor.readline()
                 a.append([float(line.split()[2]), float(line.split()[4]), float(line.split()[6])])
             # end for ion
             normal_modes.append(a)
@@ -139,65 +146,65 @@ class CastepOutputReader(GenericOutputReader):
         return
 
     def _read_cellcontents(self, line):
-        line = self.fd.readline()
-        line = self.fd.readline()
-        line = self.fd.readline()
+        line = self.file_descriptor.readline()
+        line = self.file_descriptor.readline()
+        line = self.file_descriptor.readline()
         aVector = [float(line.split()[0]), float(line.split()[1]), float(line.split()[2])]
-        line = self.fd.readline()
+        line = self.file_descriptor.readline()
         bVector = [float(line.split()[0]), float(line.split()[1]), float(line.split()[2])]
-        line = self.fd.readline()
+        line = self.file_descriptor.readline()
         cVector = [float(line.split()[0]), float(line.split()[1]), float(line.split()[2])]
-        self.unitCells.append(UnitCell(aVector, bVector, cVector))
-        self.ncells = len(self.unitCells)
-        line = self.fd.readline()
-        line = self.fd.readline()
-        line = self.fd.readline()
-        line = self.fd.readline()
-        line = self.fd.readline()
-        line = self.fd.readline()
-        line = self.fd.readline()
+        self.unit_cells.append(UnitCell(aVector, bVector, cVector))
+        self.ncells = len(self.unit_cells)
+        line = self.file_descriptor.readline()
+        line = self.file_descriptor.readline()
+        line = self.file_descriptor.readline()
+        line = self.file_descriptor.readline()
+        line = self.file_descriptor.readline()
+        line = self.file_descriptor.readline()
+        line = self.file_descriptor.readline()
         self.volume = float(line.split()[4])
-        line = self.fd.readline()
-        line = self.fd.readline()
-        line = self.fd.readline()
-        line = self.fd.readline()
-        line = self.fd.readline()
-        if len(self.unitCells) == 1:
+        line = self.file_descriptor.readline()
+        line = self.file_descriptor.readline()
+        line = self.file_descriptor.readline()
+        line = self.file_descriptor.readline()
+        line = self.file_descriptor.readline()
+        if len(self.unit_cells) == 1:
             self.nions = int(line.split()[7])
-            line = self.fd.readline()
+            line = self.file_descriptor.readline()
             self.nspecies = int(line.split()[7])
-            line = self.fd.readline()
-            line = self.fd.readline()
-        line = self.fd.readline()
-        line = self.fd.readline()
-        line = self.fd.readline()
-        line = self.fd.readline()
+            line = self.file_descriptor.readline()
+            line = self.file_descriptor.readline()
+        line = self.file_descriptor.readline()
+        line = self.file_descriptor.readline()
+        line = self.file_descriptor.readline()
+        line = self.file_descriptor.readline()
         fractional_coordinates = []
         # ions_per_type is a dictionary here and is local
         ions_per_type = {}
-        if len(self.unitCells) == 1:
+        if len(self.unit_cells) == 1:
             self.species = []
             for i in range(self.nions):
-                line = self.fd.readline()
+                line = self.file_descriptor.readline()
                 atom_type = line.split()[1]
                 if atom_type not in ions_per_type:
                     self.species.append(atom_type)
                     ions_per_type[atom_type] = 0
                 ions_per_type[atom_type] += 1
-                atom_frac = [float(f) for f in (line.split()[3:6])]
+                atom_frac = [float(f) for f in line.split()[3:6]]
                 fractional_coordinates.append(atom_frac)
             # At some point we should store the fractional coordinates
             for species in self.species:
                 n = ions_per_type[species]
                 # self.ions_per_type is a list
                 self.ions_per_type.append(n)
-        self.unitCells[-1].fractionalCoordinates(fractional_coordinates)
+        self.unit_cells[-1].set_fractional_coordinates(fractional_coordinates)
         return
 
     def _read_masses(self, line):
         self.masses = []
         for i in range(self.nspecies):
-            line = self.fd.readline()
+            line = self.file_descriptor.readline()
             species = line.split()[0]
             mass = float(line.split()[1])
             self.masses_dictionary[species] = mass
@@ -217,45 +224,45 @@ class CastepOutputReader(GenericOutputReader):
                                                       [a2x a2y a2z]
                                                       [a3x a3y a3z]]
            where 1,2,3 are the field directions and x, y, z are the atomic displacements"""
-        line = self.fd.readline()
+        line = self.file_descriptor.readline()
         self.born_charges = []
         for i in range(self.nions):
             b = []
-            line = self.fd.readline()
+            line = self.file_descriptor.readline()
             b.append([float(f) for f in line.split()[2:5]])
-            line = self.fd.readline()
+            line = self.file_descriptor.readline()
             b.append([float(f) for f in line.split()[0:3]])
-            line = self.fd.readline()
+            line = self.file_descriptor.readline()
             b.append([float(f) for f in line.split()[0:3]])
             B = np.array(b)
             C = B.T
             self.born_charges.append(C.tolist())
         if self.neutral:
-            self._BornChargeSumRule()
+            self._born_charge_sum_rule()
         return
 
     def _read_dielectric(self, line):
-        line = self.fd.readline()
-        line = self.fd.readline()
+        line = self.file_descriptor.readline()
+        line = self.file_descriptor.readline()
         # this is epsilon infinity
         self.zerof_optical_dielectric = []
         # this is the zero frequency static dielectric constant
         self.zerof_static_dielectric = []
         self.zerof_optical_dielectric.append([float(f) for f in line.split()[0:3]])
         self.zerof_static_dielectric.append([float(f) for f in line.split()[3:6]])
-        line = self.fd.readline()
+        line = self.file_descriptor.readline()
         self.zerof_optical_dielectric.append([float(f) for f in line.split()[0:3]])
         self.zerof_static_dielectric.append([float(f) for f in line.split()[3:6]])
-        line = self.fd.readline()
+        line = self.file_descriptor.readline()
         self.zerof_optical_dielectric.append([float(f) for f in line.split()[0:3]])
         self.zerof_static_dielectric.append([float(f) for f in line.split()[3:6]])
         return
 
     def _read_skip4(self, line):
-        self.fd.readline()
-        self.fd.readline()
-        self.fd.readline()
-        self.fd.readline()
+        self.file_descriptor.readline()
+        self.file_descriptor.readline()
+        self.file_descriptor.readline()
+        self.file_descriptor.readline()
         return
 
     def _read_external_pressure(self, line):
@@ -264,7 +271,7 @@ class CastepOutputReader(GenericOutputReader):
 
     def _read_pspot(self, line):
         for i in range(self.nspecies):
-            line = self.fd.readline()
+            line = self.file_descriptor.readline()
             self.pspots[line.split()[0]] = line.split()[1]
         return
 
@@ -293,9 +300,9 @@ class CastepOutputReader(GenericOutputReader):
 
     def _read_energies(self, line):
         self.final_energy_without_entropy = float(line.split()[4])
-        line = self.fd.readline()
+        line = self.file_descriptor.readline()
         self.final_free_energy = float(line.split()[5])
-        # jk line = self.fd.readline()
-        # jk line = self.fd.readline()
+        # jk line = self.file_descriptor.readline()
+        # jk line = self.file_descriptor.readline()
         # jk self.final_0K_energy = float(line.split()[5])
         return

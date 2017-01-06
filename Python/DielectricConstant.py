@@ -14,12 +14,13 @@
 # You should have received a copy of the MIT License
 # along with this program, if not see https://opensource.org/licenses/MIT
 #
+"""Calculate the dielectric responses """
 from __future__ import print_function
+import math
+import sys
 import cmath
 import numpy as np
 import scipy as sc
-import math
-import sys
 from Python.Constants import PI, d2byamuang2
 
 
@@ -27,16 +28,16 @@ class DielectricConstant:
     """Calculate the dielectric responses """
 
     def __init__(self):
-        self.unit = self.tensorInitialiseDiagonal([1.0, 1.0, 1.0])
+        self.unit = self.initialise_diagonal_tensor([1.0, 1.0, 1.0])
         self.reader   = ""
         self.efield_dictionary = {}
 
-    def setReader(self, reader):
+    def set_reader(self, reader):
         '''Set the reader to reader.  Either a castep reader or a vasp reader'''
         self.reader = reader
         return
 
-    def tensorInitialiseDiagonal(self, reals):
+    def initialise_diagonal_tensor(self, reals):
         '''Initialise a 3x3 tensor, the argument is a list of 3 real numbers for the diagonals, the returned tensor is an array'''
         x = np.zeros((3, 3), dtype=np.float)
         x[0, 0] = reals[0]
@@ -44,27 +45,27 @@ class DielectricConstant:
         x[2, 2] = reals[2]
         return x
 
-    def tensorInitialiseRandom(self, scale):
+    def initialise_random_tensor(self, scale):
         '''Initialise a 3x3 complex tensor, the argument gives the maximum absolute value'''
-        print("Error tensorInitialiseRandom not working", file=sys.stderr)
+        print("Error initialise_random_tensor not working", file=sys.stderr)
         exit(1)
         return
 
-    def initialiseSphereDepolarisationMatrix(self):
+    def initialise_sphere_depolarisation_matrix(self):
         '''Initialise a 3x3 tensor with the sphere depolarisation matrix, returns a tensor'''
         athird = 1.0 / 3.0
-        tensor = self.tensorInitialiseDiagonal([athird, athird, athird])
+        tensor = self.initialise_diagonal_tensor([athird, athird, athird])
         tensor = tensor / np.trace(tensor)
         return tensor
 
-    def initialisePlateDepolarisationMatrix(self, normal):
+    def initialise_plate_depolarisation_matrix(self, normal):
         '''Initialise a 3x3 tensor with the plate depolarisation matrix, returns a tensor'''
         normal = normal / np.linalg.norm(normal)
         tensor = np.outer(normal, normal)
         tensor = tensor / np.trace(tensor)
         return tensor
 
-    def initialiseNeedleDepolarisationMatrix(self, unique):
+    def initialise_needle_depolarisation_matrix(self, unique):
         '''Initialise a 3x3 tensor with the needle depolarisation matrix'''
         # unique is the unique direction of the needle
         # depolarisation matrix is therefore half the sum of the
@@ -96,7 +97,7 @@ class DielectricConstant:
         tensor = tensor / np.trace(tensor)
         return tensor
 
-    def initialiseEllipsoidDepolarisationMatrix(self, unique, aoverb):
+    def initialise_ellipsoid_depolarisation_matrix(self, unique, aoverb):
         '''Initialise a 3x3 tensor with the ellipsoid depolarisation matrix'''
         # unique is the unique direction of the ellipsoid
         # a and b are the sizes of the ellipsoid along the unique axis (a) and perpendicular to it b
@@ -127,20 +128,20 @@ class DielectricConstant:
         small = 1.0E-8
         if bovera < 1.0-small:
             e = math.sqrt(1.0  - bovera*bovera)
-            Nz = (1 - e*e) * (np.log(((1+e) / (1-e))) - 2*e) / (2*e*e*e)
+            nz = (1 - e*e) * (np.log(((1+e) / (1-e))) - 2*e) / (2*e*e*e)
         elif bovera > 1.0+small:
             e = math.sqrt(bovera*bovera - 1.0)
-            Nz = (1 + e*e) * (e - np.arctan(e)) / (e*e*e)
+            nz = (1 + e*e) * (e - np.arctan(e)) / (e*e*e)
         else:
-            Nz = 1.0/3.0
-        Nxy = (1 - Nz) * 0.5
+            nz = 1.0/3.0
+        nxy = (1 - nz) * 0.5
 
         # compute the tensors from the outer product of each direction
-        tensor = Nz*np.outer(unique, unique) + Nxy*np.outer(dir1, dir1) + Nxy*np.outer(dir2, dir2)
+        tensor = nz*np.outer(unique, unique) + nxy*np.outer(dir1, dir1) + nxy*np.outer(dir2, dir2)
         tensor = tensor / np.trace(tensor)
         return tensor
 
-    def IonicPermittivity(self, mode_list, oscillator_strengths, frequencies, volume):
+    def ionic_permittivity(self, mode_list, oscillator_strengths, frequencies, volume):
         """Calculate the low frequency permittivity or zero frequency permittivity
            oscillator_strengths are in atomic units
            frequencies are in atomic units
@@ -151,7 +152,7 @@ class DielectricConstant:
         # end for
         return permittivity * (4 * PI / volume)
 
-    def IRIntensities(self, oscillator_strengths):
+    def infrared_intensities(self, oscillator_strengths):
         """Calculate the IR intensities from the trace of the oscillator strengths,
            The intensities are returned in units of (D/A)^2/amu"""
         # Each mode has a 3x3 oscillator strength
@@ -168,7 +169,7 @@ class DielectricConstant:
         intensities = intensities / convert
         return intensities
 
-    def LongitudinalModes(self, frequencies, normal_modes, born_charges, masses, epsilon_inf, volume, qlist, reader):
+    def logitudinal_mores(self, frequencies, normal_modes, born_charges, masses, epsilon_inf, volume, qlist, reader):
         """Apply the nonanalytic correction to the dynamical matrix and calculate the LO frequencies
            frequencies are the frequencies (f) in atomic units
            normal_modes are the mass weighted normal modes (U)
@@ -188,27 +189,27 @@ class DielectricConstant:
         # Construct UT from the normal modes
         n = np.size(normal_modes, 0)
         m = np.size(normal_modes, 1)*3
-        UT = np.zeros((n, m))
+        ut = np.zeros((n, m))
         for imode, mode in enumerate(normal_modes):
             n = 0
             for atom in mode:
                 # in python the first index is the row of the matrix, the second is the column
-                UT[imode, n+0] = atom[0]
-                UT[imode, n+1] = atom[1]
-                UT[imode, n+2] = atom[2]
+                ut[imode, n+0] = atom[0]
+                ut[imode, n+1] = atom[1]
+                ut[imode, n+2] = atom[2]
                 n = n + 3
             # end for atom
         # end for imode
         # zero the nonanalytical correction
-        Wm = np.zeros((n, n))
+        wm = np.zeros((n, n))
         # convert the frequencies^2 to a real diagonal array
         # Warning we have to make sure the sign is correct here
         f2 = np.diag(np.sign(frequencies)*np.real(frequencies*frequencies))
-        Dm = np.dot(np.dot(UT.T, f2), UT)
+        dm = np.dot(np.dot(ut.T, f2), ut)
         # Make sure the dynamical matrix is real
-        Dm = np.real(Dm)
+        dm = np.real(dm)
         # Find its eigenvalues
-        eig_val, eig_vec = np.linalg.eigh(Dm)
+        eig_val, eig_vec = np.linalg.eigh(dm)
         # Store the results for returning to the main program
         results = []
         # Loop over q values
@@ -216,20 +217,20 @@ class DielectricConstant:
             # Now calculate the nonanalytic part
             constant = 4.0 * PI / (np.dot(np.dot(q, epsilon_inf), q) * volume)
             # Loop over atom a
-            for a, Za in enumerate(born_charges):
+            for a, za in enumerate(born_charges):
                 # atom is the atom index
                 # born contains the polarisability tensor [z1x z1y z1z] [z2x z2y z2z] [z3x z3y z3z]]
                 # where 1, 2, 3 are the directions of the field and x, y, z are the coordinates of the atom
-                Za = np.dot(q, Za)
+                za = np.dot(q, za)
                 # Loop over atom b
-                for b, Zb in enumerate(born_charges):
-                    Zb = np.dot(q, Zb)
-                    terms = np.outer(Za, Zb) * constant / math.sqrt(masses[a]*masses[b])
+                for b, zb in enumerate(born_charges):
+                    zb = np.dot(q, zb)
+                    terms = np.outer(za, zb) * constant / math.sqrt(masses[a]*masses[b])
                     i = a*3
                     for termi in terms:
                         j = b*3
                         for term in termi:
-                            Wm[i, j] = term
+                            wm[i, j] = term
                             j = j + 1
                         # end for term
                         i = i + 1
@@ -237,11 +238,11 @@ class DielectricConstant:
                 # end loop over b
             # end loop over a
             # Construct the full dynamical matrix with the correction
-            Dmq = Dm + Wm
+            dmq = dm + wm
             # If projection was requested when the matrix was read, project out translation
             if reader.eckart:
-                reader.project(Dmq)
-            eig_val, eig_vec = np.linalg.eigh(Dmq)
+                reader.project(dmq)
+            eig_val, eig_vec = np.linalg.eigh(dmq)
             # If eig_val less than zero we set it to zero
             values = []
             for eig in eig_val:
@@ -256,7 +257,7 @@ class DielectricConstant:
         # end loop over q
         return results
 
-    def OscillatorStrengths(self, normal_modes, born_charges):
+    def oscillator_strengths(self, normal_modes, born_charges):
         """Calculate oscillator strengths from the normal modes and the born charges
            normal_modes are in the mass weighted coordinate system and normalised
            born charges are in electrons, so atomic units"""
@@ -277,7 +278,7 @@ class DielectricConstant:
         # end for
         return oscillator_strengths
 
-    def NormalModes(self, masses, mass_weighted_normal_modes):
+    def normal_modes(self, masses, mass_weighted_normal_modes):
         """ Transform from mass weighted coordinates to xyz. Note this returns an array object.
             The returned normal modes have NOT been renormalised.
             The input masses are in atomic units
@@ -298,7 +299,7 @@ class DielectricConstant:
     def efield(self, type):
         return np.array(self.efield_dictionary[type])
 
-    def projectField(self, shape, shape_data, projection, efield):
+    def project_field(self, shape, shape_data, projection, efield):
         """Take the field directions in efield and apply shape projection."""
         if projection == "random":
             return np.array(efield)
@@ -322,11 +323,11 @@ class DielectricConstant:
                 # end for
                 return np.array(proj_field)
         else:
-            print("Error in projectField, projection unkown: ", projection, file=sys.stderr)
+            print("Error in project_field, projection unkown: ", projection, file=sys.stderr)
             exit(1)
         return
 
-    def rodriguesRotations(self, efield):
+    def rogridgues_rotations(self, efield):
         """Take the field directions in efield and use each direction to calculate a random rotation about that axis.
            Use the field (which a random unit vector in xyz space) to generate an orthogonal rotation matrix
            Rodrigues rotation formula A = I3. cos(theta) + (1-cos(theta)) e . eT + ex sin(theta0
@@ -361,7 +362,7 @@ class DielectricConstant:
             rotations.append(rotation)
         return rotations
 
-    def absorptionFromModeIntensities(self, f, modes, frequencies, sigmas, intensities):
+    def absorption_from_mode_intensities(self, f, modes, frequencies, sigmas, intensities):
         """Calculate the absorption from the frequencies and intensities using a Lorentzian
            f is the frequency of the absorption in cm-1
            modes are a list of the modes
@@ -376,7 +377,7 @@ class DielectricConstant:
             absorption = absorption + 2.0 * 4225.6 * icastep / PI * (sigma / (4.0 * (f - v)*(f - v) + sigma*sigma))
         return absorption
 
-    def dielectricContribution(self, f, modes, frequencies, sigmas, strengths, volume):
+    def dielectric_contribution(self, f, modes, frequencies, sigmas, strengths, volume):
         """Calculate the dielectric function for a set of modes with their own widths and strengths
            f is the frequency of the dielectric response in au
            modes are a list of the modes
@@ -390,7 +391,7 @@ class DielectricConstant:
             dielectric = dielectric + s / np.complex((v*v - f*f), -sigma*f)
         return dielectric * (4.0*PI/volume)
 
-    def drudeContribution(self, f, frequency, sigma, volume):
+    def drude_contribution(self, f, frequency, sigma, volume):
         """Calculate the dielectric function for a set of a Drude oscillator
            f is the frequency of the dielectric response in au
            frequency(au), sigmas(au) are the plasma frequency and the width
@@ -403,7 +404,7 @@ class DielectricConstant:
         dielectric = dielectric - self.unit * frequency*frequency / np.complex(-f*f, -sigma*f)
         return dielectric * (4.0*PI/volume)
 
-    def averagedPermittivity(self, dielectric_medium, dielecv, shape, L, vf):
+    def averaged_permittivity(self, dielectric_medium, dielecv, shape, L, vf):
         """Calculate the effective constant permittivity using the averaged permittivity method
            dielectric_medium is the dielectric constant tensor of the medium
            dielecv is the total frequency dielectric constant tensor at the current frequency
@@ -636,12 +637,12 @@ class DielectricConstant:
 
     def _brug_iter_error(self, epsbr, eps1, eps2, shape, L, f1):
         f2 = 1.0 - f1
-        Leps1 = np.dot(L, (eps1 - epsbr))
-        Leps2 = np.dot(L, (eps2 - epsbr))
-        Leps1 = self.average_tensor(Leps1)
-        Leps2 = self.average_tensor(Leps2)
-        a1 = np.linalg.inv(epsbr + Leps1)
-        a2 = np.linalg.inv(epsbr + Leps2)
+        leps1 = np.dot(L, (eps1 - epsbr))
+        leps2 = np.dot(L, (eps2 - epsbr))
+        leps1 = self.average_tensor(leps1)
+        leps2 = self.average_tensor(leps2)
+        a1 = np.linalg.inv(epsbr + leps1)
+        a2 = np.linalg.inv(epsbr + leps2)
         # alpha1 and 2 are the polarisabilities of 1 and 2 in the effective medium
         eps1av = self.average_tensor(eps1)
         eps2av = self.average_tensor(eps2)
@@ -662,25 +663,25 @@ class DielectricConstant:
             Calculate the trace of the dielectric and calculate both square roots.
             The choose the root with the largest imaginary component This obeys the Konig Kramer requirements'''
         trace = np.trace(dielectric)/3.0
-        sq1 = np.sqrt(trace)
-        r, phase = cmath.polar(sq1)
-        sq2 = cmath.rect(-r, phase)
-        imag1 = np.imag(sq1)
-        imag2 = np.imag(sq2)
+        solution1 = np.sqrt(trace)
+        r, phase = cmath.polar(solution1)
+        solution2 = cmath.rect(-r, phase)
+        imag1 = np.imag(solution1)
+        imag2 = np.imag(solution2)
         if imag1 > imag2:
-            sq = sq1
+            solution = solution1
         else:
-            sq = sq2
-        if np.abs(sq*sq-trace)/(1+np.abs(trace)) > 1.0E-8 or debug:
+            solution = solution2
+        if np.abs(solution*solution-trace)/(1+np.abs(trace)) > 1.0E-8 or debug:
             print("There is an error in refractive index")
             print("trace = ", trace)
-            print("sq*sq = ", sq*sq, np.abs(sq*sq-trace))
-            print("sq    = ", sq, sq*sq)
-            print("sq1   = ", sq1, sq1*sq1)
-            print("sq2   = ", sq2, sq2*sq2)
-        return sq
+            print("solution*solution = ", solution*solution, np.abs(solution*solution-trace))
+            print("solution    = ", solution, solution*solution)
+            print("solution1   = ", solution1, solution1*solution1)
+            print("solution2   = ", solution2, solution2*solution2)
+        return solution
 
-    def directionFromShape(self, data):
+    def direction_from_shape(self, data):
         # Determine the unique direction of the shape from data
         # data may contain a miller indices which defines a surface eg. (1,1,-1)
         # or a direction as a miller direction vector eg. [1,0,-1]
@@ -722,11 +723,11 @@ class DielectricConstant:
         if not len(hkl) == 3:
             print("Error encountered in interpretting the miller surface / vector", data)
             exit(1)
-        cell = self.reader.unitCells[-1]
+        cell = self.reader.unit_cells[-1]
         if surface:
-            direction = cell.convertHkl2Xyz(hkl)
+            direction = cell.convert_hkl_to_xyz(hkl)
         else:
-            direction = cell.convertAbc2Xyz(hkl)
+            direction = cell.convert_abc_to_xyz(hkl)
         direction = direction / np.linalg.norm(direction)
         data = data.replace('"', '')
         data = data.replace("", '')

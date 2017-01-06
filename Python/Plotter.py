@@ -1,7 +1,8 @@
 #!/usr/bin/python
+"""Do some plotting for the dielectric functions"""
 from __future__ import print_function, division
-import numpy as np
 import sys
+import numpy as np
 
 
 class Plotter:
@@ -18,7 +19,7 @@ class Plotter:
         self.frequencies = []
         return
 
-    def addDielectric(self, nplot, method, vf_type, shape, data, v, trace, absorption, molar_absorption):
+    def add_dielectric(self, nplot, method, vf_type, shape, data, v, trace, absorption, molar_absorption):
         """Add the trace of a dielectric to be plotted, add the absorption and the molar absorption"""
         if nplot not in self.plot_numbers:
             self.methods.append(method)
@@ -60,11 +61,11 @@ class Plotter:
             thz = v * 0.0299792458
             output = ",,,,,{:12f},{:12f}".format(v, thz)
             for dri, absorption, molar_absorption in zip(self.traces, self.absorption_coefficients, self.molar_absorption_coefficients):
-                    dr = float(np.real(dri[iv]))
-                    di = float(np.imag(dri[iv]))
-                    K1 = absorption[iv]
-                    K2 = molar_absorption[iv]
-                    output += "," + ",".join("{:20.8f}".format(p) for p in [dr, di, K1, K2])
+                trace_real = float(np.real(dri[iv]))
+                trace_imag = float(np.imag(dri[iv]))
+                absrp = absorption[iv]
+                mabsrp = molar_absorption[iv]
+                output += "," + ",".join("{:20.8f}".format(p) for p in [trace_real, trace_imag, absrp, mabsrp])
                 # end loop over shape
             # end loop over method
             print(output, file=fd_csvfile)
@@ -74,17 +75,17 @@ class Plotter:
     def plot(self, types):
         for plot in types:
             if plot == 'imaginary':
-                self.plotImaginary()
+                self.plot_imaginary()
             elif plot == 'real':
-                self.plotReal()
+                self.plot_real()
             elif plot == 'absorption':
-                self.plotAbsorption()
+                self.plot_absorption()
             elif plot == 'molar_absorption':
-                self.plotMolarAbsorption()
+                self.plot_molar_absorption()
             elif plot == 'molarAbsorption':
-                self.plotMolarAbsorption()
+                self.plot_molar_absorption()
             elif plot == 'molarabsorption':
-                self.plotMolarAbsorption()
+                self.plot_molar_absorption()
             else:
                 print('Unkown plot type {}'.format(plot))
                 exit(1)
@@ -92,7 +93,7 @@ class Plotter:
         # endfor
         return
 
-    def plotMolarAbsorption(self):
+    def plot_molar_absorption(self):
         """Plot loss data """
         import pylab as pl
         # Choose a suitable scale TO has to be treated differently, TO was added last
@@ -122,7 +123,7 @@ class Plotter:
         pl.show()
         return
 
-    def plotAbsorption(self):
+    def plot_absorption(self):
         """Plot loss data """
         import pylab as pl
         # Choose a suitable scale TO has to be treated differently, TO was added last
@@ -152,7 +153,7 @@ class Plotter:
         pl.show()
         return
 
-    def plotImaginary(self):
+    def plot_imaginary(self):
         """Plot loss data """
         import pylab as pl
         # Choose a suitable scale TO has to be treated differently, TO was added last
@@ -183,7 +184,7 @@ class Plotter:
         pl.show()
         return
 
-    def plotReal(self):
+    def plot_real(self):
         """Plot loss data """
         import pylab as pl
         # Choose a suitable scale TO has to be treated differently, TO was added last
@@ -215,7 +216,7 @@ class Plotter:
         return
 
 
-def printReals(title, reals, no_per_line=8, format="{:9.2f}", file=sys.stdout, separator=" "):
+def print_reals(title, reals, no_per_line=8, format="{:9.2f}", file=sys.stdout, separator=" "):
     #
     # Print out a list of reals prettily
     #
