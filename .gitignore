@@ -60,3 +60,4 @@ target/
 command.csv
 command.out
 makefile
+.mod
