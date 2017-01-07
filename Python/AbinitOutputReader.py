@@ -40,6 +40,10 @@ class AbinitOutputReader(GenericOutputReader):
     def __init__(self, filenames):
         GenericOutputReader.__init__(self, filenames)
         self.type = 'Abinit output files'
+        self.acell = None
+        self.ntypat = None
+        self.charges = None
+        self.typmasses = None
         return
 
     def _read_output_files(self):

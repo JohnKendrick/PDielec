@@ -43,6 +43,7 @@ class GenericOutputReader:
         self.born_charges               = []
         self.species                    = []
         self.manage                     = {}
+        self.file_descriptor            = None
         # this in epsilon infinity
         self.zerof_optical_dielectric   = [[0, 0, 0], [0, 0, 0], [0, 0, 0]]
         # this is the zero frequency static dielectric constant
@@ -58,10 +59,12 @@ class GenericOutputReader:
         return
 
     def read_output(self):
+        """Interface to the private read output files methods"""
         self._read_output_files()
         return
 
     def print_info(self):
+        """Print information about the system"""
         # Generic printing of information
         print("Number of atoms: {:5d}".format(self.nions))
         print("Number of species: {:5d}".format(self.nspecies))
@@ -94,7 +97,7 @@ class GenericOutputReader:
         # Loop through the contents of the file a line at a time and parse the contents
         line = self.file_descriptor.readline()
         while line != '':
-            for k in self.manage.keys():
+            for k in self.manage:
                 if self.manage[k][0].match(line):
                     method   = self.manage[k][1]
                     if self.debug:
@@ -109,6 +112,7 @@ class GenericOutputReader:
         return
 
     def _symmetric_orthogonalisation(self, A):
+        """Private routine to perform symetric orthogonalisation"""
         # The matrix A is only approximately orthogonal
         n = np.size(A, 0)
         unity = np.eye(n)
@@ -126,6 +130,7 @@ class GenericOutputReader:
         return Ak
 
     def calculate_mass_weighted_normal_modes(self):
+        """Calculate the mass weighted normal modes"""
         #
         # Reconstruct the massweighted hessian
         # If necessary diagonalise it and extract the frequencies and normal modes
@@ -155,8 +160,8 @@ class GenericOutputReader:
         # The convention is that if the frequency is negative
         # then it is really imaginary, so the square of the frequency
         # will be negative too.
-        frequencies = np.array(self.frequencies)
-        f2 = np.diag(np.sign(frequencies)*np.real(frequencies*frequencies))
+        frequencies_a = np.array(self.frequencies)
+        f2 = np.diag(np.sign(frequencies_a)*np.real(frequencies_a*frequencies_a))
         # The back transformation uses approximately orthogonal (unitary) matrices
         # So before that lets orthogonalise them
         UT = self._symmetric_orthogonalisation(UT)
@@ -172,10 +177,10 @@ class GenericOutputReader:
         # Store the new frequencies, using the negative convention for imaginary modes
         for i in range(nmodes):
             if eig_val[i] < 0:
-                frequencies[i] = -math.sqrt(-eig_val[i])
+                frequencies_a[i] = -math.sqrt(-eig_val[i])
             else:
-                frequencies[i] = math.sqrt(eig_val[i])
-        self.frequencies = frequencies.tolist()
+                frequencies_a[i] = math.sqrt(eig_val[i])
+        self.frequencies = frequencies_a.tolist()
         # Store the mass weighted normal modes
         for i in range(nmodes):
             mode = []
@@ -189,9 +194,9 @@ class GenericOutputReader:
         return self.mass_weighted_normal_modes
 
     def project(self, hessian):
-        #
-        # Take the given matrix (np.array)
-        # Project out the translational modes
+        """Apply projection operators to remove translation
+        Take the given matrix (np.array)
+        Project out the translational modes"""
         #
         nmodes = self.nions*3
         unit = np.eye(nmodes)
@@ -218,12 +223,13 @@ class GenericOutputReader:
         return hessian
 
     def _dynamical_matrix(self, hessian):
-        # Process the Dynamical matrix
-        # Hessian is a nxn matrix of the mass weighted force constants
-        # The hessian is symmetrised
-        # Translational modes are projected out
-        # The hessian is diagonalised
-        # Finally the frequencies and normal modes are stored
+        """Process the dynamical matrix
+        Hessian is a nxn matrix of the mass weighted force constants
+        The hessian is symmetrised
+        Translational modes are projected out
+        The hessian is diagonalised
+        Finally the frequencies and normal modes are stored"""
+        #
         nmodes = self.nions*3
         # symmetrise
         uplo = 'U'
@@ -240,16 +246,16 @@ class GenericOutputReader:
         #
         # If eig_val has negative values then we store the negative frequency
         # convert to cm-1
-        frequencies = np.zeros(nmodes)
+        frequencies_a = np.zeros(nmodes)
         for i, eig in enumerate(eig_val):
             if eig < 0:
-                frequencies[i] = -math.sqrt(-eig) / wavenumber
+                frequencies_a[i] = -math.sqrt(-eig) / wavenumber
             else:
-                frequencies[i] = math.sqrt(eig) / wavenumber
+                frequencies_a[i] = math.sqrt(eig) / wavenumber
             # end if
         # end for
         self.mass_weighted_normal_modes = []
-        self.frequencies = frequencies.tolist()
+        self.frequencies = frequencies_a.tolist()
         # Store the mass weighted normal modes
         for i in range(nmodes):
             mode = []

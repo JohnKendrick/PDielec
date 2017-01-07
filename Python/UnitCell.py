@@ -19,6 +19,7 @@
 
 import numpy as np
 
+
 class UnitCell:
     """Hold unit cell information and its associated calculated properties"""
     def __init__(self, a=None, b=None, c=None, alpha=None, beta=None, gamma=None):

@@ -29,7 +29,7 @@ class DielectricConstant:
 
     def __init__(self):
         self.unit = self.initialise_diagonal_tensor([1.0, 1.0, 1.0])
-        self.reader   = ""
+        self.reader   = None
         self.efield_dictionary = {}
 
     def set_reader(self, reader):
@@ -135,7 +135,7 @@ class DielectricConstant:
         else:
             nz = 1.0/3.0
         nxy = (1 - nz) * 0.5
-
+        #
         # compute the tensors from the outer product of each direction
         tensor = nz*np.outer(unique, unique) + nxy*np.outer(dir1, dir1) + nxy*np.outer(dir2, dir2)
         tensor = tensor / np.trace(tensor)
@@ -189,27 +189,27 @@ class DielectricConstant:
         # Construct UT from the normal modes
         n = np.size(normal_modes, 0)
         m = np.size(normal_modes, 1)*3
-        ut = np.zeros((n, m))
+        UT = np.zeros((n, m))
         for imode, mode in enumerate(normal_modes):
             n = 0
             for atom in mode:
                 # in python the first index is the row of the matrix, the second is the column
-                ut[imode, n+0] = atom[0]
-                ut[imode, n+1] = atom[1]
-                ut[imode, n+2] = atom[2]
+                UT[imode, n+0] = atom[0]
+                UT[imode, n+1] = atom[1]
+                UT[imode, n+2] = atom[2]
                 n = n + 3
             # end for atom
         # end for imode
         # zero the nonanalytical correction
-        wm = np.zeros((n, n))
+        Wm = np.zeros((n, n))
         # convert the frequencies^2 to a real diagonal array
         # Warning we have to make sure the sign is correct here
         f2 = np.diag(np.sign(frequencies)*np.real(frequencies*frequencies))
-        dm = np.dot(np.dot(ut.T, f2), ut)
+        Dm = np.dot(np.dot(UT.T, f2), UT)
         # Make sure the dynamical matrix is real
-        dm = np.real(dm)
+        Dm = np.real(Dm)
         # Find its eigenvalues
-        eig_val, eig_vec = np.linalg.eigh(dm)
+        eig_val, eig_vec = np.linalg.eigh(Dm)
         # Store the results for returning to the main program
         results = []
         # Loop over q values
@@ -230,7 +230,7 @@ class DielectricConstant:
                     for termi in terms:
                         j = b*3
                         for term in termi:
-                            wm[i, j] = term
+                            Wm[i, j] = term
                             j = j + 1
                         # end for term
                         i = i + 1
@@ -238,11 +238,11 @@ class DielectricConstant:
                 # end loop over b
             # end loop over a
             # Construct the full dynamical matrix with the correction
-            dmq = dm + wm
+            Dmq = Dm + Wm
             # If projection was requested when the matrix was read, project out translation
             if reader.eckart:
-                reader.project(dmq)
-            eig_val, eig_vec = np.linalg.eigh(dmq)
+                reader.project(Dmq)
+            eig_val, eig_vec = np.linalg.eigh(Dmq)
             # If eig_val less than zero we set it to zero
             values = []
             for eig in eig_val:
@@ -283,21 +283,22 @@ class DielectricConstant:
             The returned normal modes have NOT been renormalised.
             The input masses are in atomic units
             the output normal modes are in atomic units """
-        m = []
+        list_m = []
         normal_modes = np.zeros_like(mass_weighted_normal_modes)
         nions = np.size(masses)
         for a in range(nions):
             x = 1.0 / math.sqrt(masses[a])
             atom = [x, x, x]
-            m.append(atom)
+            list_m.append(atom)
         # end of loop of ions
-        array_m = np.array(m)
+        array_m = np.array(list_m)
         for index, mode in enumerate(mass_weighted_normal_modes):
             normal_modes[index] = mode * array_m
         return normal_modes
 
-    def efield(self, type):
-        return np.array(self.efield_dictionary[type])
+    def efield(self, etype):
+        """Return the efield_dictionary"""
+        return np.array(self.efield_dictionary[etype])
 
     def project_field(self, shape, shape_data, projection, efield):
         """Take the field directions in efield and apply shape projection."""
@@ -387,8 +388,8 @@ class DielectricConstant:
         for mode in modes:
             v = frequencies[mode]
             sigma = sigmas[mode]
-            s = strengths[mode].astype(complex)
-            dielectric = dielectric + s / np.complex((v*v - f*f), -sigma*f)
+            strength = strengths[mode].astype(complex)
+            dielectric = dielectric + strength / np.complex((v*v - f*f), -sigma*f)
         return dielectric * (4.0*PI/volume)
 
     def drude_contribution(self, f, frequency, sigma, volume):
@@ -441,12 +442,12 @@ class DielectricConstant:
         emedium = np.trace(dielectric_medium) / 3.0
         # Equation 5.78 in Sihvola
         nalpha = emedium*vf*np.dot((dielecv - dielectric_medium), np.linalg.inv(dielectric_medium + np.dot(L, (dielecv-dielectric_medium))))
-        nalphaL = np.dot((nalpha/emedium), L)
+        nalphal = np.dot((nalpha/emedium), L)
         # average the polarisability over orientation
         nalpha = np.trace(nalpha) / 3.0 * self.unit
         # average the polarisability*L over orientation
-        nalphaL = np.trace(nalphaL) / 3.0 * self.unit
-        polarisation = np.dot(np.linalg.inv(self.unit - nalphaL), nalpha)
+        nalphal = np.trace(nalphal) / 3.0 * self.unit
+        polarisation = np.dot(np.linalg.inv(self.unit - nalphal), nalpha)
         effd         = dielectric_medium + polarisation
         trace = np.trace(effd) / 3.0
         effdielec = np.array([[trace, 0, 0], [0, trace, 0], [0, 0, trace]])
@@ -488,6 +489,7 @@ class DielectricConstant:
         return effdielec
 
     def coherent(self, dielectric_medium, dielecv, shape, L, vf, dielectric_apparent):
+        """Driver for coherent2 method"""
         for i in range(10):
             dielectric_apparent = 0.1 * dielectric_apparent + 0.9 * self.coherent2(dielectric_medium, dielectric_apparent, dielecv, shape, L, vf)
         return dielectric_apparent
@@ -504,12 +506,12 @@ class DielectricConstant:
         eapparent = np.trace(dielectric_apparent) / 3.0
         # Equation 5.78 in Sihvola
         nalpha = emedium*vf*np.dot((dielecv - dielectric_medium), np.linalg.inv(dielectric_medium + np.dot(L, (dielecv-dielectric_medium))))
-        nalphaL = np.dot((nalpha/eapparent), L)
+        nalphal = np.dot((nalpha/eapparent), L)
         # average the polarisability over orientation
         nalpha = np.trace(nalpha) / 3.0 * self.unit
         # average the polarisability*L over orientation
-        nalphaL = np.trace(nalphaL) / 3.0 * self.unit
-        polarisation = np.dot(np.linalg.inv(self.unit - nalphaL), nalpha)
+        nalphal = np.trace(nalphal) / 3.0 * self.unit
+        polarisation = np.dot(np.linalg.inv(self.unit - nalphal), nalpha)
         effd         = dielectric_medium + polarisation
         trace = np.trace(effd) / 3.0
         effdielec = np.array([[trace, 0, 0], [0, trace, 0], [0, 0, trace]])
@@ -569,10 +571,12 @@ class DielectricConstant:
         return epsbr
 
     def average_tensor(self, t):
+        """Return the averaged tensor"""
         a = np.trace(t) / 3.0
         return np.array([[a, 0, 0], [0, a, 0], [0, 0, a]])
 
     def _brug_minimise_scalar(self, variables, eps1, eps2, shape, L, f1):
+        """Bruggeman method using scalar quantities"""
         # unpack the complex number from the variables
         # two things going on here.
         # 1. the two variables refer to the real and imaginary components
@@ -601,6 +605,7 @@ class DielectricConstant:
         return 1.0+error
 
     def _brug_minimise_tensor(self, variables, eps1, eps2, shape, L, f1):
+        """Bruggeman method using tensor quantities"""
         # unpack the complex number from the variables
         # two things going on here.
         # 1. the two variables refer to the real and imaginary components
@@ -636,6 +641,7 @@ class DielectricConstant:
         return 1.0+error
 
     def _brug_iter_error(self, epsbr, eps1, eps2, shape, L, f1):
+        """Routine to calculate the error in the Bruggeman method"""
         f2 = 1.0 - f1
         leps1 = np.dot(L, (eps1 - epsbr))
         leps2 = np.dot(L, (eps2 - epsbr))
@@ -682,9 +688,9 @@ class DielectricConstant:
         return solution
 
     def direction_from_shape(self, data):
-        # Determine the unique direction of the shape from data
-        # data may contain a miller indices which defines a surface eg. (1,1,-1)
-        # or a direction as a miller direction vector eg. [1,0,-1]
+        """ Determine the unique direction of the shape from data
+        data may contain a miller indices which defines a surface eg. (1,1,-1)
+        or a direction as a miller direction vector eg. [1,0,-1] """
         surface = False
         # original = data
         i = data.find(",")

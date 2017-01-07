@@ -14,6 +14,7 @@
 # You should have received a copy of the MIT License
 # along with this program, if not see https://opensource.org/licenses/MIT
 #
+"""Read the contents of a QE output file containing QE dynmical matrix"""
 import re
 import math
 import numpy as np
@@ -23,11 +24,13 @@ from Python.GenericOutputReader import GenericOutputReader
 
 
 class QEOutputReader(GenericOutputReader):
-    """Read the contents of a dmat file containing QE dynmical matrix"""
+    """Read the contents of a QE output file containing QE dynmical matrix"""
 
     def __init__(self, filenames):
         GenericOutputReader.__init__(self, filenames)
         self.type                    = 'QE output'
+        self.alat                    = None
+        self.mass_species            = None
         return
 
     def _read_output_files(self):

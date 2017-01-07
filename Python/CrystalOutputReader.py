@@ -231,14 +231,14 @@ class CrystalOutputReader(GenericOutputReader):
         # Read the ionic contribution to the static dielectric
         line = self.file_descriptor.readline()
         line = self.file_descriptor.readline()
-        ionic_dielectric = []
-        ionic_dielectric.append([float(f) for f in line.split()[0:3]])
+        self.zerof_static_dielectric = []
+        self.zerof_static_dielectric.append([float(f) for f in line.split()[0:3]])
         line = self.file_descriptor.readline()
-        ionic_dielectric.append([float(f) for f in line.split()[0:3]])
+        self.zerof_static_dielectric.append([float(f) for f in line.split()[0:3]])
         line = self.file_descriptor.readline()
-        ionic_dielectric.append([float(f) for f in line.split()[0:3]])
-        a = np.array(ionic_dielectric)
-        self.zerof_static_dielectric = a.tolist()
+        self.zerof_static_dielectric.append([float(f) for f in line.split()[0:3]])
+        # a = np.array(ionic_dielectric)
+        # self.zerof_static_dielectric = a.tolist()
         return
 
     def _read_lattice_vectors(self, line):

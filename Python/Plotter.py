@@ -19,7 +19,7 @@ class Plotter:
         self.frequencies = []
         return
 
-    def add_dielectric(self, nplot, method, vf_type, shape, data, v, trace, absorption, molar_absorption):
+    def add_dielectric(self, nplot, method, vf_type, shape, data, frequency, trace, absorption, molar_absorption):
         """Add the trace of a dielectric to be plotted, add the absorption and the molar absorption"""
         if nplot not in self.plot_numbers:
             self.methods.append(method)
@@ -31,7 +31,7 @@ class Plotter:
             self.absorption_coefficients.append([])
             self.molar_absorption_coefficients.append([])
             self.frequencies.append([])
-        self.frequencies[nplot].append(v)
+        self.frequencies[nplot].append(frequency)
         self.traces[nplot].append(trace)
         self.absorption_coefficients[nplot].append(absorption)
         self.molar_absorption_coefficients[nplot].append(molar_absorption)
@@ -73,6 +73,7 @@ class Plotter:
         return
 
     def plot(self, types):
+        """Plot driver routine"""
         for plot in types:
             if plot == 'imaginary':
                 self.plot_imaginary()
@@ -124,7 +125,7 @@ class Plotter:
         return
 
     def plot_absorption(self):
-        """Plot loss data """
+        """Plot absorption data """
         import pylab as pl
         # Choose a suitable scale TO has to be treated differently, TO was added last
         maxd = 0.0
@@ -161,8 +162,8 @@ class Plotter:
         max_to = 1.2*np.amax(np.imag(self.traces[-1]))
         # loop over all methods except the last, TO
         for traces in self.traces[:-1]:
-            di = np.imag(traces)
-            maxd = max(maxd, np.amax(di))
+            real_trace = np.imag(traces)
+            maxd = max(maxd, np.amax(real_trace))
         # end loop over entries
         to_scale = maxd/max_to
         to_scale = 1.0
@@ -185,15 +186,15 @@ class Plotter:
         return
 
     def plot_real(self):
-        """Plot loss data """
+        """Plot real data """
         import pylab as pl
         # Choose a suitable scale TO has to be treated differently, TO was added last
         maxd = 0.0
         max_to = 1.2*np.amax(np.real(self.traces[-1]))
         # loop over all methods except the last, TO
         for traces in self.traces[:-1]:
-            di = np.real(traces)
-            maxd = max(maxd, np.amax(di))
+            real_trace = np.real(traces)
+            maxd = max(maxd, np.amax(real_trace))
         # end loop over entries
         to_scale = maxd/max_to
         to_scale = 1.0
@@ -217,6 +218,7 @@ class Plotter:
 
 
 def print_reals(title, reals, no_per_line=8, format="{:9.2f}", file=sys.stdout, separator=" "):
+    """Print reals data """
     #
     # Print out a list of reals prettily
     #
@@ -237,6 +239,7 @@ def print_reals(title, reals, no_per_line=8, format="{:9.2f}", file=sys.stdout, 
 
 
 def print3x3(title, array, format="{:14.6f}", file=sys.stdout, separator=" "):
+    """Print 3x3 matrix"""
     #
     # Print out a 3x3 tensor matrix
     #

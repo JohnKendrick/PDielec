@@ -14,9 +14,20 @@
 # You should have received a copy of the MIT License
 # along with this program, if not see https://opensource.org/licenses/MIT
 #
+"""Read the contents of a Gulp output file
+   It is quite difficult to work out what is a suitable set of commands for gulp
+   The following seems to work OK, important are
+   phon - a phonon calculation
+   intens - calculate the IR intensities
+   eigen - print the eigen vectors of the dynamical matrix
+   cart - print the cartesian coordinates (this is the only way of see what all the atom types are)
+   nosym - make sure the calculation is done in P1
+   qeq molq optimise conp qok nomodcoord prop phon intens eigen cart
+"""
+
 import re
-import numpy as np
 import os
+import numpy as np
 from Python.UnitCell import UnitCell
 from Python.GenericOutputReader import GenericOutputReader
 
@@ -48,6 +59,13 @@ class GulpOutputReader(GenericOutputReader):
         self.fractional_coordinates  = []
         self.pressure                = None
         self.masses                  = []
+        self.atomic_charges          = []
+        self.mass_dictionary         = {}
+        self.temperature             = None
+        self.elastic_constant_tensor = None
+        self.nshells                 = None
+        self.nions_irreducible       = None
+        self.atom_types              = None
         return
 
     def _read_output_files(self):
@@ -71,10 +89,12 @@ class GulpOutputReader(GenericOutputReader):
         self._read_output_file(self._gulpfile)
 
     def _read_formula(self, line):
+        """Read the formula line"""
         self.formula = line.split()[2]
         return
 
     def _read_elastic_constants(self, line):
+        """Read the elastic constants"""
         for skip in range(0, 5):
             line = self.file_descriptor.readline()
         elastic = []
@@ -88,6 +108,7 @@ class GulpOutputReader(GenericOutputReader):
         return
 
     def _read_frequencies(self, line):
+        """Read the frequencies"""
         self.frequencies = []
         self.mass_weighted_normal_modes = []
         line = self.file_descriptor.readline()
@@ -130,12 +151,15 @@ class GulpOutputReader(GenericOutputReader):
             line = self.file_descriptor.readline()
 
     def _read_total_number_of_atoms(self, line):
+        """Read the number of atoms"""
         self.nions = int(line.split()[4])
 
     def _read_number_of_irreducible_atoms(self, line):
+        """Read the number of irreducible atoms"""
         self.nions_irreducible = int(line.split()[5])
 
     def _read_lattice(self, line):
+        """Read the lattice vectors"""
         line = self.file_descriptor.readline()
         line = self.file_descriptor.readline()
         x = float(line.split()[0])
@@ -169,6 +193,7 @@ class GulpOutputReader(GenericOutputReader):
         self.unit_cells[-1].set_fractional_coordinates(self.fractional_coordinates)
 
     def _read_cellcontents(self, line):
+        """Read the cell contents in xyz space"""
         self.atom_types = []
         self.masses = []
         self.cartesian_coordinates = []
@@ -206,6 +231,7 @@ class GulpOutputReader(GenericOutputReader):
         return
 
     def _read_cellcontentsf(self, line):
+        """Read the cell contents fractional space"""
         self.atom_types = []
         self.masses = []
         self.fractional_coordinates = []
@@ -241,6 +267,7 @@ class GulpOutputReader(GenericOutputReader):
         return
 
     def _read_species(self, line):
+        """Read species information"""
         self.mass_dictionary = {}
         for skip in range(0, 6):
             line = self.file_descriptor.readline()
@@ -284,6 +311,7 @@ class GulpOutputReader(GenericOutputReader):
         return
 
     def _read_optical_dielectric(self, line):
+        """Read optical dielectric constant"""
         for skip in range(0, 5):
             line = self.file_descriptor.readline()
         # this is the zero frequency optical dielectric constant
@@ -296,6 +324,7 @@ class GulpOutputReader(GenericOutputReader):
         return
 
     def _read_static_dielectric(self, line):
+        """Read static dielectric constant"""
         for skip in range(0, 5):
             line = self.file_descriptor.readline()
         # this is the zero frequency static dielectric constant
@@ -308,14 +337,17 @@ class GulpOutputReader(GenericOutputReader):
         return
 
     def _read_temperature(self, line):
+        """Read temperature"""
         self.temperature = float(line.split()[4])
         return
 
     def _read_external_pressure(self, line):
+        """Read external pressure"""
         self.pressure = float(line.split()[4])
         return
 
     def _read_energies(self, line):
+        """Read energies"""
         # self.final_energy_without_entropy = unkown
         # line = self.file_descriptor.readline()
         # self.final_free_energy = float(line.split()[5])

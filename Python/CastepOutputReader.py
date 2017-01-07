@@ -22,8 +22,8 @@
    _DyanmicalMatrix
 """
 import re
-import numpy as np
 import os
+import numpy as np
 from Python.UnitCell import UnitCell
 from Python.GenericOutputReader import GenericOutputReader
 
@@ -65,6 +65,7 @@ class CastepOutputReader(GenericOutputReader):
         self.ions_per_type           = []
         self._ion_type_index         = {}
         self._ion_index_type         = {}
+        self.intensities             = None
         return
 
     def _read_output_files(self):
@@ -82,7 +83,7 @@ class CastepOutputReader(GenericOutputReader):
         self.manage['pressure']      = (re.compile(' *\* Pressure: '), self._read_external_pressure)
         self.manage['opticalDielectric']  = (re.compile(' *Optical Permittivity'), self._read_dielectric)
         self.manage['bornCharges']    = (re.compile(' *Born Effective Charges'), self._read_born_charges)
-        """For the .phonon file"""
+        #  For the .phonon file
         self.manage['frequency']      = (re.compile('     q-pt=    1    0.000000  0.000000  0.000000      1.0000000000 *$'), self._read_frequencies)
         self.manage['nbranches']      = (re.compile(' Number of branches'), self._read_nbranches)
         for f in self._outputfiles:
@@ -149,12 +150,12 @@ class CastepOutputReader(GenericOutputReader):
         line = self.file_descriptor.readline()
         line = self.file_descriptor.readline()
         line = self.file_descriptor.readline()
-        aVector = [float(line.split()[0]), float(line.split()[1]), float(line.split()[2])]
+        avector = [float(line.split()[0]), float(line.split()[1]), float(line.split()[2])]
         line = self.file_descriptor.readline()
-        bVector = [float(line.split()[0]), float(line.split()[1]), float(line.split()[2])]
+        bvector = [float(line.split()[0]), float(line.split()[1]), float(line.split()[2])]
         line = self.file_descriptor.readline()
-        cVector = [float(line.split()[0]), float(line.split()[1]), float(line.split()[2])]
-        self.unit_cells.append(UnitCell(aVector, bVector, cVector))
+        cvector = [float(line.split()[0]), float(line.split()[1]), float(line.split()[2])]
+        self.unit_cells.append(UnitCell(avector, bvector, cvector))
         self.ncells = len(self.unit_cells)
         line = self.file_descriptor.readline()
         line = self.file_descriptor.readline()
