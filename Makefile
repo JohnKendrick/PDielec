@@ -26,7 +26,7 @@ test:
 		@( cd Examples; make --no-print-directory test )
 
 pylint:		
-		@pylint -d E501,E221,C901 pdielec
+		@pylint pdielec Python/*.py
 
 pylama:		
 		@pylama -i E501,E221,C901 .
