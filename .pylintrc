@@ -143,7 +143,7 @@ ignore-imports=no
 
 # Good variable names which should always be accepted, separated by a comma
 #good-names=i,j,k,ex,Run,_
-good-names=A,B,Ak,Bk,U,UT,Kk,Ck,L,p1,p2,p3,P1,P2,P3,f1,f2,fi,fr,b1,b2,c1,c2m,a,b,c,e,f,p,q,r,n,x,y,z,i,j,k,ex,iv,Run,nx,_
+good-names=vf,Wm,Dm,Dmq,za,zb,nz,PI,A,B,Ak,Bk,U,UT,Kk,C,Ck,L,p1,p2,p3,P1,P2,P3,f1,f2,fi,fr,b1,b2,c1,c2m,e1,e2,e3,a,b,c,e,f,p,q,r,m,n,v,x,y,z,i,j,k,ex,iv,Run,nx,_,Me,Mem1,Mi,nA,nAL
 
 # Bad variable names which should always be refused, separated by a comma
 bad-names=foo,bar,baz,toto,tutu,tata
@@ -178,10 +178,10 @@ inlinevar-rgx=[A-Za-z_][A-Za-z0-9_]*$
 inlinevar-name-hint=[A-Za-z_][A-Za-z0-9_]*$
 
 # Regular expression matching correct variable names
-variable-rgx=[a-z_][a-z0-9_]{2,30}$
+variable-rgx=[a-z_][a-z0-9_]{2,50}$
 
 # Naming hint for variable names
-variable-name-hint=[a-z_][a-z0-9_]{2,30}$
+variable-name-hint=[a-z_][a-z0-9_]{2,50}$
 
 # Regular expression matching correct attribute names
 attr-rgx=[a-z_][a-z0-9_]{2,30}$
@@ -233,7 +233,7 @@ docstring-min-length=-1
 [ELIF]
 
 # Maximum number of nested blocks for function / method body
-max-nested-blocks=5
+max-nested-blocks=6
 
 
 [MISCELLANEOUS]
@@ -353,20 +353,20 @@ analyse-fallback-blocks=no
 [DESIGN]
 
 # Maximum number of arguments for function / method
-max-args=5
+max-args=15
 
 # Argument names that match this expression will be ignored. Default to name
 # with leading underscore
 ignored-argument-names=_.*
 
 # Maximum number of locals for function / method body
-max-locals=15
+max-locals=800
 
 # Maximum number of return / yield for function / method body
 max-returns=6
 
 # Maximum number of branch for function / method body
-max-branches=12
+max-branches=250
 
 # Maximum number of statements in function / method body
 max-statements=200
@@ -375,7 +375,7 @@ max-statements=200
 max-parents=7
 
 # Maximum number of attributes for a class (see R0902).
-max-attributes=7
+max-attributes=30
 
 # Minimum number of public methods for a class (see R0903).
 min-public-methods=2
