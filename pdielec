@@ -673,7 +673,7 @@ def main():
         qlist.extend(qlist_input)
     # Loop over all the cartesian directions to find the splitting
     if qlist:
-        lo_freqs = calculator.logitudinal_mores(frequencies, mass_weighted_normal_modes, born_charges, masses, epsilon_inf, volume, qlist, reader)
+        lo_freqs = calculator.logitudinal_modes(frequencies, mass_weighted_normal_modes, born_charges, masses, epsilon_inf, volume, qlist, reader)
         print_reals("Transverse frequencies (cm-1)", np.real(frequencies_cm1))
         print(" ")
         index = 0

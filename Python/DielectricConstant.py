@@ -169,7 +169,7 @@ class DielectricConstant:
         intensities = intensities / convert
         return intensities
 
-    def logitudinal_mores(self, frequencies, normal_modes, born_charges, masses, epsilon_inf, volume, qlist, reader):
+    def logitudinal_modes(self, frequencies, normal_modes, born_charges, masses, epsilon_inf, volume, qlist, reader):
         """Apply the nonanalytic correction to the dynamical matrix and calculate the LO frequencies
            frequencies are the frequencies (f) in atomic units
            normal_modes are the mass weighted normal modes (U)
