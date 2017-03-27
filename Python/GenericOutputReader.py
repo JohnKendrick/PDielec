@@ -222,6 +222,14 @@ class GenericOutputReader:
         hessian = np.dot(np.dot(P3.T, hessian), P3)
         return hessian
 
+    def _read_till_phrase(self,phrase):
+        """Read lines from the current file until a match with phrase is found
+           Once a match is found return the matching line"""
+        line = ""
+        while not phrase.match(line):
+            line = self.file_descriptor.readline()
+        return line
+
     def _dynamical_matrix(self, hessian):
         """Process the dynamical matrix
         Hessian is a nxn matrix of the mass weighted force constants

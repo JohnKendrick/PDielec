@@ -35,6 +35,7 @@ class CastepOutputReader(GenericOutputReader):
        printInfo
        _read_output_file
        _DyanmicalMatrix
+       _read_till_phrase
 """
 
     def __init__(self, filenames):
@@ -147,8 +148,7 @@ class CastepOutputReader(GenericOutputReader):
         return
 
     def _read_cellcontents(self, line):
-        line = self.file_descriptor.readline()
-        line = self.file_descriptor.readline()
+        line = self._read_till_phrase(re.compile(' *Real Lattice'))
         line = self.file_descriptor.readline()
         avector = [float(line.split()[0]), float(line.split()[1]), float(line.split()[2])]
         line = self.file_descriptor.readline()
@@ -157,19 +157,9 @@ class CastepOutputReader(GenericOutputReader):
         cvector = [float(line.split()[0]), float(line.split()[1]), float(line.split()[2])]
         self.unit_cells.append(UnitCell(avector, bvector, cvector))
         self.ncells = len(self.unit_cells)
-        line = self.file_descriptor.readline()
-        line = self.file_descriptor.readline()
-        line = self.file_descriptor.readline()
-        line = self.file_descriptor.readline()
-        line = self.file_descriptor.readline()
-        line = self.file_descriptor.readline()
-        line = self.file_descriptor.readline()
+        line = self._read_till_phrase(re.compile(' *Current cell volume'))
         self.volume = float(line.split()[4])
-        line = self.file_descriptor.readline()
-        line = self.file_descriptor.readline()
-        line = self.file_descriptor.readline()
-        line = self.file_descriptor.readline()
-        line = self.file_descriptor.readline()
+        line = self._read_till_phrase(re.compile(' *Total number of ions in cell'))
         if len(self.unit_cells) == 1:
             self.nions = int(line.split()[7])
             line = self.file_descriptor.readline()
