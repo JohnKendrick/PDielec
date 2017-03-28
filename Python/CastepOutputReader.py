@@ -52,10 +52,9 @@ class CastepOutputReader(GenericOutputReader):
         # Specific Castep Reader Variables
         self.pspots                  = {}
         self.spin                    = 0
-        self.encut                   = 0.0
+        self.energy_cutoff           = 0.0
         self.ediff                   = 0.0
         self.epsilon                 = None
-        self.nkpts                   = 0
         self.nbands                  = 0
         self._nbranches              = 0
         self.species                 = []
@@ -67,6 +66,7 @@ class CastepOutputReader(GenericOutputReader):
         self._ion_type_index         = {}
         self._ion_index_type         = {}
         self.intensities             = None
+        self.magnetization           = None
         return
 
     def _read_output_files(self):
@@ -77,11 +77,13 @@ class CastepOutputReader(GenericOutputReader):
         self.manage['cellcontents']  = (re.compile(' *Unit Cell'), self._read_cellcontents)
         self.manage['pspots']        = (re.compile(' *Files used for pseudopotentials:'), self._read_pspot)
         self.manage['masses']        = (re.compile(' *Mass of species in AMU'), self._read_masses)
-        self.manage['kpts']          = (re.compile(' *Number of kpoints used'), self._read_kpoints)
+        self.manage['kpoints']       = (re.compile(' *Number of kpoints used'), self._read_kpoints)
+        self.manage['kpoint_grid']   = (re.compile(' *MP grid size for SCF'), self._read_kpoint_grid)
         self.manage['finalenergy']   = (re.compile(' *Final energy, E'), self._read_energies)
-        self.manage['encut']         = (re.compile(' *plane wave basis set cut'), self._read_encut)
+        self.manage['finalenergy2']   = (re.compile('Final energy ='), self._read_energies2)
+        self.manage['energy_cutoff'] = (re.compile(' *plane wave basis set cut'), self._read_energy_cutoff)
         self.manage['nbands']        = (re.compile(' *number of bands'), self._read_nbands)
-        self.manage['pressure']      = (re.compile(' *\* Pressure: '), self._read_external_pressure)
+        self.manage['pressure']      = (re.compile(' *\* *Pressure: '), self._read_external_pressure)
         self.manage['opticalDielectric']  = (re.compile(' *Optical Permittivity'), self._read_dielectric)
         self.manage['bornCharges']    = (re.compile(' *Born Effective Charges'), self._read_born_charges)
         #  For the .phonon file
@@ -130,8 +132,12 @@ class CastepOutputReader(GenericOutputReader):
         # end of for freq
         return
 
+    def _read_kpoint_grid(self, line):
+        self.kpoint_grid = [ int(line.split()[7]), int(line.split()[8]), int(line.split()[9]) ]
+        return
+
     def _read_kpoints(self, line):
-        self.nkpts = int(line.split()[5])
+        self.kpoints = int(line.split()[5])
         return
 
     def _read_nbands(self, line):
@@ -270,8 +276,8 @@ class CastepOutputReader(GenericOutputReader):
         self.spin = int(float(line.split()[5]))
         return
 
-    def _read_encut(self, line):
-        self.encut = float(line.split()[6])
+    def _read_energy_cutoff(self, line):
+        self.energy_cutoff = float(line.split()[6])
         return
 
     def _read_ediff(self, line):
@@ -279,7 +285,7 @@ class CastepOutputReader(GenericOutputReader):
         return
 
     def _read_nelect(self, line):
-        self.nelect = int(float(line.split()[4]))
+        self.electrons = int(float(line.split()[4]))
         return
 
     def _read_epsilon(self, line):
@@ -293,7 +299,10 @@ class CastepOutputReader(GenericOutputReader):
         self.final_energy_without_entropy = float(line.split()[4])
         line = self.file_descriptor.readline()
         self.final_free_energy = float(line.split()[5])
-        # jk line = self.file_descriptor.readline()
-        # jk line = self.file_descriptor.readline()
-        # jk self.final_0K_energy = float(line.split()[5])
         return
+
+    def _read_energies2(self, line):
+        self.final_energy_without_entropy = float(line.split()[3])
+        self.final_free_energy = float(line.split()[3])
+        return
+

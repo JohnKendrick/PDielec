@@ -41,9 +41,12 @@ class AbinitOutputReader(GenericOutputReader):
         GenericOutputReader.__init__(self, filenames)
         self.type = 'Abinit output files'
         self.acell = None
-        self.ntypat = None
+        self.nspecies = None
         self.charges = None
         self.typmasses = None
+        self.magnetization = None
+        self.final_energy_without_entropy = None
+        self.pressure = None
         return
 
     def _read_output_files(self):
@@ -59,8 +62,33 @@ class AbinitOutputReader(GenericOutputReader):
         self.manage['typat']    = (re.compile('            typat '), self._read_typat)
         self.manage['ntypat']   = (re.compile('           ntypat '), self._read_ntypat)
         self.manage['acell']    = (re.compile('            acell '), self._read_acell)
+        self.manage['nkpt']    = (re.compile('             nkpt '), self._read_kpoints)
+        self.manage['ecut']    = (re.compile('^ *ecut '), self._read_energy_cutoff)
+        self.manage['kptrlatt']    = (re.compile('         kptrlatt '), self._read_kpoint_grid)
+        self.manage['electrons']    = (re.compile('  fully or partial'), self._read_electrons)
+        self.manage['pressure']    = (re.compile('-Cartesian.*GPa'), self._read_pressure)
         for f in self._outputfiles:
             self._read_output_file(f)
+        return
+
+    def _read_pressure(self, line):
+        self.pressure = float(line.split()[7])
+        return
+
+    def _read_electrons(self, line):
+        self.electrons = float(line.split()[6])
+        return
+
+    def _read_kpoint_grid(self, line):
+        self.kpoint_grid = [ int(line.split()[1]), int(line.split()[5]), int(line.split()[9]) ]
+        return
+
+    def _read_kpoints(self, line):
+        self.kpoints = int(line.split()[1])
+        return
+
+    def _read_energy_cutoff(self, line):
+        self.energy_cutoff = 27.21 * float(line.split()[1])
         return
 
     def _read_acell(self, line):
@@ -68,7 +96,7 @@ class AbinitOutputReader(GenericOutputReader):
         return
 
     def _read_ntypat(self, line):
-        self.ntypat = int(line.split()[1])
+        self.nspecies = int(line.split()[1])
         return
 
     def _read_typat(self, line):

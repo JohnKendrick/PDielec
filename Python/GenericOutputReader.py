@@ -31,14 +31,17 @@ class GenericOutputReader:
         self.names                      = [os.path.abspath(f) for f in filenames]
         self.debug                      = False
         self.type                       = 'Unkown'
-        self.ncells                     = 0
-        self.nsteps                     = 0
+        self.ncells                     = None
+        self.nsteps                     = None
         self.formula                    = None
-        self.nelect                     = 0
-        self.volume                     = 0.0
-        self.nions                      = 0
-        self.nspecies                   = 0
-        self.final_free_energy          = 0
+        self.nelect                     = None
+        self.volume                     = None
+        self.nions                      = None
+        self.nspecies                   = None
+        self.final_free_energy          = None
+        self.kpoints                    = None
+        self.kpoint_grid                = [ None, None, 0 ]
+        self.energy_cutoff              = None
         self.unit_cells                  = []
         self.born_charges               = []
         self.species                    = []
@@ -68,6 +71,9 @@ class GenericOutputReader:
         # Generic printing of information
         print("Number of atoms: {:5d}".format(self.nions))
         print("Number of species: {:5d}".format(self.nspecies))
+        print("Number of kpoints: {:5d}".format(self.kpoints))
+        print("Kpoint grid      : {:5d} {:5d} {:5d}".format(self.kpoint_grid[0], self.kpoint_grid[1], self.kpoint_grid[2]))
+        print("Energy cutoff (eV): {:f}".format(self.energy_cutoff))
         print_reals("Frequencies (cm-1):", self.frequencies)
         print_reals("Masses (amu):", self.masses)
         for i, charges in enumerate(self.born_charges):

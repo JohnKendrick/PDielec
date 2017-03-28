@@ -478,10 +478,11 @@ def main():
         if os.path.isdir(names[0]):
             print('Analysing VASP directory: {} '.format(names[0]))
             outcarfile = os.path.join(names[0], "OUTCAR")
+            kpointsfile = os.path.join(names[0], "KPOINTS")
             if not os.path.isfile(outcarfile):
                 print("Error: NO OUTCAR FILE IN DIRECTORY")
                 exit()
-            reader = VaspOutputReader(names)
+            reader = VaspOutputReader( [outcarfile, kpointsfile] )
         elif names[0].find("OUTCAR") >= 0 and os.path.isfile("OUTCAR"):
             reader = VaspOutputReader(names)
         elif names[0].find(".gout") >= 0 and os.path.isfile(names[0]):

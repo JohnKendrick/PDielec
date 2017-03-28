@@ -27,19 +27,14 @@ class VaspOutputReader(GenericOutputReader):
 
     def __init__(self, names):
         GenericOutputReader.__init__(self, names)
-        if names[0] == "OUTCAR":
-            directory = "."
-        else:
-            directory = names[0]
-        self._outputfiles            = [os.path.join(directory, 'OUTCAR')]
-        self.name                    = os.path.abspath(directory)
         self.type                    = 'Vasp output'
         self.pspots                  = {}
+        self.ncells                  = 0
         self.spin                    = 0
-        self.encut                   = 0.0
+        self.energy_cutoff           = 0.0
         self.ediff                   = 0.0
         self.nelect                  = 0
-        self.nkpts                   = 0
+        self.kpoints                 = 0
         self.nbands                  = 0
         self.electrons               = 0.0
         self.magnetization           = 0.0
@@ -82,8 +77,14 @@ class VaspOutputReader(GenericOutputReader):
         self.manage['eigenvectors'] = (re.compile(' Eigenvectors and eige'), self._read_eigenvectors)
         self.manage['eigenskip']    = (re.compile(' Eigenvectors after division'), self._read_skip4)
         self.manage['elastic']      = (re.compile(' TOTAL ELASTIC MODULI'), self._read_elastic_constants)
+        self.manage['kpoint']      = (re.compile('^Gamma'), self._read_kpoint_grid)
         for f in self._outputfiles:
             self._read_output_file(f)
+        return
+
+    def _read_kpoint_grid(self, line):
+        line = self.file_descriptor.readline()
+        self.kpoint_grid = [int(f) for f in line.split()[0:3] ]
         return
 
     def _read_ionspertype(self, line):
@@ -227,7 +228,7 @@ class VaspOutputReader(GenericOutputReader):
 
     def _read_array_dimensions(self, line):
         line = self.file_descriptor.readline()
-        self.nkpts = int(line.split()[3])
+        self.kpoints = int(line.split()[3])
         self.nbands = int(line.split()[14])
         line = self.file_descriptor.readline()
         self.nions = int(line.split()[11])
@@ -263,7 +264,7 @@ class VaspOutputReader(GenericOutputReader):
         return
 
     def _read_encut(self, line):
-        self.encut = float(line.split()[2])
+        self.energy_cutoff = float(line.split()[2])
         return
 
     def _read_ediff(self, line):

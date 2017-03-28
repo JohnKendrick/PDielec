@@ -31,10 +31,12 @@ class QEOutputReader(GenericOutputReader):
         self.type                    = 'QE output'
         self.alat                    = None
         self.mass_species            = None
+        self.magnetization           = None
+        self.pressure                = None
         return
 
     def _read_output_files(self):
-        """Read the AbInit file names"""
+        """Read the QE file names"""
         # Define the search keys to be looked for in the files
         self.manage = {}   # Empty the dictionary matching phrases
         self.manage['header']   = (re.compile('Dynamical matrix file'), self._read_header)
@@ -43,9 +45,31 @@ class QEOutputReader(GenericOutputReader):
         self.manage['dynamical']  = (re.compile(' *Dynamical  Matrix in c'), self._read_dynamical)
         self.manage['epsilon']  = (re.compile(' *Dielectric Tensor:'), self._read_epsilon)
         self.manage['charges']  = (re.compile(' *Effective Charges E-U:'), self._read_born_charges)
+        self.manage['energy_cutoff']  = (re.compile(' *kinetic-energy cutoff'), self._read_energy_cutoff)
+        self.manage['kpoints']  = (re.compile(' *number of k points'), self._read_kpoints)
+        self.manage['kpoint_grid']  = (re.compile('K_POINTS automatic'), self._read_kpoint_grid)
+        self.manage['electrons']  = (re.compile('^ *number of electrons'), self._read_electrons)
+        self.manage['energy']  = (re.compile('^ *total energy  *='), self._read_energy)
         for f in self._outputfiles:
             self._read_output_file(f)
         return
+
+    def _read_electrons(self, line):
+        self.electrons = float(line.split()[4])
+
+    def _read_energy(self, line):
+        self.final_energy_without_entropy = float(line.split()[3]) * 27.21 / 2.0
+        self.final_free_energy = float(line.split()[3]) * 27.21 / 2.0
+
+    def _read_energy_cutoff(self, line):
+        self.energy_cutoff = float(line.split()[3]) * 27.21 / 2.0
+
+    def _read_kpoints(self, line):
+        self.kpoints = int(line.split()[4])
+
+    def _read_kpoint_grid(self, line):
+        line = self.file_descriptor.readline()
+        self.kpoint_grid = [ float(f) for f in line.split()[0:3] ]
 
     def _read_header(self, line):
         line = self.file_descriptor.readline()

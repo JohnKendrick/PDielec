@@ -33,6 +33,8 @@ class CrystalOutputReader(GenericOutputReader):
         GenericOutputReader.__init__(self, filenames)
         self.type                    = 'Crystal output'
         self.species                 = []
+        self.magnetization           = None
+        self.pressure                = None
         return
 
     def _read_output_files(self):
@@ -46,9 +48,28 @@ class CrystalOutputReader(GenericOutputReader):
         self.manage['staticIonic']  = (re.compile(' SUM TENSOR OF THE VIBRATIONAL CONTRIBUTIONS TO '), self._read_ionic_dielectric)
         self.manage['noeckart']  = (re.compile('.* REMOVING ECKART CONDITIONS'), self._read_eckart)
         self.manage['epsilon']  = (re.compile(' SUSCEPTIBILITY '), self._read_epsilon)
+        self.manage['kpoints']  = (re.compile(' SHRINK\. FACT\.\('), self._read_kpoints)
+        self.manage['electrons']  = (re.compile(' N\. OF ELECTRONS'), self._read_electrons)
+        self.manage['energy']  = (re.compile(' TOTAL ENERGY(DFT)'), self._read_energy)
+        self.manage['energy']  = (re.compile(' TOTAL ENERGY + DISP'), self._read_energy2)
         for f in self._outputfiles:
             self._read_output_file(f)
         return
+
+    def _read_energy(self, line):
+        self.final_free_energy = 27.21*float(line.split()[3])
+        self.final_energy_without_entropy = 27.21*float(line.split()[3])
+
+    def _read_energy2(self, line):
+        self.final_free_energy = 27.21*float(line.split()[5])
+        self.final_energy_without_entropy = 27.21*float(line.split()[5])
+
+    def _read_electrons(self, line):
+        self.electrons = int(line.split()[5])
+
+    def _read_kpoints(self, line):
+        self.kpoint_grid = [ int(line.split()[2]), int(line.split()[3]), int(line.split()[4]) ]
+        self.kpoints = int(line.split()[12])
 
     def _read_epsilon(self, line):
         self.file_descriptor.readline()
