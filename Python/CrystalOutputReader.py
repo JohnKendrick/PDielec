@@ -50,8 +50,8 @@ class CrystalOutputReader(GenericOutputReader):
         self.manage['epsilon']  = (re.compile(' SUSCEPTIBILITY '), self._read_epsilon)
         self.manage['kpoints']  = (re.compile(' SHRINK\. FACT\.\('), self._read_kpoints)
         self.manage['electrons']  = (re.compile(' N\. OF ELECTRONS'), self._read_electrons)
-        self.manage['energy']  = (re.compile(' TOTAL ENERGY(DFT)'), self._read_energy)
-        self.manage['energy']  = (re.compile(' TOTAL ENERGY + DISP'), self._read_energy2)
+        self.manage['energy']  = (re.compile(' TOTAL ENERGY\(DFT\)'), self._read_energy)
+        self.manage['energy2']  = (re.compile(' TOTAL ENERGY + DISP'), self._read_energy2)
         for f in self._outputfiles:
             self._read_output_file(f)
         return
