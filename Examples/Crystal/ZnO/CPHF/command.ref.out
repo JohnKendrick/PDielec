@@ -5,8 +5,6 @@ The frequency increment is 0.20 cm-1
 The default width factor (-sigma) has been set to 5.000000 cm-1
 The permittivity of the medium (-dielectric) has been set to 2.0000
 The density of the medium (-density) has been set to 2.2000 g/cc
- 
-Optical permitivity diagonal elements specified: 5.7390 5.7390 5.6735
 Vmin is:   300.0 cm-1
 Vmax is:   800.0 cm-1
 All phonon modes will be considered
@@ -33,7 +31,6 @@ Shape depolarisation matrix: plate (1,0,0) xyz=[1.000000,0.000000,0.000000]
             0.000000       0.000000       0.000000
             0.000000       0.000000       0.000000
 
-
 Volume of unit cell is    49.16470602 Angstrom^3
 Total unit cell mass is:   159.84800000 g/mol
 Crystal density is:   5.39887 g/cc
@@ -57,11 +54,11 @@ Permittivity contribution from ionic displacements
             0.000000       0.000000       5.061893
  
 Optical permittivity at zero frequency
-            5.738970       0.000000       0.000000
-            0.000000       5.738970       0.000000
-            0.000000       0.000000       5.673460
+            4.460000      -0.000000       0.000000
+           -0.000000       4.459900      -0.000000
+            0.000000      -0.000000       4.430300
  
 Total permittivity
-            9.973808      -0.000000       0.000000
-           -0.000000       9.973808       0.000000
-            0.000000       0.000000      10.735353
+            8.694838      -0.000000       0.000000
+           -0.000000       8.694738       0.000000
+            0.000000       0.000000       9.492193
