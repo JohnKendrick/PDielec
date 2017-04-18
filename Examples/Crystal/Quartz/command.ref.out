@@ -15,16 +15,6 @@ Vmax is:   300.0 cm-1
 All phonon modes will be considered
 No projection of the dynamical matrix will be performed
 The charge neutrality of the Born atomic charges will not be enforced
-Reading Born Charge Tensor from output file
-WARNING! WARNING! WARNING! WARNING! WARNING!
-The numerical precision of the input is limited
-If possible proved a BORN.DAT from the calculation
-WARNING! WARNING! WARNING! WARNING! WARNING!
-Reading Normal Modes from output file
-WARNING! WARNING! WARNING! WARNING! WARNING!
-The numerical precision of the input is limited
-If possible proved a HESSFREQ.DAT from the calculation
-WARNING! WARNING! WARNING! WARNING! WARNING!
  
 Shape depolarisation matrix: needle [0,0,1] xyz=[0.000000,0.000000,1.000000]
             0.500000       0.000000       0.000000

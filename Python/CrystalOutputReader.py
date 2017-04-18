@@ -20,6 +20,7 @@
 import re
 import math
 import os
+import sys
 import numpy as np
 from Python.Constants import amu
 from Python.UnitCell import UnitCell
@@ -105,20 +106,20 @@ class CrystalOutputReader(GenericOutputReader):
         return
 
     def _read_eigenvectors(self, line):
-        if os.path.isfile("HESSFREQ.DAT"):
-            print("Reading Hessian from HESSFREQ.DAT")
-            self._read_hessfreq_dat()
+        if os.path.isfile(self.open_directory+"/HESSFREQ.DAT"):
+            print("Reading Hessian from HESSFREQ.DAT",file=sys.stderr)
+            self._read_hessfreq_dat(self.open_directory+"/HESSFREQ.DAT")
         else:
-            print("Reading Normal Modes from output file")
-            print("WARNING! WARNING! WARNING! WARNING! WARNING!")
-            print("The numerical precision of the input is limited")
-            print("If possible proved a HESSFREQ.DAT from the calculation")
-            print("WARNING! WARNING! WARNING! WARNING! WARNING!")
+            print("Reading Normal Modes from output file",file=sys.stderr)
+            print("WARNING! WARNING! WARNING! WARNING! WARNING!",file=sys.stderr)
+            print("The numerical precision of the input is limited",file=sys.stderr)
+            print("If possible proved a HESSFREQ.DAT from the calculation",file=sys.stderr)
+            print("WARNING! WARNING! WARNING! WARNING! WARNING!",file=sys.stderr)
             self._read_output_eigenvectors(line)
         return
 
-    def _read_hessfreq_dat(self):
-        fd2 = open("HESSFREQ.DAT", 'r')
+    def _read_hessfreq_dat(self,filename):
+        fd2 = open(filename, 'r')
         nmodes = self.nions*3
         # Create a mass weighting vector
         n = 0
@@ -199,22 +200,23 @@ class CrystalOutputReader(GenericOutputReader):
                                       [a2x a2y a2z]
                                       [a3x a3y a3z]]
            where 1,2,3 are the field directions and x, y, z are the atomic displacements"""
-        if os.path.isfile("BORN.DAT"):
-            print("Reading Born charge tensor from BORN.DAT")
-            self._read_born_charges_from_born_dat()
+        # Extract directory containing the output file
+        if os.path.isfile(self.open_directory+"/BORN.DAT"):
+            print("Reading Born charge tensor from BORN.DAT",file=sys.stderr)
+            self._read_born_charges_from_born_dat(self.open_directory+"/BORN.DAT")
         else:
-            print("Reading Born Charge Tensor from output file")
-            print("WARNING! WARNING! WARNING! WARNING! WARNING!")
-            print("The numerical precision of the input is limited")
-            print("If possible proved a BORN.DAT from the calculation")
-            print("WARNING! WARNING! WARNING! WARNING! WARNING!")
+            print("Reading Born Charge Tensor from output file",file=sys.stderr)
+            print("WARNING! WARNING! WARNING! WARNING! WARNING!",file=sys.stderr)
+            print("The numerical precision of the input is limited",file=sys.stderr)
+            print("If possible proved a BORN.DAT from the calculation",file=sys.stderr)
+            print("WARNING! WARNING! WARNING! WARNING! WARNING!",file=sys.stderr)
             self._read_born_charges_from_output(line)
         if self.neutral:
             self._born_charge_sum_rule()
         return
 
-    def _read_born_charges_from_born_dat(self):
-        fd2 = open("BORN.DAT", 'r')
+    def _read_born_charges_from_born_dat(self,filename):
+        fd2 = open(filename, 'r')
         self.born_charges = []
         for i in range(self.nions):
             b = []

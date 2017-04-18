@@ -58,7 +58,9 @@ class GenericOutputReader:
         self.ions                       = []
         self.eckart                     = False
         self.neutral                    = False
-        self.hessian_symmetrisation    = "symm"
+        self.hessian_symmetrisation     = "symm"
+        self.open_filename              = ""
+        self.open_directory             = ""
         return
 
     def read_output(self):
@@ -100,6 +102,10 @@ class GenericOutputReader:
     def _read_output_file(self, name):
         """Read through the files for key words.  The keywords are established in _read_output_files"""
         self.file_descriptor = open(name, 'r')
+        self.open_filename = name
+        self.open_directory = os.path.dirname(name)
+        if self.open_directory == "":
+            self.open_directory = "."
         # Loop through the contents of the file a line at a time and parse the contents
         line = self.file_descriptor.readline()
         while line != '':

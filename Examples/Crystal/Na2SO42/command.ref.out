@@ -13,8 +13,6 @@ Program used to perform the phonon calculation was: crystal
 The file containing the output is: Na2SO42.out
 No projection of the dynamical matrix will be performed
 The charge neutrality of the Born atomic charges will not be enforced
-Reading Born charge tensor from BORN.DAT
-Reading Hessian from HESSFREQ.DAT
  
 Shape depolarisation matrix: needle [0,0,1] xyz=[-0.259408,-0.205709,0.943606]
             0.466354      -0.026681       0.122389
