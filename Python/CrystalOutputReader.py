@@ -224,6 +224,9 @@ class CrystalOutputReader(GenericOutputReader):
             b.append([float(line.split()[0]), float(line.split()[1]), float(line.split()[2])])
             line = fd2.readline()
             b.append([float(line.split()[0]), float(line.split()[1]), float(line.split()[2])])
+            b_np = np.array(b)
+            bt_np = b_np.T 
+            b = bt_np.tolist()
             self.born_charges.append(b)
         fd2.close()
         return
