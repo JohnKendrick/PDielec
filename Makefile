@@ -14,6 +14,7 @@ default:
 
 install:	
 		cp pdielec $(SCRIPTS)
+		cp preader $(SCRIPTS)
 		mkdir -p $(SCRIPTS)/Python
 		cp -r Python/*.py $(SCRIPTS)/Python
 
