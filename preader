@@ -1,0 +1,188 @@
+#!/usr/bin/python
+"""Read the contents of a directory containing DFT output and create a csv style file of information"""
+import string
+import re
+import numpy as np
+import os, sys
+from Python.Constants import *
+from Python.UnitCell import *
+from Python.VaspOutputReader import *
+from Python.CastepOutputReader import CastepOutputReader
+from Python.GulpOutputReader import GulpOutputReader
+from Python.CrystalOutputReader import CrystalOutputReader
+from Python.AbinitOutputReader import AbinitOutputReader
+from Python.QEOutputReader import QEOutputReader
+
+
+
+# Start processing the directories
+if len(sys.argv) <= 1 :
+    print('preader program [-observables] dirnames or filenames .....', file=sys.stderr)
+    exit
+
+observables=False
+files = []
+
+program = sys.argv[1]
+
+eckart = False
+neutral = False
+hessian_symmetrisation = "symm"
+for f in sys.argv[2:]:
+    if f == "-observables":
+        observables = True
+    elif f == "-ecakrt":
+        ecakrt = True
+    elif f == "-neutral":
+        neutral = True
+    elif f == "-crystal":
+        hessian_symmetrisation = "crystal"
+    else:
+        files.append(f)
+
+print('program is ',program,file=sys.stderr)
+#print('files are ',files,file=sys.stderr)
+#print('Eckart is ',eckart,file=sys.stderr)
+#print('Neutral is ',neutral,file=sys.stderr)
+#print('Hessian symmetrisation is ',hessian_symmetrisation,file=sys.stderr)
+
+print('directory,electrons,magnetization,kpnts,kpnt_1,kpnt_2,kpnt_3,energy_cutoff_eV,final_free_energy_eV,final_energy_without_entropy_eV,pressure_GPa,a_A,b_A,c_A,alpha,beta,gamma,volume,eps0_xx,eps0_yy,eps0_zz,eps0_xy,eps0_xz,eps0_yz,epsinf_xx,epsinf_yy,epsinf_zz,epsinf_xy,epsinf_xz,epsinf_yz, c11_gpa, c22_gpa, c33_gpa, c44_gpa, c55_gpa, c66_gpa, c12_gpa,  c13_gpa, c23_gpa, f1_cm1, f2_cm1, f3_cm1, f4_cm1, f5_cm1, f6_cm1')
+files.sort()
+for name in files :
+    print('Analysing ',name, file=sys.stderr)
+    fulldirname = os.path.realpath(name)
+    head,tail = os.path.split(fulldirname)
+    root,ext = os.path.splitext(tail)
+    if program == "castep":
+        reader = CastepOutputReader( [name] )
+    elif program == "vasp":
+        name1 = os.path.join(head,'OUTCAR')
+        name2 = os.path.join(head,'KPOINTS')
+        reader = VaspOutputReader( [name1, name2] )
+    elif program == "gulp":
+        reader = GulpOutputReader( [name] )
+    elif program == "crystal":
+        reader = CrystalOutputReader( [name] )
+    elif program == "abinit":
+        reader = AbinitOutputReader( [name] )
+    elif program == "qe":
+        tail1 = root+'.dynG'
+        tail2 = root+'.log'
+        name1 = os.path.join(head,tail1)
+        name2 = os.path.join(head,tail2)
+        reader = QEOutputReader( [name1, name2] )
+    else:
+        print('Program name not recognized',program)
+        exit()
+
+    reader.eckart = eckart
+    reader.neutral = neutral
+    reader.hessian_symmetrisation = hessian_symmetrisation
+    reader.read_output()
+    #jk calculator = DielectricConstant()
+    #jk calculator.set_reader(reader)
+    unitCell = reader.unit_cells[-1]
+    a,b,c,alpha,beta,gamma = unitCell.convert_unitcell_to_abc()
+    eps0   = np.array(reader.zerof_static_dielectric)
+    epsinf = np.array(reader.zerof_optical_dielectric)
+    eps0_xx = str(eps0[0,0])
+    eps0_yy = str(eps0[1,1])
+    eps0_zz = str(eps0[2,2])
+    eps0_xy = str(( eps0[0,1] + eps0[1,0] ) /2.0)
+    eps0_xz = str(( eps0[0,2] + eps0[2,0] ) /2.0)
+    eps0_yz = str(( eps0[1,2] + eps0[2,1] ) /2.0)
+    epsinf_xx = str(epsinf[0,0])
+    epsinf_yy = str(epsinf[1,1])
+    epsinf_zz = str(epsinf[2,2])
+    epsinf_xy = str(( epsinf[0,1] + epsinf[1,0] ) /2.0)
+    epsinf_xz = str(( epsinf[0,2] + epsinf[2,0] ) /2.0)
+    epsinf_yz = str(( epsinf[1,2] + epsinf[2,1] ) /2.0)
+    volume = str(reader.volume)
+    carray = np.array(reader.elastic_constants)
+    c11 = str(carray[0,0])
+    c22 = str(carray[1,1])
+    c33 = str(carray[2,2])
+    c44 = str(carray[3,3])
+    c55 = str(carray[4,4])
+    c66 = str(carray[5,5])
+    c12 = str(carray[0,1])
+    c13 = str(carray[0,2])
+    c23 = str(carray[1,2])
+    frequencies = reader.frequencies
+    frequencies.sort()
+    string = fulldirname
+    string = string + ',' + str(reader.electrons)
+    string = string + ',' + str(reader.magnetization)
+    string = string + ',' + str(reader.kpoints)
+    string = string + ',' + str(reader.kpoint_grid[0])
+    string = string + ',' + str(reader.kpoint_grid[1])
+    string = string + ',' + str(reader.kpoint_grid[2])
+    string = string + ',' + str(reader.energy_cutoff)
+    string = string + ',' + str(reader.final_free_energy)
+    string = string + ',' + str(reader.final_energy_without_entropy)
+    string = string + ',' + str(reader.pressure)
+    string = string + ',' + str(a) + ',' + str(b) + ',' + str(c) + ',' + str(alpha) + ',' + str(beta) + ',' + str(gamma) + ',' + volume
+    string = string + ',' + eps0_xx + ',' + eps0_yy + ',' + eps0_zz + ',' + eps0_xy + ',' + eps0_xz + ',' + eps0_yz
+    string = string + ',' + epsinf_xx + ',' + epsinf_yy + ',' + epsinf_zz + ',' + epsinf_xy + ',' + epsinf_xz + ',' + epsinf_yz
+    string = string + ',' + c11 + ',' + c22 + ',' + c33 + ',' + c44 + ',' + c55 + ',' + c66
+    string = string + ',' + c12 + ',' + c13 + ',' + c23
+    for f in frequencies:
+        string = string + ',' + str(f)
+    print(string)
+    if observables:
+        filename = directory+'.observables'
+        if directory == '.' :
+            filename = 'dot.observables'
+        filename = filename.replace("/","_")
+        print('filename', filename, file=sys.stderr)
+        fd = open(filename,'w')
+        print('observables', file=fd)
+        if eps0[0,0] != 0.0 :
+            print('sdlc', file=fd)
+            print('1 1 ', eps0[0,0], file=fd)
+            print('sdlc', file=fd)
+            print('2 2 ', eps0[1,1], file=fd)
+            print('sdlc', file=fd)
+            print('3 3 ', eps0[2,2], file=fd)
+            print('hfdlc', file=fd)
+            print('1 1 ', epsinf[0,0], file=fd)
+            print('hfdlc', file=fd)
+            print('2 2 ', epsinf[1,1], file=fd)
+            print('hfdlc', file=fd)
+            print('3 3 ', epsinf[2,2], file=fd)
+        if carray[0,0] != 0.0:
+            print('elastic', file=fd)
+            print('1 1 ', carray[0,0], file=fd)
+            print('elastic', file=fd)
+            print('2 2 ', carray[1,1], file=fd)
+            print('elastic', file=fd)
+            print('3 3 ', carray[2,2], file=fd)
+            print('elastic', file=fd)
+            print('4 4 ', carray[3,3], file=fd)
+            print('elastic', file=fd)
+            print('5 5 ', carray[4,4], file=fd)
+            print('elastic', file=fd)
+            print('6 6 ', carray[5,5], file=fd)
+            print('elastic', file=fd)
+            print('1 2 ', carray[0,1], file=fd)
+            print('elastic', file=fd)
+            print('1 3 ', carray[0,2], file=fd)
+            print('elastic', file=fd)
+            print('2 3 ', carray[1,2], file=fd)
+        nfreq = len(frequencies)
+        if nfreq > 4 :
+            for n in range(nfreq):
+                nlast = n
+                if frequencies[n].real > 1.0E-6:
+                    break
+                # end of if
+            # end of for
+            if frequencies[nlast].real > 1.0E-8 :
+                n = nlast 
+                print('frequency', nfreq - nlast, file=fd)
+                for f in frequencies[nlast:] :
+                    n = n + 1
+                    print(n, f, file=fd)
+        print('end', file=fd)
+        fd.close()
+  
