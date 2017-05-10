@@ -53,6 +53,7 @@ class CrystalOutputReader(GenericOutputReader):
         self.manage['electrons']  = (re.compile(' N\. OF ELECTRONS'), self._read_electrons)
         self.manage['energy']  = (re.compile(' TOTAL ENERGY\(DFT\)'), self._read_energy)
         self.manage['energy2']  = (re.compile(' TOTAL ENERGY + DISP'), self._read_energy2)
+        self.manage['energy3']  = (re.compile(' *CENTRAL POINT'), self._read_energy3)
         for f in self._outputfiles:
             self._read_output_file(f)
         return
@@ -65,6 +66,10 @@ class CrystalOutputReader(GenericOutputReader):
         self.final_free_energy = 27.21*float(line.split()[5])
         self.final_energy_without_entropy = 27.21*float(line.split()[5])
 
+    def _read_energy3(self, line):
+        self.final_free_energy = 27.21*float(line.split()[2])
+        self.final_energy_without_entropy = 27.21*float(line.split()[2])
+
     def _read_electrons(self, line):
         self.electrons = int(line.split()[5])
 
@@ -76,12 +81,19 @@ class CrystalOutputReader(GenericOutputReader):
         self.file_descriptor.readline()
         self.file_descriptor.readline()
         optical_dielectric = [[0, 0, 0], [0, 0, 0], [0, 0, 0]]
-        optical_dielectric[0][0] = float(self.file_descriptor.readline().split()[3])
-        optical_dielectric[0][1] = float(self.file_descriptor.readline().split()[3])
-        optical_dielectric[0][2] = float(self.file_descriptor.readline().split()[3])
-        optical_dielectric[1][1] = float(self.file_descriptor.readline().split()[3])
-        optical_dielectric[1][2] = float(self.file_descriptor.readline().split()[3])
-        optical_dielectric[2][2] = float(self.file_descriptor.readline().split()[3])
+        linea = self.file_descriptor.readline().split()
+        while len(linea) > 0:
+            component = linea[0]
+            epsilon = float(linea[3])
+            if component == "XX": optical_dielectric[0][0] = epsilon
+            if component == "YY": optical_dielectric[1][1] = epsilon
+            if component == "ZZ": optical_dielectric[2][2] = epsilon
+            if component == "XY": optical_dielectric[0][1] = epsilon
+            if component == "XZ": optical_dielectric[0][2] = epsilon
+            if component == "YZ": optical_dielectric[1][2] = epsilon
+            # read the next line
+            linea = self.file_descriptor.readline().split()
+        # symmetrize
         optical_dielectric[1][0] = optical_dielectric[0][1]
         optical_dielectric[2][0] = optical_dielectric[0][2]
         optical_dielectric[2][1] = optical_dielectric[1][2]
