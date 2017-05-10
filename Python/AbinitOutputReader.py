@@ -63,12 +63,33 @@ class AbinitOutputReader(GenericOutputReader):
         self.manage['ntypat']   = (re.compile('           ntypat '), self._read_ntypat)
         self.manage['acell']    = (re.compile('            acell '), self._read_acell)
         self.manage['nkpt']    = (re.compile('             nkpt '), self._read_kpoints)
+        self.manage['band']    = (re.compile('            nband '), self._read_band)
+        self.manage['band1']    = (re.compile('            nband1 '), self._read_band)
+        self.manage['occupancy']    = (re.compile('              occ '), self._read_occupancy)
+        self.manage['occupancy1']    = (re.compile('              occ1 '), self._read_occupancy)
         self.manage['ecut']    = (re.compile('^ *ecut '), self._read_energy_cutoff)
         self.manage['kptrlatt']    = (re.compile('         kptrlatt '), self._read_kpoint_grid)
         self.manage['electrons']    = (re.compile('  fully or partial'), self._read_electrons)
         self.manage['pressure']    = (re.compile('-Cartesian.*GPa'), self._read_pressure)
         for f in self._outputfiles:
             self._read_output_file(f)
+        return
+
+    def _read_band(self, line):
+        self.nbands = int(line.split()[1])
+        print("nbands",self.nbands)
+        return
+
+    def _read_occupancy(self, line):
+        occs = []
+        occupancies = line.split()[1:]
+        while len(occs) < self.nbands:
+            occs+= [ float(f) for f in occupancies ]
+            occupancies = self.file_descriptor.readline().split()
+        sum = 0.0
+        for f in occs:
+            sum += f
+        self.electrons = int(sum + 0.0001)
         return
 
     def _read_pressure(self, line):
