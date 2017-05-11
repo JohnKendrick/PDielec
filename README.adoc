@@ -6,7 +6,7 @@ v2.0.1, 2016-06-24
 
 Authors: John Kendrick and Andrew Burnett
 
-The Python package PDielec calculates the infrared absorption characteristics of a crystalline material supported in a non absorbing medium by post processesing the output of solid state quantum mechanical and molecular mechanical calculations of the phonons or dielectric response of the crystalline material.
+The Python package, PDielec calculates the infrared absorption characteristics of a crystalline material supported in a non absorbing medium by post processesing the output of solid state quantum mechanical and molecular mechanical calculations of the phonons or dielectric response of the crystalline material.
 The package calculates the internal electric field arising from different particle morphologies and calculates the resulting shift in absorption frequency and intensity arising from the coupling between a phonon and the internal field.  The theory of the approach has been published.  Any use of the package should cite;
 PDielec: The calculation of infrared and terahertz absorption for powdered crystals
 John Kendrick and Andrew D. Burnett
@@ -21,19 +21,19 @@ The package is suited for the calculation of the complex, frequency dependent pe
 == Installation
 The pdielec package is written in Python and has been tested using Python 2.7 and Python 3.5.1 on Linux and in Windows 10.
 The package is available on GitHub and can be downloaded from https://github.com/JohnKendrick/PDielec
+An auxilliary program, preader, is also distributed.  This command summarises the output from the solid state packages as a csv file which can be simply read as a spread sheet.
 
  git clone https://github.com/JohnKendrick/PDielec.git
 
 === Linux
-Install Python 2 using the package manager for your version of Linux.  In addition install python2 versions of numpy, scipy and matplotlib.  In Ubuntu they are installed by;
+Both Python 2.7 and Python 3 or supported.  Install Python using the package manager for your version of Linux.  In addition install python versions of numpy, scipy and matplotlib.  In Ubuntu they are installed by;
 
  sudo apt-get install python-dev python-numpy python-scipy python-matplotlib
 
 Put the PDielec directory in your executable path, eg;
 
  export PATH=~/PDielec;$PATH
-
-Where python3 and python2 have been installed, it is important to ensure that the `python` command runs python2.
+ 
 
 === Windows
 Install a version of Python which incorporates SciPy.  The program has been tested with the Anaconda system which is available from https://www.continuum.io/why-anaconda.  The package is compatible with both Python 2 and 3.
@@ -42,9 +42,9 @@ On Windows install a version of Git.  www.git-scm.com has a version of git based
 
 == Directory structure
 
-* PDielec/ is the home directory and contains the `pdielec` command
-* PDielec/Python holds the source for the modules used by the pdielec command
-* PDielec/Examples a set of examples are available for CASTEP, GULP and VASP.  Each example directory holds the input files to the QM/MM program and the relevant output files which are post processed by PDielec
+* PDielec/ is the home directory and contains the `pdielec` and `preader` commands
+* PDielec/Python holds the source for the modules used by the pdielec and preader commands
+* PDielec/Examples a set of examples are available for Abinit, Crystal14, CASTEP, GULP and VASP.  Each example directory holds the input files to the QM/MM program and the relevant output files which are post processed by PDielec.  For each program there is also a preader directory which holds test output for the preader command.
 
 == Examples
 Each example directory has the relevant input data sets use to run the QM/MM program and the output files from that run which are post-processed by PDielec.  There is a file `command.sh` which contains a typical example of a PDielec command line and which has been used to create the reference output files `command.ref.out` and `csvfile.ref.csv`.  The example can be run
@@ -55,24 +55,24 @@ The output can be compared with the reference data to see if the program is work
 
 The main Examples/ directory also has a  Makefile file which can be used to verify the correct working of the package.  Simply by typing `make` in the Examples directory each example will be run automatically and the output compared with the reference files.  To remove the intermediate files after running the tests automatically, type `make clean`.
 
-== Examples of usage
+== Examples of pdielec usage
 
- pdielec -method ap -method maxwell -sphere -plate 0 0 1 -needle 0 0 1 .
+ pdielec -program vasp -method ap -method maxwell -sphere -plate 0 0 1 -needle 0 0 1 .
 
 Performs a calculation using the Averaged-Permittivity and Maxwell-Garnett mixing rules for spherical particles,  plate-like particles with a surface (001) and needle-like particles with a unique direction lying along the [001] direction.  The supporting matrix is taken to be PTFE and the default volume fraction (10%) is used.  The results of a VASP calculation are stored in the current directory. 
 There is no absorption output from this command as neither the -plot nor the -csv options were specified.
 
- pdielec  -vmin 300 -vmax 800 -sphere -dielectric 3 -vf 0.1 -vf 0.2 -sigma 10 -csv mgo.csv phonon
+ pdielec  -program castep -vmin 300 -vmax 800 -sphere -dielectric 3 -vf 0.1 -vf 0.2 -sigma 10 -csv mgo.csv phonon
 
 Performs a calculation for spherical particles varying the frequency from 300 to 800 cm 1,  the permittivity of the supporting media is 3, two volume fractions are considered and a damping factor of 10 cm-1 is used.  The results of a CASTEP calculation with the seed-name “phonon” are analysed and the results stored in mgo.csv for further analysis using a spreadsheet.  In this example a Maxwell-Garnett mixing rule is used by default.
 If visual inspection of the results is required then the following
 will perform the same calculation but a graph shown the molar absorption coefficients will be displayed.
 
- pdielec  -vmin 300 -vmax 800 -sphere -kbr 3 -vf 0.1 -vf 0.2 -sigma 10 -csv mgo.csv -plot molar_absorption phonon
+ pdielec  -program castep -vmin 300 -vmax 800 -sphere -kbr 3 -vf 0.1 -vf 0.2 -sigma 10 -csv mgo.csv -plot molar_absorption phonon
 
 The followng command performs a calculation of the absorption spectrum resulting from a GULP calculation.  The supporting matrix density and permittivity are those of high density polyethylene, the frequency range is 0 to 2000 cm-1, the volume fraction considered is 10%, the mixing rules used are Averaged-Permittivity and Maxwell-Garnett.  Spheres and plates with the (1 ̅1 ̅2 ̅) surface are considered.
 
- pdielec -matrix hdpe -method ap -method maxwell -sphere -plate -1 -1 -2 -vmax 2000 -vf 0.1 calcite.gout  -csv calcite.csv
+ pdielec -program gulp -matrix hdpe -method ap -method maxwell -sphere -plate -1 -1 -2 -vmax 2000 -vf 0.1 calcite.gout  -csv calcite.csv
 
 == Command line options
 
@@ -127,3 +127,18 @@ The supporting matrix is often selected from a small range of materials which ha
 | mdpe    | 0.933   | 2.25         | Medium density polyethylene
 | ldpe    | 0.925   | 2.25         | Low density polyethylene
 |===
+
+== Examples of preader usage
+The first parameter on the preader command is the program which has been used to generate the output and maybe one of vasp, abinit, crystal, gulp, castep or qe.  The rest of the parameters are file names which will be processed to find relevant information.  For some programs more than one file has to be read.  For example in the case of Quantum Espresso the dynamical matrix file has to read, and in addition the log or output file needs processing for information such as the number of electrons.  This means that it is best to use the same root for the dynamical matrix file name as is used for the output log file.
+
+ preader vasp */*/OUTCAR > summary.csv
+
+ preader vasp `find . -name OUTCAR` > summary.csv
+
+ preader castep `find . -name \*.castep` > summary.csv
+
+ preader abinit `find . -name \*.out` > summary.csv
+
+ preader qe `find . -name \*.dynG` > summary.csv
+
+

@@ -77,7 +77,6 @@ class AbinitOutputReader(GenericOutputReader):
 
     def _read_band(self, line):
         self.nbands = int(line.split()[1])
-        print("nbands",self.nbands)
         return
 
     def _read_occupancy(self, line):

@@ -7,10 +7,13 @@
 
 
 default:	
-		@echo "Too install pdielec in the $(SCRIPTS) directory"
+		@echo "Too install pdielec and preader in the $(SCRIPTS) directory"
 		@echo "Type 'make install'"
 		@echo "Too perform all the tests in the Examples directory"
 		@echo "Type 'make test'"
+		@echo "For a subset of the tests"
+		@echo "Type 'make test_pdielec'"
+		@echo " or  'make test_preader'"
 
 install:	
 		cp pdielec $(SCRIPTS)
@@ -18,13 +21,17 @@ install:
 		mkdir -p $(SCRIPTS)/Python
 		cp -r Python/*.py $(SCRIPTS)/Python
 
-test:		
-		@echo "The tests take a while to run."
-		@echo "Verification is done by a simple diff with a reference file"
-		@echo "Unfortunately just running on a different machine can cause small"
-		@echo "and insignificant changes to the output files."
-		@echo "If you see a change you must check if it is significant or not by hand."
-		@( cd Examples; make --no-print-directory test )
+test:		test_preader test_pdielec
+
+tests:		test_preader test_pdielec
+
+test_preader:		
+		@echo "Testing preader functionality....."
+		@( cd Examples; make --no-print-directory test_preader )
+
+test_pdielec:		
+		@echo "Testing pdielec functionality (takes a while to run)."
+		@( cd Examples; make --no-print-directory test_pdielec )
 
 pylint:		
 		@pylint pdielec Python/*.py

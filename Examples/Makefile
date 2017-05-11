@@ -1,4 +1,12 @@
-test:
+test_preader:
+	@$(MAKE) --no-print-directory -C Castep/preader test
+	@$(MAKE) --no-print-directory -C Vasp/preader test
+	@$(MAKE) --no-print-directory -C Gulp/preader test
+	@$(MAKE) --no-print-directory -C Crystal/preader test
+	@$(MAKE) --no-print-directory -C AbInit/preader test
+	@$(MAKE) --no-print-directory -C QE/preader test
+
+test_pdielec:
 	@$(MAKE) --no-print-directory -C Castep/AsparticAcid test
 	@$(MAKE) --no-print-directory -C Castep/MgO test
 	@$(MAKE) --no-print-directory -C Castep/Na2SO42 test
@@ -26,6 +34,12 @@ clean:
 	@find . -name command.csv -exec rm -f {} \;
 
 regenerate:
+	@$(MAKE) --no-print-directory -C Castep/preader regenerate
+	@$(MAKE) --no-print-directory -C Vasp/preader regenerate
+	@$(MAKE) --no-print-directory -C Gulp/preader regenerate
+	@$(MAKE) --no-print-directory -C Crystal/preader regenerate
+	@$(MAKE) --no-print-directory -C AbInit/preader regenerate
+	@$(MAKE) --no-print-directory -C QE/preader regenerate
 	@$(MAKE) --no-print-directory -C Castep/AsparticAcid regenerate
 	@$(MAKE) --no-print-directory -C Castep/MgO regenerate
 	@$(MAKE) --no-print-directory -C Castep/Na2SO42 regenerate
