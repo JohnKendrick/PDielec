@@ -8,6 +8,6 @@ Normal modes for Wurtzite
   epsil=.true.,
   trans=.true.,
   asr=.true.
-  fildyn='dmat.zno'
+  fildyn='zno.ph.dynG'
  /
  0.0 0.0 0.0

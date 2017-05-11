@@ -49,31 +49,43 @@ print('program is ',program,file=sys.stderr)
 print('directory,electrons,magnetization,kpnts,kpnt_1,kpnt_2,kpnt_3,energy_cutoff_eV,final_free_energy_eV,final_energy_without_entropy_eV,pressure_GPa,a_A,b_A,c_A,alpha,beta,gamma,volume,eps0_xx,eps0_yy,eps0_zz,eps0_xy,eps0_xz,eps0_yz,epsinf_xx,epsinf_yy,epsinf_zz,epsinf_xy,epsinf_xz,epsinf_yz, c11_gpa, c22_gpa, c33_gpa, c44_gpa, c55_gpa, c66_gpa, c12_gpa,  c13_gpa, c23_gpa, f1_cm1, f2_cm1, f3_cm1, f4_cm1, f5_cm1, f6_cm1')
 files.sort()
 for name in files :
-    print('Analysing ',name, file=sys.stderr)
-    fulldirname = os.path.realpath(name)
+    fulldirname = name
     head,tail = os.path.split(fulldirname)
     root,ext = os.path.splitext(tail)
     if program == "castep":
-        reader = CastepOutputReader( [name] )
+        names = [ name ]
+        reader = CastepOutputReader( names )
     elif program == "vasp":
         name1 = os.path.join(head,'OUTCAR')
         name2 = os.path.join(head,'KPOINTS')
-        reader = VaspOutputReader( [name1, name2] )
+        names = [ name1, name2 ]
+        reader = VaspOutputReader( names )
     elif program == "gulp":
-        reader = GulpOutputReader( [name] )
+        names = [ name ]
+        reader = GulpOutputReader( names )
     elif program == "crystal":
-        reader = CrystalOutputReader( [name] )
+        names = [ name ]
+        reader = CrystalOutputReader( names )
     elif program == "abinit":
-        reader = AbinitOutputReader( [name] )
+        names = [ name ]
+        reader = AbinitOutputReader( names )
     elif program == "qe":
         tail1 = root+'.dynG'
         tail2 = root+'.log'
+        tail3 = root+'.out'
         name1 = os.path.join(head,tail1)
         name2 = os.path.join(head,tail2)
-        reader = QEOutputReader( [name1, name2] )
+        name3 = os.path.join(head,tail3)
+        name4 = os.path.join(head,tail)
+        names = []
+        for n in [ name1, name2, name3, name4 ]:
+            if os.path.isfile(n): names.append(n)
+        names = list(set(names))
+        reader = QEOutputReader( names )
     else:
-        print('Program name not recognized',program)
+        print('Program name not recognized',program,file=sys.stderr)
         exit()
+    print('Analysing ',names, file=sys.stderr)
 
     reader.eckart = eckart
     reader.neutral = neutral

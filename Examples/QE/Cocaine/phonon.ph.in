@@ -4,6 +4,6 @@ Phonons at Gamma Point with IR & Raman
   epsil=.true.,
   lraman=.false.,
  outdir = '/tmp/1075.1.all.q/pwscf' ,
-  fildyn='cocaine.dynG',
+  fildyn='phonon.dynG',
  /
 0.0 0.0 0.0

@@ -18,6 +18,7 @@
 from __future__ import print_function
 import math
 import os
+import sys
 import numpy as np
 from Python.Constants import wavenumber, avogadro_si
 from Python.Plotter import print3x3, print_reals
@@ -34,11 +35,12 @@ class GenericOutputReader:
         self.ncells                     = None
         self.nsteps                     = None
         self.formula                    = None
-        self.nelect                     = None
+        self.electrons                  = None
         self.volume                     = None
         self.nions                      = None
         self.nspecies                   = None
         self.final_free_energy          = None
+        self.final_energy_without_entropy = None
         self.kpoints                    = None
         self.kpoint_grid                = [ None, None, 0 ]
         self.energy_cutoff              = None
@@ -101,6 +103,11 @@ class GenericOutputReader:
 
     def _read_output_file(self, name):
         """Read through the files for key words.  The keywords are established in _read_output_files"""
+        # Check to see if the file exists....
+        if not os.path.isfile(name):
+            print("Warning file is not present: ", name, file=sys.stderr)
+            return
+        # Open file and store file name and directory
         self.file_descriptor = open(name, 'r')
         self.open_filename = name
         self.open_directory = os.path.dirname(name)
