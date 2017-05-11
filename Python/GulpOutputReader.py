@@ -66,6 +66,8 @@ class GulpOutputReader(GenericOutputReader):
         self.nshells                 = None
         self.nions_irreducible       = None
         self.atom_types              = None
+        self.electrons               = 0
+        self.magnetization           = 0
         return
 
     def _read_output_files(self):
@@ -348,10 +350,10 @@ class GulpOutputReader(GenericOutputReader):
 
     def _read_energies(self, line):
         """Read energies"""
-        # self.final_energy_without_entropy = unkown
-        # line = self.file_descriptor.readline()
-        # self.final_free_energy = float(line.split()[5])
-        # jk line = self.file_descriptor.readline()
-        # jk line = self.file_descriptor.readline()
-        # jk self.final_0K_energy = float(line.split()[5])
+        #line = self.file_descriptor.readline()
+        self.final_free_energy = float(line.split()[4])
+        line = self.file_descriptor.readline()
+        line = self.file_descriptor.readline()
+        #self.final_0K_energy = float(line.split()[5])
+        self.final_energy_without_entropy = self.final_free_energy
         return
