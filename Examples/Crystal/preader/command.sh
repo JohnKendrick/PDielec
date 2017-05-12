@@ -1,4 +1,4 @@
-python ../../../preader crystal  \
+python ../../../preader crystal -eckart  \
        ../Leucine/LEUCINE_DIELECTRC_PBED_6311Gdp.out \
        ../Leucine/LEUCINE_FREQUENCY_PBED3_631Gdp_FULLOPTIMIZATON.out \
        ../Na2SO42/Na2SO42.out \
