@@ -26,6 +26,8 @@ test_pdielec:
 	@$(MAKE) --no-print-directory -C QE/ZnO test
 	@$(MAKE) --no-print-directory -C QE/Na2SO42 test
 	@$(MAKE) --no-print-directory -C QE/Cocaine test
+	@$(MAKE) --no-print-directory -C Phonopy/ZnO test
+	@$(MAKE) --no-print-directory -C Phonopy/Na2SO42 test
 
 clean:
 	@echo "Cleaning old command.out files"
@@ -59,3 +61,5 @@ regenerate:
 	@$(MAKE) --no-print-directory -C QE/ZnO regenerate
 	@$(MAKE) --no-print-directory -C QE/Na2SO42 regenerate
 	@$(MAKE) --no-print-directory -C QE/Cocaine regenerate
+	@$(MAKE) --no-print-directory -C Phonopy/ZnO regenerate
+	@$(MAKE) --no-print-directory -C Phonopy/Na2SO42 regenerate

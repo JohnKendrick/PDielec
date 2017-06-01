@@ -23,6 +23,7 @@ import numpy as np
 from Python.Constants import amu, PI, avogadro_si, wavenumber, angstrom
 from Python.DielectricConstant import DielectricConstant
 from Python.VaspOutputReader import VaspOutputReader
+from Python.PhonopyOutputReader import PhonopyOutputReader
 from Python.CastepOutputReader import CastepOutputReader
 from Python.GulpOutputReader import GulpOutputReader
 from Python.CrystalOutputReader import CrystalOutputReader
@@ -49,9 +50,9 @@ def main():
         print("        [-hessian crystal/symm]")
         print("        [-h -help]")
         print("        [-program name] file1 [file2]")
-        print("pdielec: Calculates a spectrum from VASP, CASTEP or GULP")
+        print("pdielec: Calculates an IR spectrum from VASP, CASTEP, PWscf, Abinit, Phonopy or GULP")
         print("             At least one shape must be specified (-sphere -needle -plate)")
-        print("         -program castep/crystal/vasp/abinit/qe/gulp")
+        print("         -program castep/crystal/vasp/abinit/qe/phonopy/gulp")
         print("             Specifies the program that created the files to be processed")
         print("             some programs require two or more files to be specified")
         print("             In the case of VASP file1 must be OUTCAR")
@@ -60,6 +61,7 @@ def main():
         print("             In the case of Crystal file1 must be the output file name of the calculation")
         print("             In the case of Quantum Espresso file1 must be the output file name of the calculation")
         print("             In the case of Abinit file1 must be the output file name of the abinit calculation")
+        print("             In the case of phonopy file1 must the qpoints.yaml file")
         print("         -method ap/balan/maxwell/bruggeman/bruggeman_iter/bruggeman_minimise/maxwell_sihvola")
         print("             Choose the method to be used to, balan, maxwell or bruggeman")
         print("             maxwell_sihvola should give the same results as maxwell but could be used to deal with chirality")
@@ -169,6 +171,7 @@ def main():
     debug          = False
     increment      = 0.2
     program        = ""
+    qmprogram      = ""
     optical        = []
     optical_tensor = []
     my_modes       = []
@@ -235,6 +238,9 @@ def main():
         if token == "-program":
             itoken += 1
             program = tokens[itoken]
+            if program == "phonopy":
+                itoken += 1
+                qmprogram = tokens[itoken]
         elif token == "-sigma":
             itoken += 1
             sigma = float(tokens[itoken])
@@ -395,10 +401,15 @@ def main():
         # end loop over tokens
 
     # Look for obvious errors
-    programs = ["castep", "abinit", "qe", "castep", "vasp", "crystal", "gulp"]
+    programs = ["castep", "abinit", "qe", "castep", "vasp", "crystal", "gulp", "phonopy"]
     if program is not "":
         if program not in programs:
             print("program specified is: {:s}".format(program))
+            print("Needs to be one of: " + " ".join(p for p in programs))
+            exit(1)
+    if qmprogram is not "":
+        if qmprogram not in programs:
+            print("QM program specified is: {:s}".format(program))
             print("Needs to be one of: " + " ".join(p for p in programs))
             exit(1)
     if len(names) <= 0:
@@ -534,6 +545,22 @@ def main():
             reader = AbinitOutputReader(names)
         elif program == "qe":
             reader = QEOutputReader(names)
+        elif program == "phonopy":
+            # Which QM program was used by PHONOPY?
+            if qmprogram == "castep":
+                qmreader = CastepOutputReader(names)
+            elif qmprogram == "vasp":
+                qmreader = VaspOutputReader(names)
+            elif qmprogram == "gulp":
+                qmreader = GulpOutputReader(names)
+            elif qmprogram == "crystal":
+                qmreader = CrystalOutputReader(names)
+            elif qmprogram == "abinit":
+                qmreader = AbinitOutputReader(names)
+            elif qmprogram == "qe":
+                qmreader = QEOutputReader(names)
+            # The QM reader is used to get info about the QM calculation
+            reader = PhonopyOutputReader(names,qmreader)
         # endif
     # end if
     if eckart:

@@ -181,7 +181,7 @@ class GenericOutputReader:
         # will be negative too.
         frequencies_a = np.array(self.frequencies)
         f2 = np.diag(np.sign(frequencies_a)*np.real(frequencies_a*frequencies_a))
-        # The back transformation uses approximately orthogonal (unitary) matrices
+        # The back transformation uses approximately orthogonal (unitary) matrices because of rounding issues on reading vectors
         # So before that lets orthogonalise them
         UT = self._symmetric_orthogonalisation(UT)
         hessian = np.dot(np.dot(UT.T, f2), UT)

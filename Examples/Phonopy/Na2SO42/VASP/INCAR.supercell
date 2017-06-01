@@ -1,0 +1,17 @@
+ENCUT = 600.0
+LASPH = .TRUE.
+LMAXMIX = 4
+IBRION = -1       ! DFPT with symmetry
+POTIM = 0.2      ! Scaling factor for forces
+ISIF   = 3       ! 3=optimise cell and ions, 2=optimise ions
+NSW    = 1      ! If this is not set there is no calculation of normal modes
+NELMIN = 4       ! The minimum number of electronic optimisation steps
+PREC   = Accurate
+LREAL  = .FALSE.
+ISMEAR = -5       ! Smearing method 0=Gaussian, -5=tetrahedron (needs gamma and >2 kpoints)
+SIGMA  = 0.05    ! Width of smearing 
+EDIFF  = 5E-8    ! A bit more accurate
+ALGO = Fast
+LREAL = .FALSE.
+LWAVE = .FALSE.
+LCHARG = .FALSE.
