@@ -15,7 +15,7 @@ DOI: 10.1002/jcc.24344
 
 == Introduction
 The molecular and solid state quantum mechanical calculations of response properties such as the frequencies and intensities of infrared (IR) and terahertz (THz) radiation absorption has become generally available in many molecular and solid state computer programs.  A common approach is to assume the harmonic approximation and calculate the mass weighted force constant matrix (for molecules) or the dynamical matrix at the gamma point (for periodic solids).  Diagonalisation of the matrix gives the frequencies for absorption and the normal modes (molecules) or phonon displacements (periodic solids).  
-The calculation of the absorption intensity for each mode requires the calculation of the change in dipole moment caused by the displacement of the atoms for that mode.  For solids where there is a large separation of charge, there can be a large coupling between a phonon mode and the internal field within a particle resulting from its morphology.  The PDielec program is written in Python and post processes the output of solid state quantum mechanical (QM) and molecular mechanics (MM) based codes such as VASP, CASTEP, CRYSTAL14, Abinit, QuantumEspresso and GULP to predict the infrared absorption of crystalline insulator materials whose crystal size is small compared with the wavelength of the absorbing radiation. 
+The calculation of the absorption intensity for each mode requires the calculation of the change in dipole moment caused by the displacement of the atoms for that mode.  For solids where there is a large separation of charge, there can be a large coupling between a phonon mode and the internal field within a particle resulting from its morphology.  The PDielec program is written in Python and post processes the output of solid state quantum mechanical (QM) and molecular mechanics (MM) based codes such as VASP, CASTEP, CRYSTAL14, Abinit, QuantumEspresso, Phonopy and GULP to predict the infrared absorption of crystalline insulator materials whose crystal size is small compared with the wavelength of the absorbing radiation. 
 The package is suited for the calculation of the complex, frequency dependent permittivity and its associated absorption of infrared radiation for a finely ground crystalline material dispersed in a low loss dielectric medium such KBr or PTFE.  A particular feature of the program is its ability to take into account the constant permittivity of the supporting medium and the particle shape through an effective medium theory.  
 
 == Installation
@@ -44,7 +44,7 @@ On Windows install a version of Git.  www.git-scm.com has a version of git based
 
 * PDielec/ is the home directory and contains the `pdielec` and `preader` commands
 * PDielec/Python holds the source for the modules used by the pdielec and preader commands
-* PDielec/Examples a set of examples are available for Abinit, Crystal14, CASTEP, GULP and VASP.  Each example directory holds the input files to the QM/MM program and the relevant output files which are post processed by PDielec.  For each program there is also a preader directory which holds test output for the preader command.
+* PDielec/Examples a set of examples are available for Abinit, Crystal14, CASTEP, GULP, Phonopy and VASP.  Each example directory holds the input files to the QM/MM program and the relevant output files which are post processed by PDielec.  For each program there is also a preader directory which holds test output for the preader command.
 
 == Examples
 Each example directory has the relevant input data sets use to run the QM/MM program and the output files from that run which are post-processed by PDielec.  There is a file `command.sh` which contains a typical example of a PDielec command line and which has been used to create the reference output files `command.ref.out` and `csvfile.ref.csv`.  The example can be run
@@ -74,6 +74,14 @@ The followng command performs a calculation of the absorption spectrum resulting
 
  pdielec -program gulp -matrix hdpe -method ap -method maxwell -sphere -plate -1 -1 -2 -vmax 2000 -vf 0.1 calcite.gout  -csv calcite.csv
 
+The Phonopy program may also be used to generate the dynamical matrix at the gamma point.  Phonopy drives a number of programs to calculate the dynamical matrix numerically.  The pdielec interface has so far only be tested for Phonopy/VASP and requires the output of a calculation of the Born charges using VASP.
+An example of its use is;
+
+ pdielec -program phonopy vasp OUTCAR -matrix hdpe -method ap -method maxwell -sphere -plate -1 -1 -2 -vmax 2000 -vf 0.1 -csv calcite.csv
+
+This assumes that the dynamical matrix has been calculation at the gamma point using phonopy and is stored in the files qpoints.yaml in the current directory.
+
+
 == Command line options
 
 .Table Command line options
@@ -81,7 +89,7 @@ The followng command performs a calculation of the absorption spectrum resulting
 
 | Option | Default | Purpose | Repeatable? 
 
-| -program s |  | Specifies the program used in generating the output which will be analysed| No 
+| -program s |  | Specifies the program used in generating the output which will be analysed. Options are *castep*, *gulp*, *abinit*, *phonopy*, *vasp*, *crystal* or *qe*| No 
 | -method s | *maxwell* | The method is given by the string s and may be either *ap*, *maxwell* or *bruggeman*| Yes 
 | -sphere | | The inclusion is a sphere, the default if no other shape is given | No
 | -needle h k l | | The inclusion is a needle whose unique direction is given by [hkl] | Yes 
