@@ -15,3 +15,10 @@ phonopy was used to calculate and store the dynamical matrix at the Gamma point 
 
 phonopy --dim="1 1 1" --qpoints-"0 0 0" --writedm
 The output from this command is stored in qpoints.yaml and phonopy.yaml
+
+
+phonopy band.conf
+Was used to generate the band.yaml file.  This contains the displacements of the phonon modes and can be visualised using;
+
+phononwebsite at http://henriquemiranda.github.io/phononwebsite/
+
