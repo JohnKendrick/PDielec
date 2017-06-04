@@ -121,6 +121,9 @@ class Plotter:
             plot_labels.append(label)
         # end loop over method
         pl.legend(plot_list,  plot_labels, loc='best', numpoints=1)
+        pl.xlabel('Frequency (cm-1)')
+        pl.ylabel('Molar Absorption (cm-1.L.mole-1)')
+        pl.title('Molar Absorption')
         pl.show()
         return
 
@@ -151,6 +154,9 @@ class Plotter:
             plot_labels.append(label)
         # end loop over method
         pl.legend(plot_list,  plot_labels, loc='best', numpoints=1)
+        pl.xlabel('Frequency (cm-1)')
+        pl.ylabel('Absorption Coefficient (cm-1)')
+        pl.title('Absorption Coefficient')
         pl.show()
         return
 
@@ -182,6 +188,9 @@ class Plotter:
             plot_labels.append(label)
         # end loop over method
         pl.legend(plot_list,  plot_labels, loc='best', numpoints=1)
+        pl.xlabel('Frequency (cm-1)')
+        pl.ylabel('Imaginary Permittivity')
+        pl.title('Imaginary Permittivity')
         pl.show()
         return
 
@@ -213,6 +222,9 @@ class Plotter:
             plot_labels.append(label)
         # end loop over method
         pl.legend(plot_list,  plot_labels, loc='best', numpoints=1)
+        pl.xlabel('Frequency (cm-1)')
+        pl.ylabel('Real Permittivity')
+        pl.title('Real Permittivity')
         pl.show()
         return
 
