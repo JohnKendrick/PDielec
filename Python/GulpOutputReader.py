@@ -49,31 +49,22 @@ class GulpOutputReader(GenericOutputReader):
         self._gulpfile               = names[0]
         self.name                    = os.path.abspath(self._gulpfile)
         self.type                    = 'Gulp output'
-        self.nsteps                  = 0
-        self.formula                 = None
         self.shells                  = 0
         self.ncores                  = 0
-        self.nspecies                = 0
-        self.species                 = []
-        self.cartesian_coordinates   = []
-        self.fractional_coordinates  = []
-        self.pressure                = None
-        self.masses                  = []
+        self._cartesian_coordinates  = []
+        self._fractional_coordinates  = []
         self.atomic_charges          = []
-        self.mass_dictionary         = {}
+        self._mass_dictionary         = {}
         self.temperature             = None
         self.elastic_constant_tensor = None
         self.nshells                 = None
         self.nions_irreducible       = None
-        self.atom_types              = None
-        self.electrons               = 0
-        self.magnetization           = 0
+        self._atom_types              = None
         return
 
     def _read_output_files(self):
         """Read the .gout file"""
         self.manage = {}   # Empty the dictionary matching phrases
-        self.manage['formula']  = (re.compile(' *Formula'), self._read_formula)
         self.manage['nions']  = (re.compile(' *Total number atoms'), self._read_total_number_of_atoms)
         self.manage['nions_irreducible']  = (re.compile(' *Number of irreducible atoms'), self._read_number_of_irreducible_atoms)
         self.manage['cellcontents']  = (re.compile(' *Final Cartesian coor'), self._read_cellcontents)
@@ -89,11 +80,6 @@ class GulpOutputReader(GenericOutputReader):
         self.manage['elasticConstants']  = (re.compile(' *Elastic Constant Matrix'), self._read_elastic_constants)
         self.manage['frequencies']  = (re.compile(' *Frequencies .cm-1.'), self._read_frequencies)
         self._read_output_file(self._gulpfile)
-
-    def _read_formula(self, line):
-        """Read the formula line"""
-        self.formula = line.split()[2]
-        return
 
     def _read_elastic_constants(self, line):
         """Read the elastic constants"""
@@ -183,30 +169,32 @@ class GulpOutputReader(GenericOutputReader):
         self.volume = cell.volume
         self.ncells = len(self.unit_cells)
         # Convert fractional coordinates to cartesians
-        if len(self.cartesian_coordinates) == 0:
-            if len(self.fractional_coordinates) == 0:
+        if len(self._cartesian_coordinates) == 0:
+            if len(self._fractional_coordinates) == 0:
                 print("Error no coordinates fraction or cartesian found")
                 exit()
-            for atom_frac in self.fractional_coordinates:
+            for atom_frac in self._fractional_coordinates:
                 atom_cart = cell.convert_abc_to_xyz(atom_frac)
                 self.cartesian_coordinates.append(atom_cart)
             # end for
         # end if
-        self.unit_cells[-1].set_fractional_coordinates(self.fractional_coordinates)
+        self.unit_cells[-1].set_fractional_coordinates(self._fractional_coordinates)
 
     def _read_cellcontents(self, line):
         """Read the cell contents in xyz space"""
-        self.atom_types = []
+        self._atom_types = []
         self.masses = []
-        self.cartesian_coordinates = []
+        self._cartesian_coordinates = []
         self.atomic_charges = []
         self.ncores = 0
         self.nshells = 0
+        self.atom_type_list = []
+        self.ions_per_type = [ 0 for i in range(self.nspecies) ]
         for skip in range(0, 5):
             line = self.file_descriptor.readline()
         for ion in range(0, self.nions):
             line = self.file_descriptor.readline()
-            atom_type = line.split()[1]
+            atom_type = line.split()[1].capitalize()
             coreshell = line.split()[2]
             if coreshell == 's':
                 self.nshells += 1
@@ -214,10 +202,13 @@ class GulpOutputReader(GenericOutputReader):
                 self.ncores += 1
                 atom_frac = [float(f) for f in line.split()[3:6]]
                 q = float(line.split()[6])
-                self.atom_types.append(atom_type)
-                self.masses.append(self.mass_dictionary[atom_type])
+                self._atom_types.append(atom_type)
+                self.masses.append(self._mass_dictionary[atom_type])
+                species_index=self.species.index(atom_type)
+                self.atom_type_list.append(species_index)
+                self.ions_per_type[species_index] += 1
                 self.atomic_charges.append(q)
-                self.cartesian_coordinates.append(atom_frac)
+                self._cartesian_coordinates.append(atom_frac)
         self.nions = self.ncores
         if len(self.born_charges) == 0:
             for q in self.atomic_charges:
@@ -234,26 +225,28 @@ class GulpOutputReader(GenericOutputReader):
 
     def _read_cellcontentsf(self, line):
         """Read the cell contents fractional space"""
-        self.atom_types = []
+        self._atom_types = []
         self.masses = []
-        self.fractional_coordinates = []
+        self._fractional_coordinates = []
         self.atomic_charges = []
         self.ncores = 0
         self.nshells = 0
+        self.atom_type_list = []
         for skip in range(0, 5):
             line = self.file_descriptor.readline()
         for ion in range(0, self.nions):
             line = self.file_descriptor.readline()
-            atom_type = line.split()[1]
+            atom_type = line.split()[1].capitalize()
             coreshell = line.split()[2]
             if coreshell == 's':
                 self.nshells += 1
             else:
                 self.ncores += 1
                 atom_frac = [float(f) for f in line.split()[3:6]]
-                self.atom_types.append(atom_type)
-                self.masses.append(self.mass_dictionary[atom_type])
-                self.fractional_coordinates.append(atom_frac)
+                self._atom_types.append(atom_type)
+                self.masses.append(self._mass_dictionary[atom_type])
+                self.atom_type_list.append(self.species.index(atom_type))
+                self._fractional_coordinates.append(atom_frac)
         self.nions = self.ncores
         if len(self.born_charges) == 0:
             for q in self.atomic_charges:
@@ -270,17 +263,23 @@ class GulpOutputReader(GenericOutputReader):
 
     def _read_species(self, line):
         """Read species information"""
-        self.mass_dictionary = {}
+        self.species = []
+        self.mass_per_type = []
+        self._mass_dictionary = {}
         for skip in range(0, 6):
             line = self.file_descriptor.readline()
         n = len(line.split())
         while n > 1:
-            species = line.split()[0]
+            species = line.split()[0].capitalize()
             coreshell = line.split()[1]
             if coreshell == "Core":
-                self.mass_dictionary[species] = (float(line.split()[3]))
+                self._mass_dictionary[species] = (float(line.split()[3]))
+                if species not in self.species:
+                    self.species.append(species)
+                    self.masses_per_type.append(self._mass_dictionary[species])
             line = self.file_descriptor.readline()
             n = len(line.split())
+        self.nspecies = len(self.species)
         return
 
     def _read_born_charges(self, line):

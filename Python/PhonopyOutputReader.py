@@ -31,26 +31,6 @@ class PhonopyOutputReader(GenericOutputReader):
         GenericOutputReader.__init__(self, names)
         # We have to use the qm reader to do the reading of the QM files
         self.type                    = 'Phonopy output'
-        self.pspots                  = {}
-        self.ncells                  = 0
-        self.spin                    = 0
-        self.energy_cutoff           = 0.0
-        self.ediff                   = 0.0
-        self.nelect                  = 0
-        self.kpoints                 = 0
-        self.nbands                  = 0
-        self.electrons               = 0.0
-        self.magnetization           = 0.0
-        self.final_energy_without_entropy = 0
-        self.final_free_energy       = 0
-        self.pressure                = None
-        self._pulay                  = None
-        self.elastic_constants       = [[0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0]]
-        self.masses_list             = []
-        self.ions_per_type           = []
-        self.ibrion                  = 0
-        self.potim                   = 0.0
-        self.epsilon                 = None
         self.qmreader                = qmreader
         return
 
@@ -73,22 +53,22 @@ class PhonopyOutputReader(GenericOutputReader):
         self.volume                  = self.qmreader.volume
         self.spin                    = self.qmreader.spin
         self.energy_cutoff           = self.qmreader.energy_cutoff
-        self.ediff                   = self.qmreader.ediff
-        self.nelect                  = self.qmreader.nelect
         self.kpoints                 = self.qmreader.kpoints
+        self.kpoint_grid             = self.qmreader.kpoint_grid
         self.nbands                  = self.qmreader.nbands
         self.nions                   = self.qmreader.nions
+        self.ions_per_type           = self.qmreader.ions_per_type
+        self.atom_type_list          = self.qmreader.atom_type_list 
         self.electrons               = self.qmreader.electrons
         self.magnetization           = self.qmreader.magnetization
         self.final_energy_without_entropy = self.qmreader.final_energy_without_entropy
         self.final_free_energy       = self.qmreader.final_free_energy
         self.pressure                = self.qmreader.pressure
-        self._pulay                  = self.qmreader._pulay
-        self.masses_list             = self.qmreader.masses_list
+        self.masses_per_type         = self.qmreader.masses_per_type
         self.ions_per_type           = self.qmreader.ions_per_type
         self.masses                  = self.qmreader.masses
-        self.epsilon                 = self.qmreader.epsilon
-        self.kpoint_grid             = self.qmreader.kpoint_grid
+        self.nspecies                = self.qmreader.nspecies
+        self.species                 = self.qmreader.species
         self.born_charges            = self.qmreader.born_charges
         self.zerof_optical_dielectric= self.qmreader.zerof_optical_dielectric
         self.zerof_static_dielectric = self.qmreader.zerof_static_dielectric
@@ -99,28 +79,33 @@ class PhonopyOutputReader(GenericOutputReader):
     def read_dynamical_matrix(self):
         import yaml
         fd = open("qpoints.yaml")
-        data = yaml.load(fd)
+        data_q = yaml.load(fd)
         fd.close
-        qpoints = data['phonon'][0]['q-position']
+        fd = open("phonopy.yaml")
+        data_p = yaml.load(fd)
+        fd.close
+        print("self.masses",self.masses)
+        self._old_masses = []
+        for i in range(self.nions):
+            self._old_masses.append(data_p['primitive_cell']['points'][i]['mass'])
+        print("self._old_masses",self._old_masses)
+        qpoints = data_q['phonon'][0]['q-position']
         # print('q-points',qpoints)
-        natom = data['natom']
+        natom = data_q['natom']
         # print('natom:',natom)
         dynmat = []
-        dynmat_data = data['phonon'][0]['dynamical_matrix']
+        dynmat_data = data_q['phonon'][0]['dynamical_matrix']
         for row in dynmat_data:
             vals = np.reshape(row, (-1, 2))
             dynmat.append(vals[:, 0] + vals[:, 1] * 1j)
         dynmat = np.array(dynmat)
         # Make sure the hessian is real
         hessian = np.real(dynmat)
-        # We need to convert to au
+        # We need to convert to cm-1
         conversion_factor_to_THz = 15.633302
         conversion_factor_to_cm1 = conversion_factor_to_THz * 33.35641
         conv  = conversion_factor_to_cm1 
         hessian = hessian * conv * conv
-        # Project out the translational modes if requested
-        if self.eckart:
-            hessian = self.project(hessian)
         # Find its eigenvalues and eigen vectors
         eig_val, eig_vec = np.linalg.eigh(hessian)
         self.mass_weighted_normal_modes = []
@@ -138,10 +123,5 @@ class PhonopyOutputReader(GenericOutputReader):
                 mode.append(modea)
             self.mass_weighted_normal_modes.append(mode)
         # end for i
-
-        # eigvals, eigvecs, = np.linalg.eigh(dynmat)
-        # conversion_factor_to_THz = 15.633302
-        # conversion_factor_to_cm1 = conversion_factor_to_THz * 33.35641
-        # Calculate frequencies
-        return self.mass_weighted_normal_modes
+        return
 

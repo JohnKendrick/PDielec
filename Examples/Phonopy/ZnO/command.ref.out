@@ -13,6 +13,8 @@ Program used to perform the phonon calculation was: phonopy
 The file containing the output is: VASP.Born/OUTCAR
 No projection of the dynamical matrix will be performed
 The charge neutrality of the Born atomic charges will not be enforced
+self.masses [65.39, 65.39, 16.0, 16.0]
+self._old_masses [65.38, 65.38, 15.9994, 15.9994]
  
 Shape depolarisation matrix: sphere   
             0.333333       0.000000       0.000000
@@ -44,18 +46,18 @@ Only IR active modes are shown
 Mode Frequency Intensity         Integrated Molar Absorption Epsilon_max   FWHM  
      cm-1      Debye2/Angs2/amu   Coefficient L/mole/cm/cm    L/mole/cm    cm-1  
 ---- --------- ----------------  --------------------------- -----------   ----  
-   4    91.29          0.000000                    0.000009      0.0000      5.0
-   6   350.39         17.094314                72233.735241   9197.0848      5.0
-   7   372.02         16.402293                69309.529478   8824.7634      5.0
-   8   372.02         16.402080                69308.628104   8824.6486      5.0
-  10   402.00          0.000000                    0.000010      0.0000      5.0
-  11   509.33          0.000000                    0.000001      0.0000      5.0
+   4    91.28          0.000000                    0.000009      0.0000      5.0
+   6   350.38         17.094316                72233.740475   9197.0855      5.0
+   7   372.01         16.402301                69309.562782   8824.7676      5.0
+   8   372.01         16.402073                69308.599517   8824.6450      5.0
+   9   401.99          0.000000                    0.000010      0.0000      5.0
+  11   509.32          0.000000                    0.000001      0.0000      5.0
  
  
 Permittivity contribution from ionic displacements
-            5.086907      -0.000000      -0.000107
-           -0.000000       5.086978      -0.000082
-           -0.000107      -0.000082       5.976225
+            5.087213      -0.000000      -0.000107
+           -0.000000       5.087285      -0.000082
+           -0.000107      -0.000082       5.976586
  
 Optical permittivity at zero frequency
             5.739330       0.000000       0.000000
@@ -63,6 +65,6 @@ Optical permittivity at zero frequency
             0.000000       0.000000       5.673771
  
 Total permittivity
-           10.826237      -0.000000      -0.000107
-           -0.000000      10.826308      -0.000082
-           -0.000107      -0.000082      11.649996
+           10.826543      -0.000000      -0.000107
+           -0.000000      10.826615      -0.000082
+           -0.000107      -0.000082      11.650357

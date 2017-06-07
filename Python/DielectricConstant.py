@@ -20,7 +20,7 @@ import math
 import sys
 import cmath
 import numpy as np
-import scipy as sc
+import scipy.optimize as sc
 from Python.Constants import PI, d2byamuang2
 
 
@@ -535,7 +535,7 @@ class DielectricConstant:
         variables = np.array([np.real(trace), np.log(1.0 + np.abs(np.imag(trace)))])
         options = {'xtol': 1.0e-4,
                    'ftol': 1.0E-4}
-        sol = sc.optimize.minimize(self._brug_minimise_tensor, variables, method='Powell', args=(eps1, eps2, shape, L, f1), options=options)
+        sol = sc.minimize(self._brug_minimise_tensor, variables, method='Powell', args=(eps1, eps2, shape, L, f1), options=options)
         if not sol.success:
             print("A Bruggeman solution was not found at this frequency")
         variables = sol.x

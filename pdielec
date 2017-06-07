@@ -20,7 +20,7 @@ import math
 import os
 import sys
 import numpy as np
-from Python.Constants import amu, PI, avogadro_si, wavenumber, angstrom
+from Python.Constants import amu, PI, avogadro_si, wavenumber, angstrom, isotope_masses, average_masses
 from Python.DielectricConstant import DielectricConstant
 from Python.VaspOutputReader import VaspOutputReader
 from Python.PhonopyOutputReader import PhonopyOutputReader
@@ -42,6 +42,7 @@ def main():
         print("        [-optical xx yy zz] [-optical_tensor xx yy zz xy xz yz] [-vmin {:.1f}] [-vmax {:.1f}]".format(vmin, vmax))
         print("        [-vf {:.3f}] ".format(volume_fraction))
         print("        [-mf {:.3f}] ".format(mass_fraction))
+        print("        [-masses program/average/isotope] ")
         print("        [-dielectric {:.4f}] [-density {:.4f}] ".format(matrix_dielectric, matrix_density))
         print("        [-matrix nujol/ptfe/kbr/ldpe/mdpe/hdpe] ")
         print("        [-LO h k l] [-LO_cart x y z]")
@@ -76,6 +77,14 @@ def main():
         print("         -vf 0.1")
         print("             Include the following number as a volume fraction")
         print("             The option can be used more than once")
+        print("         -mf 0.1")
+        print("             Include the following number as a mass fraction")
+        print("             The option can be used more than once")
+        print("         -masses program")
+        print("             By default the atomic masses are defined by the QM/MM program")
+        print("             The options are program/average/isotope           ")
+        print("             average means the weight is average using the natural abundance")
+        print("             isotope means the most abundant isotopic mass is used")
         print("         -print")
         print("           print additional information about the calculation")
         print("         -csv file.csv")
@@ -189,6 +198,7 @@ def main():
     volume_fractions = []
     mass_fractions = []
     mass_fractions_string = []
+    mass_definition = 'program'
     fractional_types = []
     plot_types      = []
     volume_fraction = 0.1
@@ -261,6 +271,11 @@ def main():
             itoken += 1
             volume_fractions.append(float(tokens[itoken]))
             fractional_types.append("vf=%s" % (tokens[itoken]))
+        elif token == "-masses":
+            itoken += 1
+            if tokens[itoken][0] == "p":  mass_definition = "program"
+            if tokens[itoken][0] == "a":  mass_definition = "average"
+            if tokens[itoken][0] == "i":  mass_definition = "isotope"
         elif token == "-mf":
             itoken += 1
             mass_fractions.append(float(tokens[itoken]))
@@ -608,6 +623,15 @@ def main():
         print3x3(title, depolarisations[-1])
     if len(optical) > 0:
         print()
+    # What mass definition are we using?
+    if not mass_definition == "program":
+        print(" ")
+        print("Atomic masses will be defined using: ", mass_definition)
+        print_reals("Old masses by atom types", reader.masses_per_type,format="{:10.6f}")
+        print_reals("Old atomic mass list", reader.masses,format="{:10.6f}")
+        reader.change_masses(mass_definition, isotope_masses, average_masses)
+        print_reals("New masses by atom types", reader.masses_per_type,format="{:10.6f}")
+        print_reals("New atomic mass list", reader.masses,format="{:10.6f}")
     # Define some of the constants
     dielectric_medium = calculator.initialise_diagonal_tensor([matrix_dielectric, matrix_dielectric, matrix_dielectric])
     # access the information as numpy arrays.  Use atomic units for these arrays

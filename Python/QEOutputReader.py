@@ -29,10 +29,7 @@ class QEOutputReader(GenericOutputReader):
     def __init__(self, filenames):
         GenericOutputReader.__init__(self, filenames)
         self.type                    = 'QE output'
-        self.alat                    = None
-        self.mass_species            = None
-        self.magnetization           = None
-        self.pressure                = None
+        self._alat                    = None
         return
 
     def _read_output_files(self):
@@ -76,7 +73,7 @@ class QEOutputReader(GenericOutputReader):
         line = self.file_descriptor.readline()
         self.nspecies = int(line.split()[0])
         self.nions    = int(line.split()[1])
-        self.alat     = float(line.split()[3])
+        self._alat     = float(line.split()[3])
 
     def _read_epsilon(self, line):
         self.file_descriptor.readline()
@@ -90,13 +87,13 @@ class QEOutputReader(GenericOutputReader):
         return
 
     def _read_masses(self):
-        self.mass_species = []
+        self.masses_per_type = []
         self.species      = []
         for i in range(self.nspecies):
             linea = self.file_descriptor.readline().replace('\'', '').split()
-            self.species.append(linea[1])
+            self.species.append(linea[1].capitalize())
             # The factor of two is because au in pwscf are half mass of electron
-            self.mass_species.append(float(linea[2])*2/amu)
+            self.masses_per_type.append(float(linea[2])*2/amu)
         self._read_cartesian_coordinates()
         return
 
@@ -147,11 +144,11 @@ class QEOutputReader(GenericOutputReader):
 
     def _read_lattice_vectors(self, line):
         linea = self.file_descriptor.readline().split()
-        avector = [float(f)*self.alat/angs2bohr for f in linea[0:3]]
+        avector = [float(f)*self._alat/angs2bohr for f in linea[0:3]]
         linea = self.file_descriptor.readline().split()
-        bvector = [float(f)*self.alat/angs2bohr for f in linea[0:3]]
+        bvector = [float(f)*self._alat/angs2bohr for f in linea[0:3]]
         linea = self.file_descriptor.readline().split()
-        cvector = [float(f)*self.alat/angs2bohr for f in linea[0:3]]
+        cvector = [float(f)*self._alat/angs2bohr for f in linea[0:3]]
         self.unit_cells.append(UnitCell(avector, bvector, cvector))
         self.ncells = len(self.unit_cells)
         self.volume = self.unit_cells[-1].volume
@@ -159,11 +156,15 @@ class QEOutputReader(GenericOutputReader):
         return
 
     def _read_cartesian_coordinates(self):
-        self.ions = []
+        self.cartesian_cordinates = []
         self.masses = []
+        self.atom_type_list = []
+        self.ions_per_type = [ 0 for i in range(self.nspecies) ]
         for i in range(self.nions):
             linea = self.file_descriptor.readline().split()
             species = int(linea[1])
-            self.ions.append([float(linea[2]), float(linea[3]), float(linea[4])])
-            self.masses.append(self.mass_species[species-1])
+            self.cartesian_cordinates.append([float(linea[2]), float(linea[3]), float(linea[4])])
+            self.masses.append(self.masses_per_type[species-1])
+            self.atom_type_list.append(species-1)
+            self.ions_per_type[species-1] += 1
         return

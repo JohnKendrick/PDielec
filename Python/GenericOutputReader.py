@@ -19,9 +19,10 @@ from __future__ import print_function
 import math
 import os
 import sys
+import string
 import numpy as np
-from Python.Constants import wavenumber, avogadro_si
-from Python.Plotter import print3x3, print_reals
+from Python.Constants import wavenumber, avogadro_si, atomic_number_to_element
+from Python.Plotter import print3x3, print_reals, print_strings, print_ints
 
 
 class GenericOutputReader:
@@ -32,23 +33,26 @@ class GenericOutputReader:
         self.names                      = [os.path.abspath(f) for f in filenames]
         self.debug                      = False
         self.type                       = 'Unkown'
-        self.ncells                     = None
-        self.nsteps                     = None
-        self.formula                    = None
-        self.electrons                  = None
-        self.volume                     = None
-        self.nions                      = None
-        self.nspecies                   = None
-        self.final_free_energy          = None
-        self.final_energy_without_entropy = None
-        self.kpoints                    = None
-        self.kpoint_grid                = [ None, None, 0 ]
-        self.energy_cutoff              = None
-        self.unit_cells                  = []
-        self.born_charges               = []
+        self.ncells                     = 0
+        self.unit_cells                 = []
+        self.nsteps                     = 0
+        self.electrons                  = 0
+        self.spin                       = 0
+        self.nbands                     = 0
+        self.volume                     = 0
+        self.nions                      = 0
+        self.nspecies                   = 0
         self.species                    = []
+        self.final_free_energy          = 0.0
+        self.final_energy_without_entropy = 0.0
+        self.kpoints                    = 1
+        self.kpoint_grid                = [ 1, 1, 1 ]
+        self.energy_cutoff              = 0.0
+        self.born_charges               = []
         self.manage                     = {}
-        self.file_descriptor            = None
+        self.file_descriptor            = ''
+        self.pressure                   = 0
+        self.magnetization              = 0.0
         # this in epsilon infinity
         self.zerof_optical_dielectric   = [[0, 0, 0], [0, 0, 0], [0, 0, 0]]
         # this is the zero frequency static dielectric constant
@@ -56,13 +60,16 @@ class GenericOutputReader:
         self.elastic_constants          = [[0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0]]
         self.frequencies                = []
         self.mass_weighted_normal_modes = []
+        self.ions_per_type              = []
+        self.atom_type_list             = []
         self.masses                     = []
-        self.ions                       = []
+        self.masses_per_type            = []
         self.eckart                     = False
         self.neutral                    = False
         self.hessian_symmetrisation     = "symm"
         self.open_filename              = ""
         self.open_directory             = ""
+        self._old_masses                = []
         return
 
     def read_output(self):
@@ -70,16 +77,66 @@ class GenericOutputReader:
         self._read_output_files()
         return
 
+    def cleanup_symbol(self,s):
+        """Return a true element from the symbol"""
+        s = s.capitalize()
+        s = s.replace('_','')
+        for i in string.digits:
+            s = s.replace(i,'')
+        return s
+
+    def change_masses(self, definition, isotope_masses, average_masses):
+        self._old_masses = self.masses
+        self.masses = []
+        self.masses_per_type = []
+        if definition == "average":
+            for symbol in self.species:
+                # the element name may be appended with a digit or an underscore
+                element = self.cleanup_symbol(symbol)
+                self.masses_per_type.append(average_masses[element])
+             # end for symbol
+        elif definition == "isotope":
+            for symbol in self.species:
+                # the element name may be appended with a digit or an underscore
+                element = self.cleanup_symbol(symbol)
+                abmax = 0.0
+                for iso in isotope_masses[element]:
+                    weight = iso[1]
+                    abundance = iso[2]
+                    if abundance > abmax:
+                        abmax = abundance
+                        weightmax = weight
+                # end of for iso 
+                self.masses_per_type.append(weightmax)
+            # end of for symbol
+        else:
+            print('Error, mass definition not recognised',definition)
+            exit()
+        self.masses = [ self.masses_per_type[atype] for atype in self.atom_type_list ]
+        return
+
     def print_info(self):
         """Print information about the system"""
         # Generic printing of information
+        print("")
+        print("Summary of information contained in the QM/MM Reader")
+        print("")
         print("Number of atoms: {:5d}".format(self.nions))
+        print("")
         print("Number of species: {:5d}".format(self.nspecies))
+        print_strings("Species:", self.species)
+        print_ints("Number of atoms for each species:", self.ions_per_type)
+        print_reals("Mass of each species:", self.masses_per_type,format="{:10.6f}")
+        print_ints("Atom type list:", self.atom_type_list)
+        print("")
         print("Number of kpoints: {:5d}".format(self.kpoints))
+        print("")
         print("Kpoint grid      : {:5d} {:5d} {:5d}".format(self.kpoint_grid[0], self.kpoint_grid[1], self.kpoint_grid[2]))
+        print("")
         print("Energy cutoff (eV): {:f}".format(self.energy_cutoff))
+        print("")
         print_reals("Frequencies (cm-1):", self.frequencies)
-        print_reals("Masses (amu):", self.masses)
+        print_reals("Masses (amu):", self.masses,format="{:10.6f}")
         for i, charges in enumerate(self.born_charges):
             title = "Born Charges for Atom {:d}".format(i)
             print3x3(title, charges)
@@ -187,6 +244,10 @@ class GenericOutputReader:
         hessian = np.dot(np.dot(UT.T, f2), UT)
         # Make sure the dynamical matrix is real
         hessian = np.real(hessian)
+        # If the masses have been changed then alter the mass weighted hessian here
+        if len(self._old_masses) > 0: 
+            hessian = self._modify_mass_weighting(hessian,self._old_masses,self.masses)
+            self._old_masses = []
         # Project out the translational modes if requested
         if self.eckart:
             hessian = self.project(hessian)
@@ -268,6 +329,11 @@ class GenericOutputReader:
         # Project out the translational modes if requested
         if self.eckart:
             hessian = self.project(hessian)
+        #
+        # If the masses have been changed then alter the mass weighted hessian here
+        if len(self._old_masses) > 0: 
+            hessian = self._modify_mass_weighting(hessian,self._old_masses,self.masses)
+            self._old_masses = []
         # diagonalise
         eig_val, eig_vec = np.linalg.eigh(hessian, UPLO=uplo)
         #
@@ -304,3 +370,23 @@ class GenericOutputReader:
         new_born_charges = born_charges - total
         self.born_charges = new_born_charges.tolist()
         return
+
+    def _modify_mass_weighting(self,hessian,old,new):
+        #
+        # Remove the mass weighting imposed by the QM/MM program - defined in old
+        # Replace by PDielec mass weighting - defined in new
+        #
+        ipos = -1
+        for i in range(self.nions):
+            for ix in range(3):
+                ipos += 1
+                jpos = -1
+                for j in range(self.nions):
+                    for jx in range(3):
+                        jpos += 1
+                        hessian[ipos,jpos] = hessian[ipos,jpos] * math.sqrt( old[i]*old[j] / ( new[i]*new[j] ))
+                    # end for jx
+                # end for j
+            # end for ix
+        # end for i
+        return hessian

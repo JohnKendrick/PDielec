@@ -33,9 +33,7 @@ class CrystalOutputReader(GenericOutputReader):
     def __init__(self, filenames):
         GenericOutputReader.__init__(self, filenames)
         self.type                    = 'Crystal output'
-        self.species                 = []
-        self.magnetization           = None
-        self.pressure                = None
+        self._fractional_coordinates = []
         return
 
     def _read_output_files(self):
@@ -47,7 +45,6 @@ class CrystalOutputReader(GenericOutputReader):
         self.manage['bornCharges']  = (re.compile(' ATOMIC BORN CHARGE TENSOR'), self._read_born_charges)
         self.manage['eigenvectors']  = (re.compile(' NORMAL MODES NORMALIZ'), self._read_eigenvectors)
         self.manage['staticIonic']  = (re.compile(' SUM TENSOR OF THE VIBRATIONAL CONTRIBUTIONS TO '), self._read_ionic_dielectric)
-        self.manage['noeckart']  = (re.compile('.* REMOVING ECKART CONDITIONS'), self._read_eckart)
         self.manage['epsilon']  = (re.compile(' SUSCEPTIBILITY '), self._read_epsilon)
         self.manage['kpoints']  = (re.compile(' SHRINK\. FACT\.\('), self._read_kpoints)
         self.manage['electrons']  = (re.compile(' N\. OF ELECTRONS'), self._read_electrons)
@@ -100,20 +97,18 @@ class CrystalOutputReader(GenericOutputReader):
         self.zerof_optical_dielectric = optical_dielectric
         return
 
-    def _read_eckart(self, line):
-        # We are going to ignore this in the input, as it is now handled by PDielec
-        # self.eckart = False
-        return
-
     def _read_masses(self, line):
         line = self.file_descriptor.readline()
         line = self.file_descriptor.readline()
         n = 2
+        self.masses_per_type = [ 0 for i in range(self.nspecies) ]
         for i in range(self.nions):
             if n > 11:
                 line = self.file_descriptor.readline()
                 n = 2
-            self.masses.append(float(line.split()[n]))
+            mass = float(line.split()[n])
+            self.masses.append(mass)
+            self.masses_per_type[self.atom_type_list[i]] = mass
             n = n + 3
         return
 
@@ -291,16 +286,26 @@ class CrystalOutputReader(GenericOutputReader):
         self.ncells = len(self.unit_cells)
         self.volume = self.unit_cells[-1].volume
         # The fractional coordinates are specified before the lattice vectors
-        self.unit_cells[-1].set_fractional_coordinates(self.ions)
+        self.unit_cells[-1].set_fractional_coordinates(self._fractional_coordinates)
         return
 
     def _read_fractional_coordinates(self, line):
         self.nions = int(line.split()[12])
         line = self.file_descriptor.readline()
         line = self.file_descriptor.readline()
-        self.ions = []
+        self._fractional_coordinates = []
+        self.species = []
+        self.atom_type_list = []
         for i in range(self.nions):
             line = self.file_descriptor.readline()
-            self.species.append(line.split()[3])
-            self.ions.append([float(line.split()[4]), float(line.split()[5]), float(line.split()[6])])
+            species = line.split()[3].capitalize()
+            if species not in self.species:
+                self.species.append(species)
+            species_index = self.species.index(species)
+            self.atom_type_list.append(species_index)
+            self._fractional_coordinates.append([float(line.split()[4]), float(line.split()[5]), float(line.split()[6])])
+        self.nspecies = len(self.species)
+        self.ions_per_type = [ 0 for i in range(self.nspecies) ]
+        for species_index in self.atom_type_list:
+            self.ions_per_type[species_index] += 1
         return

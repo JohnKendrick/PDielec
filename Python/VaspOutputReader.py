@@ -20,6 +20,7 @@ import os
 import numpy as np
 from Python.UnitCell import UnitCell
 from Python.GenericOutputReader import GenericOutputReader
+from Python.Constants           import atomic_number_to_element
 
 
 class VaspOutputReader(GenericOutputReader):
@@ -28,26 +29,11 @@ class VaspOutputReader(GenericOutputReader):
     def __init__(self, names):
         GenericOutputReader.__init__(self, names)
         self.type                    = 'Vasp output'
-        self.pspots                  = {}
-        self.ncells                  = 0
-        self.spin                    = 0
-        self.energy_cutoff           = 0.0
-        self.ediff                   = 0.0
-        self.nelect                  = 0
-        self.kpoints                 = 0
-        self.nbands                  = 0
-        self.electrons               = 0.0
-        self.magnetization           = 0.0
-        self.final_energy_without_entropy = 0
-        self.final_free_energy       = 0
-        self.pressure                = None
+        self._pspots                  = {}
+        self._ediff                   = 0.0
         self._pulay                  = None
-        self.elastic_constants       = [[0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0]]
-        self.masses_list             = []
-        self.ions_per_type           = []
-        self.ibrion                  = 0
-        self.potim                   = 0.0
-        self.epsilon                 = None
+        self._ibrion                  = 0
+        self._potim                   = 0.0
         return
 
     def _read_output_files(self):
@@ -64,7 +50,6 @@ class VaspOutputReader(GenericOutputReader):
         self.manage['ibrion']       = (re.compile('   IBRION = '), self._read_ibrion)
         self.manage['potim']        = (re.compile('   POTIM  = '), self._read_potim)
         self.manage['nelect']       = (re.compile('   NELECT = '), self._read_nelect)
-        self.manage['epsilon']      = (re.compile('   LEPSILON= '), self._read_epsilon)
         self.manage['lattice']      = (re.compile('  volume of cell :'), self._read_lattice_vectors)
         self.manage['fractional']   = (re.compile(' position of ions in fractional coordinates'), self._read_fractional_coordinates)
         self.manage['energy']       = (re.compile('  FREE ENERGIE OF THE ION'), self._read_energy)
@@ -78,8 +63,21 @@ class VaspOutputReader(GenericOutputReader):
         self.manage['eigenskip']    = (re.compile(' Eigenvectors after division'), self._read_skip4)
         self.manage['elastic']      = (re.compile(' TOTAL ELASTIC MODULI'), self._read_elastic_constants)
         self.manage['kpoint']      = (re.compile('^Gamma'), self._read_kpoint_grid)
+        self.manage['species']      = (re.compile('^ *Atomic configuration'), self._read_species)
         for f in self._outputfiles:
             self._read_output_file(f)
+        return
+
+    def _read_species(self, line):
+        line = self.file_descriptor.readline()
+        nlines = int(line.split()[0])
+        line = self.file_descriptor.readline()
+        zcharge = 0.0
+        for i in range(nlines):
+            line = self.file_descriptor.readline()
+            zcharge = zcharge + float(line.split()[4])
+        self.species.append(atomic_number_to_element[int(zcharge+0.001)])
+        self.nspecies = len(self.species)
         return
 
     def _read_kpoint_grid(self, line):
@@ -91,9 +89,10 @@ class VaspOutputReader(GenericOutputReader):
         self.ions_per_type = [int(i) for i in line.split()[4:]]
         self.nspecies = len(self.ions_per_type)
         self.masses = []
-        for k, mass in enumerate(self.masses_list):
+        for k, mass in enumerate(self.masses_per_type):
             n = self.ions_per_type[k]
             for i in range(0, n):
+                self.atom_type_list.append(k)
                 self.masses.append(mass)
             # end loop over i
         # end look over current know types
@@ -102,7 +101,7 @@ class VaspOutputReader(GenericOutputReader):
     def _read_masses(self, line):
         mass_string = line.split()[2]
         mass_string = mass_string.replace(";", "")
-        self.masses_list.append(float(mass_string))
+        self.masses_per_type.append(float(mass_string))
         return
 
     def _read_eigenvectors(self, line):
@@ -223,7 +222,7 @@ class VaspOutputReader(GenericOutputReader):
         return
 
     def _read_pspot(self, line):
-        self.pspots[line.split()[2]] = line.split()[1]
+        self._pspots[line.split()[2]] = line.split()[1]
         return
 
     def _read_array_dimensions(self, line):
@@ -268,26 +267,19 @@ class VaspOutputReader(GenericOutputReader):
         return
 
     def _read_ediff(self, line):
-        self.ediff = float(line.split()[2])
+        self._ediff = float(line.split()[2])
         return
 
     def _read_ibrion(self, line):
-        self.ibrion = int(line.split()[2])
+        self._ibrion = int(line.split()[2])
         return
 
     def _read_potim(self, line):
-        self.potim = float(line.split()[2])
+        self._potim = float(line.split()[2])
         return
 
     def _read_nelect(self, line):
-        self.nelect = int(float(line.split()[2]))
-        return
-
-    def _read_epsilon(self, line):
-        var = line.split()[2].lower()
-        self.epsilon = False
-        if var == '.true.' or var == 't' or var == 'true':
-            self.epsilon = True
+        self.electrons = int(float(line.split()[2]))
         return
 
     def _read_magnet(self, line):

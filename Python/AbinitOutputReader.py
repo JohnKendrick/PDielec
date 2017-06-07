@@ -24,7 +24,7 @@
 import re
 import math
 import numpy as np
-from Python.Constants import amu, angs2bohr
+from Python.Constants import amu, angs2bohr, atomic_number_to_element
 from Python.UnitCell import UnitCell
 from Python.GenericOutputReader import GenericOutputReader
 
@@ -40,13 +40,8 @@ class AbinitOutputReader(GenericOutputReader):
     def __init__(self, filenames):
         GenericOutputReader.__init__(self, filenames)
         self.type = 'Abinit output files'
-        self.acell = None
-        self.nspecies = None
-        self.charges = None
-        self.typmasses = None
-        self.magnetization = None
-        self.final_energy_without_entropy = None
-        self.pressure = None
+        self._acell = None
+        self._charges = None
         return
 
     def _read_output_files(self):
@@ -71,8 +66,17 @@ class AbinitOutputReader(GenericOutputReader):
         self.manage['kptrlatt']    = (re.compile('         kptrlatt '), self._read_kpoint_grid)
         self.manage['electrons']    = (re.compile('  fully or partial'), self._read_electrons)
         self.manage['pressure']    = (re.compile('-Cartesian.*GPa'), self._read_pressure)
+        self.manage['znucl']    = (re.compile('^  *znucl'), self._read_species)
         for f in self._outputfiles:
             self._read_output_file(f)
+        return
+
+    def _read_species(self, line):
+        self.species = []
+        for z in line.split()[1:]:
+            iz = int(float(z)+0.001)
+            self.species.append(atomic_number_to_element[iz].capitalize())
+        self.nspecies = len(self.species)
         return
 
     def _read_band(self, line):
@@ -112,7 +116,7 @@ class AbinitOutputReader(GenericOutputReader):
         return
 
     def _read_acell(self, line):
-        self.acell = [float(f)/angs2bohr for f in line.split()[1:4]]
+        self._acell = [float(f)/angs2bohr for f in line.split()[1:4]]
         return
 
     def _read_ntypat(self, line):
@@ -121,10 +125,12 @@ class AbinitOutputReader(GenericOutputReader):
 
     def _read_typat(self, line):
         # typat occurs last in the list of data items we need from the output file
-        typat = [int(i) for i in line.split()[1:]]
+        self.atom_type_list = [int(i)-1 for i in line.split()[1:]]
         self.masses = [None for i in range(self.nions)]
-        for i, a in enumerate(typat):
-            self.masses[i] = self.typmasses[a-1]
+        self.ions_per_type = [0 for i in range(self.nspecies)]
+        for i, a in enumerate(self.atom_type_list):
+            self.ions_per_type[a-1] += 1
+            self.masses[i] = self.masses_per_type[a]
         return
 
     def _read_epsilon(self, line):
@@ -143,11 +149,11 @@ class AbinitOutputReader(GenericOutputReader):
     def _read_natom(self, line):
         self.nions = int(line.split()[1])
         # We can only create this once we know the number of ions
-        self.charges = np.zeros((self.nions, 3, 3))
+        self._charges = np.zeros((self.nions, 3, 3))
         return
 
     def _read_masses(self, line):
-        self.typmasses = [float(f) for f in line.split()[1:]]
+        self.masses_per_type = [float(f) for f in line.split()[1:]]
         return
 
     def _read_dynamical(self, line):
@@ -197,13 +203,13 @@ class AbinitOutputReader(GenericOutputReader):
                 ifield = int(linea[0])
                 ixyz   = int(linea[2])
                 iatom  = int(linea[3])
-            self.charges[iatom-1][ifield-1][ixyz-1] += 0.5*float(linea[4])
+            self._charges[iatom-1][ifield-1][ixyz-1] += 0.5*float(linea[4])
         # Convert the charges
         self.born_charges = []
         for i in range(self.nions):
             atom = []
             for ifield in range(3):
-                b = self.charges[i][ifield][:].tolist()
+                b = self._charges[i][ifield][:].tolist()
                 atom.append(b)
             self.born_charges.append(atom)
         if self.neutral:
@@ -217,9 +223,9 @@ class AbinitOutputReader(GenericOutputReader):
         bvector = [float(linea[0]), float(linea[1]), float(linea[2])]
         linea = self.file_descriptor.readline().split()
         cvector = [float(linea[0]), float(linea[1]), float(linea[2])]
-        avector = [f * self.acell[0] for f in avector]
-        bvector = [f * self.acell[1] for f in bvector]
-        cvector = [f * self.acell[2] for f in cvector]
+        avector = [f * self._acell[0] for f in avector]
+        bvector = [f * self._acell[1] for f in bvector]
+        cvector = [f * self._acell[2] for f in cvector]
         self.unit_cells.append(UnitCell(avector, bvector, cvector))
         self.ncells = len(self.unit_cells)
         self.volume = self.unit_cells[-1].volume

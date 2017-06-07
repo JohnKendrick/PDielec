@@ -50,23 +50,14 @@ class CastepOutputReader(GenericOutputReader):
         self._outputfiles            = [self._castepfile, self._phononfile]
         self.type                    = 'Castep output'
         # Specific Castep Reader Variables
-        self.pspots                  = {}
-        self.spin                    = 0
-        self.energy_cutoff           = 0.0
-        self.ediff                   = 0.0
-        self.epsilon                 = None
-        self.nbands                  = 0
+        self._pspots                  = {}
+        self._ediff                   = 0.0
+        self._epsilon                 = None
         self._nbranches              = 0
-        self.species                 = []
-        self.final_energy_without_entropy = 0.0
-        self.pressure                = None
         self._pulay                  = None
-        self.masses_dictionary       = {}
-        self.ions_per_type           = []
         self._ion_type_index         = {}
         self._ion_index_type         = {}
-        self.intensities             = None
-        self.magnetization           = None
+        self._intensities             = None
         return
 
     def _read_output_files(self):
@@ -120,13 +111,13 @@ class CastepOutputReader(GenericOutputReader):
             normal_modes.append(a)
         # end for imode
         self.frequencies = []
-        self.intensities = []
+        self._intensities = []
         self.mass_weighted_normal_modes = []
         # now reads all frequencies imaginary or not
         # imaginary frequencies are indicated by real negative values
         for i, freq in enumerate(frequencies):
             self.frequencies.append(freq)
-            self.intensities.append(intensities[i])
+            self._intensities.append(intensities[i])
             self.mass_weighted_normal_modes.append(normal_modes[i])
             # end of if freq
         # end of for freq
@@ -145,7 +136,7 @@ class CastepOutputReader(GenericOutputReader):
         return
 
     def _read_pseudoatom(self, line):
-        species = line.split()[5]
+        species = line.split()[5].capitalize()
         # These are two private dictionary to map the species name to a type index
         self.species.append(species)
         self._ion_type_index[species] = self.nspecies
@@ -179,14 +170,16 @@ class CastepOutputReader(GenericOutputReader):
         fractional_coordinates = []
         # ions_per_type is a dictionary here and is local
         ions_per_type = {}
+        self.atom_type_list = []
         if len(self.unit_cells) == 1:
             self.species = []
             for i in range(self.nions):
                 line = self.file_descriptor.readline()
-                atom_type = line.split()[1]
+                atom_type = line.split()[1].capitalize()
                 if atom_type not in ions_per_type:
                     self.species.append(atom_type)
                     ions_per_type[atom_type] = 0
+                self.atom_type_list.append(self.species.index(atom_type))
                 ions_per_type[atom_type] += 1
                 atom_frac = [float(f) for f in line.split()[3:6]]
                 fractional_coordinates.append(atom_frac)
@@ -200,11 +193,12 @@ class CastepOutputReader(GenericOutputReader):
 
     def _read_masses(self, line):
         self.masses = []
+        self.masses_per_type = []
         for i in range(self.nspecies):
             line = self.file_descriptor.readline()
             species = line.split()[0]
             mass = float(line.split()[1])
-            self.masses_dictionary[species] = mass
+            self.masses_per_type.append(mass)
             nions = self.ions_per_type[i]
             for j in range(nions):
                 self.masses.append(mass)
@@ -269,7 +263,7 @@ class CastepOutputReader(GenericOutputReader):
     def _read_pspot(self, line):
         for i in range(self.nspecies):
             line = self.file_descriptor.readline()
-            self.pspots[line.split()[0]] = line.split()[1]
+            self._pspots[line.split()[0]] = line.split()[1]
         return
 
     def _read_spin(self, line):
@@ -281,7 +275,7 @@ class CastepOutputReader(GenericOutputReader):
         return
 
     def _read_ediff(self, line):
-        self.ediff = float(line.split()[2])
+        self._ediff = float(line.split()[2])
         return
 
     def _read_nelect(self, line):
