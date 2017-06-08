@@ -1,3 +1,8 @@
+Version 3.0.0
+Fixed a bug in the way born charges were read in by the Crystal interface.
+Added a Phonopy interface (only the VASP driver in Phonopy has been tested)
+Added an internal table of masses to PDielec so that a consistent set of masses is used across all QM/MM programs
+
 Version 2.0.1
 Fixed a small error in the logic for printing to csv using -csv_ext
 Modified the reading of Crystal14 ouput so that the NOECKART flag  in the output file is now ignored and overriden by the PDielec -noeckart flag
