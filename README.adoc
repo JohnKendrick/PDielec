@@ -26,9 +26,9 @@ An auxilliary program, preader, is also distributed.  This command summarises th
  git clone https://github.com/JohnKendrick/PDielec.git
 
 === Linux
-Both Python 2.7 and Python 3 or supported.  Install Python using the package manager for your version of Linux.  In addition install python versions of numpy, scipy and matplotlib.  In Ubuntu they are installed by;
+Both Python 2.7 and Python 3 or supported.  Install Python using the package manager for your version of Linux.  In addition install python versions of yaml, numpy, scipy and matplotlib.  In Ubuntu they are installed by;
 
- sudo apt-get install python-dev python-numpy python-scipy python-matplotlib
+ sudo apt-get install yaml python-dev python-numpy python-scipy python-matplotlib
 
 Put the PDielec directory in your executable path, eg;
 
