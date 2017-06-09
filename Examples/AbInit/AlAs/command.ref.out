@@ -28,9 +28,23 @@ Shape depolarisation matrix: plate (1,0,0) xyz=[-0.577350,0.577350,0.577350]
             0.333333      -0.333333      -0.333333
            -0.333333       0.333333       0.333333
            -0.333333       0.333333       0.333333
+ 
+Atomic masses will be defined using:  average
+ 
+Old masses by atom types
+  26.981539  74.921590
+ 
+Old atomic mass list
+  26.981539  74.921590
+ 
+New masses by atom types
+  26.981539  74.921600
+ 
+New atomic mass list
+  26.981539  74.921600
 
 Volume of unit cell is    44.24758303 Angstrom^3
-Total unit cell mass is:   101.90312900 g/mol
+Total unit cell mass is:   101.90313860 g/mol
 Crystal density is:   3.82426 g/cc
 
 
@@ -41,9 +55,9 @@ Only IR active modes are shown
 Mode Frequency Intensity         Integrated Molar Absorption Epsilon_max   FWHM  
      cm-1      Debye2/Angs2/amu   Coefficient L/mole/cm/cm    L/mole/cm    cm-1  
 ---- --------- ----------------  --------------------------- -----------   ----  
-   3   344.26          5.179774                21887.651657   2786.8224      5.0
-   4   344.26          5.179774                21887.652175   2786.8224      5.0
-   5   344.26          5.179774                21887.651244   2786.8223      5.0
+   3   344.26          5.179774                21887.651109   2786.8223      5.0
+   4   344.26          5.179774                21887.651626   2786.8224      5.0
+   5   344.26          5.179773                21887.650695   2786.8222      5.0
  
  
 Permittivity contribution from ionic displacements

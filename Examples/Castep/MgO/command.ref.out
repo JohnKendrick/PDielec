@@ -20,6 +20,20 @@ Shape depolarisation matrix: needle [0,0,1] xyz=[0.000000,0.707107,0.707107]
             0.500000       0.000000       0.000000
             0.000000       0.250000      -0.250000
             0.000000      -0.250000       0.250000
+ 
+Atomic masses will be defined using:  average
+ 
+Old masses by atom types
+  15.999400  24.305000
+ 
+Old atomic mass list
+  15.999400  24.305000
+ 
+New masses by atom types
+  15.999400  24.305000
+ 
+New atomic mass list
+  15.999400  24.305000
 
 Volume of unit cell is    19.14979700 Angstrom^3
 Total unit cell mass is:    40.30440000 g/mol

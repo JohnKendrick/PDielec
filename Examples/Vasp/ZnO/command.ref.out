@@ -26,10 +26,24 @@ Shape depolarisation matrix: needle [0,0,1] xyz=[0.000000,0.000000,1.000000]
             0.500000       0.000000       0.000000
             0.000000       0.500000       0.000000
             0.000000       0.000000       0.000000
+ 
+Atomic masses will be defined using:  average
+ 
+Old masses by atom types
+  65.390000  16.000000
+ 
+Old atomic mass list
+  65.390000  65.390000  16.000000  16.000000
+ 
+New masses by atom types
+  65.380000  15.999400
+ 
+New atomic mass list
+  65.380000  65.380000  15.999400  15.999400
 
 Volume of unit cell is    49.69000000 Angstrom^3
-Total unit cell mass is:   162.78000000 g/mol
-Crystal density is:   5.43978 g/cc
+Total unit cell mass is:   162.75880000 g/mol
+Crystal density is:   5.43907 g/cc
 
 The density of the supporting matrix is    2.2000 g/cc
 Converting the following mass fractions to volume fractions:
@@ -42,17 +56,17 @@ Only IR active modes are shown
 Mode Frequency Intensity         Integrated Molar Absorption Epsilon_max   FWHM  
      cm-1      Debye2/Angs2/amu   Coefficient L/mole/cm/cm    L/mole/cm    cm-1  
 ---- --------- ----------------  --------------------------- -----------   ----  
-   3    91.24          0.000000                    0.000007      0.0000      5.0
-   6   349.98         17.117855                72333.209719   9209.7503      5.0
-   7   372.08         16.425567                69407.875221   8837.2851      5.0
-   8   372.08         16.425661                69408.273274   8837.3358      5.0
-  10   402.05          0.000000                    0.000010      0.0000      5.0
+   4    91.25          0.000000                    0.000007      0.0000      5.0
+   6   349.99         17.118884                72337.557354   9210.3039      5.0
+   7   372.09         16.426554                69412.046742   8837.8163      5.0
+   8   372.09         16.426648                69412.444923   8837.8670      5.0
+   9   402.06          0.000000                    0.000010      0.0000      5.0
  
  
 Permittivity contribution from ionic displacements
-            5.092627      -0.000000      -0.000118
-           -0.000000       5.092656      -0.000104
-           -0.000118      -0.000104       5.998594
+            5.092626      -0.000000      -0.000118
+           -0.000000       5.092655      -0.000104
+           -0.000118      -0.000104       5.998592
  
 Optical permittivity at zero frequency
             5.738971       0.000000       0.000000
@@ -60,6 +74,6 @@ Optical permittivity at zero frequency
            -0.000000       0.000000       5.673464
  
 Total permittivity
-           10.831598      -0.000000      -0.000118
-           -0.000000      10.831627      -0.000104
-           -0.000118      -0.000104      11.672058
+           10.831597      -0.000000      -0.000118
+           -0.000000      10.831626      -0.000104
+           -0.000118      -0.000104      11.672056

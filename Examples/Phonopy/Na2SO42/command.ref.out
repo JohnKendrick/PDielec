@@ -30,6 +30,15 @@ Shape depolarisation matrix: plate (1,0,0) xyz=[0.956543,0.120767,0.265406]
             0.914975       0.115519       0.253873
             0.115519       0.014585       0.032052
             0.253873       0.032052       0.070441
+ 
+Atomic masses will be defined using:  program
+ 
+Masses by atom types
+  22.990000  32.066000  16.000000
+ 
+Atomic mass list
+  22.990000  22.990000  32.066000  32.066000  16.000000  16.000000  16.000000  16.000000
+  16.000000  16.000000  16.000000  16.000000
 
 Volume of unit cell is   146.34000000 Angstrom^3
 Total unit cell mass is:   238.11200000 g/mol

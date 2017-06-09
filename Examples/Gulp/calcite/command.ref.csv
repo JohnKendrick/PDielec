@@ -1,4 +1,4 @@
-../../../pdielec -matrix ptfe -method ap -method maxwell -sphere -plate -1 -1 -2 -vmin 0 -vmax 2000 -vf 0.1 calcite.gout -csv command1.csv
+../../../pdielec -matrix ptfe -method ap -method maxwell -sphere -plate -1 -1 -2 -vmin 0 -vmax 2000 -vf 0.1 calcite.gout -masses program -csv command1.csv
 Mode,Frequency,Intensity        ,Integrated Molar Absorption,Epsilon_max,  FWHM  
     ,cm-1     ,Debye2/Angs2/amu , Coefficient L/mole/cm/cm  , L/mole/cm ,  cm-1  
 ----,---------,---------------- ,---------------------------, --------- ,  ----  

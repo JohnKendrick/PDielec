@@ -81,10 +81,11 @@ def main():
         print("             Include the following number as a mass fraction")
         print("             The option can be used more than once")
         print("         -masses program")
-        print("             By default the atomic masses are defined by the QM/MM program")
+        print("             By default the atomic masses are defined by the average weight")
         print("             The options are program/average/isotope           ")
-        print("             average means the weight is average using the natural abundance")
+        print("             average means the weight is averaged using the natural abundance")
         print("             isotope means the most abundant isotopic mass is used")
+        print("             program means that the QM/MM programs masses are used")
         print("         -print")
         print("           print additional information about the calculation")
         print("         -csv file.csv")
@@ -198,7 +199,7 @@ def main():
     volume_fractions = []
     mass_fractions = []
     mass_fractions_string = []
-    mass_definition = 'program'
+    mass_definition = 'average'
     fractional_types = []
     plot_types      = []
     volume_fraction = 0.1
@@ -632,6 +633,11 @@ def main():
         reader.change_masses(mass_definition, isotope_masses, average_masses)
         print_reals("New masses by atom types", reader.masses_per_type,format="{:10.6f}")
         print_reals("New atomic mass list", reader.masses,format="{:10.6f}")
+    else:
+        print(" ")
+        print("Atomic masses will be defined using: ", mass_definition)
+        print_reals("Masses by atom types", reader.masses_per_type,format="{:10.6f}")
+        print_reals("Atomic mass list", reader.masses,format="{:10.6f}")
     # Define some of the constants
     dielectric_medium = calculator.initialise_diagonal_tensor([matrix_dielectric, matrix_dielectric, matrix_dielectric])
     # access the information as numpy arrays.  Use atomic units for these arrays

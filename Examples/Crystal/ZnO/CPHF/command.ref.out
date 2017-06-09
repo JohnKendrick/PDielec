@@ -28,6 +28,14 @@ Shape depolarisation matrix: plate (1,0,0) xyz=[1.000000,0.000000,0.000000]
             1.000000       0.000000       0.000000
             0.000000       0.000000       0.000000
             0.000000       0.000000       0.000000
+ 
+Atomic masses will be defined using:  program
+ 
+Masses by atom types
+  63.929100  15.994900
+ 
+Atomic mass list
+  63.929100  63.929100  15.994900  15.994900
 
 Volume of unit cell is    49.16470602 Angstrom^3
 Total unit cell mass is:   159.84800000 g/mol
@@ -147,10 +155,24 @@ Shape depolarisation matrix: sphere
             0.333333       0.000000       0.000000
             0.000000       0.333333       0.000000
             0.000000       0.000000       0.333333
+ 
+Atomic masses will be defined using:  average
+ 
+Old masses by atom types
+  63.929100  15.994900
+ 
+Old atomic mass list
+  63.929100  63.929100  15.994900  15.994900
+ 
+New masses by atom types
+  65.380000  15.999400
+ 
+New atomic mass list
+  65.380000  65.380000  15.999400  15.999400
 
 Volume of unit cell is    49.16470602 Angstrom^3
-Total unit cell mass is:   159.84800000 g/mol
-Crystal density is:   5.39887 g/cc
+Total unit cell mass is:   162.75880000 g/mol
+Crystal density is:   5.49718 g/cc
 
 
 Concentration for unit volume fraction   33.7750 moles/Litre
@@ -160,15 +182,15 @@ Only IR active modes are shown
 Mode Frequency Intensity         Integrated Molar Absorption Epsilon_max   FWHM  
      cm-1      Debye2/Angs2/amu   Coefficient L/mole/cm/cm    L/mole/cm    cm-1  
 ---- --------- ----------------  --------------------------- -----------   ----  
-   6   373.58         16.257897                68699.367902   8747.0752      5.0
-   7   398.07         15.468640                65364.283764   8322.4391      5.0
-   8   398.07         15.468640                65364.283764   8322.4391      5.0
+   6   372.69         16.182039                68378.822582   8706.2621      5.0
+   7   397.14         15.396461                65059.285688   8283.6055      5.0
+   8   397.14         15.396461                65059.285688   8283.6055      5.0
  
  
 Permittivity contribution from ionic displacements
             4.234835      -0.000000      -0.000000
            -0.000000       4.234835      -0.000000
-           -0.000000      -0.000000       5.053747
+           -0.000000      -0.000000       5.054209
  
 Optical permittivity at zero frequency
             4.460000      -0.000000       0.000000
@@ -178,4 +200,4 @@ Optical permittivity at zero frequency
 Total permittivity
             8.694835      -0.000000      -0.000000
            -0.000000       8.694735      -0.000000
-           -0.000000      -0.000000       9.484047
+           -0.000000      -0.000000       9.484509
