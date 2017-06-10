@@ -78,17 +78,17 @@ class PhonopyOutputReader(GenericOutputReader):
 
     def read_dynamical_matrix(self):
         import yaml
-        fd = open("qpoints.yaml")
+        # the first name has to be the qpoints file
+        fd = open(self._outputfiles[0])
         data_q = yaml.load(fd)
         fd.close
-        fd = open("phonopy.yaml")
+        # the second name has to be the phonopy file
+        fd = open(self._outputfiles[1])
         data_p = yaml.load(fd)
         fd.close
-        print("self.masses",self.masses)
         self._old_masses = []
         for i in range(self.nions):
             self._old_masses.append(data_p['primitive_cell']['points'][i]['mass'])
-        print("self._old_masses",self._old_masses)
         qpoints = data_q['phonon'][0]['q-position']
         # print('q-points',qpoints)
         natom = data_q['natom']

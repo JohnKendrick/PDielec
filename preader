@@ -4,7 +4,7 @@ import string
 import re
 import numpy as np
 import os, sys
-from Python.Constants import amu, PI, avogadro_si, wavenumber, angstrom
+from Python.Constants import amu, PI, avogadro_si, wavenumber, angstrom, isotope_masses, average_masses
 from Python.DielectricConstant import DielectricConstant
 from Python.VaspOutputReader import VaspOutputReader
 from Python.CastepOutputReader import CastepOutputReader
@@ -12,54 +12,124 @@ from Python.GulpOutputReader import GulpOutputReader
 from Python.CrystalOutputReader import CrystalOutputReader
 from Python.AbinitOutputReader import AbinitOutputReader
 from Python.QEOutputReader import QEOutputReader
+from Python.PhonopyOutputReader import PhonopyOutputReader
 
 
 
 # Start processing the directories
 if len(sys.argv) <= 1 :
-    print('preader program [-eckart] [-neutral] [-intensities] [-crystal] filenames .....', file=sys.stderr)
-    print('  -eckart projects out the translational components                           ', file=sys.stderr)
-    print('  -neutral imposes neutrality on the Born charges of the molecule             ', file=sys.stderr)
-    print('  -crystal imposes crystal14 symmetrisation of the hessian                    ', file=sys.stderr)
-    print('  -intensities requests a calculation of the intensities                      ', file=sys.stderr)
-    print('   any of -eckart -neutral or -crystal implies an intensity calculation       ', file=sys.stderr)
+    print('preader -program program [-eckart] [-neutral] [-nocalculation] [-hessian symm] [-masses average] filenames .....', file=sys.stderr)
+    print('  \"program\" must be one of \"abinit\", \"castep\", \"crystal\", \"gulp\"       ', file=sys.stderr)
+    print('           \"phonopy\", \"qe\", \"vasp\"                                         ', file=sys.stderr)
+    print('           If phonopy is used it must be followed by the QM package              ', file=sys.stderr)
+    print('  -masses [average|isotope|program]  chooses the atomic mass definition average  ', file=sys.stderr)
+    print('          The default is \"average\"                                             ', file=sys.stderr)
+    print('  -eckart projects out the translational components. Default is no projection    ', file=sys.stderr)
+    print('  -neutral imposes neutrality on the Born charges of the molecule.               ', file=sys.stderr)
+    print('           Default is no neutrality is imposed                                   ', file=sys.stderr)
+    print('  -hessian [symm|crystal] defines the symmetrisation of the hessian              ', file=sys.stderr)
+    print('           \"crystal\" imposes Crystal14 symmetrisation                          ', file=sys.stderr)
+    print('           \"symm\" symmetrises by averaging the hessian with its transpose      ', file=sys.stderr)
+    print('           \"symm\" is the default                                               ', file=sys.stderr)
+    print('  -nocalculation requests no calculations are performed                          ', file=sys.stderr)
+    print('           A single line is output with results obtained by reading the output   ', file=sys.stderr)
+    print('           any of -masses -eckart -neutral or -crystal are ignored               ', file=sys.stderr)
     exit()
 
 observables=False
 files = []
-
-program = sys.argv[1]
-
 eckart = False
 neutral = False
 hessian_symmetrisation = "symm"
-global_calculate_intensities = False
-for f in sys.argv[2:]:
-    if f == "-observables":
+mass_definition = "average"
+global_no_calculation = False
+tokens = sys.argv[1:]
+ntokens = len(tokens)-1
+itoken = -1
+program = ''
+qmprogram = ''
+while itoken < ntokens:
+    itoken += 1
+    token = tokens[itoken]
+    if token == "-observables":
         observables = True
-    elif f == "-eckart":
+    elif token == "-eckart":
         eckart = True
-    elif f == "-neutral":
+    elif token == "-neutral":
         neutral = True
-    elif f == "-crystal":
-        hessian_symmetrisation = "crystal"
-    elif f == "-intensities":
-        global_calculate_intensities = True
+    elif token == "-hessian":
+        itoken += 1
+        hessian_symmetrisation = tokens[itoken]
+        print(hessian_symmetrisation, file=sys.stderr)
+        if (not hessian_symmetrisation == "symm") and ( not hessian_symmetrisation == "crystal" ):
+            print('-hessian must be followed by \"symm\" or \"crystal\"',file=sys.stderr)
+            exit()
+    elif token == "-masses":
+        itoken += 1
+        token = tokens[itoken]
+        if token[0] == 'a':
+            mass_definition = 'average'
+        elif token[0] == 'i':
+            mass_definition = 'isotope'
+        elif token[0] == 'p':
+            mass_definition = 'program'
+        else:
+            print('-masses must be followed by \"average\" \"isotope\" or \"program\"',file=sys.stderr)
+            exit()
+    elif token == "-nocalculation":
+        global_no_calculation = True
+    elif token == "-program":
+        itoken += 1
+        program = tokens[itoken]
+        if program == 'phonopy':
+            itoken += 1
+            qmprogram = tokens[itoken]
     else:
-        files.append(f)
-if eckart or neutral or hessian_symmetrisation == 'crystal':
-    global_calculate_intensities = True
+        files.append(token)
 
-print('program is ',program,file=sys.stderr)
-print('files are ',files,file=sys.stderr)
-print('Eckart is ',eckart,file=sys.stderr)
-print('Neutral is ',neutral,file=sys.stderr)
-print('Hessian symmetrisation is ',hessian_symmetrisation,file=sys.stderr)
+if len(program) < 1:
+    print('Please use -program to define the package used to generate the output files',file=sys.stderr)
+    exit()
 
-print('directory,electrons,magnetization,kpnts,kpnt_1,kpnt_2,kpnt_3,energy_cutoff_eV,final_free_energy_eV,final_energy_without_entropy_eV,pressure_GPa,a_A,b_A,c_A,alpha,beta,gamma,volume,eps0_xx,eps0_yy,eps0_zz,eps0_xy,eps0_xz,eps0_yz,epsinf_xx,epsinf_yy,epsinf_zz,epsinf_xy,epsinf_xz,epsinf_yz, c11_gpa, c22_gpa, c33_gpa, c44_gpa, c55_gpa, c66_gpa, c12_gpa,  c13_gpa, c23_gpa, f1_cm1, f2_cm1, f3_cm1, f4_cm1, f5_cm1, f6_cm1')
+if not program in ['abinit','castep','crystal','gulp','qe','vasp','phonopy']:
+    print('Program is not recognised: ',program,file=sys.stderr)
+    exit()
+
+if program == 'phonopy':
+    if not qmprogram in ['abinit','castep','crystal','gulp','qe','vasp']:
+        print('Phonopy QM program is not recognised: ',qmprogram,file=sys.stderr)
+        exit()
+    print('QM program used by Phonopy is: ',qmprogram,file=sys.stderr)
+
+print('Program is ',program,file=sys.stderr)
+
+for f in files:
+    if not os.path.isfile(f):
+        print('Error file requested for analysis does not exist',f,file=sys.stderr)
+        exit()
+print('Files are ',files,file=sys.stderr)
+if global_no_calculation:
+    print('No calculations has been requested',file=sys.stderr)
+    print('The frequencies (if present) will come from the QM/MM program    ',file=sys.stderr)
+    print('No hessian symmetrisation be performed',file=sys.stderr)
+    if eckart:
+        print('The -eckart flag will be ignored',file=sys.stderr)
+        eckart = False
+    if neutral:
+        print('The -neutral flag will be ignored',file=sys.stderr)
+        neutral = False
+    if not mass_definition == "program":
+        print('The -average_masses and -isotoper_masses flags will be ignored',file=sys.stderr)
+        mass_definition = "program"
+else:
+    print('Eckart is ',eckart,file=sys.stderr)
+    print('Neutral is ',neutral,file=sys.stderr)
+    print('Mass definition is ',mass_definition,file=sys.stderr)
+    print('Hessian symmetrisation is ',hessian_symmetrisation,file=sys.stderr)
+
+print('directory,information,electrons,magnetization,kpnts,kpnt_1,kpnt_2,kpnt_3,energy_cutoff_eV,final_free_energy_eV,final_energy_without_entropy_eV,pressure_GPa,a_A,b_A,c_A,alpha,beta,gamma,volume,eps0_xx,eps0_yy,eps0_zz,eps0_xy,eps0_xz,eps0_yz,epsinf_xx,epsinf_yy,epsinf_zz,epsinf_xy,epsinf_xz,epsinf_yz, c11_gpa, c22_gpa, c33_gpa, c44_gpa, c55_gpa, c66_gpa, c12_gpa,  c13_gpa, c23_gpa,f1,f2,f3,f4,f5,f6....')
 files.sort()
 for name in files :
-    calculate_intensities = global_calculate_intensities
     fulldirname = name
     head,tail = os.path.split(fulldirname)
     root,ext = os.path.splitext(tail)
@@ -93,27 +163,67 @@ for name in files :
             if os.path.isfile(n): names.append(n)
         names = list(set(names))
         reader = QEOutputReader( names )
+    elif program == "phonopy":
+        # The order is important
+        pname1 = os.path.join(head,'qpoints.yaml')
+        pname2 = os.path.join(head,'phonopy.yaml')
+        # Only works for VASP at the moment
+        vname1 = os.path.join(head,'OUTCAR')
+        vname2 = os.path.join(head,'KPOINTS')
+        pnames = [ pname1, pname2 ]
+        vnames = [ vname1, vname2 ]
+        pnames.extend(vnames)
+        names = pnames
+        # Which QM program was used by PHONOPY?
+        if qmprogram == "castep":
+            print("Error in qmreader",qmprogram)
+            exit()
+            qmreader = CastepOutputReader(names)
+        elif qmprogram == "vasp":
+            qmreader = VaspOutputReader(vnames)
+        elif qmprogram == "gulp":
+            print("Error in qmreader",qmprogram)
+            exit()
+            qmreader = GulpOutputReader(names)
+        elif qmprogram == "crystal":
+            print("Error in qmreader",qmprogram)
+            exit()
+            qmreader = CrystalOutputReader(names)
+        elif qmprogram == "abinit":
+            print("Error in qmreader",qmprogram)
+            exit()
+            qmreader = AbinitOutputReader(names)
+        elif qmprogram == "qe":
+            print("Error in qmreader",qmprogram)
+            exit()
+            qmreader = QEOutputReader(names)
+        # The QM reader is used to get info about the QM calculation
+        reader = PhonopyOutputReader(pnames,qmreader)
     else:
         print('Program name not recognized',program,file=sys.stderr)
         exit()
-    print('Analysing ',names, file=sys.stderr)
 
+    print('Analysing ',names, file=sys.stderr)
     reader.eckart = eckart
     reader.neutral = neutral
     reader.hessian_symmetrisation = hessian_symmetrisation
     reader.read_output()
     frequencies = reader.frequencies
+    no_calculation = global_no_calculation
     if len(frequencies) < 3:
-        calculate_intensities = False
+        no_calculation = True
     calculator = DielectricConstant()
     calculator.set_reader(reader)
-    # Only calculate the intensities if asked to or if the flags eckart/neutral or symmetrised hessian are set
-    if calculate_intensities:
-        masses = np.array(reader.masses) * amu
+    if not no_calculation:
+        # What mass definition are we using?
+        if not mass_definition == "program":
+            reader.change_masses(mass_definition, isotope_masses, average_masses)
         # Get the born charges
         born_charges = np.array(reader.born_charges)
         # Calculate the mass weighted normal modes.  This just forces projection 
         mass_weighted_normal_modes = reader.calculate_mass_weighted_normal_modes()
+        # The masses might have changed in the calculation of the mass weighted normal modes
+        masses = np.array(reader.masses) * amu
         normal_modes = calculator.normal_modes(masses, mass_weighted_normal_modes)
         # from the normal modes and the born charges calculate the oscillator strengths of each mode
         oscillator_strengths = calculator.oscillator_strengths(normal_modes, born_charges)
@@ -151,7 +261,8 @@ for name in files :
     c13 = str(carray[0,2])
     c23 = str(carray[1,2])
     # Assemble the output line for the unprojected frequencies and all the other data
-    string = fulldirname
+    header = fulldirname + ',Read from program'
+    string = ''
     string = string + ',' + str(reader.electrons)
     string = string + ',' + str(reader.magnetization)
     string = string + ',' + str(reader.kpoints)
@@ -167,43 +278,35 @@ for name in files :
     string = string + ',' + epsinf_xx + ',' + epsinf_yy + ',' + epsinf_zz + ',' + epsinf_xy + ',' + epsinf_xz + ',' + epsinf_yz
     string = string + ',' + c11 + ',' + c22 + ',' + c33 + ',' + c44 + ',' + c55 + ',' + c66
     string = string + ',' + c12 + ',' + c13 + ',' + c23
+    common_output=string
+    string = header+common_output
     for f in frequencies:
         string = string + ',' + str(f)
     print(string)
     # Assemble the next line if any of eckart/neutral/symm have been used
-    if calculate_intensities and ( eckart or neutral or hessian_symmetrisation=='crystal' ) :
-        option_string = ''
-        if eckart : option_string += 'eckart '
+    option_string = ''
+    if not no_calculation:
+        option_string = 'Calculated frequencies (cm-1)'
+        if eckart :
+            option_string = option_string+' eckart'
         if neutral : 
-            if not option_string == '' :
-                option_string += '+'
-            option_string += 'neutral '
-        if hessian_symmetrisation == 'crystal' : 
-            if not option_string == '' :
-                option_string += '+'
-            option_string += 'crystal_hessian_symmetrisation '
-        string = fulldirname+'_'+option_string
-        for i in range(37):
-            string = string + ',' 
-        string = string + ',' + option_string
+            option_string = option_string+' neutral'
+        option_string = option_string+' hessian_symmetrisation='+hessian_symmetrisation
+        option_string = option_string+' mass_definition='+mass_definition
+        header = fulldirname+','+option_string
+        string = header + common_output 
         for f in modified_frequencies:
             string = string + ',' + str(f)
         print(string)
-    # Assemble the next lines if intensities have been requested
-    if calculate_intensities :
-        option_string = 'Intensities (Debye2/Angs2/amu)'
-        string = fulldirname+'_'+option_string
-        for i in range(37):
-            string = string + ',' 
-        string = string + ',' + option_string
+        option_string = 'Calculated Intensities (Debye2/Angs2/amu)'
+        header = fulldirname+','+option_string
+        string = header + common_output 
         for f in intensities:
             string = string + ',' + str(f)
         print(string)
-        option_string = 'Integrated Molar Absorption (L/mole/cm/cm)'
-        string = fulldirname+'_'+option_string
-        for i in range(37):
-            string = string + ',' 
-        string = string + ',' + option_string
+        option_string = 'Calculated Integrated Molar Absorption (L/mole/cm/cm)'
+        header = fulldirname+','+option_string
+        string = header + common_output 
         for f in intensities:
             string = string + ',' + str(f*4225.6)
         print(string)

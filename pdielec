@@ -245,7 +245,6 @@ def main():
     itoken = 0
     while itoken < ntokens:
         token = tokens[itoken]
-
         if token == "-program":
             itoken += 1
             program = tokens[itoken]
@@ -538,6 +537,17 @@ def main():
             else:
                 seedname = names[0]
             checkfiles.append(seedname+".castep")
+        elif program == "phonopy":
+            # We only have a VASP / Phonopy interface
+            # Creat a list of phonopy files
+            pnames = []
+            head,tail = os.path.split(names[0])
+            pnames.append(head+'qpoints.yaml')
+            pnames.append(head+'phonopy.yaml')
+            # Creat a list of VASP files NB.  They all have to be in the same directory
+            vnames = names
+            pnames.extend(vnames)
+            checkfiles = pnames
         else:
             checkfiles = names
         print("")
@@ -564,19 +574,19 @@ def main():
         elif program == "phonopy":
             # Which QM program was used by PHONOPY?
             if qmprogram == "castep":
-                qmreader = CastepOutputReader(names)
+                qmreader = CastepOutputReader(vnames)
             elif qmprogram == "vasp":
-                qmreader = VaspOutputReader(names)
+                qmreader = VaspOutputReader(vnames)
             elif qmprogram == "gulp":
-                qmreader = GulpOutputReader(names)
+                qmreader = GulpOutputReader(vnames)
             elif qmprogram == "crystal":
-                qmreader = CrystalOutputReader(names)
+                qmreader = CrystalOutputReader(vnames)
             elif qmprogram == "abinit":
-                qmreader = AbinitOutputReader(names)
+                qmreader = AbinitOutputReader(vnames)
             elif qmprogram == "qe":
-                qmreader = QEOutputReader(names)
+                qmreader = QEOutputReader(vnames)
             # The QM reader is used to get info about the QM calculation
-            reader = PhonopyOutputReader(names,qmreader)
+            reader = PhonopyOutputReader(pnames,qmreader)
         # endif
     # end if
     if eckart:

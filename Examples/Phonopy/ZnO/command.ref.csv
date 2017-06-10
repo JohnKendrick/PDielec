@@ -1,4 +1,4 @@
-../../../pdielec -program phonopy vasp VASP.Born/OUTCAR -matrix ptfe -vmin 0 -vmax 1000 -mf 0.01 -method ap -method maxwell -method bruggeman_iter -sphere -plate 0 0 1 -needle 0 0 1 -csv command.csv -sigma 5
+../../../pdielec -program phonopy vasp OUTCAR -matrix ptfe -vmin 0 -vmax 1000 -mf 0.01 -method ap -method maxwell -method bruggeman_iter -sphere -plate 0 0 1 -needle 0 0 1 -csv command.csv -sigma 5
 Mode,Frequency,Intensity        ,Integrated Molar Absorption,Epsilon_max,  FWHM  
     ,cm-1     ,Debye2/Angs2/amu , Coefficient L/mole/cm/cm  , L/mole/cm ,  cm-1  
 ----,---------,---------------- ,---------------------------, --------- ,  ----  

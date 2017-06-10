@@ -79,7 +79,7 @@ An example of its use is;
 
  pdielec -program phonopy vasp OUTCAR -matrix hdpe -method ap -method maxwell -sphere -plate -1 -1 -2 -vmax 2000 -vf 0.1 -csv calcite.csv
 
-This assumes that the dynamical matrix has been calculation at the gamma point using phonopy and is stored in the files qpoints.yaml in the current directory.  By default the PHONOPY interface will use the atomic weights in the OUTCAR file.  It is recommended that PDielec replace these with its own internal atomic weights.  The use of 'isotope' should give results consistent with PHONOPY's own results.
+This assumes that the dynamical matrix has been calculation at the gamma point using phonopy and is stored in the files qpoints.yaml in the current directory.  There should also be a phonopy.yaml file present in the same directory.  By default the PHONOPY interface will use the atomic weights in the OUTCAR file.  It is recommended that PDielec replace these with its own internal atomic weights.  The use of 'isotope' should give results consistent with PHONOPY's own results.
 
 
 == Command line options
@@ -138,24 +138,28 @@ The supporting matrix is often selected from a small range of materials which ha
 |===
 
 == Examples of preader usage
-The first parameter on the preader command is the program which has been used to generate the output and maybe one of vasp, abinit, crystal, gulp, castep or qe.  The rest of the parameters are file names which will be processed to find relevant information.  For some programs more than one file has to be read.  For example in the case of Quantum Espresso the dynamical matrix file has to read, and in addition the log or output file needs processing for information such as the number of electrons.  This means that it is best to use the same root for the dynamical matrix file name as is used for the output log file.
+The first parameter on the preader command is the program which has been used to generate the output and maybe one of vasp, abinit, crystal, gulp, castep or qe.  The rest of the parameters are file names which will be processed to find relevant information.  For some programs more than one file has to be read.  For example in the case of Quantum Espresso the dynamical matrix file has to read, and in addition the log or output file needs processing for information such as the number of electrons.  This means that it is best to use the same root for the dynamical matrix file name as is used for the output log file.  For Phonopy it is necessary to read both the VASP OUTCAR file and the qpoints.yaml and phonopy.yaml files, so these all need to be in the same directory
 
 preader has several options including;
- -eckart to apply eckart conditions to the hessian (implies -intensities)
- -crystal to impose crystal14 style symmetrisation of the hessian (implies -intensities)
- -neutral to require that the Born charges give a neutral unit cell (implies -intensities)
- -intensities to request the calculation of infrared intensities 
+ -program                           To specify the QM/MM program which generated the output files
+ -eckart                            To apply eckart conditions to the hessian 
+ -hessian [symm|crystal]            Use crystal to impose crystal14 style symmetrisation of the hessian 
+ -neutral                           To require that the Born charges give a neutral unit cell
+ -masses  [program|isotope|average] The default is to use the average abundancies of the isotopes to give the atomic masses
+ -nocalculation                     No calculations are performed only the output of the files is given
 
- preader vasp -eckart */*/OUTCAR > summary.csv
+ preader -program vasp -eckart */*/OUTCAR > summary.csv
 
- preader vasp -intensities `find . -name OUTCAR` > summary.csv
+ preader -program phonopy vasp -eckart */*/OUTCAR > summary.csv
 
- preader castep `find . -name \*.castep` > summary.csv
+ preader -program vasp `find . -name OUTCAR` > summary.csv
 
- preader abinit `find . -name \*.out` > summary.csv
+ preader -program castep `find . -name \*.castep` > summary.csv
 
- preader qe `find . -name \*.dynG` > summary.csv
+ preader -program abinit `find . -name \*.out` > summary.csv
 
- preader crystal -crystal `find . -name \*.out` > summary.csv
+ preader -program qe `find . -name \*.dynG` > summary.csv
+
+ preader -program crystal -hessian crystal `find . -name \*.out` > summary.csv
 
 

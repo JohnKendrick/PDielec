@@ -10,11 +10,11 @@ Vmax is:   300.0 cm-1
 All phonon modes will be considered
 
 Program used to perform the phonon calculation was: phonopy
-The file containing the output is: VASP/OUTCAR
+The file containing the output is: qpoints.yaml
+The file containing the output is: phonopy.yaml
+The file containing the output is: OUTCAR
 No projection of the dynamical matrix will be performed
 The charge neutrality of the Born atomic charges will be enforced
-self.masses [22.99, 22.99, 32.066, 32.066, 16.0, 16.0, 16.0, 16.0, 16.0, 16.0, 16.0, 16.0]
-self._old_masses [22.989769, 22.989769, 32.065, 32.065, 15.9994, 15.9994, 15.9994, 15.9994, 15.9994, 15.9994, 15.9994, 15.9994]
  
 Shape depolarisation matrix: needle [0,0,1] xyz=[-0.232365,-0.234179,0.944016]
             0.473003      -0.027207       0.109678
@@ -130,11 +130,11 @@ Vmax is:   300.0 cm-1
 All phonon modes will be considered
 
 Program used to perform the phonon calculation was: phonopy
-The file containing the output is: VASP/OUTCAR
+The file containing the output is: qpoints.yaml
+The file containing the output is: phonopy.yaml
+The file containing the output is: OUTCAR
 No projection of the dynamical matrix will be performed
 The charge neutrality of the Born atomic charges will be enforced
-self.masses [22.99, 22.99, 32.066, 32.066, 16.0, 16.0, 16.0, 16.0, 16.0, 16.0, 16.0, 16.0]
-self._old_masses [22.989769, 22.989769, 32.065, 32.065, 15.9994, 15.9994, 15.9994, 15.9994, 15.9994, 15.9994, 15.9994, 15.9994]
  
 Shape depolarisation matrix: sphere   
             0.333333       0.000000       0.000000
@@ -230,11 +230,11 @@ Vmax is:   300.0 cm-1
 All phonon modes will be considered
 
 Program used to perform the phonon calculation was: phonopy
-The file containing the output is: VASP/OUTCAR
+The file containing the output is: qpoints.yaml
+The file containing the output is: phonopy.yaml
+The file containing the output is: OUTCAR
 No projection of the dynamical matrix will be performed
 The charge neutrality of the Born atomic charges will be enforced
-self.masses [22.99, 22.99, 32.066, 32.066, 16.0, 16.0, 16.0, 16.0, 16.0, 16.0, 16.0, 16.0]
-self._old_masses [22.989769, 22.989769, 32.065, 32.065, 15.9994, 15.9994, 15.9994, 15.9994, 15.9994, 15.9994, 15.9994, 15.9994]
  
 Shape depolarisation matrix: sphere   
             0.333333       0.000000       0.000000

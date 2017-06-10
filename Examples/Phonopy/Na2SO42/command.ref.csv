@@ -1,4 +1,4 @@
-../../../pdielec -matrix ptfe -sigma 5 -method maxwell -method bruggeman -method ap -vf 0.1 -needle 0 0 1 -ellipsoid 0 0 1 0.5 -plate 1 0 0 -LO 1 1 1 -csv command1.csv -masses program -neutral -program phonopy vasp VASP/OUTCAR
+../../../pdielec -matrix ptfe -sigma 5 -method maxwell -method bruggeman -method ap -vf 0.1 -needle 0 0 1 -ellipsoid 0 0 1 0.5 -plate 1 0 0 -LO 1 1 1 -csv command1.csv -masses program -neutral -program phonopy vasp OUTCAR
 Mode,Frequency,Intensity        ,Integrated Molar Absorption,Epsilon_max,  FWHM  
     ,cm-1     ,Debye2/Angs2/amu , Coefficient L/mole/cm/cm  , L/mole/cm ,  cm-1  
 ----,---------,---------------- ,---------------------------, --------- ,  ----  
@@ -1537,7 +1537,7 @@ Mode,Frequency,Intensity        ,Integrated Molar Absorption,Epsilon_max,  FWHM
 ,,,,,  299.600000,    8.981782,          1.96506609,          0.00837784,          4.88594121,          4.30588339,          1.95670826,          0.01023241,          5.98024991,          5.27027602,          1.97607800,          0.00842133,          4.89760297,          4.31616067,          1.98671100,          0.00705734,          4.09334869,          3.60738728,          1.98669169,          0.00713506,          4.13844728,          3.64713177,          1.98573586,          0.00756440,          4.38853151,          3.86752605,          1.98688774,          0.00682870,          3.96055992,          3.49036316
 ,,,,,  299.800000,    8.987778,          1.96572908,          0.00830557,          4.84621157,          4.27087045,          1.95751180,          0.01011182,          5.91250615,          5.21057478,          1.97674518,          0.00835356,          4.86061465,          4.28356359,          1.98727009,          0.00700069,          4.06263411,          3.58031912,          1.98725615,          0.00707317,          4.10470544,          3.61739575,          1.98633528,          0.00750447,          4.35601043,          3.83886587,          1.98742982,          0.00678247,          3.93583592,          3.46857438
 ,,,,,  300.000000,    8.993774,          1.96638641,          0.00823433,          4.80704580,          4.23635442,          1.95830606,          0.00999363,          5.84611061,          5.15206170,          1.97740703,          0.00828670,          4.82411904,          4.25140074,          1.98782474,          0.00694481,          4.03233238,          3.55361481,          1.98781576,          0.00701219,          4.07146134,          3.58809838,          1.98693000,          0.00744533,          4.32391607,          3.81058175,          1.98796826,          0.00673680,          3.91141219,          3.44705024
-../../../pdielec -matrix ptfe -sigma 5 -method maxwell -vf 0.1 -sphere -masses isotope -csv command2.csv -neutral -program phonopy vasp VASP/OUTCAR
+../../../pdielec -matrix ptfe -sigma 5 -method maxwell -vf 0.1 -sphere -masses isotope -csv command2.csv -neutral -program phonopy vasp OUTCAR
 Mode,Frequency,Intensity        ,Integrated Molar Absorption,Epsilon_max,  FWHM  
     ,cm-1     ,Debye2/Angs2/amu , Coefficient L/mole/cm/cm  , L/mole/cm ,  cm-1  
 ----,---------,---------------- ,---------------------------, --------- ,  ----  
@@ -3076,7 +3076,7 @@ Mode,Frequency,Intensity        ,Integrated Molar Absorption,Epsilon_max,  FWHM
 ,,,,,  299.600000,    8.981782,          1.95975957,          0.00954646,          5.57501210,          4.91314794
 ,,,,,  299.800000,    8.987778,          1.96051157,          0.00944511,          5.51844602,          4.86329737
 ,,,,,  300.000000,    8.993774,          1.96125571,          0.00934555,          5.46288600,          4.81433343
-../../../pdielec -matrix ptfe -sigma 5 -method maxwell -vf 0.1 -sphere -masses average -csv command3.csv -neutral -program phonopy vasp VASP/OUTCAR
+../../../pdielec -matrix ptfe -sigma 5 -method maxwell -vf 0.1 -sphere -masses average -csv command3.csv -neutral -program phonopy vasp OUTCAR
 Mode,Frequency,Intensity        ,Integrated Molar Absorption,Epsilon_max,  FWHM  
     ,cm-1     ,Debye2/Angs2/amu , Coefficient L/mole/cm/cm  , L/mole/cm ,  cm-1  
 ----,---------,---------------- ,---------------------------, --------- ,  ----  
