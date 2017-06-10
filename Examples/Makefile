@@ -1,6 +1,7 @@
 test_preader:
 	@$(MAKE) --no-print-directory -C Castep/preader test
 	@$(MAKE) --no-print-directory -C Vasp/preader test
+	@$(MAKE) --no-print-directory -C Phonopy/preader test
 	@$(MAKE) --no-print-directory -C Gulp/preader test
 	@$(MAKE) --no-print-directory -C Crystal/preader test
 	@$(MAKE) --no-print-directory -C AbInit/preader test
