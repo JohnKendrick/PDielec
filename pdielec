@@ -43,6 +43,7 @@ def main():
         print("        [-vf {:.3f}] ".format(volume_fraction))
         print("        [-mf {:.3f}] ".format(mass_fraction))
         print("        [-masses program/average/isotope] ")
+        print("        [-mass element mass] ")
         print("        [-dielectric {:.4f}] [-density {:.4f}] ".format(matrix_dielectric, matrix_density))
         print("        [-matrix nujol/ptfe/kbr/ldpe/mdpe/hdpe] ")
         print("        [-LO h k l] [-LO_cart x y z]")
@@ -86,6 +87,10 @@ def main():
         print("             average means the weight is averaged using the natural abundance")
         print("             isotope means the most abundant isotopic mass is used")
         print("             program means that the QM/MM programs masses are used")
+        print("         -mass element symbol")
+        print("             Allows individual elements to have their masses defined")
+        print("             the -masses mass definition is applied first,     ")
+        print("             then any masses defined by -mass are applied,     ")
         print("         -print")
         print("           print additional information about the calculation")
         print("         -csv file.csv")
@@ -190,6 +195,7 @@ def main():
     qdata          = []
     ignore_modes   = []
     mode_sigmas    = {}
+    mass_dictionary= {}
     vmax           = 300.0
     vmin           = 0.0
     shapes         = []
@@ -271,6 +277,12 @@ def main():
             itoken += 1
             volume_fractions.append(float(tokens[itoken]))
             fractional_types.append("vf=%s" % (tokens[itoken]))
+        elif token == "-mass":
+            itoken += 1
+            element = tokens[itoken]
+            itoken += 1
+            mass = float(tokens[itoken])
+            mass_dictionary[element] = mass
         elif token == "-masses":
             itoken += 1
             if tokens[itoken][0] == "p":  mass_definition = "program"
@@ -635,12 +647,16 @@ def main():
     if len(optical) > 0:
         print()
     # What mass definition are we using?
-    if not mass_definition == "program":
+    if not mass_definition == "program" or mass_dictionary:
         print(" ")
         print("Atomic masses will be defined using: ", mass_definition)
+        if mass_dictionary:
+            print("Additional elemental masses have been specifically specified:")
+            for element in mass_dictionary:
+                print("    ",element,": ",mass_dictionary[element])
         print_reals("Old masses by atom types", reader.masses_per_type,format="{:10.6f}")
         print_reals("Old atomic mass list", reader.masses,format="{:10.6f}")
-        reader.change_masses(mass_definition, isotope_masses, average_masses)
+        reader.change_masses(mass_definition, isotope_masses, average_masses, mass_dictionary)
         print_reals("New masses by atom types", reader.masses_per_type,format="{:10.6f}")
         print_reals("New atomic mass list", reader.masses,format="{:10.6f}")
     else:

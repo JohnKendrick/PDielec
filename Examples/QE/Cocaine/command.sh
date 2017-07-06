@@ -7,5 +7,10 @@ python ../../../pdielec -matrix ptfe -sigma 5 \
                          -sphere -masses isotope -print \
                          -csv command2.csv \
                          -program qe phonon.dynG  $*
-cat command1.csv command2.csv > command.csv
-rm -f command1.csv command2.csv
+python ../../../pdielec -matrix ptfe -sigma 5 \
+                         -sphere -masses isotope -print \
+                         -mass H 2.01410178 \
+                         -csv command3.csv \
+                         -program qe phonon.dynG  $*
+cat command1.csv command2.csv command3.csv > command.csv
+rm -f command1.csv command2.csv command3.csv

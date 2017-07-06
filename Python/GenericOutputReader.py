@@ -70,6 +70,7 @@ class GenericOutputReader:
         self.open_filename              = ""
         self.open_directory             = ""
         self._old_masses                = []
+        self._masses_have_changed       = False
         return
 
     def read_output(self):
@@ -85,17 +86,24 @@ class GenericOutputReader:
             s = s.replace(i,'')
         return s
 
-    def change_masses(self, definition, isotope_masses, average_masses):
+    def change_masses(self, definition, isotope_masses, average_masses, mass_dictionary):
         self._old_masses = self.masses
+        old_masses_per_type = self.masses_per_type
+        self._masses_have_changed = False
         self.masses = []
         self.masses_per_type = []
         if definition == "average":
+            self._masses_have_changed = True
             for symbol in self.species:
                 # the element name may be appended with a digit or an underscore
                 element = self.cleanup_symbol(symbol)
-                self.masses_per_type.append(average_masses[element])
+                mass = average_masses[element]
+                if element in mass_dictionary:
+                    mass = mass_dictionary[element]
+                self.masses_per_type.append(mass)
              # end for symbol
         elif definition == "isotope":
+            self._masses_have_changed = True
             for symbol in self.species:
                 # the element name may be appended with a digit or an underscore
                 element = self.cleanup_symbol(symbol)
@@ -105,9 +113,20 @@ class GenericOutputReader:
                     abundance = iso[2]
                     if abundance > abmax:
                         abmax = abundance
-                        weightmax = weight
+                        mass = weight
                 # end of for iso 
-                self.masses_per_type.append(weightmax)
+                if element in mass_dictionary:
+                    mass = mass_dictionary[element]
+                self.masses_per_type.append(mass)
+            # end of for symbol
+        elif definition == "program":
+            for symbol,mass in zip(self.species,old_masses_per_type):
+                # the element name may be appended with a digit or an underscore
+                element = self.cleanup_symbol(symbol)
+                if element in mass_dictionary:
+                    mass = mass_dictionary[element]
+                    self._masses_have_changed = True
+                self.masses_per_type.append(mass)
             # end of for symbol
         else:
             print('Error, mass definition not recognised',definition)
@@ -245,9 +264,9 @@ class GenericOutputReader:
         # Make sure the dynamical matrix is real
         hessian = np.real(hessian)
         # If the masses have been changed then alter the mass weighted hessian here
-        if len(self._old_masses) > 0: 
+        if self._masses_have_changed: 
             hessian = self._modify_mass_weighting(hessian,self._old_masses,self.masses)
-            self._old_masses = []
+            self._masses_have_changed = False
         # Project out the translational modes if requested
         if self.eckart:
             hessian = self.project(hessian)
@@ -331,9 +350,9 @@ class GenericOutputReader:
             hessian = self.project(hessian)
         #
         # If the masses have been changed then alter the mass weighted hessian here
-        if len(self._old_masses) > 0: 
+        if self._masses_have_changed: 
             hessian = self._modify_mass_weighting(hessian,self._old_masses,self.masses)
-            self._old_masses = []
+            self._masses_have_changed = False
         # diagonalise
         eig_val, eig_vec = np.linalg.eigh(hessian, UPLO=uplo)
         #

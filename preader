@@ -24,6 +24,8 @@ if len(sys.argv) <= 1 :
     print('           If phonopy is used it must be followed by the QM package              ', file=sys.stderr)
     print('  -masses [average|isotope|program]  chooses the atomic mass definition average  ', file=sys.stderr)
     print('          The default is \"average\"                                             ', file=sys.stderr)
+    print('  -mass  element mass                                                            ', file=sys.stderr)
+    print('          Change the mass of the element specified                               ', file=sys.stderr)
     print('  -eckart projects out the translational components. Default is no projection    ', file=sys.stderr)
     print('  -neutral imposes neutrality on the Born charges of the molecule.               ', file=sys.stderr)
     print('           Default is no neutrality is imposed                                   ', file=sys.stderr)
@@ -33,7 +35,7 @@ if len(sys.argv) <= 1 :
     print('           \"symm\" is the default                                               ', file=sys.stderr)
     print('  -nocalculation requests no calculations are performed                          ', file=sys.stderr)
     print('           A single line is output with results obtained by reading the output   ', file=sys.stderr)
-    print('           any of -masses -eckart -neutral or -crystal are ignored               ', file=sys.stderr)
+    print('           any of -mass -masses -eckart -neutral or -crystal are ignored         ', file=sys.stderr)
     exit()
 
 observables=False
@@ -42,6 +44,7 @@ eckart = False
 neutral = False
 hessian_symmetrisation = "symm"
 mass_definition = "average"
+mass_dictionary = {}
 global_no_calculation = False
 tokens = sys.argv[1:]
 ntokens = len(tokens)-1
@@ -76,6 +79,12 @@ while itoken < ntokens:
         else:
             print('-masses must be followed by \"average\" \"isotope\" or \"program\"',file=sys.stderr)
             exit()
+    elif token == "-mass":
+        itoken += 1
+        element = tokens[itoken]
+        itoken += 1
+        mass = float(tokens[itoken])
+        mass_dictionary[element] = mass
     elif token == "-nocalculation":
         global_no_calculation = True
     elif token == "-program":
@@ -119,8 +128,11 @@ if global_no_calculation:
         print('The -neutral flag will be ignored',file=sys.stderr)
         neutral = False
     if not mass_definition == "program":
-        print('The -average_masses and -isotoper_masses flags will be ignored',file=sys.stderr)
+        print('The average and isotope mass definitions will be ignored',file=sys.stderr)
         mass_definition = "program"
+    if mass_dictionary:
+        print('The masses specified by the -mass directive will be ignored',file=sys.stderr)
+        mass_dictionary = {}
 else:
     print('Eckart is ',eckart,file=sys.stderr)
     print('Neutral is ',neutral,file=sys.stderr)
@@ -216,8 +228,8 @@ for name in files :
     calculator.set_reader(reader)
     if not no_calculation:
         # What mass definition are we using?
-        if not mass_definition == "program":
-            reader.change_masses(mass_definition, isotope_masses, average_masses)
+        if not mass_definition == "program" or mass_dictionary:
+            reader.change_masses(mass_definition, isotope_masses, average_masses, mass_dictionary)
         # Get the born charges
         born_charges = np.array(reader.born_charges)
         # Calculate the mass weighted normal modes.  This just forces projection 
