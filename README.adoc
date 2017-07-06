@@ -120,6 +120,7 @@ This assumes that the dynamical matrix has been calculation at the gamma point u
 | -hessian s | | If the string "s" is "crystal" symmetrisation of the hessian will be performed using the Crystal14 convention.  Otherwise if the string is "symm" the default method will be used| No
 | -threshold z1 z2 | | The modes which are included in the absorption calculation are chosen to have intensities above z1 and have frequencies greater than z2| No
 | -masses s | | By default the program uses the average atomic mass.  s can be *program* , *isotope*, or *average* indicating that the masses are taken from the QM/MM program, the most abundant isotope or the average mass according the natural abundance| No
+| -mass s z | | The mass of element s is set to the value z.  This is done after the mass definition given by -masses is applied. | Yes
 |===
 
 The supporting matrix is often selected from a small range of materials which have little or no absorption in the frequency range of interest.  The properties of the materials known to the program are summarised in the table below.
@@ -146,6 +147,7 @@ preader has several options including;
  -hessian [symm|crystal]            Use crystal to impose crystal14 style symmetrisation of the hessian 
  -neutral                           To require that the Born charges give a neutral unit cell
  -masses  [program|isotope|average] The default is to use the average abundancies of the isotopes to give the atomic masses
+ -mass H 2.014101                   Changes the mass of all hydrogens to that of deuterim.  The directive can be repeated
  -nocalculation                     No calculations are performed only the output of the files is given
 
  preader -program vasp -eckart */*/OUTCAR > summary.csv
@@ -158,7 +160,7 @@ preader has several options including;
 
  preader -program abinit `find . -name \*.out` > summary.csv
 
- preader -program qe `find . -name \*.dynG` > summary.csv
+ preader -program qe -mass H 2.014101 `find . -name \*.dynG` > summary.csv
 
  preader -program crystal -hessian crystal `find . -name \*.out` > summary.csv
 
