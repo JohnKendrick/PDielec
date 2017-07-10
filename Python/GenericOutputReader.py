@@ -50,6 +50,7 @@ class GenericOutputReader:
         self.energy_cutoff              = 0.0
         self.born_charges               = []
         self.manage                     = {}
+        self.iterations                 = {}
         self.file_descriptor            = ''
         self.pressure                   = 0
         self.magnetization              = 0.0

@@ -52,6 +52,7 @@ class VaspOutputReader(GenericOutputReader):
         self.manage['nelect']       = (re.compile('   NELECT = '), self._read_nelect)
         self.manage['lattice']      = (re.compile('  volume of cell :'), self._read_lattice_vectors)
         self.manage['fractional']   = (re.compile(' position of ions in fractional coordinates'), self._read_fractional_coordinates)
+        self.manage['forces']       = (re.compile(' POSITION  *TOTAL-FORCES'), self._read_forces)
         self.manage['energy']       = (re.compile('  FREE ENERGIE OF THE ION'), self._read_energy)
         self.manage['magnet']       = (re.compile(' number of electron '), self._read_magnet)
         self.manage['pressure']     = (re.compile('  external pressure ='), self._read_external_pressure)
@@ -67,6 +68,28 @@ class VaspOutputReader(GenericOutputReader):
         for f in self._outputfiles:
             self._read_output_file(f)
         return
+
+    def _read_forces(self, line):
+        line = self.file_descriptor.readline()
+        maxf = 0.0
+        rmsf = 0.0
+        for i in range(self.nions):
+            line = self.file_descriptor.readline()
+            forces = [ float(f) for f in line.split()[3:6] ]
+            for f in forces:
+                rmsf += forces[f]*forces[f]
+                if abs(forces[f]) > maxf:
+                    maxf = abs(forces[f])
+                # end if
+            # end for f
+         #end for i
+         if not "max_force" in self.iterations:
+             self.iterations["max_force"] = []
+         self.iterations["max_force"].append(maxf)
+         if not "rms_force" in self.iterations:
+             self.iterations["rms_force"] = []
+         self.iterations["rms_force"].append(rmsf)
+         return
 
     def _read_species(self, line):
         line = self.file_descriptor.readline()
