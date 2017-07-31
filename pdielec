@@ -20,8 +20,8 @@ import math
 import os
 import sys
 import numpy as np
+from multiprocessing import Pool, cpu_count
 from Python.Constants import amu, PI, avogadro_si, wavenumber, angstrom, isotope_masses, average_masses
-from Python.DielectricConstant import DielectricConstant
 from Python.VaspOutputReader import VaspOutputReader
 from Python.PhonopyOutputReader import PhonopyOutputReader
 from Python.CastepOutputReader import CastepOutputReader
@@ -30,7 +30,7 @@ from Python.CrystalOutputReader import CrystalOutputReader
 from Python.AbinitOutputReader import AbinitOutputReader
 from Python.QEOutputReader import QEOutputReader
 from Python.Plotter import Plotter, print3x3, print_reals
-
+import Python.Calculator as Calculator
 
 def main():
     """Main Driver routine for PDielec - reads the input and directs the calculation"""
@@ -171,6 +171,8 @@ def main():
         print("             Set the thresholds for treating a phonon mode")
         print("             Only modes with an intensity > 1.0E-10 and a frequency above 5cm-1")
         print("             Will be conidered in the calcualtion of the absorption spectrum")
+        print("         -processors 0")
+        print("             Use the specificed number of processors, the default is to use all available processors")
         print("         -drude drude_input_plasma drude_input_sigma")
         print("             Tells the program to include a Drude for metals in the calculation")
         print("             of the dielectric.")
@@ -235,9 +237,7 @@ def main():
     drude_input_sigma = 0.0
     threshold = {'intensity': 1.0E-10, 'frequency': 5}
     hessian_symmetrisation = "symm"
-
-    # Establish the calculator function which will be used for the majority of calculations
-    calculator = DielectricConstant()
+    number_of_processors = 0
 
     # check usage
     if len(sys.argv) <= 1:
@@ -387,6 +387,9 @@ def main():
                 exit(1)
         elif token == "-neutral":
             neutral = True
+        elif token == "-processors":
+            itoken += 1
+            number_of_processors = int(tokens[itoken])
         elif token == "-LO_cart":
             itoken += 1
             qlist_input.append([float(q) for q in tokens[itoken:itoken+3]])
@@ -486,7 +489,7 @@ def main():
     if len(optical) > 0:
         print(" ")
         print("Optical permitivity diagonal elements specified: " + " ".join("{:.4f}".format(p) for p in optical))
-        optical_tensor = calculator.initialise_diagonal_tensor(optical)
+        optical_tensor = Calculator.initialise_diagonal_tensor(optical)
     print("Vmin is: {:7.1f} cm-1".format(vmin))
     print("Vmax is: {:7.1f} cm-1".format(vmax))
     if len(my_modes) > 0:
@@ -497,6 +500,8 @@ def main():
             print("     " + " ".join("{:d}".format(m) for m in ignore_modes))
         else:
             print("All phonon modes will be considered")
+    drude_sigma = 0.0
+    drude_plasma = 0.0
     if drude:
         print("A Drude model will be used as well as the phonon modes")
         print("The Drude sigma parameter  is; {:6.1f} cm-1".format(drude_input_sigma))
@@ -504,6 +509,12 @@ def main():
         drude_sigma = drude_input_sigma * wavenumber
         drude_plasma = drude_input_plasma * wavenumber
     # end if
+    # Parallel options handled here
+    if number_of_processors == 0:
+        number_of_processors = cpu_count()
+        print("The number of processors ({}) has been determined automatically".format(number_of_processors))
+    else:
+        print("The number of processors has been set to {} ".format(number_of_processors))
     #
     # Arrays will be used where possible from now on, also some arrays will contain complex numbers
     #
@@ -616,7 +627,6 @@ def main():
     reader.debug = debug
     # Initiate reading of the files
     reader.read_output()
-    calculator.set_reader(reader)
     if print_info:
         reader.print_info()
     # Calculate the depolarisation matrices.  Put here because we need the lattice vectors
@@ -629,17 +639,17 @@ def main():
         title = "Shape depolarisation matrix: {} {} {}".format(shape, printd, label)
         if shape == "sphere":
             direction = []
-            depolarisations.append(calculator.initialise_sphere_depolarisation_matrix())
+            depolarisations.append(Calculator.initialise_sphere_depolarisation_matrix())
         if shape == "plate":
-            direction = calculator.direction_from_shape(data)
-            depolarisations.append(calculator.initialise_plate_depolarisation_matrix(direction))
+            direction = Calculator.direction_from_shape(data,reader)
+            depolarisations.append(Calculator.initialise_plate_depolarisation_matrix(direction))
         if shape == "needle":
-            direction = calculator.direction_from_shape(data)
-            depolarisations.append(calculator.initialise_needle_depolarisation_matrix(direction))
+            direction = Calculator.direction_from_shape(data,reader)
+            depolarisations.append(Calculator.initialise_needle_depolarisation_matrix(direction))
         if shape == "ellipsoid":
             ellipsez, aoverb = data
-            direction = calculator.direction_from_shape(ellipsez)
-            depolarisations.append(calculator.initialise_ellipsoid_depolarisation_matrix(direction, aoverb))
+            direction = Calculator.direction_from_shape(ellipsez,reader)
+            depolarisations.append(Calculator.initialise_ellipsoid_depolarisation_matrix(direction, aoverb))
         # Print out the depolarisation matrix
         if len(direction) > 0:
             title = title + "xyz=[" + ",".join("{:f}".format(d) for d in direction) + "]"
@@ -665,7 +675,7 @@ def main():
         print_reals("Masses by atom types", reader.masses_per_type,format="{:10.6f}")
         print_reals("Atomic mass list", reader.masses,format="{:10.6f}")
     # Define some of the constants
-    dielectric_medium = calculator.initialise_diagonal_tensor([matrix_dielectric, matrix_dielectric, matrix_dielectric])
+    dielectric_medium = Calculator.initialise_diagonal_tensor([matrix_dielectric, matrix_dielectric, matrix_dielectric])
     # access the information as numpy arrays.  Use atomic units for these arrays
     masses = np.array(reader.masses) * amu
     print("")
@@ -739,17 +749,17 @@ def main():
     #
     # calculate normal modes in xyz coordinate space
     # should they be re-normalised or not?  According to Balan the mass weighted coordinates should be normalised
-    normal_modes = calculator.normal_modes(masses, mass_weighted_normal_modes)
+    normal_modes = Calculator.normal_modes(masses, mass_weighted_normal_modes)
     # from the normal modes and the born charges calculate the oscillator strengths of each mode
-    oscillator_strengths = calculator.oscillator_strengths(normal_modes, born_charges)
+    oscillator_strengths = Calculator.oscillator_strengths(normal_modes, born_charges)
     # calculate the intensities from the trace of the oscillator strengths
-    intensities = calculator.infrared_intensities(oscillator_strengths)
+    intensities = Calculator.infrared_intensities(oscillator_strengths)
     #
     # If LO frequencies have been requested lets calculate them now
     # First calculate the cartesian directions from any wavevectors
     if qdata:
         for q in qdata:
-            qlist.append(calculator.direction_from_shape(q))
+            qlist.append(Calculator.direction_from_shape(q,reader))
         # end for
         print(" ")
     # No add any cartesian directions which were specified
@@ -757,7 +767,7 @@ def main():
         qlist.extend(qlist_input)
     # Loop over all the cartesian directions to find the splitting
     if qlist:
-        lo_freqs = calculator.logitudinal_modes(frequencies, mass_weighted_normal_modes, born_charges, masses, epsilon_inf, volume, qlist, reader)
+        lo_freqs = Calculator.longitudinal_modes(frequencies, mass_weighted_normal_modes, born_charges, masses, epsilon_inf, volume, qlist, reader)
         print_reals("Transverse frequencies (cm-1)", np.real(frequencies_cm1))
         print(" ")
         index = 0
@@ -827,27 +837,23 @@ def main():
         if fd_csvfile is not None:
             print("{:>4d},{:>8.2f},{:>17.6f},{:>27.6f},{:>11.4f},{:>8.1f}".format(mode, freq, intn, 4225.6*intn, 2*4225.6*intn/widt/PI, widt), file=fd_csvfile)
     # from the oscillator strengths calculate the low frequency permittivity
-    epsilon_ionic = calculator.ionic_permittivity(mode_list, oscillator_strengths, frequencies, volume)
+    epsilon_ionic = Calculator.ionic_permittivity(mode_list, oscillator_strengths, frequencies, volume)
     print(" ")
     print3x3('Permittivity contribution from ionic displacements', epsilon_ionic)
     print3x3('Optical permittivity at zero frequency', epsilon_inf)
     epsilon_total = epsilon_inf + epsilon_ionic
     print3x3('Total permittivity', epsilon_total)
-    #
-    # Create a dictionary to hold the last solution for a given method/volume/fraction
-    previous_solution = {}
-    # Loop over frequencies
+    # Prepare parallel call parameters for a Loop over frequencies
+    call_parameters = []
     for v in np.arange(float(vmin), float(vmax)+0.5*float(increment), float(increment)):
-        # loop over all modes and calculate the contribution to the dielectric
         vau = v * wavenumber
-        ionicv = calculator.dielectric_contribution(vau, mode_list, frequencies, sigmas, oscillator_strengths, volume)
-        if drude:
-            ionicv = ionicv + calculator.drude_contribution(vau, drude_plasma, drude_sigma, volume)
-        # absorption units here are L/mole/cm-1
-        # molar_absorption_coefficient_from_mode_intensities_Lpmolpcm = calculator.absorption_from_mode_intensities(v, mode_list, frequencies_cm1, sigmas_cm1, intensities)
-        # Now the units are cm-1
-        # absorption_coefficient_from_mode_intensities_pcm = concentration * molar_absorption_coefficient_from_mode_intensities_Lpmolpcm
-        dielecv = ionicv + epsilon_inf
+        call_parameters.append( (v, vau, mode_list, frequencies, sigmas, oscillator_strengths, volume, epsilon_inf, drude, drude_plasma, drude_sigma) )
+    # Create a pool of processors and get them to calculate the initial dielectric contribution from the phonon modes
+    p = Pool(number_of_processors)
+    results = p.map(Calculator.parallel_dielectric, call_parameters )
+    # Prepare parallel call parameters for the loop over frequencies, methods, volume fractions
+    call_parameters = []
+    for v,vau,dielecv in results:
         nplot = -1
         # Loop over methods
         for method in methods:
@@ -857,73 +863,32 @@ def main():
                 ap_count = 0  # Use a counter to only calculate the AveragedPermittivity once for all shapes
                 for shape, data, L in zip(shapes, shape_data, depolarisations):
                     nplot += 1
-                    if method == "balan":
-                        effdielec = calculator.balan(dielectric_medium, dielecv, shape, L, vf)
-                    elif method == "ap" or method == "averagedpermittivity":
+                    if method == "ap" or method == "averagedpermittivity":
                         if ap_count == 0:
-                            effdielec = calculator.averaged_permittivity(dielectric_medium, dielecv, shape, L, vf)
                             shape = "noshape"
                             ap_count += 1
                         else:
                             nplot -= 1
                             continue
-                    elif method == "maxwell":
-                        effdielec = calculator.maxwell(dielectric_medium, dielecv, shape, L, vf)
-                    elif method == "maxwell_sihvola":
-                        effdielec = calculator.maxwell_sihvola(dielectric_medium, dielecv, shape, L, vf)
-                    elif method == "coherent":
-                        if (method, vf, shape) in previous_solution:
-                            eff = previous_solution[method, vf, shape]
-                        else:
-                            eff = calculator.maxwell(dielectric_medium, dielecv, shape, L, vf)
-                        effdielec = calculator.coherent(dielectric_medium, dielecv, shape, L, vf, eff)
-                    elif method == "bruggeman_minimise":
-                        if (method, vf, shape) in previous_solution:
-                            eff = previous_solution[method, vf, shape]
-                        else:
-                            eff = calculator.maxwell(dielectric_medium, dielecv, shape, L, vf)
-                        effdielec = calculator.bruggeman_minimise(dielectric_medium, dielecv, shape, L, vf, eff)
-                        previous_solution[(method, vf, shape)] = effdielec
-                    elif method == "bruggeman" or method == "bruggeman_iter":
-                        if (method, vf, shape) in previous_solution:
-                            eff = previous_solution[method, vf, shape]
-                        else:
-                            eff = calculator.maxwell(dielectric_medium, dielecv, shape, L, vf)
-                        effdielec = calculator.bruggeman_iter(dielectric_medium, dielecv, shape, L, vf, eff)
-                        previous_solution[(method, vf, shape)] = effdielec
-                    else:
-                        print('Unkown dielectric method {}'.format(method))
-                        exit(1)
-                    # Average over all directions by taking the trace
-                    trace = (effdielec[0, 0] + effdielec[1, 1] + effdielec[2, 2]) / 3.0
-                    refractive_index = calculator.refractive_index(effdielec)
-                    # absorption coefficient is calculated from the imaginary refractive index
-                    # see H.C. van de Hulst Light Scattering by Small Particles , page 267
-                    # This is different but related to Genzel and Martin Equation 16, Phys. Stat. Sol. 51(1972) 91-
-                    # I've add a factor of log10(e) because we need to assume a decadic Beer's law
-                    # units are cm-1
-                    absorption_coefficient = v * 4*PI * np.imag(refractive_index) * math.log10(math.e)
-                    # units are cm-1 L moles-1
-                    molar_absorption_coefficient = absorption_coefficient / concentration / vf
-                    plotter.add_dielectric(nplot, method, vf_type, shape, data, v, trace, absorption_coefficient, molar_absorption_coefficient)
+                    call_parameters.append( (v,vau,dielecv,method,vf,vf_type,nplot,dielectric_medium,dielecv,shape,data,L,concentration) )
                 # end of loop over shapes
             # end of loop over volume fractions
         # end of loops over methods
-        # Calculate TO contribution to loss
-        trace = (dielecv[0, 0] + dielecv[1, 1] + dielecv[2, 2]) / 3.0
-        #  Scale the output to use a volume fraction so plots are comparable
-        # absorption_coefficient_from_mode_intensities_pcm *= vf
-        # plotter.add_dielectric(nplot, 'TOs_from_intensities', vf, 'noshape', '', v, trace_pure, absorption_coefficient_from_mode_intensities_pcm, \
-        #                       molar_absorption_coefficient_from_mode_intensities_Lpmolpcm)
     # end of look over frequencies
+    # Now perform the parallel calculation of the effective medium equations
+    results = p.map(Calculator.solve_effective_medium_equations, call_parameters )
+    # Add the results to the plotter function
+    for v,nplot,method,vf_type,shape,data,trace,absorption_coefficient,molar_absorption_coefficient in results:
+        plotter.add_dielectric(nplot, method, vf_type, shape, data, v, trace, absorption_coefficient, molar_absorption_coefficient)
+    # Tidy up before plotting
     if fd_csvfile is not None:
         fd_csvfile = fd_csvfiles[2]
         plotter.printout(fd_csvfile)
     if fd_csvfile is not None:
         for file_descriptor in fd_csvfiles:
             file_descriptor.close()
+    # Call the plotter
     plotter.plot(plot_types)
-
 
 if __name__ == "__main__":
     main()
