@@ -1,0 +1,68 @@
+#!/usr/bin/python
+"""Read in two csv files and check that the float contents are the same"""
+import string
+import os, sys
+
+def isfloat(value):
+  try:
+    float(value)
+    return True
+  except ValueError:
+    return False
+
+
+# Start processing the directories
+if len(sys.argv) <= 1 :
+    print('checkcsv file file2', file=sys.stderr)
+    print('         Compare the two csv files for any significant changes', file=sys.stderr)
+    exit()
+
+tokens = sys.argv[1:]
+ntokens = len(tokens)-1
+file1 = sys.argv[1]
+file2 = sys.argv[2]
+fd1 = open(file1)
+fd2 = open(file2)
+
+line1_errors = []
+line2_errors = []
+line_numbers_with_error = []
+nerrors = 0
+store_error = False
+max_percentage_error = 0.0
+line_number = 0
+for line1,line2 in zip(fd1,fd2):
+  line_number += 1
+  for word1,word2 in zip(line1.split(','),line2.split(',')):
+    if isfloat(word1):
+        if not isfloat(word2):
+            nerrors +=1 
+            store_error = True
+        else:
+            float1 = float(word1)
+            float2 = float(word2)
+            error = abs(float1 - float2)
+            percentage_error = 100.0*error/(float1+float2+1.0e-16)/2.0
+            if percentage_error > 1.0e-6:
+                nerrors += 1 
+                store_error = True
+                if max_percentage_error < percentage_error:
+                    keep_line_number = line_number
+                    keep_word1 = word1
+                    keep_word2 = word2
+                    keep_line1 = line1
+                    keep_line2 = line2
+                    max_percentage_error = percentage_error
+    # endif 
+    if store_error and nerrors < 10:
+        line_numbers_with_error.append(line_number)
+        line1_errors.append(word1)
+        line2_errors.append(word2)
+        store_error = False
+    # endif store_error
+  # end for word1, word2
+#end for line1, line2
+if nerrors > 0:
+  print("  ERRORS:({}) LARGEST ON LINE {} OF {}({}) and {}({}) -- max %error={}".format(nerrors, keep_line_number, file1,keep_word1,file2,keep_word2,max_percentage_error))
+else:
+  print("  OK: {} = {} -- max %error={}" .format(file1,file2,max_percentage_error))
