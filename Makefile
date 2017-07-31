@@ -34,6 +34,10 @@ test_pdielec:
 		@echo "Testing pdielec functionality (takes a while to run)."
 		@( cd Examples; make --no-print-directory test_pdielec )
 
+regenerate:		
+		@echo "Regenerating all reference data"
+		@( cd Examples; make --no-print-directory regenerate )
+
 pylint:		
 		@pylint pdielec Python/*.py
 

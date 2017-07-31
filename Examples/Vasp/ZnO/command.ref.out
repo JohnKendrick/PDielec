@@ -8,6 +8,7 @@ The density of the medium (-density) has been set to 2.2000 g/cc
 Vmin is:     0.0 cm-1
 Vmax is:  1000.0 cm-1
 All phonon modes will be considered
+The number of processors (4) has been determined automatically
 Analysing VASP directory: . 
 No projection of the dynamical matrix will be performed
 The charge neutrality of the Born atomic charges will not be enforced

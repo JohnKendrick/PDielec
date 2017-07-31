@@ -13,6 +13,7 @@ The optical permitivity tensor has been specified:
 Vmin is:     0.0 cm-1
 Vmax is:   300.0 cm-1
 All phonon modes will be considered
+The number of processors (4) has been determined automatically
 No projection of the dynamical matrix will be performed
 The charge neutrality of the Born atomic charges will not be enforced
  

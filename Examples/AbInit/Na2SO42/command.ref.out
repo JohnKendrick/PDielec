@@ -8,6 +8,7 @@ The density of the medium (-density) has been set to 2.2000 g/cc
 Vmin is:     0.0 cm-1
 Vmax is:   300.0 cm-1
 All phonon modes will be considered
+The number of processors (4) has been determined automatically
 
 Program used to perform the phonon calculation was: abinit
 The file containing the output is: Na2SO42.out
