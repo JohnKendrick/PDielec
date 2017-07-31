@@ -1,3 +1,5 @@
+Parallel version of the code
+
 Version 3.0.0
 Fixed a bug in the way born charges were read in by the Crystal interface.
 Added a Phonopy interface (only the VASP driver in Phonopy has been tested)
