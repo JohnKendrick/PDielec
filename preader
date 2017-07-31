@@ -5,7 +5,6 @@ import re
 import numpy as np
 import os, sys
 from Python.Constants import amu, PI, avogadro_si, wavenumber, angstrom, isotope_masses, average_masses
-from Python.DielectricConstant import DielectricConstant
 from Python.VaspOutputReader import VaspOutputReader
 from Python.CastepOutputReader import CastepOutputReader
 from Python.GulpOutputReader import GulpOutputReader
@@ -13,6 +12,7 @@ from Python.CrystalOutputReader import CrystalOutputReader
 from Python.AbinitOutputReader import AbinitOutputReader
 from Python.QEOutputReader import QEOutputReader
 from Python.PhonopyOutputReader import PhonopyOutputReader
+import Python.Calculator as Calculator
 
 
 
@@ -63,7 +63,6 @@ while itoken < ntokens:
     elif token == "-hessian":
         itoken += 1
         hessian_symmetrisation = tokens[itoken]
-        print(hessian_symmetrisation, file=sys.stderr)
         if (not hessian_symmetrisation == "symm") and ( not hessian_symmetrisation == "crystal" ):
             print('-hessian must be followed by \"symm\" or \"crystal\"',file=sys.stderr)
             exit()
@@ -108,36 +107,36 @@ if program == 'phonopy':
     if not qmprogram in ['abinit','castep','crystal','gulp','qe','vasp']:
         print('Phonopy QM program is not recognised: ',qmprogram,file=sys.stderr)
         exit()
-    print('QM program used by Phonopy is: ',qmprogram,file=sys.stderr)
+    print('  QM program used by Phonopy is: ',qmprogram,file=sys.stderr)
 
-print('Program is ',program,file=sys.stderr)
+print('  Program is ',program,file=sys.stderr)
 
 for f in files:
     if not os.path.isfile(f):
         print('Error file requested for analysis does not exist',f,file=sys.stderr)
         exit()
-print('Files are ',files,file=sys.stderr)
+
 if global_no_calculation:
-    print('No calculations has been requested',file=sys.stderr)
-    print('The frequencies (if present) will come from the QM/MM program    ',file=sys.stderr)
-    print('No hessian symmetrisation be performed',file=sys.stderr)
+    print('  No calculations has been requested',file=sys.stderr)
+    print('  The frequencies (if present) will come from the QM/MM program    ',file=sys.stderr)
+    print('  No hessian symmetrisation be performed',file=sys.stderr)
     if eckart:
-        print('The -eckart flag will be ignored',file=sys.stderr)
+        print('  The -eckart flag will be ignored',file=sys.stderr)
         eckart = False
     if neutral:
-        print('The -neutral flag will be ignored',file=sys.stderr)
+        print('  The -neutral flag will be ignored',file=sys.stderr)
         neutral = False
     if not mass_definition == "program":
-        print('The average and isotope mass definitions will be ignored',file=sys.stderr)
+        print('  The average and isotope mass definitions will be ignored',file=sys.stderr)
         mass_definition = "program"
     if mass_dictionary:
-        print('The masses specified by the -mass directive will be ignored',file=sys.stderr)
+        print('  The masses specified by the -mass directive will be ignored',file=sys.stderr)
         mass_dictionary = {}
 else:
-    print('Eckart is ',eckart,file=sys.stderr)
-    print('Neutral is ',neutral,file=sys.stderr)
-    print('Mass definition is ',mass_definition,file=sys.stderr)
-    print('Hessian symmetrisation is ',hessian_symmetrisation,file=sys.stderr)
+    print('  Eckart is ',eckart,file=sys.stderr)
+    print('  Neutral is ',neutral,file=sys.stderr)
+    print('  Mass definition is ',mass_definition,file=sys.stderr)
+    print('  Hessian symmetrisation is ',hessian_symmetrisation,file=sys.stderr)
 
 print('directory,information,electrons,magnetization,kpnts,kpnt_1,kpnt_2,kpnt_3,energy_cutoff_eV,final_free_energy_eV,final_energy_without_entropy_eV,pressure_GPa,a_A,b_A,c_A,alpha,beta,gamma,volume,eps0_xx,eps0_yy,eps0_zz,eps0_xy,eps0_xz,eps0_yz,epsinf_xx,epsinf_yy,epsinf_zz,epsinf_xy,epsinf_xz,epsinf_yz, c11_gpa, c22_gpa, c33_gpa, c44_gpa, c55_gpa, c66_gpa, c12_gpa,  c13_gpa, c23_gpa,f1,f2,f3,f4,f5,f6....')
 files.sort()
@@ -215,7 +214,7 @@ for name in files :
         print('Program name not recognized',program,file=sys.stderr)
         exit()
 
-    print('Analysing ',names, file=sys.stderr)
+    print('  Analysing ',names, file=sys.stderr)
     reader.eckart = eckart
     reader.neutral = neutral
     reader.hessian_symmetrisation = hessian_symmetrisation
@@ -224,8 +223,6 @@ for name in files :
     no_calculation = global_no_calculation
     if len(frequencies) < 3:
         no_calculation = True
-    calculator = DielectricConstant()
-    calculator.set_reader(reader)
     if not no_calculation:
         # What mass definition are we using?
         if not mass_definition == "program" or mass_dictionary:
@@ -236,11 +233,11 @@ for name in files :
         mass_weighted_normal_modes = reader.calculate_mass_weighted_normal_modes()
         # The masses might have changed in the calculation of the mass weighted normal modes
         masses = np.array(reader.masses) * amu
-        normal_modes = calculator.normal_modes(masses, mass_weighted_normal_modes)
+        normal_modes = Calculator.normal_modes(masses, mass_weighted_normal_modes)
         # from the normal modes and the born charges calculate the oscillator strengths of each mode
-        oscillator_strengths = calculator.oscillator_strengths(normal_modes, born_charges)
+        oscillator_strengths = Calculator.oscillator_strengths(normal_modes, born_charges)
         # calculate the intensities from the trace of the oscillator strengths
-        intensities = calculator.infrared_intensities(oscillator_strengths)
+        intensities = Calculator.infrared_intensities(oscillator_strengths)
         modified_frequencies = reader.frequencies
         modified_frequencies.sort()
     # Continue reading any data from the output file
