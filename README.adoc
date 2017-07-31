@@ -121,6 +121,7 @@ This assumes that the dynamical matrix has been calculation at the gamma point u
 | -threshold z1 z2 | | The modes which are included in the absorption calculation are chosen to have intensities above z1 and have frequencies greater than z2| No
 | -masses s | | By default the program uses the average atomic mass.  s can be *program* , *isotope*, or *average* indicating that the masses are taken from the QM/MM program, the most abundant isotope or the average mass according the natural abundance| No
 | -mass s z | | The mass of element s is set to the value z.  This is done after the mass definition given by -masses is applied. | Yes
+| -processors z | | The number of processors used in the calculation can be set here.  If it is not set then the maximum number of cpus in the machine are utilised. | No
 |===
 
 The supporting matrix is often selected from a small range of materials which have little or no absorption in the frequency range of interest.  The properties of the materials known to the program are summarised in the table below.
