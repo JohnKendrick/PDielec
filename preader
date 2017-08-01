@@ -12,135 +12,12 @@ from Python.CrystalOutputReader import CrystalOutputReader
 from Python.AbinitOutputReader import AbinitOutputReader
 from Python.QEOutputReader import QEOutputReader
 from Python.PhonopyOutputReader import PhonopyOutputReader
+from multiprocessing import Pool, cpu_count
 import Python.Calculator as Calculator
 
 
-
-# Start processing the directories
-if len(sys.argv) <= 1 :
-    print('preader -program program [-eckart] [-neutral] [-nocalculation] [-hessian symm] [-masses average] filenames .....', file=sys.stderr)
-    print('  \"program\" must be one of \"abinit\", \"castep\", \"crystal\", \"gulp\"       ', file=sys.stderr)
-    print('           \"phonopy\", \"qe\", \"vasp\"                                         ', file=sys.stderr)
-    print('           If phonopy is used it must be followed by the QM package              ', file=sys.stderr)
-    print('  -masses [average|isotope|program]  chooses the atomic mass definition average  ', file=sys.stderr)
-    print('          The default is \"average\"                                             ', file=sys.stderr)
-    print('  -mass  element mass                                                            ', file=sys.stderr)
-    print('          Change the mass of the element specified                               ', file=sys.stderr)
-    print('  -eckart projects out the translational components. Default is no projection    ', file=sys.stderr)
-    print('  -neutral imposes neutrality on the Born charges of the molecule.               ', file=sys.stderr)
-    print('           Default is no neutrality is imposed                                   ', file=sys.stderr)
-    print('  -hessian [symm|crystal] defines the symmetrisation of the hessian              ', file=sys.stderr)
-    print('           \"crystal\" imposes Crystal14 symmetrisation                          ', file=sys.stderr)
-    print('           \"symm\" symmetrises by averaging the hessian with its transpose      ', file=sys.stderr)
-    print('           \"symm\" is the default                                               ', file=sys.stderr)
-    print('  -nocalculation requests no calculations are performed                          ', file=sys.stderr)
-    print('           A single line is output with results obtained by reading the output   ', file=sys.stderr)
-    print('           any of -mass -masses -eckart -neutral or -crystal are ignored         ', file=sys.stderr)
-    exit()
-
-observables=False
-files = []
-eckart = False
-neutral = False
-hessian_symmetrisation = "symm"
-mass_definition = "average"
-mass_dictionary = {}
-global_no_calculation = False
-tokens = sys.argv[1:]
-ntokens = len(tokens)-1
-itoken = -1
-program = ''
-qmprogram = ''
-while itoken < ntokens:
-    itoken += 1
-    token = tokens[itoken]
-    if token == "-observables":
-        observables = True
-    elif token == "-eckart":
-        eckart = True
-    elif token == "-neutral":
-        neutral = True
-    elif token == "-hessian":
-        itoken += 1
-        hessian_symmetrisation = tokens[itoken]
-        if (not hessian_symmetrisation == "symm") and ( not hessian_symmetrisation == "crystal" ):
-            print('-hessian must be followed by \"symm\" or \"crystal\"',file=sys.stderr)
-            exit()
-    elif token == "-masses":
-        itoken += 1
-        token = tokens[itoken]
-        if token[0] == 'a':
-            mass_definition = 'average'
-        elif token[0] == 'i':
-            mass_definition = 'isotope'
-        elif token[0] == 'p':
-            mass_definition = 'program'
-        else:
-            print('-masses must be followed by \"average\" \"isotope\" or \"program\"',file=sys.stderr)
-            exit()
-    elif token == "-mass":
-        itoken += 1
-        element = tokens[itoken]
-        itoken += 1
-        mass = float(tokens[itoken])
-        mass_dictionary[element] = mass
-    elif token == "-nocalculation":
-        global_no_calculation = True
-    elif token == "-program":
-        itoken += 1
-        program = tokens[itoken]
-        if program == 'phonopy':
-            itoken += 1
-            qmprogram = tokens[itoken]
-    else:
-        files.append(token)
-
-if len(program) < 1:
-    print('Please use -program to define the package used to generate the output files',file=sys.stderr)
-    exit()
-
-if not program in ['abinit','castep','crystal','gulp','qe','vasp','phonopy']:
-    print('Program is not recognised: ',program,file=sys.stderr)
-    exit()
-
-if program == 'phonopy':
-    if not qmprogram in ['abinit','castep','crystal','gulp','qe','vasp']:
-        print('Phonopy QM program is not recognised: ',qmprogram,file=sys.stderr)
-        exit()
-    print('  QM program used by Phonopy is: ',qmprogram,file=sys.stderr)
-
-print('  Program is ',program,file=sys.stderr)
-
-for f in files:
-    if not os.path.isfile(f):
-        print('Error file requested for analysis does not exist',f,file=sys.stderr)
-        exit()
-
-if global_no_calculation:
-    print('  No calculations has been requested',file=sys.stderr)
-    print('  The frequencies (if present) will come from the QM/MM program    ',file=sys.stderr)
-    print('  No hessian symmetrisation be performed',file=sys.stderr)
-    if eckart:
-        print('  The -eckart flag will be ignored',file=sys.stderr)
-        eckart = False
-    if neutral:
-        print('  The -neutral flag will be ignored',file=sys.stderr)
-        neutral = False
-    if not mass_definition == "program":
-        print('  The average and isotope mass definitions will be ignored',file=sys.stderr)
-        mass_definition = "program"
-    if mass_dictionary:
-        print('  The masses specified by the -mass directive will be ignored',file=sys.stderr)
-        mass_dictionary = {}
-else:
-    print('  Eckart is ',eckart,file=sys.stderr)
-    print('  Neutral is ',neutral,file=sys.stderr)
-    print('  Mass definition is ',mass_definition,file=sys.stderr)
-    print('  Hessian symmetrisation is ',hessian_symmetrisation,file=sys.stderr)
-
-print('directory,information,electrons,magnetization,kpnts,kpnt_1,kpnt_2,kpnt_3,energy_cutoff_eV,final_free_energy_eV,final_energy_without_entropy_eV,pressure_GPa,a_A,b_A,c_A,alpha,beta,gamma,volume,eps0_xx,eps0_yy,eps0_zz,eps0_xy,eps0_xz,eps0_yz,epsinf_xx,epsinf_yy,epsinf_zz,epsinf_xy,epsinf_xz,epsinf_yz, c11_gpa, c22_gpa, c33_gpa, c44_gpa, c55_gpa, c66_gpa, c12_gpa,  c13_gpa, c23_gpa,f1,f2,f3,f4,f5,f6....')
-files.sort()
-for name in files :
+def read_a_file( calling_parameters):
+    name, eckart, neutral, mass_definition, mass_dictionary, global_no_calculation = calling_parameters
     fulldirname = name
     head,tail = os.path.split(fulldirname)
     root,ext = os.path.splitext(tail)
@@ -291,7 +168,7 @@ for name in files :
     string = header+common_output
     for f in frequencies:
         string = string + ',' + str(f)
-    print(string)
+    results_string = [ string ]
     # Assemble the next line if any of eckart/neutral/symm have been used
     option_string = ''
     if not no_calculation:
@@ -306,21 +183,164 @@ for name in files :
         string = header + common_output 
         for f in modified_frequencies:
             string = string + ',' + str(f)
-        print(string)
+        results_string.append(string)
         option_string = 'Calculated Intensities (Debye2/Angs2/amu)'
         header = fulldirname+','+option_string
         string = header + common_output 
         for f in intensities:
             string = string + ',' + str(f)
-        print(string)
+        results_string.append(string)
         option_string = 'Calculated Integrated Molar Absorption (L/mole/cm/cm)'
         header = fulldirname+','+option_string
         string = header + common_output 
         for f in intensities:
             string = string + ',' + str(f*4225.6)
+        results_string.append(string)
+    # End if not no_calculation
+    return name,results_string
+        
+# Start processing the directories
+if len(sys.argv) <= 1 :
+    print('preader -program program [-eckart] [-neutral] [-nocalculation] [-hessian symm] [-masses average] filenames .....', file=sys.stderr)
+    print('  \"program\" must be one of \"abinit\", \"castep\", \"crystal\", \"gulp\"       ', file=sys.stderr)
+    print('           \"phonopy\", \"qe\", \"vasp\"                                         ', file=sys.stderr)
+    print('           If phonopy is used it must be followed by the QM package              ', file=sys.stderr)
+    print('  -masses [average|isotope|program]  chooses the atomic mass definition average  ', file=sys.stderr)
+    print('          The default is \"average\"                                             ', file=sys.stderr)
+    print('  -mass  element mass                                                            ', file=sys.stderr)
+    print('          Change the mass of the element specified                               ', file=sys.stderr)
+    print('  -eckart projects out the translational components. Default is no projection    ', file=sys.stderr)
+    print('  -neutral imposes neutrality on the Born charges of the molecule.               ', file=sys.stderr)
+    print('           Default is no neutrality is imposed                                   ', file=sys.stderr)
+    print('  -hessian [symm|crystal] defines the symmetrisation of the hessian              ', file=sys.stderr)
+    print('           \"crystal\" imposes Crystal14 symmetrisation                          ', file=sys.stderr)
+    print('           \"symm\" symmetrises by averaging the hessian with its transpose      ', file=sys.stderr)
+    print('           \"symm\" is the default                                               ', file=sys.stderr)
+    print('  -nocalculation requests no calculations are performed                          ', file=sys.stderr)
+    print('           A single line is output with results obtained by reading the output   ', file=sys.stderr)
+    print('           any of -mass -masses -eckart -neutral or -crystal are ignored         ', file=sys.stderr)
+    exit()
+
+observables=False
+files = []
+eckart = False
+neutral = False
+hessian_symmetrisation = "symm"
+mass_definition = "average"
+mass_dictionary = {}
+global_no_calculation = False
+tokens = sys.argv[1:]
+ntokens = len(tokens)-1
+itoken = -1
+program = ''
+qmprogram = ''
+while itoken < ntokens:
+    itoken += 1
+    token = tokens[itoken]
+    if token == "-observables":
+        observables = True
+    elif token == "-eckart":
+        eckart = True
+    elif token == "-neutral":
+        neutral = True
+    elif token == "-hessian":
+        itoken += 1
+        hessian_symmetrisation = tokens[itoken]
+        if (not hessian_symmetrisation == "symm") and ( not hessian_symmetrisation == "crystal" ):
+            print('-hessian must be followed by \"symm\" or \"crystal\"',file=sys.stderr)
+            exit()
+    elif token == "-masses":
+        itoken += 1
+        token = tokens[itoken]
+        if token[0] == 'a':
+            mass_definition = 'average'
+        elif token[0] == 'i':
+            mass_definition = 'isotope'
+        elif token[0] == 'p':
+            mass_definition = 'program'
+        else:
+            print('-masses must be followed by \"average\" \"isotope\" or \"program\"',file=sys.stderr)
+            exit()
+    elif token == "-mass":
+        itoken += 1
+        element = tokens[itoken]
+        itoken += 1
+        mass = float(tokens[itoken])
+        mass_dictionary[element] = mass
+    elif token == "-nocalculation":
+        global_no_calculation = True
+    elif token == "-program":
+        itoken += 1
+        program = tokens[itoken]
+        if program == 'phonopy':
+            itoken += 1
+            qmprogram = tokens[itoken]
+    else:
+        files.append(token)
+
+if len(program) < 1:
+    print('Please use -program to define the package used to generate the output files',file=sys.stderr)
+    exit()
+
+if not program in ['abinit','castep','crystal','gulp','qe','vasp','phonopy']:
+    print('Program is not recognised: ',program,file=sys.stderr)
+    exit()
+
+if program == 'phonopy':
+    if not qmprogram in ['abinit','castep','crystal','gulp','qe','vasp']:
+        print('Phonopy QM program is not recognised: ',qmprogram,file=sys.stderr)
+        exit()
+    print('  QM program used by Phonopy is: ',qmprogram,file=sys.stderr)
+
+print('  Program is ',program,file=sys.stderr)
+
+for f in files:
+    if not os.path.isfile(f):
+        print('Error file requested for analysis does not exist',f,file=sys.stderr)
+        exit()
+
+if global_no_calculation:
+    print('  No calculations has been requested',file=sys.stderr)
+    print('  The frequencies (if present) will come from the QM/MM program    ',file=sys.stderr)
+    print('  No hessian symmetrisation be performed',file=sys.stderr)
+    if eckart:
+        print('  The -eckart flag will be ignored',file=sys.stderr)
+        eckart = False
+    if neutral:
+        print('  The -neutral flag will be ignored',file=sys.stderr)
+        neutral = False
+    if not mass_definition == "program":
+        print('  The average and isotope mass definitions will be ignored',file=sys.stderr)
+        mass_definition = "program"
+    if mass_dictionary:
+        print('  The masses specified by the -mass directive will be ignored',file=sys.stderr)
+        mass_dictionary = {}
+else:
+    print('  Eckart is ',eckart,file=sys.stderr)
+    print('  Neutral is ',neutral,file=sys.stderr)
+    print('  Mass definition is ',mass_definition,file=sys.stderr)
+    print('  Hessian symmetrisation is ',hessian_symmetrisation,file=sys.stderr)
+#
+# Create a pool of processors to handle reading the files
+#
+p = Pool(4)
+# Create a tuple list of calling parameters 
+calling_parameters = []
+files.sort()
+for name in files:
+    calling_parameters.append( (name, eckart, neutral, mass_definition, mass_dictionary, global_no_calculation) )
+# Calculate the results in parallel
+results = p.map(read_a_file,calling_parameters)
+# Print out the results
+print('directory,information,electrons,magnetization,kpnts,kpnt_1,kpnt_2,kpnt_3,energy_cutoff_eV,final_free_energy_eV,final_energy_without_entropy_eV,pressure_GPa,a_A,b_A,c_A,alpha,beta,gamma,volume,eps0_xx,eps0_yy,eps0_zz,eps0_xy,eps0_xz,eps0_yz,epsinf_xx,epsinf_yy,epsinf_zz,epsinf_xy,epsinf_xz,epsinf_yz, c11_gpa, c22_gpa, c33_gpa, c44_gpa, c55_gpa, c66_gpa, c12_gpa,  c13_gpa, c23_gpa,f1,f2,f3,f4,f5,f6....')
+for name,strings in results:
+    for string in strings:
         print(string)
-        
-        
+#
+# Process the observables switch
+# ( for the time being this is commented out )
+exit()
+for name in files :
     if observables:
         filename = directory+'.observables'
         if directory == '.' :

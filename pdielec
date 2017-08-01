@@ -850,8 +850,9 @@ def main():
         vau = v * wavenumber
         call_parameters.append( (v, vau, mode_list, frequencies, sigmas, oscillator_strengths, volume, epsilon_inf, drude, drude_plasma, drude_sigma) )
     # Create a pool of processors and get them to calculate the initial dielectric contribution from the phonon modes
+    chunksize = 1
     p = Pool(number_of_processors)
-    results = p.map(Calculator.parallel_dielectric, call_parameters )
+    results = p.map(Calculator.parallel_dielectric, call_parameters)
     # Prepare the share memory so we can pass previous solutions around
     # the number of plots will be less than or equal to nplots
     nplots = len(results)*len(methods)*len(volume_fractions)*len(shapes)
@@ -890,7 +891,7 @@ def main():
     # Allocate so shared memory
     nplots = nplot
     # Now perform the parallel calculation of the effective medium equations
-    results = p.map(Calculator.solve_effective_medium_equations, call_parameters )
+    results = p.map(Calculator.solve_effective_medium_equations, call_parameters)
     # Add the results to the plotter function
     for v,nplot,method,vf_type,shape,data,trace,absorption_coefficient,molar_absorption_coefficient in results:
         plotter.add_dielectric(nplot, method, vf_type, shape, data, v, trace, absorption_coefficient, molar_absorption_coefficient)
