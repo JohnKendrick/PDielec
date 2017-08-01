@@ -20,7 +20,8 @@ import math
 import os
 import sys
 import numpy as np
-from multiprocessing import Pool, cpu_count
+import ctypes
+from multiprocessing import Pool, cpu_count, Array
 from Python.Constants import amu, PI, avogadro_si, wavenumber, angstrom, isotope_masses, average_masses
 from Python.VaspOutputReader import VaspOutputReader
 from Python.PhonopyOutputReader import PhonopyOutputReader
@@ -851,6 +852,17 @@ def main():
     # Create a pool of processors and get them to calculate the initial dielectric contribution from the phonon modes
     p = Pool(number_of_processors)
     results = p.map(Calculator.parallel_dielectric, call_parameters )
+    # Prepare the share memory so we can pass previous solutions around
+    # the number of plots will be less than or equal to nplots
+    nplots = len(results)*len(methods)*len(volume_fractions)*len(shapes)
+    # Allocate space for the shared memory, we need twice as much as we have a complex data type
+    shared_array_base = Array(ctypes.c_double, 2*nplots*9)
+    previous_solution_shared = np.ctypeslib.as_array(shared_array_base.get_obj())
+    # Convert the space allocated to comples
+    previous_solution_shared.dtype = np.complex128
+    # Reshape the array and fill everything with zero's
+    previous_solution_shared = previous_solution_shared.reshape(nplots, 3,3)
+    previous_solution_shared.fill(0.0+0.0j)
     # Prepare parallel call parameters for the loop over frequencies, methods, volume fractions
     call_parameters = []
     for v,vau,dielecv in results:
@@ -870,11 +882,13 @@ def main():
                         else:
                             nplot -= 1
                             continue
-                    call_parameters.append( (v,vau,dielecv,method,vf,vf_type,nplot,dielectric_medium,dielecv,shape,data,L,concentration) )
+                    call_parameters.append( (v,vau,dielecv,method,vf,vf_type,nplot,dielectric_medium,dielecv,shape,data,L,concentration,previous_solution_shared) )
                 # end of loop over shapes
             # end of loop over volume fractions
         # end of loops over methods
     # end of look over frequencies
+    # Allocate so shared memory
+    nplots = nplot
     # Now perform the parallel calculation of the effective medium equations
     results = p.map(Calculator.solve_effective_medium_equations, call_parameters )
     # Add the results to the plotter function

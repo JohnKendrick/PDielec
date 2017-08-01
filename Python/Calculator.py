@@ -755,7 +755,9 @@ def parallel_dielectric(call_parameters):
 
 def solve_effective_medium_equations( call_parameters ):
     # call_parameters is a tuple
-    v,vau,dielecv,method,vf,vf_type,nplot,dielectric_medium,dielecv,shape,data,L,concentration = call_parameters
+    # In the case of Bruggeman and coherent we can use the previous result to start the iteration/minimisation
+    # However to do this we need some shared memory, this allocated in previous_solution_shared
+    v,vau,dielecv,method,vf,vf_type,nplot,dielectric_medium,dielecv,shape,data,L,concentration,previous_solution_shared = call_parameters
     if method == "balan":
         effdielec = balan(dielectric_medium, dielecv, shape, L, vf)
     elif method == "ap" or method == "averagedpermittivity":
@@ -765,14 +767,23 @@ def solve_effective_medium_equations( call_parameters ):
     elif method == "maxwell_sihvola":
         effdielec = maxwell_sihvola(dielectric_medium, dielecv, shape, L, vf)
     elif method == "coherent":
-        eff = maxwell(dielectric_medium, dielecv, shape, L, vf)
+        eff  = previous_solution_shared[nplot]
+        if np.abs(np.trace(eff)) < 1.0e-8: 
+            eff = maxwell(dielectric_medium, dielecv, shape, L, vf)
         effdielec = coherent(dielectric_medium, dielecv, shape, L, vf, eff)
+        previous_solution_shared[nplot] = effdielec
     elif method == "bruggeman_minimise":
-        eff = maxwell(dielectric_medium, dielecv, shape, L, vf)
+        eff  = previous_solution_shared[nplot]
+        if np.abs(np.trace(eff)) < 1.0e-8: 
+            eff = maxwell(dielectric_medium, dielecv, shape, L, vf)
         effdielec = bruggeman_minimise(dielectric_medium, dielecv, shape, L, vf, eff)
+        previous_solution_shared[nplot] = effdielec
     elif method == "bruggeman" or method == "bruggeman_iter":
-        eff = maxwell(dielectric_medium, dielecv, shape, L, vf)
+        eff  = previous_solution_shared[nplot]
+        if np.abs(np.trace(eff)) < 1.0e-8: 
+            eff = maxwell(dielectric_medium, dielecv, shape, L, vf)
         effdielec = bruggeman_iter(dielectric_medium, dielecv, shape, L, vf, eff)
+        previous_solution_shared[nplot] = effdielec
     else:
         print('Unkown dielectric method: {}'.format(method))
         exit(1)
