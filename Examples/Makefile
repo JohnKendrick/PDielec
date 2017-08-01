@@ -15,6 +15,7 @@ test_pdielec:
 	@$(MAKE) --no-print-directory -C Vasp/ZnO test
 	@$(MAKE) --no-print-directory -C Vasp/Na2SO42 test
 	@$(MAKE) --no-print-directory -C Gulp/calcite test
+	@$(MAKE) --no-print-directory -C Gulp/Na2SO42 test
 	@$(MAKE) --no-print-directory -C Crystal/Na2SO42 test
 	@$(MAKE) --no-print-directory -C Crystal/Leucine test
 	@$(MAKE) --no-print-directory -C Crystal/Quartz test
@@ -50,6 +51,7 @@ regenerate:
 	@$(MAKE) --no-print-directory -C Vasp/ZnO regenerate
 	@$(MAKE) --no-print-directory -C Vasp/Na2SO42 regenerate
 	@$(MAKE) --no-print-directory -C Gulp/calcite regenerate
+	@$(MAKE) --no-print-directory -C Gulp/Na2SO42 regenerate
 	@$(MAKE) --no-print-directory -C Crystal/Na2SO42 regenerate
 	@$(MAKE) --no-print-directory -C Crystal/Leucine regenerate
 	@$(MAKE) --no-print-directory -C Crystal/Quartz regenerate
