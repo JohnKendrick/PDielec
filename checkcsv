@@ -2,6 +2,7 @@
 """Read in two csv files and check that the float contents are the same"""
 import string
 import os, sys
+from termcolor import colored
 
 def isfloat(value):
   try:
@@ -63,6 +64,6 @@ for line1,line2 in zip(fd1,fd2):
   # end for word1, word2
 #end for line1, line2
 if nerrors > 0:
-  print("  ERRORS:({}) LARGEST ON LINE {} OF {}({}) and {}({}) -- max %error={}".format(nerrors, keep_line_number, file1,keep_word1,file2,keep_word2,max_percentage_error))
+  print('  '+colored('ERRORS:','red')+"({}) LARGEST ON LINE {} OF {}({}) and {}({}) -- max %error={}".format(nerrors, keep_line_number, file1,keep_word1,file2,keep_word2,max_percentage_error))
 else:
-  print("  OK: {} = {} -- max %error={}" .format(file1,file2,max_percentage_error))
+  print('  '+colored('OK:','blue')+" {} = {} -- max %error={}" .format(file1,file2,max_percentage_error))
