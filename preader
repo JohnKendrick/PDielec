@@ -330,11 +330,17 @@ files.sort()
 for name in files:
     calling_parameters.append( (name, eckart, neutral, mass_definition, mass_dictionary, global_no_calculation) )
 # Calculate the results in parallel
-results = p.map(read_a_file,calling_parameters)
+results_map_object = p.map_async(read_a_file,calling_parameters)
+results_map_object.wait()
+results = results_map_object.get()
+# Convert the results into a dictionary
+results_dictionary = {}
+for name,strings in results:
+    results_dictionary[name] = strings
 # Print out the results
 print('directory,information,electrons,magnetization,kpnts,kpnt_1,kpnt_2,kpnt_3,energy_cutoff_eV,final_free_energy_eV,final_energy_without_entropy_eV,pressure_GPa,a_A,b_A,c_A,alpha,beta,gamma,volume,eps0_xx,eps0_yy,eps0_zz,eps0_xy,eps0_xz,eps0_yz,epsinf_xx,epsinf_yy,epsinf_zz,epsinf_xy,epsinf_xz,epsinf_yz, c11_gpa, c22_gpa, c33_gpa, c44_gpa, c55_gpa, c66_gpa, c12_gpa,  c13_gpa, c23_gpa,f1,f2,f3,f4,f5,f6....')
-for name,strings in results:
-    for string in strings:
+for name in files:
+    for string in results_dictionary[name]:
         print(string)
 #
 # Process the observables switch
