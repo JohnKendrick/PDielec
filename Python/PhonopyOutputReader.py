@@ -77,14 +77,23 @@ class PhonopyOutputReader(GenericOutputReader):
         return
 
     def read_dynamical_matrix(self):
+        #
+        # Yaml imports of large files are really slow....
+        # Attempt to use the PyYaml C parser, using yaml.CLoader
+        #
         import yaml
+        try: 
+            from yaml import CLoader as Loader
+        except:
+            print("WARNING: Yaml CLoader is not avaiable, using fallback")
+            from yaml import Loader as Loader
         # the first name has to be the qpoints file
         fd = open(self._outputfiles[0])
-        data_q = yaml.load(fd)
+        data_q = yaml.load(fd, Loader=Loader)
         fd.close
         # the second name has to be the phonopy file
         fd = open(self._outputfiles[1])
-        data_p = yaml.load(fd)
+        data_p = yaml.load(fd, Loader=Loader)
         fd.close
         self._old_masses = []
         for i in range(self.nions):
