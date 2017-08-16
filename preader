@@ -1,5 +1,6 @@
 #!/usr/bin/python
 """Read the contents of a directory containing DFT output and create a csv style file of information"""
+from __future__ import print_function
 import string
 import re
 import numpy as np
@@ -113,10 +114,14 @@ def read_a_file( calling_parameters):
         normal_modes = Calculator.normal_modes(masses, mass_weighted_normal_modes)
         # from the normal modes and the born charges calculate the oscillator strengths of each mode
         oscillator_strengths = Calculator.oscillator_strengths(normal_modes, born_charges)
-        # calculate the intensities from the trace of the oscillator strengths
-        intensities = Calculator.infrared_intensities(oscillator_strengths)
         modified_frequencies = reader.frequencies
         modified_frequencies.sort()
+        # if the frequency is less than 5 cm-1 assume that the oscillator strength is zero
+        for imode,f in enumerate(modified_frequencies):
+            if f < 5.0:
+                oscillator_strengths[imode]=np.zeros((3,3))
+        # calculate the intensities from the trace of the oscillator strengths
+        intensities = Calculator.infrared_intensities(oscillator_strengths)
     # Continue reading any data from the output file
     frequencies.sort()
     unitCell = reader.unit_cells[-1]
