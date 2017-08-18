@@ -1,4 +1,4 @@
-!#/bin/python
+#!/usr/bin/python
 # The script was taken from the intel web-site and modified
 # https://software.intel.com/sites/default/files/0f/a7/mkl_benchmark.py
 import os

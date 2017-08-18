@@ -61,7 +61,7 @@ def isfloat(value):
 
 # Start processing the directories
 if len(sys.argv) <= 1 :
-    print('checkcsv file file2 [-sep blanks] [-thresh 1.0E-6]', file=sys.stderr)
+    print('checkcsv file file2 [-sep blanks] [-thresh 1.0E-3]', file=sys.stderr)
     print('         Compare the two files for any significant changes', file=sys.stderr)
     print('         The default separator is "blanks" for txt/out files', file=sys.stderr)
     print('         and "," for csv files', file=sys.stderr)
@@ -70,7 +70,7 @@ if len(sys.argv) <= 1 :
     print('         The default value for threshold is 1.0E-6 ', file=sys.stderr)
     exit()
 
-threshold = 1.0E-6
+threshold = 1.0E-3
 separator = None
 tokens = sys.argv[1:]
 ntokens = len(tokens)-1

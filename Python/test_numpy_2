@@ -15,8 +15,8 @@ print('BLAS info:')
 for kk, vv in info.items():
     print(' * ' + kk + ' ' + str(vv))
 
-setup = "import numpy; x = numpy.random.random((10000, 10000))"
-count = 50
+setup = "import numpy; x = numpy.random.random((20000, 2000))"
+count = 5
 
 t = timeit.Timer("numpy.dot(x, x.T)", setup=setup)
 print("\ndot: %f sec" % (t.timeit(count) / count))
