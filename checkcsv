@@ -35,14 +35,13 @@ def compare_lines( line1, line2, swapped):
             #      6 0.88888                            6 0.99999
             if not swapped or index > 1 or error2 > 1.0e-10:
                 percentage_error = 100.0*error/(float1+float2+2.0)/2.0
+                max_percentage_error = percentage_error
                 if percentage_error > threshold:
                     nerrors += 1 
                     store_error = True
                     if max_percentage_error < percentage_error:
                         keep_word1 = word1
                         keep_word2 = word2
-                        max_percentage_error = percentage_error
-        
                 # end if 
              #end if error_swapped
         #end if not
@@ -126,12 +125,14 @@ line_numbers_with_error = []
 nerrors = 0
 store_error = False
 max_percentage_error = 0.0
+max_percentage_error2= 0.0
 line_number = 0
 compare_next_line = False
 for line1,line2 in zip(fd1,fd2):
   line_number += 1
   if not compare_next_line:
       store_error, nerror, percentage_error, keep_word1c, keep_word2c = compare_lines(line1,line2,False)
+      max_percentage_error2 = max(max_percentage_error2,percentage_error)
       if store_error:
           # if there was an error let's see if two lines are swapped
           line1a = line1
@@ -166,4 +167,4 @@ for line1,line2 in zip(fd1,fd2):
 if nerrors > 0:
   print('  '+colored('ERRORS:','red')+"({}) LARGEST ON LINE {} OF {}({}) and {}({}) -- max %error={}".format(nerrors, keep_line_number, file1,keep_word1,file2,keep_word2,max_percentage_error))
 else:
-  print('  '+colored('OK:','blue')+" {} = {} -- max %error={}" .format(file1,file2,max_percentage_error))
+  print('  '+colored('OK:','blue')+" {} = {} -- max %error={}" .format(file1,file2,max_percentage_error2))
