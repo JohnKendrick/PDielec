@@ -16,6 +16,10 @@ from Python.PhonopyOutputReader import PhonopyOutputReader
 from multiprocessing import Pool, cpu_count
 import Python.Calculator as Calculator
 
+def set_affinity_on_worker():
+    """When a new worker process is created, the affinity is set to all CPUs"""
+    #JK print("I'm the process %d, setting affinity to all CPUs." % os.getpid())
+    os.system("taskset -p 0xff %d" % os.getpid())
 
 def read_a_file( calling_parameters):
     name, eckart, neutral, mass_definition, mass_dictionary, global_no_calculation = calling_parameters
@@ -328,7 +332,7 @@ else:
 #
 # Create a pool of processors to handle reading the files
 #
-p = Pool(4)
+p = Pool(initializer=set_affinity_on_worker)
 # Create a tuple list of calling parameters 
 calling_parameters = []
 files.sort()
