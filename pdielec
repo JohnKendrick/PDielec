@@ -784,6 +784,21 @@ def main():
         # end for qxyz, lo_freq
     # end if qlist
     #
+    # Calculate degenerate lists
+    #
+    degeneracy_threshold = 1.0E-6
+    degenerate_lists = {}
+    mmax = len(frequencies)
+    for m1 in range(len(frequencies)):
+        degenerate_lists[m1] = []
+    for m1 in range(len(frequencies)):
+        f1 = frequencies[m1]
+        for m2 in range(m1+1,min(mmax,m1+3)):
+            f2 = frequencies[m2]
+            if abs(f2-f1) < degeneracy_threshold:
+                degenerate_lists[m1].append(m2)
+                degenerate_lists[m2].append(m1)
+    #
     # Only modes with non-zero oscillator strengths contribute to the dielectric
     # so calculate those modes which we can safely ignore and store them in ignore_modes
     #
@@ -791,7 +806,13 @@ def main():
         for mode, intensity in enumerate(intensities):
             # ignore modes with a low oscillator strength
             if intensity < threshold['intensity']:
-                ignore_modes.append(mode)
+                # If any of its degenerate modes have intensity then we shouldn't ignore it
+                dont_ignore = False
+                for m in degenerate_lists[mode]:
+                    if intensities[m] > threshold['intensity']:
+                        dont_ignore = True
+                if not dont_ignore:
+                    ignore_modes.append(mode)
             # ignore modes with low real frequency
             elif np.real(frequencies[mode])/wavenumber < threshold['frequency']:
                 ignore_modes.append(mode)
