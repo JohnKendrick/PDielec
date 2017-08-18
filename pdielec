@@ -786,7 +786,7 @@ def main():
     #
     # Calculate degenerate lists
     #
-    degeneracy_threshold = 1.0E-6
+    degeneracy_threshold = 1.0E-8
     degenerate_lists = {}
     mmax = len(frequencies)
     for m1 in range(len(frequencies)):
@@ -807,11 +807,11 @@ def main():
             # ignore modes with a low oscillator strength
             if intensity < threshold['intensity']:
                 # If any of its degenerate modes have intensity then we shouldn't ignore it
-                dont_ignore = False
+                ignore = True
                 for m in degenerate_lists[mode]:
                     if intensities[m] > threshold['intensity']:
-                        dont_ignore = True
-                if not dont_ignore:
+                        ignore = False
+                if ignore:
                     ignore_modes.append(mode)
             # ignore modes with low real frequency
             elif np.real(frequencies[mode])/wavenumber < threshold['frequency']:

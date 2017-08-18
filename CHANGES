@@ -1,4 +1,7 @@
-Parallel version of the code
+Added degeneracy checking
+Added improved checking of output files, so that small changes due to numpy/mkl choice are ignored
+
+Parallel version of PDielec and preader
 
 Version 3.0.0
 Fixed a bug in the way born charges were read in by the Crystal interface.

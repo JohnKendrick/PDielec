@@ -1,7 +1,6 @@
 test:	
 	@echo "Testing preader for Crystal...."
 	@bash command.sh > command.csv
-	@echo "  Comparing csv file with reference...."
 	@../../../checkcsv command.ref.csv command.csv
 
 regenerate:

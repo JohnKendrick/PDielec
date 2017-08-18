@@ -1,3 +1,8 @@
+#!/bin/python
+#
+# Taken from the following website, and acknowledged with thanks
+# https://gist.github.com/gdooper/95bd6fe9bcc252038b6e8284d229be6e
+#
 import numpy as np
 import numpy.random as npr
 import time

@@ -1,3 +1,6 @@
+!#/bin/python
+# The script was taken from the intel web-site and modified
+# https://software.intel.com/sites/default/files/0f/a7/mkl_benchmark.py
 import os
 import sys
 import timeit
@@ -36,7 +39,7 @@ def test_dot():
      b = numpy.linalg.inv(a)
      result = numpy.dot(a, b) - numpy.eye(i)
  
-# Test to start. The dict is the value I had with the WEBER and no MKL followed by Strauss with MKL
+# Test to start. The dict is the value I had with the WEBER with MKL followed by Strauss with MKL
 tests = {test_eigenvalue : (349., 182.5),
 test_svd : (1948.7, 1179.3),
 test_inv : (175.3, 134.2),
@@ -48,13 +51,13 @@ test_dot : (270.1, 146.6) }
 THREADS_LIMIT_ENV = 'MKL_NUM_THREADS'
  
 def start_benchmark():
-    print("""Benchmark is made against Weber without MKL and Strauss with MKL running single threaded""")
+    print("""Benchmark is made against Weber with MKL and Strauss with MKL running single threaded""")
     if THREADS_LIMIT_ENV in os.environ:
         print("Maximum number of threads used for computation is : %s" % os.environ[THREADS_LIMIT_ENV])
     numpy.seterr(all='ignore')
     print(("-" * 80))
     print("Starting timing with numpy %s\nVersion: %s" % (numpy.__version__, sys.version))
-    print("%20s : %10s - %5s / %5s" % ("Function", "Timing [ms]", "Weber", "Strauss MKL"))
+    print("%20s : %10s - %5s / %5s" % ("Function", "Timing [ms]", "Weber", "Strauss"))
     for fun, bench in tests.items():
         t = timeit.Timer(stmt="%s()" % fun.__name__, setup="from __main__ import %s" % fun.__name__)
         res = t.repeat(repeat=6, number=1)

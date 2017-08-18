@@ -1,9 +1,7 @@
 test:	
 	@echo "Calculating absorption for Na2(SO4)2 from PHONOPY...."
 	@bash command.sh > command.out
-	@echo "  Comparing output csv file reference...."
-	@diff command.ref.out command.out
-	@echo "  Comparing csv file with reference...."
+	@../../../checkcsv command.ref.out command.out
 	@../../../checkcsv command.ref.csv command.csv
 
 regenerate:
