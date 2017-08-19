@@ -36,7 +36,8 @@ import Python.Calculator as Calculator
 def set_affinity_on_worker():
     """When a new worker process is created, the affinity is set to all CPUs"""
     #JK print("I'm the process %d, setting affinity to all CPUs." % os.getpid())
-    os.system("taskset -p 0xff %d" % os.getpid())
+    #JK Commented out for the time being
+    #JK os.system("taskset -p 0xff %d > /dev/null" % os.getpid())
 
 
 def main():
