@@ -179,6 +179,9 @@ def main():
         print("             Set the thresholds for treating a phonon mode")
         print("             Only modes with an intensity > 1.0E-10 and a frequency above 5cm-1")
         print("             Will be conidered in the calcualtion of the absorption spectrum")
+        print("         -molesof [atoms|cells|molecules natoms]")
+        print("             Definition of moles for the calculation of concentration.  The default is 'cells'")
+        print("             if 'molecules' is given then the number of atoms in the molecules is needed")
         print("         -processors 0")
         print("             Use the specificed number of processors, the default is to use all available processors")
         print("         -drude drude_input_plasma drude_input_sigma")
@@ -246,6 +249,7 @@ def main():
     threshold = {'intensity': 1.0E-10, 'frequency': 5}
     hessian_symmetrisation = "symm"
     number_of_processors = 0
+    moles_of = 'cells'
 
     # check usage
     if len(sys.argv) <= 1:
@@ -398,6 +402,19 @@ def main():
         elif token == "-processors":
             itoken += 1
             number_of_processors = int(tokens[itoken])
+        elif token == "-molesof":
+            itoken += 1
+            moles_of = tokens[itoken]
+            if moles_of == 'molecules':
+                itoken += 1
+                number_of_atoms_per_molecule = int(tokens[itoken])
+            elif moles_of == 'atoms':
+                pass
+            elif moles_of == 'cells':
+                pass
+            else:
+                print("The -molesof directive has a wrong argument \"molecules\",\"atoms\" or \"cells\" {:s}".format(moles_of))
+                exit(1)
         elif token == "-LO_cart":
             itoken += 1
             qlist_input.append([float(q) for q in tokens[itoken:itoken+3]])
@@ -716,7 +733,14 @@ def main():
     # the concentration of unit cells per 1000 cc can be calculated in moles / L
     concentration = 1000.0 / (avogadro_si * reader.volume * 1.0e-24)
     print("")
-    print("Concentration for unit volume fraction {:9.4f} moles/Litre".format(concentration))
+    if moles_of == 'atoms':
+        concentration = 1000.0 / (avogadro_si * reader.volume * 1.0e-24 / reader.nions )
+        print("Concentration: {:9.4f} moles of atoms/Litre".format(concentration))
+    elif moles_of == 'molecules':
+        concentration = 1000.0 / (avogadro_si * reader.volume * 1.0e-24 * number_of_atoms_per_molecule / reader.nions )
+        print("Concentration: {:9.4f} moles of molecules/Litre (1 molecule = {} atoms)".format(concentration,number_of_atoms_per_molecule))
+    else:
+        print("Concentration for unit volume fraction {:9.4f} moles/Litre".format(concentration))
 
     # Get the zero frequency optical tensor from the output
     epsilon_inf = np.array(reader.zerof_optical_dielectric)
