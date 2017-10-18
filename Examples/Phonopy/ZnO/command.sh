@@ -1,1 +1,4 @@
-python ../../../pdielec  -program phonopy vasp OUTCAR -matrix ptfe -vmin 0 -vmax 1000 -mf 0.01 -method ap -method maxwell -method bruggeman_iter -sphere -plate 0 0 1 -needle 0 0 1 -csv command.csv  -sigma 5  $*
+python=$1
+shift
+params=$*
+$python ../../../pdielec $params  -program phonopy vasp OUTCAR -matrix ptfe -vmin 0 -vmax 1000 -mf 0.01 -method ap -method maxwell -method bruggeman_iter -sphere -plate 0 0 1 -needle 0 0 1 -csv command.csv  -sigma 5  $*

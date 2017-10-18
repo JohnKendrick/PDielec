@@ -5,6 +5,7 @@
 # If necessary the following line can be uncommented and edited
 # SCRIPTS = /home/software/Scripts
 
+-include Makefile.mk
 
 default:	
 		@echo "Too install pdielec and preader in the $(SCRIPTS) directory"
