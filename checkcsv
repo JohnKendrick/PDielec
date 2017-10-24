@@ -143,6 +143,9 @@ for line1,line2 in zip(fd1,fd2):
       store_error1, nerror1, percentage_error1, keep_word1a, keep_word2a = compare_lines(line1,line2a,True)
       store_error2, nerror2, percentage_error2, keep_word1b, keep_word2b = compare_lines(line2,line1a,True)
       compare_next_line = False
+      keep_word1 = keep_word1a
+      keep_word2 = keep_word2a
+      keep_line_number = line_number
       if store_error1 or store_error2:
           # There is still an error on the swapped lines so we have an error on line1 and line1a
           nerrors += nerror
