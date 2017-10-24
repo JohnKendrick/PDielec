@@ -10,6 +10,7 @@ class Plotter:
     def __init__(self):
         self.methods = []
         self.volume_fractions = []
+        self.sizes = []
         self.shapes = []
         self.shape_data = []
         self.plot_numbers = []
@@ -19,14 +20,15 @@ class Plotter:
         self.frequencies = []
         return
 
-    def add_dielectric(self, nplot, method, vf_type, shape, data, frequency, trace, absorption, molar_absorption):
+    def add_dielectric(self, nplot, method, vf_type, size, shape, data, frequency, trace, absorption, molar_absorption):
         """Add the trace of a dielectric to be plotted, add the absorption and the molar absorption"""
         if nplot not in self.plot_numbers:
+            self.plot_numbers.append(nplot)
             self.methods.append(method)
             self.volume_fractions.append(vf_type)
+            self.sizes.append(size)
             self.shapes.append(shape)
             self.shape_data.append(data)
-            self.plot_numbers.append(nplot)
             self.traces.append([])
             self.absorption_coefficients.append([])
             self.molar_absorption_coefficients.append([])
@@ -43,18 +45,20 @@ class Plotter:
             return
         # Print the header
         output = ",,,,,cm-1,thz"
-        for method, shape, data, vf_type in zip(self.methods, self.shapes, self.shape_data, self.volume_fractions):
+        for method, shape, data, vf_type, size in zip(self.methods, self.shapes, self.shape_data, self.volume_fractions, self.sizes):
             strdata = str(data)
             strdata = strdata.replace(" ", "")
             strdata = strdata.replace(",", " ")
             strdata = strdata.replace("'", "")
             strdata = strdata.replace('"', "")
-            output += ","+method+"_"+shape+strdata+"_real_dielectric"+"("+vf_type+")"
-            output += ","+method+"_"+shape+strdata+"_imag_dielectric"+"("+vf_type+")"
-            output += ","+method+"_"+shape+strdata+"_absorption_coeficient_cm-1"+"("+vf_type+")"
-            output += ","+method+"_"+shape+strdata+"_molar_absorption_coeficient_cm-1.L.mole-1"+"("+vf_type+")"
-            # end loop over shape
-        # end loop over method
+            ssize=""
+            if size > 1.0e-6:
+                ssize = "/{:f}".format(size).rstrip("0").rstrip(".")+"mu"
+            output += ","+method+"_"+shape+strdata+"_real_dielectric"+"("+vf_type+ssize+")"
+            output += ","+method+"_"+shape+strdata+"_imag_dielectric"+"("+vf_type+ssize+")"
+            output += ","+method+"_"+shape+strdata+"_absorption_coeficient_cm-1"+"("+vf_type+ssize+")"
+            output += ","+method+"_"+shape+strdata+"_molar_absorption_coeficient_cm-1.L.mole-1"+"("+vf_type+ssize+")"
+            # end loop over method.....
         print(output, file=fd_csvfile)
         # Use the first frequency list
         for iv, v in enumerate(self.frequencies[0]):
@@ -66,8 +70,7 @@ class Plotter:
                 absrp = absorption[iv]
                 mabsrp = molar_absorption[iv]
                 output += "," + ",".join("{:20.8f}".format(p) for p in [trace_real, trace_imag, absrp, mabsrp])
-                # end loop over shape
-            # end loop over method
+                # end loop dri, absorption
             print(output, file=fd_csvfile)
         # end loop over frequency
         return
@@ -110,8 +113,11 @@ class Plotter:
         self.molar_absorption_coefficients[-1] = to_scale * molar_absorption
         plot_list = []
         plot_labels = []
-        for method, shape, data, frequencies, molar_absorption, vf_type in zip(self.methods, self.shapes, self.shape_data, self.frequencies, self.molar_absorption_coefficients, self.volume_fractions):
-            label = method+"_"+shape+str(data)+"("+vf_type+")"
+        for method, shape, data, frequencies, molar_absorption, vf_type, size in zip(self.methods, self.shapes, self.shape_data, self.frequencies, self.molar_absorption_coefficients, self.volume_fractions, self.sizes):
+            ssize=""
+            if size > 1.0e-6:
+                ssize = "/{:f}".format(size).rstrip("0").rstrip(".")+"mu"
+            label = method+"_"+shape+str(data)+"("+vf_type+ssize+")"
             label = label.replace(" ", "")
             label = label.replace(",", " ")
             label = label.replace("'", "")
@@ -143,8 +149,11 @@ class Plotter:
         self.absorption_coefficients[-1] = to_scale * absorptions
         plot_list = []
         plot_labels = []
-        for method, shape, data, frequencies, absorptions, vf_type in zip(self.methods, self.shapes, self.shape_data, self.frequencies, self.absorption_coefficients, self.volume_fractions):
-            label = method+"_"+shape+str(data)+"("+vf_type+")"
+        for method, shape, data, frequencies, absorptions, vf_type, size in zip(self.methods, self.shapes, self.shape_data, self.frequencies, self.absorption_coefficients, self.volume_fractions, self.sizes):
+            ssize=""
+            if size > 1.0e-6:
+                ssize = "/{:f}".format(size).rstrip("0").rstrip(".")+"mu"
+            label = method+"_"+shape+str(data)+"("+vf_type+ssize+")"
             label = label.replace(" ", "")
             label = label.replace(",", " ")
             label = label.replace("'", "")
@@ -177,8 +186,11 @@ class Plotter:
         self.traces[-1] = to_scale * traces
         plot_list = []
         plot_labels = []
-        for method, shape, data, frequencies, traces, vf_type in zip(self.methods, self.shapes, self.shape_data, self.frequencies, self.traces, self.volume_fractions):
-            label = method+"_"+shape+str(data)+"("+vf_type+")"
+        for method, shape, data, frequencies, traces, vf_type, size in zip(self.methods, self.shapes, self.shape_data, self.frequencies, self.traces, self.volume_fractions, self.sizes):
+            ssize=""
+            if size > 1.0e-6:
+                ssize = "/{:f}".format(size).rstrip("0").rstrip(".")+"mu"
+            label = method+"_"+shape+str(data)+"("+vf_type+ssize+")"
             label = label.replace(" ", "")
             label = label.replace(",", " ")
             label = label.replace("'", "")
@@ -211,8 +223,11 @@ class Plotter:
         self.traces[-1] = to_scale * traces
         plot_list = []
         plot_labels = []
-        for method, shape, data, frequencies, traces, vf_type in zip(self.methods, self.shapes, self.shape_data, self.frequencies, self.traces, self.volume_fractions):
-            label = method+"_"+shape+str(data)+"("+vf_type+")"
+        for method, shape, data, frequencies, traces, vf_type, size in zip(self.methods, self.shapes, self.shape_data, self.frequencies, self.traces, self.volume_fractions, self.sizes):
+            ssize=""
+            if size > 1.0e-6:
+                ssize = "/{:f}".format(size).rstrip("0").rstrip(".")+"mu"
+            label = method+"_"+shape+str(data)+"("+vf_type+ssize+")"
             label = label.replace(" ", "")
             label = label.replace(",", " ")
             label = label.replace("'", "")
