@@ -99,6 +99,9 @@ def main():
         print("             Allows individual elements to have their masses defined")
         print("             the -masses mass definition is applied first,     ")
         print("             then any masses defined by -mass are applied,     ")
+        print("         -size a")
+        print("             specifies the size of spherical particle to be considered in microns")
+        print("             only the maxwell and bruggeman methods incorporation size effects")
         print("         -print")
         print("           print additional information about the calculation")
         print("         -csv file.csv")
@@ -221,6 +224,7 @@ def main():
     mass_definition = 'average'
     fractional_types = []
     plot_types      = []
+    sizes = []
     volume_fraction = 0.1
     mass_fraction = 0.0
     sigma          = 5.0
@@ -304,6 +308,9 @@ def main():
             itoken += 1
             mass_fractions.append(float(tokens[itoken]))
             mass_fractions_string.append(tokens[itoken])
+        elif token == "-size":
+            itoken += 1
+            sizes.append(float(tokens[itoken]))
         elif token == "-dielectric":
             itoken += 1
             matrix_dielectric = float(tokens[itoken])
@@ -482,6 +489,15 @@ def main():
 
     # print out information
     print("The following methods will be used: " + " ".join(m for m in methods))
+
+    # Process size information, if no sizes have been given the use 0.0
+    if len(sizes) > 0:
+        print("Particle sizes have been specified (in microns)")
+        for a in sizes:
+            print("Size of spherical particles: ", a)
+    else:
+        sizes.append(0.0)
+    
 
     fd_csvfile = None
     fd_csvfiles = [None, None, None]
@@ -728,7 +744,7 @@ def main():
     # Set default volume fraction if we need to
     if len(volume_fractions) == 0:
         volume_fractions.append(volume_fraction)
-        fractional_types.append("vf={:f}".format(volume_fraction))
+        fractional_types.append("vf={:f}".format(volume_fraction).rstrip("0"))
 
     # the concentration of unit cells per 1000 cc can be calculated in moles / L
     concentration = 1000.0 / (avogadro_si * reader.volume * 1.0e-24)
@@ -910,7 +926,7 @@ def main():
     # Allocate space for the shared memory, we need twice as much as we have a complex data type
     shared_array_base = Array(ctypes.c_double, 2*nplots*9)
     previous_solution_shared = np.ctypeslib.as_array(shared_array_base.get_obj())
-    # Convert the space allocated to comples
+    # Convert the space allocated to complex
     previous_solution_shared.dtype = np.complex128
     # Reshape the array and fill everything with zero's
     previous_solution_shared = previous_solution_shared.reshape(nplots, 3,3)
@@ -923,6 +939,11 @@ def main():
         for method in methods:
             # Loop over volume_fractions
             for vf, vf_type in zip(volume_fractions, fractional_types):
+              # loop over sizes
+              for size_in_mu in sizes:
+                # convert the size to a dimensionless number which is 2*pi*size/lambda
+                lambda_in_mu = 1.0E4 / (v + 1.0e-12)
+                size = 2.0*PI*size_in_mu / lambda_in_mu
                 # Loop over shapes
                 ap_count = 0  # Use a counter to only calculate the AveragedPermittivity once for all shapes
                 for shape, data, L in zip(shapes, shape_data, depolarisations):
@@ -934,8 +955,9 @@ def main():
                         else:
                             nplot -= 1
                             continue
-                    call_parameters.append( (v,vau,dielecv,method,vf,vf_type,nplot,dielectric_medium,dielecv,shape,data,L,concentration,previous_solution_shared) )
+                    call_parameters.append( (v,vau,dielecv,method,vf,vf_type,size_in_mu,size,nplot,dielectric_medium,dielecv,shape,data,L,concentration,previous_solution_shared) )
                 # end of loop over shapes
+              # end of loop over sizes
             # end of loop over volume fractions
         # end of loops over methods
     # end of look over frequencies
@@ -944,8 +966,8 @@ def main():
     # Now perform the parallel calculation of the effective medium equations
     results = p.map(Calculator.solve_effective_medium_equations, call_parameters)
     # Add the results to the plotter function
-    for v,nplot,method,vf_type,shape,data,trace,absorption_coefficient,molar_absorption_coefficient in results:
-        plotter.add_dielectric(nplot, method, vf_type, shape, data, v, trace, absorption_coefficient, molar_absorption_coefficient)
+    for v,nplot,method,vf_type,size_in_mu,shape,data,trace,absorption_coefficient,molar_absorption_coefficient in results:
+        plotter.add_dielectric(nplot, method, vf_type, size_in_mu, shape, data, v, trace, absorption_coefficient, molar_absorption_coefficient)
     # Tidy up before plotting
     if fd_csvfile is not None:
         fd_csvfile = fd_csvfiles[2]
