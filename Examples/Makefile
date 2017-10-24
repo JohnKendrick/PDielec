@@ -31,6 +31,9 @@ test_pdielec:
 	@$(MAKE) --no-print-directory -C QE/Cocaine test
 	@$(MAKE) --no-print-directory -C Phonopy/ZnO test
 	@$(MAKE) --no-print-directory -C Phonopy/Na2SO42 test
+	@$(MAKE) --no-print-directory -C SizeEffects/BaTiO3 test
+	@$(MAKE) --no-print-directory -C SizeEffects/MgO test
+	@$(MAKE) --no-print-directory -C SizeEffects/ZnO test
 
 clean:
 	@echo "Cleaning old command.out files"
