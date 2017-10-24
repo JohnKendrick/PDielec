@@ -1,0 +1,81 @@
+The following methods will be used: ap maxwell
+Particle sizes have been specified (in microns)
+Size of spherical particles:  0.0
+Size of spherical particles:  1.0
+Size of spherical particles:  2.0
+Creating a csv file: command.csv
+No plotting has been requested
+The frequency increment is 0.20 cm-1
+The default width factor (-sigma) has been set to 5.000000 cm-1
+The permittivity of the medium (-dielectric) has been set to 2.0000
+The density of the medium (-density) has been set to 2.2000 g/cc
+Vmin is:     0.0 cm-1
+Vmax is:  1000.0 cm-1
+All phonon modes will be considered
+The number of processors has been set to 1 
+Analysing VASP directory: . 
+No projection of the dynamical matrix will be performed
+The charge neutrality of the Born atomic charges will not be enforced
+ 
+Shape depolarisation matrix: sphere   
+            0.333333       0.000000       0.000000
+            0.000000       0.333333       0.000000
+            0.000000       0.000000       0.333333
+ 
+Shape depolarisation matrix: needle [0,0,1] xyz=[0.000000,0.000000,1.000000]
+            0.500000       0.000000       0.000000
+            0.000000       0.500000       0.000000
+            0.000000       0.000000       0.000000
+ 
+Atomic masses will be defined using:  average
+ 
+Old masses by atom types
+  65.390000  16.000000
+ 
+Old atomic mass list
+  65.390000  65.390000  16.000000  16.000000
+ 
+New masses by atom types
+  65.380000  15.999400
+ 
+New atomic mass list
+  65.380000  65.380000  15.999400  15.999400
+
+Volume of unit cell is    49.69000000 Angstrom^3
+Total unit cell mass is:   162.75880000 g/mol
+Crystal density is:   5.43907 g/cc
+
+The density of the supporting matrix is    2.2000 g/cc
+Converting the following mass fractions to volume fractions:
+   The equivalent volume fraction for mass fraction  0.0100 is  0.004069
+
+Concentration for unit volume fraction   33.4180 moles/Litre
+Calculated Integrated IR band intensities (espilon_max assumes a fwhm line width)
+Only IR active modes are shown
+
+Mode Frequency Intensity         Integrated Molar Absorption Epsilon_max   FWHM  
+     cm-1      Debye2/Angs2/amu   Coefficient L/mole/cm/cm    L/mole/cm    cm-1  
+---- --------- ----------------  --------------------------- -----------   ----  
+   3    91.25          0.000000                    0.000007      0.0000      5.0
+   4    91.25          0.000000                    0.000000      0.0000      5.0
+   6   349.99         17.118884                72337.557354   9210.3039      5.0
+   7   372.09         16.426646                69412.437372   8837.8660      5.0
+   8   372.09         16.426556                69412.054294   8837.8172      5.0
+   9   402.06          0.000000                    0.000001      0.0000      5.0
+  10   402.06          0.000000                    0.000010      0.0000      5.0
+ 
+ 
+Permittivity contribution from ionic displacements
+            5.092626      -0.000000      -0.000118
+           -0.000000       5.092655      -0.000104
+           -0.000118      -0.000104       5.998592
+ 
+Optical permittivity at zero frequency
+            5.738971       0.000000       0.000000
+            0.000000       5.738971       0.000000
+           -0.000000       0.000000       5.673464
+ 
+Total permittivity
+           10.831597      -0.000000      -0.000118
+           -0.000000      10.831626      -0.000104
+           -0.000118      -0.000104      11.672056
