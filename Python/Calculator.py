@@ -397,24 +397,39 @@ def drude_contribution(f, frequency, sigma, volume):
     dielectric = dielectric - unit * frequency*frequency / np.complex(-f*f, -sigma*f)
     return dielectric * (4.0*PI/volume)
 
-def averaged_permittivity(dielectric_medium, dielecv, shape, L, vf):
+def calculate_size_factor (x):
+    """
+    Calculate a size effect using Equations 10.38 and 10.39 in Sihvola
+    """
+    if x < 1.0E-12:
+        result = 1.0
+    else:
+        ix = complex(0,x)
+        g1 = 2.0 / 3.0 * ( ( 1.0 + ix ) * np.exp(-ix) - 1.0 )
+        g2 = ( 1 + ix - (7.0/15.0) * x*x - complex(0,2.0*x*x*x/15.0) ) * np.exp(-ix) -1.0
+        result = 1 - g1 - g2
+    return result
+
+def averaged_permittivity(dielectric_medium, dielecv, shape, L, vf, size):
     """Calculate the effective constant permittivity using the averaged permittivity method
        dielectric_medium is the dielectric constant tensor of the medium
        dielecv is the total frequency dielectric constant tensor at the current frequency
        shape is the name of the current shape
        L is the shapes depolarisation matrix
+       size is the dimensionless size parameter for the frequency under consideration (not used)
        The routine returns the effective dielectric constant"""
     effd = vf * dielecv + (1.0-vf) * dielectric_medium
     trace = np.trace(effd) / 3.0
     effdielec = np.array([[trace, 0, 0], [0, trace, 0], [0, 0, trace]])
     return effdielec
 
-def balan(dielectric_medium, dielecv, shape, L, vf):
+def balan(dielectric_medium, dielecv, shape, L, vf, size):
     """Calculate the effective constant permittivity using the method of balan
        dielectric_medium is the dielectric constant tensor of the medium
        dielecv is the total frequency dielectric constant tensor at the current frequency
        shape is the name of the current shape
        L is the shapes depolarisation matrix
+       size is the dimensionless size parameter for the frequency under consideration (not used)
        The routine returns the effective dielectric constant"""
     unit = initialise_unit_tensor()
     dielecvm1 = (dielecv - unit)
@@ -424,18 +439,21 @@ def balan(dielectric_medium, dielecv, shape, L, vf):
     effdielec = np.array([[trace, 0, 0], [0, trace, 0], [0, 0, trace]])
     return effdielec
 
-def maxwell(dielectric_medium, dielecv, shape, L, vf):
+def maxwell(dielectric_medium, dielecv, shape, L, vf, size):
     """Calculate the effective constant permittivity using the maxwell garnett method
        dielectric_medium is the dielectric constant tensor of the medium
        dielecv is the total frequency dielectric constant tensor at the current frequency
        shape is the name of the current shape
        L is the shapes depolarisation matrix
+       size is the dimensionless size parameter for the frequency under consideration
        vf is the volume fraction of filler
        The routine returns the effective dielectric constant"""
     unit = initialise_unit_tensor()
     emedium = np.trace(dielectric_medium) / 3.0
+    # If appropriate calculate a size effect using Equations 10.38 and 10.39 in Sihvola
+    size_factor = calculate_size_factor(size)
     # Equation 5.78 in Sihvola
-    nalpha = emedium*vf*np.dot((dielecv - dielectric_medium), np.linalg.inv(dielectric_medium + np.dot(L, (dielecv-dielectric_medium))))
+    nalpha = emedium*vf*np.dot((dielecv - dielectric_medium), np.linalg.inv(dielectric_medium + size_factor * np.dot(L, (dielecv-dielectric_medium))))
     nalphal = np.dot((nalpha/emedium), L)
     # average the polarisability over orientation
     nalpha = np.trace(nalpha) / 3.0 * unit
@@ -447,12 +465,13 @@ def maxwell(dielectric_medium, dielecv, shape, L, vf):
     effdielec = np.array([[trace, 0, 0], [0, trace, 0], [0, 0, trace]])
     return effdielec
 
-def maxwell_sihvola(dielectric_medium, dielecv, shape, L, vf):
+def maxwell_sihvola(dielectric_medium, dielecv, shape, L, vf, size):
     """Calculate the effective constant permittivity using the maxwell garnett method
        dielectric_medium is the dielectric constant tensor of the medium
        dielecv is the total frequency dielectric constant tensor at the current frequency
        shape is the name of the current shape
        L is the shapes depolarisation matrix
+       size is the dimensionless size parameter for the frequency under consideration
        vf is the volume fraction of filler
        The routine returns the effective dielectric constant"""
     unit = initialise_unit_tensor()
@@ -463,8 +482,10 @@ def maxwell_sihvola(dielectric_medium, dielecv, shape, L, vf):
     # assume that the medium is isotropic calculate the inverse of the dielectric
     Mem1 = 3.0 / np.trace(Me)
     Mi = dielecv
+    # If appropriate calculate a size effect using Equations 10.38 and 10.39 in Sihvola
+    size_factor = calculate_size_factor(size)
     # calculate the polarisability matrix x the number density of inclusions
-    nA = vf*np.dot((Mi-Me), np.linalg.inv(unit + (Mem1 * np.dot(L, (Mi - Me)))))
+    nA = vf*np.dot((Mi-Me), np.linalg.inv(unit + (size_factor * Mem1 * np.dot(L, (Mi - Me)))))
     nAL = np.dot((nA), L)
     # average the polarisability over orientation
     nA = np.trace(nA) / 3.0 * unit
@@ -483,25 +504,28 @@ def maxwell_sihvola(dielectric_medium, dielecv, shape, L, vf):
     effdielec = np.array([[trace, 0, 0], [0, trace, 0], [0, 0, trace]])
     return effdielec
 
-def coherent(dielectric_medium, dielecv, shape, L, vf, dielectric_apparent):
+def coherent(dielectric_medium, dielecv, shape, L, vf, size, dielectric_apparent):
     """Driver for coherent2 method"""
     for i in range(10):
-        dielectric_apparent = 0.1 * dielectric_apparent + 0.9 * coherent2(dielectric_medium, dielectric_apparent, dielecv, shape, L, vf)
+        dielectric_apparent = 0.1 * dielectric_apparent + 0.9 * coherent2(dielectric_medium, dielectric_apparent, dielecv, shape, L, vf, size)
     return dielectric_apparent
 
-def coherent2(dielectric_medium, dielectric_apparent, dielecv, shape, L, vf):
+def coherent2(dielectric_medium, dielectric_apparent, dielecv, shape, L, vf, size):
     """Calculate the effective constant permittivity using the maxwell garnett method
        dielectric_medium is the dielectric constant tensor of the medium
        dielecv is the total frequency dielectric constant tensor at the current frequency
        shape is the name of the current shape
        L is the shapes depolarisation matrix
+       size is the dimensionless size parameter for the frequency under consideration
        vf is the volume fraction of filler
        The routine returns the effective dielectric constant"""
     unit = initialise_unit_tensor()
     emedium = np.trace(dielectric_medium) / 3.0
     eapparent = np.trace(dielectric_apparent) / 3.0
+    # If appropriate calculate a size effect using Equations 10.38 and 10.39 in Sihvola
+    size_factor = calculate_size_factor(size)
     # Equation 5.78 in Sihvola
-    nalpha = emedium*vf*np.dot((dielecv - dielectric_medium), np.linalg.inv(dielectric_medium + np.dot(L, (dielecv-dielectric_medium))))
+    nalpha = emedium*vf*np.dot((dielecv - dielectric_medium), np.linalg.inv(dielectric_medium + size_factor * np.dot(L, (dielecv-dielectric_medium))))
     nalphal = np.dot((nalpha/eapparent), L)
     # average the polarisability over orientation
     nalpha = np.trace(nalpha) / 3.0 * unit
@@ -513,13 +537,14 @@ def coherent2(dielectric_medium, dielectric_apparent, dielecv, shape, L, vf):
     effdielec = np.array([[trace, 0, 0], [0, trace, 0], [0, 0, trace]])
     return effdielec
 
-def bruggeman_minimise( eps1, eps2, shape, L, f2, epsbr):
+def bruggeman_minimise( eps1, eps2, shape, L, f2, size, epsbr):
     """Calculate the effective constant permittivity using the method of bruggeman
        eps1 is the dielectric constant tensor of 1 (The medium)
        eps2 is the dielectric constant tensor of 2 (The inclusion)
        shape is the name of the current shape
        L is the shapes depolarisation matrix
        f2 is the volume fraction of component 2
+       size is the dimensionless size parameter for the frequency under consideration
        epsbr is an initial guess at the solution
        The routine returns the effective dielectric constant
        On the application of homogenization formalisms to active dielectric composite materials
@@ -531,7 +556,7 @@ def bruggeman_minimise( eps1, eps2, shape, L, f2, epsbr):
     variables = np.array([np.real(trace), np.log(1.0 + np.abs(np.imag(trace)))])
     options = {'xtol': 1.0e-4,
                'ftol': 1.0E-4}
-    sol = sc.minimize(_brug_minimise_tensor, variables, method='Powell', args=(eps1, eps2, shape, L, f1), options=options)
+    sol = sc.minimize(_brug_minimise_tensor, variables, method='Powell', args=(eps1, eps2, shape, L, f1, size), options=options)
     if not sol.success:
         print("A Bruggeman solution was not found at this frequency")
     variables = sol.x
@@ -540,13 +565,14 @@ def bruggeman_minimise( eps1, eps2, shape, L, f2, epsbr):
     epsbr = np.array([[trace, 0, 0], [0, trace, 0], [0, 0, trace]])
     return epsbr
 
-def bruggeman_iter( eps1, eps2, shape, L, f2, epsbr):
+def bruggeman_iter( eps1, eps2, shape, L, f2, size, epsbr):
     """Calculate the effective constant permittivity using the method of bruggeman
        eps1 is the dielectric constant tensor of 1 (The medium)
        eps2 is the dielectric constant tensor of 2 (The inclusion)
        shape is the name of the current shape
        L is the shapes depolarisation matrix
        f2 is the volume fraction of component 2
+       size is the dimensionless size parameter for the frequency under consideration
        epsbr is an initial guess at the solution
        The routine returns the effective dielectric constant
        On the application of homogenization formalisms to active dielectric composite materials
@@ -557,7 +583,7 @@ def bruggeman_iter( eps1, eps2, shape, L, f2, epsbr):
     niters = 0
     while not converged:
         niters += 1
-        epsbr, error = _brug_iter_error(epsbr, eps1, eps2, shape, L, f1)
+        epsbr, error = _brug_iter_error(epsbr, eps1, eps2, shape, L, f1, size)
         if abs(error) < 1.0E-8:
             converged = True
         if niters > 3000:
@@ -571,7 +597,7 @@ def average_tensor(t):
     a = np.trace(t) / 3.0
     return np.array([[a, 0, 0], [0, a, 0], [0, 0, a]])
 
-def _brug_minimise_scalar(variables, eps1, eps2, shape, L, f1):
+def _brug_minimise_scalar(variables, eps1, eps2, shape, L, f1, size):
     """Bruggeman method using scalar quantities"""
     # unpack the complex number from the variables
     # two things going on here.
@@ -580,8 +606,10 @@ def _brug_minimise_scalar(variables, eps1, eps2, shape, L, f1):
     trace = complex(variables[0], np.exp(variables[1])-1.0)
     epsbr = np.array([[trace, 0, 0], [0, trace, 0], [0, 0, trace]])
     f2 = 1.0 - f1
+    # If appropriate calculate a size effect using Equations 10.38 and 10.39 in Sihvola
+    size_factor = calculate_size_factor(size)
     b1 = np.dot(L, (eps1 - epsbr))
-    b2 = np.dot(L, (eps2 - epsbr))
+    b2 = size_factor * np.dot(L, (eps2 - epsbr))
     tb1 = np.trace(b1)/3.0
     tb2 = np.trace(b2)/3.0
     ta1 = 1.0/(1.0 + tb1)
@@ -600,7 +628,7 @@ def _brug_minimise_scalar(variables, eps1, eps2, shape, L, f1):
     # So we shift the solution by 1.0, the tol is now relative to 1.0
     return 1.0+error
 
-def _brug_minimise_tensor(variables, eps1, eps2, shape, L, f1):
+def _brug_minimise_tensor(variables, eps1, eps2, shape, L, f1, size):
     """Bruggeman method using tensor quantities"""
     # unpack the complex number from the variables
     # two things going on here.
@@ -609,8 +637,10 @@ def _brug_minimise_tensor(variables, eps1, eps2, shape, L, f1):
     trace = complex(variables[0], np.exp(variables[1])-1.0)
     epsbr = np.array([[trace,  0, 0], [0, trace, 0], [0, 0, trace]])
     f2 = 1.0 - f1
+    # If appropriate calculate a size effect using Equations 10.38 and 10.39 in Sihvola
+    size_factor = calculate_size_factor(size)
     b1 = np.dot(L, (eps1 - epsbr))
-    b2 = np.dot(L, (eps2 - epsbr))
+    b2 = size_factor * np.dot(L, (eps2 - epsbr))
     b1 = average_tensor(b1)
     b2 = average_tensor(b2)
     a1 = np.linalg.inv(epsbr + b1)
@@ -636,11 +666,13 @@ def _brug_minimise_tensor(variables, eps1, eps2, shape, L, f1):
     # So we shift the solution by 1.0, the tol is now relative to 1.0
     return 1.0+error
 
-def _brug_iter_error(epsbr, eps1, eps2, shape, L, f1):
+def _brug_iter_error(epsbr, eps1, eps2, shape, L, f1, size):
     """Routine to calculate the error in the Bruggeman method"""
     f2 = 1.0 - f1
+    # If appropriate calculate a size effect using Equations 10.38 and 10.39 in Sihvola
+    size_factor = calculate_size_factor(size)
     leps1 = np.dot(L, (eps1 - epsbr))
-    leps2 = np.dot(L, (eps2 - epsbr))
+    leps2 = size_factor * np.dot(L, (eps2 - epsbr))
     leps1 = average_tensor(leps1)
     leps2 = average_tensor(leps2)
     a1 = np.linalg.inv(epsbr + leps1)
@@ -655,7 +687,8 @@ def _brug_iter_error(epsbr, eps1, eps2, shape, L, f1):
     error = np.linalg.norm(error)
     m1 = f1*np.dot(eps1, a1)+f2*np.dot(eps2, a2)
     m2 = np.linalg.inv(f1*a1 + f2*a2)
-    epsbr = np.dot(m1, m2)
+    damp = 0.1
+    epsbr = (1.0 - damp)*np.dot(m1, m2) + damp*epsbr
     trace = np.trace(epsbr) / 3.0
     epsbr = np.array([[trace, 0, 0], [0, trace, 0], [0, 0, trace]])
     return epsbr, error
@@ -757,32 +790,32 @@ def solve_effective_medium_equations( call_parameters ):
     # call_parameters is a tuple
     # In the case of Bruggeman and coherent we can use the previous result to start the iteration/minimisation
     # However to do this we need some shared memory, this allocated in previous_solution_shared
-    v,vau,dielecv,method,vf,vf_type,nplot,dielectric_medium,dielecv,shape,data,L,concentration,previous_solution_shared = call_parameters
+    v,vau,dielecv,method,vf,vf_type,size_in_mu,size,nplot,dielectric_medium,dielecv,shape,data,L,concentration,previous_solution_shared = call_parameters
     if method == "balan":
-        effdielec = balan(dielectric_medium, dielecv, shape, L, vf)
+        effdielec = balan(dielectric_medium, dielecv, shape, L, vf, size)
     elif method == "ap" or method == "averagedpermittivity":
-            effdielec = averaged_permittivity(dielectric_medium, dielecv, shape, L, vf)
+            effdielec = averaged_permittivity(dielectric_medium, dielecv, shape, L, vf, size)
     elif method == "maxwell":
-        effdielec = maxwell(dielectric_medium, dielecv, shape, L, vf)
+        effdielec = maxwell(dielectric_medium, dielecv, shape, L, vf, size)
     elif method == "maxwell_sihvola":
-        effdielec = maxwell_sihvola(dielectric_medium, dielecv, shape, L, vf)
+        effdielec = maxwell_sihvola(dielectric_medium, dielecv, shape, L, vf, size)
     elif method == "coherent":
         eff  = previous_solution_shared[nplot]
         if np.abs(np.trace(eff)) < 1.0e-8: 
-            eff = maxwell(dielectric_medium, dielecv, shape, L, vf)
-        effdielec = coherent(dielectric_medium, dielecv, shape, L, vf, eff)
+            eff = maxwell(dielectric_medium, dielecv, shape, L, vf, size)
+        effdielec = coherent(dielectric_medium, dielecv, shape, L, vf, size, eff)
         previous_solution_shared[nplot] = effdielec
     elif method == "bruggeman_minimise":
         eff  = previous_solution_shared[nplot]
         if np.abs(np.trace(eff)) < 1.0e-8: 
-            eff = maxwell(dielectric_medium, dielecv, shape, L, vf)
-        effdielec = bruggeman_minimise(dielectric_medium, dielecv, shape, L, vf, eff)
+            eff = maxwell(dielectric_medium, dielecv, shape, L, vf, size)
+        effdielec = bruggeman_minimise(dielectric_medium, dielecv, shape, L, vf, size, eff)
         previous_solution_shared[nplot] = effdielec
     elif method == "bruggeman" or method == "bruggeman_iter":
         eff  = previous_solution_shared[nplot]
         if np.abs(np.trace(eff)) < 1.0e-8: 
-            eff = maxwell(dielectric_medium, dielecv, shape, L, vf)
-        effdielec = bruggeman_iter(dielectric_medium, dielecv, shape, L, vf, eff)
+            eff = maxwell(dielectric_medium, dielecv, shape, L, vf, size)
+        effdielec = bruggeman_iter(dielectric_medium, dielecv, shape, L, vf, size, eff)
         previous_solution_shared[nplot] = effdielec
     else:
         print('Unkown dielectric method: {}'.format(method))
@@ -798,6 +831,6 @@ def solve_effective_medium_equations( call_parameters ):
     absorption_coefficient = v * 4*PI * np.imag(refractive_index) * math.log10(math.e)
     # units are cm-1 L moles-1
     molar_absorption_coefficient = absorption_coefficient / concentration / vf
-    return v,nplot,method,vf_type,shape,data,trace,absorption_coefficient,molar_absorption_coefficient
+    return v,nplot,method,vf_type,size_in_mu,shape,data,trace,absorption_coefficient,molar_absorption_coefficient
 
 
