@@ -39,13 +39,16 @@ class Plotter:
         self.molar_absorption_coefficients[nplot].append(molar_absorption)
         return
 
-    def printout(self, fd_csvfile):
+    def printout(self, fd_csvfile, csv_extended):
         """Print data to a csv file"""
         if fd_csvfile == 0:
             return
         # Print the header
-        output = ",,,,,cm-1,thz"
-        for method, shape, data, vf_type, size in zip(self.methods, self.shapes, self.shape_data, self.volume_fractions, self.sizes):
+        output = ",,,,,,cm-1,thz"
+        if csv_extended:
+          output = "cm-1,thz"
+        for outputType in ['_molar_absorption_coefficient_cm-1.L.mole-1','_real_dielectric','_imag_dielectric','_absorption_coefficent_cm-1']:
+          for method, shape, data, vf_type, size in zip(self.methods, self.shapes, self.shape_data, self.volume_fractions, self.sizes):
             strdata = str(data)
             strdata = strdata.replace(" ", "")
             strdata = strdata.replace(",", " ")
@@ -54,23 +57,30 @@ class Plotter:
             ssize=""
             if size > 1.0e-6:
                 ssize = "/{:f}".format(size).rstrip("0").rstrip(".")+"mu"
-            output += ","+method+"_"+shape+strdata+"_real_dielectric"+"("+vf_type+ssize+")"
-            output += ","+method+"_"+shape+strdata+"_imag_dielectric"+"("+vf_type+ssize+")"
-            output += ","+method+"_"+shape+strdata+"_absorption_coeficient_cm-1"+"("+vf_type+ssize+")"
-            output += ","+method+"_"+shape+strdata+"_molar_absorption_coeficient_cm-1.L.mole-1"+"("+vf_type+ssize+")"
-            # end loop over method.....
+            output += ","+method+"_"+shape+strdata+outputType+"("+vf_type+ssize+")"
+          # end loop over method.....
+        # end of loop over outputType
         print(output, file=fd_csvfile)
         # Use the first frequency list
         for iv, v in enumerate(self.frequencies[0]):
             thz = v * 0.0299792458
-            output = ",,,,,{:12f},{:12f}".format(v, thz)
-            for dri, absorption, molar_absorption in zip(self.traces, self.absorption_coefficients, self.molar_absorption_coefficients):
-                trace_real = float(np.real(dri[iv]))
-                trace_imag = float(np.imag(dri[iv]))
-                absrp = absorption[iv]
-                mabsrp = molar_absorption[iv]
-                output += "," + ",".join("{:20.8f}".format(p) for p in [trace_real, trace_imag, absrp, mabsrp])
+            output = ",,,,,,{:12f},{:12f}".format(v, thz)
+            if csv_extended:
+                output = "{:12f},{:12f}".format(v, thz)
+            for molar_absorption in self.molar_absorption_coefficients:
+                output += ",{:20.8f}".format(molar_absorption[iv])
                 # end loop dri, absorption
+            for dri in self.traces:
+                trace_real = float(np.real(dri[iv]))
+                output += ",{:20.8f}".format(trace_real)
+            # end loop dri
+            for dri in self.traces:
+                trace_imag = float(np.imag(dri[iv]))
+                output += ",{:20.8f}".format(trace_imag)
+                # end loop dri
+            for absorption in self.absorption_coefficients:
+                output += ",{:20.8f}".format(absorption[iv])
+                # end loop absorption
             print(output, file=fd_csvfile)
         # end loop over frequency
         return
