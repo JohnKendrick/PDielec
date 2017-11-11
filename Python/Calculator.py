@@ -439,6 +439,58 @@ def balan(dielectric_medium, dielecv, shape, L, vf, size):
     effdielec = np.array([[trace, 0, 0], [0, trace, 0], [0, 0, trace]])
     return effdielec
 
+def mie_scattering(dielectric_medium, dielecv, shape, L, vf, size, size_mu):
+    """Calculate the effective constant permittivity using a Mie scattering approach
+       dielectric_medium is the dielectric constant tensor of the medium
+       dielecv is the total frequency dielectric constant tensor at the current frequency
+       shape is the name of the current shape (NOT USED)
+       L is the shapes depolarisation matrix (NOT USED)
+       size is the dimensionless size parameter for the frequency under consideration
+       vf is the volume fraction of filler
+       Mie only works for spherical particles, so shape, and L parameters are ignored
+       The routine returns the effective dielectric constant"""
+    import PyMieScatt as ps
+    i = complex(0,1)
+    # We need to taken account of the change in wavelength and the change in size parameter due to the 
+    # None unit value of the dielectric of the embedding medium
+    # The size parameter is 2pi r / lambda
+    # The effective lambda in the supporting medium is lambda / sqrt(emedium)
+    # Where the refractive index is taken to be sqrt(emedium) (non magnetic materials)
+    emedium = np.trace(dielectric_medium) / 3.0
+    refractive_index_medium = np.sqrt(emedium)
+    lambda_vacuum_mu = 2 * PI * size_mu / size
+    wavelength_nm = lambda_vacuum_mu * 1000 / refractive_index_medium
+    radius_nm = size_mu * 1000
+    diameter_nm = 2 * radius_nm
+    # To account for anisotropy we diagonalise the real part of the dielectric matrix and transform
+    # the full matrix with the eigenvectors, U
+    # Find U and E, such that UT. D. U = E (where D is the real part of dielecv)
+    E,U = np.linalg.eigh(np.real(dielecv))
+    # Transform the full dielectric matrix
+    rotated_dielec = np.dot(np.dot(U.T, dielecv), U)
+    # The wavevector in nm-1
+    k_nm = 2 * PI / wavelength_nm
+    # volume of a particle in nm^3
+    v_nm = 4.0/3.0 * PI * radius_nm * radius_nm * radius_nm
+    # Number density of particles (number / nm^3)
+    N_nm = vf / v_nm
+    # We are now going to ignore any off-diagonal elements
+    trace = 0.0
+    # Now take the average of each direction
+    for index in [0,1,2]:
+        refractive_index = calculate_refractive_index_scalar(rotated_dielec[index,index]) / refractive_index_medium
+        # Calculate the scattering factors at 0 degrees 
+        s1,s2 = ps.MieS1S2(refractive_index, size*refractive_index_medium, 1)
+        # See van de Hulst page 129, 130
+        # Refractive index of material is
+        refractive_index = refractive_index_medium * ( 1.0 - i * s1 * 2 * PI * N_nm / ( k_nm * k_nm * k_nm ) )
+        trace += refractive_index 
+    # return an isotropic tensor
+    trace = trace / 3.0
+    eff = trace * trace
+    effdielec = np.array([[eff, 0, 0], [0, eff, 0], [0, 0, eff]])
+    return effdielec
+
 def maxwell(dielectric_medium, dielecv, shape, L, vf, size):
     """Calculate the effective constant permittivity using the maxwell garnett method
        dielectric_medium is the dielectric constant tensor of the medium
@@ -698,7 +750,14 @@ def calculate_refractive_index(dielectric, debug=False):
         Calculate the trace of the dielectric and calculate both square roots.
         The choose the root with the largest imaginary component This obeys the Konig Kramer requirements'''
     trace = np.trace(dielectric)/3.0
-    solution1 = np.sqrt(trace)
+    solution = calculate_refractive_index_scalar(trace, debug)
+    return solution
+
+def calculate_refractive_index_scalar(dielectric_scalar, debug=False):
+    ''' Calculate the refractive index from the dielectric constant.
+        Calculate the trace of the dielectric and calculate both square roots.
+        The choose the root with the largest imaginary component This obeys the Konig Kramer requirements'''
+    solution1 = np.sqrt(dielectric_scalar)
     r, phase = cmath.polar(solution1)
     solution2 = cmath.rect(-r, phase)
     imag1 = np.imag(solution1)
@@ -707,10 +766,10 @@ def calculate_refractive_index(dielectric, debug=False):
         solution = solution1
     else:
         solution = solution2
-    if np.abs(solution*solution-trace)/(1+np.abs(trace)) > 1.0E-8 or debug:
+    if np.abs(solution*solution-dielectric_scalar)/(1+np.abs(dielectric_scalar)) > 1.0E-8 or debug:
         print("There is an error in refractive index")
-        print("trace = ", trace)
-        print("solution*solution = ", solution*solution, np.abs(solution*solution-trace))
+        print("Dielectric = ", dielectric_scalar)
+        print("solution*solution = ", solution*solution, np.abs(solution*solution-dielectric))
         print("solution    = ", solution, solution*solution)
         print("solution1   = ", solution1, solution1*solution1)
         print("solution2   = ", solution2, solution2*solution2)
@@ -790,7 +849,7 @@ def solve_effective_medium_equations( call_parameters ):
     # call_parameters is a tuple
     # In the case of Bruggeman and coherent we can use the previous result to start the iteration/minimisation
     # However to do this we need some shared memory, this allocated in previous_solution_shared
-    v,vau,dielecv,method,vf,vf_type,size_in_mu,size,nplot,dielectric_medium,dielecv,shape,data,L,concentration,previous_solution_shared = call_parameters
+    v,vau,dielecv,method,vf,vf_type,size_mu,size,nplot,dielectric_medium,dielecv,shape,data,L,concentration,previous_solution_shared = call_parameters
     if method == "balan":
         effdielec = balan(dielectric_medium, dielecv, shape, L, vf, size)
     elif method == "ap" or method == "averagedpermittivity":
@@ -817,6 +876,8 @@ def solve_effective_medium_equations( call_parameters ):
             eff = maxwell(dielectric_medium, dielecv, shape, L, vf, size)
         effdielec = bruggeman_iter(dielectric_medium, dielecv, shape, L, vf, size, eff)
         previous_solution_shared[nplot] = effdielec
+    elif method == "mie":
+        effdielec = mie_scattering(dielectric_medium, dielecv, shape, L, vf, size, size_mu)
     else:
         print('Unkown dielectric method: {}'.format(method))
         exit(1)
@@ -831,6 +892,6 @@ def solve_effective_medium_equations( call_parameters ):
     absorption_coefficient = v * 4*PI * np.imag(refractive_index) * math.log10(math.e)
     # units are cm-1 L moles-1
     molar_absorption_coefficient = absorption_coefficient / concentration / vf
-    return v,nplot,method,vf_type,size_in_mu,shape,data,trace,absorption_coefficient,molar_absorption_coefficient
+    return v,nplot,method,vf_type,size_mu,shape,data,trace,absorption_coefficient,molar_absorption_coefficient
 
 
