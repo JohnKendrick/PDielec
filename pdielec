@@ -30,6 +30,7 @@ from Python.GulpOutputReader import GulpOutputReader
 from Python.CrystalOutputReader import CrystalOutputReader
 from Python.AbinitOutputReader import AbinitOutputReader
 from Python.QEOutputReader import QEOutputReader
+from Python.ExperimentOutputReader import ExperimentOutputReader
 from Python.Plotter import Plotter, print3x3, print_reals
 import Python.Calculator as Calculator
 
@@ -44,7 +45,7 @@ def main():
     """Main Driver routine for PDielec - reads the input and directs the calculation"""
     def show_usage():
         """Show pdielec usage"""
-        print("pdielec [-method ap/balan/maxwell/bruggeman] [-plot molar_absorption]")
+        print("pdielec [-method ap/balan/maxwell/bruggeman/mie] [-plot molar_absorption]")
         print("        [-sphere] [-needle h k l] [-plate h k l] [-ellipsoid h k l aoverb]")
         print("        [-print] [-sigma {:.1f}] [-mode_sigma mode {:.1f}] ".format(sigma, sigma))
         print("        [-optical xx yy zz] [-optical_tensor xx yy zz xy xz yz] [-vmin {:.1f}] [-vmax {:.1f}]".format(vmin, vmax))
@@ -62,7 +63,7 @@ def main():
         print("        [-program name] file1 [file2]")
         print("pdielec: Calculates an IR spectrum from VASP, CASTEP, PWscf, Abinit, Phonopy or GULP")
         print("             At least one shape must be specified (-sphere -needle -plate)")
-        print("         -program castep/crystal/vasp/abinit/qe/phonopy/gulp")
+        print("         -program castep/crystal/vasp/abinit/qe/phonopy/gulp/experiment")
         print("             Specifies the program that created the files to be processed")
         print("             some programs require two or more files to be specified")
         print("             In the case of VASP file1 must be OUTCAR")
@@ -72,11 +73,13 @@ def main():
         print("             In the case of Quantum Espresso file1 must be the output file name of the calculation")
         print("             In the case of Abinit file1 must be the output file name of the abinit calculation")
         print("             In the case of phonopy file1 must the qpoints.yaml file")
-        print("         -method ap/balan/maxwell/bruggeman/bruggeman_iter/bruggeman_minimise/maxwell_sihvola")
-        print("             Choose the method to be used to, balan, maxwell or bruggeman")
+        print("             In the case of experiment the file should be a file containing experimental information")
+        print("         -method ap/balan/maxwell/bruggeman/bruggeman_iter/bruggeman_minimise/maxwell_sihvola/mie")
+        print("             Choose the method to be used to, mie, balan, maxwell or bruggeman")
         print("             maxwell_sihvola should give the same results as maxwell but could be used to deal with chirality")
         print("             bruggeman and brugemann_iter solve the bruggeman equations iteratively..")
         print("             brugemann_minimise solves the bruggeman equations by minimisation..")
+        print("             Note that mie only applies to spherical particles..")
         print("             The option can be used more than once")
         print("         -plot real/imaginary/absorption/molar_absorption")
         print("             The real, imaginary or the absorption coefficent of ")
@@ -100,8 +103,8 @@ def main():
         print("             the -masses mass definition is applied first,     ")
         print("             then any masses defined by -mass are applied,     ")
         print("         -size a")
-        print("             specifies the size of spherical particle to be considered in microns")
-        print("             only the maxwell and bruggeman methods incorporation size effects")
+        print("             specifies the radius of spherical particle to be considered in microns")
+        print("             only the mie, maxwell and bruggeman methods incorporation size effects")
         print("         -print")
         print("           print additional information about the calculation")
         print("         -csv file.csv")
@@ -147,13 +150,11 @@ def main():
         print("             oblate ellipsoid eccentricity (a/b) < 1")
         print("             prolate ellipsoid eccentricity (a/b) > 1")
         print("             The option can be used more than once")
-        print("         -optical xx yy zz are the optical permitivitties (diagonals) ")
-        print("             These can be found in the .castep file")
-        print("             If the .castep file is present then the values will be read automatically")
+        print("         -optical xx yy zz are the optical permitivitties (diagonal only) ")
         print("             If the tensor is not diagonal use the -optical_tensor flag")
         print("         -optical_tensor xx yy zz xy xz yz is the full optical permitivitty tensor")
         print("             If either optical commands are given on the command line they overide")
-        print("             the optical permittivity found in the .castep file")
+        print("             the optical permittivity")
         print("         -i  step   gives the increment of frequency (0.2 cm-1)")
         print("         -ignore mode")
         print("             Ignore a mode in the construction of the dielectric")
@@ -463,7 +464,7 @@ def main():
         # end loop over tokens
 
     # Look for obvious errors
-    programs = ["castep", "abinit", "qe", "castep", "vasp", "crystal", "gulp", "phonopy"]
+    programs = ["castep", "abinit", "qe", "castep", "vasp", "crystal", "gulp", "phonopy", "experiment"]
     if program is not "":
         if program not in programs:
             print("program specified is: {:s}".format(program))
@@ -494,7 +495,7 @@ def main():
     if len(sizes) > 0:
         print("Particle sizes have been specified (in microns)")
         for a in sizes:
-            print("Size of spherical particles: ", a)
+            print("Radius of spherical particles: ", a)
     else:
         sizes.append(0.0)
     
@@ -651,6 +652,8 @@ def main():
                 qmreader = QEOutputReader(vnames)
             # The QM reader is used to get info about the QM calculation
             reader = PhonopyOutputReader(pnames,qmreader)
+        elif program == "experiment":
+            reader = ExperimentOutputReader(names)
         # endif
     # end if
     if eckart:
@@ -794,12 +797,15 @@ def main():
     sigmas_cm1 = np.array(sigmas)
     sigmas = np.array(sigmas)*wavenumber
 
-    #
-    # calculate normal modes in xyz coordinate space
-    # should they be re-normalised or not?  According to Balan the mass weighted coordinates should be normalised
-    normal_modes = Calculator.normal_modes(masses, mass_weighted_normal_modes)
-    # from the normal modes and the born charges calculate the oscillator strengths of each mode
-    oscillator_strengths = Calculator.oscillator_strengths(normal_modes, born_charges)
+    if program == 'experiment':
+        oscillator_strengths = reader.oscillator_strengths
+    else:
+        #
+        # calculate normal modes in xyz coordinate space
+        # should they be re-normalised or not?  According to Balan the mass weighted coordinates should be normalised
+        normal_modes = Calculator.normal_modes(masses, mass_weighted_normal_modes)
+        # from the normal modes and the born charges calculate the oscillator strengths of each mode
+        oscillator_strengths = Calculator.oscillator_strengths(normal_modes, born_charges)
     # calculate the intensities from the trace of the oscillator strengths
     intensities = Calculator.infrared_intensities(oscillator_strengths)
     #
@@ -940,10 +946,12 @@ def main():
             # Loop over volume_fractions
             for vf, vf_type in zip(volume_fractions, fractional_types):
               # loop over sizes
-              for size_in_mu in sizes:
+              for size_mu in sizes:
                 # convert the size to a dimensionless number which is 2*pi*size/lambda
-                lambda_in_mu = 1.0E4 / (v + 1.0e-12)
-                size = 2.0*PI*size_in_mu / lambda_in_mu
+                lambda_mu = 1.0E4 / (v + 1.0e-12)
+                if size_mu < 1.0e-12:
+                    size_mu = 1.0e-12
+                size = 2.0*PI*size_mu / lambda_mu
                 # Loop over shapes
                 ap_count = 0  # Use a counter to only calculate the AveragedPermittivity once for all shapes
                 for shape, data, L in zip(shapes, shape_data, depolarisations):
@@ -955,7 +963,7 @@ def main():
                         else:
                             nplot -= 1
                             continue
-                    call_parameters.append( (v,vau,dielecv,method,vf,vf_type,size_in_mu,size,nplot,dielectric_medium,dielecv,shape,data,L,concentration,previous_solution_shared) )
+                    call_parameters.append( (v,vau,dielecv,method,vf,vf_type,size_mu,size,nplot,dielectric_medium,dielecv,shape,data,L,concentration,previous_solution_shared) )
                 # end of loop over shapes
               # end of loop over sizes
             # end of loop over volume fractions
@@ -966,13 +974,12 @@ def main():
     # Now perform the parallel calculation of the effective medium equations
     results = p.map(Calculator.solve_effective_medium_equations, call_parameters)
     # Add the results to the plotter function
-    for v,nplot,method,vf_type,size_in_mu,shape,data,trace,absorption_coefficient,molar_absorption_coefficient in results:
-        plotter.add_dielectric(nplot, method, vf_type, size_in_mu, shape, data, v, trace, absorption_coefficient, molar_absorption_coefficient)
+    for v,nplot,method,vf_type,size_mu,shape,data,trace,absorption_coefficient,molar_absorption_coefficient in results:
+        plotter.add_dielectric(nplot, method, vf_type, size_mu, shape, data, v, trace, absorption_coefficient, molar_absorption_coefficient)
     # Tidy up before plotting
     if fd_csvfile is not None:
         fd_csvfile = fd_csvfiles[2]
-        plotter.printout(fd_csvfile)
-    if fd_csvfile is not None:
+        plotter.printout(fd_csvfile, csv_extended)
         for file_descriptor in fd_csvfiles:
             file_descriptor.close()
     # Call the plotter

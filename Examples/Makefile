@@ -34,6 +34,8 @@ test_pdielec:
 	@$(MAKE) --no-print-directory -C SizeEffects/BaTiO3 test
 	@$(MAKE) --no-print-directory -C SizeEffects/MgO test
 	@$(MAKE) --no-print-directory -C SizeEffects/ZnO test
+	@$(MAKE) --no-print-directory -C Mie/MgO test
+	@$(MAKE) --no-print-directory -C Experiment/Experiment1 test
 
 clean:
 	@echo "Cleaning old command.out files"
