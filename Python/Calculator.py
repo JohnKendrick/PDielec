@@ -741,7 +741,7 @@ def _brug_iter_error(epsbr, eps1, eps2, shape, L, f1, size):
     error = np.linalg.norm(error)
     m1 = f1*np.dot(eps1, a1)+f2*np.dot(eps2, a2)
     m2 = np.linalg.inv(f1*a1 + f2*a2)
-    damp = 0.1
+    damp = 0.0
     epsbr = (1.0 - damp)*np.dot(m1, m2) + damp*epsbr
     trace = np.trace(epsbr) / 3.0
     epsbr = np.array([[trace, 0, 0], [0, trace, 0], [0, 0, trace]])
