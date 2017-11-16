@@ -1,9 +1,9 @@
 The following methods will be used: maxwell
 Particle sizes have been specified (in microns)
-Size of spherical particles:  0.0
-Size of spherical particles:  0.1
-Size of spherical particles:  1.0
-Size of spherical particles:  3.0
+Radius of spherical particles:  0.0
+Radius of spherical particles:  0.1
+Radius of spherical particles:  1.0
+Radius of spherical particles:  3.0
 Creating a csv file: command1.csv
 No plotting has been requested
 The frequency increment is 0.20 cm-1
@@ -13,7 +13,7 @@ The density of the medium (-density) has been set to 2.2000 g/cc
 Vmin is:   300.0 cm-1
 Vmax is:   800.0 cm-1
 All phonon modes will be considered
-The number of processors has been set to 1 
+The number of processors (4) has been determined automatically
 No projection of the dynamical matrix will be performed
 The charge neutrality of the Born atomic charges will not be enforced
  
@@ -69,10 +69,10 @@ Total permittivity
             0.000000      -0.000000      10.003299
 The following methods will be used: bruggeman
 Particle sizes have been specified (in microns)
-Size of spherical particles:  0.0
-Size of spherical particles:  0.1
-Size of spherical particles:  1.0
-Size of spherical particles:  3.0
+Radius of spherical particles:  0.0
+Radius of spherical particles:  0.1
+Radius of spherical particles:  1.0
+Radius of spherical particles:  3.0
 Creating a csv file: command2.csv
 No plotting has been requested
 The frequency increment is 0.20 cm-1
@@ -82,7 +82,7 @@ The density of the medium (-density) has been set to 2.2000 g/cc
 Vmin is:   300.0 cm-1
 Vmax is:   800.0 cm-1
 All phonon modes will be considered
-The number of processors has been set to 1 
+The number of processors (4) has been determined automatically
 No projection of the dynamical matrix will be performed
 The charge neutrality of the Born atomic charges will not be enforced
  

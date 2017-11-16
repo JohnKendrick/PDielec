@@ -59,8 +59,8 @@ Mode Frequency Intensity         Integrated Molar Absorption Epsilon_max   FWHM
  
  
 Permittivity contribution from ionic displacements
-            4.259656      -0.000000      -0.000000
-           -0.000000       4.259656      -0.000000
+            4.259656       0.000000      -0.000000
+            0.000000       4.259656      -0.000000
            -0.000000      -0.000000       5.050784
  
 Optical permittivity at zero frequency
@@ -69,6 +69,6 @@ Optical permittivity at zero frequency
             0.000000       0.000000       5.673460
  
 Total permittivity
-            9.998626      -0.000000      -0.000000
-           -0.000000       9.998626      -0.000000
+            9.998626       0.000000      -0.000000
+            0.000000       9.998626      -0.000000
            -0.000000      -0.000000      10.724244

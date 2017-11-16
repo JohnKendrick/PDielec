@@ -72,3 +72,8 @@ regenerate:
 	@$(MAKE) --no-print-directory -C QE/Cocaine regenerate
 	@$(MAKE) --no-print-directory -C Phonopy/ZnO regenerate
 	@$(MAKE) --no-print-directory -C Phonopy/Na2SO42 regenerate
+	@$(MAKE) --no-print-directory -C SizeEffects/BaTiO3 regenerate
+	@$(MAKE) --no-print-directory -C SizeEffects/MgO regenerate
+	@$(MAKE) --no-print-directory -C SizeEffects/ZnO regenerate
+	@$(MAKE) --no-print-directory -C Mie/MgO regenerate
+	@$(MAKE) --no-print-directory -C Experiment/Experiment1 regenerate
