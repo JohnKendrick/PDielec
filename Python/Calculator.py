@@ -481,6 +481,7 @@ def mie_scattering(dielectric_medium, dielecv, shape, L, vf, size, size_mu):
         refractive_index = calculate_refractive_index_scalar(rotated_dielec[index,index]) / refractive_index_medium
         # Calculate the scattering factors at 0 degrees 
         s1,s2 = ps.MieS1S2(refractive_index, size*refractive_index_medium, 1)
+        #jk qext,qsca,qabs,g,qpr,qback,qratio = ps.AutoMieQ(refractive_index, wavelength_nm, diameter_nm)
         # See van de Hulst page 129, 130
         # Refractive index of material is
         refractive_index = refractive_index_medium * ( 1.0 - i * s1 * 2 * PI * N_nm / ( k_nm * k_nm * k_nm ) )
@@ -489,6 +490,7 @@ def mie_scattering(dielectric_medium, dielecv, shape, L, vf, size, size_mu):
     trace = trace / 3.0
     eff = trace * trace
     effdielec = np.array([[eff, 0, 0], [0, eff, 0], [0, 0, eff]])
+    #jk print(radius_nm, lambda_vacuum_mu*1000.0, qext,qsca,qabs,g,qpr,qback,qratio,np.real(s1),np.imag(s1),np.real(trace),np.imag(trace),np.real(eff),np.imag(eff))
     return effdielec
 
 def maxwell(dielectric_medium, dielecv, shape, L, vf, size):
