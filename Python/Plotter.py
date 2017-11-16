@@ -92,8 +92,16 @@ class Plotter:
                 self.plot_imaginary()
             elif plot == 'real':
                 self.plot_real()
+            elif plot == 'extinction':
+                self.plot_absorption()
             elif plot == 'absorption':
                 self.plot_absorption()
+            elif plot == 'molar_extinction':
+                self.plot_molar_absorption()
+            elif plot == 'molarExtinction':
+                self.plot_molar_absorption()
+            elif plot == 'molarextinction':
+                self.plot_molar_absorption()
             elif plot == 'molar_absorption':
                 self.plot_molar_absorption()
             elif plot == 'molarAbsorption':
