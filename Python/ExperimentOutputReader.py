@@ -102,13 +102,20 @@ class ExperimentOutputReader(GenericOutputReader):
 
     def _read_static_dielectric(self, line):
         # the is epsilon infinity
-        self.zerof_optical_dielectric = []
+        od = []
         line = self.file_descriptor.readline()
-        self.zerof_optical_dielectric.append([float(f) for f in line.split()[0:3]])
+        od.append([complex(f) for f in line.split()[0:3]])
         line = self.file_descriptor.readline()
-        self.zerof_optical_dielectric.append([float(f) for f in line.split()[0:3]])
+        od.append([complex(f) for f in line.split()[0:3]])
         line = self.file_descriptor.readline()
-        self.zerof_optical_dielectric.append([float(f) for f in line.split()[0:3]])
+        od.append([complex(f) for f in line.split()[0:3]])
+        # If we have complex input return a complex list, otherwise return a real list
+        odc = np.array(od)
+        odi = np.absolute(np.imag(odc))
+        sumi = np.sum(odi)
+        if sumi < 1.0e-12:
+            odc = np.real(odc)
+        self.zerof_optical_dielectric = odc.tolist()
         return
 
     def calculate_mass_weighted_normal_modes(self):
