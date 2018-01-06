@@ -32,6 +32,14 @@ def initialise_unit_tensor():
     x[2, 2] = 1.0
     return x
 
+def initialise_complex_diagonal_tensor(reals):
+    '''Initialise a 3x3 tensor, the argument is a list of 3 real numbers for the diagonals, the returned tensor is an array'''
+    x = np.zeros((3, 3), dtype=np.complex)
+    x[0, 0] = reals[0]
+    x[1, 1] = reals[1]
+    x[2, 2] = reals[2]
+    return x
+
 def initialise_diagonal_tensor(reals):
     '''Initialise a 3x3 tensor, the argument is a list of 3 real numbers for the diagonals, the returned tensor is an array'''
     x = np.zeros((3, 3), dtype=np.float)
@@ -439,17 +447,21 @@ def balan(dielectric_medium, dielecv, shape, L, vf, size):
     effdielec = np.array([[trace, 0, 0], [0, trace, 0], [0, 0, trace]])
     return effdielec
 
-def mie_scattering(dielectric_medium, dielecv, shape, L, vf, size, size_mu):
+def mie_scattering(dielectric_medium, dielecv, shape, L, vf, size, size_mu, size_distribution_sigma):
     """Calculate the effective constant permittivity using a Mie scattering approach
        dielectric_medium is the dielectric constant tensor of the medium
        dielecv is the total frequency dielectric constant tensor at the current frequency
        shape is the name of the current shape (NOT USED)
        L is the shapes depolarisation matrix (NOT USED)
        size is the dimensionless size parameter for the frequency under consideration
+       size_distribution_sigma is the log normal value of sigma
        vf is the volume fraction of filler
        Mie only works for spherical particles, so shape, and L parameters are ignored
        The routine returns the effective dielectric constant"""
     import PyMieScatt as ps
+    from scipy.integrate import trapz
+    from scipy.stats import lognorm
+    # define i as a complex number
     i = complex(0,1)
     # We need to taken account of the change in wavelength and the change in size parameter due to the 
     # None unit value of the dielectric of the embedding medium
@@ -474,14 +486,56 @@ def mie_scattering(dielectric_medium, dielecv, shape, L, vf, size, size_mu):
     v_nm = 4.0/3.0 * PI * radius_nm * radius_nm * radius_nm
     # Number density of particles (number / nm^3)
     N_nm = vf / v_nm
+    # If there is a size distribution set up to use it
+    if size_distribution_sigma:
+        lower,upper = lognorm.interval(0.9999,size_distribution_sigma,scale=size_mu)
+        numberOfBins = 40
+        dp = np.logspace(np.log(lower),np.log(upper),numberOfBins,base=np.e)
+        # The definitions used are confusing;
+        # dp is the log of the variable
+        # s is the standard deviation (shape function) of the log of the variate
+        # scale is the mean of the underlying normal distribution
+        ndp = lognorm.pdf(dp,s=size_distribution_sigma,scale=size_mu)
+        #print("DP",dp)
+        #print("NDP",ndp)
+        #print("Upper lower",lower,upper)
+        #print("Size_MU",size_mu)
     # We are now going to ignore any off-diagonal elements
     trace = 0.0
     # Now take the average of each direction
     for index in [0,1,2]:
         refractive_index = calculate_refractive_index_scalar(rotated_dielec[index,index]) / refractive_index_medium
-        # Calculate the scattering factors at 0 degrees 
-        s1,s2 = ps.MieS1S2(refractive_index, size*refractive_index_medium, 1)
-        #jk qext,qsca,qabs,g,qpr,qback,qratio = ps.AutoMieQ(refractive_index, wavelength_nm, diameter_nm)
+        #jk print('refractive_index', refractive_index)
+        #jk print('refractive_index_medium', refractive_index_medium)
+        #jk print('rotated_dielec', rotated_dielec[index,index])
+        if size_distribution_sigma:
+            # Calculate the integral of the forward scattering factors over the distribution
+            s1_factors = []
+            for r in dp:
+                # The size parameter is 2pi r / lambda 
+                x = 2 * PI * r / lambda_vacuum_mu
+                # Calculate the S1 and S2 scattering factors, and store in a list
+                s1,s2 = ps.MieS1S2(refractive_index, x*refractive_index_medium, 1)
+                s1_factors.append(s1)
+            # Now integrate
+            s1 = trapz(s1_factors*ndp,dp)
+            normal = trapz(ndp,dp)
+            mean = trapz(ndp*dp,dp)
+            true_mean = np.exp( np.log(size_mu) + size_distribution_sigma*size_distribution_sigma/2.0)
+            v_cm1 = 1.0E4/lambda_vacuum_mu 
+            #print("Frequency,normal,mean",v_cm1,normal,true_mean,mean)
+            if np.abs(normal - 1.0) > 1.0E-2:
+                print("Warning integration of log-normal distribution in error", normal)
+                print("Stopping calculation - likely problem is too large a sigma for log-normal distribution")
+                effdielec = np.array([[1, 0, 0], [0, 1, 0], [0, 0, 1]])
+                return effdielec
+        else:
+            # Calculate the scattering factors at 0 degrees 
+            #jk print("refractive_index, size, refractive_index_medium", refractive_index, size, refractive_index_medium)
+            s1,s2 = ps.MieS1S2(refractive_index, size*refractive_index_medium, 1)
+        # qext,qsca,qabs,g,qpr,qback,qratio = ps.AutoMieQ(refractive_index, wavelength_nm, diameter_nm)
+        #jk print('s1,s2',s1,s2)
+        #jk print('qext,qsca,qabs',qext,qsca,qabs)
         # See van de Hulst page 129, 130
         # Refractive index of material is
         refractive_index = refractive_index_medium * ( 1.0 - i * s1 * 2 * PI * N_nm / ( k_nm * k_nm * k_nm ) )
@@ -491,6 +545,7 @@ def mie_scattering(dielectric_medium, dielecv, shape, L, vf, size, size_mu):
     eff = trace * trace
     effdielec = np.array([[eff, 0, 0], [0, eff, 0], [0, 0, eff]])
     #jk print(radius_nm, lambda_vacuum_mu*1000.0, qext,qsca,qabs,g,qpr,qback,qratio,np.real(s1),np.imag(s1),np.real(trace),np.imag(trace),np.real(eff),np.imag(eff))
+    #print ("radius_nm, eff", radius_nm, eff)
     return effdielec
 
 def maxwell(dielectric_medium, dielecv, shape, L, vf, size):
@@ -851,7 +906,7 @@ def solve_effective_medium_equations( call_parameters ):
     # call_parameters is a tuple
     # In the case of Bruggeman and coherent we can use the previous result to start the iteration/minimisation
     # However to do this we need some shared memory, this allocated in previous_solution_shared
-    v,vau,dielecv,method,vf,vf_type,size_mu,size,nplot,dielectric_medium,dielecv,shape,data,L,concentration,previous_solution_shared = call_parameters
+    v,vau,dielecv,method,vf,vf_type,size_mu,size_distribution_sigma,size,nplot,dielectric_medium,dielecv,shape,data,L,concentration,previous_solution_shared = call_parameters
     if method == "balan":
         effdielec = balan(dielectric_medium, dielecv, shape, L, vf, size)
     elif method == "ap" or method == "averagedpermittivity":
@@ -879,7 +934,7 @@ def solve_effective_medium_equations( call_parameters ):
         effdielec = bruggeman_iter(dielectric_medium, dielecv, shape, L, vf, size, eff)
         previous_solution_shared[nplot] = effdielec
     elif method == "mie":
-        effdielec = mie_scattering(dielectric_medium, dielecv, shape, L, vf, size, size_mu)
+        effdielec = mie_scattering(dielectric_medium, dielecv, shape, L, vf, size, size_mu, size_distribution_sigma)
     else:
         print('Unkown dielectric method: {}'.format(method))
         exit(1)
@@ -894,6 +949,6 @@ def solve_effective_medium_equations( call_parameters ):
     absorption_coefficient = v * 4*PI * np.imag(refractive_index) * math.log10(math.e)
     # units are cm-1 L moles-1
     molar_absorption_coefficient = absorption_coefficient / concentration / vf
-    return v,nplot,method,vf_type,size_mu,shape,data,trace,absorption_coefficient,molar_absorption_coefficient
+    return v,nplot,method,vf_type,size_mu,size_distribution_sigma,shape,data,trace,absorption_coefficient,molar_absorption_coefficient
 
 
