@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python
 #
 # Copyright 2015 John Kendrick
 #
@@ -102,9 +102,11 @@ def main():
         print("             Allows individual elements to have their masses defined")
         print("             the -masses mass definition is applied first,     ")
         print("             then any masses defined by -mass are applied,     ")
-        print("         -size a")
+        print("         -size a [width]")
         print("             specifies the radius of spherical particle to be considered in microns")
         print("             only the mie, maxwell and bruggeman methods incorporation size effects")
+        print("             in the case of the mie method a log normal size distribution can be specified")
+        print("             by giving the mean of the log distribution (in microns) and its width (log microns)")
         print("         -print")
         print("           print additional information about the calculation")
         print("         -csv file.csv")
@@ -112,6 +114,8 @@ def main():
         print("         -csv_ext file.csv")
         print("           extended print option creating 3 csv files")
         print("           file_command.csv, file_frequencies.csv file_spectrum.csv")
+        print("         -excel  file.xlsx")
+        print("           output the results to an excel file")
         print("         -sigma gives the Lorentzian sigma width in wavenumbers default is %f" % sigma)
         print("         -mode_sigma mode sigma")
         print("             A given mode is assigned its own width")
@@ -226,6 +230,7 @@ def main():
     fractional_types = []
     plot_types      = []
     sizes = []
+    size_distribution_sigmas = []
     volume_fraction = 0.1
     mass_fraction = 0.0
     sigma          = 5.0
@@ -237,6 +242,7 @@ def main():
     matrix_density = 2.2
     print_info      = False
     csvfile        = ""
+    excelfile      = ""
     csv_extended   = False
     # Define materials as (density, permittivity)
     matrix           = {}
@@ -312,6 +318,11 @@ def main():
         elif token == "-size":
             itoken += 1
             sizes.append(float(tokens[itoken]))
+            if tokens[itoken+1][0] != '-':
+                itoken += 1
+                size_distribution_sigmas.append(float(tokens[itoken]))
+            else:
+                size_distribution_sigmas.append(None)
         elif token == "-dielectric":
             itoken += 1
             matrix_dielectric = float(tokens[itoken])
@@ -327,14 +338,28 @@ def main():
                 print("Error, unkown material {:s}", token)
                 exit(1)
         elif token == "-optical":
-            optical = [float(f) for f in tokens[itoken+1:itoken+4]]
+            optical = [complex(f) for f in tokens[itoken+1:itoken+4]]
             itoken = itoken + 3
+            # Check that the optical diagonal is real or complex
+            odc = np.array(optical)
+            odi = np.absolute(np.imag(odc))
+            sumi = np.sum(odi)
+            if sumi < 1.0e-12:
+                odr = np.real(odc)
+                optical = odr.tolist()
         elif token == "-optical_tensor":
-            temp = [float(f) for f in tokens[itoken+1:itoken+10]]
+            temp = [complex(f) for f in tokens[itoken+1:itoken+10]]
             itoken = itoken + 9
             optical_tensor.append(temp[0:3])
             optical_tensor.append(temp[3:6])
             optical_tensor.append(temp[6:9])
+            # Check that the optical is real or complex
+            odc = np.array(optical_tensor)
+            odi = np.absolute(np.imag(odc))
+            sumi = np.sum(odi)
+            if sumi < 1.0e-12:
+                odr = np.real(odc)
+                optical_tensor = odr.tolist()
         elif token == "-i":
             itoken += 1
             increment = float(tokens[itoken])
@@ -358,6 +383,9 @@ def main():
             itoken += 1
             csvfile = tokens[itoken]
             csv_extended = False
+        elif token == "-excel":
+            itoken += 1
+            excelfile = tokens[itoken]
         elif token == "-sphere":
             shapes.append("sphere")
             shape_data.append(" ")
@@ -494,12 +522,17 @@ def main():
     # Process size information, if no sizes have been given the use 0.0
     if len(sizes) > 0:
         print("Particle sizes have been specified (in microns)")
-        for a in sizes:
-            print("Radius of spherical particles: ", a)
+        for a,sig in zip(sizes,size_distribution_sigmas):
+            if sig:
+                print("Mean radius of spherical particles and log normal sigma: ", a, sig)
+            else:
+                print("Radius of spherical particles: ", a)
     else:
         sizes.append(0.0)
+        size_distribution_sigmas.append(None)
     
 
+    fd_excelfile = None
     fd_csvfile = None
     fd_csvfiles = [None, None, None]
     if csvfile != "":
@@ -515,6 +548,9 @@ def main():
             fd_csvfiles[1] = fd_csvfiles[0]
             fd_csvfiles[2] = fd_csvfiles[0]
         fd_csvfile = fd_csvfiles[0]
+    if excelfile != "":
+        print("Creating an excel file: "+excelfile)
+        fd_excelfile = 1
     if len(plot_types) == 0:
         print("No plotting has been requested")
     else:
@@ -531,7 +567,15 @@ def main():
     if len(optical) > 0:
         print(" ")
         print("Optical permitivity diagonal elements specified: " + " ".join("{:.4f}".format(p) for p in optical))
-        optical_tensor = Calculator.initialise_diagonal_tensor(optical)
+        optical_tensor = Calculator.initialise_complex_diagonal_tensor(optical)
+        # Check that the optical is real or complex
+        odc = np.array(optical_tensor)
+        odi = np.absolute(np.imag(odc))
+        sumi = np.sum(odi)
+        if sumi < 1.0e-12:
+            odr = np.real(odc)
+            optical_tensor = odr.tolist()
+    # end if len(optical)
     print("Vmin is: {:7.1f} cm-1".format(vmin))
     print("Vmax is: {:7.1f} cm-1".format(vmax))
     if len(my_modes) > 0:
@@ -733,6 +777,19 @@ def main():
     rho1 = crystal_density
     rho2 = matrix_density
     print("")
+    if fd_excelfile is not None:
+        import xlsxwriter as xlsx
+        workbook = xlsx.Workbook(excelfile)
+        worksheet = workbook.add_worksheet('info')
+        excel_row = 0;  worksheet.write(excel_row,0,command_line)
+        excel_row += 2; worksheet.write(excel_row,0,'Volume of unit cel (Angstrom^3)')
+        excel_row += 1; worksheet.write(excel_row,0,reader.volume)
+        excel_row += 2; worksheet.write(excel_row,0,'Unit cell mass (g/mol)')
+        excel_row += 1; worksheet.write(excel_row,0,mtotal)
+        excel_row += 2; worksheet.write(excel_row,0,'Crystal density (g/cc)')
+        excel_row += 1; worksheet.write(excel_row,0,crystal_density)
+        excel_row += 2; worksheet.write(excel_row,0,'Matrix density (g/cc)')
+        excel_row += 1; worksheet.write(excel_row,0,matrix_density)
     # Convert any mass fractions to volume fractions
     if len(mass_fractions) > 0:
         print("The density of the supporting matrix is {:9.4f} g/cc".format(matrix_density))
@@ -808,6 +865,9 @@ def main():
         oscillator_strengths = Calculator.oscillator_strengths(normal_modes, born_charges)
     # calculate the intensities from the trace of the oscillator strengths
     intensities = Calculator.infrared_intensities(oscillator_strengths)
+    if fd_excelfile is not None:
+        excel_row += 2; worksheet.write(excel_row,0,'Transverse optical frequencies (cm-1)')
+        excel_row += 1; [ worksheet.write(excel_row,col,f) for col,f in enumerate(np.real(frequencies_cm1)) ]
     #
     # If LO frequencies have been requested lets calculate them now
     # First calculate the cartesian directions from any wavevectors
@@ -834,6 +894,9 @@ def main():
             qxyz_string = "[" + ",".join("{:7.4f}".format(xyz) for xyz in qxyz) + "]"
             print_reals("Longitudinal frequencies (cm-1) q->0 q(cart)=" + qxyz_string + qstring, np.real(lo_freq))
             print(" ")
+            if fd_excelfile is not None:
+                excel_row += 2; worksheet.write(excel_row,0,'Logitudinal optical frequencies (cm-1) q->0 q(cart)='+qxyz_string+qstring)
+                excel_row += 1; [ worksheet.write(excel_row,col,f) for col,f in enumerate(np.real(lo_freq)) ]
         # end for qxyz, lo_freq
     # end if qlist
     #
@@ -918,13 +981,45 @@ def main():
     print3x3('Optical permittivity at zero frequency', epsilon_inf)
     epsilon_total = epsilon_inf + epsilon_ionic
     print3x3('Total permittivity', epsilon_total)
+    # If we have been requested to write an xslx file do so now
+    if fd_excelfile is not None:
+        excel_row += 2
+        for col,string in enumerate(["Mode", "Frequency", "Intensity", "Integrated Molar Absorption", "Epsilon Max", "FWHM"]):
+            worksheet.write(excel_row,col,string)
+        excel_row += 1
+        for col,string in enumerate(["    ", "cm-1", "Debye2/Angs2/amu", "Coefficient L/mol/cm/cm", "L/mol/cm", "cm-1"]):
+            worksheet.write(excel_row,col,string)
+        for mode in mode_list:
+            freq = reader.frequencies[mode]
+            intn = intensities[mode]
+            widt = sigmas_cm1[mode]
+            excel_row += 1
+            for col,result in enumerate([mode, freq, intn, 4225.6*intn, 2*4225.6*intn/widt/PI, widt]):
+                worksheet.write(excel_row,col,result)
+        excel_row += 2; 
+        worksheet.write(excel_row,0,'Permittivity contribution from ionic displacements')
+        excel_row += 1; [ worksheet.write(excel_row,col,perm) for col,perm in enumerate(epsilon_ionic[0]) ]
+        excel_row += 1; [ worksheet.write(excel_row,col,perm) for col,perm in enumerate(epsilon_ionic[1]) ]
+        excel_row += 1; [ worksheet.write(excel_row,col,perm) for col,perm in enumerate(epsilon_ionic[2]) ]
+        #
+        excel_row += 2;  worksheet.write(excel_row,0,'Optical permittivity at zero frequency')
+        excel_row += 1; [ worksheet.write(excel_row,col,perm) for col,perm in enumerate(epsilon_inf[0]) ]
+        excel_row += 1; [ worksheet.write(excel_row,col,perm) for col,perm in enumerate(epsilon_inf[1]) ]
+        excel_row += 1; [ worksheet.write(excel_row,col,perm) for col,perm in enumerate(epsilon_inf[2]) ]
+        #
+        excel_row += 2; worksheet.write(excel_row,0,'Total permittivity')
+        excel_row += 1; [ worksheet.write(excel_row,col,perm) for col,perm in enumerate(epsilon_total[0]) ]
+        excel_row += 1; [ worksheet.write(excel_row,col,perm) for col,perm in enumerate(epsilon_total[1]) ]
+        excel_row += 1; [ worksheet.write(excel_row,col,perm) for col,perm in enumerate(epsilon_total[2]) ]
+        # Finished processing the first sheet of the xlsx file
+    #
     # Prepare parallel call parameters for a Loop over frequencies
     call_parameters = []
     for v in np.arange(float(vmin), float(vmax)+0.5*float(increment), float(increment)):
         vau = v * wavenumber
         call_parameters.append( (v, vau, mode_list, frequencies, sigmas, oscillator_strengths, volume, epsilon_inf, drude, drude_plasma, drude_sigma) )
     # Create a pool of processors and get them to calculate the initial dielectric contribution from the phonon modes
-    p = Pool(number_of_processors,initializer=set_affinity_on_worker)
+    p = Pool(number_of_processors,initializer=set_affinity_on_worker,maxtasksperchild=10)
     results = p.map(Calculator.parallel_dielectric, call_parameters)
     # Prepare the share memory so we can pass previous solutions around
     # the number of plots will be less than or equal to nplots
@@ -946,7 +1041,7 @@ def main():
             # Loop over volume_fractions
             for vf, vf_type in zip(volume_fractions, fractional_types):
               # loop over sizes
-              for size_mu in sizes:
+              for size_mu,size_sigma in zip(sizes,size_distribution_sigmas):
                 # convert the size to a dimensionless number which is 2*pi*size/lambda
                 lambda_mu = 1.0E4 / (v + 1.0e-12)
                 if size_mu < 1.0e-12:
@@ -963,20 +1058,26 @@ def main():
                         else:
                             nplot -= 1
                             continue
-                    call_parameters.append( (v,vau,dielecv,method,vf,vf_type,size_mu,size,nplot,dielectric_medium,dielecv,shape,data,L,concentration,previous_solution_shared) )
+                    call_parameters.append( (v,vau,dielecv,method,vf,vf_type,size_mu,size_sigma,size,nplot,dielectric_medium,dielecv,shape,data,L,concentration,previous_solution_shared) )
                 # end of loop over shapes
               # end of loop over sizes
             # end of loop over volume fractions
         # end of loops over methods
     # end of look over frequencies
-    # Allocate so shared memory
+    # Allocate some shared memory
     nplots = nplot
     # Now perform the parallel calculation of the effective medium equations
     results = p.map(Calculator.solve_effective_medium_equations, call_parameters)
+    #  Close all the parallel workers
+    p.close()
+    p.join()
     # Add the results to the plotter function
-    for v,nplot,method,vf_type,size_mu,shape,data,trace,absorption_coefficient,molar_absorption_coefficient in results:
-        plotter.add_dielectric(nplot, method, vf_type, size_mu, shape, data, v, trace, absorption_coefficient, molar_absorption_coefficient)
+    for v,nplot,method,vf_type,size_mu,size_sigma,shape,data,trace,absorption_coefficient,molar_absorption_coefficient in results:
+        plotter.add_dielectric(nplot, method, vf_type, size_mu, size_sigma, shape, data, v, trace, absorption_coefficient, molar_absorption_coefficient)
     # Tidy up before plotting
+    if fd_excelfile is not None:
+        plotter.excel(workbook)
+        workbook.close()
     if fd_csvfile is not None:
         fd_csvfile = fd_csvfiles[2]
         plotter.printout(fd_csvfile, csv_extended)
