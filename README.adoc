@@ -53,8 +53,10 @@ This copies the commands and modules to the \~/bin directory which should be inc
  
 === Windows
 A Windows 10 installation which works for users without administrator rights involves a few steps but gives an installation which can run all the test cases.  In the following instructions replace 'yourusername' with your user name.
+
 ==== Install Git
 First of all install a Windows version of git from www.git-scm.com. A 64 bit version of Windows 10 will be assumed for the following instructions.  
+
 * From the download page download and run the 64 bit Git for Windows setup.
 * During the installation you process choose to install the Quick Launch and Desktop icons as these make using the program easier. 
 * If you are not familar with the vi or vim editor, it is probably best to use the Nano editor, although if you wish you can install Notepad++ and use that as the default editor.
@@ -74,6 +76,7 @@ Once you have Git installed open the "Git bash" shell and create the following d
 From the web url http://www.equation.com/servlet/equation.cmd?fa=make download the 64-bit version of make.exe and copy it into your bin/ directory.  You should find this directory in c:\users\yourusername\bin in the file manager.
 
 ==== Install Python
+
 * From https://www.python.org/downloads/windows/ download and run the Windows x86-64 executable installer for the latest Python 3.6 version
 * Uncheck install launcher for all users
 * Check "Add Python 3.6 to PATH"
