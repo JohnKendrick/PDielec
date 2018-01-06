@@ -58,7 +58,7 @@ A Windows 10 installation which works for users without administrator rights inv
 First of all install a Windows version of git from www.git-scm.com. A 64 bit version of Windows 10 will be assumed for the following instructions.  
 
 * From the download page download and run the 64 bit Git for Windows setup.
-* During the installation you process choose to install the Quick Launch and Desktop icons as these make using the program easier. 
+* During the installation install the Quick Launch and Desktop icons as these make using the program easier. 
 * If you are not familar with the vi or vim editor, it is probably best to use the Nano editor, although if you wish you can install Notepad++ and use that as the default editor.
 * In the section concerning the PATH environment I would recommend the last option "Use git and optional Unix tools from the Windows Command prompt".  This option will mean that some Windows commands eg. find and sort will be replace by the Unix commands.  
 * Leave the https certificate choice as the default, namely the OpenSSL library. 
@@ -81,7 +81,7 @@ From the web url http://www.equation.com/servlet/equation.cmd?fa=make download t
 * Uncheck install launcher for all users
 * Check "Add Python 3.6 to PATH"
 * Click on "Install now" button
-* Check installation ran OK by running the Idle
+* Check installation ran OK by running the Idle python environment
 
 ==== Install additional Python modules for PDielec
 Open a Git Bash Console and type;
