@@ -1,6 +1,18 @@
+version 4.0.1
+Modified preader to work in parallel under Windows
+Changed the complex optical dielectric to real if the imaginary components are 0
+Changed the README to give much better information about Windows 10 installations
+Modified the shebang on the preader and pdielec commands so that Windows recognises them
+Modified the checkcsv command so that it ignores the number of processors
+
+Version 4.0.0
+Mie scattering
+Excel spread sheet writing completed
+Added an 'experiment' program for testing parts of the code without having to do an abinitio calculation.
+
+Version 3.0.1
 Added degeneracy checking
 Added improved checking of output files, so that small changes due to numpy/mkl choice are ignored
-
 Parallel version of PDielec and preader
 
 Version 3.0.0
@@ -14,7 +26,6 @@ Modified the reading of Crystal14 ouput so that the NOECKART flag  in the output
 Added a -threshold command which allows the user to be more selective as to which modes are included in the absorption calculation
 
 Version 2.0
-
 Updated the code to be compatible with both Python 2 and Python 3
 In the process of modifying all the print statement, prettified the output
 Added a -h -help to print out the usage information
