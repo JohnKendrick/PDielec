@@ -4,8 +4,9 @@
 # destination directory. 
 # If necessary the following line can be uncommented and edited
 # SCRIPTS = /home/software/Scripts
+# By default if no SCRIPTS environment variable is present then the installation goes to ~/bin
 
--include Makefile.mk
+SCRIPTS ?= ~/bin
 
 default:	
 		@echo "Too install pdielec and preader in the $(SCRIPTS) directory"
