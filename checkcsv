@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python
 """Read in two csv files and check that the float contents are the same"""
 import string
 import os, sys
@@ -17,6 +17,18 @@ def compare_lines( line1, line2, swapped):
   keep_word1 = ''
   keep_word2 = ''
   index = 0
+  len1 = len(line1.split(separator))
+  len2 = len(line2.split(separator))
+  if len1 == len2:
+      if len1 > 4:
+          word1 = line1.split(separator)[3]
+          word2 = line2.split(separator)[3]
+          if word1 == word2  and word1 == "processors":
+              # Ignore this line 'cos the number of processors used depends on the machine
+              return (store_error, nerrors, max_percentage_error, keep_word1, keep_word2)
+          # end if word1 == word2
+      # end if len1 > 4
+  #end if len1 == len2
   for word1,word2 in zip(line1.split(separator),line2.split(separator)):
     index += 1
     if isfloat(word1):
