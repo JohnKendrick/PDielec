@@ -1,0 +1,19 @@
+---
+version: 2
+multicolumn: false
+web-width: 500px
+align: center
+float: h!
+grid:
+  rows: 1
+  columns: 1
+  grid_elements:
+  - path: figures/command/command.csv
+    type: table
+    from:
+    - 1
+    - 1
+    to:
+    - 1
+    - 1
+    url: "/users/223746/articles/279061/master/file/figures/command/command.csv"
