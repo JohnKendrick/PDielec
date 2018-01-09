@@ -72,6 +72,7 @@ class CastepOutputReader(GenericOutputReader):
         self.manage['kpoint_grid']   = (re.compile(' *MP grid size for SCF'), self._read_kpoint_grid)
         self.manage['finalenergy']   = (re.compile(' *Final energy, E'), self._read_energies)
         self.manage['finalenergy2']   = (re.compile('Final energy ='), self._read_energies2)
+        self.manage['finalenergy3']   = (re.compile('Dispersion corrected final energy'), self._read_energies3)
         self.manage['energy_cutoff'] = (re.compile(' *plane wave basis set cut'), self._read_energy_cutoff)
         self.manage['nbands']        = (re.compile(' *number of bands'), self._read_nbands)
         self.manage['pressure']      = (re.compile(' *\* *Pressure: '), self._read_external_pressure)
@@ -156,52 +157,69 @@ class CastepOutputReader(GenericOutputReader):
         self.ncells = len(self.unit_cells)
         line = self._read_till_phrase(re.compile(' *Current cell volume'))
         self.volume = float(line.split()[4])
-        line = self._read_till_phrase(re.compile(' *Total number of ions in cell'))
-        if len(self.unit_cells) == 1:
-            self.nions = int(line.split()[7])
+        if self.nions == 0:
+            line = self._read_till_phrase(re.compile(' *Total number of ions in cell'))
+            if len(self.unit_cells) == 1:
+                self.nions = int(line.split()[7])
+                line = self.file_descriptor.readline()
+                self.nspecies = int(line.split()[7])
+                line = self.file_descriptor.readline()
+                line = self.file_descriptor.readline()
             line = self.file_descriptor.readline()
-            self.nspecies = int(line.split()[7])
             line = self.file_descriptor.readline()
             line = self.file_descriptor.readline()
-        line = self.file_descriptor.readline()
-        line = self.file_descriptor.readline()
-        line = self.file_descriptor.readline()
-        line = self.file_descriptor.readline()
+            line = self.file_descriptor.readline()
+        # end if self.nions
+        else:
+            # Not all Unit Cell output is the same in Castep 17
+            line = self._read_till_phrase(re.compile(' *xxxxxxxxxxxxxxxxxxxxxxxxxxxx'))
+            line = self.file_descriptor.readline()
+            line = self.file_descriptor.readline()
+            line = self.file_descriptor.readline()
+        # end of else
         fractional_coordinates = []
         # ions_per_type is a dictionary here and is local
         ions_per_type = {}
         self.atom_type_list = []
-        if len(self.unit_cells) == 1:
-            self.species = []
-            for i in range(self.nions):
-                line = self.file_descriptor.readline()
-                atom_type = line.split()[1].capitalize()
-                if atom_type not in ions_per_type:
-                    self.species.append(atom_type)
-                    ions_per_type[atom_type] = 0
-                self.atom_type_list.append(self.species.index(atom_type))
-                ions_per_type[atom_type] += 1
-                atom_frac = [float(f) for f in line.split()[3:6]]
-                fractional_coordinates.append(atom_frac)
-            # At some point we should store the fractional coordinates
-            for species in self.species:
-                n = ions_per_type[species]
-                # self.ions_per_type is a list
-                self.ions_per_type.append(n)
+        self.species = []
+        for i in range(self.nions):
+            line = self.file_descriptor.readline()
+            atom_type = line.split()[1].capitalize()
+            if atom_type not in ions_per_type:
+                self.species.append(atom_type)
+                ions_per_type[atom_type] = 0
+            self.atom_type_list.append(self.species.index(atom_type))
+            ions_per_type[atom_type] += 1
+            atom_frac = [float(f) for f in line.split()[3:6]]
+            fractional_coordinates.append(atom_frac)
+        # At some point we should store the fractional coordinates
+        for species in self.species:
+            n = ions_per_type[species]
+            # self.ions_per_type is a list
+            self.ions_per_type.append(n)
         self.unit_cells[-1].set_fractional_coordinates(fractional_coordinates)
         return
 
     def _read_masses(self, line):
         self.masses = []
         self.masses_per_type = []
-        for i in range(self.nspecies):
-            line = self.file_descriptor.readline()
-            species = line.split()[0]
+        self.species = []
+        self.nspecies = 0
+        line = self.file_descriptor.readline()
+        while len(line.split()) != 0:
+            species = line.split()[0].capitalize()
             mass = float(line.split()[1])
+            nions = self.ions_per_type[self.nspecies]
+            self.species.append(species)
+            # These are two private dictionary to map the species name to a type index
+            # self._ion_type_index[species] = self.nspecies
+            self._ion_index_type[self.nspecies] = species
             self.masses_per_type.append(mass)
-            nions = self.ions_per_type[i]
+            self.nspecies += 1
             for j in range(nions):
                 self.masses.append(mass)
+            line = self.file_descriptor.readline()
+        # end while loop
         return
 
     def _read_born_charges(self, line):
@@ -298,5 +316,10 @@ class CastepOutputReader(GenericOutputReader):
     def _read_energies2(self, line):
         self.final_energy_without_entropy = float(line.split()[3])
         self.final_free_energy = float(line.split()[3])
+        return
+
+    def _read_energies3(self, line):
+        self.final_energy_without_entropy = float(line.split()[5])
+        self.final_free_energy = float(line.split()[5])
         return
 
