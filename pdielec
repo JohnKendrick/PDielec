@@ -848,7 +848,7 @@ def main():
 
     if debug:
         print("Complete mode list is: " + ",".join("{:4d}".format(m) for m in mode_list))
-        print("Sigmas are:            " + ",".join("{:4d}".format(s) for s in sigmas))
+        print("Sigmas are:            " + ",".join("{:4f}".format(s) for s in sigmas))
 
     # convert sigmas to wavenumbers
     sigmas_cm1 = np.array(sigmas)
