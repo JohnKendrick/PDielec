@@ -2,7 +2,7 @@
 :keywords: PDielec, CASTEP, VASP, Gulp, Crystal, Abinit, QuantumEspresso, Infrared, Terahertz, spectroscopy
 = The PDielec package
 John Kendrick and Andrew Burnett
-v2.0.1, 2016-06-24
+v4.0.1, 2018-01-01
 
 Authors: John Kendrick and Andrew Burnett
 
@@ -14,9 +14,9 @@ Journal of Computational Chemistry 2016, vol 27, 1491-1504
 DOI: 10.1002/jcc.24344
 
 == Introduction
-The molecular and solid state quantum mechanical calculations of response properties such as the frequencies and intensities of infrared (IR) and terahertz (THz) radiation absorption has become generally available in many molecular and solid state computer programs.  A common approach is to assume the harmonic approximation and calculate the mass weighted force constant matrix (for molecules) or the dynamical matrix at the gamma point (for periodic solids).  Diagonalisation of the matrix gives the frequencies for absorption and the normal modes (molecules) or phonon displacements (periodic solids).  
-The calculation of the absorption intensity for each mode requires the calculation of the change in dipole moment caused by the displacement of the atoms for that mode.  For solids where there is a large separation of charge, there can be a large coupling between a phonon mode and the internal field within a particle resulting from its morphology.  The PDielec program is written in Python and post processes the output of solid state quantum mechanical (QM) and molecular mechanics (MM) based codes such as VASP, CASTEP, CRYSTAL14, Abinit, QuantumEspresso, Phonopy and GULP to predict the infrared absorption of crystalline insulator materials whose crystal size is small compared with the wavelength of the absorbing radiation. 
-The package is suited for the calculation of the complex, frequency dependent permittivity and its associated absorption of infrared radiation for a finely ground crystalline material dispersed in a low loss dielectric medium such KBr or PTFE.  A particular feature of the program is its ability to take into account the constant permittivity of the supporting medium and the particle shape through an effective medium theory.  
+The molecular and solid state quantum mechanical calculations of response properties such as the frequencies and intensities of infrared (IR) and terahertz (THz) radiation absorption has become generally available in many molecular and solid state computer programs.  A common approach is to assume the harmonic approximation and calculate the mass weighted force constant matrix (for molecules) or the dynamical matrix at the gamma point (for periodic solids).  Diagonalisation of the matrix gives the frequencies for absorption and the normal modes (molecules) or phonon displacements (periodic solids).
+The calculation of the absorption intensity for each mode requires the calculation of the change in dipole moment caused by the displacement of the atoms for that mode.  For solids where there is a large separation of charge, there can be a large coupling between a phonon mode and the internal field within a particle resulting from its morphology.  The PDielec program is written in Python and post processes the output of solid state quantum mechanical (QM) and molecular mechanics (MM) based codes such as VASP, CASTEP, CRYSTAL14, Abinit, QuantumEspresso, Phonopy and GULP to predict the infrared absorption of crystalline insulator materials whose crystal size is small compared with the wavelength of the absorbing radiation.
+The package is suited for the calculation of the complex, frequency dependent permittivity and its associated absorption of infrared radiation for a finely ground crystalline material dispersed in a low loss dielectric medium such KBr or PTFE.  A particular feature of the program is its ability to take into account the constant permittivity of the supporting medium and the particle shape through an effective medium theory.
 
 == Installation
 The pdielec package is written in Python and has been tested using Python 2.7 and Python 3.6.4 on Linux and in Windows 10.
@@ -40,7 +40,7 @@ cd to a directory where PDielec will be installed and use git to clone a copy of
 
   cd ~/Software
   git clone https://github.com/JohnKendrick/PDielec.git
-  
+
 This will create a directory \~/Software/PDielec.  To make the program generally available to the user;
 
   cd ~/Software/PDielec
@@ -50,20 +50,20 @@ This copies the commands and modules to the \~/bin directory which should be inc
 
  export PATH=~/bin;$PATH
 
- 
+
 === Windows
 A Windows 10 installation which works for users without administrator rights involves a few steps but gives an installation which can run all the test cases.  In the following instructions replace 'yourusername' with your user name.
 
 ==== Install Git
-First of all install a Windows version of git from www.git-scm.com. A 64 bit version of Windows 10 will be assumed for the following instructions.  
+First of all install a Windows version of git from www.git-scm.com. A 64 bit version of Windows 10 will be assumed for the following instructions.
 
 * From the download page download and run the 64 bit Git for Windows setup.
-* During the installation install the Quick Launch and Desktop icons as these make using the program easier. 
+* During the installation install the Quick Launch and Desktop icons as these make using the program easier.
 * If you are not familar with the vi or vim editor, it is probably best to use the Nano editor, although if you wish you can install Notepad++ and use that as the default editor.
-* In the section concerning the PATH environment I would recommend the last option "Use git and optional Unix tools from the Windows Command prompt".  This option will mean that some Windows commands eg. find and sort will be replace by the Unix commands.  
-* Leave the https certificate choice as the default, namely the OpenSSL library. 
-* Line endings are best left to the default setting of Windows-style for checkout and Unix-style for check-in. 
-* The Console I use is the MinTTY console it has a larger scrolling buffer than the Windows console. 
+* In the section concerning the PATH environment I would recommend the last option "Use git and optional Unix tools from the Windows Command prompt".  This option will mean that some Windows commands eg. find and sort will be replace by the Unix commands.
+* Leave the https certificate choice as the default, namely the OpenSSL library.
+* Line endings are best left to the default setting of Windows-style for checkout and Unix-style for check-in.
+* The Console I use is the MinTTY console it has a larger scrolling buffer than the Windows console.
 * Under the "Configuring extra options" I leave everything as the default.
 I have seen a few hickups in the installation of Git.  Occasionally I have to do the installation twice and occasionally I am left with the Setup Installing window indicating that I should wait, when in fact the installation has completed.  When this happens I kill the setup process with the task manager
 
@@ -169,12 +169,12 @@ This assumes that the dynamical matrix has been calculation at the gamma point u
 .Table Command line options
 |===
 
-| Option | Default | Purpose | Repeatable? 
+| Option | Default | Purpose | Repeatable?
 
-| -program s |  | Specifies the program used in generating the output which will be analysed. Options are *castep*, *gulp*, *abinit*, *phonopy*, *vasp*, *crystal*, *experiment* or *qe*| No 
-| -method s | *maxwell* | The method is given by the string s and may be either *ap*, *maxwell*, *mie* or *bruggeman*| Yes 
+| -program s |  | Specifies the program used in generating the output which will be analysed. Options are *castep*, *gulp*, *abinit*, *phonopy*, *vasp*, *crystal*, *experiment* or *qe*| No
+| -method s | *maxwell* | The method is given by the string s and may be either *ap*, *maxwell*, *mie* or *bruggeman*| Yes
 | -sphere | | The inclusion is a sphere, the default if no other shape is given | No
-| -needle h k l | | The inclusion is a needle whose unique direction is given by [hkl] | Yes 
+| -needle h k l | | The inclusion is a needle whose unique direction is given by [hkl] | Yes
 | -plate h k l | | The inclusion is a plate whose surface is defined by (hkl) | Yes
 | -ellipse h k l z | | The inclusion is an ellipsoid whose unique direction is given by [hkl] and the eccentricity is given by z | Yes
 | -vf z | 0.1 | z specifies the volume fraction | Yes
@@ -228,8 +228,8 @@ The first parameter on the preader command is the program which has been used to
 
 preader has several options including;
  -program                           To specify the QM/MM program which generated the output files
- -eckart                            To apply eckart conditions to the hessian 
- -hessian [symm|crystal]            Use crystal to impose crystal14 style symmetrisation of the hessian 
+ -eckart                            To apply Eckart conditions to the hessian
+ -hessian [symm|crystal]            Use crystal to impose crystal14 style symmetrisation of the hessian
  -neutral                           To require that the Born charges give a neutral unit cell
  -masses  [program|isotope|average] The default is to use the average abundancies of the isotopes to give the atomic masses
  -mass H 2.014101                   Changes the mass of all hydrogens to that of deuterim.  The directive can be repeated
@@ -248,5 +248,3 @@ preader has several options including;
  preader -program qe -mass H 2.014101 `find . -name \*.dynG` > summary.csv
 
  preader -program crystal -hessian crystal `find . -name \*.out` > summary.csv
-
-
