@@ -1,0 +1,4 @@
+PYTHON_EXE = python
+PDIELEC_OPTIONS = "-processors 0"
+PDIELEC_OPTIONS = ""
+PREADER_OPTIONS = ""

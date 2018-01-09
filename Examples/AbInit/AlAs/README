@@ -1,0 +1,5 @@
+AlAs.files        Specifies the files needed for an Abinit run (including the pseudopotentials)
+AlAs.in           Input
+AlAs.out          Output
+
+This example is taken from the tests directory of the Abinit program

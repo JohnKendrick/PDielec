@@ -1,0 +1,250 @@
+:description: A description of PDielec package
+:keywords: PDielec, CASTEP, VASP, Gulp, Crystal, Abinit, QuantumEspresso, Infrared, Terahertz, spectroscopy
+= The PDielec package
+John Kendrick and Andrew Burnett
+v4.0.1, 2018-01-01
+
+Authors: John Kendrick and Andrew Burnett
+
+The Python package, PDielec calculates the infrared absorption characteristics of a crystalline material supported in a non absorbing medium by post processesing the output of solid state quantum mechanical and molecular mechanical calculations of the phonons or dielectric response of the crystalline material.
+The package calculates the internal electric field arising from different particle morphologies and calculates the resulting shift in absorption frequency and intensity arising from the coupling between a phonon and the internal field.  The theory of the approach has been published.  Any use of the package should cite;
+PDielec: The calculation of infrared and terahertz absorption for powdered crystals
+John Kendrick and Andrew D. Burnett
+Journal of Computational Chemistry 2016, vol 27, 1491-1504
+DOI: 10.1002/jcc.24344
+
+== Introduction
+The molecular and solid state quantum mechanical calculations of response properties such as the frequencies and intensities of infrared (IR) and terahertz (THz) radiation absorption has become generally available in many molecular and solid state computer programs.  A common approach is to assume the harmonic approximation and calculate the mass weighted force constant matrix (for molecules) or the dynamical matrix at the gamma point (for periodic solids).  Diagonalisation of the matrix gives the frequencies for absorption and the normal modes (molecules) or phonon displacements (periodic solids).
+The calculation of the absorption intensity for each mode requires the calculation of the change in dipole moment caused by the displacement of the atoms for that mode.  For solids where there is a large separation of charge, there can be a large coupling between a phonon mode and the internal field within a particle resulting from its morphology.  The PDielec program is written in Python and post processes the output of solid state quantum mechanical (QM) and molecular mechanics (MM) based codes such as VASP, CASTEP, CRYSTAL14, Abinit, QuantumEspresso, Phonopy and GULP to predict the infrared absorption of crystalline insulator materials whose crystal size is small compared with the wavelength of the absorbing radiation.
+The package is suited for the calculation of the complex, frequency dependent permittivity and its associated absorption of infrared radiation for a finely ground crystalline material dispersed in a low loss dielectric medium such KBr or PTFE.  A particular feature of the program is its ability to take into account the constant permittivity of the supporting medium and the particle shape through an effective medium theory.
+
+== Installation
+The pdielec package is written in Python and has been tested using Python 2.7 and Python 3.6.4 on Linux and in Windows 10.
+The package is available on GitHub and can be downloaded from https://github.com/JohnKendrick/PDielec
+An auxilliary program, preader, is also distributed.  This command summarises the output from the solid state packages as a csv file which can be simply read as a spread sheet.
+
+ git clone https://github.com/JohnKendrick/PDielec.git
+
+=== Linux
+Both Python 2.7 and Python 3 or supported.  Install Python using the package manager for your version of Linux or get your IT manager to do it for you..  In addition install python versions of yaml, numpy, scipy, pymiescatt, pyyaml, xlsxwriter, termcolor and matplotlib.  They can be installed using the pip program in Python.  If the user does not have administrator rights on the machine then the use of pip install --user will install the python modules in a user's directory.  If the user does have administrator rights and wants to install the packages for all users then the '--user' option can be omitted.
+
+ pip install --user numpy
+ pip install --user scipy
+ pip install --user matplotlib
+ pip install --user PyYaml
+ pip install --user PyMieScatt
+ pip install --user XlsxWriter
+ pip install --user termcolor
+
+cd to a directory where PDielec will be installed and use git to clone a copy of the program.  I use a 'Software/' directory in my home directory to store programs, so for me the commands to obtain PDielec would look like this.
+
+  cd ~/Software
+  git clone https://github.com/JohnKendrick/PDielec.git
+
+This will create a directory \~/Software/PDielec.  To make the program generally available to the user;
+
+  cd ~/Software/PDielec
+  make install
+
+This copies the commands and modules to the \~/bin directory which should be included in your PATH environment variable.
+
+ export PATH=~/bin;$PATH
+
+
+=== Windows
+A Windows 10 installation which works for users without administrator rights involves a few steps but gives an installation which can run all the test cases.  In the following instructions replace 'yourusername' with your user name.
+
+==== Install Git
+First of all install a Windows version of git from www.git-scm.com. A 64 bit version of Windows 10 will be assumed for the following instructions.
+
+* From the download page download and run the 64 bit Git for Windows setup.
+* During the installation install the Quick Launch and Desktop icons as these make using the program easier.
+* If you are not familar with the vi or vim editor, it is probably best to use the Nano editor, although if you wish you can install Notepad++ and use that as the default editor.
+* In the section concerning the PATH environment I would recommend the last option "Use git and optional Unix tools from the Windows Command prompt".  This option will mean that some Windows commands eg. find and sort will be replace by the Unix commands.
+* Leave the https certificate choice as the default, namely the OpenSSL library.
+* Line endings are best left to the default setting of Windows-style for checkout and Unix-style for check-in.
+* The Console I use is the MinTTY console it has a larger scrolling buffer than the Windows console.
+* Under the "Configuring extra options" I leave everything as the default.
+I have seen a few hickups in the installation of Git.  Occasionally I have to do the installation twice and occasionally I am left with the Setup Installing window indicating that I should wait, when in fact the installation has completed.  When this happens I kill the setup process with the task manager
+
+==== Install make
+Once you have Git installed open the "Git bash" shell and create the following directories in your home directory;
+
+  mkdir bin
+  mkdir Software
+
+From the web url http://www.equation.com/servlet/equation.cmd?fa=make download the 64-bit version of make.exe and copy it into your bin/ directory.  You should find this directory in c:\users\yourusername\bin in the file manager.
+
+==== Install Python
+
+* From https://www.python.org/downloads/windows/ download and run the Windows x86-64 executable installer for the latest Python 3.6 version
+* Uncheck install launcher for all users
+* Check "Add Python 3.6 to PATH"
+* Click on "Install now" button
+* Check installation ran OK by running the Idle python environment
+
+==== Install additional Python modules for PDielec
+Open a Git Bash Console and type;
+
+ pip install numpy
+ pip install scipy
+ pip install matplotlib
+ pip install PyYaml
+ pip install PyMieScatt
+ pip install XlsxWriter
+ pip install termcolor
+
+==== Install PDielec
+Open a Git Bash Console and type;
+
+  cd Software
+  git clone https://github.com/JohnKendrick/PDielec.git
+
+This should create a directory in Software called PDielec
+
+==== Testing PDielec
+Open a Git Bash Console and type;
+
+  cd Software/PDielec
+  make test_preader
+  make test_pdielec
+
+==== Installing PDielec to run in any Git Bash Console
+Open a Git Bash Console and type;
+
+  cd Software/PDielec
+  export SCRIPTS=~/bin
+  make install
+
+==== Updating PDielec from the Git repository
+Open a Git Bash Console and type;
+
+  cd Software/PDielec
+  git pull
+
+=== PDielec Directory structure
+
+* PDielec/ is the home directory and contains the `pdielec` and `preader` commands
+* PDielec/Python holds the source for the modules used by the pdielec and preader commands
+* PDielec/Examples a set of examples are available for Abinit, Crystal14, CASTEP, GULP, Phonopy, Mie and VASP.  Each example directory holds the input files to the QM/MM program and the relevant output files which are post processed by PDielec.  For each program there is also a preader directory which holds test output for the preader command.
+
+=== Examples
+Each example directory has the relevant input data sets use to run the QM/MM program and the output files from that run which are post-processed by PDielec.  There is a file `command.sh` which contains a typical example of a PDielec command line and which has been used to create the reference output files `command.ref.out` and `csvfile.ref.csv`.  The example can be run
+
+ bash command.sh
+
+The output can be compared with the reference data to see if the program is working correctly.
+
+The main Examples/ directory also has a  Makefile file which can be used to verify the correct working of the package.  Simply by typing `make` in the Examples directory each example will be run automatically and the output compared with the reference files.  To remove the intermediate files after running the tests automatically, type `make clean`.
+
+=== Examples of pdielec usage
+
+ pdielec -program vasp -method ap -method maxwell -sphere -plate 0 0 1 -needle 0 0 1 OUTCAR
+
+Performs a calculation using the Averaged-Permittivity and Maxwell-Garnett mixing rules for spherical particles,  plate-like particles with a surface (001) and needle-like particles with a unique direction lying along the [001] direction.  The supporting matrix is taken to be PTFE and the default volume fraction (10%) is used.  The results of a VASP calculation are stored in the OUTCAR file in the current directory. The PDielec will use its own internal table of isotopic masses and abundances.  This is recommended for calculations using VASP as the QM program.
+There is no absorption output from this command as neither the -plot nor the -csv options were specified.
+
+ pdielec  -program castep -vmin 300 -vmax 800 -sphere -dielectric 3 -vf 0.1 -vf 0.2 -sigma 10 -csv mgo.csv phonon
+
+Performs a calculation for spherical particles varying the frequency from 300 to 800 cm 1,  the permittivity of the supporting media is 3, two volume fractions are considered and a damping factor of 10 cm-1 is used.  The results of a CASTEP calculation with the seed-name “phonon” are analysed and the results stored in mgo.csv for further analysis using a spreadsheet.  In this example a Maxwell-Garnett mixing rule is used by default.
+If visual inspection of the results is required then the following
+will perform the same calculation but a graph shown the molar absorption coefficients will be displayed.
+
+ pdielec  -program castep -vmin 300 -vmax 800 -sphere -kbr 3 -vf 0.1 -vf 0.2 -sigma 10 -csv mgo.csv -plot molar_absorption phonon
+
+The followng command performs a calculation of the absorption spectrum resulting from a GULP calculation.  The supporting matrix density and permittivity are those of high density polyethylene, the frequency range is 0 to 2000 cm-1, the volume fraction considered is 10%, the mixing rules used are Averaged-Permittivity and Maxwell-Garnett.  Spheres and plates with the (1 ̅1 ̅2 ̅) surface are considered.
+
+ pdielec -program gulp -matrix hdpe -method ap -method maxwell -sphere -plate -1 -1 -2 -vmax 2000 -vf 0.1 calcite.gout  -csv calcite.csv
+
+The Phonopy program may also be used to generate the dynamical matrix at the gamma point.  Phonopy drives a number of programs to calculate the dynamical matrix numerically.  The pdielec interface has so far only be tested for Phonopy/VASP and requires the output of a calculation of the Born charges using VASP.
+An example of its use is;
+
+ pdielec -program phonopy vasp OUTCAR -matrix hdpe -method ap -method maxwell -sphere -plate -1 -1 -2 -vmax 2000 -vf 0.1 -csv calcite.csv
+
+This assumes that the dynamical matrix has been calculation at the gamma point using phonopy and is stored in the files qpoints.yaml in the current directory.  There should also be a phonopy.yaml file present in the same directory.  By default the PHONOPY interface will use the atomic weights in the OUTCAR file.  It is recommended that PDielec replace these with its own internal atomic weights.  The use of 'isotope' should give results consistent with PHONOPY's own results.
+
+
+=== Command line options
+
+.Table Command line options
+|===
+
+| Option | Default | Purpose | Repeatable?
+
+| -program s |  | Specifies the program used in generating the output which will be analysed. Options are *castep*, *gulp*, *abinit*, *phonopy*, *vasp*, *crystal*, *experiment* or *qe*| No
+| -method s | *maxwell* | The method is given by the string s and may be either *ap*, *maxwell*, *mie* or *bruggeman*| Yes
+| -sphere | | The inclusion is a sphere, the default if no other shape is given | No
+| -needle h k l | | The inclusion is a needle whose unique direction is given by [hkl] | Yes
+| -plate h k l | | The inclusion is a plate whose surface is defined by (hkl) | Yes
+| -ellipse h k l z | | The inclusion is an ellipsoid whose unique direction is given by [hkl] and the eccentricity is given by z | Yes
+| -vf z | 0.1 | z specifies the volume fraction | Yes
+| -mf z | 0.0 | z specifies the mass fraction | Yes
+| -size z1 [z2] | 0.0 | z1 specifies the radius in microns of a sphere for the *bruggeman*, *maxwell* and *mie* methods.  If z2 is specified a log-normal distribution for the *mie* method is used | Yes
+| -matrix s | *ptfe* | The supporting matrix is defined by the string s.  Options are *ptfe*, *kbr*, *nujol*, *air*, *vacuum*, *ldpe*, *mdpe*, *hdpe* | Yes
+| -density z | 2.2 | z defines the density of the supporting matrix | No
+| -dielectric z | 2.0 | z defines the dielectric of the supporting matrix | No
+| -sigma z | 5.0 | z specifies the damping factor (or width) of the Lorentzian in cm-1 | No
+| -mode_sigma k z | | The kth mode is assigned a width of z cm-1 | Yes
+| -LO h k l  | | The longitudinal optic frequencies are calculated for (hkl) | Yes
+| -LO_cart x y z  | | The longitudinal optic frequencies are calculated for the cartesian direction x, y, z  | Yes
+| -vmin z | 0.0 | The starting wavenumber for the frequency range | No
+| -vm z | 300.0 | The final wavenumber for the frequency range | No
+| -i z | 0.2 | The increment wavenumber used to cover the frequency range | No
+| -plot s | | A plot is requested the string s can be *absorption*, *molar_absorption*, *real*, or *imaginary* | Yes
+| -excel s | | Output is sent to an excel .xlsx file specified by the string s | No
+| -csv s | | Output is sent to a comma delimited file specified by the string s | No
+| -csv_ext s | | Output is sent to 3 comma delimited files specified by the string s_frequencies.csv s_spectrum.csv and s_command.csv | No
+| -print | | Additional output is printed regarding the QM/MM program | No
+| -ignore k | | Ignore the k'th mode.  Any mode less than 5 cm-1 is ignored automatically | Yes
+| -mode k | | Only using the kth mode in the calculation | Yes
+| -optical z1 z2 z3 | | z1, z2 and z3 are the diagonal elements of the optical permittivity tensor | No
+| -optical_tensor z1 z2 ..z9 | | z1, z2 .. Z9 define the full optical permittivity tensor | No
+| -eckart | | The translational modes will be projected from the hessian | No
+| -neutral | | The Born charge matrices will be modified to make the system overall charge neutral | No
+| -hessian s | | If the string "s" is "crystal" symmetrisation of the hessian will be performed using the Crystal14 convention.  Otherwise if the string is "symm" the default method will be used| No
+| -threshold z1 z2 | | The modes which are included in the absorption calculation are chosen to have intensities above z1 and have frequencies greater than z2| No
+| -masses s | | By default the program uses the average atomic mass.  s can be *program* , *isotope*, or *average* indicating that the masses are taken from the QM/MM program, the most abundant isotope or the average mass according the natural abundance| No
+| -mass s z | | The mass of element s is set to the value z.  This is done after the mass definition given by -masses is applied. | Yes
+| -processors z | | The number of processors used in the calculation can be set here.  If it is not set then the maximum number of cpus in the machine are utilised. | No
+|===
+
+The supporting matrix is often selected from a small range of materials which have little or no absorption in the frequency range of interest.  The properties of the materials known to the program are summarised in the table below.
+
+.Table Physical properties of matrix materials
+|===
+| Name    | Density | Permittivity | Description
+| ptfe    | 2.2     | 2.0          | Polytetrafluoroethylene
+| air     | 0.0     | 1.0          | Air
+| vacuum  | 0.0     | 1.0          | Vacuum
+| kbr     | 2.75    | 2.25         | Potassium bromide
+| nujol   | 0.838   | 2.155        | Nujol
+| hdpe    | 0.955   | 2.25         | High density polyethylene
+| mdpe    | 0.933   | 2.25         | Medium density polyethylene
+| ldpe    | 0.925   | 2.25         | Low density polyethylene
+|===
+
+== Examples of preader usage
+The first parameter on the preader command is the program which has been used to generate the output and maybe one of vasp, abinit, crystal, gulp, castep or qe.  The rest of the parameters are file names which will be processed to find relevant information.  For some programs more than one file has to be read.  For example in the case of Quantum Espresso the dynamical matrix file has to read, and in addition the log or output file needs processing for information such as the number of electrons.  This means that it is best to use the same root for the dynamical matrix file name as is used for the output log file.  For Phonopy it is necessary to read both the VASP OUTCAR file and the qpoints.yaml and phonopy.yaml files, so these all need to be in the same directory
+
+preader has several options including;
+ -program                           To specify the QM/MM program which generated the output files
+ -eckart                            To apply Eckart conditions to the hessian
+ -hessian [symm|crystal]            Use crystal to impose crystal14 style symmetrisation of the hessian
+ -neutral                           To require that the Born charges give a neutral unit cell
+ -masses  [program|isotope|average] The default is to use the average abundancies of the isotopes to give the atomic masses
+ -mass H 2.014101                   Changes the mass of all hydrogens to that of deuterim.  The directive can be repeated
+ -nocalculation                     No calculations are performed only the output of the files is given
+
+ preader -program vasp -eckart */*/OUTCAR > summary.csv
+
+ preader -program phonopy vasp -eckart */*/OUTCAR > summary.csv
+
+ preader -program vasp `find . -name OUTCAR` > summary.csv
+
+ preader -program castep `find . -name \*.castep` > summary.csv
+
+ preader -program abinit `find . -name \*.out` > summary.csv
+
+ preader -program qe -mass H 2.014101 `find . -name \*.dynG` > summary.csv
+
+ preader -program crystal -hessian crystal `find . -name \*.out` > summary.csv

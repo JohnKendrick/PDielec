@@ -1,0 +1,205 @@
+The following methods will be used: maxwell
+Creating a csv file: command1.csv
+No plotting has been requested
+The frequency increment is 0.20 cm-1
+The default width factor (-sigma) has been set to 5.000000 cm-1
+The permittivity of the medium (-dielectric) has been set to 2.0000
+The density of the medium (-density) has been set to 2.2000 g/cc
+Vmin is:   300.0 cm-1
+Vmax is:   800.0 cm-1
+All phonon modes will be considered
+The number of processors (4) has been determined automatically
+
+Program used to perform the phonon calculation was: crystal
+The file containing the output is: ZnO_CPHF.out
+No projection of the dynamical matrix will be performed
+The charge neutrality of the Born atomic charges will not be enforced
+ 
+Shape depolarisation matrix: sphere   
+            0.333333       0.000000       0.000000
+            0.000000       0.333333       0.000000
+            0.000000       0.000000       0.333333
+ 
+Shape depolarisation matrix: needle [0,0,1] xyz=[0.000000,0.000000,1.000000]
+            0.500000       0.000000       0.000000
+            0.000000       0.500000       0.000000
+            0.000000       0.000000       0.000000
+ 
+Shape depolarisation matrix: plate (1,0,0) xyz=[1.000000,0.000000,0.000000]
+            1.000000       0.000000       0.000000
+            0.000000       0.000000       0.000000
+            0.000000       0.000000       0.000000
+ 
+Atomic masses will be defined using:  program
+ 
+Masses by atom types
+  63.929100  15.994900
+ 
+Atomic mass list
+  63.929100  63.929100  15.994900  15.994900
+
+Volume of unit cell is    49.16470602 Angstrom^3
+Total unit cell mass is:   159.84800000 g/mol
+Crystal density is:   5.39887 g/cc
+
+
+Concentration for unit volume fraction   33.7750 moles/Litre
+Calculated Integrated IR band intensities (espilon_max assumes a fwhm line width)
+Only IR active modes are shown
+
+Mode Frequency Intensity         Integrated Molar Absorption Epsilon_max   FWHM  
+     cm-1      Debye2/Angs2/amu   Coefficient L/mole/cm/cm    L/mole/cm    cm-1  
+---- --------- ----------------  --------------------------- -----------   ----  
+   6   373.28         16.258071                68700.105030   8747.1690      5.0
+   7   398.07         15.468640                65364.283764   8322.4391      5.0
+   8   398.07         15.468640                65364.283764   8322.4391      5.0
+ 
+ 
+Permittivity contribution from ionic displacements
+            4.234838      -0.000000       0.000000
+           -0.000000       4.234838      -0.000000
+            0.000000      -0.000000       5.061893
+ 
+Optical permittivity at zero frequency
+            4.460000      -0.000000       0.000000
+           -0.000000       4.459900      -0.000000
+            0.000000      -0.000000       4.430300
+ 
+Total permittivity
+            8.694838      -0.000000       0.000000
+           -0.000000       8.694738      -0.000000
+            0.000000      -0.000000       9.492193
+The following methods will be used: maxwell
+Creating a csv file: command2.csv
+No plotting has been requested
+The frequency increment is 0.20 cm-1
+The default width factor (-sigma) has been set to 5.000000 cm-1
+The permittivity of the medium (-dielectric) has been set to 2.0000
+The density of the medium (-density) has been set to 2.2000 g/cc
+Vmin is:   300.0 cm-1
+Vmax is:   800.0 cm-1
+All phonon modes will be considered
+The number of processors (4) has been determined automatically
+
+Program used to perform the phonon calculation was: crystal
+The file containing the output is: ZnO_CPHF.out
+No projection of the dynamical matrix will be performed
+The charge neutrality of the Born atomic charges will not be enforced
+
+Summary of information contained in the QM/MM Reader
+
+Number of atoms:     4
+
+Number of species:     2
+ 
+Species:
+ Zn        O        
+ 
+Number of atoms for each species:
+         2         2
+ 
+Mass of each species:
+  63.929100  15.994900
+ 
+Atom type list:
+         0         0         1         1
+
+Number of kpoints:    50
+
+Kpoint grid      :     8     8     8
+
+Energy cutoff (eV): 0.000000
+
+ 
+Frequencies (cm-1):
+    -15.01     -0.34     -0.34     86.29     86.29    255.95    373.58    398.07
+    398.07    422.02    422.02    517.43
+ 
+Masses (amu):
+  63.929100  63.929100  15.994900  15.994900
+ 
+Born Charges for Atom 0
+            2.071004       0.000000       0.000000
+            0.000000       2.071004       0.000000
+           -0.000000      -0.000000       2.123207
+ 
+Born Charges for Atom 1
+            2.071004       0.000000       0.000000
+            0.000000       2.071004       0.000000
+           -0.000000      -0.000000       2.123207
+ 
+Born Charges for Atom 2
+           -2.071007       0.000000       0.000000
+            0.000000      -2.071007       0.000000
+           -0.000000       0.000000      -2.123213
+ 
+Born Charges for Atom 3
+           -2.071007       0.000000       0.000000
+            0.000000      -2.071007       0.000000
+           -0.000000       0.000000      -2.123213
+ 
+Epsilon inf: 
+            4.460000      -0.000000       0.000000
+           -0.000000       4.459900      -0.000000
+            0.000000      -0.000000       4.430300
+ 
+Unit cell: 
+            2.843449      -1.641666       0.000000
+            0.000000       3.283332       0.000000
+            0.000000       0.000000       5.266149
+ 
+Volume of cell: 49.164706
+Total mass is: 159.848000 g/mol
+Density is: 5.398869 g/cc
+ 
+ 
+Shape depolarisation matrix: sphere   
+            0.333333       0.000000       0.000000
+            0.000000       0.333333       0.000000
+            0.000000       0.000000       0.333333
+ 
+Atomic masses will be defined using:  average
+ 
+Old masses by atom types
+  63.929100  15.994900
+ 
+Old atomic mass list
+  63.929100  63.929100  15.994900  15.994900
+ 
+New masses by atom types
+  65.380000  15.999400
+ 
+New atomic mass list
+  65.380000  65.380000  15.999400  15.999400
+
+Volume of unit cell is    49.16470602 Angstrom^3
+Total unit cell mass is:   162.75880000 g/mol
+Crystal density is:   5.49718 g/cc
+
+
+Concentration for unit volume fraction   33.7750 moles/Litre
+Calculated Integrated IR band intensities (espilon_max assumes a fwhm line width)
+Only IR active modes are shown
+
+Mode Frequency Intensity         Integrated Molar Absorption Epsilon_max   FWHM  
+     cm-1      Debye2/Angs2/amu   Coefficient L/mole/cm/cm    L/mole/cm    cm-1  
+---- --------- ----------------  --------------------------- -----------   ----  
+   6   372.69         16.182039                68378.822582   8706.2621      5.0
+   7   397.14         15.396461                65059.285688   8283.6055      5.0
+   8   397.14         15.396461                65059.285688   8283.6055      5.0
+ 
+ 
+Permittivity contribution from ionic displacements
+            4.234835      -0.000000       0.000000
+           -0.000000       4.234835       0.000000
+            0.000000       0.000000       5.054209
+ 
+Optical permittivity at zero frequency
+            4.460000      -0.000000       0.000000
+           -0.000000       4.459900      -0.000000
+            0.000000      -0.000000       4.430300
+ 
+Total permittivity
+            8.694835      -0.000000       0.000000
+           -0.000000       8.694735       0.000000
+            0.000000       0.000000       9.484509

@@ -1,0 +1,331 @@
+The following methods will be used: maxwell bruggeman ap
+Creating a csv file: command1.csv
+No plotting has been requested
+The frequency increment is 0.20 cm-1
+The default width factor (-sigma) has been set to 5.000000 cm-1
+The permittivity of the medium (-dielectric) has been set to 2.0000
+The density of the medium (-density) has been set to 2.2000 g/cc
+Vmin is:     0.0 cm-1
+Vmax is:   300.0 cm-1
+All phonon modes will be considered
+The number of processors (4) has been determined automatically
+
+Program used to perform the phonon calculation was: vasp
+The file containing the output is: OUTCAR
+No projection of the dynamical matrix will be performed
+The charge neutrality of the Born atomic charges will be enforced
+ 
+Shape depolarisation matrix: needle [0,0,1] xyz=[-0.230678,-0.237479,0.943606]
+            0.473394      -0.027391       0.108835
+           -0.027391       0.471802       0.112043
+            0.108835       0.112043       0.054804
+ 
+Shape depolarisation matrix: ellipsoid [0,0,1] 0.5xyz=[-0.230678,-0.237479,0.943606]
+            0.251874       0.015930      -0.063298
+            0.015930       0.252800      -0.065164
+           -0.063298      -0.065164       0.495326
+ 
+Shape depolarisation matrix: plate (1,0,0) xyz=[0.956157,0.124489,0.265077]
+            0.914237       0.119031       0.253455
+            0.119031       0.015497       0.032999
+            0.253455       0.032999       0.070266
+ 
+Atomic masses will be defined using:  program
+ 
+Masses by atom types
+  22.990000  32.066000  16.000000
+ 
+Atomic mass list
+  22.990000  22.990000  32.066000  32.066000  16.000000  16.000000  16.000000  16.000000
+  16.000000  16.000000  16.000000  16.000000
+
+Volume of unit cell is   151.88000000 Angstrom^3
+Total unit cell mass is:   238.11200000 g/mol
+Crystal density is:   2.60333 g/cc
+
+
+Concentration for unit volume fraction   10.9332 moles/Litre
+ 
+ 
+Transverse frequencies (cm-1)
+    -12.06     -0.94     -0.68     91.20    107.89    113.15    120.54    124.53
+    134.04    141.99    180.96    181.81    208.12    208.67    230.01    235.38
+    260.63    340.12    379.28    402.59    445.19    528.11    530.21    532.37
+    547.32    565.00    617.17    663.91    725.56    818.40   1000.88   1028.50
+   1188.93   1195.88   1205.48   1223.88
+ 
+ 
+Longitudinal frequencies (cm-1) q->0 q(cart)=[ 0.5164, 0.5138, 0.6851] (1,1,1)
+    -12.04     -0.93     -0.16     91.49    107.89    113.15    122.09    124.53
+    134.91    141.99    180.96    184.40    208.12    230.01    233.33    246.57
+    260.63    340.12    379.52    402.59    445.19    530.21    532.32    545.38
+    547.32    566.62    617.17    694.23    725.56    818.40   1006.11   1028.50
+   1195.88   1197.70   1223.88   1251.55
+ 
+Calculated Integrated IR band intensities (espilon_max assumes a fwhm line width)
+Only IR active modes are shown
+
+Mode Frequency Intensity         Integrated Molar Absorption Epsilon_max   FWHM  
+     cm-1      Debye2/Angs2/amu   Coefficient L/mole/cm/cm    L/mole/cm    cm-1  
+---- --------- ----------------  --------------------------- -----------   ----  
+   3    91.20          0.412419                 1742.719237    221.8899      5.0
+   4   107.89          0.000000                    0.000600      0.0001      5.0
+   5   113.15          0.000000                    0.000485      0.0001      5.0
+   6   120.54          1.509238                 6377.437976    812.0006      5.0
+   7   124.53          0.000000                    0.000330      0.0000      5.0
+   8   134.04          2.960977                12511.903171   1593.0650      5.0
+   9   141.99          0.000000                    0.000082      0.0000      5.0
+  10   180.96          0.000000                    0.000183      0.0000      5.0
+  11   181.81          0.525701                 2221.403733    282.8379      5.0
+  12   208.12          0.000000                    0.000233      0.0000      5.0
+  13   208.67          3.272104                13826.604643   1760.4580      5.0
+  14   230.01          0.000000                    0.000460      0.0001      5.0
+  15   235.38          3.636075                15364.598613   1956.2815      5.0
+  16   260.63          0.000000                    0.000024      0.0000      5.0
+  17   340.12          0.000000                    0.000041      0.0000      5.0
+  18   379.28          0.100402                  424.256836     54.0181      5.0
+  19   402.59          0.000000                    0.000049      0.0000      5.0
+  20   445.19          0.244879                 1034.761009    131.7499      5.0
+  21   528.11          6.061126                25611.894370   3261.0077      5.0
+  22   530.21          0.000000                    0.000095      0.0000      5.0
+  23   532.37          3.271461                13823.883944   1760.1116      5.0
+  24   547.32          0.000000                    0.000535      0.0001      5.0
+  25   565.00          1.886858                 7973.106226   1015.1674      5.0
+  26   617.17          0.000000                    0.000018      0.0000      5.0
+  27   663.91         20.514380                86685.563611  11037.1488      5.0
+  28   725.56          0.000000                    0.000721      0.0001      5.0
+  29   818.40          0.000000                    0.000092      0.0000      5.0
+  30  1000.88          8.075118                34122.220208   4344.5760      5.0
+  31  1028.50          0.000000                    0.000133      0.0000      5.0
+  32  1188.93         27.015566               114156.976658  14534.9177      5.0
+  33  1195.88          0.000000                    0.001216      0.0002      5.0
+  34  1205.48         23.204143                98051.425969  12484.2953      5.0
+  35  1223.88          0.000000                    0.001510      0.0002      5.0
+ 
+ 
+Permittivity contribution from ionic displacements
+            3.523120      -0.904618      -0.590289
+           -0.904618       2.716330       0.441234
+           -0.590289       0.441234       2.266643
+ 
+Optical permittivity at zero frequency
+            2.441544      -0.046150      -0.239448
+           -0.046144       2.289331       0.087335
+           -0.239449       0.087347       2.573720
+ 
+Total permittivity
+            5.964664      -0.950768      -0.829737
+           -0.950762       5.005661       0.528569
+           -0.829738       0.528581       4.840363
+No shapes were specified, using a sphere
+The following methods will be used: maxwell
+Creating a csv file: command2.csv
+No plotting has been requested
+The frequency increment is 0.20 cm-1
+The default width factor (-sigma) has been set to 5.000000 cm-1
+The permittivity of the medium (-dielectric) has been set to 2.0000
+The density of the medium (-density) has been set to 2.2000 g/cc
+Vmin is:     0.0 cm-1
+Vmax is:   300.0 cm-1
+All phonon modes will be considered
+The number of processors (4) has been determined automatically
+
+Program used to perform the phonon calculation was: vasp
+The file containing the output is: OUTCAR
+The translational modes will be projected from the Dynamical matrix where possible
+The charge neutrality of the Born atomic charges will not be enforced
+
+Summary of information contained in the QM/MM Reader
+
+Number of atoms:    12
+
+Number of species:     3
+ 
+Species:
+ Na        S         O        
+ 
+Number of atoms for each species:
+         2         2         8
+ 
+Mass of each species:
+  22.990000  32.066000  16.000000
+ 
+Atom type list:
+         0         0         1         1         2         2         2         2
+         2         2         2         2
+
+Number of kpoints:   106
+
+Kpoint grid      :     1     1     1
+
+Energy cutoff (eV): 600.000000
+
+ 
+Frequencies (cm-1):
+   1223.88   1205.48   1195.88   1188.93   1028.50   1000.88    818.40    725.56
+    663.91    617.17    565.00    547.32    532.37    530.21    528.11    445.19
+    402.59    379.28    340.12    260.63    235.38    230.01    208.67    208.12
+    181.81    180.96    141.99    134.04    124.53    120.54    113.15    107.89
+     91.20     -0.68     -0.94    -12.06
+ 
+Masses (amu):
+  22.990000  22.990000  32.066000  32.066000  16.000000  16.000000  16.000000  16.000000
+  16.000000  16.000000  16.000000  16.000000
+ 
+Born Charges for Atom 0
+            1.231320       0.042280       0.007810
+            0.031210       1.188590      -0.039670
+           -0.015170      -0.048860       1.192180
+ 
+Born Charges for Atom 1
+            1.231330       0.042310       0.007830
+            0.031220       1.188590      -0.039670
+           -0.015160      -0.048920       1.192170
+ 
+Born Charges for Atom 2
+            2.921000      -0.490450      -0.072390
+            0.083770       3.210950       0.075990
+            0.133360       0.733530       3.278790
+ 
+Born Charges for Atom 3
+            2.920950      -0.490460      -0.072400
+            0.083580       3.211000       0.075820
+            0.133270       0.733440       3.278770
+ 
+Born Charges for Atom 4
+           -0.492370       0.387450       0.217520
+            0.192790      -0.862860      -0.335130
+            0.156050      -0.595240      -0.749520
+ 
+Born Charges for Atom 5
+           -0.492620       0.387560       0.217800
+            0.192830      -0.863030      -0.335180
+            0.156360      -0.595180      -0.749840
+ 
+Born Charges for Atom 6
+           -1.240350      -0.247390       0.447560
+           -0.259150      -1.177720       0.173370
+            0.421020       0.134310      -1.295640
+ 
+Born Charges for Atom 7
+           -1.239750      -0.246970       0.447610
+           -0.259310      -1.177810       0.173290
+            0.420790       0.134000      -1.295740
+ 
+Born Charges for Atom 8
+           -1.329900      -0.140340      -0.252190
+           -0.337650      -1.053360      -0.248020
+           -0.517690      -0.385950      -1.258690
+ 
+Born Charges for Atom 9
+           -1.329490      -0.140210      -0.252200
+           -0.337460      -1.053290      -0.247790
+           -0.517600      -0.385880      -1.258370
+ 
+Born Charges for Atom 10
+           -1.086340       0.449800      -0.353110
+            0.291470      -1.296900       0.370860
+           -0.181660       0.160270      -1.160160
+ 
+Born Charges for Atom 11
+           -1.086260       0.450110      -0.353250
+            0.291720      -1.297380       0.371200
+           -0.181540       0.159950      -1.160020
+ 
+Epsilon inf: 
+            2.441544      -0.046150      -0.239448
+           -0.046144       2.289331       0.087335
+           -0.239449       0.087347       2.573720
+ 
+Unit cell: 
+            4.780000       0.000000       0.000000
+           -0.719772       5.528341       0.000000
+           -1.405061      -1.446482       5.747502
+ 
+Volume of cell: 151.880000
+Total mass is: 238.112000 g/mol
+Density is: 2.603333 g/cc
+ 
+ 
+Shape depolarisation matrix: sphere   
+            0.333333       0.000000       0.000000
+            0.000000       0.333333       0.000000
+            0.000000       0.000000       0.333333
+ 
+Atomic masses will be defined using:  average
+ 
+Old masses by atom types
+  22.990000  32.066000  16.000000
+ 
+Old atomic mass list
+  22.990000  22.990000  32.066000  32.066000  16.000000  16.000000  16.000000  16.000000
+  16.000000  16.000000  16.000000  16.000000
+ 
+New masses by atom types
+  22.989769  32.065000  15.999400
+ 
+New atomic mass list
+  22.989769  22.989769  32.065000  32.065000  15.999400  15.999400  15.999400  15.999400
+  15.999400  15.999400  15.999400  15.999400
+
+Volume of unit cell is   151.88000000 Angstrom^3
+Total unit cell mass is:   238.10473856 g/mol
+Crystal density is:   2.60325 g/cc
+
+
+Concentration for unit volume fraction   10.9332 moles/Litre
+Calculated Integrated IR band intensities (espilon_max assumes a fwhm line width)
+Only IR active modes are shown
+
+Mode Frequency Intensity         Integrated Molar Absorption Epsilon_max   FWHM  
+     cm-1      Debye2/Angs2/amu   Coefficient L/mole/cm/cm    L/mole/cm    cm-1  
+---- --------- ----------------  --------------------------- -----------   ----  
+   3    90.89          0.417860                 1765.708711    224.8170      5.0
+   4   107.89          0.000000                    0.000600      0.0001      5.0
+   5   113.15          0.000000                    0.000485      0.0001      5.0
+   6   120.53          1.510455                 6382.576598    812.6549      5.0
+   7   124.54          0.000000                    0.000330      0.0000      5.0
+   8   134.04          2.960000                12507.778087   1592.5398      5.0
+   9   141.99          0.000000                    0.000082      0.0000      5.0
+  10   180.97          0.000000                    0.000183      0.0000      5.0
+  11   181.77          0.521757                 2204.737223    280.7159      5.0
+  12   208.12          0.000000                    0.000233      0.0000      5.0
+  13   208.64          3.270103                13818.147087   1759.3811      5.0
+  14   230.01          0.000000                    0.000460      0.0001      5.0
+  15   235.31          3.636546                15366.589253   1956.5349      5.0
+  16   260.64          0.000000                    0.000024      0.0000      5.0
+  17   340.12          0.000000                    0.000041      0.0000      5.0
+  18   379.29          0.100643                  425.276879     54.1479      5.0
+  19   402.60          0.000000                    0.000049      0.0000      5.0
+  20   445.19          0.244799                 1034.420888    131.7066      5.0
+  21   528.11          6.050895                25568.659939   3255.5029      5.0
+  22   530.22          0.000000                    0.000095      0.0000      5.0
+  23   532.38          3.273945                13834.380604   1761.4480      5.0
+  24   547.33          0.000000                    0.000535      0.0001      5.0
+  25   565.01          1.885826                 7968.746520   1014.6123      5.0
+  26   617.18          0.000000                    0.000018      0.0000      5.0
+  27   663.92         20.506279                86651.331806  11032.7902      5.0
+  28   725.57          0.000000                    0.000721      0.0001      5.0
+  29   818.42          0.000000                    0.000092      0.0000      5.0
+  30  1000.90          8.073603                34115.815878   4343.7606      5.0
+  31  1028.51          0.000000                    0.000133      0.0000      5.0
+  32  1188.95         27.001532               114097.674098  14527.3671      5.0
+  33  1195.90          0.000000                    0.001216      0.0002      5.0
+  34  1205.50         23.188428                97985.021173  12475.8404      5.0
+  35  1223.90          0.000000                    0.001510      0.0002      5.0
+ 
+ 
+Permittivity contribution from ionic displacements
+            3.522803      -0.908037      -0.589428
+           -0.908037       2.722986       0.432322
+           -0.589428       0.432322       2.272757
+ 
+Optical permittivity at zero frequency
+            2.441544      -0.046150      -0.239448
+           -0.046144       2.289331       0.087335
+           -0.239449       0.087347       2.573720
+ 
+Total permittivity
+            5.964347      -0.954187      -0.828876
+           -0.954181       5.012317       0.519657
+           -0.828877       0.519669       4.846477

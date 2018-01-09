@@ -1,0 +1,89 @@
+  ndtset  3
+AUTOPARAL 1
+
+#Ground state calculation
+  kptopt1   1             # Automatic generation of k points, taking
+  ngkpt1     7 6 5
+                          # into account the symmetry
+  tolvrs1   1.0d-14       # SCF stopping criterion
+    iscf1   5             # Self-consistent calculation, using algorithm 5
+
+#Response Function calculation : d/dk
+  rfelfd2   2             # Activate the calculation of the d/dk perturbation
+   rfdir2   1 1 1         # Need to consider the perturbation in the x-direction only
+                          # This is rather specific, due to the high symmetry of the AlAs crystal
+                          # In general, just use rfdir 1 1 1
+                          # In the present version of ABINIT (v4.6), symmetry cannot be used
+                          # to reduce the number of ddk perturbations
+npfft 1
+    nqpt2   1
+     qpt2   0.0 0.0 0.0   # This is a calculation at the Gamma point
+
+  getwfk2   1           # Uses as input the output wf of the previous dataset
+
+  kptopt2   1             # Automatic generation of k points,
+  ngkpt2    7 6 5
+                          # using only the time-reversal symmetry to decrease
+                          # the size of the k point set.
+
+    iscf2  -3             # The d/dk perturbation must be treated 
+                          # in a non-self-consistent way
+  tolwfr2   1.0d-18       # Must use tolwfr for non-self-consistent calculations
+                          # Here, the value of tolwfr is very low.
+
+#Response Function calculation : electric field perturbation and phonons
+  rfphon3   1             # Activate the calculation of the atomic dispacement perturbations
+ rfatpol3   1 12          # All the atoms will be displaced
+  rfelfd3   3             # Activate the calculation of the electric field perturbation
+   rfdir3   1 1 1         # All directions are selected. However, symmetries will be used to decrease
+                          # the number of perturbations, so only the x electric field is needed
+                          # (and this explains why in the second dataset, rfdir was set to 1 0 0).
+
+    nqpt3   1
+     qpt3   0.0 0.0 0.0   # This is a calculation at the Gamma point
+
+  getwfk3   1            # Uses as input wfs the output wfs of the dataset 1
+  getddk3   2          # Uses as input ddk wfs the output of the dataset 2
+
+  kptopt3   1             # Automatic generation of k points,
+  ngkpt3    7 6 5
+                          # the size of the k point set.
+  tolvrs3   1.0d-14
+    iscf3   5             # Self-consistent calculation, using algorithm 5
+
+
+
+#Exchange-correlation functional
+ixc      11             # PBE
+
+#Definition of the planewave basis set
+ecut     40.0           # Maximal kinetic energy cut-off, in Hartree
+occopt      7           # Fermi-Dirac
+tsmear   0.02           # ~0.2 eV, Default 0.04Ha
+#Definition of the SCF procedure
+nstep 150              # Maximal number of SCF cycles
+diemac 9.0             # Although this is not mandatory, it is worth to
+
+# Structural parameters
+acell    3*9.032890758  
+
+rprim    1.000000000000000   0.000000000000000   0.000000000000000 
+        -0.150579971949830   1.156556669451014   0.000000000000000 
+        -0.293945722767960  -0.302611362049708   1.202406194659567 
+       
+natom    12  
+ntypat   3  
+typat    1 1 2 2 3 3 3 3 3 3 3 3  
+znucl    16 11 8  
+xred   0.606730770694      0.778166429343      0.239929670135
+       0.393269229306      0.221833570657      0.760070329865
+       0.044680569463      0.313002895424      0.217300094618
+       0.955319430537      0.686997104576      0.782699905382
+       0.584963974087      0.039653908578      0.416717516834
+       0.415036025913      0.960346091422      0.583282483166
+       0.767254565736      0.895296506671      0.102658857937
+       0.232745434264      0.104703493329      0.897341142063
+       0.308403164563      0.654539706510      0.120799865737
+       0.691596835437      0.345460293490      0.879200134263
+       0.765194188370      0.633799313216      0.382018765638
+       0.234805811630      0.366200686784      0.617981234362

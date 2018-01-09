@@ -1,0 +1,73 @@
+opti conp nosymm phonon intensity eigen cart
+# opti conp mole nosymm phonon intensity eigen cart
+keyword molmec
+keyword fix
+maxcyc opt 500
+output cif na2so42_gulp_optimised.cif
+
+title
+Na2(SO4)2 Phonon Calculation
+end
+
+name Sodium peroxodisulfate
+
+cell
+4.780 5.575 6.091 101.871 103.337 97.418 1 1 1 1 1 1
+
+fractional
+S6+    core 0.61154   0.78124   0.24744  1 1 1
+Na1+   core 0.03590   0.31397   0.20685  1 1 1
+O3-    core 0.57850   0.03880   0.41800  1 1 1
+O2-    core 0.77220   0.89590   0.11130  1 1 1
+O2-    shel 0.77220   0.89590   0.11130  1 1 1
+O2-    core 0.31760   0.65260   0.12630  1 1 1
+O2-    shel 0.31760   0.65260   0.12630  1 1 1
+O2-    core 0.77010   0.64510   0.39490  1 1 1
+O2-    shel 0.77010   0.64510   0.39490  1 1 1
+
+space
+P -1
+
+species
+Na1+    core  0.7992380
+S6+     core  2.721222
+O3-     core  1.0013810
+O3-     shel -1.6804030  
+O2-     core  1.2745090
+O2-     shel -2.2216550
+
+#
+buck inter
+Na1+ core O2-  shel   1194.840881 0.259189  0.0  0.00 10.00     0 0 0 
+Na1+ core O3-  shel  197870.280715 0.183367  0.0  0.00 10.00     0 0 0 
+O2-  shel O2-  shel  27594.381598 0.239636    86.772496  0.00 15.00  0 0 0 
+O3-  shel O2-  shel  13464.865791 0.109464     0.0  0.00 15.00  0 0 0 
+
+#
+morse intra bond
+S6+ core O2- shel 448.261621 0.164819 1.064817 0     0 0 0 
+S6+ core O3- shel 222.313945 0.147776 0.920604 0     0 0 0 
+O3- shel O3- shel 1322.52795 0.170165 1.484171  0     0 0 0 
+
+#
+spring
+O2- 56.02442  5 1 0
+O3- 55.859544   5 1 0
+
+#
+three bond intra
+S6+ core O2- shel O2- shel 77.39308   125.173601   1.6 1.6 2.4   0 0 0 
+S6+ core O3- shel O2- shel  6.096117  127.462065   1.6 1.6 2.4   0 0 0 
+O3- shel O3- shel S6+ core  2.028792   74.379536   1.8 1.8 3.6   0 0 0 
+
+#
+coulomb  intra x12
+coulomb  intra x13
+
+#
+element
+cova Na1+ 0.0
+cova S6+  0.7
+cova O2-  0.8
+cova O3-  0.9
+end
