@@ -34,8 +34,9 @@ deploy-html: $(HTML)
 
 .PHONY: install
 install:	$(PDF) $(HTML)
-		cp $(PDF) ../Documentation
+		cp $(PDF)  ../Documentation
 		cp $(HTML) ../Documentation
+		cp $(HTML) ~/Data/GitHub/JohnKendrick.github.io
 
 
 # View products.
