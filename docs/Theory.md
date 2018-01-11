@@ -26,6 +26,8 @@ Bibliography: ./pdielec.bib
 
 [TITLE]
 
+[TOC]
+
 INTRODUCTION
 ========
 
@@ -197,7 +199,7 @@ Figure [#fig-polarisation] shows a schematic of the field and polarisation insid
 ~ Figure {#fig-polarisation; caption: "Schematic showing the field and polarisation inside an inclusion with non-isotropic permittivity ${\tensorbf{\varepsilon}}_{i}$ embedded in a supporting medium with permittivity $\varepsilon_e$. The internal field within the inclusion is indicated by $\fieldbf{E}_i$, the external, applied field is indicated by $\fieldbf{E}_e$ and the induced polarisation in the inclusion is shown by $\fieldbf{P}$"}
 ![img-polarisation]
 ~
-[img-polarisation]: ./Figures/Figure01_Polarisation_Picture.png "Polarisation and field schematic" {width:auto; max-width:90%}
+[img-polarisation]: ./Figures/Polarisation_Schematic.png "Polarisation and field schematic" {width:auto; max-width:90%}
 
 The electric field internal to the inclusion gives rise to a polarisation density which is no longer necessarily aligned with the field because the material is non-isotropic. The polarisation density in the inclusion can be expressed as the tensor product of the permittivity contrast between the inclusion and the supporting medium and the (as yet unknown) internal field.
 

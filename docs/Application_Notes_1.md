@@ -48,12 +48,12 @@ Because MgO is isotropic with only a single frequency contributing to the permit
 ![#img-MgO-permittivity]
 ~ 
 
-[#img-MgO-permittivity]: Figures/Figure02_MgO_permittivity.png {width:auto; max-width:90%} 
+[#img-MgO-permittivity]: Figures/MgO_Permittivity.svg {width:auto; max-width:90%} 
 
 ~Figure {#fig-mgo-real; Caption: "Real and imaginary permittivities of a 10% volume fraction of MgO spheres in PTFE using the Maxwell-Garnett method"}
 ![#img-MgO-real]
 ~
-[#img-MgO-real]: Figures/Figure03_Mgo_Real_imaginary.png {width:auto; max-width:90%}
+[#img-MgO-real]: Figures/MgO_Real_Imaginary.svg {width:auto; max-width:90%}
 
 
 Using the Maxwell-Garnett mixing rule, Figure [#fig-mgo-real] shows the calculated permittivities of a 10% volume fraction of MgO spheres in a supporting medium with a frequency independent permittivity of 2.0, which would be typical of a material such as PTFE. Due to the dilution effect the real component has shifted to a base line value close to 2, and the absorption, as indicated by the maximum in the imaginary component has shifted by about 150 cm^-1^ to 550 cm^-1^. 
@@ -63,7 +63,7 @@ The effect of volume fraction on the predicted molar absorption coefficient, usi
 ~Figure {#fig-mgo-vf; Caption: "Effect of volume fraction on the Maxwell-Garnett molar absorption coefficient of MgO spheres in PTFE"}
 ![#img-mgo-vf]
 ~
-[#img-mgo-vf]: ./Figures/Figure04_Mgo_MG_volume_fraction.png {width:auto; max-width:90%}
+[#img-mgo-vf]: ./Figures/MgO_MG_Volume_Fraction.svg {width:auto; max-width:90%}
 
 Figure 6 shows the same plot for the Bruggeman mixing rule. At low
 volume fractions the Bruggeman mixing rule predicts a similar absorption
@@ -80,19 +80,19 @@ dominate the absorption.
 ~Figure {#fig-mgo-vf-bg; Caption: "Effect of volume fraction on the Bruggeman molar absorption coefficient of MgO spheres in PTFE" }
 ![#img-mgo-vf-bg]
 ~
-[#img-mgo-vf-bg]: ./Figures/Figure05_Mgo_Bruggeman_volume_fraction.png {width:auto; max-width:90%}
+[#img-mgo-vf-bg]: ./Figures/MgO_Bruggeman_Volume_Fraction.svg {width:auto; max-width:90%}
 
 ~Figure {#fig-mgo-varying-permittivity; Caption:"The Maxwell-Garnett molar absorption coefficients of spherical MgO particles, 1% volume fraction, embedded in media of varying permittivities" }
 ![#img-mgo-varying-permittivity]
 ~
-[#img-mgo-varying-permittivity]: Figures/Figure06_MgO_varying_permittivity.png "MgO: Effect of permittivity according to Maxwell-Garnett"{ width:auto; max-width:90% }
+[#img-mgo-varying-permittivity]: Figures/MgO_Varying_Permittivity.svg "MgO: Effect of permittivity according to Maxwell-Garnett"{ width:auto; max-width:90% }
 
 Figure [#fig-mgo-varying-permittivity] shows the effect of varying the permittivity of the supporting medium. The calculations were performed on spherical MgO particles with a 1% volume fraction. The lowest permittivity is that of a vacuum (or air) and shows the highest shift of the absorption maximum to higher frequencies. Increasing the permittivity lowers the shift until it becomes quite small. A similar effect is seen for the Bruggeman mixing model. However, the absorption resulting for particles in a low dielectric medium is considerable broader than that seen in the Maxwell-Garnet case. This broadening reduces as the permittivity of the medium increases (see Figure [#fig-mgo-varying-permittivity-brug]).
 
 ~ Figure {#fig-mgo-varying-permittivity-brug; Caption:"The Bruggeman molar absorption coefficients of spherical MgO particles, 1% volume fraction, embedded in media of varying permittivites"}
 ![Figure07_MgO_varying_permittivity_bruggeman]
 ~
-[Figure07_MgO_varying_permittivity_bruggeman]: Figures/Figure07_MgO_varying_permittivity_bruggeman.png "MgO: Effect of permittivity according to Bruggeman" { width:auto; max-width:90% }
+[Figure07_MgO_varying_permittivity_bruggeman]: Figures/MgO_Varying_Permittivity_Bruggeman.svg "MgO: Effect of permittivity according to Bruggeman" { width:auto; max-width:90% }
 
 
 ZnO using VASP
@@ -128,7 +128,7 @@ VASP and the permittivity was calculated using DFPT and the results reported in 
 ~ Figure {#fig-zno; caption:"The effect of shape on the Maxwell-Garnett molar absorption coefficient of 1% volume fraction ZnO in PTFE"}
 ![Figure08_ZnO]
 ~
-[Figure08_ZnO]: Figures/Figure08_ZnO.png "ZnO: Effect of shape on absorption" { width:auto; max-width:90% }
+[Figure08_ZnO]: Figures/ZnO-Maxwell_Garnett.svg "ZnO: Effect of shape on absorption" { width:auto; max-width:90% }
 
 For the Maxwell-Garnett mixing rule the sphere morphology results in the two absorption peaks shifting from their TO positions to higher wavenumber by about 80 cm^-1^. The plate morphology results in one of the peaks moving to higher wavenumber by about 130 cm^-1^, whilst the other remains at the TO position. The Maxwell-Garnett results are in close accord with some experimental results by Yamamoto et al [@Yamamoto1977] who measured the infrared spectrum of ZnO smoke particles and observed peaks in the absorption at 380, 530 and 550 cm^-1^. Previous work [@Rendon1981;@Hayashi1977a] have also used effective medium theory to explain the observed spectrum.
 
@@ -169,7 +169,7 @@ Figure [#fig-calcite] shows the results of analysis of the results using PDielec
 ~ Figure {#fig-calcite; Caption:"Calculated Maxwell-Garnett absorption spectrum of 10% volume fraction of calcite in PTFE"}
 ![Figure09_calcite]
 ~
-[Figure09_calcite]: Figures/Figure09_calcite.png "Calculated Maxwell-Garnett absorption" { width:auto; max-width:90% }
+[Figure09_calcite]: Figures/Calcite_AP_Plate211_Sphere.svg "Calculated Maxwell-Garnett absorption" { width:auto; max-width:90% }
 
 Fluoroapatite using VASP
 ========================
@@ -201,14 +201,14 @@ All calculations were performed by VASP [@Hafner2008c] using projector augmented
 ~
 
 ~Figure {#fig-fluoroapatite-morphology; caption:"BFDH Morphology of fluoroapatite"}
-![Figure10_Fluroapatite_morphology]
+![Figure10_Fluoroapatite_morphology]
 ~
-[Figure10_Fluroapatite_morphology]: Figures/Figure10_Fluroapatite_morphology.png "Figure10_Fluroapatite_morphology" { width:auto; max-width:90% }
+[Figure10_Fluoroapatite_morphology]: Figures/Fluoroapatite_morphology.png "Figure10_Fluroapatite_morphology" { width:auto; max-width:90% }
 
 ~Figure {#fig-fluoroapatite-absorption; caption:"Calculated Maxwell-Garnett absorption spectra of 10% fluoroapatite in PTFE"}
 ![Figure11_Fluoroapatite_absorption]
 ~
-[Figure11_Fluoroapatite_absorption]: Figures/Figure11_Fluoroapatite_absorption.png "Figure11_Fluoroapatite_absorption" { width:auto; max-width:90% }
+[Figure11_Fluoroapatite_absorption]: Figures/Fluoroapatite_absorption.svg "Figure11_Fluoroapatite_absorption" { width:auto; max-width:90% }
 
 
 L-aspartic Acid using CASTEP
@@ -250,10 +250,23 @@ L-aspartic acid is a zwitterion in the solid state and so the shape of the parti
 
 The THz spectrum of L-aspartic acid has been reported by Juliano and Korter [@Juliano2015] in the frequency range 0-90 cm^-1^. The infrared spectrum has been reported and assigned by Lopez *et al* [@LopezNavarrete1994]. Figure [#fig-aspartic] shows the calculated absorption spectra for L-aspartic acid for three frequency ranges. The calculation of the spectra used the Maxwell-Garnett mixing rule with a 10% volume fraction of L-aspartic acid in PTFE and for comparison the TO mixing rule. A damping factor of 2 cm^-1^ was used. Spherical and a variety of plate-like inclusions were used to illustrate their effect on the absorption spectra. Figure [#fig-aspartic]a shows the frequency range from 60-130 cm^-1^ which is that covered by THz spectroscopy. The shifts observed for the different particle morphologies are not large, but the change in intensities is significant. The molecular motions associated with phonons at these frequencies tend to be whole molecule motion involving rotation. Figure [#fig-aspartic]b shows the frequency range from 1260-1340 cm^-1^. In this frequency range bending of the carboxylate anion contributes to the spectrum significantly. The three different plate morphologies show different and significant shifts in the TO absorption peak at 1290 cm^-1^. The spherical morphology shows a shift of around 25 cm^-1^ to higher wavenumber. Figure [#fig-aspartic]c shows the spectra in the frequency range 2900-3100 cm^-1^, which corresponds to the motion of O-H (below 2980 cm^-1^) and N-H (above 2980 cm^-1^) stretching. The effect of the different possible crystal morphologies is large with shifts to higher frequency of up to 50 cm^-1^. The spectra below 3000 cm^-1^ arises from two TO absorptions at 2946 and 2947 cm^-1^. Because the motions associated with each mode interact differently with the internal field within each crystal they give rise to different shifts producing more complex spectra.
 
-~ Figure {#fig-aspartic; caption: "Calculated Maxwell-Garnett absorption spectra of 10% volume fraction of L-aspartic acid in PTFE a) frequency range 60-130 cm^-1^,  b) frequency range 1260-1340 cm^-1^ and c) frequency range 2900-3100 cm^-1^"}
-![Figure12]
+~ Begin Figure {#fig-aspartic; caption: "Calculated Maxwell-Garnett absorption spectra of 10% volume fraction of L-aspartic acid in PTFE "}
+~ Begin SubFigureRow {vertical-align: bottom}
+~ SubFigure {#fig-aspartic-a; caption: "Frequency range 60-130 cm^-1^"}
+![Aspartica]
 ~
-[Figure12]: Figures/Figure12.png "Maxwell-Garnett absorption of L-aspartic acid" { width:auto; max-width:90%; max-height:90% }
+~ SubFigure {#fig-aspartic-b; caption: "Frequency range 1260-1340 cm^-1^"}
+![Asparticb]
+~
+~ SubFigure {#fig-aspartic-a; caption: "Frequency range 2900-3100 cm^-1^"}
+![Asparticc]
+~
+~ End SubFigureRow
+~ End Figure
+ 
+[Aspartica]: Figures/Aspartic_thz_a.svg "Maxwell-Garnett absorption of L-aspartic acid" { width:auto; max-width:90%; max-height:90% }
+[Asparticb]: Figures/Aspartic_thz_b.svg "Maxwell-Garnett absorption of L-aspartic acid" { width:auto; max-width:90%; max-height:90% }
+[Asparticc]: Figures/Aspartic_thz_c.svg "Maxwell-Garnett absorption of L-aspartic acid" { width:auto; max-width:90%; max-height:90% }
 
 
 MgO Example using Mie Scattering
@@ -265,7 +278,7 @@ indicates that for small sizes of particles, the Mie and the Maxwell-Garnett met
 ~ Figure {#fig-mgo-mie; caption: "Comparison of Mie and Maxwell methods. 1% volume fraction of MgO in PTFE, sphere radius of 0.1 μm and a broadening of 5 cm^-1^"}
 ![mgo-maxwell-mie]
 ~
-[mgo-maxwell-mie]: Figures/mgo-maxwell-mie.png "mgo-maxwell-mie" { width:90%; max-width:90% }
+[mgo-maxwell-mie]: Figures/MgO_Mie_Maxwell.svg "MgO-maxwell-mie" { width:90%; max-width:90% }
 
 To better understand what makes particles large or small Table [#tab-mgo-mie-sizes] shows the dimensionless size parameter, $x$, as a function of wavenumber and of sphere radius. It has been assumed that the supporting medium is PTFE. Since the power expansion of the size parameters leads to terms which are quadratic in x, it should be expected that when x is less than about 0.1 μm, the particles can be considered small. It can be seen that particles less than 0.01 μm are small over the range of frequencies considered. But while 0.1 μm particles are small in the THz regime and low frequency infrared they should not be considered small over the more extended infrared frequencies. 1μm particles should be considered large for both the THz and the extended infrared.
 
@@ -293,7 +306,7 @@ Figure [#fig-mgo-mie-sizes] shows how the Mie predictions change as the particle
 ~ Figure {#fig-mgo-mie-sizes; caption: "Variation in absorption calculated by the Mie method for different radii of spheres. 1% volume fraction of MgO in PTFE and a broadening of 5 cm^-1^"}
 ![mgo-mie-sizes]
 ~
-[mgo-mie-sizes]: Figures/mgo-mie-sizes.png "Mie calculatons on MgO" { width:90%; max-width:90% }
+[mgo-mie-sizes]: Figures/MgO_Mie_Sizes.svg "Mie calculations on MgO" { width:90%; max-width:90% }
 
 Figure [#fig-mgo-mie-sizes-big] shows the effect of increasing the particle size further. More structure appears in the absorption, with increasing absorption around
 the bulk TO frequency. Above 4.0 μm there is more low frequency structure
@@ -302,7 +315,7 @@ appearing, below 300 cm^-1^.
 ~ Figure { #fig-mgo-mie-sizes-big; caption: "Variation in absorption calculated by the Mie method for larger sphere radii. 1% volume fraction of MgO in PTFE and a broadening of 5 cm^-1^"}
 ![mgo-mie-sizes-big]
 ~
-[mgo-mie-sizes-big]: Figures/mgo-mie-sizes-big.png "Mie calculations on MgO" { width:90%; max-width:90% }
+[mgo-mie-sizes-big]: Figures/MgO_Mie_Sizes_Big.svg "Mie calculations on MgO" { width:90%; max-width:90% }
 
 ZnO Example using Mie Scattering
 ================================
@@ -312,12 +325,12 @@ ZnO is an anisotropic material, so the treatment described here using Mie scatte
 ~Figure {#fig-zno-maxwell-garnett; caption: "ZnO spheres in PTFE using Maxwell Garnett"}
 ![zno-maxwell-garnett]
 ~
-[zno-maxwell-garnett]: Figures/zno-maxwell-garnett.png "ZnO spheres using Maxwell Garnett" { width:90%; max-width:90% }
+[zno-maxwell-garnett]: Figures/ZnO-Maxwell_Garnett.svg "ZnO spheres using Maxwell Garnett" { width:90%; max-width:90% }
 
 ~Figure {#fig-zno-mie; caption: "ZnO spheres in PTFE using Mie"}
 ![zno-mie]
 ~
-[zno-mie]: Figures/zno-mie.png "ZnO spheres using Mie" { width:90%; max-width:90% }
+[zno-mie]: Figures/ZnO_Mie.svg "ZnO spheres using Mie" { width:90%; max-width:90% }
 
 Figures [#fig-zno-maxwell-garnett] and [#fig-zno-mie] compare the capabilities of the Maxwell-Garnett and Mie methods for describing volume fraction effects. Figure [#fig-zno-maxwell-garnett] shows that Maxwell-Garnett predicts a lowering of intensity and frequency of the high frequency peak as the volume fraction is increased. Figure [#fig-zno-mie] illustrates that Mie theory shows no effect of the change in volume fraction. This is to be expected as the theory assumes that each sphere is isolated and not affecting the other spheres around it. It should be pointed out that the figures are plotting molar absorption coefficients. The actual absorption would increase with volume fraction of ZnO.
 
@@ -326,7 +339,7 @@ Figure [#fig-zno-mie-sizes] shows that the variation of the Mie scattering with 
 ~Figure {#fig-zno-mie-sizes; caption: "Mie scattering of 10% volume fraction ZnO spheres in PTFE using a line broadening factor of 5 cm^-1^. "}
 ![zno-mie-sizes]
 ~
-[zno-mie-sizes]: Figures/zno-mie-sizes.png "zno-mie-sizes" { width:90%; max-width:90% }
+[zno-mie-sizes]: Figures/ZnO_Mie_Sizes.svg "zno-mie-sizes" { width:90%; max-width:90% }
 
 
 
