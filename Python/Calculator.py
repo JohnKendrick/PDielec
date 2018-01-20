@@ -48,6 +48,13 @@ def initialise_diagonal_tensor(reals):
     x[2, 2] = reals[2]
     return x
 
+def calculate_distance(a,b):
+    '''Calculate the distance between a and b'''
+    d = 0.0
+    for c1, c2 in zip(a,b):
+        d += (c2 - c1)*(c2 - c1)
+    return math.sqrt(d)
+
 def initialise_random_tensor(scale):
     '''Initialise a 3x3 complex tensor, the argument gives the maximum absolute value'''
     print("Error initialise_random_tensor not working", file=sys.stderr)
@@ -950,5 +957,107 @@ def solve_effective_medium_equations( call_parameters ):
     # units are cm-1 L moles-1
     molar_absorption_coefficient = absorption_coefficient / concentration / vf
     return v,nplot,method,vf_type,size_mu,size_distribution_sigma,shape,data,trace,absorption_coefficient,molar_absorption_coefficient
+def calculate_centre_of_mass(xyzs, masses):
+   '''Calculate centre of mass'''
+   cm = np.zeros(3)
+   mass = 0.0
+   for m,xyz in zip(masses,xyzs):
+       mass += m
+       cm   += m*xyz
+   cm /= mass
+   return mass,cm
 
+def orthogonalise_projection_operator(ps):
+   '''Orthogonalise the projection operators ps'''
+   # The projection operator has dimension [6][natoms*3]
+   maxcyc = 10
+   cycle = 0
+   max_overlap = 1.0
+   while cycle < maxcyc and max_overlap > 1.0E-8:
+       cycle += 1
+       max_overlap = 0.0
+       for i,p in enumerate(ps):
+           # Normalise the projection operator
+           p = p / math.sqrt(np.dot(p,p))
+           ps[i] = p
+           for j,q in enumerate(ps):
+               if j > i:
+                   # Gramm Schmidt orthogonoalisation
+                   dotprod = np.dot(p,q)
+                   ps[j] = q - dotprod*p
+                   if max_overlap < dotprod:
+                       max_overlap = dotprod
+   if cycle >= maxcyc:
+       print('WARNING Schmidt Orthogonalisation Failed', max_overlap)
+   return ps
+
+def construct_projection_operator(atoms, xyzs, masses, nats):
+   '''Construct the projection operator for the molecule defined by atoms, xyz, masses'''
+   mass,cm = calculate_centre_of_mass(xyzs,masses)
+   # The projection operator has dimension number_of_constraints*natoms*3
+   ps = np.zeros( (6,nats*3) )
+   x = 0
+   y = 1
+   z = 2
+   for i,mass,xyz in zip(atoms,masses,xyzs):
+       ps[0,i*3+x] = math.sqrt(mass)
+       ps[1,i*3+y] = math.sqrt(mass)
+       ps[2,i*3+z] = math.sqrt(mass)
+       # coordinates relative to the centre of mass
+       relxyz = math.sqrt(mass) * (xyz - cm)
+       # First rotations about x in the y/z plane
+       # zz is really r*sin(theta), and sin(theta) = zz/r
+       # yy is really r*cos(theta), and cos(theta) = yy/r
+       ps[3,i*3+x] = 0.0
+       ps[3,i*3+y] = -relxyz[z]
+       ps[3,i*3+z] = +relxyz[y]
+       # Next rotations about y in the x/z plane
+       ps[4,i*3+x] = +relxyz[z]
+       ps[4,i*3+y] = 0.0
+       ps[4,i*3+z] = -relxyz[x]
+       # Next rotations about z in the x/y plane
+       ps[5,i*3+x] = -relxyz[y]
+       ps[5,i*3+y] = +relxyz[x]
+       ps[5,i*3+z] = 0.0
+   return ps
+   
+def calculate_energy_distribution(cell, frequencies, normal_modes, debug=False):
+   '''Calculate energy distribution in the phonon modes
+      frequencies are the frequencies in cm-1
+      normal_modes are the mass weighted normal modes'''
+   molecules = cell.molecules
+   atomic_masses = cell.atomic_masses
+   centres_of_mass = cell.centres_of_mass
+   xyz = cell.xyz_coordinates
+   nats = len(xyz)
+   # Calculate the projections operators for each molecule
+   molecular_projection_operators = []
+   for atoms in molecules:
+       mol_xyzs  = [ xyz[atom] for atom in atoms]
+       mol_masses = [ atomic_masses[atom] for atom in atoms]
+       projection_operators = construct_projection_operator(atoms,mol_xyzs,mol_masses,nats)
+       projection_operators = orthogonalise_projection_operator(projection_operators)
+       molecular_projection_operators.append(projection_operators)
+   # Calculate the contributions to the kinetic energy in each mode
+   energies_in_modes = []
+   for mode in normal_modes:
+       energies_in_molecules = []
+       mode_cm = mode
+       centre_of_mass_energy = 0.0
+       rotational_energy = 0.0
+       for imol,ps in enumerate(molecular_projection_operators):
+           # Calculate total kinetic energy
+           total_energy = np.dot(mode,mode)
+           # Project out centre of mass motion of each molecule
+           mode_cm = mode - np.dot(mode,ps[0])*ps[0] - np.dot(mode,ps[1])*ps[1] - np.dot(mode,ps[2])*ps[2]
+           centre_of_mass_energy += total_energy - np.dot(mode_cm,mode_cm)
+           # Project out molecular rotation of each molecule
+           mode_cm = mode - np.dot(mode,ps[3])*ps[3] - np.dot(mode,ps[4])*ps[4] - np.dot(mode,ps[5])*ps[5]
+           rotational_energy += total_energy - np.dot(mode_cm,mode_cm)
+       # end for imol,ps
+       vibrational_energy = total_energy - centre_of_mass_energy - rotational_energy
+       energies_in_modes.append( (total_energy,centre_of_mass_energy,rotational_energy,vibrational_energy) )
+   # end for mode in normal modes
+   return energies_in_modes
+# end def
 
