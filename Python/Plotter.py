@@ -390,8 +390,8 @@ def print_ints(title, ints, no_per_line=8, format="{:9d}", file=sys.stdout, sepa
     # Print out a list of ints prettily
     #
     len_ints = len(ints)
-    print(" ", file=file)
     if title != "":
+        print(" ", file=file)
         print(title, file=file)
     nlines = int((len_ints - 1) / no_per_line) + 1
     start = 0
@@ -410,8 +410,8 @@ def print_strings(title, strings, no_per_line=8, format="{:9s}", file=sys.stdout
     # Print out a list of strings prettily
     #
     len_strings = len(strings)
-    print(" ", file=file)
     if title != "":
+        print(" ", file=file)
         print(title, file=file)
     nlines = int((len_strings - 1) / no_per_line) + 1
     start = 0
@@ -431,8 +431,8 @@ def print_reals(title, reals, no_per_line=8, format="{:9.2f}", file=sys.stdout, 
     # Print out a list of reals prettily
     #
     len_reals = len(reals)
-    print(" ", file=file)
     if title != "":
+        print(" ", file=file)
         print(title, file=file)
     nlines = int((len_reals - 1) / no_per_line) + 1
     start = 0
