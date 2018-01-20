@@ -160,11 +160,15 @@ class QEOutputReader(GenericOutputReader):
         self.masses = []
         self.atom_type_list = []
         self.ions_per_type = [ 0 for i in range(self.nspecies) ]
+        species_list = []
         for i in range(self.nions):
             linea = self.file_descriptor.readline().split()
-            species = int(linea[1])
+            species_index = int(linea[1])
             self.cartesian_cordinates.append([float(linea[2]), float(linea[3]), float(linea[4])])
-            self.masses.append(self.masses_per_type[species-1])
-            self.atom_type_list.append(species-1)
-            self.ions_per_type[species-1] += 1
+            self.masses.append(self.masses_per_type[species_index-1])
+            self.atom_type_list.append(species_index-1)
+            self.ions_per_type[species_index-1] += 1
+            species_list.append(self.species[species_index-1])
+        self.unit_cells[-1].set_xyz_coordinates(self.cartesian_cordinates)
+        self.unit_cells[-1].set_element_names(species_list)
         return

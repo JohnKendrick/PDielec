@@ -89,15 +89,18 @@ class ExperimentOutputReader(GenericOutputReader):
         self.nions = int(line.split()[1])
         self.ions_per_type = [ 0 for s in self.species ]
         self.masses = []
+        species_list = []
         for n in range(self.nions):
             line = self.file_descriptor.readline()
             species = line.split()[0]
             index = self._ion_type_index[species]
             self.atom_type_list.append(index)
+            species_list.append(species)
             ions.append([float(f) for f in line.split()[1:4]])
             self.ions_per_type[index] += 1
             self.masses.append(self.masses_per_type[index])
         self.unit_cells[-1].set_fractional_coordinates(ions)
+        self.unit_cells[-1].set_element_names(species_list)
         return
 
     def _read_static_dielectric(self, line):

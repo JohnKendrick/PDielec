@@ -287,6 +287,7 @@ class CrystalOutputReader(GenericOutputReader):
         self.volume = self.unit_cells[-1].volume
         # The fractional coordinates are specified before the lattice vectors
         self.unit_cells[-1].set_fractional_coordinates(self._fractional_coordinates)
+        self.unit_cells[-1].set_element_names(self.species_list)
         return
 
     def _read_fractional_coordinates(self, line):
@@ -295,10 +296,12 @@ class CrystalOutputReader(GenericOutputReader):
         line = self.file_descriptor.readline()
         self._fractional_coordinates = []
         self.species = []
+        self.species_list = []
         self.atom_type_list = []
         for i in range(self.nions):
             line = self.file_descriptor.readline()
             species = line.split()[3].capitalize()
+            self.species_list.append(species)
             if species not in self.species:
                 self.species.append(species)
             species_index = self.species.index(species)

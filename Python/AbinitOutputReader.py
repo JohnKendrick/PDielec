@@ -54,6 +54,7 @@ class AbinitOutputReader(GenericOutputReader):
         self.manage['masses']   = (re.compile('              amu '), self._read_masses)
         self.manage['nions']    = (re.compile('            natom '), self._read_natom)
         self.manage['lattice']  = (re.compile('            rprim '), self._read_lattice_vectors)
+        self.manage['xred']  = (re.compile('             xred '), self._read_xred)
         self.manage['typat']    = (re.compile('            typat '), self._read_typat)
         self.manage['ntypat']   = (re.compile('           ntypat '), self._read_ntypat)
         self.manage['acell']    = (re.compile('            acell '), self._read_acell)
@@ -66,12 +67,12 @@ class AbinitOutputReader(GenericOutputReader):
         self.manage['kptrlatt']    = (re.compile('         kptrlatt '), self._read_kpoint_grid)
         self.manage['electrons']    = (re.compile('  fully or partial'), self._read_electrons)
         self.manage['pressure']    = (re.compile('-Cartesian.*GPa'), self._read_pressure)
-        self.manage['znucl']    = (re.compile('^  *znucl'), self._read_species)
+        self.manage['znucl']    = (re.compile('^  *znucl '), self._read_znucl)
         for f in self._outputfiles:
             self._read_output_file(f)
         return
 
-    def _read_species(self, line):
+    def _read_znucl(self, line):
         self.species = []
         for z in line.split()[1:]:
             iz = int(float(z)+0.001)
@@ -131,6 +132,9 @@ class AbinitOutputReader(GenericOutputReader):
         for i, a in enumerate(self.atom_type_list):
             self.ions_per_type[a-1] += 1
             self.masses[i] = self.masses_per_type[a]
+        if self.species:
+            species_list = [ self.species[i] for i in self.atom_type_list ]
+            self.unit_cells[-1].set_element_names(species_list)
         return
 
     def _read_epsilon(self, line):
@@ -215,6 +219,21 @@ class AbinitOutputReader(GenericOutputReader):
         if self.neutral:
             self._born_charge_sum_rule()
         return
+
+    def _read_xred(self, line):
+        linea = line.split()[1:]
+        fractional = []
+        fractional.append( [ float(xyz) for xyz in linea ] )
+        for i in range(self.nions-1):
+            linea = self.file_descriptor.readline().split()
+            fractional.append( [ float(xyz) for xyz in linea ] )
+        # end for i
+        self.unit_cells[-1].set_fractional_coordinates(fractional)
+        if self.species:
+            species_list = [ self.species[i] for i in self.atom_type_list ]
+            self.unit_cells[-1].set_element_names(species_list)
+    # end def
+
 
     def _read_lattice_vectors(self, line):
         linea = line.split()

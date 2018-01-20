@@ -182,9 +182,11 @@ class CastepOutputReader(GenericOutputReader):
         ions_per_type = {}
         self.atom_type_list = []
         self.species = []
+        species_list = []
         for i in range(self.nions):
             line = self.file_descriptor.readline()
             atom_type = line.split()[1].capitalize()
+            species_list.append(atom_type)
             if atom_type not in ions_per_type:
                 self.species.append(atom_type)
                 ions_per_type[atom_type] = 0
@@ -198,6 +200,7 @@ class CastepOutputReader(GenericOutputReader):
             # self.ions_per_type is a list
             self.ions_per_type.append(n)
         self.unit_cells[-1].set_fractional_coordinates(fractional_coordinates)
+        self.unit_cells[-1].set_element_names(species_list)
         return
 
     def _read_masses(self, line):

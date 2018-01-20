@@ -179,6 +179,7 @@ class GulpOutputReader(GenericOutputReader):
             # end for
         # end if
         self.unit_cells[-1].set_fractional_coordinates(self._fractional_coordinates)
+        self.unit_cells[-1].set_element_names(self._atom_types)
 
     def _read_cellcontents(self, line):
         """Read the cell contents in xyz space"""

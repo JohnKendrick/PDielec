@@ -112,11 +112,13 @@ class VaspOutputReader(GenericOutputReader):
         self.ions_per_type = [int(i) for i in line.split()[4:]]
         self.nspecies = len(self.ions_per_type)
         self.masses = []
+        self.species_list = []
         for k, mass in enumerate(self.masses_per_type):
             n = self.ions_per_type[k]
             for i in range(0, n):
                 self.atom_type_list.append(k)
                 self.masses.append(mass)
+                self.species_list.append(self.species[k])
             # end loop over i
         # end look over current know types
         return
@@ -268,6 +270,7 @@ class VaspOutputReader(GenericOutputReader):
         cell = UnitCell(avector, bvector, cvector)
         if self.ncells > 0:
             cell.set_fractional_coordinates(self.unit_cells[-1].fractional_coordinates)
+            cell.set_element_names(self.species_list)
         self.unit_cells.append(cell)
         self.ncells = len(self.unit_cells)
         return
@@ -279,6 +282,7 @@ class VaspOutputReader(GenericOutputReader):
             line = self.file_descriptor.readline()
             ions.append([float(f) for f in line.split()[0:3]])
         self.unit_cells[-1].set_fractional_coordinates(ions)
+        self.unit_cells[-1].set_element_names(self.species_list)
         return
 
     def _read_spin(self, line):
