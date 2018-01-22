@@ -28,13 +28,11 @@ Bibliography: ./pdielec.bib
 
 [TOC]
 
-INTRODUCTION
-========
+# INTRODUCTION
 
 preader is a 'helper' program which uses the underlying modules of PDielec to read output files and summarise the results of various MM/QM packages.  The program can be used to perform some straightforward calculations.  For instance projection of any remaining centre of mass motion of the crystal can be performed to make sure that there are three zero frequencies.  Also the masses used in the calculation of the dynamical matrix can be altered.
 
-MM/QM PACKAGES
-=========
+# MM/QM PACKAGES
 
 The MM / QM packages supported are summarised below.  Unlike PDielec it is not necessary to have performed a full calculation of the dynamical matrix.  In the majority of cases preader will read geometry optimisation runs.
 
@@ -56,8 +54,7 @@ The output file is the dynamical matrix file, specified by "filedyn" in a run of
 **GULP** -program gulp outputfilename
 The name on the command line is a file ending in .gout, containing the output of a GULP run. The contents of this file alone are sufficient to provide the unit cell, atomic masses, frequencies, normal modes, Born charge tensors and optical permittivity. Because GULP only writes out the Born charge matrices for the asymmetric unit, it is necessary to run a frequency calculation using P1 symmetry and a complete unit cell. The key words; nosymm, phonon, intensity, eigen and cart are recommended for the GULP calculation. In the case that no shells are used in the calculation the optical permittivity is not available in the output and it is necessary to provide it on the command line (see -optical and -optical\_tensor options below).
 
-PROGRAM OPTIONS
-===============
+# PROGRAM OPTIONS
 
 Examples of data sets for these packages are included with the distribution and can be found in the Examples/'Package'/preader directory. The program is run from the command line. There are several command options and these are summarized below. Some of the options may be repeated.
 
@@ -74,8 +71,7 @@ Examples of data sets for these packages are included with the distribution and 
 ~
 
 
-EXAMPLES
-========
+# EXAMPLES
 
          preader -program vasp `find . -name OUTCAR` > results.csv
 

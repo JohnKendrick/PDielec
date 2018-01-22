@@ -308,7 +308,7 @@ Table [#tab-isoleucine-results] shows that results of the analyis of the phonon 
  ￅￅￅￅￅￅￅￅￅￅￅￅￅￅￅￅￅￅￅￅￅￅￅￅￅￅￅￅￅￅￅￅￅￅￅￅￅￅￅￅￅￅￅￅￅￅￅￅￅￅￅￅￅￅￅￅￅￅￅￅￅￅￅￅￅￅￅￅￅￅ
 ### BaTiO~3~
 
-The example for BaTiO~3~ can be found in Example/Abinit/BaTiO3-phonana from the main directory of the PDielec distribution. The results of the Abinit calculation can be analysed using the following command;
+The example for BaTiO~3~ can be found in Example/AbInit/BaTiO3-phonana from the main directory of the PDielec distribution. The results of the Abinit calculation can be analysed using the following command;
 
         phonana -program abinit BaTiO3.out -radius Ba 0.1 -excel results.xlsx
         

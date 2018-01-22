@@ -1,5 +1,6 @@
 test_phonana:
 	@$(MAKE) --no-print-directory -C Castep/Isoleucine test
+	@$(MAKE) --no-print-directory -C AbInit/BaTiO3-phonana test
 
 test_preader:
 	@$(MAKE) --no-print-directory -C Castep/preader test
@@ -47,6 +48,7 @@ clean:
 
 regenerate:
 	@$(MAKE) --no-print-directory -C Castep/Isoleucine regenerate
+	@$(MAKE) --no-print-directory -C AbInit/BaTiO3-phonana test
 	@$(MAKE) --no-print-directory -C Castep/preader regenerate
 	@$(MAKE) --no-print-directory -C Vasp/preader regenerate
 	@$(MAKE) --no-print-directory -C Gulp/preader regenerate

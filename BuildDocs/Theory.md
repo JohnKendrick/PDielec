@@ -28,15 +28,13 @@ Bibliography: ./pdielec.bib
 
 [TOC]
 
-INTRODUCTION
-========
+# INTRODUCTION
 
 The theory underlying the Python package PDielec is described.  PDielec calculates the infrared absorption characteristics of a crystalline material supported in a non-absorbing medium.  PDielec post processes solid state quantum mechanical and molecular mechanical calculations of the phonons and dielectric response of the crystalline material. The molecular and solid state quantum mechanical (QM) calculations of response properties such as the frequencies and intensities of infrared (IR) and terahertz (THz) radiation absorption has become generally available in many molecular and solid state computer programs. A common approach is to assume the harmonic approximation and calculate the mass weighted force constant matrix (for molecules) or the dynamical matrix at the gamma point (for periodic solids). Diagonalisation of the matrix gives the frequencies for absorption and the normal modes (molecules) or phonon displacements (periodic solids). The calculation of the absorption intensity for each mode requires the calculation of the change in dipole moment caused by the displacement of the atoms for that mode. For solids where there is a large separation of charge, there can be a large coupling between a phonon mode and the internal field within a particle resulting from its morphology. 
 
 PDielec post processes the output of solid state quantum mechanical and molecular mechanics (MM) based codes such as VASP [@Hafner2008c], CASTEP [@Clark2005d], CRYSTAL [@Dovesi2014], Abinit [@Gonze2016] , Quantum Espresso [@Giannozzi2009], Phonopy [@Togo2015], and GULP [@Gale2003] to predict the infrared absorption of crystalline insulator materials whose crystal size is small compared with the wavelength of the absorbing radiation. The package is suited for the calculation of the complex, frequency dependent permittivity and its associated absorption of infrared radiation for a finely ground crystalline material dispersed in a low loss dielectric medium such KBr or Polytetrafluoroethylene (PTFE). A particular feature of the program is its ability to take into account the constant permittivity of the supporting medium and the particle shape of the material of interest through an effective medium theory. The paper outlines the theory used by the program and gives some examples of the application of the program for ionic and molecular materials.
 
-THEORY
-======
+# THEORY
 
 Equations [#eq-beer1] and [#eq-beer2] describe Beer-Lambert's law [@Bertie2006] where $\alpha$ is the (decadic) absorption coefficient (usually given in cm^-1^), $I$ and $I_0$ are the intensities after and before absorption respectively and $d$ is the path length.
 
@@ -57,8 +55,7 @@ It is common, especially in the chemistry community, when reporting infrared spe
 
 where $C$ is the concentration of the absorbing species.
 
-Molecular Approach to Absorption Intensity
-------------------------------------------
+## Molecular Approach to Absorption Intensity
 
 For molecules the transition intensity $I_k$ of the $k^{th}$ vibrational mode (calculated from the change in dipole moment along the mode displacement) can be converted to an integrated molar absorption coefficient, $A_k$, which can then be more readily compared with experiment. The theory for this is described by Wilson, Decius and Cross [@Wilson1955] and results in expressions such as those given in equations [#eq-Absorption1] and [#eq-Absorption2].  The first expression shows the relationship between the integrated molar absorption coefficient and the transition intensity and uses the number of molecules per unit volume ($N$), the velocity of light ($c$) and the degeneracy of the mode ($g_k$). The second expression shows the appropriate conversion factors if the units for the integrated molar absorption coefficient are L mol^‑1^cm^‑2^ (1 L mol^-1^cm^-2^ = 0.01 km mol^-1^) and the units for the transition intensity are D^2^ Å^-2^ amu^-1^, where D represents the Debye unit of dipole  moment and amu is an atomic mass unit. The factor log~e~10 arises due to the choice of a decadic Beer's law.
 
@@ -95,8 +92,7 @@ a^{mol}(\bar{\nu}) = \sum_k{a_k(\bar{\nu})}
 
 A comment should be made about the various units which can be used for these quantities. A common unit for the transition intensity is D^2^ Å^-2^ amu^-1^, another is km mol^-1^. However, it should be pointed out that strictly speaking the latter unit refers to the integrated molar absorption coefficient as defined above in Equation [#eq-integratedmolarintensity] and therefore relies on the assumptions made in its derivation. ( 1 D^2^ Å^-2^ amu^-1^ is equivalent to 42.256 km mol^-1^ ).
 
-Solid State Approach to Absorption Intensity
---------------------------------------------
+## Solid State Approach to Absorption Intensity
 
 The optical properties of a solid are determined by its complex, frequency dependent relative permittivity,
 $\boldsymbol{\varepsilon}(\bar{\nu})$, and in particular the real and imaginary components, $\boldsymbol{\kappa}$ and $\mathbf{n}$, of the complex refractive index, $\mathbf{N}{(\bar{\nu})}$ where;
@@ -177,8 +173,7 @@ For ionic systems it is common practice in solid state QM and MM programs to inc
 The mass weighting has been incorporated through the mass of the atoms, $M_s$ and $M_t$.  The correction depends upon the direction, $\bar{\mathbf{q}}$, that the long wave-length limit is
 approached.  Diagonalisation of the corrected matrix gives the squared frequencies of N-1 LO modes and 2N-2 TO modes, Equation [#eq-eigenvalues].  In some of the examples given below the LO frequencies will be given for comparison with the TO frequencies.
 
-Effect of Particle Shape on Infrared Absorption
------------------------------------------------
+## Effect of Particle Shape on Infrared Absorption
 
 It has long been recognised that, especially for ionic materials, the local field within a crystal and its coupling with the transverse optical phonons has an important effect on the position and intensity of the absorption. Fröhlich [@Frohlich1948] was one of the first to point out that the frequency of absorption of a small ionic sphere embedded in a low dielectric medium is shifted to lie between the transverse and longitudinal optical frequencies of the material making up the sphere.
 
@@ -350,8 +345,7 @@ It is useful to be able to compare the effective medium theories with the absorp
 
 Equation [#eq-ap] defines an isotropic permittivity which can be used to calculate such an absorption coefficient. The angle brackets indicate an average of orientation. This mixing rule provides a useful comparison between the absorption calculated without any shape effects and that calculated including shape effects using the other mixing rules presented above. At low concentrations the peak positions of the AP mixing rule will be at the TO frequencies.
 
-Particle Size Effects
----------------------
+## Particle Size Effects
 
 Meier and Wokaun [@Meier1983] outlined an approach to treating large (metal) spherical particles, where particle size is incorporating terms up to 3^rd^ order in the wave vector *k*. Using Equations [#eq-PolarisationDensity] and [#eq-InternalField] we can write;
 
@@ -394,8 +388,7 @@ This leads to a modified equation for the polarisability of spherical particles;
 
 Using the modified, sized dependent polarisability all the Bruggeman and Maxwell mixing schemes can be implemented in a way that incorporates size effects.  Generally speaking the on-set of changes in the calculated absorption is an indication that size effects are important and should be treated properly.
 
-Light Scattering by Spherical Particles using Mie Theory
---------------------------------------------------------
+## Light Scattering by Spherical Particles using Mie Theory
 
 For particles which are comparable in size to the wavelength of light, the theory developed by Mie and described fully by van de Hulst [@VanDeHulst1981] can be used. Unfortunately this theory is only applicable to spherical, isotropic particles where the separation between the particles is large compared with the wavelength of light.
 
@@ -445,8 +438,7 @@ Here $N$ is the number density of particles and $k$ is the wave-vector of the li
 
 This approach to taking anisotropy into account when the embedded particles are anisotropic but randomly oriented is approximate, but has been shown to have a reasonably wide range of application [@Stout2007].
 
-IMPLEMENTATION
-==============
+# IMPLEMENTATION
 
 The above theory has been implemented in a Python 2/3 package which is available for download [@pdielec]. The package requires SCIPY [@scipy], NUMPY [@scipy}], PyYAML (py-yaml) [@pyyaml], PyMieScatt [@Sumlin2018a], xlswriter [@xlsxwriter] and if visualization of the predicted spectra is required MATPLOTLIB [@scipy]. The program is run from the command line. There are several command options and these are summarized below in Table 1. At the moment the package has interfaces to five solid state QM codes, VASP [@Hafner2008c], CASTEP [@Clark2005d], CRYSTAL14 [@Dovesi2014], Abinit [@Gonze2016], Quantum Espresso [@Giannozzi2009] and Phonopy [@Togo2015].  In addition an interface is available for GULP [@Gale2003] which is a force field based solid state code. Finally an interface has been written to and 'experiment' file format which allows the preparation of a user defined file specifying the permittivities and absorption frequencies. The origin of the dataset(s) used for processing is determined by a command line switch, -program. An outline of the interfaces to these codes is given here. The package used for the calculation is described by the --program option. In addition a file name is given which contains the output which will be processed by PDielec.
 
@@ -589,8 +581,7 @@ From an experimental point of view it is often convenient to use a mass fraction
 
 The optical permittivity is normally calculated by the QM or MM program concerned. However, as this property reflects the electronic contribution to the permittivity at zero frequency, unless there is some treatment of electrons by the shell model, then in MM calculations the optical permittivity needs to be defined through the command line options -optical or -optical_tensor.  Unlike the other methods 'mie' method cannot work with particles of zero radius. All methods therefore use a default size of 10^-12^ μm. The Mie approach is only valid for dilute dispersions and for spherical particles. However, if other shapes are specified the Mie method will still be called and the results will be applicable to spheres of the specified size.
 
-Parallelization and threads
-----------------------------
+## Parallelization and threads
 
 To improve the performance of the program python parallelization has been used to parallelize over the frequencies, shapes and methods. By default this parallelization spawns additional Python executables, depending on the number of cores available.
 
@@ -604,8 +595,7 @@ Finally the use of non-standard BLAS libraries seems to cause problems with the 
 
 For some reason this also works if the MKL library is being used.
 
-Performance
-------------
+## Performance
 
 PDielec has been written to make use of multiprocessor computers. On a 4 processor machine the speed-up is nearly linear up to 4 processors, as can be seen in the Figure below.
 
@@ -614,8 +604,7 @@ PDielec has been written to make use of multiprocessor computers. On a 4 process
 ~
 [img-speedup]: ./Figures/SpeedUp.png "Speed-up" {width:auto; max-width:90%}
 
-Example command line uses of PDielec
-------------------------------------
+## Example command line uses of PDielec
 
          pdielec -program vasp OUTCAR -method ap -method maxwell \
                  -sphere -plate 0 0 1 -needle 0 0 1 -LO 0 0 1
@@ -650,8 +639,7 @@ This command performs a calculation of the absorption spectrum resulting from a 
 
 This command performs a calculation of the absorption spectrum resulting from the data stored in the experiment.expt file. Maxwell-Garnett calculations are performed with 3 different sized spheres and the results stored in a Excel file.
 
-Contents of the csv output file
--------------------------------
+## Contents of the csv output file
 
 If a csv output file is requested the file will contain the command used to perform the calculation. A brief summary is given of each active infrared mode; including the mode number, frequency, intensity, integrated molar absorption coefficient, its peak height (calculated from the intensity and damping factor) and the damping parameter used in the calculation. Following this is a table with a column for frequency followed by columns containing the real and imaginary permittivities, the absorption and molar absorption coefficients at each frequency.
 

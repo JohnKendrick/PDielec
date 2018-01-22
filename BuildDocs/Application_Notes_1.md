@@ -13,13 +13,11 @@ bibliography: ./pdielec.bib
 
 [TOC]
 
-Introduction
-========
+# Introduction
 
 Several examples are given to illustrate applications of the package.  The calculations used to provide the data for the permittivities are sufficiently accurate to illustrate aspects of the theory. The examples are chosen to show the package being used with the QM packages CASTEP and VASP and with the MM package GULP.
 
-MgO using CASTEP
-================
+# MgO using CASTEP
 
 Magnesium oxide is an isotropic medium, the initial unit cell and the space group symmetry ($Fm\overline{3}m$) were taken from the Inorganic Crystal Structure Database (ICSD) [@Hellenbrandt2015] reference number ICSD-52026 [@Tsirelson1998]. The primitive cell was optimized using CASTEP. Norm-conserving pseudo-potentials were used to represent the core electrons of magnesium and oxygen. An energy cutoff of 1000 eV was used with the PBE [@Kresse1999a] density functional and a k-point spacing for the Monkhorst-Pack grid of 0.04 Å^-1^. The primitive cell was optimized and a Density Functional Perturbation Theory (DFPT) calculation of the phonon spectrum at the gamma point was performed. The optimised lattice parameter was found to be 2.1234 Å, compared with the experimental value of 2.107 Å. Only 3 degenerate modes contribute to the permittivity. A summary of the results is presented in Table [#tab-mgo-properties].
 
@@ -95,8 +93,7 @@ Figure [#fig-mgo-varying-permittivity] shows the effect of varying the permittiv
 [Figure07_MgO_varying_permittivity_bruggeman]: Figures/MgO_Varying_Permittivity_Bruggeman.svg "MgO: Effect of permittivity according to Bruggeman" { width:auto; max-width:90% }
 
 
-ZnO using VASP
-==============
+# ZnO using VASP
 
 Zinc oxide crystallizes in space group $P6_3mc$ (wurtzite). All calculations were performed by VASP [@Hafner2008c] using projector augmented-wave PAW [@Kresse1999a] pseudo-potentials, the PBE [@Perdew1996a] density functional, an energy cutoff of 600 eV and a k-point resolution of approximately 0.1 Å^-1^. The initial unit cell was taken from the ICSD [@]Hellenbrandt2015] with code ICSD-26170 [@McNally2012a]. The unit cell and atom positions were optimized using
 VASP and the permittivity was calculated using DFPT and the results reported in Table [#tab-zno-properties]. Only two of the bands showed any significant intensity, a doubly degenerate band (E) with a TO frequency of 372.1 cm^-1^ and a non-degenerate band (A) with a TO frequency of 350.0 cm^-1^. The LO frequency of the non-degenerate band is shifted to 502.0 cm^-1^ for a wave-vector with direction (001), whilst the degenerate modes are unaffected. In the case of the (010) direction the LO frequency of one of the E modes is shifted to 511.2 cm^-1^. It is known that ZnO can crystallize with a plate morphology [@Yamamoto1977] with the (001) surface dominant. Calculations of the molar absorption were performed for a sphere, plate and needle like shapes with the unique directions of the plate and the needle being normal to the (001) surface. A volume fraction of 1% was chosen for these calculations and the predicted molar absorption coefficients for the Maxwell-Garnett mixing rule is shown in Figure 9.
@@ -132,8 +129,7 @@ VASP and the permittivity was calculated using DFPT and the results reported in 
 
 For the Maxwell-Garnett mixing rule the sphere morphology results in the two absorption peaks shifting from their TO positions to higher wavenumber by about 80 cm^-1^. The plate morphology results in one of the peaks moving to higher wavenumber by about 130 cm^-1^, whilst the other remains at the TO position. The Maxwell-Garnett results are in close accord with some experimental results by Yamamoto et al [@Yamamoto1977] who measured the infrared spectrum of ZnO smoke particles and observed peaks in the absorption at 380, 530 and 550 cm^-1^. Previous work [@Rendon1981;@Hayashi1977a] have also used effective medium theory to explain the observed spectrum.
 
-Calcite using GULP
-==================
+# Calcite using GULP
 
 Calcite is the most stable polymorph of calcium carbonate and the crystal structure belongs to the $R\overline{3}c$ space group. The force field and atomic structures used here are described in detail in work by Fisler [@Fisler2000]. Briefly, the oxygen ions are described using a core-shell model [@Dick1958]. The carbon - oxygen potential of the carbonate is taken to be a Morse potential and an additional 3 atom potential is used to maintain the O-C-O angle at 120^o^. The van der Waals interactions between non bonded atoms are taken to be Buckingham potentials and the charges on the calcium, carbon and oxygen ions are +2, +1.3435 and -1.1145 respectively. The shell charge of the oxygen ion is -2.133 and the spring constant for the core-shell interaction is 52.74 eV/Å^2^. The unit cell was optimized using the primitive unit cell and the full space group symmetry. The calculation of the phonon spectrum was performed without symmetry but still using the primitive cell of the lattice. A summary of the calculated properties is given in Table [#tab-calcite-properties].
 
@@ -171,8 +167,7 @@ Figure [#fig-calcite] shows the results of analysis of the results using PDielec
 ~
 [Figure09_calcite]: Figures/Calcite_AP_Plate211_Sphere.svg "Calculated Maxwell-Garnett absorption" { width:auto; max-width:90% }
 
-Fluoroapatite using VASP
-========================
+# Fluoroapatite using VASP
 
 The line shapes of the infrared absorption of apatite and fluoroapatite were examined extensively by Balan *et al* [@Balan2008b]. Their calculations included the effect of crystallite habit on the spectrum and the results reported here are similar to their conclusions. The method used by Balan *et al*. is an infinitely dilute Maxwell-Garnett model, so the only difference between the methods used by them and those reported here using PDielec are the incorporation of the volume fraction into the theory and the use of an ellipsoidal shape for comparison with the other shapes.
 
@@ -211,8 +206,7 @@ All calculations were performed by VASP [@Hafner2008c] using projector augmented
 [Figure11_Fluoroapatite_absorption]: Figures/Fluoroapatite_absorption.svg "Figure11_Fluoroapatite_absorption" { width:auto; max-width:90% }
 
 
-L-aspartic Acid using CASTEP
-============================
+# L-aspartic Acid using CASTEP
 
 L-aspartic acid is a zwitterion in the solid state and so the shape of the particles used in the measurement of IR and THz spectra maybe important. The starting geometry for optimization of the unit cell and molecular structure of L-aspartic acid was taken from Derissen et al [@Derissen1968]. The PBE [@Perdew1996a] functional was used with a plane wave energy cutoff of 1000 eV and norm conserving pseudo-potentials. A dispersion correction using the Tkatchenko-Scheffler scheme [@Tkatchenko2009c] available in CASTEP was applied for both the geometry optimisation and the calculation of the phonon spectrum at the gamma point, with a value S~6~ scaling factor [@Juliano2015] of 1.0. A summary of the results of the calculations is shown in Table [#tab-aspartic-properties].
 
@@ -269,8 +263,7 @@ The THz spectrum of L-aspartic acid has been reported by Juliano and Korter [@Ju
 [Asparticc]: Figures/Aspartic_thz_c.svg "Maxwell-Garnett absorption of L-aspartic acid" { width:auto; max-width:90%; max-height:90% }
 
 
-MgO Example using Mie Scattering
-================================
+# MgO Example using Mie Scattering
 
 Figure 13 compares a Mie scattering calculation with the results from Maxwell-Garnett effective medium theory. The same data set was used for the CASTEP, MgO example. A volume fraction of 1% was used with a small sphere radius (0.1 μm) and a broadening of 5 cm^-1^ embedded in a matrix of PTFE. A power expansion in the size parameter of the Mie expressions
 indicates that for small sizes of particles, the Mie and the Maxwell-Garnett methods should be the same. This is verified in Figure 13.
@@ -317,8 +310,7 @@ appearing, below 300 cm^-1^.
 ~
 [mgo-mie-sizes-big]: Figures/MgO_Mie_Sizes_Big.svg "Mie calculations on MgO" { width:90%; max-width:90% }
 
-ZnO Example using Mie Scattering
-================================
+# ZnO Example using Mie Scattering
 
 ZnO is an anisotropic material, so the treatment described here using Mie scattering is an approximation. However, the permittivity constant tensor is diagonal due to the space group symmetry of the crystal. 
 
