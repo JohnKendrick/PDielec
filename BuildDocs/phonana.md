@@ -30,7 +30,7 @@ Bibliography: ./pdielec.bib
 
 # INTRODUCTION
 
-Phonana is a 'helper' program which uses the underlying modules of PDielec to read an output file from an MM or QM calculation of the phonon modes in a crystal.  The phonon modes are analysed and the percentage of molecular centre-of-mass and rigid bodt rotational motion in each mode is calculated.  Using the results of the analysis it is possible to differentiate between inter- and intra-molecular phonon modes (see for instance Jepsen et al [@Jepsen2007].
+Phonana is a 'helper' program which uses the underlying modules of PDielec to read an output file from an MM or QM calculation of the phonon modes in a crystal.  The phonon modes are analysed and the percentage of molecular centre-of-mass and rigid bodt rotational motion in each mode is calculated.  Using the results of the analysis it is possible to differentiate between inter- and intra-molecular phonon modes (see for instance Jepsen et al [@Jepsen2007]).
 
 # THEORY
 
