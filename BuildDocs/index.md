@@ -46,3 +46,21 @@ There is set of
 and examples, which illustrate the use of the program
 </div>
 ~
+
+# Supporting programs
+A couple of supporting commands have been developed with use the same underlying libraries to read the output files from the various QM/MM packages.
+~ TexOnly
+~~ Snippet
+\noindent \href{preader.pdf}{"preader"} reads a list of input files and summarises the results in output which can be written to a csv file.
+\noindent \href{phonana.pdf}{"phonana"} reads an output file and calculates the contribution of molecular centre of mass and rotation to each phonon mode
+~~
+~
+
+~ HtmlOnly
+<div>
+<a href="preader.html">preader</a>
+reads a list of input files and summarises the results in output which can be written to a csv file.
+<a href="phonana.html">phonana</a>
+reads an output file and calculates the contribution of molecular centre of mass and rotation to each phonon mode
+</div>
+~

@@ -19,9 +19,9 @@ Bibliography: ./pdielec.bib
 ~ MathDefs
 \newcommand{\water}{H_{2}O}
 \newcommand{\tensor}[1]{\bar{\bar{#1}}}
-\newcommand{\tensorbs}[1]{\bar{\bar{\boldsymbol{#1}}}}
-\newcommand{\tensorbf}[1]{\bar{\bar{\mathbf{#1}}}}
-\newcommand{\fieldbf}[1]{\bar{\mathbf{#1}}}
+\newcommand{\tensorbs}[1]{\bar{\bar{\bm{#1}}}}
+\newcommand{\tensorbf}[1]{\bar{\bar{\bm{#1}}}}
+\newcommand{\fieldbf}[1]{\bar{\bm{#1}}}
 ~
 
 [TITLE]

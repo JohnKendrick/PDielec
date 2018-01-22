@@ -1,5 +1,6 @@
 package: svg
 package: hyperref
+package: bm
 <!-- Reasonable bibliography style. -->
 csl style: ieee
 cite style: numeric
