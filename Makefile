@@ -16,6 +16,7 @@ default:
 		@echo "For a subset of the tests"
 		@echo "Type 'make test_pdielec'"
 		@echo " or  'make test_preader'"
+		@echo " or  'make test_phonana'"
 
 install:	
 		cp pdielec $(SCRIPTS)
@@ -23,9 +24,13 @@ install:
 		mkdir -p $(SCRIPTS)/Python
 		cp -r Python/*.py $(SCRIPTS)/Python
 
-test:		test_preader test_pdielec
+test:		test_preader test_pdielec test_phonana
 
-tests:		test_preader test_pdielec
+tests:		test_preader test_pdielec test_phonana
+
+test_phonana:		
+		@echo "Testing phonana functionality....."
+		@( cd Examples; make --no-print-directory test_phonana )
 
 test_preader:		
 		@echo "Testing preader functionality....."

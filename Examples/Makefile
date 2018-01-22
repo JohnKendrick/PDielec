@@ -1,3 +1,5 @@
+test_phonana:
+	@$(MAKE) --no-print-directory -C Castep/Isoleucine test
 
 test_preader:
 	@$(MAKE) --no-print-directory -C Castep/preader test
@@ -44,6 +46,7 @@ clean:
 	@find . -name command.csv -exec rm -f {} \;
 
 regenerate:
+	@$(MAKE) --no-print-directory -C Castep/Isoleucine regenerate
 	@$(MAKE) --no-print-directory -C Castep/preader regenerate
 	@$(MAKE) --no-print-directory -C Vasp/preader regenerate
 	@$(MAKE) --no-print-directory -C Gulp/preader regenerate
