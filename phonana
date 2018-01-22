@@ -368,16 +368,19 @@ def main():
             print("Additional elemental masses have been specifically specified:")
             for element in mass_dictionary:
                 print("    ",element,": ",mass_dictionary[element])
-        print_reals("Old masses by atom types", reader.masses_per_type,format="{:10.6f}")
-        print_reals("Old atomic mass list", reader.masses,format="{:10.6f}")
+        if debug:
+           print_reals("Old masses by atom types", reader.masses_per_type,format="{:10.6f}")
+           print_reals("Old atomic mass list", reader.masses,format="{:10.6f}")
         reader.change_masses(mass_definition, isotope_masses, average_masses, mass_dictionary)
-        print_reals("New masses by atom types", reader.masses_per_type,format="{:10.6f}")
-        print_reals("New atomic mass list", reader.masses,format="{:10.6f}")
+        if debug:
+            print_reals("New masses by atom types", reader.masses_per_type,format="{:10.6f}")
+            print_reals("New atomic mass list", reader.masses,format="{:10.6f}")
     else:
         print(" ")
         print("Atomic masses will be defined using: ", mass_definition)
-        print_reals("Masses by atom types", reader.masses_per_type,format="{:10.6f}")
-        print_reals("Atomic mass list", reader.masses,format="{:10.6f}")
+        if debug:
+            print_reals("Masses by atom types", reader.masses_per_type,format="{:10.6f}")
+            print_reals("Atomic mass list", reader.masses,format="{:10.6f}")
     # access the information as numpy arrays.  Use atomic units for these arrays
     masses = np.array(reader.masses) * amu
     print("")
@@ -437,9 +440,8 @@ def main():
 
     cell = reader.unit_cells[-1]
     cell.set_atomic_masses(atom_masses)
-    newcell,old_order = cell.calculate_molecular_contents(scale, toler, covalent_radii)
-    if debug:
-        newcell.print()
+    newcell,nmols,old_order = cell.calculate_molecular_contents(scale, toler, covalent_radii)
+    newcell.print()
     # Reorder the atoms so that the mass weighted normal modes order agrees with the ordering in the new cell
     nmodes,nions,temp = np.shape(normal_modes)
     new_normal_modes = np.zeros( (nmodes,3*nions) )
@@ -454,25 +456,29 @@ def main():
     # Calculate the distribution in energy for the normal modes
     mode_energies = Calculator.calculate_energy_distribution(newcell, frequencies_cm1, new_normal_modes)
     # Output the final result
-    title = ['Frequency','%mol-cme','%mol-rot','%vib']
-    print_strings('Percentage energies in vibrational modes',title,format="{:>15}")
-    for freq,energies in zip(frequencies_cm1,mode_energies):
-           tote,cme,rote,vibe = energies
-           output = [ freq, 100*cme/tote, 100*rote/tote, 100*vibe/tote ]
-           print_reals('',output,format="{:15.2f}")
-    # if using a csv file write out the results
+    title = ['Freq(cm-1)','%mol-cme','%mol-rot','%vib']
+    for i in range(nmols):
+        title.append('%mol-'+str(i))
+    print_strings('Percentage energies in vibrational modes',title,format="{:>10}")
     if not fd_csvfile is None:
-       print('Frequency,','%mol-cme,','%mol-rot,','%vib',file=fd_csvfile)
-       for freq,energies in zip(frequencies_cm1,mode_energies):
-           tote,cme,rote,vibe = energies
-           print(freq,',',100*cme/tote,',',100*rote/tote,',',100*vibe/tote,file=fd_csvfile)
+        print_strings('Percentage energies in vibrational modes',title,format="{:>10}",file=fd_csvfile,separator=",")
+    for freq,energies in zip(frequencies_cm1,mode_energies):
+           tote,cme,rote,vibe,molecular_energies = energies
+           output = [ freq, 100*cme/tote, 100*rote/tote, 100*vibe/tote ]
+           for e in molecular_energies:
+               output.append(100*e/tote)
+           print_reals('',output,format="{:10.2f}")
+           if not fd_csvfile is None:
+               print_reals('',output,format="{:10.2f}",file=fd_csvfile,separator=",")
     # if using a excel file write out the results
     if not fd_excelfile is None:
         excel_row += 2; worksheet.write(excel_row,0,'Percentage energies in vibrational modes')
-        excel_row += 1; [ worksheet.write(excel_row,col,f) for col,f in enumerate( ('Frequency (cm-1)','%mol-cme,','%mol-rot,','%vib') ) ]
-        for freq,energies in zip(frequencies,mode_energies):
-           tote,cme,rote,vibe = energies
+        excel_row += 1; [ worksheet.write(excel_row,col,f) for col,f in enumerate(title) ]
+        for freq,energies in zip(frequencies_cm1,mode_energies):
+           tote,cme,rote,vibe, molecular_energies = energies
            output = [ freq, 100*cme/tote, 100*rote/tote, 100*vibe/tote ]
+           for e in molecular_energies:
+               output.append(100*e/tote)
            excel_row += 1; [ worksheet.write(excel_row,col,f) for col,f in enumerate( output ) ]
     if fd_excelfile is not None:
         workbook.close()
