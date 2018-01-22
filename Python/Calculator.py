@@ -1032,12 +1032,20 @@ def calculate_energy_distribution(cell, frequencies, normal_modes, debug=False):
    nats = len(xyz)
    # Calculate the projections operators for each molecule
    molecular_projection_operators = []
+   molecule_masks = []
    for atoms in molecules:
        mol_xyzs  = [ xyz[atom] for atom in atoms]
+       mol_mask = np.zeros(nats*3)
+       for atom in atoms:
+           mol_mask[3*atom+0] = 1
+           mol_mask[3*atom+1] = 1
+           mol_mask[3*atom+2] = 1
        mol_masses = [ atomic_masses[atom] for atom in atoms]
        projection_operators = construct_projection_operator(atoms,mol_xyzs,mol_masses,nats)
        projection_operators = orthogonalise_projection_operator(projection_operators)
        molecular_projection_operators.append(projection_operators)
+       # 
+       molecule_masks.append(mol_mask) 
    # Calculate the contributions to the kinetic energy in each mode
    energies_in_modes = []
    for mode in normal_modes:
@@ -1045,7 +1053,8 @@ def calculate_energy_distribution(cell, frequencies, normal_modes, debug=False):
        mode_cm = mode
        centre_of_mass_energy = 0.0
        rotational_energy = 0.0
-       for imol,ps in enumerate(molecular_projection_operators):
+       molecular_energies = []
+       for imol,(ps,mask) in enumerate(zip(molecular_projection_operators,molecule_masks)):
            # Calculate total kinetic energy
            total_energy = np.dot(mode,mode)
            # Project out centre of mass motion of each molecule
@@ -1054,9 +1063,13 @@ def calculate_energy_distribution(cell, frequencies, normal_modes, debug=False):
            # Project out molecular rotation of each molecule
            mode_cm = mode - np.dot(mode,ps[3])*ps[3] - np.dot(mode,ps[4])*ps[4] - np.dot(mode,ps[5])*ps[5]
            rotational_energy += total_energy - np.dot(mode_cm,mode_cm)
+           # Now work out the energy of the molecule
+           mode_cm = mask * mode
+           mol_energy = np.dot(mode_cm,mode_cm)
+           molecular_energies.append(mol_energy)
        # end for imol,ps
        vibrational_energy = total_energy - centre_of_mass_energy - rotational_energy
-       energies_in_modes.append( (total_energy,centre_of_mass_energy,rotational_energy,vibrational_energy) )
+       energies_in_modes.append( (total_energy,centre_of_mass_energy,rotational_energy,vibrational_energy,molecular_energies) )
    # end for mode in normal modes
    return energies_in_modes
 # end def
