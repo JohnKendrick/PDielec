@@ -20,6 +20,7 @@
 import numpy as np
 import math
 from Python.Calculator import calculate_distance
+from Python.Plotter import print_reals, print_ints, print_strings
 
 
 class UnitCell:
@@ -43,23 +44,26 @@ class UnitCell:
         self._calculate_reciprocal_lattice(self.lattice)
 
     def print(self):
-        print('a,b,c,alpha,beta,gamma',self.a,self.b,self.c,self.alpha,self.beta,self.gamma)
-        print('lattice')
-        print(self.lattice)
-        print('reciprocal lattice')
-        print(self.reciprocal_lattice)
-        print('Fractional coords')
-        print(self.fractional_coordinates)
-        print('XYZ coords')
-        print(self.xyz_coordinates)
+        print_reals('Unit Cell a,b,c ',[self.a, self.b, self.c], format='{:12.6f}')
+        print_reals('Unit Cell alpha,beta,gamma',[self.alpha, self.beta, self.gamma], format='{:12.6f}')
+        print_reals('lattice', self.lattice[0], format='{:12.6f}')
+        print_reals('', self.lattice[1], format='{:12.6f}')
+        print_reals('', self.lattice[2], format='{:12.6f}')
+        print_strings('Element names',self.element_names)
+        print_reals('Fractional coords',self.fractional_coordinates[0], format='{:12.6f}')
+        for frac in self.fractional_coordinates[1:]:
+            print_reals('',frac, format='{:12.6f}')
+        print_reals('Cartesian coords',self.xyz_coordinates[0], format='{:12.6f}')
+        for xyz in self.xyz_coordinates[1:]:
+            print_reals('',xyz, format='{:12.6f}')
         if self.molecules:
             for molid,atoms in enumerate(self.molecules):
                 mass, cm_xyz, cm_frac = self.calculateCentreOfMass(atoms)
-                print('molecule ',molid+1)
-                print(atoms)
-                print('Mass',mass)
-                print('Centre of Mass (xyz)',cm_xyz)
-                print('Centre of Mass (frac)',cm_frac)
+                molstring = 'Molecule '+str(molid)+':'
+                print_ints('Atoms in '+molstring,atoms)
+                print_reals('Mass of '+molstring,[ mass ], format='{:12.6f}')
+                print_reals('Centre of Mass  (xyz) of '+molstring, cm_xyz, format='{:12.6f}')
+                print_reals('Centre of Mass (frac) of '+molstring, cm_frac,format='{:12.6f}')
 
     def calculateCentreOfMass(self,atoms):
         mass = 0.0
@@ -387,7 +391,7 @@ class UnitCell:
         new_unit_cell.set_element_names(new_element_names)
         new_unit_cell.set_atomic_masses(new_masses)
         new_unit_cell.set_molecules(new_molecules)
-        return new_unit_cell, old_order
+        return new_unit_cell, len(new_molecules), old_order
 
     def set_molecules(self, molecules):
         '''Define a list of molecules, each molecule is a list of atom coordinates'''
