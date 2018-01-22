@@ -1,0 +1,87 @@
+The covalent radius of  Ba  is now  0.1
+Creating a csv file: command.csv
+Vmin is:     0.0 cm-1
+Vmax is:  9000.0 cm-1
+All phonon modes will be considered
+
+Program used to perform the phonon calculation was: abinit
+The file containing the output is: BaTiO3.out
+No projection of the dynamical matrix will be performed
+The charge neutrality of the Born atomic charges will not be enforced
+ 
+Atomic masses will be defined using:  average
+
+Volume of unit cell is    73.08489893 Angstrom^3
+Total unit cell mass is:   233.19220000 g/mol
+Crystal density is:   5.29829 g/cc
+
+ 
+Unit Cell a,b,c 
+     4.180959     4.180959     4.180959
+ 
+Unit Cell alpha,beta,gamma
+    90.000000    90.000000    90.000000
+ 
+lattice
+     4.180959     0.000000     0.000000
+     0.000000     4.180959     0.000000
+     0.000000     0.000000     4.180959
+ 
+Element names
+ O         Ti        O         O         Ba       
+ 
+Fractional coords
+     0.500000     0.500000     0.000000
+     0.500000     0.500000     0.500000
+     0.500000     0.000000     0.500000
+     0.000000     0.500000     0.500000
+     0.000000     0.000000     0.000000
+ 
+Cartesian coords
+     2.090479     2.090479     0.000000
+     2.090479     2.090479     2.090479
+     2.090479     0.000000     2.090479
+     0.000000     2.090479     2.090479
+     0.000000     0.000000     0.000000
+ 
+Atoms in Molecule 0:
+         0         1         2         3
+ 
+Mass of Molecule 0:
+    95.865200
+ 
+Centre of Mass  (xyz) of Molecule 0:
+     1.741589     1.741589     1.741589
+ 
+Centre of Mass (frac) of Molecule 0:
+     0.416553     0.416553     0.416553
+ 
+Atoms in Molecule 1:
+         4
+ 
+Mass of Molecule 1:
+   137.327000
+ 
+Centre of Mass  (xyz) of Molecule 1:
+     0.000000     0.000000     0.000000
+ 
+Centre of Mass (frac) of Molecule 1:
+     0.000000     0.000000     0.000000
+ 
+Percentage energies in vibrational modes
+ Freq(cm-1)   %mol-cme   %mol-rot       %vib     %mol-0     %mol-1
+      65.74      95.89       1.01       3.10      26.10      73.90
+      65.74      95.89       1.16       2.95      26.10      73.90
+      65.75      95.89       1.09       3.02      26.10      73.90
+     198.01      70.25       6.60      23.15      75.32      24.68
+     198.01      70.25       8.26      21.49      75.32      24.68
+     198.02      70.23       7.43      22.33      75.33      24.67
+     270.59      -0.00      55.57      44.43     100.00       0.00
+     270.59       0.00      34.42      65.58     100.00       0.00
+     270.59       0.00      76.71      23.29     100.00       0.00
+     279.39      33.78      18.52      47.70      98.59       1.41
+     279.39      33.76      19.26      46.98      98.60       1.40
+     279.39      33.76      17.79      48.45      98.60       1.40
+     493.63       0.10      17.40      82.50      99.98       0.02
+     493.63       0.10      17.40      82.51      99.98       0.02
+     493.63       0.10      17.40      82.51      99.98       0.02

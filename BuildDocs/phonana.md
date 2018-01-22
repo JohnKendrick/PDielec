@@ -28,16 +28,13 @@ Bibliography: ./pdielec.bib
 
 [TOC]
 
-INTRODUCTION
-========
+# INTRODUCTION
 
-phonana is a 'helper' program which uses the underlying modules of PDielec to read an output file from an MM or QM calculation of the phonon modes in a crystal.  The phonon modes are analysed and the percentage of molecular centre-of-mass and rigid bodt rotational motion in each mode is calculated.  Using the results of the analysis it is possible to differentiate between inter- and intra-molecular phonon modes (see for instance Jepsen et al [@Jepsen2007].
+Phonana is a 'helper' program which uses the underlying modules of PDielec to read an output file from an MM or QM calculation of the phonon modes in a crystal.  The phonon modes are analysed and the percentage of molecular centre-of-mass and rigid bodt rotational motion in each mode is calculated.  Using the results of the analysis it is possible to differentiate between inter- and intra-molecular phonon modes (see for instance Jepsen et al [@Jepsen2007].
 
-THEORY
-======
+# THEORY
 
-Molecular Systems
------------------
+## Molecular Systems
 
 It is common in molecular calculations of
 vibrational properties to construct a force constant matrix which enforces the
@@ -101,8 +98,7 @@ In practice the projection operators will be defined using mass-weighted cartesi
 ~
 
   
-Periodic Systems
-----------------
+## Periodic Systems
 
 The invariants of the energy in a periodic system are the three
 translational modes corresponding to motion of all the atoms in the same
@@ -176,8 +172,7 @@ E^{vib}_p = E^{total}_p - E^{cm}_p - E^{rot}_p
 
 Since all of the energy terms depend in the same way on $\dot{Q}_p$ , it is not required in the calculation of the *relative* contributions to the energy coming from the external (molecular centre-of-mass and rigid-body rotation) and the internal modes (vibrational contributions)
 
-IMPLEMENTATION
-==============
+# IMPLEMENTATION
 
 In order to calculate the relative internal and external contributions to each phonon mode it is first necessary to identify the molecules in the crystal.  In many cases the unit cell is packed with atoms in such a way that the cell is filled, rather than in a way reflecting the bondedness of the molecules.  Phonana therefore first replicates the atoms in all cells neighbouring the central unit cell.  Within this supercell the bonds are determined by calculating the distances between all atoms in the supercell.  In practice an order N method is used whereby instead of searching all the supercell only the space around each atom is searched for potentially bonded partners.  The criterion of the presence of a bond between atoms $i$ and $j$ is given by the requirement that the distance between the atoms $r{ij}$ is less than the bonding requirement;
 
@@ -194,8 +189,8 @@ Finally a new cell with the same dimensions as the original is constructed.  Whe
 
 The projection operators, Equation [#eq-finaloperator], can now be constructed and the relative energies calculated using Equations [#eq-energy-cm], [#eq-energy-rot] and [#eq-energy-vib]. 
 
-QM/MM PROGRAMS
-==============
+# QM/MM PROGRAMS
+
 The MM / QM packages supported are summarised below.
 
 **VASP** -program vasp OUTCAR
@@ -221,8 +216,7 @@ The output file is the dynamical matrix file, specified by "filedyn" in a run of
 **GULP** -program gulp outputfilename
 The name on the command line is a file ending in .gout, containing the output of a GULP run. The contents of this file alone are sufficient to provide the unit cell, atomic masses, frequencies, normal modes, Born charge tensors and optical permittivity. Because GULP only writes out the Born charge matrices for the asymmetric unit, it is necessary to run a frequency calculation using P1 symmetry and a complete unit cell. The key words; nosymm, phonon, intensity, eigen and cart are recommended for the GULP calculation. In the case that no shells are used in the calculation the optical permittivity is not available in the output and it is necessary to provide it on the command line (see -optical and -optical\_tensor options below).
 
-OPTIONS
-=======
+# OPTIONS
 
 There are several command options and these are summarized below. Some of the options may be repeated. 
 
@@ -247,11 +241,10 @@ There are several command options and these are summarized below. Some of the op
 ~
 
 
-EXAMPLES
-========
+# EXAMPLES
 
-Usage
------
+
+## Usage
          phonana -program vasp OUTCAR 
 
 This reads the results of the VASP calculation and prints a summary of the molecular centre-of-mass and molecular rotation contributions to each phonon mode.
@@ -264,8 +257,9 @@ As above but with the results written to a spreadsheet
 
 As above but with the eckardt projection of the crystal centre-of-mass motion.  The covalent radius of the sulphur atom is set to 1 Angstrom.
 
-Output
-------
+## Output
+
+### Isoleucine
 
 The example of a calculation on isoleucine using Castep is available in the Examples/Castep/Isoleucine directory of the distribution.  The analysis was performed using;
 
@@ -285,7 +279,7 @@ The program first finds the four molecules of isoleucine in the unit cell of the
 
 Table [#tab-isoleucine-results] shows that results of the analyis of the phonon modes with frequencies below 100 cm^-1^.  The first 3 modes should have zero frequency as they are the translationally invariant modes of the lattice.  The negative number shown here actually indicates that the mode has an imaginary frequency.  As can be see under the column %col-cme they are almost completely associated with molecular centre-of-mass motion.  This is true also of the lowest non-zero frequency at 32,81 cm^-1^ and to some extent of the next mode at 39.73 cm^-1^.  Although for this latter mode there is considerable contribution from rigid-body rotational motion (see the %mol-rot column).  As the frequency of the phonon mode increases the contribution from rigid-body motion generally decreases and contribution from vibrational mode (see the %vib column) increases,  The total contribution from molecular motion is summarised in the last four columns. 
 
-~ TableFigure {#tab-isoleucine-results; caption: "Percentage contribtions of the centre-of-mass and the rotational molecular modes to each phonon mode"}
+~ TableFigure {#tab-isoleucine-results; caption: "Isoleucine: percentage contribtions of the centre-of-mass and the rotational molecular modes to each phonon mode"}
 
 | Freq(cm-1) | %mol-cme | %mol-rot | %vib | %mol-0 | %mol-1 | %mol-2 | %mol-3 |
 |------------|----------|----------|------|-------|-------|-------|-------|
@@ -312,6 +306,36 @@ Table [#tab-isoleucine-results] shows that results of the analyis of the phonon 
 
 ~
  ￅￅￅￅￅￅￅￅￅￅￅￅￅￅￅￅￅￅￅￅￅￅￅￅￅￅￅￅￅￅￅￅￅￅￅￅￅￅￅￅￅￅￅￅￅￅￅￅￅￅￅￅￅￅￅￅￅￅￅￅￅￅￅￅￅￅￅￅￅￅ
+### BaTiO~3~
+
+The example for BaTiO~3~ can be found in Example/Abinit/BaTiO3-phonana from the main directory of the PDielec distribution. The results of the Abinit calculation can be analysed using the following command;
+
+        phonana -program abinit BaTiO3.out -radius Ba 0.1 -excel results.xlsx
+        
+The -radius option has been used to set the covalent radius of Ba to a small value so this atom will be treated as though it is not bonded to anything else in the cell.  This results in 2 'molecules' being found in the cell; a TiO~3~ moiety and the Ba^2+^ ion. 
+
+The results of the analysis are shown in Table [#tab-batio3-results] below.  In this example the lowest 3 modes (which have not been projected) show that there is a problem with translational invariance of the calculation.  The frequencies should be 0.0.  The fact that they are mainly centre-of-mass modes is shown by the high percentage in the %mol-cme column.  The energy in these three modes seems to be mainly in molecule 1, which is the Ba^2+^ ion.  The modes at 198.01 cm^-1^ also have a large centre-of-mass component, this time mainly coming from molecule 0, which is the TiO~3~ moeity. Above 200 cm^-1^ there is little centre-of-mass contribution to the energy and all the modes are dominated by the TiO~3~ group.
+
+~ TableFigure {#tab-batio3-results; caption: "BaTiO~3~: percentage contribtions of the centre-of-mass and the rotational molecular modes to each phonon mode"}
+
+| Freq(cm-1) | %mol-cme | %mol-rot | %vib | %mol-0 | %mol-1 |
+|------------|----------|----------|------|--------|--------|
+| 65.74      | 95.9     | 1.0      | 3.1  | 26.1   | 73.9   |
+| 65.74      | 95.9     | 1.2      | 2.9  | 26.1   | 73.9   |
+| 65.75      | 95.9     | 1.1      | 3.0  | 26.1   | 73.9   |
+| 198.01     | 70.2     | 6.6      | 23.2 | 75.3   | 24.7   |
+| 198.01     | 70.2     | 8.3      | 21.5 | 75.3   | 24.7   |
+| 198.02     | 70.2     | 7.4      | 22.3 | 75.3   | 24.7   |
+| 270.59     | 0.0      | 55.6     | 44.4 | 100.0  | 0.0    |
+| 270.59     | 0.0      | 34.4     | 65.6 | 100.0  | 0.0    |
+| 270.59     | 0.0      | 76.7     | 23.3 | 100.0  | 0.0    |
+| 279.39     | 33.8     | 18.5     | 47.7 | 98.6   | 1.4    |
+| 279.39     | 33.8     | 19.3     | 47.0 | 98.6   | 1.4    |
+| 279.39     | 33.8     | 17.8     | 48.4 | 98.6   | 1.4    |
+| 493.63     | 0.1      | 17.4     | 82.5 | 100.0  | 0.0    |
+| 493.63     | 0.1      | 17.4     | 82.5 | 100.0  | 0.0    |
+| 493.63     | 0.1      | 17.4     | 82.5 | 100.0  | 0.0    |
+~
 
 [BIB]
 
