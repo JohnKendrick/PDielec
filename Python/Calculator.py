@@ -978,7 +978,11 @@ def orthogonalise_projection_operator(ps):
        max_overlap = 0.0
        for i,p in enumerate(ps):
            # Normalise the projection operator
-           p = p / math.sqrt(np.dot(p,p))
+           anorm = np.dot(p,p)
+           shift = 0.0
+           if anorm < 1.0e-12:
+               shift = 1.0E-12
+           p = p / np.sqrt(np.dot(p,p) + shift )
            ps[i] = p
            for j,q in enumerate(ps):
                if j > i:
@@ -989,6 +993,7 @@ def orthogonalise_projection_operator(ps):
                        max_overlap = dotprod
    if cycle >= maxcyc:
        print('WARNING Schmidt Orthogonalisation Failed', max_overlap)
+       exit()
    return ps
 
 def construct_projection_operator(atoms, xyzs, masses, nats):
@@ -1000,25 +1005,25 @@ def construct_projection_operator(atoms, xyzs, masses, nats):
    y = 1
    z = 2
    for i,mass,xyz in zip(atoms,masses,xyzs):
-       ps[0,i*3+x] = math.sqrt(mass)
-       ps[1,i*3+y] = math.sqrt(mass)
-       ps[2,i*3+z] = math.sqrt(mass)
+       ps[0][i*3+x] = math.sqrt(mass)
+       ps[1][i*3+y] = math.sqrt(mass)
+       ps[2][i*3+z] = math.sqrt(mass)
        # coordinates relative to the centre of mass
        relxyz = math.sqrt(mass) * (xyz - cm)
        # First rotations about x in the y/z plane
        # zz is really r*sin(theta), and sin(theta) = zz/r
        # yy is really r*cos(theta), and cos(theta) = yy/r
-       ps[3,i*3+x] = 0.0
-       ps[3,i*3+y] = -relxyz[z]
-       ps[3,i*3+z] = +relxyz[y]
+       ps[3][i*3+x] = 0.0
+       ps[3][i*3+y] = -relxyz[z]
+       ps[3][i*3+z] = +relxyz[y]
        # Next rotations about y in the x/z plane
-       ps[4,i*3+x] = +relxyz[z]
-       ps[4,i*3+y] = 0.0
-       ps[4,i*3+z] = -relxyz[x]
+       ps[4][i*3+x] = +relxyz[z]
+       ps[4][i*3+y] = 0.0
+       ps[4][i*3+z] = -relxyz[x]
        # Next rotations about z in the x/y plane
-       ps[5,i*3+x] = -relxyz[y]
-       ps[5,i*3+y] = +relxyz[x]
-       ps[5,i*3+z] = 0.0
+       ps[5][i*3+x] = -relxyz[y]
+       ps[5][i*3+y] = +relxyz[x]
+       ps[5][i*3+z] = 0.0
    return ps
    
 def calculate_energy_distribution(cell, frequencies, normal_modes, debug=False):
@@ -1048,7 +1053,7 @@ def calculate_energy_distribution(cell, frequencies, normal_modes, debug=False):
        molecule_masks.append(mol_mask) 
    # Calculate the contributions to the kinetic energy in each mode
    energies_in_modes = []
-   for mode in normal_modes:
+   for imode,mode in enumerate(normal_modes):
        energies_in_molecules = []
        mode_cm = mode
        centre_of_mass_energy = 0.0
