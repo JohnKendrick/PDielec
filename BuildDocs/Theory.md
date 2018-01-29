@@ -166,12 +166,11 @@ In some cases, using Equations [#eq-oscillatorstrength] and [#eq-borncharges], P
 
 For ionic systems it is common practice in solid state QM and MM programs to include a long wave-length, non-analytic correction to the mass weighted dynamical matrix at the $\Gamma$ point, which describes the coupling of the longitudinal optic (LO) modes to the induced field resulting from the vibration. This may be written for atoms $s$ and $t$ and their Cartesian components $\alpha$ and $\beta$ as [@Gonze1997];
 
-~ Equation {#eq-LODynamicaMatrix}
+~ Equation {#eq-LODynamicalMatrix}
 \left( \tensorbf{D}^\text{LO}_{\mathbf{q \rightarrow 0}} \right)_{s,\alpha;t,\beta} = \left( \tensorbf{D} \right)_{s,\alpha;t,\beta}\mathbf{+}\frac{4\pi}{V\sqrt{M_{s}M_{t}}}\mathbf{\ }\frac{\left( {\bar{\mathbf{q}}}^{\text{T}}{{\mathbf{\ }\tensorbf{Z}}}_{s} \right)_{\alpha}\left( {\bar{\mathbf{q}}}^{\text{T}}{\tensorbf{Z}}_t \right)_\beta}{{\bar{\mathbf{q}}}^{\text{T}}\mathbf{\cdot}{{\tensorbs{\varepsilon}}}_{\infty} \cdot \bar{\mathbf{q}}}
 ~
 
-The mass weighting has been incorporated through the mass of the atoms, $M_s$ and $M_t$.  The correction depends upon the direction, $\bar{\mathbf{q}}$, that the long wave-length limit is
-approached.  Diagonalisation of the corrected matrix gives the squared frequencies of N-1 LO modes and 2N-2 TO modes, Equation [#eq-eigenvalues].  In some of the examples given below the LO frequencies will be given for comparison with the TO frequencies.
+The mass weighting has been incorporated through the mass of the atoms, $M_s$ and $M_t$.  The correction depends upon the direction, $\bar{\mathbf{q}}$, that the long wave-length limit is approached.  Diagonalisation of the corrected matrix gives the squared frequencies of N-1 LO modes and 2N-2 TO modes, Equation [#eq-eigenvalues].  In some of the examples given below the LO frequencies will be given for comparison with the TO frequencies.
 
 ## Effect of Particle Shape on Infrared Absorption
 
@@ -442,23 +441,22 @@ This approach to taking anisotropy into account when the embedded particles are 
 
 The above theory has been implemented in a Python 2/3 package which is available for download [@pdielec]. The package requires SCIPY [@scipy], NUMPY [@scipy}], PyYAML (py-yaml) [@pyyaml], PyMieScatt [@Sumlin2018a], xlswriter [@xlsxwriter] and if visualization of the predicted spectra is required MATPLOTLIB [@scipy]. The program is run from the command line. There are several command options and these are summarized below in Table 1. At the moment the package has interfaces to five solid state QM codes, VASP [@Hafner2008c], CASTEP [@Clark2005d], CRYSTAL14 [@Dovesi2014], Abinit [@Gonze2016], Quantum Espresso [@Giannozzi2009] and Phonopy [@Togo2015].  In addition an interface is available for GULP [@Gale2003] which is a force field based solid state code. Finally an interface has been written to and 'experiment' file format which allows the preparation of a user defined file specifying the permittivities and absorption frequencies. The origin of the dataset(s) used for processing is determined by a command line switch, -program. An outline of the interfaces to these codes is given here. The package used for the calculation is described by the --program option. In addition a file name is given which contains the output which will be processed by PDielec.
 
-**VASP** -program vasp OUTCAR
+## VASP (-program vasp OUTCAR)
 The name provided on the command line is an OUTCAR file. The OUTCAR is read by PDielec to determine the unit cell, atomic masses, frequencies, normal modes, Born charge tensors and optical permittivity. The VASP run can be a DFPT or numerical calculation of the response.
 
-**CASTEP** -program castep seedname
+## CASTEP (-program castep seedname)
 The name provided on the command line is the seedname for the calculation. The corresponding seedname.castep file in the current directory is read and processed to determine the unit cell, atomic masses, optical permittivity and born charge tensors. The normal modes and their frequencies are determined from the seedname.phonon file. The CASTEP run needs to be a DFPT (phonon+efield) task.
 
-**CRYSTAL** -program crystal outputfilename
-The name on the command line is a file ending in .out, containing the output of a CRYSTAL14 run. The contents of this file alone are sufficient to provide the unit cell, atomic masses, frequencies, normal modes and Born charge tensors. However, the number of significant figures for the normal modes is not sufficient for an accurate calculation and it is therefore recommended that the HESSFREQ.DAT and BORN.DAT files are also made available. If they are present in the directory where PDielec is run from , it uses these files to calculate the Born charge tensors, frequencies and normal modes. The CRYSTAL calculation needs to be a frequency calculation (FREQCALC) with the infrared intensity (INTENS) selected. The default algorithm does not calculate the optical permittivity, so this needs to be provided on the command line. However, if the CPHF or CPKS algorithm is used for the frequency calculation, the optical permittivity is calculated and PDielec will automatically read it from the output file. By default CRYSTAL projects out the pure translational modes of the system before calculating the frequencies, this can also done by the PDielec package. Small differences in the calculated frequencies between the CRYSTAL program and PDielec have been observed. These have been found to be due to a slightly different method for symmetrising the 2^nd^ derivative matrix, because of this an optional directive "-hessian crystal" can be used to indicate that PDielec should use the same symmetrisation as
-CRYSTAL14.
+## CRYSTAL (-program crystal outputfilename)
+The name on the command line is a file ending in .out, containing the output of a CRYSTAL14 run. The contents of this file alone are sufficient to provide the unit cell, atomic masses, frequencies, normal modes and Born charge tensors. However, the number of significant figures for the normal modes is not sufficient for an accurate calculation and it is therefore recommended that the HESSFREQ.DAT and BORN.DAT files are also made available. If they are present in the directory where PDielec is run from , it uses these files to calculate the Born charge tensors, frequencies and normal modes. The CRYSTAL calculation needs to be a frequency calculation (FREQCALC) with the infrared intensity (INTENS) selected. The default algorithm does not calculate the optical permittivity, so this needs to be provided on the command line. However, if the CPHF or CPKS algorithm is used for the frequency calculation, the optical permittivity is calculated and PDielec will automatically read it from the output file. By default CRYSTAL projects out the pure translational modes of the system before calculating the frequencies, this can also done by the PDielec package. Small differences in the calculated frequencies between the CRYSTAL program and PDielec have been observed. These have been found to be due to a slightly different method for symmetrising the 2^nd^ derivative matrix, because of this an optional directive "-hessian crystal" can be used to indicate that PDielec should use the same symmetrisation as CRYSTAL14.
 
-**ABINIT** -program abinit outputfilename
+## ABINIT (-program abinit outputfilename)
 The output file should come from a run containing three datasets. One to calculate the wavefunction at the optimized geometry, one to calculate the field perturbations and one to calculate the second derivatives. Examples of input files and output files are available with the distribution.
 
-**QE** -program qe outputfilename
+## QE (-program qe outputfilename)
 The output file is the dynamical matrix file, specified by "filedyn" in a run of the quantum espresso phonon package. Examples of input and output files are given in the PDielec distribution
 
-**PHONOPY** -program phonopy vasp OUTCAR.born
+## PHONOPY (-program phonopy vasp OUTCAR.born)
 Phonopy calculates the dynamical matrix through numerical differentiation. It has interfaces to several programs, although PDielec has only used the VASP interface. In principle other interfaces could be used. The second parameter for the --program directive is the PHONOPY interface that was used to calculate the forces. Typically these would be generated by performing;
 
         phonopy --d --dim="1 1 1"
@@ -473,10 +471,10 @@ where the DISP-\* directories are where the VASP calculation was performed. Fina
 
 To calculate the infrared spectrum PDielec needs the Born charges for the atoms in the unit cell and these can be calculated using VASP and the optimized geometry of the unit cell. The OUTCAR file from this calculation can be copied to the current directory and renamed OUTCAR.born
 
-**GULP** -program gulp outputfilename
+## GULP (-program gulp outputfilename)
 The name on the command line is a file ending in .gout, containing the output of a GULP run. The contents of this file alone are sufficient to provide the unit cell, atomic masses, frequencies, normal modes, Born charge tensors and optical permittivity. Because GULP only writes out the Born charge matrices for the asymmetric unit, it is necessary to run a frequency calculation using P1 symmetry and a complete unit cell. The key words; nosymm, phonon, intensity, eigen and cart are recommended for the GULP calculation. In the case that no shells are used in the calculation the optical permittivity is not available in the output and it is necessary to provide it on the command line (see -optical and -optical\_tensor options below).
 
-**EXPERIMENT** -program experiment\_filename
+## EXPERIMENT (-program experiment\_filename)
 This option has been added to allow the exploration of 'toy' problems. The file contains a minimum amount of data to allow a calculation to proceed. It is assumed that the systems will be isotropic as that make the input simpler. Calculations of the LO frequencies will not work with this option. An example input file is given here, which gives results very similar to that found for the Castep, MgO example;
 
 ```
@@ -502,46 +500,80 @@ frequencies 3       # Specify how many frequencies to read in
 
 Examples of data sets for these packages are included with the distribution. The interface to these QM and MM codes reads information about the unit cell, the calculated normal modes and the Born charge matrices; from these the permittivity is calculated over the frequency range requested. The absorption and molar absorption coefficients can be plotted along with the real and imaginary permittivities. Optionally all the information can be written to a comma separated values (csv) file for direct importing into a spreadsheet. The program is run from the command line. There are several command options and these are summarized below. Some of the options may be repeated. The package needs a shape to be specified (sphere, needle, plate or ellipse). If no shape is specified on the command line a sphere is assumed.
 
-~TableFigure {#tab-options; caption: "Command line options for PDielec"; breakable:true}
-| Option                     | Default | Purpose                                  | R[^foot1] |
-| :------------------------- | ------- | :--------------------------------------- | :-------: |
-| -program string            |         | string can be “abinit”,  “castep”, “crystal”, “gulp”, “qe”, “experiment” or “vasp” and specifies the program which generated the results to be analysed |           |
-| -method string             |         | The method is given by the string and is either ‘ap’, ‘maxwell’, ‘bruggeman’ or ‘mie’ |     ✔     |
-| -sphere                    |         | The inclusion is a sphere, the default if no other shape is given. |           |
-| -needle h k l              |         | The inclusion is a needle whose unique directionis given by the direction \[hkl\]. |     ✔     |
-| -plate h k l               |         | The inclusion is a plate whose  surface is defined by the Miller indices \(hkl\).   Note that needles and ellipsoid use  directions in crystal coordinates defined by \[hkl\].   For non-orthogonal lattices the normal to  the \(hkl\) is not necessarily the same as \[hkl\]. |     ✔     |
-| -ellipse h k l z           |         | The inclusion is an ellipsoid, whose  unique direction is given by \[hkl\],  z  specifies the eccentricity of the ellipsoid. |     ✔     |
-| -vf real                   | 0.1     | real specifies the volume fraction       |     ✔     |
-| -mf real                   | 0.0     | real specifies a mass fraction from  which the volume fraction is calculated.   The calculation requires the density of the supporting matrix. |     ✔     |
-| -matrix string             | ptfe    | The supporting matrix is defined by  the string.  Options are “ptfe”, “kbr”,  “ujol”, “air”, “vacuum”, “ldpe”, “mdpe”, “hdpe”.  If the matrix is given in this way both the  density and the permittivity of the supporting matrix are defined.  Alternatively the density and dielectric  options can be used. |           |
-| -density real              | 2.2     | real defines the density of the  supporting matrix |           |
-| -dielectric real           | 2.0     | real defines the dielectric of the  supporting matrix |           |
-| -LO h k l                  |         | The frequencies corresponding to the  longitudinal optic modes with a k vector direction (h k l) are calculated  using Equations 10 and 11 |     ✔     |
-| -LO_cart x y z             |         | As above but for Cartesian  directions   |     ✔     |
-| -sigma real                | 5.0     | real specifies the damping factor, σ,  for all modes in cm^-1^, as used in Equation 10a |           |
-| -mode_sigma k z            |         | The k’th mode is assigned a specific  σ (cm-1) given by z. |           |
-| -vmin real                 | 0.0     | real is the starting wavenumber (cm^-1^)  for the frequency range |           |
-| -vmax real                 | 300.0   | real is the final wavenumber (cm^-1^)  for the frequency range |           |
-| -i real                    | 0.2     | real is the increment used to cover  the frequency range (cm^-1^) |           |
-| -plot sstring              |         | Plot types  are specified by the string and they can be  ‘absorption’, ‘molar_absorption’, ‘real’ or ‘imaginary’ |     ✔     |
-| -excel s                   |         | Writes the results to an excel  spread sheet with the name  specified  by the string s. |           |
-| -csv s                     |         | Output is sent to a comma separated  file specified by the string s. |           |
-| -csv_ext string            |         | Output is sent to 3 comma separated  files; string_command.csv, string_frequency.csv and string_spectrum.csv |           |
-| -print                     |         | Additional output is provided from  the QM or MM calculation |           |
-| -ignore k                  |         | Ignore the kth mode (any mode below 5cm^-1^ is ignored automatically) |     ✔     |
-| -mode k                    |         | Only use the kth mode in the  calculation of the permittivity |     ✔     |
-| -threshold z1 z2           |         | The modes selected for inclusion in  the absorption calculation have to have an IR intensity greater than z1 and a  frequency greater than z2. By default z1 and z2 are 1.0e-10 and 5cm^-1^  respectively. |           |
-| -eckart                    |         | The translational modes are  projected out of the hessian before diagonalisation |           |
-| -hessian string            |         | string may be either “crystal” or  “symm”.  In the case of “crystal” the  hessian is symmetrised using the same algorithm as Crystal14.  “symm” is the default |           |
-| -optical z1 z2 z3          |         | z1,z2 and z3 define the diagonal of  the optical permittivity tensor |           |
-| -optical_tensor z1 z2 ..z9 |         | z1,..9 define the full optical permittivitytensor |           |
-| -masses string             |         | string can be either “program”, “average” or“isotopic”, meaning that the masses used in the calculation of the frequenciesare either taken from the QM program or are the average of the isotopeabundances or are the most abundant isotope mass. |           |
-| -mass string real          |         | The atomic mass of string is set to real.  This can be used to explore the effect ofisotope substitution on the calculated frequencies |     ✔     |
-| -processors int            |         | The number of processors to be used  in the calculation can be defined.  By  default all available processors are used. |           |
-| -molesof string \[int\]      |         | By default string is “cells”.  Other options are “atoms” or  “molecules”.  If ‘molecules’ is  specified then the number of atoms in a molecules must be provided |           |
-| -size real \[sigma\]         |         | Used to modify the polarisability (Eq.34) for spherical particles which incorporates the radius of the particle inmicrons(real).   It is also used to specify the dimension of thespherical particles for the Mie method.  It is also possible to specify a sizedistribution in which case the first number is the mean of the log distribution(in microns) and the second is its width (in log(microns)) |           |
+## Program Options
+The program options are summarised below, a ✔ indicates that the option can be specified more than once.  Where there is a default value, it value is shown.
+
+* -program program
+  : Program can be “abinit”,  “castep”, “crystal”, “gulp”, “qe”, “experiment” or “vasp” and specifies the program which generated the results to be analysed.
+* -method maxwell (✔)
+  : The method is given by the string and is either ‘ap’, ‘maxwell’, ‘bruggeman’ or ‘mie’.
+* -sphere (✔)
+  : The inclusion is a sphere, the default if no other shape is given.
+* -needle h k l (✔)
+  : The inclusion is a needle whose unique directionis given by the direction \[hkl\].
+* -plate h k l (✔)
+  : The inclusion is a plate whose  surface is defined by the Miller indices \(hkl\).   Note that needles and ellipsoid use  directions in crystal coordinates defined by \[hkl\].   For non-orthogonal lattices the normal to  the \(hkl\) is not necessarily the same as \[hkl\].
+* -ellipse h k l z (✔)
+  : The inclusion is an ellipsoid, whose  unique direction is given by \[hkl\],  z  specifies the eccentricity of the ellipsoid.
+* -vf 0.1 (✔)
+  : Specifies the volume fraction of inclusion.
+* -mf 0.0 (✔)
+  : Specifies a mass fraction from  which the volume fraction is calculated.   The calculation requires the density of the supporting matrix.
+* -matrix ptfe 
+  : The supporting matrix is defined by  the string.  Options are “ptfe”, “kbr”,  “ujol”, “air”, “vacuum”, “ldpe”, “mdpe”, “hdpe”.  If the matrix is given in this way both the  density and the permittivity of the supporting matrix are defined.  Alternatively the density and dielectric  options can be used.
+* -density 2.2
+  : Defines the density of the  supporting matrix.
+* -dielectric 2.0
+  : Defines the dielectric of the  supporting matrix.
+* -LO h k l (✔)
+  : The frequencies corresponding to the longitudinal optic modes with a k vector direction (h k l) are calculated  using Equations [#eq-LODynamicalMatrix].
+* -LO_cart x y z (✔)
+  : As above but for Cartesian  directions
+* -sigma 5.0 
+  : Specifies the damping factor, σ,  for all modes in cm^-1^, as used in Equation [#eq-permittivity].
+* -mode_sigma k σ (✔)
+  : The k’th mode is assigned a specific σ (cm-1).
+* -vmin 0.0
+  : Thee starting wavenumber (cm^-1^)  for the frequency range.
+* -vmax 300.0
+  : The final wavenumber (cm^-1^)  for the frequency range.
+* -i 0.2
+  : The increment used to cover  the frequency range (cm^-1^).
+* -plot absorption (✔)
+  : Plot types  are specified by the string and they can be  ‘absorption’, ‘molar_absorption’, ‘real’ or ‘imaginary’.
+* -excel filename.xlsx
+  : Writes the results to an excel  spread sheet with the specified name.
+* -csv filename.csv
+  : Output is sent to the specified comma separated  file.
+* -csv_ext filename
+  : Output is sent to 3 comma separated  files; filename_command.csv, filename_frequency.csv and filename_spectrum.csv.
+* -print
+  : Additional output is provided from  the QM or MM calculation.
+* -ignore k (✔)
+  : Ignore the kth mode (any mode below 5cm^-1^ is ignored automatically).
+* -mode k (✔)
+  : Only use the kth mode in the  calculation of the permittivity.
+* -threshold 1.0e-10 5.0
+  : The modes selected for inclusion in  the absorption calculation have to have an IR intensity greater than 1.0E-10 and a frequency greater than 5.0 cm^-1^.
+* -eckart
+  : The translational modes are  projected out of the hessian before diagonalisation.
+* -hessian symm
+  : This option can specify either “crystal” or  “symm”.  In the case of “crystal” the  hessian is symmetrised using the same algorithm as Crystal14.
+* -optical z1 z2 z3
+  : z1,z2 and z3 define the diagonal of  the optical permittivity tensor.
+* -optical_tensor z1 z2 ..z9
+  : z1,..9 define the full optical permittivity tensor.
+* -masses average
+  : Specified the mass definition to use, which can be either “program”, “average” or “isotopic”, meaning that the masses used in the calculation of the frequenciesare either taken from the QM program or are the average of the isotope abundances or are the most abundant isotope mass.
+* -mass element mass (✔)
+  : The atomic mass of the element is set to mass.  This can be used to explore the effect of isotope substitution on the calculated frequencies.
+* -processors int
+  : The number of processors to be used  in the calculation can be defined.  By  default all available processors are used.
+* -molesof cells \[number_of_atoms_per_molecule\]
+  : The default for the calculation of molar concentration is “cells”.  Other options are “atoms” or  “molecules”.  If ‘molecules’ is  specified then the number of atoms in a molecules must be provided.
+* -size  0.00001 \[sigma\]
+  : Modifies the polarisability (Eq.34) for spherical particles which incorporates the radius of the particle in microns(real).   It is also used to specify the dimension of the spherical particles for the Mie method.  It is also possible to specify a size distribution in which case the first number is the mean of the log distribution (in microns) and the second is its width (in log(microns)).
 ~
-[^foot1]: This column indicates if a command line option can be used more than once
 
 The shape options; ellipse, slab and needle, specify a unique axis \[hkl\] using the crystal axes of the unit cell. PDielec transforms these to a cartesian coordinate system using the unit cell lattice vectors. In the case of a slab morphology the unique direction is normal to the surface specified by its Miller indices \(hkl\. The definitions of the various depolarisation tensors are indicated in Table below.
 

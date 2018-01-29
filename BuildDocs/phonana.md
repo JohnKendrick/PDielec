@@ -28,9 +28,10 @@ Bibliography: ./pdielec.bib
 
 [TOC]
 
+
 # INTRODUCTION
 
-Phonana is a 'helper' program which uses the underlying modules of PDielec to read an output file from an MM or QM calculation of the phonon modes in a crystal.  The phonon modes are analysed and the percentage of molecular centre-of-mass and rigid bodt rotational motion in each mode is calculated.  Using the results of the analysis it is possible to differentiate between inter- and intra-molecular phonon modes (see for instance Jepsen et al [@Jepsen2007]).
+Phonana is a 'helper' program which uses the underlying modules of PDielec to read an output file from an MM or QM calculation of the phonon modes in a crystal.  The phonon modes are analysed and the percentage of molecular centre-of-mass and rigid body rotational motion in each mode is calculated.  Using the results of the analysis it is possible to differentiate between inter- and intra-molecular phonon modes (see for instance Jepsen et al [@Jepsen2007]).
 
 # THEORY
 
@@ -62,9 +63,9 @@ For the projection operator which will project out all components of translation
 \fieldbf{V}^{x} = \begin{pmatrix} \fieldbf{V}^{x}_{1} \\ \fieldbf{V}^{x}_{2}\\ \vdots \end{pmatrix} 
 ~
 
-There are two other projection operators describing translation along the y- and z-axis.  In a similar fashion it is possible to describe an infinitesimal molecular rotation using a vector V and therefore constructing a projection operator to remove rigid-body rotation.
+There are two other projection operators describing translation along the y- and z-axis.  
 
-If the coordinates of atom $a$ relative to the centre-of-mass of the molecule are $x, y \text{ and } z$, the component of the projection vector, $\tensorbf{V}$ representing rotation about the x-axis in the yz-plane is;
+In a similar fashion it is possible to describe an infinitesimal molecular rotation using a vector V and therefore constructing a projection operator to remove rigid-body rotation.  If the coordinates of atom $a$ relative to the centre-of-mass of the molecule are $x, y \text{ and } z$, the component of the projection vector, $\tensorbf{V}$ representing rotation about the x-axis in the yz-plane is;
 
 
 ~ Equation {#eq-rotyz}
@@ -131,7 +132,7 @@ relationship between the mass weighted normal mode;
 \sqrt{ m_a } \fieldbf{\Delta x}_{a,p} = \fieldbf{L}_{a,p} Q_p
 ~
 
-As proposed by Hug and Hasler [@Hug2005c], since the kinetic energy can be expressed as
+As proposed by Hug and Haesler [@Hug2005c], since the kinetic energy can be expressed as
 atomic contributions, consideration of the virial theorem indicates that
 this is true also for the potential energy. Using mass weighted
 Cartesian coordinates for convenience, an analysis of the phonon modes
@@ -189,57 +190,80 @@ Finally a new cell with the same dimensions as the original is constructed.  Whe
 
 The projection operators, Equation [#eq-finaloperator], can now be constructed and the relative energies calculated using Equations [#eq-energy-cm], [#eq-energy-rot] and [#eq-energy-vib]. 
 
-# QM/MM PROGRAMS
+## QM/MM PROGRAMS
 
 The MM / QM packages supported are summarised below.
 
-**VASP** -program vasp OUTCAR
-The name provided on the command line is an OUTCAR file. The OUTCAR is read by phonana to determine the unit cell, atomic masses, frequencies, normal modes, Born charge tensors and optical permittivity. The VASP run can be a DFPT or numerical calculation of the response.
+* VASP (-program vasp OUTCAR)
+  : The name provided on the command line is an OUTCAR file. The OUTCAR is read by phonana to determine the unit cell, atomic masses, frequencies, normal modes, Born charge tensors and optical permittivity. The VASP run can be a DFPT or numerical calculation of the response.
 
-**CASTEP** -program castep seedname
-The name provided on the command line is the seedname for the calculation. The corresponding seedname.castep file in the current directory is read and processed to determine the unit cell, atomic masses, optical permittivity and born charge tensors. The normal modes and their frequencies are determined from the seedname.phonon file.  The CASTEP run needs to be a DFPT (phonon+efield) task.
+* CASTEP (-program castep seedname)
+  : The name provided on the command line is the seedname for the calculation. The corresponding seedname.castep file in the current directory is read and processed to determine the unit cell, atomic masses, optical permittivity and born charge tensors. The normal modes and their frequencies are determined from the seedname.phonon file.  The CASTEP run needs to be a DFPT (phonon+efield) task.
 
-**CRYSTAL** -program crystal outputfilename
-The name on the command line is a file ending in .out, containing the output of a CRYSTAL14 run. The contents of this file alone are sufficient to provide the unit cell, atomic masses, frequencies, normal modes and Born charge tensors. However, the number of significant figures for the normal modes is not sufficient for an accurate calculation and it is therefore recommended that the HESSFREQ.DAT and BORN.DAT files are also made available. If they are present in the directory where phonana is run from , it uses these files to calculate the Born charge tensors, frequencies and normal modes. By default CRYSTAL projects out the pure translational modes of the system before calculating the frequencies, this can also done by the phonana package. The CRYSTAL calculation needs to be a frequency calculation (FREQCALC) with the infrared intensity (INTENS) selected. The default algorithm does not calculate the optical permittivity, so
-this needs to be provided on the command line. However, if the CPHF or
-CPKS algorithm is used for the frequency calculation, the optical permittivity
-is calculated and PDielec will automatically read it from the output file. By de-
-fault CRYSTAL projects out the pure translational modes of the system before
-calculating the frequencies, this can also done by the PDielec package.Small differences in the calculated frequencies between the CRYSTAL program and phonana have been observed. These have been found to be due to a slightly different method for symmetrising the 2^nd^ derivative matrix, because of this an optional directive "-hessian crystal" can be used to indicate that phonana should use the same symmetrisation as CRYSTAL14.
+* CRYSTAL (-program crystal outputfilename)
+  : The name on the command line is a file ending in .out, containing the output of a CRYSTAL14 run. The contents of this file alone are sufficient to provide the unit cell, atomic masses, frequencies, normal modes and Born charge tensors. However, the number of significant figures for the normal modes is not sufficient for an accurate calculation and it is therefore recommended that the HESSFREQ.DAT and BORN.DAT files are also made available. If they are present in the directory where phonana is run from , it uses these files to calculate the Born charge tensors, frequencies and normal modes. By default CRYSTAL projects out the pure translational modes of the system before calculating the frequencies, this can also done by the phonana package. The CRYSTAL calculation needs to be a frequency calculation (FREQCALC) with the infrared intensity (INTENS) selected. The default algorithm does not calculate the optical permittivity, so this needs to be provided on the command line. However, if the CPHF or CPKS algorithm is used for the frequency calculation, the optical permittivity is calculated and PDielec will automatically read it from the output file. By default CRYSTAL projects out the pure translational modes of the system before calculating the frequencies, this can also done by the PDielec package.Small differences in the calculated frequencies between the CRYSTAL program and phonana have been observed. These have been found to be due to a slightly different method for symmetrising the 2^nd^ derivative matrix, because of this an optional directive "-hessian crystal" can be used to indicate that phonana should use the same symmetrisation as CRYSTAL14.
 
-**ABINIT** -program abinit outputfilename
-The output file should come from a run containing three datasets. One to calculate the wavefunction at the optimized geometry, one to calculate the field perturbations and one to calculate the second derivatives. Examples of input files and output files are available with the distribution.
+* ABINIT (-program abinit outputfilename)
+  : The output file should come from a run containing three datasets. One to calculate the wavefunction at the optimized geometry, one to calculate the field perturbations and one to calculate the second derivatives. Examples of input files and output files are available with the distribution.
 
-**QE** -program qe outputfilename
-The output file is the dynamical matrix file, specified by "filedyn" in a run of the quantum espresso phonon package. Examples of input and output files are given in the phonana distribution
+* QE (-program qe outputfilename)
+  : The output file is the dynamical matrix file, specified by "filedyn" in a run of the quantum espresso phonon package. Examples of input and output files are given in the phonana distribution
 
-**GULP** -program gulp outputfilename
-The name on the command line is a file ending in .gout, containing the output of a GULP run. The contents of this file alone are sufficient to provide the unit cell, atomic masses, frequencies, normal modes, Born charge tensors and optical permittivity. Because GULP only writes out the Born charge matrices for the asymmetric unit, it is necessary to run a frequency calculation using P1 symmetry and a complete unit cell. The key words; nosymm, phonon, intensity, eigen and cart are recommended for the GULP calculation. In the case that no shells are used in the calculation the optical permittivity is not available in the output and it is necessary to provide it on the command line (see -optical and -optical\_tensor options below).
+* GULP (-program gulp outputfilename)
+  : The name on the command line is a file ending in .gout, containing the output of a GULP run. The contents of this file alone are sufficient to provide the unit cell, atomic masses, frequencies, normal modes, Born charge tensors and optical permittivity. Because GULP only writes out the Born charge matrices for the asymmetric unit, it is necessary to run a frequency calculation using P1 symmetry and a complete unit cell. The key words; nosymm, phonon, intensity, eigen and cart are recommended for the GULP calculation. In the case that no shells are used in the calculation the optical permittivity is not available in the output and it is necessary to provide it on the command line (see -optical and -optical\_tensor options below).
 
-# OPTIONS
+## COMMAND OPTIONS
 
-There are several command options and these are summarized below. Some of the options may be repeated. 
+There are several command options and these are summarized in below. Some of the options may be repeated and these are indicated by a ✔.  Where there is a default its value is show.
 
-~TableFigure {#tab-options; caption: "Command line options for phonana <br>^1^This column indicates if a command line option can be used more than once"; breakable:true}
-| Option                     | Default | Purpose                                  | R^1^ |
-| :------------------------- | ------- | :--------------------------------------- | :-------: |
-| -program string            |         | string can be “abinit”,  “castep”, “crystal”, “gulp”, “qe”, “experiment” or “vasp” and specifies the program which generated the results to be analysed |           |
-| -vmin real                 | 0.0     | real is the starting wavenumber (cm^-1^)  for the frequency range |           |
-| -vmax real                 | 5000.0  | real is the final wavenumber (cm^-1^)  for the frequency range |           |
-| -radius element real       |         | The covalent radius of 'element' is set to real |         ✔     |
-| -toler real       |   0.1   | Set the tolerance value used for calculating bonds. A bond is created between two atoms whose distance apart is less than scale*(radi+radj)+toler, where radii is the covalent radius of atom i |               |
-| -scale real       |   1.1   | Set the scale factor for calculating bonds |               |
-| -excel s                   |         | Writes the results to an excel  spread sheet with the name  specified  by the string s. |           |
-| -csv s                     |         | Output is sent to a comma separated  file specified by the string s. |           |
-| -print                     |         | Additional output is provided from  the QM or MM calculation |           |
-| -ignore k                  |         | Ignore the kth mode  |     ✔     |
-| -mode k                    |         | Only use the kth mode in the analysis |     ✔     |
-| -eckart                    |         | The translational modes are  projected out of the hessian before diagonalisation |           |
-| -hessian string            |         | string may be either “crystal” or  “symm”.  In the case of “crystal” the  hessian is symmetrised using the same algorithm as Crystal14.  “symm” is the default |           |
-| -masses string             |         | string can be either “program”, “average” or“isotopic”, meaning that the masses used in the calculation of the frequenciesare either taken from the QM program or are the average of the isotopeabundances or are the most abundant isotope mass. |           |
-| -mass string real          |         | The atomic mass of string is set to real.  This can be used to explore the effect ofisotope substitution on the calculated frequencies |     ✔     |
-~
+* -program program
+  : program can be “abinit”,  “castep”, “crystal”, “gulp”, “qe”, “experiment” or “vasp” and specifies the program which generated the results to be analysed.
+* -vmin vmin (0.0)
+  : vmin is the starting wavenumber (cm^-1^)  for the frequency range.
+* -vmax vmax (9000.0)
+  : vmax is the final wavenumber (cm^-1^)  for the frequency range
+* -radius element value (✔)
+  : The covalent radius of 'element' is set to value
+* -toler toler (0.1)
+  : Set the tolerance value used for calculating bonds. A bond is created between two atoms whose distance apart is less than scale*(radi+radj)+toler, where radii is the covalent radius of atom i
+* -scale scale (1.1)
+  : Set the scale factor for calculating bonds
+* -excel filename
+  : Write the results to an excel  spread sheet with the name  specified.
+* -csv filename
+  : Output is sent to a comma separated  file specified.
+* -print
+  : Additional output is provided from  the QM or MM calculation
+* -ignore k (✔)
+  : Ignore the kth mode
+* -mode k (✔)
+  : Only use the kth mode in the analysis
+* -eckart
+  : The translational modes are  projected out of the hessian before diagonalisation
+* -hessian string (symm)
+  : string may be either “crystal” or  “symm”.  In the case of “crystal” the  hessian is symmetrised using the same algorithm as Crystal14
+* -masses mass_definition (average)
+  : mass_definition can be either “program”, “average” or “isotopic”, meaning that the masses used in the calculation of the frequenciesare either taken from the QM program or are the average of the isotopeabundances or are the most abundant isotope mass.
+* -mass element mass (✔)
+  : The atomic element set to the value mass.  This can be used to explore the effect of isotope substitution on the calculated frequencies
+* -viewer
+  : Opens a graphics window showing the molecular structure of the unit cell and an the displacement of the phonon modes as arrows
 
+
+## INSTALLATION
+Phonana doesn't need any extra installation above what is needed to run PDielec, except if the the -viewer option is used.  The viewer is a Mayavi application and needs the following installed.
+
+    sudo pip install vtk
+    sudo pip install pyvtk
+    sudo pip instal  vtkinterface
+
+The installation of these modules can be performed as root, if all users on the machine require access to them, or they can be installed in the user's file system using 'pip --user' instead of 'pip'
+
+On some Linux systems they installation of VTK can cause problems.  The most common of which can be an error message indicating that the vtkOpenGLKitPython module cannot be found.
+
+This can be fixed by adding the vtk/ directory from your Python site-packages directory to your LD_LIBRARY_PATH.  If your LD_LIBRARY_PATH is otherwise empty and (for this example) the VTK pacakge was installed for all users;
+
+     export LD_LIBRARY_PATH=/usr/lib/python3.6/site-packages/vtk
 
 # EXAMPLES
 
@@ -267,7 +291,7 @@ The example of a calculation on isoleucine using Castep is available in the Exam
 
 The program first finds the four molecules of isoleucine in the unit cell of the crystal structure.  After summarising the the unit cell information, the elements of the atoms are given.  The ordering of the atoms at this point is different to the ordering in the original cell and in the QM calculation.  The program lists the cartesian and fractional coordinates.  Again these will not be the same as in the original calculation.  For each molecule the program lists the index numbers of the atoms in the molecule, the molecular mass and the centres of mass of the molecules. The results are summarised in Table [#tab-isoleucine-mols].
 
-~TableFigure {#tab-isoleucine-mols; caption: "Molecular constituents of the isoleucine unit cell (centre-of-masses are in fractional coordinates)"}
+~TableFigure {#tab-isoleucine-mols; caption: "Molecular constituents of the isoleucine unit cell (centre-of-masses are in fractional coordinates)"; page-align:forcehere}
 
 | Molecule | Mass    | CM~a~     | CM~b~     | CM~c~     |
 |----------|---------|----------|----------|----------|
@@ -279,7 +303,7 @@ The program first finds the four molecules of isoleucine in the unit cell of the
 
 Table [#tab-isoleucine-results] shows that results of the analyis of the phonon modes with frequencies below 100 cm^-1^.  The first 3 modes should have zero frequency as they are the translationally invariant modes of the lattice.  The negative number shown here actually indicates that the mode has an imaginary frequency.  As can be see under the column %col-cme they are almost completely associated with molecular centre-of-mass motion.  This is true also of the lowest non-zero frequency at 32,81 cm^-1^ and to some extent of the next mode at 39.73 cm^-1^.  Although for this latter mode there is considerable contribution from rigid-body rotational motion (see the %mol-rot column).  As the frequency of the phonon mode increases the contribution from rigid-body motion generally decreases and contribution from vibrational mode (see the %vib column) increases,  The total contribution from molecular motion is summarised in the last four columns. 
 
-~ TableFigure {#tab-isoleucine-results; caption: "Isoleucine: percentage contribtions of the centre-of-mass and the rotational molecular modes to each phonon mode"}
+~ TableFigure {#tab-isoleucine-results; caption: "Isoleucine: percentage contribtions of the centre-of-mass and the rotational molecular modes to each phonon mode"; page-align:forcehere}
 
 | Freq(cm-1) | %mol-cme | %mol-rot | %vib | %mol-0 | %mol-1 | %mol-2 | %mol-3 |
 |------------|----------|----------|------|-------|-------|-------|-------|
@@ -316,7 +340,7 @@ The -radius option has been used to set the covalent radius of Ba to a small val
 
 The results of the analysis are shown in Table [#tab-batio3-results] below.  In this example the lowest 3 modes (which have not been projected) show that there is a problem with translational invariance of the calculation.  The frequencies should be 0.0.  The fact that they are mainly centre-of-mass modes is shown by the high percentage in the %mol-cme column.  The energy in these three modes seems to be mainly in molecule 1, which is the Ba^2+^ ion.  The modes at 198.01 cm^-1^ also have a large centre-of-mass component, this time mainly coming from molecule 0, which is the TiO~3~ moeity. Above 200 cm^-1^ there is little centre-of-mass contribution to the energy and all the modes are dominated by the TiO~3~ group.
 
-~ TableFigure {#tab-batio3-results; caption: "BaTiO~3~: percentage contribtions of the centre-of-mass and the rotational molecular modes to each phonon mode"}
+~ TableFigure {#tab-batio3-results; caption: "BaTiO~3~: percentage contribtions of the centre-of-mass and the rotational molecular modes to each phonon mode"; page-align:forcehere}
 
 | Freq(cm-1) | %mol-cme | %mol-rot | %vib | %mol-0 | %mol-1 |
 |------------|----------|----------|------|--------|--------|
@@ -336,6 +360,23 @@ The results of the analysis are shown in Table [#tab-batio3-results] below.  In 
 | 493.63     | 0.1      | 17.4     | 82.5 | 100.0  | 0.0    |
 | 493.63     | 0.1      | 17.4     | 82.5 | 100.0  | 0.0    |
 ~
+
+### Isoleucine Visualisation
+Using the same example as used in [#sec-isoleucine] the command;
+
+    phonana -program castep phonon castep -viewer
+    
+was used to raise a basic 3D molecular viewer showing the molecular structure in the unit-cell and the displacements corresponding to a phonon mode as shown in Figure [#fig-viewer].
+
+~ Figure { #fig-viewer; caption: "The Phonan 3D Viewer"; page-align:here }
+![img-viewer]
+~
+
+[img-viewer]: Figures/phonana_viewer.png { width:90%; }
+
+The graphical window responds to mouse presses in the usual way.  Rotation can be carried out with the left mouse button .  The right or wheel mouse buttons control the zoom.  The middle button controls the panning.  Below the graphical window is a mode selector, which indicates the mode selected and the range of modes which can be selected using the slider. The frequency of the selected mode is indicated below the slider.  On changing the selected mode the displacements (shown as arrows) also change.
+
+There is an animate button which will start an animation of the selected mode.  The animations take some time to start (and finish).  Once started there is new small window which pops up, this can be ignored.  It is best to start and stop the animation using the 'Animate' button on the main window.  Another press of the 'Animate' button will stop the animation and will show the original displacement vector view.  The time taken for the change of view is substantial and the user needs to be patient.
 
 [BIB]
 

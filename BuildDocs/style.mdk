@@ -1,6 +1,7 @@
 package: svg
 package: hyperref
 package: bm
+package: float
 <!-- Reasonable bibliography style. -->
 csl style: ieee
 cite style: numeric
