@@ -969,7 +969,7 @@ def calculate_centre_of_mass(xyzs, masses):
 
 def orthogonalise_projection_operator(ps):
    '''Orthogonalise the projection operators ps'''
-   # The projection operator has dimension [6][natoms*3]
+   # The projection operator has dimension [6,natoms*3]
    maxcyc = 10
    cycle = 0
    max_overlap = 1.0
@@ -1005,25 +1005,25 @@ def construct_projection_operator(atoms, xyzs, masses, nats):
    y = 1
    z = 2
    for i,mass,xyz in zip(atoms,masses,xyzs):
-       ps[0][i*3+x] = math.sqrt(mass)
-       ps[1][i*3+y] = math.sqrt(mass)
-       ps[2][i*3+z] = math.sqrt(mass)
+       ps[0,i*3+x] = math.sqrt(mass)
+       ps[1,i*3+y] = math.sqrt(mass)
+       ps[2,i*3+z] = math.sqrt(mass)
        # coordinates relative to the centre of mass
        relxyz = math.sqrt(mass) * (xyz - cm)
        # First rotations about x in the y/z plane
        # zz is really r*sin(theta), and sin(theta) = zz/r
        # yy is really r*cos(theta), and cos(theta) = yy/r
-       ps[3][i*3+x] = 0.0
-       ps[3][i*3+y] = -relxyz[z]
-       ps[3][i*3+z] = +relxyz[y]
+       ps[3,i*3+x] = 0.0
+       ps[3,i*3+y] = -relxyz[z]
+       ps[3,i*3+z] = +relxyz[y]
        # Next rotations about y in the x/z plane
-       ps[4][i*3+x] = +relxyz[z]
-       ps[4][i*3+y] = 0.0
-       ps[4][i*3+z] = -relxyz[x]
+       ps[4,i*3+x] = +relxyz[z]
+       ps[4,i*3+y] = 0.0
+       ps[4,i*3+z] = -relxyz[x]
        # Next rotations about z in the x/y plane
-       ps[5][i*3+x] = -relxyz[y]
-       ps[5][i*3+y] = +relxyz[x]
-       ps[5][i*3+z] = 0.0
+       ps[5,i*3+x] = -relxyz[y]
+       ps[5,i*3+y] = +relxyz[x]
+       ps[5,i*3+z] = 0.0
    return ps
    
 def calculate_energy_distribution(cell, frequencies, normal_modes, debug=False):
