@@ -49,6 +49,8 @@ def main():
         print("             In the case of Abinit file1 must be the output file name of the abinit calculation")
         print("             In the case of phonopy file1 must the qpoints.yaml file")
         print("             In the case of experiment the file should be a file containing experimental information")
+        print("         -viewer ")
+        print("             Requests a 3D view of the phonon modes")
         print("         -radius element radius")
         print("             Change the value of the covalent radius for the given element")
         print("         -toler tolerance")
@@ -115,6 +117,7 @@ def main():
     csvfile        = ""
     excelfile      = ""
     hessian_symmetrisation = "symm"
+    viewer3D = False
 
     # check usage
     if len(sys.argv) <= 1:
@@ -134,6 +137,8 @@ def main():
             if program == "phonopy":
                 itoken += 1
                 qmprogram = tokens[itoken]
+        elif token == "-viewer":
+            viewer3D = True
         elif token == "-mass":
             itoken += 1
             element = tokens[itoken]
@@ -445,16 +450,20 @@ def main():
     # Reorder the atoms so that the mass weighted normal modes order agrees with the ordering in the new cell
     nmodes,nions,temp = np.shape(normal_modes)
     new_normal_modes = np.zeros( (nmodes,3*nions) )
+    new_mass_weighted_normal_modes = np.zeros( (nmodes,3*nions) )
     masses = newcell.atomic_masses
     for imode,mode in enumerate(mass_weighted_normal_modes):
         for index,old_index in enumerate(old_order):
             i = index*3
             j = old_index*3
-            new_normal_modes[imode][i+0] = mode[old_index][0] 
-            new_normal_modes[imode][i+1] = mode[old_index][1] 
-            new_normal_modes[imode][i+2] = mode[old_index][2] 
+            new_mass_weighted_normal_modes[imode,i+0] = mode[old_index][0] 
+            new_mass_weighted_normal_modes[imode,i+1] = mode[old_index][1] 
+            new_mass_weighted_normal_modes[imode,i+2] = mode[old_index][2] 
+            new_normal_modes[imode,i+0] = new_mass_weighted_normal_modes[imode,i+0] / math.sqrt(masses[index])
+            new_normal_modes[imode,i+1] = new_mass_weighted_normal_modes[imode,i+1] / math.sqrt(masses[index])
+            new_normal_modes[imode,i+2] = new_mass_weighted_normal_modes[imode,i+2] / math.sqrt(masses[index])
     # Calculate the distribution in energy for the normal modes
-    mode_energies = Calculator.calculate_energy_distribution(newcell, frequencies_cm1, new_normal_modes)
+    mode_energies = Calculator.calculate_energy_distribution(newcell, frequencies_cm1, new_mass_weighted_normal_modes)
     # Output the final result
     title = ['Freq(cm-1)','%mol-cme','%mol-rot','%vib']
     for i in range(nmols):
@@ -484,6 +493,10 @@ def main():
         workbook.close()
     if fd_csvfile is not None:
         fd_csvfile.close()
+    if viewer3D:
+        from Python.ViewerClass import ViewerClass
+        viewer = ViewerClass(newcell,new_normal_modes,frequencies_cm1)
+        viewer.configure_traits()
 
 if __name__ == "__main__":
     main()
