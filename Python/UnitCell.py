@@ -30,6 +30,7 @@ class UnitCell:
         self.xyz_coordinates = []
         self.element_names = []
         self.atom_labels = []
+        self.bonds = []
         self.nions = 0
         self.molecules = []
         self.atomic_masses = []
@@ -42,6 +43,42 @@ class UnitCell:
             self.lattice[1] = b
             self.lattice[2] = c
         self._calculate_reciprocal_lattice(self.lattice)
+
+    def getBoundingBox(self):
+        # Return a box with 12 edges which represent the unit cell in cartesian space
+        #  7---6
+        # /|  /|
+        # 3---2|
+        # |4--|5
+        # 0---1/
+        # Corners in abc space
+        corners = []
+        corners.append( np.array( [0.0,0.0,0.0] ) )
+        corners.append( np.array( [1.0,0.0,0.0] ) )
+        corners.append( np.array( [1.0,1.0,0.0] ) )
+        corners.append( np.array( [0.0,1.0,0.0] ) )
+        corners.append( np.array( [0.0,0.0,1.0] ) )
+        corners.append( np.array( [1.0,0.0,1.0] ) )
+        corners.append( np.array( [1.0,1.0,1.0] ) )
+        corners.append( np.array( [0.0,1.0,1.0] ) )
+        # Now calculate the corners in cartesian space
+        corners_xyz = [ self.convert_abc_to_xyz(corner) for corner in corners ]
+        # Now calculate the edges each edge is a tuple with a beginning coordinate and an end coordinate
+        edges = []
+        edges.append( (corners_xyz[1] , corners_xyz[0]) )
+        edges.append( (corners_xyz[2] , corners_xyz[1]) )
+        edges.append( (corners_xyz[3] , corners_xyz[2]) )
+        edges.append( (corners_xyz[3] , corners_xyz[0]) )
+        edges.append( (corners_xyz[4] , corners_xyz[0]) )
+        edges.append( (corners_xyz[5] , corners_xyz[1]) )
+        edges.append( (corners_xyz[6] , corners_xyz[2]) )
+        edges.append( (corners_xyz[7] , corners_xyz[3]) )
+        edges.append( (corners_xyz[5] , corners_xyz[4]) )
+        edges.append( (corners_xyz[6] , corners_xyz[5]) )
+        edges.append( (corners_xyz[7] , corners_xyz[6]) )
+        edges.append( (corners_xyz[7] , corners_xyz[4]) )
+        return edges
+         
 
     def print(self):
         print_reals('Unit Cell a,b,c ',[self.a, self.b, self.c], format='{:12.6f}')
@@ -284,8 +321,6 @@ class UnitCell:
                     pass
             # end for abc 
         # end for i,a
-        #jk for atom_index in range(self.nions):
-            #jk print('Bonds from atom', atom_index, bondedToAtom[atom_index])
         # 
         # Now we have to find how many molecules we have in the cell
         # There must be at least one molecule in the cell and it must contain the first atom
@@ -297,6 +332,7 @@ class UnitCell:
         molID = -1
         # We stop when all the atoms in the original cell belong to a molecule
         remainingAtoms = [ atom for atom in range(self.nions) ]
+        bonds = []
         while len(remainingAtoms) > 0:
             #jk print("Remaining atoms")
             #jk print(remainingAtoms)
@@ -324,6 +360,7 @@ class UnitCell:
                             # The image of j in the original cell might not be available, and j might be bonded
                             if jx in remainingAtoms and not j in belongsToMolecule:
                                 # if j was not already in a molecule then we have new information
+                                bonds.append( (i,j) )
                                 moreAtomsToBeFound = True
                                 molecules[useThisMolecule].append(j)
                                 belongsToMolecule[j] = useThisMolecule
@@ -386,13 +423,31 @@ class UnitCell:
                 new_atom_index.append(new_index)
                 new_index += 1
             new_molecules.append(new_atom_index)
+        # as well as being able to go from the new order and look up the old order
+        # we need to be able to take the old order and look up what the new order is
+        invert_old_order = np.zeros_like(old_order)
+        for i,j in enumerate(old_order):
+            invert_old_order[j] = i
+        new_bonds = []
+        for bond in bonds:
+            i,j = bond
+            ix = invert_old_order[index_supercell[i]]
+            jx = invert_old_order[index_supercell[j]]
+            new_bonds.append( (ix,jx) )
         new_unit_cell = UnitCell( self.a, self.b, self.c, self.alpha, self.beta, self.gamma )
         new_unit_cell.set_fractional_coordinates(new_fractional.tolist())
         new_unit_cell.set_element_names(new_element_names)
         new_unit_cell.set_atomic_masses(new_masses)
         new_unit_cell.set_molecules(new_molecules)
+        new_unit_cell.set_bonds(new_bonds)
         return new_unit_cell, len(new_molecules), old_order
 
+    def set_bonds(self, bonds):
+        '''Define a list of bonds for the unit cell'''
+        self.bonds = bonds
+        print('BONDS',self.bonds)
+        return
+            
     def set_molecules(self, molecules):
         '''Define a list of molecules, each molecule is a list of atom coordinates'''
         self.molecules = molecules
