@@ -255,7 +255,8 @@ Phonana doesn't need any extra installation above what is needed to run PDielec,
 
     sudo pip install vtk
     sudo pip install pyvtk
-    sudo pip instal  vtkinterface
+    sudo pip install  vtkinterface
+    sudo pip install  mayavi
 
 The installation of these modules can be performed as root, if all users on the machine require access to them, or they can be installed in the user's file system using 'pip --user' instead of 'pip'
 

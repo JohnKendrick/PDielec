@@ -465,9 +465,10 @@ def mie_scattering(dielectric_medium, dielecv, shape, L, vf, size, size_mu, size
        vf is the volume fraction of filler
        Mie only works for spherical particles, so shape, and L parameters are ignored
        The routine returns the effective dielectric constant"""
-    import PyMieScatt as ps
+    # import Python.PyMieScatt as ps
     from scipy.integrate import trapz
     from scipy.stats import lognorm
+    from Python.PyMieScatt.Mie import MieS1S2
     # define i as a complex number
     i = complex(0,1)
     # We need to taken account of the change in wavelength and the change in size parameter due to the 
@@ -522,7 +523,7 @@ def mie_scattering(dielectric_medium, dielecv, shape, L, vf, size, size_mu, size
                 # The size parameter is 2pi r / lambda 
                 x = 2 * PI * r / lambda_vacuum_mu
                 # Calculate the S1 and S2 scattering factors, and store in a list
-                s1,s2 = ps.MieS1S2(refractive_index, x*refractive_index_medium, 1)
+                s1,s2 = MieS1S2(refractive_index, x*refractive_index_medium, 1)
                 s1_factors.append(s1)
             # Now integrate
             s1 = trapz(s1_factors*ndp,dp)
@@ -539,7 +540,7 @@ def mie_scattering(dielectric_medium, dielecv, shape, L, vf, size, size_mu, size
         else:
             # Calculate the scattering factors at 0 degrees 
             #jk print("refractive_index, size, refractive_index_medium", refractive_index, size, refractive_index_medium)
-            s1,s2 = ps.MieS1S2(refractive_index, size*refractive_index_medium, 1)
+            s1,s2 = MieS1S2(refractive_index, size*refractive_index_medium, 1)
         # qext,qsca,qabs,g,qpr,qback,qratio = ps.AutoMieQ(refractive_index, wavelength_nm, diameter_nm)
         #jk print('s1,s2',s1,s2)
         #jk print('qext,qsca,qabs',qext,qsca,qabs)

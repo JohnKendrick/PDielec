@@ -20,22 +20,16 @@ The package is suited for the calculation of the complex, frequency dependent pe
 
 == Installation
 The pdielec package is written in Python and has been tested using Python 2.7 and Python 3.6.4 on Linux and in Windows 10.
-The package is available on GitHub and can be downloaded from https://github.com/JohnKendrick/PDielec
-An auxilliary program, preader, is also distributed.  This command summarises the output from the solid state packages as a csv file which can be simply read as a spread sheet.
+Auxilliary programs, preader and phonana are also distributed.  
 
- git clone https://github.com/JohnKendrick/PDielec.git
+preader summarises the outputs from the solid state packages as a csv file which can be simply read as a spread sheet.
+
+phonana analyses a single file and reports the percentages of internal and external motion in each mode.  It also has a basis 3D viewer which can be used to visualise a phonon mode.
+
 
 === Linux
-Both Python 2.7 and Python 3 or supported.  Install Python using the package manager for your version of Linux or get your IT manager to do it for you..  In addition install python versions of yaml, numpy, scipy, pymiescatt, pyyaml, xlsxwriter, termcolor and matplotlib.  They can be installed using the pip program in Python.  If the user does not have administrator rights on the machine then the use of pip install --user will install the python modules in a user's directory.  If the user does have administrator rights and wants to install the packages for all users then the '--user' option can be omitted.
 
- pip install --user numpy
- pip install --user scipy
- pip install --user matplotlib
- pip install --user PyYaml
- pip install --user PyMieScatt
- pip install --user XlsxWriter
- pip install --user termcolor
-
+The package is available on GitHub and can be downloaded from https://github.com/JohnKendrick/PDielec.
 cd to a directory where PDielec will be installed and use git to clone a copy of the program.  I use a 'Software/' directory in my home directory to store programs, so for me the commands to obtain PDielec would look like this.
 
   cd ~/Software
@@ -49,6 +43,55 @@ This will create a directory \~/Software/PDielec.  To make the program generally
 This copies the commands and modules to the \~/bin directory which should be included in your PATH environment variable.
 
  export PATH=~/bin;$PATH
+
+
+==== Anaconda
+Anaconda is a Python package manager and is useful when trying out different versions of Python as there is a very convenient environment manager.  Anaconda can be installed as a user program and so root access to the computer is not needed.  The software can be downloaded from https://conda.io/miniconda.html or https://www.anaconda.com/download/.  Unless you are interested in the full package the miniconda installation should be sufficient for installing the rest of the modules needed for the PDielec installation.
+
+As an example here is an installation using a Python 2.7 environment.  Using 'pip install' means that the anaconda build system is bypassed.ld system in Anaconda normally makes sure only compatible software versions are installed, but this seems to cause problems in this case.  The Mie scattering section of the code does not work in the Python 2.7 environment becuae there is some incompatibility in the PyMieScatt code.   
+
+
+   conda create  --name pdielec2 python=2
+   conda install --name pdielec2 mayavi
+   conda install --name pdielec2 scipy
+   source activate pdielec2
+   pip install matplotlib
+   pip install termcolor
+   pip install xlsxwriter
+   pip install pyyaml
+
+Here is an example of creating a Python 3 environment in Anaconda
+
+   conda create  --name pdielec3 python=3
+   conda install --name pdielec3 -c conda-forge mayavi
+   conda install --name pdielec3 -c conda-forge scipy
+   source activate pdielec3
+   pip install matplotlib
+   pip install termcolor
+   pip install xlsxwriter
+   pip install pyyaml
+
+
+==== Using pip (only needed if not using anaconda)
+If you are working in an environment with Python already installed then it is possible to use pip to add the additional modules that are needed.  If the user does not have administrator rights on the machine then the use of pip install --user will install the python modules in a user's directory.  If the user does have administrator rights and wants to install the packages for all users then the '--user' option can be omitted.
+
+  pip install --user numpy
+  pip install --user scipy
+  pip install --user matplotlib
+  pip install --user PyYaml
+  pip install --user XlsxWriter
+  pip install --user termcolor
+
+Additional modules are needed if you wish to use the viewer option in phonana.  The viewer makes use of the vtk and mayavi modules which often cause problems with dependencies.
+
+  pip install --user vtk
+  pip install --user pyvtk
+  pip install --user vtkinterface
+  pip install --user mayavi
+
+On some installations an error message appears on running phonana indicating that the vtkPython module cannot be found.  This can be solved by adding the vtk package installation directory.  For example;
+
+  export LD_LIBRARY_PATH=/usr/lib/python3.6/site-packages/vtk
 
 
 === Windows
@@ -75,7 +118,33 @@ Once you have Git installed open the "Git bash" shell and create the following d
 
 From the web url http://www.equation.com/servlet/equation.cmd?fa=make download the 64-bit version of make.exe and copy it into your bin/ directory.  You should find this directory in c:\users\yourusername\bin in the file manager.
 
-==== Install Python
+==== Anaconda
+Anaconda is a Python package manager and is useful when trying out different versions of Python as there is a very convenient environment manager.  Anaconda can be installed as a user program and so root access to the computer is not needed.  The software can be downloaded from https://conda.io/miniconda.html or https://www.anaconda.com/download/.  Unless you are interested in the full package the miniconda installation should be sufficient for installing the rest of the modules needed for the PDielec installation.
+
+As an example here is an installation using a Python 2.7 environment.  Using 'pip install' means that the anaconda build system is bypassed.ld system in Anaconda normally makes sure only compatible software versions are installed, but this seems to cause problems in this case.  The Mie scattering section of the code does not work in the Python 2.7 environment becuae there is some incompatibility in the PyMieScatt code.   
+
+   conda create  --name pdielec2 python=2
+   conda install --name pdielec2 mayavi
+   conda install --name pdielec2 scipy
+   source activate pdielec2
+   pip install matplotlib
+   pip install termcolor
+   pip install xlsxwriter
+   pip install pyyaml
+
+Here is an example of creating a Python 3 environment in Anaconda
+
+   conda create  --name pdielec3 python=3
+   conda install --name pdielec3 -c conda-forge mayavi
+   conda install --name pdielec3 -c conda-forge scipy
+   source activate pdielec3
+   pip install matplotlib
+   pip install termcolor
+   pip install xlsxwriter
+   pip install pyyaml
+
+
+==== Install Python (only needed if not using anaconda)
 
 * From https://www.python.org/downloads/windows/ download and run the Windows x86-64 executable installer for the latest Python 3.6 version
 * Uncheck install launcher for all users
@@ -83,7 +152,6 @@ From the web url http://www.equation.com/servlet/equation.cmd?fa=make download t
 * Click on "Install now" button
 * Check installation ran OK by running the Idle python environment
 
-==== Install additional Python modules for PDielec
 Open a Git Bash Console and type;
 
  pip install numpy
@@ -94,6 +162,14 @@ Open a Git Bash Console and type;
  pip install XlsxWriter
  pip install termcolor
 
+Additional modules are needed if you wish to use the viewer option in phonana.  The viewer makes use of the vtk and mayavi modules which often cause problems with dependencies.
+
+  pip install --user vtk
+  pip install --user pyvtk
+  pip install --user vtkinterface
+  pip install --user mayavi
+
+
 ==== Install PDielec
 Open a Git Bash Console and type;
 
@@ -103,7 +179,7 @@ Open a Git Bash Console and type;
 This should create a directory in Software called PDielec
 
 ==== Testing PDielec
-Open a Git Bash Console and type;
+Open a Git Bash Console.  If you have installed Python using anaconda then you need to 'source activate' the environment you have established before typing;
 
   cd Software/PDielec
   make test_preader
