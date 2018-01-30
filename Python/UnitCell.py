@@ -17,6 +17,7 @@
 
 """Hold unit cell information and its associated calculated properties"""
 
+from __future__ import print_function
 import numpy as np
 import math
 from Python.Calculator import calculate_distance
@@ -80,7 +81,7 @@ class UnitCell:
         return edges
          
 
-    def print(self):
+    def printInfo(self):
         print_reals('Unit Cell a,b,c ',[self.a, self.b, self.c], format='{:12.6f}')
         print_reals('Unit Cell alpha,beta,gamma',[self.alpha, self.beta, self.gamma], format='{:12.6f}')
         print_reals('lattice', self.lattice[0], format='{:12.6f}')

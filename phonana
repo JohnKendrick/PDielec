@@ -446,7 +446,7 @@ def main():
     cell = reader.unit_cells[-1]
     cell.set_atomic_masses(atom_masses)
     newcell,nmols,old_order = cell.calculate_molecular_contents(scale, toler, covalent_radii)
-    newcell.print()
+    newcell.printInfo()
     # Reorder the atoms so that the mass weighted normal modes order agrees with the ordering in the new cell
     nmodes,nions,temp = np.shape(normal_modes)
     new_normal_modes = np.zeros( (nmodes,3*nions) )

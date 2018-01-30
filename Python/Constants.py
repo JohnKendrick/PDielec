@@ -266,10 +266,12 @@ average_masses = {
     "Uuo": None
 }
 
-# Covalent radii from ;
-# Beatriz Cordero; Verónica Gómez; Ana E. Platero-Prats; Marc Revés; Jorge Echeverría;;
-#  Eduard Cremades; Flavia Barragán; Santiago Alvarez (2008).
-# "Covalent radii revisited". Dalton Trans. (21): 2832–2838. doi:10.1039/b801115j.
+#
+# Covalent radii from;
+# Beatriz Cordero, Veronica Gomex, Ana E. Platero-Prats, Marc Reves, Jorge Echeverria,
+# Eduard Cremades, Flavia Barragan and Santiago Alvarez (2008)
+# Covalent Radii Revisited - Dalton Trans. (21) 2832-2838 doiL10.1039/b801115j
+#
 covalent_radii = {
     "X":  0.00,
     "H":  0.31,

@@ -214,30 +214,28 @@ class ViewerClass(HasTraits):
     def animate(self):
         mlab.clf()
         self.draw_noupdate()
-        animator = self.anim()
+        animator = anim(self.phase_index, self.phase_direction, self.number_of_phase_steps, self.quiverBonds, self.refreshAtoms, self.refreshQuiverBonds,self.refreshBonds)
 #        from objbrowser import browse
 #        browse(animator)
 #        print('In animate called anim')
 
-    def refreshBonds(self):
-        i =self.phase_index
+    def refreshBonds(self, phase_index):
         for ig,glyph in enumerate(self.glyph_bonds):
-            glyph.mlab_source.set(x=self.bondx[i,ig], y=self.bondy[i,ig], z=self.bondz[i,ig])
+            glyph.mlab_source.set(x=self.bondx[phase_index,ig], y=self.bondy[phase_index,ig], z=self.bondz[phase_index,ig])
         return
 
-    def refreshQuiverBonds(self):
-        self.glyph_quiver_bonds.mlab_source.set(x=self.startX[self.phase_index],
-                                                y=self.startY[self.phase_index],
-                                                z=self.startZ[self.phase_index],
-                                                u=self.dirX[self.phase_index],
-                                                v=self.dirY[self.phase_index],
-                                                w=self.dirZ[self.phase_index])
+    def refreshQuiverBonds(self, phase_index):
+        self.glyph_quiver_bonds.mlab_source.set(x=self.startX[phase_index],
+                                                y=self.startY[phase_index],
+                                                z=self.startZ[phase_index],
+                                                u=self.dirX[phase_index],
+                                                v=self.dirY[phase_index],
+                                                w=self.dirZ[phase_index])
         return
 
-    def refreshAtoms(self):
-        i =self.phase_index
+    def refreshAtoms(self, phase_index):
         for ig,glyph in enumerate(self.glyph_atoms):
-            glyph.mlab_source.set(x=self.newX[i,ig], y=self.newY[i,ig], z=self.newZ[i,ig])
+            glyph.mlab_source.set(x=self.newX[phase_index,ig], y=self.newY[phase_index,ig], z=self.newZ[phase_index,ig])
         return
 
     def refreshDisplacements(self):
@@ -316,22 +314,22 @@ class ViewerClass(HasTraits):
         self.calculatePhasePositions()
         return self.frequencies[self.gui_mode_selection]
 
-    @mlab.animate(delay=20,ui=True)
-    def anim(self):
-        f = mlab.gcf()
-        f.scene.anti_aliasing_frames = 0
-        while True:
-            self.phase_index = self.phase_index + self.phase_direction
-            if self.phase_index >= int(self.number_of_phase_steps/2):
-                self.phase_direction = -1
-            elif self.phase_index <= -int(self.number_of_phase_steps/2):
-                self.phase_direction = +1
-            f.scene.disable_render = True
-            if self.quiverBonds:
-                self.refreshQuiverBonds()
-            else:
-                self.refreshBonds()
-            self.refreshAtoms()
-            f.scene.disable_render = False
-            yield
-        return
+@mlab.animate(delay=20,ui=True, support_movie=False)
+def anim(phase_index, phase_direction, number_of_phase_steps, quiverBonds, refreshAtoms, refreshQuiverBonds, refreshBonds ):
+    f = mlab.gcf()
+    f.scene.anti_aliasing_frames = 0
+    while True:
+        phase_index = phase_index + phase_direction
+        if phase_index >= int(number_of_phase_steps/2):
+            phase_direction = -1
+        elif phase_index <= -int(number_of_phase_steps/2):
+            phase_direction = +1
+        f.scene.disable_render = True
+        if quiverBonds:
+            refreshQuiverBonds(phase_index)
+        else:
+            refreshBonds(phase_index)
+        refreshAtoms(phase_index)
+        f.scene.disable_render = False
+        yield
+    return
