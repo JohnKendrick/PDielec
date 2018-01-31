@@ -446,7 +446,6 @@ class UnitCell:
     def set_bonds(self, bonds):
         '''Define a list of bonds for the unit cell'''
         self.bonds = bonds
-        print('BONDS',self.bonds)
         return
             
     def set_molecules(self, molecules):
