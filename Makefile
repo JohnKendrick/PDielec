@@ -9,7 +9,7 @@
 SCRIPTS ?= ~/bin
 
 default:	
-		@echo "Too install pdielec and preader in the $(SCRIPTS) directory"
+		@echo "Too install pdielec, phonana and preader in the $(SCRIPTS) directory"
 		@echo "Type 'make install'"
 		@echo "Too perform all the tests in the Examples directory"
 		@echo "Type 'make test'"
@@ -21,6 +21,7 @@ default:
 install:	
 		cp pdielec $(SCRIPTS)
 		cp preader $(SCRIPTS)
+		cp phonana $(SCRIPTS)
 		mkdir -p $(SCRIPTS)/Python
 		cp -r Python/*.py $(SCRIPTS)/Python
 
