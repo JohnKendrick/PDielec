@@ -136,7 +136,7 @@ def RayleighMieQ(m, wavelength, diameter, asDict=False):
     else:
       return qext, qsca, qabs, g, qpr, qback, qratio
 
-def AutoMieQ(m, wavelength, diameter, crossover=0.5, asDict=False):
+def AutoMieQ(m, wavelength, diameter, crossover=0.01, asDict=False):
 #  http://pymiescatt.readthedocs.io/en/latest/forward.html#AutoMieQ
   x = np.pi*diameter/wavelength
   if x==0:
@@ -194,8 +194,8 @@ def LowFrequencyMie_ab(m,x):
   bn = np.append(b1,b2)
   return an,bn
 
-def AutoMie_ab(m,x):
-  if x<0.5:
+def AutoMie_ab(m,x,crossover=0.01):
+  if x<crossover:
     return LowFrequencyMie_ab(m,x)
   else:
     return Mie_ab(m,x)
