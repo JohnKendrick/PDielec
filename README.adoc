@@ -48,7 +48,7 @@ This copies the commands and modules to the \~/bin directory which should be inc
 ==== Anaconda
 Anaconda is a Python package manager and is useful when trying out different versions of Python as there is a very convenient environment manager.  Anaconda can be installed as a user program and so root access to the computer is not needed.  The software can be downloaded from https://conda.io/miniconda.html or https://www.anaconda.com/download/.  Unless you are interested in the full package the miniconda installation should be sufficient for installing the rest of the modules needed for the PDielec installation.
 
-As an example here is an installation using a Python 2.7 environment.  Using 'pip install' means that the anaconda build system is bypassed.ld system in Anaconda normally makes sure only compatible software versions are installed, but this seems to cause problems in this case.  The Mie scattering section of the code does not work in the Python 2.7 environment becuae there is some incompatibility in the PyMieScatt code.   
+As an example here is an installation using a Python 2.7 environment.  Using 'pip install' means that the anaconda build system is bypassed.ld system in Anaconda normally makes sure only compatible software versions are installed, but this seems to cause problems in this case. 
 
 
    conda create  --name pdielec2 python=2
@@ -121,7 +121,7 @@ From the web url http://www.equation.com/servlet/equation.cmd?fa=make download t
 ==== Anaconda
 Anaconda is a Python package manager and is useful when trying out different versions of Python as there is a very convenient environment manager.  Anaconda can be installed as a user program and so root access to the computer is not needed.  The software can be downloaded from https://conda.io/miniconda.html or https://www.anaconda.com/download/.  Unless you are interested in the full package the miniconda installation should be sufficient for installing the rest of the modules needed for the PDielec installation.
 
-As an example here is an installation using a Python 2.7 environment.  Using 'pip install' means that the anaconda build system is bypassed.ld system in Anaconda normally makes sure only compatible software versions are installed, but this seems to cause problems in this case.  The Mie scattering section of the code does not work in the Python 2.7 environment becuae there is some incompatibility in the PyMieScatt code.   
+As an example here is an installation using a Python 2.7 environment.  Using 'pip install' means that the anaconda build system is bypassed.ld system in Anaconda normally makes sure only compatible software versions are installed, but this seems to cause problems in this case.  
 
    conda create  --name pdielec2 python=2
    conda install --name pdielec2 mayavi
@@ -158,7 +158,6 @@ Open a Git Bash Console and type;
  pip install scipy
  pip install matplotlib
  pip install PyYaml
- pip install PyMieScatt
  pip install XlsxWriter
  pip install termcolor
 
@@ -202,6 +201,7 @@ Open a Git Bash Console and type;
 
 * PDielec/ is the home directory and contains the `pdielec` and `preader` commands
 * PDielec/Python holds the source for the modules used by the pdielec and preader commands
+* PDielec/Python/PyMieScatt holds a customised version of the PyMieScatt code downloaded from https://github.com/bsumlin/PyMieScatt.  Thanks to Benjamin Sumlin for making this available
 * PDielec/Examples a set of examples are available for Abinit, Crystal14, CASTEP, GULP, Phonopy, Mie and VASP.  Each example directory holds the input files to the QM/MM program and the relevant output files which are post processed by PDielec.  For each program there is also a preader directory which holds test output for the preader command.
 
 === Examples
