@@ -314,7 +314,7 @@ class ViewerClass(HasTraits):
         self.calculatePhasePositions()
         return self.frequencies[self.gui_mode_selection]
 
-@mlab.animate(delay=20,ui=True, support_movie=False)
+@mlab.animate(delay=20, ui=True, support_movie=False)
 def anim(phase_index, phase_direction, number_of_phase_steps, quiverBonds, refreshAtoms, refreshQuiverBonds, refreshBonds ):
     f = mlab.gcf()
     f.scene.anti_aliasing_frames = 0
