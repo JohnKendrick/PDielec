@@ -38,6 +38,7 @@ test_pdielec:
 	@$(MAKE) --no-print-directory -C SizeEffects/MgO test
 	@$(MAKE) --no-print-directory -C SizeEffects/ZnO test
 	@$(MAKE) --no-print-directory -C Mie/MgO test
+	@$(MAKE) --no-print-directory -C Mie/MgO_lognormal test
 	@$(MAKE) --no-print-directory -C Experiment/Experiment1 test
 
 clean:
@@ -81,4 +82,5 @@ regenerate:
 	@$(MAKE) --no-print-directory -C SizeEffects/MgO regenerate
 	@$(MAKE) --no-print-directory -C SizeEffects/ZnO regenerate
 	@$(MAKE) --no-print-directory -C Mie/MgO regenerate
+	@$(MAKE) --no-print-directory -C Mie/MgO_lognormal regenerate
 	@$(MAKE) --no-print-directory -C Experiment/Experiment1 regenerate
