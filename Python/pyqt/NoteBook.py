@@ -8,6 +8,7 @@ from PyQt5.QtWidgets import  QVBoxLayout, QHBoxLayout
 from PyQt5.QtGui import QIcon
 from PyQt5.QtCore import pyqtSlot
 from PyQt5.QtCore import Qt
+from MainTab import MainTab
  
 class NoteBook(QWidget):        
  
@@ -21,16 +22,17 @@ class NoteBook(QWidget):
         self.layout = QVBoxLayout()
  
         # Initialize tab screen
-        self.tabs = QTabWidget()
-        self.tab1 = MainTab()	
-#        self.tab2 = QWidget()
-#        self.tab3 = QWidget()
-#        self.tabs.resize(300,200) 
+        self.tabs = QTabWidget(self)
+        self.tab1 = MainTab(self)
+        self.tab2 = QWidget(self)
+        self.tab3 = QWidget(self)
+        self.tabs.resize(300,200) 
  
         # Add tabs
         self.tabs.addTab(self.tab1,"Main")
-#        self.tabs.addTab(self.tab2,"Settings")
-#        self.tabs.addTab(self.tab3,"Scenario 1")
+        self.tabs.addTab(self.tab2,"Settings")
+        self.tabs.addTab(self.tab3,"Scenario 1")
  
+        self.layout.addWidget(self.tabs)
         self.setLayout(self.layout)
         return

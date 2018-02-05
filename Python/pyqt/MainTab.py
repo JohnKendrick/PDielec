@@ -4,10 +4,12 @@ from PyQt5.QtWidgets import QMainWindow, QApplication
 from PyQt5.QtWidgets import  QPushButton, QWidget, QAction, QTabWidget
 from PyQt5.QtWidgets import  QListWidget, QComboBox, QLabel, QLineEdit
 from PyQt5.QtWidgets import  QFileDialog, QCheckBox
-from PyQt5.QtWidgets import  QVBoxLayout, QHBoxLayout
+from PyQt5.QtWidgets import  QVBoxLayout, QHBoxLayout, QMessageBox
 from PyQt5.QtGui import QIcon
 from PyQt5.QtCore import pyqtSlot
 from PyQt5.QtCore import Qt
+from Python.GenericOutputReader import get_reader
+from Python.GenericOutputReader import GenericOutputReader
  
 class MainTab(QWidget):        
  
@@ -31,6 +33,7 @@ class MainTab(QWidget):
         self.program_cb.addItem('Abinit')
         self.program_cb.addItem('Castep')
         self.program_cb.addItem('Crystal')
+        self.program_cb.addItem('Experiment')
         self.program_cb.addItem('Gulp')
         self.program_cb.addItem('Phonopy')
         self.program_cb.addItem('Quantum Espresso')
@@ -88,8 +91,28 @@ class MainTab(QWidget):
         vbox.addLayout(hbox)
         # Final button
         self.pushButton1 = QPushButton("Read Output File")
+        self.pushButton1.setToolTip("Read the output file specified and list the phonon frequencies found")
+        self.pushButton1.clicked.connect(self.pushButton1Clicked)
         vbox.addWidget(self.pushButton1)
-        self.setLayout(svbox)
+        # output window
+        self.listw_l = QLabel("Frequencies from "+self.settings["filename"]+":", self)
+        vbox.addWidget(self.listw_l)
+        self.listw = QListWidget(self)
+        vbox.addWidget(self.listw)
+        # finalise the layout
+        self.setLayout(vbox)
+
+    def pushButton1Clicked(self):
+        print("Reading output file ", self.settings["filename"])
+        if not os.path.isfile(self.settings["filename"]):
+            QMessageBox.about(self,"Processing output file","The filename for the output file to be processed is not correct")
+            return
+        self.listw_l.setText("Frequencies from "+self.settings["filename"]+":")
+        self.reader = get_reader(self.settings["program"],self.settings["filename"])
+        frequencies = self.reader.frequencies
+        for f in frequencies:
+            self.listw.additems(str(f))
+        
 
     def on_born_changed(self):
         print("on born change ", self.born_cb.isChecked())

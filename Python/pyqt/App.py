@@ -8,6 +8,7 @@ from PyQt5.QtWidgets import  QVBoxLayout, QHBoxLayout
 from PyQt5.QtGui import QIcon
 from PyQt5.QtCore import pyqtSlot
 from PyQt5.QtCore import Qt
+from NoteBook import NoteBook
  
 class App(QMainWindow):
  
