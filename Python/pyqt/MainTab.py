@@ -8,8 +8,7 @@ from PyQt5.QtWidgets import  QVBoxLayout, QHBoxLayout, QMessageBox
 from PyQt5.QtGui import QIcon
 from PyQt5.QtCore import pyqtSlot
 from PyQt5.QtCore import Qt
-from Python.GenericOutputReader import get_reader
-from Python.GenericOutputReader import GenericOutputReader
+from Python.Utilities import get_reader
  
 class MainTab(QWidget):        
  
@@ -17,9 +16,10 @@ class MainTab(QWidget):
         super(QWidget, self).__init__(parent)
         self.settings = {}
         self.settings["eckart"] = True
-        self.settings["born"] = False
+        self.settings["neutral"] = False
         self.settings["program"] = "Castep"
         self.settings["filename"] = ""
+        self.settings["hessian_symmetrisation"] = "symm"
         self.layout = QVBoxLayout()
  
         # Create first tab - MAIN
@@ -82,7 +82,7 @@ class MainTab(QWidget):
         self.born_cb.setText("")
         self.born_cb.setLayoutDirection(Qt.RightToLeft)
         self.born_cb.stateChanged.connect(self.on_born_changed)
-        if self.settings["born"]:
+        if self.settings["neutral"]:
             self.born_cb.setCheckState(Qt.Checked)
         else:
             self.born_cb.setCheckState(Qt.Unchecked)
@@ -105,19 +105,24 @@ class MainTab(QWidget):
     def pushButton1Clicked(self):
         print("Reading output file ", self.settings["filename"])
         if not os.path.isfile(self.settings["filename"]):
-            QMessageBox.about(self,"Processing output file","The filename for the output file to be processed is not correct")
+            QMessageBox.about(self,"Processing output file","The filename for the output file to be processed is not correct: "+self.settings["filename"])
             return
         self.listw_l.setText("Frequencies from "+self.settings["filename"]+":")
         self.reader = get_reader(self.settings["program"],self.settings["filename"])
-        frequencies = self.reader.frequencies
-        for f in frequencies:
-            self.listw.additems(str(f))
+        self.reader.eckart = self.settings["eckart"]
+        self.reader.neutral = self.settings["neutral"]
+        self.reader.hessian_symmetrisation = self.settings["hessian_symmetrisation"]
+        self.reader.read_output()
+        self.reader.print_info()
+        frequencies_cm1 = self.reader.frequencies
+        for f in frequencies_cm1:
+            self.listw.addItem(str(f))
         
 
     def on_born_changed(self):
         print("on born change ", self.born_cb.isChecked())
-        self.settings["born"] = self.born_cb.isChecked()
-        print("on born change ", self.settings["born"])
+        self.settings["neutral"] = self.born_cb.isChecked()
+        print("on born change ", self.settings["neutral"])
 
     def on_eckart_changed(self):
         print("on eckart change ", self.eckart_cb.isChecked())
@@ -141,8 +146,8 @@ class MainTab(QWidget):
         self.file_le.setText(self.settings["filename"])
  
     def on_file_le_changed(self, text):
-        print("on file changed", self.file_le.text())
         print("on file changed", text)
+        self.settings["filename"] = text
  
     def on_program_cb_changed(self,index):
         print("on program combobox changed", index)
