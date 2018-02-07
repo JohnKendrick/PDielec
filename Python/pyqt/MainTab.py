@@ -20,6 +20,9 @@ class MainTab(QWidget):
         self.settings["program"] = "Castep"
         self.settings["filename"] = ""
         self.settings["hessian_symmetrisation"] = "symm"
+        self.settingsTab = None
+        self.notebook = None
+        self.reader = None
         self.layout = QVBoxLayout()
  
         # Create first tab - MAIN
@@ -44,18 +47,6 @@ class MainTab(QWidget):
         self.program_cb.currentIndexChanged.connect(self.on_program_cb_changed)
         hbox.addWidget(self.program_l)
         hbox.addWidget(self.program_cb)
-        vbox.addLayout(hbox)
-        # The file selector
-        hbox = QHBoxLayout()
-        self.file_l  = QLabel("Output file:",self)
-        self.file_l.setToolTip("Choose output file for analysis (press return for a file chooser)")
-        self.file_le = QLineEdit(self)
-        self.file_le.setToolTip("Choose output file for analysis (press return for a file chooser)")
-        self.file_le.setText("")
-        self.file_le.returnPressed.connect(self.on_file_le_return)
-        self.file_le.textChanged.connect(self.on_file_le_changed)
-        hbox.addWidget(self.file_l)
-        hbox.addWidget(self.file_le)
         vbox.addLayout(hbox)
         # The eckart checkbox
         hbox = QHBoxLayout()
@@ -89,6 +80,18 @@ class MainTab(QWidget):
         hbox.addWidget(self.born_l)
         hbox.addWidget(self.born_cb)
         vbox.addLayout(hbox)
+        # The file selector
+        hbox = QHBoxLayout()
+        self.file_l  = QLabel("Output file:",self)
+        self.file_l.setToolTip("Choose output file for analysis (press return for a file chooser)")
+        self.file_le = QLineEdit(self)
+        self.file_le.setToolTip("Choose output file for analysis (press return for a file chooser)")
+        self.file_le.setText("")
+        self.file_le.returnPressed.connect(self.on_file_le_return)
+        self.file_le.textChanged.connect(self.on_file_le_changed)
+        hbox.addWidget(self.file_l)
+        hbox.addWidget(self.file_le)
+        vbox.addLayout(hbox)
         # Final button
         self.pushButton1 = QPushButton("Read Output File")
         self.pushButton1.setToolTip("Read the output file specified and list the phonon frequencies found")
@@ -109,6 +112,8 @@ class MainTab(QWidget):
             return
         self.listw_l.setText("Frequencies from "+self.settings["filename"]+":")
         self.reader = get_reader(self.settings["program"],self.settings["filename"])
+        # tell the settings tab that we have read the info and we have a reader
+        self.settingsTab.set_reader(self.reader)
         self.reader.eckart = self.settings["eckart"]
         self.reader.neutral = self.settings["neutral"]
         self.reader.hessian_symmetrisation = self.settings["hessian_symmetrisation"]
@@ -117,6 +122,8 @@ class MainTab(QWidget):
         frequencies_cm1 = self.reader.frequencies
         for f in frequencies_cm1:
             self.listw.addItem(str(f))
+        # tell the notebook to update the Settings tab with information 
+        self.notebook.setTabEnabled(1,True)
         
 
     def on_born_changed(self):
@@ -135,6 +142,8 @@ class MainTab(QWidget):
         self.settings["filename"] = self.file_le.text()
         if os.path.isfile(self.settings["filename"]):
             self.settings["filename"] = os.path.relpath(self.settings["filename"])
+            # The file exists to treat it as though the button has been pressed
+            self.pushButton1Clicked()
             return
         # The file doesn't exist so open a file chooser
         options = QFileDialog.Options()
