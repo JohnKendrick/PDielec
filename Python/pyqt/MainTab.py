@@ -21,7 +21,6 @@ class MainTab(QWidget):
         self.settings["filename"] = ""
         self.settings["hessian_symmetrisation"] = "symm"
         self.settingsTab = None
-        self.notebook = None
         self.reader = None
         self.layout = QVBoxLayout()
  
@@ -122,8 +121,8 @@ class MainTab(QWidget):
         frequencies_cm1 = self.reader.frequencies
         for f in frequencies_cm1:
             self.listw.addItem(str(f))
-        # tell the notebook to update the Settings tab with information 
-        self.notebook.setTabEnabled(1,True)
+        # tell the settings tab to update the widgets that depend on the contents of the reader
+        self.settingsTab.refresh()
         
 
     def on_born_changed(self):

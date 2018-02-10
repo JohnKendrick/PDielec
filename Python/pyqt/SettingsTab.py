@@ -11,6 +11,7 @@ from PyQt5.QtCore     import  pyqtSlot
 from PyQt5.QtCore     import  Qt
 from Python.Utilities import  get_reader
 from Python.Constants import  support_matrix_db
+from Python.Constants import  average_masses, isotope_masses
  
 class SettingsTab(QWidget):
  
@@ -19,50 +20,37 @@ class SettingsTab(QWidget):
         self.settings = {}
         self.settings["vmin"] = 0
         self.settings["vmax"] = 400
-        self.settings["mass"] = "average"
         matrix = "ptfe"
         self.settings["matrix"] = matrix
         self.settings["matrix_density"] = support_matrix_db[matrix][0]
         self.settings["matrix_permittivity"] = support_matrix_db[matrix][1]
+        self.mass_definition_options = ["average","program","isotope","gui"]
+        self.settings["mass_definition"] = "average"
+        self.settings["masses"] = []
         self.reader = MainTab.reader
         self.layout = QVBoxLayout()
         # Create second tab - SettingsTab
         vbox = QVBoxLayout(self)
         # The mass definition combobox
         box = QFormLayout()
-        #self.mass_l  = QLabel("Atomic Mass Definition:",self)
-        #self.mass_l.setToolTip("The atomic masses used to calculate frequencies and intensities can be give here")
         self.mass_cb = QComboBox(self)
         self.mass_cb.setToolTip("The atomic masses used to calculate frequencies and intensities can be give here")
         self.mass_cb.addItem('Average natural abundance')
         self.mass_cb.addItem('Mass taken from QM/MM program')
         self.mass_cb.addItem('Most common isotope mass')
-        index = self.mass_cb.findText(self.settings["mass"], Qt.MatchFixedString)
-        if index >=0:
-            self.mass_cb.setCurrentIndex(index)
-        else:
-            print("mass index was not 0")
+        # set default to average natural abundance
+        self.mass_cb.setCurrentIndex(0)
         self.mass_cb.currentIndexChanged.connect(self.on_mass_cb_changed)
-        #hbox.addWidget(self.mass_l)
-        #hbox.addWidget(self.mass_cb)
-        #vbox.addLayout(hbox)
         box.addRow(QLabel("Atomic mass defintion:", self), self.mass_cb)
-        # Create Table containing the masses
+        # Create Table containing the masses - block signals until the table is loaded
         self.element_masses_tw = QTableWidget(self)
         self.element_masses_tw.setToolTip("Individual element masses can be modified here")
         self.element_masses_tw.itemClicked.connect(self.on_element_masses_tw_itemClicked)
+        self.element_masses_tw.itemChanged.connect(self.on_element_masses_tw_itemChanged)
         self.element_masses_tw.setRowCount(1)
-        if self.reader:
-            masses = self.reader.masses_per_type
-            self.element_masses_tw.setColumnCount(len(masses))
-            for i,mass in enumerate(masses):
-                self.element_masses_tw.setItem(0,i, str(mass) )
+        self.element_masses_tw.blockSignals(True)
         box.addRow(QLabel("Atomic masses", self), self.element_masses_tw)
-        vbox.addLayout(box)
         # Support matrix
-        hbox = QHBoxLayout()
-        self.matrix_l  = QLabel("Support matrix:",self)
-        self.matrix_l.setToolTip("Define the permittivity and density of the support matrix")
         self.matrix_cb = QComboBox(self)
         self.matrix_cb.setToolTip("Define the permittivity and density of the support matrix")
         for matrix in support_matrix_db:
@@ -74,76 +62,47 @@ class SettingsTab(QWidget):
         else:
             print("support matrix index was not 0")
         self.matrix_cb.currentIndexChanged.connect(self.on_matrix_cb_changed)
-        hbox.addWidget(self.matrix_l)
-        hbox.addWidget(self.matrix_cb)
-        vbox.addLayout(hbox)
-        # Support matrix density
-        hbox = QHBoxLayout()
-        self.density_l = QLabel("Support density:", self)
-        self.density_l.setToolTip("Define the support matrix density")
+        box.addRow(QLabel("Support matrix:",self), self.matrix_cb)
         self.density_le = QLineEdit(self) 
         self.density_le.setToolTip("Define the support matrix density")
         self.density_le.setText(str(self.settings["matrix_density"]))
         self.density_le.textChanged.connect(self.on_density_le_changed)
-        hbox.addWidget(self.density_l)
-        hbox.addWidget(self.density_le)
-        vbox.addLayout(hbox)
+        box.addRow(QLabel("Support density", self), self.density_le)
         # Support matrix permittivity
-        hbox = QHBoxLayout()
-        self.permittivity_l = QLabel("Support permittivity:", self)
-        self.permittivity_l.setToolTip("Define the support matrix permittivity")
         self.permittivity_le = QLineEdit(self) 
         self.permittivity_le.setToolTip("Define the support matrix permittivity")
         self.permittivity_le.setText(str(self.settings["matrix_permittivity"]))
         self.permittivity_le.textChanged.connect(self.on_permittivity_le_changed)
-        hbox.addWidget(self.permittivity_l)
-        hbox.addWidget(self.permittivity_le)
-        vbox.addLayout(hbox)
-
+        box.addRow(QLabel("Support permittivity", self), self.permittivity_le)
         # The minimum frequency
-        hbox = QHBoxLayout()
-        self.vmin_l = QLabel("Minimum frequency:", self)
-        self.vmin_l.setToolTip("Set the minimum frequency to be considered)")
         self.vmin_sb = QSpinBox(self)
         self.vmin_sb.setRange(-200,9000)
         self.vmin_sb.setValue(self.settings["vmin"])
         self.vmin_sb.setToolTip("Set the minimum frequency to be considered)")
         self.vmin_sb.valueChanged.connect(self.on_vmin_changed)
-        hbox.addWidget(self.vmin_l)
-        hbox.addWidget(self.vmin_sb)
-        vbox.addLayout(hbox)
+        box.addRow(QLabel("Minimum frequency:", self), self.vmin_sb)
         # The maximum frequency
-        hbox = QHBoxLayout()
-        self.vmax_l = QLabel("Maximum frequency:", self)
-        self.vmax_l.setToolTip("Set the maximum frequency to be considered)")
         self.vmax_sb = QSpinBox(self)
         self.vmax_sb.setRange(-200,9000)
         self.vmax_sb.setValue(self.settings["vmax"])
         self.vmax_sb.setToolTip("Set the maximum frequency to be considered)")
         self.vmax_sb.valueChanged.connect(self.on_vmax_changed)
-        hbox.addWidget(self.vmax_l)
-        hbox.addWidget(self.vmax_sb)
-        vbox.addLayout(hbox)
+        box.addRow(QLabel("Maximum frequency:", self), self.vmax_sb)
         # Optical permittivity
-        hbox = QHBoxLayout()
-        self.optical_l = QLabel("Optical permittivity")
-        self.optical_l.setToolTip("The optical permittivity is taken from the calculation where this is possible.  If it is not availble suitbale values should be provided here")
         self.optical_tw = QTableWidget(3,3)
+        self.optical_tw.setToolTip("The optical permittivity is taken from the calculation where this is possible.  If it is not availble suitbale values should be provided here")
+        # Set the header names
+        self.optical_tw.setHorizontalHeaderLabels(["x","y","z"])
+        self.optical_tw.setVerticalHeaderLabels  (["x","y","z"])
         self.optical_tw.itemClicked.connect(self.on_optical_tw_itemClicked)
-        if self.reader:
-            optical = self.reader.zerof_optical_dielectric
-            for i,row in enumerate(optical):
-                for j, value in enumerate(row):
-                    self.element_masses_tw.setItem(i,j, str(value) )
-        # Support matrix
-        hbox.addWidget(self.optical_l)
-        hbox.addWidget(self.optical_tw)
-        vbox.addLayout(hbox)
+        self.optical_tw.itemChanged.connect(self.on_optical_tw_itemChanged)
+        box.addRow(QLabel("Optical permittivity:", self), self.optical_tw)
         # Final button
         self.pushButton1 = QPushButton("Read Output File")
         self.pushButton1.setToolTip("Read the output file specified and list the phonon frequencies found")
         self.pushButton1.clicked.connect(self.pushButton1Clicked)
-        vbox.addWidget(self.pushButton1)
+        box.addRow(self.pushButton1)
+        vbox.addLayout(box)
         # output window
         self.listw_l = QLabel("Frequencies from:", self)
         vbox.addWidget(self.listw_l)
@@ -174,17 +133,49 @@ class SettingsTab(QWidget):
     def on_mass_cb_changed(self,index):
         print("on mass combobox changed", index)
         print("on mass combobox changed", self.mass_cb.currentText())
-        options = ["average","program","isotope"]
-        self.settings["mass"] = options[index]
+        self.settings["mass_definition"] = self.mass_definition_options[index]
         # Modify the element masses
-        print("on_mass_change",self.reader)
+        self.set_masses_tw()
+
+    def set_masses_tw(self):
+        print("set masses")
         if self.reader:
             masses = self.reader.masses_per_type
+            species = self.reader.species
             self.element_masses_tw.setColumnCount(len(masses))
-            for i,mass in enumerate(masses):set_reader
+            self.element_masses_tw.setHorizontalHeaderLabels(species)
+            self.element_masses_tw.setVerticalHeaderLabels([""])
+            # set masses of the elements in the table widget according to the mass definition
+            self.settings["masses"] = []
+            for i,(mass,element) in enumerate(zip(masses,species)):
+                print("set_masses_tw", self.settings["mass_definition"],i,mass,element)
                 qw = QTableWidgetItem()
-                qw.setText(str(mass))
-                self.element_masses_tw.setItem(0,i, qw )
+                if self.settings["mass_definition"] == "program":
+                    self.element_masses_tw.blockSignals(True)
+                    qw.setText(str(mass))
+                    self.element_masses_tw.setItem(0,i, qw )
+                    self.settings["masses"].append(mass)
+                elif self.settings["mass_definition"] == "average":
+                    self.element_masses_tw.blockSignals(True)
+                    qw.setText(str(average_masses[element]))
+                    print("average",average_masses[element])
+                    self.element_masses_tw.setItem(0,i, qw )
+                    self.settings["masses"].append(average_masses[element])
+                elif  self.settings["mass_definition"] == "isotope":
+                    self.element_masses_tw.blockSignals(True)
+                    max_abundance = 0.0
+                    for atomic_number,mass,abundance in isotope_masses[element]:
+                        print("abundance",atomic_number,mass,abundance)
+                        if abundance > max_abundance:
+                            max_abundance = abundance
+                            abundant_mass = mass
+                        print("abundant mass",abundant_mass)
+                    qw.setText(str(abundant_mass))
+                    print("isotope",abundant_mass)
+                    self.element_masses_tw.setItem(0,i, qw )
+                    self.settings["masses"].append(abundant_mass)
+            # unblock the table signals
+            self.element_masses_tw.blockSignals(False)
 
     def on_matrix_cb_changed(self,index):
         print("on matrix combobox changed", index)
@@ -211,8 +202,43 @@ class SettingsTab(QWidget):
         print("on_element_masses_tw_itemClicked)", item)
         print("on_element_masses_tw_itemClicked)", item.row())
         print("on_element_masses_tw_itemClicked)", item.column())
+        self.element_masses_tw.blockSignals(False)
+
+    def on_element_masses_tw_itemChanged(self, item):
+        print("on_element_masses_tw_itemChanged)", item)
+        print("on_element_masses_tw_itemChanged)", item.row())
+        print("on_element_masses_tw_itemChanged)", item.column())
+        col = item.column()
+        self.settings["mass_definition"] = "gui"
+        self.settings["masses"][col] = float(item.text())
+        print("masses", self.settings["masses"])
+
+    def on_optical_tw_itemChanged(self, item):
+        print("on_optical_itemChanged)", item)
+        print("on_optical_itemChanged)", item.row())
+        print("on_optical_itemChanged)", item.column())
+        self.settings["optical_permittivity"][item.row()][item.col()] = float(item.text())
+        print("optical permittivity")
+        print(self.settings["optical_permittivity"])
 
     def on_optical_tw_itemClicked(self, item):
-        print("on_optical_tw)", item)
-        print("on_optical)", item.row())
-        print("on_optical)", item.column())
+        print("on_optical_itemClicked)", item)
+        print("on_optical_itemClicked)", item.row())
+        print("on_optical_itemClicked)", item.column())
+        self.element_masses_tw.blockSignals(False)
+
+    def refresh(self):
+        # Refresh the widgets that depend on the reader
+        if self.reader:
+            # Masses
+            self.set_masses_tw()
+            # Optical dielectric
+            self.set_optical_permittivity_tw()
+
+    def set_optical_permittivity_tw(self):
+        optical = self.reader.zerof_optical_dielectric
+        self.settings["optical_permittivity"] = optical
+        self.element_masses_tw.blockSignals(True)
+        for i,row in enumerate(optical):
+            for j, value in enumerate(row):
+                self.optical_tw.setItem(i,j, QTableWidgetItem(str(value) ))

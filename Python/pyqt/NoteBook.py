@@ -23,8 +23,6 @@ class NoteBook(QWidget):
         self.tab2 = SettingsTab(self, self.tab1)
         # tell the main window the tab for the settings
         self.tab1.settingsTab = self.tab2
-        # tell the main window what its controlling notebook is
-        self.tab1.notebook = self
         # Open more windows
         self.tab3 = QWidget(self)
         self.tabs.resize(300,200) 
