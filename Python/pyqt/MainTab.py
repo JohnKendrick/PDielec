@@ -4,6 +4,7 @@ from PyQt5.QtWidgets import QMainWindow, QApplication
 from PyQt5.QtWidgets import  QPushButton, QWidget, QAction, QTabWidget
 from PyQt5.QtWidgets import  QListWidget, QComboBox, QLabel, QLineEdit
 from PyQt5.QtWidgets import  QFileDialog, QCheckBox
+from PyQt5.QtWidgets import  QFormLayout
 from PyQt5.QtWidgets import  QVBoxLayout, QHBoxLayout, QMessageBox
 from PyQt5.QtGui import QIcon
 from PyQt5.QtCore import pyqtSlot
@@ -15,21 +16,19 @@ class MainTab(QWidget):
     def __init__(self, parent):   
         super(QWidget, self).__init__(parent)
         self.settings = {}
-        self.settings["eckart"] = True
-        self.settings["neutral"] = False
         self.settings["program"] = "Castep"
         self.settings["filename"] = ""
         self.settings["hessian_symmetrisation"] = "symm"
         self.settingsTab = None
         self.reader = None
-        self.layout = QVBoxLayout()
+#        self.layout = QVBoxLayout()
  
         # Create first tab - MAIN
-        vbox = QVBoxLayout(self)
+        vbox = QVBoxLayout()
+        form = QFormLayout()
+        #
         # The program combobox
-        hbox = QHBoxLayout()
-        self.program_l  = QLabel("Program:",self)
-        self.program_l.setToolTip("Choose QM/MM program")
+        #
         self.program_cb = QComboBox(self)
         self.program_cb.setToolTip("Choose QM/MM program")
         self.program_cb.addItem('Abinit')
@@ -44,58 +43,24 @@ class MainTab(QWidget):
         if index >=0:
             self.program_cb.setCurrentIndex(index)
         self.program_cb.currentIndexChanged.connect(self.on_program_cb_changed)
-        hbox.addWidget(self.program_l)
-        hbox.addWidget(self.program_cb)
-        vbox.addLayout(hbox)
-        # The eckart checkbox
-        hbox = QHBoxLayout()
-        self.eckart_l = QLabel("Eckart conditions?", self)
-        self.eckart_l.setToolTip("Applying Eckart conditions ensures three zero translation mode)")
-        self.eckart_cb = QCheckBox(self)
-        self.eckart_cb.setToolTip("Applying Eckart conditions ensures three zero translation mode)")
-        self.eckart_cb.setText("")
-        self.eckart_cb.setLayoutDirection(Qt.RightToLeft)
-        self.eckart_cb.stateChanged.connect(self.on_eckart_changed)
-        if self.settings["eckart"]:
-            self.eckart_cb.setCheckState(Qt.Checked)
-        else:
-            self.eckart_cb.setCheckState(Qt.Unchecked)
-        hbox.addWidget(self.eckart_l)
-        hbox.addWidget(self.eckart_cb)
-        vbox.addLayout(hbox)
-        # Add the Born neutral condition
-        hbox = QHBoxLayout()
-        self.born_l = QLabel("Born neutrality?", self)
-        self.born_l.setToolTip("Applying Born charge neutrality ensures the unit cell has zero charge")
-        self.born_cb = QCheckBox(self)
-        self.born_cb.setToolTip("Applying Born charge neutrality ensures unit cell has zero charge")
-        self.born_cb.setText("")
-        self.born_cb.setLayoutDirection(Qt.RightToLeft)
-        self.born_cb.stateChanged.connect(self.on_born_changed)
-        if self.settings["neutral"]:
-            self.born_cb.setCheckState(Qt.Checked)
-        else:
-            self.born_cb.setCheckState(Qt.Unchecked)
-        hbox.addWidget(self.born_l)
-        hbox.addWidget(self.born_cb)
-        vbox.addLayout(hbox)
+        form.addRow(QLabel("QM/MM Program:"), self.program_cb)
+        #
         # The file selector
-        hbox = QHBoxLayout()
-        self.file_l  = QLabel("Output file:",self)
-        self.file_l.setToolTip("Choose output file for analysis (press return for a file chooser)")
+        #
         self.file_le = QLineEdit(self)
         self.file_le.setToolTip("Choose output file for analysis (press return for a file chooser)")
         self.file_le.setText("")
         self.file_le.returnPressed.connect(self.on_file_le_return)
         self.file_le.textChanged.connect(self.on_file_le_changed)
-        hbox.addWidget(self.file_l)
-        hbox.addWidget(self.file_le)
-        vbox.addLayout(hbox)
+        form.addRow(QLabel("Output file name:"), self.file_le)
+        #
         # Final button
+        #
         self.pushButton1 = QPushButton("Read Output File")
         self.pushButton1.setToolTip("Read the output file specified and list the phonon frequencies found")
         self.pushButton1.clicked.connect(self.pushButton1Clicked)
-        vbox.addWidget(self.pushButton1)
+        form.addRow(self.pushButton1)
+        vbox.addLayout(form)
         # output window
         self.listw_l = QLabel("Frequencies from "+self.settings["filename"]+":", self)
         vbox.addWidget(self.listw_l)
@@ -113,9 +78,9 @@ class MainTab(QWidget):
         self.reader = get_reader(self.settings["program"],self.settings["filename"])
         # tell the settings tab that we have read the info and we have a reader
         self.settingsTab.set_reader(self.reader)
-        self.reader.eckart = self.settings["eckart"]
-        self.reader.neutral = self.settings["neutral"]
-        self.reader.hessian_symmetrisation = self.settings["hessian_symmetrisation"]
+#        self.reader.eckart = self.settings["eckart"]
+#        self.reader.neutral = self.settings["neutral"]
+#        self.reader.hessian_symmetrisation = self.settings["hessian_symmetrisation"]
         self.reader.read_output()
         self.reader.print_info()
         frequencies_cm1 = self.reader.frequencies
