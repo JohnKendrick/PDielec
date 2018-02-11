@@ -6,15 +6,23 @@ from PyQt5.QtWidgets  import  QListWidget, QComboBox, QLabel, QLineEdit
 from PyQt5.QtWidgets  import  QFileDialog, QCheckBox
 from PyQt5.QtWidgets  import  QVBoxLayout, QHBoxLayout, QMessageBox, QGroupBox, QFormLayout
 from PyQt5.QtWidgets  import  QSpinBox, QTableWidget, QTableWidgetItem
+from PyQt5.QtWidgets  import  QSizePolicy, QSpacerItem
 from PyQt5.QtGui      import  QIcon
 from PyQt5.QtCore     import  pyqtSlot
-from PyQt5.QtCore     import  Qt
+from PyQt5.QtCore     import  Qt, QSize
 from Python.Utilities import  get_reader
 from Python.Constants import  support_matrix_db
 from Python.Constants import  average_masses, isotope_masses
+
+class FixedQTableWidget(QTableWidget):
+    def __init__(self, *args, parent=None):   
+        super(QTableWidget, self).__init__(*args)
+
+    def sizeHint(self):
+        size = self.size()
+        return QSize(size)
  
 class SettingsTab(QWidget):
- 
     def __init__(self, parent, MainTab):   
         super(QWidget, self).__init__(parent)
         self.settings = {}
@@ -72,13 +80,17 @@ class SettingsTab(QWidget):
         self.mass_cb.currentIndexChanged.connect(self.on_mass_cb_changed)
         form.addRow(QLabel("Atomic mass defintion:", self), self.mass_cb)
         # Create Table containing the masses - block signals until the table is loaded
-        self.element_masses_tw = QTableWidget(self)
+        self.element_masses_tw = FixedQTableWidget(self)
         self.element_masses_tw.setToolTip("Individual element masses can be modified here")
         self.element_masses_tw.itemClicked.connect(self.on_element_masses_tw_itemClicked)
         self.element_masses_tw.itemChanged.connect(self.on_element_masses_tw_itemChanged)
         self.element_masses_tw.setRowCount(1)
         self.element_masses_tw.blockSignals(True)
+        #sizePolicy = QSizePolicy(QSizePolicy.Preferred,QSizePolicy.Preferred)
+        #self.element_masses_tw.setSizePolicy(sizePolicy)
+        print("element_masses_tw sizeHint",self.element_masses_tw.sizeHint())
         form.addRow(QLabel("Atomic masses", self), self.element_masses_tw)
+        form.addItem(QSpacerItem(20, 40, QSizePolicy.Expanding, QSizePolicy.Expanding) )
         #
         # Support matrix
         #
@@ -128,7 +140,7 @@ class SettingsTab(QWidget):
         #
         # Create the Optical permittivity table widget and block signals until a click on the widget
         #
-        self.optical_tw = QTableWidget(3,3)
+        self.optical_tw = FixedQTableWidget(3,3)
         self.optical_tw.setToolTip("The optical permittivity is taken from the calculation where this is possible.  If it is not availble suitbale values should be provided here")
         # Set the header names
         self.optical_tw.setHorizontalHeaderLabels(["x","y","z"])
@@ -276,8 +288,12 @@ class SettingsTab(QWidget):
         if self.reader:
             # Masses
             self.set_masses_tw()
+            print("element_masses_tw sizeHint",self.element_masses_tw.sizeHint())
+            print("element_masses_tw size",self.element_masses_tw.size())
             # Optical dielectric
             self.set_optical_permittivity_tw()
+            print("optical_tw sizeHint",self.optical_tw.sizeHint())
+            print("optical_tw size",self.optical_tw.size())
 
     def set_optical_permittivity_tw(self):
         optical = self.reader.zerof_optical_dielectric
