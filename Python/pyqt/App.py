@@ -15,10 +15,10 @@ class App(QMainWindow):
     def __init__(self):
         super().__init__()
         self.title = 'PDielec:'
-        self.left = 0
-        self.top = 0
-        self.width = 300
-        self.height = 200
+        self.left = 10
+        self.top = 10
+        self.width = 500
+        self.height = 700
         self.setWindowTitle(self.title)
         self.setGeometry(self.left, self.top, self.width, self.height)
  

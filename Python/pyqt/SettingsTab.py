@@ -1,5 +1,7 @@
 import sys
 import os.path
+import numpy as np
+import Python.Calculator as Calculator
 from PyQt5.QtWidgets  import  QMainWindow, QApplication
 from PyQt5.QtWidgets  import  QPushButton, QWidget, QAction, QTabWidget
 from PyQt5.QtWidgets  import  QListWidget, QComboBox, QLabel, QLineEdit
@@ -11,7 +13,7 @@ from PyQt5.QtGui      import  QIcon
 from PyQt5.QtCore     import  pyqtSlot
 from PyQt5.QtCore     import  Qt, QSize
 from Python.Utilities import  get_reader
-from Python.Constants import  support_matrix_db
+from Python.Constants import  support_matrix_db, wavenumber
 from Python.Constants import  average_masses, isotope_masses
 
 class FixedQTableWidget(QTableWidget):
@@ -19,8 +21,22 @@ class FixedQTableWidget(QTableWidget):
         super(QTableWidget, self).__init__(*args)
 
     def sizeHint(self):
-        size = self.size()
-        return QSize(size)
+        width = 0
+        for i in range(self.columnCount()):
+            print("column width",i,self.columnWidth(i))
+            width += self.columnWidth(i)
+        width += self.verticalHeader().sizeHint().width()
+        width += self.verticalScrollBar().sizeHint().width()
+        width += self.frameWidth()*2
+        height = 0
+        for i in range(self.rowCount()):
+            print("row height",i,self.rowHeight(i))
+            height += self.rowHeight(i)
+        height += self.verticalHeader().sizeHint().width()
+        height += self.horizontalScrollBar().sizeHint().height()
+        height += self.frameWidth()*2
+        #jk self.resize(QSize(width,height))
+        return QSize(width,height)
  
 class SettingsTab(QWidget):
     def __init__(self, parent, MainTab):   
@@ -28,8 +44,11 @@ class SettingsTab(QWidget):
         self.settings = {}
         self.settings["eckart"] = True
         self.settings["neutral"] = False
+        self.settings["hessian_symmetrisation"] = "symm"
+        self.settings["sigma"] = 5
         self.settings["vmin"] = 0
         self.settings["vmax"] = 400
+        self.settings["spreadsheet"] = ""
         matrix = "ptfe"
         self.settings["matrix"] = matrix
         self.settings["matrix_density"] = support_matrix_db[matrix][0]
@@ -86,11 +105,12 @@ class SettingsTab(QWidget):
         self.element_masses_tw.itemChanged.connect(self.on_element_masses_tw_itemChanged)
         self.element_masses_tw.setRowCount(1)
         self.element_masses_tw.blockSignals(True)
-        #sizePolicy = QSizePolicy(QSizePolicy.Preferred,QSizePolicy.Preferred)
-        #self.element_masses_tw.setSizePolicy(sizePolicy)
+        sizePolicy = QSizePolicy(QSizePolicy.Preferred,QSizePolicy.Preferred)
+        sizePolicy = QSizePolicy(QSizePolicy.Minimum,QSizePolicy.Minimum)
+        self.element_masses_tw.setSizePolicy(sizePolicy)
         print("element_masses_tw sizeHint",self.element_masses_tw.sizeHint())
         form.addRow(QLabel("Atomic masses", self), self.element_masses_tw)
-        form.addItem(QSpacerItem(20, 40, QSizePolicy.Expanding, QSizePolicy.Expanding) )
+        #form.addItem(QSpacerItem(20, 40, QSizePolicy.Expanding, QSizePolicy.Expanding) )
         #
         # Support matrix
         #
@@ -120,6 +140,15 @@ class SettingsTab(QWidget):
         self.permittivity_le.textChanged.connect(self.on_permittivity_le_changed)
         form.addRow(QLabel("Support permittivity", self), self.permittivity_le)
         #
+        # The lorentzian width - sigma
+        #
+        self.sigma_sb = QSpinBox(self)
+        self.sigma_sb.setRange(1,100)
+        self.sigma_sb.setValue(self.settings["sigma"])
+        self.sigma_sb.setToolTip("Set the default Lorentzian width factor (sigma) in cm-1")
+        self.sigma_sb.valueChanged.connect(self.on_sigma_changed)
+        form.addRow(QLabel("Lorentzian width (sigma):", self), self.sigma_sb)
+        #
         # The minimum frequency
         #
         self.vmin_sb = QSpinBox(self)
@@ -148,20 +177,33 @@ class SettingsTab(QWidget):
         self.optical_tw.itemClicked.connect(self.on_optical_tw_itemClicked)
         self.optical_tw.itemChanged.connect(self.on_optical_tw_itemChanged)
         self.optical_tw.blockSignals(True)
+        self.optical_tw.setSizePolicy(sizePolicy)
         form.addRow(QLabel("Optical permittivity:", self), self.optical_tw)
+        # 
+        # Store results in a file?
+        #
+        self.file_store_le = QLineEdit(self) 
+        self.file_store_le.setToolTip("Store the results in a .csv or .xlsx file")
+        self.file_store_le.setText(str(self.settings["spreadsheet"]))
+        self.file_store_le.textChanged.connect(self.on_file_store_le_changed)
+        form.addRow(QLabel("Output spreadsheet", self), self.file_store_le)
         #
         # Final button
         #
-        self.pushButton1 = QPushButton("Read Output File")
-        self.pushButton1.setToolTip("Read the output file specified and list the phonon frequencies found")
+        self.pushButton1 = QPushButton("Process and calculate intensities")
+        self.pushButton1.setToolTip("Process and calculate intensities using the MM/QM phonon output")
         self.pushButton1.clicked.connect(self.pushButton1Clicked)
         form.addRow(self.pushButton1)
         vbox.addLayout(form)
         # output window
-        self.listw_l = QLabel("Frequencies from:", self)
-        vbox.addWidget(self.listw_l)
-        self.listw = QListWidget(self)
-        vbox.addWidget(self.listw)
+        # Create Table containing the IR active modes
+        self.output_tw = FixedQTableWidget(self)
+        self.output_tw.setToolTip("Output showing the frequencies and strengths of the IR active modes only")
+        self.output_tw.itemClicked.connect(self.on_output_tw_itemClicked)
+        self.output_tw.itemChanged.connect(self.on_output_tw_itemChanged)
+        self.output_tw.setRowCount(1)
+        self.output_tw.blockSignals(True)
+        vbox.addWidget(self.output_tw)
         # finalise the layout
         self.setLayout(vbox)
 
@@ -170,11 +212,39 @@ class SettingsTab(QWidget):
         self.reader.neutral = self.settings["neutral"]
         self.reader.eckart = self.settings["eckart"]
         self.reader.hessian_symmetrisation = self.settings["hessian_symmetrisation"]
-        self.reader.read_output()
-        self.reader.print_info()
-        frequencies_cm1 = self.reader.frequencies
-        for f in frequencies_cm1:
-            self.listw.addItem(str(f))
+        mass_weighted_normal_modes = self.reader.calculate_mass_weighted_normal_modes()
+        # convert sigmas to wavenumbers
+        self.frequencies_cm1 = self.reader.frequencies
+        self.sigmas = [ self.settings["sigma"] for i in self.frequencies_cm1 ]
+        sigmas_cm1 = np.array(self.sigmas)
+        sigmas = np.array(self.sigmas)*wavenumber
+        born_charges = np.array(self.reader.born_charges)
+        if self.reader.type == 'Experimental output':
+            oscillator_strengths = self.reader.oscillator_strengths
+        else:
+            #
+            # calculate normal modes in xyz coordinate space
+            # should they be re-normalised or not?  According to Balan the mass weighted coordinates should be normalised
+            normal_modes = Calculator.normal_modes(masses, mass_weighted_normal_modes)
+            # from the normal modes and the born charges calculate the oscillator strengths of each mode
+            oscillator_strengths = Calculator.oscillator_strengths(normal_modes, born_charges)
+        # calculate the intensities from the trace of the oscillator strengths
+        intensities = Calculator.infrared_intensities(oscillator_strengths)
+ 
+        self.output_tw.setRowCount(len(self.sigmas))
+        self.output_tw.setColumnCount(3)
+        for i,(f,sigma) in enumerate(zip(self.frequencies_cm1, self.sigmas)):
+            self.output_tw.setItem(i, 0, QTableWidgetItem(" ") )
+            self.output_tw.setItem(i, 1, QTableWidgetItem(str(f) ) )
+            self.output_tw.setItem(i, 2, QTableWidgetItem(str(sigma) ) )
+
+    def on_file_store_le_changed(self,text):
+        self.settings["spreadsheet"] = text
+        print("on file_store_le change ", self.settings["spreadsheet"])
+
+    def on_sigma_changed(self):
+        self.settings["sigma"] = self.sigma_sb.value()
+        print("on sigma change ", self.settings["sigma"])
 
     def on_vmin_changed(self):
         self.settings["vmin"] = self.vmin_sb.value()
@@ -251,6 +321,21 @@ class SettingsTab(QWidget):
 
     def set_reader(self,reader):
         self.reader = reader
+
+    def on_output_tw_itemClicked(self, item):
+        print("on_output_tw_itemClicked)", item)
+        print("on_output_tw_itemClicked)", item.row())
+        print("on_output_tw_itemClicked)", item.column())
+        self.output_tw.blockSignals(False)
+
+    def on_output_tw_itemChanged(self, item):
+        print("on_output_tw_itemChanged)", item)
+        print("on_output_tw_itemChanged)", item.row())
+        print("on_output_tw_itemChanged)", item.column())
+        col = item.column()
+        row = item.row()
+        new_value = float(item.text())
+        print("output new value", self.settings["sigma"], new_value)
 
     def on_element_masses_tw_itemClicked(self, item):
         print("on_element_masses_tw_itemClicked)", item)

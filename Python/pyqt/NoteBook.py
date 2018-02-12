@@ -25,7 +25,7 @@ class NoteBook(QWidget):
         self.tab1.settingsTab = self.tab2
         # Open more windows
         self.tab3 = QWidget(self)
-        self.tabs.resize(300,200) 
+        #self.tabs.resize(300,200) 
  
         # Add tabs
         self.tabs.addTab(self.tab1,"Main")
