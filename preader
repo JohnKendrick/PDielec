@@ -109,7 +109,10 @@ def read_a_file( calling_parameters):
     if not no_calculation:
         # What mass definition are we using?
         if not mass_definition == "program" or mass_dictionary:
-            reader.change_masses(mass_definition, isotope_masses, average_masses, mass_dictionary)
+            if mass_definition == "average":
+                reader.change_masses(average_masses, mass_dictionary)
+            elif mass_definition == "isotope":
+                reader.change_masses(isotope_masses, mass_dictionary)
         # Get the born charges
         born_charges = np.array(reader.born_charges)
         # Calculate the mass weighted normal modes.  This just forces projection 

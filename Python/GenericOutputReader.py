@@ -64,6 +64,7 @@ class GenericOutputReader:
         self.atom_type_list             = []
         self.masses                     = []
         self.masses_per_type            = []
+        self.program_masses_per_type    = []
         self.eckart                     = False
         self.neutral                    = False
         self.hessian_symmetrisation     = "symm"
@@ -86,51 +87,22 @@ class GenericOutputReader:
             s = s.replace(i,'')
         return s
 
-    def change_masses(self, definition, isotope_masses, average_masses, mass_dictionary):
+    def change_masses(self, new_masses, mass_dictionary):
         self._old_masses = self.masses
-        old_masses_per_type = self.masses_per_type
-        self._masses_have_changed = False
+        if not self.program_masses_per_type:
+            # We only want to do this once - remember the program masses
+            self.program_masses_per_type = self.masses_per_type
         self.masses = []
         self.masses_per_type = []
-        if definition == "average":
-            self._masses_have_changed = True
-            for symbol in self.species:
-                # the element name may be appended with a digit or an underscore
-                element = self.cleanup_symbol(symbol)
-                mass = average_masses[element]
-                if element in mass_dictionary:
-                    mass = mass_dictionary[element]
-                self.masses_per_type.append(mass)
-             # end for symbol
-        elif definition == "isotope":
-            self._masses_have_changed = True
-            for symbol in self.species:
-                # the element name may be appended with a digit or an underscore
-                element = self.cleanup_symbol(symbol)
-                abmax = 0.0
-                for iso in isotope_masses[element]:
-                    weight = iso[1]
-                    abundance = iso[2]
-                    if abundance > abmax:
-                        abmax = abundance
-                        mass = weight
-                # end of for iso 
-                if element in mass_dictionary:
-                    mass = mass_dictionary[element]
-                self.masses_per_type.append(mass)
-            # end of for symbol
-        elif definition == "program":
-            for symbol,mass in zip(self.species,old_masses_per_type):
-                # the element name may be appended with a digit or an underscore
-                element = self.cleanup_symbol(symbol)
-                if element in mass_dictionary:
-                    mass = mass_dictionary[element]
-                    self._masses_have_changed = True
-                self.masses_per_type.append(mass)
-            # end of for symbol
-        else:
-            print('Error, mass definition not recognised',definition)
-            exit()
+        self._masses_have_changed = True
+        for symbol in self.species:
+            # the element name may be appended with a digit or an underscore
+            element = self.cleanup_symbol(symbol)
+            mass = new_masses[element]
+            if element in mass_dictionary:
+                mass = mass_dictionary[element]
+            self.masses_per_type.append(mass)
+        # end for symbol
         self.masses = [ self.masses_per_type[atype] for atype in self.atom_type_list ]
         return
 

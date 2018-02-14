@@ -376,7 +376,10 @@ def main():
         if debug:
            print_reals("Old masses by atom types", reader.masses_per_type,format="{:10.6f}")
            print_reals("Old atomic mass list", reader.masses,format="{:10.6f}")
-        reader.change_masses(mass_definition, isotope_masses, average_masses, mass_dictionary)
+        if mass_definition == "average":
+            reader.change_masses(average_masses, mass_dictionary)
+        elif mass_definition == "isotope":
+            reader.change_masses(isotope_masses, mass_dictionary)
         if debug:
             print_reals("New masses by atom types", reader.masses_per_type,format="{:10.6f}")
             print_reals("New atomic mass list", reader.masses,format="{:10.6f}")
