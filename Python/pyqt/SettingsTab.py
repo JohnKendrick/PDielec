@@ -13,7 +13,7 @@ from PyQt5.QtGui      import  QIcon
 from PyQt5.QtCore     import  pyqtSlot
 from PyQt5.QtCore     import  Qt, QSize
 from Python.Utilities import  get_reader
-from Python.Constants import  support_matrix_db, wavenumber
+from Python.Constants import  support_matrix_db, wavenumber, amu
 from Python.Constants import  average_masses, isotope_masses
 
 class FixedQTableWidget(QTableWidget):
@@ -209,10 +209,22 @@ class SettingsTab(QWidget):
 
     def pushButton1Clicked(self):
         print("Button 1 pressed")
+        self.reader.read_output()
         self.reader.neutral = self.settings["neutral"]
         self.reader.eckart = self.settings["eckart"]
         self.reader.hessian_symmetrisation = self.settings["hessian_symmetrisation"]
-        self.reader.change_masses(self.settings["mass_definition"], isotope_masses, average_masses, mass_dictionary)
+        mass_dictionary = []
+        self.reader.reset_masses()
+        if self.settings["mass_definition"] == "average":
+            self.reader.change_masses(average_masses, mass_dictionary)
+        elif self.settings["mass_definition"] == "isotope":
+            self.reader.change_masses(isotope_masses, mass_dictionary)
+        elif self.settings["mass_definition"] == "gui":
+            self.reader.change_masses(self.settings["masses_dictionary"], mass_dictionary)
+        elif self.settings["mass_definition"] == "program":
+            pass
+        else:
+            print("Error unkown mass definition", self.settings["mass_definition"] )
         mass_weighted_normal_modes = self.reader.calculate_mass_weighted_normal_modes()
         # convert sigmas to wavenumbers
         self.frequencies_cm1 = self.reader.frequencies
@@ -225,7 +237,7 @@ class SettingsTab(QWidget):
         else:
             #
             # calculate normal modes in xyz coordinate space
-            # should they be re-normalised or not?  According to Balan the mass weighted coordinates should be normalised
+            masses = np.array(self.reader.masses) * amu
             normal_modes = Calculator.normal_modes(masses, mass_weighted_normal_modes)
             # from the normal modes and the born charges calculate the oscillator strengths of each mode
             oscillator_strengths = Calculator.oscillator_strengths(normal_modes, born_charges)
@@ -233,11 +245,13 @@ class SettingsTab(QWidget):
         intensities = Calculator.infrared_intensities(oscillator_strengths)
  
         self.output_tw.setRowCount(len(self.sigmas))
-        self.output_tw.setColumnCount(3)
-        for i,(f,sigma) in enumerate(zip(self.frequencies_cm1, self.sigmas)):
+        self.output_tw.setColumnCount(4)
+        self.output_tw.setHorizontalHeaderLabels(['Include?', 'Frequency', 'sigma', 'Intensity'])
+        for i,(f,sigma,intensity) in enumerate(zip(self.frequencies_cm1, self.sigmas, intensities)):
             self.output_tw.setItem(i, 0, QTableWidgetItem(" ") )
             self.output_tw.setItem(i, 1, QTableWidgetItem(str(f) ) )
             self.output_tw.setItem(i, 2, QTableWidgetItem(str(sigma) ) )
+            self.output_tw.setItem(i, 3, QTableWidgetItem(str(intensity) ) )
 
     def on_file_store_le_changed(self,text):
         self.settings["spreadsheet"] = text
@@ -265,13 +279,37 @@ class SettingsTab(QWidget):
     def set_masses_tw(self):
         print("set masses")
         if self.reader:
-            masses = self.reader.masses_per_type
+            self.element_masses_tw.blockSignals(True)
             species = self.reader.species
+            if self.settings["mass_definition"] == "gui":
+                self.settings["mass_definition"] == "average"
+                self.mass_cb.setCurrentIndex(0)
+            # set the initial dictionary according to the mass_definition
+            masses = []
+            self.masses_dictionary = {}
+            if self.settings["mass_definition"] == "average":
+                for element in species:
+                    mass = average_masses[element]
+                    masses.append(mass)
+                    self.masses_dictionary[element] = mass
+            elif self.settings["mass_definition"] == "isotope":
+                for element in species:
+                    mass = isotope_masses[element]
+                    masses.append(mass)
+                    self.masses_dictionary[element] = mass
+            elif self.settings["mass_definition"] == "program":
+                 self.reader.reset_masses()
+                 masses = self.reader.masses_per_type
+                 for mass,element in zip(masses,species):
+                    self.masses_dictionary[element] = mass
+            elif self.settings["mass_definition"] == "gui":
+                 pass
+            else:
+                 print("Error mass_definition not recognised", self.settings["mass_definition"])
             self.element_masses_tw.setColumnCount(len(masses))
             self.element_masses_tw.setHorizontalHeaderLabels(species)
             self.element_masses_tw.setVerticalHeaderLabels([""])
             # set masses of the elements in the table widget according to the mass definition
-            self.settings["masses_dictionary"] = {}
             for i,(mass,element) in enumerate(zip(masses,species)):
                 print("set_masses_tw", self.settings["mass_definition"],i,mass,element)
                 qw = QTableWidgetItem()
@@ -286,16 +324,11 @@ class SettingsTab(QWidget):
                     self.element_masses_tw.setItem(0,i, qw )
                 elif  self.settings["mass_definition"] == "isotope":
                     self.element_masses_tw.blockSignals(True)
-                    max_abundance = 0.0
-                    for atomic_number,mass,abundance in isotope_masses[element]:
-                        print("abundance",atomic_number,mass,abundance)
-                        if abundance > max_abundance:
-                            max_abundance = abundance
-                            abundant_mass = mass
-                        print("abundant mass",abundant_mass)
-                    qw.setText(str(abundant_mass))
-                    print("isotope",abundant_mass)
+                    qw.setText(str(isotope_masses[element]))
+                    print("isotope",isotope_masses[element])
                     self.element_masses_tw.setItem(0,i, qw )
+                else:
+                    print("mass_definition not processed", self.settings["mass_definition"])
             # unblock the table signals
             self.element_masses_tw.blockSignals(False)
 
@@ -347,7 +380,7 @@ class SettingsTab(QWidget):
         print("on_element_masses_tw_itemChanged)", item.column())
         col = item.column()
         self.settings["mass_definition"] = "gui"
-        self.settings["masses_dictionary"][self.species[co]l] = float(item.text())
+        self.settings["masses_dictionary"][self.reader.species[col]] = float(item.text())
         print("masses_dictionary", self.settings["masses_dictionary"])
 
     def on_optical_tw_itemChanged(self, item):

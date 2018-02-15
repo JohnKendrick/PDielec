@@ -64,14 +64,15 @@ class GenericOutputReader:
         self.atom_type_list             = []
         self.masses                     = []
         self.masses_per_type            = []
-        self.program_masses_per_type    = []
+        self.program_mass_dictionary    = {}
         self.eckart                     = False
         self.neutral                    = False
         self.hessian_symmetrisation     = "symm"
         self.open_filename              = ""
         self.open_directory             = ""
         self._old_masses                = []
-        self._masses_have_changed       = False
+        self.hessian                    = None
+        self.hessian_has_been_set       = False
         return
 
     def read_output(self):
@@ -87,14 +88,22 @@ class GenericOutputReader:
             s = s.replace(i,'')
         return s
 
+    def reset_masses(self):
+        #  If the mass needs reseting use the original (program) mass dictionary
+        mass_dictionary = {}
+        if self.program_mass_dictionary:
+            self.change_masses(self.program_mass_dictionary,mass_dictionary)
+
     def change_masses(self, new_masses, mass_dictionary):
-        self._old_masses = self.masses
-        if not self.program_masses_per_type:
-            # We only want to do this once - remember the program masses
-            self.program_masses_per_type = self.masses_per_type
+        # Change the masses of the species stored, using the new_masses dictionary
+        # if any of the elements are in the mass_dictionary then use that mass instead
+        if not self.program_mass_dictionary:
+            # We only want to do this once - remember the program masses as a dictionary
+            for symbol,mass in zip(self.species,self.masses_per_type):
+                element = self.cleanup_symbol(symbol)
+                self.program_mass_dictionary[element] = mass
         self.masses = []
         self.masses_per_type = []
-        self._masses_have_changed = True
         for symbol in self.species:
             # the element name may be appended with a digit or an underscore
             element = self.cleanup_symbol(symbol)
@@ -212,33 +221,36 @@ class GenericOutputReader:
         m = np.size(self.mass_weighted_normal_modes, 1)*3
         nmodes = 3*self.nions
         UT = np.zeros((n, m))
-        for imode, mode in enumerate(self.mass_weighted_normal_modes):
-            n = 0
-            for atom in mode:
-                # in python the first index is the row of the matrix, the second is the column
-                UT[imode, n+0] = atom[0]
-                UT[imode, n+1] = atom[1]
-                UT[imode, n+2] = atom[2]
-                n = n + 3
-            # end for atom
-        # end for imode
-        # convert the frequencies^2 to a real diagonal array
-        # Warning we have to make sure the sign is correct here
-        # The convention is that if the frequency is negative
-        # then it is really imaginary, so the square of the frequency
-        # will be negative too.
-        frequencies_a = np.array(self.frequencies)
-        f2 = np.diag(np.sign(frequencies_a)*np.real(frequencies_a*frequencies_a))
-        # The back transformation uses approximately orthogonal (unitary) matrices because of rounding issues on reading vectors
-        # So before that lets orthogonalise them
-        UT = self._symmetric_orthogonalisation(UT)
-        hessian = np.dot(np.dot(UT.T, f2), UT)
-        # Make sure the dynamical matrix is real
-        hessian = np.real(hessian)
+        # if the non mass-weighted hasn't been set, set it
+        if not self.hessian_has_been_set:
+            self.hessian_has_been_set = True
+            for imode, mode in enumerate(self.mass_weighted_normal_modes):
+                n = 0
+                for atom in mode:
+                    # in python the first index is the row of the matrix, the second is the column
+                    UT[imode, n+0] = atom[0]
+                    UT[imode, n+1] = atom[1]
+                    UT[imode, n+2] = atom[2]
+                    n = n + 3
+                # end for atom
+            # end for imode
+            # convert the frequencies^2 to a real diagonal array
+            # Warning we have to make sure the sign is correct here
+            # The convention is that if the frequency is negative
+            # then it is really imaginary, so the square of the frequency
+            # will be negative too.
+            frequencies_a = np.array(self.frequencies)
+            f2 = np.diag(np.sign(frequencies_a)*np.real(frequencies_a*frequencies_a))
+            # The back transformation uses approximately orthogonal (unitary) matrices because of rounding issues on reading vectors
+            # So before that lets orthogonalise them
+            UT = self._symmetric_orthogonalisation(UT)
+            hessian = np.dot(np.dot(UT.T, f2), UT)
+            # Make sure the dynamical matrix is real
+            hessian = np.real(hessian)
+            # We are going to store the non mass-weighted hessian
+            self.hessian = self._remove_mass_weighting(hessian,self.masses)
         # If the masses have been changed then alter the mass weighted hessian here
-        if self._masses_have_changed: 
-            hessian = self._modify_mass_weighting(hessian,self._old_masses,self.masses)
-            self._masses_have_changed = False
+        hessian = self._modify_mass_weighting(self.hessian,self.masses)
         # Project out the translational modes if requested
         if self.eckart:
             hessian = self.project(hessian)
@@ -317,14 +329,13 @@ class GenericOutputReader:
             uplo = 'L'
         else:
             uplo = 'U'
+        if not self.hessian_has_been_set:
+            self.hessian_has_been_set = True
+            self.hessian = self._remove_mass_weighting(hessian,self.masses)
+        hessian = self._modify_mass_weighting(self.hessian,self.masses)
         # Project out the translational modes if requested
         if self.eckart:
             hessian = self.project(hessian)
-        #
-        # If the masses have been changed then alter the mass weighted hessian here
-        if self._masses_have_changed: 
-            hessian = self._modify_mass_weighting(hessian,self._old_masses,self.masses)
-            self._masses_have_changed = False
         # diagonalise
         eig_val, eig_vec = np.linalg.eigh(hessian, UPLO=uplo)
         #
@@ -362,10 +373,9 @@ class GenericOutputReader:
         self.born_charges = new_born_charges.tolist()
         return
 
-    def _modify_mass_weighting(self,hessian,old,new):
+    def _modify_mass_weighting(self,hessian,new):
         #
-        # Remove the mass weighting imposed by the QM/MM program - defined in old
-        # Replace by PDielec mass weighting - defined in new
+        # Mass weight defined in new
         #
         ipos = -1
         for i in range(self.nions):
@@ -375,7 +385,26 @@ class GenericOutputReader:
                 for j in range(self.nions):
                     for jx in range(3):
                         jpos += 1
-                        hessian[ipos,jpos] = hessian[ipos,jpos] * math.sqrt( old[i]*old[j] / ( new[i]*new[j] ))
+                        hessian[ipos,jpos] = hessian[ipos,jpos] / math.sqrt(  new[i]*new[j] )
+                    # end for jx
+                # end for j
+            # end for ix
+        # end for i
+        return hessian
+
+    def _remove_mass_weighting(self,hessian,old):
+        #
+        # Remove the mass weighting imposed by the QM/MM program - defined in old
+        #
+        ipos = -1
+        for i in range(self.nions):
+            for ix in range(3):
+                ipos += 1
+                jpos = -1
+                for j in range(self.nions):
+                    for jx in range(3):
+                        jpos += 1
+                        hessian[ipos,jpos] = hessian[ipos,jpos] * math.sqrt( old[i]*old[j] )
                     # end for jx
                 # end for j
             # end for ix
