@@ -21,7 +21,7 @@ import os
 import sys
 import string
 import numpy as np
-from Python.Constants import wavenumber, avogadro_si, atomic_number_to_element
+from Python.Constants import wavenumber, avogadro_si, atomic_number_to_element, amu
 from Python.Plotter import print3x3, print_reals, print_strings, print_ints
 
 class GenericOutputReader:
@@ -91,6 +91,7 @@ class GenericOutputReader:
     def reset_masses(self):
         #  If the mass needs reseting use the original (program) mass dictionary
         mass_dictionary = {}
+        print("Re setting mass dictionary to the program values")
         if self.program_mass_dictionary:
             self.change_masses(self.program_mass_dictionary,mass_dictionary)
 
@@ -99,9 +100,12 @@ class GenericOutputReader:
         # if any of the elements are in the mass_dictionary then use that mass instead
         if not self.program_mass_dictionary:
             # We only want to do this once - remember the program masses as a dictionary
+            print("Setting program mass dictionary")
             for symbol,mass in zip(self.species,self.masses_per_type):
                 element = self.cleanup_symbol(symbol)
                 self.program_mass_dictionary[element] = mass
+        print("changing masses", new_masses)
+        print("changing masses", program_mass_dictionary)
         self.masses = []
         self.masses_per_type = []
         for symbol in self.species:
@@ -221,6 +225,8 @@ class GenericOutputReader:
         m = np.size(self.mass_weighted_normal_modes, 1)*3
         nmodes = 3*self.nions
         UT = np.zeros((n, m))
+        frequencies_a = np.array(self.frequencies)
+        masses = np.array(self.masses)*amu
         # if the non mass-weighted hasn't been set, set it
         if not self.hessian_has_been_set:
             self.hessian_has_been_set = True
@@ -248,9 +254,9 @@ class GenericOutputReader:
             # Make sure the dynamical matrix is real
             hessian = np.real(hessian)
             # We are going to store the non mass-weighted hessian
-            self.hessian = self._remove_mass_weighting(hessian,self.masses)
+            self.hessian = self._remove_mass_weighting(hessian,masses)
         # If the masses have been changed then alter the mass weighted hessian here
-        hessian = self._modify_mass_weighting(self.hessian,self.masses)
+        hessian = self._modify_mass_weighting(self.hessian, masses)
         # Project out the translational modes if requested
         if self.eckart:
             hessian = self.project(hessian)
@@ -329,10 +335,11 @@ class GenericOutputReader:
             uplo = 'L'
         else:
             uplo = 'U'
+        masses = np.array(self.masses)*amu
         if not self.hessian_has_been_set:
             self.hessian_has_been_set = True
-            self.hessian = self._remove_mass_weighting(hessian,self.masses)
-        hessian = self._modify_mass_weighting(self.hessian,self.masses)
+            self.hessian = self._remove_mass_weighting(hessian,masses)
+        hessian = self._modify_mass_weighting(self.hessian,masses)
         # Project out the translational modes if requested
         if self.eckart:
             hessian = self.project(hessian)
