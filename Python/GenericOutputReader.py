@@ -71,8 +71,8 @@ class GenericOutputReader:
         self.open_filename              = ""
         self.open_directory             = ""
         self._old_masses                = []
-        self.hessian                    = None
-        self.hessian_has_been_set       = False
+        self.nomass_hessian             = None
+        self.nomass_hessian_has_been_set= False
         return
 
     def read_output(self):
@@ -91,7 +91,8 @@ class GenericOutputReader:
     def reset_masses(self):
         #  If the mass needs reseting use the original (program) mass dictionary
         mass_dictionary = {}
-        print("Re setting mass dictionary to the program values")
+        if self.debug:
+            print("Re setting mass dictionary to the program values")
         if self.program_mass_dictionary:
             self.change_masses(self.program_mass_dictionary,mass_dictionary)
 
@@ -100,12 +101,13 @@ class GenericOutputReader:
         # if any of the elements are in the mass_dictionary then use that mass instead
         if not self.program_mass_dictionary:
             # We only want to do this once - remember the program masses as a dictionary
-            print("Setting program mass dictionary")
+            if self.debug:
+                print("Setting program mass dictionary")
             for symbol,mass in zip(self.species,self.masses_per_type):
                 element = self.cleanup_symbol(symbol)
                 self.program_mass_dictionary[element] = mass
-        print("changing masses", new_masses)
-        print("changing masses", program_mass_dictionary)
+        if self.debug:
+            print("changing masses", self.program_mass_dictionary)
         self.masses = []
         self.masses_per_type = []
         for symbol in self.species:
@@ -221,15 +223,21 @@ class GenericOutputReader:
         # and U is a hermitian matrix so U-1 = UT
         # D = (UT)-1 f^2 U-1 = U f UT
         # Construct UT from the normal modes
+        if self.debug:
+            print("calculate mass weighted normal modes")
         n = np.size(self.mass_weighted_normal_modes, 0)
         m = np.size(self.mass_weighted_normal_modes, 1)*3
         nmodes = 3*self.nions
         UT = np.zeros((n, m))
-        frequencies_a = np.array(self.frequencies)
+        frequencies_a = np.array(self.frequencies) * wavenumber
+        if self.debug:
+            print("frequencies_a",frequencies_a)
         masses = np.array(self.masses)*amu
         # if the non mass-weighted hasn't been set, set it
-        if not self.hessian_has_been_set:
-            self.hessian_has_been_set = True
+        if not self.nomass_hessian_has_been_set:
+            if self.debug:
+                print("hessian was not set")
+            self.nomass_hessian_has_been_set = True
             for imode, mode in enumerate(self.mass_weighted_normal_modes):
                 n = 0
                 for atom in mode:
@@ -245,7 +253,7 @@ class GenericOutputReader:
             # The convention is that if the frequency is negative
             # then it is really imaginary, so the square of the frequency
             # will be negative too.
-            frequencies_a = np.array(self.frequencies)
+            frequencies_a = np.array(self.frequencies) * wavenumber
             f2 = np.diag(np.sign(frequencies_a)*np.real(frequencies_a*frequencies_a))
             # The back transformation uses approximately orthogonal (unitary) matrices because of rounding issues on reading vectors
             # So before that lets orthogonalise them
@@ -254,22 +262,33 @@ class GenericOutputReader:
             # Make sure the dynamical matrix is real
             hessian = np.real(hessian)
             # We are going to store the non mass-weighted hessian
-            self.hessian = self._remove_mass_weighting(hessian,masses)
+            self.nomass_hessian = self._remove_mass_weighting(hessian,masses)
+            if self.debug:
+                print("non mass weighted hessian", self.nomass_hessian[0:4][0]) 
         # If the masses have been changed then alter the mass weighted hessian here
-        hessian = self._modify_mass_weighting(self.hessian, masses)
+        if self.debug:
+            print("masses", masses) 
+            print("non mass weighted hessian", self.nomass_hessian[0:4][0]) 
+        hessian = self._modify_mass_weighting(self.nomass_hessian, masses)
+        if self.debug:
+            print("mass weighted hessian", hessian[0:4][0]) 
         # Project out the translational modes if requested
         if self.eckart:
             hessian = self.project(hessian)
+            if self.debug:
+                print("projected hessian", hessian[0:4][0]) 
         # Find its eigenvalues and eigen vectors
         eig_val, eig_vec = np.linalg.eigh(hessian)
         self.mass_weighted_normal_modes = []
         # Store the new frequencies, using the negative convention for imaginary modes
         for i in range(nmodes):
             if eig_val[i] < 0:
-                frequencies_a[i] = -math.sqrt(-eig_val[i])
+                frequencies_a[i] = -math.sqrt(-eig_val[i]) / wavenumber
             else:
-                frequencies_a[i] = math.sqrt(eig_val[i])
+                frequencies_a[i] = math.sqrt(eig_val[i]) / wavenumber
         self.frequencies = frequencies_a.tolist()
+        if self.debug:
+            print("calculated frequencies", self.frequencies)
         # Store the mass weighted normal modes
         for i in range(nmodes):
             mode = []
@@ -326,6 +345,9 @@ class GenericOutputReader:
         Translational modes are projected out
         The hessian is diagonalised
         Finally the frequencies and normal modes are stored"""
+        if self.debug:
+            print("_dynamical_matrix")
+            print("hessian", hessian[0:4][0]) 
         #
         nmodes = self.nions*3
         # symmetrise
@@ -336,13 +358,23 @@ class GenericOutputReader:
         else:
             uplo = 'U'
         masses = np.array(self.masses)*amu
-        if not self.hessian_has_been_set:
-            self.hessian_has_been_set = True
-            self.hessian = self._remove_mass_weighting(hessian,masses)
-        hessian = self._modify_mass_weighting(self.hessian,masses)
+        if self.debug:
+            print("masses", self.masses, masses) 
+        if not self.nomass_hessian_has_been_set:
+            self.nomass_hessian_has_been_set = True
+            self.nomass_hessian = self._remove_mass_weighting(hessian,masses)
+        if self.debug:
+            print("non mass weighted hessian", self.nomass_hessian[0:4][0]) 
+        hessian = self._modify_mass_weighting(self.nomass_hessian,masses)
+        if self.debug:
+            print("non mass weighted hessian", self.nomass_hessian[0:4][0]) 
+        if self.debug:
+            print("mass weighted hessian", hessian[0:4][0]) 
         # Project out the translational modes if requested
         if self.eckart:
             hessian = self.project(hessian)
+        if self.debug:
+            print("projected hessian", hessian[0:4][0]) 
         # diagonalise
         eig_val, eig_vec = np.linalg.eigh(hessian, UPLO=uplo)
         #
@@ -358,6 +390,8 @@ class GenericOutputReader:
         # end for
         self.mass_weighted_normal_modes = []
         self.frequencies = frequencies_a.tolist()
+        if self.debug:
+            print("frequencies", self.frequencies) 
         # Store the mass weighted normal modes
         for i in range(nmodes):
             mode = []
@@ -368,6 +402,8 @@ class GenericOutputReader:
                 mode.append(modea)
             self.mass_weighted_normal_modes.append(mode)
         # end for i
+        if self.debug:
+            print("non mass weighted hessian", self.nomass_hessian[0:4][0]) 
         return
 
     def _born_charge_sum_rule(self):
@@ -385,6 +421,7 @@ class GenericOutputReader:
         # Mass weight defined in new
         #
         ipos = -1
+        new_hessian = np.empty_like(hessian)
         for i in range(self.nions):
             for ix in range(3):
                 ipos += 1
@@ -392,17 +429,18 @@ class GenericOutputReader:
                 for j in range(self.nions):
                     for jx in range(3):
                         jpos += 1
-                        hessian[ipos,jpos] = hessian[ipos,jpos] / math.sqrt(  new[i]*new[j] )
+                        new_hessian[ipos,jpos] = hessian[ipos,jpos] / math.sqrt(  new[i]*new[j] )
                     # end for jx
                 # end for j
             # end for ix
         # end for i
-        return hessian
+        return new_hessian
 
     def _remove_mass_weighting(self,hessian,old):
         #
         # Remove the mass weighting imposed by the QM/MM program - defined in old
         #
+        new_hessian = np.empty_like(hessian)
         ipos = -1
         for i in range(self.nions):
             for ix in range(3):
@@ -411,9 +449,9 @@ class GenericOutputReader:
                 for j in range(self.nions):
                     for jx in range(3):
                         jpos += 1
-                        hessian[ipos,jpos] = hessian[ipos,jpos] * math.sqrt( old[i]*old[j] )
+                        new_hessian[ipos,jpos] = hessian[ipos,jpos] * math.sqrt( old[i]*old[j] )
                     # end for jx
                 # end for j
             # end for ix
         # end for i
-        return hessian
+        return new_hessian
