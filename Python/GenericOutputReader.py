@@ -96,6 +96,16 @@ class GenericOutputReader:
         if self.program_mass_dictionary:
             self.change_masses(self.program_mass_dictionary,mass_dictionary)
 
+    def mass_dictionary(self):
+        dictionary = {}
+        for symbol,mass in zip(self.species,self.masses_per_type):
+            # the element name may be appended with a digit or an underscore
+            element = self.cleanup_symbol(symbol)
+            dictionary[element] = mass
+        if self.debug:
+            print("new mass_dictionary", dictionary)
+        return dictionary
+
     def change_masses(self, new_masses, mass_dictionary):
         # Change the masses of the species stored, using the new_masses dictionary
         # if any of the elements are in the mass_dictionary then use that mass instead
@@ -119,6 +129,8 @@ class GenericOutputReader:
             self.masses_per_type.append(mass)
         # end for symbol
         self.masses = [ self.masses_per_type[atype] for atype in self.atom_type_list ]
+        if self.debug:
+            print("new masses", self.masses)
         return
 
     def print_info(self):
@@ -261,11 +273,26 @@ class GenericOutputReader:
             hessian = np.dot(np.dot(UT.T, f2), UT)
             # Make sure the dynamical matrix is real
             hessian = np.real(hessian)
-            # We are going to store the non mass-weighted hessian
+            # We are going to store the non mass-weighted hessian, since the frequencies came from the MM/QM program
+            # they are calculated using the program masses
+            current_mass_dictionary = self.mass_dictionary()
+            if self.debug:
+                print("current mass dictionary", current_mass_dictionary)
+            # There is a chance that the program_mass_dictionary hasn't been set - if it hasn't use the current masses
+            if not self.program_mass_dictionary:
+                self.program_mass_dictionary = current_mass_dictionary
+            if self.debug:
+                print("program mass dictionary", self.program_mass_dictionary)
+            self.change_masses(self.program_mass_dictionary, {})
+            masses = np.array(self.masses)*amu
+            # remove the mass weighting from the hessian and store
             self.nomass_hessian = self._remove_mass_weighting(hessian,masses)
+            # finally replace the masses with those set before we did this
+            self.change_masses(current_mass_dictionary, {})
             if self.debug:
                 print("non mass weighted hessian", self.nomass_hessian[0:4][0]) 
         # If the masses have been changed then alter the mass weighted hessian here
+        masses = np.array(self.masses)*amu
         if self.debug:
             print("masses", masses) 
             print("non mass weighted hessian", self.nomass_hessian[0:4][0]) 
@@ -350,17 +377,16 @@ class GenericOutputReader:
             print("hessian", hessian[0:4][0]) 
         #
         nmodes = self.nions*3
-        # symmetrise
-        uplo = 'U'
-        if self.hessian_symmetrisation == "symm":
-            hessian = 0.5 * (hessian + hessian.T)
-            uplo = 'L'
-        else:
-            uplo = 'U'
         masses = np.array(self.masses)*amu
         if self.debug:
             print("masses", self.masses, masses) 
         if not self.nomass_hessian_has_been_set:
+            # symmetrise the hessian and store it for later use
+            if self.hessian_symmetrisation == "symm":
+                hessian = 0.5 * (hessian + hessian.T)
+            else:
+                # Crystal only uses the upper triangle to calculate the eigenvalues
+                hessian = hessian - np.tril(hessian) + np.triu(hessian).T
             self.nomass_hessian_has_been_set = True
             self.nomass_hessian = self._remove_mass_weighting(hessian,masses)
         if self.debug:
@@ -376,7 +402,7 @@ class GenericOutputReader:
         if self.debug:
             print("projected hessian", hessian[0:4][0]) 
         # diagonalise
-        eig_val, eig_vec = np.linalg.eigh(hessian, UPLO=uplo)
+        eig_val, eig_vec = np.linalg.eigh(hessian)
         #
         # If eig_val has negative values then we store the negative frequency
         # convert to cm-1

@@ -98,12 +98,15 @@ def read_a_file( calling_parameters):
         exit()
 
     print('  Analysing ',names, file=sys.stderr)
+    # The order that the settings are applied is important
+    # Symmetry is applied before the file is read, it is an integral part of the hessian
+    # Eckart and neutral are applied after the file has been read, this way the original frequencies are those before any calculations
     reader.debug = debug
-    reader.eckart = eckart
-    reader.neutral = neutral
     reader.hessian_symmetrisation = hessian_symmetrisation
     reader.read_output()
     frequencies = reader.frequencies
+    reader.eckart = eckart
+    reader.neutral = neutral
     no_calculation = global_no_calculation
     if len(frequencies) < 3:
         no_calculation = True

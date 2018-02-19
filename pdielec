@@ -709,13 +709,16 @@ def main():
     else:
         print("The charge neutrality of the Born atomic charges will not be enforced")
     # Modify the default settings of the reader
+    reader.debug = debug
+    # The order these settings is applied is important - the hessian symmetry is determined by the program so apply
+    # The non mass weighted hesian stored in reader will be symmetrised
+    reader.hessian_symmetrisation = hessian_symmetrisation
+    # Initiate reading of the files - at this point any masses are set by the program
+    reader.read_output()
+    # Now apply the eckart and neutral conditions
     reader.eckart = eckart
     reader.neutral = neutral
-    reader.hessian_symmetrisation = hessian_symmetrisation
-    reader.debug = debug
-    # Initiate reading of the files
-    reader.read_output()
-    if print_info:
+    if debug or print_info:
         reader.print_info()
     # Calculate the depolarisation matrices.  Put here because we need the lattice vectors
     depolarisations = []
