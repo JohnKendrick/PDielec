@@ -717,7 +717,8 @@ def main():
     reader.read_output()
     # Now apply the eckart and neutral conditions
     reader.eckart = eckart
-    reader.neutral = neutral
+    if neutral:
+        reader.neutralise_born_charges()
     if debug or print_info:
         reader.print_info()
     # Calculate the depolarisation matrices.  Put here because we need the lattice vectors

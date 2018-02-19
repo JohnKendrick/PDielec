@@ -105,19 +105,21 @@ def read_a_file( calling_parameters):
     reader.hessian_symmetrisation = hessian_symmetrisation
     reader.read_output()
     frequencies = reader.frequencies
-    reader.eckart = eckart
-    reader.neutral = neutral
     no_calculation = global_no_calculation
     if len(frequencies) < 3:
         no_calculation = True
     if not no_calculation:
+        # apply the eckart conditions before we change the masses
+        reader.eckart = eckart
+        # Get the born charges
+        if neutral:
+            reader.neutralise_born_charges()
         # What mass definition are we using?
         if not mass_definition == "program" or mass_dictionary:
             if mass_definition == "average":
                 reader.change_masses(average_masses, mass_dictionary)
             elif mass_definition == "isotope":
                 reader.change_masses(isotope_masses, mass_dictionary)
-        # Get the born charges
         born_charges = np.array(reader.born_charges)
         # Calculate the mass weighted normal modes.  This just forces projection 
         mass_weighted_normal_modes = reader.calculate_mass_weighted_normal_modes()

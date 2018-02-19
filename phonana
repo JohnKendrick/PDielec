@@ -357,12 +357,13 @@ def main():
     else:
         print("The charge neutrality of the Born atomic charges will not be enforced")
     # Modify the default settings of the reader
-    reader.eckart = eckart
-    reader.neutral = neutral
     reader.hessian_symmetrisation = hessian_symmetrisation
     reader.debug = debug
     # Initiate reading of the files
     reader.read_output()
+    reader.eckart = eckart
+    if neutral:
+        reader.neutralise_born_charges()
     if print_info:
         reader.print_info()
     # What mass definition are we using?
