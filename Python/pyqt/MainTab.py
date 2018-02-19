@@ -10,6 +10,7 @@ from PyQt5.QtGui import QIcon
 from PyQt5.QtCore import pyqtSlot
 from PyQt5.QtCore import Qt
 from Python.Utilities import get_reader
+import numpy as np
  
 class MainTab(QWidget):        
  
@@ -83,9 +84,9 @@ class MainTab(QWidget):
 #        self.reader.hessian_symmetrisation = self.settings["hessian_symmetrisation"]
         self.reader.read_output()
         self.reader.print_info()
-        frequencies_cm1 = self.reader.frequencies
+        frequencies_cm1 = np.sort(self.reader.frequencies)
         for f in frequencies_cm1:
-            self.listw.addItem(str(f))
+            self.listw.addItem("{0:.3f}".format(f))
         # tell the settings tab to update the widgets that depend on the contents of the reader
         self.settingsTab.refresh()
         

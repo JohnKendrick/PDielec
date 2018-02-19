@@ -13,7 +13,7 @@ from PyQt5.QtGui      import  QIcon
 from PyQt5.QtCore     import  pyqtSlot
 from PyQt5.QtCore     import  Qt, QSize
 from Python.Utilities import  get_reader
-from Python.Constants import  support_matrix_db, wavenumber, amu
+from Python.Constants import  support_matrix_db, wavenumber, amu, PI
 from Python.Constants import  average_masses, isotope_masses
 
 class FixedQTableWidget(QTableWidget):
@@ -56,6 +56,8 @@ class SettingsTab(QWidget):
         self.mass_definition_options = ["average","program","isotope","gui"]
         self.settings["mass_definition"] = "average"
         self.settings["masses_dictionary"] = {}
+        self.modes_selected = []
+        # get the reader from the main tab
         self.reader = MainTab.reader
         # Create second tab - SettingsTab
         vbox = QVBoxLayout()
@@ -128,7 +130,7 @@ class SettingsTab(QWidget):
         form.addRow(QLabel("Support matrix:",self), self.matrix_cb)
         self.density_le = QLineEdit(self) 
         self.density_le.setToolTip("Define the support matrix density")
-        self.density_le.setText(str(self.settings["matrix_density"]))
+        self.density_le.setText("{0:.2f}".format(self.settings["matrix_density"]))
         self.density_le.textChanged.connect(self.on_density_le_changed)
         form.addRow(QLabel("Support density", self), self.density_le)
         #
@@ -136,7 +138,7 @@ class SettingsTab(QWidget):
         #
         self.permittivity_le = QLineEdit(self) 
         self.permittivity_le.setToolTip("Define the support matrix permittivity")
-        self.permittivity_le.setText(str(self.settings["matrix_permittivity"]))
+        self.permittivity_le.setText("{0:.2f}".format(self.settings["matrix_permittivity"]))
         self.permittivity_le.textChanged.connect(self.on_permittivity_le_changed)
         form.addRow(QLabel("Support permittivity", self), self.permittivity_le)
         #
@@ -184,7 +186,7 @@ class SettingsTab(QWidget):
         #
         self.file_store_le = QLineEdit(self) 
         self.file_store_le.setToolTip("Store the results in a .csv or .xlsx file")
-        self.file_store_le.setText(str(self.settings["spreadsheet"]))
+        self.file_store_le.setText(self.settings["spreadsheet"])
         self.file_store_le.textChanged.connect(self.on_file_store_le_changed)
         form.addRow(QLabel("Output spreadsheet", self), self.file_store_le)
         #
@@ -209,10 +211,11 @@ class SettingsTab(QWidget):
 
     def pushButton1Clicked(self):
         print("Button 1 pressed")
-        self.reader.read_output()
-        self.reader.neutral = self.settings["neutral"]
-        self.reader.eckart = self.settings["eckart"]
         self.reader.hessian_symmetrisation = self.settings["hessian_symmetrisation"]
+        self.reader.read_output()
+        if self.settings["neutral"]:
+            self.reader.neutralise_born_charges()
+        self.reader.eckart = self.settings["eckart"]
         mass_dictionary = []
         self.reader.reset_masses()
         if self.settings["mass_definition"] == "average":
@@ -228,9 +231,8 @@ class SettingsTab(QWidget):
         mass_weighted_normal_modes = self.reader.calculate_mass_weighted_normal_modes()
         # convert sigmas to wavenumbers
         self.frequencies_cm1 = self.reader.frequencies
-        self.sigmas = [ self.settings["sigma"] for i in self.frequencies_cm1 ]
-        sigmas_cm1 = np.array(self.sigmas)
-        sigmas = np.array(self.sigmas)*wavenumber
+        self.sigmas_cm1 = [ self.settings["sigma"] for i in self.frequencies_cm1 ]
+        self.sigmas = np.array(self.sigmas_cm1)*wavenumber
         born_charges = np.array(self.reader.born_charges)
         if self.reader.type == 'Experimental output':
             oscillator_strengths = self.reader.oscillator_strengths
@@ -242,16 +244,38 @@ class SettingsTab(QWidget):
             # from the normal modes and the born charges calculate the oscillator strengths of each mode
             oscillator_strengths = Calculator.oscillator_strengths(normal_modes, born_charges)
         # calculate the intensities from the trace of the oscillator strengths
-        intensities = Calculator.infrared_intensities(oscillator_strengths)
- 
-        self.output_tw.setRowCount(len(self.sigmas))
-        self.output_tw.setColumnCount(4)
-        self.output_tw.setHorizontalHeaderLabels(['Include?', 'Frequency', 'sigma', 'Intensity'])
-        for i,(f,sigma,intensity) in enumerate(zip(self.frequencies_cm1, self.sigmas, intensities)):
-            self.output_tw.setItem(i, 0, QTableWidgetItem(" ") )
-            self.output_tw.setItem(i, 1, QTableWidgetItem(str(f) ) )
-            self.output_tw.setItem(i, 2, QTableWidgetItem(str(sigma) ) )
-            self.output_tw.setItem(i, 3, QTableWidgetItem(str(intensity) ) )
+        self.intensities = Calculator.infrared_intensities(oscillator_strengths)
+        # Decide which modes to select
+        for f,intensity in zip(self.frequencies_cm1,self.intensities):
+            if f > 10.0 and intensity > 1.0E-4:
+                self.modes_selected.append(True)
+            else:
+                self.modes_selected.append(False)
+        self.output_tw.setRowCount(len(self.sigmas_cm1))
+        self.output_tw.setColumnCount(5)
+        self.output_tw.setHorizontalHeaderLabels(['Include?', 'Sigma', 'Frequency', 'Intensity', 'Absorption', 'Epsilon max'])
+        self.redraw_output_tw()
+
+    def redraw_output_tw(self):
+        self.output_tw.blockSignals(True)
+        for i,(f,sigma,intensity) in enumerate(zip(self.frequencies_cm1, self.sigmas_cm1, self.intensities)):
+            items = []
+            item = QTableWidgetItem("{0:2f}".format(sigma))
+            item.setFlags(Qt.ItemIsUserCheckable | Qt.ItemIsEnabled | Qt.ItemIsSelectable | Qt.ItemIsEditable )
+            if self.modes_selected[i]:
+                item.setCheckState(Qt.Checked)
+            else:
+                item.setCheckState(Qt.Unchecked)
+            items.append(item)
+            items.append(QTableWidgetItem("{0:.4f}".format(f) ) )
+            items.append(QTableWidgetItem("{0:.4f}".format(intensity) ) )
+            items.append(QTableWidgetItem("{0:.2f}".format(intensity*4225.6) ) )
+            items.append(QTableWidgetItem("{0:.2f}".format(2*intensity*4225.6/self.sigmas_cm1[i]/PI) ) )
+            for j,item in enumerate(items):
+                item.setTextAlignment(Qt.AlignHCenter | Qt.AlignVCenter)
+                self.output_tw.setItem(i, j, item )
+        # Release the block on signals for the frequency output table
+        self.output_tw.blockSignals(False)
 
     def on_file_store_le_changed(self,text):
         self.settings["spreadsheet"] = text
@@ -279,6 +303,7 @@ class SettingsTab(QWidget):
     def set_masses_tw(self):
         print("set masses")
         if self.reader:
+            self.reader.debug = True
             self.element_masses_tw.blockSignals(True)
             species = self.reader.species
             if self.settings["mass_definition"] == "gui":
@@ -315,16 +340,19 @@ class SettingsTab(QWidget):
                 qw = QTableWidgetItem()
                 if self.settings["mass_definition"] == "program":
                     self.element_masses_tw.blockSignals(True)
-                    qw.setText(str(mass))
+                    qw.setText("{0:.6f}".format(mass))
+                    qw.setTextAlignment(Qt.AlignHCenter | Qt.AlignVCenter)
                     self.element_masses_tw.setItem(0,i, qw )
                 elif self.settings["mass_definition"] == "average":
                     self.element_masses_tw.blockSignals(True)
-                    qw.setText(str(average_masses[element]))
+                    qw.setText("{0:.6f}".format(average_masses[element]))
+                    qw.setTextAlignment(Qt.AlignHCenter | Qt.AlignVCenter)
                     print("average",average_masses[element])
                     self.element_masses_tw.setItem(0,i, qw )
                 elif  self.settings["mass_definition"] == "isotope":
                     self.element_masses_tw.blockSignals(True)
-                    qw.setText(str(isotope_masses[element]))
+                    qw.setText("{0:.6f}".format(isotope_masses[element]))
+                    qw.setTextAlignment(Qt.AlignHCenter | Qt.AlignVCenter)
                     print("isotope",isotope_masses[element])
                     self.element_masses_tw.setItem(0,i, qw )
                 else:
@@ -339,8 +367,8 @@ class SettingsTab(QWidget):
         self.settings["matrix"] = matrix
         self.settings["matrix_density"] = support_matrix_db[matrix][0]
         self.settings["matrix_permittivity"] = support_matrix_db[matrix][1]
-        self.density_le.setText(str(self.settings["matrix_density"]))
-        self.permittivity_le.setText(str(self.settings["matrix_permittivity"]))
+        self.density_le.setText("{0:.3f}".format(self.settings["matrix_density"]))
+        self.permittivity_le.setText("{0:.3f}".format(self.settings["matrix_permittivity"]))
 
     def on_density_le_changed(self,text):
         self.settings["density"] = float(text)
@@ -365,8 +393,20 @@ class SettingsTab(QWidget):
         print("on_output_tw_itemChanged)", item.column())
         col = item.column()
         row = item.row()
-        new_value = float(item.text())
-        print("output new value", self.settings["sigma"], new_value)
+        if col == 0:
+            # If this is the first column alter the check status but reset the sigma value
+            if item.checkState() == Qt.Checked:
+                self.modes_selected[row] = True
+            else:
+                 self.modes_selected[row] = False
+            new_value = float(item.text())
+            if new_value != self.sigmas_cm1:
+                self.sigmas_cm1[row] = new_value
+                self.redraw_output_tw()
+        elif col == 1:
+            self.redraw_output_tw()
+        else:
+            self.redraw_output_tw()
 
     def on_element_masses_tw_itemClicked(self, item):
         print("on_element_masses_tw_itemClicked)", item)
@@ -417,7 +457,9 @@ class SettingsTab(QWidget):
         self.optical_tw.blockSignals(True)
         for i,row in enumerate(optical):
             for j, value in enumerate(row):
-                self.optical_tw.setItem(i,j, QTableWidgetItem(str(value) ))
+                qw = QTableWidgetItem("{0:.4f}".format(value) )
+                qw.setTextAlignment(Qt.AlignHCenter | Qt.AlignVCenter)
+                self.optical_tw.setItem(i,j,qw)
         self.optical_tw.blockSignals(False)
 
     def on_born_changed(self):
