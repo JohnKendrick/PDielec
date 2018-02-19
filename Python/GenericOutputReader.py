@@ -66,7 +66,6 @@ class GenericOutputReader:
         self.masses_per_type            = []
         self.program_mass_dictionary    = {}
         self.eckart                     = False
-        self.neutral                    = False
         self.hessian_symmetrisation     = "symm"
         self.open_filename              = ""
         self.open_directory             = ""
@@ -333,6 +332,7 @@ class GenericOutputReader:
         Take the given matrix (np.array)
         Project out the translational modes"""
         #
+        new_hessian = np.zeros_like(hessian)
         nmodes = self.nions*3
         unit = np.eye(nmodes)
         p1 = np.zeros(nmodes)
@@ -352,10 +352,10 @@ class GenericOutputReader:
         P2 = unit - np.outer(p2, p2)
         P3 = unit - np.outer(p3, p3)
         # Now project out
-        hessian = np.dot(np.dot(P1.T, hessian), P1)
-        hessian = np.dot(np.dot(P2.T, hessian), P2)
-        hessian = np.dot(np.dot(P3.T, hessian), P3)
-        return hessian
+        new_hessian = np.dot(np.dot(P1.T, hessian), P1)
+        new_hessian = np.dot(np.dot(P2.T, new_hessian), P2)
+        new_hessian = np.dot(np.dot(P3.T, new_hessian), P3)
+        return new_hessian
 
     def _read_till_phrase(self,phrase):
         """Read lines from the current file until a match with phrase is found
@@ -430,6 +430,10 @@ class GenericOutputReader:
         # end for i
         if self.debug:
             print("non mass weighted hessian", self.nomass_hessian[0:4][0]) 
+        return
+
+    def neutralise_born_charges(self):
+        self._born_charge_sum_rule()
         return
 
     def _born_charge_sum_rule(self):

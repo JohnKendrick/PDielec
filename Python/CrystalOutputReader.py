@@ -218,8 +218,6 @@ class CrystalOutputReader(GenericOutputReader):
             # print("If possible proved a BORN.DAT from the calculation",file=sys.stderr)
             # print("WARNING! WARNING! WARNING! WARNING! WARNING!",file=sys.stderr)
             self._read_born_charges_from_output(line)
-        if self.neutral:
-            self._born_charge_sum_rule()
         return
 
     def _read_born_charges_from_born_dat(self,filename):

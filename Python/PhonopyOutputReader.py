@@ -38,7 +38,6 @@ class PhonopyOutputReader(GenericOutputReader):
         """Read the Phonopy files in the directory"""
         # Set the qm reader to have all the settings that phonopy reader has
         self.qmreader.eckart = self.eckart
-        self.qmreader.neutral = self.neutral
         self.qmreader.hessian_symmetrisation = self.hessian_symmetrisation
         self.qmreader.debug = self.debug
         # trigger the reading of the qm files

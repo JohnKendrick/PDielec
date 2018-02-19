@@ -138,8 +138,6 @@ class QEOutputReader(GenericOutputReader):
             line = self.file_descriptor.readline()
             b.append([float(line.split()[0]), float(line.split()[1]), float(line.split()[2])])
             self.born_charges.append(b)
-        if self.neutral:
-            self._born_charge_sum_rule()
         return
 
     def _read_lattice_vectors(self, line):
