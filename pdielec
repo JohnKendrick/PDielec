@@ -23,6 +23,7 @@ import numpy as np
 import ctypes
 from multiprocessing import Pool, cpu_count, Array
 from Python.Constants import amu, PI, avogadro_si, wavenumber, angstrom, isotope_masses, average_masses
+from Python.Constants import support_matrix_db
 from Python.VaspOutputReader import VaspOutputReader
 from Python.PhonopyOutputReader import PhonopyOutputReader
 from Python.CastepOutputReader import CastepOutputReader
@@ -125,8 +126,8 @@ def main():
         print("         -matrix ptfe")
         print("             Defines material, density and permittivity of the supporting medium")
         print("             Possible materials are;")
-        for f in matrix:
-            (rho, eps) = matrix[f]
+        for f in support_matrix_db:
+            (rho, eps) = support_matrix_db[f]
             print("                 " + "{:6s} density ".format(f) + "{:.4f}".format(rho) + " permittivity " + " {:.4f}".format(eps))
         print("         -dielectric is the dielectric constant of the medium")
         print("             For kbr the value is 2.25")
@@ -244,16 +245,6 @@ def main():
     csvfile        = ""
     excelfile      = ""
     csv_extended   = False
-    # Define materials as (density, permittivity)
-    matrix           = {}
-    matrix["air"]    = (0.000, 1.000)
-    matrix["vacuum"] = (0.000, 1.000)
-    matrix["ptfe"]   = (2.200, 2.000)
-    matrix["kbr"]    = (2.750, 2.250)
-    matrix["nujol"]  = (0.838, 2.155)
-    matrix["ldpe"]   = (0.925, 2.250)
-    matrix["mdpe"]   = (0.933, 2.250)
-    matrix["hdpe"]   = (0.955, 2.250)
     drude = False
     drude_input_plasma = 0.0
     drude_input_sigma = 0.0
@@ -332,8 +323,8 @@ def main():
         elif token == "-matrix":
             itoken += 1
             token = tokens[itoken]
-            if token in matrix:
-                (matrix_density, matrix_dielectric) = matrix[token]
+            if token in support_matrix_db:
+                (matrix_density, matrix_dielectric) = support_matrix_db[token]
             else:
                 print("Error, unkown material {:s}", token)
                 exit(1)

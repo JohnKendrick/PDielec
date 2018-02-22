@@ -13,7 +13,7 @@ from PyQt5.QtGui      import  QIcon
 from PyQt5.QtCore     import  pyqtSlot
 from PyQt5.QtCore     import  Qt, QSize
 from Python.Utilities import  get_reader
-from Python.Constants import  support_matrix_db, wavenumber, amu, PI
+from Python.Constants import  wavenumber, amu, PI
 from Python.Constants import  average_masses, isotope_masses
 
 class FixedQTableWidget(QTableWidget):
@@ -39,26 +39,24 @@ class FixedQTableWidget(QTableWidget):
         return QSize(width,height)
  
 class SettingsTab(QWidget):
-    def __init__(self, parent, MainTab):   
+    def __init__(self, parent):   
         super(QWidget, self).__init__(parent)
+        self.notebook = parent
         self.settings = {}
         self.settings["eckart"] = True
         self.settings["neutral"] = False
         self.settings["hessian_symmetrisation"] = "symm"
         self.settings["sigma"] = 5
-        self.settings["vmin"] = 0
-        self.settings["vmax"] = 400
-        self.settings["spreadsheet"] = ""
-        matrix = "ptfe"
-        self.settings["matrix"] = matrix
-        self.settings["matrix_density"] = support_matrix_db[matrix][0]
-        self.settings["matrix_permittivity"] = support_matrix_db[matrix][1]
         self.mass_definition_options = ["average","program","isotope","gui"]
         self.settings["mass_definition"] = "average"
         self.settings["masses_dictionary"] = {}
         self.modes_selected = []
+        self.frequencies_cm1 = []
+        self.intensities = []
+        self.sigmas_cm1 = []
+        self.oscillator_strengths = []
         # get the reader from the main tab
-        self.reader = MainTab.reader
+        self.reader = self.notebook.reader
         # Create second tab - SettingsTab
         vbox = QVBoxLayout()
         form = QFormLayout()
@@ -114,34 +112,6 @@ class SettingsTab(QWidget):
         form.addRow(QLabel("Atomic masses", self), self.element_masses_tw)
         #form.addItem(QSpacerItem(20, 40, QSizePolicy.Expanding, QSizePolicy.Expanding) )
         #
-        # Support matrix
-        #
-        self.matrix_cb = QComboBox(self)
-        self.matrix_cb.setToolTip("Define the permittivity and density of the support matrix")
-        for matrix in support_matrix_db:
-            print("matrix:",matrix, support_matrix_db[matrix])
-            self.matrix_cb.addItem(matrix)
-        index = self.matrix_cb.findText(self.settings["matrix"], Qt.MatchFixedString)
-        if index >=0:
-            self.matrix_cb.setCurrentIndex(index)
-        else:
-            print("support matrix index was not 0")
-        self.matrix_cb.currentIndexChanged.connect(self.on_matrix_cb_changed)
-        form.addRow(QLabel("Support matrix:",self), self.matrix_cb)
-        self.density_le = QLineEdit(self) 
-        self.density_le.setToolTip("Define the support matrix density")
-        self.density_le.setText("{0:.2f}".format(self.settings["matrix_density"]))
-        self.density_le.textChanged.connect(self.on_density_le_changed)
-        form.addRow(QLabel("Support density", self), self.density_le)
-        #
-        # Support matrix permittivity
-        #
-        self.permittivity_le = QLineEdit(self) 
-        self.permittivity_le.setToolTip("Define the support matrix permittivity")
-        self.permittivity_le.setText("{0:.2f}".format(self.settings["matrix_permittivity"]))
-        self.permittivity_le.textChanged.connect(self.on_permittivity_le_changed)
-        form.addRow(QLabel("Support permittivity", self), self.permittivity_le)
-        #
         # The lorentzian width - sigma
         #
         self.sigma_sb = QSpinBox(self)
@@ -150,24 +120,6 @@ class SettingsTab(QWidget):
         self.sigma_sb.setToolTip("Set the default Lorentzian width factor (sigma) in cm-1")
         self.sigma_sb.valueChanged.connect(self.on_sigma_changed)
         form.addRow(QLabel("Lorentzian width (sigma):", self), self.sigma_sb)
-        #
-        # The minimum frequency
-        #
-        self.vmin_sb = QSpinBox(self)
-        self.vmin_sb.setRange(-200,9000)
-        self.vmin_sb.setValue(self.settings["vmin"])
-        self.vmin_sb.setToolTip("Set the minimum frequency to be considered)")
-        self.vmin_sb.valueChanged.connect(self.on_vmin_changed)
-        form.addRow(QLabel("Minimum frequency:", self), self.vmin_sb)
-        #
-        # The maximum frequency
-        #
-        self.vmax_sb = QSpinBox(self)
-        self.vmax_sb.setRange(-200,9000)
-        self.vmax_sb.setValue(self.settings["vmax"])
-        self.vmax_sb.setToolTip("Set the maximum frequency to be considered)")
-        self.vmax_sb.valueChanged.connect(self.on_vmax_changed)
-        form.addRow(QLabel("Maximum frequency:", self), self.vmax_sb)
         #
         # Create the Optical permittivity table widget and block signals until a click on the widget
         #
@@ -181,21 +133,13 @@ class SettingsTab(QWidget):
         self.optical_tw.blockSignals(True)
         self.optical_tw.setSizePolicy(sizePolicy)
         form.addRow(QLabel("Optical permittivity:", self), self.optical_tw)
-        # 
-        # Store results in a file?
-        #
-        self.file_store_le = QLineEdit(self) 
-        self.file_store_le.setToolTip("Store the results in a .csv or .xlsx file")
-        self.file_store_le.setText(self.settings["spreadsheet"])
-        self.file_store_le.textChanged.connect(self.on_file_store_le_changed)
-        form.addRow(QLabel("Output spreadsheet", self), self.file_store_le)
         #
         # Final button
         #
-        self.pushButton1 = QPushButton("Process and calculate intensities")
-        self.pushButton1.setToolTip("Process and calculate intensities using the MM/QM phonon output")
-        self.pushButton1.clicked.connect(self.pushButton1Clicked)
-        form.addRow(self.pushButton1)
+        self.calculateButton = QPushButton("Process and calculate intensities")
+        self.calculateButton.setToolTip("Process and calculate intensities using the MM/QM phonon output")
+        self.calculateButton.clicked.connect(self.calculateButtonClicked)
+        form.addRow(self.calculateButton)
         vbox.addLayout(form)
         # output window
         # Create Table containing the IR active modes
@@ -209,7 +153,7 @@ class SettingsTab(QWidget):
         # finalise the layout
         self.setLayout(vbox)
 
-    def pushButton1Clicked(self):
+    def calculateButtonClicked(self):
         print("Button 1 pressed")
         self.reader.hessian_symmetrisation = self.settings["hessian_symmetrisation"]
         self.reader.read_output()
@@ -229,69 +173,79 @@ class SettingsTab(QWidget):
         else:
             print("Error unkown mass definition", self.settings["mass_definition"] )
         mass_weighted_normal_modes = self.reader.calculate_mass_weighted_normal_modes()
-        # convert sigmas to wavenumbers
+        # convert cm-1 to au
         self.frequencies_cm1 = self.reader.frequencies
+        frequencies = np.array(self.frequencies_cm1) * wavenumber
         self.sigmas_cm1 = [ self.settings["sigma"] for i in self.frequencies_cm1 ]
-        self.sigmas = np.array(self.sigmas_cm1)*wavenumber
         born_charges = np.array(self.reader.born_charges)
         if self.reader.type == 'Experimental output':
-            oscillator_strengths = self.reader.oscillator_strengths
+            self.oscillator_strengths = self.reader.oscillator_strengths
         else:
             #
             # calculate normal modes in xyz coordinate space
             masses = np.array(self.reader.masses) * amu
             normal_modes = Calculator.normal_modes(masses, mass_weighted_normal_modes)
             # from the normal modes and the born charges calculate the oscillator strengths of each mode
-            oscillator_strengths = Calculator.oscillator_strengths(normal_modes, born_charges)
+            self.oscillator_strengths = Calculator.oscillator_strengths(normal_modes, born_charges)
         # calculate the intensities from the trace of the oscillator strengths
-        self.intensities = Calculator.infrared_intensities(oscillator_strengths)
+        self.intensities = Calculator.infrared_intensities(self.oscillator_strengths)
         # Decide which modes to select
         for f,intensity in zip(self.frequencies_cm1,self.intensities):
-            if f > 10.0 and intensity > 1.0E-4:
+            if f > 10.0 and intensity > 1.0E-6:
                 self.modes_selected.append(True)
             else:
                 self.modes_selected.append(False)
         self.output_tw.setRowCount(len(self.sigmas_cm1))
         self.output_tw.setColumnCount(5)
-        self.output_tw.setHorizontalHeaderLabels(['Include?', 'Sigma', 'Frequency', 'Intensity', 'Absorption', 'Epsilon max'])
+        self.output_tw.setHorizontalHeaderLabels(['   Sigma   \n(cm-1)', ' Frequency \n(cm-1)', '  Intensity  \n(Debye2/Å2/amu)', 'Integrated Molar Absorption\n(L/mole/cm2)', 'Absorption maximum\n(L/mole/cm)'])
         self.redraw_output_tw()
 
     def redraw_output_tw(self):
+        # If the frequencies haven't been set yet just don't try to do anything
+        if not self.frequencies_cm1:
+            return
         self.output_tw.blockSignals(True)
         for i,(f,sigma,intensity) in enumerate(zip(self.frequencies_cm1, self.sigmas_cm1, self.intensities)):
+            # Sigma and check / unchecked column
             items = []
-            item = QTableWidgetItem("{0:2f}".format(sigma))
-            item.setFlags(Qt.ItemIsUserCheckable | Qt.ItemIsEnabled | Qt.ItemIsSelectable | Qt.ItemIsEditable )
+            itemFlags = []
+            item = QTableWidgetItem("{0:.1f}".format(sigma))
             if self.modes_selected[i]:
                 item.setCheckState(Qt.Checked)
+                itemFlags.append( item.flags() & Qt.NoItemFlags | Qt.ItemIsUserCheckable | Qt.ItemIsEnabled | Qt.ItemIsSelectable | Qt.ItemIsEditable )
+                otherFlags = item.flags() & Qt.NoItemFlags | Qt.ItemIsEnabled
             else:
+                #itemFlags.append( item.flags() | Qt.ItemIsUserCheckable | Qt.ItemIsEnabled & ~Qt.ItemIsSelectable & ~Qt.ItemIsEditable )
+                itemFlags.append( item.flags() & Qt.NoItemFlags | Qt.ItemIsUserCheckable | Qt.ItemIsEnabled )
                 item.setCheckState(Qt.Unchecked)
+                otherFlags = item.flags() & Qt.NoItemFlags
             items.append(item)
+            # Frequency column cm-1
             items.append(QTableWidgetItem("{0:.4f}".format(f) ) )
+            itemFlags.append( otherFlags )
+            # Intensity column Debye2/Angs2/amu
             items.append(QTableWidgetItem("{0:.4f}".format(intensity) ) )
+            itemFlags.append( otherFlags )
+            # Integrated molar absorption L/mole/cm/cm
             items.append(QTableWidgetItem("{0:.2f}".format(intensity*4225.6) ) )
+            itemFlags.append( otherFlags )
+            # Maximum extinction L/mole/cm
             items.append(QTableWidgetItem("{0:.2f}".format(2*intensity*4225.6/self.sigmas_cm1[i]/PI) ) )
-            for j,item in enumerate(items):
+            itemFlags.append( otherFlags )
+            for j,(item,flag) in enumerate(zip(items,itemFlags)):
+                item.setFlags(flag)
                 item.setTextAlignment(Qt.AlignHCenter | Qt.AlignVCenter)
                 self.output_tw.setItem(i, j, item )
         # Release the block on signals for the frequency output table
+        self.output_tw.resizeColumnsToContents()
         self.output_tw.blockSignals(False)
-
-    def on_file_store_le_changed(self,text):
-        self.settings["spreadsheet"] = text
-        print("on file_store_le change ", self.settings["spreadsheet"])
 
     def on_sigma_changed(self):
         self.settings["sigma"] = self.sigma_sb.value()
+        self.sigmas_cm1 = [ self.settings["sigma"] for i in self.frequencies_cm1 ]
+        self.redraw_output_tw()
+
         print("on sigma change ", self.settings["sigma"])
-
-    def on_vmin_changed(self):
-        self.settings["vmin"] = self.vmin_sb.value()
-        print("on vmin change ", self.settings["vmin"])
-
-    def on_vmax_changed(self):
-        self.settings["vmax"] = self.vmin_sb.value()
-        print("on vmax change ", self.settings["vmax"])
 
     def on_mass_cb_changed(self,index):
         print("on mass combobox changed", index)
@@ -360,37 +314,24 @@ class SettingsTab(QWidget):
             # unblock the table signals
             self.element_masses_tw.blockSignals(False)
 
-    def on_matrix_cb_changed(self,index):
-        print("on matrix combobox changed", index)
-        print("on matrix combobox changed", self.matrix_cb.currentText())
-        matrix = self.matrix_cb.currentText()
-        self.settings["matrix"] = matrix
-        self.settings["matrix_density"] = support_matrix_db[matrix][0]
-        self.settings["matrix_permittivity"] = support_matrix_db[matrix][1]
-        self.density_le.setText("{0:.3f}".format(self.settings["matrix_density"]))
-        self.permittivity_le.setText("{0:.3f}".format(self.settings["matrix_permittivity"]))
-
-    def on_density_le_changed(self,text):
-        self.settings["density"] = float(text)
-        print("on density line edit changed", text)
-
-    def on_permittivity_le_changed(self,text):
-        self.settings["permittivity"] = float(text)
-        print("on density line edit changed", text)
-
-    def set_reader(self,reader):
-        self.reader = reader
-
     def on_output_tw_itemClicked(self, item):
-        print("on_output_tw_itemClicked)", item)
-        print("on_output_tw_itemClicked)", item.row())
-        print("on_output_tw_itemClicked)", item.column())
-        self.output_tw.blockSignals(False)
+        print("on_output_tw_itemClicked)", item.row(), item.column() )
+        #col = item.column()
+        #row = item.row()
+        # Handle the case that an unchecked (greyed out) sigma is clicked
+        #self.output_tw.blockSignals(True)
+        #if col == 0:
+        #    if not self.modes_selected[row]:
+        #        print("on_output_tw_item_clicked changing mode selection", row)
+        #        self.modes_selected[row] = True
+        #        print("on_output_tw_item_clicked mode selected is", self.modes_selected[row])
+        #        item.setFlags(item.flags() & Qt.NoItemFlags | Qt.ItemIsUserCheckable | Qt.ItemIsEnabled | Qt.ItemIsSelectable | Qt.ItemIsEditable )
+        #        item.setCheckState(Qt.Checked)
+        #self.output_tw.blockSignals(False)
 
     def on_output_tw_itemChanged(self, item):
-        print("on_output_tw_itemChanged)", item)
-        print("on_output_tw_itemChanged)", item.row())
-        print("on_output_tw_itemChanged)", item.column())
+        self.output_tw.blockSignals(True)
+        print("on_output_tw_itemChanged)", item.row(), item.column() )
         col = item.column()
         row = item.row()
         if col == 0:
@@ -409,23 +350,18 @@ class SettingsTab(QWidget):
             self.redraw_output_tw()
 
     def on_element_masses_tw_itemClicked(self, item):
-        print("on_element_masses_tw_itemClicked)", item)
-        print("on_element_masses_tw_itemClicked)", item.row())
-        print("on_element_masses_tw_itemClicked)", item.column())
+        print("on_element_masses_tw_itemClicked)", item.row(),item.column() )
         self.element_masses_tw.blockSignals(False)
 
     def on_element_masses_tw_itemChanged(self, item):
-        print("on_element_masses_tw_itemChanged)", item)
-        print("on_element_masses_tw_itemChanged)", item.row())
-        print("on_element_masses_tw_itemChanged)", item.column())
+        print("on_element_masses_tw_itemChanged)", item.row(), item.column() )
         col = item.column()
         self.settings["mass_definition"] = "gui"
         self.settings["masses_dictionary"][self.reader.species[col]] = float(item.text())
         print("masses_dictionary", self.settings["masses_dictionary"])
 
     def on_optical_tw_itemChanged(self, item):
-        print("on_optical_itemChanged)", item)
-        print("on_optical_itemChanged)", item.row())
+        print("on_optical_itemChanged)", item.row(), item.column() )
         print("on_optical_itemChanged)", item.column())
         self.settings["optical_permittivity"][item.row()][item.column()] = float(item.text())
         self.settings["optical_permittivity"][item.column()][item.row()] = float(item.text())
@@ -434,9 +370,7 @@ class SettingsTab(QWidget):
         print(self.settings["optical_permittivity"])
 
     def on_optical_tw_itemClicked(self, item):
-        print("on_optical_itemClicked)", item)
-        print("on_optical_itemClicked)", item.row())
-        print("on_optical_itemClicked)", item.column())
+        print("on_optical_itemClicked)", item.row(), item.column() )
         self.optical_tw.blockSignals(False)
 
     def refresh(self):

@@ -14,13 +14,14 @@ import numpy as np
  
 class MainTab(QWidget):        
  
-    def __init__(self, parent):   
+    def __init__(self, parent, program, filename):   
         super(QWidget, self).__init__(parent)
         self.settings = {}
         self.settings["program"] = "Castep"
-        self.settings["filename"] = ""
-        self.settings["hessian_symmetrisation"] = "symm"
-        self.settingsTab = None
+        self.settings["filename"] = filename
+        if program != "":
+            self.settings["program"] = program.capitalize()
+        self.notebook = parent
         self.reader = None
 #        self.layout = QVBoxLayout()
  
@@ -43,6 +44,10 @@ class MainTab(QWidget):
         index = self.program_cb.findText(self.settings["program"], Qt.MatchFixedString)
         if index >=0:
             self.program_cb.setCurrentIndex(index)
+        else:
+            self.settings["program"] = "Castep"
+            index = 1
+            self.program_cb.setCurrentIndex(index)
         self.program_cb.currentIndexChanged.connect(self.on_program_cb_changed)
         form.addRow(QLabel("QM/MM Program:"), self.program_cb)
         #
@@ -50,7 +55,7 @@ class MainTab(QWidget):
         #
         self.file_le = QLineEdit(self)
         self.file_le.setToolTip("Choose output file for analysis (press return for a file chooser)")
-        self.file_le.setText("")
+        self.file_le.setText(filename)
         self.file_le.returnPressed.connect(self.on_file_le_return)
         self.file_le.textChanged.connect(self.on_file_le_changed)
         form.addRow(QLabel("Output file name:"), self.file_le)
@@ -69,6 +74,9 @@ class MainTab(QWidget):
         vbox.addWidget(self.listw)
         # finalise the layout
         self.setLayout(vbox)
+        # If the filename was given the force it to be read and processed
+        if filename != "":
+            self.pushButton1Clicked()
 
     def pushButton1Clicked(self):
         print("Reading output file ", self.settings["filename"])
@@ -77,18 +85,19 @@ class MainTab(QWidget):
             return
         self.listw_l.setText("Frequencies from "+self.settings["filename"]+":")
         self.reader = get_reader(self.settings["program"],self.settings["filename"])
-        # tell the settings tab that we have read the info and we have a reader
-        self.settingsTab.set_reader(self.reader)
-#        self.reader.eckart = self.settings["eckart"]
-#        self.reader.neutral = self.settings["neutral"]
-#        self.reader.hessian_symmetrisation = self.settings["hessian_symmetrisation"]
+        # tell the notebook that we have read the info and we have a reader
+        self.notebook.reader = self.reader
         self.reader.read_output()
         self.reader.print_info()
         frequencies_cm1 = np.sort(self.reader.frequencies)
         for f in frequencies_cm1:
             self.listw.addItem("{0:.3f}".format(f))
         # tell the settings tab to update the widgets that depend on the contents of the reader
-        self.settingsTab.refresh()
+        if hasattr(self.notebook, 'settingsTab'):
+            self.notebook.settingsTab.refresh()
+        if hasattr(self.notebook, 'scenarios'):
+            for tab in self.notebook.scenarios:
+                tab.refresh()
         
 
     def on_born_changed(self):

@@ -919,7 +919,7 @@ def solve_effective_medium_equations( call_parameters ):
         effdielec = balan(dielectric_medium, dielecv, shape, L, vf, size)
     elif method == "ap" or method == "averagedpermittivity":
             effdielec = averaged_permittivity(dielectric_medium, dielecv, shape, L, vf, size)
-    elif method == "maxwell":
+    elif method == "maxwell" or method == "maxwell-garnett":
         effdielec = maxwell(dielectric_medium, dielecv, shape, L, vf, size)
     elif method == "maxwell_sihvola":
         effdielec = maxwell_sihvola(dielectric_medium, dielecv, shape, L, vf, size)

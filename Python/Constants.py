@@ -737,8 +737,8 @@ atomic_number_to_element = {
 
 # Define support matrix materials as (density, permittivity)
 support_matrix_db           = {}
-support_matrix_db["air"]    = (0.000, 1.000)
-support_matrix_db["vacuum"] = (0.000, 1.000)
+support_matrix_db["air"]    = (1.225e-3, 1.000)
+support_matrix_db["vacuum"] = (1.000e-15, 1.000)
 support_matrix_db["ptfe"]   = (2.200, 2.000)
 support_matrix_db["kbr"]    = (2.750, 2.250)
 support_matrix_db["nujol"]  = (0.838, 2.155)
