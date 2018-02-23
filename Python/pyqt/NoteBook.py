@@ -19,11 +19,13 @@ class NoteBook(QWidget):
     def __init__(self, parent, program, filename):   
         super(QWidget, self).__init__(parent)
         self.reader = None
+        self.newCalculationRequired = True
         self.layout = QVBoxLayout()
         # The number of tabs before we have scenarios
         self.tabOffSet = 2
         # Initialize tab screen
         self.tabs = QTabWidget(self)
+        self.tabs.currentChanged.connect(self.on_tabs_currentChanged)
         self.mainTab = MainTab(self, program, filename)
         self.settingsTab = SettingsTab(self)
         if filename != "":
@@ -35,15 +37,15 @@ class NoteBook(QWidget):
         self.scenarios[0].setScenarioIndex(0)
         # Open the plotting tab
         self.plottingTab = PlottingTab(self)
+        if filename != "":
+            self.plottingTab.refresh()
+        #
         #self.tabs.resize(300,200) 
- 
         # Add tabs
         self.tabs.addTab(self.mainTab,"Main")
         self.tabs.addTab(self.settingsTab,"Settings")
         for i,tab in enumerate(self.scenarios):
             self.tabs.addTab(tab,"Scenario "+str(i+1))
-        # tell the main tab about the scenarios
-        self.mainTab.scenarios = self.scenarios
         self.tabs.addTab(self.plottingTab,"Plotting")
 
         # Add the tab widget
@@ -67,5 +69,9 @@ class NoteBook(QWidget):
         del self.scenarios[index]
         for i,scenario in enumerate(self.scenarios):
             scenario.setScenarioIndex(i)
-            self.tabs.setTabText(self.tabOffSet+i,"Scenario "+str(i))
+            self.tabs.setTabText(self.tabOffSet+i,"Scenario "+str(i+1))
         return
+
+    def on_tabs_currentChanged(self, tabindex):
+        print("Tab index changed", tabindex)
+        self.newCalculationRequired = True

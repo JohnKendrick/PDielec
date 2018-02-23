@@ -23,19 +23,16 @@ class FixedQTableWidget(QTableWidget):
     def sizeHint(self):
         width = 0
         for i in range(self.columnCount()):
-            print("column width",i,self.columnWidth(i))
             width += self.columnWidth(i)
         width += self.verticalHeader().sizeHint().width()
         width += self.verticalScrollBar().sizeHint().width()
         width += self.frameWidth()*2
         height = 0
         for i in range(self.rowCount()):
-            print("row height",i,self.rowHeight(i))
             height += self.rowHeight(i)
         height += self.verticalHeader().sizeHint().width()
         height += self.horizontalScrollBar().sizeHint().height()
         height += self.frameWidth()*2
-        #jk self.resize(QSize(width,height))
         return QSize(width,height)
  
 class SettingsTab(QWidget):
@@ -67,11 +64,11 @@ class SettingsTab(QWidget):
         self.eckart_cb.setToolTip("Applying Eckart conditions ensures three zero translation mode)")
         self.eckart_cb.setText("")
         self.eckart_cb.setLayoutDirection(Qt.RightToLeft)
-        self.eckart_cb.stateChanged.connect(self.on_eckart_changed)
         if self.settings["eckart"]:
             self.eckart_cb.setCheckState(Qt.Checked)
         else:
             self.eckart_cb.setCheckState(Qt.Unchecked)
+        self.eckart_cb.stateChanged.connect(self.on_eckart_changed)
         form.addRow(QLabel("Apply Eckart conditions?", self), self.eckart_cb)
         #
         # Add the Born neutral condition
@@ -80,11 +77,11 @@ class SettingsTab(QWidget):
         self.born_cb.setToolTip("Applying Born charge neutrality ensures unit cell has zero charge")
         self.born_cb.setText("")
         self.born_cb.setLayoutDirection(Qt.RightToLeft)
-        self.born_cb.stateChanged.connect(self.on_born_changed)
         if self.settings["neutral"]:
             self.born_cb.setCheckState(Qt.Checked)
         else:
             self.born_cb.setCheckState(Qt.Unchecked)
+        self.born_cb.stateChanged.connect(self.on_born_changed)
         form.addRow(QLabel("Apply Born charge neutrality?",self),self.born_cb)
         #
         # The mass definition combobox
@@ -110,7 +107,6 @@ class SettingsTab(QWidget):
         self.element_masses_tw.setSizePolicy(sizePolicy)
         print("element_masses_tw sizeHint",self.element_masses_tw.sizeHint())
         form.addRow(QLabel("Atomic masses", self), self.element_masses_tw)
-        #form.addItem(QSpacerItem(20, 40, QSizePolicy.Expanding, QSizePolicy.Expanding) )
         #
         # The lorentzian width - sigma
         #
@@ -130,16 +126,17 @@ class SettingsTab(QWidget):
         self.optical_tw.setVerticalHeaderLabels  (["x","y","z"])
         self.optical_tw.itemClicked.connect(self.on_optical_tw_itemClicked)
         self.optical_tw.itemChanged.connect(self.on_optical_tw_itemChanged)
+        # Block the widget until the optical permittivity is loaded
         self.optical_tw.blockSignals(True)
         self.optical_tw.setSizePolicy(sizePolicy)
         form.addRow(QLabel("Optical permittivity:", self), self.optical_tw)
         #
-        # Final button
+        # Final button - need for this has been removed refreshes are done after every change
         #
-        self.calculateButton = QPushButton("Process and calculate intensities")
-        self.calculateButton.setToolTip("Process and calculate intensities using the MM/QM phonon output")
-        self.calculateButton.clicked.connect(self.calculateButtonClicked)
-        form.addRow(self.calculateButton)
+        #self.calculateButton = QPushButton("Process and calculate intensities")
+        #self.calculateButton.setToolTip("Process and calculate intensities using the MM/QM phonon output")
+        #self.calculateButton.clicked.connect(self.calculateButtonClicked)
+        #form.addRow(self.calculateButton)
         vbox.addLayout(form)
         # output window
         # Create Table containing the IR active modes
@@ -155,7 +152,12 @@ class SettingsTab(QWidget):
 
     def calculateButtonClicked(self):
         print("Button 1 pressed")
+        self.reader = self.notebook.reader
+        # Only calculate if the reader is set
+        if self.reader is None:
+            return
         self.reader.hessian_symmetrisation = self.settings["hessian_symmetrisation"]
+        # Do I still need to re-read the output file ?????
         self.reader.read_output()
         if self.settings["neutral"]:
             self.reader.neutralise_born_charges()
@@ -190,6 +192,7 @@ class SettingsTab(QWidget):
         # calculate the intensities from the trace of the oscillator strengths
         self.intensities = Calculator.infrared_intensities(self.oscillator_strengths)
         # Decide which modes to select
+        self.modes_selected = []
         for f,intensity in zip(self.frequencies_cm1,self.intensities):
             if f > 10.0 and intensity > 1.0E-6:
                 self.modes_selected.append(True)
@@ -244,7 +247,6 @@ class SettingsTab(QWidget):
         self.settings["sigma"] = self.sigma_sb.value()
         self.sigmas_cm1 = [ self.settings["sigma"] for i in self.frequencies_cm1 ]
         self.redraw_output_tw()
-
         print("on sigma change ", self.settings["sigma"])
 
     def on_mass_cb_changed(self,index):
@@ -253,6 +255,7 @@ class SettingsTab(QWidget):
         self.settings["mass_definition"] = self.mass_definition_options[index]
         # Modify the element masses
         self.set_masses_tw()
+        self.calculateButtonClicked()
 
     def set_masses_tw(self):
         print("set masses")
@@ -358,6 +361,7 @@ class SettingsTab(QWidget):
         col = item.column()
         self.settings["mass_definition"] = "gui"
         self.settings["masses_dictionary"][self.reader.species[col]] = float(item.text())
+        self.calculateButtonClicked()
         print("masses_dictionary", self.settings["masses_dictionary"])
 
     def on_optical_tw_itemChanged(self, item):
@@ -365,7 +369,6 @@ class SettingsTab(QWidget):
         print("on_optical_itemChanged)", item.column())
         self.settings["optical_permittivity"][item.row()][item.column()] = float(item.text())
         self.settings["optical_permittivity"][item.column()][item.row()] = float(item.text())
-        self.set_optical_permittivity_tw()
         print("optical permittivity")
         print(self.settings["optical_permittivity"])
 
@@ -375,6 +378,7 @@ class SettingsTab(QWidget):
 
     def refresh(self):
         # Refresh the widgets that depend on the reader
+        self.reader = self.notebook.reader
         if self.reader:
             # Masses
             self.set_masses_tw()
@@ -384,6 +388,7 @@ class SettingsTab(QWidget):
             self.set_optical_permittivity_tw()
             print("optical_tw sizeHint",self.optical_tw.sizeHint())
             print("optical_tw size",self.optical_tw.size())
+        self.calculateButtonClicked()
 
     def set_optical_permittivity_tw(self):
         optical = self.reader.zerof_optical_dielectric
@@ -400,9 +405,11 @@ class SettingsTab(QWidget):
         print("on born change ", self.born_cb.isChecked())
         self.settings["neutral"] = self.born_cb.isChecked()
         print("on born change ", self.settings["neutral"])
+        self.calculateButtonClicked()
 
     def on_eckart_changed(self):
         print("on eckart change ", self.eckart_cb.isChecked())
         self.settings["eckart"] = self.eckart_cb.isChecked()
         print("on eckart change ", self.settings["eckart"])
+        self.calculateButtonClicked()
 

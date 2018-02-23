@@ -917,7 +917,7 @@ def solve_effective_medium_equations( call_parameters ):
     v,vau,dielecv,method,vf,vf_type,size_mu,size_distribution_sigma,size,nplot,dielectric_medium,dielecv,shape,data,L,concentration,previous_solution_shared = call_parameters
     if method == "balan":
         effdielec = balan(dielectric_medium, dielecv, shape, L, vf, size)
-    elif method == "ap" or method == "averagedpermittivity":
+    elif method == "ap" or method == "averagedpermittivity" or method == "averaged permittivity" or method == "average permittivity":
             effdielec = averaged_permittivity(dielectric_medium, dielecv, shape, L, vf, size)
     elif method == "maxwell" or method == "maxwell-garnett":
         effdielec = maxwell(dielectric_medium, dielecv, shape, L, vf, size)

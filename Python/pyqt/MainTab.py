@@ -93,11 +93,14 @@ class MainTab(QWidget):
         for f in frequencies_cm1:
             self.listw.addItem("{0:.3f}".format(f))
         # tell the settings tab to update the widgets that depend on the contents of the reader
+        print("Main tab: processing a return")
         if hasattr(self.notebook, 'settingsTab'):
             self.notebook.settingsTab.refresh()
         if hasattr(self.notebook, 'scenarios'):
             for tab in self.notebook.scenarios:
                 tab.refresh()
+        if hasattr(self.notebook, 'plottingTab'):
+            self.notebook.plottingTab.refresh()
         
 
     def on_born_changed(self):
