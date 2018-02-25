@@ -969,7 +969,7 @@ def main():
                         else:
                             nplot -= 1
                             continue
-                    call_parameters.append( (v,vau,dielecv,method,vf,vf_type,size_mu,size_sigma,size,nplot,dielectric_medium,dielecv,shape,data,L,concentration,previous_solution_shared) )
+                    call_parameters.append( (v,vau,dielecv,method,vf,vf_type,size_mu,size_sigma,size,nplot,dielectric_medium,shape,data,L,concentration,previous_solution_shared) )
                 # end of loop over shapes
               # end of loop over sizes
             # end of loop over volume fractions

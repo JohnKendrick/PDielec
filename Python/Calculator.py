@@ -914,7 +914,7 @@ def solve_effective_medium_equations( call_parameters ):
     # call_parameters is a tuple
     # In the case of Bruggeman and coherent we can use the previous result to start the iteration/minimisation
     # However to do this we need some shared memory, this allocated in previous_solution_shared
-    v,vau,dielecv,method,vf,vf_type,size_mu,size_distribution_sigma,size,nplot,dielectric_medium,dielecv,shape,data,L,concentration,previous_solution_shared = call_parameters
+    v,vau,dielecv,method,vf,vf_type,size_mu,size_distribution_sigma,size,nplot,dielectric_medium,shape,data,L,concentration,previous_solution_shared = call_parameters
     if method == "balan":
         effdielec = balan(dielectric_medium, dielecv, shape, L, vf, size)
     elif method == "ap" or method == "averagedpermittivity" or method == "averaged permittivity" or method == "average permittivity":

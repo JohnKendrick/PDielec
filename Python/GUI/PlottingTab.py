@@ -9,7 +9,7 @@ from PyQt5.QtWidgets  import  QFileDialog, QProgressBar
 from PyQt5.QtWidgets  import  QVBoxLayout, QHBoxLayout, QFormLayout
 from PyQt5.QtWidgets  import  QSpinBox
 from PyQt5.QtCore     import  Qt
-from Python.Constants import  wavenumber, amu, PI, avogadro_si
+from Python.Constants import  wavenumber, amu, PI, avogadro_si, angstrom
 from Python.Constants import  average_masses, isotope_masses
 import ctypes
 # Import plotting requirements
@@ -291,7 +291,7 @@ class PlottingTab(QWidget):
         frequencies = np.array(frequencies_cm1) * wavenumber
         intensities = self.notebook.settingsTab.intensities
         oscillator_strengths = self.notebook.settingsTab.oscillator_strengths
-        volume = reader.volume
+        volume = reader.volume*angstrom*angstrom*angstrom
         vmin = self.settings['vmin']
         vmax = self.settings['vmax']
         vinc = self.settings['vinc']
@@ -399,7 +399,7 @@ class PlottingTab(QWidget):
             for v,vau,dielecv in dielecv_results:
                 vau = v * wavenumber
                 call_parameters.append( (v,vau,dielecv,method,volume_fraction,vf_type,particle_size_mu,particle_sigma,size,nplot,
-                                         matrix_permittivity,dielecv,shape,data,L,concentration,previous_solution_shared) )
+                                         matrix_permittivity,shape,data,L,concentration,previous_solution_shared) )
                 nplot += 1
             results = []
             for result in pool.imap(Calculator.solve_effective_medium_equations, call_parameters, chunksize=40):

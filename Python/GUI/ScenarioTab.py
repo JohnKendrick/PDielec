@@ -23,7 +23,7 @@ class ScenarioTab(QWidget):
         self.settings['matrix_permittivity'] = support_matrix_db[matrix][1]
         self.settings['mass_fraction'] = 0.1
         self.settings['volume_fraction'] = 0.1
-        self.settings['particle_size'] = 0.1
+        self.settings['particle_size'] = 0.0001
         self.settings['particle_sigma'] = 0.0
         self.settings['aoverb'] = 1.0
         self.settings['h'] = 0
@@ -355,8 +355,10 @@ class ScenarioTab(QWidget):
         # Have a look through the settings and see if we need to grey anything out
         if self.settings['method'] == 'Mie':
             self.size_le.setEnabled(True)
+            self.sigma_le.setEnabled(True)
         else:
             self.size_le.setEnabled(False)
+            self.sigma_le.setEnabled(False)
         # deal with shapes
         if self.settings['shape'] == 'Ellipsoid':
             self.h_sb.setEnabled(True)
