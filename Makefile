@@ -19,11 +19,18 @@ default:
 		@echo " or  'make test_phonana'"
 
 install:	
-		cp pdielec $(SCRIPTS)
-		cp preader $(SCRIPTS)
-		cp phonana $(SCRIPTS)
+		cp pdielec.py $(SCRIPTS)
+		cp preader.py $(SCRIPTS)
+		cp phonana.py $(SCRIPTS)
+		cp pdgui.py   $(SCRIPTS)
+		cp -P pdielec    $(SCRIPTS)
+		cp -P preader    $(SCRIPTS)
+		cp -P phonana    $(SCRIPTS)
+		cp -P pdgui      $(SCRIPTS)
 		mkdir -p $(SCRIPTS)/Python
 		cp -r Python/*.py $(SCRIPTS)/Python
+		cp -r Python/PyMieScatt/*.py $(SCRIPTS)/Python/PyMieScatt/
+		cp -r Python/GUI/*.py $(SCRIPTS)/Python/GUI/
 
 test:		test_preader test_pdielec test_phonana
 

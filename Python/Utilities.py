@@ -33,11 +33,11 @@ from Python.ExperimentOutputReader import ExperimentOutputReader
 
 
 
-def get_reader(program,filename):
+def get_reader(program,names,qmprogram):
     reader = None
-    names = [ filename ]
     program = program.lower()
-    print("get_reader",names,program)
+    qmprogram = qmprogram.lower()
+    #print("get_reader",names,program)
     if program == "":
         #  This is the old behaviour.  It copes with VASP, CASTEP and Crystal
         #  If names[0] is a directory then we will use a vaspoutputreader
@@ -133,3 +133,73 @@ def get_reader(program,filename):
         # endif
     # end if
     return reader
+
+class Debug():
+
+    def __init__(self,debug,text):
+        self.debug = debug
+        self.text  = text
+        return
+ 
+    def print(self,*args):
+        if self.debug:
+            print(self.text,*args)
+        return
+
+from multiprocessing import Pool, cpu_count
+global complete
+def complete(result):
+    print('This is complete')
+    global processes, results, completed_processes, pool, total_processes
+    # The results come back in an arbitrary order
+    results.append(result)
+    completed_processes += 1
+    print('Progress: {:.2f}%'.format((completed_processes/total_processes)*100))
+
+
+class ParallelSim:
+    global processes, results, completed_processes, pool, total_processes
+    processes = cpu_count()
+    results = []
+    completed_processes = 0
+    pool = None
+    total_processes = 0
+  
+#    def complete(result):
+#        global processes, results, completed_processes, pool, total_processes
+#        # The results come back in an arbitrary order
+#        results.append(result)
+#        completed_processes += 1
+#        print('Progress: {:.2f}%'.format((completed_processes/total_processes)*100))
+#
+    def initialise(procs=cpu_count()):
+        global processes, results, completed_processes, pool, total_processes
+        print('Number of processes', processes)
+        processes = procs
+        pool = Pool(processes=procs)
+        total_processes = 0
+        completed_processes = 0
+        results = []
+
+    def add(func, args):
+        global processes, results, completed_processes, pool, total_processes
+        global complete
+        # The call back has to be a class function - not an instance function
+        pool.apply_async(func=func, args=args, callback=complete)
+        print('add',func)
+        total_processes += 1
+
+    def run():
+        global processes, results, completed_processes, pool, total_processes
+        print('closing the pool')
+        pool.close()
+        pool.join()
+
+    def get_sorted_results():
+        global processes, results, completed_processes, pool, total_processes
+        return results.sort()
+
+    def get_results():
+        global processes, results, completed_processes, pool, total_processes
+        return results
+
