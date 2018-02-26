@@ -369,7 +369,7 @@ Using the same example as used in [#sec-isoleucine] the command;
     
 was used to raise a basic 3D molecular viewer showing the molecular structure in the unit-cell and the displacements corresponding to a phonon mode as shown in Figure [#fig-viewer].
 
-~ Figure { #fig-viewer; caption: "The Phonan 3D Viewer"; page-align:here }
+~ Figure { #fig-viewer; caption: "The Phonana 3D Viewer"; page-align:here }
 ![img-viewer]
 ~
 

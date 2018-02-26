@@ -60,10 +60,10 @@ The *Plotting Tab* shows the absorption or permittivity as a function of frequen
 
 The *Main Tab* is used to pick the MM/QM package and the output file which will be analysed.
 
-~ Figure { #fig-mainTab; caption: "The Main Tab"; page-align:here }
+~ Figure { #fig-mainTab; caption: "The Main Tab"; page-align:inplace }
 ![img-mainTab]
 ~
-[img-mainTab]: Figures/MainTab.png { width:90%; }
+[img-mainTab]: Figures/MainTab.png { width:80%; }
 
 The QM/MM program can be chosen from the dropdown list.  The output file name can be input into the text box below it.  Any entry in this *Output file name* text box will be read when the user types an 'Enter' command.  If the file is not valid a file chooser will pop-up and the user can select a file from that.
 
@@ -74,10 +74,10 @@ Once the file has been specified and read the frequencies found in the calculati
 
 The *Settings Tab* affects the calculation of the frequencies and their intensities.
 
-~ Figure { #fig-settingsTab; caption: "The Settings Tab"; page-align:here }
+~ Figure { #fig-settingsTab; caption: "The Settings Tab"; page-align:inplace }
 ![img-settingsTab]
 ~
-[img-settingsTab]: Figures/SettingsTab.png { width:90%; }
+[img-settingsTab]: Figures/SettingsTab.png { width:80%; }
 
 The Eckart conditions control whether 3 modes at zero frequency due to translational invariance are projected out of the dynamical matrix.  By default the Eckart conditions are applied and the 3 modes are projected out.
 
@@ -100,10 +100,10 @@ The output table at the bottom of the tab shows the calculated frequencies and t
 
 There can be more than one *Scenario Tab".  Each one specifies a particular material, method or particle shape which will be used in the *Plotting Tab*.
 
-~ Figure { #fig-scenarioTab; caption: "The Scenario Tab"; page-align:here }
+~ Figure { #fig-scenarioTab; caption: "The Scenario Tab"; page-align:inplace }
 ![img-scenarioTab]
 ~
-[img-scenarioTab]: Figures/ScenarioTab.png { width:90%; }
+[img-scenarioTab]: Figures/ScenarioTab.png { width:80%; }
 
 The support matrix into which the active dielectric material is dispersed can be selected from the *Support matrix* drop down menu.  The selected supporting material will change the density and permittivity shown in the respective text boxes.  The user can edit these values independently if necessary.  
 
@@ -122,10 +122,10 @@ Scenarios can be added or removed using the push buttons at the bottom of each *
 
 The *plotting tab* controls and plots the absorption and permittivity as a function of frequency calculated for each scenario present in the pdgui notebook.
 
-~ Figure { #fig-PlottingTab; caption: "The Plotting Tab"; page-align:here }
+~ Figure { #fig-PlottingTab; caption: "The Plotting Tab"; page-align:inplace }
 ![img-PlottingTab]
 ~
-[img-PlottingTab]: Figures/PlottingTab.png { width:90%; }
+[img-PlottingTab]: Figures/PlottingTab.png { width:80%; }
 
 The minimum and maximum frequencies can be specified along with the frequency increment.  An effective medium theory calculation will be performed for each scenario at every frequency between the minimum and maxmimum frequencies at the interval specified.
 
