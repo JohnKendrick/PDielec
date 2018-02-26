@@ -20,7 +20,9 @@ The package is suited for the calculation of the complex, frequency dependent pe
 
 == Installation
 The pdielec package is written in Python and has been tested using Python 2.7 and Python 3.6.4 on Linux and in Windows 10.
-Auxilliary programs, preader and phonana are also distributed.  
+Auxilliary programs, pdgui, preader and phonana are also distributed.  
+
+pdgui  provides a user friendly interface to PDielec.  Most options are available within the graphical user interface.
 
 preader summarises the outputs from the solid state packages as a csv file which can be simply read as a spread sheet.
 
