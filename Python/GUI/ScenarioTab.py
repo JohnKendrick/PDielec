@@ -1,3 +1,4 @@
+# -*- coding: utf8 -*-
 import sys
 import os.path
 import numpy as np
@@ -117,11 +118,11 @@ class ScenarioTab(QWidget):
         # Particle size option
         #
         self.size_le = QLineEdit(self) 
-        self.size_le.setToolTip('Define the particle radius of the sphere in microns. \nOnly applicable for the Mie method')
+        self.size_le.setToolTip('Define the particle radius of the sphere in μm. \nOnly applicable for the Mie method')
         self.size_le.setText('{0:.6f}'.format(self.settings['particle_size']))
         self.size_le.textChanged.connect(self.on_size_le_changed)
-        label = QLabel('Particle size (radius in microns)',self)
-        label.setToolTip('Define the particle radius of the sphere in microns. \nOnly applicable for the Mie method')
+        label = QLabel('Particle radius (μm)',self)
+        label.setToolTip('Define the particle radius of the sphere in μm. \nOnly applicable for the Mie method')
         form.addRow(label, self.size_le)
         #
         # Particle sigma option
@@ -130,14 +131,14 @@ class ScenarioTab(QWidget):
         self.sigma_le.setToolTip('Define the particle size distribution as a lognormal distribution with the given sigma. \nOnly applicable for the Mie method')
         self.sigma_le.setText('{0:.6f}'.format(self.settings['particle_sigma']))
         self.sigma_le.textChanged.connect(self.on_sigma_le_changed)
-        label = QLabel('Particle sigma (microns)',self)
+        label = QLabel('Particle sigma (μm)',self)
         label.setToolTip('Define the particle size distribition as a lognormal with the given sigma. \nOnly applicable for the Mie method')
         form.addRow(label, self.sigma_le)
         #
         # Crystallite shape
         #
         self.shape_cb = QComboBox(self)
-        self.shape_cb.setToolTip('Choose a particle shape. \nFor the Mie method only sphere is allowed.  \nFor shapes other than sphere there is a unique direction. \nFor ellipsoidal and needle like this is a direction [hkl].  \nFor a plate the perpendicular to a crystal face (hkl) is used to define the unique direction')
+        self.shape_cb.setToolTip('Choose a particle shape. \nFor the Mie method only sphere is allowed.  \nFor shapes other than sphere there is a unique direction. \nFor ellipsoidal and needle like this is a direction [abc].  \nFor a plate the perpendicular to a crystal face (hkl) is used to define the unique direction')
         for shape in self.shapes:
             self.shape_cb.addItem(shape)
         index = self.shape_cb.findText(self.settings['shape'], Qt.MatchFixedString)
@@ -147,11 +148,11 @@ class ScenarioTab(QWidget):
             print('Method index was not 0',self.settings['shape'])
         self.shape_cb.currentIndexChanged.connect(self.on_shape_cb_changed)
         label = QLabel('Shape',self)
-        label.setToolTip('Choose a particle shape. \nFor the Mie method only sphere is allowed.  \nFor shapes other than sphere there is a unique direction. \nFor ellipsoidal and needle like this is a direction [hkl].  \nFor a plate the perpendicular to a crystal face (hkl) is used to define the unique direction')
+        label.setToolTip('Choose a particle shape. \nFor the Mie method only sphere is allowed.  \nFor shapes other than sphere there is a unique direction. \nFor ellipsoidal and needle like this is a direction [abc].  \nFor a plate the perpendicular to a crystal face (hkl) is used to define the unique direction')
         form.addRow(label, self.shape_cb)
         #
         # Particle shape information
-        # unique direction (hkl) or [hkl]
+        # unique direction (hkl) or [abc]
         self.h_sb = QSpinBox(self)
         self.h_sb.setToolTip('Define the h dimension of the unique direction')
         self.h_sb.setRange(0,20)
@@ -171,8 +172,8 @@ class ScenarioTab(QWidget):
         hbox.addWidget(self.h_sb)
         hbox.addWidget(self.k_sb)
         hbox.addWidget(self.l_sb)
-        self.hkl_label = QLabel('Unique direction [hkl]',self)
-        self.hkl_label.setToolTip('Define the unique direction by [hkl] or (hkl). \n[hkl] is used by needles and ellipsoids.  It defines the unique direction in crystallographic units. \n(hkl) is used by plates it defines a surface and the unique direction is perpendicular to it.')
+        self.hkl_label = QLabel('Unique direction [abc]',self)
+        self.hkl_label.setToolTip('Define the unique direction by [abc] or (hkl). \n[abc] is used by needles and ellipsoids.  It defines the unique direction in crystallographic units. \n(hkl) is used by plates it defines a surface and the unique direction is perpendicular to it.')
 
         form.addRow(self.hkl_label, hbox)
         #
@@ -368,7 +369,7 @@ class ScenarioTab(QWidget):
     def on_density_le_changed(self,text):
         try:
             self.settings['matrix_density'] = float(text)
-            # mass fraction taked precedence
+            # volume fraction taked precedence
             self.update_mf_le()
             self.update_vf_le()
             debugger.print('on density line edit changed', text)
@@ -390,15 +391,26 @@ class ScenarioTab(QWidget):
         if self.settings['method'] == 'Mie':
             self.size_le.setEnabled(True)
             self.sigma_le.setEnabled(True)
+            for i,shape in enumerate(self.shapes):
+                self.shape_cb.model().item(i).setEnabled(False)
+            self.settings['shape'] = 'Sphere'
+            index = self.shape_cb.findText(self.settings['shape'], Qt.MatchFixedString)
+            if index >=0:
+                self.shape_cb.model().item(index).setEnabled(True)
+                self.shape_cb.setCurrentIndex(index)
+            else:
+                print('Method index was not 0',self.settings['shape'])
         else:
             self.size_le.setEnabled(False)
             self.sigma_le.setEnabled(False)
+            for i,shape in enumerate(self.shapes):
+                self.shape_cb.model().item(i).setEnabled(True)
         # deal with shapes
         if self.settings['shape'] == 'Ellipsoid':
             self.h_sb.setEnabled(True)
             self.k_sb.setEnabled(True)
             self.l_sb.setEnabled(True)
-            self.hkl_label.setText('Unique direction [hkl]')
+            self.hkl_label.setText('Unique direction [abc]')
             self.aoverb_le.setEnabled(True)
         elif self.settings['shape'] == 'Plate':
             self.h_sb.setEnabled(True)
@@ -410,7 +422,7 @@ class ScenarioTab(QWidget):
             self.h_sb.setEnabled(True)
             self.k_sb.setEnabled(True)
             self.l_sb.setEnabled(True)
-            self.hkl_label.setText('Unique direction [hkl]')
+            self.hkl_label.setText('Unique direction [abc]')
             self.aoverb_le.setEnabled(False)
         elif self.settings['shape'] == 'Sphere':
             self.h_sb.setEnabled(False)

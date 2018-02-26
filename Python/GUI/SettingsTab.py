@@ -1,3 +1,4 @@
+# -*- coding: utf8 -*-
 import sys
 import os.path
 import numpy as np
@@ -113,9 +114,11 @@ class SettingsTab(QWidget):
         self.sigma_sb = QSpinBox(self)
         self.sigma_sb.setRange(1,100)
         self.sigma_sb.setValue(self.settings['sigma'])
-        self.sigma_sb.setToolTip('Set the default Lorentzian width factor (sigma) in cm-1')
+        self.sigma_sb.setToolTip('Set the default Lorentzian width factor (σ) in cm-1')
         self.sigma_sb.valueChanged.connect(self.on_sigma_changed)
-        form.addRow(QLabel('Lorentzian width (sigma):', self), self.sigma_sb)
+        label = QLabel('Lorentzian width (σ):', self)
+        label.setToolTip('Set the default Lorentzian width factor (σ) in cm-1')
+        form.addRow(label, self.sigma_sb)
         #
         # Create the Optical permittivity table widget and block signals until a click on the widget
         #

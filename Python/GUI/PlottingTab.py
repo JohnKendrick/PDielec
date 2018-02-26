@@ -8,6 +8,7 @@ from PyQt5.QtWidgets  import  QComboBox, QLabel, QLineEdit
 from PyQt5.QtWidgets  import  QFileDialog, QProgressBar
 from PyQt5.QtWidgets  import  QVBoxLayout, QHBoxLayout, QFormLayout
 from PyQt5.QtWidgets  import  QSpinBox
+from PyQt5.QtWidgets  import  QSizePolicy
 from PyQt5.QtCore     import  Qt
 from Python.Constants import  wavenumber, amu, PI, avogadro_si, angstrom
 from Python.Constants import  average_masses, isotope_masses
@@ -168,7 +169,9 @@ class PlottingTab(QWidget):
         # Add the matplotlib figure to the bottom 
         self.figure = matplotlib.figure.Figure()
         self.canvas = FigureCanvas(self.figure)
+        self.canvas.setSizePolicy(QSizePolicy(QSizePolicy.Expanding,QSizePolicy.Expanding))
         self.toolbar = NavigationToolbar(self.canvas, self)
+        self.toolbar.setSizePolicy(QSizePolicy(QSizePolicy.Fixed,QSizePolicy.Fixed))
         form.addRow(self.canvas)
         form.addRow(self.toolbar)
         vbox.addLayout(form)

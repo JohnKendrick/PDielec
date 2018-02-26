@@ -40,9 +40,9 @@ class MainTab(QWidget):
         self.program_cb.addItem('Vasp')
         self.program_cb.addItem('Gulp')
         self.program_cb.addItem('Phonopy - VASP')
-        self.program_cb.addItem('Phonopy - QE') 
-        self.program_cb.addItem('Phonopy - Crystal')
-        self.program_cb.addItem('Quantum Espresso')
+#        self.program_cb.addItem('Phonopy - QE') 
+#        self.program_cb.addItem('Phonopy - Crystal')
+#        self.program_cb.addItem('Quantum Espresso')
         self.program_cb.addItem('Experiment')
         prtext = self.settings['program'].capitalize()
         qmtext = self.settings['qmprogram'].capitalize()
@@ -101,10 +101,23 @@ class MainTab(QWidget):
             return
         self.listw_l.setText('Frequencies from '+self.settings['filename']+':')
         self.reader = get_reader(self.settings['program'],[ self.settings['filename'] ], self.settings['qmprogram'] )
+        if self.reader is None:
+            print('Error in reading files - program  is ',self.settings['program'])
+            print('Error in reading files - filename is ',self.settings['filename'])
+            print('Need to choose the file and program properly')
+            QMessageBox.about(self,'Processing output file','The filename for the output file to be processed is not correct: '+self.settings['filename'])
+            return
         #self.reader.debug = self.debug
         # tell the notebook that we have read the info and we have a reader
         self.notebook.reader = self.reader
-        self.reader.read_output()
+        try:
+            self.reader.read_output()
+        except:
+            print('Error in reading output files - program  is ',self.settings['program'])
+            print('Error in reading output files - filename is ',self.settings['filename'])
+            print('Need to choose the file and program properly')
+            QMessageBox.about(self,'Processing output file','The filename for the output file to be processed is not correct: '+self.settings['filename'])
+            return
         if self.debug:
             self.reader.print_info()
         frequencies_cm1 = np.sort(self.reader.frequencies)

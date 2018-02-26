@@ -48,7 +48,8 @@ def get_reader(program,names,qmprogram):
             kpointsfile = os.path.join(names[0], "KPOINTS")
             if not os.path.isfile(outcarfile):
                 print("Error: NO OUTCAR FILE IN DIRECTORY")
-                exit()
+                reader = None
+                return
             reader = VaspOutputReader( [outcarfile, kpointsfile] )
         elif names[0].find("OUTCAR") >= 0 and os.path.isfile("OUTCAR"):
             reader = VaspOutputReader(names)
@@ -64,7 +65,7 @@ def get_reader(program,names,qmprogram):
             print('No valid file name has been found on the command line')
             print('Try using the -program option to specify the')
             print('files which will be read')
-            exit(1)
+            reader = None
     else:
         # New Specification of Program used to define the input files
         # Abinit and QE need a couple of files to be specified
@@ -98,7 +99,8 @@ def get_reader(program,names,qmprogram):
             if not os.path.isfile(f):
                 print("Output files created by program: {}".format(program))
                 print("Error: file not available: {}".format(f))
-                exit()
+                reader = None
+                return reader
         # The files requested are available so read them
         if program == "castep":
             reader = CastepOutputReader(names)
