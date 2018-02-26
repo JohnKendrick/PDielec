@@ -156,6 +156,11 @@ class MainTab(QWidget):
         if self.settings['filename']:
             debugger.print('new file name', self.settings['filename'])
         self.file_le.setText(self.settings['filename'])
+        if os.path.isfile(self.settings['filename']):
+            self.settings['filename'] = os.path.relpath(self.settings['filename'])
+            # The file exists to treat it as though the button has been pressed
+            self.pushButton1Clicked()
+            return
  
     def on_file_le_changed(self, text):
         debugger.print('on file changed', text)

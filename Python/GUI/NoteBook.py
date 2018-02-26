@@ -17,6 +17,7 @@ class NoteBook(QWidget):
         debugger = Debug(debug,'NoteBook:')
         self.reader = None
         self.newCalculationRequired = True
+        self.debug = debug
         self.layout = QVBoxLayout()
         # The number of tabs before we have scenarios
         self.tabOffSet = 2
@@ -51,8 +52,12 @@ class NoteBook(QWidget):
         return
 
     def addScenario(self,index):
-        self.scenarios.append( ScenarioTab(self) )
+        self.scenarios.append( ScenarioTab(self, self.debug) )
+        # debugger.print('Settings for scenario', index)
+        # self.scenarios[index].print_settings()
         self.scenarios[-1].settings = copy.deepcopy(self.scenarios[index].settings)
+        # debugger.print('Settings for new scenario')
+        # self.scenarios[-1].print_settings()
         self.scenarios[-1].refresh()
         for i,scenario in enumerate(self.scenarios):
             scenario.setScenarioIndex(i)
@@ -62,11 +67,13 @@ class NoteBook(QWidget):
         return
 
     def deleteScenario(self,index):
-        self.tabs.removeTab(self.tabOffSet+index)
-        del self.scenarios[index]
-        for i,scenario in enumerate(self.scenarios):
-            scenario.setScenarioIndex(i)
-            self.tabs.setTabText(self.tabOffSet+i,'Scenario '+str(i+1))
+        # Don't delete the last scenario
+        if len(self.scenarios) > 1:
+            self.tabs.removeTab(self.tabOffSet+index)
+            del self.scenarios[index]
+            for i,scenario in enumerate(self.scenarios):
+                scenario.setScenarioIndex(i)
+                self.tabs.setTabText(self.tabOffSet+i,'Scenario '+str(i+1))
         return
 
     def on_tabs_currentChanged(self, tabindex):

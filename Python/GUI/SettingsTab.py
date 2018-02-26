@@ -46,7 +46,7 @@ class SettingsTab(QWidget):
         self.settings['sigma'] = 5
         self.mass_definition_options = ['average','program','isotope','gui']
         self.settings['mass_definition'] = 'average'
-        self.settings['masses_dictionary'] = {}
+        self.masses_dictionary = {}
         self.modes_selected = []
         self.frequencies_cm1 = []
         self.intensities = []
@@ -92,8 +92,8 @@ class SettingsTab(QWidget):
         self.mass_cb.addItem('Mass taken from QM/MM program')
         self.mass_cb.addItem('Most common isotope mass')
         # set default to average natural abundance
-        self.mass_cb.setCurrentIndex(0)
         self.mass_cb.currentIndexChanged.connect(self.on_mass_cb_changed)
+        self.mass_cb.setCurrentIndex(0)
         form.addRow(QLabel('Atomic mass defintion:', self), self.mass_cb)
         # Create Table containing the masses - block signals until the table is loaded
         self.element_masses_tw = FixedQTableWidget(self)
@@ -169,7 +169,7 @@ class SettingsTab(QWidget):
         elif self.settings['mass_definition'] == 'isotope':
             self.reader.change_masses(isotope_masses, mass_dictionary)
         elif self.settings['mass_definition'] == 'gui':
-            self.reader.change_masses(self.settings['masses_dictionary'], mass_dictionary)
+            self.reader.change_masses(self.masses_dictionary, mass_dictionary)
         elif self.settings['mass_definition'] == 'program':
             pass
         else:
@@ -267,7 +267,6 @@ class SettingsTab(QWidget):
                 self.mass_cb.setCurrentIndex(0)
             # set the initial dictionary according to the mass_definition
             masses = []
-            self.masses_dictionary = {}
             if self.settings['mass_definition'] == 'average':
                 for element in species:
                     mass = average_masses[element]
@@ -290,6 +289,8 @@ class SettingsTab(QWidget):
             self.element_masses_tw.setColumnCount(len(masses))
             self.element_masses_tw.setHorizontalHeaderLabels(species)
             self.element_masses_tw.setVerticalHeaderLabels([''])
+            debugger.print('masses_dictionary',self.masses_dictionary)
+            debugger.print('masses',masses)
             # set masses of the elements in the table widget according to the mass definition
             for i,(mass,element) in enumerate(zip(masses,species)):
                 debugger.print('set_masses_tw', self.settings['mass_definition'],i,mass,element)
@@ -359,9 +360,9 @@ class SettingsTab(QWidget):
         debugger.print('on_element_masses_tw_itemChanged)', item.row(), item.column() )
         col = item.column()
         self.settings['mass_definition'] = 'gui'
-        self.settings['masses_dictionary'][self.reader.species[col]] = float(item.text())
+        self.masses_dictionary[self.reader.species[col]] = float(item.text())
         self.calculateButtonClicked()
-        debugger.print('masses_dictionary', self.settings['masses_dictionary'])
+        debugger.print('masses_dictionary', self.masses_dictionary)
 
     def on_optical_tw_itemChanged(self, item):
         debugger.print('on_optical_itemChanged)', item.row(), item.column() )

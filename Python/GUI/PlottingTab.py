@@ -383,7 +383,7 @@ class PlottingTab(QWidget):
             mass_fraction = scenario.settings['mass_fraction']
             volume_fraction = scenario.settings['volume_fraction']
             particle_size_mu = scenario.settings['particle_size']
-            particle_sigma = scenario.settings['particle_sigma']
+            particle_sigma_mu = scenario.settings['particle_sigma']
             shape = scenario.settings['shape'].lower()
             hkl = [scenario.settings['h'], scenario.settings['k'], scenario.settings['l']] 
             aoverb = scenario.settings['aoverb']
@@ -398,7 +398,7 @@ class PlottingTab(QWidget):
             nplot = 0
             for v,vau,dielecv in dielecv_results:
                 vau = v * wavenumber
-                call_parameters.append( (v,vau,dielecv,method,volume_fraction,vf_type,particle_size_mu,particle_sigma,size,nplot,
+                call_parameters.append( (v,vau,dielecv,method,volume_fraction,vf_type,particle_size_mu,particle_sigma_mu,size,nplot,
                                          matrix_permittivity,shape,data,L,concentration,previous_solution_shared) )
                 nplot += 1
             results = []

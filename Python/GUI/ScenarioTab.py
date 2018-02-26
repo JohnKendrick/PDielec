@@ -81,21 +81,21 @@ class ScenarioTab(QWidget):
         # Mass fraction of dielectric medium
         #
         self.mf_le = QLineEdit(self) 
-        self.mf_le.setToolTip('The mole fraction of the dielectric medium. \nNote that volume and mole fraction are linked')
-        self.mf_le.setText('{0:.6f}'.format(self.settings['mass_fraction']))
+        self.mf_le.setToolTip('The percentage mass fraction of the dielectric medium. \nNote that volume and mass fraction are linked')
+        self.mf_le.setText('{0:.6f}'.format(100*self.settings['mass_fraction']))
         self.mf_le.textChanged.connect(self.on_mf_le_changed)
-        label = QLabel('Mole fraction of dielectric', self)
-        label.setToolTip('The mole fraction of the dielectric medium. \nNote that volume and mole fraction are linked')
+        label = QLabel('% mass fraction of dielectric', self)
+        label.setToolTip('The percentage mass fraction of the dielectric medium. \nNote that volume and mass fraction are linked')
         form.addRow(label, self.mf_le)
         #
         # Volume fraction of dielectric medium
         #
         self.vf_le = QLineEdit(self) 
-        self.vf_le.setToolTip('The volume fraction of the dielectric medium. \nNote that volume and mole fraction are linked')
+        self.vf_le.setToolTip('The percentage volume fraction of the dielectric medium. \nNote that volume and mass fraction are linked')
         self.vf_le.textChanged.connect(self.on_vf_le_changed)
-        self.vf_le.setText('{0:.6f}'.format(self.settings['volume_fraction']))
-        label = QLabel('Volume fraction of dielectric', self)
-        label.setToolTip('The volume fraction of the dielectric medium. \nNote that volume and mole fraction are linked')
+        self.vf_le.setText('{0:.6f}'.format(100.0*self.settings['volume_fraction']))
+        label = QLabel('% volume fraction of dielectric', self)
+        label.setToolTip('The percentage volume fraction of the dielectric medium. \nNote that volume and mass fraction are linked')
         form.addRow(label, self.vf_le)
         #
         # Calculation method
@@ -127,10 +127,10 @@ class ScenarioTab(QWidget):
         # Particle sigma option
         #
         self.sigma_le = QLineEdit(self) 
-        self.sigma_le.setToolTip('Define the particle size distribution as a lognormal distribution with the give sigma. \nOnly applicable for the Mie method')
+        self.sigma_le.setToolTip('Define the particle size distribution as a lognormal distribution with the given sigma. \nOnly applicable for the Mie method')
         self.sigma_le.setText('{0:.6f}'.format(self.settings['particle_sigma']))
         self.sigma_le.textChanged.connect(self.on_sigma_le_changed)
-        label = QLabel('Particle sigma (radius in microns)',self)
+        label = QLabel('Particle sigma (microns)',self)
         label.setToolTip('Define the particle size distribition as a lognormal with the given sigma. \nOnly applicable for the Mie method')
         form.addRow(label, self.sigma_le)
         #
@@ -232,7 +232,8 @@ class ScenarioTab(QWidget):
         mass = 0.0
         for m in self.reader.masses:
             mass += m
-        return m / (avogadro_si * volume * 1.0e-24)
+        density = mass / (avogadro_si * volume * 1.0e-24)
+        return density
         
 
     def on_h_sb_changed(self,value):
@@ -259,10 +260,19 @@ class ScenarioTab(QWidget):
 
     def on_mf_le_changed(self,text):
         debugger.print('on mass fraction line edit changed', text)
-        mf = float(text)
-        if mf > 0.0:
-            self.settings['mass_fraction'] = mf
-            self.update_vf_le()
+        try:
+            mf = float(text)/100.0
+            mf1 = min(mf, 1.0)
+            mf1 = max(mf1, 1.0e-12)
+            if abs(mf-mf1) > 1.0e-12:
+                self.settings['mass_fraction'] = mf1
+                self.update_vf_le()
+                self.update_mf_le()
+            else:
+                self.settings['mass_fraction'] = mf
+                self.update_vf_le()
+        except:
+           pass
 
     def update_vf_le(self):
         mf1 = self.settings['mass_fraction']
@@ -272,7 +282,7 @@ class ScenarioTab(QWidget):
         vf1 = 1.0 / ( 1.0 + mf2/mf1 * (rho1/rho2) )
         self.settings['volume_fraction'] = vf1
         self.vf_le.blockSignals(True)
-        self.vf_le.setText('{0:.6}'.format(vf1))
+        self.vf_le.setText('{0:.6}'.format(100.0*vf1))
         self.vf_le.blockSignals(False)
         debugger.print('Update_vf_le')
         debugger.print('rho 1', rho1)
@@ -281,7 +291,10 @@ class ScenarioTab(QWidget):
         
     def on_aoverb_le_changed(self,text):
         debugger.print('on_aoverb_le_changed',text)
-        self.settings['aoverb'] = float(text)
+        try:
+            self.settings['aoverb'] = float(text)
+        except:
+            pass
 
     def on_legend_le_changed(self,text):
         debugger.print('on legend change', text)
@@ -290,18 +303,33 @@ class ScenarioTab(QWidget):
 
     def on_sigma_le_changed(self,text):
         debugger.print('on sigma line edit changed', text)
-        self.settings['particle_sigma'] = float(text)
+        try:
+            self.settings['particle_sigma'] = float(text)
+        except:
+            pass
 
     def on_size_le_changed(self,text):
         debugger.print('on size line edit changed', text)
-        self.settings['particle_size'] = float(text)
+        try:
+            self.settings['particle_size'] = float(text)
+        except:
+            pass
 
     def on_vf_le_changed(self,text):
         debugger.print('on volume fraction line edit changed', text)
-        vf = float(text)
-        if vf > 1.0e-12:
-            self.settings['volume_fraction'] = vf
-            self.update_mf_le()
+        try:
+            vf = float(text)/100.0
+            vf1 = min(vf, 1.0)
+            vf1 = max(vf1, 1.0e-12)
+            if abs(vf-vf1) > 1.0e-12:
+                self.settings['volume_fraction'] = vf1
+                self.update_mf_le()
+                self.update_vf_le()
+            else:
+                self.settings['volume_fraction'] = vf
+                self.update_mf_le()
+        except:
+            pass
 
     def update_mf_le(self):
         vf1 = self.settings['volume_fraction']
@@ -311,8 +339,8 @@ class ScenarioTab(QWidget):
         mf1 = 1.0 / ( 1.0 + (vf2/vf1) * (rho2/rho1) )
         self.settings['mass_fraction'] = mf1
         self.mf_le.blockSignals(True)
-        self.mf_le.setText('{0:.6}'.format(mf1))
-        self.vf_le.blockSignals(False)
+        self.mf_le.setText('{0:.6}'.format(100.0*mf1))
+        self.mf_le.blockSignals(False)
         debugger.print('Update_mf_le')
         debugger.print('rho 1', rho1)
         debugger.print('rho 2', rho2)
@@ -338,15 +366,21 @@ class ScenarioTab(QWidget):
         self.permittivity_le.blockSignals(False)
 
     def on_density_le_changed(self,text):
-        self.settings['density'] = float(text)
-        # mass fraction taked precedence
-        self.update_mf_le()
-        self.update_vf_le()
-        debugger.print('on density line edit changed', text)
+        try:
+            self.settings['matrix_density'] = float(text)
+            # mass fraction taked precedence
+            self.update_mf_le()
+            self.update_vf_le()
+            debugger.print('on density line edit changed', text)
+        except:
+            pass
 
     def on_permittivity_le_changed(self,text):
-        self.settings['permittivity'] = float(text)
-        debugger.print('on density line edit changed', text)
+        try:
+            self.settings['matrix_permittivity'] = float(text)
+        except:
+            pass
+        debugger.print('on permittivity line edit changed', text)
 
     def set_reader(self,reader):
         self.reader = reader
@@ -394,6 +428,11 @@ class ScenarioTab(QWidget):
         return
 
 
+    def print_settings(self):
+        debugger.print('SETTINGS')
+        for key in self.settings:
+            debugger.print(key, self.settings[key]) 
+        
     def refresh(self):
         debugger.print('refresh')
         # First see if we can get the reader from the mainTab
@@ -402,10 +441,11 @@ class ScenarioTab(QWidget):
         self.matrix_cb.blockSignals(True)
         self.density_le.blockSignals(True)
         self.permittivity_le.blockSignals(True)
-        #self.mf_le.blockSignals(True)
-        #self.vf_le.blockSignals(True)
+        self.mf_le.blockSignals(True)
+        self.vf_le.blockSignals(True)
         self.methods_cb.blockSignals(True)
         self.size_le.blockSignals(True)
+        self.sigma_le.blockSignals(True)
         self.shape_cb.blockSignals(True)
         self.h_sb.blockSignals(True)
         self.k_sb.blockSignals(True)
@@ -424,6 +464,7 @@ class ScenarioTab(QWidget):
         index = self.methods_cb.findText(self.settings['method'], Qt.MatchFixedString)
         self.methods_cb.setCurrentIndex(index)
         self.size_le.setText('{0:.6f}'.format(self.settings['particle_size']))
+        self.sigma_le.setText('{0:.6f}'.format(self.settings['particle_sigma']))
         index = self.shape_cb.findText(self.settings['shape'], Qt.MatchFixedString)
         self.shape_cb.setCurrentIndex(index)
         self.h_sb.setValue(self.settings['h'])
@@ -439,6 +480,7 @@ class ScenarioTab(QWidget):
         self.vf_le.blockSignals(False)
         self.methods_cb.blockSignals(False)
         self.size_le.blockSignals(False)
+        self.sigma_le.blockSignals(False)
         self.shape_cb.blockSignals(False)
         self.h_sb.blockSignals(False)
         self.k_sb.blockSignals(False)
