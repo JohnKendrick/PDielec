@@ -28,6 +28,8 @@ install:
 		cp -P phonana    $(SCRIPTS)
 		cp -P pdgui      $(SCRIPTS)
 		mkdir -p $(SCRIPTS)/Python
+		mkdir -p $(SCRIPTS)/Python/PyMieScatt
+		mkdir -p $(SCRIPTS)/Python/GUI
 		cp -r Python/*.py $(SCRIPTS)/Python
 		cp -r Python/PyMieScatt/*.py $(SCRIPTS)/Python/PyMieScatt/
 		cp -r Python/GUI/*.py $(SCRIPTS)/Python/GUI/
