@@ -20,7 +20,13 @@ import os
 import sys
 from Python.GUI.App import App
 from PyQt5.QtWidgets import QApplication
+from multiprocessing import freeze_support
 
-app = QApplication(sys.argv)
-ex = App(sys.argv)
-sys.exit(app.exec_())
+def main(sys):
+    app = QApplication(sys.argv)
+    ex = App(sys.argv)
+    sys.exit(app.exec_())
+
+if __name__ == '__main__':
+    freeze_support()
+    main(sys)

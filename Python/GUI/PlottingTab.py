@@ -1,7 +1,18 @@
 import sys
 import os.path
+import os
 import numpy as np
-from multiprocessing import Pool, cpu_count, Array
+osname = os.name
+parallelism = 'threading'
+parallelism = 'multitaksing'
+if parallelism == 'threading':
+    threading = True
+    from multiprocessing.dummy import Pool
+else:
+    threading = False
+    from multiprocessing import Pool
+#
+from multiprocessing import cpu_count, Array
 import Python.Calculator as Calculator
 from PyQt5.QtWidgets  import  QPushButton, QWidget
 from PyQt5.QtWidgets  import  QComboBox, QLabel, QLineEdit
@@ -19,6 +30,7 @@ import matplotlib.figure
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT as NavigationToolbar
 from Python.Utilities import Debug
+import time
 
 def set_affinity_on_worker():
     '''When a new worker process is created, the affinity is set to all CPUs'''
@@ -182,25 +194,29 @@ class PlottingTab(QWidget):
         debugger.print('PlottingTab: molarAbsorptionButtonClicked pressed')
         if self.notebook.newCalculationRequired:
             self.calculate()
-        self.plot(self.xaxes, self.molarAbsorptionCoefficients, r'Molar Absorption Coefficient $\mathdefault{(L mole^{-1} cm^{-1})}$')
+        if not self.notebook.newCalculationRequired:
+            self.plot(self.xaxes, self.molarAbsorptionCoefficients, r'Molar Absorption Coefficient $\mathdefault{(L mole^{-1} cm^{-1})}$')
 
     def absorptionButtonClicked(self):
         debugger.print('PlottingTab: absorptionButtonClicked pressed')
         if self.notebook.newCalculationRequired:
             self.calculate()
-        self.plot(self.xaxes, self.absorptionCoefficients, r'Absorption Coefficient $\mathdefault{(cm^{-1})}$')
+        if not self.notebook.newCalculationRequired:
+            self.plot(self.xaxes, self.absorptionCoefficients, r'Absorption Coefficient $\mathdefault{(cm^{-1})}$')
 
     def realPermButtonClicked(self):
         debugger.print('PlottingTab: realPermButtonClicked pressed')
         if self.notebook.newCalculationRequired:
             self.calculate()
-        self.plot(self.xaxes, self.realPermittivities, 'Real Component of Permittivity')
+        if not self.notebook.newCalculationRequired:
+            self.plot(self.xaxes, self.realPermittivities, 'Real Component of Permittivity')
 
     def imagPermButtonClicked(self):
         debugger.print('PlottingTab: imagPermButtonClicked pressed')
         if self.notebook.newCalculationRequired:
             self.calculate()
-        self.plot(self.xaxes, self.imagPermittivities, 'Imaginary Component of Permittivity')
+        if not self.notebook.newCalculationRequired:
+            self.plot(self.xaxes, self.imagPermittivities, 'Imaginary Component of Permittivity')
 
     def on_file_store_le_changed(self,text):
         self.settings['spreadsheet'] = text
@@ -273,15 +289,22 @@ class PlottingTab(QWidget):
         debugger.print('PlottingTab: The concentration has been set', self.settings['molar_definition'], self.settings['concentration'])
 
     def calculate(self):
+        global threading
         debugger.print('PlottingTab: calculate')
-        self.notebook.newCalculationRequired = False
         self.progressbar.setValue(0)
         # Assemble the mainTab settings
         settings = self.notebook.mainTab.settings
         program = settings['program']
         filename = settings['filename']
         reader = self.notebook.mainTab.reader
+        if reader is None:
+            return
+        if program is '':
+            return
+        if filename is '':
+            return
         # Assemble the settingsTab settings
+        self.notebook.newCalculationRequired = False
         settings = self.notebook.settingsTab.settings
         eckart = settings['eckart']
         neutral = settings['neutral']
@@ -351,7 +374,11 @@ class PlottingTab(QWidget):
         progress = 0
         self.progressbar.setMaximum(maximum_progress)
         number_of_processors = cpu_count()
-        pool = Pool(number_of_processors, initializer=set_affinity_on_worker, maxtasksperchild=10)
+        #jk start = time.time()
+        if threading:
+            pool = Pool(number_of_processors)
+        else:
+            pool = Pool(number_of_processors, initializer=set_affinity_on_worker, maxtasksperchild=10)
         dielecv_results = []
         for result in pool.imap(Calculator.parallel_dielectric, call_parameters,chunksize=40):
             dielecv_results.append(result)
@@ -359,6 +386,7 @@ class PlottingTab(QWidget):
             self.progressbar.setValue(progress)
         pool.close()
         pool.join()
+        #jk print('Dielec calculation duration ', time.time()-start)
         nplots = len(dielecv_results)
         # Allocate space for the shared memory, we need twice as much as we have a complex data type
         shared_array_base = Array(ctypes.c_double, 2*nplots*9)
@@ -376,7 +404,11 @@ class PlottingTab(QWidget):
         self.imagPermittivities = []
         self.absorptionCoefficients = []
         self.molarAbsorptionCoefficients = []
-        pool = Pool(number_of_processors, initializer=set_affinity_on_worker, maxtasksperchild=10)
+        #jk start = time.time()
+        if threading:
+            pool = Pool(number_of_processors)
+        else:
+            pool = Pool(number_of_processors, initializer=set_affinity_on_worker, maxtasksperchild=10)
         for i,(scenario,L) in enumerate(zip(self.scenarios,depolarisations)):
             debugger.print('PlottingTab: Scenario ',i,L)
             matrix = scenario.settings['matrix']
@@ -427,6 +459,7 @@ class PlottingTab(QWidget):
             self.molarAbsorptionCoefficients.append(molarAbsorptionCoefficient)
         pool.close()
         pool.join()
+        #jk print('Dielec calculation duration ', time.time()-start)
 
     def plot(self,xs,ys,ylabel):
         # import matplotlib.pyplot as pl

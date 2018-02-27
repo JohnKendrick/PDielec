@@ -12,9 +12,7 @@ class App(QMainWindow):
         debug = False
         # Manage options
         for arg in args[1:]:
-            print('arg is',arg)
             if arg == '-d' or arg == '-debug' or arg == '--debug':
-                print('debug is true')
                 debug = True
             elif arg == '-h' or arg == '-help' or arg == '--help':
                 print('help is true')
@@ -22,10 +20,8 @@ class App(QMainWindow):
                 print('pdgui [-help] [-debug] [program] [filename]')
                 exit()
             elif program == '':
-                print('program is true')
                 program = arg
             elif filename == '':
-                print('filename is true')
                 filename = arg
         #
         self.title = 'PDielec GUI '
