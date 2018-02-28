@@ -17,7 +17,9 @@ default:
 		@echo "Type 'make test_pdielec'"
 		@echo " or  'make test_preader'"
 		@echo " or  'make test_phonana'"
+		@echo " or  'make pyinstaller'"
 
+.PHONY:		install
 install:	
 		cp pdielec.py $(SCRIPTS)
 		cp preader.py $(SCRIPTS)
@@ -38,28 +40,39 @@ test:		test_preader test_pdielec test_phonana
 
 tests:		test_preader test_pdielec test_phonana
 
+.PHONY:		test_phonana
 test_phonana:		
 		@echo "Testing phonana functionality....."
 		@( cd Examples; make --no-print-directory test_phonana )
 
+.PHONY:		test_preader
 test_preader:		
 		@echo "Testing preader functionality....."
 		@( cd Examples; make --no-print-directory test_preader )
 
+.PHONY:		test_pdielec
 test_pdielec:		
 		@echo "Testing pdielec functionality (takes a while to run)."
 		@( cd Examples; make --no-print-directory test_pdielec )
 
+.PHONY:		regenerate
 regenerate:		
 		@echo "Regenerating all reference data"
 		@( cd Examples; make --no-print-directory regenerate )
 
+.PHONY:		pylint
 pylint:		
 		@pylint pdielec Python/*.py
 
+.PHONY:		pylama
 pylama:		
 		@pylama -i E501,E221,C901 .
 
+.PHONY:		clean
 clean:		
 		@( cd Examples; make --no-print-directory clean )
 
+.PHONY:		pyinstaller
+pyinstaller:
+		pyinstaller pdgui.spec -y
+		cp -r dist/pdgui/PyQt5/Qt/plugins/platforms dist/pdgui
