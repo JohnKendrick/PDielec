@@ -1,0 +1,5 @@
+The PDGui program will be installed in the PDGui program group
+The program analyses the output from QM/MM solid programs and
+calculates the vibrational frequencies and infrared absorption using 
+and effective medium theory.
+

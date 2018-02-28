@@ -1,0 +1,5 @@
+To create an inno installer
+
+pyinstaller pdgui.py -y
+cd dist/pdgui
+cp -r ./PyQt5/Qt/plugins/platforms .
