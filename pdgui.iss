@@ -6,6 +6,8 @@
 #define MyAppPublisher "John Kendrick and Andrew Burnett"
 #define MyAppURL "https://github.com/JohnKendrick/PDielec"
 #define MyAppExeName "pdgui.exe"
+#define MyIconName "infrared.ico"
+#define SourcePath "C:\Users\pdielec\Software\PDielec"
 
 [Setup]
 ; NOTE: The value of AppId uniquely identifies this application.
@@ -37,13 +39,15 @@ Name: "english"; MessagesFile: "compiler:Default.isl"
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
 
 [Files]
-Source: "C:\Users\pdielec\Software\PDielec\dist\pdgui\pdgui.exe"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\pdielec\Software\PDielec\dist\pdgui\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "{#SourcePath}\dist\pdgui\pdgui.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: "{#SourcePath}\dist\pdgui\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "{#SourcePath}\BuildDocs\Figures\{#MyIconName}"; DestDir: "{app}"
+;Source: "{#SourcePath}\Examples\*"; DestDir: "{app}\Examples"; Flags: ignoreversion recursesubdirs createallsubdirs 
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]
-Name: "{commonprograms}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"
-Name: "{commondesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Tasks: desktopicon
+Name: "{commonprograms}\{#MyAppName}"; Filename: "{app}\{#MyIconName}"
+Name: "{commondesktop}\{#MyAppName}"; Filename: "{app}\{#MyIconName}"; Tasks: desktopicon
 
 [Run]
 Filename: "{app}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#StringChange(MyAppName, '&', '&&')}}"; Flags: nowait postinstall skipifsilent
