@@ -154,7 +154,7 @@ class MainTab(QWidget):
         # Does the file exist?
         self.settings['filename'] = self.file_le.text()
         if os.path.isfile(self.settings['filename']):
-            self.settings['filename'] = os.path.relpath(self.settings['filename'])
+            # self.settings['filename'] = os.path.relpath(self.settings['filename'])
             # The file exists to treat it as though the button has been pressed
             self.pushButton1Clicked()
             return
@@ -163,14 +163,15 @@ class MainTab(QWidget):
         options |= QFileDialog.DontUseNativeDialog
         self.settings['filename'], _ = QFileDialog.getOpenFileName(self,'QFileDialog.getOpenFileName()', '','All Files (*)', options=options)
         try:
-            self.settings['filename'] = os.path.relpath(self.settings['filename'])
+            #self.settings['filename'] = os.path.relpath(self.settings['filename'])
+            pass
         except:
             self.settings['filename'] = ''
         if self.settings['filename']:
             debugger.print('new file name', self.settings['filename'])
         self.file_le.setText(self.settings['filename'])
         if os.path.isfile(self.settings['filename']):
-            self.settings['filename'] = os.path.relpath(self.settings['filename'])
+            #self.settings['filename'] = os.path.relpath(self.settings['filename'])
             # The file exists to treat it as though the button has been pressed
             self.pushButton1Clicked()
             return
