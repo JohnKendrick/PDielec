@@ -138,9 +138,25 @@ The molar absorption, the absorption and the real or imaginary permittivity can 
 
 # INSTALLATION
 
-pdgui requires the PyQT5 libraries in addition to the libraries used by PDielec
+pdgui requires the PyQT5 libraries in addition to the libraries used by PDielec, these will be installed automatically by matplotlib.
+
+Installation on Microsoft Windows 10 was succesful using Anaconda with Python 3.6
+
+    conda create -n pdielec36 python=3.6
+    conda activate pdielec36
+    conda install numpy
+    conda install scipy
+    conda install matplotlib
+    pip install termcolor
+    pip install xlsxwriter
+    pip install pyyaml
+
+Installation on Linux requires pyqt5 modules.  If they have not been installed already with maplotlib.  If you don't have sudo access you can install the module in your user directory;
+
 
     sudo pip install pyqt5
 
-The installation of these modules can be performed as root, if all users on the machine require access to them, or they can be installed in the user's file system using 'pip --user' instead of 'pip'
+or
+
+    pip install --user pyqt5
 

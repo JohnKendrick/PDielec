@@ -6,9 +6,8 @@ PDF := $(TARGETS:%=%.pdf)
 HTML := $(TARGETS:%=%.html)
 
 # Shortcuts.
-.PHONY: pdf html
-pdf: $(PDF)
-html: $(HTML)
+.PHONY: default
+default: $(PDF) $(HTML)
 
 # Build PDF via LaTeX.
 %.pdf: %.md $(DEPS)

@@ -48,7 +48,7 @@ This copies the commands and modules to the \~/bin directory which should be inc
 
 
 ==== Anaconda
-Anaconda is a Python package manager and is useful when trying out different versions of Python as there is a very convenient environment manager.  Anaconda can be installed as a user program and so root access to the computer is not needed.  The software can be downloaded from https://conda.io/miniconda.html or https://www.anaconda.com/download/.  Unless you are interested in the full package the miniconda installation should be sufficient for installing the rest of the modules needed for the PDielec installation.
+Anaconda is a Python package manager and is useful when trying out different versions of Python as there is a very convenient environment manager.  Anaconda can be installed as a user program and so root access to the computer is not needed.  The software can be downloaded from https://conda.io/miniconda.html or https://www.anaconda.com/download/.  Unless you are interested in the full package the miniconda installation should be sufficient for installing the rest of the modules needed for the PDielec installation.  The visualisation routines in phonana require mayavi.  If you are not intending using phonana, there is no need to install mayavi.
 
 As an example here is an installation using a Python 2.7 environment.  Using 'pip install' means that the anaconda build system is bypassed.ld system in Anaconda normally makes sure only compatible software versions are installed, but this seems to cause problems in this case. 
 
