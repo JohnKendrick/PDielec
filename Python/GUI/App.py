@@ -26,7 +26,7 @@ class App(QMainWindow):
         #
         self.title = 'PDielec GUI '
         self.left = 10
-        self.top = 10
+        self.top = 30
         self.width = 500
         self.height = 800
         self.setWindowTitle(self.title)

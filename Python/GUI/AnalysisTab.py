@@ -234,8 +234,8 @@ class AnalysisTab(QWidget):
         settings = self.notebook.mainTab.settings
         program = settings['program']
         filename = settings['filename']
-        reader = self.notebook.mainTab.reader
-        if reader is None:
+        self.reader = self.notebook.mainTab.reader
+        if self.reader is None:
             return
         if program is '':
             return
@@ -255,13 +255,13 @@ class AnalysisTab(QWidget):
         frequencies = np.array(self.frequencies_cm1) * wavenumber
         intensities = self.notebook.settingsTab.intensities
         oscillator_strengths = self.notebook.settingsTab.oscillator_strengths
-        volume = reader.volume*angstrom*angstrom*angstrom
+        volume = self.reader.volume*angstrom*angstrom*angstrom
         vmin = self.settings['vmin']
         vmax = self.settings['vmax']
         scale = self.settings['bond_scaling']
         tolerance = self.settings['bond_tolerance']
         # Find the last unit cell read by the reader and its masses
-        cell = reader.unit_cells[-1]
+        cell = self.reader.unit_cells[-1]
         atom_masses = self.reader.masses
         cell.set_atomic_masses(atom_masses)
         newcell,nmols,old_order = cell.calculate_molecular_contents(scale, tolerance, covalent_radii)
