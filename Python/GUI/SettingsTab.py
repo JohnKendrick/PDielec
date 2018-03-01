@@ -6,7 +6,7 @@ import Python.Calculator as Calculator
 from PyQt5.QtWidgets  import  QPushButton, QWidget
 from PyQt5.QtWidgets  import  QComboBox, QLabel, QLineEdit
 from PyQt5.QtWidgets  import  QCheckBox
-from PyQt5.QtWidgets  import  QVBoxLayout, QHBoxLayout, QFormLayout
+from PyQt5.QtWidgets  import  QVBoxLayout, QFormLayout
 from PyQt5.QtWidgets  import  QSpinBox, QTableWidget, QTableWidgetItem
 from PyQt5.QtWidgets  import  QSizePolicy
 from PyQt5.QtCore     import  Qt, QSize
@@ -53,6 +53,7 @@ class SettingsTab(QWidget):
         self.intensities = []
         self.sigmas_cm1 = []
         self.oscillator_strengths = []
+        self.mass_weighted_normal_modes = None
         # get the reader from the main tab
         self.reader = self.notebook.reader
         # Create second tab - SettingsTab
@@ -177,7 +178,7 @@ class SettingsTab(QWidget):
             pass
         else:
             print('Error unkown mass definition', self.settings['mass_definition'] )
-        mass_weighted_normal_modes = self.reader.calculate_mass_weighted_normal_modes()
+        self.mass_weighted_normal_modes = self.reader.calculate_mass_weighted_normal_modes()
         # convert cm-1 to au
         self.frequencies_cm1 = self.reader.frequencies
         frequencies = np.array(self.frequencies_cm1) * wavenumber
@@ -189,7 +190,7 @@ class SettingsTab(QWidget):
             #
             # calculate normal modes in xyz coordinate space
             masses = np.array(self.reader.masses) * amu
-            normal_modes = Calculator.normal_modes(masses, mass_weighted_normal_modes)
+            normal_modes = Calculator.normal_modes(masses, self.mass_weighted_normal_modes)
             # from the normal modes and the born charges calculate the oscillator strengths of each mode
             self.oscillator_strengths = Calculator.oscillator_strengths(normal_modes, born_charges)
         # calculate the intensities from the trace of the oscillator strengths

@@ -1,23 +1,21 @@
-import sys
-import os.path
-import os
+import math
 import numpy as np
 import Python.Calculator as Calculator
 from PyQt5.QtWidgets  import  QPushButton, QWidget
 from PyQt5.QtWidgets  import  QComboBox, QLabel, QLineEdit
-from PyQt5.QtWidgets  import  QFileDialog, QProgressBar
 from PyQt5.QtWidgets  import  QVBoxLayout, QHBoxLayout, QFormLayout
 from PyQt5.QtWidgets  import  QSpinBox
 from PyQt5.QtWidgets  import  QSizePolicy
 from PyQt5.QtCore     import  Qt
 from Python.Constants import  wavenumber, amu, PI, avogadro_si, angstrom
-from Python.Constants import  average_masses, isotope_masses
+from Python.Constants import  covalent_radii
 # Import plotting requirements
 import matplotlib
 import matplotlib.figure
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT as NavigationToolbar
 from Python.Utilities import Debug
+from Python.Plotter import print_strings, print_reals
 
 class AnalysisTab(QWidget):
     def __init__(self, parent, debug=False ):   
@@ -30,6 +28,8 @@ class AnalysisTab(QWidget):
         self.settings['vmin'] = 0
         self.settings['vmax'] = 400
         self.settings['title'] = 'Analysis'
+        self.settings['bond_scaling'] = 1.1
+        self.settings['bond_tolerance'] = 0.1
         self.frequency_units = None
         # store the notebook
         self.notebook = parent
@@ -60,6 +60,23 @@ class AnalysisTab(QWidget):
         label = QLabel('Maximum frequency:', self)
         label.setToolTip('Set the maximum frequency to be considered)')
         form.addRow(label, self.vmax_sb)
+        #
+        # The bond tolerance and scaling of radii frequency
+        #
+        hbox = QHBoxLayout()
+        self.scale_le = QLineEdit(self)
+        self.scale_le.setText('{}'.format(self.settings['bond_scaling']))
+        self.scale_le.setToolTip('Scale the covalent radii to determine bonding')
+        self.scale_le.textChanged.connect(self.on_scale_changed)
+        hbox.addWidget(self.scale_le)
+        self.tolerance_le = QLineEdit(self)
+        self.tolerance_le.setText('{}'.format(self.settings['bond_tolerance']))
+        self.tolerance_le.setToolTip('Tolerance for bonding is determined from scale*(radi+radj)+toler')
+        self.tolerance_le.textChanged.connect(self.on_tolerance_changed)
+        hbox.addWidget(self.tolerance_le)
+        label = QLabel('Bonding scale and tolerance', self)
+        label.setToolTip('Bonding is determined from scale*(radi+radj)+toler')
+        form.addRow(label, hbox)
         # 
         # Store results in a file?
         #
@@ -81,15 +98,15 @@ class AnalysisTab(QWidget):
         # 
         # Set the x-axis frequency units
         #
-        self.funits_cb = QComboBox(self) 
-        self.funits_cb.setToolTip('Set the frequency units for the x-axis')
-        for choice in ['wavenumber','THz']:
-            self.funits_cb.addItem(choice)
-        self.frequency_units = 'wavenumber'
-        self.funits_cb.currentIndexChanged.connect(self.on_funits_cb_changed)
-        label = QLabel('Frequency units for the x-axis', self)
-        label.setToolTip('Set the frequency units for the x-axis')
-        form.addRow(label, self.funits_cb)
+        #self.funits_cb = QComboBox(self) 
+        #self.funits_cb.setToolTip('Set the frequency units for the x-axis')
+        #for choice in ['wavenumber','THz']:
+        #    self.funits_cb.addItem(choice)
+        #self.frequency_units = 'wavenumber'
+        #self.funits_cb.currentIndexChanged.connect(self.on_funits_cb_changed)
+        #label = QLabel('Frequency units for the x-axis', self)
+        #label.setToolTip('Set the frequency units for the x-axis')
+        #form.addRow(label, self.funits_cb)
         # Add the matplotlib figure to the bottom 
         self.figure = matplotlib.figure.Figure()
         self.canvas = FigureCanvas(self.figure)
@@ -101,6 +118,14 @@ class AnalysisTab(QWidget):
         vbox.addLayout(form)
         # finalise the layout
         self.setLayout(vbox)
+
+    def on_scale_changed(self,text):
+        debugger.print('on file_scale_le changed ', text)
+        self.settings['bond_scaling'] = float(text)
+        
+    def on_tolerance_changed(self,text):
+        debugger.print('on file_tolerance_le changed ', text)
+        self.settings['bond_tolerance'] = float(text)
 
     def on_file_store_le_changed(self,text):
         self.settings['spreadsheet'] = text
@@ -115,19 +140,18 @@ class AnalysisTab(QWidget):
 
     def on_vmin_changed(self):
         self.settings['vmin'] = self.vmin_sb.value()
-        self.notebook.newCalculationRequired = True
-        self.progressbar.setValue(0)
         debugger.print('on vmin change ', self.settings['vmin'])
+        self.plot()
 
     def on_vmax_changed(self):
         self.settings['vmax'] = self.vmax_sb.value()
-        self.notebook.newCalculationRequired = True
-        self.progressbar.setValue(0)
         debugger.print('on vmax change ', self.settings['vmax'])
+        self.plot()
 
     def refresh(self):
         debugger.print('refreshing widget')
         self.calculate()
+        self.plot()
         return
 
     def on_funits_cb_changed(self, index):
@@ -135,7 +159,7 @@ class AnalysisTab(QWidget):
             self.frequency_units = 'wavenumber'
         else:
             self.frequency_units = 'THz'
-        self.replot()
+        self.plot()
         debugger.print('Frequency units changed to ', self.frequency_units)
 
     def calculate(self):
@@ -152,7 +176,6 @@ class AnalysisTab(QWidget):
         if filename is '':
             return
         # Assemble the settingsTab settings
-        self.notebook.newCalculationRequired = False
         settings = self.notebook.settingsTab.settings
         eckart = settings['eckart']
         neutral = settings['neutral']
@@ -161,18 +184,24 @@ class AnalysisTab(QWidget):
         sigmas_cm1 = self.notebook.settingsTab.sigmas_cm1
         sigmas = np.array(sigmas_cm1) * wavenumber
         modes_selected = self.notebook.settingsTab.modes_selected
-        frequencies_cm1 = self.notebook.settingsTab.frequencies_cm1
-        frequencies = np.array(frequencies_cm1) * wavenumber
+        self.frequencies_cm1 = self.notebook.settingsTab.frequencies_cm1
+        mass_weighted_normal_modes = self.notebook.settingsTab.mass_weighted_normal_modes
+        frequencies = np.array(self.frequencies_cm1) * wavenumber
         intensities = self.notebook.settingsTab.intensities
         oscillator_strengths = self.notebook.settingsTab.oscillator_strengths
         volume = reader.volume*angstrom*angstrom*angstrom
         vmin = self.settings['vmin']
         vmax = self.settings['vmax']
+        scale = self.settings['bond_scaling']
+        tolerance = self.settings['bond_tolerance']
+        # Find the last unit cell read by the reader and its masses
         cell = reader.unit_cells[-1]
         atom_masses = self.reader.masses
         cell.set_atomic_masses(atom_masses)
-        newcell,nmols,old_order = cell.calculate_molecular_contents(scale, toler, covalent_radii)
+        newcell,nmols,old_order = cell.calculate_molecular_contents(scale, tolerance, covalent_radii)
         newcell.printInfo()
+        # get the normal modes from the mass weighted ones
+        normal_modes = Calculator.normal_modes(atom_masses, mass_weighted_normal_modes)
         # Reorder the atoms so that the mass weighted normal modes order agrees with the ordering in the new cell
         nmodes,nions,temp = np.shape(normal_modes)
         new_normal_modes = np.zeros( (nmodes,3*nions) )
@@ -189,7 +218,7 @@ class AnalysisTab(QWidget):
                 new_normal_modes[imode,i+1] = new_mass_weighted_normal_modes[imode,i+1] / math.sqrt(masses[index])
                 new_normal_modes[imode,i+2] = new_mass_weighted_normal_modes[imode,i+2] / math.sqrt(masses[index])
         # Calculate the distribution in energy for the normal modes
-        mode_energies = Calculator.calculate_energy_distribution(newcell, frequencies_cm1, new_mass_weighted_normal_modes)
+        self.mode_energies = Calculator.calculate_energy_distribution(newcell, self.frequencies_cm1, new_mass_weighted_normal_modes)
         # Output the final result
         title = ['Freq(cm-1)','%mol-cme','%mol-rot','%vib']
         for i in range(nmols):
@@ -198,7 +227,7 @@ class AnalysisTab(QWidget):
         fd_csvfile = None
         if not fd_csvfile is None:
             print_strings('Percentage energies in vibrational modes',title,format="{:>10}",file=fd_csvfile,separator=",")
-        for freq,energies in zip(frequencies_cm1,mode_energies):
+        for freq,energies in zip(self.frequencies_cm1,self.mode_energies):
                tote,cme,rote,vibe,molecular_energies = energies
                output = [ freq, 100*cme/tote, 100*rote/tote, 100*vibe/tote ]
                for e in molecular_energies:
@@ -211,7 +240,7 @@ class AnalysisTab(QWidget):
         if not fd_excelfile is None:
             excel_row += 2; worksheet.write(excel_row,0,'Percentage energies in vibrational modes')
             excel_row += 1; [ worksheet.write(excel_row,col,f) for col,f in enumerate(title) ]
-            for freq,energies in zip(frequencies_cm1,mode_energies):
+            for freq,energies in zip(self.frequencies_cm1,self.mode_energies):
                tote,cme,rote,vibe, molecular_energies = energies
                output = [ freq, 100*cme/tote, 100*rote/tote, 100*vibe/tote ]
                for e in molecular_energies:
@@ -224,33 +253,47 @@ class AnalysisTab(QWidget):
         #
         self.xaxes = []
 
-    def plot(self,xs,ys,ylabel):
-        # import matplotlib.pyplot as pl
-        # mp.use('Qt5Agg')
+    def plot(self):
         self.subplot = None
-        self.remember_xs = xs
-        self.remember_ys = ys
-        self.remember_ylabel = ylabel
         self.figure.clf()
-        if self.frequency_units == 'wavenumber':
-            xlabel = r'Frequency $\mathdefault{(cm^{-1})}}$'
-            scale = 1.0
-        else:
-            xlabel = r'THz'
-            scale = 0.02998
         self.subplot = self.figure.add_subplot(111)
-        for scenario,x,y in zip(self.scenarios,xs,ys):
-            x = np.array(x)
-            legend = scenario.settings['legend']
-            line, = self.subplot.plot(scale*x,y,lw=2, label=legend )
+        xlabel = 'Mode Number'
+        ylabel = 'Percentage energy'
+        # Decide which modes to analyse
+        mode_list = []
+        mode_list_text = []
+        cme_energy = []
+        rot_energy = []
+        vib_energy = []
+        vib_bottom = []
+        mol_energy = []
+        vmin = self.settings['vmin']
+        vmax = self.settings['vmax']
+        for imode, frequency in enumerate(self.frequencies_cm1):
+            if frequency >= vmin and frequency <= vmax:
+                mode_list.append(imode)
+                mode_list_text.append(str(imode))
+                tote,cme,rote,vibe,molecular_energies = self.mode_energies[imode]
+                cme_energy.append(cme/tote*100.0)
+                rot_energy.append(rote/tote*100.0)
+                vib_energy.append(vibe/tote*100.0)
+                vib_bottom.append( (cme+rote)/tote*100.0 )
+                mol_energy.append(molecular_energies/tote*100)
+        width = 0.8
+        p1 = self.subplot.bar(mode_list,cme_energy,width)
+        p2 = self.subplot.bar(mode_list,rot_energy,width,bottom=cme_energy)
+        p3 = self.subplot.bar(mode_list,vib_energy,width,bottom=vib_bottom)
+#        p4 = self.subplot.bar(mode_list,mol_energy,width,bottom=vib_energy)
+        plots = ( p1[0], p2[0], p3[0] )
+        #plots = ( p1[0], p2[0], p3[0], p4[0] )
+        #legends = ('translation','rotation','vibration','molecule')
+        legends = ('translation','rotation','vibration')
+        #self.subplot.xticks(mode_list,mode_list_text)
+        #self.subplot.yticks(np.arrange(0,101,10))
         self.subplot.set_xlabel(xlabel)
         self.subplot.set_ylabel(ylabel)
-        self.subplot.legend(loc='best')
+        #self.subplot.legend( ploc='best')
+        self.subplot.legend( plots, legends)
         self.subplot.set_title(self.settings['title'])
         self.canvas.draw_idle()
 
-    def replot(self):
-        if self.subplot is not None:
-            self.plot(self.remember_xs, self.remember_ys, self.remember_ylabel)
-            
- 
