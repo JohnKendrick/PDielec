@@ -30,6 +30,10 @@ class AnalysisTab(QWidget):
         self.settings['title'] = 'Analysis'
         self.settings['bond_scaling'] = 1.1
         self.settings['bond_tolerance'] = 0.1
+        self.settings['bar_width'] = 0.5
+        self.settings['plot_types'] = ['Internal vs External','Molecular Composition']
+        self.plot_type_index = 0
+        self.number_of_molecules = 0
         self.frequency_units = None
         # store the notebook
         self.notebook = parent
@@ -42,7 +46,7 @@ class AnalysisTab(QWidget):
         # The minimum frequency
         #
         self.vmin_sb = QSpinBox(self)
-        self.vmin_sb.setRange(0,9000)
+        self.vmin_sb.setRange(-100,9000)
         self.vmin_sb.setValue(self.settings['vmin'])
         self.vmin_sb.setToolTip('Set the minimum frequency to be considered)')
         self.vmin_sb.valueChanged.connect(self.on_vmin_changed)
@@ -77,6 +81,23 @@ class AnalysisTab(QWidget):
         label = QLabel('Bonding scale and tolerance', self)
         label.setToolTip('Bonding is determined from scale*(radi+radj)+toler')
         form.addRow(label, hbox)
+        self.molecules_le = QLineEdit(self)
+        self.molecules_le.setEnabled(False)
+        self.molecules_le.setText('{}'.format(self.number_of_molecules))
+        self.molecules_le.setToolTip('The bonding tolerances can change the number of molecules found')
+        label = QLabel('Number of molecules found', self)
+        label.setToolTip('The bonding tolerances can change the number of molecules found')
+        form.addRow(label, self.molecules_le)
+        #
+        # The plotting width of bar
+        #
+        self.width_le = QLineEdit(self)
+        self.width_le.setText('{}'.format(self.settings['bar_width']))
+        self.width_le.setToolTip('Change the width of the bars - should be between 0 and 1')
+        self.width_le.textChanged.connect(self.on_width_changed)
+        label = QLabel('Bar width', self)
+        label.setToolTip('Change the width of the bars - should be between 0 and 1')
+        form.addRow(label, self.width_le)
         # 
         # Store results in a file?
         #
@@ -95,19 +116,21 @@ class AnalysisTab(QWidget):
         label = QLabel('Plot title', self)
         label.setToolTip('Set the plot title')
         form.addRow(label, self.title_le)
-        # 
-        # Set the x-axis frequency units
         #
-        #self.funits_cb = QComboBox(self) 
-        #self.funits_cb.setToolTip('Set the frequency units for the x-axis')
-        #for choice in ['wavenumber','THz']:
-        #    self.funits_cb.addItem(choice)
-        #self.frequency_units = 'wavenumber'
-        #self.funits_cb.currentIndexChanged.connect(self.on_funits_cb_changed)
-        #label = QLabel('Frequency units for the x-axis', self)
-        #label.setToolTip('Set the frequency units for the x-axis')
-        #form.addRow(label, self.funits_cb)
+        # Add a comb box to select which type of plot
+        #
+        self.plottype_cb = QComboBox(self) 
+        self.plottype_cb.setToolTip('The energy can be decomposed either according to internal vs external motion or into a molecular based decompostion')
+        for choice in self.settings["plot_types"]:
+            self.plottype_cb.addItem(choice)
+        self.plottype_cb.setCurrentIndex(self.plot_type_index)
+        self.plottype_cb.currentIndexChanged.connect(self.on_plottype_cb_changed)
+        label = QLabel('Choose the plot type', self)
+        label.setToolTip('The energy can be decomposed either according to internal vs external motion or into a molecular based decompostion')
+        form.addRow(label, self.plottype_cb)
+        #
         # Add the matplotlib figure to the bottom 
+        #
         self.figure = matplotlib.figure.Figure()
         self.canvas = FigureCanvas(self.figure)
         self.canvas.setSizePolicy(QSizePolicy(QSizePolicy.Expanding,QSizePolicy.Expanding))
@@ -119,13 +142,53 @@ class AnalysisTab(QWidget):
         # finalise the layout
         self.setLayout(vbox)
 
+    def on_width_changed(self,text):
+        debugger.print('on width changed ', text)
+        try:
+          self.settings['bar_width'] = float(text)
+        except:
+          pass
+        self.width_le.blockSignals(True)
+        if self.settings['bar_width'] < 0.0:
+            self.settings['bar_width'] = 0.0
+            self.width_le.setText('{}'.format(self.settings['bar_width']))
+        if self.settings['bar_width'] > 1.0:
+            self.settings['bar_width'] = 1.0
+            self.width_le.setText('{}'.format(self.settings['bar_width']))
+        self.width_le.blockSignals(False)
+        self.plot()
+        
     def on_scale_changed(self,text):
-        debugger.print('on file_scale_le changed ', text)
-        self.settings['bond_scaling'] = float(text)
+        debugger.print('on scale_le changed ', text)
+        try:
+            self.settings['bond_scaling'] = float(text)
+        except:
+          pass
+        self.width_le.blockSignals(True)
+        if self.settings['bond_scaling'] < 0.0:
+            self.settings['bond_scaling'] = 0.0
+            self.scale_le.setText('{}'.format(self.settings['bond_scaling']))
+        if self.settings['bond_scaling'] > 2.0:
+            self.settings['bond_scaling'] = 2.0
+            self.scale_le.setText('{}'.format(self.settings['bond_scaling']))
+        self.width_le.blockSignals(False)
+        self.refresh()
         
     def on_tolerance_changed(self,text):
         debugger.print('on file_tolerance_le changed ', text)
-        self.settings['bond_tolerance'] = float(text)
+        try:
+            self.settings['bond_tolerance'] = float(text)
+        except:
+          pass
+        self.width_le.blockSignals(True)
+        if self.settings['bond_tolerance'] < 0.0:
+            self.settings['bond_tolerance'] = 0.0
+            self.tolerance_le.setText('{}'.format(self.settings['bond_tolerance']))
+        if self.settings['bond_tolerance'] > 2.0:
+            self.settings['bond_tolerance'] = 2.0
+            self.tolerance_le.setText('{}'.format(self.settings['bond_tolerance']))
+        self.width_le.blockSignals(False)
+        self.refresh()
 
     def on_file_store_le_changed(self,text):
         self.settings['spreadsheet'] = text
@@ -141,12 +204,18 @@ class AnalysisTab(QWidget):
     def on_vmin_changed(self):
         self.settings['vmin'] = self.vmin_sb.value()
         debugger.print('on vmin change ', self.settings['vmin'])
-        self.plot()
+        vmin = self.settings['vmin']
+        vmax = self.settings['vmax']
+        if vmax > vmin:
+            self.plot()
 
     def on_vmax_changed(self):
         self.settings['vmax'] = self.vmax_sb.value()
         debugger.print('on vmax change ', self.settings['vmax'])
-        self.plot()
+        vmin = self.settings['vmin']
+        vmax = self.settings['vmax']
+        if vmax > vmin:
+            self.plot()
 
     def refresh(self):
         debugger.print('refreshing widget')
@@ -154,13 +223,10 @@ class AnalysisTab(QWidget):
         self.plot()
         return
 
-    def on_funits_cb_changed(self, index):
-        if index == 0:
-            self.frequency_units = 'wavenumber'
-        else:
-            self.frequency_units = 'THz'
+    def on_plottype_cb_changed(self, index):
+        self.plot_type_index = index
+        debugger.print('Plot type index changed to ', self.plot_type_index)
         self.plot()
-        debugger.print('Frequency units changed to ', self.frequency_units)
 
     def calculate(self):
         debugger.print('calculate')
@@ -199,7 +265,9 @@ class AnalysisTab(QWidget):
         atom_masses = self.reader.masses
         cell.set_atomic_masses(atom_masses)
         newcell,nmols,old_order = cell.calculate_molecular_contents(scale, tolerance, covalent_radii)
-        newcell.printInfo()
+        #newcell.printInfo()
+        self.number_of_molecules = nmols
+        self.molecules_le.setText('{}'.format(self.number_of_molecules))
         # get the normal modes from the mass weighted ones
         normal_modes = Calculator.normal_modes(atom_masses, mass_weighted_normal_modes)
         # Reorder the atoms so that the mass weighted normal modes order agrees with the ordering in the new cell
@@ -220,21 +288,21 @@ class AnalysisTab(QWidget):
         # Calculate the distribution in energy for the normal modes
         self.mode_energies = Calculator.calculate_energy_distribution(newcell, self.frequencies_cm1, new_mass_weighted_normal_modes)
         # Output the final result
-        title = ['Freq(cm-1)','%mol-cme','%mol-rot','%vib']
-        for i in range(nmols):
-            title.append('%mol-'+str(i))
-        print_strings('Percentage energies in vibrational modes',title,format="{:>10}")
+        #title = ['Freq(cm-1)','%mol-cme','%mol-rot','%vib']
+        #for i in range(self.number_of_molecules):
+        #    title.append('%mol-'+str(i))
+        #print_strings('Percentage energies in vibrational modes',title,format="{:>10}")
         fd_csvfile = None
-        if not fd_csvfile is None:
-            print_strings('Percentage energies in vibrational modes',title,format="{:>10}",file=fd_csvfile,separator=",")
-        for freq,energies in zip(self.frequencies_cm1,self.mode_energies):
-               tote,cme,rote,vibe,molecular_energies = energies
-               output = [ freq, 100*cme/tote, 100*rote/tote, 100*vibe/tote ]
-               for e in molecular_energies:
-                   output.append(100*e/tote)
-               print_reals('',output,format="{:10.2f}")
-               if not fd_csvfile is None:
-                   print_reals('',output,format="{:10.2f}",file=fd_csvfile,separator=",")
+        #if not fd_csvfile is None:
+        #    print_strings('Percentage energies in vibrational modes',title,format="{:>10}",file=fd_csvfile,separator=",")
+        #for freq,energies in zip(self.frequencies_cm1,self.mode_energies):
+        #       tote,cme,rote,vibe,molecular_energies = energies
+        #       output = [ freq, 100*cme/tote, 100*rote/tote, 100*vibe/tote ]
+        #       for e in molecular_energies:
+        #           output.append(100*e/tote)
+        #       print_reals('',output,format="{:10.2f}")
+        #       if not fd_csvfile is None:
+        #           print_reals('',output,format="{:10.2f}",file=fd_csvfile,separator=",")
         # if using a excel file write out the results
         fd_excelfile = None
         if not fd_excelfile is None:
@@ -251,9 +319,53 @@ class AnalysisTab(QWidget):
         if fd_csvfile is not None:
             fd_csvfile.close()
         #
-        self.xaxes = []
 
     def plot(self):
+         if self.plot_type_index == 0:
+             self.plot_internal_external()
+         else:
+             self.plot_molecular()
+
+    def plot_molecular(self):
+        self.subplot = None
+        self.figure.clf()
+        self.subplot = self.figure.add_subplot(111)
+        xlabel = 'Molecule'
+        ylabel = 'Percentage energy'
+        # Decide which modes to analyse
+        mode_list = []
+        mode_list_text = []
+        vmin = self.settings['vmin']
+        vmax = self.settings['vmax']
+        tote,cme,rote,vibe,mole = self.mode_energies[0]
+        mol_energies = None
+        mol_energies = [ [] for _ in range(self.number_of_molecules) ]
+        mol_bottoms  = [ [] for _ in range(self.number_of_molecules) ]
+        for imode, frequency in enumerate(self.frequencies_cm1):
+            if frequency >= vmin and frequency <= vmax:
+                mode_list.append(imode)
+                mode_list_text.append(str(imode))
+                tote,cme,rote,vibe,mole = self.mode_energies[imode]
+                for i,mol in enumerate(mole):
+                    mol_energies[i].append(100.0*mol/tote)
+                    if i == 0:
+                        mol_bottoms[i].append(0.0)
+                    else:
+                        mol_bottoms[i].append(mol_bottoms[i-1][-1]+mol_energies[i-1][-1])
+        width = self.settings['bar_width']
+        plots = []
+        for i,(energies,bottoms) in enumerate(zip(mol_energies, mol_bottoms )):
+            plots.append(self.subplot.bar(mode_list,energies,width, bottom=bottoms))
+        legends = []
+        for i in range(self.number_of_molecules):
+            legends.append('Molecule '+str(i))
+        self.subplot.set_xlabel(xlabel)
+        self.subplot.set_ylabel(ylabel)
+        self.subplot.legend( plots, legends)
+        self.subplot.set_title('Molecular Composition of Vibrational Energy')
+        self.canvas.draw_idle()
+
+    def plot_internal_external(self):
         self.subplot = None
         self.figure.clf()
         self.subplot = self.figure.add_subplot(111)
@@ -279,14 +391,11 @@ class AnalysisTab(QWidget):
                 vib_energy.append(vibe/tote*100.0)
                 vib_bottom.append( (cme+rote)/tote*100.0 )
                 mol_energy.append(molecular_energies/tote*100)
-        width = 0.8
+        width = self.settings['bar_width']
         p1 = self.subplot.bar(mode_list,cme_energy,width)
         p2 = self.subplot.bar(mode_list,rot_energy,width,bottom=cme_energy)
         p3 = self.subplot.bar(mode_list,vib_energy,width,bottom=vib_bottom)
-#        p4 = self.subplot.bar(mode_list,mol_energy,width,bottom=vib_energy)
         plots = ( p1[0], p2[0], p3[0] )
-        #plots = ( p1[0], p2[0], p3[0], p4[0] )
-        #legends = ('translation','rotation','vibration','molecule')
         legends = ('translation','rotation','vibration')
         #self.subplot.xticks(mode_list,mode_list_text)
         #self.subplot.yticks(np.arrange(0,101,10))
@@ -294,6 +403,6 @@ class AnalysisTab(QWidget):
         self.subplot.set_ylabel(ylabel)
         #self.subplot.legend( ploc='best')
         self.subplot.legend( plots, legends)
-        self.subplot.set_title(self.settings['title'])
+        self.subplot.set_title('Internal-External Composition of Vibrational Energy')
         self.canvas.draw_idle()
 
