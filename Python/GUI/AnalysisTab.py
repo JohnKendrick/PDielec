@@ -25,7 +25,7 @@ class AnalysisTab(QWidget):
         self.settings = {}
         self.subplot = None
         self.setWindowTitle('Analysis')
-        self.settings['vmin'] = 0
+        self.settings['vmin'] = -1
         self.settings['vmax'] = 400
         self.settings['title'] = 'Analysis'
         self.settings['bond_scaling'] = 1.1
