@@ -7,6 +7,7 @@ from Python.GUI.MainTab         import  MainTab
 from Python.GUI.SettingsTab     import  SettingsTab
 from Python.GUI.ScenarioTab     import  ScenarioTab
 from Python.GUI.PlottingTab     import  PlottingTab
+from Python.GUI.AnalysisTab     import  AnalysisTab
 from Python.Utilities           import  Debug
  
 class NoteBook(QWidget):        
@@ -38,6 +39,11 @@ class NoteBook(QWidget):
         if filename != '':
             self.plottingTab.refresh()
         #
+        # Open the Analysis tab
+        self.analysisTab = AnalysisTab(self, debug=debug)
+        if filename != '':
+            self.analysisTab.refresh()
+        #
         #self.tabs.resize(300,200) 
         # Add tabs
         self.tabs.addTab(self.mainTab,'Main')
@@ -45,6 +51,7 @@ class NoteBook(QWidget):
         for i,tab in enumerate(self.scenarios):
             self.tabs.addTab(tab,'Scenario '+str(i+1))
         self.tabs.addTab(self.plottingTab,'Plotting')
+        self.tabs.addTab(self.analysisTab,'Analysis')
 
         # Add the tab widget
         self.layout.addWidget(self.tabs)
@@ -78,5 +85,12 @@ class NoteBook(QWidget):
 
     def on_tabs_currentChanged(self, tabindex):
         debugger.print('Tab index changed', tabindex)
+        #       Number of tabs
+        ntabs = 2 + len(self.scenarios) + 2
         self.newCalculationRequired = True
-        self.plottingTab.refresh()
+        if tabindex == ntabs-1:
+            # analysis tab
+            self.analysisTab.refresh()
+        elif tabindex == ntabs-2:
+            # plottings tab
+            self.plottingTab.refresh()

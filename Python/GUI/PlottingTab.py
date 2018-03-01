@@ -144,7 +144,6 @@ class PlottingTab(QWidget):
         self.funits_cb.setToolTip('Set the frequency units for the x-axis')
         for choice in ['wavenumber','THz']:
             self.funits_cb.addItem(choice)
-        self.molar_cb.setCurrentIndex(0)
         self.frequency_units = 'wavenumber'
         self.funits_cb.currentIndexChanged.connect(self.on_funits_cb_changed)
         label = QLabel('Frequency units for the x-axis', self)
@@ -191,28 +190,28 @@ class PlottingTab(QWidget):
         self.setLayout(vbox)
 
     def molarAbsorptionButtonClicked(self):
-        debugger.print('PlottingTab: molarAbsorptionButtonClicked pressed')
+        debugger.print('molarAbsorptionButtonClicked pressed')
         if self.notebook.newCalculationRequired:
             self.calculate()
         if not self.notebook.newCalculationRequired:
             self.plot(self.xaxes, self.molarAbsorptionCoefficients, r'Molar Absorption Coefficient $\mathdefault{(L mole^{-1} cm^{-1})}$')
 
     def absorptionButtonClicked(self):
-        debugger.print('PlottingTab: absorptionButtonClicked pressed')
+        debugger.print('absorptionButtonClicked pressed')
         if self.notebook.newCalculationRequired:
             self.calculate()
         if not self.notebook.newCalculationRequired:
             self.plot(self.xaxes, self.absorptionCoefficients, r'Absorption Coefficient $\mathdefault{(cm^{-1})}$')
 
     def realPermButtonClicked(self):
-        debugger.print('PlottingTab: realPermButtonClicked pressed')
+        debugger.print('realPermButtonClicked pressed')
         if self.notebook.newCalculationRequired:
             self.calculate()
         if not self.notebook.newCalculationRequired:
             self.plot(self.xaxes, self.realPermittivities, 'Real Component of Permittivity')
 
     def imagPermButtonClicked(self):
-        debugger.print('PlottingTab: imagPermButtonClicked pressed')
+        debugger.print('imagPermButtonClicked pressed')
         if self.notebook.newCalculationRequired:
             self.calculate()
         if not self.notebook.newCalculationRequired:
@@ -220,35 +219,35 @@ class PlottingTab(QWidget):
 
     def on_file_store_le_changed(self,text):
         self.settings['spreadsheet'] = text
-        debugger.print('PlottingTab: on file_store_le change ', self.settings['spreadsheet'])
+        debugger.print('on file_store_le change ', self.settings['spreadsheet'])
 
     def on_title_changed(self,text):
         self.settings['title'] = text
         if self.subplot is not None:
             self.subplot.set_title(self.settings['title'])
             self.canvas.draw_idle()
-        debugger.print('PlottingTab: on title change ', self.settings['title'])
+        debugger.print('on title change ', self.settings['title'])
 
     def on_vinc_changed(self,text):
         self.settings['vinc'] = float(text)
         self.notebook.newCalculationRequired = True
         self.progressbar.setValue(0)
-        debugger.print('PlottingTab: on vinc change ', self.settings['vinc'])
+        debugger.print('on vinc change ', self.settings['vinc'])
 
     def on_vmin_changed(self):
         self.settings['vmin'] = self.vmin_sb.value()
         self.notebook.newCalculationRequired = True
         self.progressbar.setValue(0)
-        debugger.print('PlottingTab: on vmin change ', self.settings['vmin'])
+        debugger.print('on vmin change ', self.settings['vmin'])
 
     def on_vmax_changed(self):
         self.settings['vmax'] = self.vmax_sb.value()
         self.notebook.newCalculationRequired = True
         self.progressbar.setValue(0)
-        debugger.print('PlottingTab: on vmax change ', self.settings['vmax'])
+        debugger.print('on vmax change ', self.settings['vmax'])
 
     def refresh(self):
-        debugger.print('PlottingTab: refreshing widget')
+        debugger.print('refreshing widget')
         # Refresh the widgets that depend on the reader
         self.reader = self.notebook.reader
         if self.reader is not None:
@@ -263,7 +262,7 @@ class PlottingTab(QWidget):
         self.notebook.newCalculationRequired = True
         self.progressbar.setValue(0)
         self.settings['natoms'] = value
-        debugger.print('PlottingTab: on natoms changed ', self.settings['natoms'])
+        debugger.print('on natoms changed ', self.settings['natoms'])
 
     def on_funits_cb_changed(self, index):
         if index == 0:
@@ -271,7 +270,7 @@ class PlottingTab(QWidget):
         else:
             self.frequency_units = 'THz'
         self.replot()
-        debugger.print('PlottingTab: Frequency units changed to ', self.frequency_units)
+        debugger.print('Frequency units changed to ', self.frequency_units)
 
     def on_molar_cb_changed(self, index):
         self.settings['molar_definition'] = self.molar_definitions[index]
@@ -286,11 +285,11 @@ class PlottingTab(QWidget):
         elif self.settings['molar_definition'] == 'Atoms':
             self.settings['concentration'] = 1000.0 / (avogadro_si * self.reader.volume * 1.0e-24 / self.reader.nions)
             self.natoms_sb.setEnabled(False)
-        debugger.print('PlottingTab: The concentration has been set', self.settings['molar_definition'], self.settings['concentration'])
+        debugger.print('The concentration has been set', self.settings['molar_definition'], self.settings['concentration'])
 
     def calculate(self):
         global threading
-        debugger.print('PlottingTab: calculate')
+        debugger.print('calculate')
         self.progressbar.setValue(0)
         # Assemble the mainTab settings
         settings = self.notebook.mainTab.settings
@@ -330,21 +329,21 @@ class PlottingTab(QWidget):
         for mode_index,selected in enumerate(modes_selected):
             if selected:
                 mode_list.append(mode_index)
-        debugger.print('PlottingTab: mode_list', mode_list)
+        debugger.print('mode_list', mode_list)
         # Calculate the ionic permittivity at zero frequency
         epsilon_ionic = Calculator.ionic_permittivity(mode_list, oscillator_strengths, frequencies, volume )
-        debugger.print('PlottingTab: epsilon_ionic',epsilon_ionic)
+        debugger.print('epsilon_ionic',epsilon_ionic)
         epsilon_total = epsilon_inf + epsilon_ionic
-        debugger.print('PlottingTab: epsilon_total',epsilon_ionic)
+        debugger.print('epsilon_total',epsilon_ionic)
         cell = reader.unit_cells[-1]
         directions = []
         depolarisations = []
         # Process the shapes and the unique directions.
         # and calculate the depolarisation matrices
         for scenario in self.scenarios:
-            debugger.print('PlottingTab: Scenario ',scenario.scenarioIndex)
+            debugger.print('Scenario ',scenario.scenarioIndex)
             shape = scenario.settings['shape']
-            debugger.print('PlottingTab: shape ',shape)
+            debugger.print('shape ',shape)
             hkl = [scenario.settings['h'], scenario.settings['k'], scenario.settings['l']] 
             aoverb = scenario.settings['aoverb']
             if shape == 'Ellipsoid':
@@ -361,7 +360,7 @@ class PlottingTab(QWidget):
                 direction = np.array( [] )
             direction = direction / np.linalg.norm(direction)
             directions.append(direction)
-            debugger.print('PlottingTab: direction',direction)
+            debugger.print('direction',direction)
             depolarisations.append(depolarisation)
         # Set up the parallel processing requirements before looping over the frequencies
         call_parameters = []
@@ -410,7 +409,7 @@ class PlottingTab(QWidget):
         else:
             pool = Pool(number_of_processors, initializer=set_affinity_on_worker, maxtasksperchild=10)
         for i,(scenario,L) in enumerate(zip(self.scenarios,depolarisations)):
-            debugger.print('PlottingTab: Scenario ',i,L)
+            debugger.print('Scenario ',i,L)
             matrix = scenario.settings['matrix']
             method = scenario.settings['method'].lower()
             matrix_density = scenario.settings['matrix_density']
