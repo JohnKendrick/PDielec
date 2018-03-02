@@ -175,9 +175,9 @@ Additional modules are needed if you wish to use the viewer option in phonana.  
 Open a Git Bash Console and type;
 
   cd Software
-  git clone https://github.com/JohnKendrick/PDielec.git
+  git clone -c core.symlinks=true https://github.com/JohnKendrick/PDielec.git
 
-This should create a directory in Software called PDielec
+This should create a directory in Software called PDielec.  The "-c core.symlinks=true" means that the commands; pdielec, pdgui, phonana and preader are treated as windows symlinks to their equivalent .py file.
 
 ==== Testing PDielec
 Open a Git Bash Console.  If you have installed Python using anaconda then you need to 'source activate' the environment you have established before typing;
