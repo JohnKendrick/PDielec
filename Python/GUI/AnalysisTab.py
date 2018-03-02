@@ -321,6 +321,8 @@ class AnalysisTab(QWidget):
         #
 
     def plot(self):
+         if self.reader is None:
+             return
          if self.plot_type_index == 0:
              self.plot_internal_external()
          else:
