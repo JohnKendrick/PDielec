@@ -8,6 +8,7 @@ from Python.GUI.SettingsTab     import  SettingsTab
 from Python.GUI.ScenarioTab     import  ScenarioTab
 from Python.GUI.PlottingTab     import  PlottingTab
 from Python.GUI.AnalysisTab     import  AnalysisTab
+from Python.GUI.ViewerTab       import  ViewerTab
 from Python.Utilities           import  Debug
  
 class NoteBook(QWidget):        
@@ -44,6 +45,11 @@ class NoteBook(QWidget):
         if filename != '':
             self.analysisTab.refresh()
         #
+        # Open the Viewer tab
+        self.viewerTab = ViewerTab(self, debug=debug)
+        if filename != '':
+            self.viewerTab.refresh()
+        #
         #self.tabs.resize(300,200) 
         # Add tabs
         self.tabs.addTab(self.mainTab,'Main')
@@ -52,6 +58,7 @@ class NoteBook(QWidget):
             self.tabs.addTab(tab,'Scenario '+str(i+1))
         self.tabs.addTab(self.plottingTab,'Plotting')
         self.tabs.addTab(self.analysisTab,'Analysis')
+        self.tabs.addTab(self.viewerTab,'3D Viewer')
 
         # Add the tab widget
         self.layout.addWidget(self.tabs)
@@ -90,7 +97,10 @@ class NoteBook(QWidget):
         self.newCalculationRequired = True
         if tabindex == ntabs-1:
             # analysis tab
+            self.viewerTab.refresh()
+        if tabindex == ntabs-2:
+            # analysis tab
             self.analysisTab.refresh()
-        elif tabindex == ntabs-2:
+        elif tabindex == ntabs-3:
             # plottings tab
             self.plottingTab.refresh()
