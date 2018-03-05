@@ -1,39 +1,36 @@
 import math
 import numpy as np
 import Python.Calculator as Calculator
-from PyQt5.QtWidgets  import  QPushButton, QWidget
-from PyQt5.QtWidgets  import  QComboBox, QLabel, QLineEdit
-from PyQt5.QtWidgets  import  QVBoxLayout, QHBoxLayout, QFormLayout
-from PyQt5.QtWidgets  import  QSpinBox
-from PyQt5.QtWidgets  import  QSizePolicy
-from PyQt5.QtCore     import  Qt
-from Python.Constants import  wavenumber, amu, PI, avogadro_si, angstrom
-from Python.Constants import  covalent_radii, elemental_colours
+from PyQt5.QtWidgets         import  QPushButton, QWidget
+from PyQt5.QtWidgets         import  QComboBox, QLabel, QLineEdit
+from PyQt5.QtWidgets         import  QVBoxLayout, QHBoxLayout, QFormLayout
+from PyQt5.QtWidgets         import  QSpinBox
+from PyQt5.QtWidgets         import  QSizePolicy
+from PyQt5.QtCore            import  Qt
+from Python.Constants        import  wavenumber, amu, PI, avogadro_si, angstrom
+from Python.Constants        import  covalent_radii, elemental_colours
 # Import plotting requirements
-import matplotlib
-import matplotlib.figure
-from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
-from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT as NavigationToolbar
-from Python.Utilities import Debug
-from Python.Plotter import print_strings, print_reals
+from Python.Utilities        import Debug
+from Python.Plotter          import print_strings, print_reals
+from Python.GUI.OpenGLWidget import OpenGLWidget
 
 class ViewerTab(QWidget):
     def __init__(self, parent, debug=False ):   
         super(QWidget, self).__init__(parent)
         global debugger
         debugger = Debug(debug,'ViewerTab')
-        self.settings = {}
         self.subplot = None
         self.setWindowTitle('Viewer')
-        self.settings['selected_mode'] = 4
-        self.settings['title'] = 'Viewer'
-        self.settings['bond_width'] = 0.2
-        self.settings['atom_scaling'] = 1.0
+        self.selected_mode = 4
+        self.title = 'Viewer'
+        self.atom_scaling = 0.3
         self.maxdisplacement = 1.0
-        self.settings['cell_width'] = 0.1
-        self.settings['plot_types'] = ['Animation','Arrows']
+        self.cell_width = 0.1
+        self.plot_types = ['Animation','Arrows']
         self.plot_type_index = 0
         self.number_of_molecules = 0
+        self.bond_colour = [ 0.2, 0.2, 0.2 ]
+        self.bond_radius = 0.1
         # store the notebook
         self.notebook = parent
         # get the reader from the main tab
@@ -50,7 +47,7 @@ class ViewerTab(QWidget):
             self.selected_mode_sb.setRange(0,len(self.frequencies_cm1)-1)
         else:
             self.selected_mode_sb.setRange(0,2000)
-        self.selected_mode_sb.setValue(self.settings['selected_mode'])
+        self.selected_mode_sb.setValue(self.selected_mode)
         self.selected_mode_sb.setToolTip('Set the mode to be visualised')
         self.selected_mode_sb.valueChanged.connect(self.on_selected_mode_changed)
         label = QLabel('Select phonon mode', self)
@@ -60,7 +57,7 @@ class ViewerTab(QWidget):
         # The atom scaling
         #
         self.atom_scaling_le = QLineEdit(self)
-        self.atom_scaling_le.setText('{}'.format(self.settings['atom_scaling']))
+        self.atom_scaling_le.setText('{}'.format(self.atom_scaling))
         self.atom_scaling_le.setToolTip('Scale the covalent radii to determine the size of the atomic spheres')
         self.atom_scaling_le.textChanged.connect(self.on_atom_scaling_changed)
         label = QLabel('Atom scaling', self)
@@ -69,19 +66,19 @@ class ViewerTab(QWidget):
         #
         # The bond width
         #
-        self.bond_width_le = QLineEdit(self)
-        self.bond_width_le.setText('{}'.format(self.settings['bond_width']))
-        self.bond_width_le.setToolTip('Determines the size of the bonds drawn')
-        self.bond_width_le.textChanged.connect(self.on_bond_width_changed)
+        self.bond_radius_le = QLineEdit(self)
+        self.bond_radius_le.setText('{}'.format(self.bond_radius))
+        self.bond_radius_le.setToolTip('Determines the size of the bonds drawn')
+        self.bond_radius_le.textChanged.connect(self.on_bond_radius_changed)
         label = QLabel('Bond width', self)
         label.setToolTip('Determines the size of the bonds drawn')
-        form.addRow(label, self.bond_width_le)
+        form.addRow(label, self.bond_radius_le)
         #
         #
         # The cell width
         #
         self.cell_width_le = QLineEdit(self)
-        self.cell_width_le.setText('{}'.format(self.settings['cell_width']))
+        self.cell_width_le.setText('{}'.format(self.cell_width))
         self.cell_width_le.setToolTip('Determines the size of the cell outline')
         self.cell_width_le.textChanged.connect(self.on_cell_width_changed)
         label = QLabel('Cell width', self)
@@ -102,7 +99,7 @@ class ViewerTab(QWidget):
         #
         self.title_le = QLineEdit(self) 
         self.title_le.setToolTip('Set the plot title')
-        self.title_le.setText(self.settings['title'])
+        self.title_le.setText(self.title)
         self.title_le.textChanged.connect(self.on_title_changed)
         label = QLabel('Plot title', self)
         label.setToolTip('Set the plot title')
@@ -112,7 +109,7 @@ class ViewerTab(QWidget):
         #
         self.plottype_cb = QComboBox(self) 
         self.plottype_cb.setToolTip('The plot can either be an animation or the modes can be shown by arrow')
-        for choice in self.settings["plot_types"]:
+        for choice in self.plot_types:
             self.plottype_cb.addItem(choice)
         self.plottype_cb.setCurrentIndex(self.plot_type_index)
         self.plottype_cb.currentIndexChanged.connect(self.on_plottype_cb_changed)
@@ -147,81 +144,81 @@ class ViewerTab(QWidget):
     def on_atom_scaling_changed(self,text):
         debugger.print('on atom_scaling_le changed ', text)
         try:
-            self.settings['atom_scaling'] = float(text)
+            self.atom_scaling = float(text)
         except:
           pass
         self.atom_scaling_le.blockSignals(True)
-        if self.settings['atom_scaling'] < 0.0:
-            self.settings['atom_scaling'] = 0.0
-            self.atom_scaling_le.setText('{}'.format(self.settings['atom_scaling']))
-        if self.settings['atom_scaling'] > 10.0:
-            self.settings['atom_scaling'] = 10.0
-            self.atom_scaling_le.setText('{}'.format(self.settings['atom_scaling']))
+        if self.atom_scaling < 0.0:
+            self.atom_scaling = 0.0
+            self.atom_scaling_le.setText('{}'.format(self.atom_scaling))
+        if self.atom_scaling > 10.0:
+            self.atom_scaling = 10.0
+            self.atom_scaling_le.setText('{}'.format(self.atom_scaling))
         self.atom_scaling_le.blockSignals(False)
         self.refresh()
         
     def on_cell_width_changed(self,text):
         debugger.print('on cell_width_le changed ', text)
         try:
-            self.settings['cell_width'] = float(text)
+            self.cell_width = float(text)
         except:
           pass
         self.cell_width_le.blockSignals(True)
-        if self.settings['cell_width'] < 0.0:
-            self.settings['cell_width'] = 0.0
-            self.cell_width_le.setText('{}'.format(self.settings['cell_width']))
-        if self.settings['cell_width'] > 2.0:
-            self.settings['cell_width'] = 2.0
-            self.cell_width_le.setText('{}'.format(self.settings['cell_width']))
+        if self.cell_width < 0.0:
+            self.cell_width = 0.0
+            self.cell_width_le.setText('{}'.format(self.cell_width))
+        if self.cell_width > 2.0:
+            self.cell_width = 2.0
+            self.cell_width_le.setText('{}'.format(self.cell_width))
         self.cell_width_le.blockSignals(False)
         self.refresh()
         
-    def on_bond_width_changed(self,text):
-        debugger.print('on bond_width_le changed ', text)
+    def on_bond_radius_changed(self,text):
+        debugger.print('on bond_radius_le changed ', text)
         try:
-            self.settings['bond_width'] = float(text)
+            self.bond_radius = float(text)
         except:
           pass
-        self.bond_width_le.blockSignals(True)
-        if self.settings['bond_width'] < 0.0:
-            self.settings['bond_width'] = 0.0
-            self.bond_width_le.setText('{}'.format(self.settings['bond_width']))
-        if self.settings['bond_width'] > 2.0:
-            self.settings['bond_width'] = 2.0
-            self.bond_width_le.setText('{}'.format(self.settings['bond_width']))
-        self.bond_width_le.blockSignals(False)
+        self.bond_radius_le.blockSignals(True)
+        if self.bond_radius < 0.0:
+            self.bond_radius = 0.0
+            self.bond_radius_le.setText('{}'.format(self.bond_radius))
+        if self.bond_radius > 2.0:
+            self.bond_radius = 2.0
+            self.bond_radius_le.setText('{}'.format(self.bond_radius))
+        self.bond_radius_le.blockSignals(False)
         self.refresh()
         
     def on_tolerance_changed(self,text):
         debugger.print('on file_tolerance_le changed ', text)
         try:
-            self.settings['bond_tolerance'] = float(text)
+            self.bond_tolerance = float(text)
         except:
           pass
         self.tolerance_le.blockSignals(True)
-        if self.settings['bond_tolerance'] < 0.0:
-            self.settings['bond_tolerance'] = 0.0
-            self.tolerance_le.setText('{}'.format(self.settings['bond_tolerance']))
-        if self.settings['bond_tolerance'] > 2.0:
-            self.settings['bond_tolerance'] = 2.0
-            self.tolerance_le.setText('{}'.format(self.settings['bond_tolerance']))
+        if self.bond_tolerance < 0.0:
+            self.bond_tolerance = 0.0
+            self.tolerance_le.setText('{}'.format(self.bond_tolerance))
+        if self.bond_tolerance > 2.0:
+            self.bond_tolerance = 2.0
+            self.tolerance_le.setText('{}'.format(self.bond_tolerance))
         self.tolerance_le.blockSignals(False)
         self.refresh()
 
     def on_file_store_le_changed(self,text):
-        self.settings['spreadsheet'] = text
-        debugger.print('on file_store_le change ', self.settings['spreadsheet'])
+        self.spreadsheet = text
+        debugger.print('on file_store_le change ', self.spreadsheet)
 
     def on_title_changed(self,text):
-        self.settings['title'] = text
+        self.title = text
         if self.subplot is not None:
-            self.subplot.set_title(self.settings['title'])
+            self.subplot.set_title(self.title)
             self.canvas.draw_idle()
-        debugger.print('on title change ', self.settings['title'])
+        debugger.print('on title change ', self.title)
 
     def on_selected_mode_changed(self):
-        self.settings['selected_mode'] = self.selected_mode_sb.value()
-        debugger.print('on selected_mode change ', self.settings['selected_mode'])
+        self.selected_mode = self.selected_mode_sb.value()
+        debugger.print('on selected_mode change ', self.selected_mode)
         self.plot()
 
     def refresh(self):
@@ -264,6 +261,7 @@ class ViewerTab(QWidget):
         scale = 1.1
         tolerance = 0.2
         newcell,nmols,old_order = cell.calculate_molecular_contents(scale, tolerance, covalent_radii)
+        print('rot centre newcell', newcell.calculateCentreOfMass() )
         # get the normal modes from the mass weighted ones
         self.normal_modes = Calculator.normal_modes(atom_masses, mass_weighted_normal_modes)
         # Reorder the atoms so that the mass weighted normal modes order agrees with the ordering in the new cell
@@ -319,12 +317,21 @@ class ViewerTab(QWidget):
            colour_list = [ colour/255.0 for colour in elemental_colours[el] ] 
            colour_tuple = tuple(colour_list)
            self.colours.append( colour_tuple )
-           self.radii.append(1.3*covalent_radii[el])
+           self.radii.append(self.atom_scaling*covalent_radii[el])
         self.mode = 0
         self.number_of_phase_steps = 21
         self.phase_direction = 1
         self.phase_index = 0
         self.calculatePhasePositions()
+        for col, rad, x, y, z in zip(self.colours, self.radii, self.X, self.Y, self.Z):
+            self.opengl_widget.addSphere(col, rad, x, y, z)
+        for bond in self.unit_cell.bonds:
+            i,j = bond
+            start = [ self.X[i], self.Y[i], self.Z[i] ]
+            end   = [ self.X[j], self.Y[j], self.Z[j] ]
+            self.opengl_widget.addCylinder(self.bond_colour, self.bond_radius, start, end)
+        print('rot centre', self.unit_cell.calculateCentreOfMass() )
+        self.opengl_widget.setRotationCentre(self.unit_cell.calculateCentreOfMass() )
         return
 
     def calculatePhasePositions(self):
@@ -475,58 +482,4 @@ class ViewerTab(QWidget):
 
     def plot_internal_external(self):
         pass
-
-from OpenGL.GL      import *
-from OpenGL.GLU     import *
-from OpenGL.GLUT    import *
-from PyQt5.QtWidgets import QOpenGLWidget
-class OpenGLWidget(QOpenGLWidget):
-
-
-    def __init__(self, parent):
-        QOpenGLWidget.__init__(self, parent)
-        self.setMinimumSize(640, 480)
-
-    def paintGL(self):
-        print('Paint')
-
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
-        glLoadIdentity()
-
-        glTranslatef(-2.5, 0.5, -6.0)
-        glColor3f( 1.0, 1.5, 0.0 );
-        glPolygonMode(GL_FRONT, GL_FILL);
-
-        glBegin(GL_TRIANGLES)
-        glVertex3f(2.0,-1.2,0.0)
-        glVertex3f(2.6,0.0,0.0)
-        glVertex3f(2.9,-1.2,0.0)
-        glEnd()
-
-        glFlush()
-        #glutSwapBuffers()
-
-
-
-    def resizeGL(self,w,h):
-        print('resizeGL',w,h)
-        self.width = w
-        self.height =h
-
-    def initializeGL(self):
-        print('Initialise')
-        self.makeCurrent()
-        glutInit('3D Visualiser')
-
-        glClearDepth(1.0)              
-        glDepthFunc(GL_LESS)
-        glEnable(GL_DEPTH_TEST)
-        glShadeModel(GL_SMOOTH)
-
-        glMatrixMode(GL_PROJECTION)
-        glLoadIdentity()                    
-        gluPerspective(45.0,1.33,0.1, 100.0) 
-        glMatrixMode(GL_MODELVIEW)
-
-
 
