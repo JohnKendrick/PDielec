@@ -5,9 +5,17 @@ from OpenGL.GLU      import *
 from OpenGL.GLUT     import *
 from PyQt5.QtWidgets import QOpenGLWidget
 from PyQt5.QtCore    import Qt
+from PyQt5.QtGui     import QSurfaceFormat
 from Python.Constants import PI
 
 class OpenGLWidget(QOpenGLWidget):
+
+    format = QSurfaceFormat()
+    format.setDepthBufferSize(24)
+    format.setStencilBufferSize(8)
+    format.setSamples(6)
+    format.setSwapBehavior(QSurfaceFormat.DoubleBuffer)
+    QSurfaceFormat.setDefaultFormat(format)
 
     def __init__(self, parent):
         QOpenGLWidget.__init__(self, parent)
@@ -56,11 +64,6 @@ class OpenGLWidget(QOpenGLWidget):
         gluQuadricNormals(self.quadric, GLU_SMOOTH)
         self.setFocusPolicy(Qt.StrongFocus)
         self.matrix =  np.eye( 4, dtype=np.float32)
-#        format = QSurfaceFormat()
-#        format.setVersion(2,0)
-#        format.setBufferSize(24)
-#        format.setStencilBufferSize(8)
-#        QSurfaceFormat.sefDefaultFormat(format)
 
     def moleculeRotate(self,scale,x,y,z):
         # Rotate molecular frame using glortho
@@ -153,7 +156,8 @@ class OpenGLWidget(QOpenGLWidget):
         # For the same reason we need to apply the zoom factor here
         glScalef(self.zoom_factor, self.zoom_factor, self.zoom_factor)
         # Clear the screen
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
+        #glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
+        glClear(GL_COLOR_BUFFER_BIT)
         glPushMatrix()
         glTranslatef(-self.rotation_centre[0],-self.rotation_centre[1],-self.rotation_centre[2] )
         self.drawSpheres()
@@ -220,16 +224,27 @@ class OpenGLWidget(QOpenGLWidget):
     def initializeGL(self):
         print('Initialise')
         self.makeCurrent()
-        glutInit('3D Visualiser')
+        #glutInit('3D Visualiser')
+        #glutInitDisplayString(b"double=1 rgb=1 samples=8 depth=16")
+        #glutInitDisplayMode(GLUT_DOUBLE|GLUT_RGB|GLUT_ALPHA|GLUT_DEPTH)
         glClearDepth(1.0)              
         glDepthFunc(GL_LESS)
         glEnable(GL_DEPTH_TEST)
         glEnable(GL_NORMALIZE)
-        glDisable(GL_DITHER)
+        #glDisable(GL_DITHER)
         glShadeModel(GL_SMOOTH)
+        glEnable(GL_POLYGON_SMOOTH)
+        glEnable(GL_POINT_SMOOTH)
+        glEnable(GL_LINE_SMOOTH)
+        glEnable(GL_MULTISAMPLE)
+        glCullFace(GL_BACK)
+        glEnable(GL_CULL_FACE)
+        #glBlendFunc(GL_SRC_ALPHA_SATURATE, GL_ONE)
+        glEnable(GL_BLEND)
         self.defineLights()
 
     def setImageSize(self):
+        print('setImageSize')
         maxsize = 0.0
         for sphere in self.sphere_positions:
             vec = sphere - self.rotation_centre
@@ -248,14 +263,16 @@ class OpenGLWidget(QOpenGLWidget):
                 maxsize = dist
         print('maximum  size', maxsize)
         self.image_size = maxsize
-        self.setProjectionMatrix()
         
 
     def setProjectionMatrix(self):
         glMatrixMode(GL_PROJECTION)
         glLoadIdentity()                    
-        orthox = 1.1 * self.image_size * self.width  / max(self.width,self.imageSize)
-        orthoy = 1.1 * self.imageS_size * self.height / max(self.width,self.imageSize)
+        print(self.image_size)
+        print(self.width)
+        print(max(self.width,self.image_size))
+        orthox = 1.1 * self.image_size * self.width  / max(self.width,self.image_size)
+        orthoy = 1.1 * self.image_size * self.height / max(self.width,self.image_size)
         orthoz = 1.1 * self.image_size
         glOrtho(-orthox, orthox, -orthoy, orthoy, -orthoz, orthoz)
         glMatrixMode(GL_MODELVIEW)
