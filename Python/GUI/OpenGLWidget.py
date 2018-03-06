@@ -11,25 +11,24 @@ class OpenGLWidget(QOpenGLWidget):
 
     def __init__(self, parent):
         QOpenGLWidget.__init__(self, parent)
-        self.setMinimumSize(640, 480)
+        self.setMinimumSize(640, 680)
         self.lightingOn = True
-        self.diffuseMaterialFactor  = 0.5
-        self.ambientMaterialFactor  = 0.5
-        self.specularMaterialFactor = 0.5
-        self.ambientLightFactor     = 0.2
+        self.diffuseMaterialFactor  = 0.9
+        self.ambientMaterialFactor  = 0.4
+        self.specularMaterialFactor = 0.7
+        self.glintMaterialFactor    = 100.0
         self.diffuseLightFactor     = 0.8
-        self.specularLightFactor    = 0.5
+        self.ambientLightFactor     = 0.6
+        self.specularLightFactor    = 1.0
         self.linearAttenuation      = True
         self.lightSwitches          = [False]*8
         self.lightSwitches[0]       = True
         self.lightSwitches[1]       = True
-        self.imageSize              = 15.0
+        self.image_size             = 15.0
         self.white                  = np.array( [1.0, 1.0, 1.0, 1.0] )
         self.sphere_colours         = []
         self.sphere_radii           = []
-        self.sphere_X               = []
-        self.sphere_Y               = []
-        self.sphere_Z               = []
+        self.sphere_positions       = []
         self.sphere_slices          = 15
         self.sphere_stacks          = 15
         self.cylinder_colours       = []
@@ -37,15 +36,24 @@ class OpenGLWidget(QOpenGLWidget):
         self.cylinder_pos1          = []
         self.cylinder_pos2          = []
         self.cylinder_slices        = 10
-        self.cylinder_stacks        = 10
+        self.cylinder_stacks        =  2
         self.cylinder_angles        = []
         self.cylinder_heights       = []
         self.cylinder_rotations     = []
+        self.arrow_directions       = []
+        self.arrow_angles           = []
+        self.arrow_heights          = []
+        self.arrow_rotations        = []
+        self.arrow_scaling          = 10
+        self.arrow_colour           = np.array( [ 0.0, 1.0, 0.0 ] )
+        self.arrow_radius           = 0.05
+        
         self.show_full_screen       = False
         self.zoom_factor            = 1.0
         self.rotation_centre         = np.array( [0.0, 0.0, 0.0] )
         self.quadric                = gluNewQuadric()
         gluQuadricDrawStyle(self.quadric, GLU_FILL)
+        gluQuadricNormals(self.quadric, GLU_SMOOTH)
         self.setFocusPolicy(Qt.StrongFocus)
         self.matrix =  np.eye( 4, dtype=np.float32)
 #        format = QSurfaceFormat()
@@ -127,7 +135,7 @@ class OpenGLWidget(QOpenGLWidget):
         modifiers = event.modifiers()
         if modifiers & Qt.ShiftModifier or modifiers & Qt.ControlModifier:
             # handle zoom
-            xzoom = -1.0*(self.xAtMove - self.xAtPress)
+            xzoom = +1.0*(self.xAtMove - self.xAtPress)
             yzoom = -1.0*(self.yAtMove - self.yAtPress)
             self.zoom(xzoom+yzoom)
         else:
@@ -150,16 +158,18 @@ class OpenGLWidget(QOpenGLWidget):
         glTranslatef(-self.rotation_centre[0],-self.rotation_centre[1],-self.rotation_centre[2] )
         self.drawSpheres()
         self.drawCylinders()
+        self.drawArrows()
         glPopMatrix()
 
     def drawSpheres(self):
-        for (col,rad,x, y, z) in zip(self.sphere_colours, self.sphere_radii, self.sphere_X, self.sphere_Y, self.sphere_Z):
+        for (col,rad, (x, y, z)) in zip(self.sphere_colours, self.sphere_radii, self.sphere_positions ):
             diffMatColour =  col * self.diffuseMaterialFactor
             ambMatColour =   col * self.ambientMaterialFactor
             specMatColour =  self.white * self.specularLightFactor
             glMaterialfv(GL_FRONT, GL_DIFFUSE, diffMatColour)
             glMaterialfv(GL_FRONT, GL_AMBIENT, ambMatColour)
             glMaterialfv(GL_FRONT, GL_SPECULAR, specMatColour)
+            glMaterialf( GL_FRONT, GL_SHININESS, self.glintMaterialFactor)
             glPushMatrix()
             glTranslatef( x, y, z )
             gluSphere(self.quadric, rad, self.sphere_slices, self.sphere_stacks)
@@ -173,11 +183,32 @@ class OpenGLWidget(QOpenGLWidget):
             glMaterialfv(GL_FRONT, GL_DIFFUSE, diffMatColour)
             glMaterialfv(GL_FRONT, GL_AMBIENT, ambMatColour)
             glMaterialfv(GL_FRONT, GL_SPECULAR, specMatColour)
+            glMaterialf( GL_FRONT, GL_SHININESS, self.glintMaterialFactor)
             glPushMatrix()
             glTranslated( pos2[0], pos2[1], pos2[2] )
             glRotated(angle, rot[0], rot[1], rot[2])
             gluCylinder(self.quadric, rad, rad, length, self.cylinder_slices, self.cylinder_stacks)
             glPopMatrix()
+
+    def drawArrows(self):
+        for ( pos, direction, length, angle, rot) in zip( self.sphere_positions, self.arrow_directions, self.arrow_heights, self.arrow_angles, self.arrow_rotations):
+            diffMatColour =  self.arrow_colour * self.diffuseMaterialFactor
+            ambMatColour =   self.arrow_colour * self.ambientMaterialFactor
+            specMatColour =  self.white * self.specularLightFactor
+            glMaterialfv(GL_FRONT, GL_DIFFUSE, diffMatColour)
+            glMaterialfv(GL_FRONT, GL_AMBIENT, ambMatColour)
+            glMaterialfv(GL_FRONT, GL_SPECULAR, specMatColour)
+            glMaterialf( GL_FRONT, GL_SHININESS, self.glintMaterialFactor)
+            length *= self.arrow_scaling
+            glPushMatrix()
+            glTranslated( pos[0], pos[1], pos[2] )
+            glRotated(angle, rot[0], rot[1], rot[2])
+            gluCylinder(self.quadric, self.arrow_radius, self.arrow_radius, length, self.cylinder_slices, self.cylinder_stacks)
+            glTranslated( 0.0, 0.0, length )
+            length = 0.1
+            gluCylinder(self.quadric, 2.0*self.arrow_radius, 0.1*self.arrow_radius, length, self.cylinder_slices, self.cylinder_stacks)
+            glPopMatrix()
+
 
     def resizeGL(self,w,h):
         print('resizeGL',w,h)
@@ -198,16 +229,39 @@ class OpenGLWidget(QOpenGLWidget):
         glShadeModel(GL_SMOOTH)
         self.defineLights()
 
+    def setImageSize(self):
+        maxsize = 0.0
+        for sphere in self.sphere_positions:
+            vec = sphere - self.rotation_centre
+            dist = math.sqrt(np.dot(vec,vec))
+            if dist > maxsize:
+                maxsize = dist
+        for pos in self.cylinder_pos1:
+            vec = pos - self.rotation_centre
+            dist = math.sqrt(np.dot(vec,vec))
+            if dist > maxsize:
+                maxsize = dist
+        for pos in self.cylinder_pos2:
+            vec = pos - self.rotation_centre
+            dist = math.sqrt(np.dot(vec,vec))
+            if dist > maxsize:
+                maxsize = dist
+        print('maximum  size', maxsize)
+        self.image_size = maxsize
+        self.setProjectionMatrix()
+        
+
     def setProjectionMatrix(self):
         glMatrixMode(GL_PROJECTION)
         glLoadIdentity()                    
-        orthox = 1.1 * self.imageSize * self.width  / max(self.width,self.imageSize)
-        orthoy = 1.1 * self.imageSize * self.height / max(self.width,self.imageSize)
-        orthoz = 1.1 * self.imageSize
+        orthox = 1.1 * self.image_size * self.width  / max(self.width,self.imageSize)
+        orthoy = 1.1 * self.imageS_size * self.height / max(self.width,self.imageSize)
+        orthoz = 1.1 * self.image_size
         glOrtho(-orthox, orthox, -orthoy, orthoy, -orthoz, orthoz)
         glMatrixMode(GL_MODELVIEW)
         glLoadIdentity()
         self.matrix =  np.eye( 4, dtype=np.float32)
+        self.zoom_factor = 1.0
 
     def defineLights(self):
         glEnable(GL_LIGHTING)
@@ -227,10 +281,41 @@ class OpenGLWidget(QOpenGLWidget):
                 glDisable(light)
 
     def setRotationCentre(self, pos):
-        print('rotation centre')
-        print(pos)
         self.rotation_centre = np.array(pos)
-        print(self.rotation_centre)
+
+    def deleteSpheres(self):
+        self.sphere_colours = []
+        self.sphere_radii = []
+        self.sphere_positions = []
+
+    def deleteCylinders(self):
+        self.cylinder_colours = []
+        self.cylinder_radii = []
+        self.cylinder_pos1 = []
+        self.cylinder_pos2 = []
+        self.cylinder_angles = []
+        self.cylinder_heights = []
+        self.cylinder_rotations = []
+
+    def deleteDisplacements(self):
+        # This is called subsequently to all arrows having been added, it sets all the arrow directions for every atom
+        self.arrow_directions = []
+        self.arrow_angles = []
+        self.arrow_heights = []
+        self.arrow_rotations = []
+
+    def addDisplacement(self, direction):
+        # Adds a displacement to each atom
+        p = np.array(direction)
+        z = np.array( [0.0, 0.0, 1.0] )
+        t = np.cross(z, p)
+        height = math.sqrt(np.dot(p,p)) + 1.0E-8
+        angle = 180.0 / PI * math.acos( np.dot(z,p) / height )
+        p = p / height
+        self.arrow_angles.append(angle)
+        self.arrow_heights.append(height)
+        self.arrow_rotations.append(t)
+        self.arrow_directions.append(p)
 
     def addCylinder(self, colour, radius, pos1, pos2):
         a = np.array(pos1)
@@ -248,9 +333,7 @@ class OpenGLWidget(QOpenGLWidget):
         self.cylinder_heights.append(height)
         self.cylinder_rotations.append(t)
 
-    def addSphere(self, colour, radius, x, y, z):
+    def addSphere(self, colour, radius, pos):
         self.sphere_colours.append(np.array(colour))
         self.sphere_radii.append(radius)
-        self.sphere_X.append(x)
-        self.sphere_Y.append(y)
-        self.sphere_Z.append(z)
+        self.sphere_positions.append(np.array(pos))

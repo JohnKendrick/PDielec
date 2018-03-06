@@ -22,15 +22,15 @@ class ViewerTab(QWidget):
         self.subplot = None
         self.setWindowTitle('Viewer')
         self.selected_mode = 4
-        self.title = 'Viewer'
         self.atom_scaling = 0.3
         self.maxdisplacement = 1.0
-        self.cell_width = 0.1
         self.plot_types = ['Animation','Arrows']
         self.plot_type_index = 0
         self.number_of_molecules = 0
-        self.bond_colour = [ 0.2, 0.2, 0.2 ]
+        self.bond_colour = [ 0.3, 0.3, 0.3 ]
         self.bond_radius = 0.1
+        self.cell_edge_colour = [ 1.0, 0.0, 0.0 ]
+        self.cell_edge_radius = 0.1
         # store the notebook
         self.notebook = parent
         # get the reader from the main tab
@@ -70,20 +70,20 @@ class ViewerTab(QWidget):
         self.bond_radius_le.setText('{}'.format(self.bond_radius))
         self.bond_radius_le.setToolTip('Determines the size of the bonds drawn')
         self.bond_radius_le.textChanged.connect(self.on_bond_radius_changed)
-        label = QLabel('Bond width', self)
+        label = QLabel('Bond radius', self)
         label.setToolTip('Determines the size of the bonds drawn')
         form.addRow(label, self.bond_radius_le)
         #
         #
         # The cell width
         #
-        self.cell_width_le = QLineEdit(self)
-        self.cell_width_le.setText('{}'.format(self.cell_width))
-        self.cell_width_le.setToolTip('Determines the size of the cell outline')
-        self.cell_width_le.textChanged.connect(self.on_cell_width_changed)
-        label = QLabel('Cell width', self)
+        self.cell_radius_le = QLineEdit(self)
+        self.cell_radius_le.setText('{}'.format(self.cell_edge_radius))
+        self.cell_radius_le.setToolTip('Determines the size of the cell outline')
+        self.cell_radius_le.textChanged.connect(self.on_cell_radius_changed)
+        label = QLabel('Cell radius', self)
         label.setToolTip('Determines the size of the cell outline')
-        form.addRow(label, self.cell_width_le)
+        form.addRow(label, self.cell_radius_le)
         #
         # The maximum displacement
         #
@@ -94,16 +94,6 @@ class ViewerTab(QWidget):
         label = QLabel('Maximum displacement', self)
         label.setToolTip('Set the size of the maximum displacement')
         form.addRow(label, self.maximum_displacement_le)
-        # 
-        # Set the plot title         
-        #
-        self.title_le = QLineEdit(self) 
-        self.title_le.setToolTip('Set the plot title')
-        self.title_le.setText(self.title)
-        self.title_le.textChanged.connect(self.on_title_changed)
-        label = QLabel('Plot title', self)
-        label.setToolTip('Set the plot title')
-        form.addRow(label, self.title_le)
         #
         # Add a comb box to select which type of plot
         #
@@ -120,6 +110,7 @@ class ViewerTab(QWidget):
         # Add the opengl figure to the bottom 
         #
         self.opengl_widget = OpenGLWidget(self)
+        self.opengl_widget.setSizePolicy(QSizePolicy(QSizePolicy.Expanding,QSizePolicy.Expanding))
         form.addRow(self.opengl_widget)
         vbox.addLayout(form)
         # finalise the layout
@@ -157,20 +148,20 @@ class ViewerTab(QWidget):
         self.atom_scaling_le.blockSignals(False)
         self.refresh()
         
-    def on_cell_width_changed(self,text):
-        debugger.print('on cell_width_le changed ', text)
+    def on_cell_radius_changed(self,text):
+        debugger.print('on cell_radius changed ', text)
         try:
-            self.cell_width = float(text)
+            self.cell_edge_radius = float(text)
         except:
           pass
-        self.cell_width_le.blockSignals(True)
-        if self.cell_width < 0.0:
-            self.cell_width = 0.0
-            self.cell_width_le.setText('{}'.format(self.cell_width))
-        if self.cell_width > 2.0:
-            self.cell_width = 2.0
-            self.cell_width_le.setText('{}'.format(self.cell_width))
-        self.cell_width_le.blockSignals(False)
+        self.cell_radius_le.blockSignals(True)
+        if self.cell_edge_radius < 0.0:
+            self.cell_edge_radius = 0.0
+            self.cell_radius_le.setText('{}'.format(self.cell_edge_radius))
+        if self.cell_edge_radius > 2.0:
+            self.cell_edge_radius = 2.0
+            self.cell_radius_le.setText('{}'.format(self.cell_edge_radius))
+        self.cell_radius_le.blockSignals(False)
         self.refresh()
         
     def on_bond_radius_changed(self,text):
@@ -205,20 +196,12 @@ class ViewerTab(QWidget):
         self.tolerance_le.blockSignals(False)
         self.refresh()
 
-    def on_file_store_le_changed(self,text):
-        self.spreadsheet = text
-        debugger.print('on file_store_le change ', self.spreadsheet)
-
-    def on_title_changed(self,text):
-        self.title = text
-        if self.subplot is not None:
-            self.subplot.set_title(self.title)
-            self.canvas.draw_idle()
-        debugger.print('on title change ', self.title)
-
     def on_selected_mode_changed(self):
         self.selected_mode = self.selected_mode_sb.value()
         debugger.print('on selected_mode change ', self.selected_mode)
+        self.opengl_widget.deleteDisplacements()
+        for x,y,z in zip( self.U[self.selected_mode], self.V[self.selected_mode], self.W[self.selected_mode] ):
+            self.opengl_widget.addDisplacement( [x,y,z] )
         self.plot()
 
     def refresh(self):
@@ -261,7 +244,6 @@ class ViewerTab(QWidget):
         scale = 1.1
         tolerance = 0.2
         newcell,nmols,old_order = cell.calculate_molecular_contents(scale, tolerance, covalent_radii)
-        print('rot centre newcell', newcell.calculateCentreOfMass() )
         # get the normal modes from the mass weighted ones
         self.normal_modes = Calculator.normal_modes(atom_masses, mass_weighted_normal_modes)
         # Reorder the atoms so that the mass weighted normal modes order agrees with the ordering in the new cell
@@ -323,15 +305,23 @@ class ViewerTab(QWidget):
         self.phase_direction = 1
         self.phase_index = 0
         self.calculatePhasePositions()
-        for col, rad, x, y, z in zip(self.colours, self.radii, self.X, self.Y, self.Z):
-            self.opengl_widget.addSphere(col, rad, x, y, z)
+        # Give the opengl_widget the information it needs
+        self.opengl_widget.deleteSpheres()
+        for col, rad, xyz in zip(self.colours, self.radii, self.unit_cell.xyz_coordinates):
+            self.opengl_widget.addSphere(col, rad, xyz )
+        self.opengl_widget.deleteCylinders()
         for bond in self.unit_cell.bonds:
             i,j = bond
             start = [ self.X[i], self.Y[i], self.Z[i] ]
             end   = [ self.X[j], self.Y[j], self.Z[j] ]
             self.opengl_widget.addCylinder(self.bond_colour, self.bond_radius, start, end)
-        print('rot centre', self.unit_cell.calculateCentreOfMass() )
+        self.opengl_widget.deleteDisplacements()
+        for u,v,w in zip( self.U[self.selected_mode], self.V[self.selected_mode], self.W[self.selected_mode] ):
+            self.opengl_widget.addDisplacement( [u, v, w] )
         self.opengl_widget.setRotationCentre(self.unit_cell.calculateCentreOfMass() )
+        for p1,p2 in self.cell_edges:
+            self.opengl_widget.addCylinder(self.cell_edge_colour, self.cell_edge_radius, p1, p2)
+        self.opengl_widget.setImageSize()
         return
 
     def calculatePhasePositions(self):
@@ -341,133 +331,7 @@ class ViewerTab(QWidget):
         U = self.U[self.mode]
         V = self.V[self.mode]
         W = self.W[self.mode]
-        maxR = np.amax(U) 
-        maxR = max(maxR, np.amax(V) )
-        maxR = max(maxR, np.amax(W))
-        self.scale_vibrations = self.maxdisplacement / maxR
-        #print('MaxR is',maxR)
-        self.newX    = np.zeros( (self.number_of_phase_steps,self.natoms) )
-        self.newY    = np.zeros( (self.number_of_phase_steps,self.natoms) )
-        self.newZ    = np.zeros( (self.number_of_phase_steps,self.natoms) )
-        self.startX  = np.zeros( (self.number_of_phase_steps,self.nbonds) )
-        self.startY  = np.zeros( (self.number_of_phase_steps,self.nbonds) )
-        self.startZ  = np.zeros( (self.number_of_phase_steps,self.nbonds) )
-        self.dirX    = np.zeros( (self.number_of_phase_steps,self.nbonds) )
-        self.dirY    = np.zeros( (self.number_of_phase_steps,self.nbonds) )
-        self.dirZ    = np.zeros( (self.number_of_phase_steps,self.nbonds) )
-        self.bondx   = np.zeros( (self.number_of_phase_steps,self.natoms,2) )
-        self.bondy   = np.zeros( (self.number_of_phase_steps,self.natoms,2) )
-        self.bondz   = np.zeros( (self.number_of_phase_steps,self.natoms,2) )
-        # work out the scaling factor to get the require maximumdisplacement
-        disX = self.X - U
-        sign = +1.0
-        phases = []
-        small = 1.0E-8
-        n2 = int(self.number_of_phase_steps/2)
-        delta = 1.0 / n2
-        phase = -delta
-        for phase_index in range(self.number_of_phase_steps):
-            phase += delta*sign
-            self.newX[phase_index] = self.X+U*phase*self.scale_vibrations
-            self.newY[phase_index] = self.Y+V*phase*self.scale_vibrations
-            self.newZ[phase_index] = self.Z+W*phase*self.scale_vibrations
-            if phase >= 1.0-small:
-                sign = -1.0
-                phase += delta*sign
-            elif phase <= -1.0+small:
-                sign = +1.0
-                phase += delta*sign
-            phases.append(phase)
-        # end for phase_index
-        for phase_index,phase in enumerate(phases):
-            for ibond,bond in enumerate(self.bonds):
-                i,j = bond
-                self.bondx[phase_index,ibond,0] = self.newX[phase_index,i]
-                self.bondy[phase_index,ibond,0] = self.newY[phase_index,i]
-                self.bondz[phase_index,ibond,0] = self.newZ[phase_index,i]
-                self.bondx[phase_index,ibond,1] = self.newX[phase_index,j]
-                self.bondy[phase_index,ibond,1] = self.newY[phase_index,j]
-                self.bondz[phase_index,ibond,1] = self.newZ[phase_index,j]
-                self.startX[phase_index,ibond] = self.newX[phase_index,i]
-                self.startY[phase_index,ibond] = self.newY[phase_index,i]
-                self.startZ[phase_index,ibond] = self.newZ[phase_index,i]
-                self.dirX[phase_index,ibond] = self.newX[phase_index,j] - self.newX[phase_index,i]
-                self.dirY[phase_index,ibond] = self.newY[phase_index,j] - self.newY[phase_index,i]
-                self.dirZ[phase_index,ibond] = self.newZ[phase_index,j] - self.newZ[phase_index,i]
-            #end for ibond,bond
-        # end of phase_index,phase
-        
-
-    def animate(self):
-        pass
-
-    def refreshBonds(self, phase_index):
-        pass
         return
-
-    def refreshAtoms(self, phase_index):
-        pass
-        return
-
-    def refreshDisplacements(self):
-        pass
-        return
-
-    def draw(self):
-        self.drawUnitCell()
-        self.drawBonds()
-        self.drawAtoms()
-        self.drawDisplacements()
-
-    def drawDisplacements(self):
-        pass
-        return
-
-    def drawUnitCell(self):
-        bondx = np.zeros( 2 )
-        bondy = np.zeros( 2 )
-        bondz = np.zeros( 2 )
-        ones  = np.array( (1.0,1.0) )
-        for edge in self.cell_edges:
-            p1,p2 =edge
-            bondx[0] = p1[0]
-            bondy[0] = p1[1]
-            bondz[0] = p1[2]
-            bondx[1] = p2[0]
-            bondy[1] = p2[1]
-            bondz[1] = p2[2]
-            #mlab.plot3d(bondx,bondy,bondz,ones, tube_radius=0.15, tube_sides=10, color=(1,0,0) )
-        return
-
-    def drawQuiverBonds(self):
-        self.glyph_quiver_bonds = mlab.quiver3d(self.startX[0],self.startY[0],self.startZ[0],
-                                                self.dirX[0],  self.dirY[0],  self.dirZ[0],
-                                                color=(0,0,0), mode='cylinder')
-
-    def drawBonds(self):
-        bondx = np.zeros( 2 )
-        bondy = np.zeros( 2 )
-        bondz = np.zeros( 2 )
-        ones  = np.array( (1.0,1.0) )
-        self.glyph_bonds = []
-        for bond in self.unit_cell.bonds:
-            i,j = bond
-            bondx[0] = self.X[i]
-            bondy[0] = self.Y[i]
-            bondz[0] = self.Z[i]
-            bondx[1] = self.X[j]
-            bondy[1] = self.Y[j]
-            bondz[1] = self.Z[j]
-            #glyph = mlab.plot3d(bondx,bondy,bondz,ones,tube_radius=0.1, tube_sides=10, color=(0,0,0) )
-            #self.glyph_bonds.append(glyph)
-        return
-
-    def drawAtoms(self):
-        #for x,y,z,colour,size in zip(self.X, self.Y, self.Z, self.colours, self.radii):
-           #glyph = mlab.points3d([x],[y],[z],[1],color=colour,resolution=20, scale_factor=size)
-           #self.glyph_atoms.append(glyph)
-        return
-
 
     def plot(self):
          if self.reader is None:
@@ -478,8 +342,8 @@ class ViewerTab(QWidget):
              self.plot_arrows()
 
     def plot_animation(self):
-        pass
+        self.opengl_widget.update()
 
-    def plot_internal_external(self):
-        pass
+    def plot_arrows(self):
+        self.opengl_widget.update()
 
