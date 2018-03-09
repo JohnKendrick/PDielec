@@ -21,8 +21,9 @@ import os
 import sys
 import string
 import numpy as np
-from Python.Constants import wavenumber, avogadro_si, atomic_number_to_element, amu
-from Python.Plotter import print3x3, print_reals, print_strings, print_ints
+from Python.Constants  import wavenumber, avogadro_si, atomic_number_to_element, amu
+from Python.Plotter    import print3x3, print_reals, print_strings, print_ints
+from Python.Calculator import cleanup_symbol
 
 class GenericOutputReader:
     """Generic reader of output files.  Actual reader should inherit from this class"""
@@ -72,20 +73,14 @@ class GenericOutputReader:
         self._old_masses                = []
         self.nomass_hessian             = None
         self.nomass_hessian_has_been_set= False
+        self.original_born_charges      = None
+        self.original_born_charges_are_being_used = True
         return
 
     def read_output(self):
         """Interface to the private read output files methods"""
         self._read_output_files()
         return
-
-    def cleanup_symbol(self,s):
-        """Return a true element from the symbol"""
-        s = s.capitalize()
-        s = s.replace('_','')
-        for i in string.digits:
-            s = s.replace(i,'')
-        return s
 
     def reset_masses(self):
         #  If the mass needs reseting use the original (program) mass dictionary
@@ -95,11 +90,14 @@ class GenericOutputReader:
         if self.program_mass_dictionary:
             self.change_masses(self.program_mass_dictionary,mass_dictionary)
 
+    def getSpecies(self):
+        return [ cleanup_symbol(el) for el in self.species ]
+
     def mass_dictionary(self):
         dictionary = {}
         for symbol,mass in zip(self.species,self.masses_per_type):
             # the element name may be appended with a digit or an underscore
-            element = self.cleanup_symbol(symbol)
+            element = cleanup_symbol(symbol)
             dictionary[element] = mass
         if self.debug:
             print("new mass_dictionary", dictionary)
@@ -113,7 +111,7 @@ class GenericOutputReader:
             if self.debug:
                 print("Setting program mass dictionary")
             for symbol,mass in zip(self.species,self.masses_per_type):
-                element = self.cleanup_symbol(symbol)
+                element = cleanup_symbol(symbol)
                 self.program_mass_dictionary[element] = mass
         if self.debug:
             print("changing masses", self.program_mass_dictionary)
@@ -121,7 +119,7 @@ class GenericOutputReader:
         self.masses_per_type = []
         for symbol in self.species:
             # the element name may be appended with a digit or an underscore
-            element = self.cleanup_symbol(symbol)
+            element = cleanup_symbol(symbol)
             mass = new_masses[element]
             if element in mass_dictionary:
                 mass = mass_dictionary[element]
@@ -432,7 +430,14 @@ class GenericOutputReader:
             print("non mass weighted hessian", self.nomass_hessian[0:4][0]) 
         return
 
+    def reset_born_charges(self):
+        if not self.original_born_charges_are_being_used:
+            self.born_charges = self.original_born_charges
+
     def neutralise_born_charges(self):
+        if self.original_born_charges_are_being_used:
+            self.original_born_charges = self.born_charges
+            self.original_born_charges_are_being_used = False
         self._born_charge_sum_rule()
         return
 
@@ -442,6 +447,8 @@ class GenericOutputReader:
         born_charges = np.array(self.born_charges)
         new_born_charges = np.zeros_like(self.born_charges)
         total = np.sum(born_charges) / self.nions
+        if self.debug:
+            print('born charge sum', total)
         new_born_charges = born_charges - total
         self.born_charges = new_born_charges.tolist()
         return

@@ -18,7 +18,7 @@ from PyQt5.QtWidgets  import  QPushButton, QWidget
 from PyQt5.QtWidgets  import  QComboBox, QLabel, QLineEdit
 from PyQt5.QtWidgets  import  QFileDialog, QProgressBar
 from PyQt5.QtWidgets  import  QVBoxLayout, QHBoxLayout, QFormLayout
-from PyQt5.QtWidgets  import  QSpinBox
+from PyQt5.QtWidgets  import  QSpinBox,QDoubleSpinBox
 from PyQt5.QtWidgets  import  QSizePolicy
 from PyQt5.QtCore     import  Qt
 from Python.Constants import  wavenumber, amu, PI, avogadro_si, angstrom
@@ -47,14 +47,13 @@ class PlottingTab(QWidget):
         self.settings = {}
         self.subplot = None
         self.setWindowTitle('Plotting')
-        self.settings['vmin'] = 0
-        self.settings['vmax'] = 400
-        self.settings['vinc'] = 0.2
-        self.settings['spreadsheet'] = ''
+        self.settings['Minimum frequency'] = 0
+        self.settings['Maximum frequency'] = 400
+        self.settings['Frequency increment'] = 0.2
         self.molar_definitions = ['Unit cells','Atoms','Molecules']
-        self.settings['molar_definition'] = 'Unit cells'
-        self.settings['natoms'] = 1
-        self.settings['title'] = 'Plot Title'
+        self.settings['Molar definition'] = 'Unit cells'
+        self.settings['Number of atoms'] = 1
+        self.settings['Plot title'] = 'Plot Title'
         self.frequency_units = None
         # store the notebook
         self.notebook = parent
@@ -68,7 +67,7 @@ class PlottingTab(QWidget):
         #
         self.vmin_sb = QSpinBox(self)
         self.vmin_sb.setRange(0,9000)
-        self.vmin_sb.setValue(self.settings['vmin'])
+        self.vmin_sb.setValue(self.settings['Minimum frequency'])
         self.vmin_sb.setToolTip('Set the minimum frequency to be considered)')
         self.vmin_sb.valueChanged.connect(self.on_vmin_changed)
         label = QLabel('Minimum frequency:', self)
@@ -79,7 +78,7 @@ class PlottingTab(QWidget):
         #
         self.vmax_sb = QSpinBox(self)
         self.vmax_sb.setRange(0,9000)
-        self.vmax_sb.setValue(self.settings['vmax'])
+        self.vmax_sb.setValue(self.settings['Maximum frequency'])
         self.vmax_sb.setToolTip('Set the maximum frequency to be considered)')
         self.vmax_sb.valueChanged.connect(self.on_vmax_changed)
         label = QLabel('Maximum frequency:', self)
@@ -88,22 +87,24 @@ class PlottingTab(QWidget):
         # 
         # Choose a suitable increment
         #
-        self.vinc_le = QLineEdit(self) 
-        self.vinc_le.setToolTip('Choose an increment for the frequency when plotting')
-        self.vinc_le.setText('{0:.2f}'.format(self.settings['vinc']))
-        self.vinc_le.textChanged.connect(self.on_vinc_changed)
+        self.vinc_sb = QDoubleSpinBox(self) 
+        self.vinc_sb.setRange(0.01,5.0)
+        self.vinc_sb.setSingleStep(0.1)
+        self.vinc_sb.setDecimals(2)
+        self.vinc_sb.setToolTip('Choose an increment for the frequency when plotting')
+        self.vinc_sb.setValue(self.settings['Frequency increment'])
+        self.vinc_sb.valueChanged.connect(self.on_vinc_changed)
         label = QLabel('Frequency increment', self)
         label.setToolTip('Choose an increment for the frequency when plotting')
-        form.addRow(label, self.vinc_le)
+        form.addRow(label, self.vinc_sb)
         # 
         # Define molar quantity
         #
         self.molar_cb = QComboBox(self) 
         self.molar_cb.setToolTip('Define what a mole is.  \nIn the case of Molecules, the number of atoms in a molecule must be given')
-        for definition in self.molar_definitions:
-            self.molar_cb.addItem(definition)
+        self.molar_cb.addItems(self.molar_definitions)
         self.molar_cb.setCurrentIndex(0)
-        self.molar_cb.currentIndexChanged.connect(self.on_molar_cb_changed)
+        self.molar_cb.activated.connect(self.on_molar_cb_activated)
         label = QLabel('Molar definition', self)
         label.setToolTip('Define what a mole is.  \nIn the case of Molecules, the number of atoms in a molecule must be given')
         form.addRow(label, self.molar_cb)
@@ -113,26 +114,18 @@ class PlottingTab(QWidget):
         self.natoms_sb = QSpinBox(self)
         self.natoms_sb.setToolTip('Set the number of atoms in a molecule. \nOnly need this if moles of molecules is needed')
         self.natoms_sb.setRange(1,500)
-        self.natoms_sb.setValue(self.settings['natoms'])
+        self.natoms_sb.setValue(self.settings['Number of atoms'])
         self.natoms_sb.valueChanged.connect(self.on_natoms_changed)
         self.natoms_sb.setEnabled(False)
         label = QLabel('Number of atoms per molecule', self)
         label.setToolTip('Set the number of atoms in a molecule. \nOnly need this if moles of molecules is needed')
         form.addRow(label, self.natoms_sb)
         # 
-        # Store results in a file?
-        #
-        #self.file_store_le = QLineEdit(self) 
-        #self.file_store_le.setToolTip('Store the results in a .csv or .xlsx file')
-        #self.file_store_le.setText(self.settings['spreadsheet'])
-        #self.file_store_le.textChanged.connect(self.on_file_store_le_changed)
-        #form.addRow(QLabel('Output spreadsheet', self), self.file_store_le)
-        # 
         # Set the plot title         
         #
         self.title_le = QLineEdit(self) 
         self.title_le.setToolTip('Set the plot title')
-        self.title_le.setText(self.settings['title'])
+        self.title_le.setText(self.settings['Plot title'])
         self.title_le.textChanged.connect(self.on_title_changed)
         label = QLabel('Plot title', self)
         label.setToolTip('Set the plot title')
@@ -142,10 +135,9 @@ class PlottingTab(QWidget):
         #
         self.funits_cb = QComboBox(self) 
         self.funits_cb.setToolTip('Set the frequency units for the x-axis')
-        for choice in ['wavenumber','THz']:
-            self.funits_cb.addItem(choice)
+        self.funits_cb.addItems( ['wavenumber','THz'] )
         self.frequency_units = 'wavenumber'
-        self.funits_cb.currentIndexChanged.connect(self.on_funits_cb_changed)
+        self.funits_cb.activated.connect(self.on_funits_cb_activated)
         label = QLabel('Frequency units for the x-axis', self)
         label.setToolTip('Set the frequency units for the x-axis')
         form.addRow(label, self.funits_cb)
@@ -217,34 +209,30 @@ class PlottingTab(QWidget):
         if not self.notebook.newCalculationRequired:
             self.plot(self.xaxes, self.imagPermittivities, 'Imaginary Component of Permittivity')
 
-    def on_file_store_le_changed(self,text):
-        self.settings['spreadsheet'] = text
-        debugger.print('on file_store_le change ', self.settings['spreadsheet'])
-
     def on_title_changed(self,text):
-        self.settings['title'] = text
+        self.settings['Plot title'] = text
         if self.subplot is not None:
-            self.subplot.set_title(self.settings['title'])
+            self.subplot.set_title(self.settings['Plot title'])
             self.canvas.draw_idle()
-        debugger.print('on title change ', self.settings['title'])
+        debugger.print('on title change ', self.settings['Plot title'])
 
-    def on_vinc_changed(self,text):
-        self.settings['vinc'] = float(text)
+    def on_vinc_changed(self,value):
+        self.settings['Frequency increment'] = value
         self.notebook.newCalculationRequired = True
         self.progressbar.setValue(0)
-        debugger.print('on vinc change ', self.settings['vinc'])
+        debugger.print('on vinc change ', self.settings['Frequency increment'])
 
     def on_vmin_changed(self):
-        self.settings['vmin'] = self.vmin_sb.value()
+        self.settings['Minimum frequency'] = self.vmin_sb.value()
         self.notebook.newCalculationRequired = True
         self.progressbar.setValue(0)
-        debugger.print('on vmin change ', self.settings['vmin'])
+        debugger.print('on vmin change ', self.settings['Minimum frequency'])
 
     def on_vmax_changed(self):
-        self.settings['vmax'] = self.vmax_sb.value()
+        self.settings['Maximum frequency'] = self.vmax_sb.value()
         self.notebook.newCalculationRequired = True
         self.progressbar.setValue(0)
-        debugger.print('on vmax change ', self.settings['vmax'])
+        debugger.print('on vmax change ', self.settings['Maximum frequency'])
 
     def refresh(self):
         debugger.print('refreshing widget')
@@ -256,15 +244,16 @@ class PlottingTab(QWidget):
         self.notebook.newCalculationRequired = True
         # Reset the progress bar
         self.progressbar.setValue(0)
+        self.molarAbsorptionButtonClicked()
         return
 
     def on_natoms_changed(self, value):
         self.notebook.newCalculationRequired = True
         self.progressbar.setValue(0)
-        self.settings['natoms'] = value
-        debugger.print('on natoms changed ', self.settings['natoms'])
+        self.settings['Number of atoms'] = value
+        debugger.print('on natoms changed ', self.settings['Number of atoms'])
 
-    def on_funits_cb_changed(self, index):
+    def on_funits_cb_activated(self, index):
         if index == 0:
             self.frequency_units = 'wavenumber'
         else:
@@ -272,20 +261,20 @@ class PlottingTab(QWidget):
         self.replot()
         debugger.print('Frequency units changed to ', self.frequency_units)
 
-    def on_molar_cb_changed(self, index):
-        self.settings['molar_definition'] = self.molar_definitions[index]
+    def on_molar_cb_activated(self, index):
+        self.settings['Molar definition'] = self.molar_definitions[index]
         self.notebook.newCalculationRequired = True
         self.progressbar.setValue(0)
-        if self.settings['molar_definition'] == 'Molecules':
-            self.settings['concentration'] = 1000.0 / (avogadro_si * self.reader.volume * 1.0e-24 * self.settings['natoms'] / self.reader.nions)
+        if self.settings['Molar definition'] == 'Molecules':
+            self.settings['concentration'] = 1000.0 / (avogadro_si * self.reader.volume * 1.0e-24 * self.settings['Number of atoms'] / self.reader.nions)
             self.natoms_sb.setEnabled(True)
-        elif self.settings['molar_definition'] == 'Unit cells':
+        elif self.settings['Molar definition'] == 'Unit cells':
             self.settings['concentration'] = 1000.0 / (avogadro_si * self.reader.volume * 1.0e-24)
             self.natoms_sb.setEnabled(False)
-        elif self.settings['molar_definition'] == 'Atoms':
+        elif self.settings['Molar definition'] == 'Atoms':
             self.settings['concentration'] = 1000.0 / (avogadro_si * self.reader.volume * 1.0e-24 / self.reader.nions)
             self.natoms_sb.setEnabled(False)
-        debugger.print('The concentration has been set', self.settings['molar_definition'], self.settings['concentration'])
+        debugger.print('The concentration has been set', self.settings['Molar definition'], self.settings['concentration'])
 
     def calculate(self):
         global threading
@@ -293,8 +282,8 @@ class PlottingTab(QWidget):
         self.progressbar.setValue(0)
         # Assemble the mainTab settings
         settings = self.notebook.mainTab.settings
-        program = settings['program']
-        filename = settings['filename']
+        program = settings['Program']
+        filename = settings['Output file name']
         reader = self.notebook.mainTab.reader
         if reader is None:
             return
@@ -305,10 +294,10 @@ class PlottingTab(QWidget):
         # Assemble the settingsTab settings
         self.notebook.newCalculationRequired = False
         settings = self.notebook.settingsTab.settings
-        eckart = settings['eckart']
-        neutral = settings['neutral']
-        hessian_symm = settings['hessian_symmetrisation']
-        epsilon_inf = np.array(settings['optical_permittivity'])
+        eckart = settings['Eckart flag']
+        neutral = settings['Neutral Born charges']
+        hessian_symm = settings['Hessian symmetrisation']
+        epsilon_inf = np.array(settings['Optical permittivity'])
         sigmas_cm1 = self.notebook.settingsTab.sigmas_cm1
         sigmas = np.array(sigmas_cm1) * wavenumber
         modes_selected = self.notebook.settingsTab.modes_selected
@@ -317,9 +306,9 @@ class PlottingTab(QWidget):
         intensities = self.notebook.settingsTab.intensities
         oscillator_strengths = self.notebook.settingsTab.oscillator_strengths
         volume = reader.volume*angstrom*angstrom*angstrom
-        vmin = self.settings['vmin']
-        vmax = self.settings['vmax']
-        vinc = self.settings['vinc']
+        vmin = self.settings['Minimum frequency']
+        vmax = self.settings['Maximum frequency']
+        vinc = self.settings['Frequency increment']
         calling_parameters = []
         self.scenarios = self.notebook.scenarios
         mode_list = []
@@ -342,10 +331,10 @@ class PlottingTab(QWidget):
         # and calculate the depolarisation matrices
         for scenario in self.scenarios:
             debugger.print('Scenario ',scenario.scenarioIndex)
-            shape = scenario.settings['shape']
-            debugger.print('shape ',shape)
-            hkl = [scenario.settings['h'], scenario.settings['k'], scenario.settings['l']] 
-            aoverb = scenario.settings['aoverb']
+            shape = scenario.settings['Particle shape']
+            debugger.print('Particle shape ',shape)
+            hkl = [scenario.settings['Unique direction - h'], scenario.settings['Unique direction - k'], scenario.settings['Unique direction - l']] 
+            aoverb = scenario.settings['Ellipsoid a/b']
             if shape == 'Ellipsoid':
                 direction = cell.convert_abc_to_xyz(hkl)
                 depolarisation = Calculator.initialise_ellipsoid_depolarisation_matrix(direction,aoverb)
@@ -410,17 +399,17 @@ class PlottingTab(QWidget):
             pool = Pool(number_of_processors, initializer=set_affinity_on_worker, maxtasksperchild=10)
         for i,(scenario,L) in enumerate(zip(self.scenarios,depolarisations)):
             debugger.print('Scenario ',i,L)
-            matrix = scenario.settings['matrix']
-            method = scenario.settings['method'].lower()
-            matrix_density = scenario.settings['matrix_density']
-            matrix_permittivity = np.identity(3) * scenario.settings['matrix_permittivity']
-            mass_fraction = scenario.settings['mass_fraction']
-            volume_fraction = scenario.settings['volume_fraction']
-            particle_size_mu = scenario.settings['particle_size']
-            particle_sigma_mu = scenario.settings['particle_sigma']
-            shape = scenario.settings['shape'].lower()
-            hkl = [scenario.settings['h'], scenario.settings['k'], scenario.settings['l']] 
-            aoverb = scenario.settings['aoverb']
+            matrix = scenario.settings['Matrix']
+            method = scenario.settings['Effective medium method'].lower()
+            matrix_density = scenario.settings['Matrix density']
+            matrix_permittivity = np.identity(3) * scenario.settings['Matrix permittivity']
+            mass_fraction = scenario.settings['Mass fraction']
+            volume_fraction = scenario.settings['Volume fraction']
+            particle_size_mu = scenario.settings['Particle size(mu)']
+            particle_sigma_mu = scenario.settings['Particle size distribution sigma(mu)']
+            shape = scenario.settings['Particle shape'].lower()
+            hkl = [scenario.settings['Unique direction - h'], scenario.settings['Unique direction - k'], scenario.settings['Unique direction - l']] 
+            aoverb = scenario.settings['Ellipsoid a/b']
             # convert the size to a dimensionless number which is 2*pi*size/lambda
             lambda_mu = 1.0E4 / (v + 1.0e-12)
             if particle_size_mu < 1.0e-12:
@@ -482,7 +471,7 @@ class PlottingTab(QWidget):
         self.subplot.set_xlabel(xlabel)
         self.subplot.set_ylabel(ylabel)
         self.subplot.legend(loc='best')
-        self.subplot.set_title(self.settings['title'])
+        self.subplot.set_title(self.settings['Plot title'])
         self.canvas.draw_idle()
 
     def replot(self):

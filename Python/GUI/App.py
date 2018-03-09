@@ -9,6 +9,8 @@ class App(QMainWindow):
         super().__init__()
         program = ''
         filename = ''
+        spreadsheet = ''
+        exit = ''
         debug = False
         # Manage options
         for arg in args[1:]:
@@ -17,12 +19,16 @@ class App(QMainWindow):
             elif arg == '-h' or arg == '-help' or arg == '--help':
                 print('help is true')
                 print('pdgui - graphical user interface to the PDielec package')
-                print('pdgui [-help] [-debug] [program] [filename]')
+                print('pdgui [-help] [-debug] [program] [filename] [spreadsheet]')
                 exit()
             elif program == '':
                 program = arg
             elif filename == '':
                 filename = arg
+            elif spreadsheet == '':
+                spreadsheet = arg
+            elif exit == '':
+                exit = arg
         #
         self.title = 'PDielec GUI '
         self.left = 10
@@ -32,10 +38,20 @@ class App(QMainWindow):
         self.setWindowTitle(self.title)
         self.setGeometry(self.left, self.top, self.width, self.height)
  
-        self.notebook = NoteBook(self, program, filename, debug=debug)
+        self.notebook = NoteBook(self, program, filename, spreadsheet, debug=debug)
         self.setCentralWidget(self.notebook)
- 
         self.show()
+        if exit == 'exit':
+            sys.exit()
+
+    def closeEvent(self, event):
+        # Make sure any spread sheet is closed
+        print('captured close event')
+        if self.notebook.spreadsheet is not None:
+            print('closing spreadsheet')
+            self.notebook.spreadsheet.close()
+        super(App, self).closeEvent(event)
+    
  
 if __name__ == '__main__':
     app = QApplication(sys.argv)

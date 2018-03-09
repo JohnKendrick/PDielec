@@ -20,8 +20,9 @@
 from __future__ import print_function
 import numpy as np
 import math
-from Python.Calculator import calculate_distance
-from Python.Plotter import print_reals, print_ints, print_strings
+from Python.Calculator  import calculate_distance
+from Python.Plotter     import print_reals, print_ints, print_strings
+from Python.Calculator  import cleanup_symbol
 
 
 class UnitCell:
@@ -79,7 +80,7 @@ class UnitCell:
         edges.append( (corners_xyz[6] , corners_xyz[5]) )
         edges.append( (corners_xyz[7] , corners_xyz[6]) )
         edges.append( (corners_xyz[7] , corners_xyz[4]) )
-        return edges
+        return corners_xyz,edges
          
 
     def printInfo(self):
@@ -230,6 +231,7 @@ class UnitCell:
     def set_element_names(self, element_names):
         self.element_names = []
         for el in element_names:
+          el = cleanup_symbol(el)
           self.element_names.append(el)
         return
 
@@ -272,8 +274,6 @@ class UnitCell:
         BoxAtoms = {}
         BoxNeighbours = {}
         boxSize = 0.0
-        scale = 1.1
-        toler = 0.1
         # calculate boxsize
         rmax = 0.0
         for el in self.element_names:

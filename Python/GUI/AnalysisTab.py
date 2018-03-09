@@ -31,10 +31,12 @@ class AnalysisTab(QWidget):
         self.settings['bond_scaling'] = 1.1
         self.settings['bond_tolerance'] = 0.1
         self.settings['bar_width'] = 0.5
-        self.settings['plot_types'] = ['Internal vs External','Molecular Composition']
+        self.plot_types = ['Internal vs External','Molecular Composition']
         self.plot_type_index = 0
         self.number_of_molecules = 0
         self.frequency_units = None
+        self.cell_of_molecules = None
+        self.original_atomic_order = None
         # store the notebook
         self.notebook = parent
         # get the reader from the main tab
@@ -121,8 +123,7 @@ class AnalysisTab(QWidget):
         #
         self.plottype_cb = QComboBox(self) 
         self.plottype_cb.setToolTip('The energy can be decomposed either according to internal vs external motion or into a molecular based decompostion')
-        for choice in self.settings["plot_types"]:
-            self.plottype_cb.addItem(choice)
+        self.plottype_cb.addItems(self.plot_types)
         self.plottype_cb.setCurrentIndex(self.plot_type_index)
         self.plottype_cb.currentIndexChanged.connect(self.on_plottype_cb_changed)
         label = QLabel('Choose the plot type', self)
@@ -232,8 +233,8 @@ class AnalysisTab(QWidget):
         debugger.print('calculate')
         # Assemble the mainTab settings
         settings = self.notebook.mainTab.settings
-        program = settings['program']
-        filename = settings['filename']
+        program = settings['Program']
+        filename = settings['Output file name']
         self.reader = self.notebook.mainTab.reader
         if self.reader is None:
             return
@@ -243,10 +244,10 @@ class AnalysisTab(QWidget):
             return
         # Assemble the settingsTab settings
         settings = self.notebook.settingsTab.settings
-        eckart = settings['eckart']
-        neutral = settings['neutral']
-        hessian_symm = settings['hessian_symmetrisation']
-        epsilon_inf = np.array(settings['optical_permittivity'])
+        eckart = settings['Eckart flag']
+        neutral = settings['Neutral Born charges']
+        hessian_symm = settings['Hessian symmetrisation']
+        epsilon_inf = np.array(settings['Optical permittivity'])
         sigmas_cm1 = self.notebook.settingsTab.sigmas_cm1
         sigmas = np.array(sigmas_cm1) * wavenumber
         modes_selected = self.notebook.settingsTab.modes_selected
@@ -264,29 +265,29 @@ class AnalysisTab(QWidget):
         cell = self.reader.unit_cells[-1]
         atom_masses = self.reader.masses
         cell.set_atomic_masses(atom_masses)
-        newcell,nmols,old_order = cell.calculate_molecular_contents(scale, tolerance, covalent_radii)
-        #newcell.printInfo()
-        self.number_of_molecules = nmols
+        self.cell_of_molecules,nmols,self.original_atomic_order = cell.calculate_molecular_contents(scale, tolerance, covalent_radii)
         self.molecules_le.setText('{}'.format(self.number_of_molecules))
+        # if the number of molecules has changed then tell the viewerTab that the cell has changed
+        self.number_of_molecules = nmols
         # get the normal modes from the mass weighted ones
         normal_modes = Calculator.normal_modes(atom_masses, mass_weighted_normal_modes)
-        # Reorder the atoms so that the mass weighted normal modes order agrees with the ordering in the new cell
+        # Reorder the atoms so that the mass weighted normal modes order agrees with the ordering in the cell_of_molecules cell
         nmodes,nions,temp = np.shape(normal_modes)
-        new_normal_modes = np.zeros( (nmodes,3*nions) )
-        new_mass_weighted_normal_modes = np.zeros( (nmodes,3*nions) )
-        masses = newcell.atomic_masses
+        self.new_normal_modes = np.zeros( (nmodes,3*nions) )
+        self.new_mass_weighted_normal_modes = np.zeros( (nmodes,3*nions) )
+        masses = self.cell_of_molecules.atomic_masses
         for imode,mode in enumerate(mass_weighted_normal_modes):
-            for index,old_index in enumerate(old_order):
+            for index,old_index in enumerate(self.original_atomic_order):
                 i = index*3
                 j = old_index*3
-                new_mass_weighted_normal_modes[imode,i+0] = mode[old_index][0] 
-                new_mass_weighted_normal_modes[imode,i+1] = mode[old_index][1] 
-                new_mass_weighted_normal_modes[imode,i+2] = mode[old_index][2] 
-                new_normal_modes[imode,i+0] = new_mass_weighted_normal_modes[imode,i+0] / math.sqrt(masses[index])
-                new_normal_modes[imode,i+1] = new_mass_weighted_normal_modes[imode,i+1] / math.sqrt(masses[index])
-                new_normal_modes[imode,i+2] = new_mass_weighted_normal_modes[imode,i+2] / math.sqrt(masses[index])
+                self.new_mass_weighted_normal_modes[imode,i+0] = mode[old_index][0] 
+                self.new_mass_weighted_normal_modes[imode,i+1] = mode[old_index][1] 
+                self.new_mass_weighted_normal_modes[imode,i+2] = mode[old_index][2] 
+                self.new_normal_modes[imode,i+0] = self.new_mass_weighted_normal_modes[imode,i+0] / math.sqrt(masses[index])
+                self.new_normal_modes[imode,i+1] = self.new_mass_weighted_normal_modes[imode,i+1] / math.sqrt(masses[index])
+                self.new_normal_modes[imode,i+2] = self.new_mass_weighted_normal_modes[imode,i+2] / math.sqrt(masses[index])
         # Calculate the distribution in energy for the normal modes
-        self.mode_energies = Calculator.calculate_energy_distribution(newcell, self.frequencies_cm1, new_mass_weighted_normal_modes)
+        self.mode_energies = Calculator.calculate_energy_distribution(self.cell_of_molecules, self.frequencies_cm1, self.new_mass_weighted_normal_modes)
         # Output the final result
         #title = ['Freq(cm-1)','%mol-cme','%mol-rot','%vib']
         #for i in range(self.number_of_molecules):

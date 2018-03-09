@@ -13,11 +13,12 @@ from Python.Utilities           import  Debug
  
 class NoteBook(QWidget):        
  
-    def __init__(self, parent, program, filename, debug=False):   
+    def __init__(self, parent, program, filename, spreadsheet, debug=False):   
         super(QWidget, self).__init__(parent)
         global debugger
         debugger = Debug(debug,'NoteBook:')
         self.reader = None
+        self.spreadsheet = None
         self.newCalculationRequired = True
         self.debug = debug
         self.layout = QVBoxLayout()
@@ -26,7 +27,7 @@ class NoteBook(QWidget):
         # Initialize tab screen
         self.tabs = QTabWidget(self)
         self.tabs.currentChanged.connect(self.on_tabs_currentChanged)
-        self.mainTab = MainTab(self, program, filename, debug=debug)
+        self.mainTab = MainTab(self, program, filename, spreadsheet, debug=debug)
         self.settingsTab = SettingsTab(self, debug=debug)
         if filename != '':
             self.settingsTab.refresh()
@@ -93,10 +94,10 @@ class NoteBook(QWidget):
     def on_tabs_currentChanged(self, tabindex):
         debugger.print('Tab index changed', tabindex)
         #       Number of tabs
-        ntabs = 2 + len(self.scenarios) + 2
+        ntabs = 2 + len(self.scenarios) + 3
         self.newCalculationRequired = True
         if tabindex == ntabs-1:
-            # analysis tab
+            # viewer tab
             self.viewerTab.refresh()
         if tabindex == ntabs-2:
             # analysis tab
