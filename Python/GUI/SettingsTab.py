@@ -11,7 +11,7 @@ from PyQt5.QtWidgets  import  QDoubleSpinBox, QTableWidget, QTableWidgetItem
 from PyQt5.QtWidgets  import  QSizePolicy
 from PyQt5.QtCore     import  Qt, QSize
 from Python.Utilities import  get_reader
-from Python.Constants import  wavenumber, amu, PI
+from Python.Constants import  wavenumber, amu, PI, angstrom
 from Python.Constants import  average_masses, isotope_masses
 from Python.Utilities import  Debug
 
@@ -195,11 +195,17 @@ class SettingsTab(QWidget):
         self.intensities = Calculator.infrared_intensities(self.oscillator_strengths)
         # Decide which modes to select
         self.modes_selected = []
-        for f,intensity in zip(self.frequencies_cm1,self.intensities):
+        mode_list = []
+        for index,(f,intensity) in enumerate(zip(self.frequencies_cm1,self.intensities)):
             if f > 10.0 and intensity > 1.0E-6:
                 self.modes_selected.append(True)
+                mode_list.append(index)
             else:
                 self.modes_selected.append(False)
+        # Calculate the ionic contribution to the permittivity
+        frequencies = wavenumber*np.array(self.frequencies_cm1)
+        volume = self.reader.volume*angstrom*angstrom*angstrom
+        self.epsilon_ionic = Calculator.ionic_permittivity(mode_list, self.oscillator_strengths, frequencies, volume )
         self.output_tw.setRowCount(len(self.sigmas_cm1))
         self.output_tw.setColumnCount(5)
         self.output_tw.setHorizontalHeaderLabels(['   Sigma   \n(cm-1)', ' Frequency \n(cm-1)', '  Intensity  \n(Debye2/Å2/amu)', 'Integrated Molar Absorption\n(L/mole/cm2)', 'Absorption maximum\n(L/mole/cm)'])
@@ -213,12 +219,23 @@ class SettingsTab(QWidget):
             return
         sp.selectWorkSheet('Settings')
         sp.writeNextRow(['Settings and calculations of frequencies and absorption'], row=0, col=1)
-        for item in self.settings:
+        for item in sorted(self.settings):
             if item == 'Optical permittivity':
-               sp.writeNextRow([item], col=1, check=1)
+               sp.writeNextRow([item], col=1)
                sp.writeNextRow(self.settings[item][0], col=2, check=1)
                sp.writeNextRow(self.settings[item][1], col=2, check=1)
                sp.writeNextRow(self.settings[item][2], col=2, check=1)
+               eps = self.epsilon_ionic.tolist()
+               sp.writeNextRow(['Ionic Contribution to permittivity at zero frequency'], col=1)
+               sp.writeNextRow(eps[0], col=2, check=1)
+               sp.writeNextRow(eps[1], col=2, check=1)
+               sp.writeNextRow(eps[2], col=2, check=1)
+               eps = self.epsilon_ionic + np.array(self.settings[item])
+               eps = eps.tolist()
+               sp.writeNextRow(['Total Contribution to permittivity at zero frequency'], col=1)
+               sp.writeNextRow(eps[0], col=2, check=1)
+               sp.writeNextRow(eps[1], col=2, check=1)
+               sp.writeNextRow(eps[2], col=2, check=1)
             else:
                sp.writeNextRow([item,self.settings[item]], col=1, check=1)
         sp.writeNextRow([''], col=1)

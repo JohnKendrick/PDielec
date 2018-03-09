@@ -3,7 +3,7 @@ class SpreadSheetManager():
     def __init__(self, filename):
         # Manage a spread sheet for PDielec / PDGui
         self.workbook = xlsx.Workbook(filename)
-        self.tab_names = ['Main', 'Settings', 'Scenarios', 'Plotting', 'Analysis']
+        self.tab_names = ['Main', 'Settings', 'Scenarios', 'Molar Absorption','Absorption', 'Real Permittivity', 'Imaginary Permittivity', 'Analysis']
         self.worksheets = {}
         # Positions points to where we write to next
         self.positions  = {}
@@ -25,10 +25,9 @@ class SpreadSheetManager():
             col = oldCol
         if row is None:
             row = oldRow
-        if col == 1:
-            self.write(row,0,check)
         if col == 0:
             print('We have a problem, col is 0')
+        self.write(row,0,check)
         for item in items:
             #print('writing ', row, col, item)
             self.write(row, col, item)
@@ -44,7 +43,7 @@ class SpreadSheetManager():
     def delete(self):
         for row in range(0,self.max_row[self.name]):
             for col in range(0, self.max_col[self.name]):
-                self.worksheets[self.name].write(row,column,'')
+                self.worksheets[self.name].write(row,col,'')
         self.positions[self.name] = (-1,0)
         self.max_col[self.name] = 0
         self.max_row[self.name] = 0

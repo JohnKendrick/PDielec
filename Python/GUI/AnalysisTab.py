@@ -37,6 +37,8 @@ class AnalysisTab(QWidget):
         self.frequency_units = None
         self.cell_of_molecules = None
         self.original_atomic_order = None
+        self.frequencies_cm1 = []
+        self.mode_energies = []
         # store the notebook
         self.notebook = parent
         # get the reader from the main tab
@@ -101,14 +103,6 @@ class AnalysisTab(QWidget):
         label.setToolTip('Change the width of the bars - should be between 0 and 1')
         form.addRow(label, self.width_le)
         # 
-        # Store results in a file?
-        #
-        #self.file_store_le = QLineEdit(self) 
-        #self.file_store_le.setToolTip('Store the results in a .csv or .xlsx file')
-        #self.file_store_le.setText(self.settings['spreadsheet'])
-        #self.file_store_le.textChanged.connect(self.on_file_store_le_changed)
-        #form.addRow(QLabel('Output spreadsheet', self), self.file_store_le)
-        # 
         # Set the plot title         
         #
         self.title_le = QLineEdit(self) 
@@ -142,6 +136,28 @@ class AnalysisTab(QWidget):
         vbox.addLayout(form)
         # finalise the layout
         self.setLayout(vbox)
+        if self.notebook.spreadsheet is not None:
+            self.write_spreadSheet()
+
+    def write_spreadSheet(self):
+        if self.notebook.spreadsheet is None:
+            return
+        sp = self.notebook.spreadsheet
+        sp.selectWorkSheet('Analysis')
+        sp.delete()
+        sp.writeNextRow(['Analysis of the vibrational modes into percentage contributions for molecules and internal/external modes'], row=0,col=1)
+        headers = ['Mode','Frequency (cm-1)', 'Centre of mass %','Rotational %', 'Vibrational %']
+        for mol in range(self.number_of_molecules):
+            headers.append('Molecule '+str(mol)+' %')
+        #
+        sp.writeNextRow(headers,col=1)
+        for imode,(freq,energies) in enumerate(zip(self.frequencies_cm1,self.mode_energies)):
+           tote,cme,rote,vibe, molecular_energies = energies
+           output = [ imode, freq, 100*cme/tote, 100*rote/tote, 100*vibe/tote ]
+           for e in molecular_energies:
+               output.append(100*e/tote)
+           sp.writeNextRow(output,col=1,check=1)
+
 
     def on_width_changed(self,text):
         debugger.print('on width changed ', text)
@@ -176,7 +192,7 @@ class AnalysisTab(QWidget):
         self.refresh()
         
     def on_tolerance_changed(self,text):
-        debugger.print('on file_tolerance_le changed ', text)
+        debugger.print('on_tolerance_le changed ', text)
         try:
             self.settings['bond_tolerance'] = float(text)
         except:
@@ -190,10 +206,6 @@ class AnalysisTab(QWidget):
             self.tolerance_le.setText('{}'.format(self.settings['bond_tolerance']))
         self.width_le.blockSignals(False)
         self.refresh()
-
-    def on_file_store_le_changed(self,text):
-        self.settings['spreadsheet'] = text
-        debugger.print('on file_store_le change ', self.settings['spreadsheet'])
 
     def on_title_changed(self,text):
         self.settings['title'] = text
@@ -288,38 +300,9 @@ class AnalysisTab(QWidget):
                 self.new_normal_modes[imode,i+2] = self.new_mass_weighted_normal_modes[imode,i+2] / math.sqrt(masses[index])
         # Calculate the distribution in energy for the normal modes
         self.mode_energies = Calculator.calculate_energy_distribution(self.cell_of_molecules, self.frequencies_cm1, self.new_mass_weighted_normal_modes)
-        # Output the final result
-        #title = ['Freq(cm-1)','%mol-cme','%mol-rot','%vib']
-        #for i in range(self.number_of_molecules):
-        #    title.append('%mol-'+str(i))
-        #print_strings('Percentage energies in vibrational modes',title,format="{:>10}")
-        fd_csvfile = None
-        #if not fd_csvfile is None:
-        #    print_strings('Percentage energies in vibrational modes',title,format="{:>10}",file=fd_csvfile,separator=",")
-        #for freq,energies in zip(self.frequencies_cm1,self.mode_energies):
-        #       tote,cme,rote,vibe,molecular_energies = energies
-        #       output = [ freq, 100*cme/tote, 100*rote/tote, 100*vibe/tote ]
-        #       for e in molecular_energies:
-        #           output.append(100*e/tote)
-        #       print_reals('',output,format="{:10.2f}")
-        #       if not fd_csvfile is None:
-        #           print_reals('',output,format="{:10.2f}",file=fd_csvfile,separator=",")
-        # if using a excel file write out the results
-        fd_excelfile = None
-        if not fd_excelfile is None:
-            excel_row += 2; worksheet.write(excel_row,0,'Percentage energies in vibrational modes')
-            excel_row += 1; [ worksheet.write(excel_row,col,f) for col,f in enumerate(title) ]
-            for freq,energies in zip(self.frequencies_cm1,self.mode_energies):
-               tote,cme,rote,vibe, molecular_energies = energies
-               output = [ freq, 100*cme/tote, 100*rote/tote, 100*vibe/tote ]
-               for e in molecular_energies:
-                   output.append(100*e/tote)
-               excel_row += 1; [ worksheet.write(excel_row,col,f) for col,f in enumerate( output ) ]
-        if fd_excelfile is not None:
-            workbook.close()
-        if fd_csvfile is not None:
-            fd_csvfile.close()
-        #
+        # Store the results in the spread shee
+        if self.notebook.spreadsheet is not None:
+            self.write_spreadSheet()
 
     def plot(self):
          if self.reader is None:

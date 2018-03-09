@@ -120,7 +120,7 @@ class MainTab(QWidget):
         sp.selectWorkSheet('Main')
         debugger.print('write_spreadsheet',self.settings)
         sp.writeNextRow( ['Main Tab Settings'], col=1 )
-        for item in self.settings:
+        for item in sorted(self.settings):
             sp.writeNextRow([item,self.settings[item]], col=1, check=1)
         sp.writeNextRow( [''], col=1 )
         sp.writeNextRow( ['Frequencies (cm1) as read from the output file'], col=1 )

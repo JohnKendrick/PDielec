@@ -54,6 +54,8 @@ class PlottingTab(QWidget):
         self.settings['Molar definition'] = 'Unit cells'
         self.settings['Number of atoms'] = 1
         self.settings['Plot title'] = 'Plot Title'
+        self.directions = []
+        self.depolarisations = []
         self.frequency_units = None
         # store the notebook
         self.notebook = parent
@@ -320,13 +322,14 @@ class PlottingTab(QWidget):
                 mode_list.append(mode_index)
         debugger.print('mode_list', mode_list)
         # Calculate the ionic permittivity at zero frequency
-        epsilon_ionic = Calculator.ionic_permittivity(mode_list, oscillator_strengths, frequencies, volume )
+        epsilon_ionic = self.notebook.settingsTab.epsilon_ionic
+        #epsilon_ionic = Calculator.ionic_permittivity(mode_list, oscillator_strengths, frequencies, volume )
         debugger.print('epsilon_ionic',epsilon_ionic)
         epsilon_total = epsilon_inf + epsilon_ionic
         debugger.print('epsilon_total',epsilon_ionic)
         cell = reader.unit_cells[-1]
-        directions = []
-        depolarisations = []
+        self.directions = []
+        self.depolarisations = []
         # Process the shapes and the unique directions.
         # and calculate the depolarisation matrices
         for scenario in self.scenarios:
@@ -348,9 +351,9 @@ class PlottingTab(QWidget):
                 depolarisation = Calculator.initialise_sphere_depolarisation_matrix()
                 direction = np.array( [] )
             direction = direction / np.linalg.norm(direction)
-            directions.append(direction)
+            self.directions.append(direction)
             debugger.print('direction',direction)
-            depolarisations.append(depolarisation)
+            self.depolarisations.append(depolarisation)
         # Set up the parallel processing requirements before looping over the frequencies
         call_parameters = []
         for v in np.arange(float(vmin), float(vmax)+0.5*float(vinc), float(vinc)):
@@ -397,7 +400,7 @@ class PlottingTab(QWidget):
             pool = Pool(number_of_processors)
         else:
             pool = Pool(number_of_processors, initializer=set_affinity_on_worker, maxtasksperchild=10)
-        for i,(scenario,L) in enumerate(zip(self.scenarios,depolarisations)):
+        for i,(scenario,L) in enumerate(zip(self.scenarios,self.depolarisations)):
             debugger.print('Scenario ',i,L)
             matrix = scenario.settings['Matrix']
             method = scenario.settings['Effective medium method'].lower()
@@ -448,6 +451,46 @@ class PlottingTab(QWidget):
         pool.close()
         pool.join()
         #jk print('Dielec calculation duration ', time.time()-start)
+        if self.notebook.spreadsheet is not None:
+            self.write_spreadSheet()
+
+    def write_spreadSheet(self):
+        if self.notebook.spreadsheet is None:
+            return
+        # Deal with Scenarios first
+        sp = self.notebook.spreadsheet
+        sp.selectWorkSheet('Scenarios')
+        sp.delete()
+        sp.writeNextRow(['A list of the scenarios used the calculation of the effective medium'],col=1)
+        for index,(scenario,direction,depolarisation) in enumerate(zip(self.scenarios,self.directions,self.depolarisations)):
+            sp.writeNextRow([''],col=1)
+            sp.writeNextRow(['Scenario '+str(index)],col=1,check=1)
+            settings = scenario.settings
+            for key in sorted(settings,key=str.lower):
+                sp.writeNextRow([key, settings[key]],col=1,check=1)
+            sp.writeNextRow(['Normalised unique direction']+direction.tolist(), col=1,check=1)
+            sp.writeNextRow(['Depolarisation matrix'], col=1,check=1)
+            sp.writeNextRow(depolarisation[0].tolist(), col=2, check=1)
+            sp.writeNextRow(depolarisation[1].tolist(), col=2, check=1)
+            sp.writeNextRow(depolarisation[2].tolist(), col=2, check=1)
+        # Now deal with Molar absorption, absorption, real and imaginary permittivity
+        self.write_results(sp, 'Molar Absorption',self.xaxes, self.molarAbsorptionCoefficients)
+        self.write_results(sp, 'Absorption',self.xaxes, self.absorptionCoefficients)
+        self.write_results(sp, 'Real Permittivity',self.xaxes, self.realPermittivities)
+        self.write_results(sp, 'Imaginary Permittivity',self.xaxes, self.imagPermittivities)
+
+    def write_results(self, sp, name, vss, yss):
+        sp.selectWorkSheet(name)
+        sp.delete()
+        headers = ['frequencies (cm-1)']
+        for isc,ys in enumerate(yss):
+            headers.append('Scenario'+str(isc))
+        sp.writeNextRow(headers,row=0, col=1)
+        for iv,v in enumerate(vss[0]):
+           output = [v]
+           for ys in yss:
+               output.append(ys[iv])
+           sp.writeNextRow(output, col=1,check=1)
 
     def plot(self,xs,ys,ylabel):
         # import matplotlib.pyplot as pl
