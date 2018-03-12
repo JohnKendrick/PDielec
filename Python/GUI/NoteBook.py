@@ -12,13 +12,15 @@ from Python.Utilities           import  Debug
  
 class NoteBook(QWidget):        
  
-    def __init__(self, parent, program, filename, spreadsheet, debug=False):   
+    def __init__(self, parent, program, filename, spreadsheet, debug=False, progressbar=False):   
         super(QWidget, self).__init__(parent)
         global debugger
         debugger = Debug(debug,'NoteBook:')
         self.reader = None
+        self.progressbar=progressbar
         self.spreadsheet = None
-        self.newCalculationRequired = True
+        self.newPlottingCalculationRequired = True
+        self.newAnalysisCalculationRequired = True
         self.debug = debug
         self.layout = QVBoxLayout()
         # The number of tabs before we have scenarios
@@ -33,7 +35,7 @@ class NoteBook(QWidget):
         if filename != '':
             debugger.print('Refreshing settingsTab in notebook initialisation - filename',filename)
             self.settingsTab.refresh()
-            self.settingsTab.calculateButtonClicked()
+            #self.settingsTab.calculateButtonClicked()
         #
         # Open more windows
         #
@@ -76,11 +78,12 @@ class NoteBook(QWidget):
 
     def addScenario(self,copyFromIndex=-2):
         debugger.print('Settings for scenario', copyFromIndex)
+        self.newPlottingCalculationRequired = True
         self.scenarios.append( ScenarioTab(self, self.debug) )
         self.scenarios[-1].settings = copy.deepcopy(self.scenarios[copyFromIndex].settings)
         # debugger.print('Settings for new scenario')
         # self.scenarios[-1].print_settings()
-        self.scenarios[-1].refresh()
+        self.scenarios[-1].refresh(force=True)
         for i,scenario in enumerate(self.scenarios):
             scenario.setScenarioIndex(i)
         n = len(self.scenarios)
@@ -91,6 +94,7 @@ class NoteBook(QWidget):
     def deleteScenario(self,index):
         # Don't delete the last scenario
         if len(self.scenarios) > 1:
+            self.newPlottingCalculationRequired = True
             self.tabs.removeTab(self.tabOffSet+index)
             del self.scenarios[index]
             for i,scenario in enumerate(self.scenarios):
@@ -98,30 +102,29 @@ class NoteBook(QWidget):
                 self.tabs.setTabText(self.tabOffSet+i,'Scenario '+str(i+1))
         return
 
-    def refresh(self):
-        debugger.print('Notebook refresh changed')
+    def refresh(self,force=False):
+        debugger.print('Notebook refresh changed',force)
         ntabs = 2 + len(self.scenarios) + 3
-        self.mainTab.refresh()
-        self.settingsTab.refresh()
+        self.mainTab.refresh(force=force)
+        self.settingsTab.refresh(force=force)
         for tab in self.scenarios:
-            tab.refresh()
+            tab.refresh(force=force)
         self.tabs.setCurrentIndex(ntabs-3)
-        self.plottingTab.refresh()
+        self.plottingTab.refresh(force=force)
         self.tabs.setCurrentIndex(ntabs-3)
-        self.analysisTab.refresh()
+        self.analysisTab.refresh(force=force)
         self.tabs.setCurrentIndex(ntabs-2)
-        self.viewerTab.refresh()
+        self.viewerTab.refresh(force=force)
         self.tabs.setCurrentIndex(ntabs-1)
 
     def on_tabs_currentChanged(self, tabindex):
         debugger.print('Tab index changed', tabindex)
         #       Number of tabs
         ntabs = 2 + len(self.scenarios) + 3
-        self.newCalculationRequired = True
         if tabindex == ntabs-1:
             # viewer tab
             self.viewerTab.refresh()
-        if tabindex == ntabs-2:
+        elif tabindex == ntabs-2:
             # analysis tab
             self.analysisTab.refresh()
         elif tabindex == ntabs-3:

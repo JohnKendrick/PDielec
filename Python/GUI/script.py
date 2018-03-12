@@ -6,7 +6,6 @@ tab.settings['Program'] = 'abinit'
 tab.settings['QM program'] = ''
 tab.settings['Output file name'] = 'temp.out'
 tab.settings['Excel filename'] = 'temp.xlsx'
-tab.refresh()
 #
 # SettingsTab
 #

@@ -19,6 +19,8 @@ class ScenarioTab(QWidget):
         debugger = Debug(debug,'ScenarioTab:')
         self.dirty = True
         self.settings = {}
+        self.notebook = parent
+        self.notebook.newPlottingCalculationRequired = True
         matrix = 'ptfe'
         self.settings['Matrix'] = matrix
         self.settings['Matrix density'] = support_matrix_db[matrix][0]
@@ -171,17 +173,17 @@ class ScenarioTab(QWidget):
         # unique direction (hkl) or [abc]
         self.h_sb = QSpinBox(self)
         self.h_sb.setToolTip('Define the h dimension of the unique direction')
-        self.h_sb.setRange(0,20)
+        self.h_sb.setRange(-20,20)
         self.h_sb.setValue(self.settings['Unique direction - h'])
         self.h_sb.valueChanged.connect(self.on_h_sb_changed)
         self.k_sb = QSpinBox(self)
         self.k_sb.setToolTip('Define the k dimension of the unique direction')
-        self.k_sb.setRange(0,20)
+        self.k_sb.setRange(-20,20)
         self.k_sb.setValue(self.settings['Unique direction - k'])
         self.k_sb.valueChanged.connect(self.on_k_sb_changed)
         self.l_sb = QSpinBox(self)
         self.l_sb.setToolTip('Define the l dimension of the unique direction')
-        self.l_sb.setRange(0,20)
+        self.l_sb.setRange(-20,20)
         self.l_sb.setValue(self.settings['Unique direction - l'])
         self.l_sb.valueChanged.connect(self.on_l_sb_changed)
         hbox = QHBoxLayout()
@@ -259,33 +261,39 @@ class ScenarioTab(QWidget):
     def on_h_sb_changed(self,value):
         debugger.print('on_h_sb_changed', value)
         self.dirty = True
+        self.notebook.newPlottingCalculationRequired = True
         self.settings['Unique direction - h'] = value
 
     def on_k_sb_changed(self,value):
         debugger.print('on_k_sb_changed', value)
         self.dirty = True
+        self.notebook.newPlottingCalculationRequired = True
         self.settings['Unique direction - k'] = value
 
     def on_l_sb_changed(self,value):
         debugger.print('on_l_sb_changed', value)
         self.dirty = True
+        self.notebook.newPlottingCalculationRequired = True
         self.settings['Unique direction - l'] = value
 
     def on_shape_cb_activated(self,index):
         debugger.print('on shape cb activated', index)
         self.dirty = True
+        self.notebook.newPlottingCalculationRequired = True
         self.settings['Particle shape'] = self.shapes[index]
         self.change_greyed_out()
 
     def on_methods_cb_activated(self,index):
         debugger.print('on methods cb activated', index)
         self.dirty = True
+        self.notebook.newPlottingCalculationRequired = True
         self.settings['Effective medium method'] = self.methods[index]
         self.change_greyed_out()
 
     def on_mf_sb_changed(self,value):
         debugger.print('on mass fraction line edit changed', value)
         self.dirty = True
+        self.notebook.newPlottingCalculationRequired = True
         self.settings['Mass fraction'] =  value/100.0
         if self.settings['Mass or volume fraction'] == 'mass':
             self.update_vf_sb()
@@ -312,6 +320,7 @@ class ScenarioTab(QWidget):
     def on_aoverb_sb_changed(self,value):
         debugger.print('on_aoverb_le_changed',value)
         self.dirty = True
+        self.notebook.newPlottingCalculationRequired = True
         self.settings['Ellipsoid a/b'] = value
 
     def on_legend_le_changed(self,text):
@@ -323,16 +332,19 @@ class ScenarioTab(QWidget):
     def on_sigma_sb_changed(self,value):
         debugger.print('on sigma line edit changed', value)
         self.dirty = True
+        self.notebook.newPlottingCalculationRequired = True
         self.settings['Particle size distribution sigma(mu)'] = value
 
     def on_size_sb_changed(self,value):
         debugger.print('on size line edit changed', value)
         self.dirty = True
+        self.notebook.newPlottingCalculationRequired = True
         self.settings['Particle size(mu)'] = value
 
     def on_vf_sb_changed(self,value):
         debugger.print('on volume fraction line edit changed', value)
         self.dirty = True
+        self.notebook.newPlottingCalculationRequired = True
         self.settings['Volume fraction'] = value/100.0
         if self.settings['Mass or volume fraction'] == 'volume':
             self.update_mf_sb()
@@ -360,6 +372,7 @@ class ScenarioTab(QWidget):
         debugger.print('on matrix combobox activated', index)
         debugger.print('on matrix combobox activated', self.matrix_cb.currentText())
         self.dirty = True
+        self.notebook.newPlottingCalculationRequired = True
         matrix = self.matrix_cb.currentText()
         self.matrix_cb.blockSignals(True)
         self.density_sb.blockSignals(True)
@@ -383,14 +396,17 @@ class ScenarioTab(QWidget):
         self.update_vf_sb()
         debugger.print('on density line edit changed', value)
         self.dirty = True
+        self.notebook.newPlottingCalculationRequired = True
 
     def on_permittivity_sb_changed(self,value):
         self.settings['Matrix permittivity'] = value
         debugger.print('on permittivity line edit changed', value)
         self.dirty = True
+        self.notebook.newPlottingCalculationRequired = True
 
     def set_reader(self,reader):
         self.dirty = True
+        self.notebook.newPlottingCalculationRequired = True
         self.reader = reader
 
     def change_greyed_out(self):
@@ -465,10 +481,13 @@ class ScenarioTab(QWidget):
         for key in self.settings:
             debugger.print(key, self.settings[key]) 
         
-    def refresh(self,force):
-        debugger.print('refresh', force)
+    def refresh(self,force=False):
         if not self.dirty and not force:
+            debugger.print('refresh aborted', self.dirty,force)
             return
+        debugger.print('refresh', force)
+        # Tell the main notebook that we need to recalculate any plot
+        self.notebook.newPlottingCalculationRequired = True
         # First see if we can get the reader from the mainTab
         self.reader = self.notebook.mainTab.reader
         # block signals to all the widgets

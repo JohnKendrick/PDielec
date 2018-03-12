@@ -20,6 +20,7 @@ class ViewerTab(QWidget):
         global debugger
         debugger = Debug(debug,'ViewerTab')
         self.debug = debug
+        self.dirty = True
         self.subplot = None
         self.setWindowTitle('Viewer')
         self.selected_mode = 0
@@ -264,6 +265,7 @@ class ViewerTab(QWidget):
             self.opengl_widget.addArrows( uvw, arrow_scaling )
         self.opengl_widget.setRotationCentre(self.unit_cell.calculateCentreOfMass() )
         self.opengl_widget.setImageSize()
+        self.dirty = False
         return
 
     def calculatePhasePositions(self):
@@ -325,8 +327,11 @@ class ViewerTab(QWidget):
         self.opengl_widget.update()
         return
 
-    def refresh(self):
-        debugger.print('refresh widget')
+    def refresh(self,force=False):
+        if not self.dirty and not force:
+            debugger.print('refresh aborted',self.dirty,force)
+            return
+        debugger.print('refresh widget',force)
         self.selected_mode_sb.setValue(self.selected_mode)
         self.atom_scaling_sb.setValue(self.settings['Atom scaling'])
         self.bond_radius_sb.setValue(self.settings['Bond radius'])

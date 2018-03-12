@@ -25,11 +25,11 @@ class MainTab(QWidget):
         self.settings['Excel file name'] = excelfile
         self.settings['QM program'] = ''
         self.notebook = parent
+        self.notebook.plottingCalculationRequired = True
+        self.notebook.analysisCalculationRequired = True
         self.reader = None
         self.frequencies_cm1 = None
         self.dirty = True
-#        self.layout = QVBoxLayout()
- 
         # Create first tab - MAIN
         vbox = QVBoxLayout()
         form = QFormLayout()
@@ -132,6 +132,7 @@ class MainTab(QWidget):
         if not os.path.isfile(self.settings['Output file name']):
             QMessageBox.about(self,'Processing output file','The filename for the output file to be processed is not correct: '+self.settings['Output file name'])
             return
+        self.listw_l.clear()
         self.listw_l.setText('Frequencies from '+self.settings['Output file name'])
         self.reader = get_reader(self.settings['Program'],[ self.settings['Output file name'] ], self.settings['QM program'] )
         if self.reader is None:
@@ -158,6 +159,8 @@ class MainTab(QWidget):
             return
         # tell the notebook that we have read the info and we have a reader
         self.notebook.reader = self.reader
+        self.notebook.plottingCalculationRequired = True
+        self.notebook.analysisCalculationRequired = True
         if self.debug:
             self.reader.print_info()
         self.frequencies_cm1 = np.sort(self.reader.frequencies)
@@ -284,6 +287,8 @@ class MainTab(QWidget):
         debugger.print('refresh', force)
         if not self.dirty and not force:
             return
+        self.notebook.newPlottingCalculationRequired = True
+        self.notebook.newAnalysisCalculationRequired = True
         prtext = self.settings['Program'].capitalize()
         qmtext = self.settings['QM program'].capitalize()
         if prtext == 'Qe':

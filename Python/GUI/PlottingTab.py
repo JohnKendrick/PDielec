@@ -172,9 +172,12 @@ class PlottingTab(QWidget):
         hbox.addWidget(self.imagPermButton)
         form.addRow(hbox)
         # Add a progress bar
+        if self.notebook.progressbar is not None:
+            self.splash_progressbar = self.notebook.progressbar
         self.progressbar = QProgressBar(self)
         self.progressbar.setToolTip('Show the progress of any calculations')
         self.progressbar.setMinimum(0)
+        self.splash_progressbar.setMinimum(0)
         label = QLabel('Calculation progress', self)
         label.setToolTip('Show the progress of any calculations')
         form.addRow(label,self.progressbar)
@@ -192,30 +195,30 @@ class PlottingTab(QWidget):
 
     def molarAbsorptionButtonClicked(self):
         debugger.print('molarAbsorptionButtonClicked pressed')
-        if self.notebook.newCalculationRequired:
+        if self.notebook.newPlottingCalculationRequired:
             self.calculate()
-        if not self.notebook.newCalculationRequired:
+        if not self.notebook.newPlottingCalculationRequired:
             self.plot(self.xaxes, self.molarAbsorptionCoefficients, r'Molar Absorption Coefficient $\mathdefault{(L mole^{-1} cm^{-1})}$')
 
     def absorptionButtonClicked(self):
         debugger.print('absorptionButtonClicked pressed')
-        if self.notebook.newCalculationRequired:
+        if self.notebook.newPlottingCalculationRequired:
             self.calculate()
-        if not self.notebook.newCalculationRequired:
+        if not self.notebook.newPlottingCalculationRequired:
             self.plot(self.xaxes, self.absorptionCoefficients, r'Absorption Coefficient $\mathdefault{(cm^{-1})}$')
 
     def realPermButtonClicked(self):
         debugger.print('realPermButtonClicked pressed')
-        if self.notebook.newCalculationRequired:
+        if self.notebook.newPlottingCalculationRequired:
             self.calculate()
-        if not self.notebook.newCalculationRequired:
+        if not self.notebook.newPlottingCalculationRequired:
             self.plot(self.xaxes, self.realPermittivities, 'Real Component of Permittivity')
 
     def imagPermButtonClicked(self):
         debugger.print('imagPermButtonClicked pressed')
-        if self.notebook.newCalculationRequired:
+        if self.notebook.newPlottingCalculationRequired:
             self.calculate()
-        if not self.notebook.newCalculationRequired:
+        if not self.notebook.newPlottingCalculationRequired:
             self.plot(self.xaxes, self.imagPermittivities, 'Imaginary Component of Permittivity')
 
     def on_title_changed(self,text):
@@ -227,29 +230,33 @@ class PlottingTab(QWidget):
 
     def on_vinc_changed(self,value):
         self.settings['Frequency increment'] = value
-        self.notebook.newCalculationRequired = True
+        self.notebook.newPlottingCalculationRequired = True
         self.dirty = True
         self.progressbar.setValue(0)
+        self.splash_progressbar.setValue(0)
         debugger.print('on vinc change ', self.settings['Frequency increment'])
 
     def on_vmin_changed(self):
         self.settings['Minimum frequency'] = self.vmin_sb.value()
-        self.notebook.newCalculationRequired = True
+        self.notebook.newPlottingCalculationRequired = True
         self.dirty = True
         self.progressbar.setValue(0)
+        self.splash_progressbar.setValue(0)
         debugger.print('on vmin change ', self.settings['Minimum frequency'])
 
     def on_vmax_changed(self):
         self.settings['Maximum frequency'] = self.vmax_sb.value()
-        self.notebook.newCalculationRequired = True
+        self.notebook.newPlottingCalculationRequired = True
         self.dirty = True
         self.progressbar.setValue(0)
+        self.splash_progressbar.setValue(0)
         debugger.print('on vmax change ', self.settings['Maximum frequency'])
 
     def refresh(self,force=False):
-        debugger.print('refreshing widget', force)
-        if not self.dirty and not force:
+        if not self.dirty and not force and not self.notebook.newPlottingCalculationRequired:
+            debugger.print('refreshing widget aborted', self.dirty,force,self.notebook.newPlottingCalculationRequired)
             return
+        debugger.print('refreshing widget', force)
         self.vmin_sb.setValue(self.settings['Minimum frequency'])
         self.vmax_sb.setValue(self.settings['Maximum frequency'])
         self.vinc_sb.setValue(self.settings['Frequency increment'])
@@ -266,17 +273,20 @@ class PlottingTab(QWidget):
         if self.reader is not None:
             self.settings['concentration'] = 1000.0 / (avogadro_si * self.reader.volume * 1.0e-24)
         # Flag a recalculation will be required
-        self.notebook.newCalculationRequired = True
+        self.notebook.newPlottingCalculationRequired = True
         # Reset the progress bar
         self.progressbar.setValue(0)
+        self.splash_progressbar.setValue(0)
         self.molarAbsorptionButtonClicked()
         self.dirty = False
+        self.notebook.newPlottingCalculationRequired = False
         return
 
     def on_natoms_changed(self, value):
-        self.notebook.newCalculationRequired = True
+        self.notebook.newPlottingCalculationRequired = True
         self.dirty = True
         self.progressbar.setValue(0)
+        self.splash_progressbar.setValue(0)
         self.settings['Number of atoms'] = value
         debugger.print('on natoms changed ', self.settings['Number of atoms'])
 
@@ -291,9 +301,10 @@ class PlottingTab(QWidget):
     def on_molar_cb_activated(self, index):
         self.molar_cb_current_index = index
         self.settings['Molar definition'] = self.molar_definitions[index]
-        self.notebook.newCalculationRequired = True
+        self.notebook.newPlottingCalculationRequired = True
         self.dirty = True
         self.progressbar.setValue(0)
+        self.splash_progressbar.setValue(0)
         if self.settings['Molar definition'] == 'Molecules':
             self.settings['concentration'] = 1000.0 / (avogadro_si * self.reader.volume * 1.0e-24 * self.settings['Number of atoms'] / self.reader.nions)
             self.natoms_sb.setEnabled(True)
@@ -309,6 +320,7 @@ class PlottingTab(QWidget):
         global threading
         debugger.print('calculate')
         self.progressbar.setValue(0)
+        self.splash_progressbar.setValue(0)
         # Assemble the mainTab settings
         settings = self.notebook.mainTab.settings
         program = settings['Program']
@@ -321,7 +333,7 @@ class PlottingTab(QWidget):
         if filename is '':
             return
         # Assemble the settingsTab settings
-        self.notebook.newCalculationRequired = False
+        self.notebook.newPlottingCalculationRequired = False
         settings = self.notebook.settingsTab.settings
         eckart = settings['Eckart flag']
         neutral = settings['Neutral Born charges']
@@ -391,6 +403,7 @@ class PlottingTab(QWidget):
         maximum_progress = len(call_parameters) * (1 + len(self.scenarios))
         progress = 0
         self.progressbar.setMaximum(maximum_progress)
+        self.splash_progressbar.setValue(maximum_progress)
         number_of_processors = cpu_count()
         #jk start = time.time()
         if threading:
@@ -402,6 +415,7 @@ class PlottingTab(QWidget):
             dielecv_results.append(result)
             progress += 1
             self.progressbar.setValue(progress)
+            self.splash_progressbar.setValue(progress)
         pool.close()
         pool.join()
         #jk print('Dielec calculation duration ', time.time()-start)
@@ -459,6 +473,7 @@ class PlottingTab(QWidget):
                 results.append(result)
                 progress += 1
                 self.progressbar.setValue(progress)
+                self.splash_progressbar.setValue(progress)
             xaxis = []
             realPermittivity = []
             imagPermittivity = []

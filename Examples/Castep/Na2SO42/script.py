@@ -1,10 +1,11 @@
+self.notebook.tabs.setCurrentIndex(0)
 #
 # SettingsTab
 #
 tab = self.notebook.settingsTab
 tab.settings['Eckart flag'] = False
 tab.settings['Neutral Born charges'] = False
-tab.settings['Sigma value'] = 10
+tab.settings['Sigma value'] = 5
 tab.settings['Mass definition'] = 'average'
 #
 # 0th Scenario tabs
@@ -22,22 +23,21 @@ tab.settings['Effective medium method'] = 'Maxwell-Garnett'
 tab.settings['Particle shape'] = 'Sphere'
 # Add new scenarios
 methods = [ 'Maxwell-Garnett', 'Bruggeman']
-shapes = ['Sphere', 'Needle']
-vfs    = [ 0.1, 0.2 ]
+shapes = ['Needle', 'Ellipsoid', 'Plate']
+hkls   = [[0,0,1],  [0,0,1],     [1,0,0]]
 for method in methods:
-    for vf in vfs:
-        for shape in shapes:
-            self.notebook.addScenario()
-            tab = self.notebook.scenarios[-1]
-            tab.settings['Particle shape'] = shape
-            tab.settings['Effective medium method'] = method
-            tab.settings['Volume fraction'] = vf
-tab.settings['Effective medium method'] = 'Averaged Permittivity'
+    for shape,hkl in zip(shapes,hkls):
+        self.notebook.addScenario()
+        tab = self.notebook.scenarios[-1]
+        tab.settings['Particle shape'] = shape
+        tab.settings['Effective medium method'] = method
+        tab.settings['Unique direction - h'] = hkl[0]
+        tab.settings['Unique direction - k'] = hkl[1]
+        tab.settings['Unique direction - l'] = hkl[2]
+self.notebook.addScenario()
+tab = self.notebook.scenarios[-1]
+tab.settings['Effective medium method'] = 'Averaged permittivity'
 tab.settings['Particle shape'] = 'Sphere'
-for vf in vfs:
-    self.notebook.addScenario()
-    tab = self.notebook.scenarios[-1]
-    tab.settings['Volume fraction'] = vf
 self.notebook.deleteScenario(0)
 #
 # Plotting Tab
@@ -59,3 +59,4 @@ tab.settings['Covalent radius scaling'] = 1.1
 tab.settings['Bonding tolerance'] = 0.1
 tab.settings['Bar width'] = 0.5
 #
+self.notebook.tabs.setCurrentIndex(0)

@@ -1,6 +1,7 @@
 import sys
 import os.path
-from PyQt5.QtWidgets import QMainWindow, QApplication
+from PyQt5.QtWidgets import QMainWindow, QApplication, QSplashScreen, QProgressBar
+from PyQt5           import Qt
 from Python.GUI.NoteBook import NoteBook
  
 class App(QMainWindow):
@@ -44,6 +45,10 @@ class App(QMainWindow):
                 spreadsheet = token
             itoken += 1
         #
+        splash = QSplashScreen(self)
+        progressbar = QProgressBar(splash)
+        progressbar.show()
+        splash.show()
         self.title = 'PDielec GUI '
         self.left = 10
         self.top = 30
@@ -52,18 +57,18 @@ class App(QMainWindow):
         self.setWindowTitle(self.title)
         self.setGeometry(self.left, self.top, self.width, self.height)
  
-        self.notebook = NoteBook(self, program, filename, spreadsheet, debug=debug)
+        self.notebook = NoteBook(self, program, filename, spreadsheet, progressbar=progressbar, debug=debug)
         self.setCentralWidget(self.notebook)
-        self.show()
         if script:
             self.readScript(scriptname)
         if exit:
             sys.exit()
+        self.show()
 
     def readScript(self,scriptname):
         with open(scriptname,'r') as fd:
             exec(fd.read())
-        self.notebook.refresh()
+        self.notebook.refresh(force=True)
 
     def closeEvent(self, event):
         # Make sure any spread sheet is closed

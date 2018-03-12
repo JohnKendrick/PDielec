@@ -40,6 +40,7 @@ class SettingsTab(QWidget):
         global debugger
         debugger = Debug(debug, 'SettingsTab:')
         self.notebook = parent
+        self.dirty = True
         self.settings = {}
         self.settings['Eckart flag'] = True
         self.settings['Neutral Born charges'] = False
@@ -67,6 +68,11 @@ class SettingsTab(QWidget):
         self.eckart_cb.setToolTip('Applying Eckart conditions ensures three zero translation mode)')
         self.eckart_cb.setText('')
         self.eckart_cb.setLayoutDirection(Qt.RightToLeft)
+        if self.settings['Eckart flag']:
+            self.eckart_cb.setCheckState(Qt.Checked)
+        else:
+            self.eckart_cb.setCheckState(Qt.Unchecked)
+        self.eckart_cb.stateChanged.connect(self.on_eckart_changed)
         if self.settings['Eckart flag']:
             self.eckart_cb.setCheckState(Qt.Checked)
         else:
@@ -145,7 +151,6 @@ class SettingsTab(QWidget):
         # Create Table containing the IR active modes
         self.output_tw = FixedQTableWidget(self)
         self.output_tw.setToolTip('Output showing the frequencies and strengths of the IR active modes only')
-        self.output_tw.itemClicked.connect(self.on_output_tw_itemClicked)
         self.output_tw.itemChanged.connect(self.on_output_tw_itemChanged)
         self.output_tw.setRowCount(1)
         self.output_tw.blockSignals(True)
@@ -159,6 +164,9 @@ class SettingsTab(QWidget):
         # Only calculate if the reader is set
         if self.reader is None:
             return
+        # Flag the fact that we need new calculations and new analysis
+        self.notebook.newPlottingCalculationRequired = True
+        self.notebook.newAnalysisCalculationRequired = True
         self.reader.hessian_symmetrisation = self.settings['Hessian symmetrisation']
         #self.reader.read_output()
         if self.settings['Neutral Born charges']:
@@ -181,6 +189,10 @@ class SettingsTab(QWidget):
         self.mass_weighted_normal_modes = self.reader.calculate_mass_weighted_normal_modes()
         # convert cm-1 to au
         self.frequencies_cm1 = self.reader.frequencies
+        # work out the degeneraceies
+        degeneracy_threshold = 1.0E-8
+        self.degenerate_lists = {}
+#        #
         frequencies = np.array(self.frequencies_cm1) * wavenumber
         self.sigmas_cm1 = [ self.settings['Sigma value'] for i in self.frequencies_cm1 ]
         born_charges = np.array(self.reader.born_charges)
@@ -214,6 +226,7 @@ class SettingsTab(QWidget):
         self.redraw_output_tw()
         if self.notebook.spreadsheet is not None:
             self.write_spreadsheet()
+        self.dirty = False
 
     def write_spreadsheet(self):
         sp = self.notebook.spreadsheet
@@ -292,6 +305,8 @@ class SettingsTab(QWidget):
         self.settings['Sigma value'] = self.sigma_sb.value()
         self.sigmas_cm1 = [ self.settings['Sigma value'] for i in self.frequencies_cm1 ]
         self.redraw_output_tw()
+        self.notebook.newPlottingCalculationRequired = True
+        self.notebook.newAnalysisCalculationRequired = True
         debugger.print('on sigma change ', self.settings['Sigma value'])
 
     def on_mass_cb_activated(self,index):
@@ -302,6 +317,8 @@ class SettingsTab(QWidget):
         # Modify the element masses
         self.set_masses_tw()
         self.calculateButtonClicked()
+        self.notebook.newPlottingCalculationRequired = True
+        self.notebook.newAnalysisCalculationRequired = True
 
     def set_masses_tw(self):
         debugger.print('set masses')
@@ -362,21 +379,8 @@ class SettingsTab(QWidget):
                     print('Mass definition not processed', self.settings['Mass definition'])
             # unblock the table signals
             self.element_masses_tw.blockSignals(False)
-
-    def on_output_tw_itemClicked(self, item):
-        debugger.print('on_output_tw_itemClicked)', item.row(), item.column() )
-        #col = item.column()
-        #row = item.row()
-        # Handle the case that an unchecked (greyed out) sigma is clicked
-        #self.output_tw.blockSignals(True)
-        #if col == 0:
-        #    if not self.modes_selected[row]:
-        #        debugger.print('on_output_tw_item_clicked changing mode selection', row)
-        #        self.modes_selected[row] = True
-        #        debugger.print('on_output_tw_item_clicked mode selected is', self.modes_selected[row])
-        #        item.setFlags(item.flags() & Qt.NoItemFlags | Qt.ItemIsUserCheckable | Qt.ItemIsEnabled | Qt.ItemIsSelectable | Qt.ItemIsEditable )
-        #        item.setCheckState(Qt.Checked)
-        #self.output_tw.blockSignals(False)
+            self.notebook.newPlottingCalculationRequired = True
+            self.notebook.newAnalysisCalculationRequired = True
 
     def on_output_tw_itemChanged(self, item):
         self.output_tw.blockSignals(True)
@@ -397,6 +401,8 @@ class SettingsTab(QWidget):
             self.redraw_output_tw()
         else:
             self.redraw_output_tw()
+        self.notebook.newPlottingCalculationRequired = True
+        self.notebook.newAnalysisCalculationRequired = True
 
     def on_element_masses_tw_itemClicked(self, item):
         debugger.print('on_element_masses_tw_itemClicked)', item.row(),item.column() )
@@ -409,12 +415,16 @@ class SettingsTab(QWidget):
         self.settings['Mass definition'] = 'gui'
         self.masses_dictionary[elements[col]] = float(item.text())
         self.calculateButtonClicked()
+        self.notebook.newPlottingCalculationRequired = True
+        self.notebook.newAnalysisCalculationRequired = True
         debugger.print('masses_dictionary', self.masses_dictionary)
 
     def on_optical_tw_itemChanged(self, item):
         debugger.print('on_optical_itemChanged)', item.row(), item.column() )
         self.settings['Optical permittivity'][item.row()][item.column()] = float(item.text())
         self.settings['Optical permittivity'][item.column()][item.row()] = float(item.text())
+        self.notebook.newPlottingCalculationRequired = True
+        self.notebook.newAnalysisCalculationRequired = True
         debugger.print('optical permittivity')
         debugger.print(self.settings['Optical permittivity'])
 
@@ -427,7 +437,10 @@ class SettingsTab(QWidget):
         if not self.reader and self.notebook.reader:
             self.dirty = True
         if not self.dirty and not force:
+            debugger.print('Aborting refresh readers are: ',self.reader,self.notebook.reader)
+            debugger.print('Aborting self.dirty and force ',self.dirty,  force)
             return
+        debugger.print('refresh ',force)
         self.reader = self.notebook.reader
         if self.reader:
             # Masses
@@ -437,6 +450,15 @@ class SettingsTab(QWidget):
                 self.set_optical_permittivity_tw()
             else:
                 self.refresh_optical_permittivity_tw()
+        self.sigma_sb.setValue(self.settings['Sigma value'])
+        if self.settings['Eckart flag']:
+            self.eckart_cb.setCheckState(Qt.Checked)
+        else:
+            self.eckart_cb.setCheckState(Qt.Unchecked)
+        if self.settings['Neutral Born charges']:
+            self.born_cb.setCheckState(Qt.Checked)
+        else:
+            self.born_cb.setCheckState(Qt.Unchecked)
         self.calculateButtonClicked()
 
     def refresh_optical_permittivity_tw(self):
@@ -458,10 +480,14 @@ class SettingsTab(QWidget):
         self.settings['Neutral Born charges'] = self.born_cb.isChecked()
         debugger.print('on born change ', self.settings['Neutral Born charges'])
         self.calculateButtonClicked()
+        self.notebook.newPlottingCalculationRequired = True
+        self.notebook.newAnalysisCalculationRequired = True
 
     def on_eckart_changed(self):
         debugger.print('on eckart change ', self.eckart_cb.isChecked())
         self.settings['Eckart flag'] = self.eckart_cb.isChecked()
         debugger.print('on eckart change ', self.settings['Eckart flag'])
         self.calculateButtonClicked()
+        self.notebook.newPlottingCalculationRequired = True
+        self.notebook.newAnalysisCalculationRequired = True
 

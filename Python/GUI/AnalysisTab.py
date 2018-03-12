@@ -212,9 +212,10 @@ class AnalysisTab(QWidget):
             self.plot()
 
     def refresh(self, force=False):
-        debugger.print('refreshing widget', force)
-        if not self.dirty and not force:
+        if not self.dirty and not force and not self.notebook.newAnalysisCalculationRequired:
+            debugger.print('return with no refresh', self.dirty, force, self.notebook.newAnalysisCalculationRequired)
             return
+        debugger.print('Refreshing widget')
         self.vmin_sb.setValue(self.settings['Minimum frequency'])
         self.vmax_sb.setValue(self.settings['Maximum frequency'])
         self.scale_sp.setValue(self.settings['Covalent radius scaling'])
@@ -225,6 +226,7 @@ class AnalysisTab(QWidget):
         self.plottype_cb.setCurrentIndex(self.plot_type_index)
         self.calculate()
         self.plot()
+        self.notebook.newAnalysisCalculationRequired = False
         return
 
     def on_plottype_cb_changed(self, index):
@@ -290,7 +292,29 @@ class AnalysisTab(QWidget):
                 self.new_normal_modes[imode,i+1] = self.new_mass_weighted_normal_modes[imode,i+1] / math.sqrt(masses[index])
                 self.new_normal_modes[imode,i+2] = self.new_mass_weighted_normal_modes[imode,i+2] / math.sqrt(masses[index])
         # Calculate the distribution in energy for the normal modes
-        self.mode_energies = Calculator.calculate_energy_distribution(self.cell_of_molecules, self.frequencies_cm1, self.new_mass_weighted_normal_modes)
+        mode_energies = Calculator.calculate_energy_distribution(self.cell_of_molecules, self.frequencies_cm1, self.new_mass_weighted_normal_modes)
+        # Deal with degeneracies
+        degenerate_list = [ [] for f in self.frequencies_cm1]
+        for i,fi in enumerate(self.frequencies_cm1):
+            for j,fj in enumerate(self.frequencies_cm1):
+                if abs(fi-fj) < 1.0E-8:
+                    degenerate_list[i].append(j)
+        self.mode_energies = []
+        for i,fi in enumerate(self.frequencies_cm1):
+            tote,cme,rote,vibe,mole = mode_energies[i]
+            sums = [0.0]*5
+            sume = [0.0]*len(mole)
+            degeneracy = len(degenerate_list[i])
+            for j in degenerate_list[i]:
+                tote,cme,rote,vibe,mole = mode_energies[j]
+                sums[0] += tote / degeneracy
+                sums[1] += cme / degeneracy
+                sums[2] += rote / degeneracy
+                sums[3] += vibe / degeneracy
+                for k,e in enumerate(mole):
+                    sume[k] += e / degeneracy
+                sums[4] = sume
+            self.mode_energies.append(sums)
         # Store the results in the spread shee
         if self.notebook.spreadsheet is not None:
             self.write_spreadSheet()
