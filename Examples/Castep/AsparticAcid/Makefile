@@ -1,4 +1,9 @@
 -include ../../Makefile.mk
+pdgui:	
+	@echo "Calculating absorption for L-Aspartic acid from CASTEP...."
+	@bash pdgui.sh > pdgui.out
+	@../../../checkexcel results.ref.xlsx results.xlsx
+
 test:	
 	@echo "Calculating absorption for L-Aspartic acid from CASTEP...."
 	@bash command.sh ${PYTHON_EXE} ${PDIELEC_OPTIONS} > command.out

@@ -27,6 +27,7 @@ class MainTab(QWidget):
         self.notebook = parent
         self.reader = None
         self.frequencies_cm1 = None
+        self.dirty = True
 #        self.layout = QVBoxLayout()
  
         # Create first tab - MAIN
@@ -77,7 +78,7 @@ class MainTab(QWidget):
         #
         self.file_le = QLineEdit(self)
         self.file_le.setToolTip('Choose output file for analysis (press return for a file chooser)')
-        self.file_le.setText(filename)
+        self.file_le.setText(self.settings['Output file name'])
         self.file_le.returnPressed.connect(self.on_file_le_return)
         self.file_le.textChanged.connect(self.on_file_le_changed)
         label = QLabel('Analyse this output file')
@@ -163,11 +164,13 @@ class MainTab(QWidget):
         for f in self.frequencies_cm1:
             self.listw.addItem('{0:.3f}'.format(f))
         # tell the settings tab to update the widgets that depend on the contents of the reader
-        debugger.print('Main tab: processing a return')
+        debugger.print('processing a return')
         if hasattr(self.notebook, 'settingsTab'):
+            debugger.print('about to refresh settings')
             self.notebook.settingsTab.refresh()
         # Update any scenarios
         if hasattr(self.notebook, 'scenarios'):
+            debugger.print('about to refresh scenarios')
             debugger.print('notebook has {} scenarios'.format(len(self.notebook.scenarios)))
             for tab in self.notebook.scenarios:
                 tab.refresh()
@@ -175,19 +178,19 @@ class MainTab(QWidget):
             debugger.print('notebook has no scenarios yet')
         # Update the plotting tab
         if hasattr(self.notebook, 'plottingTab'):
-            debugger.print('notebook has a plottingTab')
+            debugger.print('about to refresh plottingtab')
             self.notebook.plottingTab.refresh()
         else:
             debugger.print('notebook has no plotting tab yet')
         # Update the analysis tab
         if hasattr(self.notebook, 'analysisTab'):
-            debugger.print('notebook has a analysisTab')
+            debugger.print('about to refresh analysisTab')
             self.notebook.analysisTab.refresh()
         else:
             debugger.print('notebook has no analysis tab yet')
         # Update the viewer tab
         if hasattr(self.notebook, 'viewerTab'):
-            debugger.print('notebook has a viewerTab')
+            debugger.print('about to refresh viewerTab')
             self.notebook.viewerTab.refresh()
         else:
             debugger.print('notebook has no viewer tab yet')
@@ -219,6 +222,7 @@ class MainTab(QWidget):
     def on_resultsfile_le_changed(self, text):
         debugger.print('on resultsfile changed', text)
         self.openSpreadSheet(text)
+        self.dirty = True
 
     def openSpreadSheet(self,text):
         if self.notebook.spreadsheet is not None:
@@ -253,6 +257,7 @@ class MainTab(QWidget):
     def on_file_le_changed(self, text):
         debugger.print('on file changed', text)
         self.settings['Output file name'] = text
+        self.dirty = True
  
     def on_program_cb_activated(self,index):
         debugger.print('on program combobox activated', index)
@@ -273,3 +278,34 @@ class MainTab(QWidget):
             self.settings['Program']   = 'qe'
         debugger.print('Program is now  ', self.settings['Program'])
         debugger.print('QM program is now', self.settings['QM program'])
+        self.dirty = True
+
+    def refresh(self,force=False):
+        debugger.print('refresh', force)
+        if not self.dirty and not force:
+            return
+        prtext = self.settings['Program'].capitalize()
+        qmtext = self.settings['QM program'].capitalize()
+        if prtext == 'Qe':
+            prtext = 'Quantum Espresso'
+        elif prtext == 'Vasp':
+            prtext = 'VASP'
+            self.settings['QM program'] = 'vasp'
+        elif prtext == 'Phonopy':
+            if qmtext != '':
+                prtext = prtext + ' - ' + qmtext
+        index = self.program_cb.findText(prtext, Qt.MatchFixedString)
+        if index >=0:
+            self.program_cb.setCurrentIndex(index)
+        elif self.settings['Program'] == 'phonopy':
+            index = 4
+            self.settings['QM program'] = 'vasp'
+            self.program_cb.setCurrentIndex(index)
+        else:
+            self.settings['Program'] = 'castep'
+            index = 1
+            self.program_cb.setCurrentIndex(index)
+        self.file_le.setText(self.settings['Output file name'])
+        self.resultsfile_le.setText(self.settings['Excel file name'])
+        self.dirty = False
+        return

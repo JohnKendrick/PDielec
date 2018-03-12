@@ -23,21 +23,22 @@ class ViewerTab(QWidget):
         self.subplot = None
         self.setWindowTitle('Viewer')
         self.selected_mode = 0
-        self.atom_scaling = 0.5
-        self.maxdisplacement = 1.0
-        self.plot_types = ['Animation','Arrows']
-        self.plot_type_index = 1
-        self.number_of_molecules = 0
-        self.bond_colour = [ 0.3, 0.3, 0.3 ]
-        self.bond_radius = 0.1
-        self.cell_edge_colour = [ 1.0, 0.0, 0.0 ]
-        self.cell_edge_radius = 0.1
-        self.cell_edges = None
-        self.cell_corners = None
-        self.number_of_phase_steps = 41
+        self.settings = {}
+        self.settings['Atom scaling'] = 0.5
+        self.settings['Maximum displacement'] = 1.0
+        self.settings['Bond color'] = [ 0.3, 0.3, 0.3 ]
+        self.settings['Bond radius'] = 0.1
+        self.settings['Cell colour'] = [ 1.0, 0.0, 0.0 ]
+        self.settings['Cell radius'] = 0.1
+        self.settings['Number of phase steps'] = 41
         self.light_switches = [False]*8
         self.light_switches[0] = True
         self.light_switches[1] = True
+        self.plot_types = ['Animation','Arrows']
+        self.plot_type_index = 1
+        self.number_of_molecules = 0
+        self.cell_edges = None
+        self.cell_corners = None
         # store the notebook
         self.notebook = parent
         # get the reader from the main tab
@@ -67,7 +68,7 @@ class ViewerTab(QWidget):
         self.atom_scaling_sb.setRange(0.01,5.0)
         self.atom_scaling_sb.setSingleStep(0.1)
         self.atom_scaling_sb.setDecimals(2)
-        self.atom_scaling_sb.setValue(self.atom_scaling)
+        self.atom_scaling_sb.setValue(self.settings['Atom scaling'])
         self.atom_scaling_sb.setToolTip('Scale the covalent radii to determine the size of the atomic spheres')
         self.atom_scaling_sb.valueChanged.connect(self.on_atom_scaling_changed)
         #
@@ -77,7 +78,7 @@ class ViewerTab(QWidget):
         self.bond_radius_sb.setRange(0.01,1.0)
         self.bond_radius_sb.setSingleStep(0.1)
         self.bond_radius_sb.setDecimals(2)
-        self.bond_radius_sb.setValue(self.bond_radius)
+        self.bond_radius_sb.setValue(self.settings['Bond radius'])
         self.bond_radius_sb.setToolTip('Determines the size of the bonds drawn')
         self.bond_radius_sb.valueChanged.connect(self.on_bond_radius_changed)
         #
@@ -87,7 +88,7 @@ class ViewerTab(QWidget):
         self.cell_radius_sb.setRange(0.01,1.0)
         self.cell_radius_sb.setSingleStep(0.1)
         self.cell_radius_sb.setDecimals(2)
-        self.cell_radius_sb.setValue(self.cell_edge_radius)
+        self.cell_radius_sb.setValue(self.settings['Cell radius'])
         self.cell_radius_sb.setToolTip('Determines the size of the cell outline')
         self.cell_radius_sb.valueChanged.connect(self.on_cell_radius_changed)
         #
@@ -97,7 +98,7 @@ class ViewerTab(QWidget):
         self.maximum_displacement_sb.setRange(0.1,10.0)
         self.maximum_displacement_sb.setSingleStep(0.1)
         self.maximum_displacement_sb.setDecimals(1)
-        self.maximum_displacement_sb.setValue(self.maxdisplacement)
+        self.maximum_displacement_sb.setValue(self.settings['Maximum displacement'])
         self.maximum_displacement_sb.setToolTip('Set the size of the maximum displacement')
         self.maximum_displacement_sb.valueChanged.connect(self.on_maximum_displacement_changed)
         #
@@ -149,7 +150,6 @@ class ViewerTab(QWidget):
         self.setLayout(vbox)
 
     def on_light_switches_cb_activated(self, index):
-        print('light switch activated', index)
         self.light_switches[index] = not self.light_switches[index]
         if self.light_switches[index]:
             string = 'switch light {} off'.format(index)
@@ -157,42 +157,42 @@ class ViewerTab(QWidget):
             string = 'switch light {} on'.format(index)
         self.light_switches_cb.setItemText(index,string)
         self.opengl_widget.defineLights()
-        self.refresh()
+        self.calculate()
+        self.plot()
 
     def on_maximum_displacement_changed(self,value):
         debugger.print('on maximum_displacement changed ', value)
-        self.maxdisplacement = value
-        self.refresh()
+        self.settings['Maximum displacement'] = value
+        self.calculate()
+        self.plot()
         
     def on_atom_scaling_changed(self,value):
         debugger.print('on atom_scaling changed ', value)
-        self.atom_scaling = value
-        self.refresh()
+        self.settings['Atom scaling'] = value
+        self.calculate()
+        self.plot()
         
     def on_cell_radius_changed(self,value):
         debugger.print('on cell_radius changed ', value)
-        self.cell_edge_radius = value
-        self.refresh()
+        self.settings['Cell radius'] = value
+        self.calculate()
+        self.plot()
         
     def on_bond_radius_changed(self,value):
-        self.bond_radius = value
-        self.refresh()
+        self.settings['Bond radius'] = value
+        self.calculate()
+        self.plot()
         
     def on_selected_mode_changed(self):
         self.selected_mode = self.selected_mode_sb.value()
         debugger.print('on selected_mode change ', self.selected_mode)
         self.opengl_widget.deleteArrows()
         maxR = np.max( np.abs(np.array(self.UVW[self.selected_mode])))
-        arrow_scaling = self.maxdisplacement / maxR
+        arrow_scaling = self.settings['Maximum displacement'] / maxR
         for uvw in self.UVW[self.selected_mode]:
             self.opengl_widget.addArrows( uvw, arrow_scaling )
-        self.refresh()
-
-    def refresh(self):
-        debugger.print('refresh widget')
         self.calculate()
         self.plot()
-        return
 
     def on_plottype_cb_changed(self, index):
         self.plot_type_index = index
@@ -246,7 +246,7 @@ class ViewerTab(QWidget):
            colour_list = [ colour/255.0 for colour in elemental_colours[el] ] 
            colour_tuple = tuple(colour_list)
            self.colours.append( colour_tuple )
-           self.radii.append(self.atom_scaling*covalent_radii[el])
+           self.radii.append(self.settings['Atom scaling']*covalent_radii[el])
         # reorder the displacement info in the normal modes into U,V and W lists 
         self.UVW = []
         for mode,displacements in enumerate(self.normal_modes):
@@ -258,7 +258,7 @@ class ViewerTab(QWidget):
         self.calculatePhasePositions()
         # Add the arrows
         maxR = np.max( np.abs(np.array(self.UVW[self.selected_mode])))
-        arrow_scaling = self.maxdisplacement / maxR
+        arrow_scaling = self.settings['Maximum displacement'] / maxR
         self.opengl_widget.deleteArrows()
         for uvw in self.UVW[self.selected_mode]:
             self.opengl_widget.addArrows( uvw, arrow_scaling )
@@ -268,26 +268,24 @@ class ViewerTab(QWidget):
 
     def calculatePhasePositions(self):
         # we need the number of phase steps to be odd
-        if self.number_of_phase_steps%2 == 0:
-            self.numbers_of_phase_steps += 1
+        if self.settings['Number of phase steps']%2 == 0:
+            self.settings['Number of phase steps'] += 1
         UVW = np.array( self.UVW[self.selected_mode] )
         debugger.print('calculate phase positions UVW', UVW)
         maxR = np.amax(np.abs(UVW))
         debugger.print('calculate phase positions maxr', maxR)
-        self.scale_vibrations = self.maxdisplacement / maxR
+        self.scale_vibrations = self.settings['Maximum displacement'] / maxR
         debugger.print('calculate phase positions scale_vibrations', self.scale_vibrations)
-        self.newXYZ       = np.zeros( (self.number_of_phase_steps, self.natoms, 3) )
+        self.newXYZ       = np.zeros( (self.settings['Number of phase steps'], self.natoms, 3) )
         sign = +1.0
         phases = []
         small = 1.0E-8
-        n2 = int(self.number_of_phase_steps/2)
+        n2 = int(self.settings['Number of phase steps']/2)
         delta = 1.0 / float(n2)
         phases = np.arange(-1.0, 1.0+delta-1.0E-10, delta)
         debugger.print('Phases', phases)
         for phase_index,phase in enumerate(phases):
             self.newXYZ[phase_index] = self.XYZ+phase*self.scale_vibrations*UVW
-            #debugger.print('Phase_index', phase_index)
-            #debugger.print('Atom positions', self.newXYZ[phase_index])
         # end for phase_index
         #
         # Store the results in the opengl widget
@@ -299,12 +297,12 @@ class ViewerTab(QWidget):
             for col, rad, xyz in zip(self.colours, self.radii, self.newXYZ[phase_index]):
                 self.opengl_widget.addSphere(col, rad, xyz, phase=phase_index )
             for p in self.cell_corners:
-                self.opengl_widget.addSphere(self.cell_edge_colour, self.cell_edge_radius, p, phase=phase_index )
+                self.opengl_widget.addSphere(self.settings['Cell colour'], self.settings['Cell radius'], p, phase=phase_index )
             for bond in self.unit_cell.bonds:
                 i,j = bond
-                self.opengl_widget.addCylinder(self.bond_colour, self.bond_radius, self.newXYZ[phase_index,i], self.newXYZ[phase_index,j], phase=phase_index)
+                self.opengl_widget.addCylinder(self.settings['Bond color'], self.settings['Bond radius'], self.newXYZ[phase_index,i], self.newXYZ[phase_index,j], phase=phase_index)
             for p1,p2 in self.cell_edges:
-                self.opengl_widget.addCylinder(self.cell_edge_colour, self.cell_edge_radius, p1, p2, phase=phase_index)
+                self.opengl_widget.addCylinder(self.settings['Cell colour'], self.settings['Cell radius'], p1, p2, phase=phase_index)
         return
 
     def plot(self):
@@ -319,9 +317,29 @@ class ViewerTab(QWidget):
         self.opengl_widget.showArrows(False)
         self.opengl_widget.update()
         self.opengl_widget.startAnimation()
+        return
 
     def plot_arrows(self):
         self.opengl_widget.showArrows(True)
         self.opengl_widget.stopAnimation()
         self.opengl_widget.update()
+        return
+
+    def refresh(self):
+        debugger.print('refresh widget')
+        self.selected_mode_sb.setValue(self.selected_mode)
+        self.atom_scaling_sb.setValue(self.settings['Atom scaling'])
+        self.bond_radius_sb.setValue(self.settings['Bond radius'])
+        self.cell_radius_sb.setValue(self.settings['Cell radius'])
+        self.maximum_displacement_sb.setValue(self.settings['Maximum displacement'])
+        self.plottype_cb.setCurrentIndex(self.plot_type_index)
+        for index,light in enumerate(self.light_switches):
+            if light:
+                string = 'switch light {} off'.format(index)
+            else:
+                string = 'switch light {} on'.format(index)
+            self.light_switches_cb.setItemText(index,string)
+        self.calculate()
+        self.plot()
+        return
 

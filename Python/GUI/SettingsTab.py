@@ -94,8 +94,10 @@ class SettingsTab(QWidget):
         self.mass_cb.addItem('Average natural abundance')
         self.mass_cb.addItem('Mass taken from QM/MM program')
         self.mass_cb.addItem('Most common isotope mass')
+        self.mass_cb.addItem('Masses set individually')
         # set default to average natural abundance
         self.mass_cb.activated.connect(self.on_mass_cb_activated)
+        self.current_mass_definition_index = self.mass_definition_options.index(self.settings['Mass definition'])
         self.mass_cb.setCurrentIndex(0)
         form.addRow(QLabel('Atomic mass defintion:', self), self.mass_cb)
         # Create Table containing the masses - block signals until the table is loaded
@@ -168,12 +170,12 @@ class SettingsTab(QWidget):
         self.reader.reset_masses()
         if self.settings['Mass definition'] == 'average':
             self.reader.change_masses(average_masses, mass_dictionary)
+        elif self.settings['Mass definition'] == 'program':
+            pass
         elif self.settings['Mass definition'] == 'isotope':
             self.reader.change_masses(isotope_masses, mass_dictionary)
         elif self.settings['Mass definition'] == 'gui':
             self.reader.change_masses(self.masses_dictionary, mass_dictionary)
-        elif self.settings['Mass definition'] == 'program':
-            pass
         else:
             print('Error unkown mass definition', self.settings['Mass definition'] )
         self.mass_weighted_normal_modes = self.reader.calculate_mass_weighted_normal_modes()
@@ -296,6 +298,7 @@ class SettingsTab(QWidget):
         debugger.print('on mass combobox activated', index)
         debugger.print('on mass combobox activated', self.mass_cb.currentText())
         self.settings['Mass definition'] = self.mass_definition_options[index]
+        self.current_mass_definition_index = index
         # Modify the element masses
         self.set_masses_tw()
         self.calculateButtonClicked()
@@ -305,28 +308,28 @@ class SettingsTab(QWidget):
         if self.reader:
             self.element_masses_tw.blockSignals(True)
             species = self.reader.getSpecies()
-            if self.settings['Mass definition'] == 'gui':
-                self.settings['Mass definition'] == 'average'
-                self.mass_cb.setCurrentIndex(0)
             # set the initial dictionary according to the mass_definition
             masses = []
             if self.settings['Mass definition'] == 'average':
+                self.mass_cb.setCurrentIndex(0)
                 for element in species:
                     mass = average_masses[element]
                     masses.append(mass)
                     self.masses_dictionary[element] = mass
+            elif self.settings['Mass definition'] == 'program':
+                self.mass_cb.setCurrentIndex(1)
+                self.reader.reset_masses()
+                masses = self.reader.masses_per_type
+                for mass,element in zip(masses,species):
+                    self.masses_dictionary[element] = mass
             elif self.settings['Mass definition'] == 'isotope':
+                self.mass_cb.setCurrentIndex(2)
                 for element in species:
                     mass = isotope_masses[element]
                     masses.append(mass)
                     self.masses_dictionary[element] = mass
-            elif self.settings['Mass definition'] == 'program':
-                 self.reader.reset_masses()
-                 masses = self.reader.masses_per_type
-                 for mass,element in zip(masses,species):
-                    self.masses_dictionary[element] = mass
             elif self.settings['Mass definition'] == 'gui':
-                 pass
+                self.mass_cb.setCurrentIndex(3)
             else:
                  debugger.print('Error mass_definition not recognised', self.settings['Mass definition'])
             self.element_masses_tw.setColumnCount(len(masses))
@@ -419,23 +422,25 @@ class SettingsTab(QWidget):
         debugger.print('on_optical_itemClicked)', item.row(), item.column() )
         self.optical_tw.blockSignals(False)
 
-    def refresh(self):
+    def refresh(self, force=False):
         # Refresh the widgets that depend on the reader
+        if not self.reader and self.notebook.reader:
+            self.dirty = True
+        if not self.dirty and not force:
+            return
         self.reader = self.notebook.reader
         if self.reader:
             # Masses
             self.set_masses_tw()
-            debugger.print('element_masses_tw sizeHint',self.element_masses_tw.sizeHint())
-            debugger.print('element_masses_tw size',self.element_masses_tw.size())
             # Optical dielectric
-            self.set_optical_permittivity_tw()
-            debugger.print('optical_tw sizeHint',self.optical_tw.sizeHint())
-            debugger.print('optical_tw size',self.optical_tw.size())
+            if self.settings['Optical permittivity'] is None:
+                self.set_optical_permittivity_tw()
+            else:
+                self.refresh_optical_permittivity_tw()
         self.calculateButtonClicked()
 
-    def set_optical_permittivity_tw(self):
-        optical = self.reader.zerof_optical_dielectric
-        self.settings['Optical permittivity'] = optical
+    def refresh_optical_permittivity_tw(self):
+        optical = self.settings['Optical permittivity']
         self.optical_tw.blockSignals(True)
         for i,row in enumerate(optical):
             for j, value in enumerate(row):
@@ -443,6 +448,10 @@ class SettingsTab(QWidget):
                 qw.setTextAlignment(Qt.AlignHCenter | Qt.AlignVCenter)
                 self.optical_tw.setItem(i,j,qw)
         self.optical_tw.blockSignals(False)
+
+    def set_optical_permittivity_tw(self):
+        self.settings['Optical permittivity'] = self.reader.zerof_optical_dielectric
+        self.refresh_optical_permittivity_tw()
 
     def on_born_changed(self):
         debugger.print('on born change ', self.born_cb.isChecked())

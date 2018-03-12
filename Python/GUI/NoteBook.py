@@ -1,4 +1,3 @@
-import sys
 import os.path
 import copy
 from PyQt5.QtWidgets            import  QPushButton, QWidget, QTabWidget
@@ -24,35 +23,44 @@ class NoteBook(QWidget):
         self.layout = QVBoxLayout()
         # The number of tabs before we have scenarios
         self.tabOffSet = 2
+        #
         # Initialize tab screen
+        #
         self.tabs = QTabWidget(self)
         self.tabs.currentChanged.connect(self.on_tabs_currentChanged)
         self.mainTab = MainTab(self, program, filename, spreadsheet, debug=debug)
         self.settingsTab = SettingsTab(self, debug=debug)
         if filename != '':
+            debugger.print('Refreshing settingsTab in notebook initialisation - filename',filename)
             self.settingsTab.refresh()
             self.settingsTab.calculateButtonClicked()
+        #
         # Open more windows
+        #
         self.scenarios = []
         self.scenarios.append( ScenarioTab(self, debug=debug ) )
         self.scenarios[0].setScenarioIndex(0)
+        #
         # Open the plotting tab
+        #
         self.plottingTab = PlottingTab(self, debug=debug)
         if filename != '':
+            debugger.print('Refreshing plotting because filename is set')
             self.plottingTab.refresh()
         #
         # Open the Analysis tab
+        #
         self.analysisTab = AnalysisTab(self, debug=debug)
         if filename != '':
+            debugger.print('Refreshing analysis because filename is set')
             self.analysisTab.refresh()
         #
         # Open the Viewer tab
-        self.viewerTab = ViewerTab(self, debug=debug)
-        if filename != '':
-            self.viewerTab.refresh()
         #
-        #self.tabs.resize(300,200) 
+        self.viewerTab = ViewerTab(self, debug=debug)
+        #
         # Add tabs
+        #
         self.tabs.addTab(self.mainTab,'Main')
         self.tabs.addTab(self.settingsTab,'Settings')
         for i,tab in enumerate(self.scenarios):
@@ -66,11 +74,10 @@ class NoteBook(QWidget):
         self.setLayout(self.layout)
         return
 
-    def addScenario(self,index):
+    def addScenario(self,copyFromIndex=-2):
+        debugger.print('Settings for scenario', copyFromIndex)
         self.scenarios.append( ScenarioTab(self, self.debug) )
-        # debugger.print('Settings for scenario', index)
-        # self.scenarios[index].print_settings()
-        self.scenarios[-1].settings = copy.deepcopy(self.scenarios[index].settings)
+        self.scenarios[-1].settings = copy.deepcopy(self.scenarios[copyFromIndex].settings)
         # debugger.print('Settings for new scenario')
         # self.scenarios[-1].print_settings()
         self.scenarios[-1].refresh()
@@ -90,6 +97,21 @@ class NoteBook(QWidget):
                 scenario.setScenarioIndex(i)
                 self.tabs.setTabText(self.tabOffSet+i,'Scenario '+str(i+1))
         return
+
+    def refresh(self):
+        debugger.print('Notebook refresh changed')
+        ntabs = 2 + len(self.scenarios) + 3
+        self.mainTab.refresh()
+        self.settingsTab.refresh()
+        for tab in self.scenarios:
+            tab.refresh()
+        self.tabs.setCurrentIndex(ntabs-3)
+        self.plottingTab.refresh()
+        self.tabs.setCurrentIndex(ntabs-3)
+        self.analysisTab.refresh()
+        self.tabs.setCurrentIndex(ntabs-2)
+        self.viewerTab.refresh()
+        self.tabs.setCurrentIndex(ntabs-1)
 
     def on_tabs_currentChanged(self, tabindex):
         debugger.print('Tab index changed', tabindex)

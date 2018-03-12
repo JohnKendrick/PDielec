@@ -44,6 +44,7 @@ class PlottingTab(QWidget):
         super(QWidget, self).__init__(parent)
         global debugger
         debugger = Debug(debug,'PlottingTab')
+        self.dirty = True
         self.settings = {}
         self.subplot = None
         self.setWindowTitle('Plotting')
@@ -57,6 +58,7 @@ class PlottingTab(QWidget):
         self.directions = []
         self.depolarisations = []
         self.frequency_units = None
+        self.molar_cb_current_index = 0
         # store the notebook
         self.notebook = parent
         # get the reader from the main tab
@@ -105,7 +107,12 @@ class PlottingTab(QWidget):
         self.molar_cb = QComboBox(self) 
         self.molar_cb.setToolTip('Define what a mole is.  \nIn the case of Molecules, the number of atoms in a molecule must be given')
         self.molar_cb.addItems(self.molar_definitions)
-        self.molar_cb.setCurrentIndex(0)
+        try:
+            self.molar_cb_current_index = self.molar_definitions.index(self.settings["Molar definition"])
+        except:
+            self.molar_cb_current_index = 0
+            self.settings["Molar definition"] = self.molar_definitions[self.molar_cb_current_index]
+        self.molar_cb.setCurrentIndex(self.molar_cb_current_index)
         self.molar_cb.activated.connect(self.on_molar_cb_activated)
         label = QLabel('Molar definition', self)
         label.setToolTip('Define what a mole is.  \nIn the case of Molecules, the number of atoms in a molecule must be given')
@@ -221,23 +228,39 @@ class PlottingTab(QWidget):
     def on_vinc_changed(self,value):
         self.settings['Frequency increment'] = value
         self.notebook.newCalculationRequired = True
+        self.dirty = True
         self.progressbar.setValue(0)
         debugger.print('on vinc change ', self.settings['Frequency increment'])
 
     def on_vmin_changed(self):
         self.settings['Minimum frequency'] = self.vmin_sb.value()
         self.notebook.newCalculationRequired = True
+        self.dirty = True
         self.progressbar.setValue(0)
         debugger.print('on vmin change ', self.settings['Minimum frequency'])
 
     def on_vmax_changed(self):
         self.settings['Maximum frequency'] = self.vmax_sb.value()
         self.notebook.newCalculationRequired = True
+        self.dirty = True
         self.progressbar.setValue(0)
         debugger.print('on vmax change ', self.settings['Maximum frequency'])
 
-    def refresh(self):
-        debugger.print('refreshing widget')
+    def refresh(self,force=False):
+        debugger.print('refreshing widget', force)
+        if not self.dirty and not force:
+            return
+        self.vmin_sb.setValue(self.settings['Minimum frequency'])
+        self.vmax_sb.setValue(self.settings['Maximum frequency'])
+        self.vinc_sb.setValue(self.settings['Frequency increment'])
+        try:
+            self.molar_cb_current_index = self.molar_definitions.index(self.settings["Molar definition"])
+        except:
+            self.molar_cb_current_index = 0
+            self.settings["Molar definition"] = self.molar_definitions[self.molar_cb_current_index]
+        self.molar_cb.setCurrentIndex(self.molar_cb_current_index)
+        self.natoms_sb.setValue(self.settings['Number of atoms'])
+        self.title_le.setText(self.settings['Plot title'])
         # Refresh the widgets that depend on the reader
         self.reader = self.notebook.reader
         if self.reader is not None:
@@ -247,10 +270,12 @@ class PlottingTab(QWidget):
         # Reset the progress bar
         self.progressbar.setValue(0)
         self.molarAbsorptionButtonClicked()
+        self.dirty = False
         return
 
     def on_natoms_changed(self, value):
         self.notebook.newCalculationRequired = True
+        self.dirty = True
         self.progressbar.setValue(0)
         self.settings['Number of atoms'] = value
         debugger.print('on natoms changed ', self.settings['Number of atoms'])
@@ -264,8 +289,10 @@ class PlottingTab(QWidget):
         debugger.print('Frequency units changed to ', self.frequency_units)
 
     def on_molar_cb_activated(self, index):
+        self.molar_cb_current_index = index
         self.settings['Molar definition'] = self.molar_definitions[index]
         self.notebook.newCalculationRequired = True
+        self.dirty = True
         self.progressbar.setValue(0)
         if self.settings['Molar definition'] == 'Molecules':
             self.settings['concentration'] = 1000.0 / (avogadro_si * self.reader.volume * 1.0e-24 * self.settings['Number of atoms'] / self.reader.nions)
@@ -320,22 +347,22 @@ class PlottingTab(QWidget):
         for mode_index,selected in enumerate(modes_selected):
             if selected:
                 mode_list.append(mode_index)
-        debugger.print('mode_list', mode_list)
+        #debugger.print('mode_list', mode_list)
         # Calculate the ionic permittivity at zero frequency
         epsilon_ionic = self.notebook.settingsTab.epsilon_ionic
         #epsilon_ionic = Calculator.ionic_permittivity(mode_list, oscillator_strengths, frequencies, volume )
-        debugger.print('epsilon_ionic',epsilon_ionic)
+        #debugger.print('epsilon_ionic',epsilon_ionic)
         epsilon_total = epsilon_inf + epsilon_ionic
-        debugger.print('epsilon_total',epsilon_ionic)
+        #debugger.print('epsilon_total',epsilon_ionic)
         cell = reader.unit_cells[-1]
         self.directions = []
         self.depolarisations = []
         # Process the shapes and the unique directions.
         # and calculate the depolarisation matrices
         for scenario in self.scenarios:
-            debugger.print('Scenario ',scenario.scenarioIndex)
+            #debugger.print('Scenario ',scenario.scenarioIndex)
             shape = scenario.settings['Particle shape']
-            debugger.print('Particle shape ',shape)
+            #debugger.print('Particle shape ',shape)
             hkl = [scenario.settings['Unique direction - h'], scenario.settings['Unique direction - k'], scenario.settings['Unique direction - l']] 
             aoverb = scenario.settings['Ellipsoid a/b']
             if shape == 'Ellipsoid':
@@ -352,7 +379,7 @@ class PlottingTab(QWidget):
                 direction = np.array( [] )
             direction = direction / np.linalg.norm(direction)
             self.directions.append(direction)
-            debugger.print('direction',direction)
+            #debugger.print('direction',direction)
             self.depolarisations.append(depolarisation)
         # Set up the parallel processing requirements before looping over the frequencies
         call_parameters = []
@@ -401,7 +428,7 @@ class PlottingTab(QWidget):
         else:
             pool = Pool(number_of_processors, initializer=set_affinity_on_worker, maxtasksperchild=10)
         for i,(scenario,L) in enumerate(zip(self.scenarios,self.depolarisations)):
-            debugger.print('Scenario ',i,L)
+            #debugger.print('Scenario ',i,L)
             matrix = scenario.settings['Matrix']
             method = scenario.settings['Effective medium method'].lower()
             matrix_density = scenario.settings['Matrix density']
@@ -453,6 +480,7 @@ class PlottingTab(QWidget):
         #jk print('Dielec calculation duration ', time.time()-start)
         if self.notebook.spreadsheet is not None:
             self.write_spreadSheet()
+        self.dirty = False
 
     def write_spreadSheet(self):
         if self.notebook.spreadsheet is None:

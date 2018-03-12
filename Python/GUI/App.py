@@ -10,25 +10,39 @@ class App(QMainWindow):
         program = ''
         filename = ''
         spreadsheet = ''
-        exit = ''
+        exit = False
         debug = False
+        script = False
+        scriptname = ''
         # Manage options
-        for arg in args[1:]:
-            if arg == '-d' or arg == '-debug' or arg == '--debug':
+        tokens = args[1:]
+        ntokens = len(tokens)
+        itoken = 0
+        while itoken < ntokens:
+            token = tokens[itoken]
+            if token == '-d' or token == '-debug' or token == '--debug':
                 debug = True
-            elif arg == '-h' or arg == '-help' or arg == '--help':
+            elif token == '-exit' or token == '--exit' or token == '-quit' or token == '--quit':
+                exit = True
+            elif token == '-script' or token == '--script':
+                itoken += 1
+                script = True
+                scriptname = tokens[itoken]
+            elif token == '-spreadsheet' or token == '--spreadsheet':
+                itoken += 1
+                spreadsheet = tokens[itoken]
+            elif token == '-h' or token == '-help' or token == '--help':
                 print('help is true')
                 print('pdgui - graphical user interface to the PDielec package')
-                print('pdgui [-help] [-debug] [program] [filename] [spreadsheet]')
+                print('pdgui [-help] [-debug] [program] [filename] [spreadsheet] [-script scriptname]')
                 exit()
             elif program == '':
-                program = arg
+                program = token
             elif filename == '':
-                filename = arg
+                filename = token
             elif spreadsheet == '':
-                spreadsheet = arg
-            elif exit == '':
-                exit = arg
+                spreadsheet = token
+            itoken += 1
         #
         self.title = 'PDielec GUI '
         self.left = 10
@@ -41,14 +55,19 @@ class App(QMainWindow):
         self.notebook = NoteBook(self, program, filename, spreadsheet, debug=debug)
         self.setCentralWidget(self.notebook)
         self.show()
-        if exit == 'exit':
+        if script:
+            self.readScript(scriptname)
+        if exit:
             sys.exit()
+
+    def readScript(self,scriptname):
+        with open(scriptname,'r') as fd:
+            exec(fd.read())
+        self.notebook.refresh()
 
     def closeEvent(self, event):
         # Make sure any spread sheet is closed
-        print('captured close event')
         if self.notebook.spreadsheet is not None:
-            print('closing spreadsheet')
             self.notebook.spreadsheet.close()
         super(App, self).closeEvent(event)
     

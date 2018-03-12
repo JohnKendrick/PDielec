@@ -17,6 +17,7 @@ class ScenarioTab(QWidget):
         super(QWidget, self).__init__(parent)
         global debugger
         debugger = Debug(debug,'ScenarioTab:')
+        self.dirty = True
         self.settings = {}
         matrix = 'ptfe'
         self.settings['Matrix'] = matrix
@@ -30,6 +31,7 @@ class ScenarioTab(QWidget):
         self.settings['Unique direction - h'] = 0
         self.settings['Unique direction - k'] = 0
         self.settings['Unique direction - l'] = 1
+        self.settings['Mass or volume fraction'] = 'volume'
         # get the reader from the main tab
         self.notebook = parent
         self.reader = self.notebook.mainTab.reader
@@ -236,7 +238,7 @@ class ScenarioTab(QWidget):
     def pushButton1Clicked(self):
         # Add another scenario
         debugger.print('Button 1 pressed')
-        self.notebook.addScenario(self.scenarioIndex)
+        self.notebook.addScenario(copyFromIndex=self.scenarioIndex)
 
     def pushButton3Clicked(self):
         # Delete a scenario
@@ -256,31 +258,41 @@ class ScenarioTab(QWidget):
 
     def on_h_sb_changed(self,value):
         debugger.print('on_h_sb_changed', value)
+        self.dirty = True
         self.settings['Unique direction - h'] = value
 
     def on_k_sb_changed(self,value):
         debugger.print('on_k_sb_changed', value)
+        self.dirty = True
         self.settings['Unique direction - k'] = value
 
     def on_l_sb_changed(self,value):
         debugger.print('on_l_sb_changed', value)
+        self.dirty = True
         self.settings['Unique direction - l'] = value
 
     def on_shape_cb_activated(self,index):
         debugger.print('on shape cb activated', index)
+        self.dirty = True
         self.settings['Particle shape'] = self.shapes[index]
         self.change_greyed_out()
 
     def on_methods_cb_activated(self,index):
         debugger.print('on methods cb activated', index)
+        self.dirty = True
         self.settings['Effective medium method'] = self.methods[index]
         self.change_greyed_out()
 
     def on_mf_sb_changed(self,value):
         debugger.print('on mass fraction line edit changed', value)
+        self.dirty = True
         self.settings['Mass fraction'] =  value/100.0
-        self.update_vf_sb()
-        self.update_mf_sb()
+        if self.settings['Mass or volume fraction'] == 'mass':
+            self.update_vf_sb()
+            self.update_mf_sb()
+        else:
+            self.update_mf_sb()
+            self.update_vf_sb()
 
     def update_vf_sb(self):
         mf1 = self.settings['Mass fraction']
@@ -299,26 +311,35 @@ class ScenarioTab(QWidget):
         
     def on_aoverb_sb_changed(self,value):
         debugger.print('on_aoverb_le_changed',value)
+        self.dirty = True
         self.settings['Ellipsoid a/b'] = value
 
     def on_legend_le_changed(self,text):
         debugger.print('on legend change', text)
+        self.dirty = True
         self.settings['legend'] = text
         self.legend_le.setText(text)
 
     def on_sigma_sb_changed(self,value):
         debugger.print('on sigma line edit changed', value)
+        self.dirty = True
         self.settings['Particle size distribution sigma(mu)'] = value
 
     def on_size_sb_changed(self,value):
         debugger.print('on size line edit changed', value)
+        self.dirty = True
         self.settings['Particle size(mu)'] = value
 
     def on_vf_sb_changed(self,value):
         debugger.print('on volume fraction line edit changed', value)
+        self.dirty = True
         self.settings['Volume fraction'] = value/100.0
-        self.update_mf_sb()
-        self.update_vf_sb()
+        if self.settings['Mass or volume fraction'] == 'volume':
+            self.update_mf_sb()
+            self.update_vf_sb()
+        else:
+            self.update_vf_sb()
+            self.update_mf_sb()
 
     def update_mf_sb(self):
         vf1 = self.settings['Volume fraction']
@@ -338,6 +359,7 @@ class ScenarioTab(QWidget):
     def on_matrix_cb_activated(self,index):
         debugger.print('on matrix combobox activated', index)
         debugger.print('on matrix combobox activated', self.matrix_cb.currentText())
+        self.dirty = True
         matrix = self.matrix_cb.currentText()
         self.matrix_cb.blockSignals(True)
         self.density_sb.blockSignals(True)
@@ -355,23 +377,20 @@ class ScenarioTab(QWidget):
         self.permittivity_sb.blockSignals(False)
 
     def on_density_sb_changed(self,value):
-        try:
-            self.settings['Matrix density'] = value
-            # volume fraction taked precedence
-            self.update_mf_sb()
-            self.update_vf_sb()
-            debugger.print('on density line edit changed', value)
-        except:
-            pass
+        self.settings['Matrix density'] = value
+        # volume fraction taked precedence
+        self.update_mf_sb()
+        self.update_vf_sb()
+        debugger.print('on density line edit changed', value)
+        self.dirty = True
 
     def on_permittivity_sb_changed(self,value):
-        try:
-            self.settings['Matrix permittivity'] = value
-        except:
-            pass
+        self.settings['Matrix permittivity'] = value
         debugger.print('on permittivity line edit changed', value)
+        self.dirty = True
 
     def set_reader(self,reader):
+        self.dirty = True
         self.reader = reader
 
     def change_greyed_out(self):
@@ -446,8 +465,10 @@ class ScenarioTab(QWidget):
         for key in self.settings:
             debugger.print(key, self.settings[key]) 
         
-    def refresh(self):
-        debugger.print('refresh')
+    def refresh(self,force):
+        debugger.print('refresh', force)
+        if not self.dirty and not force:
+            return
         # First see if we can get the reader from the mainTab
         self.reader = self.notebook.mainTab.reader
         # block signals to all the widgets
@@ -469,9 +490,14 @@ class ScenarioTab(QWidget):
         self.matrix_cb.setCurrentIndex(index)
         self.density_sb.setValue(self.settings['Matrix density'])
         self.permittivity_sb.setValue(self.settings['Matrix permittivity'])
-        # volume fraction takes precedence
-        self.update_mf_sb()
-        self.update_vf_sb()
+        if self.settings['Mass or volume fraction'] == 'volume':
+            # volume fraction takes precedence
+            self.update_mf_sb()
+            self.update_vf_sb()
+        else:
+            # mass fraction takes precedence
+            self.update_vf_sb()
+            self.update_mf_sb()
         #
         index = self.methods_cb.findText(self.settings['Effective medium method'], Qt.MatchFixedString)
         self.methods_cb.setCurrentIndex(index)
@@ -498,4 +524,5 @@ class ScenarioTab(QWidget):
         self.k_sb.blockSignals(False)
         self.l_sb.blockSignals(False)
         self.aoverb_sb.blockSignals(False)
+        self.dirty = False
         return

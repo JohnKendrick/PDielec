@@ -4,7 +4,7 @@ import Python.Calculator as Calculator
 from PyQt5.QtWidgets  import  QPushButton, QWidget
 from PyQt5.QtWidgets  import  QComboBox, QLabel, QLineEdit
 from PyQt5.QtWidgets  import  QVBoxLayout, QHBoxLayout, QFormLayout
-from PyQt5.QtWidgets  import  QSpinBox
+from PyQt5.QtWidgets  import  QSpinBox, QDoubleSpinBox
 from PyQt5.QtWidgets  import  QSizePolicy
 from PyQt5.QtCore     import  Qt
 from Python.Constants import  wavenumber, amu, PI, avogadro_si, angstrom
@@ -25,12 +25,13 @@ class AnalysisTab(QWidget):
         self.settings = {}
         self.subplot = None
         self.setWindowTitle('Analysis')
-        self.settings['vmin'] = -1
-        self.settings['vmax'] = 400
+        self.settings['Minimum frequency'] = -1
+        self.settings['Maximum frequency'] = 400
         self.settings['title'] = 'Analysis'
-        self.settings['bond_scaling'] = 1.1
-        self.settings['bond_tolerance'] = 0.1
-        self.settings['bar_width'] = 0.5
+        self.settings['Covalent radius scaling'] = 1.1
+        self.settings['Bonding tolerance'] = 0.1
+        self.settings['Bar width'] = 0.5
+        self.dirty = True
         self.plot_types = ['Internal vs External','Molecular Composition']
         self.plot_type_index = 0
         self.number_of_molecules = 0
@@ -51,7 +52,7 @@ class AnalysisTab(QWidget):
         #
         self.vmin_sb = QSpinBox(self)
         self.vmin_sb.setRange(-100,9000)
-        self.vmin_sb.setValue(self.settings['vmin'])
+        self.vmin_sb.setValue(self.settings['Minimum frequency'])
         self.vmin_sb.setToolTip('Set the minimum frequency to be considered)')
         self.vmin_sb.valueChanged.connect(self.on_vmin_changed)
         label = QLabel('Minimum frequency:', self)
@@ -62,26 +63,32 @@ class AnalysisTab(QWidget):
         #
         self.vmax_sb = QSpinBox(self)
         self.vmax_sb.setRange(0,9000)
-        self.vmax_sb.setValue(self.settings['vmax'])
+        self.vmax_sb.setValue(self.settings['Maximum frequency'])
         self.vmax_sb.setToolTip('Set the maximum frequency to be considered)')
         self.vmax_sb.valueChanged.connect(self.on_vmax_changed)
         label = QLabel('Maximum frequency:', self)
         label.setToolTip('Set the maximum frequency to be considered)')
         form.addRow(label, self.vmax_sb)
         #
-        # The bond tolerance and scaling of radii frequency
+        # The bonding tolerance and scaling of radii frequency
         #
         hbox = QHBoxLayout()
-        self.scale_le = QLineEdit(self)
-        self.scale_le.setText('{}'.format(self.settings['bond_scaling']))
-        self.scale_le.setToolTip('Scale the covalent radii to determine bonding')
-        self.scale_le.textChanged.connect(self.on_scale_changed)
-        hbox.addWidget(self.scale_le)
-        self.tolerance_le = QLineEdit(self)
-        self.tolerance_le.setText('{}'.format(self.settings['bond_tolerance']))
-        self.tolerance_le.setToolTip('Tolerance for bonding is determined from scale*(radi+radj)+toler')
-        self.tolerance_le.textChanged.connect(self.on_tolerance_changed)
-        hbox.addWidget(self.tolerance_le)
+        self.scale_sp = QDoubleSpinBox(self)
+        self.scale_sp.setRange(0.01,10.0)
+        self.scale_sp.setSingleStep(0.01)
+        self.scale_sp.setDecimals(2)
+        self.scale_sp.setValue(self.settings['Covalent radius scaling'])
+        self.scale_sp.setToolTip('Scale the covalent radii to determine bonding')
+        self.scale_sp.valueChanged.connect(self.on_scale_changed)
+        hbox.addWidget(self.scale_sp)
+        self.tolerance_sp = QDoubleSpinBox(self)
+        self.tolerance_sp.setRange(0.01,2.0)
+        self.tolerance_sp.setSingleStep(0.01)
+        self.tolerance_sp.setDecimals(2)
+        self.tolerance_sp.setValue(self.settings['Bonding tolerance'])
+        self.tolerance_sp.setToolTip('Tolerance for bonding is determined from scale*(radi+radj)+toler')
+        self.tolerance_sp.valueChanged.connect(self.on_tolerance_changed)
+        hbox.addWidget(self.tolerance_sp)
         label = QLabel('Bonding scale and tolerance', self)
         label.setToolTip('Bonding is determined from scale*(radi+radj)+toler')
         form.addRow(label, hbox)
@@ -95,13 +102,16 @@ class AnalysisTab(QWidget):
         #
         # The plotting width of bar
         #
-        self.width_le = QLineEdit(self)
-        self.width_le.setText('{}'.format(self.settings['bar_width']))
-        self.width_le.setToolTip('Change the width of the bars - should be between 0 and 1')
-        self.width_le.textChanged.connect(self.on_width_changed)
+        self.width_sp = QDoubleSpinBox(self)
+        self.width_sp.setRange(0.01,2.0)
+        self.width_sp.setSingleStep(0.01)
+        self.width_sp.setDecimals(2)
+        self.width_sp.setValue(self.settings['Bar width'])
+        self.width_sp.setToolTip('Change the width of the bars - should be between 0 and 1')
+        self.width_sp.valueChanged.connect(self.on_width_changed)
         label = QLabel('Bar width', self)
         label.setToolTip('Change the width of the bars - should be between 0 and 1')
-        form.addRow(label, self.width_le)
+        form.addRow(label, self.width_sp)
         # 
         # Set the plot title         
         #
@@ -159,53 +169,24 @@ class AnalysisTab(QWidget):
            sp.writeNextRow(output,col=1,check=1)
 
 
-    def on_width_changed(self,text):
-        debugger.print('on width changed ', text)
-        try:
-          self.settings['bar_width'] = float(text)
-        except:
-          pass
-        self.width_le.blockSignals(True)
-        if self.settings['bar_width'] < 0.0:
-            self.settings['bar_width'] = 0.0
-            self.width_le.setText('{}'.format(self.settings['bar_width']))
-        if self.settings['bar_width'] > 1.0:
-            self.settings['bar_width'] = 1.0
-            self.width_le.setText('{}'.format(self.settings['bar_width']))
-        self.width_le.blockSignals(False)
+    def on_width_changed(self,value):
+        debugger.print('on width changed ', value)
+        self.settings['Bar width'] = value
         self.plot()
         
-    def on_scale_changed(self,text):
-        debugger.print('on scale_le changed ', text)
-        try:
-            self.settings['bond_scaling'] = float(text)
-        except:
-          pass
-        self.width_le.blockSignals(True)
-        if self.settings['bond_scaling'] < 0.0:
-            self.settings['bond_scaling'] = 0.0
-            self.scale_le.setText('{}'.format(self.settings['bond_scaling']))
-        if self.settings['bond_scaling'] > 2.0:
-            self.settings['bond_scaling'] = 2.0
-            self.scale_le.setText('{}'.format(self.settings['bond_scaling']))
-        self.width_le.blockSignals(False)
-        self.refresh()
+    def on_scale_changed(self,value):
+        debugger.print('on scale_le changed ', value)
+        self.settings['Covalent radius scaling'] = value
+        self.dirty = True
+        self.calculate()
+        self.plot()
         
-    def on_tolerance_changed(self,text):
-        debugger.print('on_tolerance_le changed ', text)
-        try:
-            self.settings['bond_tolerance'] = float(text)
-        except:
-          pass
-        self.width_le.blockSignals(True)
-        if self.settings['bond_tolerance'] < 0.0:
-            self.settings['bond_tolerance'] = 0.0
-            self.tolerance_le.setText('{}'.format(self.settings['bond_tolerance']))
-        if self.settings['bond_tolerance'] > 2.0:
-            self.settings['bond_tolerance'] = 2.0
-            self.tolerance_le.setText('{}'.format(self.settings['bond_tolerance']))
-        self.width_le.blockSignals(False)
-        self.refresh()
+    def on_tolerance_changed(self,value):
+        debugger.print('on_tolerance_le changed ', value)
+        self.settings['Bonding tolerance'] = value
+        self.dirty = True
+        self.calculate()
+        self.plot()
 
     def on_title_changed(self,text):
         self.settings['title'] = text
@@ -215,23 +196,33 @@ class AnalysisTab(QWidget):
         debugger.print('on title change ', self.settings['title'])
 
     def on_vmin_changed(self):
-        self.settings['vmin'] = self.vmin_sb.value()
-        debugger.print('on vmin change ', self.settings['vmin'])
-        vmin = self.settings['vmin']
-        vmax = self.settings['vmax']
+        self.settings['Minimum frequency'] = self.vmin_sb.value()
+        debugger.print('on vmin change ', self.settings['Minimum frequency'])
+        vmin = self.settings['Minimum frequency']
+        vmax = self.settings['Maximum frequency']
         if vmax > vmin:
             self.plot()
 
     def on_vmax_changed(self):
-        self.settings['vmax'] = self.vmax_sb.value()
-        debugger.print('on vmax change ', self.settings['vmax'])
-        vmin = self.settings['vmin']
-        vmax = self.settings['vmax']
+        self.settings['Maximum frequency'] = self.vmax_sb.value()
+        debugger.print('on vmax change ', self.settings['Maximum frequency'])
+        vmin = self.settings['Minimum frequency']
+        vmax = self.settings['Maximum frequency']
         if vmax > vmin:
             self.plot()
 
-    def refresh(self):
-        debugger.print('refreshing widget')
+    def refresh(self, force=False):
+        debugger.print('refreshing widget', force)
+        if not self.dirty and not force:
+            return
+        self.vmin_sb.setValue(self.settings['Minimum frequency'])
+        self.vmax_sb.setValue(self.settings['Maximum frequency'])
+        self.scale_sp.setValue(self.settings['Covalent radius scaling'])
+        self.tolerance_sp.setValue(self.settings['Bonding tolerance'])
+        self.molecules_le.setText('{}'.format(self.number_of_molecules))
+        self.width_sp.setValue(self.settings['Bar width'])
+        self.title_le.setText(self.settings['title'])
+        self.plottype_cb.setCurrentIndex(self.plot_type_index)
         self.calculate()
         self.plot()
         return
@@ -269,10 +260,10 @@ class AnalysisTab(QWidget):
         intensities = self.notebook.settingsTab.intensities
         oscillator_strengths = self.notebook.settingsTab.oscillator_strengths
         volume = self.reader.volume*angstrom*angstrom*angstrom
-        vmin = self.settings['vmin']
-        vmax = self.settings['vmax']
-        scale = self.settings['bond_scaling']
-        tolerance = self.settings['bond_tolerance']
+        vmin = self.settings['Minimum frequency']
+        vmax = self.settings['Maximum frequency']
+        scale = self.settings['Covalent radius scaling']
+        tolerance = self.settings['Bonding tolerance']
         # Find the last unit cell read by the reader and its masses
         cell = self.reader.unit_cells[-1]
         atom_masses = self.reader.masses
@@ -303,6 +294,8 @@ class AnalysisTab(QWidget):
         # Store the results in the spread shee
         if self.notebook.spreadsheet is not None:
             self.write_spreadSheet()
+        # Flag that a recalculation is not needed
+        self.dirty = False
 
     def plot(self):
          if self.reader is None:
@@ -321,8 +314,8 @@ class AnalysisTab(QWidget):
         # Decide which modes to analyse
         mode_list = []
         mode_list_text = []
-        vmin = self.settings['vmin']
-        vmax = self.settings['vmax']
+        vmin = self.settings['Minimum frequency']
+        vmax = self.settings['Maximum frequency']
         tote,cme,rote,vibe,mole = self.mode_energies[0]
         mol_energies = None
         mol_energies = [ [] for _ in range(self.number_of_molecules) ]
@@ -338,7 +331,7 @@ class AnalysisTab(QWidget):
                         mol_bottoms[i].append(0.0)
                     else:
                         mol_bottoms[i].append(mol_bottoms[i-1][-1]+mol_energies[i-1][-1])
-        width = self.settings['bar_width']
+        width = self.settings['Bar width']
         plots = []
         for i,(energies,bottoms) in enumerate(zip(mol_energies, mol_bottoms )):
             plots.append(self.subplot.bar(mode_list,energies,width, bottom=bottoms))
@@ -365,8 +358,8 @@ class AnalysisTab(QWidget):
         vib_energy = []
         vib_bottom = []
         mol_energy = []
-        vmin = self.settings['vmin']
-        vmax = self.settings['vmax']
+        vmin = self.settings['Minimum frequency']
+        vmax = self.settings['Maximum frequency']
         for imode, frequency in enumerate(self.frequencies_cm1):
             if frequency >= vmin and frequency <= vmax:
                 mode_list.append(imode)
@@ -377,7 +370,7 @@ class AnalysisTab(QWidget):
                 vib_energy.append(vibe/tote*100.0)
                 vib_bottom.append( (cme+rote)/tote*100.0 )
                 mol_energy.append(molecular_energies/tote*100)
-        width = self.settings['bar_width']
+        width = self.settings['Bar width']
         p1 = self.subplot.bar(mode_list,cme_energy,width)
         p2 = self.subplot.bar(mode_list,rot_energy,width,bottom=cme_energy)
         p3 = self.subplot.bar(mode_list,vib_energy,width,bottom=vib_bottom)

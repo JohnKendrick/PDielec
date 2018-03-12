@@ -363,7 +363,6 @@ class OpenGLWidget(QOpenGLWidget):
         self.makeCurrent()
         if self.light_switches is None:
             self.light_switches = self.notebook.viewerTab.light_switches
-            print(self.light_switches)
             glEnable(GL_LIGHTING)
             for position,lightOn,light in zip(self.light_positions,self.light_switches,self.lights):
                 glLightfv(light, GL_AMBIENT,  [ self.ambientLightFactor,  self.ambientLightFactor,  self.ambientLightFactor,  1.0 ] )
