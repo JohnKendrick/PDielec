@@ -6,7 +6,7 @@ from PyQt5.QtWidgets  import  QComboBox, QLabel, QLineEdit
 from PyQt5.QtWidgets  import  QVBoxLayout, QHBoxLayout, QFormLayout
 from PyQt5.QtWidgets  import  QSpinBox, QDoubleSpinBox
 from PyQt5.QtWidgets  import  QSizePolicy
-from PyQt5.QtCore     import  Qt
+from PyQt5.QtCore     import  Qt, QCoreApplication
 from Python.Constants import  wavenumber, amu, PI, avogadro_si, angstrom
 from Python.Constants import  covalent_radii
 # Import plotting requirements
@@ -146,8 +146,10 @@ class AnalysisTab(QWidget):
         vbox.addLayout(form)
         # finalise the layout
         self.setLayout(vbox)
+        QCoreApplication.processEvents()
         if self.notebook.spreadsheet is not None:
             self.write_spreadSheet()
+        QCoreApplication.processEvents()
 
     def write_spreadSheet(self):
         if self.notebook.spreadsheet is None:

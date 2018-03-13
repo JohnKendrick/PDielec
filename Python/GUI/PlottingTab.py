@@ -20,7 +20,7 @@ from PyQt5.QtWidgets  import  QFileDialog, QProgressBar
 from PyQt5.QtWidgets  import  QVBoxLayout, QHBoxLayout, QFormLayout
 from PyQt5.QtWidgets  import  QSpinBox,QDoubleSpinBox
 from PyQt5.QtWidgets  import  QSizePolicy
-from PyQt5.QtCore     import  Qt
+from PyQt5.QtCore     import  Qt, QCoreApplication
 from Python.Constants import  wavenumber, amu, PI, avogadro_si, angstrom
 from Python.Constants import  average_masses, isotope_masses
 import ctypes
@@ -178,6 +178,7 @@ class PlottingTab(QWidget):
         self.progressbar.setToolTip('Show the progress of any calculations')
         self.progressbar.setMinimum(0)
         self.splash_progressbar.setMinimum(0)
+        self.splash_progressbar.setMinimum(0)
         label = QLabel('Calculation progress', self)
         label.setToolTip('Show the progress of any calculations')
         form.addRow(label,self.progressbar)
@@ -192,6 +193,7 @@ class PlottingTab(QWidget):
         vbox.addLayout(form)
         # finalise the layout
         self.setLayout(vbox)
+        QCoreApplication.processEvents()
 
     def molarAbsorptionButtonClicked(self):
         debugger.print('molarAbsorptionButtonClicked pressed')
@@ -234,6 +236,7 @@ class PlottingTab(QWidget):
         self.dirty = True
         self.progressbar.setValue(0)
         self.splash_progressbar.setValue(0)
+        QCoreApplication.processEvents()
         debugger.print('on vinc change ', self.settings['Frequency increment'])
 
     def on_vmin_changed(self):
@@ -242,6 +245,7 @@ class PlottingTab(QWidget):
         self.dirty = True
         self.progressbar.setValue(0)
         self.splash_progressbar.setValue(0)
+        QCoreApplication.processEvents()
         debugger.print('on vmin change ', self.settings['Minimum frequency'])
 
     def on_vmax_changed(self):
@@ -250,6 +254,7 @@ class PlottingTab(QWidget):
         self.dirty = True
         self.progressbar.setValue(0)
         self.splash_progressbar.setValue(0)
+        QCoreApplication.processEvents()
         debugger.print('on vmax change ', self.settings['Maximum frequency'])
 
     def refresh(self,force=False):
@@ -280,6 +285,7 @@ class PlottingTab(QWidget):
         self.molarAbsorptionButtonClicked()
         self.dirty = False
         self.notebook.newPlottingCalculationRequired = False
+        QCoreApplication.processEvents()
         return
 
     def on_natoms_changed(self, value):
@@ -287,6 +293,7 @@ class PlottingTab(QWidget):
         self.dirty = True
         self.progressbar.setValue(0)
         self.splash_progressbar.setValue(0)
+        QCoreApplication.processEvents()
         self.settings['Number of atoms'] = value
         debugger.print('on natoms changed ', self.settings['Number of atoms'])
 
@@ -305,6 +312,7 @@ class PlottingTab(QWidget):
         self.dirty = True
         self.progressbar.setValue(0)
         self.splash_progressbar.setValue(0)
+        QCoreApplication.processEvents()
         if self.settings['Molar definition'] == 'Molecules':
             self.settings['concentration'] = 1000.0 / (avogadro_si * self.reader.volume * 1.0e-24 * self.settings['Number of atoms'] / self.reader.nions)
             self.natoms_sb.setEnabled(True)
@@ -321,6 +329,7 @@ class PlottingTab(QWidget):
         debugger.print('calculate')
         self.progressbar.setValue(0)
         self.splash_progressbar.setValue(0)
+        QCoreApplication.processEvents()
         # Assemble the mainTab settings
         settings = self.notebook.mainTab.settings
         program = settings['Program']
@@ -403,7 +412,8 @@ class PlottingTab(QWidget):
         maximum_progress = len(call_parameters) * (1 + len(self.scenarios))
         progress = 0
         self.progressbar.setMaximum(maximum_progress)
-        self.splash_progressbar.setValue(maximum_progress)
+        self.splash_progressbar.setMaximum(maximum_progress)
+        QCoreApplication.processEvents()
         number_of_processors = cpu_count()
         #jk start = time.time()
         if threading:
@@ -418,6 +428,7 @@ class PlottingTab(QWidget):
             self.splash_progressbar.setValue(progress)
         pool.close()
         pool.join()
+        QCoreApplication.processEvents()
         #jk print('Dielec calculation duration ', time.time()-start)
         nplots = len(dielecv_results)
         # Allocate space for the shared memory, we need twice as much as we have a complex data type
@@ -474,6 +485,7 @@ class PlottingTab(QWidget):
                 progress += 1
                 self.progressbar.setValue(progress)
                 self.splash_progressbar.setValue(progress)
+            QCoreApplication.processEvents()
             xaxis = []
             realPermittivity = []
             imagPermittivity = []
@@ -496,6 +508,7 @@ class PlottingTab(QWidget):
         if self.notebook.spreadsheet is not None:
             self.write_spreadSheet()
         self.dirty = False
+        QCoreApplication.processEvents()
 
     def write_spreadSheet(self):
         if self.notebook.spreadsheet is None:

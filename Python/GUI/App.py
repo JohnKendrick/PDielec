@@ -1,12 +1,14 @@
 import sys
 import os.path
 from PyQt5.QtWidgets import QMainWindow, QApplication, QSplashScreen, QProgressBar
-from PyQt5           import Qt
+from PyQt5.QtGui     import QPixmap
+#from PyQt5           import Qt
+from PyQt5.QtCore    import Qt, QCoreApplication
 from Python.GUI.NoteBook import NoteBook
  
 class App(QMainWindow):
  
-    def __init__(self, args):
+    def __init__(self, args, progressbar):
         super().__init__()
         program = ''
         filename = ''
@@ -45,10 +47,6 @@ class App(QMainWindow):
                 spreadsheet = token
             itoken += 1
         #
-        splash = QSplashScreen(self)
-        progressbar = QProgressBar(splash)
-        progressbar.show()
-        splash.show()
         self.title = 'PDielec GUI '
         self.left = 10
         self.top = 30
@@ -56,19 +54,21 @@ class App(QMainWindow):
         self.height = 800
         self.setWindowTitle(self.title)
         self.setGeometry(self.left, self.top, self.width, self.height)
- 
-        self.notebook = NoteBook(self, program, filename, spreadsheet, progressbar=progressbar, debug=debug)
+        QCoreApplication.processEvents()
+        self.notebook = NoteBook(self, program, filename, spreadsheet, script=script, progressbar=progressbar, debug=debug)
         self.setCentralWidget(self.notebook)
         if script:
+            self.script = False
+            self.notebook.script = False
             self.readScript(scriptname)
         if exit:
             sys.exit()
-        self.show()
+        #self.show()
 
     def readScript(self,scriptname):
         with open(scriptname,'r') as fd:
             exec(fd.read())
-        self.notebook.refresh(force=True)
+        self.notebook.refresh(force=False)
 
     def closeEvent(self, event):
         # Make sure any spread sheet is closed
@@ -76,8 +76,8 @@ class App(QMainWindow):
             self.notebook.spreadsheet.close()
         super(App, self).closeEvent(event)
     
- 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
     ex = App(sys.argv)
+    ex.show()
     sys.exit(app.exec_())

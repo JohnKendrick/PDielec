@@ -5,7 +5,7 @@ from PyQt5.QtWidgets  import  QListWidget, QComboBox, QLabel, QLineEdit
 from PyQt5.QtWidgets  import  QFileDialog, QPushButton
 from PyQt5.QtWidgets  import  QFormLayout
 from PyQt5.QtWidgets  import  QVBoxLayout, QHBoxLayout, QMessageBox
-from PyQt5.QtCore     import  Qt
+from PyQt5.QtCore     import  Qt, QCoreApplication
 from Python.Utilities import  get_reader, Debug
 from Python.GUI.SpreadSheetManager import SpreadSheetManager
 import numpy as np
@@ -104,14 +104,17 @@ class MainTab(QWidget):
         vbox.addWidget(self.listw)
         # finalise the layout
         self.setLayout(vbox)
+        QCoreApplication.processEvents()
         # If the filename was given then force it to be read and processed
         if filename != '':
             self.read_output_file()
+        QCoreApplication.processEvents()
         # If there is a spreadsheet the write it
         if self.settings['Excel file name'] != '':
             self.openSpreadSheet(self.settings['Excel file name'])
         if self.notebook.spreadsheet is not None:
             self.write_spreadsheet()
+        QCoreApplication.processEvents()
 
     def write_spreadsheet(self):
         sp = self.notebook.spreadsheet

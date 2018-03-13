@@ -9,7 +9,7 @@ from PyQt5.QtWidgets  import  QCheckBox
 from PyQt5.QtWidgets  import  QVBoxLayout, QFormLayout
 from PyQt5.QtWidgets  import  QDoubleSpinBox, QTableWidget, QTableWidgetItem
 from PyQt5.QtWidgets  import  QSizePolicy
-from PyQt5.QtCore     import  Qt, QSize
+from PyQt5.QtCore     import  Qt, QSize, QCoreApplication
 from Python.Utilities import  get_reader
 from Python.Constants import  wavenumber, amu, PI, angstrom
 from Python.Constants import  average_masses, isotope_masses
@@ -157,6 +157,7 @@ class SettingsTab(QWidget):
         vbox.addWidget(self.output_tw)
         # finalise the layout
         self.setLayout(vbox)
+        QCoreApplication.processEvents()
 
     def calculateButtonClicked(self):
         debugger.print('Button 1 pressed')
@@ -186,6 +187,7 @@ class SettingsTab(QWidget):
             self.reader.change_masses(self.masses_dictionary, mass_dictionary)
         else:
             print('Error unkown mass definition', self.settings['Mass definition'] )
+        QCoreApplication.processEvents()
         self.mass_weighted_normal_modes = self.reader.calculate_mass_weighted_normal_modes()
         # convert cm-1 to au
         self.frequencies_cm1 = self.reader.frequencies
@@ -223,10 +225,13 @@ class SettingsTab(QWidget):
         self.output_tw.setRowCount(len(self.sigmas_cm1))
         self.output_tw.setColumnCount(5)
         self.output_tw.setHorizontalHeaderLabels(['   Sigma   \n(cm-1)', ' Frequency \n(cm-1)', '  Intensity  \n(Debye2/Å2/amu)', 'Integrated Molar Absorption\n(L/mole/cm2)', 'Absorption maximum\n(L/mole/cm)'])
+        QCoreApplication.processEvents()
         self.redraw_output_tw()
+        QCoreApplication.processEvents()
         if self.notebook.spreadsheet is not None:
             self.write_spreadsheet()
         self.dirty = False
+        QCoreApplication.processEvents()
 
     def write_spreadsheet(self):
         sp = self.notebook.spreadsheet
@@ -300,6 +305,7 @@ class SettingsTab(QWidget):
         # Release the block on signals for the frequency output table
         self.output_tw.resizeColumnsToContents()
         self.output_tw.blockSignals(False)
+        QCoreApplication.processEvents()
 
     def on_sigma_changed(self):
         self.settings['Sigma value'] = self.sigma_sb.value()
@@ -319,6 +325,7 @@ class SettingsTab(QWidget):
         self.calculateButtonClicked()
         self.notebook.newPlottingCalculationRequired = True
         self.notebook.newAnalysisCalculationRequired = True
+        QCoreApplication.processEvents()
 
     def set_masses_tw(self):
         debugger.print('set masses')
@@ -381,6 +388,7 @@ class SettingsTab(QWidget):
             self.element_masses_tw.blockSignals(False)
             self.notebook.newPlottingCalculationRequired = True
             self.notebook.newAnalysisCalculationRequired = True
+        QCoreApplication.processEvents()
 
     def on_output_tw_itemChanged(self, item):
         self.output_tw.blockSignals(True)
@@ -403,6 +411,7 @@ class SettingsTab(QWidget):
             self.redraw_output_tw()
         self.notebook.newPlottingCalculationRequired = True
         self.notebook.newAnalysisCalculationRequired = True
+        QCoreApplication.processEvents()
 
     def on_element_masses_tw_itemClicked(self, item):
         debugger.print('on_element_masses_tw_itemClicked)', item.row(),item.column() )
@@ -427,10 +436,12 @@ class SettingsTab(QWidget):
         self.notebook.newAnalysisCalculationRequired = True
         debugger.print('optical permittivity')
         debugger.print(self.settings['Optical permittivity'])
+        QCoreApplication.processEvents()
 
     def on_optical_tw_itemClicked(self, item):
         debugger.print('on_optical_itemClicked)', item.row(), item.column() )
         self.optical_tw.blockSignals(False)
+        QCoreApplication.processEvents()
 
     def refresh(self, force=False):
         # Refresh the widgets that depend on the reader
@@ -460,6 +471,7 @@ class SettingsTab(QWidget):
         else:
             self.born_cb.setCheckState(Qt.Unchecked)
         self.calculateButtonClicked()
+        QCoreApplication.processEvents()
 
     def refresh_optical_permittivity_tw(self):
         optical = self.settings['Optical permittivity']
@@ -470,10 +482,12 @@ class SettingsTab(QWidget):
                 qw.setTextAlignment(Qt.AlignHCenter | Qt.AlignVCenter)
                 self.optical_tw.setItem(i,j,qw)
         self.optical_tw.blockSignals(False)
+        QCoreApplication.processEvents()
 
     def set_optical_permittivity_tw(self):
         self.settings['Optical permittivity'] = self.reader.zerof_optical_dielectric
         self.refresh_optical_permittivity_tw()
+        QCoreApplication.processEvents()
 
     def on_born_changed(self):
         debugger.print('on born change ', self.born_cb.isChecked())
@@ -482,6 +496,7 @@ class SettingsTab(QWidget):
         self.calculateButtonClicked()
         self.notebook.newPlottingCalculationRequired = True
         self.notebook.newAnalysisCalculationRequired = True
+        QCoreApplication.processEvents()
 
     def on_eckart_changed(self):
         debugger.print('on eckart change ', self.eckart_cb.isChecked())
@@ -490,4 +505,5 @@ class SettingsTab(QWidget):
         self.calculateButtonClicked()
         self.notebook.newPlottingCalculationRequired = True
         self.notebook.newAnalysisCalculationRequired = True
+        QCoreApplication.processEvents()
 

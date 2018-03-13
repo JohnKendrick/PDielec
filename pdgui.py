@@ -18,13 +18,23 @@
 from __future__ import print_function
 import os
 import sys
-from Python.GUI.App import App
-from PyQt5.QtWidgets import QApplication
+import time
+from Python.GUI.App  import App
+from PyQt5.QtGui     import QPixmap
+from PyQt5.QtWidgets import QApplication, QSplashScreen, QProgressBar
 from multiprocessing import freeze_support
 
 def main(sys):
     app = QApplication(sys.argv)
-    ex = App(sys.argv)
+    dirname = os.path.dirname(os.path.realpath(sys.argv[0]))
+    splashfile = os.path.join(dirname, 'Python/GUI/splash.png')
+    pixmap = QPixmap(splashfile)
+    splash = QSplashScreen(pixmap)
+    progressbar = QProgressBar(splash)
+    splash.show()
+    ex = App(sys.argv, progressbar)
+    ex.show()
+    splash.finish(ex)
     sys.exit(app.exec_())
 
 if __name__ == '__main__':
