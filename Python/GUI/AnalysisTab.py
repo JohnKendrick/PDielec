@@ -5,7 +5,7 @@ from PyQt5.QtWidgets  import  QPushButton, QWidget
 from PyQt5.QtWidgets  import  QComboBox, QLabel, QLineEdit
 from PyQt5.QtWidgets  import  QVBoxLayout, QHBoxLayout, QFormLayout
 from PyQt5.QtWidgets  import  QSpinBox, QDoubleSpinBox
-from PyQt5.QtWidgets  import  QSizePolicy
+from PyQt5.QtWidgets  import  QSizePolicy, QTableWidgetItem
 from PyQt5.QtCore     import  Qt, QCoreApplication
 from Python.Constants import  wavenumber, amu, PI, avogadro_si, angstrom
 from Python.Constants import  covalent_radii
@@ -16,6 +16,7 @@ from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT as NavigationToolbar
 from Python.Utilities import Debug
 from Python.Plotter import print_strings, print_reals
+from Python.GUI.SettingsTab import FixedQTableWidget
 
 class AnalysisTab(QWidget):
     def __init__(self, parent, debug=False ):   
@@ -40,6 +41,8 @@ class AnalysisTab(QWidget):
         self.original_atomic_order = None
         self.frequencies_cm1 = []
         self.mode_energies = []
+        self.element_radii = covalent_radii
+        self.species = []
         # store the notebook
         self.notebook = parent
         # get the reader from the main tab
@@ -92,6 +95,18 @@ class AnalysisTab(QWidget):
         label = QLabel('Bonding scale and tolerance', self)
         label.setToolTip('Bonding is determined from scale*(radi+radj)+toler')
         form.addRow(label, hbox)
+        # Add a table of covalent radii
+        self.element_radii_tw = FixedQTableWidget(self)
+        self.element_radii_tw.setToolTip('Individual covalent radii used to determine bonding can be set here')
+        self.element_radii_tw.itemClicked.connect(self.on_element_radii_tw_itemClicked)
+        self.element_radii_tw.itemChanged.connect(self.on_element_radii_tw_itemChanged)
+        self.element_radii_tw.setRowCount(1)
+        self.element_radii_tw.blockSignals(False)
+        sizePolicy = QSizePolicy(QSizePolicy.Minimum,QSizePolicy.Minimum)
+        self.element_radii_tw.setSizePolicy(sizePolicy)
+        form.addRow(QLabel('Atomic radii', self), self.element_radii_tw)
+ 
+        # ADD NUMBER OF MOLECULES FOUND
         self.molecules_le = QLineEdit(self)
         self.molecules_le.setEnabled(False)
         self.molecules_le.setText('{}'.format(self.number_of_molecules))
@@ -151,6 +166,46 @@ class AnalysisTab(QWidget):
             self.write_spreadSheet()
         QCoreApplication.processEvents()
 
+    def on_element_radii_tw_itemClicked(self,item):
+        self.element_radii_tw.blockSignals(False)
+
+    def on_element_radii_tw_itemChanged(self,item):
+        if self.reader is None:
+            return
+        col = item.column()
+        try:
+            self.element_radii[self.species[col]] = float(item.text())
+            self.calculate()
+            self.plot()
+            self.notebook.visualiserTab.refresh(force=True)
+        except:
+            pass
+
+    def set_radii_tw(self):
+        if self.reader is None:
+            return
+        self.element_radii_tw.blockSignals(True)
+        self.species = self.reader.getSpecies()
+        radii = [ self.element_radii[el] for el in self.species ]
+        self.element_radii_tw.setColumnCount(len(self.species))
+        self.element_radii_tw.setHorizontalHeaderLabels(self.species)
+        self.element_radii_tw.setVerticalHeaderLabels([''])
+        for i,(radius,element) in enumerate(zip(radii,self.species)):
+            qw = QTableWidgetItem()
+            qw.setText('{0:.6f}'.format(radius))
+            qw.setTextAlignment(Qt.AlignHCenter | Qt.AlignVCenter)
+            self.element_radii_tw.setItem(0,i, qw )
+        self.element_radii_tw.blockSignals(False)
+        # end if
+        return
+
+    def setCovalentRadius(self,element,radius):
+        self.element_radii[element] = radius
+        self.set_radii_tw()
+        self.calculate()
+        self.plot()
+        self.notebook.visualiserTab.refresh(force=True)
+
     def write_spreadSheet(self):
         if self.notebook.spreadsheet is None:
             return
@@ -182,6 +237,7 @@ class AnalysisTab(QWidget):
         self.dirty = True
         self.calculate()
         self.plot()
+        self.notebook.visualiserTab.refresh(force=True)
         
     def on_tolerance_changed(self,value):
         debugger.print('on_tolerance_le changed ', value)
@@ -189,6 +245,7 @@ class AnalysisTab(QWidget):
         self.dirty = True
         self.calculate()
         self.plot()
+        self.notebook.visualiserTab.refresh(force=True)
 
     def on_title_changed(self,text):
         self.settings['title'] = text
@@ -226,6 +283,7 @@ class AnalysisTab(QWidget):
         self.width_sp.setValue(self.settings['Bar width'])
         self.title_le.setText(self.settings['title'])
         self.plottype_cb.setCurrentIndex(self.plot_type_index)
+        self.set_radii_tw()
         self.calculate()
         self.plot()
         self.notebook.newAnalysisCalculationRequired = False
@@ -273,9 +331,9 @@ class AnalysisTab(QWidget):
         atom_masses = self.reader.masses
         cell.set_atomic_masses(atom_masses)
         self.cell_of_molecules,nmols,self.original_atomic_order = cell.calculate_molecular_contents(scale, tolerance, covalent_radii)
-        self.molecules_le.setText('{}'.format(self.number_of_molecules))
         # if the number of molecules has changed then tell the viewerTab that the cell has changed
         self.number_of_molecules = nmols
+        self.molecules_le.setText('{}'.format(self.number_of_molecules))
         # get the normal modes from the mass weighted ones
         normal_modes = Calculator.normal_modes(atom_masses, mass_weighted_normal_modes)
         # Reorder the atoms so that the mass weighted normal modes order agrees with the ordering in the cell_of_molecules cell
@@ -299,7 +357,7 @@ class AnalysisTab(QWidget):
         degenerate_list = [ [] for f in self.frequencies_cm1]
         for i,fi in enumerate(self.frequencies_cm1):
             for j,fj in enumerate(self.frequencies_cm1):
-                if abs(fi-fj) < 1.0E-8:
+                if abs(fi-fj) < 1.0E-5:
                     degenerate_list[i].append(j)
         self.mode_energies = []
         for i,fi in enumerate(self.frequencies_cm1):

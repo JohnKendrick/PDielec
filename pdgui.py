@@ -30,6 +30,11 @@ def main(sys):
     for token in sys.argv:
         if token == '-nosplash' or token == '--nosplash':
             showSplash = False
+        elif token == '-h' or token == '-help' or token == '--help':
+            print('pdgui - graphical user interface to the PDielec package')
+            print('pdgui [-help] [-debug] [program] [filename] [spreadsheet] [-script scriptname] [-nosplash]')
+            exit()
+
     if show_splash:
         dirname = os.path.dirname(os.path.realpath(sys.argv[0]))
         splashfile = os.path.join(dirname, 'Python/GUI/splash.png')

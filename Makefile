@@ -35,6 +35,7 @@ install:
 		cp -r Python/*.py $(SCRIPTS)/Python
 		cp -r Python/PyMieScatt/*.py $(SCRIPTS)/Python/PyMieScatt/
 		cp -r Python/GUI/*.py $(SCRIPTS)/Python/GUI/
+		cp -r Python/GUI/*.png $(SCRIPTS)/Python/GUI/
 
 test:		test_preader test_pdielec test_phonana
 

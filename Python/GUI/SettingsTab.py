@@ -114,7 +114,6 @@ class SettingsTab(QWidget):
         self.element_masses_tw.itemChanged.connect(self.on_element_masses_tw_itemChanged)
         self.element_masses_tw.setRowCount(1)
         self.element_masses_tw.blockSignals(True)
-        sizePolicy = QSizePolicy(QSizePolicy.Preferred,QSizePolicy.Preferred)
         sizePolicy = QSizePolicy(QSizePolicy.Minimum,QSizePolicy.Minimum)
         self.element_masses_tw.setSizePolicy(sizePolicy)
         debugger.print('element_masses_tw sizeHint',self.element_masses_tw.sizeHint())

@@ -173,31 +173,31 @@ class MainTab(QWidget):
         debugger.print('processing a return')
         if hasattr(self.notebook, 'settingsTab'):
             debugger.print('about to refresh settings')
-            self.notebook.settingsTab.refresh()
+            self.notebook.settingsTab.refresh(force=True)
         # Update any scenarios
         if hasattr(self.notebook, 'scenarios'):
             debugger.print('about to refresh scenarios')
             debugger.print('notebook has {} scenarios'.format(len(self.notebook.scenarios)))
             for tab in self.notebook.scenarios:
-                tab.refresh()
+                tab.refresh(force=True)
         else:
             debugger.print('notebook has no scenarios yet')
         # Update the plotting tab
         if hasattr(self.notebook, 'plottingTab'):
             debugger.print('about to refresh plottingtab')
-            self.notebook.plottingTab.refresh()
+            self.notebook.plottingTab.refresh(force=True)
         else:
             debugger.print('notebook has no plotting tab yet')
         # Update the analysis tab
         if hasattr(self.notebook, 'analysisTab'):
             debugger.print('about to refresh analysisTab')
-            self.notebook.analysisTab.refresh()
+            self.notebook.analysisTab.refresh(force=True)
         else:
             debugger.print('notebook has no analysis tab yet')
         # Update the viewer tab
         if hasattr(self.notebook, 'viewerTab'):
             debugger.print('about to refresh viewerTab')
-            self.notebook.viewerTab.refresh()
+            self.notebook.viewerTab.refresh(force=True)
         else:
             debugger.print('notebook has no viewer tab yet')
 
@@ -222,7 +222,7 @@ class MainTab(QWidget):
             if os.path.isfile(self.settings['Output file name']):
                 debugger.print('on resultsfile about to press the button ')
                 # The file exists to treat it as though the button has been pressed
-                self.pushButton1Clicked()
+                self.read_output_file()
         debugger.print('on resultsfile return ')
  
     def on_resultsfile_le_changed(self, text):
@@ -237,7 +237,8 @@ class MainTab(QWidget):
             self.notebook.spreadsheet = SpreadSheetManager(text)
             self.settings['Excel file name'] = text
         else:
-            print('spreadsheet name not valid', text)
+           print('spreadsheet name not valid', text)
+           exit()
 
     def on_file_le_return(self):
         debugger.print('on file return ', self.file_le.text())

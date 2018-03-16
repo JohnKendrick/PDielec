@@ -8,7 +8,7 @@ from PyQt5.QtWidgets         import  QSpinBox, QTabWidget, QDoubleSpinBox
 from PyQt5.QtWidgets         import  QSizePolicy, QColorDialog
 from PyQt5.QtCore            import  Qt
 from Python.Constants        import  wavenumber, amu, PI, avogadro_si, angstrom
-from Python.Constants        import  covalent_radii, elemental_colours
+from Python.Constants        import  elemental_colours
 # Import plotting requirements
 from Python.Utilities        import Debug
 from Python.Plotter          import print_strings, print_reals
@@ -33,7 +33,7 @@ class ViewerTab(QWidget):
         self.settings['Cell radius']           = 0.1
         self.settings['Background colour']     = [ 120, 120, 120, 255 ]
         self.settings['Arrow colour']          = [   0, 255,   0, 255 ]
-        self.settings['Arrow radius']          = 0.1
+        self.settings['Arrow radius']          = 0.07
         self.settings['Number of phase steps'] = 41
         self.light_switches = [False]*8
         self.light_switches[0] = True
@@ -41,12 +41,13 @@ class ViewerTab(QWidget):
         self.plot_types = ['Animation','Arrows']
         self.plot_type_index = 1
         self.number_of_molecules = 0
+        self.unit_cell = None
         self.cell_edges = None
         self.cell_corners = None
         # element_colours is a dictionary
         self.element_colours = elemental_colours
         self.element_names = []
-        self.species       = None
+        self.species       = []
         self.element_coloured_buttons = []
         self.bond_cell_background_arrow_buttons = []
         self.bond_cell_background_arrow_names = ['Background','Cell','Bonds','Arrows']
@@ -152,9 +153,8 @@ class ViewerTab(QWidget):
         self.coloured_elements_widget = QWidget(self)
         self.element_coloured_buttons = []
         self.element_coloured_hbox = QHBoxLayout()
-        for el in self.element_names:
-            r,g,b = self.element_colours[el]
-            a = 255
+        for el in self.species:
+            r,g,b,a = self.element_colours[el]
             button = QPushButton(el)
             button.setStyleSheet('background-color:rgba( {}, {}, {}, {});'.format(r,g,b,a))
             button.clicked.connect(self.on_coloured_element_clicked)
@@ -171,7 +171,6 @@ class ViewerTab(QWidget):
         self.bond_cell_background_arrow_buttons = []
         for col, name in zip(button_colours, self.bond_cell_background_arrow_names):
             button = QPushButton(name)
-            print('name, col',name,col)
             button.setStyleSheet('background-color:rgba( {}, {}, {}, {});'.format(*col))
             button.clicked.connect(self.on_coloured_button_clicked)
             self.bond_cell_background_arrow_buttons.append(button)
@@ -182,15 +181,14 @@ class ViewerTab(QWidget):
         #
         self.settingsTab = QTabWidget(self)
         #self.settingsTab.currentChanged.connect(self.on_settingsTab_currentChanged)
-        self.settingsTab.addTab(self.maximum_displacement_sb, 'Maximum Displacement')
-        self.settingsTab.addTab(self.cell_radius_sb, 'Cell Radius')
-        self.settingsTab.addTab(self.arrow_radius_sb, 'Arrow Radius')
-        self.settingsTab.addTab(self.bond_radius_sb, 'Bond Radius')
-        self.settingsTab.addTab(self.atom_scaling_sb, 'Atom Scaling')
-        self.settingsTab.addTab(self.light_switches_cb, 'Lighting')
         self.settingsTab.addTab(self.coloured_elements_widget, 'Elements')
         self.settingsTab.addTab(self.coloured_buttons_widget, 'Colours')
-        self.coloured_elements_widget.setLayout(hbox)
+        self.settingsTab.addTab(self.atom_scaling_sb, 'Atom Scaling')
+        self.settingsTab.addTab(self.light_switches_cb, 'Lighting')
+        self.settingsTab.addTab(self.maximum_displacement_sb, 'Maximum Displacement')
+        self.settingsTab.addTab(self.bond_radius_sb, 'Bond Radius')
+        self.settingsTab.addTab(self.cell_radius_sb, 'Cell Radius')
+        self.settingsTab.addTab(self.arrow_radius_sb, 'Arrow Radius')
         label = QLabel('Settings', self)
         form.addRow(label,self.settingsTab)
         #
@@ -279,7 +277,7 @@ class ViewerTab(QWidget):
         maxR = np.max( np.abs(np.array(self.UVW[self.selected_mode])))
         arrow_scaling = self.settings['Maximum displacement'] / maxR
         for uvw in self.UVW[self.selected_mode]:
-            self.opengl_widget.addArrows( self.settings['Arrow colour'],self.setttings['Arrow radius'], uvw, arrow_scaling )
+            self.opengl_widget.addArrows( self.settings['Arrow colour'],self.settings['Arrow radius'], uvw, arrow_scaling )
         self.calculate()
         self.plot()
 
@@ -315,8 +313,8 @@ class ViewerTab(QWidget):
         volume = self.reader.volume*angstrom*angstrom*angstrom
         # Get the cell with whole molecules from the analysis tab
         self.unit_cell = self.notebook.analysisTab.cell_of_molecules
-        if self.debug:
-            self.unit_cell.printInfo()
+        # if self.debug:
+        #     self.unit_cell.printInfo()
         self.normal_modes = self.notebook.analysisTab.new_normal_modes
         self.bonds = self.unit_cell.bonds
         self.snapshot_number = 0
@@ -328,7 +326,8 @@ class ViewerTab(QWidget):
         # get the cell edges for the bounding box
         self.cell_corners,self.cell_edges = self.unit_cell.getBoundingBox()
         self.element_names = self.unit_cell.element_names
-        self.species = set(self.element_names)
+        self.species = self.reader.getSpecies()
+        covalent_radii = self.notebook.analysisTab.element_radii
         self.radii = [self.settings['Atom scaling']*covalent_radii[el] for el in self.element_names ]
         self.colours = [ self.element_colours[el] for el in self.element_names ]
         # reorder the displacement info in the normal modes into U,V and W lists 
@@ -345,7 +344,7 @@ class ViewerTab(QWidget):
         arrow_scaling = self.settings['Maximum displacement'] / maxR
         self.opengl_widget.deleteArrows()
         for uvw in self.UVW[self.selected_mode]:
-            self.opengl_widget.addArrows( self.settings['Arrow colour'],self.setttings['Arrow radius'], uvw, arrow_scaling )
+            self.opengl_widget.addArrows( self.settings['Arrow colour'],self.settings['Arrow radius'], uvw, arrow_scaling )
         self.opengl_widget.setRotationCentre(self.unit_cell.calculateCentreOfMass() )
         self.opengl_widget.setImageSize()
         self.dirty = False
@@ -356,6 +355,8 @@ class ViewerTab(QWidget):
             self.settings['Background colour'] = colour
         elif element == 'Cell' or element == 'cell':
             self.settings['Cell colour'] = colour
+        elif element == 'Arrow' or element == 'arrow':
+            self.settings['Arrow colour'] = colour
         else:
             self.element_colours[element] = colour
         self.plot()
@@ -439,29 +440,38 @@ class ViewerTab(QWidget):
         #
         # Colours list of buttons with element colours
         #
+        self.reader = self.notebook.mainTab.reader
+        if self.reader is None:
+            debugger.print('reader is none ')
+            self.element_names = []
+            self.species = []
+        else:
+            self.unit_cell = self.notebook.analysisTab.cell_of_molecules
+            self.element_names = self.unit_cell.element_names
+            self.species = self.reader.getSpecies()
+            debugger.print('refresh - species ',self.species)
         count = self.element_coloured_hbox.count()
+        debugger.print('count widget',count)
         if count == 0:
+            debugger.print('initialising element colours widget')
             self.element_coloured_buttons = []
             for el in self.species:
-                r,g,b = self.element_colours[el]
-                a = 255
-                print('rgba2,',el, r,g,b,a)
+                r,g,b,a = self.element_colours[el]
                 button = QPushButton(el)
                 button.setStyleSheet('background-color:rgba( {}, {}, {}, {});'.format(r,g,b,a))
                 button.clicked.connect(self.on_coloured_element_clicked)
                 self.element_coloured_buttons.append(button)
                 self.element_coloured_hbox.addWidget(button)
         else:
+            debugger.print('update element colours widget')
             for el,button in zip(self.species,self.element_coloured_buttons):
-                r,g,b = self.element_colours[el]
-                a = 255
+                r,g,b,a = self.element_colours[el]
                 button.setStyleSheet('background-color:rgba( {}, {}, {}, {});'.format(r,g,b,a))
         #
         # Colours list of buttons with colours
         #
         button_colours = [  (r,g,b,a) for (r,g,b,a) in [self.settings['Background colour'], self.settings['Cell colour'], self.settings['Bond colour'],self.settings['Arrow colour']] ]
         for col, button in zip(button_colours, self.bond_cell_background_arrow_buttons):
-            print('2 col',col)
             button.setStyleSheet('background-color:rgba( {}, {}, {}, {});'.format(*col))
         self.calculate()
         self.plot()

@@ -14,7 +14,7 @@ class App(QMainWindow):
         filename = ''
         spreadsheet = ''
         exit = False
-        debug = False
+        self.debug = False
         script = False
         nosplash = False
         scriptname = ''
@@ -25,7 +25,7 @@ class App(QMainWindow):
         while itoken < ntokens:
             token = tokens[itoken]
             if token == '-d' or token == '-debug' or token == '--debug':
-                debug = True
+                self.debug = True
             elif token == '-nosplash' or token == '--nosplash':
                 nosplash = True
             elif token == '-exit' or token == '--exit' or token == '-quit' or token == '--quit':
@@ -38,7 +38,6 @@ class App(QMainWindow):
                 itoken += 1
                 spreadsheet = tokens[itoken]
             elif token == '-h' or token == '-help' or token == '--help':
-                print('help is true')
                 print('pdgui - graphical user interface to the PDielec package')
                 print('pdgui [-help] [-debug] [program] [filename] [spreadsheet] [-script scriptname] [-nosplash]')
                 exit()
@@ -58,7 +57,13 @@ class App(QMainWindow):
         self.setWindowTitle(self.title)
         self.setGeometry(self.left, self.top, self.width, self.height)
         QCoreApplication.processEvents()
-        self.notebook = NoteBook(self, program, filename, spreadsheet, script=script, progressbar=progressbar, debug=debug)
+        if self.debug:
+            print('About to open the notebook')
+            print('Program is', program)
+            print('Filename is', filename)
+            print('Spreadsheet is', spreadsheet)
+            print('Script is', script)
+        self.notebook = NoteBook(self, program, filename, spreadsheet, script=script, progressbar=progressbar, debug=self.debug)
         self.setCentralWidget(self.notebook)
         if script:
             self.script = False
@@ -75,8 +80,13 @@ class App(QMainWindow):
 
     def closeEvent(self, event):
         # Make sure any spread sheet is closed
+        if self.debug:
+            print('Close event as been captured')
         if self.notebook.spreadsheet is not None:
             self.notebook.spreadsheet.close()
+        else:
+            if self.debug:
+                print('Spreadsheet was not set')
         super(App, self).closeEvent(event)
     
 if __name__ == '__main__':

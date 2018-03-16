@@ -92,6 +92,8 @@ class OpenGLWidget(QOpenGLWidget):
         debugger.print('molecule rotation',x,y,z)
         self.makeCurrent()
         glMatrixMode(GL_MODELVIEW)
+        glGetFloatv(GL_MODELVIEW_MATRIX, self.matrix)
+        glLoadIdentity()
         glRotatef(scale*x, 1.0, 0.0, 0.0)
         glRotatef(scale*y, 0.0, 1.0, 0.0)
         glMultMatrixf(self.matrix)
@@ -415,9 +417,9 @@ class OpenGLWidget(QOpenGLWidget):
         debugger.print('deleteArrows')
         self.arrows = []
 
-    def addArrows(self, direction, length, phase=0):
+    def addArrows(self, colour, radius, direction, length, phase=0):
         # There is no phase requirement for arrows - they are just displacements
-        self.arrows.append( Arrow(direction, length) )
+        self.arrows.append( Arrow(colour, radius, direction, length) )
 
     def addCylinder(self, colour, radius, pos1, pos2, phase=0):
         self.cylinders[phase].append( Cylinder(colour,radius,pos1,pos2) )

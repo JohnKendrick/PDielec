@@ -326,7 +326,7 @@ class ScenarioTab(QWidget):
     def on_legend_le_changed(self,text):
         debugger.print('on legend change', text)
         self.dirty = True
-        self.settings['legend'] = text
+        self.settings['Legend'] = text
         self.legend_le.setText(text)
 
     def on_sigma_sb_changed(self,value):

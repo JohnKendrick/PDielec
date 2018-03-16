@@ -565,7 +565,7 @@ class PlottingTab(QWidget):
         self.subplot = self.figure.add_subplot(111)
         for scenario,x,y in zip(self.scenarios,xs,ys):
             x = np.array(x)
-            legend = scenario.settings['legend']
+            legend = scenario.settings['Legend']
             line, = self.subplot.plot(scale*x,y,lw=2, label=legend )
         self.subplot.set_xlabel(xlabel)
         self.subplot.set_ylabel(ylabel)
