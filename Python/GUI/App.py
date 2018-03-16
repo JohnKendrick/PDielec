@@ -16,6 +16,7 @@ class App(QMainWindow):
         exit = False
         debug = False
         script = False
+        nosplash = False
         scriptname = ''
         # Manage options
         tokens = args[1:]
@@ -25,6 +26,8 @@ class App(QMainWindow):
             token = tokens[itoken]
             if token == '-d' or token == '-debug' or token == '--debug':
                 debug = True
+            elif token == '-nosplash' or token == '--nosplash':
+                nosplash = True
             elif token == '-exit' or token == '--exit' or token == '-quit' or token == '--quit':
                 exit = True
             elif token == '-script' or token == '--script':
@@ -37,7 +40,7 @@ class App(QMainWindow):
             elif token == '-h' or token == '-help' or token == '--help':
                 print('help is true')
                 print('pdgui - graphical user interface to the PDielec package')
-                print('pdgui [-help] [-debug] [program] [filename] [spreadsheet] [-script scriptname]')
+                print('pdgui [-help] [-debug] [program] [filename] [spreadsheet] [-script scriptname] [-nosplash]')
                 exit()
             elif program == '':
                 program = token

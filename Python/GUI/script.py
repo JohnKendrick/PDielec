@@ -16,6 +16,7 @@ tab.settings['Hessian symmetrisation'] = 'symm'              # crystal/symm
 tab.settings['Sigma value'] = 5
 tab.settings['Mass definition'] = 'average'                  # average/program/isotope
 tab.settings['Optical permittivity'] = [[1,0,0],[0,1,0],[0,0,1]]
+#tab.setElementMass['H',2.0]
 #
 # Scenario tabs
 #
@@ -59,12 +60,15 @@ tab.settings['Covalent radius scaling'] = 1.1
 tab.settings['Bonding tolerance'] = 0.1
 tab.settings['Bar width'] = 0.5
 #
-# Analysis Tab
+# GUI Tab
 #
 tab = self.notebook.viewerTab
-tab.settings['Bond colour'] = [ 0.3, 0.3, 0.3 ]
+tab.settings['Bond colour'] = [ 0.3, 0.3, 0.3, 1.0 ]
 tab.settings['Bond radius'] = 0.1
 tab.settings['Number of phase steps'] = 41
-tab.settings['Cell colour'] = [ 1.0, 0.0, 0.0 ]
+tab.settings['Cell colour'] = [ 1.0, 0.0, 0.0, 1.0 ]
 tab.settings['Cell radius'] = 0.1
+tab.settings['Background colour'] = [ 0.0, 0.0, 0.0, 1.0 ]
 tab.light_switches[0] = False
+tab.setColour('Na', [255, 255, 0, 255])
+#

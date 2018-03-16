@@ -101,6 +101,7 @@ class SettingsTab(QWidget):
         self.mass_cb.addItem('Mass taken from QM/MM program')
         self.mass_cb.addItem('Most common isotope mass')
         self.mass_cb.addItem('Masses set individually')
+        self.mass_cb.model().item(3).setEnabled(False)
         # set default to average natural abundance
         self.mass_cb.activated.connect(self.on_mass_cb_activated)
         self.current_mass_definition_index = self.mass_definition_options.index(self.settings['Mass definition'])
@@ -158,6 +159,13 @@ class SettingsTab(QWidget):
         # finalise the layout
         self.setLayout(vbox)
         QCoreApplication.processEvents()
+
+    def setElementMass(self,element,mass):
+        self.settings['Mass definition'] = 'gui'
+        self.masses_dict[element] = mass
+        self.mass_cb.setCurrentIndex(3)
+        self.set_masses_tw()
+        self.calculateButtonClicked()
 
     def calculateButtonClicked(self):
         debugger.print('Button 1 pressed')
@@ -320,6 +328,8 @@ class SettingsTab(QWidget):
         debugger.print('on mass combobox activated', self.mass_cb.currentText())
         self.settings['Mass definition'] = self.mass_definition_options[index]
         self.current_mass_definition_index = index
+        if index < 3:
+            self.mass_cb.model().item(3).setEnabled(False)
         # Modify the element masses
         self.set_masses_tw()
         self.calculateButtonClicked()
@@ -353,7 +363,9 @@ class SettingsTab(QWidget):
                     masses.append(mass)
                     self.masses_dictionary[element] = mass
             elif self.settings['Mass definition'] == 'gui':
-                self.mass_cb.setCurrentIndex(3)
+                for element in species:
+                    mass = self.masses_dictionary[element]
+                    masses.append(mass)
             else:
                  debugger.print('Error mass_definition not recognised', self.settings['Mass definition'])
             self.element_masses_tw.setColumnCount(len(masses))
@@ -381,6 +393,12 @@ class SettingsTab(QWidget):
                     qw.setText('{0:.6f}'.format(isotope_masses[element]))
                     qw.setTextAlignment(Qt.AlignHCenter | Qt.AlignVCenter)
                     debugger.print('isotope',isotope_masses[element])
+                    self.element_masses_tw.setItem(0,i, qw )
+                elif  self.settings['Mass definition'] == 'gui':
+                    self.element_masses_tw.blockSignals(True)
+                    qw.setText('{0:.6f}'.format(self.masses_dictionary[element]))
+                    qw.setTextAlignment(Qt.AlignHCenter | Qt.AlignVCenter)
+                    debugger.print('gui',self.masses_dictionary[element])
                     self.element_masses_tw.setItem(0,i, qw )
                 else:
                     print('Mass definition not processed', self.settings['Mass definition'])
@@ -421,7 +439,9 @@ class SettingsTab(QWidget):
         debugger.print('on_element_masses_tw_itemChanged)', item.row(), item.column() )
         elements = self.reader.getSpecies()
         col = item.column()
+        self.mass_cb.model().item(3).setEnabled(True)
         self.settings['Mass definition'] = 'gui'
+        self.mass_cb.setCurrentIndex(3)
         self.masses_dictionary[elements[col]] = float(item.text())
         self.calculateButtonClicked()
         self.notebook.newPlottingCalculationRequired = True

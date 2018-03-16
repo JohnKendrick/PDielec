@@ -26,15 +26,23 @@ from multiprocessing import freeze_support
 
 def main(sys):
     app = QApplication(sys.argv)
-    dirname = os.path.dirname(os.path.realpath(sys.argv[0]))
-    splashfile = os.path.join(dirname, 'Python/GUI/splash.png')
-    pixmap = QPixmap(splashfile)
-    splash = QSplashScreen(pixmap)
-    progressbar = QProgressBar(splash)
-    splash.show()
+    show_splash = True
+    for token in sys.argv:
+        if token == '-nosplash' or token == '--nosplash':
+            showSplash = False
+    if show_splash:
+        dirname = os.path.dirname(os.path.realpath(sys.argv[0]))
+        splashfile = os.path.join(dirname, 'Python/GUI/splash.png')
+        pixmap = QPixmap(splashfile)
+        splash = QSplashScreen(pixmap)
+        progressbar = QProgressBar(splash)
+        splash.show()
+    else:
+        progressbar = QProgressBar()
     ex = App(sys.argv, progressbar)
     ex.show()
-    splash.finish(ex)
+    if show_splash:
+        splash.finish(ex)
     sys.exit(app.exec_())
 
 if __name__ == '__main__':

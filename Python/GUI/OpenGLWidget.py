@@ -24,7 +24,7 @@ class OpenGLWidget(QOpenGLWidget):
         global debugger
         debugger = Debug(debug,'OpenGLWidget')
         self.debug = debug
-        self.parent = parent
+        self.viewerTab = parent
         self.notebook = parent.notebook
         self.setMinimumSize(640, 680)
         self.lightingOn = True
@@ -41,8 +41,6 @@ class OpenGLWidget(QOpenGLWidget):
         self.spheres                = None
         self.cylinders              = None
         self.arrows                 = None
-        self.arrow_colour           = np.array( [ 0.0, 1.0, 0.0 ] )
-        self.arrow_radius           = 0.05
         self.current_phase          = 0
         self.phase_direction        = 1
         self.number_of_phases       = 1
@@ -53,6 +51,9 @@ class OpenGLWidget(QOpenGLWidget):
         self.timer                  = None
         self.show_arrows            = True
         self.timer_interval         = 60
+        self.my_width               = None
+        self.my_height              = None
+        self.background_colour      = None
         
         self.show_full_screen       = False
         self.rotation_centre         = np.array( [0.0, 0.0, 0.0] )
@@ -68,7 +69,7 @@ class OpenGLWidget(QOpenGLWidget):
     def enterEvent(self, event):
         debugger.print('enter event')
         self.setFocus()
-        self.parent.enterEvent(event)
+        self.viewerTab.enterEvent(event)
 
     def showArrows(self, show):
         debugger.print('show arrows',show)
@@ -91,11 +92,9 @@ class OpenGLWidget(QOpenGLWidget):
         debugger.print('molecule rotation',x,y,z)
         self.makeCurrent()
         glMatrixMode(GL_MODELVIEW)
-        glLoadIdentity()
         glRotatef(scale*x, 1.0, 0.0, 0.0)
         glRotatef(scale*y, 0.0, 1.0, 0.0)
         glMultMatrixf(self.matrix)
-        glGetFloatv(GL_MODELVIEW_MATRIX, self.matrix)
         self.update()
 
     def keyPressEvent(self, event):
@@ -182,11 +181,11 @@ class OpenGLWidget(QOpenGLWidget):
                 # handle ordinary rotation
                 xrotate = (self.xAtMove - self.xAtPress)*1
                 yrotate = (self.yAtMove - self.yAtPress)*1
-                self.moleculeRotate(1.0,yrotate,xrotate,0.0)
+                self.moleculeRotate(0.3,yrotate,xrotate,0.0)
         elif buttons & Qt.MidButton:
             debugger.print('Mouse event - mid button')
-            xshift =  0.05 * (self.xAtMove - self.xAtPress)
-            yshift = -0.05 * (self.yAtMove - self.yAtPress)
+            xshift =  0.02 * (self.xAtMove - self.xAtPress)
+            yshift = -0.02 * (self.yAtMove - self.yAtPress)
             self.translate(xshift, yshift)
             self.update()
         debugger.print('Mouse event - xy', self.xAtPress,self.yAtPress)
@@ -212,6 +211,8 @@ class OpenGLWidget(QOpenGLWidget):
         debugger.print('paintGL')
         glMatrixMode(GL_MODELVIEW)
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
+        self.background_colour = np.array(self.viewerTab.settings['Background colour'])/255.0
+        glClearColor(*self.background_colour)
         glPushMatrix()
         glTranslatef(-self.rotation_centre[0],-self.rotation_centre[1],-self.rotation_centre[2] )
         self.drawSpheres()
@@ -269,14 +270,17 @@ class OpenGLWidget(QOpenGLWidget):
         debugger.print('drawArrows')
         if self.arrows is None:
             return
+        self.arrow_colour = np.array(self.viewerTab.settings['Arrow colour'])/255.0
         for arrow,sphere in zip(self.arrows,self.spheres[self.current_phase]):
             pos       = sphere.position
             direction = arrow.direction
             length    = arrow.height
             angle     = arrow.angle
             rot       = arrow.rotation
-            diffMatColour =  self.arrow_colour * self.diffuseMaterialFactor
-            ambMatColour =   self.arrow_colour * self.ambientMaterialFactor
+            colour    = arrow.colour
+            radius    = arrow.radius
+            diffMatColour =  colour * self.diffuseMaterialFactor
+            ambMatColour =   colour * self.ambientMaterialFactor
             specMatColour =  self.white * self.specularLightFactor
             glMaterialfv(GL_FRONT, GL_DIFFUSE, diffMatColour)
             glMaterialfv(GL_FRONT, GL_AMBIENT, ambMatColour)
@@ -285,17 +289,17 @@ class OpenGLWidget(QOpenGLWidget):
             glPushMatrix()
             glTranslated( pos[0], pos[1], pos[2] )
             glRotated(angle, rot[0], rot[1], rot[2])
-            gluCylinder(self.quadric, self.arrow_radius, self.arrow_radius, length, self.cylinder_slices, self.cylinder_stacks)
+            gluCylinder(self.quadric, radius, radius, length, self.cylinder_slices, self.cylinder_stacks)
             glTranslated( 0.0, 0.0, length )
             length = 0.1
-            gluCylinder(self.quadric, 2.0*self.arrow_radius, 0.1*self.arrow_radius, length, self.cylinder_slices, self.cylinder_stacks)
+            gluCylinder(self.quadric, 2.0*radius, 0.1*radius, length, self.cylinder_slices, self.cylinder_stacks)
             glPopMatrix()
 
 
     def resizeGL(self,w,h):
         debugger.print('resizeGL',w,h)
-        self.width = w
-        self.height =h
+        self.my_width = w
+        self.my_height =h
         # set projection matrix
         self.setProjectionMatrix()
 
@@ -317,6 +321,9 @@ class OpenGLWidget(QOpenGLWidget):
         #glBlendFunc(GL_SRC_ALPHA_SATURATE, GL_ONE)
         glEnable(GL_BLEND)
         self.defineLights()
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
+        self.background_colour = np.array(self.viewerTab.settings['Background colour'])/255.0
+        glClearColor(*self.background_colour)
 
     def setImageSize(self):
         maxsize = 0.0
@@ -337,16 +344,19 @@ class OpenGLWidget(QOpenGLWidget):
             if dist > maxsize:
                 maxsize = dist
         self.image_size = maxsize
+        self.setProjectionMatrix()
         debugger.print('setImageSize',self.image_size)
         
 
     def setProjectionMatrix(self):
+        if self.image_size is None or self.my_width is None or self.my_height is None:
+            return
         self.makeCurrent()
         glMatrixMode(GL_PROJECTION)
         glLoadIdentity()                    
-        orthox = 1.1 * self.image_size * self.width  / min(self.width,self.height)
-        orthoy = 1.1 * self.image_size * self.height / min(self.width,self.height)
-        orthoz = 1.1 * self.image_size * max(self.width,self.height)
+        orthox = 1.1 * self.image_size * self.my_width  / min(self.my_width,self.my_height)
+        orthoy = 1.1 * self.image_size * self.my_height / min(self.my_width,self.my_height)
+        orthoz = 1.1 * self.image_size * max(self.my_width,self.my_height)
         debugger.print('projection', orthox, orthoy, orthoz)
         glOrtho(-orthox, orthox, -orthoy, orthoy, -orthoz, orthoz)
         glMatrixMode(GL_MODELVIEW)
@@ -362,7 +372,7 @@ class OpenGLWidget(QOpenGLWidget):
         debugger.print('Define Lights')
         self.makeCurrent()
         if self.light_switches is None:
-            self.light_switches = self.notebook.viewerTab.light_switches
+            self.light_switches = self.viewerTab.light_switches
             glEnable(GL_LIGHTING)
             for position,lightOn,light in zip(self.light_positions,self.light_switches,self.lights):
                 glLightfv(light, GL_AMBIENT,  [ self.ambientLightFactor,  self.ambientLightFactor,  self.ambientLightFactor,  1.0 ] )
@@ -417,7 +427,7 @@ class OpenGLWidget(QOpenGLWidget):
 
 class Sphere():
     def __init__(self, colour, radius, position):
-        self.colour= np.array(colour)
+        self.colour= np.array(colour)/255.0
         self.radius = radius
         self.position = np.array(position)
 
@@ -425,7 +435,7 @@ class Cylinder():
     def __init__(self, colour, radius, pos1, pos2):
         a = np.array(pos1)
         b = np.array(pos2)
-        self.colour= np.array(colour)
+        self.colour= np.array(colour)/255.0
         self.radius = radius
         self.position1 = a
         self.position2 = b
@@ -439,8 +449,9 @@ class Cylinder():
         self.rotation = t
 
 class Arrow():
-    def __init__(self, direction, scale):
+    def __init__(self, colour, radius, direction, scale):
         # Adds a displacement to each atom
+        self.colour= np.array(colour)/255.0
         p = np.array(direction)
         z = np.array( [0.0, 0.0, 1.0] )
         t = np.cross(z, p)
@@ -451,4 +462,5 @@ class Arrow():
         self.height = height*scale
         self.rotation = t
         self.direction = p
+        self.radius = radius
 
