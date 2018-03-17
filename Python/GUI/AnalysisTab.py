@@ -174,11 +174,13 @@ class AnalysisTab(QWidget):
             return
         col = item.column()
         try:
+            debugger.print('Changing the element radius',col,item.text())
             self.element_radii[self.species[col]] = float(item.text())
             self.calculate()
             self.plot()
-            self.notebook.visualiserTab.refresh(force=True)
+            self.notebook.viewerTab.refresh(force=True)
         except:
+            debugger.print('Failed Changing the element radius',col,item.text())
             pass
 
     def set_radii_tw(self):
