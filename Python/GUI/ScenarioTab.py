@@ -4,7 +4,7 @@ import os.path
 import numpy as np
 import Python.Calculator as Calculator
 from PyQt5.QtWidgets  import  QPushButton, QWidget
-from PyQt5.QtWidgets  import  QComboBox, QLabel, QLineEdit
+from PyQt5.QtWidgets  import  QComboBox, QLabel, QLineEdit, QDoubleSpinBox
 from PyQt5.QtWidgets  import  QVBoxLayout, QHBoxLayout, QFormLayout
 from PyQt5.QtWidgets  import  QSpinBox
 from PyQt5.QtCore     import  Qt
@@ -17,25 +17,29 @@ class ScenarioTab(QWidget):
         super(QWidget, self).__init__(parent)
         global debugger
         debugger = Debug(debug,'ScenarioTab:')
+        self.dirty = True
         self.settings = {}
+        self.notebook = parent
+        self.notebook.newPlottingCalculationRequired = True
         matrix = 'ptfe'
-        self.settings['matrix'] = matrix
-        self.settings['matrix_density'] = support_matrix_db[matrix][0]
-        self.settings['matrix_permittivity'] = support_matrix_db[matrix][1]
-        self.settings['mass_fraction'] = 0.1
-        self.settings['volume_fraction'] = 0.1
-        self.settings['particle_size'] = 0.0001
-        self.settings['particle_sigma'] = 0.0
-        self.settings['aoverb'] = 1.0
-        self.settings['h'] = 0
-        self.settings['k'] = 0
-        self.settings['l'] = 1
+        self.settings['Matrix'] = matrix
+        self.settings['Matrix density'] = support_matrix_db[matrix][0]
+        self.settings['Matrix permittivity'] = support_matrix_db[matrix][1]
+        self.settings['Mass fraction'] = 0.1
+        self.settings['Volume fraction'] = 0.1
+        self.settings['Particle size(mu)'] = 0.0001
+        self.settings['Particle size distribution sigma(mu)'] = 0.0
+        self.settings['Ellipsoid a/b'] = 1.0
+        self.settings['Unique direction - h'] = 0
+        self.settings['Unique direction - k'] = 0
+        self.settings['Unique direction - l'] = 1
+        self.settings['Mass or volume fraction'] = 'volume'
         # get the reader from the main tab
         self.notebook = parent
         self.reader = self.notebook.mainTab.reader
-        self.settings['method'] = 'Maxwell-Garnett'
+        self.settings['Effective medium method'] = 'Maxwell-Garnett'
         self.methods = ['Maxwell-Garnett', 'Bruggeman', 'Averaged Permittivity', 'Mie']
-        self.settings['shape'] = 'Sphere'
+        self.settings['Particle shape'] = 'Sphere'
         self.shapes = ['Sphere', 'Needle', 'Plate', 'Ellipsoid']
         self.scenarioIndex = None
         # Create a scenario tab 
@@ -46,108 +50,122 @@ class ScenarioTab(QWidget):
         #
         self.matrix_cb = QComboBox(self)
         self.matrix_cb.setToolTip('Define the permittivity and density of the support matrix')
-        for matrix in support_matrix_db:
-            debugger.print('matrix:',matrix, support_matrix_db[matrix])
-            self.matrix_cb.addItem(matrix)
-        index = self.matrix_cb.findText(self.settings['matrix'], Qt.MatchFixedString)
+        self.matrix_cb.addItems(support_matrix_db)
+        index = self.matrix_cb.findText(self.settings['Matrix'], Qt.MatchFixedString)
         if index >=0:
             self.matrix_cb.setCurrentIndex(index)
         else:
             print('support matrix index was not 0',matrix)
-        self.matrix_cb.currentIndexChanged.connect(self.on_matrix_cb_changed)
+        self.matrix_cb.activated.connect(self.on_matrix_cb_activated)
         label = QLabel('Support matrix',self)
         label.setToolTip('Define the permittivity and density of the support matrix')
         form.addRow(label, self.matrix_cb)
         #
         # Support matrix permittivity
         #
-        self.density_le = QLineEdit(self) 
-        self.density_le.setToolTip('Define the support matrix density. \nThis makes changes to the support density and permittivity')
-        self.density_le.setText('{0:.6f}'.format(self.settings['matrix_density']))
-        self.density_le.textChanged.connect(self.on_density_le_changed)
+        self.density_sb = QDoubleSpinBox(self) 
+        self.density_sb.setRange(0.001, 100.0)
+        self.density_sb.setSingleStep(0.01)
+        self.density_sb.setDecimals(3)
+        self.density_sb.setToolTip('Define the support matrix density. \nThis makes changes to the support density and permittivity')
+        self.density_sb.setValue(self.settings['Matrix density'])
+        self.density_sb.valueChanged.connect(self.on_density_sb_changed)
         label = QLabel('Support density', self)
         label.setToolTip('Define the support matrix density. \nThis makes changes to the support density and permittivity')
-        form.addRow(label, self.density_le)
+        form.addRow(label, self.density_sb)
         #
         # Support matrix permittivity
         #
-        self.permittivity_le = QLineEdit(self) 
-        self.permittivity_le.setToolTip('Define the support matrix permittivity')
-        self.permittivity_le.setText('{0:.6f}'.format(self.settings['matrix_permittivity']))
-        self.permittivity_le.textChanged.connect(self.on_permittivity_le_changed)
+        self.permittivity_sb = QDoubleSpinBox(self) 
+        self.permittivity_sb.setRange(0.001, 100.0)
+        self.permittivity_sb.setSingleStep(0.01)
+        self.permittivity_sb.setDecimals(3)
+        self.permittivity_sb.setToolTip('Define the support matrix permittivity')
+        self.permittivity_sb.setValue(self.settings['Matrix permittivity'])
+        self.permittivity_sb.valueChanged.connect(self.on_permittivity_sb_changed)
         label = QLabel('Support permittivity', self)
         label.setToolTip('Define the support matrix permittivity')
-        form.addRow(label, self.permittivity_le)
+        form.addRow(label, self.permittivity_sb)
         #
         # Mass fraction of dielectric medium
         #
-        self.mf_le = QLineEdit(self) 
-        self.mf_le.setToolTip('The percentage mass fraction of the dielectric medium. \nNote that volume and mass fraction are linked')
-        self.mf_le.setText('{0:.6f}'.format(100*self.settings['mass_fraction']))
-        self.mf_le.textChanged.connect(self.on_mf_le_changed)
+        self.mf_sb = QDoubleSpinBox(self)
+        self.mf_sb.setRange(0.000001, 100.0)
+        self.mf_sb.setSingleStep(0.1)
+        self.mf_sb.setDecimals(6)
+        self.mf_sb.setToolTip('The percentage mass fraction of the dielectric medium. \nNote that volume and mass fraction are linked')
+        self.mf_sb.setValue(100.0*self.settings['Mass fraction'])
+        self.mf_sb.valueChanged.connect(self.on_mf_sb_changed)
         label = QLabel('% mass fraction of dielectric', self)
         label.setToolTip('The percentage mass fraction of the dielectric medium. \nNote that volume and mass fraction are linked')
-        form.addRow(label, self.mf_le)
+        form.addRow(label, self.mf_sb)
         #
         # Volume fraction of dielectric medium
         #
-        self.vf_le = QLineEdit(self) 
-        self.vf_le.setToolTip('The percentage volume fraction of the dielectric medium. \nNote that volume and mass fraction are linked')
-        self.vf_le.textChanged.connect(self.on_vf_le_changed)
-        self.vf_le.setText('{0:.6f}'.format(100.0*self.settings['volume_fraction']))
+        self.vf_sb = QDoubleSpinBox(self)
+        self.vf_sb.setRange(0.000001, 100.0)
+        self.vf_sb.setSingleStep(0.1)
+        self.vf_sb.setDecimals(6)
+        self.vf_sb.setToolTip('The percentage volume fraction of the dielectric medium. \nNote that volume and mass fraction are linked')
+        self.vf_sb.valueChanged.connect(self.on_vf_sb_changed)
+        self.vf_sb.setValue(100.0*self.settings['Volume fraction'])
         label = QLabel('% volume fraction of dielectric', self)
         label.setToolTip('The percentage volume fraction of the dielectric medium. \nNote that volume and mass fraction are linked')
-        form.addRow(label, self.vf_le)
+        form.addRow(label, self.vf_sb)
         #
         # Calculation method
         #
         self.methods_cb = QComboBox(self)
         self.methods_cb.setToolTip('Choose the calculation method for the effective medium theory')
-        for method in self.methods:
-            self.methods_cb.addItem(method)
-        index = self.methods_cb.findText(self.settings['method'], Qt.MatchFixedString)
+        self.methods_cb.addItems(self.methods)
+        index = self.methods_cb.findText(self.settings['Effective medium method'], Qt.MatchFixedString)
         if index >=0:
             self.methods_cb.setCurrentIndex(index)
         else:
-            print('Method index was not 0',self.settings['method'])
-        self.methods_cb.currentIndexChanged.connect(self.on_methods_cb_changed)
+            print('Method index was not 0',self.settings['Effective medium method'])
+        self.methods_cb.activated.connect(self.on_methods_cb_activated)
         label = QLabel('Method',self)
         label.setToolTip('Choose the calculation method for the effective medium theory')
         form.addRow(label, self.methods_cb)
         #
         # Particle size option
         #
-        self.size_le = QLineEdit(self) 
-        self.size_le.setToolTip('Define the particle radius of the sphere in μm. \nOnly applicable for the Mie method')
-        self.size_le.setText('{0:.6f}'.format(self.settings['particle_size']))
-        self.size_le.textChanged.connect(self.on_size_le_changed)
+        self.size_sb = QDoubleSpinBox(self)
+        self.size_sb.setRange(0.000001, 1000.0)
+        self.size_sb.setSingleStep(0.1)
+        self.size_sb.setDecimals(6)
+        self.size_sb.setToolTip('Define the particle radius of the sphere in μm. \nOnly applicable for the Mie method')
+        self.size_sb.setValue(self.settings['Particle size(mu)'])
+        self.size_sb.valueChanged.connect(self.on_size_sb_changed)
         label = QLabel('Particle radius (μm)',self)
         label.setToolTip('Define the particle radius of the sphere in μm. \nOnly applicable for the Mie method')
-        form.addRow(label, self.size_le)
+        form.addRow(label, self.size_sb)
         #
         # Particle sigma option
         #
-        self.sigma_le = QLineEdit(self) 
-        self.sigma_le.setToolTip('Define the particle size distribution as a lognormal distribution with the given sigma. \nOnly applicable for the Mie method')
-        self.sigma_le.setText('{0:.6f}'.format(self.settings['particle_sigma']))
-        self.sigma_le.textChanged.connect(self.on_sigma_le_changed)
+        self.sigma_sb = QDoubleSpinBox(self)
+        self.sigma_sb.setRange(0.0, 1000.0)
+        self.sigma_sb.setSingleStep(0.1)
+        self.sigma_sb.setDecimals(6)
+        self.sigma_sb.setToolTip('Define the particle size distribution as a lognormal distribution with the given sigma. \nOnly applicable for the Mie method')
+        self.sigma_sb.setValue(self.settings['Particle size distribution sigma(mu)'])
+        self.sigma_sb.valueChanged.connect(self.on_sigma_sb_changed)
         label = QLabel('Particle sigma (μm)',self)
         label.setToolTip('Define the particle size distribition as a lognormal with the given sigma. \nOnly applicable for the Mie method')
-        form.addRow(label, self.sigma_le)
+        form.addRow(label, self.sigma_sb)
         #
         # Crystallite shape
         #
         self.shape_cb = QComboBox(self)
         self.shape_cb.setToolTip('Choose a particle shape. \nFor the Mie method only sphere is allowed.  \nFor shapes other than sphere there is a unique direction. \nFor ellipsoidal and needle like this is a direction [abc].  \nFor a plate the perpendicular to a crystal face (hkl) is used to define the unique direction')
-        for shape in self.shapes:
-            self.shape_cb.addItem(shape)
-        index = self.shape_cb.findText(self.settings['shape'], Qt.MatchFixedString)
+        self.shape_cb.addItems(self.shapes)
+        index = self.shape_cb.findText(self.settings['Particle shape'], Qt.MatchFixedString)
         if index >=0:
             self.shape_cb.setCurrentIndex(index)
         else:
-            print('Method index was not 0',self.settings['shape'])
-        self.shape_cb.currentIndexChanged.connect(self.on_shape_cb_changed)
-        label = QLabel('Shape',self)
+            print('Method index was not 0',self.settings['Particle shape'])
+        self.shape_cb.activated.connect(self.on_shape_cb_activated)
+        label = QLabel('Particle shape',self)
         label.setToolTip('Choose a particle shape. \nFor the Mie method only sphere is allowed.  \nFor shapes other than sphere there is a unique direction. \nFor ellipsoidal and needle like this is a direction [abc].  \nFor a plate the perpendicular to a crystal face (hkl) is used to define the unique direction')
         form.addRow(label, self.shape_cb)
         #
@@ -155,18 +173,18 @@ class ScenarioTab(QWidget):
         # unique direction (hkl) or [abc]
         self.h_sb = QSpinBox(self)
         self.h_sb.setToolTip('Define the h dimension of the unique direction')
-        self.h_sb.setRange(0,20)
-        self.h_sb.setValue(self.settings['h'])
+        self.h_sb.setRange(-20,20)
+        self.h_sb.setValue(self.settings['Unique direction - h'])
         self.h_sb.valueChanged.connect(self.on_h_sb_changed)
         self.k_sb = QSpinBox(self)
         self.k_sb.setToolTip('Define the k dimension of the unique direction')
-        self.k_sb.setRange(0,20)
-        self.k_sb.setValue(self.settings['k'])
+        self.k_sb.setRange(-20,20)
+        self.k_sb.setValue(self.settings['Unique direction - k'])
         self.k_sb.valueChanged.connect(self.on_k_sb_changed)
         self.l_sb = QSpinBox(self)
         self.l_sb.setToolTip('Define the l dimension of the unique direction')
-        self.l_sb.setRange(0,20)
-        self.l_sb.setValue(self.settings['l'])
+        self.l_sb.setRange(-20,20)
+        self.l_sb.setValue(self.settings['Unique direction - l'])
         self.l_sb.valueChanged.connect(self.on_l_sb_changed)
         hbox = QHBoxLayout()
         hbox.addWidget(self.h_sb)
@@ -179,13 +197,16 @@ class ScenarioTab(QWidget):
         #
         # a over b ratio for ellipse
         #
-        self.aoverb_le = QLineEdit(self) 
-        self.aoverb_le.setToolTip('Define the ellipsoid a/b ratio or eccentricity.  \nOnly applicable for the ellipsoid shapes \na/b < 1: oblate ellipsoid \na/b > 1: prolate ellipsoid')
-        self.aoverb_le.setText('{0:.6f}'.format(self.settings['aoverb']))
-        self.aoverb_le.textChanged.connect(self.on_aoverb_le_changed)
+        self.aoverb_sb = QDoubleSpinBox(self)
+        self.aoverb_sb.setRange(0.0, 1000.0)
+        self.aoverb_sb.setSingleStep(0.1)
+        self.aoverb_sb.setDecimals(6)
+        self.aoverb_sb.setToolTip('Define the ellipsoid a/b ratio or eccentricity.  \nOnly applicable for the ellipsoid shapes \na/b < 1: oblate ellipsoid \na/b > 1: prolate ellipsoid')
+        self.aoverb_sb.setValue(self.settings['Ellipsoid a/b'])
+        self.aoverb_sb.valueChanged.connect(self.on_aoverb_sb_changed)
         label = QLabel('Ellipsoid a/b eccentricty',self)
         label.setToolTip('Define the ellipsoid a/b ratio or eccentricity.  \nOnly applicable for the ellipsoid shapes \na/b < 1: oblate ellipsoid \na/b > 1: prolate ellipsoid')
-        form.addRow(label, self.aoverb_le)
+        form.addRow(label, self.aoverb_sb)
         #
         # Add a legend option
         #
@@ -219,7 +240,7 @@ class ScenarioTab(QWidget):
     def pushButton1Clicked(self):
         # Add another scenario
         debugger.print('Button 1 pressed')
-        self.notebook.addScenario(self.scenarioIndex)
+        self.notebook.addScenario(copyFromIndex=self.scenarioIndex)
 
     def pushButton3Clicked(self):
         # Delete a scenario
@@ -239,198 +260,213 @@ class ScenarioTab(QWidget):
 
     def on_h_sb_changed(self,value):
         debugger.print('on_h_sb_changed', value)
-        self.settings['h'] = value
+        self.dirty = True
+        self.notebook.newPlottingCalculationRequired = True
+        self.settings['Unique direction - h'] = value
 
     def on_k_sb_changed(self,value):
         debugger.print('on_k_sb_changed', value)
-        self.settings['k'] = value
+        self.dirty = True
+        self.notebook.newPlottingCalculationRequired = True
+        self.settings['Unique direction - k'] = value
 
     def on_l_sb_changed(self,value):
         debugger.print('on_l_sb_changed', value)
-        self.settings['l'] = value
+        self.dirty = True
+        self.notebook.newPlottingCalculationRequired = True
+        self.settings['Unique direction - l'] = value
 
-    def on_shape_cb_changed(self,index):
-        debugger.print('on shape cb changed', index)
-        self.settings['shape'] = self.shapes[index]
+    def on_shape_cb_activated(self,index):
+        debugger.print('on shape cb activated', index)
+        self.dirty = True
+        self.notebook.newPlottingCalculationRequired = True
+        self.settings['Particle shape'] = self.shapes[index]
         self.change_greyed_out()
 
-    def on_methods_cb_changed(self,index):
-        debugger.print('on methods cb changed', index)
-        self.settings['method'] = self.methods[index]
+    def on_methods_cb_activated(self,index):
+        debugger.print('on methods cb activated', index)
+        self.dirty = True
+        self.notebook.newPlottingCalculationRequired = True
+        self.settings['Effective medium method'] = self.methods[index]
         self.change_greyed_out()
 
-    def on_mf_le_changed(self,text):
-        debugger.print('on mass fraction line edit changed', text)
-        try:
-            mf = float(text)/100.0
-            mf1 = min(mf, 1.0)
-            mf1 = max(mf1, 1.0e-12)
-            if abs(mf-mf1) > 1.0e-12:
-                self.settings['mass_fraction'] = mf1
-                self.update_vf_le()
-                self.update_mf_le()
-            else:
-                self.settings['mass_fraction'] = mf
-                self.update_vf_le()
-        except:
-           pass
+    def on_mf_sb_changed(self,value):
+        debugger.print('on mass fraction line edit changed', value)
+        self.dirty = True
+        self.notebook.newPlottingCalculationRequired = True
+        self.settings['Mass fraction'] =  value/100.0
+        if self.settings['Mass or volume fraction'] == 'mass':
+            self.update_vf_sb()
+            self.update_mf_sb()
+        else:
+            self.update_mf_sb()
+            self.update_vf_sb()
 
-    def update_vf_le(self):
-        mf1 = self.settings['mass_fraction']
+    def update_vf_sb(self):
+        mf1 = self.settings['Mass fraction']
         mf2 = 1.0 - mf1
         rho1 = self.crystal_density()
-        rho2 = self.settings['matrix_density']
+        rho2 = self.settings['Matrix density']
         vf1 = 1.0 / ( 1.0 + mf2/mf1 * (rho1/rho2) )
-        self.settings['volume_fraction'] = vf1
-        self.vf_le.blockSignals(True)
-        self.vf_le.setText('{0:.6}'.format(100.0*vf1))
-        self.vf_le.blockSignals(False)
-        debugger.print('Update_vf_le')
+        self.settings['Volume fraction'] = vf1
+        self.vf_sb.blockSignals(True)
+        self.vf_sb.setValue(100.0*vf1)
+        self.vf_sb.blockSignals(False)
+        debugger.print('Update_vf_sb')
         debugger.print('rho 1', rho1)
         debugger.print('rho 2', rho2)
         debugger.print('vf 1 ', vf1)
         
-    def on_aoverb_le_changed(self,text):
-        debugger.print('on_aoverb_le_changed',text)
-        try:
-            self.settings['aoverb'] = float(text)
-        except:
-            pass
+    def on_aoverb_sb_changed(self,value):
+        debugger.print('on_aoverb_le_changed',value)
+        self.dirty = True
+        self.notebook.newPlottingCalculationRequired = True
+        self.settings['Ellipsoid a/b'] = value
 
     def on_legend_le_changed(self,text):
         debugger.print('on legend change', text)
-        self.settings['legend'] = text
+        self.dirty = True
+        self.settings['Legend'] = text
         self.legend_le.setText(text)
 
-    def on_sigma_le_changed(self,text):
-        debugger.print('on sigma line edit changed', text)
-        try:
-            self.settings['particle_sigma'] = float(text)
-        except:
-            pass
+    def on_sigma_sb_changed(self,value):
+        debugger.print('on sigma line edit changed', value)
+        self.dirty = True
+        self.notebook.newPlottingCalculationRequired = True
+        self.settings['Particle size distribution sigma(mu)'] = value
 
-    def on_size_le_changed(self,text):
-        debugger.print('on size line edit changed', text)
-        try:
-            self.settings['particle_size'] = float(text)
-        except:
-            pass
+    def on_size_sb_changed(self,value):
+        debugger.print('on size line edit changed', value)
+        self.dirty = True
+        self.notebook.newPlottingCalculationRequired = True
+        self.settings['Particle size(mu)'] = value
 
-    def on_vf_le_changed(self,text):
-        debugger.print('on volume fraction line edit changed', text)
-        try:
-            vf = float(text)/100.0
-            vf1 = min(vf, 1.0)
-            vf1 = max(vf1, 1.0e-12)
-            if abs(vf-vf1) > 1.0e-12:
-                self.settings['volume_fraction'] = vf1
-                self.update_mf_le()
-                self.update_vf_le()
-            else:
-                self.settings['volume_fraction'] = vf
-                self.update_mf_le()
-        except:
-            pass
+    def on_vf_sb_changed(self,value):
+        debugger.print('on volume fraction line edit changed', value)
+        self.dirty = True
+        self.notebook.newPlottingCalculationRequired = True
+        self.settings['Volume fraction'] = value/100.0
+        if self.settings['Mass or volume fraction'] == 'volume':
+            self.update_mf_sb()
+            self.update_vf_sb()
+        else:
+            self.update_vf_sb()
+            self.update_mf_sb()
 
-    def update_mf_le(self):
-        vf1 = self.settings['volume_fraction']
+    def update_mf_sb(self):
+        vf1 = self.settings['Volume fraction']
         vf2 = 1.0 - vf1
         rho1 = self.crystal_density()
-        rho2 = self.settings['matrix_density']
+        rho2 = self.settings['Matrix density']
         mf1 = 1.0 / ( 1.0 + (vf2/vf1) * (rho2/rho1) )
-        self.settings['mass_fraction'] = mf1
-        self.mf_le.blockSignals(True)
-        self.mf_le.setText('{0:.6}'.format(100.0*mf1))
-        self.mf_le.blockSignals(False)
-        debugger.print('Update_mf_le')
+        self.settings['Mass fraction'] = mf1
+        self.mf_sb.blockSignals(True)
+        self.mf_sb.setValue(100.0*mf1)
+        self.mf_sb.blockSignals(False)
+        debugger.print('Update_mf_sb')
         debugger.print('rho 1', rho1)
         debugger.print('rho 2', rho2)
         debugger.print('mf 1 ', mf1)
 
-    def on_matrix_cb_changed(self,index):
-        debugger.print('on matrix combobox changed', index)
-        debugger.print('on matrix combobox changed', self.matrix_cb.currentText())
+    def on_matrix_cb_activated(self,index):
+        debugger.print('on matrix combobox activated', index)
+        debugger.print('on matrix combobox activated', self.matrix_cb.currentText())
+        self.dirty = True
+        self.notebook.newPlottingCalculationRequired = True
         matrix = self.matrix_cb.currentText()
         self.matrix_cb.blockSignals(True)
-        self.density_le.blockSignals(True)
-        self.permittivity_le.blockSignals(True)
-        self.settings['matrix'] = matrix
-        self.settings['matrix_density'] = support_matrix_db[matrix][0]
-        self.settings['matrix_permittivity'] = support_matrix_db[matrix][1]
-        self.density_le.setText('{0:.6f}'.format(self.settings['matrix_density']))
-        self.permittivity_le.setText('{0:.6f}'.format(self.settings['matrix_permittivity']))
+        self.density_sb.blockSignals(True)
+        self.permittivity_sb.blockSignals(True)
+        self.settings['Matrix'] = matrix
+        self.settings['Matrix density'] = support_matrix_db[matrix][0]
+        self.settings['Matrix permittivity'] = support_matrix_db[matrix][1]
+        self.density_sb.setValue(self.settings['Matrix density'])
+        self.permittivity_sb.setValue(self.settings['Matrix permittivity'])
         # volume fraction takes precedence
-        self.update_mf_le()
-        self.update_vf_le()
+        self.update_mf_sb()
+        self.update_vf_sb()
         self.matrix_cb.blockSignals(False)
-        self.density_le.blockSignals(False)
-        self.permittivity_le.blockSignals(False)
+        self.density_sb.blockSignals(False)
+        self.permittivity_sb.blockSignals(False)
 
-    def on_density_le_changed(self,text):
-        try:
-            self.settings['matrix_density'] = float(text)
-            # volume fraction taked precedence
-            self.update_mf_le()
-            self.update_vf_le()
-            debugger.print('on density line edit changed', text)
-        except:
-            pass
+    def on_density_sb_changed(self,value):
+        self.settings['Matrix density'] = value
+        # volume fraction taked precedence
+        self.update_mf_sb()
+        self.update_vf_sb()
+        debugger.print('on density line edit changed', value)
+        self.dirty = True
+        self.notebook.newPlottingCalculationRequired = True
 
-    def on_permittivity_le_changed(self,text):
-        try:
-            self.settings['matrix_permittivity'] = float(text)
-        except:
-            pass
-        debugger.print('on permittivity line edit changed', text)
+    def on_permittivity_sb_changed(self,value):
+        self.settings['Matrix permittivity'] = value
+        debugger.print('on permittivity line edit changed', value)
+        self.dirty = True
+        self.notebook.newPlottingCalculationRequired = True
 
     def set_reader(self,reader):
+        self.dirty = True
+        self.notebook.newPlottingCalculationRequired = True
         self.reader = reader
 
     def change_greyed_out(self):
         # Have a look through the settings and see if we need to grey anything out
-        if self.settings['method'] == 'Mie':
-            self.size_le.setEnabled(True)
-            self.sigma_le.setEnabled(True)
+        if self.settings['Effective medium method'] == 'Mie':
+            self.size_sb.setEnabled(True)
+            self.sigma_sb.setEnabled(True)
             for i,shape in enumerate(self.shapes):
                 self.shape_cb.model().item(i).setEnabled(False)
-            self.settings['shape'] = 'Sphere'
-            index = self.shape_cb.findText(self.settings['shape'], Qt.MatchFixedString)
+            self.settings['Particle shape'] = 'Sphere'
+            self.shape_cb.setEnabled(True)
+            index = self.shape_cb.findText(self.settings['Particle shape'], Qt.MatchFixedString)
             if index >=0:
                 self.shape_cb.model().item(index).setEnabled(True)
                 self.shape_cb.setCurrentIndex(index)
             else:
-                print('Method index was not 0',self.settings['shape'])
+                print('Method index was not 0',self.settings['Particle shape'])
+        elif self.settings['Effective medium method'] == 'Averaged Permittivity':
+            self.size_sb.setEnabled(False)
+            self.sigma_sb.setEnabled(False)
+            self.settings['Particle shape'] = 'Sphere'
+            index = self.shape_cb.findText(self.settings['Particle shape'], Qt.MatchFixedString)
+            if index >=0:
+                self.shape_cb.model().item(index).setEnabled(True)
+                self.shape_cb.setCurrentIndex(index)
+            self.shape_cb.setEnabled(False)
+            for i,shape in enumerate(self.shapes):
+                self.shape_cb.model().item(i).setEnabled(False)
         else:
-            self.size_le.setEnabled(False)
-            self.sigma_le.setEnabled(False)
+            self.size_sb.setEnabled(False)
+            self.sigma_sb.setEnabled(False)
+            self.shape_cb.setEnabled(True)
             for i,shape in enumerate(self.shapes):
                 self.shape_cb.model().item(i).setEnabled(True)
         # deal with shapes
-        if self.settings['shape'] == 'Ellipsoid':
+        if self.settings['Particle shape'] == 'Ellipsoid':
             self.h_sb.setEnabled(True)
             self.k_sb.setEnabled(True)
             self.l_sb.setEnabled(True)
             self.hkl_label.setText('Unique direction [abc]')
-            self.aoverb_le.setEnabled(True)
-        elif self.settings['shape'] == 'Plate':
+            self.aoverb_sb.setEnabled(True)
+        elif self.settings['Particle shape'] == 'Plate':
             self.h_sb.setEnabled(True)
             self.k_sb.setEnabled(True)
             self.l_sb.setEnabled(True)
             self.hkl_label.setText('Unique direction (hkl)')
-            self.aoverb_le.setEnabled(False)
-        elif self.settings['shape'] == 'Needle':
+            self.aoverb_sb.setEnabled(False)
+        elif self.settings['Particle shape'] == 'Needle':
             self.h_sb.setEnabled(True)
             self.k_sb.setEnabled(True)
             self.l_sb.setEnabled(True)
             self.hkl_label.setText('Unique direction [abc]')
-            self.aoverb_le.setEnabled(False)
-        elif self.settings['shape'] == 'Sphere':
+            self.aoverb_sb.setEnabled(False)
+        elif self.settings['Particle shape'] == 'Sphere':
             self.h_sb.setEnabled(False)
             self.k_sb.setEnabled(False)
             self.l_sb.setEnabled(False)
-            self.aoverb_le.setEnabled(False)
+            self.aoverb_sb.setEnabled(False)
         else:
-            print('ScenarioTab: Shape not recognised', self.settings['shape'])
+            print('ScenarioTab: Shape not recognised', self.settings['Particle shape'])
         
     def setScenarioIndex(self,index):
         self.scenarioIndex = index
@@ -445,57 +481,67 @@ class ScenarioTab(QWidget):
         for key in self.settings:
             debugger.print(key, self.settings[key]) 
         
-    def refresh(self):
-        debugger.print('refresh')
+    def refresh(self,force=False):
+        if not self.dirty and not force:
+            debugger.print('refresh aborted', self.dirty,force)
+            return
+        debugger.print('refresh', force)
+        # Tell the main notebook that we need to recalculate any plot
+        self.notebook.newPlottingCalculationRequired = True
         # First see if we can get the reader from the mainTab
         self.reader = self.notebook.mainTab.reader
         # block signals to all the widgets
         self.matrix_cb.blockSignals(True)
-        self.density_le.blockSignals(True)
-        self.permittivity_le.blockSignals(True)
-        self.mf_le.blockSignals(True)
-        self.vf_le.blockSignals(True)
+        self.density_sb.blockSignals(True)
+        self.permittivity_sb.blockSignals(True)
+        self.mf_sb.blockSignals(True)
+        self.vf_sb.blockSignals(True)
         self.methods_cb.blockSignals(True)
-        self.size_le.blockSignals(True)
-        self.sigma_le.blockSignals(True)
+        self.size_sb.blockSignals(True)
+        self.sigma_sb.blockSignals(True)
         self.shape_cb.blockSignals(True)
         self.h_sb.blockSignals(True)
         self.k_sb.blockSignals(True)
         self.l_sb.blockSignals(True)
-        self.aoverb_le.blockSignals(True)
+        self.aoverb_sb.blockSignals(True)
         # use the settings values to initialise the widgets
-        index = self.matrix_cb.findText(self.settings['matrix'], Qt.MatchFixedString)
+        index = self.matrix_cb.findText(self.settings['Matrix'], Qt.MatchFixedString)
         self.matrix_cb.setCurrentIndex(index)
-        self.density_le.setText('{0:.6f}'.format(self.settings['matrix_density']))
-        self.permittivity_le.setText('{0:.6f}'.format(self.settings['matrix_permittivity']))
-        # volume fraction takes precedence
-        self.update_mf_le()
-        self.update_vf_le()
-        #self.vf_le.setText('{0:.6f}'.format(self.settings['volume_fraction']))
-        #self.mf_le.setText('{0:.6f}'.format(self.settings['mass_fraction']))
-        index = self.methods_cb.findText(self.settings['method'], Qt.MatchFixedString)
+        self.density_sb.setValue(self.settings['Matrix density'])
+        self.permittivity_sb.setValue(self.settings['Matrix permittivity'])
+        if self.settings['Mass or volume fraction'] == 'volume':
+            # volume fraction takes precedence
+            self.update_mf_sb()
+            self.update_vf_sb()
+        else:
+            # mass fraction takes precedence
+            self.update_vf_sb()
+            self.update_mf_sb()
+        #
+        index = self.methods_cb.findText(self.settings['Effective medium method'], Qt.MatchFixedString)
         self.methods_cb.setCurrentIndex(index)
-        self.size_le.setText('{0:.6f}'.format(self.settings['particle_size']))
-        self.sigma_le.setText('{0:.6f}'.format(self.settings['particle_sigma']))
-        index = self.shape_cb.findText(self.settings['shape'], Qt.MatchFixedString)
+        self.size_sb.setValue(self.settings['Particle size(mu)'])
+        self.sigma_sb.setValue(self.settings['Particle size distribution sigma(mu)'])
+        index = self.shape_cb.findText(self.settings['Particle shape'], Qt.MatchFixedString)
         self.shape_cb.setCurrentIndex(index)
-        self.h_sb.setValue(self.settings['h'])
-        self.k_sb.setValue(self.settings['k'])
-        self.l_sb.setValue(self.settings['l'])
-        self.aoverb_le.setText('{0:.6f}'.format(self.settings['aoverb']))
+        self.h_sb.setValue(self.settings['Unique direction - h'])
+        self.k_sb.setValue(self.settings['Unique direction - k'])
+        self.l_sb.setValue(self.settings['Unique direction - l'])
+        self.aoverb_sb.setValue(self.settings['Ellipsoid a/b'])
         self.change_greyed_out()
         # ublock signals to all the widgets
         self.matrix_cb.blockSignals(False)
-        self.density_le.blockSignals(False)
-        self.permittivity_le.blockSignals(False)
-        self.mf_le.blockSignals(False)
-        self.vf_le.blockSignals(False)
+        self.density_sb.blockSignals(False)
+        self.permittivity_sb.blockSignals(False)
+        self.mf_sb.blockSignals(False)
+        self.vf_sb.blockSignals(False)
         self.methods_cb.blockSignals(False)
-        self.size_le.blockSignals(False)
-        self.sigma_le.blockSignals(False)
+        self.size_sb.blockSignals(False)
+        self.sigma_sb.blockSignals(False)
         self.shape_cb.blockSignals(False)
         self.h_sb.blockSignals(False)
         self.k_sb.blockSignals(False)
         self.l_sb.blockSignals(False)
-        self.aoverb_le.blockSignals(False)
+        self.aoverb_sb.blockSignals(False)
+        self.dirty = False
         return

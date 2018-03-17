@@ -127,7 +127,7 @@ class ViewerClass(HasTraits):
             self.V.append(V)
             self.W.append(W)
         # get the cell edges for the bounding box
-        self.cell_edges = self.unit_cell.getBoundingBox()
+        corners,self.cell_edges = self.unit_cell.getBoundingBox()
         self.element_names = self.unit_cell.element_names
         self.colours = []
         self.radii = []
@@ -172,7 +172,6 @@ class ViewerClass(HasTraits):
         self.bondy   = np.zeros( (self.number_of_phase_steps,self.natoms,2) )
         self.bondz   = np.zeros( (self.number_of_phase_steps,self.natoms,2) )
         # work out the scaling factor to get the require maximumdisplacement
-        disX = self.X - U
         sign = +1.0
         phases = []
         small = 1.0E-8

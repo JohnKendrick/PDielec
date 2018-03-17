@@ -18,13 +18,36 @@
 from __future__ import print_function
 import os
 import sys
-from Python.GUI.App import App
-from PyQt5.QtWidgets import QApplication
+import time
+from Python.GUI.App  import App
+from PyQt5.QtGui     import QPixmap
+from PyQt5.QtWidgets import QApplication, QSplashScreen, QProgressBar
 from multiprocessing import freeze_support
 
 def main(sys):
     app = QApplication(sys.argv)
-    ex = App(sys.argv)
+    show_splash = True
+    for token in sys.argv:
+        if token == '-nosplash' or token == '--nosplash':
+            showSplash = False
+        elif token == '-h' or token == '-help' or token == '--help':
+            print('pdgui - graphical user interface to the PDielec package')
+            print('pdgui [-help] [-debug] [program] [filename] [spreadsheet] [-script scriptname] [-nosplash]')
+            exit()
+
+    if show_splash:
+        dirname = os.path.dirname(os.path.realpath(sys.argv[0]))
+        splashfile = os.path.join(dirname, 'Python/GUI/splash.png')
+        pixmap = QPixmap(splashfile)
+        splash = QSplashScreen(pixmap)
+        progressbar = QProgressBar(splash)
+        splash.show()
+    else:
+        progressbar = QProgressBar()
+    ex = App(sys.argv, progressbar)
+    ex.show()
+    if show_splash:
+        splash.finish(ex)
     sys.exit(app.exec_())
 
 if __name__ == '__main__':

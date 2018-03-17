@@ -4,9 +4,9 @@ import Python.Calculator as Calculator
 from PyQt5.QtWidgets  import  QPushButton, QWidget
 from PyQt5.QtWidgets  import  QComboBox, QLabel, QLineEdit
 from PyQt5.QtWidgets  import  QVBoxLayout, QHBoxLayout, QFormLayout
-from PyQt5.QtWidgets  import  QSpinBox
-from PyQt5.QtWidgets  import  QSizePolicy
-from PyQt5.QtCore     import  Qt
+from PyQt5.QtWidgets  import  QSpinBox, QDoubleSpinBox
+from PyQt5.QtWidgets  import  QSizePolicy, QTableWidgetItem
+from PyQt5.QtCore     import  Qt, QCoreApplication
 from Python.Constants import  wavenumber, amu, PI, avogadro_si, angstrom
 from Python.Constants import  covalent_radii
 # Import plotting requirements
@@ -16,6 +16,7 @@ from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT as NavigationToolbar
 from Python.Utilities import Debug
 from Python.Plotter import print_strings, print_reals
+from Python.GUI.SettingsTab import FixedQTableWidget
 
 class AnalysisTab(QWidget):
     def __init__(self, parent, debug=False ):   
@@ -25,16 +26,23 @@ class AnalysisTab(QWidget):
         self.settings = {}
         self.subplot = None
         self.setWindowTitle('Analysis')
-        self.settings['vmin'] = -1
-        self.settings['vmax'] = 400
+        self.settings['Minimum frequency'] = -1
+        self.settings['Maximum frequency'] = 400
         self.settings['title'] = 'Analysis'
-        self.settings['bond_scaling'] = 1.1
-        self.settings['bond_tolerance'] = 0.1
-        self.settings['bar_width'] = 0.5
-        self.settings['plot_types'] = ['Internal vs External','Molecular Composition']
+        self.settings['Covalent radius scaling'] = 1.1
+        self.settings['Bonding tolerance'] = 0.1
+        self.settings['Bar width'] = 0.5
+        self.dirty = True
+        self.plot_types = ['Internal vs External','Molecular Composition']
         self.plot_type_index = 0
         self.number_of_molecules = 0
         self.frequency_units = None
+        self.cell_of_molecules = None
+        self.original_atomic_order = None
+        self.frequencies_cm1 = []
+        self.mode_energies = []
+        self.element_radii = covalent_radii
+        self.species = []
         # store the notebook
         self.notebook = parent
         # get the reader from the main tab
@@ -47,7 +55,7 @@ class AnalysisTab(QWidget):
         #
         self.vmin_sb = QSpinBox(self)
         self.vmin_sb.setRange(-100,9000)
-        self.vmin_sb.setValue(self.settings['vmin'])
+        self.vmin_sb.setValue(self.settings['Minimum frequency'])
         self.vmin_sb.setToolTip('Set the minimum frequency to be considered)')
         self.vmin_sb.valueChanged.connect(self.on_vmin_changed)
         label = QLabel('Minimum frequency:', self)
@@ -58,29 +66,47 @@ class AnalysisTab(QWidget):
         #
         self.vmax_sb = QSpinBox(self)
         self.vmax_sb.setRange(0,9000)
-        self.vmax_sb.setValue(self.settings['vmax'])
+        self.vmax_sb.setValue(self.settings['Maximum frequency'])
         self.vmax_sb.setToolTip('Set the maximum frequency to be considered)')
         self.vmax_sb.valueChanged.connect(self.on_vmax_changed)
         label = QLabel('Maximum frequency:', self)
         label.setToolTip('Set the maximum frequency to be considered)')
         form.addRow(label, self.vmax_sb)
         #
-        # The bond tolerance and scaling of radii frequency
+        # The bonding tolerance and scaling of radii frequency
         #
         hbox = QHBoxLayout()
-        self.scale_le = QLineEdit(self)
-        self.scale_le.setText('{}'.format(self.settings['bond_scaling']))
-        self.scale_le.setToolTip('Scale the covalent radii to determine bonding')
-        self.scale_le.textChanged.connect(self.on_scale_changed)
-        hbox.addWidget(self.scale_le)
-        self.tolerance_le = QLineEdit(self)
-        self.tolerance_le.setText('{}'.format(self.settings['bond_tolerance']))
-        self.tolerance_le.setToolTip('Tolerance for bonding is determined from scale*(radi+radj)+toler')
-        self.tolerance_le.textChanged.connect(self.on_tolerance_changed)
-        hbox.addWidget(self.tolerance_le)
+        self.scale_sp = QDoubleSpinBox(self)
+        self.scale_sp.setRange(0.01,10.0)
+        self.scale_sp.setSingleStep(0.01)
+        self.scale_sp.setDecimals(2)
+        self.scale_sp.setValue(self.settings['Covalent radius scaling'])
+        self.scale_sp.setToolTip('Scale the covalent radii to determine bonding')
+        self.scale_sp.valueChanged.connect(self.on_scale_changed)
+        hbox.addWidget(self.scale_sp)
+        self.tolerance_sp = QDoubleSpinBox(self)
+        self.tolerance_sp.setRange(0.01,2.0)
+        self.tolerance_sp.setSingleStep(0.01)
+        self.tolerance_sp.setDecimals(2)
+        self.tolerance_sp.setValue(self.settings['Bonding tolerance'])
+        self.tolerance_sp.setToolTip('Tolerance for bonding is determined from scale*(radi+radj)+toler')
+        self.tolerance_sp.valueChanged.connect(self.on_tolerance_changed)
+        hbox.addWidget(self.tolerance_sp)
         label = QLabel('Bonding scale and tolerance', self)
         label.setToolTip('Bonding is determined from scale*(radi+radj)+toler')
         form.addRow(label, hbox)
+        # Add a table of covalent radii
+        self.element_radii_tw = FixedQTableWidget(self)
+        self.element_radii_tw.setToolTip('Individual covalent radii used to determine bonding can be set here')
+        self.element_radii_tw.itemClicked.connect(self.on_element_radii_tw_itemClicked)
+        self.element_radii_tw.itemChanged.connect(self.on_element_radii_tw_itemChanged)
+        self.element_radii_tw.setRowCount(1)
+        self.element_radii_tw.blockSignals(False)
+        sizePolicy = QSizePolicy(QSizePolicy.Minimum,QSizePolicy.Minimum)
+        self.element_radii_tw.setSizePolicy(sizePolicy)
+        form.addRow(QLabel('Atomic radii', self), self.element_radii_tw)
+ 
+        # ADD NUMBER OF MOLECULES FOUND
         self.molecules_le = QLineEdit(self)
         self.molecules_le.setEnabled(False)
         self.molecules_le.setText('{}'.format(self.number_of_molecules))
@@ -91,21 +117,16 @@ class AnalysisTab(QWidget):
         #
         # The plotting width of bar
         #
-        self.width_le = QLineEdit(self)
-        self.width_le.setText('{}'.format(self.settings['bar_width']))
-        self.width_le.setToolTip('Change the width of the bars - should be between 0 and 1')
-        self.width_le.textChanged.connect(self.on_width_changed)
+        self.width_sp = QDoubleSpinBox(self)
+        self.width_sp.setRange(0.01,2.0)
+        self.width_sp.setSingleStep(0.01)
+        self.width_sp.setDecimals(2)
+        self.width_sp.setValue(self.settings['Bar width'])
+        self.width_sp.setToolTip('Change the width of the bars - should be between 0 and 1')
+        self.width_sp.valueChanged.connect(self.on_width_changed)
         label = QLabel('Bar width', self)
         label.setToolTip('Change the width of the bars - should be between 0 and 1')
-        form.addRow(label, self.width_le)
-        # 
-        # Store results in a file?
-        #
-        #self.file_store_le = QLineEdit(self) 
-        #self.file_store_le.setToolTip('Store the results in a .csv or .xlsx file')
-        #self.file_store_le.setText(self.settings['spreadsheet'])
-        #self.file_store_le.textChanged.connect(self.on_file_store_le_changed)
-        #form.addRow(QLabel('Output spreadsheet', self), self.file_store_le)
+        form.addRow(label, self.width_sp)
         # 
         # Set the plot title         
         #
@@ -121,8 +142,7 @@ class AnalysisTab(QWidget):
         #
         self.plottype_cb = QComboBox(self) 
         self.plottype_cb.setToolTip('The energy can be decomposed either according to internal vs external motion or into a molecular based decompostion')
-        for choice in self.settings["plot_types"]:
-            self.plottype_cb.addItem(choice)
+        self.plottype_cb.addItems(self.plot_types)
         self.plottype_cb.setCurrentIndex(self.plot_type_index)
         self.plottype_cb.currentIndexChanged.connect(self.on_plottype_cb_changed)
         label = QLabel('Choose the plot type', self)
@@ -141,58 +161,91 @@ class AnalysisTab(QWidget):
         vbox.addLayout(form)
         # finalise the layout
         self.setLayout(vbox)
+        QCoreApplication.processEvents()
+        if self.notebook.spreadsheet is not None:
+            self.write_spreadSheet()
+        QCoreApplication.processEvents()
 
-    def on_width_changed(self,text):
-        debugger.print('on width changed ', text)
+    def on_element_radii_tw_itemClicked(self,item):
+        self.element_radii_tw.blockSignals(False)
+
+    def on_element_radii_tw_itemChanged(self,item):
+        if self.reader is None:
+            return
+        col = item.column()
         try:
-          self.settings['bar_width'] = float(text)
+            self.element_radii[self.species[col]] = float(item.text())
+            self.calculate()
+            self.plot()
+            self.notebook.visualiserTab.refresh(force=True)
         except:
-          pass
-        self.width_le.blockSignals(True)
-        if self.settings['bar_width'] < 0.0:
-            self.settings['bar_width'] = 0.0
-            self.width_le.setText('{}'.format(self.settings['bar_width']))
-        if self.settings['bar_width'] > 1.0:
-            self.settings['bar_width'] = 1.0
-            self.width_le.setText('{}'.format(self.settings['bar_width']))
-        self.width_le.blockSignals(False)
+            pass
+
+    def set_radii_tw(self):
+        if self.reader is None:
+            return
+        self.element_radii_tw.blockSignals(True)
+        self.species = self.reader.getSpecies()
+        radii = [ self.element_radii[el] for el in self.species ]
+        self.element_radii_tw.setColumnCount(len(self.species))
+        self.element_radii_tw.setHorizontalHeaderLabels(self.species)
+        self.element_radii_tw.setVerticalHeaderLabels([''])
+        for i,(radius,element) in enumerate(zip(radii,self.species)):
+            qw = QTableWidgetItem()
+            qw.setText('{0:.6f}'.format(radius))
+            qw.setTextAlignment(Qt.AlignHCenter | Qt.AlignVCenter)
+            self.element_radii_tw.setItem(0,i, qw )
+        self.element_radii_tw.blockSignals(False)
+        # end if
+        return
+
+    def setCovalentRadius(self,element,radius):
+        self.element_radii[element] = radius
+        self.set_radii_tw()
+        self.calculate()
+        self.plot()
+        self.notebook.visualiserTab.refresh(force=True)
+
+    def write_spreadSheet(self):
+        if self.notebook.spreadsheet is None:
+            return
+        sp = self.notebook.spreadsheet
+        sp.selectWorkSheet('Analysis')
+        sp.delete()
+        sp.writeNextRow(['Analysis of the vibrational modes into percentage contributions for molecules and internal/external modes'], row=0,col=1)
+        headers = ['Mode','Frequency (cm-1)', 'Centre of mass %','Rotational %', 'Vibrational %']
+        for mol in range(self.number_of_molecules):
+            headers.append('Molecule '+str(mol)+' %')
+        #
+        sp.writeNextRow(headers,col=1)
+        for imode,(freq,energies) in enumerate(zip(self.frequencies_cm1,self.mode_energies)):
+           tote,cme,rote,vibe, molecular_energies = energies
+           output = [ imode, freq, 100*cme/tote, 100*rote/tote, 100*vibe/tote ]
+           for e in molecular_energies:
+               output.append(100*e/tote)
+           sp.writeNextRow(output,col=1,check=1)
+
+
+    def on_width_changed(self,value):
+        debugger.print('on width changed ', value)
+        self.settings['Bar width'] = value
         self.plot()
         
-    def on_scale_changed(self,text):
-        debugger.print('on scale_le changed ', text)
-        try:
-            self.settings['bond_scaling'] = float(text)
-        except:
-          pass
-        self.width_le.blockSignals(True)
-        if self.settings['bond_scaling'] < 0.0:
-            self.settings['bond_scaling'] = 0.0
-            self.scale_le.setText('{}'.format(self.settings['bond_scaling']))
-        if self.settings['bond_scaling'] > 2.0:
-            self.settings['bond_scaling'] = 2.0
-            self.scale_le.setText('{}'.format(self.settings['bond_scaling']))
-        self.width_le.blockSignals(False)
-        self.refresh()
+    def on_scale_changed(self,value):
+        debugger.print('on scale_le changed ', value)
+        self.settings['Covalent radius scaling'] = value
+        self.dirty = True
+        self.calculate()
+        self.plot()
+        self.notebook.visualiserTab.refresh(force=True)
         
-    def on_tolerance_changed(self,text):
-        debugger.print('on file_tolerance_le changed ', text)
-        try:
-            self.settings['bond_tolerance'] = float(text)
-        except:
-          pass
-        self.width_le.blockSignals(True)
-        if self.settings['bond_tolerance'] < 0.0:
-            self.settings['bond_tolerance'] = 0.0
-            self.tolerance_le.setText('{}'.format(self.settings['bond_tolerance']))
-        if self.settings['bond_tolerance'] > 2.0:
-            self.settings['bond_tolerance'] = 2.0
-            self.tolerance_le.setText('{}'.format(self.settings['bond_tolerance']))
-        self.width_le.blockSignals(False)
-        self.refresh()
-
-    def on_file_store_le_changed(self,text):
-        self.settings['spreadsheet'] = text
-        debugger.print('on file_store_le change ', self.settings['spreadsheet'])
+    def on_tolerance_changed(self,value):
+        debugger.print('on_tolerance_le changed ', value)
+        self.settings['Bonding tolerance'] = value
+        self.dirty = True
+        self.calculate()
+        self.plot()
+        self.notebook.visualiserTab.refresh(force=True)
 
     def on_title_changed(self,text):
         self.settings['title'] = text
@@ -202,25 +255,38 @@ class AnalysisTab(QWidget):
         debugger.print('on title change ', self.settings['title'])
 
     def on_vmin_changed(self):
-        self.settings['vmin'] = self.vmin_sb.value()
-        debugger.print('on vmin change ', self.settings['vmin'])
-        vmin = self.settings['vmin']
-        vmax = self.settings['vmax']
+        self.settings['Minimum frequency'] = self.vmin_sb.value()
+        debugger.print('on vmin change ', self.settings['Minimum frequency'])
+        vmin = self.settings['Minimum frequency']
+        vmax = self.settings['Maximum frequency']
         if vmax > vmin:
             self.plot()
 
     def on_vmax_changed(self):
-        self.settings['vmax'] = self.vmax_sb.value()
-        debugger.print('on vmax change ', self.settings['vmax'])
-        vmin = self.settings['vmin']
-        vmax = self.settings['vmax']
+        self.settings['Maximum frequency'] = self.vmax_sb.value()
+        debugger.print('on vmax change ', self.settings['Maximum frequency'])
+        vmin = self.settings['Minimum frequency']
+        vmax = self.settings['Maximum frequency']
         if vmax > vmin:
             self.plot()
 
-    def refresh(self):
-        debugger.print('refreshing widget')
+    def refresh(self, force=False):
+        if not self.dirty and not force and not self.notebook.newAnalysisCalculationRequired:
+            debugger.print('return with no refresh', self.dirty, force, self.notebook.newAnalysisCalculationRequired)
+            return
+        debugger.print('Refreshing widget')
+        self.vmin_sb.setValue(self.settings['Minimum frequency'])
+        self.vmax_sb.setValue(self.settings['Maximum frequency'])
+        self.scale_sp.setValue(self.settings['Covalent radius scaling'])
+        self.tolerance_sp.setValue(self.settings['Bonding tolerance'])
+        self.molecules_le.setText('{}'.format(self.number_of_molecules))
+        self.width_sp.setValue(self.settings['Bar width'])
+        self.title_le.setText(self.settings['title'])
+        self.plottype_cb.setCurrentIndex(self.plot_type_index)
+        self.set_radii_tw()
         self.calculate()
         self.plot()
+        self.notebook.newAnalysisCalculationRequired = False
         return
 
     def on_plottype_cb_changed(self, index):
@@ -232,8 +298,8 @@ class AnalysisTab(QWidget):
         debugger.print('calculate')
         # Assemble the mainTab settings
         settings = self.notebook.mainTab.settings
-        program = settings['program']
-        filename = settings['filename']
+        program = settings['Program']
+        filename = settings['Output file name']
         self.reader = self.notebook.mainTab.reader
         if self.reader is None:
             return
@@ -243,10 +309,10 @@ class AnalysisTab(QWidget):
             return
         # Assemble the settingsTab settings
         settings = self.notebook.settingsTab.settings
-        eckart = settings['eckart']
-        neutral = settings['neutral']
-        hessian_symm = settings['hessian_symmetrisation']
-        epsilon_inf = np.array(settings['optical_permittivity'])
+        eckart = settings['Eckart flag']
+        neutral = settings['Neutral Born charges']
+        hessian_symm = settings['Hessian symmetrisation']
+        epsilon_inf = np.array(settings['Optical permittivity'])
         sigmas_cm1 = self.notebook.settingsTab.sigmas_cm1
         sigmas = np.array(sigmas_cm1) * wavenumber
         modes_selected = self.notebook.settingsTab.modes_selected
@@ -256,69 +322,64 @@ class AnalysisTab(QWidget):
         intensities = self.notebook.settingsTab.intensities
         oscillator_strengths = self.notebook.settingsTab.oscillator_strengths
         volume = self.reader.volume*angstrom*angstrom*angstrom
-        vmin = self.settings['vmin']
-        vmax = self.settings['vmax']
-        scale = self.settings['bond_scaling']
-        tolerance = self.settings['bond_tolerance']
+        vmin = self.settings['Minimum frequency']
+        vmax = self.settings['Maximum frequency']
+        scale = self.settings['Covalent radius scaling']
+        tolerance = self.settings['Bonding tolerance']
         # Find the last unit cell read by the reader and its masses
         cell = self.reader.unit_cells[-1]
         atom_masses = self.reader.masses
         cell.set_atomic_masses(atom_masses)
-        newcell,nmols,old_order = cell.calculate_molecular_contents(scale, tolerance, covalent_radii)
-        #newcell.printInfo()
+        self.cell_of_molecules,nmols,self.original_atomic_order = cell.calculate_molecular_contents(scale, tolerance, covalent_radii)
+        # if the number of molecules has changed then tell the viewerTab that the cell has changed
         self.number_of_molecules = nmols
         self.molecules_le.setText('{}'.format(self.number_of_molecules))
         # get the normal modes from the mass weighted ones
         normal_modes = Calculator.normal_modes(atom_masses, mass_weighted_normal_modes)
-        # Reorder the atoms so that the mass weighted normal modes order agrees with the ordering in the new cell
+        # Reorder the atoms so that the mass weighted normal modes order agrees with the ordering in the cell_of_molecules cell
         nmodes,nions,temp = np.shape(normal_modes)
-        new_normal_modes = np.zeros( (nmodes,3*nions) )
-        new_mass_weighted_normal_modes = np.zeros( (nmodes,3*nions) )
-        masses = newcell.atomic_masses
+        self.new_normal_modes = np.zeros( (nmodes,3*nions) )
+        self.new_mass_weighted_normal_modes = np.zeros( (nmodes,3*nions) )
+        masses = self.cell_of_molecules.atomic_masses
         for imode,mode in enumerate(mass_weighted_normal_modes):
-            for index,old_index in enumerate(old_order):
+            for index,old_index in enumerate(self.original_atomic_order):
                 i = index*3
                 j = old_index*3
-                new_mass_weighted_normal_modes[imode,i+0] = mode[old_index][0] 
-                new_mass_weighted_normal_modes[imode,i+1] = mode[old_index][1] 
-                new_mass_weighted_normal_modes[imode,i+2] = mode[old_index][2] 
-                new_normal_modes[imode,i+0] = new_mass_weighted_normal_modes[imode,i+0] / math.sqrt(masses[index])
-                new_normal_modes[imode,i+1] = new_mass_weighted_normal_modes[imode,i+1] / math.sqrt(masses[index])
-                new_normal_modes[imode,i+2] = new_mass_weighted_normal_modes[imode,i+2] / math.sqrt(masses[index])
+                self.new_mass_weighted_normal_modes[imode,i+0] = mode[old_index][0] 
+                self.new_mass_weighted_normal_modes[imode,i+1] = mode[old_index][1] 
+                self.new_mass_weighted_normal_modes[imode,i+2] = mode[old_index][2] 
+                self.new_normal_modes[imode,i+0] = self.new_mass_weighted_normal_modes[imode,i+0] / math.sqrt(masses[index])
+                self.new_normal_modes[imode,i+1] = self.new_mass_weighted_normal_modes[imode,i+1] / math.sqrt(masses[index])
+                self.new_normal_modes[imode,i+2] = self.new_mass_weighted_normal_modes[imode,i+2] / math.sqrt(masses[index])
         # Calculate the distribution in energy for the normal modes
-        self.mode_energies = Calculator.calculate_energy_distribution(newcell, self.frequencies_cm1, new_mass_weighted_normal_modes)
-        # Output the final result
-        #title = ['Freq(cm-1)','%mol-cme','%mol-rot','%vib']
-        #for i in range(self.number_of_molecules):
-        #    title.append('%mol-'+str(i))
-        #print_strings('Percentage energies in vibrational modes',title,format="{:>10}")
-        fd_csvfile = None
-        #if not fd_csvfile is None:
-        #    print_strings('Percentage energies in vibrational modes',title,format="{:>10}",file=fd_csvfile,separator=",")
-        #for freq,energies in zip(self.frequencies_cm1,self.mode_energies):
-        #       tote,cme,rote,vibe,molecular_energies = energies
-        #       output = [ freq, 100*cme/tote, 100*rote/tote, 100*vibe/tote ]
-        #       for e in molecular_energies:
-        #           output.append(100*e/tote)
-        #       print_reals('',output,format="{:10.2f}")
-        #       if not fd_csvfile is None:
-        #           print_reals('',output,format="{:10.2f}",file=fd_csvfile,separator=",")
-        # if using a excel file write out the results
-        fd_excelfile = None
-        if not fd_excelfile is None:
-            excel_row += 2; worksheet.write(excel_row,0,'Percentage energies in vibrational modes')
-            excel_row += 1; [ worksheet.write(excel_row,col,f) for col,f in enumerate(title) ]
-            for freq,energies in zip(self.frequencies_cm1,self.mode_energies):
-               tote,cme,rote,vibe, molecular_energies = energies
-               output = [ freq, 100*cme/tote, 100*rote/tote, 100*vibe/tote ]
-               for e in molecular_energies:
-                   output.append(100*e/tote)
-               excel_row += 1; [ worksheet.write(excel_row,col,f) for col,f in enumerate( output ) ]
-        if fd_excelfile is not None:
-            workbook.close()
-        if fd_csvfile is not None:
-            fd_csvfile.close()
-        #
+        mode_energies = Calculator.calculate_energy_distribution(self.cell_of_molecules, self.frequencies_cm1, self.new_mass_weighted_normal_modes)
+        # Deal with degeneracies
+        degenerate_list = [ [] for f in self.frequencies_cm1]
+        for i,fi in enumerate(self.frequencies_cm1):
+            for j,fj in enumerate(self.frequencies_cm1):
+                if abs(fi-fj) < 1.0E-5:
+                    degenerate_list[i].append(j)
+        self.mode_energies = []
+        for i,fi in enumerate(self.frequencies_cm1):
+            tote,cme,rote,vibe,mole = mode_energies[i]
+            sums = [0.0]*5
+            sume = [0.0]*len(mole)
+            degeneracy = len(degenerate_list[i])
+            for j in degenerate_list[i]:
+                tote,cme,rote,vibe,mole = mode_energies[j]
+                sums[0] += tote / degeneracy
+                sums[1] += cme / degeneracy
+                sums[2] += rote / degeneracy
+                sums[3] += vibe / degeneracy
+                for k,e in enumerate(mole):
+                    sume[k] += e / degeneracy
+                sums[4] = sume
+            self.mode_energies.append(sums)
+        # Store the results in the spread shee
+        if self.notebook.spreadsheet is not None:
+            self.write_spreadSheet()
+        # Flag that a recalculation is not needed
+        self.dirty = False
 
     def plot(self):
          if self.reader is None:
@@ -337,8 +398,8 @@ class AnalysisTab(QWidget):
         # Decide which modes to analyse
         mode_list = []
         mode_list_text = []
-        vmin = self.settings['vmin']
-        vmax = self.settings['vmax']
+        vmin = self.settings['Minimum frequency']
+        vmax = self.settings['Maximum frequency']
         tote,cme,rote,vibe,mole = self.mode_energies[0]
         mol_energies = None
         mol_energies = [ [] for _ in range(self.number_of_molecules) ]
@@ -354,7 +415,7 @@ class AnalysisTab(QWidget):
                         mol_bottoms[i].append(0.0)
                     else:
                         mol_bottoms[i].append(mol_bottoms[i-1][-1]+mol_energies[i-1][-1])
-        width = self.settings['bar_width']
+        width = self.settings['Bar width']
         plots = []
         for i,(energies,bottoms) in enumerate(zip(mol_energies, mol_bottoms )):
             plots.append(self.subplot.bar(mode_list,energies,width, bottom=bottoms))
@@ -381,8 +442,8 @@ class AnalysisTab(QWidget):
         vib_energy = []
         vib_bottom = []
         mol_energy = []
-        vmin = self.settings['vmin']
-        vmax = self.settings['vmax']
+        vmin = self.settings['Minimum frequency']
+        vmax = self.settings['Maximum frequency']
         for imode, frequency in enumerate(self.frequencies_cm1):
             if frequency >= vmin and frequency <= vmax:
                 mode_list.append(imode)
@@ -393,7 +454,7 @@ class AnalysisTab(QWidget):
                 vib_energy.append(vibe/tote*100.0)
                 vib_bottom.append( (cme+rote)/tote*100.0 )
                 mol_energy.append(molecular_energies/tote*100)
-        width = self.settings['bar_width']
+        width = self.settings['Bar width']
         p1 = self.subplot.bar(mode_list,cme_energy,width)
         p2 = self.subplot.bar(mode_list,rot_energy,width,bottom=cme_energy)
         p3 = self.subplot.bar(mode_list,vib_energy,width,bottom=vib_bottom)

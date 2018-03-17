@@ -22,7 +22,7 @@ import cmath
 import numpy as np
 import scipy.optimize as sc
 from Python.Constants import PI, d2byamuang2
-
+import string
 
 def initialise_unit_tensor():
     '''Initialise a 3x3 tensor, the argument is a list of 3 real numbers for the diagonals, the returned tensor is an array'''
@@ -1079,4 +1079,13 @@ def calculate_energy_distribution(cell, frequencies, normal_modes, debug=False):
    # end for mode in normal modes
    return energies_in_modes
 # end def
+
+
+def cleanup_symbol(s):
+    """Return a true element from the symbol"""
+    s = s.capitalize()
+    s = s.replace('_','')
+    for i in string.digits:
+        s = s.replace(i,'')
+    return s
 

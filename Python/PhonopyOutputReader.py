@@ -67,7 +67,7 @@ class PhonopyOutputReader(GenericOutputReader):
         self.ions_per_type           = self.qmreader.ions_per_type
         self.masses                  = self.qmreader.masses
         self.nspecies                = self.qmreader.nspecies
-        self.species                 = self.qmreader.species
+        self.species                 = self.qmreader.getSpecies()
         self.born_charges            = self.qmreader.born_charges
         self.zerof_optical_dielectric= self.qmreader.zerof_optical_dielectric
         self.zerof_static_dielectric = self.qmreader.zerof_static_dielectric

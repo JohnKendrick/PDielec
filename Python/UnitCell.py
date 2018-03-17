@@ -20,8 +20,9 @@
 from __future__ import print_function
 import numpy as np
 import math
-from Python.Calculator import calculate_distance
-from Python.Plotter import print_reals, print_ints, print_strings
+from Python.Calculator  import calculate_distance
+from Python.Plotter     import print_reals, print_ints, print_strings
+from Python.Calculator  import cleanup_symbol
 
 
 class UnitCell:
@@ -36,6 +37,7 @@ class UnitCell:
         self.molecules = []
         self.atomic_masses = []
         self.centres_of_mass = []
+        self.total_mass = 0.0
         self.lattice = [[1.0, 0.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, 1.0]]
         if gamma is not None:
             self.lattice = self.convert_abc_to_unitcell(a, b, c, alpha, beta, gamma)
@@ -78,7 +80,7 @@ class UnitCell:
         edges.append( (corners_xyz[6] , corners_xyz[5]) )
         edges.append( (corners_xyz[7] , corners_xyz[6]) )
         edges.append( (corners_xyz[7] , corners_xyz[4]) )
-        return edges
+        return corners_xyz,edges
          
 
     def printInfo(self):
@@ -96,22 +98,35 @@ class UnitCell:
             print_reals('',xyz, format='{:12.6f}')
         if self.molecules:
             for molid,atoms in enumerate(self.molecules):
-                mass, cm_xyz, cm_frac = self.calculateCentreOfMass(atoms)
+                mass, cm_xyz, cm_frac = self.calculateCentreOfMass(atom_list=atoms,units='all')
                 molstring = 'Molecule '+str(molid)+':'
                 print_ints('Atoms in '+molstring,atoms)
                 print_reals('Mass of '+molstring,[ mass ], format='{:12.6f}')
                 print_reals('Centre of Mass  (xyz) of '+molstring, cm_xyz, format='{:12.6f}')
                 print_reals('Centre of Mass (frac) of '+molstring, cm_frac,format='{:12.6f}')
 
-    def calculateCentreOfMass(self,atoms):
+    def calculateCentreOfMass(self,atom_list=None, units='xyz'):
+        # Calculate the centre of mass - if the atom list is given just use that
+        # The centre of mass can be returned in units of 'xyz' space or 'abc' space
+        # if units='all' a tuple of (mass,cm_xyz,cm_abc) is returned
+        if atom_list == None:
+            atom_list = range(self.nions)
         mass = 0.0
         cm = np.zeros(3)
-        for atom_index in atoms:
+        for atom_index in atom_list:
             mass += self.atomic_masses[atom_index]
             cm = cm + self.atomic_masses[atom_index] * self.xyz_coordinates[atom_index]
         cm_xyz = cm / mass
-        cm_fractional = self.convert_xyz_to_abc(cm_xyz)
-        return mass, cm_xyz, cm_fractional
+        if units == 'xyz':
+            return cm_xyz
+        elif units == 'mass':
+            return mass
+        elif units == 'abc':
+            cm_fractional = self.convert_xyz_to_abc(cm_xyz)
+            return cm_fractional
+        else:
+            cm_fractional = self.convert_xyz_to_abc(cm_xyz)
+            return mass, cm_xyz, cm_fractional
 
     def set_atomic_masses(self, masses):
         self.atomic_masses = masses
@@ -216,6 +231,7 @@ class UnitCell:
     def set_element_names(self, element_names):
         self.element_names = []
         for el in element_names:
+          el = cleanup_symbol(el)
           self.element_names.append(el)
         return
 
@@ -258,8 +274,6 @@ class UnitCell:
         BoxAtoms = {}
         BoxNeighbours = {}
         boxSize = 0.0
-        scale = 1.1
-        toler = 0.1
         # calculate boxsize
         rmax = 0.0
         for el in self.element_names:
@@ -374,6 +388,7 @@ class UnitCell:
         # until all the atoms belong to a molecule
         #jk print('Number of molecules', molID+1)
         self.centres_of_mass = []
+        self.total_mass = 0.0
         for mol_index in molecules:
             #jk print('Molecule ',mol_index)
             #jk print('Atoms ',molecules[mol_index])
