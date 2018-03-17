@@ -206,7 +206,7 @@ class AnalysisTab(QWidget):
         self.set_radii_tw()
         self.calculate()
         self.plot()
-        self.notebook.visualiserTab.refresh(force=True)
+        self.notebook.viewerTab.refresh(force=True)
 
     def write_spreadSheet(self):
         if self.notebook.spreadsheet is None:
@@ -239,7 +239,7 @@ class AnalysisTab(QWidget):
         self.dirty = True
         self.calculate()
         self.plot()
-        self.notebook.visualiserTab.refresh(force=True)
+        self.notebook.viewerTab.refresh(force=True)
         
     def on_tolerance_changed(self,value):
         debugger.print('on_tolerance_le changed ', value)
@@ -247,7 +247,7 @@ class AnalysisTab(QWidget):
         self.dirty = True
         self.calculate()
         self.plot()
-        self.notebook.visualiserTab.refresh(force=True)
+        self.notebook.viewerTab.refresh(force=True)
 
     def on_title_changed(self,text):
         self.settings['title'] = text
