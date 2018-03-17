@@ -73,6 +73,12 @@ class ViewerTab(QWidget):
         label = QLabel('Select phonon mode', self)
         label.setToolTip('Set the mode to be visualised')
         form.addRow(label, self.selected_mode_sb)
+        # Add frequency of mode
+        self.frequency_le = QLineEdit(self)
+        self.frequency_le.setEnabled(False)
+        self.frequency_le.setText('{}'.format(0.0))
+        label = QLabel('Frequency (cm-1)', self)
+        form.addRow(label, self.frequency_le)
         #
         # The atom scaling
         #
@@ -273,6 +279,7 @@ class ViewerTab(QWidget):
     def on_selected_mode_changed(self):
         self.selected_mode = self.selected_mode_sb.value()
         debugger.print('on selected_mode change ', self.selected_mode)
+        self.frequency_le.setText('{:.5f}'.format(self.notebook.settingsTab.frequencies_cm1[self.selected_mode]))
         self.opengl_widget.deleteArrows()
         maxR = np.max( np.abs(np.array(self.UVW[self.selected_mode])))
         arrow_scaling = self.settings['Maximum displacement'] / maxR
@@ -421,11 +428,12 @@ class ViewerTab(QWidget):
         return
 
     def refresh(self,force=False):
-        if not self.dirty and not force:
+        if not self.dirty and not force and not self.notebook.visualerCalculationRequired:
             debugger.print('refresh aborted',self.dirty,force)
             return
         debugger.print('refresh widget',force)
         self.selected_mode_sb.setValue(self.selected_mode)
+        self.frequency_le.setText('{:.5f}'.format(self.notebook.settingsTab.frequencies_cm1[self.selected_mode]))
         self.atom_scaling_sb.setValue(self.settings['Atom scaling'])
         self.bond_radius_sb.setValue(self.settings['Bond radius'])
         self.cell_radius_sb.setValue(self.settings['Cell radius'])

@@ -19,8 +19,9 @@ class NoteBook(QWidget):
         self.reader = None
         self.progressbar=progressbar
         self.spreadsheet = None
-        self.newPlottingCalculationRequired = True
-        self.newAnalysisCalculationRequired = True
+        self.plottingCalculationRequired = True
+        self.analysisCalculationRequired = True
+        self.visualerCalculationRequired = True
         self.debug = debug
         self.script = script
         self.layout = QVBoxLayout()
@@ -78,7 +79,7 @@ class NoteBook(QWidget):
 
     def addScenario(self,copyFromIndex=-2):
         debugger.print('Settings for scenario', copyFromIndex)
-        self.newPlottingCalculationRequired = True
+        self.plottingCalculationRequired = True
         self.scenarios.append( ScenarioTab(self, self.debug) )
         self.scenarios[-1].settings = copy.deepcopy(self.scenarios[copyFromIndex].settings)
         # debugger.print('Settings for new scenario')
@@ -94,7 +95,7 @@ class NoteBook(QWidget):
     def deleteScenario(self,index):
         # Don't delete the last scenario
         if len(self.scenarios) > 1:
-            self.newPlottingCalculationRequired = True
+            self.plottingCalculationRequired = True
             self.tabs.removeTab(self.tabOffSet+index)
             del self.scenarios[index]
             for i,scenario in enumerate(self.scenarios):

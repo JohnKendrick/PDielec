@@ -20,7 +20,7 @@ class ScenarioTab(QWidget):
         self.dirty = True
         self.settings = {}
         self.notebook = parent
-        self.notebook.newPlottingCalculationRequired = True
+        self.notebook.plottingCalculationRequired = True
         matrix = 'ptfe'
         self.settings['Matrix'] = matrix
         self.settings['Matrix density'] = support_matrix_db[matrix][0]
@@ -261,39 +261,39 @@ class ScenarioTab(QWidget):
     def on_h_sb_changed(self,value):
         debugger.print('on_h_sb_changed', value)
         self.dirty = True
-        self.notebook.newPlottingCalculationRequired = True
+        self.notebook.plottingCalculationRequired = True
         self.settings['Unique direction - h'] = value
 
     def on_k_sb_changed(self,value):
         debugger.print('on_k_sb_changed', value)
         self.dirty = True
-        self.notebook.newPlottingCalculationRequired = True
+        self.notebook.plottingCalculationRequired = True
         self.settings['Unique direction - k'] = value
 
     def on_l_sb_changed(self,value):
         debugger.print('on_l_sb_changed', value)
         self.dirty = True
-        self.notebook.newPlottingCalculationRequired = True
+        self.notebook.plottingCalculationRequired = True
         self.settings['Unique direction - l'] = value
 
     def on_shape_cb_activated(self,index):
         debugger.print('on shape cb activated', index)
         self.dirty = True
-        self.notebook.newPlottingCalculationRequired = True
+        self.notebook.plottingCalculationRequired = True
         self.settings['Particle shape'] = self.shapes[index]
         self.change_greyed_out()
 
     def on_methods_cb_activated(self,index):
         debugger.print('on methods cb activated', index)
         self.dirty = True
-        self.notebook.newPlottingCalculationRequired = True
+        self.notebook.plottingCalculationRequired = True
         self.settings['Effective medium method'] = self.methods[index]
         self.change_greyed_out()
 
     def on_mf_sb_changed(self,value):
         debugger.print('on mass fraction line edit changed', value)
         self.dirty = True
-        self.notebook.newPlottingCalculationRequired = True
+        self.notebook.plottingCalculationRequired = True
         self.settings['Mass fraction'] =  value/100.0
         if self.settings['Mass or volume fraction'] == 'mass':
             self.update_vf_sb()
@@ -320,7 +320,7 @@ class ScenarioTab(QWidget):
     def on_aoverb_sb_changed(self,value):
         debugger.print('on_aoverb_le_changed',value)
         self.dirty = True
-        self.notebook.newPlottingCalculationRequired = True
+        self.notebook.plottingCalculationRequired = True
         self.settings['Ellipsoid a/b'] = value
 
     def on_legend_le_changed(self,text):
@@ -332,19 +332,19 @@ class ScenarioTab(QWidget):
     def on_sigma_sb_changed(self,value):
         debugger.print('on sigma line edit changed', value)
         self.dirty = True
-        self.notebook.newPlottingCalculationRequired = True
+        self.notebook.plottingCalculationRequired = True
         self.settings['Particle size distribution sigma(mu)'] = value
 
     def on_size_sb_changed(self,value):
         debugger.print('on size line edit changed', value)
         self.dirty = True
-        self.notebook.newPlottingCalculationRequired = True
+        self.notebook.plottingCalculationRequired = True
         self.settings['Particle size(mu)'] = value
 
     def on_vf_sb_changed(self,value):
         debugger.print('on volume fraction line edit changed', value)
         self.dirty = True
-        self.notebook.newPlottingCalculationRequired = True
+        self.notebook.plottingCalculationRequired = True
         self.settings['Volume fraction'] = value/100.0
         if self.settings['Mass or volume fraction'] == 'volume':
             self.update_mf_sb()
@@ -372,7 +372,7 @@ class ScenarioTab(QWidget):
         debugger.print('on matrix combobox activated', index)
         debugger.print('on matrix combobox activated', self.matrix_cb.currentText())
         self.dirty = True
-        self.notebook.newPlottingCalculationRequired = True
+        self.notebook.plottingCalculationRequired = True
         matrix = self.matrix_cb.currentText()
         self.matrix_cb.blockSignals(True)
         self.density_sb.blockSignals(True)
@@ -396,17 +396,17 @@ class ScenarioTab(QWidget):
         self.update_vf_sb()
         debugger.print('on density line edit changed', value)
         self.dirty = True
-        self.notebook.newPlottingCalculationRequired = True
+        self.notebook.plottingCalculationRequired = True
 
     def on_permittivity_sb_changed(self,value):
         self.settings['Matrix permittivity'] = value
         debugger.print('on permittivity line edit changed', value)
         self.dirty = True
-        self.notebook.newPlottingCalculationRequired = True
+        self.notebook.plottingCalculationRequired = True
 
     def set_reader(self,reader):
         self.dirty = True
-        self.notebook.newPlottingCalculationRequired = True
+        self.notebook.plottingCalculationRequired = True
         self.reader = reader
 
     def change_greyed_out(self):
@@ -487,7 +487,7 @@ class ScenarioTab(QWidget):
             return
         debugger.print('refresh', force)
         # Tell the main notebook that we need to recalculate any plot
-        self.notebook.newPlottingCalculationRequired = True
+        self.notebook.plottingCalculationRequired = True
         # First see if we can get the reader from the mainTab
         self.reader = self.notebook.mainTab.reader
         # block signals to all the widgets

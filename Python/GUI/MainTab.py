@@ -27,6 +27,7 @@ class MainTab(QWidget):
         self.notebook = parent
         self.notebook.plottingCalculationRequired = True
         self.notebook.analysisCalculationRequired = True
+        self.notebook.visualerCalculationRequired = True
         self.reader = None
         self.frequencies_cm1 = None
         self.dirty = True
@@ -164,6 +165,7 @@ class MainTab(QWidget):
         self.notebook.reader = self.reader
         self.notebook.plottingCalculationRequired = True
         self.notebook.analysisCalculationRequired = True
+        self.notebook.visualerCalculationRequired = True
         if self.debug:
             self.reader.print_info()
         self.frequencies_cm1 = np.sort(self.reader.frequencies)
@@ -173,31 +175,31 @@ class MainTab(QWidget):
         debugger.print('processing a return')
         if hasattr(self.notebook, 'settingsTab'):
             debugger.print('about to refresh settings')
-            self.notebook.settingsTab.refresh(force=True)
+            self.notebook.settingsTab.refresh()
         # Update any scenarios
         if hasattr(self.notebook, 'scenarios'):
             debugger.print('about to refresh scenarios')
             debugger.print('notebook has {} scenarios'.format(len(self.notebook.scenarios)))
             for tab in self.notebook.scenarios:
-                tab.refresh(force=True)
+                tab.refresh()
         else:
             debugger.print('notebook has no scenarios yet')
         # Update the plotting tab
         if hasattr(self.notebook, 'plottingTab'):
             debugger.print('about to refresh plottingtab')
-            self.notebook.plottingTab.refresh(force=True)
+            self.notebook.plottingTab.refresh()
         else:
             debugger.print('notebook has no plotting tab yet')
         # Update the analysis tab
         if hasattr(self.notebook, 'analysisTab'):
             debugger.print('about to refresh analysisTab')
-            self.notebook.analysisTab.refresh(force=True)
+            self.notebook.analysisTab.refresh()
         else:
             debugger.print('notebook has no analysis tab yet')
         # Update the viewer tab
         if hasattr(self.notebook, 'viewerTab'):
             debugger.print('about to refresh viewerTab')
-            self.notebook.viewerTab.refresh(force=True)
+            self.notebook.viewerTab.refresh()
         else:
             debugger.print('notebook has no viewer tab yet')
 
@@ -236,6 +238,7 @@ class MainTab(QWidget):
         if text[-5:] == '.xlsx':
             self.notebook.spreadsheet = SpreadSheetManager(text)
             self.settings['Excel file name'] = text
+            self.dirty = True
         else:
            print('spreadsheet name not valid', text)
            exit()
@@ -247,6 +250,7 @@ class MainTab(QWidget):
         if os.path.isfile(self.settings['Output file name']):
             # The file exists to treat it as though the button has been pressed
             self.read_output_file()
+            self.dirty = True
             return
         # The file doesn't exist so open a file chooser
         options = QFileDialog.Options()
@@ -259,6 +263,7 @@ class MainTab(QWidget):
             #self.settings['Output file name'] = os.path.relpath(self.settings['Output file name'])
             # The file exists to treat it as though the button has been pressed
             self.read_output_file()
+            self.dirty = True
             return
  
     def on_file_le_changed(self, text):
@@ -293,6 +298,7 @@ class MainTab(QWidget):
             return
         self.notebook.newPlottingCalculationRequired = True
         self.notebook.newAnalysisCalculationRequired = True
+        self.notebook.newVisualerCalculationRequired = True
         prtext = self.settings['Program'].capitalize()
         qmtext = self.settings['QM program'].capitalize()
         if prtext == 'Qe':

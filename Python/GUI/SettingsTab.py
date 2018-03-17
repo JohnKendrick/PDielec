@@ -173,8 +173,8 @@ class SettingsTab(QWidget):
         if self.reader is None:
             return
         # Flag the fact that we need new calculations and new analysis
-        self.notebook.newPlottingCalculationRequired = True
-        self.notebook.newAnalysisCalculationRequired = True
+        self.notebook.plottingCalculationRequired = True
+        self.notebook.analysisCalculationRequired = True
         self.reader.hessian_symmetrisation = self.settings['Hessian symmetrisation']
         #self.reader.read_output()
         if self.settings['Neutral Born charges']:
@@ -318,8 +318,8 @@ class SettingsTab(QWidget):
         self.settings['Sigma value'] = self.sigma_sb.value()
         self.sigmas_cm1 = [ self.settings['Sigma value'] for i in self.frequencies_cm1 ]
         self.redraw_output_tw()
-        self.notebook.newPlottingCalculationRequired = True
-        self.notebook.newAnalysisCalculationRequired = True
+        self.notebook.plottingCalculationRequired = True
+        self.notebook.analysisCalculationRequired = True
         debugger.print('on sigma change ', self.settings['Sigma value'])
 
     def on_mass_cb_activated(self,index):
@@ -332,8 +332,8 @@ class SettingsTab(QWidget):
         # Modify the element masses
         self.set_masses_tw()
         self.calculateButtonClicked()
-        self.notebook.newPlottingCalculationRequired = True
-        self.notebook.newAnalysisCalculationRequired = True
+        self.notebook.plottingCalculationRequired = True
+        self.notebook.analysisCalculationRequired = True
         QCoreApplication.processEvents()
 
     def set_masses_tw(self):
@@ -403,8 +403,8 @@ class SettingsTab(QWidget):
                     print('Mass definition not processed', self.settings['Mass definition'])
             # unblock the table signals
             self.element_masses_tw.blockSignals(False)
-            self.notebook.newPlottingCalculationRequired = True
-            self.notebook.newAnalysisCalculationRequired = True
+            self.notebook.plottingCalculationRequired = True
+            self.notebook.analysisCalculationRequired = True
         QCoreApplication.processEvents()
 
     def on_output_tw_itemChanged(self, item):
@@ -426,8 +426,8 @@ class SettingsTab(QWidget):
             self.redraw_output_tw()
         else:
             self.redraw_output_tw()
-        self.notebook.newPlottingCalculationRequired = True
-        self.notebook.newAnalysisCalculationRequired = True
+        self.notebook.plottingCalculationRequired = True
+        self.notebook.analysisCalculationRequired = True
         QCoreApplication.processEvents()
 
     def on_element_masses_tw_itemClicked(self, item):
@@ -443,16 +443,16 @@ class SettingsTab(QWidget):
         self.mass_cb.setCurrentIndex(3)
         self.masses_dictionary[elements[col]] = float(item.text())
         self.calculateButtonClicked()
-        self.notebook.newPlottingCalculationRequired = True
-        self.notebook.newAnalysisCalculationRequired = True
+        self.notebook.plottingCalculationRequired = True
+        self.notebook.analysisCalculationRequired = True
         debugger.print('masses_dictionary', self.masses_dictionary)
 
     def on_optical_tw_itemChanged(self, item):
         debugger.print('on_optical_itemChanged)', item.row(), item.column() )
         self.settings['Optical permittivity'][item.row()][item.column()] = float(item.text())
         self.settings['Optical permittivity'][item.column()][item.row()] = float(item.text())
-        self.notebook.newPlottingCalculationRequired = True
-        self.notebook.newAnalysisCalculationRequired = True
+        self.notebook.plottingCalculationRequired = True
+        self.notebook.analysisCalculationRequired = True
         debugger.print('optical permittivity')
         debugger.print(self.settings['Optical permittivity'])
         QCoreApplication.processEvents()
@@ -513,8 +513,8 @@ class SettingsTab(QWidget):
         self.settings['Neutral Born charges'] = self.born_cb.isChecked()
         debugger.print('on born change ', self.settings['Neutral Born charges'])
         self.calculateButtonClicked()
-        self.notebook.newPlottingCalculationRequired = True
-        self.notebook.newAnalysisCalculationRequired = True
+        self.notebook.plottingCalculationRequired = True
+        self.notebook.analysisCalculationRequired = True
         QCoreApplication.processEvents()
 
     def on_eckart_changed(self):
@@ -522,7 +522,7 @@ class SettingsTab(QWidget):
         self.settings['Eckart flag'] = self.eckart_cb.isChecked()
         debugger.print('on eckart change ', self.settings['Eckart flag'])
         self.calculateButtonClicked()
-        self.notebook.newPlottingCalculationRequired = True
-        self.notebook.newAnalysisCalculationRequired = True
+        self.notebook.plottingCalculationRequired = True
+        self.notebook.analysisCalculationRequired = True
         QCoreApplication.processEvents()
 

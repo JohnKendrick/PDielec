@@ -105,8 +105,7 @@ class AnalysisTab(QWidget):
         sizePolicy = QSizePolicy(QSizePolicy.Minimum,QSizePolicy.Minimum)
         self.element_radii_tw.setSizePolicy(sizePolicy)
         form.addRow(QLabel('Atomic radii', self), self.element_radii_tw)
- 
-        # ADD NUMBER OF MOLECULES FOUND
+        # Add number of molecules found
         self.molecules_le = QLineEdit(self)
         self.molecules_le.setEnabled(False)
         self.molecules_le.setText('{}'.format(self.number_of_molecules))
@@ -178,7 +177,6 @@ class AnalysisTab(QWidget):
             self.element_radii[self.species[col]] = float(item.text())
             self.calculate()
             self.plot()
-            self.notebook.viewerTab.refresh(force=True)
         except:
             debugger.print('Failed Changing the element radius',col,item.text())
             pass
@@ -206,7 +204,6 @@ class AnalysisTab(QWidget):
         self.set_radii_tw()
         self.calculate()
         self.plot()
-        self.notebook.viewerTab.refresh(force=True)
 
     def write_spreadSheet(self):
         if self.notebook.spreadsheet is None:
@@ -239,7 +236,6 @@ class AnalysisTab(QWidget):
         self.dirty = True
         self.calculate()
         self.plot()
-        self.notebook.viewerTab.refresh(force=True)
         
     def on_tolerance_changed(self,value):
         debugger.print('on_tolerance_le changed ', value)
@@ -247,7 +243,6 @@ class AnalysisTab(QWidget):
         self.dirty = True
         self.calculate()
         self.plot()
-        self.notebook.viewerTab.refresh(force=True)
 
     def on_title_changed(self,text):
         self.settings['title'] = text
@@ -273,8 +268,8 @@ class AnalysisTab(QWidget):
             self.plot()
 
     def refresh(self, force=False):
-        if not self.dirty and not force and not self.notebook.newAnalysisCalculationRequired:
-            debugger.print('return with no refresh', self.dirty, force, self.notebook.newAnalysisCalculationRequired)
+        if not self.dirty and not force and not self.notebook.analysisCalculationRequired:
+            debugger.print('return with no refresh', self.dirty, force, self.notebook.analysisCalculationRequired)
             return
         debugger.print('Refreshing widget')
         self.vmin_sb.setValue(self.settings['Minimum frequency'])
@@ -285,10 +280,10 @@ class AnalysisTab(QWidget):
         self.width_sp.setValue(self.settings['Bar width'])
         self.title_le.setText(self.settings['title'])
         self.plottype_cb.setCurrentIndex(self.plot_type_index)
-        self.set_radii_tw()
         self.calculate()
+        self.set_radii_tw()
         self.plot()
-        self.notebook.newAnalysisCalculationRequired = False
+        self.notebook.analysisCalculationRequired = False
         return
 
     def on_plottype_cb_changed(self, index):
@@ -334,7 +329,10 @@ class AnalysisTab(QWidget):
         cell.set_atomic_masses(atom_masses)
         self.cell_of_molecules,nmols,self.original_atomic_order = cell.calculate_molecular_contents(scale, tolerance, covalent_radii)
         # if the number of molecules has changed then tell the viewerTab that the cell has changed
-        self.number_of_molecules = nmols
+        if self.number_of_molecules != nmols:
+            #self.notebook.viewerTab.refresh(force=True)
+            self.notebook.visualerCalculationRquired = True
+            self.number_of_molecules = nmols
         self.molecules_le.setText('{}'.format(self.number_of_molecules))
         # get the normal modes from the mass weighted ones
         normal_modes = Calculator.normal_modes(atom_masses, mass_weighted_normal_modes)
