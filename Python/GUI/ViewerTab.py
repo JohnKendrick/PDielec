@@ -309,11 +309,8 @@ class ViewerTab(QWidget):
             return
         # Assemble the settingsTab settings
         settings = self.notebook.settingsTab.settings
-        debugger.print(' settingsTab settings')
-        debugger.print(settings)
         self.frequencies_cm1 = self.notebook.settingsTab.frequencies_cm1
         self.selected_mode_sb.setRange(0,len(self.frequencies_cm1)-1)
-        debugger.print(self.frequencies_cm1)
         frequencies = np.array(self.frequencies_cm1) * wavenumber
         intensities = self.notebook.settingsTab.intensities
         oscillator_strengths = self.notebook.settingsTab.oscillator_strengths
@@ -373,11 +370,9 @@ class ViewerTab(QWidget):
         if self.settings['Number of phase steps']%2 == 0:
             self.settings['Number of phase steps'] += 1
         UVW = np.array( self.UVW[self.selected_mode] )
-        debugger.print('calculate phase positions UVW', UVW)
+        debugger.print('calculate phase positions')
         maxR = np.amax(np.abs(UVW))
-        debugger.print('calculate phase positions maxr', maxR)
         self.scale_vibrations = self.settings['Maximum displacement'] / maxR
-        debugger.print('calculate phase positions scale_vibrations', self.scale_vibrations)
         self.newXYZ       = np.zeros( (self.settings['Number of phase steps'], self.natoms, 3) )
         sign = +1.0
         phases = []
@@ -385,7 +380,6 @@ class ViewerTab(QWidget):
         n2 = int(self.settings['Number of phase steps']/2)
         delta = 1.0 / float(n2)
         phases = np.arange(-1.0, 1.0+delta-1.0E-10, delta)
-        debugger.print('Phases', phases)
         for phase_index,phase in enumerate(phases):
             self.newXYZ[phase_index] = self.XYZ+phase*self.scale_vibrations*UVW
         # end for phase_index
@@ -459,7 +453,6 @@ class ViewerTab(QWidget):
             self.species = self.reader.getSpecies()
             debugger.print('refresh - species ',self.species)
         count = self.element_coloured_hbox.count()
-        debugger.print('count widget',count)
         if count == 0:
             debugger.print('initialising element colours widget')
             self.element_coloured_buttons = []

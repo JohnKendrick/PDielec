@@ -117,7 +117,6 @@ class SettingsTab(QWidget):
         self.element_masses_tw.blockSignals(True)
         sizePolicy = QSizePolicy(QSizePolicy.Minimum,QSizePolicy.Minimum)
         self.element_masses_tw.setSizePolicy(sizePolicy)
-        debugger.print('element_masses_tw sizeHint',self.element_masses_tw.sizeHint())
         form.addRow(QLabel('Atomic masses', self), self.element_masses_tw)
         #
         # The lorentzian width - sigma
@@ -324,7 +323,6 @@ class SettingsTab(QWidget):
         debugger.print('on sigma change ', self.settings['Sigma value'])
 
     def on_mass_cb_activated(self,index):
-        debugger.print('on mass combobox activated', index)
         debugger.print('on mass combobox activated', self.mass_cb.currentText())
         self.settings['Mass definition'] = self.mass_definition_options[index]
         self.current_mass_definition_index = index
@@ -455,8 +453,6 @@ class SettingsTab(QWidget):
         self.notebook.plottingCalculationRequired = True
         self.notebook.analysisCalculationRequired = True
         self.refresh_optical_permittivity_tw()
-        debugger.print('optical permittivity')
-        debugger.print(self.settings['Optical permittivity'])
         QCoreApplication.processEvents()
 
     def on_optical_tw_itemClicked(self, item):

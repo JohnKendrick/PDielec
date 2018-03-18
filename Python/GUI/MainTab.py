@@ -2,7 +2,7 @@ import sys
 import os.path
 from PyQt5.QtWidgets  import  QWidget
 from PyQt5.QtWidgets  import  QListWidget, QComboBox, QLabel, QLineEdit
-from PyQt5.QtWidgets  import  QFileDialog, QPushButton
+from PyQt5.QtWidgets  import  QFileDialog, QPushButton, QCheckBox
 from PyQt5.QtWidgets  import  QFormLayout
 from PyQt5.QtWidgets  import  QVBoxLayout, QHBoxLayout, QMessageBox
 from PyQt5.QtCore     import  Qt, QCoreApplication
@@ -24,7 +24,6 @@ class MainTab(QWidget):
         self.settings['Output file name'] = filename
         self.settings['Excel file name'] = excelfile
         self.settings['QM program'] = ''
-        self.settings['Hessian symmetrisation'] = 'crystal'
         self.settings['Hessian symmetrisation'] = 'symm'
         self.notebook = parent
         self.notebook.plottingCalculationRequired = True
@@ -88,6 +87,25 @@ class MainTab(QWidget):
         label.setToolTip('Choose output file for analysis (press return for a file chooser)')
         form.addRow(label, self.file_le)
         #
+        # The method for symmetrising the hessian
+        #
+        self.hessian_symmetry_cb = QCheckBox(self)
+        self.hessian_symmetry_cb.setToolTip('The Crystal program uses a different method for symmetrising the hessian.  Check this flag if you want to use the same method as used by Crystal14')
+        self.hessian_symmetry_cb.setText('')
+        self.hessian_symmetry_cb.setLayoutDirection(Qt.RightToLeft)
+        if self.settings['Hessian symmetrisation'] == 'crystal':
+            self.hessian_symmetry_cb.setCheckState(Qt.Checked)
+        else:
+            self.hessian_symmetry_cb.setCheckState(Qt.Unchecked)
+        self.hessian_symmetry_cb.stateChanged.connect(self.on_hessian_symmetry_changed)
+        label = QLabel('Choose method to symmetrise the hessian')
+        label.setToolTip('The Crystal program uses a different method for symmetrising the hessian.  Check this flag if you want to use the same method as used by Crystal14')
+        if self.settings['Program'] != 'Crystal':
+            self.hessian_symmetry_cb.setEnabled(False)
+        else:
+            self.hessian_symmetry_cb.setEnabled(True)
+        form.addRow(label, self.hessian_symmetry_cb)
+        #
         # The store results
         #
         self.resultsfile_le = QLineEdit(self)
@@ -138,7 +156,8 @@ class MainTab(QWidget):
         if not os.path.isfile(self.settings['Output file name']):
             QMessageBox.about(self,'Processing output file','The filename for the output file to be processed is not correct: '+self.settings['Output file name'])
             return
-        self.listw_l.clear()
+        debugger.print('Read output file - clear list widget')
+        self.listw.clear()
         self.listw_l.setText('Frequencies from '+self.settings['Output file name'])
         self.reader = get_reader(self.settings['Program'],[ self.settings['Output file name'] ], self.settings['QM program'] )
         if self.reader is None:
@@ -148,7 +167,7 @@ class MainTab(QWidget):
             QMessageBox.about(self,'Processing output file','The filename for the output file to be processed is not correct: '+self.settings['Output file name'])
             return
         #switch on debugging in the reader
-        self.reader.debug = self.debug
+        #self.reader.debug = self.debug
         self.reader.hessian_symmetrisation = self.settings['Hessian symmetrisation']
         try:
             self.reader.read_output()
@@ -164,6 +183,15 @@ class MainTab(QWidget):
             print('Need to choose the file and program properly')
             QMessageBox.about(self,'Processing output file','The filename for the output file to be processed is not correct: '+self.settings['Output file name'])
             return
+        # Update the checkbox
+        if self.settings['Hessian symmetrisation'] == 'crystal':
+            self.hessian_symmetry_cb.setCheckState(Qt.Checked)
+        else:
+            self.hessian_symmetry_cb.setCheckState(Qt.Unchecked)
+        if self.settings['Program'] != 'crystal':
+            self.hessian_symmetry_cb.setEnabled(True)
+        else:
+            self.hessian_symmetry_cb.setEnabled(False)
         # tell the notebook that we have read the info and we have a reader
         self.notebook.reader = self.reader
         self.notebook.plottingCalculationRequired = True
@@ -205,6 +233,14 @@ class MainTab(QWidget):
             self.notebook.viewerTab.refresh()
         else:
             debugger.print('notebook has no viewer tab yet')
+
+    def on_hessian_symmetry_changed(self):
+        debugger.print('on hessian symmetry changed')
+        if self.hessian_symmetry_cb.isChecked():
+            self.settings['Hessian symmetrisation'] = 'crystal'
+        else:
+            self.settings['Hessian symmetrisation'] = 'symm'
+        self.dirty = True
 
     def on_resultsfile_le_return(self):
         debugger.print('on resultsfile return ', self.resultsfile_le.text())
@@ -288,11 +324,15 @@ class MainTab(QWidget):
             self.settings['QM program'] = 'qe'
         elif text == 'Phonopy - Crystal':
             self.settings['Program']   = 'phonopy'
-            self.settings['QM program'] = 'crystal'
+            self.settings['QM program'] = 'Crystal'
         elif text == 'Quantum Espresso':
             self.settings['Program']   = 'qe'
         debugger.print('Program is now  ', self.settings['Program'])
         debugger.print('QM program is now', self.settings['QM program'])
+        if self.settings['Program'] != 'Crystal':
+            self.hessian_symmetry_cb.setEnabled(False)
+        else:
+            self.hessian_symmetry_cb.setEnabled(True)
         self.dirty = True
 
     def refresh(self,force=False):
@@ -323,6 +363,14 @@ class MainTab(QWidget):
             self.settings['Program'] = 'castep'
             index = 1
             self.program_cb.setCurrentIndex(index)
+        if self.settings['Hessian symmetrisation'] == 'crystal':
+            self.hessian_symmetry_cb.setCheckState(Qt.Checked)
+        else:
+            self.hessian_symmetry_cb.setCheckState(Qt.Unchecked)
+        if self.settings['Program'] != 'crystal':
+            self.hessian_symmetry_cb.setEnabled(True)
+        else:
+            self.hessian_symmetry_cb.setEnabled(False)
         self.file_le.setText(self.settings['Output file name'])
         self.resultsfile_le.setText(self.settings['Excel file name'])
         filename = self.settings['Output file name']
