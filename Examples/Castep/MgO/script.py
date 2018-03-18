@@ -20,10 +20,12 @@ tab.settings['Unique direction - k'] = 0
 tab.settings['Unique direction - l'] = 1
 tab.settings['Effective medium method'] = 'Maxwell-Garnett'
 tab.settings['Particle shape'] = 'Sphere'
+tab.settings['Legend'] = 'Maxwell-Garnett sphere'
 # Add new scenarios
 methods = [ 'Maxwell-Garnett', 'Bruggeman']
 shapes = ['Sphere', 'Needle']
 vfs    = [ 0.1, 0.2 ]
+hkl = [0,0,1]
 for method in methods:
     for vf in vfs:
         for shape in shapes:
@@ -32,6 +34,9 @@ for method in methods:
             tab.settings['Particle shape'] = shape
             tab.settings['Effective medium method'] = method
             tab.settings['Volume fraction'] = vf
+            tab.settings['Legend'] = method+' vf='+str(vf)+' '+shape
+            if shape != 'Sphere':
+                tab.settings['Legend'] = method+' vf='+str(vf)+' '+shape+' '+str(hkl)
 tab.settings['Effective medium method'] = 'Averaged Permittivity'
 tab.settings['Particle shape'] = 'Sphere'
 for vf in vfs:

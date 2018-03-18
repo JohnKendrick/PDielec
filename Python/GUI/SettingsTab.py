@@ -45,6 +45,7 @@ class SettingsTab(QWidget):
         self.settings['Eckart flag'] = True
         self.settings['Neutral Born charges'] = False
         self.settings['Hessian symmetrisation'] = 'symm'
+        self.settings['Hessian symmetrisation'] = 'crystal'
         self.settings['Sigma value'] = 5
         self.mass_definition_options = ['average','program','isotope','gui']
         self.settings['Mass definition'] = 'average'
@@ -448,11 +449,12 @@ class SettingsTab(QWidget):
         debugger.print('masses_dictionary', self.masses_dictionary)
 
     def on_optical_tw_itemChanged(self, item):
-        debugger.print('on_optical_itemChanged)', item.row(), item.column() )
+        debugger.print('on_optical_itemChanged)', item.row(), item.column(), item.text() )
         self.settings['Optical permittivity'][item.row()][item.column()] = float(item.text())
         self.settings['Optical permittivity'][item.column()][item.row()] = float(item.text())
         self.notebook.plottingCalculationRequired = True
         self.notebook.analysisCalculationRequired = True
+        self.refresh_optical_permittivity_tw()
         debugger.print('optical permittivity')
         debugger.print(self.settings['Optical permittivity'])
         QCoreApplication.processEvents()

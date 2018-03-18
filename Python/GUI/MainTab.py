@@ -24,6 +24,8 @@ class MainTab(QWidget):
         self.settings['Output file name'] = filename
         self.settings['Excel file name'] = excelfile
         self.settings['QM program'] = ''
+        self.settings['Hessian symmetrisation'] = 'crystal'
+        self.settings['Hessian symmetrisation'] = 'symm'
         self.notebook = parent
         self.notebook.plottingCalculationRequired = True
         self.notebook.analysisCalculationRequired = True
@@ -147,6 +149,7 @@ class MainTab(QWidget):
             return
         #switch on debugging in the reader
         self.reader.debug = self.debug
+        self.reader.hessian_symmetrisation = self.settings['Hessian symmetrisation']
         try:
             self.reader.read_output()
         except:
@@ -322,5 +325,8 @@ class MainTab(QWidget):
             self.program_cb.setCurrentIndex(index)
         self.file_le.setText(self.settings['Output file name'])
         self.resultsfile_le.setText(self.settings['Excel file name'])
+        filename = self.settings['Output file name']
+        if filename != '':
+            self.read_output_file()
         self.dirty = False
         return

@@ -9,3 +9,13 @@ regenerate:
 	@echo "Regenerating reference files for Leucine from Crystal...."
 	@bash command.sh ${PYTHON_EXE} ${PDIELEC_OPTIONS} > command.ref.out
 	@mv command.csv command.ref.csv
+
+pdgui:	
+	@echo "PDGui Calculating absorption for Leucine from Crystal...."
+	@../../../pdgui crystal LEUCINE_FREQUENCY_PBED3_631Gdp_FULLOPTIMIZATON.out results.xlsx -script script.py -exit 2> /dev/null 1> pdgui.out
+	@../../../checkexcel results.ref.xlsx results.xlsx
+
+pdgui-regenerate:
+	@echo "PDGui Regenerating reference files for Leucine from Crystal...."
+	@../../../pdgui crystal LEUCINE_FREQUENCY_PBED3_631Gdp_FULLOPTIMIZATON.out results.xlsx -script script.py -exit 2> /dev/null 1> pdgui.out
+	@mv results.xlsx results.ref.xlsx

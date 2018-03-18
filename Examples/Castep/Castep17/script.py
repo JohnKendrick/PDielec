@@ -19,18 +19,20 @@ tab.settings['Unique direction - k'] = 0
 tab.settings['Unique direction - l'] = 1
 tab.settings['Effective medium method'] = 'Maxwell-Garnett'
 tab.settings['Particle shape'] = 'Sphere'
+tab.settings['Legend'] = 'Maxwell-Garnett'
 # Add new scenarios
 method = 'Maxwell-Garnett'
 shapes = ['Plate', 'Plate','Plate']
 hkls    = [[1,0,0], [0,1,0], [0,0,1]]
 for shape,hkl in zip(shapes,hkls):
-        self.notebook.addScenario()
-        tab = self.notebook.scenarios[-1]
-        tab.settings['Particle shape'] = shape
-        tab.settings['Effective medium method'] = method
-        tab.settings['Unique direction - h'] = hkl[0]
-        tab.settings['Unique direction - k'] = hkl[1]
-        tab.settings['Unique direction - l'] = hkl[2]
+    self.notebook.addScenario()
+    tab = self.notebook.scenarios[-1]
+    tab.settings['Particle shape'] = shape
+    tab.settings['Effective medium method'] = method
+    tab.settings['Unique direction - h'] = hkl[0]
+    tab.settings['Unique direction - k'] = hkl[1]
+    tab.settings['Unique direction - l'] = hkl[2]
+    tab.settings['Legend'] = 'Maxwell-Garnett' + ' '+shape+' '+str(hkl)
 #
 # Plotting Tab
 #

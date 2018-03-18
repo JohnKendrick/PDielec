@@ -384,6 +384,8 @@ class AnalysisTab(QWidget):
     def plot(self):
          if self.reader is None:
              return
+         if len(self.frequencies_cm1) <= 0:
+             return
          if self.plot_type_index == 0:
              self.plot_internal_external()
          else:
@@ -460,11 +462,8 @@ class AnalysisTab(QWidget):
         p3 = self.subplot.bar(mode_list,vib_energy,width,bottom=vib_bottom)
         plots = ( p1[0], p2[0], p3[0] )
         legends = ('translation','rotation','vibration')
-        #self.subplot.xticks(mode_list,mode_list_text)
-        #self.subplot.yticks(np.arrange(0,101,10))
         self.subplot.set_xlabel(xlabel)
         self.subplot.set_ylabel(ylabel)
-        #self.subplot.legend( ploc='best')
         self.subplot.legend( plots, legends)
         self.subplot.set_title('Internal-External Composition of Vibrational Energy')
         self.canvas.draw_idle()

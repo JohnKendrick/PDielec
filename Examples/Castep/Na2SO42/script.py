@@ -1,4 +1,3 @@
-self.notebook.tabs.setCurrentIndex(0)
 #
 # SettingsTab
 #
@@ -6,21 +5,21 @@ tab = self.notebook.settingsTab
 tab.settings['Eckart flag'] = False
 tab.settings['Neutral Born charges'] = False
 tab.settings['Sigma value'] = 5
-tab.settings['Mass definition'] = 'average'
+tab.settings['Mass definition'] = 'isotope'
 #
 # 0th Scenario tabs
 #
 tab = self.notebook.scenarios[0]
 tab.settings['Matrix'] = 'ptfe'
-tab.settings['Matrix permittivity'] = 3.0
 tab.settings['Mass or volume fraction'] = 'volume'
 tab.settings['Volume fraction'] = 0.1
 tab.settings['Ellipsoid a/b'] = 0.5
 tab.settings['Unique direction - h'] = 0
 tab.settings['Unique direction - k'] = 0
 tab.settings['Unique direction - l'] = 1
-tab.settings['Effective medium method'] = 'Maxwell-Garnett'
+tab.settings['Effective medium method'] = 'Averaged Permittivity'
 tab.settings['Particle shape'] = 'Sphere'
+tab.settings['Legend'] = 'Averaged permittivity'
 # Add new scenarios
 methods = [ 'Maxwell-Garnett', 'Bruggeman']
 shapes = ['Needle', 'Ellipsoid', 'Plate']
@@ -34,17 +33,13 @@ for method in methods:
         tab.settings['Unique direction - h'] = hkl[0]
         tab.settings['Unique direction - k'] = hkl[1]
         tab.settings['Unique direction - l'] = hkl[2]
-self.notebook.addScenario()
-tab = self.notebook.scenarios[-1]
-tab.settings['Effective medium method'] = 'Averaged permittivity'
-tab.settings['Particle shape'] = 'Sphere'
-self.notebook.deleteScenario(0)
+        tab.settings['Legend'] = method + ' ' + shape + ' ' +str(hkl)
 #
 # Plotting Tab
 #
 tab = self.notebook.plottingTab
-tab.settings['Minimum frequency'] = 300
-tab.settings['Maximum frequency'] = 800
+tab.settings['Minimum frequency'] = 0
+tab.settings['Maximum frequency'] = 300
 tab.settings['Frequency increment'] = 0.2
 tab.settings['Molar definition'] = 'Unit cells'
 tab.settings['Plot title'] = 'Script Title'
@@ -53,10 +48,9 @@ tab.settings['Plot title'] = 'Script Title'
 #
 tab = self.notebook.analysisTab
 tab.settings['Minimum frequency'] = -1
-tab.settings['Maximum frequency'] = 400
+tab.settings['Maximum frequency'] = 300
 tab.settings['title'] = 'Analysis'
 tab.settings['Covalent radius scaling'] = 1.1
 tab.settings['Bonding tolerance'] = 0.1
 tab.settings['Bar width'] = 0.5
 #
-self.notebook.tabs.setCurrentIndex(0)
