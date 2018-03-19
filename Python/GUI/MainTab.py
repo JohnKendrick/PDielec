@@ -16,11 +16,13 @@ class MainTab(QWidget):
         super(QWidget, self).__init__(parent)
         global debugger
         debugger = Debug(debug, 'MainTab')
+        debugger.print('Initialising ',program, filename,excelfile)
         self.debug = debug
         self.settings = {}
-        self.settings['Program'] = 'Castep'
         if program != '':
             self.settings['Program'] = program.lower()
+        else:
+            self.settings['Program'] = 'castep'
         self.settings['Output file name'] = filename
         self.settings['Excel file name'] = excelfile
         self.settings['QM program'] = ''
@@ -100,10 +102,10 @@ class MainTab(QWidget):
         self.hessian_symmetry_cb.stateChanged.connect(self.on_hessian_symmetry_changed)
         label = QLabel('Choose method to symmetrise the hessian')
         label.setToolTip('The Crystal program uses a different method for symmetrising the hessian.  Check this flag if you want to use the same method as used by Crystal14')
-        if self.settings['Program'] != 'Crystal':
-            self.hessian_symmetry_cb.setEnabled(False)
-        else:
+        if self.settings['Program'] == 'crystal':
             self.hessian_symmetry_cb.setEnabled(True)
+        else:
+            self.hessian_symmetry_cb.setEnabled(False)
         form.addRow(label, self.hessian_symmetry_cb)
         #
         # The store results
@@ -188,7 +190,7 @@ class MainTab(QWidget):
             self.hessian_symmetry_cb.setCheckState(Qt.Checked)
         else:
             self.hessian_symmetry_cb.setCheckState(Qt.Unchecked)
-        if self.settings['Program'] != 'crystal':
+        if self.settings['Program'] == 'crystal':
             self.hessian_symmetry_cb.setEnabled(True)
         else:
             self.hessian_symmetry_cb.setEnabled(False)
@@ -240,7 +242,12 @@ class MainTab(QWidget):
             self.settings['Hessian symmetrisation'] = 'crystal'
         else:
             self.settings['Hessian symmetrisation'] = 'symm'
-        self.dirty = True
+        #
+        # If we have a valid file then try re-reading the output file
+        #
+        if os.path.isfile(self.settings['Output file name']):
+            debugger.print('on resultsfile about to press the button ')
+            self.read_output_file()
 
     def on_resultsfile_le_return(self):
         debugger.print('on resultsfile return ', self.resultsfile_le.text())
@@ -314,7 +321,7 @@ class MainTab(QWidget):
         debugger.print('on program combobox activated', index)
         debugger.print('on program combobox activated', self.program_cb.currentText())
         text = self.program_cb.currentText()
-        self.settings['Program'] = text
+        self.settings['Program'] = text.lower()
         self.settings['QM program'] = ''
         if text == 'Phonopy - VASP':
             self.settings['Program']   = 'phonopy'
@@ -324,15 +331,15 @@ class MainTab(QWidget):
             self.settings['QM program'] = 'qe'
         elif text == 'Phonopy - Crystal':
             self.settings['Program']   = 'phonopy'
-            self.settings['QM program'] = 'Crystal'
+            self.settings['QM program'] = 'crystal'
         elif text == 'Quantum Espresso':
             self.settings['Program']   = 'qe'
         debugger.print('Program is now  ', self.settings['Program'])
         debugger.print('QM program is now', self.settings['QM program'])
-        if self.settings['Program'] != 'Crystal':
-            self.hessian_symmetry_cb.setEnabled(False)
-        else:
+        if self.settings['Program'] == 'crystal':
             self.hessian_symmetry_cb.setEnabled(True)
+        else:
+            self.hessian_symmetry_cb.setEnabled(False)
         self.dirty = True
 
     def refresh(self,force=False):
@@ -367,7 +374,7 @@ class MainTab(QWidget):
             self.hessian_symmetry_cb.setCheckState(Qt.Checked)
         else:
             self.hessian_symmetry_cb.setCheckState(Qt.Unchecked)
-        if self.settings['Program'] != 'crystal':
+        if self.settings['Program'] == 'crystal':
             self.hessian_symmetry_cb.setEnabled(True)
         else:
             self.hessian_symmetry_cb.setEnabled(False)
