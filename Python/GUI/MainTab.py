@@ -130,6 +130,7 @@ class MainTab(QWidget):
         QCoreApplication.processEvents()
         # If the filename was given then force it to be read and processed
         if filename != '':
+            debugger.print('Reading output file in maintab initialisation')
             self.read_output_file()
         QCoreApplication.processEvents()
         # If there is a spreadsheet the write it
@@ -246,7 +247,7 @@ class MainTab(QWidget):
         # If we have a valid file then try re-reading the output file
         #
         if os.path.isfile(self.settings['Output file name']):
-            debugger.print('on resultsfile about to press the button ')
+            debugger.print('Reading output file after hessian symmetry changed press')
             self.read_output_file()
 
     def on_resultsfile_le_return(self):
@@ -270,6 +271,7 @@ class MainTab(QWidget):
             if os.path.isfile(self.settings['Output file name']):
                 debugger.print('on resultsfile about to press the button ')
                 # The file exists to treat it as though the button has been pressed
+                debugger.print('Reading output file after results file le return')
                 self.read_output_file()
         debugger.print('on resultsfile return ')
  
@@ -295,6 +297,7 @@ class MainTab(QWidget):
         self.settings['Output file name'] = self.file_le.text()
         if os.path.isfile(self.settings['Output file name']):
             # The file exists to treat it as though the button has been pressed
+            debugger.print('Reading output file after file le return')
             self.read_output_file()
             self.dirty = True
             return
@@ -308,6 +311,7 @@ class MainTab(QWidget):
         if os.path.isfile(self.settings['Output file name']):
             #self.settings['Output file name'] = os.path.relpath(self.settings['Output file name'])
             # The file exists to treat it as though the button has been pressed
+            debugger.print('Reading output file after file le return 2nd')
             self.read_output_file()
             self.dirty = True
             return
@@ -349,6 +353,11 @@ class MainTab(QWidget):
         self.notebook.newPlottingCalculationRequired = True
         self.notebook.newAnalysisCalculationRequired = True
         self.notebook.newVisualerCalculationRequired = True
+        #
+        # Block signals during refresh
+        # 
+        for w in self.findChildren(QWidget):
+            w.blockSignals(True)
         prtext = self.settings['Program'].capitalize()
         qmtext = self.settings['QM program'].capitalize()
         if prtext == 'Qe':
@@ -383,5 +392,11 @@ class MainTab(QWidget):
         filename = self.settings['Output file name']
         if filename != '':
             self.read_output_file()
+            debugger.print('Reading output file after refresh')
         self.dirty = False
+        #
+        # UnBlock signals
+        # 
+        for w in self.findChildren(QWidget):
+            w.blockSignals(False)
         return

@@ -262,6 +262,12 @@ class PlottingTab(QWidget):
             debugger.print('refreshing widget aborted', self.dirty,force,self.notebook.plottingCalculationRequired)
             return
         debugger.print('refreshing widget', force)
+        #
+        # Block signals during refresh
+        # 
+        for w in self.findChildren(QWidget):
+            w.blockSignals(True)
+        # Now refresh values
         self.vmin_sb.setValue(self.settings['Minimum frequency'])
         self.vmax_sb.setValue(self.settings['Maximum frequency'])
         self.vinc_sb.setValue(self.settings['Frequency increment'])
@@ -285,6 +291,11 @@ class PlottingTab(QWidget):
         self.molarAbsorptionButtonClicked()
         self.dirty = False
         self.notebook.plottingCalculationRequired = False
+        #
+        # Unblock signals after refresh
+        # 
+        for w in self.findChildren(QWidget):
+            w.blockSignals(False)
         QCoreApplication.processEvents()
         return
 
@@ -380,7 +391,9 @@ class PlottingTab(QWidget):
         self.depolarisations = []
         # Process the shapes and the unique directions.
         # and calculate the depolarisation matrices
+        self.legends = []
         for scenario in self.scenarios:
+            self.legends.append(scenario.settings['Legend'])
             #debugger.print('Scenario ',scenario.scenarioIndex)
             shape = scenario.settings['Particle shape']
             #debugger.print('Particle shape ',shape)
@@ -539,8 +552,9 @@ class PlottingTab(QWidget):
         sp.selectWorkSheet(name)
         sp.delete()
         headers = ['frequencies (cm-1)']
-        for isc,ys in enumerate(yss):
-            headers.append('Scenario'+str(isc))
+        #for isc,ys in enumerate(yss):
+        #    headers.append('Scenario'+str(isc))
+        headers.extend(self.legends)
         sp.writeNextRow(headers,row=0, col=1)
         for iv,v in enumerate(vss[0]):
            output = [v]

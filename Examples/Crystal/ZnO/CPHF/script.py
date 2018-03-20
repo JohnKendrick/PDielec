@@ -23,9 +23,9 @@ tab.settings['Effective medium method'] = 'Averaged Permittivity'
 tab.settings['Particle shape'] = 'Sphere'
 tab.settings['Legend'] = 'Averaged permittivity'
 # Add new scenarios
-methods = [ 'Maxwell-Garnett', 'Bruggeman']
-shapes = ['Needle', 'Ellipsoid', 'Plate']
-hkls   = [[0,0,1],  [0,0,1],     [1,0,0]]
+methods = ['Maxwell-Garnett']
+shapes  = ['Sphere', 'Needle', 'Plate']
+hkls    = [[0,0,0],  [0,0,1],   [1,0,0]]
 for method in methods:
     for shape,hkl in zip(shapes,hkls):
         self.notebook.addScenario()
@@ -40,17 +40,17 @@ for method in methods:
 # Plotting Tab
 #
 tab = self.notebook.plottingTab
-tab.settings['Minimum frequency'] = 0
-tab.settings['Maximum frequency'] = 300
+tab.settings['Minimum frequency'] = 300
+tab.settings['Maximum frequency'] = 800
 tab.settings['Frequency increment'] = 0.2
 tab.settings['Molar definition'] = 'Unit cells'
-tab.settings['Plot title'] = 'Crystal14 - Na2(SO4)2'
+tab.settings['Plot title'] = 'Crystal14 - ZnO (CPHF)'
 #
 # Analysis Tab
 #
 tab = self.notebook.analysisTab
 tab.settings['Minimum frequency'] = -1
-tab.settings['Maximum frequency'] = 300
+tab.settings['Maximum frequency'] = 800
 tab.settings['title'] = 'Analysis'
 tab.settings['Covalent radius scaling'] = 1.1
 tab.settings['Bonding tolerance'] = 0.1

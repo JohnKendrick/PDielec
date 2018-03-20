@@ -426,6 +426,11 @@ class ViewerTab(QWidget):
             debugger.print('refresh aborted',self.dirty,force)
             return
         debugger.print('refresh widget',force)
+        #
+        # Block signals during refresh
+        # 
+        for w in self.findChildren(QWidget):
+            w.blockSignals(True)
         self.selected_mode_sb.setValue(self.selected_mode)
         self.frequency_le.setText('{:.5f}'.format(self.notebook.settingsTab.frequencies_cm1[self.selected_mode]))
         self.atom_scaling_sb.setValue(self.settings['Atom scaling'])
@@ -474,6 +479,11 @@ class ViewerTab(QWidget):
         button_colours = [  (r,g,b,a) for (r,g,b,a) in [self.settings['Background colour'], self.settings['Cell colour'], self.settings['Bond colour'],self.settings['Arrow colour']] ]
         for col, button in zip(button_colours, self.bond_cell_background_arrow_buttons):
             button.setStyleSheet('background-color:rgba( {}, {}, {}, {});'.format(*col))
+        #
+        # Unlock signals after refresh
+        # 
+        for w in self.findChildren(QWidget):
+            w.blockSignals(False)
         self.calculate()
         self.plot()
         return

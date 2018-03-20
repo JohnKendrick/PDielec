@@ -1,4 +1,13 @@
 -include ../../../Makefile.mk
+pdgui:	
+	@echo "PDGui Calculating absorption for ZnO (CPHF) from Crystal...."
+	@../../../../pdgui crystal ZnO_CPHF.out results.xlsx -script script.py -exit
+	@../../../../checkexcel results.ref.xlsx results.xlsx
+
+pdgui-regenerate:
+	@echo "PDGui Regenerating reference files for ZnO (CPHF) from Crystal ...."
+	@../../../../pdgui crystal ZnO_CPHF.out results.xlsx -script script.py -exit
+	@mv results.xlsx results.ref.xlsx
 test:	
 	@echo "Calculating absorption for ZnO (CPHF) from Crystal...."
 	@bash command.sh ${PYTHON_EXE} ${PDIELEC_OPTIONS} > command.out

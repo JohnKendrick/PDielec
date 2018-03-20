@@ -15,9 +15,9 @@ class App(QMainWindow):
         spreadsheet = ''
         exit = False
         self.debug = False
-        script = False
+        self.scripting = False
         nosplash = False
-        scriptname = ''
+        self.scriptname = ''
         # Manage options
         tokens = args[1:]
         ntokens = len(tokens)
@@ -32,8 +32,8 @@ class App(QMainWindow):
                 exit = True
             elif token == '-script' or token == '--script':
                 itoken += 1
-                script = True
-                scriptname = tokens[itoken]
+                self.scripting = True
+                self.scriptname = tokens[itoken]
             elif token == '-spreadsheet' or token == '--spreadsheet':
                 itoken += 1
                 spreadsheet = tokens[itoken]
@@ -62,21 +62,26 @@ class App(QMainWindow):
             print('Program is', program)
             print('Filename is', filename)
             print('Spreadsheet is', spreadsheet)
-            print('Script is', script)
-        self.notebook = NoteBook(self, program, filename, spreadsheet, script=script, progressbar=progressbar, debug=self.debug)
+            print('Script is', self.scriptname)
+        self.notebook = NoteBook(self, program, filename, spreadsheet, scripting=self.scripting, progressbar=progressbar, debug=self.debug)
         self.setCentralWidget(self.notebook)
-        if script:
-            self.script = False
-            self.notebook.script = False
-            self.readScript(scriptname)
+        if self.scripting:
+            if self.debug:
+                print('Processing script',self.scriptname)
+            self.readScript(self.scriptname)
         if exit:
             sys.exit()
         #self.show()
 
     def readScript(self,scriptname):
+        self.notebook.scripting = True
         with open(scriptname,'r') as fd:
             exec(fd.read())
-        self.notebook.refresh(force=False)
+        print('Finished script                ')
+        print('Setting self.notebook.scripting',False)
+        self.notebook.scripting = False
+        self.notebook.refresh()
+        QCoreApplication.processEvents()
 
     def closeEvent(self, event):
         # Make sure any spread sheet is closed

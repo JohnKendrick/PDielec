@@ -490,20 +490,11 @@ class ScenarioTab(QWidget):
         self.notebook.plottingCalculationRequired = True
         # First see if we can get the reader from the mainTab
         self.reader = self.notebook.mainTab.reader
-        # block signals to all the widgets
-        self.matrix_cb.blockSignals(True)
-        self.density_sb.blockSignals(True)
-        self.permittivity_sb.blockSignals(True)
-        self.mf_sb.blockSignals(True)
-        self.vf_sb.blockSignals(True)
-        self.methods_cb.blockSignals(True)
-        self.size_sb.blockSignals(True)
-        self.sigma_sb.blockSignals(True)
-        self.shape_cb.blockSignals(True)
-        self.h_sb.blockSignals(True)
-        self.k_sb.blockSignals(True)
-        self.l_sb.blockSignals(True)
-        self.aoverb_sb.blockSignals(True)
+        #
+        # Block signals during refresh
+        # 
+        for w in self.findChildren(QWidget):
+            w.blockSignals(True)
         # use the settings values to initialise the widgets
         index = self.matrix_cb.findText(self.settings['Matrix'], Qt.MatchFixedString)
         self.matrix_cb.setCurrentIndex(index)
@@ -529,19 +520,10 @@ class ScenarioTab(QWidget):
         self.l_sb.setValue(self.settings['Unique direction - l'])
         self.aoverb_sb.setValue(self.settings['Ellipsoid a/b'])
         self.change_greyed_out()
-        # ublock signals to all the widgets
-        self.matrix_cb.blockSignals(False)
-        self.density_sb.blockSignals(False)
-        self.permittivity_sb.blockSignals(False)
-        self.mf_sb.blockSignals(False)
-        self.vf_sb.blockSignals(False)
-        self.methods_cb.blockSignals(False)
-        self.size_sb.blockSignals(False)
-        self.sigma_sb.blockSignals(False)
-        self.shape_cb.blockSignals(False)
-        self.h_sb.blockSignals(False)
-        self.k_sb.blockSignals(False)
-        self.l_sb.blockSignals(False)
-        self.aoverb_sb.blockSignals(False)
+        #
+        # Unblock signals after refresh
+        # 
+        for w in self.findChildren(QWidget):
+            w.blockSignals(False)
         self.dirty = False
         return

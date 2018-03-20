@@ -12,7 +12,7 @@ from Python.Utilities           import  Debug
  
 class NoteBook(QWidget):        
  
-    def __init__(self, parent, program, filename, spreadsheet, debug=False, progressbar=False, script=False):   
+    def __init__(self, parent, program, filename, spreadsheet, debug=False, progressbar=False, scripting=False):   
         super(QWidget, self).__init__(parent)
         global debugger
         debugger = Debug(debug,'NoteBook:')
@@ -23,7 +23,7 @@ class NoteBook(QWidget):
         self.analysisCalculationRequired = True
         self.visualerCalculationRequired = True
         self.debug = debug
-        self.script = script
+        self.scripting = scripting
         self.layout = QVBoxLayout()
         # The number of tabs before we have scenarios
         self.tabOffSet = 2
@@ -34,7 +34,7 @@ class NoteBook(QWidget):
         self.tabs.currentChanged.connect(self.on_tabs_currentChanged)
         self.mainTab = MainTab(self, program, filename, spreadsheet, debug=debug)
         self.settingsTab = SettingsTab(self, debug=debug)
-        if filename != '' and not self.script:
+        if filename != '' and not self.scripting:
             debugger.print('Refreshing settingsTab in notebook initialisation - filename',filename)
             self.settingsTab.refresh()
         #
@@ -47,14 +47,14 @@ class NoteBook(QWidget):
         # Open the plotting tab
         #
         self.plottingTab = PlottingTab(self, debug=debug)
-        if filename != '' and not self.script:
+        if filename != '' and not self.scripting:
             debugger.print('Refreshing plotting because filename is set')
             self.plottingTab.refresh()
         #
         # Open the Analysis tab
         #
         self.analysisTab = AnalysisTab(self, debug=debug)
-        if filename != '' and not self.script:
+        if filename != '' and not self.scripting:
             debugger.print('Refreshing analysis because filename is set')
             self.analysisTab.refresh()
         #
@@ -104,7 +104,8 @@ class NoteBook(QWidget):
         return
 
     def refresh(self,force=False):
-        if self.script:
+        print('refresh notebook',self.scripting)
+        if self.scripting:
             debugger.print('Notebook aborting refresh because of scripting')
             return
         debugger.print('Notebook refresh changed',force)
@@ -123,7 +124,7 @@ class NoteBook(QWidget):
 
     def on_tabs_currentChanged(self, tabindex):
         debugger.print('Tab index changed', tabindex)
-        if self.script:
+        if self.scripting:
             return
         #       Number of tabs
         ntabs = 2 + len(self.scenarios) + 3

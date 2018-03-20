@@ -272,6 +272,11 @@ class AnalysisTab(QWidget):
             debugger.print('return with no refresh', self.dirty, force, self.notebook.analysisCalculationRequired)
             return
         debugger.print('Refreshing widget')
+        #
+        # Block signals during refresh
+        # 
+        for w in self.findChildren(QWidget):
+            w.blockSignals(True)
         self.vmin_sb.setValue(self.settings['Minimum frequency'])
         self.vmax_sb.setValue(self.settings['Maximum frequency'])
         self.scale_sp.setValue(self.settings['Covalent radius scaling'])
@@ -284,6 +289,11 @@ class AnalysisTab(QWidget):
         self.set_radii_tw()
         self.plot()
         self.notebook.analysisCalculationRequired = False
+        #
+        # Unlock signals after refresh
+        # 
+        for w in self.findChildren(QWidget):
+            w.blockSignals(False)
         return
 
     def on_plottype_cb_changed(self, index):

@@ -55,6 +55,16 @@ max_percentage_error = 0.0
 for sheet in ['Main','Settings','Scenarios','Molar Absorption','Absorption','Real Permittivity','Imaginary Permittivity', 'Analysis']:
     ws1 = wb1[sheet]
     ws2 = wb2[sheet]
+    max_rows1 = ws1.max_row
+    max_rows2 = ws2.max_row
+    max_columns1 = ws1.max_column
+    max_columns2 = ws2.max_column
+    if max_rows1 != max_rows2:
+        print('Error - the number rows in the sheet are not the same',sheet,max_rows1,max_rows2)
+        nerrors += 1
+    if max_columns1 != max_columns2:
+        print('Error - the number columns in the sheet are not the same',sheet,max_columns1,max_columns2)
+        nerrors += 1
     # 
     # Loop over rows
     #
@@ -108,5 +118,7 @@ for sheet in ['Main','Settings','Scenarios','Molar Absorption','Absorption','Rea
 if error is not None:
     sheet,row,col,value1,value2,max_percentage_error = error
     print('  '+colored('ERRORS:','red')+'({}) LARGEST ON ROW,COL {},{} OF SHEET {}, {}({}) and {}({}) -- max %error={}'.format(nerrors, row,col,sheet,file1,value1,file2,value2,max_percentage_error))
+elif nerrors > 0:
+    print('  '+colored('ERRORS:','red')+'({}) Dimensions of spreadsheet were wrong                                    '.format(nerrors))
 else:
     print('  '+colored('OK:','blue')+" {} = {} -- max %error={}" .format(file1,file2,max_percentage_error))

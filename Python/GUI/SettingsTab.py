@@ -469,6 +469,11 @@ class SettingsTab(QWidget):
             debugger.print('Aborting self.dirty and force ',self.dirty,  force)
             return
         debugger.print('refresh ',force)
+        #
+        # Block signals during refresh
+        # 
+        for w in self.findChildren(QWidget):
+            w.blockSignals(True)
         self.reader = self.notebook.reader
         if self.reader:
             # Masses
@@ -487,6 +492,11 @@ class SettingsTab(QWidget):
             self.born_cb.setCheckState(Qt.Checked)
         else:
             self.born_cb.setCheckState(Qt.Unchecked)
+        #
+        # Unlock signals after refresh
+        # 
+        for w in self.findChildren(QWidget):
+            w.blockSignals(False)
         self.calculateButtonClicked()
         QCoreApplication.processEvents()
 
