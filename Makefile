@@ -14,9 +14,10 @@ default:
 		@echo "Too perform all the tests in the Examples directory"
 		@echo "Type 'make test'"
 		@echo "For a subset of the tests"
-		@echo "Type 'make test_pdielec'"
-		@echo " or  'make test_preader'"
-		@echo " or  'make test_phonana'"
+		@echo "Type 'make test-pdielec'"
+		@echo " or  'make test-preader'"
+		@echo " or  'make test-phonana'"
+		@echo " or  'make test-pdgui'"
 		@echo " or  'make pyinstaller'"
 
 .PHONY:		install
@@ -37,24 +38,36 @@ install:
 		cp -r Python/GUI/*.py $(SCRIPTS)/Python/GUI/
 		cp -r Python/GUI/*.png $(SCRIPTS)/Python/GUI/
 
-test:		test_preader test_pdielec test_phonana
+test:		test-pdgui test-cli
 
-tests:		test_preader test_pdielec test_phonana
+test-cli:	test-preader test-pdielec test-phonana
 
-.PHONY:		test_phonana
-test_phonana:		
+tests-cli:	test-preader test-pdielec test-phonana
+
+.PHONY:		pdgui
+test-pdgui:		
+		@echo "Testing pdgui functionality....."
+		@( cd Examples; make --no-print-directory test-pdgui )
+
+.PHONY:		test-phonana
+test-phonana:		
 		@echo "Testing phonana functionality....."
-		@( cd Examples; make --no-print-directory test_phonana )
+		@( cd Examples; make --no-print-directory test-phonana )
 
-.PHONY:		test_preader
-test_preader:		
+.PHONY:		test-preader
+test-preader:		
 		@echo "Testing preader functionality....."
-		@( cd Examples; make --no-print-directory test_preader )
+		@( cd Examples; make --no-print-directory test-preader )
 
-.PHONY:		test_pdielec
-test_pdielec:		
+.PHONY:		test-pdielec
+test-pdielec:		
 		@echo "Testing pdielec functionality (takes a while to run)."
-		@( cd Examples; make --no-print-directory test_pdielec )
+		@( cd Examples; make --no-print-directory test-pdielec )
+
+.PHONY:		pdgui-regenerate
+pdgui-regenerate:		
+		@echo "Regenerating all reference data for pdgui"
+		@( cd Examples; make --no-print-directory pdgui-regenerate )
 
 .PHONY:		regenerate
 regenerate:		
