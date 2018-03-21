@@ -42,7 +42,7 @@ tab.settings['Minimum frequency'] = 0
 tab.settings['Maximum frequency'] = 300
 tab.settings['Frequency increment'] = 0.2
 tab.settings['Molar definition'] = 'Unit cells'
-tab.settings['Plot title'] = 'Gulp - calcite'
+tab.settings['Plot title'] = 'Gulp - Na2(SO4)2'
 #
 # Analysis Tab
 #

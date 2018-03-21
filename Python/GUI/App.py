@@ -77,8 +77,6 @@ class App(QMainWindow):
         self.notebook.scripting = True
         with open(scriptname,'r') as fd:
             exec(fd.read())
-        print('Finished script                ')
-        print('Setting self.notebook.scripting',False)
         self.notebook.scripting = False
         self.notebook.refresh()
         QCoreApplication.processEvents()

@@ -41,7 +41,7 @@ tab.settings['Maximum frequency'] = 4000
 tab.settings['Frequency increment'] = 0.2
 tab.molar_definitions = ['Unit cells','Atoms','Molecules']
 tab.settings['Molar definition'] = 'Unit cells'
-tab.settings['Plot title'] = 'Script Title'
+tab.settings['Plot title'] = 'Castep Aspartic Acid'
 #
 # Analysis Tab
 #

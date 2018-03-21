@@ -9,6 +9,10 @@ pdgui-regenerate:
 	@../../../pdgui gulp na2so42.gout results.xlsx -script script.py -exit
 	@mv results.xlsx results.ref.xlsx
 
+pdgui-view:
+	@echo "PDGui Viewing reference files for Na2(SO4)2 from GULP...."
+	@../../../pdgui gulp na2so42.gout -script script.py
+
 test:	
 	@echo "Calculating absorption for Na2(SO4)2 from GULP...."
 	@bash command.sh ${PYTHON_EXE} ${PDIELEC_OPTIONS} > command.out

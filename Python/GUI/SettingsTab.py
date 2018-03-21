@@ -44,8 +44,6 @@ class SettingsTab(QWidget):
         self.settings = {}
         self.settings['Eckart flag'] = True
         self.settings['Neutral Born charges'] = False
-        self.settings['Hessian symmetrisation'] = 'symm'
-        self.settings['Hessian symmetrisation'] = 'crystal'
         self.settings['Sigma value'] = 5
         self.mass_definition_options = ['average','program','isotope','gui']
         self.settings['Mass definition'] = 'average'
@@ -175,7 +173,6 @@ class SettingsTab(QWidget):
         # Flag the fact that we need new calculations and new analysis
         self.notebook.plottingCalculationRequired = True
         self.notebook.analysisCalculationRequired = True
-        self.reader.hessian_symmetrisation = self.settings['Hessian symmetrisation']
         #self.reader.read_output()
         if self.settings['Neutral Born charges']:
             self.reader.neutralise_born_charges()

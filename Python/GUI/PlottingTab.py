@@ -357,7 +357,6 @@ class PlottingTab(QWidget):
         settings = self.notebook.settingsTab.settings
         eckart = settings['Eckart flag']
         neutral = settings['Neutral Born charges']
-        hessian_symm = settings['Hessian symmetrisation']
         epsilon_inf = np.array(settings['Optical permittivity'])
         sigmas_cm1 = self.notebook.settingsTab.sigmas_cm1
         sigmas = np.array(sigmas_cm1) * wavenumber
@@ -478,17 +477,16 @@ class PlottingTab(QWidget):
             shape = scenario.settings['Particle shape'].lower()
             hkl = [scenario.settings['Unique direction - h'], scenario.settings['Unique direction - k'], scenario.settings['Unique direction - l']] 
             aoverb = scenario.settings['Ellipsoid a/b']
-            # convert the size to a dimensionless number which is 2*pi*size/lambda
-            lambda_mu = 1.0E4 / (v + 1.0e-12)
-            if particle_size_mu < 1.0e-12:
-                particle_size_mu = 1.0e-12
-            size = 2.0*PI*particle_size_mu / lambda_mu
-            data = ''
             vf_type = ''
             call_parameters = []
             nplot = 0
             for v,vau,dielecv in dielecv_results:
-                vau = v * wavenumber
+                # convert the size to a dimensionless number which is 2*pi*size/lambda
+                lambda_mu = 1.0E4 / (v + 1.0e-12)
+                if particle_size_mu < 1.0e-12:
+                    particle_size_mu = 1.0e-12
+                size = 2.0*PI*particle_size_mu / lambda_mu
+                data = ''
                 call_parameters.append( (v,vau,dielecv,method,volume_fraction,vf_type,particle_size_mu,particle_sigma_mu,size,nplot,
                                          matrix_permittivity,shape,data,L,concentration,previous_solution_shared) )
                 nplot += 1

@@ -468,7 +468,7 @@ def mie_scattering(dielectric_medium, dielecv, shape, L, vf, size, size_mu, size
     # import Python.PyMieScatt as ps
     from scipy.integrate import trapz
     from scipy.stats import lognorm
-    from Python.PyMieScatt.Mie import MieS1S2
+    from Python.PyMieScatt.Mie import MieS1S2, AutoMieQ
     # define i as a complex number
     i = complex(0,1)
     # We need to taken account of the change in wavelength and the change in size parameter due to the 

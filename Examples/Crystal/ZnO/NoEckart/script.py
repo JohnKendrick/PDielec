@@ -45,7 +45,7 @@ tab.settings['Minimum frequency'] = 300
 tab.settings['Maximum frequency'] = 800
 tab.settings['Frequency increment'] = 0.2
 tab.settings['Molar definition'] = 'Unit cells'
-tab.settings['Plot title'] = 'Crystal14 - ZnO (Default)'
+tab.settings['Plot title'] = 'Crystal14 - ZnO (no eckart)'
 #
 # Analysis Tab
 #

@@ -256,8 +256,8 @@ class MainTab(QWidget):
         text = self.resultsfile_le.text()
         self.settings['Excel file name'] = text
         if text[-5:] == '.xlsx':
+            # The file is valid so just open it
             self.openSpreadSheet(text)
-            # The file is valid so just return
         else:
             # The file doesn't exist so open a file chooser
             options = QFileDialog.Options()
@@ -277,8 +277,12 @@ class MainTab(QWidget):
  
     def on_resultsfile_le_changed(self, text):
         debugger.print('on resultsfile changed', text)
-        self.openSpreadSheet(text)
-        self.dirty = True
+        text = self.resultsfile_le.text()
+        self.settings['Excel file name'] = text
+        if text[-5:] == '.xlsx':
+            # The file is valid so just open it
+            self.openSpreadSheet(text)
+            self.dirty = True
 
     def openSpreadSheet(self,text):
         if self.notebook.spreadsheet is not None:

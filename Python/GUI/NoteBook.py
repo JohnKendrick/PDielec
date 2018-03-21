@@ -104,7 +104,6 @@ class NoteBook(QWidget):
         return
 
     def refresh(self,force=False):
-        print('refresh notebook',self.scripting)
         if self.scripting:
             debugger.print('Notebook aborting refresh because of scripting')
             return

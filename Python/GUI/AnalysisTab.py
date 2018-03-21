@@ -318,7 +318,6 @@ class AnalysisTab(QWidget):
         settings = self.notebook.settingsTab.settings
         eckart = settings['Eckart flag']
         neutral = settings['Neutral Born charges']
-        hessian_symm = settings['Hessian symmetrisation']
         epsilon_inf = np.array(settings['Optical permittivity'])
         sigmas_cm1 = self.notebook.settingsTab.sigmas_cm1
         sigmas = np.array(sigmas_cm1) * wavenumber

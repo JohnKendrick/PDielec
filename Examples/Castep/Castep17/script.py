@@ -41,7 +41,7 @@ tab.settings['Minimum frequency'] = 0
 tab.settings['Maximum frequency'] = 350
 tab.settings['Frequency increment'] = 0.2
 tab.settings['Molar definition'] = 'Unit cells'
-tab.settings['Plot title'] = 'Script Title'
+tab.settings['Plot title'] = 'Castep17 test'
 #
 # Analysis Tab
 #

@@ -83,8 +83,8 @@ def get_reader(program,names,qmprogram):
             # Creat a list of phonopy files
             pnames = []
             head,tail = os.path.split(names[0])
-            pnames.append(head+'qpoints.yaml')
-            pnames.append(head+'phonopy.yaml')
+            pnames.append(head+os.path.join('qpoints.yaml'))
+            pnames.append(head+os.path.join('phonopy.yaml'))
             # Creat a list of VASP files NB.  They all have to be in the same directory
             vnames = names
             pnames.extend(vnames)

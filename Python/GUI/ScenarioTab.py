@@ -134,11 +134,11 @@ class ScenarioTab(QWidget):
         self.size_sb.setRange(0.000001, 1000.0)
         self.size_sb.setSingleStep(0.1)
         self.size_sb.setDecimals(6)
-        self.size_sb.setToolTip('Define the particle radius of the sphere in μm. \nOnly applicable for the Mie method')
+        self.size_sb.setToolTip('Define the particle radius of the sphere in μm.')
         self.size_sb.setValue(self.settings['Particle size(mu)'])
         self.size_sb.valueChanged.connect(self.on_size_sb_changed)
         label = QLabel('Particle radius (μm)',self)
-        label.setToolTip('Define the particle radius of the sphere in μm. \nOnly applicable for the Mie method')
+        label.setToolTip('Define the particle radius of the sphere in μm.')
         form.addRow(label, self.size_sb)
         #
         # Particle sigma option
@@ -281,6 +281,10 @@ class ScenarioTab(QWidget):
         self.dirty = True
         self.notebook.plottingCalculationRequired = True
         self.settings['Particle shape'] = self.shapes[index]
+        if self.settings['Particle shape'] == 'Sphere':
+            self.settings['Unique direction - h'] = 0
+            self.settings['Unique direction - k'] = 0
+            self.settings['Unique direction - l'] = 0
         self.change_greyed_out()
 
     def on_methods_cb_activated(self,index):
@@ -288,12 +292,22 @@ class ScenarioTab(QWidget):
         self.dirty = True
         self.notebook.plottingCalculationRequired = True
         self.settings['Effective medium method'] = self.methods[index]
+        if self.settings['Effective medium method'] == 'Mie':
+            self.settings['Particle shape'] = 'Sphere'
+        elif self.settings['Effective medium method'] == 'Maxwell-Garnett':
+            self.settings['Particle size distribution sigma(mu)'] = 0.0
+        elif self.settings['Effective medium method'] == 'Bruggeman':
+            self.settings['Particle size distribution sigma(mu)'] = 0.0
+        elif self.settings['Effective medium method'] == 'Averaged Permittivity':
+            self.settings['Particle size(mu)'] = 0.0001
+            self.settings['Particle size distribution sigma(mu)'] = 0.0
         self.change_greyed_out()
 
     def on_mf_sb_changed(self,value):
         debugger.print('on mass fraction line edit changed', value)
         self.dirty = True
         self.notebook.plottingCalculationRequired = True
+        self.settings['Mass or volume fraction'] = 'mass'
         self.settings['Mass fraction'] =  value/100.0
         if self.settings['Mass or volume fraction'] == 'mass':
             self.update_vf_sb()
@@ -345,6 +359,7 @@ class ScenarioTab(QWidget):
         debugger.print('on volume fraction line edit changed', value)
         self.dirty = True
         self.notebook.plottingCalculationRequired = True
+        self.settings['Mass or volume fraction'] = 'volume'
         self.settings['Volume fraction'] = value/100.0
         if self.settings['Mass or volume fraction'] == 'volume':
             self.update_mf_sb()
@@ -411,7 +426,8 @@ class ScenarioTab(QWidget):
 
     def change_greyed_out(self):
         # Have a look through the settings and see if we need to grey anything out
-        if self.settings['Effective medium method'] == 'Mie':
+        method = self.settings['Effective medium method']
+        if method == 'Mie':
             self.size_sb.setEnabled(True)
             self.sigma_sb.setEnabled(True)
             for i,shape in enumerate(self.shapes):
@@ -424,7 +440,7 @@ class ScenarioTab(QWidget):
                 self.shape_cb.setCurrentIndex(index)
             else:
                 print('Method index was not 0',self.settings['Particle shape'])
-        elif self.settings['Effective medium method'] == 'Averaged Permittivity':
+        elif method == 'Averaged Permittivity':
             self.size_sb.setEnabled(False)
             self.sigma_sb.setEnabled(False)
             self.settings['Particle shape'] = 'Sphere'
@@ -435,6 +451,12 @@ class ScenarioTab(QWidget):
             self.shape_cb.setEnabled(False)
             for i,shape in enumerate(self.shapes):
                 self.shape_cb.model().item(i).setEnabled(False)
+        elif method == 'Maxwell-Garnett' or method == 'Bruggeman':
+            self.size_sb.setEnabled(True)
+            self.sigma_sb.setEnabled(False)
+            self.shape_cb.setEnabled(True)
+            for i,shape in enumerate(self.shapes):
+                self.shape_cb.model().item(i).setEnabled(True)
         else:
             self.size_sb.setEnabled(False)
             self.sigma_sb.setEnabled(False)
