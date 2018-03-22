@@ -13,9 +13,9 @@ from Python.Utilities import Debug
 class OpenGLWidget(QOpenGLWidget):
 
     format = QSurfaceFormat()
-    format.setDepthBufferSize(24)
-    format.setStencilBufferSize(8)
-    format.setSamples(6)
+    #format.setDepthBufferSize(24)
+    #format.setStencilBufferSize(8)
+    #format.setSamples(6)
     format.setSwapBehavior(QSurfaceFormat.DoubleBuffer)
     QSurfaceFormat.setDefaultFormat(format)
 
@@ -57,9 +57,6 @@ class OpenGLWidget(QOpenGLWidget):
         
         self.show_full_screen       = False
         self.rotation_centre         = np.array( [0.0, 0.0, 0.0] )
-        self.quadric                = gluNewQuadric()
-        gluQuadricDrawStyle(self.quadric, GLU_FILL)
-        gluQuadricNormals(self.quadric, GLU_SMOOTH)
         self.matrix =  np.eye( 4, dtype=np.float32)
         self.light_switches = None
         d = 200.0
@@ -307,7 +304,9 @@ class OpenGLWidget(QOpenGLWidget):
 
     def initializeGL(self):
         debugger.print('initializeGL')
-        self.makeCurrent()
+        self.quadric  = gluNewQuadric()
+        gluQuadricDrawStyle(self.quadric, GLU_FILL)
+        gluQuadricNormals(self.quadric, GLU_SMOOTH)
         glClearDepth(1.0)              
         glDepthFunc(GL_LESS)
         glEnable(GL_DEPTH_TEST)

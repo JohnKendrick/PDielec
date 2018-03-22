@@ -133,7 +133,7 @@ class MainTab(QWidget):
             debugger.print('Reading output file in maintab initialisation')
             self.read_output_file()
         QCoreApplication.processEvents()
-        # If there is a spreadsheet the write it
+        # If there is a spreadsheet then write it
         if self.settings['Excel file name'] != '':
             self.openSpreadSheet(self.settings['Excel file name'])
         if self.notebook.spreadsheet is not None:
