@@ -23,6 +23,7 @@ class NoteBook(QWidget):
         self.analysisCalculationRequired = True
         self.visualerCalculationRequired = True
         self.debug = debug
+        self.old_tab_index = None
         self.scripting = scripting
         self.layout = QVBoxLayout()
         # The number of tabs before we have scenarios
@@ -125,6 +126,13 @@ class NoteBook(QWidget):
         debugger.print('Tab index changed', tabindex)
         if self.scripting:
             return
+        # See if we have to up date a tab we have left
+        if self.old_tab_index is not None:
+            if self.old_tab_index == 0:
+                self.mainTab.refresh()
+            elif self.old_tab_index == 1:
+                self.settingsTab.refresh()
+        # end if
         #       Number of tabs
         ntabs = 2 + len(self.scenarios) + 3
         if tabindex == ntabs-1:
@@ -136,3 +144,4 @@ class NoteBook(QWidget):
         elif tabindex == ntabs-3:
             # plottings tab
             self.plottingTab.refresh()
+        self.old_tab_index = tabindex

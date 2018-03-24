@@ -2,7 +2,7 @@
 pdgui:	
 	@echo "PDGui Calculating absorption for Na2(SO4)2 from GULP...."
 	@../../../pdgui gulp na2so42.gout results.xlsx -script script.py -exit
-	@../../../checkcsv results.xlsx results.ref.xlsx
+	@../../../checkexcel results.xlsx results.ref.xlsx
 
 pdgui-regenerate:
 	@echo "PDGui Regenerating reference files for Na2(SO4)2 from GULP...."

@@ -240,8 +240,11 @@ class SettingsTab(QWidget):
     def write_spreadsheet(self):
         sp = self.notebook.spreadsheet
         if sp is None:
+            debugger.print('Aborting write of spreadsheet')
             return
+        debugger.print('Writing of spreadsheet')
         sp.selectWorkSheet('Settings')
+        sp.delete
         sp.writeNextRow(['Settings and calculations of frequencies and absorption'], row=0, col=1)
         for item in sorted(self.settings):
             if item == 'Optical permittivity':

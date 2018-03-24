@@ -118,6 +118,15 @@ class MainTab(QWidget):
         label = QLabel('Excel spread sheet')
         label.setToolTip('Provide the name of an .xlsx file if results are to be stored in a spreadsheet')
         form.addRow(label, self.resultsfile_le)
+        # 
+        # Calculation button
+        #
+        self.calculation_button = QPushButton('Read the output file and start the calculation')
+        self.calculation_button.setToolTip('Pressing this button initiates reading of the output file and processing of all the options')
+        self.calculation_button.clicked.connect(self.on_calculation_button_clicked)
+        #label = QLabel('Read and calculate')
+        #label.setToolTip('Pressing this button initiates reading of the output file and processing of all the options')
+        form.addRow(self.calculation_button)
         # add form layout 
         vbox.addLayout(form)
         # output window
@@ -131,14 +140,27 @@ class MainTab(QWidget):
         # If the filename was given then force it to be read and processed
         if filename != '':
             debugger.print('Reading output file in maintab initialisation')
-            self.read_output_file()
+            self.on_calculation_button_clicked()
         QCoreApplication.processEvents()
-        # If there is a spreadsheet then write it
-        if self.settings['Excel file name'] != '':
-            self.openSpreadSheet(self.settings['Excel file name'])
+
+    def on_calculation_button_clicked(self):
+        debugger.print('Calculation button clicked')
+        if len(self.settings['Excel file name']) > 5 and self.settings['Excel file name'][-5:] == '.xlsx':
+            self.directory = os.path.dirname(self.settings['Output file name'])
+            # open the file name with the directory of the output file name
+            self.openSpreadSheet(os.path.join(self.directory,self.settings['Excel file name']))
+        elif len(self.settings['Excel file name']) > 1 and self.settings['Excel file name'][-5:] != '.xlsx':
+            # The file isn't valid so tell the user there is a problem
+            QMessageBox.about(self,'Spreadsheet name','File name of spreadsheet must end in  .xlsx')
+            return
+        #
+        # Read the output file
+        #
+        self.read_output_file()
+        self.dirty = False
+        # If there is a spread sheet write the spread sheet
         if self.notebook.spreadsheet is not None:
             self.write_spreadsheet()
-        QCoreApplication.processEvents()
 
     def write_spreadsheet(self):
         sp = self.notebook.spreadsheet
@@ -146,6 +168,7 @@ class MainTab(QWidget):
             return
         debugger.print('Reading output file ', self.settings['Output file name'])
         sp.selectWorkSheet('Main')
+        sp.delete()
         debugger.print('write_spreadsheet',self.settings)
         sp.writeNextRow( ['Main Tab Settings'], col=1 )
         for item in sorted(self.settings):
@@ -243,53 +266,22 @@ class MainTab(QWidget):
             self.settings['Hessian symmetrisation'] = 'crystal'
         else:
             self.settings['Hessian symmetrisation'] = 'symm'
-        #
-        # If we have a valid file then try re-reading the output file
-        #
-        if os.path.isfile(self.settings['Output file name']):
-            debugger.print('Reading output file after hessian symmetry changed press')
-            self.read_output_file()
+        self.dirty = True
 
     def on_resultsfile_le_return(self):
         debugger.print('on resultsfile return ', self.resultsfile_le.text())
-        # Does the file end with .xlsx?
-        text = self.resultsfile_le.text()
-        self.settings['Excel file name'] = text
-        if text[-5:] == '.xlsx':
-            # The file is valid so just open it
-            self.openSpreadSheet(text)
-        else:
-            # The file doesn't exist so open a file chooser
-            options = QFileDialog.Options()
-            options |= QFileDialog.DontUseNativeDialog
-            text, _ = QFileDialog.getOpenFileName(self,'QFileDialog.getOpenFileName()', '','All Files (*.xlsx)', options=options)
-            if text != '':
-                debugger.print('new resultsfile name', text)
-                self.resultsfile_le.setText(text)
-                self.openSpreadSheet(text)
-        if self.notebook.spreadsheet is not None:
-            if os.path.isfile(self.settings['Output file name']):
-                debugger.print('on resultsfile about to press the button ')
-                # The file exists to treat it as though the button has been pressed
-                debugger.print('Reading output file after results file le return')
-                self.read_output_file()
-        debugger.print('on resultsfile return ')
  
     def on_resultsfile_le_changed(self, text):
         debugger.print('on resultsfile changed', text)
         text = self.resultsfile_le.text()
         self.settings['Excel file name'] = text
-        if text[-5:] == '.xlsx':
-            # The file is valid so just open it
-            self.openSpreadSheet(text)
-            self.dirty = True
+        self.dirty = True
 
     def openSpreadSheet(self,text):
         if self.notebook.spreadsheet is not None:
             self.notebook.spreadsheet.close()
         if text[-5:] == '.xlsx':
             self.notebook.spreadsheet = SpreadSheetManager(text)
-            self.settings['Excel file name'] = text
             self.dirty = True
         else:
            print('spreadsheet name not valid', text)
@@ -299,26 +291,14 @@ class MainTab(QWidget):
         debugger.print('on file return ', self.file_le.text())
         # Does the file exist?
         self.settings['Output file name'] = self.file_le.text()
-        if os.path.isfile(self.settings['Output file name']):
-            # The file exists to treat it as though the button has been pressed
-            debugger.print('Reading output file after file le return')
-            self.read_output_file()
-            self.dirty = True
-            return
-        # The file doesn't exist so open a file chooser
+        # Open a file chooser
         options = QFileDialog.Options()
         options |= QFileDialog.DontUseNativeDialog
         self.settings['Output file name'], _ = QFileDialog.getOpenFileName(self,'QFileDialog.getOpenFileName()', '','All Files (*)', options=options)
-        if self.settings['Output file name']:
-            debugger.print('new file name', self.settings['Output file name'])
+        debugger.print('new file name', self.settings['Output file name'])
         self.file_le.setText(self.settings['Output file name'])
-        if os.path.isfile(self.settings['Output file name']):
-            #self.settings['Output file name'] = os.path.relpath(self.settings['Output file name'])
-            # The file exists to treat it as though the button has been pressed
-            debugger.print('Reading output file after file le return 2nd')
-            self.read_output_file()
-            self.dirty = True
-            return
+        self.dirty = True
+        return
  
     def on_file_le_changed(self, text):
         debugger.print('on file changed', text)
@@ -393,10 +373,7 @@ class MainTab(QWidget):
             self.hessian_symmetry_cb.setEnabled(False)
         self.file_le.setText(self.settings['Output file name'])
         self.resultsfile_le.setText(self.settings['Excel file name'])
-        filename = self.settings['Output file name']
-        if filename != '':
-            self.read_output_file()
-            debugger.print('Reading output file after refresh')
+        self.on_calculation_button_clicked()
         self.dirty = False
         #
         # UnBlock signals

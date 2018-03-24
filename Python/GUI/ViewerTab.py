@@ -432,7 +432,10 @@ class ViewerTab(QWidget):
         for w in self.findChildren(QWidget):
             w.blockSignals(True)
         self.selected_mode_sb.setValue(self.selected_mode)
-        self.frequency_le.setText('{:.5f}'.format(self.notebook.settingsTab.frequencies_cm1[self.selected_mode]))
+        try:
+            self.frequency_le.setText('{:.5f}'.format(self.notebook.settingsTab.frequencies_cm1[self.selected_mode]))
+        except:
+            self.frequency_le.setText('{:.5f}'.format(0.0))
         self.atom_scaling_sb.setValue(self.settings['Atom scaling'])
         self.bond_radius_sb.setValue(self.settings['Bond radius'])
         self.cell_radius_sb.setValue(self.settings['Cell radius'])

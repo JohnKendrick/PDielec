@@ -428,8 +428,9 @@ class AnalysisTab(QWidget):
                         mol_bottoms[i].append(mol_bottoms[i-1][-1]+mol_energies[i-1][-1])
         width = self.settings['Bar width']
         plots = []
+        colours = ['y','b','r','c','m','k']
         for i,(energies,bottoms) in enumerate(zip(mol_energies, mol_bottoms )):
-            plots.append(self.subplot.bar(mode_list,energies,width, bottom=bottoms))
+            plots.append(self.subplot.bar(mode_list,energies,width, bottom=bottoms,color=colours[i%6]))
         legends = []
         for i in range(self.number_of_molecules):
             legends.append('Molecule '+str(i))
@@ -455,6 +456,7 @@ class AnalysisTab(QWidget):
         mol_energy = []
         vmin = self.settings['Minimum frequency']
         vmax = self.settings['Maximum frequency']
+        colours = ['y','b','r','c','m','k']
         for imode, frequency in enumerate(self.frequencies_cm1):
             if frequency >= vmin and frequency <= vmax:
                 mode_list.append(imode)
@@ -466,9 +468,9 @@ class AnalysisTab(QWidget):
                 vib_bottom.append( (cme+rote)/tote*100.0 )
                 mol_energy.append(molecular_energies/tote*100)
         width = self.settings['Bar width']
-        p1 = self.subplot.bar(mode_list,cme_energy,width)
-        p2 = self.subplot.bar(mode_list,rot_energy,width,bottom=cme_energy)
-        p3 = self.subplot.bar(mode_list,vib_energy,width,bottom=vib_bottom)
+        p1 = self.subplot.bar(mode_list,cme_energy,width,color=colours[0])
+        p2 = self.subplot.bar(mode_list,rot_energy,width,bottom=cme_energy,color=colours[1])
+        p3 = self.subplot.bar(mode_list,vib_energy,width,bottom=vib_bottom,color=colours[2])
         plots = ( p1[0], p2[0], p3[0] )
         legends = ('translation','rotation','vibration')
         self.subplot.set_xlabel(xlabel)

@@ -9,6 +9,7 @@ from PyQt5.QtCore    import QTimer
 from PyQt5.QtGui     import QSurfaceFormat
 from Python.Constants import PI
 from Python.Utilities import Debug
+import imageio
 
 class OpenGLWidget(QOpenGLWidget):
 
@@ -56,6 +57,9 @@ class OpenGLWidget(QOpenGLWidget):
         self.background_colour      = None
         
         self.show_full_screen       = False
+        self.movie                  = False
+        self.number_of_snapshots    = 0
+        self.writer                 = None
         self.rotation_centre         = np.array( [0.0, 0.0, 0.0] )
         self.matrix =  np.eye( 4, dtype=np.float32)
         self.light_switches = None
@@ -81,7 +85,22 @@ class OpenGLWidget(QOpenGLWidget):
             self.current_phase = 1
             self.phase_direction = +1
         debugger.print('Timeout - phase', self.current_phase)
+        if self.movie and self.number_of_snapshots < 2*self.number_of_phases:
+            if self.number_of_snapshots == 0:
+                self.writer = imageio.get_writer('movie.mp4', mode='I', fps=12)
+            self.number_of_snapshots += 1
+            image = self.grabFramebuffer()
+            image.save('snapshot.png')
+            image = imageio.imread('snapshot.png')
+            self.writer.append_data(image);
+        else:
+            self.movie = False
+            self.number_of_snapshots = 0
+            if self.writer is not None:
+                self.writer.close();
+                self.writer = None
         self.update()
+
 
     def moleculeRotate(self,scale,x,y,z):
         # Rotate molecular frame using glortho
@@ -101,6 +120,12 @@ class OpenGLWidget(QOpenGLWidget):
         key = event.key()
         modifiers = event.modifiers()
         debugger.print('kepressevent',key,modifiers)
+        control = False
+        shift = False
+        if modifiers & Qt.ShiftModifier:
+            shift = True
+        if modifiers & Qt.ControlModifier:
+            control = True
         if modifiers & Qt.ShiftModifier or modifiers & Qt.ControlModifier:
             amount = 45.0
         else:
@@ -117,6 +142,8 @@ class OpenGLWidget(QOpenGLWidget):
             self.zoom(+1.0)
         elif key == Qt.Key_Minus:
             self.zoom(-1.0)
+        elif key == Qt.Key_P:
+            self.save_movie()
         elif key == Qt.Key_F:
             self.show_full_screen = not self.show_full_screen
             if self.show_full_screen:
@@ -131,9 +158,29 @@ class OpenGLWidget(QOpenGLWidget):
             debugger.print('Home key', self.current_phase)
             self.update()
 
+    def save_movie(self):
+#        import imageio
+#        if self.timer is not None:
+#            self.timer.stop()
+#        writer = imageio.get_writer('movie.mp4', mode='I', fps=12)
+#        for i in range(0,2*self.number_of_phases):
+#            self.timeoutHandler()
+#            image = self.grabFramebuffer()
+#            image.save('snapshot.png')
+#            image = imageio.imread('snapshot.png')
+#            writer.append_data(image);
+#        writer.close()
+        self.movie = True
+        self.number_of_snapshots = 0
+
+    def snapshot(self):
+        import imageio
+        debugger.print('snapshot')
+        image = self.grabFramebuffer()
+        image.save('snapshot.png')
+
     def translate(self,x,y):
         debugger.print('translate ',x,y)
-        self.makeCurrent()
         glTranslatef(x, y, 0.0)
             
     def wheelEvent(self, event):
