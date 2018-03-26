@@ -1,9 +1,7 @@
 import sys
 import os.path
-from PyQt5.QtWidgets import QMainWindow, QApplication, QSplashScreen, QProgressBar
-from PyQt5.QtGui     import QPixmap
-#from PyQt5           import Qt
-from PyQt5.QtCore    import Qt, QCoreApplication
+from PyQt5.QtWidgets import QMainWindow, QApplication
+from PyQt5.QtCore    import QCoreApplication
 from Python.GUI.NoteBook import NoteBook
  
 class App(QMainWindow):

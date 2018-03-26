@@ -1,6 +1,6 @@
 import os.path
 import copy
-from PyQt5.QtWidgets            import  QPushButton, QWidget, QTabWidget
+from PyQt5.QtWidgets            import  QWidget, QTabWidget
 from PyQt5.QtWidgets            import  QVBoxLayout
 from Python.GUI.MainTab         import  MainTab
 from Python.GUI.SettingsTab     import  SettingsTab

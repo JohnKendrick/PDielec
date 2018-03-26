@@ -8,7 +8,7 @@ The density of the medium (-density) has been set to 2.2000 g/cc
 Vmin is:     0.0 cm-1
 Vmax is:  2000.0 cm-1
 All phonon modes will be considered
-The number of processors (4) has been determined automatically
+The number of processors has been set to 4 
 No projection of the dynamical matrix will be performed
 The charge neutrality of the Born atomic charges will not be enforced
  
@@ -43,11 +43,11 @@ Only IR active modes are shown
 Mode Frequency Intensity         Integrated Molar Absorption Epsilon_max   FWHM  
      cm-1      Debye2/Angs2/amu   Coefficient L/mole/cm/cm    L/mole/cm    cm-1  
 ---- --------- ----------------  --------------------------- -----------   ----  
-   3   114.77          2.386157                10082.942949   1283.8002      5.0
-   4   114.77          2.386165                10082.976755   1283.8045      5.0
+   3   114.77          2.386165                10082.976755   1283.8045      5.0
+   4   114.77          2.386157                10082.942949   1283.8002      5.0
    5   127.38          3.359475                14195.797145   1807.4650      5.0
-   9   249.29          1.226152                 5181.227434    659.6944      5.0
-  10   249.29          1.226152                 5181.226351    659.6942      5.0
+   9   249.29          1.226152                 5181.226351    659.6942      5.0
+  10   249.29          1.226152                 5181.227434    659.6944      5.0
   15   320.71          5.824938                24613.856703   3133.9336      5.0
   16   320.71          5.824945                24613.889414   3133.9377      5.0
   17   338.14          4.139440                17491.616624   2227.1018      5.0
@@ -82,7 +82,7 @@ The density of the medium (-density) has been set to 2.2000 g/cc
 Vmin is:     0.0 cm-1
 Vmax is:   300.0 cm-1
 All phonon modes will be considered
-The number of processors (4) has been determined automatically
+The number of processors has been set to 4 
 No projection of the dynamical matrix will be performed
 The charge neutrality of the Born atomic charges will not be enforced
 
@@ -220,7 +220,7 @@ Only IR active modes are shown
 Mode Frequency Intensity         Integrated Molar Absorption Epsilon_max   FWHM  
      cm-1      Debye2/Angs2/amu   Coefficient L/mole/cm/cm    L/mole/cm    cm-1  
 ---- --------- ----------------  --------------------------- -----------   ----  
-   3   114.82          2.388304                10092.018302   1284.9557      5.0
+   3   114.82          2.388304                10092.018303   1284.9557      5.0
    4   114.82          2.388304                10092.017206   1284.9555      5.0
    5   127.44          3.361628                14204.896265   1808.6236      5.0
    9   249.62          1.226471                 5182.575126    659.8660      5.0
@@ -228,7 +228,7 @@ Mode Frequency Intensity         Integrated Molar Absorption Epsilon_max   FWHM
   15   320.95          5.841023                24681.825563   3142.5876      5.0
   16   320.95          5.841032                24681.864326   3142.5926      5.0
   17   338.37          4.152351                17546.173167   2234.0482      5.0
-  20   620.24          3.382487                14293.038577   1819.8462      5.0
+  20   620.24          3.382487                14293.038576   1819.8462      5.0
   21   620.24          3.382479                14293.004414   1819.8418      5.0
   22   732.22         26.905785               113693.083223  14475.8530      5.0
   26  1464.05         16.982186                71759.923154   9136.7572      5.0

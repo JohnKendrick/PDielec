@@ -6,7 +6,7 @@ pdgui:
 
 pdgui-regenerate:	
 	@echo "PDGui regenerating reference files for L-Aspartic acid from CASTEP...."
-	../../../pdgui castep phonon.castep results.xlsx -exit -script ./script.py
+	@../../../pdgui castep phonon.castep results.xlsx -exit -script ./script.py
 	@mv results.xlsx results.ref.xlsx
 
 pdgui-view:	

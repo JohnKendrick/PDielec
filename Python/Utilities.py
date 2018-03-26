@@ -91,10 +91,10 @@ def get_reader(program,names,qmprogram):
             checkfiles = pnames
         else:
             checkfiles = names
-        print("")
-        print("Program used to perform the phonon calculation was: {}".format(program))
+        #jk print("")
+        #jk print("Program used to perform the phonon calculation was: {}".format(program))
         for f in checkfiles:
-            print("The file containing the output is: {}".format(f))
+            #jk print("The file containing the output is: {}".format(f))
             if not os.path.isfile(f):
                 print("Output files created by program: {}".format(program))
                 print("Error: file not available: {}".format(f))

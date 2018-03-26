@@ -12,10 +12,7 @@ The density of the medium (-density) has been set to 2.2000 g/cc
 Vmin is:     0.0 cm-1
 Vmax is:   300.0 cm-1
 All phonon modes will be considered
-The number of processors (4) has been determined automatically
-
-Program used to perform the phonon calculation was: abinit
-The file containing the output is: BaTiO3.out
+The number of processors has been set to 4 
 No projection of the dynamical matrix will be performed
 The charge neutrality of the Born atomic charges will not be enforced
  
@@ -44,18 +41,18 @@ Only IR active modes are shown
 Mode Frequency Intensity         Integrated Molar Absorption Epsilon_max   FWHM  
      cm-1      Debye2/Angs2/amu   Coefficient L/mole/cm/cm    L/mole/cm    cm-1  
 ---- --------- ----------------  --------------------------- -----------   ----  
-   0    65.74          1.935107                 8176.986979   1041.1263      5.0
-   1    65.74          1.935136                 8177.109917   1041.1420      5.0
+   0    65.74          1.935128                 8177.076262   1041.1377      5.0
+   1    65.74          1.935115                 8177.020635   1041.1306      5.0
    2    65.75          1.934571                 8174.722771   1040.8380      5.0
-   3   198.01         37.112257               156821.552337  19967.1402      5.0
-   4   198.01         37.112515               156822.644626  19967.2793      5.0
+   3   198.01         37.112289               156821.689833  19967.1577      5.0
+   4   198.01         37.112483               156822.507130  19967.2618      5.0
    5   198.02         37.125602               156877.944975  19974.3203      5.0
    6   270.59          0.000000                    0.000141      0.0000      5.0
-   7   270.59          0.000000                    0.000129      0.0000      5.0
-   8   270.59          0.000000                    0.000000      0.0000      5.0
+   7   270.59          0.000000                    0.000128      0.0000      5.0
+   8   270.59          0.000000                    0.000001      0.0000      5.0
    9   279.35         33.055024               139677.308047  17784.2672      5.0
-  10   279.35         33.063740               139714.140406  17788.9569      5.0
-  11   279.35         33.063415               139712.768017  17788.7821      5.0
+  10   279.35         33.063614               139713.606233  17788.8888      5.0
+  11   279.35         33.063542               139713.302190  17788.8501      5.0
   12   493.63         20.513710                86682.731944  11036.7882      5.0
   13   493.63         20.515522                86690.388406  11037.7631      5.0
   14   493.63         20.515522                86690.388408  11037.7631      5.0
@@ -89,10 +86,7 @@ The density of the medium (-density) has been set to 2.2000 g/cc
 Vmin is:     0.0 cm-1
 Vmax is:   300.0 cm-1
 All phonon modes will be considered
-The number of processors (4) has been determined automatically
-
-Program used to perform the phonon calculation was: abinit
-The file containing the output is: BaTiO3.out
+The number of processors has been set to 4 
 No projection of the dynamical matrix will be performed
 The charge neutrality of the Born atomic charges will not be enforced
 
@@ -199,21 +193,21 @@ Only IR active modes are shown
 Mode Frequency Intensity         Integrated Molar Absorption Epsilon_max   FWHM  
      cm-1      Debye2/Angs2/amu   Coefficient L/mole/cm/cm    L/mole/cm    cm-1  
 ---- --------- ----------------  --------------------------- -----------   ----  
-   0    65.74          1.935172                 8177.261588   1041.1613      5.0
-   1    65.74          1.935184                 8177.314389   1041.1680      5.0
+   0    65.74          1.935169                 8177.248862   1041.1597      5.0
+   1    65.74          1.935187                 8177.327115   1041.1696      5.0
    2    65.75          1.934628                 8174.962293   1040.8685      5.0
-   3   198.01         37.114200               156829.762540  19968.1855      5.0
-   4   198.01         37.114403               156830.622240  19968.2950      5.0
+   3   198.01         37.114367               156830.468218  19968.2754      5.0
+   4   198.01         37.114236               156829.916562  19968.2052      5.0
    5   198.02         37.127515               156886.027562  19975.3494      5.0
    6   270.59          0.000000                    0.000141      0.0000      5.0
-   7   270.59          0.000000                    0.000090      0.0000      5.0
-   8   270.59          0.000000                    0.000039      0.0000      5.0
+   7   270.59          0.000000                    0.000129      0.0000      5.0
+   8   270.59          0.000000                    0.000000      0.0000      5.0
    9   279.39         33.058636               139692.572034  17786.2107      5.0
-  10   279.39         33.067223               139728.859072  17790.8309      5.0
-  11   279.39         33.067149               139728.543367  17790.7907      5.0
+  10   279.39         33.067193               139728.732596  17790.8148      5.0
+  11   279.39         33.067179               139728.669843  17790.8068      5.0
   12   493.63         20.515510                86690.340140  11037.7569      5.0
-  13   493.63         20.517324                86698.002241  11038.7325      5.0
-  14   493.63         20.517324                86698.002243  11038.7325      5.0
+  13   493.63         20.517324                86698.002243  11038.7325      5.0
+  14   493.63         20.517324                86698.002241  11038.7325      5.0
  
  
 Permittivity contribution from ionic displacements

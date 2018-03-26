@@ -10,10 +10,7 @@ Optical permitivity diagonal elements specified: 5.7390 5.7390 5.6735
 Vmin is:   300.0 cm-1
 Vmax is:   800.0 cm-1
 All phonon modes will be considered
-The number of processors (4) has been determined automatically
-
-Program used to perform the phonon calculation was: crystal
-The file containing the output is: ZnO_noeckart.out
+The number of processors has been set to 4 
 No projection of the dynamical matrix will be performed
 The charge neutrality of the Born atomic charges will not be enforced
  
@@ -59,9 +56,9 @@ Mode Frequency Intensity         Integrated Molar Absorption Epsilon_max   FWHM
  
  
 Permittivity contribution from ionic displacements
-            4.259656       0.000000      -0.000000
-            0.000000       4.259656      -0.000000
-           -0.000000      -0.000000       5.050784
+            4.259656      -0.000000       0.000000
+           -0.000000       4.259656      -0.000000
+            0.000000      -0.000000       5.050784
  
 Optical permittivity at zero frequency
             5.738970       0.000000       0.000000
@@ -69,6 +66,6 @@ Optical permittivity at zero frequency
             0.000000       0.000000       5.673460
  
 Total permittivity
-            9.998626       0.000000      -0.000000
-            0.000000       9.998626      -0.000000
-           -0.000000      -0.000000      10.724244
+            9.998626      -0.000000       0.000000
+           -0.000000       9.998626      -0.000000
+            0.000000      -0.000000      10.724244

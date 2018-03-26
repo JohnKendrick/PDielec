@@ -13,7 +13,7 @@ pdgui-view:
 	@echo "PDGui Viewing reference files for size effects in MgO from CASTEP...."
 	@../../../pdgui castep phonon.castep -script script.py
 
-ttest:	
+test:	
 	@echo "Calculating size effects for MgO from CASTEP...."
 	@bash command.sh ${PYTHON_EXE} ${PDIELEC_OPTIONS} > command.out
 	@../../../checkcsv command.ref.out command.out

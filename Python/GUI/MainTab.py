@@ -4,7 +4,7 @@ from PyQt5.QtWidgets  import  QWidget
 from PyQt5.QtWidgets  import  QListWidget, QComboBox, QLabel, QLineEdit
 from PyQt5.QtWidgets  import  QFileDialog, QPushButton, QCheckBox
 from PyQt5.QtWidgets  import  QFormLayout
-from PyQt5.QtWidgets  import  QVBoxLayout, QHBoxLayout, QMessageBox
+from PyQt5.QtWidgets  import  QVBoxLayout, QMessageBox
 from PyQt5.QtCore     import  Qt, QCoreApplication
 from Python.Utilities import  get_reader, Debug
 from Python.GUI.SpreadSheetManager import SpreadSheetManager
@@ -24,6 +24,7 @@ class MainTab(QWidget):
         else:
             self.settings['Program'] = 'castep'
         self.settings['Output file name'] = filename
+        self.directory = os.path.dirname(self.settings['Output file name'])
         self.settings['Excel file name'] = excelfile
         self.settings['QM program'] = ''
         self.settings['Hessian symmetrisation'] = 'symm'
@@ -223,6 +224,7 @@ class MainTab(QWidget):
         self.notebook.plottingCalculationRequired = True
         self.notebook.analysisCalculationRequired = True
         self.notebook.visualerCalculationRequired = True
+        self.directory = os.path.dirname(self.settings['Output file name'])
         if self.debug:
             self.reader.print_info()
         self.frequencies_cm1 = np.sort(self.reader.frequencies)
@@ -232,31 +234,31 @@ class MainTab(QWidget):
         debugger.print('processing a return')
         if hasattr(self.notebook, 'settingsTab'):
             debugger.print('about to refresh settings')
-            self.notebook.settingsTab.refresh()
+            self.notebook.settingsTab.refresh(True)
         # Update any scenarios
         if hasattr(self.notebook, 'scenarios'):
             debugger.print('about to refresh scenarios')
             debugger.print('notebook has {} scenarios'.format(len(self.notebook.scenarios)))
             for tab in self.notebook.scenarios:
-                tab.refresh()
+                tab.refresh(True)
         else:
             debugger.print('notebook has no scenarios yet')
         # Update the plotting tab
         if hasattr(self.notebook, 'plottingTab'):
             debugger.print('about to refresh plottingtab')
-            self.notebook.plottingTab.refresh()
+            self.notebook.plottingTab.refresh(True)
         else:
             debugger.print('notebook has no plotting tab yet')
         # Update the analysis tab
         if hasattr(self.notebook, 'analysisTab'):
             debugger.print('about to refresh analysisTab')
-            self.notebook.analysisTab.refresh()
+            self.notebook.analysisTab.refresh(True)
         else:
             debugger.print('notebook has no analysis tab yet')
         # Update the viewer tab
         if hasattr(self.notebook, 'viewerTab'):
             debugger.print('about to refresh viewerTab')
-            self.notebook.viewerTab.refresh()
+            self.notebook.viewerTab.refresh(True)
         else:
             debugger.print('notebook has no viewer tab yet')
 
@@ -294,7 +296,7 @@ class MainTab(QWidget):
         # Open a file chooser
         options = QFileDialog.Options()
         options |= QFileDialog.DontUseNativeDialog
-        self.settings['Output file name'], _ = QFileDialog.getOpenFileName(self,'QFileDialog.getOpenFileName()', '','All Files (*)', options=options)
+        self.settings['Output file name'], _ = QFileDialog.getOpenFileName(self,'QFileDialog.getOpenFileName()', '','Castep (*.castep);;Abinit (*.out);;Gulp (*.gout);;VASP (OUTCAR*);; QE (*.dynG);; Crystal 14 *.out;; Phonopy (OUTCAR*);; All Files (*)', options=options)
         debugger.print('new file name', self.settings['Output file name'])
         self.file_le.setText(self.settings['Output file name'])
         self.dirty = True

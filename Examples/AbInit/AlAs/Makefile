@@ -5,7 +5,7 @@ pdgui:
 	@../../../checkexcel results.ref.xlsx results.xlsx
 
 pdgui-regenerate:
-	@echo "Regenerating pdgui reference files for AlAs from Abinit...."
+	@echo "PDGui Regenerating reference files for AlAs from Abinit...."
 	@../../../pdgui abinit AlAs.out results.xlsx -script script.py -exit
 	@mv results.xlsx results.ref.xlsx
 

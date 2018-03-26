@@ -8,10 +8,7 @@ The density of the medium (-density) has been set to 2.2000 g/cc
 Vmin is:     0.0 cm-1
 Vmax is:   300.0 cm-1
 All phonon modes will be considered
-The number of processors (4) has been determined automatically
-
-Program used to perform the phonon calculation was: gulp
-The file containing the output is: na2so42.gout
+The number of processors has been set to 4 
 No projection of the dynamical matrix will be performed
 The charge neutrality of the Born atomic charges will not be enforced
  
@@ -56,7 +53,7 @@ Transverse frequencies (cm-1)
  
  
 Longitudinal frequencies (cm-1) q->0 q(cart)=[ 0.5094, 0.5166, 0.6882] (1,1,1)
-      0.00      0.00      0.00     81.70    102.21    112.64    120.93    133.45
+     -0.00      0.00      0.00     81.70    102.21    112.64    120.93    133.45
     139.60    159.65    172.94    206.03    210.49    229.05    240.71    245.85
     249.66    333.81    383.95    441.31    447.92    474.14    536.24    558.98
     561.33    625.63    632.09    641.03    641.72    818.58   1015.68   1021.14

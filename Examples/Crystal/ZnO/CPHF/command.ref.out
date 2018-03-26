@@ -8,10 +8,7 @@ The density of the medium (-density) has been set to 2.2000 g/cc
 Vmin is:   300.0 cm-1
 Vmax is:   800.0 cm-1
 All phonon modes will be considered
-The number of processors (4) has been determined automatically
-
-Program used to perform the phonon calculation was: crystal
-The file containing the output is: ZnO_CPHF.out
+The number of processors has been set to 4 
 No projection of the dynamical matrix will be performed
 The charge neutrality of the Born atomic charges will not be enforced
  
@@ -56,9 +53,9 @@ Mode Frequency Intensity         Integrated Molar Absorption Epsilon_max   FWHM
  
  
 Permittivity contribution from ionic displacements
-            4.234838      -0.000000       0.000000
+            4.234838      -0.000000      -0.000000
            -0.000000       4.234838      -0.000000
-            0.000000      -0.000000       5.061893
+           -0.000000      -0.000000       5.061893
  
 Optical permittivity at zero frequency
             4.460000      -0.000000       0.000000
@@ -66,9 +63,9 @@ Optical permittivity at zero frequency
             0.000000      -0.000000       4.430300
  
 Total permittivity
-            8.694838      -0.000000       0.000000
+            8.694838      -0.000000      -0.000000
            -0.000000       8.694738      -0.000000
-            0.000000      -0.000000       9.492193
+           -0.000000      -0.000000       9.492193
 The following methods will be used: maxwell
 Creating a csv file: command2.csv
 No plotting has been requested
@@ -79,10 +76,7 @@ The density of the medium (-density) has been set to 2.2000 g/cc
 Vmin is:   300.0 cm-1
 Vmax is:   800.0 cm-1
 All phonon modes will be considered
-The number of processors (4) has been determined automatically
-
-Program used to perform the phonon calculation was: crystal
-The file containing the output is: ZnO_CPHF.out
+The number of processors has been set to 4 
 No projection of the dynamical matrix will be performed
 The charge neutrality of the Born atomic charges will not be enforced
 
@@ -190,9 +184,9 @@ Mode Frequency Intensity         Integrated Molar Absorption Epsilon_max   FWHM
  
  
 Permittivity contribution from ionic displacements
-            4.234835      -0.000000       0.000000
-           -0.000000       4.234835       0.000000
-            0.000000       0.000000       5.054209
+            4.234835       0.000000      -0.000000
+            0.000000       4.234835       0.000000
+           -0.000000       0.000000       5.054209
  
 Optical permittivity at zero frequency
             4.460000      -0.000000       0.000000
@@ -200,6 +194,6 @@ Optical permittivity at zero frequency
             0.000000      -0.000000       4.430300
  
 Total permittivity
-            8.694835      -0.000000       0.000000
-           -0.000000       8.694735       0.000000
-            0.000000       0.000000       9.484509
+            8.694835       0.000000      -0.000000
+            0.000000       8.694735       0.000000
+           -0.000000       0.000000       9.484509

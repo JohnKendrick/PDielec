@@ -1,7 +1,7 @@
 import math
 import numpy as np
 import Python.Calculator as Calculator
-from PyQt5.QtWidgets  import  QPushButton, QWidget
+from PyQt5.QtWidgets  import  QWidget
 from PyQt5.QtWidgets  import  QComboBox, QLabel, QLineEdit
 from PyQt5.QtWidgets  import  QVBoxLayout, QHBoxLayout, QFormLayout
 from PyQt5.QtWidgets  import  QSpinBox, QDoubleSpinBox
@@ -15,7 +15,6 @@ import matplotlib.figure
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT as NavigationToolbar
 from Python.Utilities import Debug
-from Python.Plotter import print_strings, print_reals
 from Python.GUI.SettingsTab import FixedQTableWidget
 
 class AnalysisTab(QWidget):

@@ -16,11 +16,11 @@ from multiprocessing import cpu_count, Array
 import Python.Calculator as Calculator
 from PyQt5.QtWidgets  import  QPushButton, QWidget
 from PyQt5.QtWidgets  import  QComboBox, QLabel, QLineEdit
-from PyQt5.QtWidgets  import  QFileDialog, QProgressBar
+from PyQt5.QtWidgets  import  QProgressBar
 from PyQt5.QtWidgets  import  QVBoxLayout, QHBoxLayout, QFormLayout
 from PyQt5.QtWidgets  import  QSpinBox,QDoubleSpinBox
 from PyQt5.QtWidgets  import  QSizePolicy
-from PyQt5.QtCore     import  Qt, QCoreApplication
+from PyQt5.QtCore     import  QCoreApplication
 from Python.Constants import  wavenumber, amu, PI, avogadro_si, angstrom
 from Python.Constants import  average_masses, isotope_masses
 import ctypes

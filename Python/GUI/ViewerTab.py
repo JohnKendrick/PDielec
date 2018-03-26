@@ -1,3 +1,4 @@
+import os
 import math
 import numpy as np
 import Python.Calculator as Calculator
@@ -5,7 +6,7 @@ from PyQt5.QtWidgets         import  QPushButton, QWidget
 from PyQt5.QtWidgets         import  QComboBox, QLabel, QLineEdit
 from PyQt5.QtWidgets         import  QVBoxLayout, QHBoxLayout, QFormLayout
 from PyQt5.QtWidgets         import  QSpinBox, QTabWidget, QDoubleSpinBox
-from PyQt5.QtWidgets         import  QSizePolicy, QColorDialog
+from PyQt5.QtWidgets         import  QSizePolicy, QColorDialog, QMessageBox
 from PyQt5.QtCore            import  Qt
 from Python.Constants        import  wavenumber, amu, PI, avogadro_si, angstrom
 from Python.Constants        import  elemental_colours
@@ -51,6 +52,7 @@ class ViewerTab(QWidget):
         self.element_coloured_buttons = []
         self.bond_cell_background_arrow_buttons = []
         self.bond_cell_background_arrow_names = ['Background','Cell','Bonds','Arrows']
+        self.image_filename = ''
         # store the notebook
         self.notebook = parent
         # get the reader from the main tab
@@ -202,24 +204,26 @@ class ViewerTab(QWidget):
         #
         hbox = QHBoxLayout()
         self.filename_le = QLineEdit(self)
-        self.filename_le.setToolTip('Give a file name in which to same the image')
+        self.filename_le.setToolTip('Give a file name in which to save the image.\nIf a return is pressed the filename is scanned to see whatyoe of file has been requested.')
         self.filename_le.setText(self.image_filename)
+        self.filename_le.textChanged.connect(self.on_filename_le_changed)
+        self.filename_le.returnPressed.connect(self.on_filename_le_return)
         self.png_filename_button = QPushButton('Save as png')
-        self.png_filename_button.clicked.connect(self._on_filename_button_clicked)
+        self.png_filename_button.clicked.connect(self.on_filename_button_clicked)
         self.png_filename_button.setToolTip('Save the image as a png file with arrows')
         self.mp4_filename_button = QPushButton('Save as mp4')
-        self.mp4_filename_button.clicked.connect(self._on_filename_button_clicked)
-        self.png_filename_button.setToolTip('Save the animation as an mp4 file')
+        self.mp4_filename_button.clicked.connect(self.on_filename_button_clicked)
+        self.mp4_filename_button.setToolTip('Save the animation as an mp4/avi file')
         self.gif_filename_button = QPushButton('Save as gif')
-        self.gif_filename_button.clicked.connect(self._on_filename_button_clicked)
+        self.gif_filename_button.clicked.connect(self.on_filename_button_clicked)
         self.gif_filename_button.setToolTip('Save the animation as a gif file')
         label = QLabel('Image file name', self)
-        label.setToolTip('Give a file name in which to same the image')
+        label.setToolTip('Give a file name in which to save the image.\nIf a return is pressed the filename is scanned to see whatyoe of file has been requested.')
         hbox.addWidget(self.filename_le)
         hbox.addWidget(self.png_filename_button)
         hbox.addWidget(self.mp4_filename_button)
         hbox.addWidget(self.gif_filename_button)
-        form.addRow(label, self.frequency_le)
+        form.addRow(label, hbox)
         #
         # Add the opengl figure to the bottom 
         #
@@ -231,33 +235,46 @@ class ViewerTab(QWidget):
         # finalise the layout
         self.setLayout(vbox)
 
+    def on_filename_le_return(self):
+        debugger.print('on filename le return pressed')
+        self.on_filename_button_clicked(True)
+
+    def on_filename_le_changed(self,text):
+        debugger.print('on filename le changed', text)
+        self.image_filename = text
+
     def on_filename_button_clicked(self,boolean):
         debugger.print('on filename button clicked')
-        button = self.sender()
-        text = button.text()
+        #button = self.sender()
+        #text = button.text()
         #
         # Check to see if the filename has been set
         #
-        filename = self.filename_le.text()
-        extension = os.path.splitext(filename)
-        valid_extension = extension == '.mp4' or extension == '.avi' or extension == '.png' or extension == '.gif'
+        filename = self.image_filename
+        root,extension = os.path.splitext(filename)
+        valid_extension = ( extension == '.mp4' or extension == '.avi' or extension == '.png' or extension == '.gif' )
         if filename == '' or not valid_extension:
             debugger.print('Aborting on filename button clicked', filename)
             debugger.print('Aborting on filename button clicked', valid_extension)
+            debugger.print('Aborting on filename button clicked', extension)
             QMessageBox.about(self,'Image file name', 'The file name for the image is not valid '+filename)
             return
         #
         # The filename will be opened in the directory of the output file which was read in mainTab
         #
-        filename = os.join(self.notebook.directory, filename)
+        filename = os.path.join(self.notebook.mainTab.directory, filename)
         # 
         # We need to remember the visualisation settings
         #
         old_plot_type = self.plot_type_index
-        if text == 'Save as png':
-            self.plot_type_index = 0
-        elif text == 'Save as mp4'
-        elif text == 'Save as gif':
+        if extension == '.png':
+            self.opengl_widget.snapshot(filename)
+        elif extension == '.avi':
+            self.opengl_widget.save_movie(filename)
+        elif extension == '.mp4':
+            self.opengl_widget.save_movie(filename)
+        elif extension == '.gif':
+            self.opengl_widget.save_movie(filename)
         self.plot_type_index = old_plot_type
         return
 
@@ -535,6 +552,10 @@ class ViewerTab(QWidget):
         button_colours = [  (r,g,b,a) for (r,g,b,a) in [self.settings['Background colour'], self.settings['Cell colour'], self.settings['Bond colour'],self.settings['Arrow colour']] ]
         for col, button in zip(button_colours, self.bond_cell_background_arrow_buttons):
             button.setStyleSheet('background-color:rgba( {}, {}, {}, {});'.format(*col))
+        #
+        # Filename
+        #
+        self.filename_le.setText(self.image_filename)
         #
         # Unlock signals after refresh
         # 

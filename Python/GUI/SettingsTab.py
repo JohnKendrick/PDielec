@@ -3,8 +3,8 @@ import sys
 import os.path
 import numpy as np
 import Python.Calculator as Calculator
-from PyQt5.QtWidgets  import  QPushButton, QWidget
-from PyQt5.QtWidgets  import  QComboBox, QLabel, QLineEdit
+from PyQt5.QtWidgets  import  QWidget
+from PyQt5.QtWidgets  import  QComboBox, QLabel
 from PyQt5.QtWidgets  import  QCheckBox
 from PyQt5.QtWidgets  import  QVBoxLayout, QFormLayout
 from PyQt5.QtWidgets  import  QDoubleSpinBox, QTableWidget, QTableWidgetItem

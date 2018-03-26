@@ -1,5 +1,6 @@
-import numpy as np
+import os
 import math
+import numpy as np
 from OpenGL.GL       import *
 from OpenGL.GLU      import *
 from OpenGL.GLUT     import *
@@ -161,26 +162,33 @@ class OpenGLWidget(QOpenGLWidget):
             debugger.print('Home key', self.current_phase)
             self.update()
 
-    def save_movie(self):
+    def save_movie(self, filename):
         import imageio
+        debugger.print('save_movie', filename)
         if self.timer is not None:
             self.timer.stop()
-        writer = imageio.get_writer('movie.mp4', mode='I', fps=12)
+        writer  = imageio.get_writer(filename, mode='I', fps=24)
+        tmpdir  = os.path.dirname(filename)
+        tmpfile = os.path.join(tmpdir,'.snapshot.png')
+        debugger.print('save_movie', filename)
         for i in range(0,2*self.number_of_phases):
             self.timeoutHandler()
             image = self.grabFramebuffer()
-            image.save('snapshot.png')
-            image = imageio.imread('snapshot.png')
+            image.save(tmpfile)
+            image = imageio.imread(tmpfile)
             writer.append_data(image);
         writer.close()
+        os.remove(tmpfile)
         self.movie = True
         self.number_of_snapshots = 0
+        if self.timer is not None:
+            self.timer.start()
 
-    def snapshot(self):
+    def snapshot(self,filename):
         import imageio
-        debugger.print('snapshot')
+        debugger.print('snapshot', filename)
         image = self.grabFramebuffer()
-        image.save('snapshot.png')
+        image.save(filename)
 
     def translate(self,x,y):
         debugger.print('translate ',x,y)

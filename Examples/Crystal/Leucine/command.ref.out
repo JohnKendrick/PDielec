@@ -13,7 +13,7 @@ The optical permitivity tensor has been specified:
 Vmin is:     0.0 cm-1
 Vmax is:   300.0 cm-1
 All phonon modes will be considered
-The number of processors (4) has been determined automatically
+The number of processors has been set to 4 
 No projection of the dynamical matrix will be performed
 The charge neutrality of the Born atomic charges will not be enforced
  
@@ -256,8 +256,8 @@ Mode Frequency Intensity         Integrated Molar Absorption Epsilon_max   FWHM
  194  1473.76          0.358198                 1513.603246    192.7180      5.0
  195  1480.96          0.477752                 2018.789874    257.0403      5.0
  196  1509.74          1.986266                 8393.167263   1068.6512      5.0
- 197  1517.93         19.846551                83863.585282  10677.8433      5.0
- 198  1519.03          5.174165                21863.953669   2783.8050      5.0
+ 197  1517.93         19.846551                83863.585281  10677.8433      5.0
+ 198  1519.03          5.174165                21863.953670   2783.8050      5.0
  199  1521.11          2.780582                11749.626222   1496.0089      5.0
  200  1575.03         38.865226               164228.897521  20910.2727      5.0
  201  1593.50         13.405516                56646.346857   7212.4369      5.0

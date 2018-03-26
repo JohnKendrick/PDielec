@@ -11,9 +11,6 @@ Vmin is:   300.0 cm-1
 Vmax is:   800.0 cm-1
 All phonon modes will be considered
 The number of processors has been set to 4 
-
-Program used to perform the phonon calculation was: castep
-The file containing the output is: phonon.castep
 No projection of the dynamical matrix will be performed
 The charge neutrality of the Born atomic charges will not be enforced
  

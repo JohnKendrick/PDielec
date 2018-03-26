@@ -5,7 +5,7 @@ pdgui:
 	@../../../checkexcel results.ref.xlsx results.xlsx
 
 pdgui-regenerate:	
-	@echo "PDGui Calculating absorption for MgO from CASTEP...."
+	@echo "PDGui Regenerating absorption for MgO from CASTEP...."
 	@../../../pdgui castep phonon.castep results.xlsx -script script.py -exit
 	@mv results.xlsx results.ref.xlsx
 
