@@ -16,7 +16,7 @@ class OpenGLWidget(QOpenGLWidget):
     format = QSurfaceFormat()
     #format.setDepthBufferSize(24)
     #format.setStencilBufferSize(8)
-    #format.setSamples(6)
+    format.setSamples(6)
     format.setSwapBehavior(QSurfaceFormat.DoubleBuffer)
     QSurfaceFormat.setDefaultFormat(format)
 
@@ -85,20 +85,23 @@ class OpenGLWidget(QOpenGLWidget):
             self.current_phase = 1
             self.phase_direction = +1
         debugger.print('Timeout - phase', self.current_phase)
-        if self.movie and self.number_of_snapshots < 2*self.number_of_phases:
-            if self.number_of_snapshots == 0:
-                self.writer = imageio.get_writer('movie.mp4', mode='I', fps=12)
-            self.number_of_snapshots += 1
-            image = self.grabFramebuffer()
-            image.save('snapshot.png')
-            image = imageio.imread('snapshot.png')
-            self.writer.append_data(image);
-        else:
-            self.movie = False
-            self.number_of_snapshots = 0
-            if self.writer is not None:
-                self.writer.close();
-                self.writer = None
+#        if self.movie and self.number_of_snapshots < 2*self.number_of_phases:
+#            if self.number_of_snapshots == 0:
+#                print('Opening movie.mp4')
+#                self.writer = imageio.get_writer('movie.mp4', mode='I', fps=12)
+#            print('Snap shot',self.number_of_snapshots)
+#            self.number_of_snapshots += 1
+#            image = self.grabFramebuffer()
+#            image.save('snapshot.png')
+#            image = imageio.imread('snapshot.png')
+#            self.writer.append_data(image);
+#        else:
+#            self.movie = False
+#            self.number_of_snapshots = 0
+#            if self.writer is not None:
+#                print('Closing movie.mp4')
+#                self.writer.close();
+#                self.writer = None
         self.update()
 
 
@@ -159,17 +162,17 @@ class OpenGLWidget(QOpenGLWidget):
             self.update()
 
     def save_movie(self):
-#        import imageio
-#        if self.timer is not None:
-#            self.timer.stop()
-#        writer = imageio.get_writer('movie.mp4', mode='I', fps=12)
-#        for i in range(0,2*self.number_of_phases):
-#            self.timeoutHandler()
-#            image = self.grabFramebuffer()
-#            image.save('snapshot.png')
-#            image = imageio.imread('snapshot.png')
-#            writer.append_data(image);
-#        writer.close()
+        import imageio
+        if self.timer is not None:
+            self.timer.stop()
+        writer = imageio.get_writer('movie.mp4', mode='I', fps=12)
+        for i in range(0,2*self.number_of_phases):
+            self.timeoutHandler()
+            image = self.grabFramebuffer()
+            image.save('snapshot.png')
+            image = imageio.imread('snapshot.png')
+            writer.append_data(image);
+        writer.close()
         self.movie = True
         self.number_of_snapshots = 0
 

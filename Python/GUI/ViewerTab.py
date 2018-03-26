@@ -198,6 +198,29 @@ class ViewerTab(QWidget):
         label = QLabel('Settings', self)
         form.addRow(label,self.settingsTab)
         #
+        # Add buttons to save a png or movie
+        #
+        hbox = QHBoxLayout()
+        self.filename_le = QLineEdit(self)
+        self.filename_le.setToolTip('Give a file name in which to same the image')
+        self.filename_le.setText(self.image_filename)
+        self.png_filename_button = QPushButton('Save as png')
+        self.png_filename_button.clicked.connect(self._on_filename_button_clicked)
+        self.png_filename_button.setToolTip('Save the image as a png file with arrows')
+        self.mp4_filename_button = QPushButton('Save as mp4')
+        self.mp4_filename_button.clicked.connect(self._on_filename_button_clicked)
+        self.png_filename_button.setToolTip('Save the animation as an mp4 file')
+        self.gif_filename_button = QPushButton('Save as gif')
+        self.gif_filename_button.clicked.connect(self._on_filename_button_clicked)
+        self.gif_filename_button.setToolTip('Save the animation as a gif file')
+        label = QLabel('Image file name', self)
+        label.setToolTip('Give a file name in which to same the image')
+        hbox.addWidget(self.filename_le)
+        hbox.addWidget(self.png_filename_button)
+        hbox.addWidget(self.mp4_filename_button)
+        hbox.addWidget(self.gif_filename_button)
+        form.addRow(label, self.frequency_le)
+        #
         # Add the opengl figure to the bottom 
         #
         self.opengl_widget = OpenGLWidget(self, debug=debug)
@@ -207,6 +230,36 @@ class ViewerTab(QWidget):
         vbox.addLayout(form)
         # finalise the layout
         self.setLayout(vbox)
+
+    def on_filename_button_clicked(self,boolean):
+        debugger.print('on filename button clicked')
+        button = self.sender()
+        text = button.text()
+        #
+        # Check to see if the filename has been set
+        #
+        filename = self.filename_le.text()
+        extension = os.path.splitext(filename)
+        valid_extension = extension == '.mp4' or extension == '.avi' or extension == '.png' or extension == '.gif'
+        if filename == '' or not valid_extension:
+            debugger.print('Aborting on filename button clicked', filename)
+            debugger.print('Aborting on filename button clicked', valid_extension)
+            QMessageBox.about(self,'Image file name', 'The file name for the image is not valid '+filename)
+            return
+        #
+        # The filename will be opened in the directory of the output file which was read in mainTab
+        #
+        filename = os.join(self.notebook.directory, filename)
+        # 
+        # We need to remember the visualisation settings
+        #
+        old_plot_type = self.plot_type_index
+        if text == 'Save as png':
+            self.plot_type_index = 0
+        elif text == 'Save as mp4'
+        elif text == 'Save as gif':
+        self.plot_type_index = old_plot_type
+        return
 
     def on_coloured_element_clicked(self,boolean):
         debugger.print('on coloured elements clicked')
