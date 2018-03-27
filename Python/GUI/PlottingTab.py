@@ -16,11 +16,11 @@ from multiprocessing import cpu_count, Array
 import Python.Calculator as Calculator
 from PyQt5.QtWidgets  import  QPushButton, QWidget
 from PyQt5.QtWidgets  import  QComboBox, QLabel, QLineEdit
-from PyQt5.QtWidgets  import  QProgressBar
+from PyQt5.QtWidgets  import  QProgressBar, QApplication
 from PyQt5.QtWidgets  import  QVBoxLayout, QHBoxLayout, QFormLayout
 from PyQt5.QtWidgets  import  QSpinBox,QDoubleSpinBox
 from PyQt5.QtWidgets  import  QSizePolicy
-from PyQt5.QtCore     import  QCoreApplication
+from PyQt5.QtCore     import  QCoreApplication, Qt
 from Python.Constants import  wavenumber, amu, PI, avogadro_si, angstrom
 from Python.Constants import  average_masses, isotope_masses
 import ctypes
@@ -352,6 +352,7 @@ class PlottingTab(QWidget):
             return
         if filename is '':
             return
+        QApplication.setOverrideCursor(Qt.WaitCursor)
         # Assemble the settingsTab settings
         self.notebook.plottingCalculationRequired = False
         settings = self.notebook.settingsTab.settings
@@ -519,6 +520,7 @@ class PlottingTab(QWidget):
         if self.notebook.spreadsheet is not None:
             self.write_spreadSheet()
         self.dirty = False
+        QApplication.restoreOverrideCursor()
         QCoreApplication.processEvents()
 
     def write_spreadSheet(self):

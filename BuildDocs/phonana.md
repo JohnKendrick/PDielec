@@ -30,6 +30,7 @@ Bibliography: ./pdielec.bib
 
 
 # INTRODUCTION
+Phonana has been superceded by the pdgui program.  For the time being the details of algorithms used in the analysis section of pdgui will be kept here.  It is reccommended that users use the pdgui package program for any analysis.
 
 Phonana is a 'helper' program which uses the underlying modules of PDielec to read an output file from an MM or QM calculation of the phonon modes in a crystal.  The phonon modes are analysed and the percentage of molecular centre-of-mass and rigid body rotational motion in each mode is calculated.  Using the results of the analysis it is possible to differentiate between inter- and intra-molecular phonon modes (see for instance Jepsen et al [@Jepsen2007]).
 

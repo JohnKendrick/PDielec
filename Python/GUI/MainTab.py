@@ -3,7 +3,7 @@ import os.path
 from PyQt5.QtWidgets  import  QWidget
 from PyQt5.QtWidgets  import  QListWidget, QComboBox, QLabel, QLineEdit
 from PyQt5.QtWidgets  import  QFileDialog, QPushButton, QCheckBox
-from PyQt5.QtWidgets  import  QFormLayout
+from PyQt5.QtWidgets  import  QFormLayout, QApplication
 from PyQt5.QtWidgets  import  QVBoxLayout, QMessageBox
 from PyQt5.QtCore     import  Qt, QCoreApplication
 from Python.Utilities import  get_reader, Debug
@@ -212,6 +212,7 @@ class MainTab(QWidget):
             print('Need to choose the file and program properly')
             QMessageBox.about(self,'Processing output file','The filename for the output file to be processed is not correct: '+self.settings['Output file name'])
             return
+        QApplication.setOverrideCursor(Qt.WaitCursor)
         # Update the checkbox
         if self.settings['Hessian symmetrisation'] == 'crystal':
             self.hessian_symmetry_cb.setCheckState(Qt.Checked)
@@ -263,6 +264,7 @@ class MainTab(QWidget):
             self.notebook.viewerTab.refresh()
         else:
             debugger.print('notebook has no viewer tab yet')
+        QApplication.restoreOverrideCursor()
 
     def on_hessian_symmetry_changed(self):
         debugger.print('on hessian symmetry changed')
@@ -298,11 +300,13 @@ class MainTab(QWidget):
         # Open a file chooser
         #options = QFileDialog.Options()
         #options |= QFileDialog.DontUseNativeDialog
-        self.settings['Output file name'], _ = QFileDialog.getOpenFileName(self,'Open MM/QM Output file','','Castep (*.castep);;Abinit (*.out);;Gulp (*.gout);;VASP (OUTCAR*);; QE (*.dynG);; Crystal 14 (*.out);; Phonopy (OUTCAR*);; All Files (*)')
-        debugger.print('new file name', self.settings['Output file name'])
-        self.file_le.setText(self.settings['Output file name'])
-        self.directory = os.path.dirname(self.settings['Output file name'])
-        self.dirty = True
+        filename, _ = QFileDialog.getOpenFileName(self,'Open MM/QM Output file','','Castep (*.castep);;Abinit (*.out);;Gulp (*.gout);;VASP (OUTCAR*);; QE (*.dynG);; Crystal 14 (*.out);; Phonopy (OUTCAR*);; All Files (*)')
+        if filename != '':
+            self.settings['Output file name'] = filename
+            self.file_le.setText(self.settings['Output file name'])
+            debugger.print('new file name', self.settings['Output file name'])
+            self.directory = os.path.dirname(self.settings['Output file name'])
+            self.dirty = True
         return
  
     def on_file_le_changed(self, text):

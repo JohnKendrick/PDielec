@@ -20,13 +20,11 @@ The package is suited for the calculation of the complex, frequency dependent pe
 
 == Installation
 The pdielec package is written in Python and has been tested using Python 2.7 and Python 3.6.4 on Linux and in Windows 10.
-Auxilliary programs, pdgui, preader and phonana are also distributed.  
+Auxilliary programs, pdgui and preader are also distributed.  
 
 pdgui  provides a user friendly interface to PDielec.  Most options are available within the graphical user interface.
 
 preader summarises the outputs from the solid state packages as a csv file which can be simply read as a spread sheet.
-
-phonana analyses a single file and reports the percentages of internal and external motion in each mode.  It also has a basis 3D viewer which can be used to visualise a phonon mode.
 
 
 === Linux
@@ -48,52 +46,45 @@ This copies the commands and modules to the \~/bin directory which should be inc
 
 
 ==== Anaconda
-Anaconda is a Python package manager and is useful when trying out different versions of Python as there is a very convenient environment manager.  Anaconda can be installed as a user program and so root access to the computer is not needed.  The software can be downloaded from https://conda.io/miniconda.html or https://www.anaconda.com/download/.  Unless you are interested in the full package the miniconda installation should be sufficient for installing the rest of the modules needed for the PDielec installation.  The visualisation routines in phonana require mayavi.  If you are not intending using phonana, there is no need to install mayavi.
+Anaconda is a Python package manager and is useful when trying out different versions of Python as there is a very convenient environment manager.  Anaconda can be installed as a user program and so root access to the computer is not needed.  The software can be downloaded from https://conda.io/miniconda.html or https://www.anaconda.com/download/.  Unless you are interested in the full package the miniconda installation should be sufficient for installing the rest of the modules needed for the PDielec installation.  
 
 As an example here is an installation using a Python 2.7 environment.  Using 'pip install' means that the anaconda build system is bypassed.ld system in Anaconda normally makes sure only compatible software versions are installed, but this seems to cause problems in this case. 
 
 
    conda create  --name pdielec2 python=2
-   conda install --name pdielec2 mayavi
    conda install --name pdielec2 scipy
    source activate pdielec2
    pip install matplotlib
    pip install termcolor
    pip install xlsxwriter
    pip install pyyaml
+   pip install imageio
+   imageio_download_bin
 
 Here is an example of creating a Python 3 environment in Anaconda
 
    conda create  --name pdielec3 python=3
-   conda install --name pdielec3 -c conda-forge mayavi
    conda install --name pdielec3 -c conda-forge scipy
    source activate pdielec3
    pip install matplotlib
    pip install termcolor
    pip install xlsxwriter
    pip install pyyaml
+   pip install imageio
+   imageio_download_bin
 
 
 ==== Using pip (only needed if not using anaconda)
 If you are working in an environment with Python already installed then it is possible to use pip to add the additional modules that are needed.  If the user does not have administrator rights on the machine then the use of pip install --user will install the python modules in a user's directory.  If the user does have administrator rights and wants to install the packages for all users then the '--user' option can be omitted.
 
-  pip install --user numpy
-  pip install --user scipy
-  pip install --user matplotlib
-  pip install --user PyYaml
-  pip install --user XlsxWriter
-  pip install --user termcolor
-
-Additional modules are needed if you wish to use the viewer option in phonana.  The viewer makes use of the vtk and mayavi modules which often cause problems with dependencies.
-
-  pip install --user vtk
-  pip install --user pyvtk
-  pip install --user vtkinterface
-  pip install --user mayavi
-
-On some installations an error message appears on running phonana indicating that the vtkPython module cannot be found.  This can be solved by adding the vtk package installation directory.  For example;
-
-  export LD_LIBRARY_PATH=/usr/lib/python3.6/site-packages/vtk
+   pip install --user numpy
+   pip install --user scipy
+   pip install --user matplotlib
+   pip install --user PyYaml
+   pip install --user XlsxWriter
+   pip install --user termcolor
+   pip install imageio
+   imageio_download_bin
 
 
 === Windows
@@ -126,24 +117,26 @@ Anaconda is a Python package manager and is useful when trying out different ver
 As an example here is an installation using a Python 2.7 environment.  Using 'pip install' means that the anaconda build system is bypassed.ld system in Anaconda normally makes sure only compatible software versions are installed, but this seems to cause problems in this case.  
 
    conda create  --name pdielec2 python=2
-   conda install --name pdielec2 mayavi
    conda install --name pdielec2 scipy
    source activate pdielec2
    pip install matplotlib
    pip install termcolor
    pip install xlsxwriter
    pip install pyyaml
+   pip install imageio
+   imageio_download_bin
 
 Here is an example of creating a Python 3 environment in Anaconda
 
    conda create  --name pdielec3 python=3
-   conda install --name pdielec3 -c conda-forge mayavi
    conda install --name pdielec3 -c conda-forge scipy
    source activate pdielec3
    pip install matplotlib
    pip install termcolor
    pip install xlsxwriter
    pip install pyyaml
+   pip install imageio
+   imageio_download_bin
 
 
 ==== Install Python (only needed if not using anaconda)
@@ -156,19 +149,14 @@ Here is an example of creating a Python 3 environment in Anaconda
 
 Open a Git Bash Console and type;
 
- pip install numpy
- pip install scipy
- pip install matplotlib
- pip install PyYaml
- pip install XlsxWriter
- pip install termcolor
-
-Additional modules are needed if you wish to use the viewer option in phonana.  The viewer makes use of the vtk and mayavi modules which often cause problems with dependencies.
-
-  pip install --user vtk
-  pip install --user pyvtk
-  pip install --user vtkinterface
-  pip install --user mayavi
+  pip install numpy
+  pip install scipy
+  pip install matplotlib
+  pip install PyYaml
+  pip install XlsxWriter
+  pip install termcolor
+  pip install imageio
+  imageio_download_bin
 
 
 ==== Install PDielec
@@ -177,7 +165,7 @@ Open a Git Bash Console and type;
   cd Software
   git clone -c core.symlinks=true https://github.com/JohnKendrick/PDielec.git
 
-This should create a directory in Software called PDielec.  The "-c core.symlinks=true" means that the commands; pdielec, pdgui, phonana and preader are treated as windows symlinks to their equivalent .py file.
+This should create a directory in Software called PDielec.  The "-c core.symlinks=true" means that the commands; pdielec, pdgui and preader are treated as windows symlinks to their equivalent .py file.
 
 ==== Testing PDielec
 Open a Git Bash Console.  If you have installed Python using anaconda then you need to 'source activate' the environment you have established before typing;

@@ -3,7 +3,7 @@ import sys
 import os.path
 import numpy as np
 import Python.Calculator as Calculator
-from PyQt5.QtWidgets  import  QWidget
+from PyQt5.QtWidgets  import  QWidget, QApplication
 from PyQt5.QtWidgets  import  QComboBox, QLabel
 from PyQt5.QtWidgets  import  QCheckBox
 from PyQt5.QtWidgets  import  QVBoxLayout, QFormLayout
@@ -170,6 +170,7 @@ class SettingsTab(QWidget):
         # Only calculate if the reader is set
         if self.reader is None:
             return
+        QApplication.setOverrideCursor(Qt.WaitCursor)
         # Flag the fact that we need new calculations and new analysis
         self.notebook.plottingCalculationRequired = True
         self.notebook.analysisCalculationRequired = True
@@ -235,6 +236,7 @@ class SettingsTab(QWidget):
         if self.notebook.spreadsheet is not None:
             self.write_spreadsheet()
         self.dirty = False
+        QApplication.restoreOverrideCursor()
         QCoreApplication.processEvents()
 
     def write_spreadsheet(self):

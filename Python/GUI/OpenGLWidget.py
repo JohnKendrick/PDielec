@@ -28,7 +28,7 @@ class OpenGLWidget(QOpenGLWidget):
         self.debug = debug
         self.viewerTab = parent
         self.notebook = parent.notebook
-        self.setMinimumSize(640, 680)
+        self.setMinimumSize(640, 672)
         self.lightingOn = True
         self.diffuseMaterialFactor  = 0.9
         self.ambientMaterialFactor  = 0.4
@@ -86,23 +86,6 @@ class OpenGLWidget(QOpenGLWidget):
             self.current_phase = 1
             self.phase_direction = +1
         debugger.print('Timeout - phase', self.current_phase)
-#        if self.movie and self.number_of_snapshots < 2*self.number_of_phases:
-#            if self.number_of_snapshots == 0:
-#                print('Opening movie.mp4')
-#                self.writer = imageio.get_writer('movie.mp4', mode='I', fps=12)
-#            print('Snap shot',self.number_of_snapshots)
-#            self.number_of_snapshots += 1
-#            image = self.grabFramebuffer()
-#            image.save('snapshot.png')
-#            image = imageio.imread('snapshot.png')
-#            self.writer.append_data(image);
-#        else:
-#            self.movie = False
-#            self.number_of_snapshots = 0
-#            if self.writer is not None:
-#                print('Closing movie.mp4')
-#                self.writer.close();
-#                self.writer = None
         self.update()
 
 
@@ -174,6 +157,15 @@ class OpenGLWidget(QOpenGLWidget):
         for i in range(0,2*self.number_of_phases):
             self.timeoutHandler()
             image = self.grabFramebuffer()
+            x = image.width()
+            y = image.height()
+            modx = x%16
+            mody = y%16
+            startx = int(modx / 2)
+            starty = int(mody / 2)
+            x = x - modx + startx
+            y = y - mody + starty
+            image = image.copy(startx, starty, x,y)
             image.save(tmpfile)
             image = imageio.imread(tmpfile)
             writer.append_data(image);
@@ -192,6 +184,7 @@ class OpenGLWidget(QOpenGLWidget):
 
     def translate(self,x,y):
         debugger.print('translate ',x,y)
+        self.makeCurrent()
         glTranslatef(x, y, 0.0)
             
     def wheelEvent(self, event):

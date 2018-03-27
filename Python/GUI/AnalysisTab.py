@@ -1,7 +1,7 @@
 import math
 import numpy as np
 import Python.Calculator as Calculator
-from PyQt5.QtWidgets  import  QWidget
+from PyQt5.QtWidgets  import  QWidget, QApplication
 from PyQt5.QtWidgets  import  QComboBox, QLabel, QLineEdit
 from PyQt5.QtWidgets  import  QVBoxLayout, QHBoxLayout, QFormLayout
 from PyQt5.QtWidgets  import  QSpinBox, QDoubleSpinBox
@@ -313,6 +313,7 @@ class AnalysisTab(QWidget):
             return
         if filename is '':
             return
+        QApplication.setOverrideCursor(Qt.WaitCursor)
         # Assemble the settingsTab settings
         settings = self.notebook.settingsTab.settings
         eckart = settings['Eckart flag']
@@ -388,6 +389,7 @@ class AnalysisTab(QWidget):
             self.write_spreadSheet()
         # Flag that a recalculation is not needed
         self.dirty = False
+        QApplication.restoreOverrideCursor()
 
     def plot(self):
          if self.reader is None:

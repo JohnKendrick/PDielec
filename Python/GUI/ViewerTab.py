@@ -6,7 +6,7 @@ from PyQt5.QtWidgets         import  QPushButton, QWidget
 from PyQt5.QtWidgets         import  QComboBox, QLabel, QLineEdit
 from PyQt5.QtWidgets         import  QVBoxLayout, QHBoxLayout, QFormLayout
 from PyQt5.QtWidgets         import  QSpinBox, QTabWidget, QDoubleSpinBox
-from PyQt5.QtWidgets         import  QSizePolicy, QColorDialog, QMessageBox
+from PyQt5.QtWidgets         import  QSizePolicy, QColorDialog, QMessageBox, QApplication
 from PyQt5.QtCore            import  Qt
 from Python.Constants        import  wavenumber, amu, PI, avogadro_si, angstrom
 from Python.Constants        import  elemental_colours
@@ -267,6 +267,7 @@ class ViewerTab(QWidget):
         # We need to remember the visualisation settings
         #
         old_plot_type = self.plot_type_index
+        QApplication.setOverrideCursor(Qt.WaitCursor)
         if extension == '.png':
             self.opengl_widget.snapshot(filename)
         elif extension == '.avi':
@@ -276,6 +277,7 @@ class ViewerTab(QWidget):
         elif extension == '.gif':
             self.opengl_widget.save_movie(filename)
         self.plot_type_index = old_plot_type
+        QApplication.restoreOverrideCursor()
         return
 
     def on_coloured_element_clicked(self,boolean):
@@ -377,6 +379,7 @@ class ViewerTab(QWidget):
             return
         if filename is '':
             return
+        QApplication.setOverrideCursor(Qt.WaitCursor)
         # Assemble the settingsTab settings
         settings = self.notebook.settingsTab.settings
         self.frequencies_cm1 = self.notebook.settingsTab.frequencies_cm1
@@ -422,6 +425,7 @@ class ViewerTab(QWidget):
         self.opengl_widget.setRotationCentre(self.unit_cell.calculateCentreOfMass() )
         self.opengl_widget.setImageSize()
         self.dirty = False
+        QApplication.restoreOverrideCursor()
         return
 
     def setColour(self, element, colour):
@@ -496,6 +500,7 @@ class ViewerTab(QWidget):
             debugger.print('refresh aborted',self.dirty,force)
             return
         debugger.print('refresh widget',force)
+        QApplication.setOverrideCursor(Qt.WaitCursor)
         #
         # Block signals during refresh
         # 
@@ -563,5 +568,6 @@ class ViewerTab(QWidget):
             w.blockSignals(False)
         self.calculate()
         self.plot()
+        QApplication.restoreOverrideCursor()
         return
 

@@ -44,16 +44,26 @@ or
 
     pdgui vasp OUTCAR
 
+If a spreadsheet of results is required the name of the spreadsheet can be provided on the command line.
+
+    pdgui vasp OUTCAR results.xlsx
+    
+The spreadsheet name must have an .xlsx extension.
+
 The package requires the PyQt5 library.
 After running the program the user sees a notebook interface with four tabs.
 
-The *Main Tab* allows the user to specify the program and filename which are to be anaylsed
+The *Main Tab* allows the user to specify the program and filename which are to be anaylsed.  It is also possible to specify here the spreadsheet name of results are going to be saved.
 
 The *Settings Tab* is used for changing the settings within the package
 
 The *Scenario Tab* specifies the material properties used to define the effective medium from which the  absorption characteristic are calculated.  This tab can also be used to change the algorithms used to calculate the effective medium.
 
 The *Plotting Tab* shows the absorption or permittivity as a function of frequency.
+
+The *Analysis Tab* shows the decomposition of the normal modes into molecular components.
+
+The *Visualisation Tab* displays the normal modes as either arrows showing the atomic displacement or as an animation.
 
 
 ## Main tab
@@ -65,7 +75,9 @@ The *Main Tab* is used to pick the MM/QM package and the output file which will 
 ~
 [img-mainTab]: Figures/MainTab.png { width:80%; }
 
-The QM/MM program can be chosen from the dropdown list.  The output file name can be input into the text box below it.  Any entry in this *Output file name* text box will be read when the user types an 'Enter' command.  If the file is not valid a file chooser will pop-up and the user can select a file from that.
+The QM/MM program can be chosen from the dropdown list.  The output file name can be input into the text box below it.  Any entry in this *Output file name* text box will be read when the 'Read the output file and start the calculation' button is pressed.  If the file is not valid a file chooser will pop-up and the user can select a file from that.
+
+If an Excel spreadsheet file name given, it must have the extensions .xlsx.  The spreadsheet is written when the program exits.
 
 Once the file has been specified and read the frequencies found in the calculation file are reported in the output text box.
 
@@ -83,7 +95,7 @@ The Eckart conditions control whether 3 modes at zero frequency due to translati
 
 There is an option to set the sum of the Born charge matrices to zero.  By default this is not applied.  
 
-The atomic masses can be specified in a variety of way.  They can be chosen from;
+The atomic masses can be specified in a variety of ways.  They can be chosen from;
 . The average natural abundance
 . The masses used by the QM/MM program
 . The isotopic mass of the most abundant isotope
@@ -98,7 +110,7 @@ The output table at the bottom of the tab shows the calculated frequencies and t
 
 ## Scenario Tabs
 
-There can be more than one *Scenario Tab".  Each one specifies a particular material, method or particle shape which will be used in the *Plotting Tab*.
+There can be more than one *Scenario Tab*.  Each one specifies a particular material, method or particle shape which will be used in the *Plotting Tab*.
 
 ~ Figure { #fig-scenarioTab; caption: "The Scenario Tab"; page-align:inplace }
 ![img-scenarioTab]
@@ -109,9 +121,9 @@ The support matrix into which the active dielectric material is dispersed can be
 
 The amount of dielectric material to be considered can be entered either as mass fraction (in percent) or as a volume fraction (in percent).  If the matrix support density is changed the calculated mass fraction will be updated.  It is assumed that the volume fraction has precedence.
 
-The calculation of the effective medium can be performed using a variety of methods which can be chosen from the *Method* drop down menu.  If the *Mie* method is chosen the user can enter the particles radius (microns).  The *Particle sigma* specifies the width of the LogNormal distribution.  If the width is 0.0 no sampling of the distribution is performed.
+The calculation of the effective medium can be performed using a variety of methods which can be chosen from the *Method* drop down menu.  If the *Mie* method is chosen the user can enter the particles radius (microns).  The *Particle sigma* specifies the width of a log-normal distribution.  If the width is 0.0 no sampling of the distribution is performed.
 
-For effective medium theories other than the Mie method the particle shape can be specfied using the *Shape* pull down menu.  Possible shapes are *Sphere*, *Needle*, *Plate* and *Ellipsoid*.  For the cases of *Needle* and *Ellipsoid* the unique direction is specifed by a direction [abc] in lattice units.  In the case of *Plate* the unique direction is specifies as the normal to a plane (hkl) in reciprical lattice units.  If an *Ellipsood* shape is used the eccentricy factor can be specified in the *Ellipsoid a/b eccentricity* text box.
+For effective medium theories other than the Mie method the particle shape can be specfied using the *Shape* pull down menu.  Possible shapes are *Sphere*, *Needle*, *Plate* and *Ellipsoid*.  For the cases of *Needle* and *Ellipsoid* the unique direction is specifed by a direction \[abc\] in lattice units.  In the case of *Plate* the unique direction is specifies as the normal to a plane (hkl) in reciprical lattice units.  If an *Ellipsood* shape is used the eccentricy factor can be specified in the *Ellipsoid a/b eccentricity* text box.
 
 The plot in the *Plotting Tab* has a legend and the description used in the legend for each scenario can be set by filling out the text box associated with the *Scenario legend*.
 
@@ -133,14 +145,38 @@ By default the calculation uses moles of unit cells to calculation the molar abs
 
 The title of the plot can be supplied by entering it into the *Plot title* text box and the frequency units used for the plot can also be changed from *wavenumber* to *THz*.
 
-The molar absorption, the absorption and the real or imaginary permittivity can be plotted.  Once a plot has been requested the calculation progress is shown in the progress bar.  Some settings can be changed with the whole plot being recalculated.
+The molar absorption, the absorption and the real or imaginary permittivity can be plotted.  Once a plot has been requested the calculation progress is shown in the progress bar.  Some settings can be changed without the whole plot being recalculated.
+
+## Analysis tab
+
+The *analysis tab* shows a breakdown of the phonon modes into molecular components.  The molecular structure of the unit cell is determined by the covalent radii of the atoms.  These can be speficied individually if needed.  The *analysis tab* shows the number of molecules that have been found in the analysis.
+
+~ Figure { #fig-AnalysisTab; caption: "The Analysis Tab"; page-align:inplace }
+![img-AnalysisTab]
+~
+[img-AnalysisTab]: Figures/AnalysisTab.png { width:80%; }
+
+The bar graph shows a break down of each normal mode in the chosen frequency range into either internal and external contributions or into molecular components.  The atom sizes and the molecular composition of the unit cell is displayed in the *3D viewer tab*
+
+## 3D Viewer tab
+
+The *3d viewer tab* shows the unit cell of the system using the molecular information and atomic sizes from the *analysis tab*.
+
+The atomic displacement of each phonon can either be shown as arrows or as an animation.  The views and animations can be recorded in  .png and .mp4 files respectively.  If a .gif file is specified the animation is recorded but with reduced numbers of colours.
+
+~ Figure { #fig-ViewerTab; caption: "The 3D Viewer Tab"; page-align:inplace }
+![img-ViewerTab]
+~
+[img-ViewerTab]: Figures/ViewerTab.png { width:80%; }
+
+As well as being able to change the phonon mode being analysed.  The colours and many settings in the visualiser can be adjusted from the settings tab.
 
 
 # INSTALLATION
 
 pdgui requires the PyQT5 libraries in addition to the libraries used by PDielec, these will be installed automatically by matplotlib.
 
-Installation on Microsoft Windows 10 was succesful using Anaconda with Python 3.6
+Installation on Microsoft Windows 10 was successful using Anaconda with Python 3.6
 
     conda create -n pdielec36 python=3.6
     conda activate pdielec36
@@ -150,7 +186,12 @@ Installation on Microsoft Windows 10 was succesful using Anaconda with Python 3.
     pip install termcolor
     pip install xlsxwriter
     pip install pyyaml
+    pip install imageio
+    
+The imageio library is used to create the image snapshots and movies from the *3d viewer tab*.  Its use requires the installation of some binary files, if they haven't already been installed.  The following command will make sure these have been downloaded.
 
+    imageio_download_bin
+    
 Installation on Linux requires pyqt5 modules.  If they have not been installed already with maplotlib.  If you don't have sudo access you can install the module in your user directory;
 
 
