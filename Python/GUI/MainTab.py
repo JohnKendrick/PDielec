@@ -180,6 +180,8 @@ class MainTab(QWidget):
             sp.writeNextRow(ifreq, col=1, check=1)
             
     def read_output_file(self):
+        if self.settings['Output file name'] == '':
+            return
         if not os.path.isfile(self.settings['Output file name']):
             QMessageBox.about(self,'Processing output file','The filename for the output file to be processed is not correct: '+self.settings['Output file name'])
             return
