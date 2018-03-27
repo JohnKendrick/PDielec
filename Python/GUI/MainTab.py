@@ -242,25 +242,25 @@ class MainTab(QWidget):
             debugger.print('about to refresh scenarios')
             debugger.print('notebook has {} scenarios'.format(len(self.notebook.scenarios)))
             for tab in self.notebook.scenarios:
-                tab.refresh(True)
+                tab.refresh()
         else:
             debugger.print('notebook has no scenarios yet')
         # Update the plotting tab
         if hasattr(self.notebook, 'plottingTab'):
             debugger.print('about to refresh plottingtab')
-            self.notebook.plottingTab.refresh(True)
+            self.notebook.plottingTab.refresh()
         else:
             debugger.print('notebook has no plotting tab yet')
         # Update the analysis tab
         if hasattr(self.notebook, 'analysisTab'):
             debugger.print('about to refresh analysisTab')
-            self.notebook.analysisTab.refresh(True)
+            self.notebook.analysisTab.refresh()
         else:
             debugger.print('notebook has no analysis tab yet')
         # Update the viewer tab
         if hasattr(self.notebook, 'viewerTab'):
             debugger.print('about to refresh viewerTab')
-            self.notebook.viewerTab.refresh(True)
+            self.notebook.viewerTab.refresh()
         else:
             debugger.print('notebook has no viewer tab yet')
 
@@ -296,11 +296,12 @@ class MainTab(QWidget):
         # Does the file exist?
         self.settings['Output file name'] = self.file_le.text()
         # Open a file chooser
-        options = QFileDialog.Options()
-        options |= QFileDialog.DontUseNativeDialog
-        self.settings['Output file name'], _ = QFileDialog.getOpenFileName(self,'QFileDialog.getOpenFileName()', '','Castep (*.castep);;Abinit (*.out);;Gulp (*.gout);;VASP (OUTCAR*);; QE (*.dynG);; Crystal 14 *.out;; Phonopy (OUTCAR*);; All Files (*)', options=options)
+        #options = QFileDialog.Options()
+        #options |= QFileDialog.DontUseNativeDialog
+        self.settings['Output file name'], _ = QFileDialog.getOpenFileName(self,'Open MM/QM Output file','','Castep (*.castep);;Abinit (*.out);;Gulp (*.gout);;VASP (OUTCAR*);; QE (*.dynG);; Crystal 14 (*.out);; Phonopy (OUTCAR*);; All Files (*)')
         debugger.print('new file name', self.settings['Output file name'])
         self.file_le.setText(self.settings['Output file name'])
+        self.directory = os.path.dirname(self.settings['Output file name'])
         self.dirty = True
         return
  
