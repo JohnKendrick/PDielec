@@ -59,7 +59,6 @@ As an example here is an installation using a Python 2.7 environment.  Using 'pi
    pip install xlsxwriter
    pip install pyyaml
    pip install imageio
-   imageio_download_bin
 
 Here is an example of creating a Python 3 environment in Anaconda
 
@@ -71,7 +70,6 @@ Here is an example of creating a Python 3 environment in Anaconda
    pip install xlsxwriter
    pip install pyyaml
    pip install imageio
-   imageio_download_bin
 
 
 ==== Using pip (only needed if not using anaconda)
@@ -84,7 +82,6 @@ If you are working in an environment with Python already installed then it is po
    pip install --user XlsxWriter
    pip install --user termcolor
    pip install imageio
-   imageio_download_bin
 
 
 === Windows
@@ -124,7 +121,6 @@ As an example here is an installation using a Python 2.7 environment.  Using 'pi
    pip install xlsxwriter
    pip install pyyaml
    pip install imageio
-   imageio_download_bin
 
 Here is an example of creating a Python 3 environment in Anaconda
 
@@ -136,7 +132,6 @@ Here is an example of creating a Python 3 environment in Anaconda
    pip install xlsxwriter
    pip install pyyaml
    pip install imageio
-   imageio_download_bin
 
 
 ==== Install Python (only needed if not using anaconda)
@@ -156,7 +151,6 @@ Open a Git Bash Console and type;
   pip install XlsxWriter
   pip install termcolor
   pip install imageio
-  imageio_download_bin
 
 
 ==== Install PDielec
