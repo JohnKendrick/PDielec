@@ -10,7 +10,6 @@ from PyQt5.QtCore    import QTimer
 from PyQt5.QtGui     import QSurfaceFormat
 from Python.Constants import PI
 from Python.Utilities import Debug
-import imageio
 
 class OpenGLWidget(QOpenGLWidget):
 
@@ -58,8 +57,6 @@ class OpenGLWidget(QOpenGLWidget):
         self.background_colour      = None
         
         self.show_full_screen       = False
-        self.movie                  = False
-        self.number_of_snapshots    = 0
         self.writer                 = None
         self.rotation_centre         = np.array( [0.0, 0.0, 0.0] )
         self.matrix =  np.eye( 4, dtype=np.float32)
@@ -147,6 +144,7 @@ class OpenGLWidget(QOpenGLWidget):
 
     def save_movie(self, filename):
         import imageio
+        imageio.plugins.ffmpeg.download()
         debugger.print('save_movie', filename)
         if self.timer is not None:
             self.timer.stop()
@@ -165,19 +163,17 @@ class OpenGLWidget(QOpenGLWidget):
             starty = int(mody / 2)
             x = x - modx + startx
             y = y - mody + starty
+            # The image is cropped so that the height and widths are multiples of 16
             image = image.copy(startx, starty, x,y)
             image.save(tmpfile)
             image = imageio.imread(tmpfile)
             writer.append_data(image);
         writer.close()
         os.remove(tmpfile)
-        self.movie = True
-        self.number_of_snapshots = 0
         if self.timer is not None:
             self.timer.start()
 
     def snapshot(self,filename):
-        import imageio
         debugger.print('snapshot', filename)
         image = self.grabFramebuffer()
         image.save(filename)
