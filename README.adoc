@@ -57,6 +57,7 @@ As an example here is an installation using a Python 2.7 environment.  Using 'pi
    pip install matplotlib
    pip install termcolor
    pip install xlsxwriter
+   pip install openpyxl
    pip install pyyaml
    pip install imageio
 
@@ -68,6 +69,7 @@ Here is an example of creating a Python 3 environment in Anaconda
    pip install matplotlib
    pip install termcolor
    pip install xlsxwriter
+   pip install openpyxl
    pip install pyyaml
    pip install imageio
 
@@ -80,6 +82,7 @@ If you are working in an environment with Python already installed then it is po
    pip install --user matplotlib
    pip install --user PyYaml
    pip install --user XlsxWriter
+   pip install --user openpyxl
    pip install --user termcolor
    pip install imageio
 
@@ -119,6 +122,7 @@ As an example here is an installation using a Python 2.7 environment.  Using 'pi
    pip install matplotlib
    pip install termcolor
    pip install xlsxwriter
+   pip install openpyxl
    pip install pyyaml
    pip install imageio
 
@@ -130,6 +134,7 @@ Here is an example of creating a Python 3 environment in Anaconda
    pip install matplotlib
    pip install termcolor
    pip install xlsxwriter
+   pip install openpyxl
    pip install pyyaml
    pip install imageio
 
@@ -149,6 +154,7 @@ Open a Git Bash Console and type;
   pip install matplotlib
   pip install PyYaml
   pip install XlsxWriter
+  pip install openpyxl
   pip install termcolor
   pip install imageio
 
