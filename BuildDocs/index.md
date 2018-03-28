@@ -52,7 +52,8 @@ A couple of supporting commands have been developed with use the same underlying
 ~ TexOnly
 ~~ Snippet
 \noindent \href{preader.pdf}{"preader"} reads a list of input files and summarises the results in output which can be written to a csv file.
-\noindent \href{phonana.pdf}{"phonana"} reads an output file and calculates the contribution of molecular centre of mass and rotation to each phonon mode
+\noindent \href{pdgui.pdf}{"pdgui"} provides a gui interface to the pdielec package
+\noindent \href{phonana.pdf}{"phonana"} Has been replaced by pdgui.  It reads an output file and calculates the contribution of molecular centre of mass and rotation to each phonon mode
 ~~
 ~
 
@@ -60,7 +61,9 @@ A couple of supporting commands have been developed with use the same underlying
 <div>
 <a href="preader.html">preader</a>
 reads a list of input files and summarises the results in output which can be written to a csv file.
+<a href="pdgui.html">pdgui</a>
+provides a gui interface to the pdielec package
 <a href="phonana.html">phonana</a>
-reads an output file and calculates the contribution of molecular centre of mass and rotation to each phonon mode
+Has been replaced by pdgui.  It reads an output file and calculates the contribution of molecular centre of mass and rotation to each phonon mode
 </div>
 ~
