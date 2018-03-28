@@ -3,7 +3,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "PDGui"
-#define MyAppVersion "2.11"
+#define MyAppVersion "4.0"
 #define MyAppPublisher "John Kendrick and Andrew Burnett"
 #define MyAppURL "https://github.com/JohnKendrick/PDielec"
 #define MyAppExeName "pdgui.exe"
