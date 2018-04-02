@@ -12,7 +12,6 @@ from Python.Constants        import  wavenumber, amu, PI, avogadro_si, angstrom
 from Python.Constants        import  elemental_colours
 # Import plotting requirements
 from Python.Utilities        import Debug
-from Python.Plotter          import print_strings, print_reals
 from Python.GUI.OpenGLWidget import OpenGLWidget
 
 class ViewerTab(QWidget):
@@ -22,7 +21,6 @@ class ViewerTab(QWidget):
         debugger = Debug(debug,'ViewerTab')
         self.debug = debug
         self.dirty = True
-        self.subplot = None
         self.setWindowTitle('Viewer')
         self.selected_mode = 0
         self.settings = {}
@@ -570,4 +568,3 @@ class ViewerTab(QWidget):
         self.plot()
         QApplication.restoreOverrideCursor()
         return
-
