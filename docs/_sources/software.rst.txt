@@ -3,9 +3,9 @@
 .. contents::
    :local:
 
-========
+===================
 Software components
-========
+===================
 
 There are three programs within the PDielec package.  *Pdielec* and *preader* are command line programs and *PDGui* is a graphical interface to the features of the PDielec package.
 
@@ -361,7 +361,7 @@ If a csv output file is requested the file will contain the command used to perf
 
 
 PReader
-======
+=======
 
 preader is a 'helper' program which uses the underlying modules of PDielec to read output files and summarise the results of various MM/QM packages.  The program can be used to perform some straightforward calculations.  For instance projection of any remaining centre of mass motion of the crystal can be performed to make sure that there are three zero frequencies.  Also the masses used in the calculation of the dynamical matrix can be altered.
 Unlike PDielec and PDGui it is not necessary to have performed a full calculation of the dynamical matrix.  In the majority of cases preader will read geometry optimisation runs.

@@ -57,7 +57,7 @@ Here is an example of creating a Python 3 environment in Anaconda::
 
 
 Pip (only needed if not using Anaconda)
----------
+---------------------------------------
 
 If you are working in an environment with Python already installed then it is possible to use pip to add the additional modules that are needed.  If the user does not have administrator rights on the machine then the use of pip install --user will install the python modules in a user's directory.  If the user does have administrator rights and wants to install the packages for all users then the '--user' option can be omitted.::
 
@@ -101,6 +101,7 @@ First of all install a Windows version of git from www.git-scm.com. A 64 bit ver
 * Line endings are best left to the default setting of Windows-style for checkout and Unix-style for check-in.
 * The Console I use is the MinTTY console it has a larger scrolling buffer than the Windows console.
 * Under the "Configuring extra options" I leave everything as the default.
+
 I have seen a few hickups in the installation of Git.  Occasionally I have to do the installation twice and occasionally I am left with the Setup Installing window indicating that I should wait, when in fact the installation has completed.  When this happens I kill the setup process with the task manager
 
 Install make
@@ -144,7 +145,7 @@ Here is an example of creating a Python 3 environment in Anaconda::
 
 
 Install Python (only needed if not using anaconda)
-..............
+..................................................
 
 * From https://www.python.org/downloads/windows/ download and run the Windows x86-64 executable installer for the latest Python 3.6 version
 * Uncheck install launcher for all users

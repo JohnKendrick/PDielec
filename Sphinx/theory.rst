@@ -265,7 +265,6 @@ The depolarisation matrix is determined from the shape of the crystallite.  For 
 
 .. table:: Definitions used for the depolarisation tensor
    :name: tab-depolarisation
-   :widths: auto
    :align: left
 
    +-----------+---------------------------------------------------------------------------------------------------------------------------------------------+

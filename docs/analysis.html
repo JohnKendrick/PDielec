@@ -58,7 +58,7 @@
 <div class="section" id="phonon-analysis">
 <h1><a class="toc-backref" href="#id5">Phonon Analysis</a><a class="headerlink" href="#phonon-analysis" title="Permalink to this headline">¶</a></h1>
 <p>PDGui performs an analysis of a phonon mode in terms of the percentage
-of molecular centre-of-mass and rigid body rotational motion in each mode.  Using the results of the analysis it is possible to differentiate between inter- and intra-molecular phonon modes (see for instance Jepsen et al [&#64;Jepsen2007]).  In addition, for those systems with more than one formula unit in the unit cell it is possible to break down the contribution of each molecule to a particular phonon mode.</p>
+of molecular centre-of-mass and rigid body rotational motion in each mode.  Using the results of the analysis it is possible to differentiate between inter- and intra-molecular phonon modes (see for instance Jepsen et al <a class="reference internal" href="zreferences.html#jepsen2007" id="id1">[26]</a>).  In addition, for those systems with more than one formula unit in the unit cell it is possible to break down the contribution of each molecule to a particular phonon mode.</p>
 <div class="section" id="molecular-systems">
 <h2><a class="toc-backref" href="#id6">Molecular Systems</a><a class="headerlink" href="#molecular-systems" title="Permalink to this headline">¶</a></h2>
 <p>It is common in molecular calculations of
@@ -102,7 +102,7 @@ molecule in the unit cell, which will project out the motion of
 each <em>molecular</em> translational and rotational degree of freedom. Such projection operators will
 be used to separate the external from the internal modes and there will therefore
 be a projection operator for each external mode in the system.</p>
-<p>Hug and Haesler have shown [&#64;Hug2005c] that the vibrational kinetic energy can be decomposed into single centre atomic contributions by considering the kinetic energy, <span class="math notranslate">\(T_p\)</span>, of a normal mode <span class="math notranslate">\(Q_p\)</span>;</p>
+<p>Hug and Haesler have shown <a class="reference internal" href="zreferences.html#hug2005c" id="id2">[22]</a> that the vibrational kinetic energy can be decomposed into single centre atomic contributions by considering the kinetic energy, <span class="math notranslate">\(T_p\)</span>, of a normal mode <span class="math notranslate">\(Q_p\)</span>;</p>
 <div class="math notranslate" id="equation-eq-kep">
 <span class="eqno">(63)<a class="headerlink" href="#equation-eq-kep" title="Permalink to this equation">¶</a></span>\[T_p = \frac{1}{2} \dot{Q_p} =
 \sum\limits_{a}{T_{a,p}} =
@@ -118,7 +118,7 @@ Derivation of this expression has made use of the following
 relationship between the mass weighted normal mode;</p>
 <div class="math notranslate" id="equation-eq-kinetic-energy">
 <span class="eqno">(64)<a class="headerlink" href="#equation-eq-kinetic-energy" title="Permalink to this equation">¶</a></span>\[\sqrt{ m_a } \fieldbf{\Delta x}_{a,p} = \fieldbf{L}_{a,p} Q_p\]</div>
-<p>As proposed by Hug and Haesler [&#64;Hug2005c], since the kinetic energy can be expressed as
+<p>As proposed by Hug and Haesler <a class="reference internal" href="zreferences.html#hug2005c" id="id3">[22]</a>, since the kinetic energy can be expressed as
 atomic contributions, consideration of the virial theorem indicates that
 this is true also for the potential energy. Using mass weighted
 Cartesian coordinates for convenience, an analysis of the phonon modes
@@ -159,9 +159,9 @@ molecules in the unit cell according to;</p>
 <div class="section" id="isoleucine">
 <h2><a class="toc-backref" href="#id10">Isoleucine</a><a class="headerlink" href="#isoleucine" title="Permalink to this headline">¶</a></h2>
 <p>The example of a calculation on isoleucine using Castep is available in the Examples/Castep/Isoleucine directory of the distribution.  The analysis was performed using PDGui.
-The program first finds the four molecules of isoleucine in the unit cell of the crystal structure.  The ordering of the atoms at this point is different to the ordering in the original cell and in the QM calculation.  The visualiser shows the atoms in the new positions.  These will not be the same as in the original calculation.  The molecules and their centres of mass are summarised in <a class="reference internal" href="#tab-isoleucine-mols"><span class="std std-numref">Table 2</span></a>.</p>
+The program first finds the four molecules of isoleucine in the unit cell of the crystal structure.  The ordering of the atoms at this point is different to the ordering in the original cell and in the QM calculation.  The visualiser shows the atoms in the new positions.  These will not be the same as in the original calculation.  The molecules and their centres of mass are summarised in <a class="reference internal" href="#tab-isoleucine-mols"><span class="std std-numref">Table 3</span></a>.</p>
 <table border="1" class="styled-table docutils align-center" id="tab-isoleucine-mols">
-<caption><span class="caption-number">Table 2 </span><span class="caption-text">Molecular constituents of the isoleucine unit cell (centres-of-masse are in fractional coordinates)</span><a class="headerlink" href="#tab-isoleucine-mols" title="Permalink to this table">¶</a></caption>
+<caption><span class="caption-number">Table 3 </span><span class="caption-text">Molecular constituents of the isoleucine unit cell (centres-of-masse are in fractional coordinates)</span><a class="headerlink" href="#tab-isoleucine-mols" title="Permalink to this table">¶</a></caption>
 <colgroup>
 <col width="13%" />
 <col width="11%" />
@@ -204,9 +204,9 @@ The program first finds the four molecules of isoleucine in the unit cell of the
 </tr>
 </tbody>
 </table>
-<p><a class="reference internal" href="#tab-isoleucine-results"><span class="std std-numref">Table 3</span></a> shows that results of the analyis of the phonon modes with frequencies below 100 cm<sup>-1</sup>.  The first 3 modes should have zero frequency as they are the translationally invariant modes of the lattice.  The negative number shown here actually indicates that the mode has an imaginary frequency.  As can be see under the column %col-cme they are almost completely associated with molecular centre-of-mass motion.  This is true also of the lowest non-zero frequency at 32,81 cm<sup>-1</sup> and to some extent of the next mode at 39.73 cm<sup>-1</sup>.  Although for this latter mode there is considerable contribution from rigid-body rotational motion (see the %mol-rot column).  As the frequency of the phonon mode increases the contribution from rigid-body motion generally decreases and contribution from vibrational mode (see the %vib column) increases,  The total contribution from molecular motion is summarised in the last four columns.</p>
+<p><a class="reference internal" href="#tab-isoleucine-results"><span class="std std-numref">Table 4</span></a> shows that results of the analyis of the phonon modes with frequencies below 100 cm<sup>-1</sup>.  The first 3 modes should have zero frequency as they are the translationally invariant modes of the lattice.  The negative number shown here actually indicates that the mode has an imaginary frequency.  As can be see under the column %col-cme they are almost completely associated with molecular centre-of-mass motion.  This is true also of the lowest non-zero frequency at 32,81 cm<sup>-1</sup> and to some extent of the next mode at 39.73 cm<sup>-1</sup>.  Although for this latter mode there is considerable contribution from rigid-body rotational motion (see the %mol-rot column).  As the frequency of the phonon mode increases the contribution from rigid-body motion generally decreases and contribution from vibrational mode (see the %vib column) increases,  The total contribution from molecular motion is summarised in the last four columns.</p>
 <table border="1" class="styled-table docutils align-center" id="tab-isoleucine-results">
-<caption><span class="caption-number">Table 3 </span><span class="caption-text">Isoleucine: percentage contribtions of the centre-of-mass and the rotational molecular modes to each phonon mode</span><a class="headerlink" href="#tab-isoleucine-results" title="Permalink to this table">¶</a></caption>
+<caption><span class="caption-number">Table 4 </span><span class="caption-text">Isoleucine: percentage contribtions of the centre-of-mass and the rotational molecular modes to each phonon mode</span><a class="headerlink" href="#tab-isoleucine-results" title="Permalink to this table">¶</a></caption>
 <colgroup>
 <col width="19%" />
 <col width="14%" />
@@ -418,9 +418,9 @@ The program first finds the four molecules of isoleucine in the unit cell of the
 BaTiO<sub>3</sub>
 can be found in Example/AbInit/BaTiO3 the main directory of the PDielec distribution. The results of the Abinit calculation can be analysed using PDGui.
 For this example the default covalent radius of the Barium atoms has been changed to 0.3 Å, so this atom will be treated as though it is not bonded to anything else in the cell.  This results in 2 ‘molecules’ being found in the cell; a TiO<sub>3</sub> moiety and the Ba<sup>2+</sup> ion.</p>
-<p>The results of the analysis are shown in <a class="reference internal" href="#tab-batio3-results"><span class="std std-numref">Table 4</span></a> below.  In this example the lowest 3 modes have been projected so there is no problem with translational invariance.  They are purely centre-of-mass modes.  The energy in these three modes seems to be mainly in molecule 1, which is the Ba<sup>2+</sup> ion.  The modes at 197.73 cm<sup>-1</sup> also have a large centre-of-mass component, this time mainly coming from molecule 0, which is the TiO<sub>3</sub> moeity. Above 200 cm<sup>-1</sup> there is much smaller centre-of-mass contribution to the energy and all the modes are dominated by the TiO<sub>3</sub> group.</p>
+<p>The results of the analysis are shown in <a class="reference internal" href="#tab-batio3-results"><span class="std std-numref">Table 5</span></a> below.  In this example the lowest 3 modes have been projected so there is no problem with translational invariance.  They are purely centre-of-mass modes.  The energy in these three modes seems to be mainly in molecule 1, which is the Ba<sup>2+</sup> ion.  The modes at 197.73 cm<sup>-1</sup> also have a large centre-of-mass component, this time mainly coming from molecule 0, which is the TiO<sub>3</sub> moeity. Above 200 cm<sup>-1</sup> there is much smaller centre-of-mass contribution to the energy and all the modes are dominated by the TiO<sub>3</sub> group.</p>
 <table border="1" class="styled-table docutils align-center" id="tab-batio3-results">
-<caption><span class="caption-number">Table 4 </span><span class="caption-text">BaTiO<sub>3</sub>: percentage contribtions of the centre-of-mass and the rotational molecular modes to each phonon mode</span><a class="headerlink" href="#tab-batio3-results" title="Permalink to this table">¶</a></caption>
+<caption><span class="caption-number">Table 5 </span><span class="caption-text">BaTiO<sub>3</sub>: percentage contribtions of the centre-of-mass and the rotational molecular modes to each phonon mode</span><a class="headerlink" href="#tab-batio3-results" title="Permalink to this table">¶</a></caption>
 <colgroup>
 <col width="25%" />
 <col width="18%" />

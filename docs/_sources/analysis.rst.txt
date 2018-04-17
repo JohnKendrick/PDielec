@@ -3,12 +3,12 @@
 .. contents::
    :local:
 
-========
+===============
 Phonon Analysis
-========
+===============
 
 PDGui performs an analysis of a phonon mode in terms of the percentage 
-of molecular centre-of-mass and rigid body rotational motion in each mode.  Using the results of the analysis it is possible to differentiate between inter- and intra-molecular phonon modes (see for instance Jepsen et al :cite:`@Jepsen2007`).  In addition, for those systems with more than one formula unit in the unit cell it is possible to break down the contribution of each molecule to a particular phonon mode.
+of molecular centre-of-mass and rigid body rotational motion in each mode.  Using the results of the analysis it is possible to differentiate between inter- and intra-molecular phonon modes (see for instance Jepsen et al :cite:`Jepsen2007`).  In addition, for those systems with more than one formula unit in the unit cell it is possible to break down the contribution of each molecule to a particular phonon mode.
 
 Molecular Systems
 -----------------
@@ -100,7 +100,7 @@ each *molecular* translational and rotational degree of freedom. Such projection
 be used to separate the external from the internal modes and there will therefore
 be a projection operator for each external mode in the system.
 
-Hug and Haesler have shown :cite:`@Hug2005c` that the vibrational kinetic energy can be decomposed into single centre atomic contributions by considering the kinetic energy, :math:`T_p`, of a normal mode :math:`Q_p`;
+Hug and Haesler have shown :cite:`Hug2005c` that the vibrational kinetic energy can be decomposed into single centre atomic contributions by considering the kinetic energy, :math:`T_p`, of a normal mode :math:`Q_p`;
 
 
 .. math::
@@ -126,7 +126,7 @@ relationship between the mass weighted normal mode;
 
    \sqrt{ m_a } \fieldbf{\Delta x}_{a,p} = \fieldbf{L}_{a,p} Q_p
 
-As proposed by Hug and Haesler :cite:`@Hug2005c`, since the kinetic energy can be expressed as
+As proposed by Hug and Haesler :cite:`Hug2005c`, since the kinetic energy can be expressed as
 atomic contributions, consideration of the virial theorem indicates that
 this is true also for the potential energy. Using mass weighted
 Cartesian coordinates for convenience, an analysis of the phonon modes
@@ -277,7 +277,7 @@ The program first finds the four molecules of isoleucine in the unit cell of the
 
 
 BaTiO\ :subscript:`3`
---------
+---------------------
 
 The example for 
 BaTiO\ :subscript:`3`
