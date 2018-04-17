@@ -210,7 +210,6 @@ The program first finds the four molecules of isoleucine in the unit cell of the
 
 .. table:: Molecular constituents of the isoleucine unit cell (centres-of-masse are in fractional coordinates)
    :name: tab-isoleucine-mols
-   :widths: auto
    :align: center
 
    +----------+---------+--------------------+--------------------+---------------------+
@@ -230,7 +229,6 @@ The program first finds the four molecules of isoleucine in the unit cell of the
 
 .. table:: Isoleucine: percentage contribtions of the centre-of-mass and the rotational molecular modes to each phonon mode
    :name: tab-isoleucine-results
-   :widths: auto
    :align: center
 
    +--------------+----------+----------+------+--------+--------+--------+--------+
@@ -290,7 +288,6 @@ The results of the analysis are shown in :numref:`tab-batio3-results` below.  In
 
 .. table:: BaTiO\ :subscript:`3`: percentage contribtions of the centre-of-mass and the rotational molecular modes to each phonon mode
    :name: tab-batio3-results
-   :widths: auto
    :align: center
 
    +--------------+----------+----------+------+--------+--------+
