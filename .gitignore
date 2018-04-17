@@ -64,3 +64,5 @@ makefile
 .mod
 results.xlsx
 pdgui.out
+gh-pages
+_build

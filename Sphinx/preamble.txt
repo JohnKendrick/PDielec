@@ -1,0 +1,7 @@
+.. |cm-1| replace:: cm\ :superscript:`-1`
+.. |CM1| replace:: :math:`cm^{-1}`
+.. |Lmol-1cm-2|  replace:: L·mol\ :superscript:`-1`\ ·cm\ :superscript:`-2`
+.. |Lmol-1cm-1|  replace:: L·mol\ :superscript:`-1`\ ·cm\ :superscript:`-1`
+.. |molL-1|  replace:: mol·L\ :superscript:`-1`
+.. |kmmol-1|  replace:: km·mol\ :superscript:`-1`
+.. |D2A-2amu-1| replace:: D\ :superscript:`2`\ Å\ :superscript:`-2`\ amu\ :superscript:`-1`
