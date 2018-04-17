@@ -4,6 +4,6 @@ References
 ==========
 
 .. bibliography:: pdielec.bib
-   :style: plain
+   :style: unsrt
    
 
