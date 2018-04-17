@@ -82,7 +82,7 @@ The effect of volume fraction on the predicted molar absorption coefficient, usi
 volume fractions the Bruggeman mixing rule predicts a similar absorption
 to the Maxwell-Garnett. Indeed as the volume fraction approaches zero
 the two rules predict the same absorption characteristics. However, even
-at the relatively low 1% loading , the Bruggeman mixing rule shows
+at the relatively low 1% loading, the Bruggeman mixing rule shows
 additional broadening of the peak, the shape of the absorption peak has
 lost its Lorentzian characteristic shape as can be seen clearly in
 :numref:`fig-mgo-vf-bg`.  At 10% loading the Bruggeman predicted absorption is broad with
