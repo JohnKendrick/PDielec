@@ -42,40 +42,40 @@
         
   <div class="contents local topic" id="contents">
 <ul class="simple">
-<li><a class="reference internal" href="#software-components" id="id16">Software components</a><ul>
-<li><a class="reference internal" href="#pdgui" id="id17">PDGui</a><ul>
-<li><a class="reference internal" href="#main-tab" id="id18">Main tab</a></li>
-<li><a class="reference internal" href="#settings-tab" id="id19">Settings Tab</a></li>
-<li><a class="reference internal" href="#scenario-tabs" id="id20">Scenario Tabs</a></li>
-<li><a class="reference internal" href="#plotting-tab" id="id21">Plotting Tab</a></li>
-<li><a class="reference internal" href="#analysis-tab" id="id22">Analysis tab</a></li>
-<li><a class="reference internal" href="#d-viewer-tab" id="id23">3D Viewer tab</a></li>
+<li><a class="reference internal" href="#software-components" id="id15">Software components</a><ul>
+<li><a class="reference internal" href="#pdgui" id="id16">PDGui</a><ul>
+<li><a class="reference internal" href="#main-tab" id="id17">Main tab</a></li>
+<li><a class="reference internal" href="#settings-tab" id="id18">Settings Tab</a></li>
+<li><a class="reference internal" href="#scenario-tabs" id="id19">Scenario Tabs</a></li>
+<li><a class="reference internal" href="#plotting-tab" id="id20">Plotting Tab</a></li>
+<li><a class="reference internal" href="#analysis-tab" id="id21">Analysis tab</a></li>
+<li><a class="reference internal" href="#d-viewer-tab" id="id22">3D Viewer tab</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#pdielec" id="id24">PDielec</a><ul>
-<li><a class="reference internal" href="#options" id="id25">Options</a></li>
-<li><a class="reference internal" href="#support-matrix" id="id26">Support matrix</a></li>
-<li><a class="reference internal" href="#optical-permittivity" id="id27">Optical permittivity</a></li>
-<li><a class="reference internal" href="#parallelization-and-threads" id="id28">Parallelization and threads</a></li>
-<li><a class="reference internal" href="#performance" id="id29">Performance</a></li>
-<li><a class="reference internal" href="#example-command-line-uses-of-pdielec" id="id30">Example command line uses of PDielec</a></li>
-<li><a class="reference internal" href="#contents-of-the-csv-output-file" id="id31">Contents of the csv output file</a></li>
+<li><a class="reference internal" href="#pdielec" id="id23">PDielec</a><ul>
+<li><a class="reference internal" href="#options" id="id24">Options</a></li>
+<li><a class="reference internal" href="#support-matrix" id="id25">Support matrix</a></li>
+<li><a class="reference internal" href="#optical-permittivity" id="id26">Optical permittivity</a></li>
+<li><a class="reference internal" href="#parallelization-and-threads" id="id27">Parallelization and threads</a></li>
+<li><a class="reference internal" href="#performance" id="id28">Performance</a></li>
+<li><a class="reference internal" href="#example-command-line-uses-of-pdielec" id="id29">Example command line uses of PDielec</a></li>
+<li><a class="reference internal" href="#contents-of-the-csv-output-file" id="id30">Contents of the csv output file</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#preader" id="id32">PReader</a><ul>
-<li><a class="reference internal" href="#command-options" id="id33">Command options</a></li>
-<li><a class="reference internal" href="#examples" id="id34">Examples</a></li>
+<li><a class="reference internal" href="#preader" id="id31">PReader</a><ul>
+<li><a class="reference internal" href="#command-options" id="id32">Command options</a></li>
+<li><a class="reference internal" href="#examples" id="id33">Examples</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#mm-qm-interfaces" id="id35">MM/QM Interfaces</a><ul>
-<li><a class="reference internal" href="#vasp" id="id36">VASP</a></li>
-<li><a class="reference internal" href="#castep" id="id37">CASTEP</a></li>
-<li><a class="reference internal" href="#crystal" id="id38">CRYSTAL</a></li>
-<li><a class="reference internal" href="#abinit" id="id39">ABINIT</a></li>
-<li><a class="reference internal" href="#qe" id="id40">QE</a></li>
-<li><a class="reference internal" href="#phonopy" id="id41">PHONOPY</a></li>
-<li><a class="reference internal" href="#gulp" id="id42">GULP</a></li>
-<li><a class="reference internal" href="#experiment" id="id43">EXPERIMENT</a></li>
+<li><a class="reference internal" href="#mm-qm-interfaces" id="id34">MM/QM Interfaces</a><ul>
+<li><a class="reference internal" href="#vasp" id="id35">VASP</a></li>
+<li><a class="reference internal" href="#castep" id="id36">CASTEP</a></li>
+<li><a class="reference internal" href="#crystal" id="id37">CRYSTAL</a></li>
+<li><a class="reference internal" href="#abinit" id="id38">ABINIT</a></li>
+<li><a class="reference internal" href="#qe" id="id39">QE</a></li>
+<li><a class="reference internal" href="#phonopy" id="id40">PHONOPY</a></li>
+<li><a class="reference internal" href="#gulp" id="id41">GULP</a></li>
+<li><a class="reference internal" href="#experiment" id="id42">EXPERIMENT</a></li>
 </ul>
 </li>
 </ul>
@@ -83,21 +83,21 @@
 </ul>
 </div>
 <div class="section" id="software-components">
-<h1><a class="toc-backref" href="#id16">Software components</a><a class="headerlink" href="#software-components" title="Permalink to this headline">¶</a></h1>
+<h1><a class="toc-backref" href="#id15">Software components</a><a class="headerlink" href="#software-components" title="Permalink to this headline">¶</a></h1>
 <p>There are three programs within the PDielec package.  <em>Pdielec</em> and <em>preader</em> are command line programs and <em>PDGui</em> is a graphical interface to the features of the PDielec package.</p>
 <div class="section" id="pdgui">
-<h2><a class="toc-backref" href="#id17">PDGui</a><a class="headerlink" href="#pdgui" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id16">PDGui</a><a class="headerlink" href="#pdgui" title="Permalink to this headline">¶</a></h2>
 <p>pdgui is provides a graphical front end to the capabilities of PDielec.
 pdgui can be run from the command line without any parameters or the QM/MM program name followed by the file to be read can be provided.
-For example;:</p>
+For example;</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pdgui</span>
 </pre></div>
 </div>
-<p>or:</p>
+<p>or</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pdgui</span> <span class="n">vasp</span> <span class="n">OUTCAR</span>
 </pre></div>
 </div>
-<p>If a spreadsheet of results is required the name of the spreadsheet can be provided on the command line.:</p>
+<p>If a spreadsheet of results is required the name of the spreadsheet can be provided on the command line.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pdgui</span> <span class="n">vasp</span> <span class="n">OUTCAR</span> <span class="n">results</span><span class="o">.</span><span class="n">xlsx</span>
 </pre></div>
 </div>
@@ -113,7 +113,7 @@ After running the program the user sees a notebook interface with six tabs.</p>
 <p><em>Visualisation Tab</em> displays the normal modes as either arrows showing the atomic displacement or as an animation.</p>
 </div></blockquote>
 <div class="section" id="main-tab">
-<h3><a class="toc-backref" href="#id18">Main tab</a><a class="headerlink" href="#main-tab" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id17">Main tab</a><a class="headerlink" href="#main-tab" title="Permalink to this headline">¶</a></h3>
 <p>The <em>Main Tab</em> is used to pick the MM/QM package and the output file which will be analysed.</p>
 <div class="figure" id="id8">
 <span id="fig-maintab"></span><a class="reference internal image-reference" href="_images/MainTab.png"><img alt="_images/MainTab.png" src="_images/MainTab.png" style="width: 608.0px; height: 795.2px;" /></a>
@@ -124,7 +124,7 @@ After running the program the user sees a notebook interface with six tabs.</p>
 <p>Once the file has been specified and read the frequencies found in the calculation file are reported in the output text box.</p>
 </div>
 <div class="section" id="settings-tab">
-<h3><a class="toc-backref" href="#id19">Settings Tab</a><a class="headerlink" href="#settings-tab" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id18">Settings Tab</a><a class="headerlink" href="#settings-tab" title="Permalink to this headline">¶</a></h3>
 <p>The <em>Settings Tab</em> affects the calculation of the frequencies and their intensities.</p>
 <div class="figure" id="id9">
 <span id="fig-settingstab"></span><a class="reference internal image-reference" href="_images/SettingsTab.png"><img alt="_images/SettingsTab.png" src="_images/SettingsTab.png" style="width: 608.0px; height: 795.2px;" /></a>
@@ -132,18 +132,23 @@ After running the program the user sees a notebook interface with six tabs.</p>
 </div>
 <p>The Eckart conditions control whether 3 modes at zero frequency due to translational invariance are projected out of the dynamical matrix.  By default the Eckart conditions are applied and the 3 modes are projected out.</p>
 <p>There is an option to set the sum of the Born charge matrices to zero.  By default this is not applied.</p>
-<p>The atomic masses can be specified in a variety of ways.  They can be chosen from;
-. The average natural abundance
-. The masses used by the QM/MM program
-. The isotopic mass of the most abundant isotope</p>
-<p>In addition the mass of each element can be edited separately by clicking on the mass concerned and entering a new number.</p>
-<p>The width (sigma) of all the absorptions can be set using the <em>Lorentzian width(sigma)</em>  spin box.</p>
+<dl class="docutils">
+<dt>The atomic masses can be specified in a variety of ways.  They can be chosen from;</dt>
+<dd><ul class="first last simple">
+<li>The average natural abundance</li>
+<li>The masses used by the QM/MM program</li>
+<li>The isotopic mass of the most abundant isotope</li>
+</ul>
+</dd>
+</dl>
+<p>If necessary the mass of each element can be edited separately by clicking on the mass concerned and entering a new number.</p>
+<p>The width (<span class="math notranslate">\(\sigma\)</span>) of all the absorptions can be set using the <em>Lorentzian width(sigma)</em>  spin box.</p>
 <p>Finally the optical permittivity at zero frequency is given in the <em>Optical permittivity</em> table.  In some cases it is necessary to enter the optical permittivity by hand.  This can be done by clicking each element in the table which needs changing and typing the new matrix element.</p>
 <p>The output table at the bottom of the tab shows the calculated frequencies and their intensities.  Transitions which do not contribute to the Infrared absorption are greyed out.  These transitions will not be used in later calculations.  From this table it is possible to remove or add transitions to the later calculations and it is also possible to change the width of individual transitions.</p>
 </div>
 <div class="section" id="scenario-tabs">
-<h3><a class="toc-backref" href="#id20">Scenario Tabs</a><a class="headerlink" href="#scenario-tabs" title="Permalink to this headline">¶</a></h3>
-<p>There can be more than one <em>Scenario Tab</em>.  Each one specifies a particular material, method or particle shape which will be used in the <em>Plotting Tab</em>.</p>
+<h3><a class="toc-backref" href="#id19">Scenario Tabs</a><a class="headerlink" href="#scenario-tabs" title="Permalink to this headline">¶</a></h3>
+<p>There can be more than one <em>Scenario Tab</em>.  Each one specifies a particular material, method or particle shape which will be used for the calculation of the effective medium.  The results of the calculations will be shown in the <em>Plotting Tab</em>.</p>
 <div class="figure" id="id10">
 <span id="fig-scenariotab"></span><a class="reference internal image-reference" href="_images/ScenarioTab.png"><img alt="_images/ScenarioTab.png" src="_images/ScenarioTab.png" style="width: 608.0px; height: 795.2px;" /></a>
 <p class="caption"><span class="caption-number">Fig. 3 </span><span class="caption-text">The Scenario Tab</span></p>
@@ -156,8 +161,8 @@ After running the program the user sees a notebook interface with six tabs.</p>
 <p>Scenarios can be added or removed using the push buttons at the bottom of each <em>Scenario Tab</em>.  When a new scenario is created the settings are copied from the current scenario.</p>
 </div>
 <div class="section" id="plotting-tab">
-<h3><a class="toc-backref" href="#id21">Plotting Tab</a><a class="headerlink" href="#plotting-tab" title="Permalink to this headline">¶</a></h3>
-<p>The <em>plotting tab</em> controls and plots the absorption and permittivity as a function of frequency calculated for each scenario present in the pdgui notebook.</p>
+<h3><a class="toc-backref" href="#id20">Plotting Tab</a><a class="headerlink" href="#plotting-tab" title="Permalink to this headline">¶</a></h3>
+<p>The <em>Plotting tab</em> controls and plots the absorption and permittivity as a function of frequency calculated for each scenario present in the pdgui notebook.</p>
 <div class="figure" id="id11">
 <span id="fig-plottingtab"></span><a class="reference internal image-reference" href="_images/PlottingTab.png"><img alt="_images/PlottingTab.png" src="_images/PlottingTab.png" style="width: 608.0px; height: 795.2px;" /></a>
 <p class="caption"><span class="caption-number">Fig. 4 </span><span class="caption-text">The Plotting Tab</span></p>
@@ -168,8 +173,8 @@ After running the program the user sees a notebook interface with six tabs.</p>
 <p>The molar absorption, the absorption and the real or imaginary permittivity can be plotted.  Once a plot has been requested the calculation progress is shown in the progress bar.  Some settings can be changed without the whole plot being recalculated.</p>
 </div>
 <div class="section" id="analysis-tab">
-<h3><a class="toc-backref" href="#id22">Analysis tab</a><a class="headerlink" href="#analysis-tab" title="Permalink to this headline">¶</a></h3>
-<p>The <em>analysis tab</em> shows a breakdown of the phonon modes into molecular components.  The molecular structure of the unit cell is determined by the covalent radii of the atoms.  These can be speficied individually if needed.  The <em>analysis tab</em> shows the number of molecules that have been found in the analysis.</p>
+<h3><a class="toc-backref" href="#id21">Analysis tab</a><a class="headerlink" href="#analysis-tab" title="Permalink to this headline">¶</a></h3>
+<p>The <em>Analysis tab</em> shows a breakdown of the phonon modes into molecular components.  The molecular structure of the unit cell is determined by the covalent radii of the atoms.  These can be speficied individually if needed.  The <em>Analysis tab</em> shows the number of molecules that have been found in the analysis.</p>
 <div class="figure" id="id12">
 <span id="fig-analysistab"></span><a class="reference internal image-reference" href="_images/AnalysisTab.png"><img alt="_images/AnalysisTab.png" src="_images/AnalysisTab.png" style="width: 608.0px; height: 795.2px;" /></a>
 <p class="caption"><span class="caption-number">Fig. 5 </span><span class="caption-text">The Analysis Tab</span></p>
@@ -177,7 +182,7 @@ After running the program the user sees a notebook interface with six tabs.</p>
 <p>The bar graph shows a break down of each normal mode in the chosen frequency range into either internal and external contributions or into molecular components.  The atom sizes and the molecular composition of the unit cell is displayed in the <em>3D viewer tab</em></p>
 </div>
 <div class="section" id="d-viewer-tab">
-<h3><a class="toc-backref" href="#id23">3D Viewer tab</a><a class="headerlink" href="#d-viewer-tab" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id22">3D Viewer tab</a><a class="headerlink" href="#d-viewer-tab" title="Permalink to this headline">¶</a></h3>
 <p>The <em>3d viewer tab</em> shows the unit cell of the system using the molecular information and atomic sizes from the <em>analysis tab</em>.</p>
 <p>The atomic displacement of each phonon can either be shown as arrows or as an animation.  The views and animations can be recorded in  .png and .mp4 files respectively.  If a .gif file is specified the animation is recorded but with reduced numbers of colours.</p>
 <div class="figure" id="id13">
@@ -188,10 +193,10 @@ After running the program the user sees a notebook interface with six tabs.</p>
 </div>
 </div>
 <div class="section" id="pdielec">
-<h2><a class="toc-backref" href="#id24">PDielec</a><a class="headerlink" href="#pdielec" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id23">PDielec</a><a class="headerlink" href="#pdielec" title="Permalink to this headline">¶</a></h2>
 <p>Pdielec is a command line interface to the capabilities of the PDielec package.</p>
 <div class="section" id="options">
-<h3><a class="toc-backref" href="#id25">Options</a><a class="headerlink" href="#options" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id24">Options</a><a class="headerlink" href="#options" title="Permalink to this headline">¶</a></h3>
 <p>The program options are summarised below, a ✔ indicates that the option can be specified more than once.  Where there is a default value, it value is shown.</p>
 <blockquote>
 <div><dl class="docutils">
@@ -271,74 +276,73 @@ It is also possible to specify a size distribution in which case the first numbe
 </div></blockquote>
 </div>
 <div class="section" id="support-matrix">
-<h3><a class="toc-backref" href="#id26">Support matrix</a><a class="headerlink" href="#support-matrix" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id25">Support matrix</a><a class="headerlink" href="#support-matrix" title="Permalink to this headline">¶</a></h3>
 <p>From an experimental point of view it is often convenient to use a mass fraction rather than a volume fraction to indicate the amount of dielectrically active material present.  PDielec allows mass fractions to be specified instead of a volume fraction, but this requires that the density of the supporting matrix is known. For convenience the package has a small database of the common supporting materials shown in Table below.  These can be specified through the -matrix option. In the case that the properties of the support material are different the properties can be defined instead with the -dielectric and -density options.</p>
-<table border="1" class="styled-table docutils" id="id14">
-<caption><span class="caption-number">Table 1 </span><span class="caption-text">Physical properties of matrix materials PDielec
- :name: tab-materials</span><a class="headerlink" href="#id14" title="Permalink to this table">¶</a></caption>
+<table border="1" class="colwidths-given styled-table docutils" id="tab-matrix-properties">
+<caption><span class="caption-number">Table 1 </span><span class="caption-text">Physical properties of matrix materials</span><a class="headerlink" href="#tab-matrix-properties" title="Permalink to this table">¶</a></caption>
 <colgroup>
-<col width="13%" />
-<col width="15%" />
-<col width="23%" />
-<col width="48%" />
+<col width="17%" />
+<col width="17%" />
+<col width="17%" />
+<col width="50%" />
 </colgroup>
 <thead valign="bottom">
-<tr class="row-odd"><th class="left-align head">Name</th>
-<th class="left-align head">Density</th>
-<th class="left-align head">Permittivity</th>
-<th class="left-align head">Description</th>
+<tr class="row-odd"><th class="right-align no-left-divider no-right-divider head">Name</th>
+<th class="right-align no-left-divider no-right-divider head">Density</th>
+<th class="right-align no-left-divider no-right-divider head">Permittivity</th>
+<th class="left-align no-left-divider head">Description</th>
 </tr>
 </thead>
 <tbody valign="top">
-<tr class="row-even"><td class="left-align">ptfe</td>
-<td class="left-align">2.2</td>
-<td class="left-align">2.0</td>
-<td class="left-align">polytetrafluorethylene</td>
+<tr class="row-even"><td class="right-align no-left-divider no-right-divider">ptfe</td>
+<td class="right-align no-left-divider no-right-divider">2.200</td>
+<td class="right-align no-left-divider no-right-divider">2.000</td>
+<td class="left-align no-left-divider">polytetrafluorethylene</td>
 </tr>
-<tr class="row-odd"><td class="left-align">air</td>
-<td class="left-align">0.0</td>
-<td class="left-align">1.0</td>
-<td class="left-align">air</td>
+<tr class="row-odd"><td class="right-align no-left-divider no-right-divider">air</td>
+<td class="right-align no-left-divider no-right-divider">0.000</td>
+<td class="right-align no-left-divider no-right-divider">1.000</td>
+<td class="left-align no-left-divider">air</td>
 </tr>
-<tr class="row-even"><td class="left-align">vacuum</td>
-<td class="left-align">0.0</td>
-<td class="left-align">1.0</td>
-<td class="left-align">vacuum</td>
+<tr class="row-even"><td class="right-align no-left-divider no-right-divider">vacuum</td>
+<td class="right-align no-left-divider no-right-divider">0.000</td>
+<td class="right-align no-left-divider no-right-divider">1.000</td>
+<td class="left-align no-left-divider">vacuum</td>
 </tr>
-<tr class="row-odd"><td class="left-align">kbr</td>
-<td class="left-align">2.75</td>
-<td class="left-align">2.25</td>
-<td class="left-align">potassium bromide</td>
+<tr class="row-odd"><td class="right-align no-left-divider no-right-divider">kbr</td>
+<td class="right-align no-left-divider no-right-divider">2.750</td>
+<td class="right-align no-left-divider no-right-divider">2.250</td>
+<td class="left-align no-left-divider">potassium bromide</td>
 </tr>
-<tr class="row-even"><td class="left-align">nujol</td>
-<td class="left-align">0.838</td>
-<td class="left-align">2.155</td>
-<td class="left-align">Nujol</td>
+<tr class="row-even"><td class="right-align no-left-divider no-right-divider">nujol</td>
+<td class="right-align no-left-divider no-right-divider">0.838</td>
+<td class="right-align no-left-divider no-right-divider">2.155</td>
+<td class="left-align no-left-divider">Nujol</td>
 </tr>
-<tr class="row-odd"><td class="left-align">hdpe</td>
-<td class="left-align">0.955</td>
-<td class="left-align">2.25</td>
-<td class="left-align">high density polyethylene</td>
+<tr class="row-odd"><td class="right-align no-left-divider no-right-divider">hdpe</td>
+<td class="right-align no-left-divider no-right-divider">0.955</td>
+<td class="right-align no-left-divider no-right-divider">2.250</td>
+<td class="left-align no-left-divider">high density polyethylene</td>
 </tr>
-<tr class="row-even"><td class="left-align">mdpe</td>
-<td class="left-align">0.933</td>
-<td class="left-align">2.25</td>
-<td class="left-align">medium density polyethylene</td>
+<tr class="row-even"><td class="right-align no-left-divider no-right-divider">mdpe</td>
+<td class="right-align no-left-divider no-right-divider">0.933</td>
+<td class="right-align no-left-divider no-right-divider">2.250</td>
+<td class="left-align no-left-divider">medium density polyethylene</td>
 </tr>
-<tr class="row-odd"><td class="left-align">ldpe</td>
-<td class="left-align">0.925</td>
-<td class="left-align">2.25</td>
-<td class="left-align">low density polyethylene</td>
+<tr class="row-odd"><td class="right-align no-left-divider no-right-divider">ldpe</td>
+<td class="right-align no-left-divider no-right-divider">0.925</td>
+<td class="right-align no-left-divider no-right-divider">2.250</td>
+<td class="left-align no-left-divider">low density polyethylene</td>
 </tr>
 </tbody>
 </table>
 </div>
 <div class="section" id="optical-permittivity">
-<h3><a class="toc-backref" href="#id27">Optical permittivity</a><a class="headerlink" href="#optical-permittivity" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id26">Optical permittivity</a><a class="headerlink" href="#optical-permittivity" title="Permalink to this headline">¶</a></h3>
 <p>The optical permittivity is normally calculated by the QM or MM program concerned. However, as this property reflects the electronic contribution to the permittivity at zero frequency, unless there is some treatment of electrons by the shell model, then in MM calculations the optical permittivity needs to be defined through the command line options -optical or -optical_tensor.  Unlike the other methods ‘mie’ method cannot work with particles of zero radius. All methods therefore use a default size of 10<sup>-12</sup> μm. The Mie approach is only valid for dilute dispersions and for spherical particles. However, if other shapes are specified the Mie method will still be called and the results will be applicable to spheres of the specified size.</p>
 </div>
 <div class="section" id="parallelization-and-threads">
-<h3><a class="toc-backref" href="#id28">Parallelization and threads</a><a class="headerlink" href="#parallelization-and-threads" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id27">Parallelization and threads</a><a class="headerlink" href="#parallelization-and-threads" title="Permalink to this headline">¶</a></h3>
 <p>To improve the performance of the program python parallelization has been used to parallelize over the frequencies, shapes and methods. By default this parallelization spawns additional Python executables, depending on the number of cores available.</p>
 <p>In addition to this form of parallelization the NUMPY library can use multi-threaded BLAS. NUMPY can be compiled with several different BLAS libraries, including; MKL (from Intel), OPENBLAS and ATLAS, or indeed no optimized BLAS library is necessary. To explore the BLAS version compiled with your version of NUMPY please use the test_numpy_1, test_numpy_2 and test_numpy_3 scripts included in the Python/ subdirectory. If you are using MKL or OPENBLAS, the number of threads being used needs to be set with the MKL_NUM_THREADS or OPENBLAS _NUM_THREADS environment variable (sometimes OMP_NUM_THREADS is also used). Use the test routines to determine the optimum for your system. Experience indicates that no performance benefit is obtained with more than two threads.</p>
 <p>In the case of Phonopy the dynamical matrix is read from a yaml file. This has been found to be very slow unless the C parser is used. If the C parser is not available a warning is issued and the program reverts back to the Python parser.</p>
@@ -348,43 +352,43 @@ It is also possible to specify a size distribution in which case the first numbe
 <p>For some reason this also works if the MKL library is being used.</p>
 </div>
 <div class="section" id="performance">
-<h3><a class="toc-backref" href="#id29">Performance</a><a class="headerlink" href="#performance" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id28">Performance</a><a class="headerlink" href="#performance" title="Permalink to this headline">¶</a></h3>
 <p>PDielec has been written to make use of multiprocessor computers. On a 4 processor machine the speed-up is nearly linear up to 4 processors, as can be seen in the Figure below.</p>
-<div class="figure" id="id15">
+<div class="figure" id="id14">
 <span id="fig-speedup"></span><a class="reference internal image-reference" href="_images/SpeedUp.png"><img alt="_images/SpeedUp.png" src="_images/SpeedUp.png" style="width: 450.0px; height: 272.7px;" /></a>
 <p class="caption"><span class="caption-number">Fig. 7 </span><span class="caption-text">Speed-up on a four processor workstation</span></p>
 </div>
 </div>
 <div class="section" id="example-command-line-uses-of-pdielec">
-<h3><a class="toc-backref" href="#id30">Example command line uses of PDielec</a><a class="headerlink" href="#example-command-line-uses-of-pdielec" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id29">Example command line uses of PDielec</a><a class="headerlink" href="#example-command-line-uses-of-pdielec" title="Permalink to this headline">¶</a></h3>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pdielec</span> <span class="o">-</span><span class="n">program</span> <span class="n">vasp</span> <span class="n">OUTCAR</span> <span class="o">-</span><span class="n">method</span> <span class="n">ap</span> <span class="o">-</span><span class="n">method</span> <span class="n">maxwell</span> \
         <span class="o">-</span><span class="n">sphere</span> <span class="o">-</span><span class="n">plate</span> <span class="mi">0</span> <span class="mi">0</span> <span class="mi">1</span> <span class="o">-</span><span class="n">needle</span> <span class="mi">0</span> <span class="mi">0</span> <span class="mi">1</span> <span class="o">-</span><span class="n">LO</span> <span class="mi">0</span> <span class="mi">0</span> <span class="mi">1</span>
 </pre></div>
 </div>
 <p>This performs a calculation using the Averaged-Permittivity and Maxwell-Garnett mixing rules for spherical particles, plate-like particles with a surface (001) and needle-like particles with a unique
-direction lying along the [001] direction. The supporting matrix is taken to be PTFE and the default volume fraction (10%) is used. The results of a VASP calculation are stored in the current directory.  There is no absorption output from this command as neither the -plot nor the -csv options were specified. The output includes the calculation of the LO modes along the (001) direction.:</p>
+direction lying along the [001] direction. The supporting matrix is taken to be PTFE and the default volume fraction (10%) is used. The results of a VASP calculation are stored in the current directory.  There is no absorption output from this command as neither the -plot nor the -csv options were specified. The output includes the calculation of the LO modes along the (001) direction.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pdielec</span> <span class="o">-</span><span class="n">program</span> <span class="n">castep</span> <span class="n">phonon</span> <span class="o">-</span><span class="n">vmin</span> <span class="mi">300</span> <span class="o">-</span><span class="n">vmax</span> <span class="mi">800</span> \
         <span class="o">-</span><span class="n">sphere</span> <span class="o">-</span><span class="n">dielectric</span> <span class="mi">3</span> <span class="o">-</span><span class="n">vf</span> <span class="mf">0.1</span> <span class="o">-</span><span class="n">vf</span> <span class="mf">0.2</span> <span class="o">-</span><span class="n">sigma</span> <span class="mi">10</span> <span class="o">-</span><span class="n">csv</span> <span class="n">mgo</span><span class="o">.</span><span class="n">csv</span>
 </pre></div>
 </div>
-<p>This performs a calculation for spherical particles varying the frequency from 300 to 800 cm<sup>-1</sup>, the permittivity of the supporting media is 3, two volume fractions are considered and a damping factor of 10 cm<sup>-1</sup> is used. The results of a CASTEP calculation with the seed-name “phonon” are analysed and the results stored in mgo.csv for further analysis using a spreadsheet. In this example a Maxwell-Garnett mixing rule is used by default. If visual inspection of the results is required then:</p>
+<p>This performs a calculation for spherical particles varying the frequency from 300 to 800 cm<sup>-1</sup>, the permittivity of the supporting media is 3, two volume fractions are considered and a damping factor of 10 cm<sup>-1</sup> is used. The results of a CASTEP calculation with the seed-name “phonon” are analysed and the results stored in mgo.csv for further analysis using a spreadsheet. In this example a Maxwell-Garnett mixing rule is used by default. If visual inspection of the results is required then</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pdielec</span> <span class="o">-</span><span class="n">program</span> <span class="n">castep</span> <span class="n">phonon</span> <span class="o">-</span><span class="n">vmin</span> <span class="mi">300</span> <span class="o">-</span><span class="n">vmax</span> <span class="mi">800</span> \
         <span class="o">-</span><span class="n">sphere</span> <span class="o">-</span><span class="n">dielectric</span> <span class="mi">3</span> <span class="o">-</span><span class="n">vf</span> <span class="mf">0.1</span> <span class="o">-</span><span class="n">vf</span> <span class="mf">0.2</span>\
         <span class="o">-</span><span class="n">sigma</span> <span class="mi">10</span> <span class="o">-</span><span class="n">csv</span> <span class="n">mgo</span><span class="o">.</span><span class="n">csv</span> <span class="o">-</span><span class="n">plot</span> <span class="n">molar_absorption</span>
 </pre></div>
 </div>
-<p>will perform the same calculation but a graph showing the molar absorption coefficients will be displayed.:</p>
+<p>will perform the same calculation but a graph showing the molar absorption coefficients will be displayed.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pdielec</span> <span class="o">-</span><span class="n">program</span> <span class="n">gulp</span> <span class="n">calcite</span><span class="o">.</span><span class="n">gout</span> <span class="o">-</span><span class="n">matrix</span> <span class="n">hdpe</span> \
         <span class="o">-</span><span class="n">method</span> <span class="n">ap</span> <span class="o">-</span><span class="n">method</span> <span class="n">maxwell</span> <span class="o">-</span><span class="n">sphere</span> <span class="o">-</span><span class="n">plate</span> <span class="o">-</span><span class="mi">1</span> <span class="o">-</span><span class="mi">1</span> <span class="o">-</span><span class="mi">2</span> \
         <span class="o">-</span><span class="n">vmax</span> <span class="mi">2000</span> <span class="o">-</span><span class="n">mf</span> <span class="mf">0.1</span> <span class="n">calcite</span><span class="o">.</span><span class="n">gout</span> <span class="o">-</span><span class="n">csv</span> <span class="n">calcite</span><span class="o">.</span><span class="n">csv</span>
 </pre></div>
 </div>
-<p>This command performs a calculation of the absorption spectrum resulting from a GULP calculation. The supporting matrix density and permittivity are those of high density polyethylene, the frequency range is 0 to 2000 cm<sup>-1</sup>, the mass fraction considered is 10%, the mixing rules used are Averaged-Permittivity and Maxwell-Garnett. Spheres and plates with the (<span class="math notranslate">\(\bar{1}\bar{1}\bar{2})\)</span> surface are considered.:</p>
+<p>This command performs a calculation of the absorption spectrum resulting from a GULP calculation. The supporting matrix density and permittivity are those of high density polyethylene, the frequency range is 0 to 2000 cm<sup>-1</sup>, the mass fraction considered is 10%, the mixing rules used are Averaged-Permittivity and Maxwell-Garnett. Spheres and plates with the (<span class="math notranslate">\(\bar{1}\bar{1}\bar{2})\)</span> surface are considered.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pdielec</span> <span class="o">-</span><span class="n">program</span> <span class="n">vasp</span> <span class="n">OUTCAR</span> <span class="o">-</span><span class="n">method</span> <span class="n">mie</span> <span class="o">-</span><span class="n">sphere</span> \
         <span class="o">-</span><span class="n">mf</span> <span class="mf">0.1</span> <span class="o">-</span><span class="n">size</span> <span class="mf">0.1</span> <span class="o">-</span><span class="n">size</span> <span class="mf">1.0</span> <span class="o">-</span><span class="n">size</span> <span class="mf">1.0</span> <span class="o">-</span><span class="n">csv</span> <span class="n">results</span><span class="o">.</span><span class="n">csv</span>
 </pre></div>
 </div>
-<p>This command performs a calculation of the absorption spectrum resulting from a VASP calculation using the Mie method for sphere with several particles sizes.:</p>
+<p>This command performs a calculation of the absorption spectrum resulting from a VASP calculation using the Mie method for sphere with several particles sizes.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pdielec</span> <span class="o">-</span><span class="n">sphere</span> <span class="o">-</span><span class="n">mf</span> <span class="mf">0.1</span> <span class="o">-</span><span class="n">program</span> <span class="n">experiment</span> <span class="n">experiment</span><span class="o">.</span><span class="n">expt</span>\
         <span class="o">-</span><span class="n">size</span> <span class="mf">0.1</span> <span class="o">-</span><span class="n">size</span> <span class="mf">1.0</span> <span class="o">-</span><span class="n">size</span> <span class="mf">1.0</span> <span class="o">-</span><span class="n">excel</span> <span class="n">results</span><span class="o">.</span><span class="n">xlsx</span>
 </pre></div>
@@ -392,16 +396,16 @@ direction lying along the [001] direction. The supporting matrix is taken to be 
 <p>This command performs a calculation of the absorption spectrum resulting from the data stored in the experiment.expt file. Maxwell-Garnett calculations are performed with 3 different sized spheres and the results stored in a Excel file.</p>
 </div>
 <div class="section" id="contents-of-the-csv-output-file">
-<h3><a class="toc-backref" href="#id31">Contents of the csv output file</a><a class="headerlink" href="#contents-of-the-csv-output-file" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id30">Contents of the csv output file</a><a class="headerlink" href="#contents-of-the-csv-output-file" title="Permalink to this headline">¶</a></h3>
 <p>If a csv output file is requested the file will contain the command used to perform the calculation. A brief summary is given of each active infrared mode; including the mode number, frequency, intensity, integrated molar absorption coefficient, its peak height (calculated from the intensity and damping factor) and the damping parameter used in the calculation. Following this is a table with a column for frequency followed by columns containing the real and imaginary permittivities, the absorption and molar absorption coefficients at each frequency.</p>
 </div>
 </div>
 <div class="section" id="preader">
-<h2><a class="toc-backref" href="#id32">PReader</a><a class="headerlink" href="#preader" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id31">PReader</a><a class="headerlink" href="#preader" title="Permalink to this headline">¶</a></h2>
 <p>preader is a ‘helper’ program which uses the underlying modules of PDielec to read output files and summarise the results of various MM/QM packages.  The program can be used to perform some straightforward calculations.  For instance projection of any remaining centre of mass motion of the crystal can be performed to make sure that there are three zero frequencies.  Also the masses used in the calculation of the dynamical matrix can be altered.
 Unlike PDielec and PDGui it is not necessary to have performed a full calculation of the dynamical matrix.  In the majority of cases preader will read geometry optimisation runs.</p>
 <div class="section" id="command-options">
-<h3><a class="toc-backref" href="#id33">Command options</a><a class="headerlink" href="#command-options" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id32">Command options</a><a class="headerlink" href="#command-options" title="Permalink to this headline">¶</a></h3>
 <p>Examples of data sets for these packages are included with the distribution and can be found in the Examples/’Package’/preader directory. The program is run from the command line. There are several command options and these are summarized below. Those options which may be repeated are indicated by a ✔ .</p>
 <blockquote>
 <div><dl class="docutils">
@@ -423,11 +427,11 @@ Unlike PDielec and PDGui it is not necessary to have performed a full calculatio
 </div></blockquote>
 </div>
 <div class="section" id="examples">
-<h3><a class="toc-backref" href="#id34">Examples</a><a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id33">Examples</a><a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h3>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>preader -program vasp `find . -name OUTCAR` &gt; results.csv
 </pre></div>
 </div>
-<p>This reads all the VASP OUTCAR files in the current and any of its subdirectories and summarises the results to results.csv.:</p>
+<p>This reads all the VASP OUTCAR files in the current and any of its subdirectories and summarises the results to results.csv.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>preader -program castep -eckart `find . -name \*.castep` &gt; results.csv
 </pre></div>
 </div>
@@ -436,30 +440,30 @@ Unlike PDielec and PDGui it is not necessary to have performed a full calculatio
 </div>
 </div>
 <div class="section" id="mm-qm-interfaces">
-<h2><a class="toc-backref" href="#id35">MM/QM Interfaces</a><a class="headerlink" href="#mm-qm-interfaces" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id34">MM/QM Interfaces</a><a class="headerlink" href="#mm-qm-interfaces" title="Permalink to this headline">¶</a></h2>
 <p>The packages have interfaces to five solid state QM codes, VASP <a class="reference internal" href="zreferences.html#hafner2008c" id="id1">[7]</a>, CASTEP <a class="reference internal" href="zreferences.html#clark2005d" id="id2">[23]</a>, CRYSTAL14 <a class="reference internal" href="zreferences.html#dovesi2014" id="id3">[24]</a>, Abinit <a class="reference internal" href="zreferences.html#gonze2016" id="id4">[25]</a>, Quantum Espresso <a class="reference internal" href="zreferences.html#giannozzi2009" id="id5">[26]</a> and Phonopy <a class="reference internal" href="zreferences.html#togo2015" id="id6">[27]</a>.  In addition an interface is available for GULP <a class="reference internal" href="zreferences.html#gale2003" id="id7">[28]</a> which is a force field based solid state code. Finally an interface has been written to and ‘experiment’ file format which allows the preparation of a user defined file specifying the permittivities and absorption frequencies. The origin of the dataset(s) used for processing is determined by a command line switch, -program. An outline of the interfaces to these codes is given here. The package used for the calculation is described by the –program option. In addition a file name is given which contains the output which will be processed by PDielec.</p>
 <div class="section" id="vasp">
-<h3><a class="toc-backref" href="#id36">VASP</a><a class="headerlink" href="#vasp" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id35">VASP</a><a class="headerlink" href="#vasp" title="Permalink to this headline">¶</a></h3>
 <p>The name provided on the command line is an OUTCAR file. The OUTCAR is read by PDielec to determine the unit cell, atomic masses, frequencies, normal modes, Born charge tensors and optical permittivity. The VASP run can be a DFPT or numerical calculation of the response.</p>
 </div>
 <div class="section" id="castep">
-<h3><a class="toc-backref" href="#id37">CASTEP</a><a class="headerlink" href="#castep" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id36">CASTEP</a><a class="headerlink" href="#castep" title="Permalink to this headline">¶</a></h3>
 <p>The name provided on the command line is the seedname for the calculation. The corresponding seedname.castep file in the current directory is read and processed to determine the unit cell, atomic masses, optical permittivity and born charge tensors. The normal modes and their frequencies are determined from the seedname.phonon file. The CASTEP run needs to be a DFPT (phonon+efield) task.</p>
 </div>
 <div class="section" id="crystal">
-<h3><a class="toc-backref" href="#id38">CRYSTAL</a><a class="headerlink" href="#crystal" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id37">CRYSTAL</a><a class="headerlink" href="#crystal" title="Permalink to this headline">¶</a></h3>
 <p>The name on the command line is a file ending in .out, containing the output of a CRYSTAL14 run. The contents of this file alone are sufficient to provide the unit cell, atomic masses, frequencies, normal modes and Born charge tensors. However, the number of significant figures for the normal modes is not sufficient for an accurate calculation and it is therefore recommended that the HESSFREQ.DAT and BORN.DAT files are also made available. If they are present in the directory where PDielec is run from , it uses these files to calculate the Born charge tensors, frequencies and normal modes. The CRYSTAL calculation needs to be a frequency calculation (FREQCALC) with the infrared intensity (INTENS) selected. The default algorithm does not calculate the optical permittivity, so this needs to be provided on the command line. However, if the CPHF or CPKS algorithm is used for the frequency calculation, the optical permittivity is calculated and PDielec will automatically read it from the output file. By default CRYSTAL projects out the pure translational modes of the system before calculating the frequencies, this can also done by the PDielec package. Small differences in the calculated frequencies between the CRYSTAL program and PDielec have been observed. These have been found to be due to a slightly different method for symmetrising the 2^nd^ derivative matrix, because of this an optional directive “-hessian crystal” can be used to indicate that PDielec should use the same symmetrisation as CRYSTAL14.</p>
 </div>
 <div class="section" id="abinit">
-<h3><a class="toc-backref" href="#id39">ABINIT</a><a class="headerlink" href="#abinit" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id38">ABINIT</a><a class="headerlink" href="#abinit" title="Permalink to this headline">¶</a></h3>
 <p>The output file should come from a run containing three datasets. One to calculate the wavefunction at the optimized geometry, one to calculate the field perturbations and one to calculate the second derivatives. Examples of input files and output files are available with the distribution.</p>
 </div>
 <div class="section" id="qe">
-<h3><a class="toc-backref" href="#id40">QE</a><a class="headerlink" href="#qe" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id39">QE</a><a class="headerlink" href="#qe" title="Permalink to this headline">¶</a></h3>
 <p>The output file is the dynamical matrix file, specified by “filedyn” in a run of the quantum espresso phonon package. Examples of input and output files are given in the PDielec distribution</p>
 </div>
 <div class="section" id="phonopy">
-<h3><a class="toc-backref" href="#id41">PHONOPY</a><a class="headerlink" href="#phonopy" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id40">PHONOPY</a><a class="headerlink" href="#phonopy" title="Permalink to this headline">¶</a></h3>
 <p>Phonopy calculates the dynamical matrix through numerical differentiation. It has interfaces to several programs, although PDielec has only used the VASP interface. In principle other interfaces could be used. The second parameter for the –program directive is the PHONOPY interface that was used to calculate the forces. Typically these would be generated by performing;</p>
 <blockquote>
 <div>phonopy –d –dim=”1 1 1”</div></blockquote>
@@ -472,12 +476,12 @@ Unlike PDielec and PDGui it is not necessary to have performed a full calculatio
 <p>To calculate the infrared spectrum PDielec needs the Born charges for the atoms in the unit cell and these can be calculated using VASP and the optimized geometry of the unit cell. The OUTCAR file from this calculation can be copied to the current directory and renamed OUTCAR.born</p>
 </div>
 <div class="section" id="gulp">
-<h3><a class="toc-backref" href="#id42">GULP</a><a class="headerlink" href="#gulp" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id41">GULP</a><a class="headerlink" href="#gulp" title="Permalink to this headline">¶</a></h3>
 <p>The name on the command line is a file ending in .gout, containing the output of a GULP run. The contents of this file alone are sufficient to provide the unit cell, atomic masses, frequencies, normal modes, Born charge tensors and optical permittivity. Because GULP only writes out the Born charge matrices for the asymmetric unit, it is necessary to run a frequency calculation using P1 symmetry and a complete unit cell. The key words; nosymm, phonon, intensity, eigen and cart are recommended for the GULP calculation. In the case that no shells are used in the calculation the optical permittivity is not available in the output and it is necessary to provide it on the command line (see -optical and -optical_tensor options below).</p>
 </div>
 <div class="section" id="experiment">
-<h3><a class="toc-backref" href="#id43">EXPERIMENT</a><a class="headerlink" href="#experiment" title="Permalink to this headline">¶</a></h3>
-<p>This option has been added to allow the exploration of ‘toy’ problems. The file contains a minimum amount of data to allow a calculation to proceed. It is assumed that the systems will be isotropic as that make the input simpler. Calculations of the LO frequencies will not work with this option. An example input file is given here, which gives results very similar to that found for the Castep, MgO example;:</p>
+<h3><a class="toc-backref" href="#id42">EXPERIMENT</a><a class="headerlink" href="#experiment" title="Permalink to this headline">¶</a></h3>
+<p>This option has been added to allow the exploration of ‘toy’ problems. The file contains a minimum amount of data to allow a calculation to proceed. It is assumed that the systems will be isotropic as that make the input simpler. Calculations of the LO frequencies will not work with this option. An example input file is given here, which gives results very similar to that found for the Castep, MgO example;</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">species</span> <span class="mi">2</span> <span class="c1"># Define the atomic species, followed by the number of species</span>
 <span class="n">O</span> <span class="mf">16.0</span>    <span class="c1"># Species name followed by its mass</span>
 <span class="n">Mg</span> <span class="mf">24.3</span>

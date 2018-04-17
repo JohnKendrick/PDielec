@@ -25,9 +25,7 @@ This is the documentation for the PDielec package.  The package calculates the e
    
 
 
-Indices and tables
-==================
+Search
+======
 
-* :ref:`genindex`
-* :ref:`modindex`
 * :ref:`search`

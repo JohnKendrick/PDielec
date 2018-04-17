@@ -39,7 +39,7 @@ Magnesium oxide is an isotropic medium, the initial unit cell and the space grou
    +------------------------------------------+-----------------------------+--------------------------------------+
    | **LO phonons**                           |                             |                                      |
    +------------------------------------------+-----------------------------+--------------------------------------+
-   | T (001)                                  | 593.7                       |                                      |
+   | T (001)                                  | 693.7                       |                                      |
    +------------------------------------------+-----------------------------+--------------------------------------+
 
 
@@ -48,7 +48,7 @@ Because MgO is isotropic with only a single frequency contributing to the permit
 
 .. _fig-mgo-permittivity:
 
-.. figure:: ./_static/Figures/MgO_Permittivity.svg
+.. figure:: ./_static/Figures/MgO_Permittivity.*
    :scale: 90%
 
    Permittivity of MgO
@@ -56,7 +56,7 @@ Because MgO is isotropic with only a single frequency contributing to the permit
     
 .. _fig-mgo-real:
 
-.. figure:: ./_static/Figures/MgO_Real_Imaginary.svg
+.. figure:: ./_static/Figures/MgO_Real_Imaginary.*
    :scale: 90%
 
    Real and imaginary permittivities of a 10% volume fraction of MgO spheres in PTFE using the Maxwell-Garnett method
@@ -67,7 +67,7 @@ The effect of volume fraction on the predicted molar absorption coefficient, usi
 
 .. _fig-mgo-vf:
 
-.. figure:: ./_static/Figures/MgO_MG_Volume_Fraction.svg
+.. figure:: ./_static/Figures/MgO_MG_Volume_Fraction.*
    :scale: 90%
 
    Effect of volume fraction on the Maxwell-Garnett molar absorption coefficient of MgO spheres in PTFE
@@ -87,14 +87,14 @@ dominate the absorption.
 
 .. _fig-mgo-vf-bg:
 
-.. figure:: ./_static/Figures/MgO_Bruggeman_Volume_Fraction.svg
+.. figure:: ./_static/Figures/MgO_Bruggeman_Volume_Fraction.*
    :scale: 90%
 
    Effect of volume fraction on the Bruggeman molar absorption coefficient of MgO spheres in PTFE
 
 .. _fig-mgo-varying-permittivity:
 
-.. figure:: ./_static/Figures/MgO_Varying_Permittivity.svg
+.. figure:: ./_static/Figures/MgO_Varying_Permittivity.*
    :scale: 90%
 
    Effect of volume fraction on the Bruggeman molar absorption coefficient of MgO spheres in PTFE
@@ -103,7 +103,7 @@ dominate the absorption.
 
 .. _fig-mgo-varying-permittivity-brug:
 
-.. figure:: ./_static/Figures/MgO_Varying_Permittivity_Bruggeman.svg
+.. figure:: ./_static/Figures/MgO_Varying_Permittivity_Bruggeman.*
    :scale: 90%
 
    The Bruggeman molar absorption coefficients of spherical MgO particles, 1% volume fraction, embedded in media of varying permittivites
@@ -156,7 +156,7 @@ VASP and the permittivity was calculated using DFPT and the results reported in 
 
 .. _fig-zno:
 
-.. figure:: ./_static/Figures/ZnO-Maxwell_Garnett.svg
+.. figure:: ./_static/Figures/ZnO-Maxwell_Garnett.*
    :scale: 90%
 
    ZnO: Effect of shape on absorption
@@ -213,12 +213,12 @@ Calcite is the most stable polymorph of calcium carbonate and the crystal struct
    +------------------------------------------+-----------------------------+--------------------------------------+
 
 
-:numref:`fig-calcite` shows the results of analysis of the results using PDielec. The damping parameter used in the calculation was a value of 5 |cm-1|. A 10% volume fraction was used with sphere and plate morphologies for the particles. The unique axis for the plate was taken to be the normal to the (211) surfaces in the primitive cell axes (or the {104} surfaces in the standard unit cell). Such surfaces define the rhombohedral faces commonly seen in calcite crystals.^50^ :numref:`fig-calcite` shows that the doubly degenerate TO absorption peak at 620 |cm-1| is not significantly affected by spherical particles and there is a small shift to higher frequencies in the case of plate-like particles. The non-degenerate TO transition at 732 |cm-1|, which corresponds to motion of the carbon atom of the carbonate along the unique direction of the slab, shows a shift to 786 and 819 |cm-1| for the sphere and plate respectively. The doubly degenerate peak at 1463 |cm-1| is shifted to 1480 |cm-1| by spherical particles and is split by plate-like particles with one component which shifts to 1491 |cm-1| .
+:numref:`fig-calcite` shows the results of analysis of the results using PDielec. The damping parameter used in the calculation was a value of 5 |cm-1|. A 10% volume fraction was used with sphere and plate morphologies for the particles. The unique axis for the plate was taken to be the normal to the (211) surfaces in the primitive cell axes (or the {104} surfaces in the standard unit cell). Such surfaces define the rhombohedral faces commonly seen in calcite crystals :cite:`DeOliveira1997`. :numref:`fig-calcite` shows that the doubly degenerate TO absorption peak at 620 |cm-1| is not significantly affected by spherical particles and there is a small shift to higher frequencies in the case of plate-like particles. The non-degenerate TO transition at 732 |cm-1|, which corresponds to motion of the carbon atom of the carbonate along the unique direction of the slab, shows a shift to 786 and 819 |cm-1| for the sphere and plate respectively. The doubly degenerate peak at 1463 |cm-1| is shifted to 1480 |cm-1| by spherical particles and is split by plate-like particles with one component which shifts to 1491 |cm-1| .
 
 
 .. _fig-calcite:
 
-.. figure:: ./_static/Figures/Calcite_AP_Plate211_Sphere.svg
+.. figure:: ./_static/Figures/Calcite_AP_Plate211_Sphere.*
    :scale: 90%
 
    Calculated Maxwell-Garnett absorption spectrum of 10% volume fraction of calcite in PTFE
@@ -267,7 +267,7 @@ All calculations were performed by VASP :cite:`Hafner2008c` using projector augm
 
 .. _fig-fluoroapatite-morphology:
 
-.. figure:: ./_static/Figures/Fluoroapatite_morphology.png
+.. figure:: ./_static/Figures/Fluoroapatite_morphology.*
    :scale: 90%
 
    BFDH Morphology of fluoroapatite
@@ -275,7 +275,7 @@ All calculations were performed by VASP :cite:`Hafner2008c` using projector augm
 
 .. _fig-fluoroapatite-absorption:
 
-.. figure:: ./_static/Figures/Fluoroapatite_absorption.svg
+.. figure:: ./_static/Figures/Fluoroapatite_absorption.*
    :scale: 90%
 
    Calculated Maxwell-Garnett absorption spectra of 10% fluoroapatite in PTFE
@@ -345,21 +345,21 @@ The THz spectrum of L-aspartic acid has been reported by Juliano and Korter :cit
 
 .. _fig-aspartica:
 
-.. figure:: ./_static/Figures/Aspartic_thz_a.svg
+.. figure:: ./_static/Figures/Aspartic_thz_a.*
    :scale: 90%
 
    Aspartic Acid: Frequency range 60-130 |cm-1|
 
 .. _fig-asparticb:
 
-.. figure:: ./_static/Figures/Aspartic_thz_b.svg
+.. figure:: ./_static/Figures/Aspartic_thz_b.*
    :scale: 90%
 
    Aspartic Acid: Frequency range 1260-1340 |cm-1|
 
 .. _fig-asparticc:
 
-.. figure:: ./_static/Figures/Aspartic_thz_c.svg
+.. figure:: ./_static/Figures/Aspartic_thz_c.*
    :scale: 90%
 
    Aspartic Acid: Frequency range 2900-3100 |cm-1|
@@ -374,17 +374,17 @@ indicates that for small sizes of particles, the Mie and the Maxwell-Garnett met
 
 .. _fig-mgo-mie:
 
-.. figure:: ./_static/Figures/MgO_Mie_Maxwell.svg
+.. figure:: ./_static/Figures/MgO_Mie_Maxwell.*
    :scale: 90%
 
    Comparison of Mie and Maxwell methods. 1% volume fraction of MgO in PTFE, sphere radius of 0.1 μm and a broadening of 5 |cm-1|
 
-To better understand what makes particles large or small :numref:`tab-mgo-mie-sizes` shows the dimensionless size parameter, :math:`x`, as a function of wavenumber and of sphere radius. It has been assumed that the supporting medium is PTFE. Since the power expansion of the size parameters leads to terms which are quadratic in x, it should be expected that when x is less than about 0.1 μm, the particles can be considered small. It can be seen that particles less than 0.01 μm are small over the range of frequencies considered. But while 0.1 μm particles are small in the THz regime and low frequency infrared they should not be considered small over the more extended infrared frequencies. 1μm particles should be considered large for both the THz and the extended infrared.
+To better understand what makes particles large or small :numref:`tab-mgo-mie-sizes` shows the dimensionless size parameter, :math:`x`, as a function of wavenumber and of sphere radius. It has been assumed that the supporting medium is PTFE. Since the power expansion of the size parameters leads to terms which are quadratic in :math:`x`, it should be expected that when :math:`x` is less than about 0.1 μm, the particles can be considered small. It can be seen that particles less than 0.01 μm are small over the range of frequencies considered. But while 0.1 μm particles are small in the THz regime and low frequency infrared they should not be considered small over the more extended infrared frequencies. 1μm particles should be considered large for both the THz and the extended infrared.
 
 .. table:: Variation of size parameter with wavenumber and radius of sphere
    :name: tab-mgo-mie-sizes
    :widths: 1 1 1 1 1 1
-   :column-dividers:   none double none  none  none  none
+   :column-dividers:   none none none  none  none  none
    :header-alignment: right right right right right right
    :column-alignment: right right right right right right
 
@@ -419,7 +419,7 @@ Figure :numref:`fig-mgo-mie-sizes` shows how the Mie predictions change as the p
 
 .. _fig-mgo-mie-sizes:
 
-.. figure:: ./_static/Figures/MgO_Mie_Sizes.svg
+.. figure:: ./_static/Figures/MgO_Mie_Sizes.*
    :scale: 90%
 
    Variation in absorption calculated by the Mie method for different radii of spheres. 1% volume fraction of MgO in PTFE and a broadening of 5 |cm-1|
@@ -430,7 +430,7 @@ appearing, below 300 |cm-1|.
 
 .. _fig-mgo-mie-sizes-big:
 
-.. figure:: ./_static/Figures/MgO_Mie_Sizes_Big.svg
+.. figure:: ./_static/Figures/MgO_Mie_Sizes_Big.*
    :scale: 90%
 
    Variation in absorption calculated by the Mie method for larger sphere radii. 1% volume fraction of MgO in PTFE and a broadening of 5 |cm-1|
@@ -443,14 +443,14 @@ ZnO is an anisotropic material, so the treatment described here using Mie scatte
 
 .. _fig-zno-maxwell-garnett:
 
-.. figure:: ./_static/Figures/ZnO-Maxwell_Garnett.svg
+.. figure:: ./_static/Figures/ZnO-Maxwell_Garnett.*
    :scale: 90%
 
    ZnO spheres in PTFE using Maxwell Garnett
 
 .. _fig-zno-mie:
 
-.. figure:: ./_static/Figures/ZnO_Mie.svg
+.. figure:: ./_static/Figures/ZnO_Mie.*
    :scale: 90%
 
    ZnO spheres using Mie
@@ -462,7 +462,7 @@ Figure :numref:`fig-zno-mie-sizes` shows that the variation of the Mie scatterin
 
 .. _fig-zno-mie-sizes:
 
-.. figure:: ./_static/Figures/ZnO_Mie_Sizes.svg
+.. figure:: ./_static/Figures/ZnO_Mie_Sizes.*
    :scale: 90%
 
    ZnO spheres using Mie

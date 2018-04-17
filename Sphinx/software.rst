@@ -16,15 +16,15 @@ PDGui
 
 pdgui is provides a graphical front end to the capabilities of PDielec.
 pdgui can be run from the command line without any parameters or the QM/MM program name followed by the file to be read can be provided.
-For example;::
+For example; ::
 
     pdgui
 
-or::
+or ::
 
     pdgui vasp OUTCAR
 
-If a spreadsheet of results is required the name of the spreadsheet can be provided on the command line.::
+If a spreadsheet of results is required the name of the spreadsheet can be provided on the command line. ::
 
     pdgui vasp OUTCAR results.xlsx
     
@@ -82,13 +82,13 @@ The Eckart conditions control whether 3 modes at zero frequency due to translati
 There is an option to set the sum of the Born charge matrices to zero.  By default this is not applied.  
 
 The atomic masses can be specified in a variety of ways.  They can be chosen from;
-. The average natural abundance
-. The masses used by the QM/MM program
-. The isotopic mass of the most abundant isotope
+  - The average natural abundance
+  - The masses used by the QM/MM program
+  - The isotopic mass of the most abundant isotope
 
-In addition the mass of each element can be edited separately by clicking on the mass concerned and entering a new number.
+If necessary the mass of each element can be edited separately by clicking on the mass concerned and entering a new number.
 
-The width (sigma) of all the absorptions can be set using the *Lorentzian width(sigma)*  spin box. 
+The width (:math:`\sigma`) of all the absorptions can be set using the *Lorentzian width(sigma)*  spin box. 
 
 Finally the optical permittivity at zero frequency is given in the *Optical permittivity* table.  In some cases it is necessary to enter the optical permittivity by hand.  This can be done by clicking each element in the table which needs changing and typing the new matrix element.
 
@@ -97,7 +97,7 @@ The output table at the bottom of the tab shows the calculated frequencies and t
 Scenario Tabs
 -------------
 
-There can be more than one *Scenario Tab*.  Each one specifies a particular material, method or particle shape which will be used in the *Plotting Tab*.
+There can be more than one *Scenario Tab*.  Each one specifies a particular material, method or particle shape which will be used for the calculation of the effective medium.  The results of the calculations will be shown in the *Plotting Tab*.
 
 .. _fig-scenarioTab:
 
@@ -122,7 +122,7 @@ Scenarios can be added or removed using the push buttons at the bottom of each *
 Plotting Tab
 ------------
 
-The *plotting tab* controls and plots the absorption and permittivity as a function of frequency calculated for each scenario present in the pdgui notebook.
+The *Plotting tab* controls and plots the absorption and permittivity as a function of frequency calculated for each scenario present in the pdgui notebook.
 
 
 .. _fig-plottingTab:
@@ -143,7 +143,7 @@ The molar absorption, the absorption and the real or imaginary permittivity can 
 Analysis tab
 ------------
 
-The *analysis tab* shows a breakdown of the phonon modes into molecular components.  The molecular structure of the unit cell is determined by the covalent radii of the atoms.  These can be speficied individually if needed.  The *analysis tab* shows the number of molecules that have been found in the analysis.
+The *Analysis tab* shows a breakdown of the phonon modes into molecular components.  The molecular structure of the unit cell is determined by the covalent radii of the atoms.  These can be speficied individually if needed.  The *Analysis tab* shows the number of molecules that have been found in the analysis.
 
 
 .. _fig-analysisTab:
@@ -260,29 +260,37 @@ Support matrix
 --------------
 From an experimental point of view it is often convenient to use a mass fraction rather than a volume fraction to indicate the amount of dielectrically active material present.  PDielec allows mass fractions to be specified instead of a volume fraction, but this requires that the density of the supporting matrix is known. For convenience the package has a small database of the common supporting materials shown in Table below.  These can be specified through the -matrix option. In the case that the properties of the support material are different the properties can be defined instead with the -dielectric and -density options. 
 
-.. table:: Physical properties of matrix materials PDielec
-   :name: tab-materials
 
-  +--------+---------+--------------+-----------------------------+
-  | Name   | Density | Permittivity | Description                 |
-  +========+=========+==============+=============================+
-  | ptfe   | 2.2     | 2.0          | polytetrafluorethylene      |
-  +--------+---------+--------------+-----------------------------+
-  | air    | 0.0     | 1.0          | air                         |
-  +--------+---------+--------------+-----------------------------+
-  | vacuum | 0.0     | 1.0          | vacuum                      |
-  +--------+---------+--------------+-----------------------------+
-  | kbr    | 2.75    | 2.25         | potassium bromide           |
-  +--------+---------+--------------+-----------------------------+
-  | nujol  | 0.838   | 2.155        | Nujol                       |
-  +--------+---------+--------------+-----------------------------+
-  | hdpe   | 0.955   | 2.25         | high density polyethylene   |
-  +--------+---------+--------------+-----------------------------+
-  | mdpe   | 0.933   | 2.25         | medium density polyethylene |
-  +--------+---------+--------------+-----------------------------+
-  | ldpe   | 0.925   | 2.25         | low density polyethylene    |
-  +--------+---------+--------------+-----------------------------+
-  
+
+.. table:: Physical properties of matrix materials
+   :name: tab-matrix-properties
+   :widths: 1 1 1 3
+   :column-dividers:   none none  none  none
+   :header-alignment: right right right left
+   :column-alignment: right right right left
+
+   +--------+---------+--------------+-----------------------------+
+   | Name   | Density | Permittivity | Description                 |
+   +========+=========+==============+=============================+
+   | ptfe   | 2.200   | 2.000        | polytetrafluorethylene      |
+   +--------+---------+--------------+-----------------------------+
+   | air    | 0.000   | 1.000        | air                         |
+   +--------+---------+--------------+-----------------------------+
+   | vacuum | 0.000   | 1.000        | vacuum                      |
+   +--------+---------+--------------+-----------------------------+
+   | kbr    | 2.750   | 2.250        | potassium bromide           |
+   +--------+---------+--------------+-----------------------------+
+   | nujol  | 0.838   | 2.155        | Nujol                       |
+   +--------+---------+--------------+-----------------------------+
+   | hdpe   | 0.955   | 2.250        | high density polyethylene   |
+   +--------+---------+--------------+-----------------------------+
+   | mdpe   | 0.933   | 2.250        | medium density polyethylene |
+   +--------+---------+--------------+-----------------------------+
+   | ldpe   | 0.925   | 2.250        | low density polyethylene    |
+   +--------+---------+--------------+-----------------------------+
+
+
+
 Optical permittivity
 --------------------
 
@@ -325,29 +333,29 @@ Example command line uses of PDielec
                  -sphere -plate 0 0 1 -needle 0 0 1 -LO 0 0 1
 
 This performs a calculation using the Averaged-Permittivity and Maxwell-Garnett mixing rules for spherical particles, plate-like particles with a surface (001) and needle-like particles with a unique
-direction lying along the \[001\] direction. The supporting matrix is taken to be PTFE and the default volume fraction (10%) is used. The results of a VASP calculation are stored in the current directory.  There is no absorption output from this command as neither the -plot nor the -csv options were specified. The output includes the calculation of the LO modes along the (001) direction.::
+direction lying along the \[001\] direction. The supporting matrix is taken to be PTFE and the default volume fraction (10%) is used. The results of a VASP calculation are stored in the current directory.  There is no absorption output from this command as neither the -plot nor the -csv options were specified. The output includes the calculation of the LO modes along the (001) direction. ::
 
         pdielec -program castep phonon -vmin 300 -vmax 800 \
                 -sphere -dielectric 3 -vf 0.1 -vf 0.2 -sigma 10 -csv mgo.csv
 
-This performs a calculation for spherical particles varying the frequency from 300 to 800 |cm-1|, the permittivity of the supporting media is 3, two volume fractions are considered and a damping factor of 10 |cm-1| is used. The results of a CASTEP calculation with the seed-name "phonon" are analysed and the results stored in mgo.csv for further analysis using a spreadsheet. In this example a Maxwell-Garnett mixing rule is used by default. If visual inspection of the results is required then::
+This performs a calculation for spherical particles varying the frequency from 300 to 800 |cm-1|, the permittivity of the supporting media is 3, two volume fractions are considered and a damping factor of 10 |cm-1| is used. The results of a CASTEP calculation with the seed-name "phonon" are analysed and the results stored in mgo.csv for further analysis using a spreadsheet. In this example a Maxwell-Garnett mixing rule is used by default. If visual inspection of the results is required then ::
 
         pdielec -program castep phonon -vmin 300 -vmax 800 \
                 -sphere -dielectric 3 -vf 0.1 -vf 0.2\
                 -sigma 10 -csv mgo.csv -plot molar_absorption
 
-will perform the same calculation but a graph showing the molar absorption coefficients will be displayed.::
+will perform the same calculation but a graph showing the molar absorption coefficients will be displayed. ::
 
         pdielec -program gulp calcite.gout -matrix hdpe \
                 -method ap -method maxwell -sphere -plate -1 -1 -2 \
                 -vmax 2000 -mf 0.1 calcite.gout -csv calcite.csv
 
-This command performs a calculation of the absorption spectrum resulting from a GULP calculation. The supporting matrix density and permittivity are those of high density polyethylene, the frequency range is 0 to 2000 |cm-1|, the mass fraction considered is 10%, the mixing rules used are Averaged-Permittivity and Maxwell-Garnett. Spheres and plates with the (:math:`\bar{1}\bar{1}\bar{2})` surface are considered.::
+This command performs a calculation of the absorption spectrum resulting from a GULP calculation. The supporting matrix density and permittivity are those of high density polyethylene, the frequency range is 0 to 2000 |cm-1|, the mass fraction considered is 10%, the mixing rules used are Averaged-Permittivity and Maxwell-Garnett. Spheres and plates with the (:math:`\bar{1}\bar{1}\bar{2})` surface are considered. ::
 
         pdielec -program vasp OUTCAR -method mie -sphere \
                 -mf 0.1 -size 0.1 -size 1.0 -size 1.0 -csv results.csv
 
-This command performs a calculation of the absorption spectrum resulting from a VASP calculation using the Mie method for sphere with several particles sizes.::
+This command performs a calculation of the absorption spectrum resulting from a VASP calculation using the Mie method for sphere with several particles sizes. ::
 
         pdielec -sphere -mf 0.1 -program experiment experiment.expt\
                 -size 0.1 -size 1.0 -size 1.0 -excel results.xlsx
@@ -394,7 +402,7 @@ Examples
 
          preader -program vasp `find . -name OUTCAR` > results.csv
 
-This reads all the VASP OUTCAR files in the current and any of its subdirectories and summarises the results to results.csv.::
+This reads all the VASP OUTCAR files in the current and any of its subdirectories and summarises the results to results.csv. ::
 
          preader -program castep -eckart `find . -name \*.castep` > results.csv
 
@@ -452,7 +460,7 @@ The name on the command line is a file ending in .gout, containing the output of
 EXPERIMENT 
 ----------
 
-This option has been added to allow the exploration of 'toy' problems. The file contains a minimum amount of data to allow a calculation to proceed. It is assumed that the systems will be isotropic as that make the input simpler. Calculations of the LO frequencies will not work with this option. An example input file is given here, which gives results very similar to that found for the Castep, MgO example;::
+This option has been added to allow the exploration of 'toy' problems. The file contains a minimum amount of data to allow a calculation to proceed. It is assumed that the systems will be isotropic as that make the input simpler. Calculations of the LO frequencies will not work with this option. An example input file is given here, which gives results very similar to that found for the Castep, MgO example; ::
 
   species 2 # Define the atomic species, followed by the number of species
   O 16.0    # Species name followed by its mass
