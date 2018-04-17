@@ -6,6 +6,12 @@ Installation
    :local:
 
 
+.. meta::
+   :description: PDielec package for the calculation of infrared and terahertz absorption from QM calculations
+   :keywords: Quantum Mechanics, Effective Field Theory, Maxwell, Garnett, Mie, Infrared, Terahertz, Castep, Abinit, VASP, GULP. QE
+
+
+
 Linux
 =====
 
