@@ -183,7 +183,7 @@ The molecular vibrational contribution, which can be used to classify the intern
    E^{vib}_p = E^{total}_p - E^{cm}_p - E^{rot}_p
 
 
-Since all of the energy terms depend in the same way on :math:`\dot{Q}_p` , it is not required in the calculation of the *relative* contributions to the energy coming from the external (molecular centre-of-mass and rigid-body rotation) and the internal modes (vibrational contributions)
+Since all of the energy terms depend in the same way on :math:`\dot{Q}_p`, it is not required in the calculation of the *relative* contributions to the energy coming from the external (molecular centre-of-mass and rigid-body rotation) and the internal modes (vibrational contributions)
 
 Implementation
 --------------
