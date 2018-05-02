@@ -39,6 +39,7 @@ class QEOutputReader(GenericOutputReader):
         self.manage['header']   = (re.compile('Dynamical matrix file'), self._read_header)
         self.manage['lattice']  = (re.compile('Basis vectors'), self._read_lattice_vectors)
         self.manage['lattice2']  = (re.compile('cubic'), self._read_lattice_vectors)
+        self.manage['lattice3']  = (re.compile('^ *crystal axes:'), self._read_crystal_axes)
         self.manage['dynamical']  = (re.compile(' *Dynamical  Matrix in c'), self._read_dynamical)
         self.manage['epsilon']  = (re.compile(' *Dielectric Tensor:'), self._read_epsilon)
         self.manage['charges']  = (re.compile(' *Effective Charges E-U:'), self._read_born_charges)
@@ -47,9 +48,16 @@ class QEOutputReader(GenericOutputReader):
         self.manage['kpoint_grid']  = (re.compile('K_POINTS automatic'), self._read_kpoint_grid)
         self.manage['electrons']  = (re.compile('^ *number of electrons'), self._read_electrons)
         self.manage['energy']  = (re.compile('^ *total energy  *='), self._read_energy)
+        self.manage['alat']  = (re.compile('^ *lattice parameter'), self._read_alat)
         for f in self._outputfiles:
             self._read_output_file(f)
         return
+
+    def _read_alat(self, line):
+        t = float(line.split()[4])
+        if abs(t - angs2bohr) < 1.0e-4:
+            t = angs2bohr
+        self._alat = t
 
     def _read_electrons(self, line):
         self.electrons = float(line.split()[4])
@@ -73,7 +81,10 @@ class QEOutputReader(GenericOutputReader):
         line = self.file_descriptor.readline()
         self.nspecies = int(line.split()[0])
         self.nions    = int(line.split()[1])
-        self._alat     = float(line.split()[3])
+        t              = float(line.split()[3])
+        if abs(t - angs2bohr) < 1.0e-4:
+            t = angs2bohr
+        self._alat = t
 
     def _read_epsilon(self, line):
         self.file_descriptor.readline()
@@ -138,6 +149,18 @@ class QEOutputReader(GenericOutputReader):
             line = self.file_descriptor.readline()
             b.append([float(line.split()[0]), float(line.split()[1]), float(line.split()[2])])
             self.born_charges.append(b)
+        return
+
+    def _read_crystal_axes(self, line):
+        linea = self.file_descriptor.readline().split()
+        avector = [float(f)*self._alat/angs2bohr for f in linea[3:6]]
+        linea = self.file_descriptor.readline().split()
+        bvector = [float(f)*self._alat/angs2bohr for f in linea[3:6]]
+        linea = self.file_descriptor.readline().split()
+        cvector = [float(f)*self._alat/angs2bohr for f in linea[3:6]]
+        self.unit_cells.append(UnitCell(avector, bvector, cvector))
+        self.ncells = len(self.unit_cells)
+        self.volume = self.unit_cells[-1].volume
         return
 
     def _read_lattice_vectors(self, line):
