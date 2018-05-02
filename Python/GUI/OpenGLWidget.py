@@ -1,6 +1,11 @@
 import os
 import math
 import numpy as np
+# The following lines seem to fix a problem when running on low end machines
+import OpenGL
+OpenGL.USE_ACCELERATE = False
+OpenGL.ERROR_CHECKING = False
+# end of low-end machine fix
 from OpenGL.GL       import *
 from OpenGL.GLU      import *
 from OpenGL.GLUT     import *
@@ -85,12 +90,17 @@ class OpenGLWidget(QOpenGLWidget):
         debugger.print('Timeout - phase', self.current_phase)
         self.update()
 
+    def myMakeCurrent(self):
+        self.makeCurrent()
+        err = glGetError()
+        while err != GL_NO_ERROR:
+            err = glGetError()
 
     def moleculeRotate(self,scale,x,y,z):
         # Rotate molecular frame using glortho
         # Create a 4x4 matrix for the model view
         debugger.print('molecule rotation',x,y,z)
-        self.makeCurrent()
+        self.myMakeCurrent()
         glMatrixMode(GL_MODELVIEW)
         glGetFloatv(GL_MODELVIEW_MATRIX, self.matrix)
         glLoadIdentity()
@@ -100,7 +110,7 @@ class OpenGLWidget(QOpenGLWidget):
         self.update()
 
     def keyPressEvent(self, event):
-        self.makeCurrent()
+        self.myMakeCurrent()
         key = event.key()
         modifiers = event.modifiers()
         debugger.print('kepressevent',key,modifiers)
@@ -180,12 +190,12 @@ class OpenGLWidget(QOpenGLWidget):
 
     def translate(self,x,y):
         debugger.print('translate ',x,y)
-        self.makeCurrent()
+        self.myMakeCurrent()
         glTranslatef(x, y, 0.0)
             
     def wheelEvent(self, event):
         debugger.print('Wheel event ' )
-        self.makeCurrent()
+        self.myMakeCurrent()
         zoom = event.angleDelta().y() 
         self.zoom(zoom)
         self.update()
@@ -202,7 +212,7 @@ class OpenGLWidget(QOpenGLWidget):
 
     def zoom(self, zoom):
         debugger.print('zoom ', zoom)
-        self.makeCurrent()
+        self.myMakeCurrent()
         if zoom > 0:
             zoom_factor = 1.06
         else:
@@ -399,7 +409,7 @@ class OpenGLWidget(QOpenGLWidget):
     def setProjectionMatrix(self):
         if self.image_size is None or self.my_width is None or self.my_height is None:
             return
-        self.makeCurrent()
+        self.myMakeCurrent()
         glMatrixMode(GL_PROJECTION)
         glLoadIdentity()                    
         orthox = 1.1 * self.image_size * self.my_width  / min(self.my_width,self.my_height)
@@ -418,7 +428,7 @@ class OpenGLWidget(QOpenGLWidget):
 
     def defineLights(self):
         debugger.print('Define Lights')
-        self.makeCurrent()
+        self.myMakeCurrent()
         if self.light_switches is None:
             self.light_switches = self.viewerTab.light_switches
             glEnable(GL_LIGHTING)
