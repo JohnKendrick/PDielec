@@ -18,7 +18,7 @@
 import re
 import math
 import numpy as np
-from Python.Constants import amu, angs2bohr
+from Python.Constants import amu, angs2bohr, hartree2ev
 from Python.UnitCell import UnitCell
 from Python.GenericOutputReader import GenericOutputReader
 
@@ -49,25 +49,32 @@ class QEOutputReader(GenericOutputReader):
         self.manage['electrons']  = (re.compile('^ *number of electrons'), self._read_electrons)
         self.manage['energy']  = (re.compile('^ *total energy  *='), self._read_energy)
         self.manage['alat']  = (re.compile('^ *lattice parameter'), self._read_alat)
+        self.manage['pressure']  = (re.compile('^ *total *stress *.Ry'), self._read_pressure)
         for f in self._outputfiles:
             self._read_output_file(f)
         return
+
+    def _read_pressure(self, line):
+        self.pressure = float(line.split()[5])/10.0
 
     def _read_alat(self, line):
         t = float(line.split()[4])
         if abs(t - angs2bohr) < 1.0e-4:
             t = angs2bohr
-        self._alat = t
+        # There are rounding errors when reading from the log file
+        # So only read if there is no alternative
+        if self._alat is None:
+            self._alat = t
 
     def _read_electrons(self, line):
         self.electrons = float(line.split()[4])
 
     def _read_energy(self, line):
-        self.final_energy_without_entropy = float(line.split()[3]) * 27.21 / 2.0
-        self.final_free_energy = float(line.split()[3]) * 27.21 / 2.0
+        self.final_energy_without_entropy = float(line.split()[3]) * hartree2ev / 2.0
+        self.final_free_energy = float(line.split()[3]) * hartree2ev / 2.0
 
     def _read_energy_cutoff(self, line):
-        self.energy_cutoff = float(line.split()[3]) * 27.21 / 2.0
+        self.energy_cutoff = float(line.split()[3]) * hartree2ev / 2.0
 
     def _read_kpoints(self, line):
         self.kpoints = int(line.split()[4])
