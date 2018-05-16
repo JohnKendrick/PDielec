@@ -18,6 +18,7 @@
 import math
 
 # define some useful basic constants
+hartree2ev = 27.2114
 PI = 2.0 * math.acos(0.0)
 inv4pi = 1.0 / (4.0 * PI)
 speed_light_si = 299792458.0
