@@ -22,7 +22,7 @@ import math
 import os
 import sys
 import numpy as np
-from Python.Constants import amu
+from Python.Constants import amu, hartree2ev
 from Python.UnitCell import UnitCell
 from Python.GenericOutputReader import GenericOutputReader
 
@@ -56,16 +56,16 @@ class CrystalOutputReader(GenericOutputReader):
         return
 
     def _read_energy(self, line):
-        self.final_free_energy = 27.21*float(line.split()[3])
-        self.final_energy_without_entropy = 27.21*float(line.split()[3])
+        self.final_free_energy = hartree2ev*float(line.split()[3])
+        self.final_energy_without_entropy = hartree2ev*float(line.split()[3])
 
     def _read_energy2(self, line):
-        self.final_free_energy = 27.21*float(line.split()[5])
-        self.final_energy_without_entropy = 27.21*float(line.split()[5])
+        self.final_free_energy = hartree2ev*float(line.split()[5])
+        self.final_energy_without_entropy = hartree2ev*float(line.split()[5])
 
     def _read_energy3(self, line):
-        self.final_free_energy = 27.21*float(line.split()[2])
-        self.final_energy_without_entropy = 27.21*float(line.split()[2])
+        self.final_free_energy = hartree2ev*float(line.split()[2])
+        self.final_energy_without_entropy = hartree2ev*float(line.split()[2])
 
     def _read_electrons(self, line):
         self.electrons = int(line.split()[5])
