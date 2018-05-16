@@ -48,14 +48,16 @@ def read_a_file( calling_parameters):
         tail1 = root+'.dynG'
         tail2 = root+'.log'
         tail3 = root+'.out'
-        name1 = os.path.join(head,tail1)
-        name2 = os.path.join(head,tail2)
-        name3 = os.path.join(head,tail3)
-        name4 = os.path.join(head,tail)
+        name1 = os.path.join(head,tail2)
+        name2 = os.path.join(head,tail3)
+        name3 = os.path.join(head,tail)
+        # We want the dynG entry last rounding causes problems otherwise
+        name4 = os.path.join(head,tail1)
         names = []
         for n in [ name1, name2, name3, name4 ]:
-            if os.path.isfile(n): names.append(n)
-        names = list(set(names))
+            if os.path.isfile(n):
+                if not n in names:
+                    names.append(n)
         reader = QEOutputReader( names )
     elif program == "phonopy":
         # The order is important
@@ -104,10 +106,14 @@ def read_a_file( calling_parameters):
     reader.debug = debug
     reader.hessian_symmetrisation = hessian_symmetrisation
     reader.read_output()
-    frequencies = reader.frequencies
+    frequencies_cm1 = reader.frequencies
+    frequencies = np.array(frequencies_cm1)
     no_calculation = global_no_calculation
     if len(frequencies) < 3:
         no_calculation = True
+    mode_list = []
+    ignore_modes = []
+    sigmas = []
     if not no_calculation:
         # apply the eckart conditions before we change the masses
         reader.eckart = eckart
@@ -128,19 +134,78 @@ def read_a_file( calling_parameters):
         normal_modes = Calculator.normal_modes(masses, mass_weighted_normal_modes)
         # from the normal modes and the born charges calculate the oscillator strengths of each mode
         oscillator_strengths = Calculator.oscillator_strengths(normal_modes, born_charges)
-        modified_frequencies = reader.frequencies
-        modified_frequencies.sort()
+        modified_frequencies_cm1 = reader.frequencies
+        modified_frequencies_cm1.sort()
+        modified_frequencies = np.array(modified_frequencies_cm1)
         # if the frequency is less than 5 cm-1 assume that the oscillator strength is zero
-        for imode,f in enumerate(modified_frequencies):
+        for imode,f in enumerate(modified_frequencies_cm1):
+            mode_list.append(imode)
+            sigmas.append(5.0)
             if f < 5.0:
                 oscillator_strengths[imode]=np.zeros((3,3))
         # calculate the intensities from the trace of the oscillator strengths
         intensities = Calculator.infrared_intensities(oscillator_strengths)
+        # Calculate eps0
+        volume = reader.volume*angstrom*angstrom*angstrom
+        #
+        # Calculate degenerate lists
+        #
+        degeneracy_threshold = 1.0E-8
+        threshold_intensity = 1.0E-6
+        threshold_frequency = 5.0
+        degenerate_lists = {}
+        mmax = len(modified_frequencies_cm1)
+        for m1 in range(len(modified_frequencies_cm1)):
+            degenerate_lists[m1] = []
+        for m1 in range(len(modified_frequencies_cm1)):
+            f1 = modified_frequencies[m1]
+            for m2 in range(m1+1,min(mmax,m1+3)):
+                f2 = modified_frequencies_cm1[m2]
+                if abs(f2-f1) < degeneracy_threshold:
+                    degenerate_lists[m1].append(m2)
+                    degenerate_lists[m2].append(m1)
+        #
+        # Only modes with non-zero oscillator strengths contribute to the dielectric
+        # so calculate those modes which we can safely ignore and store them in ignore_modes
+        #
+        if len(ignore_modes) == 0:
+            for mode, intensity in enumerate(intensities):
+                # ignore modes with a low oscillator strength
+                if intensity < threshold_intensity:
+                    # If any of its degenerate modes have intensity then we shouldn't ignore it
+                    ignore = True
+                    for m in degenerate_lists[mode]:
+                        if intensities[m] > threshold_intensity:
+                            ignore = False
+                    if ignore:
+                        ignore_modes.append(mode)
+                # ignore modes with low real frequency
+                elif np.real(modified_frequencies_cm1[mode])/wavenumber < threshold_frequency:
+                    ignore_modes.append(mode)
+                # ignore modes with imaginary frequency
+                elif abs(np.imag(modified_frequencies_cm1[mode]))/wavenumber > 1.0e-6:
+                    ignore_modes.append(mode)
+                # end if intensity
+            # end for
+        # end if len()
+        # Remove any unwanted modes
+        ignore_modes = list(set(ignore_modes))
+        if len(ignore_modes) > 0:
+            for mode in ignore_modes:
+                if mode in mode_list:
+                    mode_list.remove(mode)
+            # end loop over modes to be ignored
+        # end of if ignore_modes
+        ionicv = Calculator.dielectric_contribution(0.0, mode_list, modified_frequencies*wavenumber, sigmas, oscillator_strengths, volume)
+    # absorption units here are L/mole/cm-1
     # Continue reading any data from the output file
-    frequencies.sort()
+    frequencies_cm1.sort()
     unitCell = reader.unit_cells[-1]
     a,b,c,alpha,beta,gamma = unitCell.convert_unitcell_to_abc()
-    eps0   = np.array(reader.zerof_static_dielectric)
+    if not no_calculation:
+        eps0 = np.real(ionicv)
+    else:
+        eps0   = np.array(reader.zerof_static_dielectric)
     epsinf = np.array(reader.zerof_optical_dielectric)
     eps0_xx = str(eps0[0,0])
     eps0_yy = str(eps0[1,1])
@@ -185,7 +250,7 @@ def read_a_file( calling_parameters):
     string = string + ',' + c12 + ',' + c13 + ',' + c23
     common_output=string
     string = header+common_output
-    for f in frequencies:
+    for f in frequencies_cm1:
         string = string + ',' + str(f)
     results_string = [ string ]
     # Assemble the next line if any of eckart/neutral/symm have been used
@@ -200,7 +265,7 @@ def read_a_file( calling_parameters):
         option_string = option_string+' mass_definition='+mass_definition
         header = fulldirname+','+option_string
         string = header + common_output 
-        for f in modified_frequencies:
+        for f in modified_frequencies_cm1:
             string = string + ',' + str(f)
         results_string.append(string)
         option_string = 'Calculated Intensities (Debye2/Angs2/amu)'
@@ -411,18 +476,18 @@ def main(sys):
                 print('1 3 ', carray[0,2], file=fd)
                 print('elastic', file=fd)
                 print('2 3 ', carray[1,2], file=fd)
-            nfreq = len(frequencies)
+            nfreq = len(frequencies_cm1)
             if nfreq > 4 :
                 for n in range(nfreq):
                     nlast = n
-                    if frequencies[n].real > 1.0E-6:
+                    if frequencies_cm1[n].real > 1.0E-6:
                         break
                     # end of if
                 # end of for
-                if frequencies[nlast].real > 1.0E-8 :
+                if frequencies_cm1[nlast].real > 1.0E-8 :
                     n = nlast 
                     print('frequency', nfreq - nlast, file=fd)
-                    for f in frequencies[nlast:] :
+                    for f in frequencies_cm1[nlast:] :
                         n = n + 1
                         print(n, f, file=fd)
             print('end', file=fd)
