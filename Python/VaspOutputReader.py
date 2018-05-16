@@ -240,8 +240,9 @@ class VaspOutputReader(GenericOutputReader):
         return
 
     def _read_external_pressure(self, line):
-        self.pressure = float(line.split()[3])
-        self._pulay = float(line.split()[8])
+        # Vasp writes out kbar so convert to GPa
+        self.pressure = float(line.split()[3])/10.0
+        self._pulay = float(line.split()[8])/10.0
         return
 
     def _read_pspot(self, line):
