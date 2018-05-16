@@ -24,7 +24,7 @@
 import re
 import math
 import numpy as np
-from Python.Constants import amu, angs2bohr, atomic_number_to_element
+from Python.Constants import amu, angs2bohr, atomic_number_to_element, hartree2ev
 from Python.UnitCell import UnitCell
 from Python.GenericOutputReader import GenericOutputReader
 
@@ -68,8 +68,14 @@ class AbinitOutputReader(GenericOutputReader):
         self.manage['electrons']    = (re.compile('  fully or partial'), self._read_electrons)
         self.manage['pressure']    = (re.compile('-Cartesian.*GPa'), self._read_pressure)
         self.manage['znucl']    = (re.compile('^  *znucl '), self._read_znucl)
+        self.manage['totalenergy']    = (re.compile('^  *Total energy '), self._read_total_energy)
         for f in self._outputfiles:
             self._read_output_file(f)
+        return
+
+    def _read_total_energy(self, line):
+        self.final_energy_without_entropy = float(line.split()[4]) * hartree2ev 
+        self.final_free_energy = float(line.split()[4]) * hartree2ev
         return
 
     def _read_znucl(self, line):
@@ -113,7 +119,7 @@ class AbinitOutputReader(GenericOutputReader):
         return
 
     def _read_energy_cutoff(self, line):
-        self.energy_cutoff = 27.21 * float(line.split()[1])
+        self.energy_cutoff = hartree2ev * float(line.split()[1])
         return
 
     def _read_acell(self, line):
