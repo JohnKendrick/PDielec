@@ -53,8 +53,8 @@ Mode Frequency Intensity         Integrated Molar Absorption Epsilon_max   FWHM
  
  
 Permittivity contribution from ionic displacements
-            4.234838      -0.000000      -0.000000
-           -0.000000       4.234838      -0.000000
+            4.234838       0.000000      -0.000000
+            0.000000       4.234838      -0.000000
            -0.000000      -0.000000       5.061893
  
 Optical permittivity at zero frequency
@@ -63,8 +63,8 @@ Optical permittivity at zero frequency
             0.000000      -0.000000       4.430300
  
 Total permittivity
-            8.694838      -0.000000      -0.000000
-           -0.000000       8.694738      -0.000000
+            8.694838       0.000000      -0.000000
+            0.000000       8.694738      -0.000000
            -0.000000      -0.000000       9.492193
 The following methods will be used: maxwell
 Creating a csv file: command2.csv
@@ -184,9 +184,9 @@ Mode Frequency Intensity         Integrated Molar Absorption Epsilon_max   FWHM
  
  
 Permittivity contribution from ionic displacements
-            4.234835       0.000000      -0.000000
+            4.234835       0.000000       0.000000
             0.000000       4.234835       0.000000
-           -0.000000       0.000000       5.054209
+            0.000000       0.000000       5.054209
  
 Optical permittivity at zero frequency
             4.460000      -0.000000       0.000000
@@ -194,6 +194,6 @@ Optical permittivity at zero frequency
             0.000000      -0.000000       4.430300
  
 Total permittivity
-            8.694835       0.000000      -0.000000
+            8.694835       0.000000       0.000000
             0.000000       8.694735       0.000000
-           -0.000000       0.000000       9.484509
+            0.000000       0.000000       9.484509

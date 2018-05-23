@@ -57,7 +57,7 @@ Atomic mass list
    1.007940  14.006740   1.007940   1.007940   1.007940  15.999400  15.999400  15.999400
   15.999400  14.006740  12.010700  12.010700
 
-Volume of unit cell is  1679.78973777 Angstrom^3
+Volume of unit cell is  1679.78956156 Angstrom^3
 Total unit cell mass is:  1221.47543914 g/mol
 Crystal density is:   1.20748 g/cc
 
@@ -629,7 +629,7 @@ Optical permittivity at zero frequency
             0.000000       0.000000       2.521611
  
 Total permittivity
-            3.902686       0.000000       0.000000
+            3.902687       0.000000       0.000000
             0.000000       3.439798      -0.000000
             0.000000      -0.000000       3.686898
 The following methods will be used: maxwell
@@ -1696,9 +1696,9 @@ Epsilon inf:
 Unit cell: 
             7.622000       0.000000       0.000000
             0.000000      10.285000       0.000000
-            0.000000       0.000000      21.428001
+            0.000000       0.000000      21.428000
  
-Volume of cell: 1679.789738
+Volume of cell: 1679.789562
 Total mass is: 1221.475439 g/mol
 Density is: 1.207477 g/cc
  
@@ -1766,7 +1766,7 @@ New atomic mass list
    1.007825  14.003074   1.007825   1.007825   1.007825  15.994915  15.994915  15.994915
   15.994915  14.003074  12.000000  12.000000
 
-Volume of unit cell is  1679.78973777 Angstrom^3
+Volume of unit cell is  1679.78956156 Angstrom^3
 Total unit cell mass is:  1356.49494363 g/mol
 Crystal density is:   1.34095 g/cc
 
@@ -2183,9 +2183,9 @@ Mode Frequency Intensity         Integrated Molar Absorption Epsilon_max   FWHM
  
  
 Permittivity contribution from ionic displacements
-            1.301203      -0.000000       0.000000
-           -0.000000       0.775616      -0.000000
-            0.000000      -0.000000       1.091405
+            1.301203       0.000000      -0.000000
+            0.000000       0.775616      -0.000000
+           -0.000000      -0.000000       1.091405
  
 Optical permittivity at zero frequency
             2.596309       0.000000       0.000000
@@ -2193,9 +2193,9 @@ Optical permittivity at zero frequency
             0.000000       0.000000       2.521611
  
 Total permittivity
-            3.897513      -0.000000       0.000000
-           -0.000000       3.438504      -0.000000
-            0.000000      -0.000000       3.613016
+            3.897513       0.000000      -0.000000
+            0.000000       3.438504      -0.000000
+           -0.000000      -0.000000       3.613016
 The following methods will be used: maxwell
 Creating a csv file: command3.csv
 No plotting has been requested
@@ -3260,9 +3260,9 @@ Epsilon inf:
 Unit cell: 
             7.622000       0.000000       0.000000
             0.000000      10.285000       0.000000
-            0.000000       0.000000      21.428001
+            0.000000       0.000000      21.428000
  
-Volume of cell: 1679.789738
+Volume of cell: 1679.789562
 Total mass is: 1221.475439 g/mol
 Density is: 1.207477 g/cc
  
@@ -3332,7 +3332,7 @@ New atomic mass list
    2.014102  14.003074   2.014102   2.014102   2.014102  15.994915  15.994915  15.994915
   15.994915  14.003074  12.000000  12.000000
 
-Volume of unit cell is  1679.78973777 Angstrom^3
+Volume of unit cell is  1679.78956156 Angstrom^3
 Total unit cell mass is:  1445.04729747 g/mol
 Crystal density is:   1.42849 g/cc
 
@@ -3384,7 +3384,7 @@ Mode Frequency Intensity         Integrated Molar Absorption Epsilon_max   FWHM
   55   121.13          0.268948                 1136.464643    144.6992      5.0
   58   127.43          0.702272                 2967.519527    377.8363      5.0
   59   129.74          0.571498                 2414.923726    307.4776      5.0
-  60   129.80          0.079978                  337.957032     43.0300      5.0
+  60   129.80          0.079978                  337.957031     43.0300      5.0
   61   130.32          0.722615                 3053.483860    388.7816      5.0
   62   135.60          0.220484                  931.675629    118.6246      5.0
   63   136.76          0.077871                  329.051487     41.8961      5.0
@@ -3754,8 +3754,8 @@ Mode Frequency Intensity         Integrated Molar Absorption Epsilon_max   FWHM
  
 Permittivity contribution from ionic displacements
             1.300479      -0.000000      -0.000000
-           -0.000000       0.775486      -0.000000
-           -0.000000      -0.000000       1.097142
+           -0.000000       0.775486       0.000000
+           -0.000000       0.000000       1.097142
  
 Optical permittivity at zero frequency
             2.596309       0.000000       0.000000
@@ -3763,6 +3763,6 @@ Optical permittivity at zero frequency
             0.000000       0.000000       2.521611
  
 Total permittivity
-            3.896788      -0.000000      -0.000000
-           -0.000000       3.438374      -0.000000
-           -0.000000      -0.000000       3.618753
+            3.896789      -0.000000      -0.000000
+           -0.000000       3.438374       0.000000
+           -0.000000       0.000000       3.618753
