@@ -23,6 +23,7 @@ import math
 from Python.Calculator  import calculate_distance
 from Python.Plotter     import print_reals, print_ints, print_strings
 from Python.Calculator  import cleanup_symbol
+import sys
 
 
 class UnitCell:
@@ -46,6 +47,27 @@ class UnitCell:
             self.lattice[1] = b
             self.lattice[2] = c
         self._calculate_reciprocal_lattice(self.lattice)
+
+    def write_cif(self, filename='', file_=sys.stdout):
+        print('data_'+filename,                                 file=file_)
+        print('_space_group_IT_number 1',                       file=file_)
+        print('_symmetry_space_group_name_H-M \'P1\'',          file=file_)
+        print('_cell_length_a      {:12.6f}'.format(self.a),    file=file_)
+        print('_cell_length_b      {:12.6f}'.format(self.b),    file=file_)
+        print('_cell_length_c      {:12.6f}'.format(self.c),    file=file_)
+        print('_cell_angle_alpha   {:12.6f}'.format(self.alpha),file=file_)
+        print('_cell_angle_beta    {:12.6f}'.format(self.beta), file=file_)
+        print('_cell_angle_gamma   {:12.6f}'.format(self.gamma),file=file_)
+        print('loop_',                                          file=file_)
+        print('_atom_site_label',                               file=file_)
+        print('_atom_site_fract_x',                             file=file_)
+        print('_atom_site_fract_y',                             file=file_)
+        print('_atom_site_fract_z',                             file=file_)
+        print('_atom_site_site_type_symbol',                    file=file_)
+        for i,(frac,el) in enumerate(zip(self.fractional_coordinates,self.element_names)):
+            symbol = el+str(i+1)
+            print( '{} {:12.6f} {:12.6f} {:12.6f} {}'.format(symbol,frac[0], frac[1], frac[2], el), file=file_)
+        return
 
     def getBoundingBox(self):
         # Return a box with 12 edges which represent the unit cell in cartesian space
