@@ -26,10 +26,12 @@ install:
 		cp preader.py $(SCRIPTS)
 		cp phonana.py $(SCRIPTS)
 		cp pdgui.py   $(SCRIPTS)
+		cp p2cif.py   $(SCRIPTS)
 		cp -P pdielec    $(SCRIPTS)
 		cp -P preader    $(SCRIPTS)
 		cp -P phonana    $(SCRIPTS)
 		cp -P pdgui      $(SCRIPTS)
+		cp -P p2cif      $(SCRIPTS)
 		mkdir -p $(SCRIPTS)/Python
 		mkdir -p $(SCRIPTS)/Python/PyMieScatt
 		mkdir -p $(SCRIPTS)/Python/GUI
