@@ -112,7 +112,7 @@ class QEOutputReader(GenericOutputReader):
             self.species.append(linea[1].capitalize())
             # The factor of two is because au in pwscf are half mass of electron
             self.masses_per_type.append(float(linea[2])*2/amu)
-        self._read_cartesian_coordinates()
+        self._read_fractional_coordinates()
         return
 
     def _read_dynamical(self, line):
@@ -183,8 +183,8 @@ class QEOutputReader(GenericOutputReader):
         self._read_masses()
         return
 
-    def _read_cartesian_coordinates(self):
-        self.cartesian_cordinates = []
+    def _read_fractional_coordinates(self):
+        self.fractional_cordinates = []
         self.masses = []
         self.atom_type_list = []
         self.ions_per_type = [ 0 for i in range(self.nspecies) ]
@@ -192,11 +192,11 @@ class QEOutputReader(GenericOutputReader):
         for i in range(self.nions):
             linea = self.file_descriptor.readline().split()
             species_index = int(linea[1])
-            self.cartesian_cordinates.append([float(linea[2]), float(linea[3]), float(linea[4])])
+            self.fractional_cordinates.append([float(linea[2]), float(linea[3]), float(linea[4])])
             self.masses.append(self.masses_per_type[species_index-1])
             self.atom_type_list.append(species_index-1)
             self.ions_per_type[species_index-1] += 1
             species_list.append(self.species[species_index-1])
-        self.unit_cells[-1].set_xyz_coordinates(self.cartesian_cordinates)
+        self.unit_cells[-1].set_fractional_coordinates(self.fractional_cordinates)
         self.unit_cells[-1].set_element_names(species_list)
         return
