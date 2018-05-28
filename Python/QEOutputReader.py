@@ -40,6 +40,7 @@ class QEOutputReader(GenericOutputReader):
         self.manage['lattice']  = (re.compile('Basis vectors'), self._read_lattice_vectors)
         self.manage['lattice2']  = (re.compile('cubic'), self._read_lattice_vectors)
         self.manage['lattice3']  = (re.compile('^ *crystal axes:'), self._read_crystal_axes)
+        self.manage['positions']  = (re.compile('ATOMIC_POSITIONS'), self._read_atomic_positions)
         self.manage['dynamical']  = (re.compile(' *Dynamical  Matrix in c'), self._read_dynamical)
         self.manage['epsilon']  = (re.compile(' *Dielectric Tensor:'), self._read_epsilon)
         self.manage['charges']  = (re.compile(' *Effective Charges E-U:'), self._read_born_charges)
@@ -50,9 +51,13 @@ class QEOutputReader(GenericOutputReader):
         self.manage['energy']  = (re.compile('^ *total energy  *='), self._read_energy)
         self.manage['alat']  = (re.compile('^ *lattice parameter'), self._read_alat)
         self.manage['pressure']  = (re.compile('^ *total *stress *.Ry'), self._read_pressure)
+        self.manage['nions']  = (re.compile('^ *number of atoms/cell'), self._read_nions)
         for f in self._outputfiles:
             self._read_output_file(f)
         return
+
+    def _read_nions(self, line):
+        self.nions = int(line.split()[4])
 
     def _read_pressure(self, line):
         self.pressure = float(line.split()[5])/10.0
@@ -183,8 +188,22 @@ class QEOutputReader(GenericOutputReader):
         self._read_masses()
         return
 
+    def _read_atomic_positions(self,line):
+        # This is a nasty fix for a problem I cant get to the bottom of
+        # The coordinates stored in the dynamical matrix file do not seem to be fractional coordinates
+        # So I am reading the fractional coordinates here - from the log file
+        self.fractional_coordinates = []
+        species_list = []
+        for i in range(self.nions):
+            linea = self.file_descriptor.readline().split()
+            self.fractional_coordinates.append([float(linea[1]), float(linea[2]), float(linea[3])])
+          
+
     def _read_fractional_coordinates(self):
-        self.fractional_cordinates = []
+        # This is a nasty fix for a problem I cant get to the bottom of
+        # The coordinates stored in the dynamical matrix file do not seem to be fractional coordinates
+        # So I am using the fractional coordinates from the log file - see _read_atomic_positions
+#        self.fractional_coordinates = []
         self.masses = []
         self.atom_type_list = []
         self.ions_per_type = [ 0 for i in range(self.nspecies) ]
@@ -192,11 +211,11 @@ class QEOutputReader(GenericOutputReader):
         for i in range(self.nions):
             linea = self.file_descriptor.readline().split()
             species_index = int(linea[1])
-            self.fractional_cordinates.append([float(linea[2]), float(linea[3]), float(linea[4])])
+#            self.fractional_coordinates.append([float(linea[2]), float(linea[3]), float(linea[4])])
             self.masses.append(self.masses_per_type[species_index-1])
             self.atom_type_list.append(species_index-1)
             self.ions_per_type[species_index-1] += 1
             species_list.append(self.species[species_index-1])
-        self.unit_cells[-1].set_fractional_coordinates(self.fractional_cordinates)
+        self.unit_cells[-1].set_fractional_coordinates(self.fractional_coordinates)
         self.unit_cells[-1].set_element_names(species_list)
         return
