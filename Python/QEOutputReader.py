@@ -200,22 +200,21 @@ class QEOutputReader(GenericOutputReader):
           
 
     def _read_fractional_coordinates(self):
-        # This is a nasty fix for a problem I cant get to the bottom of
-        # The coordinates stored in the dynamical matrix file do not seem to be fractional coordinates
-        # So I am using the fractional coordinates from the log file - see _read_atomic_positions
-#        self.fractional_coordinates = []
         self.masses = []
         self.atom_type_list = []
         self.ions_per_type = [ 0 for i in range(self.nspecies) ]
         species_list = []
+        self.xyz_coordinates = []
+        # It took a long time to work out that alat is in bohr
+        const = self._alat/angs2bohr
         for i in range(self.nions):
             linea = self.file_descriptor.readline().split()
             species_index = int(linea[1])
-#            self.fractional_coordinates.append([float(linea[2]), float(linea[3]), float(linea[4])])
+            self.xyz_coordinates.append([const*float(linea[2]), const*float(linea[3]), const*float(linea[4])])
             self.masses.append(self.masses_per_type[species_index-1])
             self.atom_type_list.append(species_index-1)
             self.ions_per_type[species_index-1] += 1
             species_list.append(self.species[species_index-1])
-        self.unit_cells[-1].set_fractional_coordinates(self.fractional_coordinates)
+        self.unit_cells[-1].set_xyz_coordinates(self.xyz_coordinates)
         self.unit_cells[-1].set_element_names(species_list)
         return
