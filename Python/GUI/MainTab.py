@@ -193,7 +193,7 @@ class MainTab(QWidget):
             print('Error in reading files - program  is ',self.settings['Program'])
             print('Error in reading files - filename is ',self.settings['Output file name'])
             print('Need to choose the file and program properly')
-            QMessageBox.about(self,'Processing output file','The filename for the output file to be processed is not correct: '+self.settings['Output file name'])
+            QMessageBox.about(self,'Processing output file','A reader has not be created for this filename: '+self.settings['Output file name'])
             return
         #switch on debugging in the reader
         #self.reader.debug = self.debug
@@ -204,13 +204,13 @@ class MainTab(QWidget):
             print('Error in reading output files - program  is ',self.settings['Program'])
             print('Error in reading output files - filename is ',self.settings['Output file name'])
             print('Need to choose the file and program properly')
-            QMessageBox.about(self,'Processing output file','The filename for the output file to be processed is not correct: '+self.settings['Output file name'])
+            QMessageBox.about(self,'Processing output file','Error on reading the output file using read_output(): '+self.settings['Output file name'])
             return
         if len(self.reader.unit_cells) == 0:
             print('Error in reading output files - program  is ',self.settings['Program'])
             print('Error in reading output files - filename is ',self.settings['Output file name'])
             print('Need to choose the file and program properly')
-            QMessageBox.about(self,'Processing output file','The filename for the output file to be processed is not correct: '+self.settings['Output file name'])
+            QMessageBox.about(self,'Processing output file','The output file has no unit cells in it: '+self.settings['Output file name'])
             return
         QApplication.setOverrideCursor(Qt.WaitCursor)
         # Update the checkbox
