@@ -117,7 +117,7 @@ def main():
     range2 = '{}{}'.format('B',rmax)
     frequencies = np.array([[i.value for i in j] for j in ws1[range1:range2]])
     frequencies = frequencies[:,0]
-    freq_scale = (frequencies[-1] - frequencies[0]) / ( rmax - rmin )
+    freq_scale = (frequencies[1] - frequencies[0])
     print('Frequencies',frequencies)
     print('Frequency scale',freq_scale)
     # Go through the file names and store the required column of numbers
