@@ -99,7 +99,7 @@ def main():
     size = len(names)
     columns = []
     lags = np.zeros( (size,size ) )
-    correlations = np.zeros( (size,size) )
+    correlations = np.eye( size )
     # Use the first file name to define the frequency range
     # and the range of rows to be treated
     wb1 = load_workbook(filename=names[0], read_only=True)
