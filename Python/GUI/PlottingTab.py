@@ -92,9 +92,9 @@ class PlottingTab(QWidget):
         # Choose a suitable increment
         #
         self.vinc_sb = QDoubleSpinBox(self) 
-        self.vinc_sb.setRange(0.01,5.0)
+        self.vinc_sb.setRange(0.0001,5.0)
         self.vinc_sb.setSingleStep(0.1)
-        self.vinc_sb.setDecimals(2)
+        self.vinc_sb.setDecimals(4)
         self.vinc_sb.setToolTip('Choose an increment for the frequency when plotting')
         self.vinc_sb.setValue(self.settings['Frequency increment'])
         self.vinc_sb.valueChanged.connect(self.on_vinc_changed)
