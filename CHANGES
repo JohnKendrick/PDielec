@@ -1,3 +1,7 @@
+version 5.0.0
+Removed the command line interface
+Added ATR functionality
+
 version 4.0.1
 Modified preader to work in parallel under Windows
 Changed the complex optical dielectric to real if the imaginary components are 0

@@ -24,7 +24,7 @@ exe = EXE(pyz,
           strip=False,
           upx=True,
           console=False,
-	  icon='C:\\Users\\pdielec\\Software\\PDielec\\BuildDocs\\Figures\\infrared.ico')
+	  icon='C:\\Users\\pdielec\\Software\\PDielec\\Sphinx\\_static\\Figures\\infrared.ico')
 coll = COLLECT(exe,
                a.binaries,
                a.zipfiles,
