@@ -34,6 +34,9 @@ class ScenarioTab(QWidget):
         self.settings['Unique direction - k'] = 0
         self.settings['Unique direction - l'] = 1
         self.settings['Mass or volume fraction'] = 'volume'
+        self.settings['ATR material refractive index'] = 4.0
+        self.settings['ATR theta'] = 45.0
+        self.settings['ATR S polarisation fraction'] = 0.5
         # get the reader from the main tab
         self.notebook = parent
         self.reader = self.notebook.mainTab.reader
@@ -207,6 +210,41 @@ class ScenarioTab(QWidget):
         label = QLabel('Ellipsoid a/b eccentricty',self)
         label.setToolTip('Define the ellipsoid a/b ratio or eccentricity.  \nOnly applicable for the ellipsoid shapes \na/b < 1: oblate ellipsoid \na/b > 1: prolate ellipsoid')
         form.addRow(label, self.aoverb_sb)
+        #
+        # Add ATR options
+        # Refractive Index
+        self.atr_index_sb = QDoubleSpinBox(self) 
+        self.atr_index_sb.setRange(0.001, 100.0)
+        self.atr_index_sb.setSingleStep(0.01)
+        self.atr_index_sb.setDecimals(3)
+        self.atr_index_sb.setToolTip('Define the ATR material refractive index')
+        self.atr_index_sb.setValue(self.settings['ATR material refractive index'])
+        self.atr_index_sb.valueChanged.connect(self.on_atr_index_sb_changed)
+        label = QLabel('ATR material refractive index', self)
+        label.setToolTip('Define the ATR material refractive index')
+        form.addRow(label, self.atr_index_sb)
+        # Incident angle in degreees
+        self.atr_incident_ang_sb = QDoubleSpinBox(self) 
+        self.atr_incident_ang_sb.setRange(0.0, 180.0)
+        self.atr_incident_ang_sb.setSingleStep(0.1)
+        self.atr_incident_ang_sb.setDecimals(1)
+        self.atr_incident_ang_sb.setToolTip('Define the ATR incident angle')
+        self.atr_incident_ang_sb.setValue(self.settings['ATR theta'])
+        self.atr_incident_ang_sb.valueChanged.connect(self.on_atr_incident_ang_sb_changed)
+        label = QLabel('ATR incident angle', self)
+        label.setToolTip('Define the ATR incident angle')
+        form.addRow(label, self.atr_incident_ang_sb)
+        # S polarisation fraction
+        self.atr_spolfrac_sb = QDoubleSpinBox(self) 
+        self.atr_spolfrac_sb.setRange(0.0, 1.0)
+        self.atr_spolfrac_sb.setSingleStep(0.01)
+        self.atr_spolfrac_sb.setDecimals(3)
+        self.atr_spolfrac_sb.setToolTip('Define the ATR S polarisation fraction, the rest is P polarisation')
+        self.atr_spolfrac_sb.setValue(self.settings['ATR S polarisation fraction'])
+        self.atr_spolfrac_sb.valueChanged.connect(self.on_atr_spolfrac_sb_changed)
+        label = QLabel('ATR S polarisation fraction', self)
+        label.setToolTip('Define the S polarisation fraction, the rest is P polarisation')
+        form.addRow(label, self.atr_spolfrac_sb)
         #
         # Add a legend option
         #
@@ -416,6 +454,24 @@ class ScenarioTab(QWidget):
     def on_permittivity_sb_changed(self,value):
         self.settings['Matrix permittivity'] = value
         debugger.print('on permittivity line edit changed', value)
+        self.dirty = True
+        self.notebook.plottingCalculationRequired = True
+
+    def on_atr_index_sb_changed(self,value):
+        self.settings['ATR material refractive index'] = value
+        debugger.print('on atr index line edit changed', value)
+        self.dirty = True
+        self.notebook.plottingCalculationRequired = True
+
+    def on_atr_incident_ang_sb_changed(self,value):
+        self.settings['ATR theta'] = value
+        debugger.print('on atr incident angle line edit changed', value)
+        self.dirty = True
+        self.notebook.plottingCalculationRequired = True
+
+    def on_atr_spolfrac_sb_changed(self,value):
+        self.settings['ATR S polarisation fraction'] = value
+        debugger.print('on atr spolfraction line edit changed', value)
         self.dirty = True
         self.notebook.plottingCalculationRequired = True
 

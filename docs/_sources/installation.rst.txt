@@ -188,7 +188,7 @@ Open a git bash console.  If you have installed Python using anaconda then you n
 
   cd Software/PDielec
   make test_preader
-  make test_pdielec
+  make test_pdgui
 
 Installing PDielec to run in any git bash console
 .................................................
@@ -221,9 +221,9 @@ PDielec directory structure
 Examples
 ========
 
-Each example directory has the relevant input data sets use to run the QM/MM program and the output files from that run which are post-processed by PDielec.  There is a file `command.sh` which contains a typical example of a PDielec command line and which has been used to create the reference output files `command.ref.out` and `csvfile.ref.csv`.  The example can be run::
+Each example directory has the relevant input data sets use to run the QM/MM program and the output files from that run which are post-processed by PDielec.  There is a file `script.py` which contains an of PDGui usage line and which has been used to create the reference output file `results.ref.xlsx`.  The example can be run interactively::
 
- bash command.sh
+ make pdgui-view
 
 The output can be compared with the reference data to see if the program is working correctly.
 

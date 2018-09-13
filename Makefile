@@ -9,28 +9,22 @@
 SCRIPTS ?= ~/bin
 
 default:	
-		@echo "Too install pdielec, phonana and preader in the $(SCRIPTS) directory"
+		@echo "Too install pdgui and preader in the $(SCRIPTS) directory"
 		@echo "Type 'make install'"
 		@echo "Too perform all the tests in the Examples directory"
 		@echo "Type 'make test'"
 		@echo "For a subset of the tests"
-		@echo "Type 'make test-pdielec'"
 		@echo " or  'make test-preader'"
-		@echo " or  'make test-phonana'"
 		@echo " or  'make test-pdgui'"
 		@echo " or  'make pyinstaller'"
 
 .PHONY:		install
 install:	
-		cp pdielec.py $(SCRIPTS)
 		cp preader.py $(SCRIPTS)
-		cp phonana.py $(SCRIPTS)
 		cp pdgui.py   $(SCRIPTS)
 		cp p2cif.py   $(SCRIPTS)
 		cp pdcompare.py  $(SCRIPTS)
-		cp -P pdielec    $(SCRIPTS)
 		cp -P preader    $(SCRIPTS)
-		cp -P phonana    $(SCRIPTS)
 		cp -P pdgui      $(SCRIPTS)
 		cp -P p2cif      $(SCRIPTS)
 		cp -P pdcompare  $(SCRIPTS)
@@ -44,47 +38,24 @@ install:
 
 test:		test-pdgui test-cli
 
-test-cli:	test-preader test-pdielec test-phonana
+test-cli:	test-preader 
 
-tests-cli:	test-preader test-pdielec test-phonana
+tests-cli:	test-preader 
 
 .PHONY:		pdgui
 test-pdgui:		
 		@echo "Testing pdgui functionality....."
 		@( cd Examples; make --no-print-directory test-pdgui )
 
-.PHONY:		test-phonana
-test-phonana:		
-		@echo "Testing phonana functionality....."
-		@( cd Examples; make --no-print-directory test-phonana )
-
 .PHONY:		test-preader
 test-preader:		
 		@echo "Testing preader functionality....."
 		@( cd Examples; make --no-print-directory test-preader )
 
-.PHONY:		test-pdielec
-test-pdielec:		
-		@echo "Testing pdielec functionality (takes a while to run)."
-		@( cd Examples; make --no-print-directory test-pdielec )
-
-.PHONY:		pdgui-regenerate
-pdgui-regenerate:		
-		@echo "Regenerating all reference data for pdgui"
-		@( cd Examples; make --no-print-directory pdgui-regenerate )
-
 .PHONY:		regenerate
 regenerate:		
-		@echo "Regenerating all reference data"
-		@( cd Examples; make --no-print-directory regenerate )
-
-.PHONY:		pylint
-pylint:		
-		@pylint pdielec Python/*.py
-
-.PHONY:		pylama
-pylama:		
-		@pylama -i E501,E221,C901 .
+		@echo "Regenerating all reference data for pdgui"
+		@( cd Examples; make --no-print-directory pdgui-regenerate )
 
 .PHONY:		clean
 clean:		

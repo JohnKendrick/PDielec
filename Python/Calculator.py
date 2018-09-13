@@ -914,7 +914,7 @@ def solve_effective_medium_equations( call_parameters ):
     # call_parameters is a tuple
     # In the case of Bruggeman and coherent we can use the previous result to start the iteration/minimisation
     # However to do this we need some shared memory, this allocated in previous_solution_shared
-    v,vau,dielecv,method,vf,vf_type,size_mu,size_distribution_sigma,size,nplot,dielectric_medium,shape,data,L,concentration,previous_solution_shared = call_parameters
+    v,vau,dielecv,method,vf,vf_type,size_mu,size_distribution_sigma,size,nplot,dielectric_medium,shape,data,L,concentration,atrPermittivity,atrTheta,atrSPol,previous_solution_shared = call_parameters
     if method == "balan":
         effdielec = balan(dielectric_medium, dielecv, shape, L, vf, size)
     elif method == "ap" or method == "averagedpermittivity" or method == "averaged permittivity" or method == "average permittivity":
@@ -957,7 +957,9 @@ def solve_effective_medium_equations( call_parameters ):
     absorption_coefficient = v * 4*PI * np.imag(refractive_index) * math.log10(math.e)
     # units are cm-1 L moles-1
     molar_absorption_coefficient = absorption_coefficient / concentration / vf
-    return v,nplot,method,vf_type,size_mu,size_distribution_sigma,shape,data,trace,absorption_coefficient,molar_absorption_coefficient
+    # calculate the ATR reflectance
+    spatr = reflectance_atr(refractive_index,atrPermittivity,atrTheta,atrSPol)
+    return v,nplot,method,vf_type,size_mu,size_distribution_sigma,shape,data,trace,absorption_coefficient,molar_absorption_coefficient,spatr
 def calculate_centre_of_mass(xyzs, masses):
    '''Calculate centre of mass'''
    cm = np.zeros(3)
@@ -1080,6 +1082,39 @@ def calculate_energy_distribution(cell, frequencies, normal_modes, debug=False):
    return energies_in_modes
 # end def
 
+
+def reflectance_atr(ns,n0,theta,atrSPolFraction):
+    # 
+    # Calculate the atr s and p reflectance
+    # ns is the complex permittivity of the effective medium
+    # n0 is the permittivity of atr material
+    # theta is the angle of incidence in degrees
+    # atrSPolFraction is the fraction of S wave to be considered
+    #                 The amount of P wave is 1-atrSPolFraction
+    #
+    # rs is the s-wave Fresnel amplitude
+    # rp is the p-wave
+
+    # Convert theta to an angle in radians
+    theta = math.radians(theta)
+    costheta = math.cos(theta)
+    sintheta = math.sin(theta)
+    # Calculate the Fresnel amplitudes for reflection
+    # Equations taken from p368 of APPLIED SPECTROSCOPY REVIEWS
+    # Vol. 39, No. 3, pp. 365–384, 2004
+    # by Milan Milosevic
+    # DOI: 10.1081/ASR-200030195
+    rs = -1.0* (n0*costheta - cmath.sqrt(ns*ns - n0*n0*sintheta*sintheta)) / (n0*costheta + cmath.sqrt(ns*ns - n0*n0*sintheta*sintheta))
+    rp = (ns*ns/n0*costheta - cmath.sqrt(ns*ns - n0*n0*sintheta*sintheta)) / (ns*ns/n0*costheta + cmath.sqrt(ns*ns - n0*n0*sintheta*sintheta))
+    # Calculate the reflectance from the amplitudes - store as a real
+    RS = np.real(rs * rs.conjugate())
+    RP = np.real(rp * rp.conjugate())
+    RSP = atrSPolFraction*RS + (1.0-atrSPolFraction)*RP
+    # Now return the extinction
+    RSP = -math.log10(RSP)
+    return RSP
+        
+        
 
 def cleanup_symbol(s):
     """Return a true element from the symbol"""

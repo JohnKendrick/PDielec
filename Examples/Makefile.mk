@@ -1,4 +1,0 @@
-PYTHON_EXE = python
-PDIELEC_OPTIONS = ""
-PDIELEC_OPTIONS = "-processors 4"
-PREADER_OPTIONS = ""

@@ -29,10 +29,10 @@ def main(sys):
     show_splash = True
     for token in sys.argv:
         if token == '-nosplash' or token == '--nosplash':
-            showSplash = False
+            show_splash = False
         elif token == '-h' or token == '-help' or token == '--help':
             print('pdgui - graphical user interface to the PDielec package')
-            print('pdgui [-help] [-debug] [program] [filename] [spreadsheet] [-script scriptname] [-nosplash]')
+            print('pdgui [-help] [-debug] [program] [filename] [spreadsheet] [-script scriptname] [-nosplash] [-exit]')
             exit()
 
     if show_splash:
@@ -44,6 +44,7 @@ def main(sys):
         splash.show()
     else:
         progressbar = QProgressBar()
+        progressbar = None
     ex = App(sys.argv, progressbar)
     ex.show()
     if show_splash:

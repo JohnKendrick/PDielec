@@ -571,3 +571,30 @@ Here :math:`N` is the number density of particles and :math:`k` is the wave-vect
 
 This approach to taking anisotropy into account when the embedded particles are anisotropic but randomly oriented is approximate, but has been shown to have a reasonably wide range of application :cite:`Stout2007`.
 
+
+Calculation of ATR Reflectance Spectra
+--------------------------------------
+
+Attenuated total reflectance spectroscopy (ATR) uses a medium of high refractive index contrast to modify the reflectance and transmission of the infrared radiation.  Balan has reported the calculation of the ATR spectrum of apatite :cite:`Aufort2016` and chrysotile :cite:`Brouder2002`.
+A similar approach is adopted by the PDielec package.  Denoting the angle of incidence by :math:`\theta` and the refractive index of high index, non-absorbing material by :math:`n_0` and that of the absorbing material by :math:`n_s`, the Fresnel amplitudes for reflection in the direction parallel (:math:`r_p`) and perpendicular (:math:`r_s`) to the incident radiation. :cite:`Milosevic2004`
+
+.. math::
+   :label: eq-fresnel
+
+   \begin{aligned}
+   r_s &= \frac{ -n_0 \cos{\theta} + \sqrt{n_s^2 - n_0^2 \sin^2{\theta}}}{n_0 \cos{\theta} + \sqrt{n_s^2 - n_0^2 \sin^2{\theta}}} \\
+   r_p &= \frac{ \frac{n_s^2}{n_0} \cos{\theta} + \sqrt{n_s^2 - n_0^2 \sin^2{\theta}}}{\frac{n_s^2}{n_0} \cos{\theta} + \sqrt{n_s^2 - n_0^2 \sin^2{\theta}}}
+   \end{aligned} 
+
+
+The extinction is expressed in absorbance units as;
+
+.. math::
+   :label: eq-fresnel-extinction
+
+   \begin{aligned}
+   e_s &= -log_{10}( r_s^*r_s ) \\
+   e_p &= -log_{10}( r_p^*r_p ) \\
+   \end{aligned} 
+
+The approach adopted by Balan and in the PDielec package is to use the calculated effective permittivity to determine the (complex) refractive index of the material being studied.  ATR measurements are taken with compressed powders of the material, so the appropriate effective medium can be determined from a high volume fraction of the crystal in air.

@@ -1,3 +1,0 @@
-The aim of this example is to reproduce the MgO Castep calculation.
-But the data in the input file is as compressed as possible.
-The file data.expt is commented so it should be easy to understand

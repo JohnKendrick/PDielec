@@ -15,3 +15,4 @@ PDielec post processes the output of solid state quantum mechanical and molecula
 
 Using an effective medium method, the package calculates the internal electric field arising from different particle morphologies and calculates the resulting shift in absorption frequency and intensity arising from the coupling between a phonon and the internal field. The theory of the approach is described, followed by a description of the implementation within PDielec. For the specific case of a low concentration of spherical particles, calculations based on Mie scattering allow the exploration of particle size effects. A section providing several examples of its application is given.
 
+The attenuated total reflection (ATR) spectrum can be calculated for a powdered material next to a high refractive index material such as diamond or germanium.

@@ -13,7 +13,7 @@
 Software components
 ===================
 
-There are three programs within the PDielec package.  *Pdielec* and *preader* are command line programs and *PDGui* is a graphical interface to the features of the PDielec package.
+There are two programs within the PDielec package.  *Preader* is a command line program and *PDGui* a graphical interface to the features of the PDielec package.
 
 
 PDGui
@@ -179,89 +179,6 @@ The atomic displacement of each phonon can either be shown as arrows or as an an
 As well as being able to change the phonon mode being analysed.  The colours and many settings in the visualiser can be adjusted from the settings tab.
 
 
-PDielec
-=======
-
-Pdielec is a command line interface to the capabilities of the PDielec package.
-
-Options
--------
-
-The program options are summarised below, a ✔ indicates that the option can be specified more than once.  Where there is a default value, it value is shown.
-
-  -program program
-    Program can be “abinit”,  “castep”, “crystal”, “gulp”, “qe”, “experiment” or “vasp” and specifies the program which generated the results to be analysed.
-  -method maxwell (✔)
-    The method is given by the string and is either ‘ap’, ‘maxwell’, ‘bruggeman’ or ‘mie’.
-  -sphere (✔)
-    The inclusion is a sphere, the default if no other shape is given.
-  -needle h k l (✔)
-    The inclusion is a needle whose unique directionis given by the direction \[hkl\].
-  -plate h k l (✔)
-    The inclusion is a plate whose  surface is defined by the Miller indices \(hkl\).   Note that needles and ellipsoid use  directions in crystal coordinates defined by \[hkl\].   For non-orthogonal lattices the normal to  the \(hkl\) is not necessarily the same as \[hkl\].
-  -ellipse h k l z (✔)
-    The inclusion is an ellipsoid, whose  unique direction is given by \[hkl\],  z  specifies the eccentricity of the ellipsoid.
-  -vf 0.1 (✔)
-    Specifies the volume fraction of inclusion.
-  -mf 0.0 (✔)
-    Specifies a mass fraction from  which the volume fraction is calculated.   The calculation requires the density of the supporting matrix.
-  -matrix ptfe 
-    The supporting matrix is defined by  the string.  Options are “ptfe”, “kbr”,  “ujol”, “air”, “vacuum”, “ldpe”, “mdpe”, “hdpe”.  If the matrix is given in this way both the  density and the permittivity of the supporting matrix are defined.  Alternatively the density and dielectric  options can be used.
-  -density 2.2
-    Defines the density of the  supporting matrix.
-  -dielectric 2.0
-    Defines the dielectric of the  supporting matrix.
-  -LO h k l (✔)
-    The frequencies corresponding to the longitudinal optic modes with a k vector direction (h k l) are calculated  using Equations :eq:`eq-LODynamicalMatrix`.
-  -LO_cart x y z (✔)
-    As above but for Cartesian  directions
-  -sigma 5.0 
-    Specifies the damping factor, σ,  for all modes in |cm-1|, as used in Equation :eq:`eq-permittivity`.
-  -mode_sigma k σ (✔)
-    The k’th mode is assigned a specific σ (|cm-1|).
-  -vmin 0.0
-    Thee starting wavenumber (|cm-1|)  for the frequency range.
-  -vmax 300.0
-    The final wavenumber (|cm-1|)  for the frequency range.
-  -i 0.2
-    The increment used to cover  the frequency range (|cm-1|).
-  -plot absorption (✔)
-    Plot types  are specified by the string and they can be  ‘absorption’, ‘molar_absorption’, ‘real’ or ‘imaginary’.
-  -excel filename.xlsx
-    Writes the results to an excel  spread sheet with the specified name.
-  -csv filename.csv
-    Output is sent to the specified comma separated  file.
-  -csv_ext filename
-    Output is sent to 3 comma separated  files; filename_command.csv, filename_frequency.csv and filename_spectrum.csv.
-  \-print
-    Additional output is provided from  the QM or MM calculation.
-  -ignore k (✔)
-    Ignore the kth mode (any mode below 5 |cm-1| is ignored automatically).
-  -mode k (✔)
-    Only use the kth mode in the  calculation of the permittivity.
-  -threshold 1.0e-10 5.0
-    The modes selected for inclusion in  the absorption calculation have to have an IR intensity greater than 1.0E-10 and a frequency greater than 5 |cm-1|.
-  \-eckart
-    The translational modes are  projected out of the hessian before diagonalisation.
-  \-hessian symm
-    This option can specify either “crystal” or  “symm”.  In the case of “crystal” the  hessian is symmetrised using the same algorithm as Crystal14.
-  -optical z1 z2 z3
-    z1,z2 and z3 define the diagonal of  the optical permittivity tensor.
-  -optical_tensor z1 z2 ..z9
-    z1,..9 define the full optical permittivity tensor.
-  -masses average
-    Specified the mass definition to use, which can be either “program”, “average” or “isotopic”, meaning that the masses used in the calculation of the frequenciesare either taken from the QM program or are the average of the isotope abundances or are the most abundant isotope mass.
-  -mass element mass (✔)
-    The atomic mass of the element is set to mass.  This can be used to explore the effect of isotope substitution on the calculated frequencies.
-  -processors int
-    The number of processors to be used  in the calculation can be defined.  By  default all available processors are used.
-  -molesof cells \[number_of_atoms_per_molecule\]
-    The default for the calculation of molar concentration is “cells”.  Other options are “atoms” or  “molecules”.  If ‘molecules’ is  specified then the number of atoms in a molecules must be provided.
-  \-size  0.00001 [sigma]
-    Modifies the polarisability (Eq.34) for spherical particles which incorporates the radius of the particle in microns(real).
-    It is also used to specify the dimension of the spherical particles for the Mie method.
-    It is also possible to specify a size distribution in which case the first number is the mean of the log distribution (in microns) and the second is its width (in log(microns)).
-
 Support matrix
 --------------
 From an experimental point of view it is often convenient to use a mass fraction rather than a volume fraction to indicate the amount of dielectrically active material present.  PDielec allows mass fractions to be specified instead of a volume fraction, but this requires that the density of the supporting matrix is known. For convenience the package has a small database of the common supporting materials shown in Table below.  These can be specified through the -matrix option. In the case that the properties of the support material are different the properties can be defined instead with the -dielectric and -density options. 
@@ -330,49 +247,6 @@ PDielec has been written to make use of multiprocessor computers. On a 4 process
    :scale: 90%
 
    Speed-up on a four processor workstation
-
-Example command line uses of PDielec
-------------------------------------
-::
-
-         pdielec -program vasp OUTCAR -method ap -method maxwell \
-                 -sphere -plate 0 0 1 -needle 0 0 1 -LO 0 0 1
-
-This performs a calculation using the Averaged-Permittivity and Maxwell-Garnett mixing rules for spherical particles, plate-like particles with a surface (001) and needle-like particles with a unique
-direction lying along the \[001\] direction. The supporting matrix is taken to be PTFE and the default volume fraction (10%) is used. The results of a VASP calculation are stored in the current directory.  There is no absorption output from this command as neither the -plot nor the -csv options were specified. The output includes the calculation of the LO modes along the (001) direction. ::
-
-        pdielec -program castep phonon -vmin 300 -vmax 800 \
-                -sphere -dielectric 3 -vf 0.1 -vf 0.2 -sigma 10 -csv mgo.csv
-
-This performs a calculation for spherical particles varying the frequency from 300 to 800 |cm-1|, the permittivity of the supporting media is 3, two volume fractions are considered and a damping factor of 10 |cm-1| is used. The results of a CASTEP calculation with the seed-name "phonon" are analysed and the results stored in mgo.csv for further analysis using a spreadsheet. In this example a Maxwell-Garnett mixing rule is used by default. If visual inspection of the results is required then ::
-
-        pdielec -program castep phonon -vmin 300 -vmax 800 \
-                -sphere -dielectric 3 -vf 0.1 -vf 0.2\
-                -sigma 10 -csv mgo.csv -plot molar_absorption
-
-will perform the same calculation but a graph showing the molar absorption coefficients will be displayed. ::
-
-        pdielec -program gulp calcite.gout -matrix hdpe \
-                -method ap -method maxwell -sphere -plate -1 -1 -2 \
-                -vmax 2000 -mf 0.1 calcite.gout -csv calcite.csv
-
-This command performs a calculation of the absorption spectrum resulting from a GULP calculation. The supporting matrix density and permittivity are those of high density polyethylene, the frequency range is 0 to 2000 |cm-1|, the mass fraction considered is 10%, the mixing rules used are Averaged-Permittivity and Maxwell-Garnett. Spheres and plates with the (:math:`\bar{1}\bar{1}\bar{2})` surface are considered. ::
-
-        pdielec -program vasp OUTCAR -method mie -sphere \
-                -mf 0.1 -size 0.1 -size 1.0 -size 1.0 -csv results.csv
-
-This command performs a calculation of the absorption spectrum resulting from a VASP calculation using the Mie method for sphere with several particles sizes. ::
-
-        pdielec -sphere -mf 0.1 -program experiment experiment.expt\
-                -size 0.1 -size 1.0 -size 1.0 -excel results.xlsx
-
-This command performs a calculation of the absorption spectrum resulting from the data stored in the experiment.expt file. Maxwell-Garnett calculations are performed with 3 different sized spheres and the results stored in a Excel file.
-
-Contents of the csv output file
--------------------------------
-
-If a csv output file is requested the file will contain the command used to perform the calculation. A brief summary is given of each active infrared mode; including the mode number, frequency, intensity, integrated molar absorption coefficient, its peak height (calculated from the intensity and damping factor) and the damping parameter used in the calculation. Following this is a table with a column for frequency followed by columns containing the real and imaginary permittivities, the absorption and molar absorption coefficients at each frequency.
-
 
 PReader
 =======
@@ -461,31 +335,4 @@ To calculate the infrared spectrum PDielec needs the Born charges for the atoms 
 GULP 
 -----
 
-The name on the command line is a file ending in .gout, containing the output of a GULP run. The contents of this file alone are sufficient to provide the unit cell, atomic masses, frequencies, normal modes, Born charge tensors and optical permittivity. Because GULP only writes out the Born charge matrices for the asymmetric unit, it is necessary to run a frequency calculation using P1 symmetry and a complete unit cell. The key words; nosymm, phonon, intensity, eigen and cart are recommended for the GULP calculation. In the case that no shells are used in the calculation the optical permittivity is not available in the output and it is necessary to provide it on the command line (see -optical and -optical\_tensor options below).
-
-EXPERIMENT 
-----------
-
-This option has been added to allow the exploration of 'toy' problems. The file contains a minimum amount of data to allow a calculation to proceed. It is assumed that the systems will be isotropic as that make the input simpler. Calculations of the LO frequencies will not work with this option. An example input file is given here, which gives results very similar to that found for the Castep, MgO example; ::
-
-  species 2 # Define the atomic species, followed by the number of species
-  O 16.0    # Species name followed by its mass
-  Mg 24.3
-  lattice 2.12346 # Define the lattice, the parameter is a scaling factor
-  1 1 0           # The a vector
-  1 0 1           # The b vector
-  0 1 1           # The c vector
-  unitcell 2      # Define the unit cell contents and fractional coordinates
-  O 0.5 0.5 0.5   # Species fraca, fracb, fracc
-  Mg 0.0 0.0 0.0  # Species fraca, fracb, fracc
-  static          # Define the static permittivity
-  3.13969 0.0 0.0
-  0.0 3.13969 0.0
-  0.0 0.0 3.13969
-  frequencies 3       # Specify how many frequencies to read in
-  388.282 0.000073639 # The frequency in wavenumbers and oscillator strength
-  388.282 0.000073639
-  388.282 0.000073639
-
-Examples of data sets for these packages are included with the distribution. The interface to these QM and MM codes reads information about the unit cell, the calculated normal modes and the Born charge matrices; from these the permittivity is calculated over the frequency range requested. The absorption and molar absorption coefficients can be plotted along with the real and imaginary permittivities. Optionally all the information can be written to a comma separated values (csv) file for direct importing into a spreadsheet. The program is run from the command line. There are several command options and these are summarized below. Some of the options may be repeated. The package needs a shape to be specified (sphere, needle, plate or ellipse). If no shape is specified on the command line a sphere is assumed.
-
+The name on the command line is a file ending in .gout, containing the output of a GULP run. The contents of this file alone are sufficient to provide the unit cell, atomic masses, frequencies, normal modes, Born charge tensors and optical permittivity. Because GULP only writes out the Born charge matrices for the asymmetric unit, it is necessary to run a frequency calculation using P1 symmetry and a complete unit cell. The key words; nosymm, phonon, intensity, eigen and cart are recommended for the GULP calculation. In the case that no shells are used in the calculation the optical permittivity is not available in the output and it is necessary to provide it.

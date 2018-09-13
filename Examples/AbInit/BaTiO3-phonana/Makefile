@@ -1,12 +1,14 @@
--include ../../Makefile.mk
-test:	
-	@echo "Analysing phonon modes for BaTiO3 from Abinit...."
-	@bash command.sh ${PYTHON_EXE} > command.out
-	@../../../checkcsv command.ref.out command.out
-	@../../../checkcsv command.ref.csv command.csv
+pdgui:
+	@echo "PDGui calculation for absorption of AlAs from Abinit...."
+	@../../../pdgui -nosplash abinit BaTiO3.out results.xlsx -script script.py -exit
+	@../../../checkexcel results.ref.xlsx results.xlsx
 
-regenerate:
-	@echo "Regenerating phonon mode files for BaTiO3 from Abinit...."
-	@bash command.sh ${PYTHON_EXE} > command.ref.out
-	@mv command.csv command.ref.csv
+pdgui-regenerate:
+	@echo "PDGui Regenerating reference files for BaTiO3 from Abinit...."
+	@../../../pdgui -nosplash abinit BaTiO3.out results.xlsx -script script.py -exit
+	@mv results.xlsx results.ref.xlsx
+
+pdgui-view:
+	@echo "Viewing pdgui reference files for BaTiO3 from Abinit...."
+	@../../../pdgui abinit BaTiO3.out -script script.py 
 

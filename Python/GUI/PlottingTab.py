@@ -154,31 +154,33 @@ class PlottingTab(QWidget):
         # Final button
         #
         hbox = QHBoxLayout()
-        self.molarAbsorptionButton = QPushButton('Plot the molar absorption')
+        self.molarAbsorptionButton = QPushButton('Plot molar absorption')
         self.molarAbsorptionButton.setToolTip('Plot the molar absorption using the scenarios')
         self.molarAbsorptionButton.clicked.connect(self.molarAbsorptionButtonClicked)
         hbox.addWidget(self.molarAbsorptionButton)
-        self.absorptionButton = QPushButton('Plot the absorption')
+        self.absorptionButton = QPushButton('Plot absorption')
         self.absorptionButton.setToolTip('Plot the absorption using the scenarios')
         self.absorptionButton.clicked.connect(self.absorptionButtonClicked)
         hbox.addWidget(self.absorptionButton)
-        self.realPermButton = QPushButton('Plot the real permittivity')
+        self.realPermButton = QPushButton('Plot real permittivity')
         self.realPermButton.setToolTip('Plot the real permittivity using the scenarios')
         self.realPermButton.clicked.connect(self.realPermButtonClicked)
         hbox.addWidget(self.realPermButton)
-        self.imagPermButton = QPushButton('Plot the imaginary permittivity')
+        self.imagPermButton = QPushButton('Plot imaginary permittivity')
         self.imagPermButton.setToolTip('Plot the imaginary permittivity using the scenarios')
         self.imagPermButton.clicked.connect(self.imagPermButtonClicked)
         hbox.addWidget(self.imagPermButton)
+        self.atrButton = QPushButton('Plot ATR')
+        self.atrButton.setToolTip('Plot Reflectance ATR')
+        self.atrButton.clicked.connect(self.atrButtonClicked)
+        hbox.addWidget(self.atrButton)
         form.addRow(hbox)
         # Add a progress bar
-        if self.notebook.progressbar is not None:
-            self.splash_progressbar = self.notebook.progressbar
         self.progressbar = QProgressBar(self)
         self.progressbar.setToolTip('Show the progress of any calculations')
         self.progressbar.setMinimum(0)
-        self.splash_progressbar.setMinimum(0)
-        self.splash_progressbar.setMinimum(0)
+        if self.notebook.progressbar is not None:
+            self.notebook.progressbar.setMinimum(0)
         label = QLabel('Calculation progress', self)
         label.setToolTip('Show the progress of any calculations')
         form.addRow(label,self.progressbar)
@@ -223,6 +225,13 @@ class PlottingTab(QWidget):
         if not self.notebook.plottingCalculationRequired:
             self.plot(self.xaxes, self.imagPermittivities, 'Imaginary Component of Permittivity')
 
+    def atrButtonClicked(self):
+        debugger.print('atrButtonClicked pressed')
+        if self.notebook.plottingCalculationRequired:
+            self.calculate()
+        if not self.notebook.plottingCalculationRequired:
+            self.plot(self.xaxes, self.sp_atrs, 'ATR reflectance')
+
     def on_title_changed(self,text):
         self.settings['Plot title'] = text
         if self.subplot is not None:
@@ -235,7 +244,8 @@ class PlottingTab(QWidget):
         self.notebook.plottingCalculationRequired = True
         self.dirty = True
         self.progressbar.setValue(0)
-        self.splash_progressbar.setValue(0)
+        if self.notebook.progressbar is not None:
+            self.notebook.progressbar.setValue(0)
         QCoreApplication.processEvents()
         debugger.print('on vinc change ', self.settings['Frequency increment'])
 
@@ -244,7 +254,8 @@ class PlottingTab(QWidget):
         self.notebook.plottingCalculationRequired = True
         self.dirty = True
         self.progressbar.setValue(0)
-        self.splash_progressbar.setValue(0)
+        if self.notebook.progressbar is not None:
+            self.notebook.progressbar.setValue(0)
         QCoreApplication.processEvents()
         debugger.print('on vmin change ', self.settings['Minimum frequency'])
 
@@ -253,7 +264,8 @@ class PlottingTab(QWidget):
         self.notebook.plottingCalculationRequired = True
         self.dirty = True
         self.progressbar.setValue(0)
-        self.splash_progressbar.setValue(0)
+        if self.notebook.progressbar is not None:
+            self.notebook.progressbar.setValue(0)
         QCoreApplication.processEvents()
         debugger.print('on vmax change ', self.settings['Maximum frequency'])
 
@@ -287,7 +299,8 @@ class PlottingTab(QWidget):
         self.notebook.plottingCalculationRequired = True
         # Reset the progress bar
         self.progressbar.setValue(0)
-        self.splash_progressbar.setValue(0)
+        if self.notebook.progressbar is not None:
+            self.notebook.progressbar.setValue(0)
         self.molarAbsorptionButtonClicked()
         self.dirty = False
         self.notebook.plottingCalculationRequired = False
@@ -303,7 +316,8 @@ class PlottingTab(QWidget):
         self.notebook.plottingCalculationRequired = True
         self.dirty = True
         self.progressbar.setValue(0)
-        self.splash_progressbar.setValue(0)
+        if self.notebook.progressbar is not None:
+            self.notebook.progressbar.setValue(0)
         QCoreApplication.processEvents()
         self.settings['Number of atoms'] = value
         debugger.print('on natoms changed ', self.settings['Number of atoms'])
@@ -322,7 +336,8 @@ class PlottingTab(QWidget):
         self.notebook.plottingCalculationRequired = True
         self.dirty = True
         self.progressbar.setValue(0)
-        self.splash_progressbar.setValue(0)
+        if self.notebook.progressbar is not None:
+            self.notebook.progressbar.setValue(0)
         QCoreApplication.processEvents()
         if self.settings['Molar definition'] == 'Molecules':
             self.settings['concentration'] = 1000.0 / (avogadro_si * self.reader.volume * 1.0e-24 * self.settings['Number of atoms'] / self.reader.nions)
@@ -339,7 +354,8 @@ class PlottingTab(QWidget):
         global threading
         debugger.print('calculate')
         self.progressbar.setValue(0)
-        self.splash_progressbar.setValue(0)
+        if self.notebook.progressbar is not None:
+            self.notebook.progressbar.setValue(0)
         QCoreApplication.processEvents()
         # Assemble the mainTab settings
         settings = self.notebook.mainTab.settings
@@ -425,7 +441,8 @@ class PlottingTab(QWidget):
         maximum_progress = len(call_parameters) * (1 + len(self.scenarios))
         progress = 0
         self.progressbar.setMaximum(maximum_progress)
-        self.splash_progressbar.setMaximum(maximum_progress)
+        if self.notebook.progressbar is not None:
+            self.notebook.progressbar.setMaximum(maximum_progress)
         QCoreApplication.processEvents()
         number_of_processors = cpu_count()
         #jk start = time.time()
@@ -438,7 +455,8 @@ class PlottingTab(QWidget):
             dielecv_results.append(result)
             progress += 1
             self.progressbar.setValue(progress)
-            self.splash_progressbar.setValue(progress)
+            if self.notebook.progressbar is not None:
+                self.notebook.progressbar.setValue(progress)
         pool.close()
         pool.join()
         QCoreApplication.processEvents()
@@ -460,6 +478,7 @@ class PlottingTab(QWidget):
         self.imagPermittivities = []
         self.absorptionCoefficients = []
         self.molarAbsorptionCoefficients = []
+        self.sp_atrs = []
         #jk start = time.time()
         if threading:
             pool = Pool(number_of_processors)
@@ -477,6 +496,9 @@ class PlottingTab(QWidget):
             particle_sigma_mu = scenario.settings['Particle size distribution sigma(mu)']
             shape = scenario.settings['Particle shape'].lower()
             hkl = [scenario.settings['Unique direction - h'], scenario.settings['Unique direction - k'], scenario.settings['Unique direction - l']] 
+            atr_refractive_index = scenario.settings['ATR material refractive index']
+            atr_theta = scenario.settings['ATR theta']
+            atr_spolfraction = scenario.settings['ATR S polarisation fraction']
             aoverb = scenario.settings['Ellipsoid a/b']
             vf_type = ''
             call_parameters = []
@@ -489,31 +511,35 @@ class PlottingTab(QWidget):
                 size = 2.0*PI*particle_size_mu / lambda_mu
                 data = ''
                 call_parameters.append( (v,vau,dielecv,method,volume_fraction,vf_type,particle_size_mu,particle_sigma_mu,size,nplot,
-                                         matrix_permittivity,shape,data,L,concentration,previous_solution_shared) )
+                                         matrix_permittivity,shape,data,L,concentration,atr_refractive_index,atr_theta,atr_spolfraction,previous_solution_shared) )
                 nplot += 1
             results = []
             for result in pool.imap(Calculator.solve_effective_medium_equations, call_parameters, chunksize=40):
                 results.append(result)
                 progress += 1
                 self.progressbar.setValue(progress)
-                self.splash_progressbar.setValue(progress)
+                if self.notebook.progressbar is not None:
+                    self.notebook.progressbar.setValue(progress)
             QCoreApplication.processEvents()
             xaxis = []
             realPermittivity = []
             imagPermittivity = []
             absorptionCoefficient = []
             molarAbsorptionCoefficient = []
-            for v,nplot,method,vf_type,size_mu,size_sigma,shape,data,trace, absorption_coefficient,molar_absorption_coefficient in results:
+            sp_atr = []
+            for v,nplot,method,vf_type,size_mu,size_sigma,shape,data,trace, absorption_coefficient,molar_absorption_coefficient,spatr in results:
                  xaxis.append(v)
                  realPermittivity.append(np.real(trace))
                  imagPermittivity.append(np.imag(trace))
                  absorptionCoefficient.append(absorption_coefficient)
                  molarAbsorptionCoefficient.append(molar_absorption_coefficient)
+                 sp_atr.append(spatr)
             self.xaxes.append(xaxis)
             self.realPermittivities.append(realPermittivity)
             self.imagPermittivities.append(imagPermittivity)
             self.absorptionCoefficients.append(absorptionCoefficient)
             self.molarAbsorptionCoefficients.append(molarAbsorptionCoefficient)
+            self.sp_atrs.append(sp_atr)
         pool.close()
         pool.join()
         #jk print('Dielec calculation duration ', time.time()-start)
@@ -547,6 +573,7 @@ class PlottingTab(QWidget):
         self.write_results(sp, 'Absorption',self.xaxes, self.absorptionCoefficients)
         self.write_results(sp, 'Real Permittivity',self.xaxes, self.realPermittivities)
         self.write_results(sp, 'Imaginary Permittivity',self.xaxes, self.imagPermittivities)
+        self.write_results(sp, 'ATR Reflectance',self.xaxes, self.sp_atrs)
 
     def write_results(self, sp, name, vss, yss):
         sp.selectWorkSheet(name)

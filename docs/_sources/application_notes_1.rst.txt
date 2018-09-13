@@ -13,7 +13,7 @@
 Applications
 ============
 
-Several examples are given to illustrate applications of the package.  The calculations used to provide the data for the permittivities are sufficiently accurate to illustrate aspects of the theory. The examples are chosen to show the package being used with the QM packages CASTEP and VASP and with the MM package GULP.  All the calculations reported here have been performed with the command line interface to PDielec.
+Several examples are given to illustrate applications of the package.  The calculations used to provide the data for the permittivities are sufficiently accurate to illustrate aspects of the theory. The examples are chosen to show the package being used with the QM packages CASTEP and VASP and with the MM package GULP. 
 
 MgO using CASTEP
 ================

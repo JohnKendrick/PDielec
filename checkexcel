@@ -52,7 +52,7 @@ max_percentage_error = 0.0
 #
 # Loop over sheets
 #
-for sheet in ['Main','Settings','Scenarios','Molar Absorption','Absorption','Real Permittivity','Imaginary Permittivity', 'Analysis']:
+for sheet in ['Main','Settings','Scenarios','Molar Absorption','Absorption','Real Permittivity','Imaginary Permittivity', 'ATR Reflectance', 'Analysis']:
     ws1 = wb1[sheet]
     ws2 = wb2[sheet]
     max_rows1 = ws1.max_row

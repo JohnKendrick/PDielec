@@ -68,6 +68,10 @@ class App(QMainWindow):
                 print('Processing script',self.scriptname)
             self.readScript(self.scriptname)
         if exit:
+            if self.notebook.spreadsheet is not None:
+                if self.debug:
+                    print('Closing spreadsheeet on exit',self.scriptname)
+                self.notebook.spreadsheet.close()
             sys.exit()
         #self.show()
 
@@ -82,7 +86,7 @@ class App(QMainWindow):
     def closeEvent(self, event):
         # Make sure any spread sheet is closed
         if self.debug:
-            print('Close event as been captured')
+            print('Close event has been captured')
         if self.notebook.spreadsheet is not None:
             self.notebook.spreadsheet.close()
         else:
