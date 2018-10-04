@@ -38,7 +38,7 @@ def main():
         print('                         H Mie/3.0 ')
         print('         -rmax rmax  Use rows from rmin to rmax              ')
         print('         -rmin rmin  Use rows from rmin to rmax (rows start from 2)')
-        print('         -sheet [molar/absorption/real/imaginary]')
+        print('         -sheet [molar/absorption/real/imaginary/atr]')
         print('         -excel filename')
         return
 
@@ -52,6 +52,7 @@ def main():
         "absorption"  : "Absorption",
         "real"        : "Real Permittivity",
         "imaginary"   : "Imaginary Permittivity",
+        "atr"         : "ATR Reflectance",
     }
     # Begin processing of command line
     command_line = ' '.join(sys.argv)
@@ -181,6 +182,7 @@ def main():
                worksheet.write(j+1,i+1,correlations[j,i])
                worksheet.write(i+1,j+1,correlations[i,j])
         print('Finished write the spread sheet to ',excelfile)
+        workbook.close()
     
 
 if __name__ == '__main__':
