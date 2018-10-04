@@ -101,7 +101,7 @@ class MainTab(QWidget):
         else:
             self.hessian_symmetry_cb.setCheckState(Qt.Unchecked)
         self.hessian_symmetry_cb.stateChanged.connect(self.on_hessian_symmetry_changed)
-        label = QLabel('Choose method to symmetrise the hessian')
+        label = QLabel('Symmetrise the hessian for Crystal14')
         label.setToolTip('The Crystal program uses a different method for symmetrising the hessian.  Check this flag if you want to use the same method as used by Crystal14')
         if self.settings['Program'] == 'crystal':
             self.hessian_symmetry_cb.setEnabled(True)
@@ -335,7 +335,10 @@ class MainTab(QWidget):
         debugger.print('QM program is now', self.settings['QM program'])
         if self.settings['Program'] == 'crystal':
             self.hessian_symmetry_cb.setEnabled(True)
+            self.hessian_symmetry_cb.setCheckState(Qt.Checked)
         else:
+            self.hessian_symmetry_cb.setEnabled(True)
+            self.hessian_symmetry_cb.setCheckState(Qt.Unchecked)
             self.hessian_symmetry_cb.setEnabled(False)
         self.dirty = True
 
