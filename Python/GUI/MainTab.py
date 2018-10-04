@@ -96,17 +96,16 @@ class MainTab(QWidget):
         self.hessian_symmetry_cb.setToolTip('The Crystal program uses a different method for symmetrising the hessian.  Check this flag if you want to use the same method as used by Crystal14')
         self.hessian_symmetry_cb.setText('')
         self.hessian_symmetry_cb.setLayoutDirection(Qt.RightToLeft)
-        if self.settings['Hessian symmetrisation'] == 'crystal':
+        if self.settings['Program'] == 'crystal':
+            self.settings['Hessian symmetrisation'] = 'crystal'
             self.hessian_symmetry_cb.setCheckState(Qt.Checked)
+            self.hessian_symmetry_cb.setEnabled(True)
         else:
             self.hessian_symmetry_cb.setCheckState(Qt.Unchecked)
+            self.hessian_symmetry_cb.setEnabled(False)
         self.hessian_symmetry_cb.stateChanged.connect(self.on_hessian_symmetry_changed)
         label = QLabel('Symmetrise the hessian for Crystal14')
         label.setToolTip('The Crystal program uses a different method for symmetrising the hessian.  Check this flag if you want to use the same method as used by Crystal14')
-        if self.settings['Program'] == 'crystal':
-            self.hessian_symmetry_cb.setEnabled(True)
-        else:
-            self.hessian_symmetry_cb.setEnabled(False)
         form.addRow(label, self.hessian_symmetry_cb)
         #
         # The store results
