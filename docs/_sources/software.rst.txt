@@ -54,7 +54,7 @@ After running the program the user sees a notebook interface with seven tabs.
     *Fitter Tab* allows a user to display an experimental spectrum and compare it with the calculated spectrum.
 
 
-Main tab
+Main Tab
 --------
 
 The *Main Tab* is used to pick the MM/QM package and the output file which will be analysed.
@@ -130,7 +130,7 @@ Scenarios can be added or removed using the push buttons at the bottom of each *
 Plotting Tab
 ------------
 
-The *Plotting tab* controls and plots the absorption and permittivity as a function of frequency calculated for each scenario present in the pdgui notebook.
+The *Plotting Tab* controls and plots the absorption and permittivity as a function of frequency calculated for each scenario present in the pdgui notebook.
 
 
 .. _fig-plottingTab:
@@ -148,10 +148,10 @@ The title of the plot can be supplied by entering it into the *Plot title* text 
 
 The molar absorption, the absorption and the real or imaginary permittivity can be plotted.  Once a plot has been requested the calculation progress is shown in the progress bar.  Some settings can be changed without the whole plot being recalculated.
 
-Analysis tab
+Analysis Tab
 ------------
 
-The *Analysis tab* shows a breakdown of the phonon modes into molecular components.  The molecular structure of the unit cell is determined by the covalent radii of the atoms.  These can be speficied individually if needed.  The *Analysis tab* shows the number of molecules that have been found in the analysis.
+The *Analysis Tab* shows a breakdown of the phonon modes into molecular components.  The molecular structure of the unit cell is determined by the covalent radii of the atoms.  These can be speficied individually if needed.  The *Analysis Tab* shows the number of molecules that have been found in the analysis.
 
 
 .. _fig-analysisTab:
@@ -161,12 +161,12 @@ The *Analysis tab* shows a breakdown of the phonon modes into molecular componen
 
    The Analysis Tab
 
-The bar graph shows a break down of each normal mode in the chosen frequency range into either internal and external contributions or into molecular components.  The atom sizes and the molecular composition of the unit cell is displayed in the *3D viewer tab*
+The bar graph shows a break down of each normal mode in the chosen frequency range into either internal and external contributions or into molecular components.  The atom sizes and the molecular composition of the unit cell is displayed in the *3D viewer Tab*
 
-3D Viewer tab
+3D Viewer Tab
 -------------
 
-The *3d viewer tab* shows the unit cell of the system using the molecular information and atomic sizes from the *analysis tab*.
+The *3d viewer Tab* shows the unit cell of the system using the molecular information and atomic sizes from the *Analysis Tab*.
 
 The atomic displacement of each phonon can either be shown as arrows or as an animation.  The views and animations can be recorded in  .png and .mp4 files respectively.  If a .gif file is specified the animation is recorded but with reduced numbers of colours.
 
@@ -181,12 +181,12 @@ The atomic displacement of each phonon can either be shown as arrows or as an an
 As well as being able to change the phonon mode being analysed.  The colours and many settings in the visualiser can be adjusted from the settings tab.
 
 
-Fitter tab
+Fitter Tab
 -----------
 
-The *Fitter tab* imports an experimental spectrum to be imported.  The spectrum is stored in an Excel spreadsheet.  The spreadsheet should contain a single sheet with two columns.  The first column should be the frequency in cm-1 and the second should be the measured signal.  The signal can be molar absorption, absorption, real permittivity, imaginary permittivity or ATR absorbance.
+The *Fitter Tab* imports an experimental spectrum to be imported.  The spectrum is stored in an Excel spreadsheet.  The spreadsheet should contain a single sheet with two columns.  The first column should be the frequency in cm-1 and the second should be the measured signal.  The signal can be molar absorption, absorption, real permittivity, imaginary permittivity or ATR absorbance.
 Once imported the experimental spectrum can be compared with the calculated spectrum.  The tab shows the frequencies contributing to the spectrum and allows the Lorentzian widths of the transitions to be altered.  The frequency range used for the display is the same as that used in the *plotting tab*.
-The spectrum is shown at the bottom of the tab and is recalculated when the *Replot and recalculate* button is pressed.  The data type stored in the experimental spreadsheet is defined by the *Plot and data type* setting.  
+The spectrum is shown at the bottom of the tab and is recalculated when the *Replot* or *Replot with frequency shift* buttons are pressed.  The data type stored in the experimental spreadsheet is defined by the *Plot and data type* setting.  
 
 
 .. _fig-fitter:
@@ -197,7 +197,7 @@ The spectrum is shown at the bottom of the tab and is recalculated when the *Rep
    The Fitter Tab
 
 
-After a replot the cross-correlation coefficient and the frequency shift needed to maximise that cross-correlation coefficient is shown.  It is possible to apply a frequency scaling to the calculated spectrum.  However, this scaling is not reflected in the plot, it only affects the calculation of the cross-correlation coefficient.
+After a replot the cross-correlation coefficient and the frequency shift needed to maximise that cross-correlation coefficient is shown.  It is possible to apply a frequency scaling to the calculated spectrum. The *Replot with frequency shift* shows the calculated spectrum with the frequencies shifted by the shift calculated to maximise the cross-correlation coefficient.  Care must be taken in comparing the calculated and experimental spectra as different y-axes are used for each.
 
 It is also possible to automatically adjust the Lorentzian width factors with the *Perform fitting* button.  However experience with this option shows that it maybe better to adjust the peak heights manually by altering the sigma values.  At the moment only 10 iterations are performed for each press of the button.  If requested the frequency scaling factor can be adjust too.
 
