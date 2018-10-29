@@ -42,7 +42,7 @@ Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{
 [Files]
 Source: "{#SourcePath}\dist\pdgui\pdgui.exe"; DestDir: "{app}"; Flags: ignoreversion
 Source: "{#SourcePath}\dist\pdgui\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "{#SourcePath}\BuildDocs\Figures\{#MyAppIconName}"; DestDir: "{app}"
+Source: "{#SourcePath}\Sphinx\_static\Figures\{#MyAppIconName}"; DestDir: "{app}"
 ;Source: "{#SourcePath}\Examples\*"; DestDir: "{app}\Examples"; Flags: ignoreversion recursesubdirs createallsubdirs 
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
