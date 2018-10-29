@@ -1,4 +1,5 @@
 import os.path
+import sys
 import copy
 from PyQt5.QtWidgets            import  QWidget, QTabWidget
 from PyQt5.QtWidgets            import  QVBoxLayout
@@ -191,3 +192,7 @@ class NoteBook(QWidget):
             print('Control S has been pressed')
             print('Current settings will be saved to settings.py file')
             self.print_settings()
+        elif (e.key() == Qt.Key_C)  and QApplication.keyboardModifiers() and Qt.ControlModifier:
+            print('Control C has been pressed')
+            print('The program will close down')
+            sys.exit()
