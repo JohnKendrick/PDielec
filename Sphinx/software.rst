@@ -37,7 +37,7 @@ If a spreadsheet of results is required the name of the spreadsheet can be provi
 The spreadsheet name must have an .xlsx extension.
 
 The package requires the PyQt5 library.
-After running the program the user sees a notebook interface with six tabs.
+After running the program the user sees a notebook interface with seven tabs.
 
     *Main Tab* allows the user to specify the program and filename which are to be anaylsed.  It is also possible to specify here the spreadsheet name of results are going to be saved.
 
@@ -50,6 +50,8 @@ After running the program the user sees a notebook interface with six tabs.
     *Analysis Tab* shows the decomposition of the normal modes into molecular components.
 
     *Visualisation Tab* displays the normal modes as either arrows showing the atomic displacement or as an animation.
+
+    *Fitter Tab* allows a user to display an experimental spectrum and compare it with the calculated spectrum.
 
 
 Main tab
@@ -177,6 +179,27 @@ The atomic displacement of each phonon can either be shown as arrows or as an an
    The 3D Viewer Tab
 
 As well as being able to change the phonon mode being analysed.  The colours and many settings in the visualiser can be adjusted from the settings tab.
+
+
+Fitter tab
+-----------
+
+The *Fitter tab* imports an experimental spectrum to be imported.  The spectrum is stored in an Excel spreadsheet.  The spreadsheet should contain a single sheet with two columns.  The first column should be the frequency in cm-1 and the second should be the measured signal.  The signal can be molar absorption, absorption, real permittivity, imaginary permittivity or ATR absorbance.
+Once imported the experimental spectrum can be compared with the calculated spectrum.  The tab shows the frequencies contributing to the spectrum and allows the Lorentzian widths of the transitions to be altered.  The frequency range used for the display is the same as that used in the *plotting tab*.
+The spectrum is shown at the bottom of the tab and is recalculated when the *Replot and recalculate* button is pressed.  The data type stored in the experimental spreadsheet is defined by the *Plot and data type* setting.  
+
+
+.. _fig-fitter:
+
+.. figure:: ./_static/Figures/FitterTab.png 
+   :scale: 80%
+
+   The Fitter Tab
+
+
+After a replot the cross-correlation coefficient and the frequency shift needed to maximise that cross-correlation coefficient is shown.  It is possible to apply a frequency scaling to the calculated spectrum.  However, this scaling is not reflected in the plot, it only affects the calculation of the cross-correlation coefficient.
+
+It is also possible to automatically adjust the Lorentzian width factors with the *Perform fitting* button.  However experience with this option shows that it maybe better to adjust the peak heights manually by altering the sigma values.  At the moment only 10 iterations are performed for each press of the button.  If requested the frequency scaling factor can be adjust too.
 
 
 Support matrix

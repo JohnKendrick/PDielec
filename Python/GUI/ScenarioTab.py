@@ -21,6 +21,7 @@ class ScenarioTab(QWidget):
         self.settings = {}
         self.notebook = parent
         self.notebook.plottingCalculationRequired = True
+        self.notebook.fittingCalculationRequired = True
         matrix = 'ptfe'
         self.settings['Matrix'] = matrix
         self.settings['Matrix density'] = support_matrix_db[matrix][0]
@@ -300,24 +301,28 @@ class ScenarioTab(QWidget):
         debugger.print('on_h_sb_changed', value)
         self.dirty = True
         self.notebook.plottingCalculationRequired = True
+        self.notebook.fittingCalculationRequired = True
         self.settings['Unique direction - h'] = value
 
     def on_k_sb_changed(self,value):
         debugger.print('on_k_sb_changed', value)
         self.dirty = True
         self.notebook.plottingCalculationRequired = True
+        self.notebook.fittingCalculationRequired = True
         self.settings['Unique direction - k'] = value
 
     def on_l_sb_changed(self,value):
         debugger.print('on_l_sb_changed', value)
         self.dirty = True
         self.notebook.plottingCalculationRequired = True
+        self.notebook.fittingCalculationRequired = True
         self.settings['Unique direction - l'] = value
 
     def on_shape_cb_activated(self,index):
         debugger.print('on shape cb activated', index)
         self.dirty = True
         self.notebook.plottingCalculationRequired = True
+        self.notebook.fittingCalculationRequired = True
         self.settings['Particle shape'] = self.shapes[index]
         if self.settings['Particle shape'] == 'Sphere':
             self.settings['Unique direction - h'] = 0
@@ -329,6 +334,7 @@ class ScenarioTab(QWidget):
         debugger.print('on methods cb activated', index)
         self.dirty = True
         self.notebook.plottingCalculationRequired = True
+        self.notebook.fittingCalculationRequired = True
         self.settings['Effective medium method'] = self.methods[index]
         if self.settings['Effective medium method'] == 'Mie':
             self.settings['Particle shape'] = 'Sphere'
@@ -345,6 +351,7 @@ class ScenarioTab(QWidget):
         debugger.print('on mass fraction line edit changed', value)
         self.dirty = True
         self.notebook.plottingCalculationRequired = True
+        self.notebook.fittingCalculationRequired = True
         self.settings['Mass or volume fraction'] = 'mass'
         self.settings['Mass fraction'] =  value/100.0
         if self.settings['Mass or volume fraction'] == 'mass':
@@ -373,6 +380,7 @@ class ScenarioTab(QWidget):
         debugger.print('on_aoverb_le_changed',value)
         self.dirty = True
         self.notebook.plottingCalculationRequired = True
+        self.notebook.fittingCalculationRequired = True
         self.settings['Ellipsoid a/b'] = value
 
     def on_legend_le_changed(self,text):
@@ -385,18 +393,21 @@ class ScenarioTab(QWidget):
         debugger.print('on sigma line edit changed', value)
         self.dirty = True
         self.notebook.plottingCalculationRequired = True
+        self.notebook.fittingCalculationRequired = True
         self.settings['Particle size distribution sigma(mu)'] = value
 
     def on_size_sb_changed(self,value):
         debugger.print('on size line edit changed', value)
         self.dirty = True
         self.notebook.plottingCalculationRequired = True
+        self.notebook.fittingCalculationRequired = True
         self.settings['Particle size(mu)'] = value
 
     def on_vf_sb_changed(self,value):
         debugger.print('on volume fraction line edit changed', value)
         self.dirty = True
         self.notebook.plottingCalculationRequired = True
+        self.notebook.fittingCalculationRequired = True
         self.settings['Mass or volume fraction'] = 'volume'
         self.settings['Volume fraction'] = value/100.0
         if self.settings['Mass or volume fraction'] == 'volume':
@@ -426,6 +437,7 @@ class ScenarioTab(QWidget):
         debugger.print('on matrix combobox activated', self.matrix_cb.currentText())
         self.dirty = True
         self.notebook.plottingCalculationRequired = True
+        self.notebook.fittingCalculationRequired = True
         matrix = self.matrix_cb.currentText()
         self.matrix_cb.blockSignals(True)
         self.density_sb.blockSignals(True)
@@ -450,34 +462,40 @@ class ScenarioTab(QWidget):
         debugger.print('on density line edit changed', value)
         self.dirty = True
         self.notebook.plottingCalculationRequired = True
+        self.notebook.fittingCalculationRequired = True
 
     def on_permittivity_sb_changed(self,value):
         self.settings['Matrix permittivity'] = value
         debugger.print('on permittivity line edit changed', value)
         self.dirty = True
         self.notebook.plottingCalculationRequired = True
+        self.notebook.fittingCalculationRequired = True
 
     def on_atr_index_sb_changed(self,value):
         self.settings['ATR material refractive index'] = value
         debugger.print('on atr index line edit changed', value)
         self.dirty = True
         self.notebook.plottingCalculationRequired = True
+        self.notebook.fittingCalculationRequired = True
 
     def on_atr_incident_ang_sb_changed(self,value):
         self.settings['ATR theta'] = value
         debugger.print('on atr incident angle line edit changed', value)
         self.dirty = True
         self.notebook.plottingCalculationRequired = True
+        self.notebook.fittingCalculationRequired = True
 
     def on_atr_spolfrac_sb_changed(self,value):
         self.settings['ATR S polarisation fraction'] = value
         debugger.print('on atr spolfraction line edit changed', value)
         self.dirty = True
         self.notebook.plottingCalculationRequired = True
+        self.notebook.fittingCalculationRequired = True
 
     def set_reader(self,reader):
         self.dirty = True
         self.notebook.plottingCalculationRequired = True
+        self.notebook.fittingCalculationRequired = True
         self.reader = reader
 
     def change_greyed_out(self):
@@ -553,11 +571,13 @@ class ScenarioTab(QWidget):
             self.legend_le.setText('Scenario '+str(index + 1))
         return
 
-
     def print_settings(self):
-        debugger.print('SETTINGS')
+        print('#')
+        print('# Scenario tab')
+        print('#')
+        print('tab = self.notebook.scenarios')
         for key in self.settings:
-            debugger.print(key, self.settings[key]) 
+            print(key, self.settings[key]) 
         
     def refresh(self,force=False):
         if not self.dirty and not force:
@@ -566,6 +586,7 @@ class ScenarioTab(QWidget):
         debugger.print('refresh', force)
         # Tell the main notebook that we need to recalculate any plot
         self.notebook.plottingCalculationRequired = True
+        self.notebook.fittingCalculationRequired = True
         # First see if we can get the reader from the mainTab
         self.reader = self.notebook.mainTab.reader
         #

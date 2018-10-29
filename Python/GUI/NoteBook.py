@@ -2,12 +2,15 @@ import os.path
 import copy
 from PyQt5.QtWidgets            import  QWidget, QTabWidget
 from PyQt5.QtWidgets            import  QVBoxLayout
+from PyQt5.QtWidgets            import  QApplication
+from PyQt5.QtCore               import  Qt
 from Python.GUI.MainTab         import  MainTab
 from Python.GUI.SettingsTab     import  SettingsTab
 from Python.GUI.ScenarioTab     import  ScenarioTab
 from Python.GUI.PlottingTab     import  PlottingTab
 from Python.GUI.AnalysisTab     import  AnalysisTab
 from Python.GUI.ViewerTab       import  ViewerTab
+from Python.GUI.FitterTab       import  FitterTab
 from Python.Utilities           import  Debug
  
 class NoteBook(QWidget):        
@@ -22,6 +25,7 @@ class NoteBook(QWidget):
         self.plottingCalculationRequired = True
         self.analysisCalculationRequired = True
         self.visualerCalculationRequired = True
+        self.fittingCalculationRequired = True
         self.debug = debug
         self.old_tab_index = None
         self.scripting = scripting
@@ -63,6 +67,10 @@ class NoteBook(QWidget):
         #
         self.viewerTab = ViewerTab(self, debug=debug)
         #
+        # Open the Fitter tab
+        #
+        self.fitterTab = FitterTab(self, debug=debug)
+        #
         # Add tabs
         #
         self.tabs.addTab(self.mainTab,'Main')
@@ -72,6 +80,7 @@ class NoteBook(QWidget):
         self.tabs.addTab(self.plottingTab,'Plotting')
         self.tabs.addTab(self.analysisTab,'Analysis')
         self.tabs.addTab(self.viewerTab,'3D Viewer')
+        self.tabs.addTab(self.fitterTab,'Fitter')
 
         # Add the tab widget
         self.layout.addWidget(self.tabs)
@@ -84,7 +93,6 @@ class NoteBook(QWidget):
         self.scenarios.append( ScenarioTab(self, self.debug) )
         self.scenarios[-1].settings = copy.deepcopy(self.scenarios[copyFromIndex].settings)
         # debugger.print('Settings for new scenario')
-        # self.scenarios[-1].print_settings()
         self.scenarios[-1].refresh(force=True)
         for i,scenario in enumerate(self.scenarios):
             scenario.setScenarioIndex(i)
@@ -92,6 +100,33 @@ class NoteBook(QWidget):
         self.tabs.insertTab(self.tabOffSet+n-1,self.scenarios[-1],'Scenario '+str(n))
         self.tabs.setCurrentIndex(self.tabOffSet+n-1)
         return
+
+    def print_settings(self):
+        # Print the settings of all the settings that have been used to a file settings.py
+        fd = open('settings.py','w')
+        ntabs = 2+ len(self.scenarios) + 4
+        self.print_tab_settings(self.mainTab, 'mainTab',fd)
+        self.print_tab_settings(self.settingsTab, 'settingsTab',fd)
+        print('tab.sigmas_cm1 =',self.settingsTab.sigmas_cm1,file=fd)
+        for i,tab in enumerate(self.scenarios):
+            self.print_tab_settings(tab, 'scenarios[{}]'.format(i), fd)
+        self.print_tab_settings(self.plottingTab, 'plottingTab',fd)
+        self.print_tab_settings(self.analysisTab, 'analysisTab',fd)
+        self.print_tab_settings(self.viewerTab, 'viewerTab',fd)
+        self.print_tab_settings(self.fitterTab, 'fitterTab',fd)
+        fd.close()
+        return
+
+    def print_tab_settings(self,tab,title,fd):
+        print('#',file=fd)
+        print('#',file=fd)
+        print('tab = self.notebook.'+title,file=fd)
+        for item in tab.settings:
+            value = tab.settings[item]
+            if 'str' in str(type(value)):
+                print('tab.settings[\''+item+'\'] = \'{}\''.format(tab.settings[item]),file=fd)
+            else:
+                print('tab.settings[\''+item+'\'] = ', tab.settings[item],file=fd)
 
     def deleteScenario(self,index):
         # Don't delete the last scenario
@@ -109,17 +144,19 @@ class NoteBook(QWidget):
             debugger.print('Notebook aborting refresh because of scripting')
             return
         debugger.print('Notebook refresh changed',force)
-        ntabs = 2 + len(self.scenarios) + 3
+        ntabs = 2 + len(self.scenarios) + 4
         self.mainTab.refresh(force=force)
         self.settingsTab.refresh(force=force)
         for tab in self.scenarios:
             tab.refresh(force=force)
-        self.tabs.setCurrentIndex(ntabs-3)
+        self.tabs.setCurrentIndex(ntabs-5)
         self.plottingTab.refresh(force=force)
-        self.tabs.setCurrentIndex(ntabs-3)
+        self.tabs.setCurrentIndex(ntabs-4)
         self.analysisTab.refresh(force=force)
-        self.tabs.setCurrentIndex(ntabs-2)
+        self.tabs.setCurrentIndex(ntabs-3)
         self.viewerTab.refresh(force=force)
+        self.tabs.setCurrentIndex(ntabs-2)
+        self.fitterTab.refresh(force=force)
         self.tabs.setCurrentIndex(ntabs-1)
 
     def on_tabs_currentChanged(self, tabindex):
@@ -134,14 +171,23 @@ class NoteBook(QWidget):
                 self.settingsTab.refresh()
         # end if
         #       Number of tabs
-        ntabs = 2 + len(self.scenarios) + 3
+        ntabs = 2 + len(self.scenarios) + 4
         if tabindex == ntabs-1:
+            # fitter tab
+            self.fitterTab.refresh()
+        elif tabindex == ntabs-2:
             # viewer tab
             self.viewerTab.refresh()
-        elif tabindex == ntabs-2:
+        elif tabindex == ntabs-3:
             # analysis tab
             self.analysisTab.refresh()
-        elif tabindex == ntabs-3:
+        elif tabindex == ntabs-4:
             # plottings tab
             self.plottingTab.refresh()
         self.old_tab_index = tabindex
+
+    def keyPressEvent(self, e):
+        if (e.key() == Qt.Key_S)  and QApplication.keyboardModifiers() and Qt.ControlModifier:
+            print('Control S has been pressed')
+            print('Current settings will be saved to settings.py file')
+            self.print_settings()

@@ -263,6 +263,12 @@ class MainTab(QWidget):
             self.notebook.viewerTab.refresh()
         else:
             debugger.print('notebook has no viewer tab yet')
+        # Update the fitter tab
+        if hasattr(self.notebook, 'fitterTab'):
+            debugger.print('about to refresh fitterTab')
+            self.notebook.fitterTab.refresh()
+        else:
+            debugger.print('notebook has no fitter tab yet')
         QApplication.restoreOverrideCursor()
 
     def on_hessian_symmetry_changed(self):

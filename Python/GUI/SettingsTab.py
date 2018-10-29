@@ -174,6 +174,7 @@ class SettingsTab(QWidget):
         # Flag the fact that we need new calculations and new analysis
         self.notebook.plottingCalculationRequired = True
         self.notebook.analysisCalculationRequired = True
+        self.notebook.fittingCalculationRequired = True
         #self.reader.read_output()
         if self.settings['Neutral Born charges']:
             self.reader.neutralise_born_charges()
@@ -201,7 +202,8 @@ class SettingsTab(QWidget):
         self.degenerate_lists = {}
 #        #
         frequencies = np.array(self.frequencies_cm1) * wavenumber
-        self.sigmas_cm1 = [ self.settings['Sigma value'] for i in self.frequencies_cm1 ]
+        if len(self.sigmas_cm1) == 0:
+            self.sigmas_cm1 = [ self.settings['Sigma value'] for i in self.frequencies_cm1 ]
         born_charges = np.array(self.reader.born_charges)
         if self.reader.type == 'Experimental output':
             self.oscillator_strengths = self.reader.oscillator_strengths
@@ -322,6 +324,7 @@ class SettingsTab(QWidget):
         self.redraw_output_tw()
         self.notebook.plottingCalculationRequired = True
         self.notebook.analysisCalculationRequired = True
+        self.notebook.fittingCalculationRequired = True
         debugger.print('on sigma change ', self.settings['Sigma value'])
 
     def on_mass_cb_activated(self,index):
@@ -335,6 +338,7 @@ class SettingsTab(QWidget):
         self.calculateButtonClicked()
         self.notebook.plottingCalculationRequired = True
         self.notebook.analysisCalculationRequired = True
+        self.notebook.fittingCalculationRequired = True
         QCoreApplication.processEvents()
 
     def set_masses_tw(self):
@@ -406,6 +410,7 @@ class SettingsTab(QWidget):
             self.element_masses_tw.blockSignals(False)
             self.notebook.plottingCalculationRequired = True
             self.notebook.analysisCalculationRequired = True
+        self.notebook.fittingCalculationRequired = True
         QCoreApplication.processEvents()
 
     def on_output_tw_itemChanged(self, item):
@@ -429,6 +434,7 @@ class SettingsTab(QWidget):
             self.redraw_output_tw()
         self.notebook.plottingCalculationRequired = True
         self.notebook.analysisCalculationRequired = True
+        self.notebook.fittingCalculationRequired = True
         QCoreApplication.processEvents()
 
     def on_element_masses_tw_itemClicked(self, item):
@@ -446,6 +452,7 @@ class SettingsTab(QWidget):
         self.calculateButtonClicked()
         self.notebook.plottingCalculationRequired = True
         self.notebook.analysisCalculationRequired = True
+        self.notebook.fittingCalculationRequired = True
         debugger.print('masses_dictionary', self.masses_dictionary)
 
     def on_optical_tw_itemChanged(self, item):
@@ -454,6 +461,7 @@ class SettingsTab(QWidget):
         self.settings['Optical permittivity'][item.column()][item.row()] = float(item.text())
         self.notebook.plottingCalculationRequired = True
         self.notebook.analysisCalculationRequired = True
+        self.notebook.fittingCalculationRequired = True
         self.refresh_optical_permittivity_tw()
         QCoreApplication.processEvents()
 
@@ -525,6 +533,7 @@ class SettingsTab(QWidget):
         self.calculateButtonClicked()
         self.notebook.plottingCalculationRequired = True
         self.notebook.analysisCalculationRequired = True
+        self.notebook.fittingCalculationRequired = True
         QCoreApplication.processEvents()
 
     def on_eckart_changed(self):
@@ -534,5 +543,6 @@ class SettingsTab(QWidget):
         self.calculateButtonClicked()
         self.notebook.plottingCalculationRequired = True
         self.notebook.analysisCalculationRequired = True
+        self.notebook.fittingCalculationRequired = True
         QCoreApplication.processEvents()
 

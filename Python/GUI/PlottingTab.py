@@ -55,6 +55,7 @@ class PlottingTab(QWidget):
         self.settings['Molar definition'] = 'Unit cells'
         self.settings['Number of atoms'] = 1
         self.settings['Plot title'] = 'Plot Title'
+        self.xaxes = []
         self.directions = []
         self.depolarisations = []
         self.frequency_units = None
@@ -230,7 +231,7 @@ class PlottingTab(QWidget):
         if self.notebook.plottingCalculationRequired:
             self.calculate()
         if not self.notebook.plottingCalculationRequired:
-            self.plot(self.xaxes, self.sp_atrs, 'ATR reflectance')
+            self.plot(self.xaxes, self.sp_atrs, 'ATR absorption')
 
     def on_title_changed(self,text):
         self.settings['Plot title'] = text
