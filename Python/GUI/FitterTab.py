@@ -326,6 +326,8 @@ class FitterTab(QWidget):
 
     def calculateCrossCorrelation(self,scaling_factor):
         # Calculate the cross correlation coefficient between the experimental and the first scenario
+        if len(self.experimental_absorption) == 0:
+            return (0.0,0.0,0.0)
         col1 = np.array(self.experimental_absorption)
         col1 = ( col1 - np.mean(col1)) / ( np.std(col1) * np.sqrt(len(col1)) )
         col2 = np.array(self.calculated_absorptions[0])
