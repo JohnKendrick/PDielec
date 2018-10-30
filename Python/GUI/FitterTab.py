@@ -115,6 +115,7 @@ class FitterTab(QWidget):
         self.frequency_scaling_cb.stateChanged.connect(self.on_frequency_scaling_cb_changed)
         self.frequency_scaling_factor_sb = QDoubleSpinBox(self)
         self.frequency_scaling_factor_sb.setRange(0.000001,10000000.0)
+        self.frequency_scaling_factor_sb.setDecimals(4)
         self.frequency_scaling_factor_sb.setSingleStep(0.1)
         self.frequency_scaling_factor_sb.setValue(self.settings['Frequency scaling factor'])
         self.frequency_scaling_factor_sb.setToolTip('Set the value for scaling the frequency axis of the calculated spectrum')
@@ -201,29 +202,38 @@ class FitterTab(QWidget):
         self.dirty = True
 
     def on_iterations_sb_changed(self):
-         self.settings['Number of iterations'] = self.iterations_sb.value()
+        debugger.print('on_iterations_sb_changed')
+        self.settings['Number of iterations'] = self.iterations_sb.value()
+        return
 
     def on_absorption_scaling_cb_changed(self,value):
-        #print('on_absorption_scaling_cb_changed',value)
+        debugger.print('on_absorption_scaling_cb_changed',value)
         self.settings['Absorption scaling'] = self.absorption_scaling_cb.isChecked()
         return
  
     def on_absorption_scaling_factor_sb_changed(self,value):
-        #print('on_absorption_scaling_factor_sb_changed',value)
-        self.settings['Absorption scaling factor'] = float(value)
+        debugger.print('on_absorption_scaling_factor_cb_changed',value)
+        try:
+            self.settings['Absorption scaling factor'] = float(value)
+        except:
+            print('Failed to convert to float', value)
         return
 
     def on_frequency_scaling_cb_changed(self,value):
-        #print('on_frequency_scaling_cb_changed',value)
+        debugger.print('on_frequency_scaling_cb_changed',value)
         self.settings['Frequency scaling'] = self.frequency_scaling_cb.isChecked()
         return
  
     def on_frequency_scaling_factor_sb_changed(self,value):
-        #print('on_frequency_scaling_factor_sb_changed',value)
-        self.settings['Frequency scaling factor'] = float(value)
+        debugger.print('on_frequency_scaling_factor_cb_changed',value)
+        try:
+            self.settings['Frequency scaling factor'] = float(value)
+        except:
+            print('Failed to convert to float', value)
         return
 
     def replotButton1Clicked(self):
+        debugger.print('replotButton1Clicked')
         self.dirty = True
         self.notebook.plottingTab.refresh(force=True)
         self.plot_frequency_shift = False
@@ -231,6 +241,7 @@ class FitterTab(QWidget):
         return
 
     def replotButton2Clicked(self):
+        debugger.print('replotButton2Clicked')
         self.dirty = True
         self.notebook.plottingTab.refresh(force=True)
         self.plot_frequency_shift = True
@@ -240,6 +251,7 @@ class FitterTab(QWidget):
     def plot(self,experiment,xs,ys,legends,label):
         # Plot the experimental values on the left y-axis
         # Plot all the others in xs, ys on the right x-axis
+        debugger.print('plot')
         self.subplot1 = None
         self.figure.clf()
         import matplotlib.pyplot as plt
@@ -277,14 +289,15 @@ class FitterTab(QWidget):
         self.canvas.draw_idle()
 
     def fittingButtonClicked(self):
+        debugger.print('fittingButtonClicked')
         self.refresh()
-        #print('Cross correlations', lag,xcorr0,xcorr1)
         final_point = self.optimiseFit()
         return
 
     def optimiseFit(self):
         # Optimise the fit of the first scenario to the experimental data
         # First determine who many variables we have
+        debugger.print('optimiseFit')
         self.fit_list = []
         for mode,fitted in enumerate(self.modes_fitted):
             if fitted:
@@ -303,16 +316,16 @@ class FitterTab(QWidget):
 
     def optimiseFunction(self,variables) :
         # Determine the function to be optimised (minimised)
-        #print('Current point in optimisation')
-        #print(variables)
+        # print('Current point in optimisation')
+        # print(variables)
+        debugger.print('optimiseFunction',variables)
         if self.settings['Frequency scaling']:
             sigmas = variables[:-1]
             scaling_factor = variables[-1]
+            self.settings['Frequency scaling factor'] = scaling_factor
         else:
             sigmas = variables
             scaling_factor = self.settings['Frequency scaling factor']
-        #print('sigmas',sigmas)
-        #print('scaling_factor',scaling_factor)
         for index,sigma in zip(self.fit_list,sigmas):
             self.sigmas_cm1[index] = sigma
             self.redraw_sigmas_tw()
@@ -320,11 +333,12 @@ class FitterTab(QWidget):
         self.notebook.settingsTab.redraw_output_tw()
         self.notebook.plottingTab.refresh(force=True)
         self.refresh(force=True)
-        #print(' ')
         # Returning the best correlation but made negative because we need to minimise
+        debugger.print('optimiseFunction - xcorr0',self.xcorr0)
         return -1.0*self.xcorr0
 
     def calculateCrossCorrelation(self,scaling_factor):
+        debugger.print('calculateCrossCorrelation',scaling_factor)
         # Calculate the cross correlation coefficient between the experimental and the first scenario
         if len(self.experimental_absorption) == 0:
             return (0.0,0.0,0.0)
@@ -341,6 +355,7 @@ class FitterTab(QWidget):
 
 
     def redraw_sigmas_tw(self):
+        debugger.print('redraw_sigmas_tw')
         if len(self.sigmas_cm1) <= 0:
             return
         self.sigmas_tw.blockSignals(True)
@@ -379,11 +394,14 @@ class FitterTab(QWidget):
         QCoreApplication.processEvents()
 
     def on_plot_type_cb_activated(self,index):
+        # Change in plot type
+        debugger.print('on_plot_type_cb_activated', index)
         self.dirty = True
         self.settings['Plot type'] = self.plot_type_definitions[index]
 
     def on_spectrafile_le_return(self):
         # Handle a return in the excel file name line editor
+        debugger.print('on_spectrafile_le_return')
         file_name = self.spectrafile_le.text()
         if not os.path.isfile(file_name):
             qfd = QFileDialog(self)
@@ -400,6 +418,7 @@ class FitterTab(QWidget):
 
     def read_excel_file(self):
         # 
+        debugger.print('read_excel_file')
         file_name = self.settings['Excel file name']
         if not os.path.isfile(file_name):
             return
@@ -426,6 +445,7 @@ class FitterTab(QWidget):
         self.excel_file_has_been_read = False
 
     def on_sigmas_tw_itemChanged(self, item):
+        debugger.print('on_sigmas_tw_itemChanged', item)
         self.sigmas_tw.blockSignals(True)
         debugger.print('on_sigmas_tw_itemChanged)', item.row(), item.column() )
         col = item.column()
@@ -436,11 +456,14 @@ class FitterTab(QWidget):
                 self.modes_fitted[row] = True
             else:
                  self.modes_fitted[row] = False
-            new_value = float(item.text())
-            self.sigmas_cm1[row] = new_value
-            self.redraw_sigmas_tw()
-            self.notebook.settingsTab.sigmas_cm1[row] = new_value
-            self.notebook.settingsTab.redraw_output_tw()
+            try:
+                new_value = float(item.text())
+                self.sigmas_cm1[row] = new_value
+                self.redraw_sigmas_tw()
+                self.notebook.settingsTab.sigmas_cm1[row] = new_value
+                self.notebook.settingsTab.redraw_output_tw()
+            except:
+                 print('Failed to converto to float',item.txt())
         elif col == 1:
             self.redraw_sigmas_tw()
         else:
@@ -473,6 +496,11 @@ class FitterTab(QWidget):
         self.read_excel_file()
         self.plot_type_cb.setCurrentIndex(self.plot_type_definitions.index(self.settings['Plot type']))
         self.iterations_sb.setValue(self.settings['Number of iterations'])
+        if self.settings['Frequency scaling']:
+            self.frequency_scaling_cb.setCheckState(Qt.Checked)
+        else:
+            self.frequency_scaling_cb.setCheckState(Qt.Unchecked)
+        self.frequency_scaling_factor_sb.setValue(self.settings['Frequency scaling factor'])
         # 
         # If the sigmas are not set return
         #
