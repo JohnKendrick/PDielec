@@ -55,6 +55,7 @@ preamble = r'''
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
+#mathjax_path = 'https://cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js'
 extensions = [
     'sphinx.ext.mathjax',
     'sphinx.ext.githubpages',

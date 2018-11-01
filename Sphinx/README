@@ -1,0 +1,3 @@
+Problems with \newcommand
+Seems to be to do with the async parameter used to load the MathJax.js script
+If it is remove all works properly
