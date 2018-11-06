@@ -4,6 +4,7 @@ import copy
 from PyQt5.QtWidgets            import  QWidget, QTabWidget
 from PyQt5.QtWidgets            import  QVBoxLayout
 from PyQt5.QtWidgets            import  QApplication
+from PyQt5.QtWidgets            import  QFileDialog
 from PyQt5.QtCore               import  Qt
 from Python.GUI.MainTab         import  MainTab
 from Python.GUI.SettingsTab     import  SettingsTab
@@ -104,13 +105,21 @@ class NoteBook(QWidget):
 
     def print_settings(self):
         # Print the settings of all the settings that have been used to a file settings.py
-        fd = open('settings.py','w')
+        qf = QFileDialog()
+        qf.setWindowTitle('Save the program settings to a file')
+        filename,selection = qf.getSaveFileName()
+        if filename == '':
+            return
+        print('Current settings will be saved to '+filename)
+        fd = open(filename,'w')
         ntabs = 2+ len(self.scenarios) + 4
         self.print_tab_settings(self.mainTab, 'mainTab',fd)
         self.print_tab_settings(self.settingsTab, 'settingsTab',fd)
         print('tab.sigmas_cm1 =',self.settingsTab.sigmas_cm1,file=fd)
+        requireNewScenario = False
         for i,tab in enumerate(self.scenarios):
-            self.print_tab_settings(tab, 'scenarios[{}]'.format(i), fd)
+            self.print_tab_settings(tab, 'scenarios[{}]'.format(i), fd, new_scenario = requireNewScenario)
+            requireNewScenario = True
         self.print_tab_settings(self.plottingTab, 'plottingTab',fd)
         self.print_tab_settings(self.analysisTab, 'analysisTab',fd)
         self.print_tab_settings(self.viewerTab, 'viewerTab',fd)
@@ -118,9 +127,11 @@ class NoteBook(QWidget):
         fd.close()
         return
 
-    def print_tab_settings(self,tab,title,fd):
+    def print_tab_settings(self,tab,title,fd,new_scenario = False):
         print('#',file=fd)
         print('#',file=fd)
+        if new_scenario:
+            print('self.notebook.addScenario()',file=fd)
         print('tab = self.notebook.'+title,file=fd)
         for item in tab.settings:
             value = tab.settings[item]
@@ -190,7 +201,6 @@ class NoteBook(QWidget):
     def keyPressEvent(self, e):
         if (e.key() == Qt.Key_S)  and QApplication.keyboardModifiers() and Qt.ControlModifier:
             print('Control S has been pressed')
-            print('Current settings will be saved to settings.py file')
             self.print_settings()
         elif (e.key() == Qt.Key_C)  and QApplication.keyboardModifiers() and Qt.ControlModifier:
             print('Control C has been pressed')
