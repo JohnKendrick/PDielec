@@ -43,8 +43,9 @@ class FitterTab(QWidget):
         self.settings['Number of iterations'] = 20
         self.settings['Frequency scaling'] = False
         self.settings['Frequency scaling factor'] = 1.0
-        self.settings['Absorption scaling'] = False
-        self.settings['Absorption scaling factor'] = 1.0
+#        self.settings['Absorption scaling'] = False
+#        self.settings['Absorption scaling factor'] = 1.0
+        self.settings['Independent y-axes'] = True
         self.plot_frequency_shift = False
         self.xcorr0=0.0
         self.xcorr1=0.0
@@ -172,6 +173,18 @@ class FitterTab(QWidget):
         label = QLabel('Cross correlation value and shift')
         label.setToolTip('The highest cross-correlation value and its associated frequency shift is shown')
         form.addRow(label, hbox)
+        # Independent y-axes
+        self.independent_yaxes_cb = QCheckBox(self)
+        self.independent_yaxes_cb.setToolTip('Check to use indpendent y-axes in the plot')
+        self.independent_yaxes_cb.setText('')
+        self.independent_yaxes_cb.setLayoutDirection(Qt.RightToLeft)
+        if self.settings['Independent y-axes']:
+            self.independent_yaxes_cb.setCheckState(Qt.Checked)
+        else:
+            self.independent_yaxes_cb.setCheckState(Qt.Unchecked)
+        self.independent_yaxes_cb.stateChanged.connect(self.on_independent_yaxes_cb_changed)
+        label = QLabel('Use independent y-axes?')
+        form.addRow(label,self.independent_yaxes_cb)
         # Add a replot and recalculate button
         hbox = QHBoxLayout()
         self.replotButton1 = QPushButton('Replot')
@@ -204,6 +217,11 @@ class FitterTab(QWidget):
     def on_iterations_sb_changed(self):
         debugger.print('on_iterations_sb_changed')
         self.settings['Number of iterations'] = self.iterations_sb.value()
+        return
+
+    def on_independent_yaxes_cb_changed(self,value):
+        debugger.print('independent_yaxes_cb_changed',value)
+        self.settings['Independent y-axes'] = self.independent_yaxes_cb.isChecked()
         return
 
     def on_absorption_scaling_cb_changed(self,value):
@@ -263,7 +281,10 @@ class FitterTab(QWidget):
             xlabel = r'THz'
             scale = 0.02998
         self.subplot1 = self.figure.add_subplot(111)
-        self.subplot2 = self.subplot1.twinx()
+        if self.settings['Independent y-axes']:
+            self.subplot2 = self.subplot1.twinx()
+        else:
+            self.subplot2 = self.subplot1
         cmap_index = 0
         lines = []
         if self.plot_frequency_shift:
@@ -282,8 +303,14 @@ class FitterTab(QWidget):
             line, = self.subplot2.plot(scale*x,experiment,lw=2, color=cmap(cmap_index), label='Experiment' )
             lines.append(line)
         labels = [l.get_label() for l in lines]
-        self.subplot2.set_ylabel('Experiment')
-        self.subplot1.set_ylabel('Calculated '+self.settings['Plot type'] )
+        if self.settings['Independent y-axes']:
+            self.subplot2.set_ylabel('Experiment')
+            self.subplot2.set_ylim(bottom=0.0)
+            self.subplot1.set_ylabel('Calculated '+self.settings['Plot type'] )
+        else:
+            self.subplot1.set_ylabel(self.settings['Plot type'] )
+        self.subplot1.set_xlabel(xlabel)
+        self.subplot1.set_ylim(bottom=0.0)
         self.subplot1.legend(lines, labels, loc='best')
         self.subplot1.set_title(self.settings['Plot title'])
         self.canvas.draw_idle()
@@ -342,9 +369,12 @@ class FitterTab(QWidget):
         # Calculate the cross correlation coefficient between the experimental and the first scenario
         if len(self.experimental_absorption) == 0:
             return (0.0,0.0,0.0)
+        # col1 contains the experimental absorption
         col1 = np.array(self.experimental_absorption)
         col1 = ( col1 - np.mean(col1)) / ( np.std(col1) * np.sqrt(len(col1)) )
+        # col2 contains the calculated absorption
         col2 = np.array(self.calculated_absorptions[0])
+        # The new xaxis for the calculated spectrum is scaling_factor*xaxis
         f = interp1d(scaling_factor*np.array(self.xaxis), col2, kind='cubic',fill_value='extrapolate')
         col2 = f(self.xaxis)
         col2 = ( col2 - np.mean(col2)) / ( np.std(col2) * np.sqrt(len(col2)) )
@@ -501,6 +531,10 @@ class FitterTab(QWidget):
         else:
             self.frequency_scaling_cb.setCheckState(Qt.Unchecked)
         self.frequency_scaling_factor_sb.setValue(self.settings['Frequency scaling factor'])
+        if self.settings['Independent y-axes']:
+            self.independent_yaxes_cb.setCheckState(Qt.Checked)
+        else:
+            self.independent_yaxes_cb.setCheckState(Qt.Unchecked)
         # 
         # If the sigmas are not set return
         #
@@ -555,8 +589,25 @@ class FitterTab(QWidget):
     #  The experimental spectrum needs to be in the same range as the calculated spectrum
     #  It also needs to be calculated at the same frequencies as the calculated spectrum
     #
-        self.xaxis = self.calculated_frequencies[0]
-        f = interp1d(self.excel_frequencies, self.excel_absorption, kind='cubic',fill_value='extrapolate')
+        self.xaxis = np.array(self.calculated_frequencies[0])
+        # If the experimental frequencies starts at a higher frequency 
+        # than the calculated frequencies then add new frequencies to pad the range out
+        #indices = np.where (self.xaxis < self.excel_frequencies[0])
+        indices = self.xaxis < self.excel_frequencies[0]
+        padded_xaxis = self.xaxis[indices]
+        padded_yaxis = np.array([ 0 for index in indices if index ])
+        # Add the experimental frequencies
+        padded_xaxis = np.append(padded_xaxis,self.excel_frequencies)
+        padded_yaxis = np.append(padded_yaxis,self.excel_absorption)
+        # If the experimental frequencies ends at a lower frequency 
+        # than the calculated frequencies then add new frequencies to pad the range out
+        indices = self.xaxis > self.excel_frequencies[-1]
+        padded_xaxis = np.append(padded_xaxis,self.xaxis[indices])
+        padded_yaxis = np.append(padded_yaxis, np.array([ 0 for index in indices if index ]) )
+        # 
+        # Create a function using the padded frequencies to calculate the absorption at the calculated frequencies
+        f = interp1d(padded_xaxis, padded_yaxis, kind='cubic',fill_value='extrapolate')
+        # Store the experimental absorption at the calculated frequencies
         self.experimental_absorption = f(self.xaxis)
         return
     
