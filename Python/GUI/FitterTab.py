@@ -417,7 +417,7 @@ class FitterTab(QWidget):
         f = interp1d(scaling_factor*np.array(self.xaxis), col2, kind='cubic',fill_value='extrapolate')
         col2 = f(self.xaxis)
         col2 = col2 / maxcol1
-        col2[ col1< self.settings['Spectral difference threshold'] ] = 0.0
+        col1[ col1< self.settings['Spectral difference threshold'] ] = 0.0
         diff = col1 - col2
         rmse = np.sqrt(np.dot(diff,diff)/len(col2))
         return rmse
