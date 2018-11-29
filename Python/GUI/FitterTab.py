@@ -13,7 +13,6 @@ from PyQt5.QtWidgets    import  QTableWidgetItem
 from PyQt5.QtWidgets    import  QSizePolicy
 from PyQt5.QtWidgets    import  QCheckBox
 from PyQt5.QtWidgets    import  QTabWidget
-from PyQt5.QtWidgets    import  QProgressBar
 from PyQt5.QtCore       import  Qt
 from PyQt5.QtCore       import  QCoreApplication
 from PyQt5.QtCore       import  QSize
@@ -44,12 +43,15 @@ class FitterTab(QWidget):
         self.settings['Plot title'] = 'Experimental and Calculated Spectral Comparison'
         self.settings['Plot type'] = 'Molar absorption'
         self.plot_type_definitions = ['Molar absorption', 'Absorption', 'ATR','Real','Imaginary']
+        self.settings['Fitting type'] = 'Minimise x-correlation'
+        self.fitting_type_definitions = ['Minimise x-correlation', 'Minimise spectral difference']
         self.settings['Number of iterations'] = 20
         self.settings['Frequency scaling'] = False
         self.settings['Frequency scaling factor'] = 1.0
         self.settings['Absorption scaling'] = False
         self.settings['Absorption scaling factor'] = 1.0
         self.settings['Independent y-axes'] = True
+        self.settings['Spectral difference threshold'] = 0.05
         self.plot_frequency_shift = False
         self.xcorr0=0.0
         self.xcorr1=0.0
@@ -74,6 +76,14 @@ class FitterTab(QWidget):
         self.spectrafile_le.returnPressed.connect(self.on_spectrafile_le_return)
         self.spectrafile_le.textChanged.connect(self.on_spectrafile_le_changed)
         # 
+        # Select the type of fitting we are going to use
+        #
+        self.fitting_type_cb = QComboBox(self)
+        self.fitting_type_cb.setToolTip('What type of fitting?')
+        self.fitting_type_cb.addItems(self.fitting_type_definitions)
+        self.fitting_type_cb.activated.connect(self.on_fitting_type_cb_activated)
+        self.fitting_type_cb.setCurrentIndex(self.fitting_type_definitions.index(self.settings['Fitting type']))
+        # 
         # Select the type of plot we are going to use
         #
         self.plot_type_cb = QComboBox(self)
@@ -81,7 +91,6 @@ class FitterTab(QWidget):
         self.plot_type_cb.addItems(self.plot_type_definitions)
         self.plot_type_cb.activated.connect(self.on_plot_type_cb_activated)
         self.plot_type_cb.setCurrentIndex(self.plot_type_definitions.index(self.settings['Plot type']))
-        self.settings['Plot type'] = self.plot_type_definitions[0]
         #
         # See if we want frequency scaling
         #
@@ -101,6 +110,14 @@ class FitterTab(QWidget):
         self.frequency_scaling_factor_sb.setValue(self.settings['Frequency scaling factor'])
         self.frequency_scaling_factor_sb.setToolTip('Set the value for scaling the frequency axis of the calculated spectrum')
         self.frequency_scaling_factor_sb.valueChanged.connect(self.on_frequency_scaling_factor_sb_changed)
+        # Spectral difference threshold
+        self.spectral_difference_threshold_sb = QDoubleSpinBox(self)
+        self.spectral_difference_threshold_sb.setRange(0.000001,10.0)
+        self.spectral_difference_threshold_sb.setDecimals(2)
+        self.spectral_difference_threshold_sb.setSingleStep(0.1)
+        self.spectral_difference_threshold_sb.setValue(self.settings['Spectral difference threshold'])
+        self.spectral_difference_threshold_sb.setToolTip('Set the value the spectral difference threshold')
+        self.spectral_difference_threshold_sb.valueChanged.connect(self.on_spectral_difference_threshold_sb_changed)
         # Add the number of iterations
         self.iterations_sb = QSpinBox(self)
         self.iterations_sb.setRange(1,900)
@@ -127,6 +144,8 @@ class FitterTab(QWidget):
         self.settingsTab.addTab(self.frequency_scaling_factor_sb, 'Frequency scaling factor')
         self.settingsTab.addTab(self.iterations_sb, 'No. of iterations')
         self.settingsTab.addTab(self.independent_yaxes_cb, 'Independent y-axes')
+        self.settingsTab.addTab(self.fitting_type_cb, 'Fitting type')
+        self.settingsTab.addTab(self.spectral_difference_threshold_sb, 'Spectral difference threshold')
         label = QLabel('Settings', self)
         form.addRow(label,self.settingsTab)
         # END OF THE SETTINGS TAB #################################################################################################
@@ -168,7 +187,7 @@ class FitterTab(QWidget):
         # Add a progress bar
         label = QLabel('Calculation progress', self)
         label.setToolTip('Show the progress of any calculations')
-        form.addRow(label,self.notebook.plottingTab.progressbar)
+        form.addRow(label,self.notebook.progressbar)
         # Add output of the cross correlation coefficient
         hbox = QHBoxLayout()
         self.cross_correlation_le = QLineEdit(self)
@@ -177,10 +196,18 @@ class FitterTab(QWidget):
         self.lag_frequency_le = QLineEdit(self)
         self.lag_frequency_le.setEnabled(False)
         self.lag_frequency_le.setText('{}'.format(0.0))
+        self.frequency_scaling_le = QLineEdit(self)
+        self.frequency_scaling_le.setEnabled(False)
+        self.frequency_scaling_le.setText('{}'.format(self.settings['Frequency scaling factor']))
+        self.rmse_le = QLineEdit(self)
+        self.rmse_le.setEnabled(False)
+        self.rmse_le.setText('{}'.format(0.0))
         hbox.addWidget(self.cross_correlation_le)
+        hbox.addWidget(self.frequency_scaling_le)
         hbox.addWidget(self.lag_frequency_le)
-        label = QLabel('Cross correlation value and shift')
-        label.setToolTip('The highest cross-correlation value and its associated frequency shift is shown')
+        hbox.addWidget(self.rmse_le)
+        label = QLabel('X-correlation, frequency scale, shift and rmse')
+        label.setToolTip('The highest cross-correlation value and its associated frequency shift is shown followed by the spectral error')
         form.addRow(label, hbox)
         # Add the matplotlib figure to the bottom 
         self.figure = matplotlib.figure.Figure()
@@ -223,6 +250,14 @@ class FitterTab(QWidget):
         self.settings['Frequency scaling'] = self.frequency_scaling_cb.isChecked()
         return
  
+    def on_spectral_difference_threshold_sb_changed(self,value):
+        debugger.print('on_spectral_difference_threshold_sb_changed',value)
+        try:
+            self.settings['Spectral difference threshold'] = float(value)
+        except:
+            print('Failed to convert to float', value)
+        return
+
     def on_frequency_scaling_factor_sb_changed(self,value):
         debugger.print('on_frequency_scaling_factor_cb_changed',value)
         try:
@@ -356,8 +391,36 @@ class FitterTab(QWidget):
         self.notebook.plottingTab.refresh(force=True)
         self.refresh(force=True)
         # Returning the best correlation but made negative because we need to minimise
-        debugger.print('optimiseFunction - xcorr0',self.xcorr0)
-        return -1.0*self.xcorr0
+        if self.settings['Fitting type'] == 'Minimise x-correlation':
+            function_value = -1.0*self.xcorr0
+        elif self.settings['Fitting type'] == 'Minimise spectral difference':
+            function_value = self.rmse
+        debugger.print('optimiseFunction - xcorr0,rmse',self.xcorr0,self.rmse)
+        return function_value
+
+    def calculateSpectralDifference(self,scaling_factor):
+        debugger.print('calculateSpectralDifference',scaling_factor)
+        # Calculate the spectral difference  between the experimental and the first scenario
+        if len(self.experimental_absorption) == 0:
+            return 0.0
+        # col1 contains the experimental absorption
+        col1 = np.array(self.experimental_absorption)
+        maxcol1 = np.max(col1)
+        col1 = col1 / maxcol1
+        col1[ col1< self.settings['Spectral difference threshold'] ] = 0.0
+#        for i,val in enumerate(col1):
+#            if val < self.settings['Spectral difference threshold']:
+#                col1[i] = 0.0
+        # col2 contains the calculated absorption
+        col2 = np.array(self.calculated_absorptions[0])
+        # The new xaxis for the calculated spectrum is scaling_factor*xaxis
+        f = interp1d(scaling_factor*np.array(self.xaxis), col2, kind='cubic',fill_value='extrapolate')
+        col2 = f(self.xaxis)
+        col2 = col2 / maxcol1
+        col2[ col1< self.settings['Spectral difference threshold'] ] = 0.0
+        diff = col1 - col2
+        rmse = np.sqrt(np.dot(diff,diff)/len(col2))
+        return rmse
 
     def calculateCrossCorrelation(self,scaling_factor):
         debugger.print('calculateCrossCorrelation',scaling_factor)
@@ -417,6 +480,12 @@ class FitterTab(QWidget):
         # Release the block on signals for the frequency output table
         self.sigmas_tw.blockSignals(False)
         QCoreApplication.processEvents()
+
+    def on_fitting_type_cb_activated(self,index):
+        # Change in fitting type
+        debugger.print('on_fitting_type_cb_activated', index)
+        self.dirty = True
+        self.settings['Fitting type'] = self.fitting_type_definitions[index]
 
     def on_plot_type_cb_activated(self,index):
         # Change in plot type
@@ -566,8 +635,11 @@ class FitterTab(QWidget):
         legends = self.notebook.plottingTab.legends
         scaling_factor = self.settings['Frequency scaling factor']
         self.lag,self.xcorr0,self.xcorr1 = self.calculateCrossCorrelation(scaling_factor)
-        self.cross_correlation_le.setText('{}'.format(self.xcorr0))
-        self.lag_frequency_le.setText('{}'.format(self.lag))
+        self.rmse = self.calculateSpectralDifference(scaling_factor)
+        self.cross_correlation_le.setText('{:6.4f}'.format(self.xcorr0))
+        self.lag_frequency_le.setText('{:8.2f}'.format(self.lag))
+        self.frequency_scaling_le.setText('{:8.2f}'.format(self.settings['Frequency scaling factor']))
+        self.rmse_le.setText('{:e}'.format(self.rmse))
         self.plot(self.experimental_absorption,self.calculated_frequencies,self.calculated_absorptions,legends,label)
         #
         # Unblock signals after refresh
