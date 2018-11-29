@@ -12,8 +12,11 @@ from PyQt5.QtWidgets    import  QTableWidget
 from PyQt5.QtWidgets    import  QTableWidgetItem
 from PyQt5.QtWidgets    import  QSizePolicy
 from PyQt5.QtWidgets    import  QCheckBox
+from PyQt5.QtWidgets    import  QTabWidget
+from PyQt5.QtWidgets    import  QProgressBar
 from PyQt5.QtCore       import  Qt
 from PyQt5.QtCore       import  QCoreApplication
+from PyQt5.QtCore       import  QSize
 from Python.Utilities   import  Debug
 from Python.GUI.SettingsTab import  FixedQTableWidget
 # Import plotting requirements
@@ -33,6 +36,7 @@ class FitterTab(QWidget):
         global debugger
         debugger = Debug(debug,'FitterTab:')
         self.dirty = True
+        self.calculationInProgress = False
         self.settings = {}
         self.notebook = parent
         self.notebook.plottingCalculationRequired = True
@@ -43,8 +47,8 @@ class FitterTab(QWidget):
         self.settings['Number of iterations'] = 20
         self.settings['Frequency scaling'] = False
         self.settings['Frequency scaling factor'] = 1.0
-#        self.settings['Absorption scaling'] = False
-#        self.settings['Absorption scaling factor'] = 1.0
+        self.settings['Absorption scaling'] = False
+        self.settings['Absorption scaling factor'] = 1.0
         self.settings['Independent y-axes'] = True
         self.plot_frequency_shift = False
         self.xcorr0=0.0
@@ -65,43 +69,19 @@ class FitterTab(QWidget):
         # Ask for the excel spread sheet
         #
         self.spectrafile_le = QLineEdit(self)
-        self.spectrafile_le.setToolTip('Provide the name of an .xlsx file of spectrum')
+        self.spectrafile_le.setToolTip('Provide the name of an .xlsx containing the experimental spectrum.  The spreadsheet should have two columns, with no headings.  The first column contains the frequencies in cm-1.  The second contains the experimental spectrum.')
         self.spectrafile_le.setText(self.settings['Excel file name'])
         self.spectrafile_le.returnPressed.connect(self.on_spectrafile_le_return)
         self.spectrafile_le.textChanged.connect(self.on_spectrafile_le_changed)
-        label = QLabel('Excel spread sheet with spectra')
-        label.setToolTip('Provide the name of an .xlsx containing the experimental spectrum.  The spreadsheet should have two columns, with no headings.  The first column contains the frequencies in cm-1.  The second contains the experimental spectrum.')
-        form.addRow(label, self.spectrafile_le)
         # 
         # Select the type of plot we are going to use
         #
         self.plot_type_cb = QComboBox(self)
-        self.plot_type_cb.setToolTip('What type of data are we going to fit to?')
+        self.plot_type_cb.setToolTip('What type of data is stored in the experimental spreadsheet?')
         self.plot_type_cb.addItems(self.plot_type_definitions)
         self.plot_type_cb.activated.connect(self.on_plot_type_cb_activated)
         self.plot_type_cb.setCurrentIndex(self.plot_type_definitions.index(self.settings['Plot type']))
         self.settings['Plot type'] = self.plot_type_definitions[0]
-        label = QLabel('Plot and data type')
-        label.setToolTip('What type of data is stored in the experiment spread-sheet')
-        form.addRow(label,self.plot_type_cb)
-        # get initial sigmas from the settings tab
-        self.sigmas_cm1 = self.notebook.settingsTab.sigmas_cm1
-        self.modes_selected = self.notebook.settingsTab.modes_selected
-        self.frequencies_cm1 = self.notebook.settingsTab.frequencies_cm1
-        self.intensities = self.notebook.settingsTab.intensities
-        if len(self.modes_fitted) == 0 and len(self.modes_selected) > 0:
-            self.modes_selected = [ False  for _ in self.modes_selected ]
-        self.sigmas_tw = QTableWidget(self)
-        #self.sigmas_tw = FixedQTableWidget(self)
-        self.sigmas_tw.setToolTip('Choose the sigmas which will be used in the fitting')
-        self.sigmas_tw.itemChanged.connect(self.on_sigmas_tw_itemChanged)
-        self.sigmas_tw.setRowCount(len(self.sigmas_cm1))
-        self.sigmas_tw.setColumnCount(3)
-        self.sigmas_tw.setHorizontalHeaderLabels(['   Sigma   \n(cm-1)', ' Frequency \n(cm-1)', '  Intensity  \n(Debye2/Å2/amu)'])
-        self.redraw_sigmas_tw()
-        label = QLabel('Lorentzian widths:')
-        label.setToolTip('The Lorentzian widths can be edited here.  If checked they will also be used in the optimisation of the cross-correlation between the experiment and calculated spectra')
-        form.addRow(label,self.sigmas_tw)
         #
         # See if we want frequency scaling
         #
@@ -121,58 +101,12 @@ class FitterTab(QWidget):
         self.frequency_scaling_factor_sb.setValue(self.settings['Frequency scaling factor'])
         self.frequency_scaling_factor_sb.setToolTip('Set the value for scaling the frequency axis of the calculated spectrum')
         self.frequency_scaling_factor_sb.valueChanged.connect(self.on_frequency_scaling_factor_sb_changed)
-        hbox = QHBoxLayout()
-        hbox.addWidget(self.frequency_scaling_cb)
-        hbox.addWidget(self.frequency_scaling_factor_sb)
-        label = QLabel('Set frequency scaling factor to be optimised')
-        label.setToolTip('Set frequency scaling factor to be optimised.  The frequency scaling factor given will always be used, even if not included in the optimisation.  The plot does not reflect the frequency scaling.')
-        form.addRow(label, hbox)
-        #
-        # See if we want absorption scaling
-        #
-#        self.absorption_scaling_cb = QCheckBox(self)
-#        self.absorption_scaling_cb.setToolTip('Absorption scaling is applied during the fitting process')
-#        self.absorption_scaling_cb.setText('')
-#        self.absorption_scaling_cb.setLayoutDirection(Qt.RightToLeft)
-#        if self.settings['Absorption scaling']:
-#            self.absorption_scaling_cb.setCheckState(Qt.Checked)
-#        else:
-#            self.absorption_scaling_cb.setCheckState(Qt.Unchecked)
-#        self.absorption_scaling_cb.stateChanged.connect(self.on_absorption_scaling_cb_changed)
-#        self.absorption_scaling_factor_sb = QDoubleSpinBox(self)
-#        self.absorption_scaling_factor_sb.setRange(0.000001,10000000.0)
-#        self.absorption_scaling_factor_sb.setSingleStep(0.1)
-#        self.absorption_scaling_factor_sb.setValue(self.settings['Absorption scaling factor'])
-#        self.absorption_scaling_factor_sb.setToolTip('Set the value for scaling the absorption axis of the calculated spectrum')
-#        self.absorption_scaling_factor_sb.valueChanged.connect(self.on_absorption_scaling_factor_sb_changed)
-#        hbox = QHBoxLayout()
-#        hbox.addWidget(self.absorption_scaling_cb)
-#        hbox.addWidget(self.absorption_scaling_factor_sb)
-#        label = QLabel('Set absorption scaling factor to be optimised')
-#        label.setToolTip('Set absorption scaling factor to be optimised.  The absorption scaling factor given will always be used, even if not included in the optimisation.  The plot does not reflect the absorption scaling.')
-#        form.addRow(label, hbox)
         # Add the number of iterations
         self.iterations_sb = QSpinBox(self)
         self.iterations_sb.setRange(1,900)
         self.iterations_sb.setValue(self.settings['Number of iterations'])
         self.iterations_sb.setToolTip('Set the number of iterations to be used to optimise the cross-correlation coefficient')
         self.iterations_sb.valueChanged.connect(self.on_iterations_sb_changed)
-        label = QLabel('Number of iterations:')
-        label.setToolTip('Set the number of iterations to be used to optimise the cross-correlation coefficient')
-        form.addRow(label,self.iterations_sb)
-        # Add output of the cross correlation coefficient
-        hbox = QHBoxLayout()
-        self.cross_correlation_le = QLineEdit(self)
-        self.cross_correlation_le.setEnabled(False)
-        self.cross_correlation_le.setText('{}'.format(0.0))
-        self.lag_frequency_le = QLineEdit(self)
-        self.lag_frequency_le.setEnabled(False)
-        self.lag_frequency_le.setText('{}'.format(0.0))
-        hbox.addWidget(self.cross_correlation_le)
-        hbox.addWidget(self.lag_frequency_le)
-        label = QLabel('Cross correlation value and shift')
-        label.setToolTip('The highest cross-correlation value and its associated frequency shift is shown')
-        form.addRow(label, hbox)
         # Independent y-axes
         self.independent_yaxes_cb = QCheckBox(self)
         self.independent_yaxes_cb.setToolTip('Check to use indpendent y-axes in the plot')
@@ -183,8 +117,38 @@ class FitterTab(QWidget):
         else:
             self.independent_yaxes_cb.setCheckState(Qt.Unchecked)
         self.independent_yaxes_cb.stateChanged.connect(self.on_independent_yaxes_cb_changed)
-        label = QLabel('Use independent y-axes?')
-        form.addRow(label,self.independent_yaxes_cb)
+        #
+        # Add a tab widget for the settings ######################################################################################
+        #
+        self.settingsTab = QTabWidget(self)
+        self.settingsTab.addTab(self.spectrafile_le, 'Experimental spectrum')
+        self.settingsTab.addTab(self.plot_type_cb, 'Plot type')
+        self.settingsTab.addTab(self.frequency_scaling_cb, 'Frequency scaling?')
+        self.settingsTab.addTab(self.frequency_scaling_factor_sb, 'Frequency scaling factor')
+        self.settingsTab.addTab(self.iterations_sb, 'No. of iterations')
+        self.settingsTab.addTab(self.independent_yaxes_cb, 'Independent y-axes')
+        label = QLabel('Settings', self)
+        form.addRow(label,self.settingsTab)
+        # END OF THE SETTINGS TAB #################################################################################################
+        # Add Lorentzian widths table
+        # get initial sigmas from the settings tab
+        self.sigmas_cm1 = self.notebook.settingsTab.sigmas_cm1
+        self.modes_selected = self.notebook.settingsTab.modes_selected
+        self.frequencies_cm1 = self.notebook.settingsTab.frequencies_cm1
+        self.intensities = self.notebook.settingsTab.intensities
+        if len(self.modes_fitted) == 0 and len(self.modes_selected) > 0:
+            self.modes_selected = [ False  for _ in self.modes_selected ]
+        #self.sigmas_tw = QTableWidget(self)
+        self.sigmas_tw = FixedQTableWidget(self,rows=10)
+        self.sigmas_tw.setToolTip('Choose the sigmas which will be used in the fitting')
+        self.sigmas_tw.itemChanged.connect(self.on_sigmas_tw_itemChanged)
+        self.sigmas_tw.setRowCount(len(self.sigmas_cm1))
+        self.sigmas_tw.setColumnCount(3)
+        self.sigmas_tw.setHorizontalHeaderLabels(['   Sigma   \n(cm-1)', ' Frequency \n(cm-1)', '  Intensity  \n(Debye2/Å2/amu)'])
+        self.redraw_sigmas_tw()
+        label = QLabel('Lorentzian widths:')
+        label.setToolTip('The Lorentzian widths can be edited here.  If checked they will also be used in the optimisation of the cross-correlation between the experiment and calculated spectra')
+        form.addRow(label,self.sigmas_tw)
         # Add a replot and recalculate button
         hbox = QHBoxLayout()
         self.replotButton1 = QPushButton('Replot')
@@ -201,6 +165,23 @@ class FitterTab(QWidget):
         self.fittingButton.clicked.connect(self.fittingButtonClicked)
         hbox.addWidget(self.fittingButton)
         form.addRow(hbox)
+        # Add a progress bar
+        label = QLabel('Calculation progress', self)
+        label.setToolTip('Show the progress of any calculations')
+        form.addRow(label,self.notebook.plottingTab.progressbar)
+        # Add output of the cross correlation coefficient
+        hbox = QHBoxLayout()
+        self.cross_correlation_le = QLineEdit(self)
+        self.cross_correlation_le.setEnabled(False)
+        self.cross_correlation_le.setText('{}'.format(0.0))
+        self.lag_frequency_le = QLineEdit(self)
+        self.lag_frequency_le.setEnabled(False)
+        self.lag_frequency_le.setText('{}'.format(0.0))
+        hbox.addWidget(self.cross_correlation_le)
+        hbox.addWidget(self.lag_frequency_le)
+        label = QLabel('Cross correlation value and shift')
+        label.setToolTip('The highest cross-correlation value and its associated frequency shift is shown')
+        form.addRow(label, hbox)
         # Add the matplotlib figure to the bottom 
         self.figure = matplotlib.figure.Figure()
         self.canvas = FigureCanvas(self.figure)
@@ -317,14 +298,23 @@ class FitterTab(QWidget):
 
     def fittingButtonClicked(self):
         debugger.print('fittingButtonClicked')
+        if self.calculationInProgress:
+            self.fittingButton.setText('Perform fitting')
+            self.calculationInProgress = False
+        else:
+            self.fittingButton.setText('Interupt fitting')
+            self.calculationInProgress = True
         self.refresh()
         final_point = self.optimiseFit()
+        self.fittingButton.setText('Perform fitting')
+        self.calculationInProgress = False
         return
 
     def optimiseFit(self):
         # Optimise the fit of the first scenario to the experimental data
         # First determine who many variables we have
         debugger.print('optimiseFit')
+        self.functionCalls = 0
         self.fit_list = []
         for mode,fitted in enumerate(self.modes_fitted):
             if fitted:
@@ -335,7 +325,7 @@ class FitterTab(QWidget):
             initial_point.append(self.settings['Frequency scaling factor'])
         nvariables = len(initial_point)
         if nvariables > 0:
-            final_point = minimize(self.optimiseFunction, initial_point, method='nelder-mead', options={'xtol':1.0, 'disp':False, 'maxiter':self.settings['Number of iterations']} )
+            final_point = minimize(self.optimiseFunction, initial_point, method='nelder-mead', options={'xtol':1.0, 'disp':False, 'maxfev':nvariables+nvariables*self.settings['Number of iterations']} )
         else: 
              print('No sigmas have been selected for optimisation')
              final_point = []
@@ -345,7 +335,12 @@ class FitterTab(QWidget):
         # Determine the function to be optimised (minimised)
         # print('Current point in optimisation')
         # print(variables)
+        if not self.calculationInProgress:
+            return -9.9E99
         debugger.print('optimiseFunction',variables)
+        self.functionCalls += 1
+        nvariables = len(variables)
+        self.fittingButton.setText('Interrupt fitting ({}/{})'.format(self.functionCalls,nvariables+1+nvariables*self.settings['Number of iterations']))
         if self.settings['Frequency scaling']:
             sigmas = variables[:-1]
             scaling_factor = variables[-1]
@@ -517,8 +512,8 @@ class FitterTab(QWidget):
         #
         # Block signals during refresh
         # 
-        for w in self.findChildren(QWidget):
-            w.blockSignals(True)
+        #for w in self.findChildren(QWidget):
+        #    w.blockSignals(True)
         # 
         # use the settings values to initialise the widgets
         #

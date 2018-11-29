@@ -16,18 +16,28 @@ from Python.Constants import  average_masses, isotope_masses
 from Python.Utilities import  Debug
 
 class FixedQTableWidget(QTableWidget):
-    def __init__(self, *args, parent=None):   
+    def __init__(self, *args, parent=None, rows=None, columns=None):   
+        self.columns = columns
+        self.rows = rows
         super(QTableWidget, self).__init__(*args)
 
     def sizeHint(self):
         width = 0
-        for i in range(self.columnCount()):
+        if self.columns == None:
+            columns = self.columnCount()
+        else:
+            columns = self.columns
+        for i in range(columns):
             width += self.columnWidth(i)
         width += self.verticalHeader().sizeHint().width()
         width += self.verticalScrollBar().sizeHint().width()
         width += self.frameWidth()*2
         height = 0
-        for i in range(self.rowCount()):
+        if self.rows == None:
+            rows = self.rowCount()
+        else:
+            rows = self.rows
+        for i in range(rows):
             height += self.rowHeight(i)
         height += self.verticalHeader().sizeHint().width()
         height += self.horizontalScrollBar().sizeHint().height()

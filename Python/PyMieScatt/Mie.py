@@ -11,13 +11,16 @@ def coerceDType(d):
   else:
     return d
 
-def MieQ(m, wavelength, diameter, asDict=False):
+def MieQ(m, wavelength, diameter, nMedium=1.0, asDict=False, asCrossSection=False):
 #  http://pymiescatt.readthedocs.io/en/latest/forward.html#MieQ
+  nMedium = nMedium.real
+  m /= nMedium
+  wavelength /= nMedium
   x = np.pi*diameter/wavelength
   if x==0:
     return 0, 0, 0, 1.5, 0, 0, 0
   elif x<=0.05:
-    return RayleighMieQ(m, wavelength, diameter, asDict)
+    return RayleighMieQ(m, wavelength, diameter, nMedium, asDict)
   elif x>0.05:
     nmax = np.round(2+x+4*(x**(1/3)))
     n = np.arange(1,nmax+1)
@@ -42,10 +45,23 @@ def MieQ(m, wavelength, diameter, asDict=False):
     qpr = qext-qsca*g
     qback = (1/x2)*(np.abs(np.sum(n1*((-1)**n)*(an-bn)))**2)
     qratio = qback/qsca
-    if asDict:
-      return dict(Qext=qext,Qsca=qsca,Qabs=qabs,g=g,Qpr=qpr,Qback=qback,Qratio=qratio)
+    if asCrossSection:
+      css = np.pi*(diameter/2)**2
+      cext = css*qext
+      csca = css*qsca
+      cabs = css*qabs
+      cpr = css*qpr
+      cback = css*qback
+      cratio = css*qratio
+      if asDict:
+        return dict(Cext=cext,Csca=csca,Cabs=cabs,g=g,Cpr=cpr,Cback=cback,Cratio=cratio)
+      else:
+        return cext, csca, cabs, g, cpr, cback, cratio
     else:
-      return qext, qsca, qabs, g, qpr, qback, qratio
+      if asDict:
+        return dict(Qext=qext,Qsca=qsca,Qabs=qabs,g=g,Qpr=qpr,Qback=qback,Qratio=qratio)
+      else:
+        return qext, qsca, qabs, g, qpr, qback, qratio
 
 def Mie_ab(m,x):
 #  http://pymiescatt.readthedocs.io/en/latest/forward.html#Mie_ab
@@ -116,8 +132,11 @@ def Mie_cd(m,x):
 
   return cn, dn
 
-def RayleighMieQ(m, wavelength, diameter, asDict=False):
+def RayleighMieQ(m, wavelength, diameter, nMedium=1.0, asDict=False, asCrossSection=False):
 #  http://pymiescatt.readthedocs.io/en/latest/forward.html#RayleighMieQ
+  nMedium = nMedium.real
+  m /= nMedium
+  wavelength /= nMedium
   x = np.pi*diameter/wavelength
   if x==0:
     return 0, 0, 0, 1.5, 0, 0, 0
@@ -131,23 +150,42 @@ def RayleighMieQ(m, wavelength, diameter, asDict=False):
     qratio = 1.5
     g = 0
     qpr = qext
-    if asDict:
-      return dict(Qext=qext,Qsca=qsca,Qabs=qabs,g=g,Qpr=qpr,Qback=qback,Qratio=qratio)
+    if asCrossSection:
+      css = np.pi*(diameter/2)**2
+      cext = css*qext
+      csca = css*qsca
+      cabs = css*qabs
+      cpr = css*qpr
+      cback = css*qback
+      cratio = css*qratio
+      if asDict:
+        return dict(Cext=cext,Csca=csca,Cabs=cabs,g=g,Cpr=cpr,Cback=cback,Cratio=cratio)
+      else:
+        return cext, csca, cabs, g, cpr, cback, cratio
     else:
-      return qext, qsca, qabs, g, qpr, qback, qratio
+      if asDict:
+        return dict(Qext=qext,Qsca=qsca,Qabs=qabs,g=g,Qpr=qpr,Qback=qback,Qratio=qratio)
+      else:
+        return qext, qsca, qabs, g, qpr, qback, qratio
 
-def AutoMieQ(m, wavelength, diameter, crossover=0.01, asDict=False):
+def AutoMieQ(m, wavelength, diameter, nMedium=1.0, crossover=0.01, asDict=False, asCrossSection=False):
 #  http://pymiescatt.readthedocs.io/en/latest/forward.html#AutoMieQ
+  nMedium = nMedium.real
+  m /= nMedium
+  wavelength /= nMedium
   x = np.pi*diameter/wavelength
   if x==0:
     return 0, 0, 0, 1.5, 0, 0, 0
   elif x<crossover:
-    return RayleighMieQ(m, wavelength, diameter, asDict=asDict)
+    return RayleighMieQ(m, wavelength, diameter, nMedium, asDict=asDict, asCrossSection=asCrossSection)
   else:
-    return MieQ(m, wavelength, diameter, asDict=asDict)
+    return MieQ(m, wavelength, diameter, nMedium, asDict=asDict, asCrossSection=asCrossSection)
 
-def LowFrequencyMieQ(m, wavelength, diameter, asDict=False):
+def LowFrequencyMieQ(m, wavelength, diameter, nMedium=1.0, asDict=False, asCrossSection=False):
 #  http://pymiescatt.readthedocs.io/en/latest/forward.html#LowFrequencyMieQ
+  nMedium = nMedium.real
+  m /= nMedium
+  wavelength /= nMedium
   x = np.pi*diameter/wavelength
   if x==0:
     return 0, 0, 0, 1.5, 0, 0, 0
@@ -172,10 +210,23 @@ def LowFrequencyMieQ(m, wavelength, diameter, asDict=False):
     qback = (1/x2)*(np.abs(np.sum(n1*((-1)**n)*(an-bn)))**2)
     qratio = qback/qsca
 
-    if asDict:
-      return dict(Qext=qext,Qsca=qsca,Qabs=qabs,g=g,Qpr=qpr,Qback=qback,Qratio=qratio)
+    if asCrossSection:
+      css = np.pi*(diameter/2)**2
+      cext = css*qext
+      csca = css*qsca
+      cabs = css*qabs
+      cpr = css*qpr
+      cback = css*qback
+      cratio = css*qratio
+      if asDict:
+        return dict(Cext=cext,Csca=csca,Cabs=cabs,g=g,Cpr=cpr,Cback=cback,Cratio=cratio)
+      else:
+        return cext, csca, cabs, g, cpr, cback, cratio
     else:
-      return qext, qsca, qabs, g, qpr, qback, qratio
+      if asDict:
+        return dict(Qext=qext,Qsca=qsca,Qabs=qabs,g=g,Qpr=qpr,Qback=qback,Qratio=qratio)
+      else:
+        return qext, qsca, qabs, g, qpr, qback, qratio
 
 def LowFrequencyMie_ab(m,x):
 #  http://pymiescatt.readthedocs.io/en/latest/forward.html#LowFrequencyMie_ab
@@ -194,14 +245,17 @@ def LowFrequencyMie_ab(m,x):
   bn = np.append(b1,b2)
   return an,bn
 
-def AutoMie_ab(m,x,crossover=0.01):
-  if x<crossover:
+def AutoMie_ab(m,x):
+  if x<0.5:
     return LowFrequencyMie_ab(m,x)
   else:
     return Mie_ab(m,x)
 
-def Mie_SD(m, wavelength, dp, ndp, interpolate=False, asDict=False):
+def Mie_SD(m, wavelength, dp, ndp, nMedium=1.0, interpolate=False, asDict=False):
 #  http://pymiescatt.readthedocs.io/en/latest/forward.html#Mie_SD
+  nMedium = nMedium.real
+  m /= nMedium
+  wavelength /= nMedium
   dp = coerceDType(dp)
   ndp = coerceDType(ndp)
   _length = np.size(dp)
@@ -218,14 +272,14 @@ def Mie_SD(m, wavelength, dp, ndp, interpolate=False, asDict=False):
 #  _logdp = np.log10(dp)
 
   for i in range(_length):
-    Q_ext[i], Q_sca[i], Q_abs[i], g[i], Q_pr[i], Q_back[i], Q_ratio[i] = AutoMieQ(m,wavelength,dp[i])
+    Q_ext[i], Q_sca[i], Q_abs[i], g[i], Q_pr[i], Q_back[i], Q_ratio[i] = AutoMieQ(m,wavelength,dp[i],nMedium)
 
-  Bext = trapz(Q_ext*aSDn)
-  Bsca = trapz(Q_sca*aSDn)
+  Bext = trapz(Q_ext*aSDn,dp)
+  Bsca = trapz(Q_sca*aSDn,dp)
   Babs = Bext-Bsca
-  Bback = trapz(Q_back*aSDn)
-  Bratio = trapz(Q_ratio*aSDn)
-  bigG = trapz(g*Q_sca*aSDn)/trapz(Q_sca*aSDn)
+  Bback = trapz(Q_back*aSDn,dp)
+  Bratio = trapz(Q_ratio*aSDn,dp)
+  bigG = trapz(g*Q_sca*aSDn,dp)/trapz(Q_sca*aSDn,dp)
   Bpr = Bext - bigG*Bsca
 
   if asDict:
@@ -233,8 +287,11 @@ def Mie_SD(m, wavelength, dp, ndp, interpolate=False, asDict=False):
   else:
     return Bext, Bsca, Babs, bigG, Bpr, Bback, Bratio
 
-def ScatteringFunction(m, wavelength, diameter, minAngle=0, maxAngle=180, angularResolution=0.5, space='theta', angleMeasure='radians', normalization=None):
+def ScatteringFunction(m, wavelength, diameter, nMedium=1.0, minAngle=0, maxAngle=180, angularResolution=0.5, space='theta', angleMeasure='radians', normalization=None):
 #  http://pymiescatt.readthedocs.io/en/latest/forward.html#ScatteringFunction
+  nMedium = nMedium.real
+  m /= nMedium
+  wavelength /= nMedium
   x = np.pi*diameter/wavelength
 
   _steps = int(1+(maxAngle-minAngle)/angularResolution) # default 361
@@ -279,8 +336,12 @@ def ScatteringFunction(m, wavelength, diameter, minAngle=0, maxAngle=180, angula
     measure = (4*np.pi/wavelength)*np.sin(measure/2)*(diameter/2)
   return measure,SL,SR,SU
 
-def SF_SD(m, wavelength, dp, ndp, minAngle=0, maxAngle=180, angularResolution=0.5, space='theta', angleMeasure='radians', normalization=None):
+def SF_SD(m, wavelength, dp, ndp, nMedium=1.0, minAngle=0, maxAngle=180, angularResolution=0.5, space='theta', angleMeasure='radians', normalization=None):
 #  http://pymiescatt.readthedocs.io/en/latest/forward.html#SF_SD
+  nMedium = nMedium.real
+  m /= nMedium
+  wavelength /= nMedium
+  
   _steps = int(1+(maxAngle-minAngle)/angularResolution)
   ndp = coerceDType(ndp)
   dp = coerceDType(dp)
@@ -336,8 +397,11 @@ def MiePiTau(mu,nmax):
     t[n] = (n+1)*mu*p[n]-(n+2)*p[n-1]
   return p, t
 
-def MatrixElements(m,wavelength,diameter,mu):
+def MatrixElements(m,wavelength,diameter,mu,nMedium=1.0):
 #  http://pymiescatt.readthedocs.io/en/latest/forward.html#MatrixElements
+  nMedium = nMedium.real
+  m /= nMedium
+  wavelength /= nMedium
   x = np.pi*diameter/wavelength
   # B&H eqs. 4.77, where mu=cos(theta)
   S1,S2 = MieS1S2(m,x,mu)
@@ -347,8 +411,11 @@ def MatrixElements(m,wavelength,diameter,mu):
   S34 = 0.5j*(S1*np.conjugate(S2)-S2*np.conjugate(S1))
   return S11, S12, S33, S34
 
-def MieQ_withDiameterRange(m, wavelength, diameterRange=(10,1000), nd=1000, logD=False):
+def MieQ_withDiameterRange(m, wavelength, nMedium=1.0, diameterRange=(10,1000), nd=1000, logD=False):
 #  http://pymiescatt.readthedocs.io/en/latest/forward.html#MieQ_withDiameterRange
+  nMedium = nMedium.real
+  m /= nMedium
+  wavelength /= nMedium
   if logD:
     diameters = np.logspace(np.log10(diameterRange[0]),np.log10(diameterRange[1]),nd)
   else:
@@ -363,19 +430,22 @@ def MieQ_withDiameterRange(m, wavelength, diameterRange=(10,1000), nd=1000, logD
   qratio = np.array([q[6] for q in _qD])
   return diameters, qext, qsca, qabs, g, qpr, qback, qratio
 
-def MieQ_withWavelengthRange(m, diameter, wavelengthRange=(100,1600), nw=1000, logW=False):
+def MieQ_withWavelengthRange(m, diameter, nMedium=1.0, wavelengthRange=(100,1600), nw=1000, logW=False):
 #  http://pymiescatt.readthedocs.io/en/latest/forward.html#MieQ_withWavelengthRange
-  if type(m) == complex and len(wavelengthRange)==2:
+  nMedium = nMedium.real
+  _m = m/nMedium
+  _wavelengthRange = tuple([x/nMedium for x in wavelengthRange])
+  if type(_m) == complex and len(_wavelengthRange)==2:
     if logW:
-      wavelengths = np.logspace(np.log10(wavelengthRange[0]),np.log10(wavelengthRange[1]),nw)
+      wavelengths = np.logspace(np.log10(_wavelengthRange[0]),np.log10(_wavelengthRange[1]),nw)
     else:
-      wavelengths = np.linspace(wavelengthRange[0],wavelengthRange[1],nw)
-    _qD = [AutoMieQ(m,wavelength,diameter) for wavelength in wavelengths]
-  elif type(m) in [np.ndarray,list,tuple] and len(wavelengthRange)==len(m):
-    wavelengths=wavelengthRange
-    _qD = [MieQ(emm,wavelength,diameter) for emm,wavelength in zip(m,wavelengths)]
+      wavelengths = np.linspace(_wavelengthRange[0],_wavelengthRange[1],nw)
+    _qD = [AutoMieQ(_m,wavelength,diameter) for wavelength in wavelengths]
+  elif type(_m) in [np.ndarray,list,tuple] and len(_wavelengthRange)==len(_m):
+    wavelengths=_wavelengthRange
+    _qD = [MieQ(emm,wavelength,diameter) for emm,wavelength in zip(_m,wavelengths)]
   else:
-    warnings.warn("Error: the size of the input data is minmatched. Please examine your inputs and try again.")
+    warnings.warn("Error: the size of the input data is mismatched. Please examine your inputs and try again.")
     return
 
   qext = np.array([q[0] for q in _qD])
@@ -387,12 +457,15 @@ def MieQ_withWavelengthRange(m, diameter, wavelengthRange=(100,1600), nw=1000, l
   qratio = np.array([q[6] for q in _qD])
   return wavelengths, qext, qsca, qabs, g, qpr, qback, qratio
 
-def MieQ_withSizeParameterRange(m, xRange=(1,10), nx=1000, logX=False):
+def MieQ_withSizeParameterRange(m, nMedium=1.0, xRange=(1,10), nx=1000, logX=False):
 #  http://pymiescatt.readthedocs.io/en/latest/forward.html#MieQ_withSizeParameterRange
+  nMedium = nMedium.real
+  m /= nMedium
+  _xRange = tuple([x*nMedium for x in xRange]) # I think
   if logX:
-    xValues = list(np.logspace(np.log10(xRange[0]),np.log10(xRange[1]),nx))
+    xValues = list(np.logspace(np.log10(_xRange[0]),np.log10(_xRange[1]),nx))
   else:
-    xValues = list(np.linspace(xRange[0],xRange[1], nx))
+    xValues = list(np.linspace(_xRange[0],_xRange[1], nx))
   dValues = [1000*x/np.pi for x in xValues]
   _qD = [AutoMieQ(m,1000,d) for d in dValues]
   qext = np.array([q[0] for q in _qD])
@@ -404,8 +477,11 @@ def MieQ_withSizeParameterRange(m, xRange=(1,10), nx=1000, logX=False):
   qratio = np.array([q[6] for q in _qD])
   return xValues, qext, qsca, qabs, g, qpr, qback, qratio
 
-def Mie_Lognormal(m,wavelength,geoStdDev,geoMean,numberOfParticles,numberOfBins=10000,lower=1,upper=1000,gamma=[1],returnDistribution=False,decomposeMultimodal=False,asDict=False):
+def Mie_Lognormal(m,wavelength,geoStdDev,geoMean,numberOfParticles,nMedium=1.0, numberOfBins=10000,lower=1,upper=1000,gamma=[1],returnDistribution=False,decomposeMultimodal=False,asDict=False):
 #  http://pymiescatt.readthedocs.io/en/latest/forward.html#Mie_Lognormal
+  nMedium = nMedium.real
+  m /= nMedium
+  wavelength /= nMedium
   ithPart = lambda gammai, dp, dpgi, sigmagi: (gammai/(np.sqrt(2*np.pi)*np.log(sigmagi)*dp))*np.exp(-(np.log(dp)-np.log(dpgi))**2/(2*np.log(sigmagi)**2))
   dp = np.logspace(np.log10(lower),np.log10(upper),numberOfBins)
   if all([type(x) in [list, tuple, np.ndarray] for x in [geoStdDev, geoMean]]):
