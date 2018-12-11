@@ -171,6 +171,13 @@ class NoteBook(QWidget):
         self.fitterTab.refresh(force=force)
         self.tabs.setCurrentIndex(ntabs-1)
 
+    def write_spreadsheet(self):
+        debugger.print('Write spreadsheet')
+        self.mainTab.write_spreadsheet()
+        self.settingsTab.write_spreadsheet()
+        self.analysisTab.write_spreadsheet()
+        self.plottingTab.write_spreadsheet()
+
     def on_tabs_currentChanged(self, tabindex):
         debugger.print('Tab index changed', tabindex)
         if self.scripting:

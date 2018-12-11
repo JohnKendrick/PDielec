@@ -42,6 +42,7 @@ class ScenarioTab(QWidget):
         self.notebook = parent
         self.reader = self.notebook.mainTab.reader
         self.settings['Effective medium method'] = 'Maxwell-Garnett'
+        # self.methods = ['Maxwell-Garnett', 'Bruggeman', 'Averaged Permittivity', 'Mie', 'Anisotropic-Mie']
         self.methods = ['Maxwell-Garnett', 'Bruggeman', 'Averaged Permittivity', 'Mie']
         self.settings['Particle shape'] = 'Sphere'
         self.shapes = ['Sphere', 'Needle', 'Plate', 'Ellipsoid']
@@ -161,7 +162,7 @@ class ScenarioTab(QWidget):
         # Crystallite shape
         #
         self.shape_cb = QComboBox(self)
-        self.shape_cb.setToolTip('Choose a particle shape. \nFor the Mie method only sphere is allowed.  \nFor shapes other than sphere there is a unique direction. \nFor ellipsoidal and needle like this is a direction [abc].  \nFor a plate the perpendicular to a crystal face (hkl) is used to define the unique direction')
+        self.shape_cb.setToolTip('Choose a particle shape. \nFor the Mie methods only sphere is allowed.  \nFor shapes other than sphere there is a unique direction. \nFor ellipsoidal and needle like this is a direction [abc].  \nFor a plate the perpendicular to a crystal face (hkl) is used to define the unique direction')
         self.shape_cb.addItems(self.shapes)
         index = self.shape_cb.findText(self.settings['Particle shape'], Qt.MatchFixedString)
         if index >=0:
@@ -170,7 +171,7 @@ class ScenarioTab(QWidget):
             print('Method index was not 0',self.settings['Particle shape'])
         self.shape_cb.activated.connect(self.on_shape_cb_activated)
         label = QLabel('Particle shape',self)
-        label.setToolTip('Choose a particle shape. \nFor the Mie method only sphere is allowed.  \nFor shapes other than sphere there is a unique direction. \nFor ellipsoidal and needle like this is a direction [abc].  \nFor a plate the perpendicular to a crystal face (hkl) is used to define the unique direction')
+        label.setToolTip('Choose a particle shape. \nFor the Mie methods only sphere is allowed.  \nFor shapes other than sphere there is a unique direction. \nFor ellipsoidal and needle like this is a direction [abc].  \nFor a plate the perpendicular to a crystal face (hkl) is used to define the unique direction')
         form.addRow(label, self.shape_cb)
         #
         # Particle shape information
@@ -338,6 +339,8 @@ class ScenarioTab(QWidget):
         self.settings['Effective medium method'] = self.methods[index]
         if self.settings['Effective medium method'] == 'Mie':
             self.settings['Particle shape'] = 'Sphere'
+        elif self.settings['Effective medium method'] == 'Anisotropic-Mie':
+            self.settings['Particle shape'] = 'Sphere'
         elif self.settings['Effective medium method'] == 'Maxwell-Garnett':
             self.settings['Particle size distribution sigma(mu)'] = 0.0
         elif self.settings['Effective medium method'] == 'Bruggeman':
@@ -354,12 +357,7 @@ class ScenarioTab(QWidget):
         self.notebook.fittingCalculationRequired = True
         self.settings['Mass or volume fraction'] = 'mass'
         self.settings['Mass fraction'] =  value/100.0
-        if self.settings['Mass or volume fraction'] == 'mass':
-            self.update_vf_sb()
-            self.update_mf_sb()
-        else:
-            self.update_mf_sb()
-            self.update_vf_sb()
+        self.update_vf_sb()
 
     def update_vf_sb(self):
         mf1 = self.settings['Mass fraction']
@@ -410,12 +408,7 @@ class ScenarioTab(QWidget):
         self.notebook.fittingCalculationRequired = True
         self.settings['Mass or volume fraction'] = 'volume'
         self.settings['Volume fraction'] = value/100.0
-        if self.settings['Mass or volume fraction'] == 'volume':
-            self.update_mf_sb()
-            self.update_vf_sb()
-        else:
-            self.update_vf_sb()
-            self.update_mf_sb()
+        self.update_mf_sb()
 
     def update_mf_sb(self):
         vf1 = self.settings['Volume fraction']
@@ -501,7 +494,7 @@ class ScenarioTab(QWidget):
     def change_greyed_out(self):
         # Have a look through the settings and see if we need to grey anything out
         method = self.settings['Effective medium method']
-        if method == 'Mie':
+        if method == 'Mie' or method == 'Anisotropic-Mie':
             self.size_sb.setEnabled(True)
             self.sigma_sb.setEnabled(True)
             for i,shape in enumerate(self.shapes):

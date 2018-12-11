@@ -71,6 +71,7 @@ class App(QMainWindow):
             if self.notebook.spreadsheet is not None:
                 if self.debug:
                     print('Closing spreadsheeet on exit',self.scriptname)
+                self.notebook.write_spreadsheet()
                 self.notebook.spreadsheet.close()
             sys.exit()
         #self.show()
@@ -85,6 +86,7 @@ class App(QMainWindow):
 
     def closeEvent(self, event):
         # Make sure any spread sheet is closed
+        self.notebook.write_spreadsheet()
         if self.debug:
             print('Close event has been captured')
         if self.notebook.spreadsheet is not None:

@@ -245,8 +245,8 @@ class SettingsTab(QWidget):
         QCoreApplication.processEvents()
         self.redraw_output_tw()
         QCoreApplication.processEvents()
-        if self.notebook.spreadsheet is not None:
-            self.write_spreadsheet()
+        # if self.notebook.spreadsheet is not None:
+        #     self.write_spreadsheet()
         self.dirty = False
         QApplication.restoreOverrideCursor()
         QCoreApplication.processEvents()

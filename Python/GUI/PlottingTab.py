@@ -544,13 +544,13 @@ class PlottingTab(QWidget):
         pool.close()
         pool.join()
         #jk print('Dielec calculation duration ', time.time()-start)
-        if self.notebook.spreadsheet is not None:
-            self.write_spreadSheet()
+        #if self.notebook.spreadsheet is not None:
+        #    self.write_spreadsheet()
         self.dirty = False
         QApplication.restoreOverrideCursor()
         QCoreApplication.processEvents()
 
-    def write_spreadSheet(self):
+    def write_spreadsheet(self):
         if self.notebook.spreadsheet is None:
             return
         # Deal with Scenarios first

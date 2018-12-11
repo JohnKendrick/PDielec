@@ -159,8 +159,8 @@ class MainTab(QWidget):
         self.read_output_file()
         self.dirty = False
         # If there is a spread sheet write the spread sheet
-        if self.notebook.spreadsheet is not None:
-            self.write_spreadsheet()
+        # if self.notebook.spreadsheet is not None:
+        #     self.write_spreadsheet()
 
     def write_spreadsheet(self):
         sp = self.notebook.spreadsheet
