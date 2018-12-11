@@ -19,10 +19,13 @@ from __future__ import print_function
 import math
 import sys
 import cmath
+import random
 import numpy as np
 import scipy.optimize as sc
 from Python.Constants import PI, d2byamuang2
 import string
+
+points_on_sphere = None
 
 def initialise_unit_tensor():
     '''Initialise a 3x3 tensor, the argument is a list of 3 real numbers for the diagonals, the returned tensor is an array'''
@@ -150,6 +153,28 @@ def initialise_ellipsoid_depolarisation_matrix(unique, aoverb):
     tensor = nz*np.outer(unique, unique) + nxy*np.outer(dir1, dir1) + nxy*np.outer(dir2, dir2)
     tensor = tensor / np.trace(tensor)
     return tensor
+
+def fibonacci_sphere(samples=1,randomize=True):
+    rnd = 1.
+    if randomize:
+        rnd = random.random() * samples
+
+    points = []
+    offset = 2./samples
+    increment = math.pi * (3. - math.sqrt(5.));
+
+    for i in range(samples):
+        y = ((i * offset) - 1) + (offset / 2);
+        r = math.sqrt(1 - pow(y,2))
+
+        phi = ((i + rnd) % samples) * increment
+
+        x = math.cos(phi) * r
+        z = math.sin(phi) * r
+
+        points.append([x,y,z])
+
+    return points
 
 def ionic_permittivity(mode_list, oscillator_strengths, frequencies, volume):
     """Calculate the low frequency permittivity or zero frequency permittivity
@@ -454,7 +479,219 @@ def balan(dielectric_medium, dielecv, shape, L, vf, size):
     effdielec = np.array([[trace, 0, 0], [0, trace, 0], [0, 0, trace]])
     return effdielec
 
+def spherical_averaged_mie_scattering(dielectric_medium, dielecv, shape, L, vf, size, size_mu, size_distribution_sigma):
+    """Calculate the effective constant permittivity using a Mie scattering approach
+       dielectric_medium is the dielectric constant tensor of the medium
+       dielecv is the total frequency dielectric constant tensor at the current frequency
+       shape is the name of the current shape (NOT USED)
+       L is the shapes depolarisation matrix (NOT USED)
+       size is the dimensionless size parameter for the frequency under consideration
+       size_distribution_sigma is the log normal value of sigma
+       vf is the volume fraction of filler
+       Mie only works for spherical particles, so shape, and L parameters are ignored
+       The anisotropy of the permittivity is accounted for by sampling many directions 
+       and calculating the scattering in each direction
+       The routine returns the effective dielectric constant"""
+    # import Python.PyMieScatt as ps
+    from scipy.integrate import trapz
+    from scipy.stats import lognorm
+    from Python.PyMieScatt.Mie import MieS1S2, AutoMieQ
+    global points_on_sphere
+    # define i as a complex number
+    i = complex(0,1)
+    # We need to taken account of the change in wavelength and the change in size parameter due to the 
+    # None unit value of the dielectric of the embedding medium
+    # The size parameter is 2pi r / lambda
+    # The effective lambda in the supporting medium is lambda / sqrt(emedium)
+    # Where the refractive index is taken to be sqrt(emedium) (non magnetic materials)
+    emedium = np.trace(dielectric_medium) / 3.0
+    refractive_index_medium = np.sqrt(emedium)
+    lambda_vacuum_mu = 2 * PI * size_mu / size
+    wavelength_nm = lambda_vacuum_mu * 1000 / refractive_index_medium
+    radius_nm = size_mu * 1000
+    diameter_nm = 2 * radius_nm
+    # The wavevector in nm-1
+    k_nm = 2 * PI / wavelength_nm
+    # volume of a particle in nm^3
+    v_nm = 4.0/3.0 * PI * radius_nm * radius_nm * radius_nm
+    # Number density of particles (number / nm^3)
+    N_nm = vf / v_nm
+    # If there is a size distribution set up to use it
+    if size_distribution_sigma:
+        lower,upper = lognorm.interval(0.9999,size_distribution_sigma,scale=size_mu)
+        numberOfBins = 40
+        dp = np.logspace(np.log(lower),np.log(upper),numberOfBins,base=np.e)
+        # The definitions used are confusing;
+        # dp is the log of the variable
+        # s is the standard deviation (shape function) of the log of the variate
+        # scale is the mean of the underlying normal distribution
+        ndp = lognorm.pdf(dp,s=size_distribution_sigma,scale=size_mu)
+        #print("DP",dp)
+        #print("NDP",ndp)
+        #print("Upper lower",lower,upper)
+        #print("Size_MU",size_mu)
+    # Calculate the sampling points on a fibonacci sphere
+    if points_on_sphere == None:
+        points_on_sphere = fibonacci_sphere(samples=500,randomize=True)
+    trace = 0.0
+    # Now take the average of each direction on the sphere
+    for point in points_on_sphere:
+        point = np.array(point)
+        rotated_dielec = np.dot(point, np.dot(point, dielecv))
+        refractive_index = calculate_refractive_index_scalar(rotated_dielec) / refractive_index_medium
+        # print('refractive_index', refractive_index)
+        # print('refractive_index_medium', refractive_index_medium)
+        # print('rotated_dielec', rotated_dielec)
+        if size_distribution_sigma:
+            # Calculate the integral of the forward scattering factors over the distribution
+            s1_factors = []
+            for r in dp:
+                # The size parameter is 2pi r / lambda 
+                x = 2 * PI * r / lambda_vacuum_mu
+                # Calculate the S1 and S2 scattering factors, and store in a list
+                s1,s2 = MieS1S2(refractive_index, x*refractive_index_medium, 1)
+                s1_factors.append(s1)
+            # Now integrate
+            s1 = trapz(s1_factors*ndp,dp)
+            normal = trapz(ndp,dp)
+            mean = trapz(ndp*dp,dp)
+            true_mean = np.exp( np.log(size_mu) + size_distribution_sigma*size_distribution_sigma/2.0)
+            v_cm1 = 1.0E4/lambda_vacuum_mu 
+            #print("Frequency,normal,mean",v_cm1,normal,true_mean,mean)
+            if np.abs(normal - 1.0) > 1.0E-2:
+                print("Warning integration of log-normal distribution in error", normal)
+                print("Stopping calculation - likely problem is too large a sigma for log-normal distribution")
+                effdielec = np.array([[1, 0, 0], [0, 1, 0], [0, 0, 1]])
+                return effdielec
+        else:
+            # Calculate the scattering factors at 0 degrees 
+            #jk print("refractive_index, size, refractive_index_medium", refractive_index, size, refractive_index_medium)
+            s1,s2 = MieS1S2(refractive_index, size*refractive_index_medium, 1)
+        # qext,qsca,qabs,g,qpr,qback,qratio = ps.AutoMieQ(refractive_index, wavelength_nm, diameter_nm)
+        #jk print('s1,s2',s1,s2)
+        #jk print('qext,qsca,qabs',qext,qsca,qabs)
+        # See van de Hulst page 129, 130
+        # Refractive index of material is
+        # the sign of the imaginary component has changed for compatibility with MG/Bruggeman
+        refractive_index = refractive_index_medium * ( 1.0 + i * s1 * 2 * PI * N_nm / ( k_nm * k_nm * k_nm ) )
+        trace += refractive_index 
+    # return an isotropic tensor
+    trace = trace / len(points_on_sphere)
+    eff = trace * trace
+    effdielec = np.array([[eff, 0, 0], [0, eff, 0], [0, 0, eff]])
+    #jk print(radius_nm, lambda_vacuum_mu*1000.0, qext,qsca,qabs,g,qpr,qback,qratio,np.real(s1),np.imag(s1),np.real(trace),np.imag(trace),np.real(eff),np.imag(eff))
+    #print ("radius_nm, eff", radius_nm, eff)
+    return effdielec
+
+
 def mie_scattering(dielectric_medium, dielecv, shape, L, vf, size, size_mu, size_distribution_sigma):
+    """Calculate the effective constant permittivity using a Mie scattering approach
+       dielectric_medium is the dielectric constant tensor of the medium
+       dielecv is the total frequency dielectric constant tensor at the current frequency
+       shape is the name of the current shape (NOT USED)
+       L is the shapes depolarisation matrix (NOT USED)
+       size is the dimensionless size parameter for the frequency under consideration
+       size_distribution_sigma is the log normal value of sigma
+       vf is the volume fraction of filler
+       In this method the MG method is used to calculate the averaged effective permittivity
+       Then the permittivity of the isodtropic sphere that would give the same average permittivity is calculated
+       Then the Mie scattering of that sphere is calculated
+       The routine returns the effective dielectric constant"""
+    # import Python.PyMieScatt as ps
+    from scipy.integrate import trapz
+    from scipy.stats import lognorm
+    from Python.PyMieScatt.Mie import MieS1S2, AutoMieQ
+    #
+    # Calculate the MG permittivity with no size effects
+    #
+    mg_permittivity = maxwell(dielectric_medium, dielecv, shape, L, vf, 0.0000001)
+    # Use scalar quantities to calculate the dielectric constant of the equivalent isotropic sphere
+    ef = np.trace(mg_permittivity) / 3.0
+    em = np.trace(dielectric_medium) / 3.0
+    # print('dielecv',dielecv)
+    # print('Maxwell',ef)
+    # print('EMedium',em)
+    # Calculate the permittivity of an isotropic sphere that has the same effective permittivity
+    einclusion = ( -3*vf*em*em - (ef - em)*em*(2+vf) ) / ((ef-em)*(1-vf) - 3*vf*em)
+    # print('E inclusion',einclusion)
+    dielecv = einclusion*np.eye(3)
+    # print('New dielecv',dielecv)
+    # define i as a complex number
+    i = complex(0,1)
+    # We need to taken account of the change in wavelength and the change in size parameter due to the 
+    # None unit value of the dielectric of the embedding medium
+    # The size parameter is 2pi r / lambda
+    # The effective lambda in the supporting medium is lambda / sqrt(emedium)
+    # Where the refractive index is taken to be sqrt(emedium) (non magnetic materials)
+    emedium = np.trace(dielectric_medium) / 3.0
+    refractive_index_medium = np.sqrt(emedium)
+    lambda_vacuum_mu = 2 * PI * size_mu / size
+    wavelength_nm = lambda_vacuum_mu * 1000 / refractive_index_medium
+    radius_nm = size_mu * 1000
+    diameter_nm = 2 * radius_nm
+    # The wavevector in nm-1
+    k_nm = 2 * PI / wavelength_nm
+    # volume of a particle in nm^3
+    v_nm = 4.0/3.0 * PI * radius_nm * radius_nm * radius_nm
+    # Number density of particles (number / nm^3)
+    N_nm = vf / v_nm
+    # If there is a size distribution set up to use it
+    if size_distribution_sigma:
+        lower,upper = lognorm.interval(0.9999,size_distribution_sigma,scale=size_mu)
+        numberOfBins = 40
+        dp = np.logspace(np.log(lower),np.log(upper),numberOfBins,base=np.e)
+        # The definitions used are confusing;
+        # dp is the log of the variable
+        # s is the standard deviation (shape function) of the log of the variate
+        # scale is the mean of the underlying normal distribution
+        ndp = lognorm.pdf(dp,s=size_distribution_sigma,scale=size_mu)
+        #print("DP",dp)
+        #print("NDP",ndp)
+        #print("Upper lower",lower,upper)
+        #print("Size_MU",size_mu)
+    refractive_index = calculate_refractive_index_scalar(einclusion) / refractive_index_medium
+    #jk print('refractive_index', refractive_index)
+    #jk print('refractive_index_medium', refractive_index_medium)
+    #jk print('einclusion', einclusion)
+    if size_distribution_sigma:
+        # Calculate the integral of the forward scattering factors over the distribution
+        s1_factors = []
+        for r in dp:
+            # The size parameter is 2pi r / lambda 
+            x = 2 * PI * r / lambda_vacuum_mu
+            # Calculate the S1 and S2 scattering factors, and store in a list
+            s1,s2 = MieS1S2(refractive_index, x*refractive_index_medium, 1)
+            s1_factors.append(s1)
+        # Now integrate
+        s1 = trapz(s1_factors*ndp,dp)
+        normal = trapz(ndp,dp)
+        mean = trapz(ndp*dp,dp)
+        true_mean = np.exp( np.log(size_mu) + size_distribution_sigma*size_distribution_sigma/2.0)
+        v_cm1 = 1.0E4/lambda_vacuum_mu 
+        #print("Frequency,normal,mean",v_cm1,normal,true_mean,mean)
+        if np.abs(normal - 1.0) > 1.0E-2:
+            print("Warning integration of log-normal distribution in error", normal)
+            print("Stopping calculation - likely problem is too large a sigma for log-normal distribution")
+            effdielec = np.array([[1, 0, 0], [0, 1, 0], [0, 0, 1]])
+            return effdielec
+    else:
+        # Calculate the scattering factors at 0 degrees 
+        #jk print("refractive_index, size, refractive_index_medium", refractive_index, size, refractive_index_medium)
+        s1,s2 = MieS1S2(refractive_index, size*refractive_index_medium, 1)
+    # qext,qsca,qabs,g,qpr,qback,qratio = ps.AutoMieQ(refractive_index, wavelength_nm, diameter_nm)
+    #jk print('s1,s2',s1,s2)
+    #jk print('qext,qsca,qabs',qext,qsca,qabs)
+    # See van de Hulst page 129, 130
+    # Refractive index of material is
+    # the sign of the imaginary component has changed for compatibility with MG/Bruggeman
+    refractive_index = refractive_index_medium * ( 1.0 + i * s1 * 2 * PI * N_nm / ( k_nm * k_nm * k_nm ) )
+    eff = refractive_index * refractive_index
+    effdielec = np.array([[eff, 0, 0], [0, eff, 0], [0, 0, eff]])
+    #jk print(radius_nm, lambda_vacuum_mu*1000.0, qext,qsca,qabs,g,qpr,qback,qratio,np.real(s1),np.imag(s1),np.real(refractive_index),np.imag(refractive_index),np.real(eff),np.imag(eff))
+    #print ("radius_nm, eff", radius_nm, eff)
+    return effdielec
+
+def anisotropic_mie_scattering(dielectric_medium, dielecv, shape, L, vf, size, size_mu, size_distribution_sigma):
     """Calculate the effective constant permittivity using a Mie scattering approach
        dielectric_medium is the dielectric constant tensor of the medium
        dielecv is the total frequency dielectric constant tensor at the current frequency
@@ -485,9 +722,9 @@ def mie_scattering(dielectric_medium, dielecv, shape, L, vf, size, size_mu, size
     # To account for anisotropy we diagonalise the real part of the dielectric matrix and transform
     # the full matrix with the eigenvectors, U
     # Find U and E, such that UT. D. U = E (where D is the real part of dielecv)
-    E,U = np.linalg.eigh(np.real(dielecv))
+    E,U = np.linalg.eig(np.real(dielecv))
     # Transform the full dielectric matrix
-    rotated_dielec = np.dot(np.dot(U.T, dielecv), U)
+    rotated_dielec = np.matmul(U.T,np.matmul(dielecv,U))
     # The wavevector in nm-1
     k_nm = 2 * PI / wavelength_nm
     # volume of a particle in nm^3
@@ -546,7 +783,8 @@ def mie_scattering(dielectric_medium, dielecv, shape, L, vf, size, size_mu, size
         #jk print('qext,qsca,qabs',qext,qsca,qabs)
         # See van de Hulst page 129, 130
         # Refractive index of material is
-        refractive_index = refractive_index_medium * ( 1.0 - i * s1 * 2 * PI * N_nm / ( k_nm * k_nm * k_nm ) )
+        # the sign of the imaginary component has changed for compatibility with MG/Bruggeman
+        refractive_index = refractive_index_medium * ( 1.0 + i * s1 * 2 * PI * N_nm / ( k_nm * k_nm * k_nm ) )
         trace += refractive_index 
     # return an isotropic tensor
     trace = trace / 3.0
@@ -941,6 +1179,8 @@ def solve_effective_medium_equations( call_parameters ):
             eff = maxwell(dielectric_medium, dielecv, shape, L, vf, size)
         effdielec = bruggeman_iter(dielectric_medium, dielecv, shape, L, vf, size, eff)
         previous_solution_shared[nplot] = effdielec
+    elif method == "anisotropic-mie":
+        effdielec = anisotropic_mie_scattering(dielectric_medium, dielecv, shape, L, vf, size, size_mu, size_distribution_sigma)
     elif method == "mie":
         effdielec = mie_scattering(dielectric_medium, dielecv, shape, L, vf, size, size_mu, size_distribution_sigma)
     else:
