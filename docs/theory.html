@@ -313,7 +313,8 @@ G_{2}\left( x \right) &amp;= \ \left ( 1 + ix - \frac{7}{15}x^{2} - i\frac{2}{15
 <div class="section" id="light-scattering-by-spherical-particles-using-mie-theory">
 <h2><a class="toc-backref" href="#id65">Light scattering by spherical particles using Mie theory</a><a class="headerlink" href="#light-scattering-by-spherical-particles-using-mie-theory" title="Permalink to this headline">¶</a></h2>
 <p>For particles which are comparable in size to the wavelength of light, the theory developed by Mie and described fully by van de Hulst <a class="reference internal" href="zreferences.html#vandehulst1981" id="id43">[35]</a> can be used. Unfortunately this theory is only applicable to spherical, isotropic particles where the separation between the particles is large compared with the wavelength of light.</p>
-<p>PDielec implements a form of Mie theory using the Python library PyMieScatt <a class="reference internal" href="zreferences.html#sumlin2018a" id="id44">[51]</a>. In order to treat systems which are anisotropic, PDielec first of all transforms the real component of the permittivity so that the tensor is diagonal. Then the full  permittivity (real and imaginary) is transformed to this basis.</p>
+<p>PDielec implements a form of Mie theory using the Python library PyMieScatt <a class="reference internal" href="zreferences.html#sumlin2018a" id="id44">[51]</a>. In order to treat systems which are anisotropic, PDielec first of all calculates the Maxwell-Garnett permittivity for the anisotropic sphere embedded with random orientation in the supporting matrix.  The program then calculates the required permittivity of an isotropic sphere which would give the same Maxwell-Garnett permittivity as the anisotropic system.  The Mie scattering is then performed on this isotropic sphere.</p>
+<p>An alternative method which looks diagonalises the real permittivity and then uses transforms the complex permittivity into the new basis was found to cause anomolous absorptions at the TO frequencies and so the method is no long used.</p>
 <div class="math notranslate nohighlight" id="equation-eq-transform1">
 <span class="eqno">(51)<a class="headerlink" href="#equation-eq-transform1" title="Permalink to this equation">¶</a></span>\[\begin{split}\begin{aligned}
 &amp; {\tensorbf{U}^{\text{T}}} \tensorbs{\varepsilon}^{real} \tensorbf{U} = \tensorbs{\varepsilon}^{diagonal} \\
@@ -380,7 +381,7 @@ e_p &amp;= -log_{10}( r_p^*r_p ) \\
 
     <div class="footer" role="contentinfo">
         &#169; Copyright 2018, John Kendrick and Andrew Burnett.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.0.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.1.
     </div>
   </body>
 </html>

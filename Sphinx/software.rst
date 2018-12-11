@@ -184,8 +184,8 @@ As well as being able to change the phonon mode being analysed.  The colours and
 Fitter Tab
 -----------
 
-The *Fitter Tab* imports an experimental spectrum to be imported.  The spectrum is stored in an Excel spreadsheet.  The spreadsheet should contain a single sheet with two columns.  The first column should be the frequency in cm-1 and the second should be the measured signal.  The signal can be molar absorption, absorption, real permittivity, imaginary permittivity or ATR absorbance.
-Once imported the experimental spectrum can be compared with the calculated spectrum.  The tab shows the frequencies contributing to the spectrum and allows the Lorentzian widths of the transitions to be altered.  The frequency range used for the display is the same as that used in the *plotting tab*.
+The *Fitter Tab* imports an experimental spectrum.  The spectrum is stored in an Excel spreadsheet.  The spreadsheet should contain a single sheet with two columns.  The first column should be the frequency in cm-1 and the second should be the measured signal.  The signal can be molar absorption, absorption, real permittivity, imaginary permittivity or ATR absorbance.  Once imported the experimental spectrum can be compared with the calculated spectrum.  The tab shows the frequencies contributing to the spectrum and allows the Lorentzian widths of the transitions to be altered.  The frequency range used for the display is the same as that used in the *plotting tab*.
+At the top of the Tab are some settings in a tabbed notebook.  The most important is the name of the Excel file containing the experimental spectrum.  In addition there are options to change the 'Plot type', include frequency scaling in any fitting, set the frequency scaling factor, set the number of iterations to be used when fitting, choose whether the plot should use indepent y-axes for the calculated and experimental spectra, set the method used to do the fitting and finally specifiy the spectral difference threshold.
 The spectrum is shown at the bottom of the tab and is recalculated when the *Replot* or *Replot with frequency shift* buttons are pressed.  The data type stored in the experimental spreadsheet is defined by the *Plot and data type* setting.  
 
 
@@ -197,9 +197,11 @@ The spectrum is shown at the bottom of the tab and is recalculated when the *Rep
    The Fitter Tab
 
 
-After a replot the cross-correlation coefficient and the frequency shift needed to maximise that cross-correlation coefficient is shown.  It is possible to apply a frequency scaling to the calculated spectrum. The *Replot with frequency shift* shows the calculated spectrum with the frequencies shifted by the shift calculated to maximise the cross-correlation coefficient.  Care must be taken in comparing the calculated and experimental spectra as different y-axes are used for each.
+After a replot the cross-correlation coefficient, current frequency scaling factor, the frequency shift needed to maximise that cross-correlation coefficient, and the root mean squared error between the calculated and experimental spectra are shown.  It is possible to apply a frequency scaling to the calculated spectrum. The *Replot with frequency shift* shows the calculated spectrum with the frequencies shifted by the shift calculated to maximise the cross-correlation coefficient.  Care must be taken in comparing the calculated and experimental spectra as different y-axes are used for each.
 
-It is also possible to automatically adjust the Lorentzian width factors with the *Perform fitting* button.  However experience with this option shows that it maybe better to adjust the peak heights manually by altering the sigma values.  At the moment only 10 iterations are performed for each press of the button.  If requested the frequency scaling factor can be adjust too.
+It is also possible to automatically adjust the Lorentzian width factors with the *Perform fitting* button.  However experience with this option shows that it maybe better to adjust the peak heights manually by altering the sigma values.  At the moment only 20 iterations are performed for each press of the button.  If requested the frequency scaling factor can be adjust too.
+
+Two algorithms for performing the fitting are supported.  Either the cross-correlation coefficient can be maximised or the root mean squared error between the spectra can be minimised.  In the latter case the error is only calculated for signal strengths above the spectral difference threshold (which defaults to 0.05).
 
 
 Support matrix

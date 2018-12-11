@@ -517,7 +517,9 @@ Light scattering by spherical particles using Mie theory
 
 For particles which are comparable in size to the wavelength of light, the theory developed by Mie and described fully by van de Hulst :cite:`VanDeHulst1981` can be used. Unfortunately this theory is only applicable to spherical, isotropic particles where the separation between the particles is large compared with the wavelength of light.
 
-PDielec implements a form of Mie theory using the Python library PyMieScatt :cite:`Sumlin2018a`. In order to treat systems which are anisotropic, PDielec first of all transforms the real component of the permittivity so that the tensor is diagonal. Then the full  permittivity (real and imaginary) is transformed to this basis.
+PDielec implements a form of Mie theory using the Python library PyMieScatt :cite:`Sumlin2018a`. In order to treat systems which are anisotropic, PDielec first of all calculates the Maxwell-Garnett permittivity for the anisotropic sphere embedded with random orientation in the supporting matrix.  The program then calculates the required permittivity of an isotropic sphere which would give the same Maxwell-Garnett permittivity as the anisotropic system.  The Mie scattering is then performed on this isotropic sphere.
+
+An alternative method which looks diagonalises the real permittivity and then uses transforms the complex permittivity into the new basis was found to cause anomolous absorptions at the TO frequencies and so the method is no long used.
 
 .. math::
    :label: eq-transform1
