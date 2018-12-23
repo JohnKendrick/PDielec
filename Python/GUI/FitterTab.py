@@ -52,6 +52,8 @@ class FitterTab(QWidget):
         self.settings['Absorption scaling factor'] = 1.0
         self.settings['Independent y-axes'] = True
         self.settings['Spectral difference threshold'] = 0.05
+        self.settings['HPFilter lambda'] = 7.0
+        self.settings['Baseline removal'] = False
         self.plot_frequency_shift = False
         self.xcorr0=0.0
         self.xcorr1=0.0
@@ -110,6 +112,27 @@ class FitterTab(QWidget):
         self.frequency_scaling_factor_sb.setValue(self.settings['Frequency scaling factor'])
         self.frequency_scaling_factor_sb.setToolTip('Set the value for scaling the frequency axis of the calculated spectrum')
         self.frequency_scaling_factor_sb.valueChanged.connect(self.on_frequency_scaling_factor_sb_changed)
+        #
+        # See if we want base line removal
+        #
+        self.baseline_cb = QCheckBox(self)
+        self.baseline_cb.setToolTip('Frequency scaling is applied during the fitting process')
+        self.baseline_cb.setText('')
+        self.baseline_cb.setLayoutDirection(Qt.RightToLeft)
+        if self.settings['Frequency scaling']:
+            self.baseline_cb.setCheckState(Qt.Checked)
+        else:
+            self.baseline_cb.setCheckState(Qt.Unchecked)
+        self.baseline_cb.stateChanged.connect(self.on_baseline_cb_changed)
+
+        # Hodrick-Prescott Filter Lambda
+        self.hpfilter_lambda_sb = QDoubleSpinBox(self)
+        self.hpfilter_lambda_sb.setRange(0.0,10000000.0)
+        self.hpfilter_lambda_sb.setDecimals(1)
+        self.hpfilter_lambda_sb.setSingleStep(1)
+        self.hpfilter_lambda_sb.setValue(self.settings['HPFilter lambda'])
+        self.hpfilter_lambda_sb.setToolTip('The Hodrick-Prescott filter lambda value')
+        self.hpfilter_lambda_sb.valueChanged.connect(self.on_hpfilter_lambda_sb_changed)
         # Spectral difference threshold
         self.spectral_difference_threshold_sb = QDoubleSpinBox(self)
         self.spectral_difference_threshold_sb.setRange(0.000001,10.0)
@@ -146,6 +169,8 @@ class FitterTab(QWidget):
         self.settingsTab.addTab(self.independent_yaxes_cb, 'Independent y-axes')
         self.settingsTab.addTab(self.fitting_type_cb, 'Fitting type')
         self.settingsTab.addTab(self.spectral_difference_threshold_sb, 'Spectral difference threshold')
+        self.settingsTab.addTab(self.baseline_cb, 'Baseline removal?')
+        self.settingsTab.addTab(self.hpfilter_lambda_sb, 'HP Filter Lambda')
         label = QLabel('Settings', self)
         form.addRow(label,self.settingsTab)
         # END OF THE SETTINGS TAB #################################################################################################
@@ -237,6 +262,15 @@ class FitterTab(QWidget):
         self.settings['Absorption scaling'] = self.absorption_scaling_cb.isChecked()
         return
  
+    def on_hpfilter_lambda_sb_changed(self,value):
+        debugger.print('hpfilter_lambda_sb_changed',value)
+        try:
+            self.settings['HPFilter lambda'] = float(value)
+        except:
+            print('Failed to convert to float', value)
+        self.replot()
+        return
+
     def on_absorption_scaling_factor_sb_changed(self,value):
         debugger.print('on_absorption_scaling_factor_cb_changed',value)
         try:
@@ -245,6 +279,12 @@ class FitterTab(QWidget):
             print('Failed to convert to float', value)
         return
 
+    def on_baseline_cb_changed(self,value):
+        debugger.print('on_baseline_cb_changed',value)
+        self.settings['Baseline removal'] = self.baseline_cb.isChecked()
+        self.replot()
+        return
+ 
     def on_frequency_scaling_cb_changed(self,value):
         debugger.print('on_frequency_scaling_cb_changed',value)
         self.settings['Frequency scaling'] = self.frequency_scaling_cb.isChecked()
@@ -572,6 +612,10 @@ class FitterTab(QWidget):
         debugger.print('SETTINGS')
         for key in self.settings:
             debugger.print(key, self.settings[key]) 
+
+    def replot(self):
+        self.resample_spectrum()
+        self.plot(self.experimental_absorption,self.calculated_frequencies,self.calculated_absorptions,self.legends,self.plot_label)
         
     def refresh(self,force=False):
         if not self.dirty and not force and not self.notebook.fittingCalculationRequired:
@@ -619,20 +663,20 @@ class FitterTab(QWidget):
         self.settings['Plot type'] = self.plot_type_definitions[index]
         if index == 0:
             self.calculated_absorptions = self.notebook.plottingTab.molarAbsorptionCoefficients
-            label = 'Molar absorption coefficient'
+            self.plot_label = 'Molar absorption coefficient'
         elif index == 1:
             self.calculated_absorptions = self.notebook.plottingTab.absorptionCoefficients
-            label = 'Absorption coefficient'
+            self.plot_label = 'Absorption coefficient'
         elif index == 2:
             self.calculated_absorptions = self.notebook.plottingTab.sp_atrs
-            label = 'Absorption coefficient'
+            self.plot_label = 'Absorption coefficient'
         elif index == 3:
             self.calculated_absorptions = self.notebook.plottingTab.realPermittivities
-            label = 'Real Permittivity'
+            self.plot_label = 'Real Permittivity'
         elif index == 4:
             self.calculated_absorptions = self.notebook.plottingTab.imagPermittivities
-            label = 'Imaginary Permittivity'
-        legends = self.notebook.plottingTab.legends
+            self.plot_label = 'Imaginary Permittivity'
+        self.legends = self.notebook.plottingTab.legends
         scaling_factor = self.settings['Frequency scaling factor']
         self.lag,self.xcorr0,self.xcorr1 = self.calculateCrossCorrelation(scaling_factor)
         self.rmse = self.calculateSpectralDifference(scaling_factor)
@@ -640,7 +684,7 @@ class FitterTab(QWidget):
         self.lag_frequency_le.setText('{:8.2f}'.format(self.lag))
         self.frequency_scaling_le.setText('{:8.2f}'.format(self.settings['Frequency scaling factor']))
         self.rmse_le.setText('{:e}'.format(self.rmse))
-        self.plot(self.experimental_absorption,self.calculated_frequencies,self.calculated_absorptions,legends,label)
+        self.replot()
         #
         # Unblock signals after refresh
         # 
@@ -675,6 +719,13 @@ class FitterTab(QWidget):
         # Create a function using the padded frequencies to calculate the absorption at the calculated frequencies
         f = interp1d(padded_xaxis, padded_yaxis, kind='cubic',fill_value='extrapolate')
         # Store the experimental absorption at the calculated frequencies
-        self.experimental_absorption = f(self.xaxis)
+        experimental_absorption = f(self.xaxis)
+        if self.settings['Baseline removal']:
+            # Apply a Hodrick-Prescott filter to remove the background
+            self.experimental_absorption = Calculator.hodrick_prescott_filter(
+                                          experimental_absorption, 0.01,
+                                          self.settings['HPFilter lambda'], 10)
+        else:
+            self.experimental_absorption = experimental_absorption
         return
     
