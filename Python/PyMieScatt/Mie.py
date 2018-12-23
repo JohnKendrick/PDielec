@@ -65,8 +65,9 @@ def MieQ(m, wavelength, diameter, nMedium=1.0, asDict=False, asCrossSection=Fals
 
 def Mie_ab(m,x):
 #  http://pymiescatt.readthedocs.io/en/latest/forward.html#Mie_ab
-  mx = m*x
-  nmax = np.round(2+x+4*(x**(1/3)))
+  realx = abs(x)
+  mx = m*realx
+  nmax = np.round(2+realx+4*realx**(1/3))
   nmx = np.round(max(nmax,np.abs(mx))+16)
   n = np.arange(1,nmax+1)
   nu = n + 0.5
@@ -97,8 +98,9 @@ def Mie_ab(m,x):
 
 def Mie_cd(m,x):
 #  http://pymiescatt.readthedocs.io/en/latest/forward.html#Mie_cd
-  mx = m*x
-  nmax = np.round(2+x+4*(x**(1/3)))
+  realx = abs(x)
+  mx = m*realx
+  nmax = np.round(2+realx+4*(realx**(1/3)))
   nmx = np.round(max(nmax,np.abs(mx))+16)
   n = np.arange(1,int(nmax)+1)
   nu = n+0.5
@@ -138,9 +140,9 @@ def RayleighMieQ(m, wavelength, diameter, nMedium=1.0, asDict=False, asCrossSect
   m /= nMedium
   wavelength /= nMedium
   x = np.pi*diameter/wavelength
-  if x==0:
+  if abs(x)==0:
     return 0, 0, 0, 1.5, 0, 0, 0
-  elif x>0:
+  elif abs(x)>0:
     LL = (m**2-1)/(m**2+2) # Lorentz-Lorenz term
     LLabsSq = np.abs(LL)**2
     qsca = 8*LLabsSq*(x**4)/3 # B&H eq 5.8
@@ -174,9 +176,9 @@ def AutoMieQ(m, wavelength, diameter, nMedium=1.0, crossover=0.01, asDict=False,
   m /= nMedium
   wavelength /= nMedium
   x = np.pi*diameter/wavelength
-  if x==0:
+  if abs(x)==0:
     return 0, 0, 0, 1.5, 0, 0, 0
-  elif x<crossover:
+  elif abs(x)<crossover:
     return RayleighMieQ(m, wavelength, diameter, nMedium, asDict=asDict, asCrossSection=asCrossSection)
   else:
     return MieQ(m, wavelength, diameter, nMedium, asDict=asDict, asCrossSection=asCrossSection)
@@ -187,9 +189,9 @@ def LowFrequencyMieQ(m, wavelength, diameter, nMedium=1.0, asDict=False, asCross
   m /= nMedium
   wavelength /= nMedium
   x = np.pi*diameter/wavelength
-  if x==0:
+  if abs(x)==0:
     return 0, 0, 0, 1.5, 0, 0, 0
-  elif x>0:
+  elif abs(x)>0:
     n = np.arange(1,3)
     n1 = 2*n+1
     n2 = n*(n+2)/(n+1)
@@ -246,7 +248,7 @@ def LowFrequencyMie_ab(m,x):
   return an,bn
 
 def AutoMie_ab(m,x):
-  if x<0.5:
+  if abs(x)<0.5:
     return LowFrequencyMie_ab(m,x)
   else:
     return Mie_ab(m,x)
@@ -312,7 +314,7 @@ def ScatteringFunction(m, wavelength, diameter, nMedium=1.0, minAngle=0, maxAngl
   else:
     measure = np.linspace(minAngle,maxAngle,_steps)*adjust
     _q = False
-  if x == 0:
+  if abs(x) == 0:
     return measure,0,0,0
   _measure = np.linspace(minAngle,maxAngle,_steps)*np.pi/180
   SL = np.zeros(_steps)
@@ -375,7 +377,8 @@ def SF_SD(m, wavelength, dp, ndp, nMedium=1.0, minAngle=0, maxAngle=180, angular
 
 def MieS1S2(m,x,mu):
 #  http://pymiescatt.readthedocs.io/en/latest/forward.html#MieS1S2
-  nmax = np.round(2+x+4*np.power(x,1/3))
+  realx = abs(x)
+  nmax = np.round(2+realx+4*np.power(realx,1/3))
   an, bn = AutoMie_ab(m,x)
   pin, taun = MiePiTau(mu,nmax)
   n = np.arange(1,int(nmax)+1)
