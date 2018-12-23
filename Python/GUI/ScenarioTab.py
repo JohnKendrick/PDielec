@@ -26,6 +26,8 @@ class ScenarioTab(QWidget):
         self.settings['Matrix'] = matrix
         self.settings['Matrix density'] = support_matrix_db[matrix][0]
         self.settings['Matrix permittivity'] = support_matrix_db[matrix][1]
+        self.settings['Bubble radius'] = 60.0
+        self.settings['Bubble volume fraction'] = 0.0
         self.settings['Mass fraction'] = 0.1
         self.settings['Volume fraction'] = 0.1
         self.settings['Particle size(mu)'] = 0.0001
@@ -92,6 +94,32 @@ class ScenarioTab(QWidget):
         label.setToolTip('Define the support matrix permittivity')
         form.addRow(label, self.permittivity_sb)
         #
+        # Bubble volume fraction
+        #
+        self.bubble_vf_sb = QDoubleSpinBox(self) 
+        self.bubble_vf_sb.setRange(0.0, 100.0*(1.0-self.settings['Volume fraction']))
+        self.bubble_vf_sb.setSingleStep(1.0)
+        self.bubble_vf_sb.setDecimals(1)
+        self.bubble_vf_sb.setToolTip('Define the % volume fraction of bubble inclusions in the matrix')
+        self.bubble_vf_sb.setValue(self.settings['Bubble volume fraction'])
+        self.bubble_vf_sb.valueChanged.connect(self.on_bubble_vf_sb_changed)
+        label = QLabel('% Bubble volume fraction', self)
+        label.setToolTip('Define the % volume fraction of bubble inclusions in the matrix')
+        form.addRow(label, self.bubble_vf_sb)
+        #
+        # Bubble radius in microns
+        #
+        self.bubble_radius_sb = QDoubleSpinBox(self) 
+        self.bubble_radius_sb.setRange(0.001, 1000.0)
+        self.bubble_radius_sb.setSingleStep(1.0)
+        self.bubble_radius_sb.setDecimals(3)
+        self.bubble_radius_sb.setToolTip('Define the bubble radius')
+        self.bubble_radius_sb.setValue(self.settings['Bubble radius'])
+        self.bubble_radius_sb.valueChanged.connect(self.on_bubble_radius_sb_changed)
+        label = QLabel('Bubble radius (μm)', self)
+        label.setToolTip('Define the bubble radius')
+        form.addRow(label, self.bubble_radius_sb)
+        #
         # Mass fraction of dielectric medium
         #
         self.mf_sb = QDoubleSpinBox(self)
@@ -101,20 +129,20 @@ class ScenarioTab(QWidget):
         self.mf_sb.setToolTip('The percentage mass fraction of the dielectric medium. \nNote that volume and mass fraction are linked')
         self.mf_sb.setValue(100.0*self.settings['Mass fraction'])
         self.mf_sb.valueChanged.connect(self.on_mf_sb_changed)
-        label = QLabel('% mass fraction of dielectric', self)
+        label = QLabel('% Mass fraction of dielectric', self)
         label.setToolTip('The percentage mass fraction of the dielectric medium. \nNote that volume and mass fraction are linked')
         form.addRow(label, self.mf_sb)
         #
         # Volume fraction of dielectric medium
         #
         self.vf_sb = QDoubleSpinBox(self)
-        self.vf_sb.setRange(0.000001, 100.0)
+        self.vf_sb.setRange(0.000001, 100.0*(1.0-self.settings['Bubble volume fraction']))
         self.vf_sb.setSingleStep(0.1)
         self.vf_sb.setDecimals(6)
         self.vf_sb.setToolTip('The percentage volume fraction of the dielectric medium. \nNote that volume and mass fraction are linked')
         self.vf_sb.valueChanged.connect(self.on_vf_sb_changed)
         self.vf_sb.setValue(100.0*self.settings['Volume fraction'])
-        label = QLabel('% volume fraction of dielectric', self)
+        label = QLabel('% Volume fraction of dielectric', self)
         label.setToolTip('The percentage volume fraction of the dielectric medium. \nNote that volume and mass fraction are linked')
         form.addRow(label, self.vf_sb)
         #
@@ -364,11 +392,14 @@ class ScenarioTab(QWidget):
         mf2 = 1.0 - mf1
         rho1 = self.crystal_density()
         rho2 = self.settings['Matrix density']
-        vf1 = 1.0 / ( 1.0 + mf2/mf1 * (rho1/rho2) )
+        vf1 = ( 1.0 - self.settings['Bubble volume fraction'] ) * (mf1/mf2)*(rho2/rho1) / ( 1 + (mf1/mf2)*(rho2/rho1))
+#        vf1 = 1.0 / ( 1.0 + mf2/mf1 * (rho1/rho2) )
         self.settings['Volume fraction'] = vf1
         self.vf_sb.blockSignals(True)
         self.vf_sb.setValue(100.0*vf1)
         self.vf_sb.blockSignals(False)
+        self.bubble_vf_sb.setRange(0.0, 100.0*(1.0-self.settings['Volume fraction']))
+        self.vf_sb.setRange(0.0, 100.0*(1.0-self.settings['Bubble volume fraction']))
         debugger.print('Update_vf_sb')
         debugger.print('rho 1', rho1)
         debugger.print('rho 2', rho2)
@@ -385,7 +416,6 @@ class ScenarioTab(QWidget):
         debugger.print('on legend change', text)
         self.dirty = True
         self.settings['Legend'] = text
-        self.legend_le.setText(text)
 
     def on_sigma_sb_changed(self,value):
         debugger.print('on sigma line edit changed', value)
@@ -412,10 +442,11 @@ class ScenarioTab(QWidget):
 
     def update_mf_sb(self):
         vf1 = self.settings['Volume fraction']
-        vf2 = 1.0 - vf1
+        vf2 = 1.0 - vf1 - self.settings['Bubble volume fraction']
         rho1 = self.crystal_density()
         rho2 = self.settings['Matrix density']
-        mf1 = 1.0 / ( 1.0 + (vf2/vf1) * (rho2/rho1) )
+        # mf1 = 1.0 / ( 1.0 + (vf2/vf1) * (rho2/rho1) )
+        mf1 = rho1*vf1 / ( rho1*vf1 + rho2*vf2 )
         self.settings['Mass fraction'] = mf1
         self.mf_sb.blockSignals(True)
         self.mf_sb.setValue(100.0*mf1)
@@ -441,8 +472,12 @@ class ScenarioTab(QWidget):
         self.density_sb.setValue(self.settings['Matrix density'])
         self.permittivity_sb.setValue(self.settings['Matrix permittivity'])
         # volume fraction takes precedence
-        self.update_mf_sb()
-        self.update_vf_sb()
+        if self.settings['Mass or volume fraction'] == 'volume':
+            self.update_mf_sb()
+            self.update_vf_sb()
+        else:
+            self.update_vf_sb()
+            self.update_mf_sb()
         self.matrix_cb.blockSignals(False)
         self.density_sb.blockSignals(False)
         self.permittivity_sb.blockSignals(False)
@@ -450,9 +485,31 @@ class ScenarioTab(QWidget):
     def on_density_sb_changed(self,value):
         self.settings['Matrix density'] = value
         # volume fraction taked precedence
-        self.update_mf_sb()
-        self.update_vf_sb()
+        if self.settings['Mass or volume fraction'] == 'volume':
+            self.update_mf_sb()
+            self.update_vf_sb()
+        else:
+            self.update_vf_sb()
+            self.update_mf_sb()
         debugger.print('on density line edit changed', value)
+        self.dirty = True
+        self.notebook.plottingCalculationRequired = True
+        self.notebook.fittingCalculationRequired = True
+
+    def on_bubble_vf_sb_changed(self,value):
+        self.settings['Bubble volume fraction'] = value/100.0
+        if self.settings['Mass or volume fraction'] == 'volume':
+            self.update_mf_sb()
+        else:
+            self.update_vf_sb()
+        debugger.print('on bubble volume fraction changed', value)
+        self.dirty = True
+        self.notebook.plottingCalculationRequired = True
+        self.notebook.fittingCalculationRequired = True
+
+    def on_bubble_radius_sb_changed(self,value):
+        self.settings['Bubble radius'] = value
+        debugger.print('on permittivity line edit changed', value)
         self.dirty = True
         self.notebook.plottingCalculationRequired = True
         self.notebook.fittingCalculationRequired = True
@@ -592,6 +649,8 @@ class ScenarioTab(QWidget):
         self.matrix_cb.setCurrentIndex(index)
         self.density_sb.setValue(self.settings['Matrix density'])
         self.permittivity_sb.setValue(self.settings['Matrix permittivity'])
+        self.bubble_vf_sb.setValue(100*self.settings['Bubble volume fraction'])
+        self.bubble_radius_sb.setValue(self.settings['Bubble radius'])
         if self.settings['Mass or volume fraction'] == 'volume':
             # volume fraction takes precedence
             self.update_mf_sb()
