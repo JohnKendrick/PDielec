@@ -513,9 +513,9 @@ def spherical_averaged_mie_scattering(dielectric_medium, dielecv, shape, L, vf, 
     # The wavevector in nm-1
     k_nm = 2 * PI / wavelength_nm
     # volume of a particle in nm^3
-    v_nm = 4.0/3.0 * PI * radius_nm * radius_nm * radius_nm
+    V_nm = 4.0/3.0 * PI * radius_nm * radius_nm * radius_nm
     # Number density of particles (number / nm^3)
-    N_nm = vf / v_nm
+    N_nm = vf / V_nm
     # If there is a size distribution set up to use it
     if size_distribution_sigma:
         lower,upper = lognorm.interval(0.9999,size_distribution_sigma,scale=size_mu)
@@ -632,9 +632,9 @@ def mie_scattering(dielectric_medium, dielecv, shape, L, vf, size, size_mu, size
     # The wavevector in nm-1
     k_nm = 2 * PI / wavelength_nm
     # volume of a particle in nm^3
-    v_nm = 4.0/3.0 * PI * radius_nm * radius_nm * radius_nm
+    V_nm = 4.0/3.0 * PI * radius_nm * radius_nm * radius_nm
     # Number density of particles (number / nm^3)
-    N_nm = vf / v_nm
+    N_nm = vf / V_nm
     # If there is a size distribution set up to use it
     if size_distribution_sigma:
         lower,upper = lognorm.interval(0.9999,size_distribution_sigma,scale=size_mu)
@@ -728,9 +728,9 @@ def anisotropic_mie_scattering(dielectric_medium, dielecv, shape, L, vf, size, s
     # The wavevector in nm-1
     k_nm = 2 * PI / wavelength_nm
     # volume of a particle in nm^3
-    v_nm = 4.0/3.0 * PI * radius_nm * radius_nm * radius_nm
+    V_nm = 4.0/3.0 * PI * radius_nm * radius_nm * radius_nm
     # Number density of particles (number / nm^3)
-    N_nm = vf / v_nm
+    N_nm = vf / V_nm
     # If there is a size distribution set up to use it
     if size_distribution_sigma:
         lower,upper = lognorm.interval(0.9999,size_distribution_sigma,scale=size_mu)
@@ -1152,7 +1152,12 @@ def solve_effective_medium_equations( call_parameters ):
     # call_parameters is a tuple
     # In the case of Bruggeman and coherent we can use the previous result to start the iteration/minimisation
     # However to do this we need some shared memory, this allocated in previous_solution_shared
-    v,vau,dielecv,method,vf,vf_type,size_mu,size_distribution_sigma,size,nplot,dielectric_medium,shape,data,L,concentration,atrPermittivity,atrTheta,atrSPol,previous_solution_shared = call_parameters
+    v,vau,dielecv,method,vf,vf_type,size_mu,size_distribution_sigma,size,nplot,dielectric_medium,shape,data,L,concentration,atrPermittivity,atrTheta,atrSPol,bubble_vf,bubble_radius,previous_solution_shared = call_parameters
+    # Calculate the effect of bubbles in the matrix by assuming they are embedded in an effective medium defined above
+    refractive_index = math.sqrt(np.trace(dielectric_medium)/3.0)
+    if bubble_vf > 0:
+        effdielec,refractive_index = calculate_bubble_refractive_index(v, dielectric_medium, refractive_index, bubble_vf, bubble_radius)
+        dielectric_medium = effdielec
     if method == "balan":
         effdielec = balan(dielectric_medium, dielecv, shape, L, vf, size)
     elif method == "ap" or method == "averagedpermittivity" or method == "averaged permittivity" or method == "average permittivity":
@@ -1189,6 +1194,7 @@ def solve_effective_medium_equations( call_parameters ):
     # Average over all directions by taking the trace
     trace = (effdielec[0, 0] + effdielec[1, 1] + effdielec[2, 2]) / 3.0
     refractive_index = calculate_refractive_index(effdielec)
+    #
     # absorption coefficient is calculated from the imaginary refractive index
     # see H.C. van de Hulst Light Scattering by Small Particles , page 267
     # This is different but related to Genzel and Martin Equation 16, Phys. Stat. Sol. 51(1972) 91-
@@ -1200,6 +1206,101 @@ def solve_effective_medium_equations( call_parameters ):
     # calculate the ATR reflectance
     spatr = reflectance_atr(refractive_index,atrPermittivity,atrTheta,atrSPol)
     return v,nplot,method,vf_type,size_mu,size_distribution_sigma,shape,data,trace,absorption_coefficient,molar_absorption_coefficient,spatr
+
+def calculate_bubble_refractive_index(v_cm1, e_matrix, ri_medium, vf, radius_mu):
+    """Calculate the scattering from bubbles embedded in a complex dielectric at v_cm1
+       v_cm1 is the frequency in cm-1
+       e_matrix is the effective constant of the matrix
+       ri_medium is the refractive index of the medium
+       vf is the volume fraction of bubbles
+       radius_mu is the radius of the bubbles in microns
+       The routine returns the effective dielectric constant and the associated refractive index"""
+    #
+    # We need to taken account of the change in wavelength and the change in size parameter due to the 
+    # None unit value of the dielectric of the embedding medium
+    # The size parameter is 2pi r / lambda
+    # The effective lambda in the supporting medium is lambda / sqrt(emedium)
+    # Where the refractive index is taken to be sqrt(emedium) (non magnetic materials)
+    #
+    if v_cm1 > 0:
+        lambda_vacuum_nm = 1.0E3*1.0E4 / v_cm1
+    else:
+        lambda_vacuum_nm = 1.0E99
+    # Treat the bubble as though it is air in matrix 
+    
+    # The effective wave number k = sqrt(emedium)*2pi*v/c (complex!)
+    e_matrix = np.trace(e_matrix)/3.0
+    ri_matrix = math.sqrt(e_matrix)
+    radius_nm = radius_mu * 1000
+    # volume of a bubble in nm^3
+    V_nm = 4.0/3.0 * PI * radius_nm * radius_nm * radius_nm
+    # Number density of bubbles (number / nm^3)
+    N_nm = vf / V_nm
+    # The damping factor is 0 when the effect of the dielectric particles in the support matrix are ignored
+    # in this case the bubbles are supported in pure matrix.  If the damping factor is 1 the bubbles are
+    # in an effective dielectric caused by the matrix and the dielectric particles.
+    damping = 0.0
+    k_nm = waterman_truell_scattering(lambda_vacuum_nm, N_nm, radius_nm, ri_medium, ri_matrix, damping)
+    #k_nm = foldy_scattering(lambda_vacuum_nm, N_nm, radius_nm, ri_medium, ri_matrix, damping)
+    ri_medium = (1-vf)*ri_medium + vf*k_nm*lambda_vacuum_nm/(2*PI)
+    eff_medium = ri_medium * ri_medium
+    effdielec = np.array([[eff_medium, 0, 0], [0, eff_medium, 0], [0, 0, eff_medium]])
+    return effdielec,ri_medium
+
+def foldy_scattering(lambda_vacuum_nm, N_nm,radius_nm,ri_medium,ri_matrix,damping):
+    #
+    # Solve the foldy equation for scattering of an air bubble embedded in a lossy medium
+    # N_nm is the number density of bubbles in the volume nm^3
+    # k_nm is the wavenumber of the incoming wave (complex)
+    # radius_nm is the radius of the bubble
+    # ri_medium is the refractive index of the medium the bubble is in
+    #
+    from Python.PyMieScatt.Mie import MieS1S2, AutoMieQ
+    #
+    ri_damped = damping*ri_medium + (1.0-damping)*ri_matrix
+    k_nm = 2*PI*ri_damped/lambda_vacuum_nm
+    # The size parameter is now also complex and dimensionless
+    size = k_nm*radius_nm
+    refractive_index = 1.0 / ri_damped
+    # Calculate the forward and backward scattering amplitude
+    s10,s20 = MieS1S2(refractive_index, size*ri_damped, 1)
+    i = complex(0,1)
+    f0 = i * s10 / k_nm
+    new_k = np.sqrt( k_nm*k_nm + 4*PI*N_nm*f0 )
+    if new_k.imag < 0.0:
+        new_k = new_k.conjugate()
+    return new_k
+
+def waterman_truell_scattering(lambda_vacuum_nm, N_nm,radius_nm,ri_medium,ri_matrix,damping):
+    #
+    # Solve the waterman truell equation for scattering of an air bubble embedded in a lossy medium
+    # N_nm is the number density of bubbles in the volume nm^3
+    # k_nm is the wavenumber of the incoming wave (complex)
+    # radius_nm is the radius of the bubble
+    # ri_medium is the refractive index of the medium the bubble is in
+    #
+    from Python.PyMieScatt.Mie import MieS1S2, AutoMieQ
+    #
+    ri_damped = damping*ri_medium + (1.0-damping)*ri_matrix
+    k_nm = 2*PI*ri_damped/lambda_vacuum_nm
+    # The size parameter is now also complex and dimensionless
+    size = k_nm*radius_nm
+    refractive_index = 1.0 / ri_damped
+    # Calculate the forward and backward scattering amplitude
+    s10,s20 = MieS1S2(refractive_index, size*ri_damped, 1)
+    s11,s21 = MieS1S2(refractive_index, size*ri_damped,-1)
+    # the normalisation by 1/k_nm is performed when f is calculated
+    i = complex(0,1)
+    f0 = i*s10 
+    f1 = i*s11 
+    # print('Waterman_truell',abs(f0+f1))
+    k2 = k_nm*k_nm
+    f = 2*PI*N_nm/(k_nm*k_nm*k_nm) 
+    new_k = np.sqrt( k2 * ( (1+f*f0)*(1+f*f0) - f*f1*f*f1 ) )
+    if new_k.imag < 0.0:
+        new_k = new_k.conjugate()
+    return new_k
+
 def calculate_centre_of_mass(xyzs, masses):
    '''Calculate centre of mass'''
    cm = np.zeros(3)
@@ -1322,6 +1423,34 @@ def calculate_energy_distribution(cell, frequencies, normal_modes, debug=False):
    return energies_in_modes
 # end def
 
+
+def hodrick_prescott_filter(y,damping,lambda_value,niters):
+    #
+    # Apply a Hodrick Prescott filter to the spectrum in x, y
+    # y is the experimental absorption
+    # damping is used to damp the iterations 
+    # lambda_value is the chosen smoothing factor
+    # Based on ideas in the thesis of Mayank Kaushik (University Adelaide)
+    #
+    from scipy import sparse
+    #
+    # Create a sparse 3rd order difference operator
+    #
+    n = len(y)
+    diag = np.ones(n-3)
+    D = sparse.spdiags( [-1*diag, 3*diag, -3*diag, 1*diag],
+                        [0, -1, -2, -3], n, n-3 ).tocsc()
+    w = np.ones(n)
+    for it in range(10*niters):
+        W = sparse.spdiags(w, 0, n, n).tocsc()
+        Z = W + pow(10,lambda_value) * (D.dot(D.transpose()))
+        z = sparse.linalg.spsolve(Z, w*y)
+        residuals = y - z
+        # error = sum( r*r for r in residuals if r < 0.0 )
+        # error = math.sqrt(error/n)
+        w = damping*(y>z) + (1-damping)*(y<z)
+        print(it, error)
+    return y-z
 
 def reflectance_atr(ns,n0,theta,atrSPolFraction):
     # 
