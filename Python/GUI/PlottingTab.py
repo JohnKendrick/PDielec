@@ -399,10 +399,7 @@ class PlottingTab(QWidget):
         #debugger.print('mode_list', mode_list)
         # Calculate the ionic permittivity at zero frequency
         epsilon_ionic = self.notebook.settingsTab.epsilon_ionic
-        #epsilon_ionic = Calculator.ionic_permittivity(mode_list, oscillator_strengths, frequencies, volume )
-        #debugger.print('epsilon_ionic',epsilon_ionic)
         epsilon_total = epsilon_inf + epsilon_ionic
-        #debugger.print('epsilon_total',epsilon_ionic)
         cell = reader.unit_cells[-1]
         self.directions = []
         self.depolarisations = []
@@ -501,6 +498,8 @@ class PlottingTab(QWidget):
             atr_theta = scenario.settings['ATR theta']
             atr_spolfraction = scenario.settings['ATR S polarisation fraction']
             aoverb = scenario.settings['Ellipsoid a/b']
+            bubble_vf = scenario.settings['Bubble volume fraction']
+            bubble_radius = scenario.settings['Bubble radius']
             vf_type = ''
             call_parameters = []
             nplot = 0
@@ -512,7 +511,7 @@ class PlottingTab(QWidget):
                 size = 2.0*PI*particle_size_mu / lambda_mu
                 data = ''
                 call_parameters.append( (v,vau,dielecv,method,volume_fraction,vf_type,particle_size_mu,particle_sigma_mu,size,nplot,
-                                         matrix_permittivity,shape,data,L,concentration,atr_refractive_index,atr_theta,atr_spolfraction,previous_solution_shared) )
+                                         matrix_permittivity,shape,data,L,concentration,atr_refractive_index,atr_theta,atr_spolfraction,bubble_vf,bubble_radius,previous_solution_shared) )
                 nplot += 1
             results = []
             for result in pool.imap(Calculator.solve_effective_medium_equations, call_parameters, chunksize=40):
