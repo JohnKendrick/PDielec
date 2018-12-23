@@ -614,7 +614,8 @@ class FitterTab(QWidget):
             debugger.print(key, self.settings[key]) 
 
     def replot(self):
-        self.resample_spectrum()
+        if len(self.excel_absorption) > 0:
+            self.resample_spectrum()
         self.plot(self.experimental_absorption,self.calculated_frequencies,self.calculated_absorptions,self.legends,self.plot_label)
         
     def refresh(self,force=False):
