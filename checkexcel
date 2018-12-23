@@ -62,9 +62,11 @@ for sheet in ['Main','Settings','Scenarios','Molar Absorption','Absorption','Rea
     if max_rows1 != max_rows2:
         print('Error - the number rows in the sheet are not the same',sheet,max_rows1,max_rows2)
         nerrors += 1
+        continue
     if max_columns1 != max_columns2:
         print('Error - the number columns in the sheet are not the same',sheet,max_columns1,max_columns2)
         nerrors += 1
+        continue
     # 
     # Loop over rows
     #
