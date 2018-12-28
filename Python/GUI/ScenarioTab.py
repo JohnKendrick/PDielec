@@ -26,7 +26,7 @@ class ScenarioTab(QWidget):
         self.settings['Matrix'] = matrix
         self.settings['Matrix density'] = support_matrix_db[matrix][0]
         self.settings['Matrix permittivity'] = support_matrix_db[matrix][1]
-        self.settings['Bubble radius'] = 60.0
+        self.settings['Bubble radius'] = 30.0
         self.settings['Bubble volume fraction'] = 0.0
         self.settings['Mass fraction'] = 0.1
         self.settings['Volume fraction'] = 0.1
@@ -670,6 +670,7 @@ class ScenarioTab(QWidget):
         self.k_sb.setValue(self.settings['Unique direction - k'])
         self.l_sb.setValue(self.settings['Unique direction - l'])
         self.aoverb_sb.setValue(self.settings['Ellipsoid a/b'])
+        self.legend_le.setText(self.setttings['Legend'])
         self.change_greyed_out()
         #
         # Unblock signals after refresh
