@@ -115,8 +115,30 @@ There can be more than one *Scenario Tab*.  Each one specifies a particular mate
    The Scenario Tab
 
 The support matrix into which the active dielectric material is dispersed can be selected from the *Support matrix* drop down menu.  The selected supporting material will change the density and permittivity shown in the respective text boxes.  The user can edit these values independently if necessary.  
+The supporting medium may have bubbles of air trapped in the matrix.  For the case that polyethylene spheres are used to make the sample, experimental information indicates a relationship between the size of the spheres and size of the air inclusions.
 
-The amount of dielectric material to be considered can be entered either as mass fraction (in percent) or as a volume fraction (in percent).  If the matrix support density is changed the calculated mass fraction will be updated.  It is assumed that the volume fraction has precedence.
+
+.. table:: Size of air inclusion (bubbles) in polyethylene
+   :name: tab-air_bubbles
+   :widths: 1 1 1 3
+   :column-dividers:   none none  none  none
+   :header-alignment: right right right left
+   :column-alignment: right right right left
+
+   +-------------------------------+--------------+----------------------+
+   | PE Sphere Diameter (micron)   | Porosity (%) | Void radius (micron) |
+   +===============================+==============+======================+
+   | 60                            | 2.200        | 2.000                |
+   +-------------------------------+--------------+----------------------+
+   | 70                            | 0.000        | 1.000                |
+   +-------------------------------+--------------+----------------------+
+   | 360                           | 0.000        | 1.000                |
+   +-------------------------------+--------------+----------------------+
+
+The size of the air inclusions (bubbles) can be specified in the *Scenario Tab* along with the volume fraction.  If a non-zero value for the volume fraction of bubbles is given the scattering due to the air inclusions is calculated before the effective medium calculation is performed.  The forward and backward scattering amplitudes for a single scatterer are calculated using the Mie method and then used to calculated the scattering using the Waterman-Truell approximation.
+
+
+The amount of dielectric material to be considered can be entered either as mass fraction (in percent) or as a volume fraction (in percent).  If the matrix support density is changed the calculated mass fraction will be updated.  It is assumed that the volume fraction has precedence.  If a bubble volume fraction is supplied then this has to be taken account of in the calculation of the volume and mass fractions.
 
 The calculation of the effective medium can be performed using a variety of methods which can be chosen from the *Method* drop down menu.  If the *Mie* method is chosen the user can enter the particles radius (microns).  The *Particle sigma* specifies the width of a log-normal distribution.  If the width is 0.0 no sampling of the distribution is performed.
 
@@ -186,7 +208,8 @@ Fitter Tab
 
 The *Fitter Tab* imports an experimental spectrum.  The spectrum is stored in an Excel spreadsheet.  The spreadsheet should contain a single sheet with two columns.  The first column should be the frequency in cm-1 and the second should be the measured signal.  The signal can be molar absorption, absorption, real permittivity, imaginary permittivity or ATR absorbance.  Once imported the experimental spectrum can be compared with the calculated spectrum.  The tab shows the frequencies contributing to the spectrum and allows the Lorentzian widths of the transitions to be altered.  The frequency range used for the display is the same as that used in the *plotting tab*.
 At the top of the Tab are some settings in a tabbed notebook.  The most important is the name of the Excel file containing the experimental spectrum.  In addition there are options to change the 'Plot type', include frequency scaling in any fitting, set the frequency scaling factor, set the number of iterations to be used when fitting, choose whether the plot should use indepent y-axes for the calculated and experimental spectra, set the method used to do the fitting and finally specifiy the spectral difference threshold.
-The spectrum is shown at the bottom of the tab and is recalculated when the *Replot* or *Replot with frequency shift* buttons are pressed.  The data type stored in the experimental spreadsheet is defined by the *Plot and data type* setting.  
+The spectrum is shown at the bottom of the tab and is recalculated when the *Replot* or *Replot with frequency shift* buttons are pressed.  The data type stored in the experimental spreadsheet is defined by the *Plot and data type* setting.  One of the settings options is the ability to remove a baseline from the experimental spectrum.
+If baseline removal is selected a Hodrick-Prescott filter is used. The value of the filter parameter is determined by the value in the *HP filter lambda* tab.  The actual value of lambda used in the filter is the value given in the tab raised by the power of 10.
 
 
 .. _fig-fitter:

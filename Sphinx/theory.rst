@@ -600,3 +600,19 @@ The extinction is expressed in absorbance units as;
    \end{aligned} 
 
 The approach adopted by Balan and in the PDielec package is to use the calculated effective permittivity to determine the (complex) refractive index of the material being studied.  ATR measurements are taken with compressed powders of the material, so the appropriate effective medium can be determined from a high volume fraction of the crystal in air.
+
+Scattering Effects due to Air Inclusions
+----------------------------------------
+
+A common method for taking a terahertz spectrum is to dilute the active dielectric material in a transparent material such as polyethylene or PTFE spheres and then compress the composite material.  This leads to the presence of large air inclusions, or bubbles in the sample material.  The size of these inclusions can vary in size from 10 to 100 microns and is therefore capable of scattering terahertz radiation.  To account for this  the effective dielectric constant of the supporting matrix can include these scattering effects using Waterman-Truell scattering theory :cite:`Waterman1961`.
+
+.. math::
+   :label: eq-truell
+
+   K = \sqrt{ k^2 [ 1 + \frac{ 2 \pi N f(0)}{k^2} ]^2 - [ \frac { 2 \pi N f(\pi)}{k^2} ]^2 }
+
+
+Where :math:`N` is the number density of voids, :math:`K` is the effective wavenumber of the wave in the material, :math:`k` is the wavenumber of the wave in the support without air inclusions and  :math:`f(0)` and :math:`f(\pi)` are the forward and backwared amplitude scattering factors.  
+
+The scattering factors are determined using Mie theory, where it is assumed that there are spherical voids in the matrix, which are large enough to scatter light.  The effective dielectric of the matrix with voids is then used in the calculation of the effective medium theory for the dielectric material.  The calculation proceeds as it did the case with no scattering, only a complex permittivity is used to describe the supporting matrix.
+
