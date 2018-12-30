@@ -100,11 +100,11 @@ class ScenarioTab(QWidget):
         self.bubble_vf_sb.setRange(0.0, 100.0*(1.0-self.settings['Volume fraction']))
         self.bubble_vf_sb.setSingleStep(1.0)
         self.bubble_vf_sb.setDecimals(1)
-        self.bubble_vf_sb.setToolTip('Define the % volume fraction of bubble inclusions in the matrix')
+        self.bubble_vf_sb.setToolTip('Define the % volume fraction of air bubble inclusions in the matrix')
         self.bubble_vf_sb.setValue(100*self.settings['Bubble volume fraction'])
         self.bubble_vf_sb.valueChanged.connect(self.on_bubble_vf_sb_changed)
-        label = QLabel('% Bubble volume fraction', self)
-        label.setToolTip('Define the % volume fraction of bubble inclusions in the matrix')
+        label = QLabel('% Air void volume fraction', self)
+        label.setToolTip('Define the % volume fraction of air bubble inclusions in the matrix')
         form.addRow(label, self.bubble_vf_sb)
         #
         # Bubble radius in microns
@@ -113,11 +113,11 @@ class ScenarioTab(QWidget):
         self.bubble_radius_sb.setRange(0.001, 1000.0)
         self.bubble_radius_sb.setSingleStep(1.0)
         self.bubble_radius_sb.setDecimals(3)
-        self.bubble_radius_sb.setToolTip('Define the bubble radius')
+        self.bubble_radius_sb.setToolTip('Define the air bubble radius')
         self.bubble_radius_sb.setValue(self.settings['Bubble radius'])
         self.bubble_radius_sb.valueChanged.connect(self.on_bubble_radius_sb_changed)
-        label = QLabel('Bubble radius (μm)', self)
-        label.setToolTip('Define the bubble radius')
+        label = QLabel('Air void radius (μm)', self)
+        label.setToolTip('Define the air void radius')
         form.addRow(label, self.bubble_radius_sb)
         #
         # Mass fraction of dielectric medium
