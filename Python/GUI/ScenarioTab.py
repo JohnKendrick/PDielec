@@ -101,7 +101,7 @@ class ScenarioTab(QWidget):
         self.bubble_vf_sb.setSingleStep(1.0)
         self.bubble_vf_sb.setDecimals(1)
         self.bubble_vf_sb.setToolTip('Define the % volume fraction of bubble inclusions in the matrix')
-        self.bubble_vf_sb.setValue(self.settings['Bubble volume fraction'])
+        self.bubble_vf_sb.setValue(100*self.settings['Bubble volume fraction'])
         self.bubble_vf_sb.valueChanged.connect(self.on_bubble_vf_sb_changed)
         label = QLabel('% Bubble volume fraction', self)
         label.setToolTip('Define the % volume fraction of bubble inclusions in the matrix')
@@ -670,7 +670,7 @@ class ScenarioTab(QWidget):
         self.k_sb.setValue(self.settings['Unique direction - k'])
         self.l_sb.setValue(self.settings['Unique direction - l'])
         self.aoverb_sb.setValue(self.settings['Ellipsoid a/b'])
-        self.legend_le.setText(self.setttings['Legend'])
+        self.legend_le.setText(self.settings['Legend'])
         self.change_greyed_out()
         #
         # Unblock signals after refresh
