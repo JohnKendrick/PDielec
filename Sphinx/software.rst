@@ -135,10 +135,10 @@ The supporting medium may have bubbles of air trapped in the matrix.  For the ca
    | 360                           | 0.000        | 1.000                |
    +-------------------------------+--------------+----------------------+
 
-The size of the air inclusions (bubbles) can be specified in the *Scenario Tab* along with the volume fraction.  If a non-zero value for the volume fraction of bubbles is given the scattering due to the air inclusions is calculated before the effective medium calculation is performed.  The forward and backward scattering amplitudes for a single scatterer are calculated using the Mie method and then used to calculated the scattering using the Waterman-Truell approximation.
+The size of the air inclusions (bubbles) can be specified in the *Scenario Tab* along with the volume fraction.  If a non-zero value for the volume fraction of air voids is given the scattering due to the air inclusions is calculated before the effective medium calculation is performed.  The forward and backward scattering amplitudes for a single scatterer are calculated using the Mie method and then used to calculated the scattering using the Waterman-Truell approximation.
 
 
-The amount of dielectric material to be considered can be entered either as mass fraction (in percent) or as a volume fraction (in percent).  If the matrix support density is changed the calculated mass fraction will be updated.  It is assumed that the volume fraction has precedence.  If a bubble volume fraction is supplied then this has to be taken account of in the calculation of the volume and mass fractions.
+The amount of dielectric material to be considered can be entered either as mass fraction (in percent) or as a volume fraction (in percent).  If the matrix support density is changed the calculated mass fraction will be updated.  It is assumed that the volume fraction has precedence.  If an air void volume fraction is supplied then this has to be taken account of in the calculation of the volume and mass fractions.
 
 The calculation of the effective medium can be performed using a variety of methods which can be chosen from the *Method* drop down menu.  If the *Mie* method is chosen the user can enter the particles radius (microns).  The *Particle sigma* specifies the width of a log-normal distribution.  If the width is 0.0 no sampling of the distribution is performed.
 
