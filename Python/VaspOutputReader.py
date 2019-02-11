@@ -23,6 +23,14 @@ from Python.GenericOutputReader import GenericOutputReader
 from Python.Constants           import atomic_number_to_element
 
 
+def myfloat(string):
+    '''A replacement for float() which will return a large number if it finds a * in the string '''
+    if '*' in string:
+        return 9999.999
+    else:
+        return float(string)
+
+
 class VaspOutputReader(GenericOutputReader):
     """Read the contents of a directory containg VASP input and output files"""
 
@@ -40,10 +48,10 @@ class VaspOutputReader(GenericOutputReader):
         """Read the vasp files in the directory"""
         self.manage = {}   # Empty the dictionary matching phrases
         self.manage['ionspertype']  = (re.compile('   ions per type ='), self._read_ionspertype)
-        self.manage['masses_skip']  = (re.compile('  Mass of Ions in am'), self._read_skip4)
+        # self.manage['masses_skip']  = (re.compile('  Mass of Ions in am'), self._read_skip4)
         self.manage['pspots']       = (re.compile(' POTCAR:'), self._read_pspot)
         self.manage['arrays']       = (re.compile(' Dimension of arrays:'), self._read_array_dimensions)
-        self.manage['masses']       = (re.compile('   POMASS ='), self._read_masses)
+        #self.manage['masses']       = (re.compile('   POMASS ='), self._read_masses)
         self.manage['spin']         = (re.compile('   ISPIN  = '), self._read_spin)
         self.manage['encut']        = (re.compile('   ENCUT  = '), self._read_encut)
         self.manage['ediff']        = (re.compile('   EDIFF  = '), self._read_ediff)
@@ -65,6 +73,7 @@ class VaspOutputReader(GenericOutputReader):
         self.manage['elastic']      = (re.compile(' TOTAL ELASTIC MODULI'), self._read_elastic_constants)
         self.manage['kpoint']      = (re.compile('^Gamma'), self._read_kpoint_grid)
         self.manage['species']      = (re.compile('^ *Atomic configuration'), self._read_species)
+        self.manage['newmasses']  = (re.compile('  Mass of Ions in am'), self._read_newmasses)
         for f in self._outputfiles:
             self._read_output_file(f)
         return
@@ -111,11 +120,24 @@ class VaspOutputReader(GenericOutputReader):
     def _read_ionspertype(self, line):
         self.ions_per_type = [int(i) for i in line.split()[4:]]
         self.nspecies = len(self.ions_per_type)
+        return
+
+    def _read_newmasses(self, line):
+        self.masses_per_type = []
+        line = self.file_descriptor.readline()
+        mass_string = line[12:]
+        start = 0
+        increment = 6
+        for i in range(self.nspecies):
+            mass = mass_string[start:start+increment]
+            self.masses_per_type.append(float(mass))
+            start = start + increment
         self.masses = []
+        self.atom_type_list = []
         self.species_list = []
         for k, mass in enumerate(self.masses_per_type):
             n = self.ions_per_type[k]
-            for i in range(0, n):
+            for i in range(n):
                 self.atom_type_list.append(k)
                 self.masses.append(mass)
                 self.species_list.append(self.species[k])
@@ -185,17 +207,17 @@ class VaspOutputReader(GenericOutputReader):
         line = self.file_descriptor.readline()
         line = self.file_descriptor.readline()
         line = self.file_descriptor.readline()
-        elastic_constants.append([float(f) for f in line.split()[1:7]])
+        elastic_constants.append([myfloat(f) for f in line.split()[1:7]])
         line = self.file_descriptor.readline()
-        elastic_constants.append([float(f) for f in line.split()[1:7]])
+        elastic_constants.append([myfloat(f) for f in line.split()[1:7]])
         line = self.file_descriptor.readline()
-        elastic_constants.append([float(f) for f in line.split()[1:7]])
+        elastic_constants.append([myfloat(f) for f in line.split()[1:7]])
         line = self.file_descriptor.readline()
-        elastic_constants.append([float(f) for f in line.split()[1:7]])
+        elastic_constants.append([myfloat(f) for f in line.split()[1:7]])
         line = self.file_descriptor.readline()
-        elastic_constants.append([float(f) for f in line.split()[1:7]])
+        elastic_constants.append([myfloat(f) for f in line.split()[1:7]])
         line = self.file_descriptor.readline()
-        elastic_constants.append([float(f) for f in line.split()[1:7]])
+        elastic_constants.append([myfloat(f) for f in line.split()[1:7]])
         econs = np.array(elastic_constants)
         # convert from kBar to GPa
         econs = econs / 10.0
@@ -209,11 +231,17 @@ class VaspOutputReader(GenericOutputReader):
         line = self.file_descriptor.readline()
         # the is zero frequency ionic contribution to the static dielectric
         ionic_dielectric = []
-        ionic_dielectric.append([float(f) for f in line.split()[0:3]])
+        if '*' in line or len(line.split()) < 3:
+            line = "99999.999 99999.999 99999.999"
+        ionic_dielectric.append([myfloat(f) for f in line.split()[0:3]])
         line = self.file_descriptor.readline()
-        ionic_dielectric.append([float(f) for f in line.split()[0:3]])
+        if '*' in line or len(line.split()) < 3:
+            line = "99999.999 99999.999 99999.999"
+        ionic_dielectric.append([myfloat(f) for f in line.split()[0:3]])
         line = self.file_descriptor.readline()
-        ionic_dielectric.append([float(f) for f in line.split()[0:3]])
+        if '*' in line or len(line.split()) < 3:
+            line = "99999.999 99999.999 99999.999"
+        ionic_dielectric.append([myfloat(f) for f in line.split()[0:3]])
         array1 = np.array(self.zerof_optical_dielectric)
         array2 = np.array(ionic_dielectric)
         array3 = array1 + array2
@@ -225,11 +253,17 @@ class VaspOutputReader(GenericOutputReader):
         line = self.file_descriptor.readline()
         # the is epsilon infinity
         self.zerof_optical_dielectric = []
-        self.zerof_optical_dielectric.append([float(f) for f in line.split()[0:3]])
+        if '*' in line or len(line.split()) < 3:
+            line = "99999.999 99999.999 99999.999"
+        self.zerof_optical_dielectric.append([myfloat(f) for f in line.split()[0:3]])
         line = self.file_descriptor.readline()
-        self.zerof_optical_dielectric.append([float(f) for f in line.split()[0:3]])
+        if '*' in line or len(line.split()) < 3:
+            line = "99999.999 99999.999 99999.999"
+        self.zerof_optical_dielectric.append([myfloat(f) for f in line.split()[0:3]])
         line = self.file_descriptor.readline()
-        self.zerof_optical_dielectric.append([float(f) for f in line.split()[0:3]])
+        if '*' in line or len(line.split()) < 3:
+            line = "99999.999 99999.999 99999.999"
+        self.zerof_optical_dielectric.append([myfloat(f) for f in line.split()[0:3]])
         return
 
     def _read_skip4(self, line):
