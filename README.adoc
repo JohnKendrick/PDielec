@@ -2,7 +2,7 @@
 :keywords: PDielec, CASTEP, VASP, Gulp, Crystal, Abinit, QuantumEspresso, Infrared, Terahertz, spectroscopy
 = The PDielec package
 John Kendrick and Andrew Burnett
-v5.0.0, 13th September 2019
+v6.1, 13th September 2019
 
 Authors: John Kendrick and Andrew Burnett
 
