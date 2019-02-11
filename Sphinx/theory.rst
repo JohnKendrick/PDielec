@@ -519,7 +519,7 @@ For particles which are comparable in size to the wavelength of light, the theor
 
 PDielec implements a form of Mie theory using the Python library PyMieScatt :cite:`Sumlin2018a`. In order to treat systems which are anisotropic, PDielec first of all calculates the Maxwell-Garnett permittivity for the anisotropic sphere embedded with random orientation in the supporting matrix.  The program then calculates the required permittivity of an isotropic sphere which would give the same Maxwell-Garnett permittivity as the anisotropic system.  The Mie scattering is then performed on this isotropic sphere.
 
-An alternative method which looks diagonalises the real permittivity and then uses transforms the complex permittivity into the new basis was found to cause anomolous absorptions at the TO frequencies and so the method is no long used.
+An alternative method which diagonalises the real permittivity and then transforms the complex permittivity into the new basis was found to cause anomolous absorptions at the TO frequencies and so the method is no longer used.  However, the theory is given here in case it ever has to be revived.
 
 .. math::
    :label: eq-transform1
@@ -553,14 +553,14 @@ Using the routines available in PyMieScatt :cite:`Sumlin2018a` the efficiency fa
    :label: eq-MieVariable2
 
    \begin{aligned}
-   \widetilde{m}_w &= m_2\left( 1 - iS\left( 0 \right)2\pi Nk^{- 3} \right) \\
+   \widetilde{m}_w &= m_2\left( 1 + iS\left( 0 \right)2\pi Nk^{- 3} \right) \\
    N &= \frac{f}{V_{sphere}}  \\
    V_{sphere} &= \frac{4}{3} \pi a^{3} \\
    k &= \frac{2\pi}{\lambda}
    \end{aligned}
 
 
-Here :math:`N` is the number density of particles and :math:`k` is the wave-vector of the light in the surrounding medium. The subscript :math:`w` indicates that there are three values for the effective refractive index, depending on which diagonal value of the permittivity tensor is taken. Once the effective refractive index is known in each direction the effective permittivity can be calculated using the one third rule :cite:`Stout2007`;
+Here :math:`N` is the number density of particles and :math:`k` is the wave-vector of the light in the surrounding medium. The subscript :math:`w` indicates that there are three values for the effective refractive index, depending on which diagonal value of the permittivity tensor is taken. There is a change in sign from the expressions given by Hulst, this to make the imaginary component compatible with the effective permittivities.  Once the effective refractive index is known in each direction the effective permittivity can be calculated using the one third rule :cite:`Stout2007`;
 
 .. math::
    :label: eq-effectiveri
@@ -600,3 +600,58 @@ The extinction is expressed in absorbance units as;
    \end{aligned} 
 
 The approach adopted by Balan and in the PDielec package is to use the calculated effective permittivity to determine the (complex) refractive index of the material being studied.  ATR measurements are taken with compressed powders of the material, so the appropriate effective medium can be determined from a high volume fraction of the crystal in air.
+
+Scattering Effects due to Air Inclusions
+----------------------------------------
+
+A common method for taking a terahertz spectrum is to dilute the active dielectric material in a transparent material such as polyethylene or PTFE spheres and then compress the composite material.  This leads to the presence of large air inclusions, or bubbles in the sample material.  The size of these inclusions can vary in size from 10 to 100 microns and is therefore capable of scattering terahertz radiation.  To account for this  the effective dielectric constant of the supporting matrix can include these scattering effects using Waterman-Truell scattering theory :cite:`Waterman1961`.
+
+.. math::
+   :label: eq-truell
+
+   K = \sqrt{ k^2 [ 1 + \frac{ 2 \pi N f(0)}{k^2} ]^2 - [ \frac { 2 \pi N f(\pi)}{k^2} ]^2 }
+
+
+Where :math:`N` is the number density of voids, :math:`K` is the effective wavenumber of the wave in the material, :math:`k` is the wavenumber of the wave in the support without air inclusions and  :math:`f(0)` and :math:`f(\pi)` are the forward and backwared amplitude scattering factors.  
+
+
+.. math::
+   :label: eq-amplitudes
+
+   f(\theta) = \frac{i}{k} S(\theta)
+
+
+
+The scattering factors are determined using Mie theory, where it is assumed that there are spherical voids in the matrix, which are large enough to scatter light.  
+
+.. math::
+   :label: eq-refractive_index
+
+   \begin{aligned}
+   m_2 &= \frac{K \lambda} {2 \pi} \\
+   \epsilon_e &= m_2^2 \\
+   \end{aligned} 
+
+
+
+The effective permittivity of the matrix with voids is then used in the calculation of the effective medium theory for the dielectric material.  The calculation proceeds as it did in the case with no scattering, only now a complex permittivity is used to describe the supporting matrix.
+
+Removing Baseline Artifacts from Experiment
+-------------------------------------------
+In the process of reproducing experimental spectra using calculated information it is often necessary to remove any baseline artifacts from the experimental data.  A reatlively straightforward approach is adopted by *PDielec* using a Hodrick-Prescott filter.  The approach is also called asymmetric least squares smoothing.
+
+If there is a data sequence :math:`y`, sampled at regular intervals we want to determine the baseline sequence :math:`y` such that x and y are as close as possible to each other with the requirement that x is as smooth as required.
+
+It can be shown :cite:`Eilers2005` that this can be acheived by an iterative solution for :math:`x` of ;
+
+
+.. math::
+   :label: eq-hodrick-rescott
+
+   ( \tensorbf{W} + \lambda \tensorbf{D}^T \tensorbf{D}) x = \tensorbf{W} y
+
+
+
+where :math:`\tensorbf{W}` is a diagonal matrix of weights modified during the iterations to make values of :math:`x` lie below those of :math:`y` and :math:`\tensorbf{D}` is a 3rd order differencing matrix.  Since the differencing matrix is very sparse, sparse matrix routines are used to solve the equations.
+
+In *PDGui* the value of :math:`\lambda` is supplied as :math:`\log \lambda`.
