@@ -1155,8 +1155,10 @@ def solve_effective_medium_equations( call_parameters ):
     v,vau,dielecv,method,vf,vf_type,size_mu,size_distribution_sigma,size,nplot,dielectric_medium,shape,data,L,concentration,atrPermittivity,atrTheta,atrSPol,bubble_vf,bubble_radius,previous_solution_shared = call_parameters
     # Calculate the effect of bubbles in the matrix by assuming they are embedded in an effective medium defined above
     refractive_index = math.sqrt(np.trace(dielectric_medium)/3.0)
+    if refractive_index.imag < 0.0:
+        refractive_index = refractive_index.conjugate()
     if bubble_vf > 0:
-        effdielec,refractive_index = calculate_bubble_refractive_index(v, dielectric_medium, refractive_index, bubble_vf, bubble_radius)
+        effdielec,refractive_index = calculate_bubble_refractive_index(v, refractive_index, bubble_vf, bubble_radius)
         dielectric_medium = effdielec
     if method == "balan":
         effdielec = balan(dielectric_medium, dielecv, shape, L, vf, size)
@@ -1207,10 +1209,9 @@ def solve_effective_medium_equations( call_parameters ):
     spatr = reflectance_atr(refractive_index,atrPermittivity,atrTheta,atrSPol)
     return v,nplot,method,vf_type,size_mu,size_distribution_sigma,shape,data,trace,absorption_coefficient,molar_absorption_coefficient,spatr
 
-def calculate_bubble_refractive_index(v_cm1, e_matrix, ri_medium, vf, radius_mu):
-    """Calculate the scattering from bubbles embedded in a complex dielectric at v_cm1
+def calculate_bubble_refractive_index(v_cm1, ri_medium, vf, radius_mu):
+    """Calculate the scattering from bubbles embedded in a possibly, complex dielectric at v_cm1
        v_cm1 is the frequency in cm-1
-       e_matrix is the effective constant of the matrix
        ri_medium is the refractive index of the medium
        vf is the volume fraction of bubbles
        radius_mu is the radius of the bubbles in microns
@@ -1227,27 +1228,20 @@ def calculate_bubble_refractive_index(v_cm1, e_matrix, ri_medium, vf, radius_mu)
     else:
         lambda_vacuum_nm = 1.0E99
     # Treat the bubble as though it is air in matrix 
-    
     # The effective wave number k = sqrt(emedium)*2pi*v/c (complex!)
-    e_matrix = np.trace(e_matrix)/3.0
-    ri_matrix = math.sqrt(e_matrix)
     radius_nm = radius_mu * 1000
     # volume of a bubble in nm^3
     V_nm = 4.0/3.0 * PI * radius_nm * radius_nm * radius_nm
     # Number density of bubbles (number / nm^3)
     N_nm = vf / V_nm
-    # The damping factor is 0 when the effect of the dielectric particles in the support matrix are ignored
-    # in this case the bubbles are supported in pure matrix.  If the damping factor is 1 the bubbles are
-    # in an effective dielectric caused by the matrix and the dielectric particles.
-    damping = 0.0
-    k_nm = waterman_truell_scattering(lambda_vacuum_nm, N_nm, radius_nm, ri_medium, ri_matrix, damping)
-    #k_nm = foldy_scattering(lambda_vacuum_nm, N_nm, radius_nm, ri_medium, ri_matrix, damping)
-    ri_medium = (1-vf)*ri_medium + vf*k_nm*lambda_vacuum_nm/(2*PI)
+    k_nm = waterman_truell_scattering(lambda_vacuum_nm, N_nm, radius_nm, ri_medium)
+    # k_nm = foldy_scattering(lambda_vacuum_nm, N_nm, radius_nm, ri_medium)
+    ri_medium = k_nm *lambda_vacuum_nm / (2*PI)
     eff_medium = ri_medium * ri_medium
     effdielec = np.array([[eff_medium, 0, 0], [0, eff_medium, 0], [0, 0, eff_medium]])
     return effdielec,ri_medium
 
-def foldy_scattering(lambda_vacuum_nm, N_nm,radius_nm,ri_medium,ri_matrix,damping):
+def foldy_scattering(lambda_vacuum_nm, N_nm,radius_nm,ri_medium):
     #
     # Solve the foldy equation for scattering of an air bubble embedded in a lossy medium
     # N_nm is the number density of bubbles in the volume nm^3
@@ -1257,13 +1251,12 @@ def foldy_scattering(lambda_vacuum_nm, N_nm,radius_nm,ri_medium,ri_matrix,dampin
     #
     from Python.PyMieScatt.Mie import MieS1S2, AutoMieQ
     #
-    ri_damped = damping*ri_medium + (1.0-damping)*ri_matrix
-    k_nm = 2*PI*ri_damped/lambda_vacuum_nm
+    k_nm = 2*PI*ri_medium/lambda_vacuum_nm
     # The size parameter is now also complex and dimensionless
     size = k_nm*radius_nm
-    refractive_index = 1.0 / ri_damped
+    refractive_index = 1.0 / ri_medium
     # Calculate the forward and backward scattering amplitude
-    s10,s20 = MieS1S2(refractive_index, size*ri_damped, 1)
+    s10,s20 = MieS1S2(refractive_index, size*ri_medium, 1)
     i = complex(0,1)
     f0 = i * s10 / k_nm
     new_k = np.sqrt( k_nm*k_nm + 4*PI*N_nm*f0 )
@@ -1271,7 +1264,7 @@ def foldy_scattering(lambda_vacuum_nm, N_nm,radius_nm,ri_medium,ri_matrix,dampin
         new_k = new_k.conjugate()
     return new_k
 
-def waterman_truell_scattering(lambda_vacuum_nm, N_nm,radius_nm,ri_medium,ri_matrix,damping):
+def waterman_truell_scattering(lambda_vacuum_nm, N_nm,radius_nm,ri_medium):
     #
     # Solve the waterman truell equation for scattering of an air bubble embedded in a lossy medium
     # N_nm is the number density of bubbles in the volume nm^3
@@ -1281,14 +1274,13 @@ def waterman_truell_scattering(lambda_vacuum_nm, N_nm,radius_nm,ri_medium,ri_mat
     #
     from Python.PyMieScatt.Mie import MieS1S2, AutoMieQ
     #
-    ri_damped = damping*ri_medium + (1.0-damping)*ri_matrix
-    k_nm = 2*PI*ri_damped/lambda_vacuum_nm
+    k_nm = 2*PI*ri_medium/lambda_vacuum_nm
     # The size parameter is now also complex and dimensionless
     size = k_nm*radius_nm
-    refractive_index = 1.0 / ri_damped
+    refractive_index = 1.0 / ri_medium
     # Calculate the forward and backward scattering amplitude
-    s10,s20 = MieS1S2(refractive_index, size*ri_damped, 1)
-    s11,s21 = MieS1S2(refractive_index, size*ri_damped,-1)
+    s10,s20 = MieS1S2(refractive_index, size*ri_medium, 1)
+    s11,s21 = MieS1S2(refractive_index, size*ri_medium,-1)
     # the normalisation by 1/k_nm is performed when f is calculated
     i = complex(0,1)
     f0 = i*s10 

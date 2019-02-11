@@ -114,16 +114,23 @@ class NoteBook(QWidget):
         fd = open(filename,'w')
         ntabs = 2+ len(self.scenarios) + 4
         self.print_tab_settings(self.mainTab, 'mainTab',fd)
+        print('tab.refresh(force=True)',file=fd)
         self.print_tab_settings(self.settingsTab, 'settingsTab',fd)
         print('tab.sigmas_cm1 =',self.settingsTab.sigmas_cm1,file=fd)
+        print('tab.refresh(force=True)',file=fd)
         requireNewScenario = False
         for i,tab in enumerate(self.scenarios):
             self.print_tab_settings(tab, 'scenarios[{}]'.format(i), fd, new_scenario = requireNewScenario)
+            print('tab.refresh(force=True)',file=fd)
             requireNewScenario = True
         self.print_tab_settings(self.plottingTab, 'plottingTab',fd)
+        print('tab.refresh(force=True)',file=fd)
         self.print_tab_settings(self.analysisTab, 'analysisTab',fd)
+        print('tab.refresh(force=True)',file=fd)
         self.print_tab_settings(self.viewerTab, 'viewerTab',fd)
+        print('tab.refresh(force=True)',file=fd)
         self.print_tab_settings(self.fitterTab, 'fitterTab',fd)
+        print('tab.refresh(force=True)',file=fd)
         fd.close()
         return
 
