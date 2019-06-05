@@ -1435,13 +1435,17 @@ def hodrick_prescott_filter(y,damping,lambda_value,niters):
     w = np.ones(n)
     for it in range(10*niters):
         W = sparse.spdiags(w, 0, n, n).tocsc()
-        Z = W + pow(10,lambda_value) * (D.dot(D.transpose()))
+        # Problems with overflow if lambda is large
+        try:
+            Z = W + pow(10,lambda_value) * (D.dot(D.transpose()))
+        except:
+            pass
         z = sparse.linalg.spsolve(Z, w*y)
         residuals = y - z
         # error = sum( r*r for r in residuals if r < 0.0 )
         # error = math.sqrt(error/n)
         w = damping*(y>z) + (1-damping)*(y<z)
-        print(it, error)
+        # print(it, error)
     return y-z
 
 def reflectance_atr(ns,n0,theta,atrSPolFraction):
