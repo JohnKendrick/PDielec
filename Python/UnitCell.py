@@ -397,12 +397,14 @@ class UnitCell:
                             # The image of j in the original cell might not be available, and j might be bonded
                             if jx in remainingAtoms and not j in belongsToMolecule:
                                 # if j was not already in a molecule then we have new information
-                                bonds.append( (i,j) )
                                 moreAtomsToBeFound = True
                                 molecules[useThisMolecule].append(j)
                                 belongsToMolecule[j] = useThisMolecule
                                 #jk print("Removing atom index(j) from remaining atoms",index_supercell[j])
                                 remainingAtoms.remove(jx)
+                            # The j'th atom could be already specified and we have a ring....
+                            if j in belongsToMolecule:
+                                bonds.append( (i,j) )
                         # end for j
                     # end if i in
                 # end for i
