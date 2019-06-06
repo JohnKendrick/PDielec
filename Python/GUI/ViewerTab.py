@@ -307,6 +307,7 @@ class ViewerTab(QWidget):
 
 
     def on_light_switches_cb_activated(self, index):
+        debugger.print('on_light_switches_cb_activated')
         self.light_switches[index] = not self.light_switches[index]
         if self.light_switches[index]:
             string = 'switch light {} off'.format(index)
@@ -342,11 +343,13 @@ class ViewerTab(QWidget):
         self.plot()
         
     def on_bond_radius_changed(self,value):
+        debugger.print('on_bond_radius_changed')
         self.settings['Bond radius'] = value
         self.calculate()
         self.plot()
         
     def on_selected_mode_changed(self):
+        debugger.print('on_selected_mode_changed')
         self.selected_mode = self.selected_mode_sb.value()
         debugger.print('on selected_mode change ', self.selected_mode)
         self.frequency_le.setText('{:.5f}'.format(self.notebook.settingsTab.frequencies_cm1[self.selected_mode]))
@@ -359,6 +362,7 @@ class ViewerTab(QWidget):
         self.plot()
 
     def on_plottype_cb_changed(self, index):
+        debugger.print('on_plottype_cb_changed')
         self.plot_type_index = index
         debugger.print('Plot type index changed to ', self.plot_type_index)
         self.plot()
@@ -427,6 +431,7 @@ class ViewerTab(QWidget):
         return
 
     def setColour(self, element, colour):
+        debugger.print('setcolour')
         if element == 'Background' or element == 'background':
             self.settings['Background colour'] = colour
         elif element == 'Cell' or element == 'cell':
@@ -438,11 +443,11 @@ class ViewerTab(QWidget):
         self.plot()
 
     def calculatePhasePositions(self):
+        debugger.print('calculatePhasePositions')
         # we need the number of phase steps to be odd
         if self.settings['Number of phase steps']%2 == 0:
             self.settings['Number of phase steps'] += 1
         UVW = np.array( self.UVW[self.selected_mode] )
-        debugger.print('calculate phase positions')
         maxR = np.amax(np.abs(UVW))
         self.scale_vibrations = self.settings['Maximum displacement'] / maxR
         self.newXYZ       = np.zeros( (self.settings['Number of phase steps'], self.natoms, 3) )
@@ -461,6 +466,7 @@ class ViewerTab(QWidget):
         self.opengl_widget.deleteSpheres()
         self.opengl_widget.deleteCylinders()
         self.opengl_widget.createArrays(len(phases))
+        debugger.print('calculatePhasePositions - adding spheres and cylinders')
         for phase_index, phase in enumerate(phases):
             for col, rad, xyz in zip(self.colours, self.radii, self.newXYZ[phase_index]):
                 self.opengl_widget.addSphere(col, rad, xyz, phase=phase_index )
@@ -471,9 +477,11 @@ class ViewerTab(QWidget):
                 self.opengl_widget.addCylinder(self.settings['Bond colour'], self.settings['Bond radius'], self.newXYZ[phase_index,i], self.newXYZ[phase_index,j], phase=phase_index)
             for p1,p2 in self.cell_edges:
                 self.opengl_widget.addCylinder(self.settings['Cell colour'], self.settings['Cell radius'], p1, p2, phase=phase_index)
+        debugger.print('calculatePhasePositions - exiting')
         return
 
     def plot(self):
+        debugger.print('plot')
         if self.reader is None:
             return
         if self.plot_type_index == 0:
@@ -482,18 +490,21 @@ class ViewerTab(QWidget):
             self.plot_arrows()
 
     def plot_animation(self):
+        debugger.print('plot_animation')
         self.opengl_widget.showArrows(False)
         self.opengl_widget.update()
         self.opengl_widget.startAnimation()
         return
 
     def plot_arrows(self):
+        debugger.print('plot_arrows')
         self.opengl_widget.showArrows(True)
         self.opengl_widget.stopAnimation()
         self.opengl_widget.update()
         return
 
     def refresh(self,force=False):
+        debugger.print('refresh')
         if not self.dirty and not force and not self.notebook.visualerCalculationRequired:
             debugger.print('refresh aborted',self.dirty,force)
             return
