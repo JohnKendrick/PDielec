@@ -25,6 +25,7 @@ class ViewerTab(QWidget):
         self.setWindowTitle('Viewer')
         self.selected_mode = 0
         self.settings = {}
+        self.UVW = deque()
         self.settings['Atom scaling'] = 0.5
         self.settings['Maximum displacement']  = 1.0
         self.settings['Bond colour']           = [  80,  80,  80, 255 ]
@@ -412,7 +413,7 @@ class ViewerTab(QWidget):
         self.colours = [ self.element_colours[el] for el in self.element_names ]
         # reorder the displacement info in the normal modes into U,V and W lists 
         # Using deque here rather than a simple list as the memory allocation doesn't have to be contiguous
-        self.UVW = deque()
+        self.UVW.clear()
         # self.UVW = []
         for mode,displacements in enumerate(self.normal_modes):
             uvw = deque()

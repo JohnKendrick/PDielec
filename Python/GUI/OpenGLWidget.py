@@ -45,9 +45,9 @@ class OpenGLWidget(QOpenGLWidget):
         self.linearAttenuation      = True
         self.image_size             = 15.0
         self.white                  = np.array( [1.0, 1.0, 1.0, 1.0] )
-        self.spheres                = None
-        self.cylinders              = None
-        self.arrows                 = None
+        self.spheres                = deque()
+        self.cylinders              = deque()
+        self.arrows                 = deque()
         self.current_phase          = 0
         self.phase_direction        = 1
         self.number_of_phases       = 1
@@ -455,8 +455,13 @@ class OpenGLWidget(QOpenGLWidget):
         #  Create an empty list for each phase
         # self.spheres    = [ [] for i in range(nphases) ]
         # self.cylinders  = [ [] for i in range(nphases) ]
-        self.spheres    = deque( deque() for i in range(nphases) )
-        self.cylinders  = deque( deque() for i in range(nphases) )
+        #self.spheres    = deque( deque() for i in range(nphases) )
+        #self.cylinders  = deque( deque() for i in range(nphases) )
+        self.spheres.clear()
+        self.cylinders.clear()
+        for i in range(nphases):
+            self.spheres.append(deque())
+            self.cylinders.append(deque())
         self.number_of_phases = nphases
         self.current_phase = int(self.number_of_phases / 2)
 
@@ -475,7 +480,7 @@ class OpenGLWidget(QOpenGLWidget):
     def deleteArrows(self):
         debugger.print('deleteArrows')
         #self.arrows = []
-        self.arrows = deque()
+        self.arrows.clear()
 
     def addArrows(self, colour, radius, direction, length, phase=0):
         # There is no phase requirement for arrows - they are just displacements
