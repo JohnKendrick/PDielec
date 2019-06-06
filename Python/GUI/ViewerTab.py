@@ -2,6 +2,7 @@ import os
 import math
 import numpy as np
 import Python.Calculator as Calculator
+from collections import deque
 from PyQt5.QtWidgets         import  QPushButton, QWidget
 from PyQt5.QtWidgets         import  QComboBox, QLabel, QLineEdit
 from PyQt5.QtWidgets         import  QVBoxLayout, QHBoxLayout, QFormLayout
@@ -410,9 +411,12 @@ class ViewerTab(QWidget):
         self.radii = [self.settings['Atom scaling']*covalent_radii[el] for el in self.element_names ]
         self.colours = [ self.element_colours[el] for el in self.element_names ]
         # reorder the displacement info in the normal modes into U,V and W lists 
-        self.UVW = []
+        # Using deque here rather than a simple list as the memory allocation doesn't have to be contiguous
+        self.UVW = deque()
+        # self.UVW = []
         for mode,displacements in enumerate(self.normal_modes):
-            uvw = []
+            uvw = deque()
+            #uvw = []
             for i in range(0,len(displacements),3):
                 uvw.append( displacements[i:i+3] )
             self.UVW.append(uvw)
@@ -452,7 +456,6 @@ class ViewerTab(QWidget):
         self.scale_vibrations = self.settings['Maximum displacement'] / maxR
         self.newXYZ       = np.zeros( (self.settings['Number of phase steps'], self.natoms, 3) )
         sign = +1.0
-        phases = []
         small = 1.0E-8
         n2 = int(self.settings['Number of phase steps']/2)
         delta = 1.0 / float(n2)

@@ -6,6 +6,7 @@ import OpenGL
 OpenGL.USE_ACCELERATE = False
 OpenGL.ERROR_CHECKING = False
 # end of low-end machine fix
+from collections     import deque
 from OpenGL.GL       import *
 from OpenGL.GLU      import *
 from OpenGL.GLUT     import *
@@ -452,8 +453,10 @@ class OpenGLWidget(QOpenGLWidget):
     def createArrays(self, nphases):
         debugger.print('createArrays')
         #  Create an empty list for each phase
-        self.spheres    = [ [] for i in range(nphases) ]
-        self.cylinders  = [ [] for i in range(nphases) ]
+        # self.spheres    = [ [] for i in range(nphases) ]
+        # self.cylinders  = [ [] for i in range(nphases) ]
+        self.spheres    = deque( deque() for i in range(nphases) )
+        self.cylinders  = deque( deque() for i in range(nphases) )
         self.number_of_phases = nphases
         self.current_phase = int(self.number_of_phases / 2)
 
@@ -471,7 +474,8 @@ class OpenGLWidget(QOpenGLWidget):
 
     def deleteArrows(self):
         debugger.print('deleteArrows')
-        self.arrows = []
+        #self.arrows = []
+        self.arrows = deque()
 
     def addArrows(self, colour, radius, direction, length, phase=0):
         # There is no phase requirement for arrows - they are just displacements
