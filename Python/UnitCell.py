@@ -403,8 +403,12 @@ class UnitCell:
                                 #jk print("Removing atom index(j) from remaining atoms",index_supercell[j])
                                 remainingAtoms.remove(jx)
                             # The j'th atom could be already specified and we have a ring....
+                            # We also need to make sure that we have unique bonds
                             if j in belongsToMolecule:
-                                bonds.append( (i,j) )
+                                if i > j and (i,j) not in bonds:
+                                    bonds.append( (i,j) )
+                                elif i < j and (j,i) not in bonds:
+                                    bonds.append( (j,i) )
                         # end for j
                     # end if i in
                 # end for i
