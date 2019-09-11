@@ -81,7 +81,12 @@ class CrystalOutputReader(GenericOutputReader):
         linea = self.file_descriptor.readline().split()
         while len(linea) > 0:
             component = linea[0]
-            epsilon = float(linea[3])
+            # Problems with Crystal17 file format
+            if component == "0.000":
+                component = linea[1]
+                epsilon = float(linea[4])
+            else:
+                epsilon = float(linea[3])
             if component == "XX": optical_dielectric[0][0] = epsilon
             if component == "YY": optical_dielectric[1][1] = epsilon
             if component == "ZZ": optical_dielectric[2][2] = epsilon
