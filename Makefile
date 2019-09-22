@@ -24,10 +24,12 @@ install:
 		cp pdgui.py   $(SCRIPTS)
 		cp p2cif.py   $(SCRIPTS)
 		cp pdcompare.py  $(SCRIPTS)
+		cp graphdatagenerator.py  $(SCRIPTS)
 		cp -P preader    $(SCRIPTS)
 		cp -P pdgui      $(SCRIPTS)
 		cp -P p2cif      $(SCRIPTS)
 		cp -P pdcompare  $(SCRIPTS)
+		cp -P graphdatagenerator  $(SCRIPTS)
 		mkdir -p $(SCRIPTS)/Python
 		mkdir -p $(SCRIPTS)/Python/PyMieScatt
 		mkdir -p $(SCRIPTS)/Python/GUI
