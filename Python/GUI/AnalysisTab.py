@@ -18,7 +18,7 @@ from Python.Utilities import Debug
 from Python.GUI.SettingsTab import FixedQTableWidget
 
 class AnalysisTab(QWidget):
-    def __init__(self, parent, debug=False ):   
+    def __init__(self, parent, debug=False ):
         super(QWidget, self).__init__(parent)
         global debugger
         debugger = Debug(debug,'AnalysisTab')
@@ -309,9 +309,9 @@ class AnalysisTab(QWidget):
         self.reader = self.notebook.mainTab.reader
         if self.reader is None:
             return
-        if program is '':
+        if program == '':
             return
-        if filename is '':
+        if filename == '':
             return
         QApplication.setOverrideCursor(Qt.WaitCursor)
         # Assemble the settingsTab settings

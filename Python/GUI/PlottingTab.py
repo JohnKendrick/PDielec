@@ -365,9 +365,9 @@ class PlottingTab(QWidget):
         reader = self.notebook.mainTab.reader
         if reader is None:
             return
-        if program is '':
+        if program == '':
             return
-        if filename is '':
+        if filename == '':
             return
         QApplication.setOverrideCursor(Qt.WaitCursor)
         # Assemble the settingsTab settings
