@@ -61,7 +61,7 @@ class OpenGLWidget(QOpenGLWidget):
         self.my_width               = None
         self.my_height              = None
         self.background_colour      = None
-        
+
         self.show_full_screen       = False
         self.writer                 = None
         self.rotation_centre         = np.array( [0.0, 0.0, 0.0] )
@@ -193,11 +193,11 @@ class OpenGLWidget(QOpenGLWidget):
         debugger.print('translate ',x,y)
         self.myMakeCurrent()
         glTranslatef(x, y, 0.0)
-            
+
     def wheelEvent(self, event):
         debugger.print('Wheel event ' )
         self.myMakeCurrent()
-        zoom = event.angleDelta().y() 
+        zoom = event.angleDelta().y()
         self.zoom(zoom)
         self.update()
 
@@ -280,7 +280,7 @@ class OpenGLWidget(QOpenGLWidget):
 
     def drawSpheres(self):
         debugger.print('drawSpheres')
-        if self.spheres is None:
+        if len(self.spheres) == 0:
             return
         for sphere in self.spheres[self.current_phase]:
             col       = sphere.colour
@@ -300,7 +300,7 @@ class OpenGLWidget(QOpenGLWidget):
 
     def drawCylinders(self):
         debugger.print('drawCylinders')
-        if self.cylinders is None:
+        if len(self.cylinders) == 0:
             return
         for cylinder in self.cylinders[self.current_phase]:
             col    = cylinder.colour
@@ -325,7 +325,7 @@ class OpenGLWidget(QOpenGLWidget):
 
     def drawArrows(self):
         debugger.print('drawArrows')
-        if self.arrows is None:
+        if len(self.arrows) == 0:
             return
         self.arrow_colour = np.array(self.viewerTab.settings['Arrow colour'])/255.0
         for arrow,sphere in zip(self.arrows,self.spheres[self.current_phase]):
@@ -405,14 +405,13 @@ class OpenGLWidget(QOpenGLWidget):
         self.image_size = maxsize
         self.setProjectionMatrix()
         debugger.print('setImageSize',self.image_size)
-        
 
     def setProjectionMatrix(self):
         if self.image_size is None or self.my_width is None or self.my_height is None:
             return
         self.myMakeCurrent()
         glMatrixMode(GL_PROJECTION)
-        glLoadIdentity()                    
+        glLoadIdentity()
         orthox = 1.1 * self.image_size * self.my_width  / min(self.my_width,self.my_height)
         orthoy = 1.1 * self.image_size * self.my_height / min(self.my_width,self.my_height)
         orthoz = 1.1 * self.image_size * max(self.my_width,self.my_height)
@@ -467,15 +466,11 @@ class OpenGLWidget(QOpenGLWidget):
 
     def deleteSpheres(self):
         debugger.print('deleteSpheres')
-        if self.spheres is not None:
-            for spheres in self.spheres:
-                spheres = []
+        self.spheres.clear()
 
     def deleteCylinders(self):
         debugger.print('deleteCylinders')
-        if self.cylinders is not None:
-            for cylinders in self.cylinders:
-                cylinders = []
+        self.cylinders.clear()
 
     def deleteArrows(self):
         debugger.print('deleteArrows')
