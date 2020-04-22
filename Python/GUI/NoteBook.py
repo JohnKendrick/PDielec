@@ -14,23 +14,25 @@ from Python.GUI.AnalysisTab     import  AnalysisTab
 from Python.GUI.ViewerTab       import  ViewerTab
 from Python.GUI.FitterTab       import  FitterTab
 from Python.Utilities           import  Debug
- 
-class NoteBook(QWidget):        
- 
-    def __init__(self, parent, program, filename, spreadsheet, debug=False, progressbar=False, scripting=False):   
+
+class NoteBook(QWidget):
+
+    def __init__(self, parent, program, filename, spreadsheet, debug=False, progressbar=False, scripting=False, ncpus=0, threading=False):
         super(QWidget, self).__init__(parent)
         global debugger
         debugger = Debug(debug,'NoteBook:')
         self.reader = None
         self.progressbar=progressbar
         self.spreadsheet = None
+        self.threading = threading
+        self.ncpus = ncpus
+        self.scripting = scripting
+        self.debug = debug
         self.plottingCalculationRequired = True
         self.analysisCalculationRequired = True
         self.visualerCalculationRequired = True
         self.fittingCalculationRequired = True
-        self.debug = debug
         self.old_tab_index = None
-        self.scripting = scripting
         self.layout = QVBoxLayout()
         # The number of tabs before we have scenarios
         self.tabOffSet = 2

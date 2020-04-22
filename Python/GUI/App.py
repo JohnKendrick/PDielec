@@ -3,9 +3,9 @@ import os.path
 from PyQt5.QtWidgets import QMainWindow, QApplication
 from PyQt5.QtCore    import QCoreApplication
 from Python.GUI.NoteBook import NoteBook
- 
+
 class App(QMainWindow):
- 
+
     def __init__(self, args, progressbar):
         super().__init__()
         program = ''
@@ -20,6 +20,8 @@ class App(QMainWindow):
         tokens = args[1:]
         ntokens = len(tokens)
         itoken = 0
+        ncpus = 0
+        threading = False
         while itoken < ntokens:
             token = tokens[itoken]
             if token == '-d' or token == '-debug' or token == '--debug':
@@ -35,9 +37,14 @@ class App(QMainWindow):
             elif token == '-spreadsheet' or token == '--spreadsheet':
                 itoken += 1
                 spreadsheet = tokens[itoken]
-            elif token == '-h' or token == '-help' or token == '--help':
+            elif token == '-threading' or token == '--threading' or token == '-threads' or token == '--threads':
+                threading = True
+            elif token == '-cpus' or token == '--cpus':
+                itoken += 1
+                ncpus = int(tokens[itoken])
+            elif token[0:0] == '-' or token == '-h' or token == '-help' or token == '--help':
                 print('pdgui - graphical user interface to the PDielec package')
-                print('pdgui [-help] [-debug] [program] [filename] [spreadsheet] [-script scriptname] [-nosplash]')
+                print('pdgui [-help] [-debug] [program] [filename] [spreadsheet] [-script scriptname] [-nosplash] [-threading] [-cpus 0]')
                 exit()
             elif program == '':
                 program = token
@@ -61,7 +68,9 @@ class App(QMainWindow):
             print('Filename is', filename)
             print('Spreadsheet is', spreadsheet)
             print('Script is', self.scriptname)
-        self.notebook = NoteBook(self, program, filename, spreadsheet, scripting=self.scripting, progressbar=progressbar, debug=self.debug)
+            print('Ncpus is', ncpus)
+            print('Threading is', threading)
+        self.notebook = NoteBook(self, program, filename, spreadsheet, scripting=self.scripting, progressbar=progressbar, debug=self.debug, ncpus=ncpus, threading=threading)
         self.setCentralWidget(self.notebook)
         if self.scripting:
             if self.debug:

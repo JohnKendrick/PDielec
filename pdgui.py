@@ -32,7 +32,7 @@ def main(sys):
             show_splash = False
         elif token == '-h' or token == '-help' or token == '--help':
             print('pdgui - graphical user interface to the PDielec package')
-            print('pdgui [-help] [-debug] [program] [filename] [spreadsheet] [-script scriptname] [-nosplash] [-exit]')
+            print('pdgui [-help] [-debug] [program] [filename] [spreadsheet] [-script scriptname] [-nosplash] [-threads] [-cpus ncpus] [-exit]')
             exit()
 
     if show_splash:

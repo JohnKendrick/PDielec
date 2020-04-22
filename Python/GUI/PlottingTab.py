@@ -3,15 +3,6 @@ import os.path
 import os
 import numpy as np
 osname = os.name
-parallelism = 'threading'
-parallelism = 'multitaksing'
-if parallelism == 'threading':
-    threading = True
-    from multiprocessing.dummy import Pool
-else:
-    threading = False
-    from multiprocessing import Pool
-#
 from multiprocessing import cpu_count, Array
 import Python.Calculator as Calculator
 from PyQt5.QtWidgets  import  QPushButton, QWidget
@@ -64,6 +55,11 @@ class PlottingTab(QWidget):
         self.notebook = parent
         # get the reader from the main tab
         self.reader = self.notebook.mainTab.reader
+        # Create the parallel environment
+        if self.notebook.threading:
+            from multiprocessing.dummy import Pool
+        else:
+            from multiprocessing import Pool
         # Create last tab - PlottingTab
         vbox = QVBoxLayout()
         form = QFormLayout()
@@ -352,7 +348,6 @@ class PlottingTab(QWidget):
         debugger.print('The concentration has been set', self.settings['Molar definition'], self.settings['concentration'])
 
     def calculate(self):
-        global threading
         debugger.print('calculate')
         self.progressbar.setValue(0)
         if self.notebook.progressbar is not None:
@@ -411,7 +406,7 @@ class PlottingTab(QWidget):
             #debugger.print('Scenario ',scenario.scenarioIndex)
             shape = scenario.settings['Particle shape']
             #debugger.print('Particle shape ',shape)
-            hkl = [scenario.settings['Unique direction - h'], scenario.settings['Unique direction - k'], scenario.settings['Unique direction - l']] 
+            hkl = [scenario.settings['Unique direction - h'], scenario.settings['Unique direction - k'], scenario.settings['Unique direction - l']]
             aoverb = scenario.settings['Ellipsoid a/b']
             if shape == 'Ellipsoid':
                 direction = cell.convert_abc_to_xyz(hkl)
@@ -435,18 +430,24 @@ class PlottingTab(QWidget):
             vau = v * wavenumber
             call_parameters.append( (v, vau, mode_list, frequencies, sigmas, oscillator_strengths,
                                      volume, epsilon_inf, drude, drude_plasma, drude_sigma) )
-        
+
         maximum_progress = len(call_parameters) * (1 + len(self.scenarios))
         progress = 0
         self.progressbar.setMaximum(maximum_progress)
         if self.notebook.progressbar is not None:
             self.notebook.progressbar.setMaximum(maximum_progress)
         QCoreApplication.processEvents()
-        number_of_processors = cpu_count()
+        # Lets find ouit how many processors to use
+        if self.notebook.ncpus == 0:
+            number_of_processors = cpu_count()
+        else:
+            number_of_processors = self.notebook.ncpus
         #jk start = time.time()
-        if threading:
+        if self.notebook.threading:
+            from multiprocessing.dummy import Pool
             pool = Pool(number_of_processors)
         else:
+            from multiprocessing import Pool
             pool = Pool(number_of_processors, initializer=set_affinity_on_worker, maxtasksperchild=10)
         dielecv_results = []
         for result in pool.imap(Calculator.parallel_dielectric, call_parameters,chunksize=40):
@@ -478,9 +479,11 @@ class PlottingTab(QWidget):
         self.molarAbsorptionCoefficients = []
         self.sp_atrs = []
         #jk start = time.time()
-        if threading:
+        if self.notebook.threading:
+            from multiprocessing.dummy import Pool
             pool = Pool(number_of_processors)
         else:
+            from multiprocessing import Pool
             pool = Pool(number_of_processors, initializer=set_affinity_on_worker, maxtasksperchild=10)
         for i,(scenario,L) in enumerate(zip(self.scenarios,self.depolarisations)):
             #debugger.print('Scenario ',i,L)
