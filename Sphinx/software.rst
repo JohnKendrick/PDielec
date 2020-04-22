@@ -36,6 +36,35 @@ If a spreadsheet of results is required the name of the spreadsheet can be provi
     
 The spreadsheet name must have an .xlsx extension.
 
+There are several command line options which may be useful in running the package.
+
+.. table:: PDGui command line options
+   :name: command_line_options
+   :widths: 1 3 
+   :column-dividers:   none none  none  none
+   :header-alignment: left left
+   :column-alignment: left left
+
+   +-----------------------+----------------------------------------+
+   | Command line option   | Description                            |
+   +=======================+========================================+
+   | -debug                | Debugging mode, only for developers    |
+   +-----------------------+----------------------------------------+
+   | -script filename      | Specify a python script to run         |
+   +-----------------------+----------------------------------------+
+   | -exit                 | Exit the program                       |
+   +-----------------------+----------------------------------------+
+   | -nosplash             | Do not show the splash screen          |
+   +-----------------------+----------------------------------------+
+   | -threads              | Using threading for multiprocessing    |
+   +-----------------------+----------------------------------------+
+   | -cpus 2               | Using 2 processors for multiprocessing |
+   +-----------------------+----------------------------------------+
+   | -h                    | Print out help information             |
+   +-----------------------+----------------------------------------+
+
+
+
 The package requires the PyQt5 library.
 After running the program the user sees a notebook interface with seven tabs.
 
@@ -267,9 +296,23 @@ Optical permittivity
 
 The optical permittivity is normally calculated by the QM or MM program concerned. However, as this property reflects the electronic contribution to the permittivity at zero frequency, unless there is some treatment of electrons by the shell model, then in MM calculations the optical permittivity needs to be defined through the command line options -optical or -optical_tensor.  Unlike the other methods 'mie' method cannot work with particles of zero radius. All methods therefore use a default size of 10\ :superscript:`-12` μm. The Mie approach is only valid for dilute dispersions and for spherical particles. However, if other shapes are specified the Mie method will still be called and the results will be applicable to spheres of the specified size.
 
+Scripting
+---------
+Nearly all aspects of the program can be accessed through scripting.  
+The script is provided by the *-script* command line option.
+A very useful feature is the ability to save a script which reflects the current state of the program.
+By pressing *ctrlS* the user is able to save the settings to a file, which for this example will be called *settings.py*.
+The complete set of tabs and their settings are saved in the file and the state of the program can be recreated using;
+
+        pdgui -script settings.py
+
+There are several things to be aware of when using this option.  
+The file will contain parameters which have been calculated whilst reading the input file.  
+For example the optical permittivities are calculated and stored in this file.  
+If the file is then used on another DFT calculation then the optical permittivity for the settings file will be used and not the one which shoiuld have been calculated.  To use the script for other calculations but with the same scenarios the optical permittivities should be removed.
+
 Parallelization and threads
 ---------------------------
-
 
 To improve the performance of the program python parallelization has been used to parallelize over the frequencies, shapes and methods. By default this parallelization spawns additional Python executables, depending on the number of cores available.
 
@@ -283,9 +326,16 @@ Finally the use of non-standard BLAS libraries seems to cause problems with the 
 
 For some reason this also works if the MKL library is being used.
 
+There have been issues in running PDielec on Catalina, MacOS.  
+This appears to be due to the multiprocessing features of Python not working as expected on this operating system.  
+A work around is to use;
+
+        pdgui -threads -cpu 1
+
+This runs the program on a single processor using the threading library for multiprocessing.  
+
 Performance
 ------------
-
 
 PDielec has been written to make use of multiprocessor computers. On a 4 processor machine the speed-up is nearly linear up to 4 processors, as can be seen in the Figure below.
 
@@ -295,6 +345,7 @@ PDielec has been written to make use of multiprocessor computers. On a 4 process
    :scale: 90%
 
    Speed-up on a four processor workstation
+
 
 PReader
 =======

@@ -1,22 +1,21 @@
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
   <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /><meta content="PDielec package for the calculation of infrared and terahertz absorption from QM calculations" name="description" />
+    <meta charset="utf-8" /><meta content="PDielec package for the calculation of infrared and terahertz absorption from QM calculations" name="description" />
 <meta content="Quantum Mechanics, Effective Field Theory, Maxwell, Garnett, Mie, Infrared, Terahertz, Castep, Abinit, VASP, GULP. QE" name="keywords" />
 
     <title>Introduction &#8212; PDielec: John Kendrick &amp; Andrew Burnett</title>
     <link rel="stylesheet" href="_static/haiku.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="_static/table_styling.css" />
-    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-    <script type="text/javascript" src="_static/jquery.js"></script>
-    <script type="text/javascript" src="_static/underscore.js"></script>
-    <script type="text/javascript" src="_static/doctools.js"></script>
-    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <script type="text/x-mathjax-config">MathJax.Hub.Config({"extensions": ["AMSmath.js"], "TeX": {"Macros": {"bm": ["{\\boldsymbol{#1}}", 1], "tensor": ["{\\bar{\\bar{#1}}}", 1], "tensorbs": ["{\\bar{\\bar{\\bm{#1}}}}", 1], "tensorbf": ["{\\bar{\\bar{\\bm{#1}}}}", 1], "fieldbf": ["{\\bar{\\bm{#1}}}", 1], "water": "\\H_{2}O"}}})</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -38,13 +37,13 @@
         </p>
 
       </div>
-      <div class="content">
+      <div class="content" role="main">
         
         
   <div class="section" id="introduction">
 <h1>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h1>
 <p>The Python package PDielec calculates the infrared absorption characteristics of a crystalline material supported in a non-absorbing medium.
-PDielec post processes the output of solid state quantum mechanical and molecular mechanics (MM) based codes such as VASP <a class="reference internal" href="zreferences.html#hafner2008c" id="id1">[7]</a>, CASTEP <a class="reference internal" href="zreferences.html#clark2005d" id="id2">[24]</a>, CRYSTAL <a class="reference internal" href="zreferences.html#dovesi2014" id="id3">[25]</a>, Abinit <a class="reference internal" href="zreferences.html#gonze2016" id="id4">[26]</a>, Quantum Espresso <a class="reference internal" href="zreferences.html#giannozzi2009" id="id5">[27]</a>, Phonopy <a class="reference internal" href="zreferences.html#togo2015" id="id6">[28]</a>, and GULP <a class="reference internal" href="zreferences.html#gale2003" id="id7">[29]</a> to predict the infrared absorption of crystalline insulator materials whose crystal size is small compared with the wavelength of the absorbing radiation. The package is suited for the calculation of the complex, frequency dependent permittivity and its associated absorption of infrared radiation for a finely ground crystalline material dispersed in a low loss dielectric medium such KBr or Polytetrafluoroethylene (PTFE). A particular feature of the program is its ability to take into account the constant permittivity of the supporting medium and the particle shape of the material of interest through an effective medium theory.</p>
+PDielec post processes the output of solid state quantum mechanical and molecular mechanics (MM) based codes such as VASP <a class="bibtex reference internal" href="zreferences.html#hafner2008c" id="id1">[7]</a>, CASTEP <a class="bibtex reference internal" href="zreferences.html#clark2005d" id="id2">[24]</a>, CRYSTAL <a class="bibtex reference internal" href="zreferences.html#dovesi2014" id="id3">[25]</a>, Abinit <a class="bibtex reference internal" href="zreferences.html#gonze2016" id="id4">[26]</a>, Quantum Espresso <a class="bibtex reference internal" href="zreferences.html#giannozzi2009" id="id5">[27]</a>, Phonopy <a class="bibtex reference internal" href="zreferences.html#togo2015" id="id6">[28]</a>, and GULP <a class="bibtex reference internal" href="zreferences.html#gale2003" id="id7">[29]</a> to predict the infrared absorption of crystalline insulator materials whose crystal size is small compared with the wavelength of the absorbing radiation. The package is suited for the calculation of the complex, frequency dependent permittivity and its associated absorption of infrared radiation for a finely ground crystalline material dispersed in a low loss dielectric medium such KBr or Polytetrafluoroethylene (PTFE). A particular feature of the program is its ability to take into account the constant permittivity of the supporting medium and the particle shape of the material of interest through an effective medium theory.</p>
 <p>Using an effective medium method, the package calculates the internal electric field arising from different particle morphologies and calculates the resulting shift in absorption frequency and intensity arising from the coupling between a phonon and the internal field. The theory of the approach is described, followed by a description of the implementation within PDielec. For the specific case of a low concentration of spherical particles, calculations based on Mie scattering allow the exploration of particle size effects. A section providing several examples of its application is given.</p>
 <p>The attenuated total reflection (ATR) spectrum can be calculated for a powdered material next to a high refractive index material such as diamond or germanium.</p>
 </div>
@@ -65,7 +64,7 @@ PDielec post processes the output of solid state quantum mechanical and molecula
 
     <div class="footer" role="contentinfo">
         &#169; Copyright 2018, John Kendrick and Andrew Burnett.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.1.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.0.2.
     </div>
   </body>
 </html>
