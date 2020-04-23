@@ -1,0 +1,37 @@
+#!/usr/bin/python
+#
+import time
+import random
+
+# Open a file and write it
+nlines = 1000000
+col = 3
+with open('io_test.tmp', 'w') as fout:
+    for line in range(nlines):
+        fout.write('{} {} {}\n'.format(*((round(random.uniform(0,1000), 3))
+                                      for e in range(col))))
+t = time.time()
+with open('io_test.tmp', 'r') as fin:
+    line = fin.readline()
+    while line:
+        line = fin.readline()
+td = time.time() - t
+print(td*1000)
+print("Read line ms",1000*td)
+
+t = time.time()
+with open('io_test.tmp', 'r') as fin:
+    lines = fin.readlines()
+    while line in lines:
+        l = line
+td = time.time() - t
+print("Read lines ms", 1000*td)
+
+t = time.time()
+with open('io_test.tmp', 'r') as fin:
+    everything = fin.read()
+    while line in everything.splitlines():
+        l = line
+td = time.time() - t
+print("Read everything ms", 1000*td)
+
