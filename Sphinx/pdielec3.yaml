@@ -1,0 +1,14 @@
+name: pdielec3
+channels:
+  - defaults
+  - conda-forge
+dependencies:
+  - python
+  - numpy
+  - scipy
+  - pyqt
+  - xlsxwriter
+  - matplotlib
+  - pyopengl
+  - openpyxl
+prefix: /home/john/.conda/envs/pdielec3
