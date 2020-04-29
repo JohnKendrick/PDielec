@@ -36,7 +36,7 @@ Anaconda
 
 Anaconda is a Python package manager and is useful when trying out different versions of Python as there is a very convenient environment manager.  Anaconda can be installed as a user program and so root access to the computer is not needed.  The software can be downloaded from https://conda.io/miniconda.html or https://www.anaconda.com/download/.  Unless you are interested in the full package the miniconda installation should be sufficient for installing the rest of the modules needed for the PDielec installation.  
 
-As an example here is an installation using a Python 2.7 environment.  Using 'pip install' means that the anaconda build system is bypassed.ld system in Anaconda normally makes sure only compatible software versions are installed, but this seems to cause problems in this case. ::
+As an example here is an installation using a Python 2.7 environment.  Using 'pip install' means that the anaconda build system is bypassed. Anaconda normally makes sure only compatible software versions are installed, but this seems to cause problems in this case. ::
 
 
    conda create  --name pdielec2 python=2
@@ -52,14 +52,9 @@ As an example here is an installation using a Python 2.7 environment.  Using 'pi
 Here is an example of creating a Python 3 environment in Anaconda::
 
    conda create  --name pdielec3 python=3
-   conda install --name pdielec3 -c conda-forge scipy
    source activate pdielec3
-   pip install matplotlib
-   pip install termcolor
-   pip install xlsxwriter
-   pip install openpyxl
-   pip install pyyaml
-   pip install imageio
+   conda install -c conda-forge scipy
+   conda install pyqt pyopengl matplotlib termcolor openpyxl pyyaml imageio
 
 
 Pip (only needed if not using Anaconda)
@@ -125,7 +120,9 @@ Anaconda
 
 Anaconda is a Python package manager and is useful when trying out different versions of Python as there is a very convenient environment manager.  Anaconda can be installed as a user program and so root access to the computer is not needed.  The software can be downloaded from https://conda.io/miniconda.html or https://www.anaconda.com/download/.  Unless you are interested in the full package the miniconda installation should be sufficient for installing the rest of the modules needed for the PDielec installation.
 
-As an example here is an installation using a Python 2.7 environment.  Using 'pip install' means that the anaconda build system is bypassed.ld system in Anaconda normally makes sure only compatible software versions are installed, but this seems to cause problems in this case.  ::
+As an example here is an installation using a Python 2.7 environment.  
+Using 'pip install' means that the anaconda build system is bypassed.
+Anaconda normally makes sure only compatible software versions are installed, but this seems to cause problems in this case.  ::
 
    conda create  --name pdielec2 python=2
    conda install --name pdielec2 scipy
@@ -140,15 +137,9 @@ As an example here is an installation using a Python 2.7 environment.  Using 'pi
 Here is an example of creating a Python 3 environment in Anaconda::
 
    conda create  --name pdielec3 python=3
-   conda install --name pdielec3 -c conda-forge scipy
    source activate pdielec3
-   pip install matplotlib
-   pip install termcolor
-   pip install xlsxwriter
-   pip install openpyxl
-   pip install pyyaml
-   pip install imageio
-
+   conda install -c conda-forge scipy
+   conda install pyqt pyopengl matplotlib termcolor openpyxl pyyaml imageio
 
 Install Python (only needed if not using anaconda)
 ..................................................

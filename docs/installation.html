@@ -91,7 +91,7 @@ cd to a directory where PDielec will be installed and use git to clone a copy of
 <div class="section" id="anaconda">
 <h3><a class="toc-backref" href="#id3">Anaconda</a><a class="headerlink" href="#anaconda" title="Permalink to this headline">¶</a></h3>
 <p>Anaconda is a Python package manager and is useful when trying out different versions of Python as there is a very convenient environment manager.  Anaconda can be installed as a user program and so root access to the computer is not needed.  The software can be downloaded from <a class="reference external" href="https://conda.io/miniconda.html">https://conda.io/miniconda.html</a> or <a class="reference external" href="https://www.anaconda.com/download/">https://www.anaconda.com/download/</a>.  Unless you are interested in the full package the miniconda installation should be sufficient for installing the rest of the modules needed for the PDielec installation.</p>
-<p>As an example here is an installation using a Python 2.7 environment.  Using ‘pip install’ means that the anaconda build system is bypassed.ld system in Anaconda normally makes sure only compatible software versions are installed, but this seems to cause problems in this case.</p>
+<p>As an example here is an installation using a Python 2.7 environment.  Using ‘pip install’ means that the anaconda build system is bypassed. Anaconda normally makes sure only compatible software versions are installed, but this seems to cause problems in this case.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">conda</span> <span class="n">create</span>  <span class="o">--</span><span class="n">name</span> <span class="n">pdielec2</span> <span class="n">python</span><span class="o">=</span><span class="mi">2</span>
 <span class="n">conda</span> <span class="n">install</span> <span class="o">--</span><span class="n">name</span> <span class="n">pdielec2</span> <span class="n">scipy</span>
 <span class="n">source</span> <span class="n">activate</span> <span class="n">pdielec2</span>
@@ -105,14 +105,9 @@ cd to a directory where PDielec will be installed and use git to clone a copy of
 </div>
 <p>Here is an example of creating a Python 3 environment in Anaconda:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">conda</span> <span class="n">create</span>  <span class="o">--</span><span class="n">name</span> <span class="n">pdielec3</span> <span class="n">python</span><span class="o">=</span><span class="mi">3</span>
-<span class="n">conda</span> <span class="n">install</span> <span class="o">--</span><span class="n">name</span> <span class="n">pdielec3</span> <span class="o">-</span><span class="n">c</span> <span class="n">conda</span><span class="o">-</span><span class="n">forge</span> <span class="n">scipy</span>
 <span class="n">source</span> <span class="n">activate</span> <span class="n">pdielec3</span>
-<span class="n">pip</span> <span class="n">install</span> <span class="n">matplotlib</span>
-<span class="n">pip</span> <span class="n">install</span> <span class="n">termcolor</span>
-<span class="n">pip</span> <span class="n">install</span> <span class="n">xlsxwriter</span>
-<span class="n">pip</span> <span class="n">install</span> <span class="n">openpyxl</span>
-<span class="n">pip</span> <span class="n">install</span> <span class="n">pyyaml</span>
-<span class="n">pip</span> <span class="n">install</span> <span class="n">imageio</span>
+<span class="n">conda</span> <span class="n">install</span> <span class="o">-</span><span class="n">c</span> <span class="n">conda</span><span class="o">-</span><span class="n">forge</span> <span class="n">scipy</span>
+<span class="n">conda</span> <span class="n">install</span> <span class="n">pyqt</span> <span class="n">pyopengl</span> <span class="n">matplotlib</span> <span class="n">termcolor</span> <span class="n">openpyxl</span> <span class="n">pyyaml</span> <span class="n">imageio</span>
 </pre></div>
 </div>
 </div>
@@ -170,7 +165,9 @@ A Windows 10 installation from the git repository which works for users without 
 <div class="section" id="id1">
 <h4><a class="toc-backref" href="#id10">Anaconda</a><a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h4>
 <p>Anaconda is a Python package manager and is useful when trying out different versions of Python as there is a very convenient environment manager.  Anaconda can be installed as a user program and so root access to the computer is not needed.  The software can be downloaded from <a class="reference external" href="https://conda.io/miniconda.html">https://conda.io/miniconda.html</a> or <a class="reference external" href="https://www.anaconda.com/download/">https://www.anaconda.com/download/</a>.  Unless you are interested in the full package the miniconda installation should be sufficient for installing the rest of the modules needed for the PDielec installation.</p>
-<p>As an example here is an installation using a Python 2.7 environment.  Using ‘pip install’ means that the anaconda build system is bypassed.ld system in Anaconda normally makes sure only compatible software versions are installed, but this seems to cause problems in this case.</p>
+<p>As an example here is an installation using a Python 2.7 environment.
+Using ‘pip install’ means that the anaconda build system is bypassed.
+Anaconda normally makes sure only compatible software versions are installed, but this seems to cause problems in this case.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">conda</span> <span class="n">create</span>  <span class="o">--</span><span class="n">name</span> <span class="n">pdielec2</span> <span class="n">python</span><span class="o">=</span><span class="mi">2</span>
 <span class="n">conda</span> <span class="n">install</span> <span class="o">--</span><span class="n">name</span> <span class="n">pdielec2</span> <span class="n">scipy</span>
 <span class="n">source</span> <span class="n">activate</span> <span class="n">pdielec2</span>
@@ -184,14 +181,9 @@ A Windows 10 installation from the git repository which works for users without 
 </div>
 <p>Here is an example of creating a Python 3 environment in Anaconda:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">conda</span> <span class="n">create</span>  <span class="o">--</span><span class="n">name</span> <span class="n">pdielec3</span> <span class="n">python</span><span class="o">=</span><span class="mi">3</span>
-<span class="n">conda</span> <span class="n">install</span> <span class="o">--</span><span class="n">name</span> <span class="n">pdielec3</span> <span class="o">-</span><span class="n">c</span> <span class="n">conda</span><span class="o">-</span><span class="n">forge</span> <span class="n">scipy</span>
 <span class="n">source</span> <span class="n">activate</span> <span class="n">pdielec3</span>
-<span class="n">pip</span> <span class="n">install</span> <span class="n">matplotlib</span>
-<span class="n">pip</span> <span class="n">install</span> <span class="n">termcolor</span>
-<span class="n">pip</span> <span class="n">install</span> <span class="n">xlsxwriter</span>
-<span class="n">pip</span> <span class="n">install</span> <span class="n">openpyxl</span>
-<span class="n">pip</span> <span class="n">install</span> <span class="n">pyyaml</span>
-<span class="n">pip</span> <span class="n">install</span> <span class="n">imageio</span>
+<span class="n">conda</span> <span class="n">install</span> <span class="o">-</span><span class="n">c</span> <span class="n">conda</span><span class="o">-</span><span class="n">forge</span> <span class="n">scipy</span>
+<span class="n">conda</span> <span class="n">install</span> <span class="n">pyqt</span> <span class="n">pyopengl</span> <span class="n">matplotlib</span> <span class="n">termcolor</span> <span class="n">openpyxl</span> <span class="n">pyyaml</span> <span class="n">imageio</span>
 </pre></div>
 </div>
 </div>
@@ -292,7 +284,7 @@ A Windows 10 installation from the git repository which works for users without 
 
     <div class="footer" role="contentinfo">
         &#169; Copyright 2018, John Kendrick and Andrew Burnett.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.0.2.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.0.3.
     </div>
   </body>
 </html>
