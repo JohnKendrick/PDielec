@@ -11,4 +11,5 @@ dependencies:
   - matplotlib
   - pyopengl
   - openpyxl
+  - pyaml
 prefix: /home/john/.conda/envs/pdielec3

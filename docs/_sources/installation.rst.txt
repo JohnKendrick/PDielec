@@ -54,7 +54,7 @@ Here is an example of creating a Python 3 environment in Anaconda::
    conda create  --name pdielec3 python=3
    source activate pdielec3
    conda install -c conda-forge scipy
-   conda install pyqt pyopengl matplotlib termcolor openpyxl pyyaml imageio
+   conda install pyqt pyopengl matplotlib termcolor openpyxl pyaml imageio
 
 
 Pip (only needed if not using Anaconda)
@@ -139,7 +139,7 @@ Here is an example of creating a Python 3 environment in Anaconda::
    conda create  --name pdielec3 python=3
    source activate pdielec3
    conda install -c conda-forge scipy
-   conda install pyqt pyopengl matplotlib termcolor openpyxl pyyaml imageio
+   conda install pyqt pyopengl matplotlib termcolor openpyxl pyaml imageio
 
 Install Python (only needed if not using anaconda)
 ..................................................
