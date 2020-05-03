@@ -492,10 +492,10 @@ def spherical_averaged_mie_scattering(dielectric_medium, dielecv, shape, L, vf, 
        The anisotropy of the permittivity is accounted for by sampling many directions 
        and calculating the scattering in each direction
        The routine returns the effective dielectric constant"""
-    # import Python.PyMieScatt as ps
     from scipy.integrate import trapz
     from scipy.stats import lognorm
-    from Python.PyMieScatt.Mie import MieS1S2, AutoMieQ
+    # from Python.PyMieScatt.Mie import MieS1S2, AutoMieQ
+    from PyMieScatt.Mie import MieS1S2, AutoMieQ
     global points_on_sphere
     # define i as a complex number
     i = complex(0,1)
@@ -597,10 +597,10 @@ def mie_scattering(dielectric_medium, dielecv, shape, L, vf, size, size_mu, size
        Then the permittivity of the isodtropic sphere that would give the same average permittivity is calculated
        Then the Mie scattering of that sphere is calculated
        The routine returns the effective dielectric constant"""
-    # import Python.PyMieScatt as ps
     from scipy.integrate import trapz
     from scipy.stats import lognorm
-    from Python.PyMieScatt.Mie import MieS1S2, AutoMieQ
+    # from Python.PyMieScatt.Mie import MieS1S2, AutoMieQ
+    from PyMieScatt.Mie import MieS1S2, AutoMieQ
     #
     # Calculate the MG permittivity with no size effects
     #
@@ -702,10 +702,10 @@ def anisotropic_mie_scattering(dielectric_medium, dielecv, shape, L, vf, size, s
        vf is the volume fraction of filler
        Mie only works for spherical particles, so shape, and L parameters are ignored
        The routine returns the effective dielectric constant"""
-    # import Python.PyMieScatt as ps
     from scipy.integrate import trapz
     from scipy.stats import lognorm
-    from Python.PyMieScatt.Mie import MieS1S2, AutoMieQ
+    # from Python.PyMieScatt.Mie import MieS1S2, AutoMieQ
+    from PyMieScatt.Mie import MieS1S2, AutoMieQ
     # define i as a complex number
     i = complex(0,1)
     # We need to taken account of the change in wavelength and the change in size parameter due to the 
@@ -1249,7 +1249,8 @@ def foldy_scattering(lambda_vacuum_nm, N_nm,radius_nm,ri_medium):
     # radius_nm is the radius of the bubble
     # ri_medium is the refractive index of the medium the bubble is in
     #
-    from Python.PyMieScatt.Mie import MieS1S2, AutoMieQ
+    # from Python.PyMieScatt.Mie import MieS1S2, AutoMieQ
+    from PyMieScatt.Mie import MieS1S2, AutoMieQ
     #
     k_nm = 2*PI*ri_medium/lambda_vacuum_nm
     # The size parameter is now also complex and dimensionless
@@ -1272,7 +1273,8 @@ def waterman_truell_scattering(lambda_vacuum_nm, N_nm,radius_nm,ri_medium):
     # radius_nm is the radius of the bubble
     # ri_medium is the refractive index of the medium the bubble is in
     #
-    from Python.PyMieScatt.Mie import MieS1S2, AutoMieQ
+    # from Python.PyMieScatt.Mie import MieS1S2, AutoMieQ
+    from PyMieScatt.Mie import MieS1S2, AutoMieQ
     #
     k_nm = 2*PI*ri_medium/lambda_vacuum_nm
     # The size parameter is now also complex and dimensionless
