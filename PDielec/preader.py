@@ -283,7 +283,7 @@ def read_a_file( calling_parameters):
     # End if not no_calculation
     return name,results_string
 
-def main(sys):
+def main():
     # Start processing the directories
     if len(sys.argv) <= 1 :
         print('preader -program program [-eckart] [-neutral] [-nocalculation] [-hessian symm] [-masses average] filenames .....', file=sys.stderr)

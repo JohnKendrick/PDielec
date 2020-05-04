@@ -104,7 +104,7 @@ def read_a_file( calling_parameters):
     reader.read_output()
     return name,reader.unit_cells[-1]
 
-def main(sys):
+def main():
     # Start processing the directories
     if len(sys.argv) <= 1 :
         print('p2cif -program program filenames .....', file=sys.stderr)

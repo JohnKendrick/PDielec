@@ -24,7 +24,7 @@ from PyQt5.QtGui     import QPixmap
 from PyQt5.QtWidgets import QApplication, QSplashScreen, QProgressBar
 from multiprocessing import freeze_support
 
-def main(sys):
+def main():
     app = QApplication(sys.argv)
     show_splash = True
     for token in sys.argv:
