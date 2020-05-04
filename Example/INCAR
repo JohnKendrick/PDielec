@@ -1,0 +1,21 @@
+ENCUT = 600.0
+NBANDS = 38
+ISTART =  1
+ICHARGE = 0
+IBRION = 8       ! DFPT with symmetry
+POTIM  = 0.2     ! Initial diagonal hessian 
+ISIF   = 3       ! 3=optimise cell and ions, 2=optimise ions
+LEPSILON = .TRUE. ! calculate dielectric constants
+LRPA = .FALSE.
+#NWRITE = 3       ! output mass weighted normal modes
+NSW    = 1      ! If this is not set there is no calculation of normal modes
+NELMIN = 4       ! The minimum number of electronic optimisation steps
+LPLANE = .TRUE.  ! Optimised for a 4 core machine
+LSCALU = .TRUE.  ! Optimised for a 4 core machine
+#NCORE = 4        ! Optimised for a 4 core machine
+NELMIN = 4       ! The minimum number of electronic optimisation steps
+PREC   = Accurate
+LREAL  = .FALSE.
+ISMEAR = 0       ! Smearing method 0=Gaussian, -5=tetrahedron (needs gamma and >2 kpoints)
+SIGMA  = 0.05    ! Width of smearing 
+EDIFF  = 5E-6    ! A bit more accurate
