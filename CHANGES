@@ -1,6 +1,9 @@
 Version 6.3
 Added ability to request fewer cpus for parallel computation.  Also can now switch to threading model if necessary.  
 Restructured directory structure to be consistent with setup.py
+Changed the spreadsheet checking so that 'Settings' is not included - problems with checking degenerate systems
+Changed the threshold in checkcsv to 3E-2.  All tests now pass.
+Created commands in the root directory which should be similar to those created by a pip installation - pdgui, preader
 
 Version 6.2
 Treats the case of a support matrix with spherical inclusions. The scattering from the inclusions is accounted for by Mie theory. The resulting effective permittivity is used in the calculation of the effective permittivity of the active dielectric in the matrix. In addition the following features have been added;

@@ -5,14 +5,14 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="pdielc-pkg-john_kendrick", # Replace with your own username
-    version="5.1.0",
+    version="6.3.0",
     author="John Kendrick and Andrew Burnett",
     author_email="john@kendrick.co.uk",
     description="PDielec package for the calculation of THz and infrared spectra",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/JohnKendrick/PDielec",
-    packages=setuptools.find_packages(include=['pdielec','pdielec.*']),
+    packages=setuptools.find_packages(include=['PDielec','PDielec.*']),
     install_requires=[
         'numpy',
         'scipy',
@@ -22,6 +22,7 @@ setuptools.setup(
         'xlsxwriter',
         'openpyxl',
         'imageio',
+        'PyMieScatt',
     ],
     include_package_data=True,   # Assume all information is in MANIFEST.in
     classifiers=[

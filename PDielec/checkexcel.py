@@ -11,11 +11,13 @@ global threshold
 
 # Start processing the directories
 if len(sys.argv) <= 1 :
-    print('checkexcel file file2 [-thresh 1.0E-3]', file=sys.stderr)
+    print('checkexcel file file2 [-thresh 1.0E-3] [-f]', file=sys.stderr)
     print('         Compare the two excel files for any significant changes', file=sys.stderr)
     print('         Numbers f1 and f2 in each file are compared', file=sys.stderr)
     print('         an error is flagged if 2*abs(f1-f2)/(f1+f2+2) > threshold', file=sys.stderr)
     print('         The default value for threshold is 1.0E-3 ', file=sys.stderr)
+    print('         -f forces a full comparison of the sheets ', file=sys.stderr)
+    print('            by default Settings is not included    ', file=sys.stderr)
     exit()
 
 threshold = 1.0E-3
@@ -24,12 +26,15 @@ tokens = sys.argv[1:]
 ntokens = len(tokens)-1
 itoken = -1
 files = []
+full = False
 while itoken < ntokens:
     itoken += 1
     token = tokens[itoken]
     if token == '-thresh':
         itoken +=1
         threshold = float(tokens[itoken])
+    if token == '-f':
+        full = True
     else:
         files.append(tokens[itoken])
     # end if
@@ -52,7 +57,10 @@ max_percentage_error = 0.0
 #
 # Loop over sheets
 #
-for sheet in ['Main','Settings','Scenarios','Molar Absorption','Absorption','Real Permittivity','Imaginary Permittivity', 'ATR Reflectance', 'Analysis']:
+sheets = ['Main','Scenarios','Molar Absorption','Absorption','Real Permittivity','Imaginary Permittivity', 'ATR Reflectance', 'Analysis']
+if full:
+    sheets.append('Settings')
+for sheet in sheets:
     ws1 = wb1[sheet]
     ws2 = wb2[sheet]
     max_rows1 = ws1.max_row
