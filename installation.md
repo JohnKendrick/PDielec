@@ -32,6 +32,7 @@ git checkout master
 git pull
 git merge --no-ff develop  # --no-ff keeps a track of all the commits in develop
 git branch -d develop
+git tag v6.3.1             # This should agree with what is in the CHANGES file
 
 ```
 
@@ -78,5 +79,5 @@ Edit the setup.py file and remove the development designation from the project v
 
     rm -r build dist
     python setup.py sdist bdist_wheel
-	twine upload --repository pypi
+	twine upload --repository pypi dist/*
     # pip install PDielec
