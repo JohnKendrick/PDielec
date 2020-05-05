@@ -1,0 +1,9 @@
+INCAR             VASP input settings
+KPOINTS           VASP k-point settings
+POSCAR            VASP cell and atom geometry
+POTCAR.index      A pointer to the pseudo potentials used in the calculation
+OUTCAR            VASP output, analysed by PDielec
+script.py         Example script file
+
+To use this example run;
+    pdgui vasp OUTCAR -script script.py

@@ -1,3 +1,30 @@
+Version 6.3.1
+Solved packaging issues ready for release on PyPi
+
+Version 6.3.0
+Added ability to request fewer cpus for parallel computation.  Also can now switch to threading model if necessary.  
+Restructured directory structure to be consistent with setup.py
+Changed the spreadsheet checking so that 'Settings' is not included - problems with checking degenerate systems
+Changed the threshold in checkcsv to 3E-2.  All tests now pass.
+Created commands in the root directory which should be similar to those created by a pip installation - pdgui, preader
+
+Version 6.2
+Treats the case of a support matrix with spherical inclusions. The scattering from the inclusions is accounted for by Mie theory. The resulting effective permittivity is used in the calculation of the effective permittivity of the active dielectric in the matrix. In addition the following features have been added;
+
+    the sign of the imaginary component of the Mie permittivity is now consistent with Bruggeman and Maxwell-Garnett methods
+    a Hodrick-Prescott filter performs a baseline correction to the experimental spectrum in the Fitter tab.
+    saving a script has been modified to improve the scripts robustness
+    various other minor bugs have been fixed
+
+Version 6.1
+Sees the release of new Mie routines which allow a more robust treatment of anisotropic crystals. A few other issues have also been addressed. The mass and volume fractions can be edited more easily. The spreadsheet is now written out at the end of the calculation (on exiting the program). There are several changes to the fitter tab. All the options are now in their own settings tab, which gives more space for listing the frequencies. A new fitting algorithm has been provided, which minimises the root means squared error between the experimental and calculated spectra.
+
+Version 6.0.1 
+Is a minor bug-fix release to Version v6.0.
+
+Version 6.0 
+Adds the ability to alter the Lorentzian widths of the phonon transitions and compare the results interactively with an experimental spectrum.
+
 version 5.0.0
 Removed the command line interface
 Added ATR functionality
