@@ -1,0 +1,69 @@
+# Installation and upgrade protocol
+Edit ~/.pypirc file to hold usernames for the repositories being used.
+
+```
+[distutils]
+index-servers = 
+	pypi
+	testpypi
+
+[pypi]
+username: john_kendrick
+
+[testpypi]
+repository: https://test.pypi.org/legacy/
+username: john_kendrick
+```
+
+Use keyring to store the passwords for the repositories.  Note, in the examples below there may be more repos than neccessary.
+
+    keyring set https://test.pypi.org/legacy/ john_kendrick
+    keyring set https://upload.pypi.org/simple/ john_kendrick
+    keyring set https://upload.pypi.org/legacy/  john_kendrick
+    keyring set https://upload.pypi.org  john_kendrick
+
+## Git
+
+Update the CHANGES file to reflect the version number.  If you are working on a development branch, merge the changes.
+
+## Testing
+
+### Setup.py
+Edit setup.py and give the release a new version number, it is best to use a development number here as this can be changed.  Also add any new required modules to the install_requires option.
+
+For example; version 6.0.1.dev0
+
+Edit CHANGES file to record what changes have been made, don't use the developement number here, but use the final number you want used in the repository.
+
+Run the following commands to remove the old installation create a new one;
+
+    rm -r build dist
+    python setup.py sdist bdist_wheel
+
+### Install to test.pypi.org
+
+    twine upload --repository testpypi dist/*
+
+### Test installation in a new conda environment
+
+    conda create -n test python
+	conda activate test
+    pip install --index-url https://test.pypi.org/simple --extra-index-url https://pypi.org/simple PDielec
+	pdgui
+
+### Remove test installation
+
+pip installs pdgui and preader command scripts into ~./local/bin and the PDielec modules are put into ~/.local/lib
+To uninstall;
+
+	pip uninstall PDielec
+
+To remove the conda testing environment;
+ 
+
+	conda deactivate
+	conda env remove --name test
+
+## Final Installation
+
+Edit the setup.py file and remove the development designation from the project version
