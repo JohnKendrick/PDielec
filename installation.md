@@ -26,6 +26,12 @@ Use keyring to store the passwords for the repositories.  Note, in the examples 
 
 Update the CHANGES file to reflect the version number.  If you are working on a development branch, merge the changes.
 
+```
+git status       # On development branch to make sure there are no pending commits needed
+git checkout master
+git pull
+git merge --no-ff -b develop  # --no-ff keeps a track of all the commits in develop
+
 ## Testing
 
 ### Setup.py
