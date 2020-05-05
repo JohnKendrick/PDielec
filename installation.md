@@ -30,7 +30,10 @@ Update the CHANGES file to reflect the version number.  If you are working on a 
 git status       # On development branch to make sure there are no pending commits needed
 git checkout master
 git pull
-git merge --no-ff -b develop  # --no-ff keeps a track of all the commits in develop
+git merge --no-ff develop  # --no-ff keeps a track of all the commits in develop
+git branch -d develop
+
+```
 
 ## Testing
 
@@ -54,7 +57,7 @@ Run the following commands to remove the old installation create a new one;
 
     conda create -n test python
 	conda activate test
-    pip install --index-url https://test.pypi.org/simple --extra-index-url https://pypi.org/simple PDielec
+    pip install --index-url https://test.pypi.org/simple/ --extra-index-url https://pypi.org/simple/ PDielec
 	pdgui
 
 ### Remove test installation
@@ -66,10 +69,14 @@ To uninstall;
 
 To remove the conda testing environment;
  
-
 	conda deactivate
 	conda env remove --name test
 
 ## Final Installation
 
 Edit the setup.py file and remove the development designation from the project version
+
+    rm -r build dist
+    python setup.py sdist bdist_wheel
+	twine upload --repository pypi
+    # pip install PDielec
