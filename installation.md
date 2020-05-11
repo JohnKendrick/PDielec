@@ -83,7 +83,7 @@ Edit the setup.py file and remove the development designation from the project v
     # pip install PDielec
 
 
-# Installing to conda
+# Initial Installing to CONDA
 
 Make sure .condarc is;
 

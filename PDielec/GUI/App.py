@@ -22,6 +22,22 @@ class App(QMainWindow):
         itoken = 0
         ncpus = 0
         threading = False
+        # Look at the environment to see if the number of cpus is specified
+        token = os.getenv('PDIELEC_NUM_PROCESSORS')
+        if token is not None:
+            ncpus = int(token)
+        else:
+            ncpus = 0
+        # Look at the environment to see if the number of threading is specified
+        token = os.getenv('PDIELEC_THREADING')
+        if token is not None:
+            if token == 'FALSE' or token == 'false':
+                threading = False
+            else:
+                threading = True
+        else:
+            threading = False
+        # Process any instructions on the input line
         while itoken < ntokens:
             token = tokens[itoken]
             if token == '-d' or token == '-debug' or token == '--debug':
@@ -68,7 +84,7 @@ class App(QMainWindow):
             print('Filename is', filename)
             print('Spreadsheet is', spreadsheet)
             print('Script is', self.scriptname)
-            print('Ncpus is', ncpus)
+            print('No. of cpus is', ncpus)
             print('Threading is', threading)
         self.notebook = NoteBook(self, program, filename, spreadsheet, scripting=self.scripting, progressbar=progressbar, debug=self.debug, ncpus=ncpus, threading=threading)
         self.setCentralWidget(self.notebook)
