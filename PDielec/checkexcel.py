@@ -101,7 +101,7 @@ for sheet in sheets:
                         #
                         # Flag an error which is numeric
                         #
-                        percentage_error = 100.0*abs(2.0*(value1 - value2)/(value1 + value2+2))
+                        percentage_error = 100.0*abs(2.0*(value1 - value2)/(abs(value1) + abs(value2)+2))
                         if percentage_error > 100.*threshold:
                             nerrors += 1
                             if percentage_error > max_percentage_error:
