@@ -155,7 +155,7 @@ class OpenGLWidget(QOpenGLWidget):
 
     def save_movie(self, filename):
         import imageio
-        imageio.plugins.ffmpeg.download()
+        # imageio.plugins.ffmpeg.download()
         debugger.print('save_movie', filename)
         if self.timer is not None:
             self.timer.stop()
