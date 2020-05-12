@@ -1,0 +1,11 @@
+numpy
+scipy
+PyQt5
+PyMieScatt
+matplotlib
+xlsxwriter
+openpyxl
+imageio
+imageio-ffmpeg
+PyYAML
+termcolor
