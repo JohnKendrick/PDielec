@@ -505,7 +505,7 @@ def spherical_averaged_mie_scattering(dielectric_medium, dielecv, shape, L, vf, 
     # The effective lambda in the supporting medium is lambda / sqrt(emedium)
     # Where the refractive index is taken to be sqrt(emedium) (non magnetic materials)
     emedium = np.trace(dielectric_medium) / 3.0
-    refractive_index_medium = np.sqrt(emedium)
+    refractive_index_medium = np.real(np.sqrt(emedium))
     lambda_vacuum_mu = 2 * PI * size_mu / size
     wavelength_nm = lambda_vacuum_mu * 1000 / refractive_index_medium
     radius_nm = size_mu * 1000
@@ -624,7 +624,7 @@ def mie_scattering(dielectric_medium, dielecv, shape, L, vf, size, size_mu, size
     # The effective lambda in the supporting medium is lambda / sqrt(emedium)
     # Where the refractive index is taken to be sqrt(emedium) (non magnetic materials)
     emedium = np.trace(dielectric_medium) / 3.0
-    refractive_index_medium = np.sqrt(emedium)
+    refractive_index_medium = np.real(np.sqrt(emedium))
     lambda_vacuum_mu = 2 * PI * size_mu / size
     wavelength_nm = lambda_vacuum_mu * 1000 / refractive_index_medium
     radius_nm = size_mu * 1000
@@ -714,7 +714,7 @@ def anisotropic_mie_scattering(dielectric_medium, dielecv, shape, L, vf, size, s
     # The effective lambda in the supporting medium is lambda / sqrt(emedium)
     # Where the refractive index is taken to be sqrt(emedium) (non magnetic materials)
     emedium = np.trace(dielectric_medium) / 3.0
-    refractive_index_medium = np.sqrt(emedium)
+    refractive_index_medium = np.real(np.sqrt(emedium))
     lambda_vacuum_mu = 2 * PI * size_mu / size
     wavelength_nm = lambda_vacuum_mu * 1000 / refractive_index_medium
     radius_nm = size_mu * 1000

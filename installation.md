@@ -41,7 +41,7 @@ git tag v6.3.1             # This should agree with what is in the CHANGES file
 ### Setup.py
 Edit setup.py and give the release a new version number, it is best to use a development number here as this can be changed.  Also add any new required modules to the install_requires option.
 
-For example; version 6.0.1.dev0
+For example; version 6.3.1.dev0
 
 Edit CHANGES file to record what changes have been made, don't use the developement number here, but use the final number you want used in the repository.
 
@@ -81,3 +81,38 @@ Edit the setup.py file and remove the development designation from the project v
     python setup.py sdist bdist_wheel
 	twine upload --repository pypi dist/*
     # pip install PDielec
+
+
+# Initial Installing to CONDA
+
+Make sure .condarc is;
+
+```
+channel_priority: strict
+channels:
+  - conda-forge
+  - defaults
+```
+
+Got https://https://github.com/conda-forge/staged-recipes
+fork the repository
+
+```
+cd ~/Software
+git clone git@github.com:conda-forge/staged-recipes.git
+git checkout -b pdielec_6.3.1
+```
+
+make a new directory in recipes/ (called pdielec)
+
+```
+cd pdielec
+switch to conda environment ?????
+conda skeleton pypi PDielec
+This will create a new meta.yaml file
+Edit the yaml file
+git commit -a
+git push --set-upstream origin pdielec_3.6.1   # Not sure about this
+git status
+```
+

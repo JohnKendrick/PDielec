@@ -20,23 +20,16 @@ default:
 
 .PHONY:		install
 install:	
-		cp preader.py $(SCRIPTS)
-		cp pdgui.py   $(SCRIPTS)
-		cp p2cif.py   $(SCRIPTS)
-		cp pdcompare.py  $(SCRIPTS)
-		cp graphdatagenerator.py  $(SCRIPTS)
 		cp -P preader    $(SCRIPTS)
 		cp -P pdgui      $(SCRIPTS)
 		cp -P p2cif      $(SCRIPTS)
 		cp -P pdcompare  $(SCRIPTS)
 		cp -P graphdatagenerator  $(SCRIPTS)
-		mkdir -p $(SCRIPTS)/Python
-		mkdir -p $(SCRIPTS)/Python/PyMieScatt
-		mkdir -p $(SCRIPTS)/Python/GUI
-		cp -r Python/*.py $(SCRIPTS)/Python
-		cp -r Python/PyMieScatt/*.py $(SCRIPTS)/Python/PyMieScatt/
-		cp -r Python/GUI/*.py $(SCRIPTS)/Python/GUI/
-		cp -r Python/GUI/*.png $(SCRIPTS)/Python/GUI/
+		mkdir -p $(SCRIPTS)/PDielec
+		mkdir -p $(SCRIPTS)/PDielec/GUI
+		cp -r PDielec/*.py $(SCRIPTS)/PDielec
+		cp -r PDielec/GUI/*.py $(SCRIPTS)/PDielec/GUI/
+		cp -r PDielec/GUI/*.png $(SCRIPTS)/PDielec/GUI/
 
 test:		test-pdgui test-cli
 
