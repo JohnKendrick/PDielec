@@ -1,3 +1,9 @@
+version 6.4.0
+Removed the imageio-ffmpeg download code added pip install dependence instead
+Updated the installation instructions on the documentation to reflect conda-forge installation
+Added environment variables to control threading and number of cpus
+Made the refractive_index_medium variable real (not complex) to remove the warning message from PyMieScatt
+
 Version 6.3.1
 Solved packaging issues ready for release on PyPi
 

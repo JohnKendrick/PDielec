@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="PDielec",
-    version="6.3.1",
+    version="6.4.0dev"
     author="John Kendrick and Andrew Burnett",
     author_email="john@kendrick.co.uk",
     description="PDielec package for the calculation of THz and infrared spectra",
@@ -25,6 +25,7 @@ setuptools.setup(
         'xlsxwriter',
         'openpyxl',
         'imageio',
+        'imageio-ffmpeg',
         'PyYAML',
         'termcolor',
     ],
