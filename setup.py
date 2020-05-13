@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="PDielec",
-    version="6.4.0dev",
+    version="6.4.0",
     author="John Kendrick and Andrew Burnett",
     author_email="john@kendrick.co.uk",
     description="PDielec package for the calculation of THz and infrared spectra",
@@ -20,6 +20,7 @@ setuptools.setup(
         'numpy',
         'scipy',
         'PyQt5',
+        'PyOpengl',
         'PyMieScatt',
         'matplotlib',
         'xlsxwriter',
@@ -28,6 +29,12 @@ setuptools.setup(
         'imageio-ffmpeg',
         'PyYAML',
         'termcolor',
+        'bleach',
+        'docutils',
+        'Pygments',
+        'beautifulsoup4',
+        'psutil',
+        'requests',
     ],
     include_package_data=True,   # Assume all information is in MANIFEST.in
     classifiers=[
