@@ -1,3 +1,7 @@
+version 6.4.1
+Fixed a packaging problem on pypi and conda-forge
+No changes to source code
+
 version 6.4.0
 Removed the imageio-ffmpeg download code added pip install dependence instead
 Updated the installation instructions on the documentation to reflect conda-forge installation
