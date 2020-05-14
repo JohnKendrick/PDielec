@@ -15,6 +15,8 @@ from PDielec.QEOutputReader import QEOutputReader
 from PDielec.PhonopyOutputReader import PhonopyOutputReader
 from multiprocessing import Pool, cpu_count
 import PDielec.Calculator as Calculator
+import PDielec.__init__
+version = PDielec.__init__.__version__
 
 def set_affinity_on_worker():
     """When a new worker process is created, the affinity is set to all CPUs"""
@@ -283,30 +285,35 @@ def read_a_file( calling_parameters):
     # End if not no_calculation
     return name,results_string
 
+def print_help():
+    print('preader -program program [-eckart] [-neutral] [-nocalculation] [-hessian symm] [-masses average] filenames .....', file=sys.stderr)
+    print('  \"program\" must be one of \"abinit\", \"castep\", \"crystal\", \"gulp\"       ', file=sys.stderr)
+    print('           \"phonopy\", \"qe\", \"vasp\"                                         ', file=sys.stderr)
+    print('           If phonopy is used it must be followed by the QM package              ', file=sys.stderr)
+    print('  -masses [average|isotope|program]  chooses the atomic mass definition average  ', file=sys.stderr)
+    print('          The default is \"average\"                                             ', file=sys.stderr)
+    print('  -mass  element mass                                                            ', file=sys.stderr)
+    print('          Change the mass of the element specified                               ', file=sys.stderr)
+    print('  -eckart projects out the translational components. Default is no projection    ', file=sys.stderr)
+    print('  -neutral imposes neutrality on the Born charges of the molecule.               ', file=sys.stderr)
+    print('           Default is no neutrality is imposed                                   ', file=sys.stderr)
+    print('  -hessian [symm|crystal] defines the symmetrisation of the hessian              ', file=sys.stderr)
+    print('           \"crystal\" imposes Crystal14 symmetrisation                          ', file=sys.stderr)
+    print('           \"symm\" symmetrises by averaging the hessian with its transpose      ', file=sys.stderr)
+    print('           \"symm\" is the default                                               ', file=sys.stderr)
+    print('  -nocalculation requests no calculations are performed                          ', file=sys.stderr)
+    print('           A single line is output with results obtained by reading the output   ', file=sys.stderr)
+    print('           any of -mass -masses -eckart -neutral or -crystal are ignored         ', file=sys.stderr)
+    print('  -debug   to switch on more debug information                                   ', file=sys.stderr)
+    print('  -version print the version of PDielec library being used                       ', file=sys.stderr)
+    print('  Version ',version,file=sys.stderr)
+    exit()
+
+
 def main():
     # Start processing the directories
     if len(sys.argv) <= 1 :
-        print('preader -program program [-eckart] [-neutral] [-nocalculation] [-hessian symm] [-masses average] filenames .....', file=sys.stderr)
-        print('  \"program\" must be one of \"abinit\", \"castep\", \"crystal\", \"gulp\"       ', file=sys.stderr)
-        print('           \"phonopy\", \"qe\", \"vasp\"                                         ', file=sys.stderr)
-        print('           If phonopy is used it must be followed by the QM package              ', file=sys.stderr)
-        print('  -masses [average|isotope|program]  chooses the atomic mass definition average  ', file=sys.stderr)
-        print('          The default is \"average\"                                             ', file=sys.stderr)
-        print('  -mass  element mass                                                            ', file=sys.stderr)
-        print('          Change the mass of the element specified                               ', file=sys.stderr)
-        print('  -eckart projects out the translational components. Default is no projection    ', file=sys.stderr)
-        print('  -neutral imposes neutrality on the Born charges of the molecule.               ', file=sys.stderr)
-        print('           Default is no neutrality is imposed                                   ', file=sys.stderr)
-        print('  -hessian [symm|crystal] defines the symmetrisation of the hessian              ', file=sys.stderr)
-        print('           \"crystal\" imposes Crystal14 symmetrisation                          ', file=sys.stderr)
-        print('           \"symm\" symmetrises by averaging the hessian with its transpose      ', file=sys.stderr)
-        print('           \"symm\" is the default                                               ', file=sys.stderr)
-        print('  -nocalculation requests no calculations are performed                          ', file=sys.stderr)
-        print('           A single line is output with results obtained by reading the output   ', file=sys.stderr)
-        print('           any of -mass -masses -eckart -neutral or -crystal are ignored         ', file=sys.stderr)
-        print('  -debug   to switch on more debug information                                   ', file=sys.stderr)
-        exit()
-
+        print_help()
     observables=False
     files = []
     eckart = False
@@ -324,6 +331,7 @@ def main():
     while itoken < ntokens:
         itoken += 1
         token = tokens[itoken]
+        token = token.replace('--','-')
         if token == "-observables":
             observables = True
         elif token == "-debug":
@@ -356,6 +364,11 @@ def main():
             itoken += 1
             mass = float(tokens[itoken])
             mass_dictionary[element] = mass
+        elif token == "-help":
+            print_help()
+        elif token == "-version":
+            print('  Version ',version,file=sys.stderr)
+            exit()
         elif token == "-nocalculation":
             global_no_calculation = True
         elif token == "-program":

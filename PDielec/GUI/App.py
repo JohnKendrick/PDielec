@@ -3,6 +3,8 @@ import os.path
 from PyQt5.QtWidgets import QMainWindow, QApplication
 from PyQt5.QtCore    import QCoreApplication
 from PDielec.GUI.NoteBook import NoteBook
+import PDielec.__init__
+version = PDielec.__init__.__version__
 
 class App(QMainWindow):
 
@@ -60,7 +62,7 @@ class App(QMainWindow):
                 ncpus = int(tokens[itoken])
             elif token[0:0] == '-' or token == '-h' or token == '-help' or token == '--help':
                 print('pdgui - graphical user interface to the PDielec package')
-                print('pdgui [-help] [-debug] [program] [filename] [spreadsheet] [-script scriptname] [-nosplash] [-threading] [-cpus 0]')
+                print('pdgui [-help] [-debug] [program] [filename] [spreadsheet] [-script scriptname] [-nosplash] [-threading] [-cpus 0] [-version] [-exit]')
                 exit()
             elif program == '':
                 program = token
@@ -70,7 +72,7 @@ class App(QMainWindow):
                 spreadsheet = token
             itoken += 1
         #
-        self.title = 'PDielec GUI '
+        self.title = 'PDGui - Using PDielec library {} '.format(version)
         self.left = 10
         self.top = 30
         self.width = 500

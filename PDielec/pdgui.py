@@ -23,17 +23,25 @@ from PDielec.GUI.App  import App
 from PyQt5.QtGui     import QPixmap
 from PyQt5.QtWidgets import QApplication, QSplashScreen, QProgressBar
 from multiprocessing import freeze_support
+import PDielec.__init__
+version = PDielec.__init__.__version__
+
 
 def main():
-    app = QApplication(sys.argv)
-    show_splash = True
     for token in sys.argv:
         if token == '-nosplash' or token == '--nosplash':
             show_splash = False
         elif token == '-h' or token == '-help' or token == '--help':
             print('pdgui - graphical user interface to the PDielec package')
-            print('pdgui [-help] [-debug] [program] [filename] [spreadsheet] [-script scriptname] [-nosplash] [-threads] [-cpus ncpus] [-exit]')
+            print('pdgui [-help] [-debug] [program] [filename] [spreadsheet] [-script scriptname] [-nosplash] [-threads] [-cpus ncpus] [-version] [-exit]')
+            print('      Version ',version)
             exit()
+        elif token == '-v' or token == '-version' or token == '--version':
+            print('Version ',version)
+            exit()
+
+    app = QApplication(sys.argv)
+    show_splash = True
 
     if show_splash:
         dirname = os.path.dirname(os.path.realpath(sys.argv[0]))

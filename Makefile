@@ -9,16 +9,19 @@
 SCRIPTS ?= ~/bin
 
 default:	
-		@echo "Too install pdgui and preader in the $(SCRIPTS) directory"
+		@echo "To install pdgui and preader in the $(SCRIPTS) directory"
 		@echo "Type 'make install'"
-		@echo "Too perform all the tests in the Examples directory"
+		@echo "To perform all the tests in the Examples directory"
 		@echo "Type 'make test'"
 		@echo "For a subset of the tests"
 		@echo " or  'make test-preader'"
 		@echo " or  'make test-pdgui'"
+		@echo " or  'make test-cli'"
+		@echo " or  'make regenerate'"
+		@echo " or  'make pypi'"
 		@echo " or  'make pyinstaller'"
+		@echo " or  'make clean'"
 
-.PHONY:		install
 install:	
 		cp -P preader    $(SCRIPTS)
 		cp -P pdgui      $(SCRIPTS)
@@ -54,9 +57,15 @@ regenerate:
 
 .PHONY:		clean
 clean:		
+		@echo "Cleaning distribution and tests"
 		@( cd Examples; make --no-print-directory clean )
 
 .PHONY:		pyinstaller
 pyinstaller:
 		pyinstaller pdgui.spec -y
 		cp -r dist/pdgui/PyQt5/Qt/plugins/platforms dist/pdgui
+
+.PHONY:		pypi
+pypi:		
+		@echo "Generating PyPi distribution"
+		@( rm -rf build dist PDielec.egg-info; python setup.py sdist bdist_wheel )

@@ -1,11 +1,19 @@
 import setuptools
 
+# Update this for every PyPi release
+version = "6.4.1"
+
 with open("README.md", "r") as fh:
     long_description = fh.read()
 
+
+init_lines = ["# Created by setup.py, whilst creating a new PyPi release\n","__version__ = \"{}\"\n".format(version)]
+with open("PDielec/__init__.py", "w") as fh:
+    fh.writelines(init_lines)
+
 setuptools.setup(
     name="PDielec",
-    version="6.4.1",
+    version=version,
     author="John Kendrick and Andrew Burnett",
     author_email="john@kendrick.co.uk",
     description="PDielec package for the calculation of THz and infrared spectra",
