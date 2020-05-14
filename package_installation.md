@@ -1,4 +1,4 @@
-# Installation and upgrade protocol
+# Package Installation and upgrade protocol
 Edit ~/.pypirc file to hold usernames for the repositories being used.
 
 ```
@@ -49,8 +49,11 @@ Edit CHANGES file to record what changes have been made, don't use the developem
 
 Run the following commands to remove the old installation create a new one;
 
-    rm -r build dist
-    python setup.py sdist bdist_wheel
+    make pypy
+    # rm -r build dist
+    # python setup.py sdist bdist_wheel
+
+This writes a PDielec/\_\_init\_\_.py file containing the version number.
 
 ### Install to test.pypi.org
 You only need to do this if there have been significant changes to the packages required for installation.  If setup.py has not altered, or altered only in a small way then skip this step and go to *Final Installation*
@@ -81,10 +84,13 @@ To remove the conda testing environment;
 
 Edit the setup.py file and remove the development designation from the project version
 
-    rm -r build dist
-    python setup.py sdist bdist_wheel
+    make pypi
+    # rm -r build dist
+    # python setup.py sdist bdist_wheel
 	twine upload --repository pypi dist/*
     # pip install PDielec
+
+The make pypi command runs setup.py which creates a PDielec/\_\_init\_\_.py file with the version number in.
 
 # Update the conda-forge installation
 There is a bot (@regro-cf-autotick-bot) which seems to monitor pypi.org to see if there is a new release.  
