@@ -17,25 +17,23 @@ Anaconda
 Anaconda is a Python package manager and is useful when trying out different versions of Python as there is a very convenient environment manager.  Anaconda can be installed as a user program and so root access to the computer is not needed.
 The software can be downloaded from https://conda.io/miniconda.html or https://www.anaconda.com/download/.
 Unless you are interested in the full package, miniconda installation should be sufficient for installing the rest of the modules needed for the PDielec installation.
-A miniconda is the recommended environment for installing PDielec.  
+A miniconda is the recommended environment for installing PDielec.  On windows it is necessary to run the commands in an Anaconda command terminal, which will be added to the user's menu when miniconda is installed.
+
 PDielec is available on the conda-forge channel and can be installed as show in the following couple of examples.
-At some point support for Python 2 will be removed so a Python 3 installation is recommended.
 
 Installation using Anaconda can be performed on Linux, Windows and Mac systems.
 However, there are no example files installed, only the executables.  
 Example files for each of the DFT packages supported can be downloaded from the Git repository.
 
-Here is an example of creating a Python 3 environment in Anaconda::
+The cond-forge package has a python 3 environment included in the package::
 
-   conda create  --name pdielec3 python=3
-   source activate pdielec3
+   conda create  --name pdielec
+   source activate pdielec
    conda install -c conda-forge pdielec
+   pdgui
 
-Here is an installation using a Python 2.7 environment, which we use mainly for test purposes::
 
-   conda create  --name pdielec2 python=2
-   conda activate pdielec2
-   conda install -c conda-forge pdielec
+
 
 PyPi
 ====
@@ -43,6 +41,7 @@ PyPi
 If you really dont want to use Anaconda, PDielec is available on pypi.org and can be installed using pip.::
 
    pip install --user pdielec
+   pdgui
 
 
 GitHub - Linux
@@ -143,6 +142,7 @@ Open a git bash console and type;::
   pip install termcolor
   pip install imageio
   pip install imageio-ffmpeg
+  pdgui
 
 
 Install PDielec

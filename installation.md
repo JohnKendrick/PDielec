@@ -32,12 +32,11 @@ git checkout master
 git pull
 git merge --no-ff develop  # --no-ff keeps a track of all the commits in develop
 git branch -d develop
-git tag v6.3.1             # This should agree with what is in the CHANGES file
 git push                   # Check that the tags are valid on the remote github
 
 ```
 
-Update github.com with a new release.  Use the same version number as the tag.
+Update github.com with a new release.  The process of releasing the code will give it a tag on the master branch, so issue a final pull on the local machine to download the new tag.
 
 ## Testing
 
@@ -54,6 +53,7 @@ Run the following commands to remove the old installation create a new one;
     python setup.py sdist bdist_wheel
 
 ### Install to test.pypi.org
+You only need to do this if there have been significant changes to the packages required for installation.  If setup.py has not altered, or altered only in a small way then skip this step and go to *Final Installation*
 
     twine upload --repository testpypi dist/*
 
@@ -86,7 +86,12 @@ Edit the setup.py file and remove the development designation from the project v
 	twine upload --repository pypi dist/*
     # pip install PDielec
 
-# Update the conda installation
+# Update the conda-forge installation
+There is a bot (@regro-cf-autotick-bot) which seems to monitor pypi.org to see if there is a new release.  
+This means that as long as meta.yaml has not changed there should be no reason to perform a manual installation
+However, the manual work-flow for doing this is below, if it is necessary.  An alternative to the full manual process below is to clone the PR that the bot produces and edit the meta.yaml file there.
+
+## Manual update of conda-forge installation  
 
 Go the conda-forge pdielec feedstock entry at ;
 

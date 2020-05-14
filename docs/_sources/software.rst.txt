@@ -333,11 +333,20 @@ A work around is to use;
         pdgui -threads -cpu 1
 
 This runs the program on a single processor using the threading library for multiprocessing.  
+Sometimes it is more convenient to set these using the environment.  Two environment variables are read befor any command line options are processed;
+
+        export PDIELEC_NUM_PROCESSORS=4
+
+will run `pdgui` on 4 processors.  By default the number of processors is determined by interrogating the computer.  This acheived by setting the value of PDIELEC_NUM_PROCESSORS to 0.
+
+        export PDIELEC_THREADING=TRUE
+
+will run `pdgui` using the threading multiprocessing options.
 
 Performance
 ------------
 
-PDielec has been written to make use of multiprocessor computers. On a 4 processor machine the speed-up is nearly linear up to 4 processors, as can be seen in the Figure below.
+PDielec has been written to make use of multiprocessor computers. On a 4 processor machine using multiprocessing the speed-up is nearly linear up to 4 processors, as can be seen in the Figure below.  Threading does not appear to be an efficient way of running `PDielec` and it is only recommended if the default multiprocessing options is failing for some reason.
 
 .. _fig-speedup:
 
