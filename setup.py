@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="PDielec",
-    version="6.4.0",
+    version="6.4.1",
     author="John Kendrick and Andrew Burnett",
     author_email="john@kendrick.co.uk",
     description="PDielec package for the calculation of THz and infrared spectra",
@@ -13,7 +13,7 @@ setuptools.setup(
     long_description_content_type="text/markdown",
     url="https://github.com/JohnKendrick/PDielec",
     # packages=setuptools.find_packages(include=['PDielec','PDielec.*']),
-    packages=['PDielec'],
+    packages=['PDielec','PDielec/GUI'],
     license='MIT',
     keywords=['Infrared',' Infrared Spectroscopy','THz Spectroscopy','Terahertz Spectroscopy','Bruggeman','Maxwell-Garnett','Effective Medium'],
     install_requires=[
