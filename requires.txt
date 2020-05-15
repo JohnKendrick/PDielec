@@ -1,6 +1,7 @@
 numpy
 scipy
 PyQt5
+PyOpenGl
 PyMieScatt
 matplotlib
 xlsxwriter
