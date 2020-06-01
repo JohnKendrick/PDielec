@@ -1,3 +1,6 @@
+version 6.4.2
+Modified the plotting in fitter so that scaling is always applied
+
 version 6.4.1
 Fixed a packaging problem on pypi and conda-forge
 No changes to source code

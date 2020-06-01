@@ -348,7 +348,8 @@ class FitterTab(QWidget):
             scale_calc = scale * self.settings['Frequency scaling factor']
         else:
             lag = 0.0
-            scale_calc = scale
+            # scale_calc = scale
+            scale_calc = scale * self.settings['Frequency scaling factor']
         for x,y,legend in zip(xs,ys,legends):
             x = np.array(x)
             line, = self.subplot1.plot(lag+scale_calc*x,y,lw=2, color=cmap(cmap_index), label=legend )
