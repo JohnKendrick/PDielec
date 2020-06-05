@@ -46,7 +46,6 @@ class FitterTab(QWidget):
         self.settings['Fitting type'] = 'Minimise x-correlation'
         self.fitting_type_definitions = ['Minimise x-correlation', 'Minimise spectral difference']
         self.settings['Number of iterations'] = 20
-        self.settings['Frequency scaling'] = False
         self.settings['Frequency scaling factor'] = 1.0
         self.settings['Absorption scaling'] = False
         self.settings['Absorption scaling factor'] = 1.0
@@ -96,16 +95,8 @@ class FitterTab(QWidget):
         #
         # See if we want frequency scaling
         #
-        self.frequency_scaling_cb = QCheckBox(self)
-        self.frequency_scaling_cb.setToolTip('Frequency scaling is applied during the fitting process')
-        self.frequency_scaling_cb.setText('')
-        self.frequency_scaling_cb.setLayoutDirection(Qt.RightToLeft)
-        if self.settings['Frequency scaling']:
-            self.frequency_scaling_cb.setCheckState(Qt.Checked)
-        else:
-            self.frequency_scaling_cb.setCheckState(Qt.Unchecked)
-        self.frequency_scaling_cb.stateChanged.connect(self.on_frequency_scaling_cb_changed)
         self.frequency_scaling_factor_sb = QDoubleSpinBox(self)
+        self.frequency_scaling_factor_sb.setToolTip('Frequency scaling factor')
         self.frequency_scaling_factor_sb.setRange(0.000001,10000000.0)
         self.frequency_scaling_factor_sb.setDecimals(4)
         self.frequency_scaling_factor_sb.setSingleStep(0.1)
@@ -116,10 +107,10 @@ class FitterTab(QWidget):
         # See if we want base line removal
         #
         self.baseline_cb = QCheckBox(self)
-        self.baseline_cb.setToolTip('Frequency scaling is applied during the fitting process')
+        self.baseline_cb.setToolTip('Apply base line correction')
         self.baseline_cb.setText('')
         self.baseline_cb.setLayoutDirection(Qt.RightToLeft)
-        if self.settings['Frequency scaling']:
+        if self.settings['Baseline removal']:
             self.baseline_cb.setCheckState(Qt.Checked)
         else:
             self.baseline_cb.setCheckState(Qt.Unchecked)
@@ -163,7 +154,6 @@ class FitterTab(QWidget):
         self.settingsTab = QTabWidget(self)
         self.settingsTab.addTab(self.spectrafile_le, 'Experimental spectrum')
         self.settingsTab.addTab(self.plot_type_cb, 'Plot type')
-        self.settingsTab.addTab(self.frequency_scaling_cb, 'Frequency scaling?')
         self.settingsTab.addTab(self.frequency_scaling_factor_sb, 'Frequency scaling factor')
         self.settingsTab.addTab(self.iterations_sb, 'No. of iterations')
         self.settingsTab.addTab(self.independent_yaxes_cb, 'Independent y-axes')
@@ -284,12 +274,7 @@ class FitterTab(QWidget):
         self.settings['Baseline removal'] = self.baseline_cb.isChecked()
         self.replot()
         return
- 
-    def on_frequency_scaling_cb_changed(self,value):
-        debugger.print('on_frequency_scaling_cb_changed',value)
-        self.settings['Frequency scaling'] = self.frequency_scaling_cb.isChecked()
-        return
- 
+
     def on_spectral_difference_threshold_sb_changed(self,value):
         debugger.print('on_spectral_difference_threshold_sb_changed',value)
         try:
@@ -618,7 +603,7 @@ class FitterTab(QWidget):
         if len(self.excel_absorption) > 0:
             self.resample_spectrum()
         self.plot(self.experimental_absorption,self.calculated_frequencies,self.calculated_absorptions,self.legends,self.plot_label)
-        
+
     def refresh(self,force=False):
         if not self.dirty and not force and not self.notebook.fittingCalculationRequired:
             debugger.print('refresh aborted', self.dirty,force)
@@ -636,10 +621,6 @@ class FitterTab(QWidget):
         self.read_excel_file()
         self.plot_type_cb.setCurrentIndex(self.plot_type_definitions.index(self.settings['Plot type']))
         self.iterations_sb.setValue(self.settings['Number of iterations'])
-        if self.settings['Frequency scaling']:
-            self.frequency_scaling_cb.setCheckState(Qt.Checked)
-        else:
-            self.frequency_scaling_cb.setCheckState(Qt.Unchecked)
         self.frequency_scaling_factor_sb.setValue(self.settings['Frequency scaling factor'])
         if self.settings['Independent y-axes']:
             self.independent_yaxes_cb.setCheckState(Qt.Checked)

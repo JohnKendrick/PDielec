@@ -1,5 +1,7 @@
 version 6.4.2
 Modified the plotting in fitter so that scaling is always applied
+Removed the tick box in the Fitter tab that switches scaling on/off
+Only store the optical permittivity in a script fail if it has been altered in the GUI
 
 version 6.4.1
 Fixed a packaging problem on pypi and conda-forge

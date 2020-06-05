@@ -58,6 +58,7 @@ class SettingsTab(QWidget):
         self.mass_definition_options = ['average','program','isotope','gui']
         self.settings['Mass definition'] = 'average'
         self.settings['Optical permittivity'] = None
+        self.settings['Optical permittivity edited'] = False
         self.masses_dictionary = {}
         self.modes_selected = []
         self.frequencies_cm1 = []
@@ -469,6 +470,7 @@ class SettingsTab(QWidget):
         debugger.print('on_optical_itemChanged)', item.row(), item.column(), item.text() )
         self.settings['Optical permittivity'][item.row()][item.column()] = float(item.text())
         self.settings['Optical permittivity'][item.column()][item.row()] = float(item.text())
+        self.settings['Optical permittivity edited'] = True
         self.notebook.plottingCalculationRequired = True
         self.notebook.analysisCalculationRequired = True
         self.notebook.fittingCalculationRequired = True

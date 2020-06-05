@@ -143,11 +143,14 @@ class NoteBook(QWidget):
             print('self.notebook.addScenario()',file=fd)
         print('tab = self.notebook.'+title,file=fd)
         for item in tab.settings:
-            value = tab.settings[item]
-            if 'str' in str(type(value)):
-                print('tab.settings[\''+item+'\'] = \'{}\''.format(tab.settings[item]),file=fd)
+            if item == 'Optical permittivity' and not tab.settings['Optical permittivity edited']:
+                    pass
             else:
-                print('tab.settings[\''+item+'\'] = ', tab.settings[item],file=fd)
+                value = tab.settings[item]
+                if 'str' in str(type(value)):
+                    print('tab.settings[\''+item+'\'] = \'{}\''.format(tab.settings[item]),file=fd)
+                else:
+                    print('tab.settings[\''+item+'\'] = ', tab.settings[item],file=fd)
 
     def deleteScenario(self,index):
         # Don't delete the last scenario
