@@ -47,6 +47,7 @@ class FitterTab(QWidget):
         self.fitting_type_definitions = ['Minimise x-correlation', 'Minimise spectral difference']
         self.settings['Number of iterations'] = 20
         self.settings['Frequency scaling factor'] = 1.0
+        self.settings['Optimise frequency scaling'] = False
         self.settings['Absorption scaling'] = False
         self.settings['Absorption scaling factor'] = 1.0
         self.settings['Independent y-axes'] = True
@@ -148,6 +149,16 @@ class FitterTab(QWidget):
         else:
             self.independent_yaxes_cb.setCheckState(Qt.Unchecked)
         self.independent_yaxes_cb.stateChanged.connect(self.on_independent_yaxes_cb_changed)
+        # Optimise frequency scaling?
+        self.optimise_frequency_scaling_cb = QCheckBox(self)
+        self.optimise_frequency_scaling_cb.setToolTip('Use frequency scaling in optimisation')
+        self.optimise_frequency_scaling_cb.setText('')
+        self.optimise_frequency_scaling_cb.setLayoutDirection(Qt.RightToLeft)
+        if self.settings['Optimise frequency scaling']:
+            self.optimise_frequency_scaling_cb.setCheckState(Qt.Checked)
+        else:
+            self.optimise_frequency_scaling_cb.setCheckState(Qt.Unchecked)
+        self.optimise_frequency_scaling_cb.stateChanged.connect(self.on_optimise_frequency_scaling_cb_changed)
         #
         # Add a tab widget for the settings ######################################################################################
         #
@@ -158,6 +169,7 @@ class FitterTab(QWidget):
         self.settingsTab.addTab(self.iterations_sb, 'No. of iterations')
         self.settingsTab.addTab(self.independent_yaxes_cb, 'Independent y-axes')
         self.settingsTab.addTab(self.fitting_type_cb, 'Fitting type')
+        self.settingsTab.addTab(self.optimise_frequency_scaling_cb, 'Optimise scaling')
         self.settingsTab.addTab(self.spectral_difference_threshold_sb, 'Spectral difference threshold')
         self.settingsTab.addTab(self.baseline_cb, 'Baseline removal?')
         self.settingsTab.addTab(self.hpfilter_lambda_sb, 'HP Filter Lambda')
@@ -245,6 +257,11 @@ class FitterTab(QWidget):
     def on_independent_yaxes_cb_changed(self,value):
         debugger.print('independent_yaxes_cb_changed',value)
         self.settings['Independent y-axes'] = self.independent_yaxes_cb.isChecked()
+        return
+
+    def on_optimise_frequency_scaling_cb_changed(self,value):
+        debugger.print('optimise_frequency_scaling_cb_changed',value)
+        self.settings['Optimise frequency scaling'] = self.optimise_frequency_scaling_cb.isChecked()
         return
 
     def on_absorption_scaling_cb_changed(self,value):
@@ -382,7 +399,7 @@ class FitterTab(QWidget):
                 self.fit_list.append(mode)
         initial_point = [ self.sigmas_cm1[i] for i in self.fit_list ]
         # Append a scaling option
-        if self.settings['Frequency scaling']:
+        if self.settings['Optimise frequency scaling']:
             initial_point.append(self.settings['Frequency scaling factor'])
         nvariables = len(initial_point)
         if nvariables > 0:
@@ -402,7 +419,7 @@ class FitterTab(QWidget):
         self.functionCalls += 1
         nvariables = len(variables)
         self.fittingButton.setText('Interrupt fitting ({}/{})'.format(self.functionCalls,nvariables+1+nvariables*self.settings['Number of iterations']))
-        if self.settings['Frequency scaling']:
+        if self.settings['Optimise frequency scaling']:
             sigmas = variables[:-1]
             scaling_factor = variables[-1]
             self.settings['Frequency scaling factor'] = scaling_factor
