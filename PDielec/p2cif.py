@@ -22,6 +22,31 @@ def set_affinity_on_worker():
     #JK for the time being this is simply commented out, but might be useful at some point
     #os.system("taskset -p 0xff %d > /dev/null" % os.getpid())
 
+def find_program_from_name( filename ):
+    # Determine the program to use from the file name being used
+    head,tail = os.path.split(filename)
+    root,ext = os.path.splitext(tail)
+    head = head+'/'
+    if tail == 'OUTCAR':
+        if os.path.isfile(head+'phonopy.yaml'):
+            return 'phonopy'
+        else:
+            return 'vasp'
+    if ext == '.born':
+        return 'phonopy'
+    if ext ==  '.out':
+        if os.path.isfile(head+root+'.files'):
+            return 'abinit'
+        elif os.path.isfile(head+root+'.dynG'):
+            return 'qe'
+        else:
+            return 'crystal'
+    if ext ==  '.dynG':
+        return 'qe'
+    print('Error unable to automatically assign program to ',filename)
+    exit(1)
+
+
 def read_a_file( calling_parameters):
     name, program, qmprogram, debug = calling_parameters
     fulldirname = name
@@ -31,7 +56,8 @@ def read_a_file( calling_parameters):
         names = [ name ]
         reader = CastepOutputReader( names )
     elif program == "vasp":
-        name1 = os.path.join(head,'OUTCAR')
+#        name1 = os.path.join(head,'OUTCAR')
+        name1 = name
         name2 = os.path.join(head,'KPOINTS')
         names = [ name1, name2 ]
         reader = VaspOutputReader( names )
@@ -64,7 +90,8 @@ def read_a_file( calling_parameters):
         pname1 = os.path.join(head,'qpoints.yaml')
         pname2 = os.path.join(head,'phonopy.yaml')
         # Only works for VASP at the moment
-        vname1 = os.path.join(head,'OUTCAR')
+#        vname1 = os.path.join(head,'OUTCAR')
+        vname1 = name
         vname2 = os.path.join(head,'KPOINTS')
         pnames = [ pname1, pname2 ]
         vnames = [ vname1, vname2 ]
@@ -109,8 +136,11 @@ def main():
     if len(sys.argv) <= 1 :
         print('p2cif -program program filenames .....', file=sys.stderr)
         print('  \"program\" must be one of \"abinit\", \"castep\", \"crystal\", \"gulp\"       ', file=sys.stderr)
-        print('           \"phonopy\", \"qe\", \"vasp\"                                         ', file=sys.stderr)
+        print('           \"phonopy\", \"qe\", \"vasp\", \"auto\"                                ', file=sys.stderr)
+        print('           The default is auto, so the program tries to guess the package from   ', file=sys.stderr)
+        print('           the contents of the directory.  However this is not fool-proof!       ', file=sys.stderr)
         print('           If phonopy is used it must be followed by the QM package              ', file=sys.stderr)
+        print('           in auto mode if the file was created by a phonopy VASP is assumed     ', file=sys.stderr)
         print('  -debug   to switch on more debug information                                   ', file=sys.stderr)
         exit()
 
@@ -118,8 +148,8 @@ def main():
     tokens = sys.argv[1:]
     ntokens = len(tokens)-1
     itoken = -1
-    program = ''
-    qmprogram = ''
+    program = 'auto'
+    qmprogram = 'vasp'
     debug = False
     while itoken < ntokens:
         itoken += 1
@@ -139,7 +169,7 @@ def main():
         print('Please use -program to define the package used to generate the output files',file=sys.stderr)
         exit()
 
-    if not program in ['abinit','castep','crystal','gulp','qe','vasp','phonopy']:
+    if not program in ['abinit','castep','crystal','gulp','qe','vasp','phonopy','auto']:
         print('Program is not recognised: ',program,file=sys.stderr)
         exit()
 
@@ -164,7 +194,10 @@ def main():
     calling_parameters = []
     files.sort()
     for name in files:
-        calling_parameters.append( (name, program, qmprogram, debug) )
+        prog = program
+        if program == 'auto':
+            prog = find_program_from_name(name)
+        calling_parameters.append( (name, prog, qmprogram, debug) )
     # Calculate the results in parallel
     results_map_object = p.map_async(read_a_file,calling_parameters)
     results_map_object.wait()
