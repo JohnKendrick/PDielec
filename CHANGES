@@ -1,3 +1,8 @@
+version 6.4.3
+Modified p2cif so that it becomes a windows executable
+Modified p2cif and preader to be more robust when reading phonopy output
+Re-introduced fitting the frequency scaling in the fitter tab
+
 version 6.4.2
 Modified the plotting in fitter so that scaling is always applied
 Removed the tick box in the Fitter tab that switches scaling on/off
