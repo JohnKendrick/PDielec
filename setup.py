@@ -1,7 +1,7 @@
 import setuptools
 
 # Update this for every PyPi release
-version = "6.4.1"
+version = "6.4.3"
 
 with open("README.md", "r") as fh:
     long_description = fh.read()
@@ -60,6 +60,8 @@ setuptools.setup(
     entry_points= {
         'console_scripts': [
             'preader=preader:main',
+            'p2cif=p2cif:main',
+            'pdcompare=pdcompare:main',
         ],
         'gui_scripts': [
             'pdgui=pdgui:main',
