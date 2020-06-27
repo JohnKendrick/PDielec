@@ -49,7 +49,7 @@ Edit CHANGES file to record what changes have been made, don't use the developem
 
 Run the following commands to remove the old installation create a new one;
 
-    make pypy
+    make pypi
     # rm -r build dist
     # python setup.py sdist bdist_wheel
 
@@ -133,8 +133,6 @@ Review all the changes and push the fork onto GitHub.
 	git push origin update_6_4_0
 
 Now create a pull request on https://github.com/JohnKendrick/pdielec-feedstock
-
-
 
 
 # Initial Installing to CONDA - ONLY DO THIS IF THE FEEDSTOCK DOES NOT EXIST

@@ -28,11 +28,18 @@ Example files for each of the DFT packages supported can be downloaded from the 
 The cond-forge package has a python 3 environment included in the package::
 
    conda create  --name pdielec
-   source activate pdielec
+   conda activate pdielec
+   conda config --add channels conda-forge
    conda install -c conda-forge pdielec
    pdgui
 
 
+If at a later stage you want to update PDielec to the latest version from conda-forge, you should be able to update the environment in the following way::
+
+   conda activate pdielec
+   conda update pdielec
+
+This only works if the conda-forge channel has been added to the channel list for the environment.
 
 
 PyPi

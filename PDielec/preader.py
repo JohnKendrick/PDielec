@@ -36,6 +36,8 @@ def find_program_from_name( filename ):
             return 'vasp'
     if ext == '.born':
         return 'phonopy'
+    if ext == '.castep':
+        return 'castep'
     if ext ==  '.out':
         if os.path.isfile(head+root+'.files'):
             return 'abinit'

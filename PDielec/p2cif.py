@@ -32,6 +32,8 @@ def find_program_from_name( filename ):
             return 'phonopy'
         else:
             return 'vasp'
+    if ext == '.castep':
+        return 'castep'
     if ext == '.born':
         return 'phonopy'
     if ext ==  '.out':
