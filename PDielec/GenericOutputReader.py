@@ -192,7 +192,7 @@ class GenericOutputReader:
                 if self.manage[k][0].match(line):
                     method   = self.manage[k][1]
                     if self.debug:
-                        print('_read_output_file: Match found {}'.format(k))
+                        print('_read_output_file({}): Match found {}'.format(name,k))
                     method(line)
                     break
                 # end if
