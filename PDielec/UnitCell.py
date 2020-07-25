@@ -106,7 +106,7 @@ class UnitCell:
         return corners_xyz,edges
 
 
-    def printInfo(self):
+    def print_info(self):
         print_reals('Unit Cell a,b,c ',[self.a, self.b, self.c], format='{:12.6f}')
         print_reals('Unit Cell alpha,beta,gamma',[self.alpha, self.beta, self.gamma], format='{:12.6f}')
         print_reals('lattice', self.lattice[0], format='{:12.6f}')

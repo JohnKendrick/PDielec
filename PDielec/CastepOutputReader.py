@@ -17,7 +17,7 @@
 """Read the contents of a Castep output file
    Inherit the following from the GenericOutputReader
    __init__
-   printInfo
+   print_info
    _read_output_file
    _DyanmicalMatrix
 """
@@ -32,7 +32,7 @@ class CastepOutputReader(GenericOutputReader):
     """Read the contents of a Castep output file
        Inherit the following from the GenericOutputReader
        __init__
-       printInfo
+       print_info
        _read_output_file
        _DyanmicalMatrix
        _read_till_phrase
