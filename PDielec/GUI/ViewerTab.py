@@ -217,12 +217,16 @@ class ViewerTab(QWidget):
         self.gif_filename_button = QPushButton('Save as gif')
         self.gif_filename_button.clicked.connect(self.on_filename_button_clicked)
         self.gif_filename_button.setToolTip('Save the animation as a gif file')
+        self.cif_filename_button = QPushButton('Save as cif')
+        self.cif_filename_button.clicked.connect(self.on_filename_button_clicked)
+        self.cif_filename_button.setToolTip('Save the animation as a cif file')
         label = QLabel('Image file name', self)
         label.setToolTip('Give a file name in which to save the image.\nIf a return is pressed the filename is scanned to see whatyoe of file has been requested.')
         hbox.addWidget(self.filename_le)
         hbox.addWidget(self.png_filename_button)
         hbox.addWidget(self.mp4_filename_button)
         hbox.addWidget(self.gif_filename_button)
+        hbox.addWidget(self.cif_filename_button)
         form.addRow(label, hbox)
         #
         # Add the opengl figure to the bottom
@@ -252,7 +256,7 @@ class ViewerTab(QWidget):
         #
         filename = self.image_filename
         root,extension = os.path.splitext(filename)
-        valid_extension = ( extension == '.mp4' or extension == '.avi' or extension == '.png' or extension == '.gif' )
+        valid_extension = ( extension == '.mp4' or extension == '.avi' or extension == '.png' or extension == '.gif' or extension == '.cif' )
         if filename == '' or not valid_extension:
             debugger.print('Aborting on filename button clicked', filename)
             debugger.print('Aborting on filename button clicked', valid_extension)
@@ -276,6 +280,8 @@ class ViewerTab(QWidget):
             self.opengl_widget.save_movie(filename)
         elif extension == '.gif':
             self.opengl_widget.save_movie(filename)
+        elif extension == '.cif':
+            self.save_cif(filename)
         self.plot_type_index = old_plot_type
         QApplication.restoreOverrideCursor()
         return
@@ -456,8 +462,6 @@ class ViewerTab(QWidget):
         maxR = np.amax(np.abs(UVW))
         self.scale_vibrations = self.settings['Maximum displacement'] / maxR
         self.newXYZ       = np.zeros( (self.settings['Number of phase steps'], self.natoms, 3) )
-        sign = +1.0
-        small = 1.0E-8
         n2 = int(self.settings['Number of phase steps']/2)
         delta = 1.0 / float(n2)
         phases = np.arange(-1.0, 1.0+delta-1.0E-10, delta)
@@ -483,6 +487,22 @@ class ViewerTab(QWidget):
                 self.opengl_widget.addCylinder(self.settings['Cell colour'], self.settings['Cell radius'], p1, p2, phase=phase_index)
         debugger.print('calculatePhasePositions - exiting')
         return
+
+    def save_cif(self,filename):
+        #
+        # Write a single cif file containing all the phase information for discplacement along a mode
+        # First transform to abc coordinates from xyz
+        #
+        import copy
+        unitcell = copy.deepcopy(self.unit_cell)
+        n2 = int(self.settings['Number of phase steps']/2)
+        delta = 1.0 / float(n2)
+        phases = np.arange(-1.0, 1.0+delta-1.0E-10, delta)
+        with open(filename,'w') as fd:
+            for phase_index,phase in enumerate(phases):
+                description = 'mode_'+str(self.selected_mode)+'_phase_'+str(phase)
+                unitcell.set_xyz_coordinates(self.newXYZ[phase_index])
+                unitcell.write_cif(description,file_=fd)
 
     def plot(self):
         debugger.print('plot')
