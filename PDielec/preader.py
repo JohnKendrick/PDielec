@@ -5,6 +5,7 @@ import string
 import re
 import numpy as np
 import os, sys
+import psutil
 from PDielec.Constants import amu, PI, avogadro_si, wavenumber, angstrom, isotope_masses, average_masses
 from PDielec.VaspOutputReader import VaspOutputReader
 from PDielec.CastepOutputReader import CastepOutputReader
@@ -13,7 +14,8 @@ from PDielec.CrystalOutputReader import CrystalOutputReader
 from PDielec.AbinitOutputReader import AbinitOutputReader
 from PDielec.QEOutputReader import QEOutputReader
 from PDielec.PhonopyOutputReader import PhonopyOutputReader
-from multiprocessing import Pool, cpu_count
+from multiprocess import Pool
+import dill as pickle
 import PDielec.Calculator as Calculator
 import PDielec.__init__
 version = PDielec.__init__.__version__
@@ -311,10 +313,10 @@ def read_a_file( calling_parameters):
             string = string + ',' + str(f*4225.6)
         results_string.append(string)
     # End if not no_calculation
-    return name,results_string
+    return reader,name,results_string
 
 def print_help():
-    print('preader -program program [-eckart] [-neutral] [-nocalculation] [-hessian symm] [-masses average] filenames .....', file=sys.stderr)
+    print('preader -program program [-eckart] [-neutral] [-nocalculation] [-hessian symm] [-masses average] [-pickle name] [-version] filenames .....', file=sys.stderr)
     print('  \"program\" must be one of \"abinit\", \"castep\", \"crystal\", \"gulp\"       ', file=sys.stderr)
     print('           \"phonopy\", \"qe\", \"vasp\", \"auto\"                               ', file=sys.stderr)
     print('           The default is auto, so the program tries to guess the package from   ', file=sys.stderr)
@@ -336,6 +338,9 @@ def print_help():
     print('           A single line is output with results obtained by reading the output   ', file=sys.stderr)
     print('           any of -mass -masses -eckart -neutral or -crystal are ignored         ', file=sys.stderr)
     print('  -debug   to switch on more debug information                                   ', file=sys.stderr)
+    print('  -pickle  write each file reader to a pickled dump file for later processing    ', file=sys.stderr)
+    print('           the name of the file to hold all the pickled readers is given         ', file=sys.stderr)
+    print('           If the file exists it is not overwritten                              ', file=sys.stderr)
     print('  -version print the version of PDielec library being used                       ', file=sys.stderr)
     print('  Version ',version,file=sys.stderr)
     exit()
@@ -359,6 +364,7 @@ def main():
     program = 'auto'
     qmprogram = 'vasp'
     debug = False
+    picklefile = None
     while itoken < ntokens:
         itoken += 1
         token = tokens[itoken]
@@ -402,6 +408,12 @@ def main():
             exit()
         elif token == "-nocalculation":
             global_no_calculation = True
+        elif token == "-pickle":
+            itoken += 1
+            picklefile = tokens[itoken]
+            if os.path.isfile(picklefile):
+                print('Error: pickle file {} already exists'.format(picklefile),file=sys.stderr)
+                exit()
         elif token == "-program":
             itoken += 1
             program = tokens[itoken]
@@ -456,7 +468,8 @@ def main():
     #
     # Create a pool of processors to handle reading the files
     #
-    p = Pool(initializer=set_affinity_on_worker)
+    number_of_processors = psutil.cpu_count(logical=False)
+    p = Pool(number_of_processors,initializer=set_affinity_on_worker)
     # Create a tuple list of calling parameters
     calling_parameters = []
     files.sort()
@@ -471,8 +484,16 @@ def main():
     results = results_map_object.get()
     # Convert the results into a dictionary
     results_dictionary = {}
-    for name,strings in results:
+    # If pickling then open the pickle file
+    if picklefile:
+        picklefd = open(picklefile,'wb')
+    for reader,name,strings in results:
         results_dictionary[name] = strings
+        if picklefile:
+            pickle.dump(reader,picklefd)
+    # If pickling then close the pickle file
+    if picklefile:
+        picklefd.close()
     # Print out the results
     print('directory,information,electrons,magnetization,kpnts,kpnt_1,kpnt_2,kpnt_3,energy_cutoff_eV,final_free_energy_eV,final_energy_without_entropy_eV,pressure_GPa,a_A,b_A,c_A,alpha,beta,gamma,volume,eps0_xx,eps0_yy,eps0_zz,eps0_xy,eps0_xz,eps0_yz,epsinf_xx,epsinf_yy,epsinf_zz,epsinf_xy,epsinf_xz,epsinf_yz, c11_gpa, c22_gpa, c33_gpa, c44_gpa, c55_gpa, c66_gpa, c12_gpa,  c13_gpa, c23_gpa,f1,f2,f3,f4,f5,f6....')
     for name in files:
@@ -543,4 +564,4 @@ def main():
 # end of def main
 
 if __name__ == "__main__":
-    main(sys)
+    main()

@@ -28,6 +28,7 @@ version = PDielec.__init__.__version__
 
 
 def main():
+    show_splash = True
     for token in sys.argv:
         if token == '-nosplash' or token == '--nosplash':
             show_splash = False
@@ -41,7 +42,6 @@ def main():
             exit()
 
     app = QApplication(sys.argv)
-    show_splash = True
 
     if show_splash:
         dirname = os.path.dirname(os.path.realpath(sys.argv[0]))
@@ -61,4 +61,4 @@ def main():
 
 if __name__ == '__main__':
     freeze_support()
-    main(sys)
+    main()

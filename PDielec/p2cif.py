@@ -5,6 +5,7 @@ import string
 import re
 import numpy as np
 import os, sys
+import psutil
 from PDielec.Constants import amu, PI, avogadro_si, wavenumber, angstrom, isotope_masses, average_masses
 from PDielec.VaspOutputReader import VaspOutputReader
 from PDielec.CastepOutputReader import CastepOutputReader
@@ -13,7 +14,7 @@ from PDielec.CrystalOutputReader import CrystalOutputReader
 from PDielec.AbinitOutputReader import AbinitOutputReader
 from PDielec.QEOutputReader import QEOutputReader
 from PDielec.PhonopyOutputReader import PhonopyOutputReader
-from multiprocessing import Pool, cpu_count
+from multiprocess import Pool
 import PDielec.Calculator as Calculator
 
 def set_affinity_on_worker():
@@ -191,7 +192,8 @@ def main():
     #
     # Create a pool of processors to handle reading the files
     #
-    p = Pool(initializer=set_affinity_on_worker)
+    number_of_processors = psutil.cpu_count(logical=False)
+    p = Pool(number_of_processors,initializer=set_affinity_on_worker)
     # Create a tuple list of calling parameters
     calling_parameters = []
     files.sort()
