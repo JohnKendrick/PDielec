@@ -1,3 +1,16 @@
+version 6.4.4
+Added an option in viewerTab to write the vibrating molecule as a cif file.
+Modified the cif output format so it is more like that of Mercury
+Introduced psutil.cpu_count as this will give the number of physical processors
+Switched the multiprocessing module to the multiprocess module (pickling is better)
+Overrode the mkl environment variable for the number of threads.  PDgui now uses mkl threading, unless it is in multiprocessing mode.
+Used dill for the pickling itself.
+In preader added an option to pickle each of the readers that are created and store them in a file
+Added a script, pickled_reader which can read the pickled file.  The script is just an example of how the readers can be read in and the contents accessed.
+Modified UnitCell.py to use print_info instead of printInfo
+New set of pyhton packages are needed for the above;
+dill,multiprocess,psutil
+
 version 6.4.3
 Modified p2cif so that it becomes a windows executable
 Modified p2cif and preader to be more robust when reading phonopy output
