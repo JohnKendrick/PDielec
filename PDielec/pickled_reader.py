@@ -12,7 +12,7 @@ from PDielec.CrystalOutputReader import CrystalOutputReader
 from PDielec.AbinitOutputReader import AbinitOutputReader
 from PDielec.QEOutputReader import QEOutputReader
 from PDielec.PhonopyOutputReader import PhonopyOutputReader
-import dill
+import dill as pickle
 import PDielec.__init__
 version = PDielec.__init__.__version__
 
@@ -24,15 +24,36 @@ def print_help():
     exit()
 
 def main():
-    # Start processing the directories
+    #
+    # Print out the help file if there is nothing else on the command line
+    #
     if len(sys.argv) <= 1 :
         print_help()
+    #
     # Read in the pickled reader objects from the dump file
-    readers = []
+    #
     picklefile = sys.argv[1]
+    #
+    # store each reader in a list
+    #
+    readers = []
+    #
+    # Open the pickled file as binary and for reading only
+    # keep reading until we reach an end of file
+    #
     with open(picklefile,'rb') as f:
-        readers.append(dill.load(f))
+        try:
+            while True:
+                readers.append(pickle.load(f))
+        except EOFError:
+            pass
+    #
+    print('Read in {} readers'.format(len(readers)))
+    #
+    # Loop over the readers and print out some information - assign a variable
+    #
     for reader in readers:
+        print('NEW READER type={}, file={}'.format(reader.type,reader.names[0]))
         reader.print_info()
         print('LAST CELL')
         lastcell = reader.unit_cells[-1]
