@@ -71,7 +71,6 @@ class App(QMainWindow):
             elif spreadsheet == '':
                 spreadsheet = token
             itoken += 1
-        #
         self.title = 'PDGui - Using PDielec library {} '.format(version)
         self.left = 10
         self.top = 30

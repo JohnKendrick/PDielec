@@ -1,6 +1,7 @@
 import os.path
 import sys
 import copy
+import psutil
 from PyQt5.QtWidgets            import  QWidget, QTabWidget
 from PyQt5.QtWidgets            import  QVBoxLayout
 from PyQt5.QtWidgets            import  QApplication
@@ -25,7 +26,18 @@ class NoteBook(QWidget):
         self.progressbar=progressbar
         self.spreadsheet = None
         self.threading = threading
-        self.ncpus = ncpus
+        if ncpus == 0:
+            self.ncpus = psutil.cpu_count(logical=False)
+        else:
+            self.ncpus = ncpus
+        #
+        # Set threading for mkl
+        #
+        try:
+            import mkl
+            mkl.set_num_threads(self.ncpus)
+        except:
+            pass
         self.scripting = scripting
         self.debug = debug
         self.plottingCalculationRequired = True
