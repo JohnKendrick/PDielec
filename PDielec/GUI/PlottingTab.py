@@ -3,7 +3,7 @@ import os.path
 import os
 import numpy as np
 osname = os.name
-from multiprocessing import cpu_count, Array
+from multiprocess import Array
 import PDielec.Calculator as Calculator
 from PyQt5.QtWidgets  import  QPushButton, QWidget
 from PyQt5.QtWidgets  import  QComboBox, QLabel, QLineEdit
@@ -57,9 +57,9 @@ class PlottingTab(QWidget):
         self.reader = self.notebook.mainTab.reader
         # Create the parallel environment
         if self.notebook.threading:
-            from multiprocessing.dummy import Pool
+            from multiprocess.dummy import Pool
         else:
-            from multiprocessing import Pool
+            from multiprocess import Pool
         # Create last tab - PlottingTab
         vbox = QVBoxLayout()
         form = QFormLayout()
@@ -437,17 +437,21 @@ class PlottingTab(QWidget):
         if self.notebook.progressbar is not None:
             self.notebook.progressbar.setMaximum(maximum_progress)
         QCoreApplication.processEvents()
-        # Lets find ouit how many processors to use
-        if self.notebook.ncpus == 0:
-            number_of_processors = cpu_count()
-        else:
-            number_of_processors = self.notebook.ncpus
+        number_of_processors = self.notebook.ncpus
+        #
+        # Switch off mkl threading
+        #
+        try:
+            import mkl
+            mkl.set_num_threads(1)
+        except:
+            pass
         #jk start = time.time()
         if self.notebook.threading:
-            from multiprocessing.dummy import Pool
+            from multiprocess.dummy import Pool
             pool = Pool(number_of_processors)
         else:
-            from multiprocessing import Pool
+            from multiprocess import Pool
             pool = Pool(number_of_processors, initializer=set_affinity_on_worker, maxtasksperchild=10)
         dielecv_results = []
         for result in pool.imap(Calculator.parallel_dielectric, call_parameters,chunksize=40):
@@ -480,10 +484,10 @@ class PlottingTab(QWidget):
         self.sp_atrs = []
         #jk start = time.time()
         if self.notebook.threading:
-            from multiprocessing.dummy import Pool
+            from multiprocess.dummy import Pool
             pool = Pool(number_of_processors)
         else:
-            from multiprocessing import Pool
+            from multiprocess import Pool
             pool = Pool(number_of_processors, initializer=set_affinity_on_worker, maxtasksperchild=10)
         for i,(scenario,L) in enumerate(zip(self.scenarios,self.depolarisations)):
             #debugger.print('Scenario ',i,L)
@@ -545,6 +549,14 @@ class PlottingTab(QWidget):
             self.sp_atrs.append(sp_atr)
         pool.close()
         pool.join()
+        #
+        # Switch on mkl threading
+        #
+        try:
+            import mkl
+            mkl.set_num_threads(number_of_processors)
+        except:
+            pass
         #jk print('Dielec calculation duration ', time.time()-start)
         #if self.notebook.spreadsheet is not None:
         #    self.write_spreadsheet()
