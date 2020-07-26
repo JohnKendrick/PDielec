@@ -51,7 +51,8 @@ class UnitCell:
     def write_cif(self, filename='', file_=sys.stdout):
         print('data_'+filename,                                  file=file_)
         print('_space_group_IT_number 1',                        file=file_)
-        print('_symmetry_space_group_name_H-M \'P1\'',           file=file_)
+        print('_symmetry_space_group_name_H-M \'P 1\'',          file=file_)
+        print('_symmetry_Int_Tables_number        1  ',          file=file_)
         print('_cell_length_a      {:12.6f}'.format(self.a),     file=file_)
         print('_cell_length_b      {:12.6f}'.format(self.b),     file=file_)
         print('_cell_length_c      {:12.6f}'.format(self.c),     file=file_)
@@ -61,13 +62,16 @@ class UnitCell:
         print('_cell_volume        {:12.6f}'.format(self.volume),file=file_)
         print('loop_',                                           file=file_)
         print('_atom_site_label',                                file=file_)
+        print('_atom_site_type_symbol',                          file=file_)
         print('_atom_site_fract_x',                              file=file_)
         print('_atom_site_fract_y',                              file=file_)
         print('_atom_site_fract_z',                              file=file_)
-        print('_atom_site_site_type_symbol',                     file=file_)
         for i,(frac,el) in enumerate(zip(self.fractional_coordinates,self.element_names)):
             symbol = el+str(i+1)
-            print( '{} {:12.6f} {:12.6f} {:12.6f} {}'.format(symbol,frac[0], frac[1], frac[2], el), file=file_)
+            print( '{} {} {:12.6f} {:12.6f} {:12.6f}'.format(symbol, el, frac[0], frac[1], frac[2]), file=file_)
+        print(' ',                                               file=file_)
+        print('#END',                                            file=file_)
+        print(' ',                                               file=file_)
         return
 
     def getBoundingBox(self):
