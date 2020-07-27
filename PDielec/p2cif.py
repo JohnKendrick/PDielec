@@ -27,7 +27,10 @@ def find_program_from_name( filename ):
     # Determine the program to use from the file name being used
     head,tail = os.path.split(filename)
     root,ext = os.path.splitext(tail)
-    head = head+'/'
+    if head == '':
+        head = './'
+    else:
+        head = head+'/'
     if tail == 'OUTCAR':
         if os.path.isfile(head+'phonopy.yaml'):
             return 'phonopy'
