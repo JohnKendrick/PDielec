@@ -50,6 +50,7 @@ class QEOutputReader(GenericOutputReader):
         self.manage['electrons']  = (re.compile('^ *number of electrons'), self._read_electrons)
         self.manage['energy']  = (re.compile('^ *total energy  *='), self._read_energy)
         self.manage['alat']  = (re.compile('^ *lattice parameter'), self._read_alat)
+        self.manage['alat']  = (re.compile('^ *A = '), self._read_alat2)
         self.manage['celldm1']  = (re.compile('^ *celldm.1. ='), self._read_celldm1)
         self.manage['pressure']  = (re.compile('^ *total *stress *.Ry'), self._read_pressure)
         self.manage['nions']  = (re.compile('^ *number of atoms/cell'), self._read_nions)
@@ -76,7 +77,9 @@ class QEOutputReader(GenericOutputReader):
         #
         # Read from log file
         #
-        t = float(line.split()[2])
+        string = line.split()[2]
+        string = string.replace(',','')
+        t = float(string)
         if abs(t - angs2bohr) < 1.0e-4:
             t = angs2bohr
         # There are rounding errors when reading from the log file
@@ -100,6 +103,21 @@ class QEOutputReader(GenericOutputReader):
             self._alat = t
         if self.debug:
             print('_read_alat: _alat={}'.format(self._alat) )
+        return
+
+    def _read_alat2(self, line):
+        #
+        # Read from log file
+        #
+        t = float(line.split()[2])
+        if abs(t - angs2bohr) < 1.0e-4:
+            t = angs2bohr
+        # There are rounding errors when reading from the log file
+        # So only read if there is no alternative
+        if self._alat is None:
+            self._alat = t
+        if self.debug:
+            print('_read_alat2: _alat={}'.format(self._alat) )
         return
 
     def _read_electrons(self, line):
