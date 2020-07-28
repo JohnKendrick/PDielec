@@ -42,6 +42,8 @@ setuptools.setup(
         'Pygments',
         'beautifulsoup4',
         'psutil',
+        'multiprocess',
+        'dill',
         'requests',
     ],
     include_package_data=True,   # Assume all information is in MANIFEST.in
@@ -62,6 +64,7 @@ setuptools.setup(
             'preader=preader:main',
             'p2cif=p2cif:main',
             'pdcompare=pdcompare:main',
+            'pickled_reader=pickled_reader:main',
         ],
         'gui_scripts': [
             'pdgui=pdgui:main',

@@ -10,6 +10,8 @@ Added a script, pickled_reader which can read the pickled file.  The script is j
 Modified UnitCell.py to use print_info instead of printInfo
 New set of pyhton packages are needed for the above;
 dill,multiprocess,psutil
+Added new test for p2cif
+Removed redundant imports from all files
 
 version 6.4.3
 Modified p2cif so that it becomes a windows executable
