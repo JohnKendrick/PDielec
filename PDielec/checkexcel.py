@@ -1,9 +1,7 @@
 #!/usr/bin/env python
 """Read in two csv files and check that the float contents are the same"""
 from __future__ import print_function
-import string
-import os, sys
-from os.path import splitext
+import sys
 from termcolor import colored
 from openpyxl import load_workbook
 

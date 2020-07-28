@@ -16,7 +16,6 @@
 #
 """Read the contents of a directory containg VASP input and output files"""
 import re
-import os
 import numpy as np
 from PDielec.UnitCell import UnitCell
 from PDielec.GenericOutputReader import GenericOutputReader

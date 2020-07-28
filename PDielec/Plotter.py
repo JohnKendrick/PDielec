@@ -43,7 +43,6 @@ class Plotter:
 
     def excel(self, workbook):
         """Print data to a xlsx file"""
-        import xlsxwriter as xlsx
         #  Loop over the different sheets
         worksheets = []
         for itype,name in enumerate(['molar_absorption_coefficient','real_dielectric','imag_dielectric','absorption_coefficent']):

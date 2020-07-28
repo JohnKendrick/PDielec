@@ -16,8 +16,6 @@
 #
 '''PDielec driver program to calculate dielectric response at infrared and THz frequencies'''
 from __future__ import print_function
-import math
-import os
 import sys
 import numpy as np
 from openpyxl import load_workbook

@@ -7,7 +7,6 @@ from PyQt5.QtWidgets  import  QVBoxLayout, QHBoxLayout, QFormLayout
 from PyQt5.QtWidgets  import  QSpinBox, QDoubleSpinBox
 from PyQt5.QtWidgets  import  QSizePolicy, QTableWidgetItem
 from PyQt5.QtCore     import  Qt, QCoreApplication
-from PDielec.Constants import  wavenumber, amu, PI, avogadro_si, angstrom
 from PDielec.Constants import  covalent_radii
 # Import plotting requirements
 import matplotlib
@@ -316,20 +315,8 @@ class AnalysisTab(QWidget):
         QApplication.setOverrideCursor(Qt.WaitCursor)
         # Assemble the settingsTab settings
         settings = self.notebook.settingsTab.settings
-        eckart = settings['Eckart flag']
-        neutral = settings['Neutral Born charges']
-        epsilon_inf = np.array(settings['Optical permittivity'])
-        sigmas_cm1 = self.notebook.settingsTab.sigmas_cm1
-        sigmas = np.array(sigmas_cm1) * wavenumber
-        modes_selected = self.notebook.settingsTab.modes_selected
         self.frequencies_cm1 = self.notebook.settingsTab.frequencies_cm1
         mass_weighted_normal_modes = self.notebook.settingsTab.mass_weighted_normal_modes
-        frequencies = np.array(self.frequencies_cm1) * wavenumber
-        intensities = self.notebook.settingsTab.intensities
-        oscillator_strengths = self.notebook.settingsTab.oscillator_strengths
-        volume = self.reader.volume*angstrom*angstrom*angstrom
-        vmin = self.settings['Minimum frequency']
-        vmax = self.settings['Maximum frequency']
         scale = self.settings['Covalent radius scaling']
         tolerance = self.settings['Bonding tolerance']
         # Find the last unit cell read by the reader and its masses

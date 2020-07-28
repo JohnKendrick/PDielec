@@ -1,12 +1,8 @@
 #!/usr/bin/env python
 """Read the contents of a directory containing DFT output and create a cif file of the structure"""
 from __future__ import print_function
-import string
-import re
-import numpy as np
 import os, sys
 import psutil
-from PDielec.Constants import amu, PI, avogadro_si, wavenumber, angstrom, isotope_masses, average_masses
 from PDielec.VaspOutputReader import VaspOutputReader
 from PDielec.CastepOutputReader import CastepOutputReader
 from PDielec.GulpOutputReader import GulpOutputReader
@@ -15,7 +11,6 @@ from PDielec.AbinitOutputReader import AbinitOutputReader
 from PDielec.QEOutputReader import QEOutputReader
 from PDielec.PhonopyOutputReader import PhonopyOutputReader
 from multiprocess import Pool
-import PDielec.Calculator as Calculator
 
 def set_affinity_on_worker():
     """When a new worker process is created, the affinity is set to all CPUs"""
@@ -38,6 +33,8 @@ def find_program_from_name( filename ):
             return 'vasp'
     if ext == '.castep':
         return 'castep'
+    if ext == '.gout':
+        return 'gulp'
     if ext == '.born':
         return 'phonopy'
     if ext ==  '.out':
@@ -209,8 +206,6 @@ def main():
     results_map_object = p.map_async(read_a_file,calling_parameters)
     results_map_object.wait()
     results = results_map_object.get()
-    # Convert the results into a dictionary
-    results_dictionary = {}
     for name,cell in results:
         cell.write_cif(filename=name,file_=sys.stdout)
     #

@@ -18,7 +18,6 @@
 from __future__ import print_function
 import os
 import sys
-import time
 from PDielec.GUI.App  import App
 from PyQt5.QtGui     import QPixmap
 from PyQt5.QtWidgets import QApplication, QSplashScreen, QProgressBar

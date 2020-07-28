@@ -1,14 +1,10 @@
 # -*- coding: utf8 -*-
-import sys
-import os.path
-import numpy as np
-import PDielec.Calculator as Calculator
 from PyQt5.QtWidgets  import  QPushButton, QWidget
 from PyQt5.QtWidgets  import  QComboBox, QLabel, QLineEdit, QDoubleSpinBox
 from PyQt5.QtWidgets  import  QVBoxLayout, QHBoxLayout, QFormLayout
 from PyQt5.QtWidgets  import  QSpinBox
 from PyQt5.QtCore     import  Qt
-from PDielec.Constants import  support_matrix_db, wavenumber, amu, PI
+from PDielec.Constants import  support_matrix_db
 from PDielec.Constants import  avogadro_si
 from PDielec.Utilities import  Debug
 

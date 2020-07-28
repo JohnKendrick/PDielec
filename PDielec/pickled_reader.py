@@ -1,17 +1,7 @@
 #!/usr/bin/env python
 """Read the contents of a directory containing DFT output and create a csv style file of information"""
 from __future__ import print_function
-import string
-import numpy as np
-import os, sys
-from PDielec.Constants import amu, PI, avogadro_si, wavenumber, angstrom, isotope_masses, average_masses
-from PDielec.VaspOutputReader import VaspOutputReader
-from PDielec.CastepOutputReader import CastepOutputReader
-from PDielec.GulpOutputReader import GulpOutputReader
-from PDielec.CrystalOutputReader import CrystalOutputReader
-from PDielec.AbinitOutputReader import AbinitOutputReader
-from PDielec.QEOutputReader import QEOutputReader
-from PDielec.PhonopyOutputReader import PhonopyOutputReader
+import sys
 import dill as pickle
 import PDielec.__init__
 version = PDielec.__init__.__version__

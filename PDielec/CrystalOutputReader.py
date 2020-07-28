@@ -20,7 +20,6 @@
 import re
 import math
 import os
-import sys
 import numpy as np
 from PDielec.Constants import amu, hartree2ev
 from PDielec.UnitCell import UnitCell

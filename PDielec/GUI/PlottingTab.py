@@ -1,4 +1,3 @@
-import sys
 import os.path
 import os
 import numpy as np
@@ -12,8 +11,7 @@ from PyQt5.QtWidgets  import  QVBoxLayout, QHBoxLayout, QFormLayout
 from PyQt5.QtWidgets  import  QSpinBox,QDoubleSpinBox
 from PyQt5.QtWidgets  import  QSizePolicy
 from PyQt5.QtCore     import  QCoreApplication, Qt
-from PDielec.Constants import  wavenumber, amu, PI, avogadro_si, angstrom
-from PDielec.Constants import  average_masses, isotope_masses
+from PDielec.Constants import  wavenumber, PI, avogadro_si, angstrom
 import ctypes
 # Import plotting requirements
 import matplotlib
@@ -21,7 +19,6 @@ import matplotlib.figure
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT as NavigationToolbar
 from PDielec.Utilities import Debug
-import time
 
 def set_affinity_on_worker():
     '''When a new worker process is created, the affinity is set to all CPUs'''
@@ -55,11 +52,6 @@ class PlottingTab(QWidget):
         self.notebook = parent
         # get the reader from the main tab
         self.reader = self.notebook.mainTab.reader
-        # Create the parallel environment
-        if self.notebook.threading:
-            from multiprocess.dummy import Pool
-        else:
-            from multiprocess import Pool
         # Create last tab - PlottingTab
         vbox = QVBoxLayout()
         form = QFormLayout()
@@ -368,21 +360,17 @@ class PlottingTab(QWidget):
         # Assemble the settingsTab settings
         self.notebook.plottingCalculationRequired = False
         settings = self.notebook.settingsTab.settings
-        eckart = settings['Eckart flag']
-        neutral = settings['Neutral Born charges']
         epsilon_inf = np.array(settings['Optical permittivity'])
         sigmas_cm1 = self.notebook.settingsTab.sigmas_cm1
         sigmas = np.array(sigmas_cm1) * wavenumber
         modes_selected = self.notebook.settingsTab.modes_selected
         frequencies_cm1 = self.notebook.settingsTab.frequencies_cm1
         frequencies = np.array(frequencies_cm1) * wavenumber
-        intensities = self.notebook.settingsTab.intensities
         oscillator_strengths = self.notebook.settingsTab.oscillator_strengths
         volume = reader.volume*angstrom*angstrom*angstrom
         vmin = self.settings['Minimum frequency']
         vmax = self.settings['Maximum frequency']
         vinc = self.settings['Frequency increment']
-        calling_parameters = []
         self.scenarios = self.notebook.scenarios
         mode_list = []
         drude_sigma = 0
@@ -393,8 +381,6 @@ class PlottingTab(QWidget):
                 mode_list.append(mode_index)
         #debugger.print('mode_list', mode_list)
         # Calculate the ionic permittivity at zero frequency
-        epsilon_ionic = self.notebook.settingsTab.epsilon_ionic
-        epsilon_total = epsilon_inf + epsilon_ionic
         cell = reader.unit_cells[-1]
         self.directions = []
         self.depolarisations = []
@@ -491,11 +477,8 @@ class PlottingTab(QWidget):
             pool = Pool(number_of_processors, initializer=set_affinity_on_worker, maxtasksperchild=10)
         for i,(scenario,L) in enumerate(zip(self.scenarios,self.depolarisations)):
             #debugger.print('Scenario ',i,L)
-            matrix = scenario.settings['Matrix']
             method = scenario.settings['Effective medium method'].lower()
-            matrix_density = scenario.settings['Matrix density']
             matrix_permittivity = np.identity(3) * scenario.settings['Matrix permittivity']
-            mass_fraction = scenario.settings['Mass fraction']
             volume_fraction = scenario.settings['Volume fraction']
             particle_size_mu = scenario.settings['Particle size(mu)']
             particle_sigma_mu = scenario.settings['Particle size distribution sigma(mu)']

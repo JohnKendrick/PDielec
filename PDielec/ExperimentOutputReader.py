@@ -16,11 +16,9 @@
 #
 """Read the contents of a directory containg Experiment input and output files"""
 import re
-import os
 import numpy as np
 from PDielec.UnitCell import UnitCell
 from PDielec.GenericOutputReader import GenericOutputReader
-from PDielec.Constants           import atomic_number_to_element
 from PDielec.Calculator          import initialise_diagonal_tensor
 
 

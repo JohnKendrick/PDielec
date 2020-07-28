@@ -1,4 +1,3 @@
-import os.path
 import sys
 import copy
 import psutil
@@ -126,7 +125,6 @@ class NoteBook(QWidget):
             return
         print('Current settings will be saved to '+filename)
         fd = open(filename,'w')
-        ntabs = 2+ len(self.scenarios) + 4
         self.print_tab_settings(self.mainTab, 'mainTab',fd)
         print('tab.refresh(force=True)',file=fd)
         self.print_tab_settings(self.settingsTab, 'settingsTab',fd)

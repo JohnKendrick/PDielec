@@ -1,6 +1,4 @@
 # -*- coding: utf8 -*-
-import sys
-import os.path
 import numpy as np
 import PDielec.Calculator as Calculator
 from PyQt5.QtWidgets  import  QWidget, QApplication
@@ -10,7 +8,6 @@ from PyQt5.QtWidgets  import  QVBoxLayout, QFormLayout
 from PyQt5.QtWidgets  import  QDoubleSpinBox, QTableWidget, QTableWidgetItem
 from PyQt5.QtWidgets  import  QSizePolicy
 from PyQt5.QtCore     import  Qt, QSize, QCoreApplication
-from PDielec.Utilities import  get_reader
 from PDielec.Constants import  wavenumber, amu, PI, angstrom
 from PDielec.Constants import  average_masses, isotope_masses
 from PDielec.Utilities import  Debug
@@ -209,7 +206,6 @@ class SettingsTab(QWidget):
         # convert cm-1 to au
         self.frequencies_cm1 = self.reader.frequencies
         # work out the degeneraceies
-        degeneracy_threshold = 1.0E-8
         self.degenerate_lists = {}
 #        #
         frequencies = np.array(self.frequencies_cm1) * wavenumber

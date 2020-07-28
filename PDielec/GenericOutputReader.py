@@ -19,9 +19,8 @@ from __future__ import print_function
 import math
 import os
 import sys
-import string
 import numpy as np
-from PDielec.Constants  import wavenumber, avogadro_si, atomic_number_to_element, amu
+from PDielec.Constants  import wavenumber, avogadro_si, amu
 from PDielec.Plotter    import print3x3, print_reals, print_strings, print_ints
 from PDielec.Calculator import cleanup_symbol
 

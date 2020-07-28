@@ -1,12 +1,10 @@
 #!/usr/bin/env python
 """Read the contents of a directory containing DFT output and create a csv style file of information"""
 from __future__ import print_function
-import string
-import re
 import numpy as np
 import os, sys
 import psutil
-from PDielec.Constants import amu, PI, avogadro_si, wavenumber, angstrom, isotope_masses, average_masses
+from PDielec.Constants import amu, wavenumber, angstrom, isotope_masses, average_masses
 from PDielec.VaspOutputReader import VaspOutputReader
 from PDielec.CastepOutputReader import CastepOutputReader
 from PDielec.GulpOutputReader import GulpOutputReader
@@ -39,6 +37,8 @@ def find_program_from_name( filename ):
             return 'phonopy'
         else:
             return 'vasp'
+    if ext == '.gout':
+        return 'gulp'
     if ext == '.born':
         return 'phonopy'
     if ext == '.castep':

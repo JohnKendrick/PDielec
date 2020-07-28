@@ -15,13 +15,8 @@
 # along with this program, if not see https://opensource.org/licenses/MIT
 #
 """Read the contents of a directory containg Phonopy input and output files"""
-import re
-import os
-import math
 import numpy as np
-from PDielec.UnitCell import UnitCell
 from PDielec.GenericOutputReader import GenericOutputReader
-from PDielec.Constants import wavenumber
 
 
 class PhonopyOutputReader(GenericOutputReader):
@@ -97,9 +92,9 @@ class PhonopyOutputReader(GenericOutputReader):
         self._old_masses = []
         for i in range(self.nions):
             self._old_masses.append(data_p['primitive_cell']['points'][i]['mass'])
-        qpoints = data_q['phonon'][0]['q-position']
+        #qpoints = data_q['phonon'][0]['q-position']
         # print('q-points',qpoints)
-        natom = data_q['natom']
+        #natom = data_q['natom']
         # print('natom:',natom)
         dynmat = []
         dynmat_data = data_q['phonon'][0]['dynamical_matrix']

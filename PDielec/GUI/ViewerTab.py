@@ -1,7 +1,5 @@
 import os
-import math
 import numpy as np
-import PDielec.Calculator as Calculator
 from collections import deque
 from PyQt5.QtWidgets         import  QPushButton, QWidget
 from PyQt5.QtWidgets         import  QComboBox, QLabel, QLineEdit
@@ -9,7 +7,7 @@ from PyQt5.QtWidgets         import  QVBoxLayout, QHBoxLayout, QFormLayout
 from PyQt5.QtWidgets         import  QSpinBox, QTabWidget, QDoubleSpinBox
 from PyQt5.QtWidgets         import  QSizePolicy, QColorDialog, QMessageBox, QApplication
 from PyQt5.QtCore            import  Qt
-from PDielec.Constants        import  wavenumber, amu, PI, avogadro_si, angstrom
+from PDielec.Constants        import  wavenumber, angstrom
 from PDielec.Constants        import  elemental_colours
 # Import plotting requirements
 from PDielec.Utilities        import Debug
@@ -394,10 +392,6 @@ class ViewerTab(QWidget):
         settings = self.notebook.settingsTab.settings
         self.frequencies_cm1 = self.notebook.settingsTab.frequencies_cm1
         self.selected_mode_sb.setRange(0,len(self.frequencies_cm1)-1)
-        frequencies = np.array(self.frequencies_cm1) * wavenumber
-        intensities = self.notebook.settingsTab.intensities
-        oscillator_strengths = self.notebook.settingsTab.oscillator_strengths
-        volume = self.reader.volume*angstrom*angstrom*angstrom
         # Get the cell with whole molecules from the analysis tab
         self.unit_cell = self.notebook.analysisTab.cell_of_molecules
         # if self.debug:

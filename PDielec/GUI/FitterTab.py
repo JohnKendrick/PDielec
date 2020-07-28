@@ -1,5 +1,4 @@
 # -*- coding: utf8 -*-
-import sys
 import os.path
 import numpy as np
 import PDielec.Calculator as Calculator
@@ -8,14 +7,12 @@ from PyQt5.QtWidgets  import  QComboBox, QLabel, QLineEdit, QDoubleSpinBox
 from PyQt5.QtWidgets    import  QVBoxLayout, QHBoxLayout, QFormLayout
 from PyQt5.QtWidgets    import  QSpinBox
 from PyQt5.QtWidgets    import  QFileDialog
-from PyQt5.QtWidgets    import  QTableWidget
 from PyQt5.QtWidgets    import  QTableWidgetItem
 from PyQt5.QtWidgets    import  QSizePolicy
 from PyQt5.QtWidgets    import  QCheckBox
 from PyQt5.QtWidgets    import  QTabWidget
 from PyQt5.QtCore       import  Qt
 from PyQt5.QtCore       import  QCoreApplication
-from PyQt5.QtCore       import  QSize
 from PDielec.Utilities   import  Debug
 from PDielec.GUI.SettingsTab import  FixedQTableWidget
 # Import plotting requirements
@@ -23,8 +20,6 @@ import matplotlib
 import matplotlib.figure
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT as NavigationToolbar
-from PDielec.Utilities import Debug
-import time
 from openpyxl import load_workbook
 from scipy.interpolate import interp1d
 from scipy.optimize import minimize
@@ -383,7 +378,6 @@ class FitterTab(QWidget):
             self.fittingButton.setText('Interupt fitting')
             self.calculationInProgress = True
         self.refresh()
-        final_point = self.optimiseFit()
         self.fittingButton.setText('Perform fitting')
         self.calculationInProgress = False
         return

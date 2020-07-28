@@ -494,8 +494,7 @@ def spherical_averaged_mie_scattering(dielectric_medium, dielecv, shape, L, vf, 
        The routine returns the effective dielectric constant"""
     from scipy.integrate import trapz
     from scipy.stats import lognorm
-    # from PDielec.PyMieScatt.Mie import MieS1S2, AutoMieQ
-    from PyMieScatt.Mie import MieS1S2, AutoMieQ
+    from PyMieScatt.Mie import MieS1S2
     global points_on_sphere
     # define i as a complex number
     i = complex(0,1)
@@ -509,7 +508,6 @@ def spherical_averaged_mie_scattering(dielectric_medium, dielecv, shape, L, vf, 
     lambda_vacuum_mu = 2 * PI * size_mu / size
     wavelength_nm = lambda_vacuum_mu * 1000 / refractive_index_medium
     radius_nm = size_mu * 1000
-    diameter_nm = 2 * radius_nm
     # The wavevector in nm-1
     k_nm = 2 * PI / wavelength_nm
     # volume of a particle in nm^3
@@ -554,9 +552,9 @@ def spherical_averaged_mie_scattering(dielectric_medium, dielecv, shape, L, vf, 
             # Now integrate
             s1 = trapz(s1_factors*ndp,dp)
             normal = trapz(ndp,dp)
-            mean = trapz(ndp*dp,dp)
-            true_mean = np.exp( np.log(size_mu) + size_distribution_sigma*size_distribution_sigma/2.0)
-            v_cm1 = 1.0E4/lambda_vacuum_mu
+            #mean = trapz(ndp*dp,dp)
+            #true_mean = np.exp( np.log(size_mu) + size_distribution_sigma*size_distribution_sigma/2.0)
+            #v_cm1 = 1.0E4/lambda_vacuum_mu
             #print("Frequency,normal,mean",v_cm1,normal,true_mean,mean)
             if np.abs(normal - 1.0) > 1.0E-2:
                 print("Warning integration of log-normal distribution in error", normal)
@@ -567,9 +565,6 @@ def spherical_averaged_mie_scattering(dielectric_medium, dielecv, shape, L, vf, 
             # Calculate the scattering factors at 0 degrees
             #jk print("refractive_index, size, refractive_index_medium", refractive_index, size, refractive_index_medium)
             s1,s2 = MieS1S2(refractive_index, size*refractive_index_medium, 1)
-        # qext,qsca,qabs,g,qpr,qback,qratio = ps.AutoMieQ(refractive_index, wavelength_nm, diameter_nm)
-        #jk print('s1,s2',s1,s2)
-        #jk print('qext,qsca,qabs',qext,qsca,qabs)
         # See van de Hulst page 129, 130
         # Refractive index of material is
         # the sign of the imaginary component has changed for compatibility with MG/Bruggeman
@@ -599,8 +594,7 @@ def mie_scattering(dielectric_medium, dielecv, shape, L, vf, size, size_mu, size
        The routine returns the effective dielectric constant"""
     from scipy.integrate import trapz
     from scipy.stats import lognorm
-    # from PDielec.PyMieScatt.Mie import MieS1S2, AutoMieQ
-    from PyMieScatt.Mie import MieS1S2, AutoMieQ
+    from PyMieScatt.Mie import MieS1S2
     #
     # Calculate the MG permittivity with no size effects
     #
@@ -628,7 +622,6 @@ def mie_scattering(dielectric_medium, dielecv, shape, L, vf, size, size_mu, size
     lambda_vacuum_mu = 2 * PI * size_mu / size
     wavelength_nm = lambda_vacuum_mu * 1000 / refractive_index_medium
     radius_nm = size_mu * 1000
-    diameter_nm = 2 * radius_nm
     # The wavevector in nm-1
     k_nm = 2 * PI / wavelength_nm
     # volume of a particle in nm^3
@@ -665,9 +658,9 @@ def mie_scattering(dielectric_medium, dielecv, shape, L, vf, size, size_mu, size
         # Now integrate
         s1 = trapz(s1_factors*ndp,dp)
         normal = trapz(ndp,dp)
-        mean = trapz(ndp*dp,dp)
-        true_mean = np.exp( np.log(size_mu) + size_distribution_sigma*size_distribution_sigma/2.0)
-        v_cm1 = 1.0E4/lambda_vacuum_mu
+        #mean = trapz(ndp*dp,dp)
+        #true_mean = np.exp( np.log(size_mu) + size_distribution_sigma*size_distribution_sigma/2.0)
+        #v_cm1 = 1.0E4/lambda_vacuum_mu
         #print("Frequency,normal,mean",v_cm1,normal,true_mean,mean)
         if np.abs(normal - 1.0) > 1.0E-2:
             print("Warning integration of log-normal distribution in error", normal)
@@ -678,9 +671,6 @@ def mie_scattering(dielectric_medium, dielecv, shape, L, vf, size, size_mu, size
         # Calculate the scattering factors at 0 degrees
         #jk print("refractive_index, size, refractive_index_medium", refractive_index, size, refractive_index_medium)
         s1,s2 = MieS1S2(refractive_index, size*refractive_index_medium, 1)
-    # qext,qsca,qabs,g,qpr,qback,qratio = ps.AutoMieQ(refractive_index, wavelength_nm, diameter_nm)
-    #jk print('s1,s2',s1,s2)
-    #jk print('qext,qsca,qabs',qext,qsca,qabs)
     # See van de Hulst page 129, 130
     # Refractive index of material is
     # the sign of the imaginary component has changed for compatibility with MG/Bruggeman
@@ -704,8 +694,7 @@ def anisotropic_mie_scattering(dielectric_medium, dielecv, shape, L, vf, size, s
        The routine returns the effective dielectric constant"""
     from scipy.integrate import trapz
     from scipy.stats import lognorm
-    # from PDielec.PyMieScatt.Mie import MieS1S2, AutoMieQ
-    from PyMieScatt.Mie import MieS1S2, AutoMieQ
+    from PyMieScatt.Mie import MieS1S2
     # define i as a complex number
     i = complex(0,1)
     # We need to taken account of the change in wavelength and the change in size parameter due to the
@@ -718,7 +707,6 @@ def anisotropic_mie_scattering(dielectric_medium, dielecv, shape, L, vf, size, s
     lambda_vacuum_mu = 2 * PI * size_mu / size
     wavelength_nm = lambda_vacuum_mu * 1000 / refractive_index_medium
     radius_nm = size_mu * 1000
-    diameter_nm = 2 * radius_nm
     # To account for anisotropy we diagonalise the real part of the dielectric matrix and transform
     # the full matrix with the eigenvectors, U
     # Find U and E, such that UT. D. U = E (where D is the real part of dielecv)
@@ -765,9 +753,9 @@ def anisotropic_mie_scattering(dielectric_medium, dielecv, shape, L, vf, size, s
             # Now integrate
             s1 = trapz(s1_factors*ndp,dp)
             normal = trapz(ndp,dp)
-            mean = trapz(ndp*dp,dp)
-            true_mean = np.exp( np.log(size_mu) + size_distribution_sigma*size_distribution_sigma/2.0)
-            v_cm1 = 1.0E4/lambda_vacuum_mu
+            #mean = trapz(ndp*dp,dp)
+            #true_mean = np.exp( np.log(size_mu) + size_distribution_sigma*size_distribution_sigma/2.0)
+            #v_cm1 = 1.0E4/lambda_vacuum_mu
             #print("Frequency,normal,mean",v_cm1,normal,true_mean,mean)
             if np.abs(normal - 1.0) > 1.0E-2:
                 print("Warning integration of log-normal distribution in error", normal)
@@ -778,9 +766,6 @@ def anisotropic_mie_scattering(dielectric_medium, dielecv, shape, L, vf, size, s
             # Calculate the scattering factors at 0 degrees
             #jk print("refractive_index, size, refractive_index_medium", refractive_index, size, refractive_index_medium)
             s1,s2 = MieS1S2(refractive_index, size*refractive_index_medium, 1)
-        # qext,qsca,qabs,g,qpr,qback,qratio = ps.AutoMieQ(refractive_index, wavelength_nm, diameter_nm)
-        #jk print('s1,s2',s1,s2)
-        #jk print('qext,qsca,qabs',qext,qsca,qabs)
         # See van de Hulst page 129, 130
         # Refractive index of material is
         # the sign of the imaginary component has changed for compatibility with MG/Bruggeman
@@ -1072,7 +1057,7 @@ def calculate_refractive_index_scalar(dielectric_scalar, debug=False):
     if np.abs(solution*solution-dielectric_scalar)/(1+np.abs(dielectric_scalar)) > 1.0E-8 or debug:
         print("There is an error in refractive index")
         print("Dielectric = ", dielectric_scalar)
-        print("solution*solution = ", solution*solution, np.abs(solution*solution-dielectric))
+        print("solution*solution = ", solution*solution, np.abs(solution*solution-dielectric_scalar))
         print("solution    = ", solution, solution*solution)
         print("solution1   = ", solution1, solution1*solution1)
         print("solution2   = ", solution2, solution2*solution2)
@@ -1249,8 +1234,7 @@ def foldy_scattering(lambda_vacuum_nm, N_nm,radius_nm,ri_medium):
     # radius_nm is the radius of the bubble
     # ri_medium is the refractive index of the medium the bubble is in
     #
-    # from PDielec.PyMieScatt.Mie import MieS1S2, AutoMieQ
-    from PyMieScatt.Mie import MieS1S2, AutoMieQ
+    from PyMieScatt.Mie import MieS1S2
     #
     k_nm = 2*PI*ri_medium/lambda_vacuum_nm
     # The size parameter is now also complex and dimensionless
@@ -1273,8 +1257,7 @@ def waterman_truell_scattering(lambda_vacuum_nm, N_nm,radius_nm,ri_medium):
     # radius_nm is the radius of the bubble
     # ri_medium is the refractive index of the medium the bubble is in
     #
-    # from PDielec.PyMieScatt.Mie import MieS1S2, AutoMieQ
-    from PyMieScatt.Mie import MieS1S2, AutoMieQ
+    from PyMieScatt.Mie import MieS1S2
     #
     k_nm = 2*PI*ri_medium/lambda_vacuum_nm
     # The size parameter is now also complex and dimensionless
@@ -1370,7 +1353,6 @@ def calculate_energy_distribution(cell, frequencies, normal_modes, debug=False):
       normal_modes are the mass weighted normal modes'''
    molecules = cell.molecules
    atomic_masses = cell.atomic_masses
-   centres_of_mass = cell.centres_of_mass
    xyz = cell.xyz_coordinates
    nats = len(xyz)
    # Calculate the projections operators for each molecule
@@ -1392,7 +1374,6 @@ def calculate_energy_distribution(cell, frequencies, normal_modes, debug=False):
    # Calculate the contributions to the kinetic energy in each mode
    energies_in_modes = []
    for imode,mode in enumerate(normal_modes):
-       energies_in_molecules = []
        mode_cm = mode
        centre_of_mass_energy = 0.0
        rotational_energy = 0.0
@@ -1443,7 +1424,7 @@ def hodrick_prescott_filter(y,damping,lambda_value,niters):
         except:
             pass
         z = sparse.linalg.spsolve(Z, w*y)
-        residuals = y - z
+        # residuals = y - z
         # error = sum( r*r for r in residuals if r < 0.0 )
         # error = math.sqrt(error/n)
         w = damping*(y>z) + (1-damping)*(y<z)

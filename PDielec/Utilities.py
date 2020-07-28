@@ -16,10 +16,7 @@
 #
 """Generic reader of output files.  Actual reader should inherit from this class"""
 from __future__ import print_function
-import math
 import os
-import sys
-import numpy as np
 
 from PDielec.VaspOutputReader import VaspOutputReader
 from PDielec.PhonopyOutputReader import PhonopyOutputReader
