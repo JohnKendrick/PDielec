@@ -16,6 +16,7 @@ default:
 		@echo "For a subset of the tests"
 		@echo " or  'make test-preader'"
 		@echo " or  'make test-pdgui'"
+		@echo " or  'make test-p2cif'"
 		@echo " or  'make test-cli'"
 		@echo " or  'make regenerate'"
 		@echo " or  'make pypi'"
@@ -36,14 +37,21 @@ install:
 
 test:		test-pdgui test-cli
 
-test-cli:	test-preader 
+tests:		test-pdgui test-cli
 
-tests-cli:	test-preader 
+test-cli:	test-preader test-p2cif
+
+tests-cli:	test-preader test-p2cif
 
 .PHONY:		pdgui
 test-pdgui:		
 		@echo "Testing pdgui functionality....."
 		@( cd Examples; make --no-print-directory test-pdgui )
+
+.PHONY:		test-p2cif
+test-p2cif:		
+		@echo "Testing preader functionality....."
+		@( cd Examples; make --no-print-directory test-p2cif )
 
 .PHONY:		test-preader
 test-preader:		

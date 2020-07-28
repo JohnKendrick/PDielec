@@ -1,0 +1,1527 @@
+data_../ATR/AlAs/AlAs.out
+_space_group_IT_number 1
+_symmetry_space_group_name_H-M 'P 1'
+_symmetry_Int_Tables_number        1  
+_cell_length_a          3.970101
+_cell_length_b          3.970101
+_cell_length_c          3.970101
+_cell_angle_alpha      60.000000
+_cell_angle_beta       60.000000
+_cell_angle_gamma      60.000000
+_cell_volume           44.247583
+loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+Al1 Al     0.000000     0.000000     0.000000
+As2 As     0.250000     0.250000     0.250000
+ 
+#END
+ 
+data_../ATR/Na2SO42/OUTCAR
+_space_group_IT_number 1
+_symmetry_space_group_name_H-M 'P 1'
+_symmetry_Int_Tables_number        1  
+_cell_length_a          4.780000
+_cell_length_b          5.575000
+_cell_length_c          6.091000
+_cell_angle_alpha     101.871000
+_cell_angle_beta      103.337000
+_cell_angle_gamma      97.418000
+_cell_volume          151.880428
+loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+Na1 Na     0.035621     0.314345     0.209004
+Na2 Na     0.964379     0.685655     0.790996
+S3 S     0.612195     0.777661     0.244840
+S4 S     0.387805     0.222339     0.755160
+O5 O     0.581379     0.038625     0.417087
+O6 O     0.418621     0.961375     0.582913
+O7 O     0.773672     0.896196     0.108231
+O8 O     0.226328     0.103804     0.891769
+O9 O     0.315321     0.648286     0.122497
+O10 O     0.684679     0.351714     0.877503
+O11 O     0.773083     0.638872     0.392503
+O12 O     0.226917     0.361128     0.607497
+ 
+#END
+ 
+data_../AbInit/AlAs/AlAs.out
+_space_group_IT_number 1
+_symmetry_space_group_name_H-M 'P 1'
+_symmetry_Int_Tables_number        1  
+_cell_length_a          3.970101
+_cell_length_b          3.970101
+_cell_length_c          3.970101
+_cell_angle_alpha      60.000000
+_cell_angle_beta       60.000000
+_cell_angle_gamma      60.000000
+_cell_volume           44.247583
+loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+Al1 Al     0.000000     0.000000     0.000000
+As2 As     0.250000     0.250000     0.250000
+ 
+#END
+ 
+data_../AbInit/BaTiO3-phonana/BaTiO3.out
+_space_group_IT_number 1
+_symmetry_space_group_name_H-M 'P 1'
+_symmetry_Int_Tables_number        1  
+_cell_length_a          4.180959
+_cell_length_b          4.180959
+_cell_length_c          4.180959
+_cell_angle_alpha      90.000000
+_cell_angle_beta       90.000000
+_cell_angle_gamma      90.000000
+_cell_volume           73.084899
+loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+O1 O     0.500000     0.500000     0.000000
+O2 O     0.500000     0.000000     0.500000
+O3 O     0.000000     0.500000     0.500000
+Ba4 Ba     0.000000     0.000000     0.000000
+Ti5 Ti     0.500000     0.500000     0.500000
+ 
+#END
+ 
+data_../AbInit/BaTiO3/BaTiO3.out
+_space_group_IT_number 1
+_symmetry_space_group_name_H-M 'P 1'
+_symmetry_Int_Tables_number        1  
+_cell_length_a          4.180959
+_cell_length_b          4.180959
+_cell_length_c          4.180959
+_cell_angle_alpha      90.000000
+_cell_angle_beta       90.000000
+_cell_angle_gamma      90.000000
+_cell_volume           73.084899
+loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+O1 O     0.500000     0.500000     0.000000
+O2 O     0.500000     0.000000     0.500000
+O3 O     0.000000     0.500000     0.500000
+Ba4 Ba     0.000000     0.000000     0.000000
+Ti5 Ti     0.500000     0.500000     0.500000
+ 
+#END
+ 
+data_../AbInit/Na2SO42/Na2SO42.out
+_space_group_IT_number 1
+_symmetry_space_group_name_H-M 'P 1'
+_symmetry_Int_Tables_number        1  
+_cell_length_a          4.780000
+_cell_length_b          5.575000
+_cell_length_c          6.091000
+_cell_angle_alpha     101.871000
+_cell_angle_beta      103.337000
+_cell_angle_gamma      97.418000
+_cell_volume          151.880420
+loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+S1 S     0.606731     0.778166     0.239930
+S2 S     0.393269     0.221834     0.760070
+Na3 Na     0.044681     0.313003     0.217300
+Na4 Na     0.955319     0.686997     0.782700
+O5 O     0.584964     0.039654     0.416718
+O6 O     0.415036     0.960346     0.583282
+O7 O     0.767255     0.895297     0.102659
+O8 O     0.232745     0.104703     0.897341
+O9 O     0.308403     0.654540     0.120800
+O10 O     0.691597     0.345460     0.879200
+O11 O     0.765194     0.633799     0.382019
+O12 O     0.234806     0.366201     0.617981
+ 
+#END
+ 
+data_../Castep/AsparticAcid/phonon.castep
+_space_group_IT_number 1
+_symmetry_space_group_name_H-M 'P 1'
+_symmetry_Int_Tables_number        1  
+_cell_length_a          7.596991
+_cell_length_b          7.028251
+_cell_length_c          5.112691
+_cell_angle_alpha      90.000000
+_cell_angle_beta       98.771837
+_cell_angle_gamma      90.000000
+_cell_volume          269.791811
+loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+H1 H     0.212236     0.008630     0.332875
+H2 H     0.787764     0.508630     0.667125
+H3 H     0.799635     0.809274     0.461441
+H4 H     0.200365     0.309274     0.538559
+H5 H     0.701890     0.830609     0.126992
+H6 H     0.298110     0.330609     0.873008
+H7 H     0.612366     0.157191     0.968386
+H8 H     0.387634     0.657191     0.031614
+H9 H     0.607509     0.341280     0.185888
+H10 H     0.392491     0.841280     0.814112
+H11 H     0.801115     0.274496     0.091066
+H12 H     0.198885     0.774496     0.908934
+H13 H     0.791123     0.152869     0.525292
+H14 H     0.208877     0.652869     0.474708
+C15 C     0.525080     0.042273     0.447911
+C16 C     0.474920     0.542273     0.552089
+C17 C     0.704880     0.086294     0.361893
+C18 C     0.295120     0.586294     0.638107
+C19 C     0.787022     0.901462     0.287993
+C20 C     0.212978     0.401462     0.712007
+C21 C     0.969763     0.915730     0.212429
+C22 C     0.030237     0.415730     0.787571
+N23 N     0.680070     0.222795     0.137533
+N24 N     0.319930     0.722795     0.862467
+O25 O     0.395420     0.031082     0.267618
+O26 O     0.604580     0.531082     0.732382
+O27 O     0.523882     0.015056     0.687344
+O28 O     0.476118     0.515056     0.312656
+O29 O     1.002365     0.848409     0.007361
+O30 O    -0.002365     0.348409     0.992639
+O31 O     0.085124    -0.001350     0.389517
+O32 O     0.914876     0.498650     0.610483
+ 
+#END
+ 
+data_../Castep/Bubbles/phonon.castep
+_space_group_IT_number 1
+_symmetry_space_group_name_H-M 'P 1'
+_symmetry_Int_Tables_number        1  
+_cell_length_a          3.003030
+_cell_length_b          3.003030
+_cell_length_c          3.003030
+_cell_angle_alpha      60.000000
+_cell_angle_beta       60.000000
+_cell_angle_gamma      60.000000
+_cell_volume           19.149796
+loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+O1 O     0.500000     0.500000     0.500000
+Mg2 Mg     0.000000     0.000000     0.000000
+ 
+#END
+ 
+data_../Castep/Castep17/phonon.castep
+_space_group_IT_number 1
+_symmetry_space_group_name_H-M 'P 1'
+_symmetry_Int_Tables_number        1  
+_cell_length_a          4.725350
+_cell_length_b         21.600266
+_cell_length_c          7.761126
+_cell_angle_alpha      90.000000
+_cell_angle_beta      105.930239
+_cell_angle_gamma      90.000000
+_cell_volume          761.746996
+loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+H1 H     0.375722     0.964144     0.768073
+H2 H     0.624278     0.464144     0.231927
+H3 H     0.853410     0.052227     0.636479
+H4 H     0.146590     0.552227     0.363521
+H5 H     0.863502     0.009317     0.398382
+H6 H     0.136498     0.509317     0.601618
+H7 H     0.503692     0.079336     0.682098
+H8 H     0.496308     0.579336     0.317902
+H9 H     0.345028     0.166690     0.557455
+H10 H     0.654972     0.666690     0.442545
+H11 H     0.489546     0.145632     0.929307
+H12 H     0.510454     0.645632     0.070693
+H13 H     1.035757     0.178661     0.887728
+H14 H    -0.035757     0.678661     0.112272
+H15 H     0.620244     0.036349     0.993344
+H16 H     0.379756     0.536349     0.006656
+H17 H     0.609760     0.102948     0.249514
+H18 H     0.390240     0.602948     0.750486
+H19 H     0.228987     0.086694     0.218230
+H20 H     0.771013     0.586694     0.781770
+H21 H     0.362482     0.008633     0.379289
+H22 H     0.637518     0.508633     0.620711
+H23 H     0.946395     0.700694     0.806593
+H24 H     0.053605     0.200694     0.193407
+H25 H     0.459097     0.734503     0.680956
+H26 H     0.540903     0.234503     0.319044
+H27 H     0.287638     0.775526     0.970893
+H28 H     0.712362     0.275526     0.029107
+H29 H     0.860760     0.783058     0.170602
+H30 H     0.139240     0.283058     0.829398
+H31 H     0.776656     0.864792     0.953665
+H32 H     0.223344     0.364792     0.046335
+H33 H     0.206561     0.930197     0.069075
+H34 H     0.793439     0.430197     0.930925
+H35 H     0.262327     0.871435     0.762368
+H36 H     0.737673     0.371435     0.237632
+H37 H     0.604504     0.842787     0.609575
+H38 H     0.395496     0.342787     0.390425
+H39 H     0.834762     0.904548     0.406837
+H40 H     0.165238     0.404548     0.593163
+H41 H     0.097958     0.844502     0.423932
+H42 H     0.902042     0.344502     0.576068
+H43 H     0.509307     0.846907     0.221408
+H44 H     0.490693     0.346907     0.778592
+H45 H     0.700703     0.232785     0.634966
+H46 H     0.299297     0.732785     0.365034
+H47 H     0.845163     0.179197     0.554045
+H48 H     0.154837     0.679197     0.445955
+C49 C     0.163007     0.984331     0.774176
+C50 C     0.836993     0.484331     0.225824
+C51 C     0.077147     0.037286     0.639259
+C52 C     0.922853     0.537286     0.360741
+C53 C     0.283501     0.092361     0.692604
+C54 C     0.716499     0.592361     0.307396
+C55 C     0.314620     0.110536     0.888893
+C56 C     0.685380     0.610536     0.111107
+C57 C     0.408149     0.053600     0.008436
+C58 C     0.591851     0.553600     0.991564
+C59 C     0.436339     0.067888     0.203356
+C60 C     0.563661     0.567888     0.796644
+C61 C     0.870790     0.749018     0.802603
+C62 C     0.129210     0.249018     0.197397
+C63 C     0.057453     0.784287     0.967234
+C64 C     0.942547     0.284287     0.032766
+C65 C     0.001687     0.854059     0.946669
+C66 C     0.998313     0.354059     0.053331
+C67 C     0.030450     0.875866     0.763938
+C68 C     0.969550     0.375866     0.236062
+C69 C     0.837424     0.837134     0.611258
+C70 C     0.162576     0.337134     0.388742
+C71 C     0.872377     0.854816     0.428692
+C72 C     0.127623     0.354816     0.571308
+O73 O     0.938511     0.939719     0.731873
+O74 O     0.061489     0.439719     0.268127
+O75 O     0.076299     0.014117     0.466274
+O76 O     0.923701     0.514117     0.533726
+O77 O     0.172654     0.142352     0.571443
+O78 O     0.827346     0.642352     0.428557
+O79 O     0.042326     0.133520     0.910451
+O80 O     0.957674     0.633520     0.089549
+O81 O     0.511177     0.012461     0.310179
+O82 O     0.488823     0.512461     0.689821
+O83 O     0.187567     0.005067     0.954199
+O84 O     0.812433     0.505067     0.045801
+O85 O     0.571223     0.752497     0.797980
+O86 O     0.428777     0.252497     0.202020
+O87 O     0.016184     0.759565     0.131198
+O88 O     0.983816     0.259565     0.868802
+O89 O     0.210561     0.885056     0.092258
+O90 O     0.789439     0.385056     0.907742
+O91 O     0.673232     0.819861     0.288089
+O92 O     0.326768     0.319861     0.711911
+O93 O     0.922798     0.773339     0.642052
+O94 O     0.077202     0.273339     0.357948
+O95 O     0.655364     0.201913     0.538375
+O96 O     0.344636     0.701913     0.461625
+ 
+#END
+ 
+data_../Castep/Isoleucine/phonon.castep
+_space_group_IT_number 1
+_symmetry_space_group_name_H-M 'P 1'
+_symmetry_Int_Tables_number        1  
+_cell_length_a          9.672761
+_cell_length_b          5.271751
+_cell_length_c         13.981405
+_cell_angle_alpha      90.000000
+_cell_angle_beta       94.754088
+_cell_angle_gamma      90.000000
+_cell_volume          710.492353
+loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+H1 H     0.296252     0.629900     0.396910
+H2 H     0.703748     0.129900     0.603090
+H3 H     0.470347     0.702572     0.414638
+H4 H     0.529653     0.202572     0.585362
+H5 H     0.355734     0.808557     0.490806
+H6 H     0.644266     0.308557     0.509194
+H7 H     0.426806     0.140321     0.392737
+H8 H     0.573194     0.640321     0.607263
+H9 H     0.445656     0.836678     0.253093
+H10 H     0.554344     0.336678     0.746907
+H11 H     0.329620     0.365673     0.225670
+H12 H     0.670380     0.865673     0.774330
+H13 H     0.502581     0.282012     0.254504
+H14 H     0.497419     0.782012     0.745496
+H15 H     0.469247     0.390113     0.084090
+H16 H     0.530753     0.890113     0.915910
+H17 H     0.332401     0.173184     0.064559
+H18 H     0.667599     0.673184     0.935441
+H19 H     0.502622     0.062562     0.092162
+H20 H     0.497378     0.562562     0.907838
+H21 H     0.194753     0.698705     0.241114
+H22 H     0.805247     0.198705     0.758886
+H23 H     0.252252     0.803911     0.132008
+H24 H     0.747748     0.303911     0.867992
+H25 H     0.148533     1.002967     0.197555
+H26 H     0.851467     0.502967     0.802445
+H27 H     0.834497     0.227118     0.379826
+H28 H     0.165503     0.727118     0.620174
+H29 H     0.998596     0.354947     0.379497
+H30 H     0.001404     0.854947     0.620503
+H31 H     0.895028     0.428711     0.465827
+H32 H     0.104972     0.928711     0.534173
+H33 H     0.924616     0.750076     0.336273
+H34 H     0.075384     0.250076     0.663727
+H35 H     0.714546     0.392094     0.234911
+H36 H     0.285454     0.892094     0.765089
+H37 H     1.006666     0.532762     0.191605
+H38 H    -0.006666     0.032762     0.808395
+H39 H     0.947751     0.234763     0.222915
+H40 H     0.052249     0.734763     0.777085
+H41 H     0.967494     0.230627     0.052457
+H42 H     0.032506     0.730627     0.947543
+H43 H     0.873990     0.513920     0.034737
+H44 H     0.126010     1.013920     0.965263
+H45 H     0.788535     0.235991     0.066413
+H46 H     0.211465     0.735991     0.933587
+H47 H     0.661852     0.858079     0.209342
+H48 H     0.338148     0.358079     0.790658
+H49 H     0.693569     0.696290     0.103561
+H50 H     0.306431     0.196290     0.896439
+H51 H     0.822644     0.890845     0.161095
+H52 H     0.177356     0.390845     0.838905
+C53 C     0.204503     0.122878     0.383661
+C54 C     0.795497     0.622878     0.616339
+C55 C     0.345312     0.011709     0.364445
+C56 C     0.654688     0.511709     0.635555
+C57 C     0.361151     0.973638     0.257228
+C58 C     0.638849     0.473638     0.742772
+C59 C     0.407032     0.221140     0.213807
+C60 C     0.592968     0.721140     0.786193
+C61 C     0.428877     0.210097     0.108273
+C62 C     0.571123     0.710097     0.891727
+C63 C     0.232187     0.863497     0.204125
+C64 C     0.767813     0.363497     0.795875
+C65 C     0.718276     0.731949     0.380963
+C66 C     0.281724     0.231949     0.619037
+C67 C     0.840536     0.611950     0.334517
+C68 C     0.159464     0.111950     0.665483
+C69 C     0.797507     0.532428     0.231203
+C70 C     0.202493     0.032428     0.768797
+C71 C     0.916460     0.407646     0.183948
+C72 C     0.083540     0.907646     0.816052
+C73 C     0.884568     0.343988     0.079059
+C74 C     0.115432     0.843988     0.920941
+C75 C     0.740343     0.756362     0.173324
+C76 C     0.259657     0.256362     0.826676
+N77 N     0.367503     0.770969     0.419278
+N78 N     0.632497     0.270969     0.580722
+N79 N     0.894953     0.390522     0.392229
+N80 N     0.105047     0.890522     0.607771
+O81 O     0.117770     0.976875     0.414478
+O82 O     0.882230     0.476875     0.585522
+O83 O     0.184154     0.351335     0.364444
+O84 O     0.815846     0.851335     0.635556
+O85 O     0.629861     0.580501     0.408853
+O86 O     0.370139     0.080501     0.591147
+O87 O     0.712203     0.965535     0.384757
+O88 O     0.287797     0.465535     0.615243
+ 
+#END
+ 
+data_../Castep/MgO/phonon.castep
+_space_group_IT_number 1
+_symmetry_space_group_name_H-M 'P 1'
+_symmetry_Int_Tables_number        1  
+_cell_length_a          3.003030
+_cell_length_b          3.003030
+_cell_length_c          3.003030
+_cell_angle_alpha      60.000000
+_cell_angle_beta       60.000000
+_cell_angle_gamma      60.000000
+_cell_volume           19.149796
+loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+O1 O     0.500000     0.500000     0.500000
+Mg2 Mg     0.000000     0.000000     0.000000
+ 
+#END
+ 
+data_../Castep/Na2SO42/phonon.castep
+_space_group_IT_number 1
+_symmetry_space_group_name_H-M 'P 1'
+_symmetry_Int_Tables_number        1  
+_cell_length_a          4.780000
+_cell_length_b          5.575000
+_cell_length_c          6.091000
+_cell_angle_alpha     101.871000
+_cell_angle_beta      103.337000
+_cell_angle_gamma      97.418000
+_cell_volume          151.880428
+loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+O1 O     0.553874     0.019031     0.440862
+O2 O     0.446126     0.980969     0.559138
+O3 O     0.758890     0.907386     0.139814
+O4 O     0.241110     0.092614     0.860186
+O5 O     0.321294     0.656057     0.140675
+O6 O     0.678706     0.343943     0.859325
+O7 O     0.756277     0.649736     0.403633
+O8 O     0.243723     0.350264     0.596367
+Na9 Na     0.017700     0.317755     0.204064
+Na10 Na     0.982300     0.682245     0.795936
+S11 S     0.603230     0.785406     0.263766
+S12 S     0.396770     0.214594     0.736234
+ 
+#END
+ 
+data_../Crystal/Leucine/LEUCINE_DIELECTRC_PBED_6311Gdp.out
+_space_group_IT_number 1
+_symmetry_space_group_name_H-M 'P 1'
+_symmetry_Int_Tables_number        1  
+_cell_length_a          9.569164
+_cell_length_b          5.228749
+_cell_length_c         14.410556
+_cell_angle_alpha      90.000000
+_cell_angle_beta       94.442375
+_cell_angle_gamma      90.000000
+_cell_volume          718.862571
+loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+O1 O     0.367879    -0.339480     0.417017
+O2 O    -0.367879     0.160520    -0.417017
+O3 O     0.280250     0.285489     0.363123
+O4 O    -0.280250    -0.214511    -0.363123
+N5 N     0.115094    -0.128175     0.429914
+N6 N    -0.115094     0.371825    -0.429914
+H7 H     0.181099     0.018098     0.409929
+H8 H    -0.181099    -0.481902    -0.409929
+H9 H     0.009347    -0.060558     0.426548
+H10 H    -0.009347     0.439442    -0.426548
+H11 H     0.144602    -0.182554     0.498125
+H12 H    -0.144602     0.317446    -0.498125
+C13 C     0.267705    -0.480849     0.384910
+C14 C    -0.267705     0.019151    -0.384910
+C15 C     0.123422    -0.354406     0.367018
+C16 C    -0.123422     0.145594    -0.367018
+H17 H     0.039959    -0.487054     0.383774
+H18 H    -0.039959     0.012946    -0.383774
+C19 C     0.097643    -0.260604     0.265987
+C20 C    -0.097643     0.239396    -0.265987
+H21 H    -0.002453    -0.155184     0.261161
+H22 H     0.002453     0.344816    -0.261161
+H23 H     0.180162    -0.120486     0.253142
+H24 H    -0.180162     0.379514    -0.253142
+C25 C     0.090585    -0.468307     0.190501
+C26 C    -0.090585     0.031693    -0.190501
+H27 H     0.186175     0.413620     0.200196
+H28 H    -0.186175    -0.086380    -0.200196
+C29 C    -0.037223     0.357997     0.196623
+C30 C     0.037223    -0.142003    -0.196623
+H31 H    -0.035928     0.201637     0.145568
+H32 H     0.035928    -0.298363    -0.145568
+H33 H    -0.134156     0.468678     0.180884
+H34 H     0.134156    -0.031322    -0.180884
+H35 H    -0.043063     0.273074     0.265955
+H36 H     0.043063    -0.226926    -0.265955
+C37 C     0.084958    -0.343259     0.094072
+C38 C    -0.084958     0.156741    -0.094072
+H39 H     0.174323    -0.214732     0.086285
+H40 H    -0.174323     0.285268    -0.086285
+H41 H    -0.011861    -0.230018     0.081711
+H42 H     0.011861     0.269982    -0.081711
+H43 H     0.084509    -0.488815     0.038964
+H44 H    -0.084509     0.011185    -0.038964
+O45 O     0.153127    -0.455089    -0.416102
+O46 O    -0.153127     0.044911     0.416102
+O47 O     0.228851     0.145060    -0.380920
+O48 O    -0.228851    -0.354940     0.380920
+N49 N     0.421518    -0.265750    -0.396155
+N50 N    -0.421518     0.234250     0.396155
+H51 H     0.358241    -0.110685    -0.379388
+H52 H    -0.358241     0.389315     0.379388
+H53 H    -0.471484    -0.223159    -0.381630
+H54 H     0.471484     0.276841     0.381630
+H55 H     0.405283    -0.290885    -0.468633
+H56 H    -0.405283     0.209115     0.468633
+C57 C     0.246096     0.383427    -0.385414
+C58 C    -0.246096    -0.116573     0.385414
+C59 C     0.387640     0.493751    -0.346615
+C60 C    -0.387640    -0.006249     0.346615
+H61 H     0.471151     0.357184    -0.359615
+H62 H    -0.471151    -0.142816     0.359615
+C63 C     0.386239    -0.447407    -0.242180
+C64 C    -0.386239     0.052593     0.242180
+H65 H     0.479441    -0.330012    -0.221669
+H66 H    -0.479441     0.169988     0.221669
+H67 H     0.293821    -0.327756    -0.232097
+H68 H    -0.293821     0.172244     0.232097
+C69 C     0.387583     0.316362    -0.178710
+C70 C    -0.387583    -0.183638     0.178710
+H71 H     0.309357     0.179627    -0.209591
+H72 H    -0.309357    -0.320373     0.209591
+C73 C    -0.468306     0.187453    -0.172183
+C74 C     0.468306    -0.312547     0.172183
+H75 H    -0.466224     0.018023    -0.126798
+H76 H     0.466224    -0.481977     0.126798
+H77 H    -0.388123     0.321668    -0.142315
+H78 H     0.388123    -0.178332     0.142315
+H79 H    -0.436772     0.127495    -0.240626
+H80 H     0.436772    -0.372505     0.240626
+C81 C     0.346212     0.391192    -0.081737
+C82 C    -0.346212    -0.108808     0.081737
+H83 H     0.242536     0.483193    -0.085144
+H84 H    -0.242536    -0.016807     0.085144
+H85 H     0.422282    -0.472559    -0.048144
+H86 H    -0.422282     0.027441     0.048144
+H87 H     0.342864     0.222755    -0.036000
+H88 H    -0.342864    -0.277245     0.036000
+ 
+#END
+ 
+data_../Crystal/Leucine/LEUCINE_FREQUENCY_PBED3_631Gdp_FULLOPTIMIZATON.out
+_space_group_IT_number 1
+_symmetry_space_group_name_H-M 'P 1'
+_symmetry_Int_Tables_number        1  
+_cell_length_a          9.557177
+_cell_length_b          5.189272
+_cell_length_c         14.342820
+_cell_angle_alpha      90.000000
+_cell_angle_beta       94.363905
+_cell_angle_gamma      90.000000
+_cell_volume          709.266995
+loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+O1 O     0.368791    -0.333670     0.416642
+O2 O    -0.368791     0.166330    -0.416642
+O3 O     0.283173     0.284943     0.363172
+O4 O    -0.283173    -0.215057    -0.363172
+N5 N     0.115023    -0.125244     0.430532
+N6 N    -0.115023     0.374756    -0.430532
+H7 H     0.181911     0.021360     0.410243
+H8 H    -0.181911    -0.478640    -0.410243
+H9 H     0.008594    -0.056662     0.426575
+H10 H    -0.008594     0.443338    -0.426575
+H11 H     0.144178    -0.179684     0.499274
+H12 H    -0.144178     0.320316    -0.499274
+C13 C     0.268778    -0.479087     0.385314
+C14 C    -0.268778     0.020913    -0.385314
+C15 C     0.123468    -0.354496     0.367915
+C16 C    -0.123468     0.145504    -0.367915
+H17 H     0.040335    -0.488704     0.385511
+H18 H    -0.040335     0.011296    -0.385511
+C19 C     0.096666    -0.261586     0.266143
+C20 C    -0.096666     0.238414    -0.266143
+H21 H    -0.004222    -0.157157     0.261387
+H22 H     0.004222     0.342843    -0.261387
+H23 H     0.178803    -0.119132     0.252953
+H24 H    -0.178803     0.380868    -0.252953
+C25 C     0.090558    -0.471922     0.190555
+C26 C    -0.090558     0.028078    -0.190555
+H27 H     0.186345     0.408955     0.200980
+H28 H    -0.186345    -0.091045    -0.200980
+C29 C    -0.037913     0.353437     0.196259
+C30 C     0.037913    -0.146563    -0.196259
+H31 H    -0.035234     0.193412     0.145895
+H32 H     0.035234    -0.306588    -0.145895
+H33 H    -0.134676     0.464659     0.178475
+H34 H     0.134676    -0.035341    -0.178475
+H35 H    -0.046154     0.271031     0.266312
+H36 H     0.046154    -0.228969    -0.266312
+C37 C     0.086013    -0.347158     0.093378
+C38 C    -0.086013     0.152842    -0.093378
+H39 H     0.175338    -0.216709     0.085590
+H40 H    -0.175338     0.283291    -0.085590
+H41 H    -0.011258    -0.233898     0.080235
+H42 H     0.011258     0.266102    -0.080235
+H43 H     0.086543    -0.494822     0.038263
+H44 H    -0.086543     0.005178    -0.038263
+O45 O     0.151074    -0.448444    -0.414555
+O46 O    -0.151074     0.051556     0.414555
+O47 O     0.225624     0.145887    -0.380105
+O48 O    -0.225624    -0.354113     0.380105
+N49 N     0.420913    -0.261239    -0.396568
+N50 N    -0.420913     0.238761     0.396568
+H51 H     0.357654    -0.104854    -0.378995
+H52 H    -0.357654     0.395146     0.378995
+H53 H    -0.471257    -0.220080    -0.382279
+H54 H     0.471257     0.279920     0.382279
+H55 H     0.403808    -0.285603    -0.469576
+H56 H    -0.403808     0.214397     0.469576
+C57 C     0.244417     0.386552    -0.384827
+C58 C    -0.244417    -0.113448     0.384827
+C59 C     0.387137     0.495772    -0.347069
+C60 C    -0.387137    -0.004228     0.347069
+H61 H     0.470067     0.357301    -0.361253
+H62 H    -0.470067    -0.142699     0.361253
+C63 C     0.388542    -0.445571    -0.241817
+C64 C    -0.388542     0.054429     0.241817
+H65 H     0.483955    -0.331695    -0.222104
+H66 H    -0.483955     0.168305     0.222104
+H67 H     0.297870    -0.320403    -0.230854
+H68 H    -0.297870     0.179597     0.230854
+C69 C     0.387715     0.316239    -0.178056
+C70 C    -0.387715    -0.183761     0.178056
+H71 H     0.308300     0.180474    -0.209339
+H72 H    -0.308300    -0.319526     0.209339
+C73 C    -0.468783     0.182817    -0.171336
+C74 C     0.468783    -0.317183     0.171336
+H75 H    -0.467996     0.012053    -0.125627
+H76 H     0.467996    -0.487947     0.125627
+H77 H    -0.387644     0.316537    -0.141196
+H78 H     0.387644    -0.183463     0.141196
+H79 H    -0.437122     0.121457    -0.240118
+H80 H     0.437122    -0.378543     0.240118
+C81 C     0.346558     0.392846    -0.080529
+C82 C    -0.346558    -0.107154     0.080529
+H83 H     0.243239     0.487996    -0.083826
+H84 H    -0.243239    -0.012004     0.083826
+H85 H     0.423620    -0.471079    -0.046809
+H86 H    -0.423620     0.028921     0.046809
+H87 H     0.342146     0.223170    -0.034435
+H88 H    -0.342146    -0.276830     0.034435
+ 
+#END
+ 
+data_../Crystal/Na2SO42/Na2SO42.out
+_space_group_IT_number 1
+_symmetry_space_group_name_H-M 'P 1'
+_symmetry_Int_Tables_number        1  
+_cell_length_a          4.780000
+_cell_length_b          5.575000
+_cell_length_c          6.091000
+_cell_angle_alpha     101.871000
+_cell_angle_beta      103.337000
+_cell_angle_gamma      97.418000
+_cell_volume          151.880428
+loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+S1 S    -0.387023    -0.227799     0.234509
+S2 S     0.387023     0.227799    -0.234509
+Na3 Na     0.034729     0.314612     0.213014
+Na4 Na    -0.034729    -0.314612    -0.213014
+O5 O    -0.424834     0.043020     0.412590
+O6 O     0.424834    -0.043020    -0.412590
+O7 O    -0.222063    -0.096828     0.092638
+O8 O     0.222063     0.096828    -0.092638
+O9 O     0.301683    -0.367521     0.109120
+O10 O    -0.301683     0.367521    -0.109120
+O11 O    -0.214956    -0.368399     0.392770
+O12 O     0.214956     0.368399    -0.392770
+ 
+#END
+ 
+data_../Crystal/Na2SO42_C17/Na2SO42.out
+_space_group_IT_number 1
+_symmetry_space_group_name_H-M 'P 1'
+_symmetry_Int_Tables_number        1  
+_cell_length_a          4.778578
+_cell_length_b          5.589802
+_cell_length_c          6.172665
+_cell_angle_alpha     100.977971
+_cell_angle_beta      103.241651
+_cell_angle_gamma      96.981761
+_cell_volume          155.187726
+loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+S1 S    -0.391912    -0.222913     0.244777
+S2 S     0.391912     0.222913    -0.244777
+Na3 Na     0.041809     0.309698     0.210209
+Na4 Na    -0.041809    -0.309698    -0.210209
+O5 O    -0.423834     0.038027     0.414667
+O6 O     0.423834    -0.038027    -0.414667
+O7 O    -0.229447    -0.103541     0.108021
+O8 O     0.229447     0.103541    -0.108021
+O9 O     0.310405    -0.349899     0.124028
+O10 O    -0.310405     0.349899    -0.124028
+O11 O    -0.230363    -0.364729     0.392058
+O12 O     0.230363     0.364729    -0.392058
+ 
+#END
+ 
+data_../Crystal/Quartz/qua_hf_2d_f_ir-int.out
+_space_group_IT_number 1
+_symmetry_space_group_name_H-M 'P 1'
+_symmetry_Int_Tables_number        1  
+_cell_length_a          4.914579
+_cell_length_b          4.914579
+_cell_length_c          5.404859
+_cell_angle_alpha      90.000000
+_cell_angle_beta       90.000000
+_cell_angle_gamma     120.000000
+_cell_volume          113.054442
+loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+Si1 Si     0.470593     0.000000     0.000000
+Si2 Si     0.000000     0.470593    -0.333333
+Si3 Si    -0.470593    -0.470593     0.333333
+O4 O     0.415144     0.267097     0.119993
+O5 O    -0.267097     0.148047    -0.213341
+O6 O    -0.148047    -0.415144     0.453326
+O7 O     0.148047    -0.267097    -0.119993
+O8 O    -0.415144    -0.148047     0.213341
+O9 O     0.267097     0.415144    -0.453326
+ 
+#END
+ 
+data_../Crystal/Quartz/qua_hf_2d_f_lo-to.out
+_space_group_IT_number 1
+_symmetry_space_group_name_H-M 'P 1'
+_symmetry_Int_Tables_number        1  
+_cell_length_a          4.914579
+_cell_length_b          4.914579
+_cell_length_c          5.404859
+_cell_angle_alpha      90.000000
+_cell_angle_beta       90.000000
+_cell_angle_gamma     120.000000
+_cell_volume          113.054442
+loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+Si1 Si     0.470593     0.000000     0.000000
+Si2 Si     0.000000     0.470593    -0.333333
+Si3 Si    -0.470593    -0.470593     0.333333
+O4 O     0.415144     0.267097     0.119993
+O5 O    -0.267097     0.148047    -0.213341
+O6 O    -0.148047    -0.415144     0.453326
+O7 O     0.148047    -0.267097    -0.119993
+O8 O    -0.415144    -0.148047     0.213341
+O9 O     0.267097     0.415144    -0.453326
+ 
+#END
+ 
+data_../Crystal/ZnO/CPHF/ZnO_CPHF.out
+_space_group_IT_number 1
+_symmetry_space_group_name_H-M 'P 1'
+_symmetry_Int_Tables_number        1  
+_cell_length_a          3.283332
+_cell_length_b          3.283332
+_cell_length_c          5.266149
+_cell_angle_alpha      90.000000
+_cell_angle_beta       90.000000
+_cell_angle_gamma     120.000000
+_cell_volume           49.164706
+loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+Zn1 Zn     0.333333    -0.333333     0.000717
+Zn2 Zn    -0.333333     0.333333    -0.499283
+O3 O     0.333333    -0.333333     0.381783
+O4 O    -0.333333     0.333333    -0.118217
+ 
+#END
+ 
+data_../Crystal/ZnO/Default/ZnO_default.out
+_space_group_IT_number 1
+_symmetry_space_group_name_H-M 'P 1'
+_symmetry_Int_Tables_number        1  
+_cell_length_a          3.283332
+_cell_length_b          3.283332
+_cell_length_c          5.266149
+_cell_angle_alpha      90.000000
+_cell_angle_beta       90.000000
+_cell_angle_gamma     120.000000
+_cell_volume           49.164706
+loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+Zn1 Zn     0.333333    -0.333333     0.000717
+Zn2 Zn    -0.333333     0.333333    -0.499283
+O3 O     0.333333    -0.333333     0.381783
+O4 O    -0.333333     0.333333    -0.118217
+ 
+#END
+ 
+data_../Crystal/ZnO/NoEckart/ZnO_noeckart.out
+_space_group_IT_number 1
+_symmetry_space_group_name_H-M 'P 1'
+_symmetry_Int_Tables_number        1  
+_cell_length_a          3.283332
+_cell_length_b          3.283332
+_cell_length_c          5.266149
+_cell_angle_alpha      90.000000
+_cell_angle_beta       90.000000
+_cell_angle_gamma     120.000000
+_cell_volume           49.164706
+loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+Zn1 Zn     0.333333    -0.333333     0.000717
+Zn2 Zn    -0.333333     0.333333    -0.499283
+O3 O     0.333333    -0.333333     0.381783
+O4 O    -0.333333     0.333333    -0.118217
+ 
+#END
+ 
+data_../Gulp/Na2SO42/na2so42.gout
+_space_group_IT_number 1
+_symmetry_space_group_name_H-M 'P 1'
+_symmetry_Int_Tables_number        1  
+_cell_length_a          4.513499
+_cell_length_b          5.186619
+_cell_length_c          5.649542
+_cell_angle_alpha     101.846067
+_cell_angle_beta      103.207355
+_cell_angle_gamma      97.602645
+_cell_volume          123.765408
+loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+S1 S     0.611540     0.781240     0.247440
+S2 S     0.406285     0.236510     0.740105
+Na3 Na     0.051635     0.283832     0.194679
+Na4 Na     0.966189     0.733918     0.792867
+O5 O     0.561563     0.995431     0.385604
+O6 O     0.456261     0.022319     0.601941
+O7 O     0.742480     0.882719     0.151653
+O8 O     0.275344     0.135030     0.835892
+O9 O     0.374697     0.696816     0.159011
+O10 O     0.643128     0.320934     0.828535
+O11 O     0.727528     0.705085     0.392805
+O12 O     0.290297     0.312665     0.594740
+ 
+#END
+ 
+data_../Gulp/calcite/calcite.gout
+_space_group_IT_number 1
+_symmetry_space_group_name_H-M 'P 1'
+_symmetry_Int_Tables_number        1  
+_cell_length_a          6.375694
+_cell_length_b          6.375694
+_cell_length_c          6.375693
+_cell_angle_alpha      45.978700
+_cell_angle_beta       45.978700
+_cell_angle_gamma      45.978700
+_cell_volume          122.228732
+loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+Ca1 Ca     0.000000     0.000000     0.000000
+Ca2 Ca     0.500000     0.500000     0.500000
+C3 C     0.250000     0.250000     0.250000
+C4 C     0.750000     0.750000     0.750000
+O5 O     0.502654     0.997346     0.250000
+O6 O     0.250000     0.502654     0.997346
+O7 O     0.997346     0.250000     0.502654
+O8 O     0.497346     0.002654     0.750000
+O9 O     0.750000     0.497346     0.002654
+O10 O     0.002654     0.750000     0.497346
+ 
+#END
+ 
+data_../Mie/MgO/phonon.castep
+_space_group_IT_number 1
+_symmetry_space_group_name_H-M 'P 1'
+_symmetry_Int_Tables_number        1  
+_cell_length_a          3.003030
+_cell_length_b          3.003030
+_cell_length_c          3.003030
+_cell_angle_alpha      60.000000
+_cell_angle_beta       60.000000
+_cell_angle_gamma      60.000000
+_cell_volume           19.149796
+loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+O1 O     0.500000     0.500000     0.500000
+Mg2 Mg     0.000000     0.000000     0.000000
+ 
+#END
+ 
+data_../Mie/MgO_lognormal/phonon.castep
+_space_group_IT_number 1
+_symmetry_space_group_name_H-M 'P 1'
+_symmetry_Int_Tables_number        1  
+_cell_length_a          3.003030
+_cell_length_b          3.003030
+_cell_length_c          3.003030
+_cell_angle_alpha      60.000000
+_cell_angle_beta       60.000000
+_cell_angle_gamma      60.000000
+_cell_volume           19.149796
+loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+O1 O     0.500000     0.500000     0.500000
+Mg2 Mg     0.000000     0.000000     0.000000
+ 
+#END
+ 
+data_../Phonopy/Na2SO42/OUTCAR.born
+_space_group_IT_number 1
+_symmetry_space_group_name_H-M 'P 1'
+_symmetry_Int_Tables_number        1  
+_cell_length_a          4.707103
+_cell_length_b          5.481444
+_cell_length_c          6.055731
+_cell_angle_alpha     101.593391
+_cell_angle_beta      103.668745
+_cell_angle_gamma      97.032938
+_cell_volume          146.336375
+loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+Na1 Na     0.041380     0.313303     0.212037
+Na2 Na     0.958620     0.686697     0.787963
+S3 S     0.611530     0.776844     0.242790
+S4 S     0.388470     0.223156     0.757210
+O5 O     0.580935     0.040445     0.416582
+O6 O     0.419065     0.959555     0.583418
+O7 O     0.774815     0.897774     0.106465
+O8 O     0.225185     0.102226     0.893535
+O9 O     0.310577     0.647887     0.119619
+O10 O     0.689423     0.352114     0.880381
+O11 O     0.774298     0.633529     0.390754
+O12 O     0.225702     0.366471     0.609246
+ 
+#END
+ 
+data_../Phonopy/ZnO/OUTCAR.born
+_space_group_IT_number 1
+_symmetry_space_group_name_H-M 'P 1'
+_symmetry_Int_Tables_number        1  
+_cell_length_a          3.295058
+_cell_length_b          3.295058
+_cell_length_c          5.284824
+_cell_angle_alpha      90.000000
+_cell_angle_beta       90.000000
+_cell_angle_gamma     120.000000
+_cell_volume           49.692099
+loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+Zn1 Zn     0.333333     0.666667     0.000900
+Zn2 Zn     0.666667     0.333333     0.500900
+O3 O     0.333333     0.666667     0.381600
+O4 O     0.666667     0.333333     0.881600
+ 
+#END
+ 
+data_../QE/Cocaine/phonon.dynG
+_space_group_IT_number 1
+_symmetry_space_group_name_H-M 'P 1'
+_symmetry_Int_Tables_number        1  
+_cell_length_a          7.622000
+_cell_length_b         10.285000
+_cell_length_c         21.428000
+_cell_angle_alpha      90.000000
+_cell_angle_beta       90.000000
+_cell_angle_gamma      90.000000
+_cell_volume         1679.789562
+loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+Cl1 Cl     0.241675     0.050444     0.822913
+C2 C     0.323027     0.352960     0.695121
+C3 C     0.930540     0.331094     0.370968
+C4 C     0.767303     0.405826     0.350575
+C5 C     0.621339     0.310832     0.331791
+C6 C     0.589723     0.202138     0.379821
+C7 C     0.722105     0.094080     0.361694
+C8 C     1.184479     0.388950     0.430185
+C9 C     1.313945     0.493275     0.443890
+C10 C     1.305905     0.616092     0.415553
+C11 C     1.429592     0.711156     0.430387
+C12 C     1.561295     0.684368     0.473864
+C13 C     0.486103     0.272016     0.677868
+C14 C     1.570670     0.562027     0.502294
+C15 C     1.448013     0.466688     0.487005
+C16 C     1.084614     0.280077     0.265346
+C17 C     1.117890     0.259013     0.154829
+C18 C     0.548696     0.164015     0.241669
+H19 H     0.739828     0.304205     0.242365
+H20 H     0.857463     0.070894     0.271463
+H21 H     1.080212     0.159446     0.343772
+H22 H     0.902396     0.277747     0.414278
+H23 H     0.719879     0.466050     0.389458
+C24 C     0.430540     0.168906     0.629032
+H25 H     0.797743     0.470223     0.310914
+H26 H     0.501862     0.363035     0.318065
+H27 H     0.454912     0.165110     0.376995
+H28 H     0.609904     0.238097     0.427482
+H29 H     0.651413     0.005287     0.348450
+H30 H     0.812259     0.068663     0.399641
+H31 H     1.202630     0.637580     0.382001
+H32 H     1.419950     0.806010     0.407586
+H33 H     1.657269     0.758992     0.485869
+H34 H     1.672264     0.541007     0.536814
+C35 C     0.267303     0.094174     0.649425
+H36 H     1.456900     0.370196     0.507774
+H37 H     1.045699     0.344609     0.138144
+H38 H     1.256725     0.282061     0.161704
+H39 H     1.102755     0.177732     0.122315
+H40 H     0.611998     0.102697     0.206498
+H41 H     0.465001     0.236378     0.219031
+H42 H     0.471224     0.103578     0.273718
+O43 O     0.434211     0.575085     0.885947
+O44 O     0.316953     0.717772     0.955838
+O45 O     0.301396     0.636246     0.767075
+C46 C     0.121339     0.189168     0.668209
+O47 O     0.461773     0.783681     0.712670
+N48 N     0.811653     0.763608     0.775516
+C49 C     0.676973     0.852960     0.804879
+C50 C     0.513897     0.772016     0.822132
+C51 C     0.569460     0.668906     0.870968
+C52 C     0.732697     0.594174     0.850575
+C53 C     0.878661     0.689168     0.831791
+C54 C     0.910277     0.797862     0.879821
+C55 C     0.777895     0.905920     0.861694
+C56 C     0.315521     0.611050     0.930185
+C57 C     0.089723     0.297862     0.620179
+C58 C     0.186055     0.506725     0.943890
+C59 C     0.194095     0.383908     0.915553
+C60 C     0.070408     0.288844     0.930387
+C61 C    -0.061295     0.315632     0.973864
+C62 C    -0.070670     0.437973     1.002294
+C63 C     0.051987     0.533312     0.987005
+C64 C     0.415386     0.719923     0.765346
+C65 C     0.382110     0.740987     0.654829
+C66 C     0.951304     0.835985     0.741669
+H67 H     0.760172     0.695795     0.742365
+C68 C     0.222105     0.405920     0.638306
+H69 H     0.642537     0.929106     0.771463
+H70 H     0.419788     0.840554     0.843772
+H71 H     0.597604     0.722253     0.914278
+H72 H     0.780121     0.533950     0.889458
+H73 H     0.702257     0.529777     0.810914
+H74 H     0.998138     0.636965     0.818065
+H75 H     1.045088     0.834890     0.876995
+H76 H     0.890096     0.761903     0.927482
+H77 H     0.848587     0.994713     0.848450
+H78 H     0.687741     0.931337     0.899641
+C79 C     0.684479     0.111050     0.569815
+H80 H     0.297370     0.362420     0.882001
+H81 H     0.080050     0.193990     0.907586
+H82 H    -0.157269     0.241008     0.985869
+H83 H    -0.172264     0.458993     1.036814
+H84 H     0.043100     0.629804     1.007774
+H85 H     0.454301     0.655391     0.638144
+H86 H     0.243275     0.717939     0.661704
+H87 H     0.397245     0.822268     0.622315
+H88 H     0.888002     0.897303     0.706498
+H89 H     1.034999     0.763622     0.719031
+C90 C     0.813945     0.006725     0.556110
+H91 H     1.028776     0.896422     0.773718
+C92 C     0.805905    -0.116092     0.584447
+Cl93 Cl     0.258325     0.949556     0.322913
+C94 C     0.929592    -0.211156     0.569613
+C95 C     1.061295    -0.184368     0.526136
+C96 C     1.070670    -0.062027     0.497706
+C97 C     0.948013     0.033312     0.512995
+C98 C     0.584614     0.219923     0.734654
+C99 C     0.617890     0.240987     0.845171
+C100 C     0.048696     0.335985     0.758331
+H101 H     0.239828     0.195795     0.757635
+H102 H     0.357463     0.429106     0.728537
+H103 H     0.580212     0.340554     0.656228
+Cl104 Cl     0.741675     0.449556     0.177087
+H105 H     0.402396     0.222253     0.585722
+H106 H     0.219879     0.033950     0.610542
+H107 H     0.297743     0.029777     0.689086
+H108 H     0.001862     0.136965     0.681935
+H109 H    -0.045088     0.334890     0.623005
+H110 H     0.109904     0.261903     0.572518
+H111 H     0.151413     0.494713     0.651550
+H112 H     0.312259     0.431337     0.600359
+H113 H     0.702630    -0.137580     0.617999
+H114 H     0.919950    -0.306010     0.592414
+Cl115 Cl     0.758325     0.550444     0.677087
+H116 H     1.157269    -0.258992     0.514131
+H117 H     1.172264    -0.041007     0.463186
+H118 H     0.956900     0.129804     0.492226
+H119 H     0.545699     0.155391     0.861856
+H120 H     0.756725     0.217939     0.838296
+H121 H     0.602755     0.322268     0.877685
+H122 H     0.111998     0.397303     0.793502
+H123 H    -0.034999     0.263622     0.780969
+H124 H    -0.028776     0.396422     0.726282
+O125 O    -0.065789     0.924915     0.114053
+O126 O     0.565789     0.075085     0.614053
+O127 O    -0.183047     0.782228     0.044162
+O128 O    -0.198604     0.863754     0.232925
+O129 O    -0.038227     0.716319     0.287330
+N130 N     0.311653     0.736392     0.224484
+C131 C     0.176973     0.647040     0.195121
+C132 C     0.013897     0.727984     0.177868
+C133 C     0.069460     0.831094     0.129032
+C134 C     0.232697     0.905826     0.149425
+C135 C     0.378661     0.810832     0.168209
+C136 C     0.410277     0.702138     0.120179
+O137 O     0.683047     0.217772     0.544162
+C138 C     0.277895     0.594080     0.138306
+C139 C    -0.184479     0.888950     0.069815
+C140 C    -0.313945     0.993275     0.056110
+C141 C    -0.305905     1.116092     0.084447
+C142 C    -0.429592     1.211156     0.069613
+C143 C    -0.561295     1.184368     0.026136
+C144 C    -0.570670     1.062027    -0.002294
+C145 C    -0.448013     0.966688     0.012995
+C146 C    -0.084614     0.780077     0.234654
+C147 C    -0.117890     0.759013     0.345171
+O148 O     0.698604     0.136246     0.732925
+C149 C     0.451304     0.664015     0.258331
+H150 H     0.260172     0.804205     0.257635
+H151 H     0.142537     0.570894     0.228537
+H152 H    -0.080212     0.659446     0.156228
+H153 H     0.097604     0.777747     0.085722
+H154 H     0.280121     0.966050     0.110542
+H155 H     0.202257     0.970223     0.189086
+H156 H     0.498138     0.863035     0.181935
+H157 H     0.545088     0.665110     0.123005
+H158 H     0.390096     0.738097     0.072518
+O159 O     0.538227     0.283681     0.787330
+H160 H     0.348587     0.505287     0.151550
+H161 H     0.187741     0.568663     0.100359
+H162 H    -0.202630     1.137580     0.117999
+H163 H    -0.419950     1.306010     0.092414
+H164 H    -0.657269     1.258992     0.014131
+H165 H    -0.672264     1.041007    -0.036814
+H166 H    -0.456900     0.870196    -0.007774
+H167 H    -0.045699     0.844609     0.361856
+H168 H    -0.256725     0.782061     0.338296
+H169 H    -0.102755     0.677732     0.377685
+N170 N     0.188347     0.263608     0.724484
+H171 H     0.388002     0.602697     0.293502
+H172 H     0.534999     0.736378     0.280969
+H173 H     0.528776     0.603578     0.226282
+O174 O     1.065789     0.424915     0.385947
+O175 O     1.183047     0.282228     0.455838
+O176 O     1.198604     0.363754     0.267075
+O177 O     1.038227     0.216319     0.212670
+N178 N     0.688347     0.236392     0.275516
+C179 C     0.823027     0.147040     0.304879
+C180 C     0.986103     0.227984     0.322132
+ 
+#END
+ 
+data_../QE/Na2SO42/Na2SO42.dynG
+_space_group_IT_number 1
+_symmetry_space_group_name_H-M 'P 1'
+_symmetry_Int_Tables_number        1  
+_cell_length_a          4.780000
+_cell_length_b          5.575000
+_cell_length_c          6.091000
+_cell_angle_alpha     101.871000
+_cell_angle_beta      103.337000
+_cell_angle_gamma      97.418000
+_cell_volume          151.880427
+loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+S1 S     0.612052     0.777101     0.243900
+S2 S     0.387948     0.222899     0.756100
+Na3 Na     0.035809     0.314184     0.210036
+Na4 Na     0.964191     0.685816     0.789964
+O5 O     0.581865     0.039115     0.417187
+O6 O     0.418135     0.960885     0.582813
+O7 O     0.773909     0.896225     0.106490
+O8 O     0.226091     0.103775     0.893510
+O9 O     0.313508     0.647584     0.121579
+O10 O     0.686492     0.352416     0.878421
+O11 O     0.773637     0.637358     0.391942
+O12 O     0.226363     0.362642     0.608058
+ 
+#END
+ 
+data_../QE/ZnO/zno.ph.dynG
+_space_group_IT_number 1
+_symmetry_space_group_name_H-M 'P 1'
+_symmetry_Int_Tables_number        1  
+_cell_length_a          4.706998
+_cell_length_b          3.076141
+_cell_length_c          3.076348
+_cell_angle_alpha     119.999980
+_cell_angle_beta       89.994190
+_cell_angle_gamma      89.993310
+_cell_volume           38.575943
+loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+Zn1 Zn     1.285013     0.563673     0.230340
+Zn2 Zn     0.785233     0.230274     0.563515
+O3 O     0.680896     0.563755     0.230316
+O4 O     1.181336     0.230617     0.563947
+ 
+#END
+ 
+data_../SizeEffects/BaTiO3/BaTiO3.out
+_space_group_IT_number 1
+_symmetry_space_group_name_H-M 'P 1'
+_symmetry_Int_Tables_number        1  
+_cell_length_a          4.180959
+_cell_length_b          4.180959
+_cell_length_c          4.180959
+_cell_angle_alpha      90.000000
+_cell_angle_beta       90.000000
+_cell_angle_gamma      90.000000
+_cell_volume           73.084899
+loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+O1 O     0.500000     0.500000     0.000000
+O2 O     0.500000     0.000000     0.500000
+O3 O     0.000000     0.500000     0.500000
+Ba4 Ba     0.000000     0.000000     0.000000
+Ti5 Ti     0.500000     0.500000     0.500000
+ 
+#END
+ 
+data_../SizeEffects/MgO/phonon.castep
+_space_group_IT_number 1
+_symmetry_space_group_name_H-M 'P 1'
+_symmetry_Int_Tables_number        1  
+_cell_length_a          3.003030
+_cell_length_b          3.003030
+_cell_length_c          3.003030
+_cell_angle_alpha      60.000000
+_cell_angle_beta       60.000000
+_cell_angle_gamma      60.000000
+_cell_volume           19.149796
+loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+O1 O     0.500000     0.500000     0.500000
+Mg2 Mg     0.000000     0.000000     0.000000
+ 
+#END
+ 
+data_../SizeEffects/ZnO/OUTCAR
+_space_group_IT_number 1
+_symmetry_space_group_name_H-M 'P 1'
+_symmetry_Int_Tables_number        1  
+_cell_length_a          3.295058
+_cell_length_b          3.295058
+_cell_length_c          5.284824
+_cell_angle_alpha      90.000000
+_cell_angle_beta       90.000000
+_cell_angle_gamma     120.000000
+_cell_volume           49.692099
+loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+Zn1 Zn     0.333333     0.666667     0.000900
+Zn2 Zn     0.666667     0.333333     0.500900
+O3 O     0.333333     0.666667     0.381600
+O4 O     0.666667     0.333333     0.881600
+ 
+#END
+ 
+data_../Vasp/F-Apatite/OUTCAR
+_space_group_IT_number 1
+_symmetry_space_group_name_H-M 'P 1'
+_symmetry_Int_Tables_number        1  
+_cell_length_a          9.446644
+_cell_length_b          9.446644
+_cell_length_c          6.925793
+_cell_angle_alpha      90.000000
+_cell_angle_beta       90.000000
+_cell_angle_gamma     120.000000
+_cell_volume          535.248202
+loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+O1 O     0.326397     0.484735     0.250000
+O2 O     0.484735     0.158337     0.750000
+O3 O     0.841663     0.326397     0.750000
+O4 O     0.158337     0.673603     0.250000
+O5 O     0.515265     0.841663     0.250000
+O6 O     0.673603     0.515265     0.750000
+O7 O     0.588343     0.466458     0.250000
+O8 O     0.466458     0.878115     0.750000
+O9 O     0.121885     0.588343     0.750000
+O10 O     0.878115     0.411657     0.250000
+O11 O     0.533542     0.121885     0.250000
+O12 O     0.411657     0.533542     0.750000
+O13 O     0.340609     0.255788     0.069686
+O14 O     0.255788     0.915179     0.569686
+O15 O     0.340609     0.255788     0.430314
+O16 O     0.084821     0.340609     0.569686
+O17 O     0.915179     0.659391     0.430314
+O18 O     0.084821     0.340609     0.930314
+O19 O     0.744212     0.084821     0.430314
+O20 O     0.744212     0.084821     0.069686
+O21 O     0.255788     0.915179     0.930314
+O22 O     0.659391     0.744212     0.569686
+O23 O     0.659391     0.744212     0.930314
+O24 O     0.915179     0.659391     0.069686
+P25 P     0.397682     0.368418     0.250000
+P26 P     0.368418     0.970736     0.750000
+P27 P     0.029264     0.397682     0.750000
+P28 P     0.970736     0.602318     0.250000
+P29 P     0.631582     0.029264     0.250000
+P30 P     0.602318     0.631582     0.750000
+Ca31 Ca     0.333333     0.666667     0.000805
+Ca32 Ca     0.666667     0.333333     0.500805
+Ca33 Ca     0.333333     0.666667     0.499195
+Ca34 Ca     0.666667     0.333333     0.999195
+Ca35 Ca     0.243363     0.996260     0.250000
+Ca36 Ca     0.996260     0.752897     0.750000
+Ca37 Ca     0.247103     0.243363     0.750000
+Ca38 Ca     0.752897     0.756637     0.250000
+Ca39 Ca     0.003740     0.247103     0.250000
+Ca40 Ca     0.756637     0.003740     0.750000
+F41 F     0.000000     0.000000     0.250000
+F42 F     0.000000     0.000000     0.750000
+ 
+#END
+ 
+data_../Vasp/Na2SO42/OUTCAR
+_space_group_IT_number 1
+_symmetry_space_group_name_H-M 'P 1'
+_symmetry_Int_Tables_number        1  
+_cell_length_a          4.780000
+_cell_length_b          5.575000
+_cell_length_c          6.091000
+_cell_angle_alpha     101.871000
+_cell_angle_beta      103.337000
+_cell_angle_gamma      97.418000
+_cell_volume          151.880428
+loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+Na1 Na     0.035621     0.314345     0.209004
+Na2 Na     0.964379     0.685655     0.790996
+S3 S     0.612195     0.777661     0.244840
+S4 S     0.387805     0.222339     0.755160
+O5 O     0.581379     0.038625     0.417087
+O6 O     0.418621     0.961375     0.582913
+O7 O     0.773672     0.896196     0.108231
+O8 O     0.226328     0.103804     0.891769
+O9 O     0.315321     0.648286     0.122497
+O10 O     0.684679     0.351714     0.877503
+O11 O     0.773083     0.638872     0.392503
+O12 O     0.226917     0.361128     0.607497
+ 
+#END
+ 
+data_../Vasp/ZnO/OUTCAR
+_space_group_IT_number 1
+_symmetry_space_group_name_H-M 'P 1'
+_symmetry_Int_Tables_number        1  
+_cell_length_a          3.295058
+_cell_length_b          3.295058
+_cell_length_c          5.284824
+_cell_angle_alpha      90.000000
+_cell_angle_beta       90.000000
+_cell_angle_gamma     120.000000
+_cell_volume           49.692099
+loop_
+_atom_site_label
+_atom_site_type_symbol
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+Zn1 Zn     0.333333     0.666667     0.000900
+Zn2 Zn     0.666667     0.333333     0.500900
+O3 O     0.333333     0.666667     0.381600
+O4 O     0.666667     0.333333     0.881600
+ 
+#END
+ 

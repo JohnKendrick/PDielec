@@ -1,3 +1,4 @@
+
 test-preader:
 	@$(MAKE) --no-print-directory -C Castep/preader preader-test
 	@$(MAKE) --no-print-directory -C Vasp/preader preader-test
@@ -6,6 +7,9 @@ test-preader:
 	@$(MAKE) --no-print-directory -C Crystal/preader preader-test
 	@$(MAKE) --no-print-directory -C AbInit/preader preader-test
 	@$(MAKE) --no-print-directory -C QE/preader preader-test
+
+test-p2cif:
+	@$(MAKE) --no-print-directory -C P2Cif/ p2cif-test
 
 test-pdgui:
 	@$(MAKE) --no-print-directory -C Castep/AsparticAcid pdgui
@@ -43,6 +47,8 @@ test-pdgui:
 clean:
 	@echo "Cleaning old results.xlsx files"
 	@find . -name results.xlsx -exec rm -f {} \;
+	@find . -name results.csv -exec rm -f {} \;
+	@find . -name all.cif -exec rm -f {} \;
 
 pdgui-regenerate:
 	@$(MAKE) --no-print-directory -C Castep/Isoleucine pdgui-regenerate
