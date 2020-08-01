@@ -58,6 +58,7 @@ docs/_build/
 target/
 
 # John Kendrick
+all.cif
 command.csv
 command.out
 makefile

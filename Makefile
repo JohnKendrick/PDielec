@@ -25,6 +25,7 @@ default:
 
 install:	
 		cp -P preader    $(SCRIPTS)
+		cp -P p1reader   $(SCRIPTS)
 		cp -P pdgui      $(SCRIPTS)
 		cp -P p2cif      $(SCRIPTS)
 		cp -P pdcompare  $(SCRIPTS)
