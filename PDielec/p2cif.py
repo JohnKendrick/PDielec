@@ -10,6 +10,7 @@ from PDielec.CrystalOutputReader import CrystalOutputReader
 from PDielec.AbinitOutputReader import AbinitOutputReader
 from PDielec.QEOutputReader import QEOutputReader
 from PDielec.PhonopyOutputReader import PhonopyOutputReader
+import PDielec.Utilities as Utilities
 from multiprocess import Pool
 
 def set_affinity_on_worker():
@@ -18,118 +19,9 @@ def set_affinity_on_worker():
     #JK for the time being this is simply commented out, but might be useful at some point
     #os.system("taskset -p 0xff %d > /dev/null" % os.getpid())
 
-def find_program_from_name( filename ):
-    # Determine the program to use from the file name being used
-    head,tail = os.path.split(filename)
-    root,ext = os.path.splitext(tail)
-    if head == '':
-        head = './'
-    else:
-        head = head+'/'
-    if tail == 'OUTCAR':
-        if os.path.isfile(head+'phonopy.yaml'):
-            return 'phonopy'
-        else:
-            return 'vasp'
-    if ext == '.castep':
-        return 'castep'
-    if ext == '.gout':
-        return 'gulp'
-    if ext == '.born':
-        return 'phonopy'
-    if ext ==  '.out':
-        if os.path.isfile(head+root+'.files'):
-            return 'abinit'
-        elif os.path.isfile(head+root+'.dynG'):
-            return 'qe'
-        else:
-            return 'crystal'
-    if ext ==  '.dynG':
-        return 'qe'
-    print('Error unable to automatically assign program to ',filename)
-    exit(1)
-
-
 def read_a_file( calling_parameters):
     name, program, qmprogram, debug = calling_parameters
-    fulldirname = name
-    head,tail = os.path.split(fulldirname)
-    root,ext = os.path.splitext(tail)
-    if program == "castep":
-        names = [ name ]
-        reader = CastepOutputReader( names )
-    elif program == "vasp":
-#        name1 = os.path.join(head,'OUTCAR')
-        name1 = name
-        name2 = os.path.join(head,'KPOINTS')
-        names = [ name1, name2 ]
-        reader = VaspOutputReader( names )
-    elif program == "gulp":
-        names = [ name ]
-        reader = GulpOutputReader( names )
-    elif program == "crystal":
-        names = [ name ]
-        reader = CrystalOutputReader( names )
-    elif program == "abinit":
-        names = [ name ]
-        reader = AbinitOutputReader( names )
-    elif program == "qe":
-        tail1 = root+'.dynG'
-        tail2 = root+'.log'
-        tail3 = root+'.out'
-        name1 = os.path.join(head,tail2)
-        name2 = os.path.join(head,tail3)
-        name3 = os.path.join(head,tail)
-        # We want the dynG entry last rounding causes problems otherwise
-        name4 = os.path.join(head,tail1)
-        names = []
-        for n in [ name1, name2, name3, name4 ]:
-            if os.path.isfile(n):
-                if not n in names:
-                    names.append(n)
-        reader = QEOutputReader( names )
-    elif program == "phonopy":
-        # The order is important
-        pname1 = os.path.join(head,'qpoints.yaml')
-        pname2 = os.path.join(head,'phonopy.yaml')
-        # Only works for VASP at the moment
-#        vname1 = os.path.join(head,'OUTCAR')
-        vname1 = name
-        vname2 = os.path.join(head,'KPOINTS')
-        pnames = [ pname1, pname2 ]
-        vnames = [ vname1, vname2 ]
-        pnames.extend(vnames)
-        names = pnames
-        # Which QM program was used by PHONOPY?
-        if qmprogram == "castep":
-            print("Error in qmreader",qmprogram)
-            exit()
-            qmreader = CastepOutputReader(names)
-        elif qmprogram == "vasp":
-            qmreader = VaspOutputReader(vnames)
-        elif qmprogram == "gulp":
-            print("Error in qmreader",qmprogram)
-            exit()
-            qmreader = GulpOutputReader(names)
-        elif qmprogram == "crystal":
-            print("Error in qmreader",qmprogram)
-            exit()
-            qmreader = CrystalOutputReader(names)
-        elif qmprogram == "abinit":
-            print("Error in qmreader",qmprogram)
-            exit()
-            qmreader = AbinitOutputReader(names)
-        elif qmprogram == "qe":
-            print("Error in qmreader",qmprogram)
-            exit()
-            qmreader = QEOutputReader(names)
-        # The QM reader is used to get info about the QM calculation
-        reader = PhonopyOutputReader(pnames,qmreader)
-    else:
-        print('Program name not recognized',program,file=sys.stderr)
-        exit()
-
-    print('  Analysing ',names, file=sys.stderr)
+    reader = Utilities.get_reader(name,program,qmprogram)
     reader.debug = debug
     reader.read_output()
     return name,reader.unit_cells[-1]
@@ -200,7 +92,7 @@ def main():
     for name in files:
         prog = program
         if program == 'auto':
-            prog = find_program_from_name(name)
+            prog = Utilities.find_program_from_name(name)
         calling_parameters.append( (name, prog, qmprogram, debug) )
     # Calculate the results in parallel
     results_map_object = p.map_async(read_a_file,calling_parameters)
