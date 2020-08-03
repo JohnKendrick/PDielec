@@ -3,6 +3,7 @@ import os.path
 from PyQt5.QtWidgets import QMainWindow, QApplication
 from PyQt5.QtCore    import QCoreApplication
 from PDielec.GUI.NoteBook import NoteBook
+import PDielec.Utilities  as Utilities
 import PDielec.__init__
 version = PDielec.__init__.__version__
 
@@ -39,6 +40,7 @@ class App(QMainWindow):
                 threading = True
         else:
             threading = False
+        parameters = []
         # Process any instructions on the input line
         while itoken < ntokens:
             token = tokens[itoken]
@@ -62,15 +64,32 @@ class App(QMainWindow):
                 ncpus = int(tokens[itoken])
             elif token[0:0] == '-' or token == '-h' or token == '-help' or token == '--help':
                 print('pdgui - graphical user interface to the PDielec package')
-                print('pdgui [-help] [-debug] [program] [filename] [spreadsheet] [-script scriptname] [-nosplash] [-threading] [-cpus 0] [-version] [-exit]')
+                print('pdgui [-help] [-debug] [program] filename [spreadsheet] [-script scriptname] [-nosplash] [-threading] [-cpus 0] [-version] [-exit]')
                 exit()
-            elif program == '':
-                program = token
-            elif filename == '':
-                filename = token
-            elif spreadsheet == '':
-                spreadsheet = token
+            else:
+                parameters.append(token)
             itoken += 1
+        #
+        # Lets see how many command line parameters there were
+        #
+        if len(parameters) == 0:
+            pass
+        elif len(parameters) == 1:
+            filename = parameters[0]
+            program = Utilities.find_program_from_name(filename)
+        elif len(parameters) == 2:
+            program = parameters[0]
+            filename = parameters[1]
+        elif len(parameters) == 3:
+            program = parameters[0]
+            filename = parameters[1]
+            spreadsheet = parameters[2]
+        else:
+            print('Command line error',parameters)
+            print('pdgui [-help] [-debug] [program] filename [spreadsheet] [-script scriptname] [-nosplash] [-threading] [-cpus 0] [-version] [-exit]')
+        #
+        # Continue
+        #
         self.title = 'PDGui - Using PDielec library {} '.format(version)
         self.left = 10
         self.top = 30

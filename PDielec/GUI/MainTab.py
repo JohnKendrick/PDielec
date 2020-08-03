@@ -5,7 +5,7 @@ from PyQt5.QtWidgets  import  QFileDialog, QPushButton, QCheckBox
 from PyQt5.QtWidgets  import  QFormLayout, QApplication
 from PyQt5.QtWidgets  import  QVBoxLayout, QMessageBox
 from PyQt5.QtCore     import  Qt, QCoreApplication
-from PDielec.Utilities import  get_reader, Debug
+from PDielec.Utilities import  pdgui_get_reader, Debug
 from PDielec.GUI.SpreadSheetManager import SpreadSheetManager
 import numpy as np
 
@@ -186,7 +186,7 @@ class MainTab(QWidget):
         debugger.print('Read output file - clear list widget')
         self.listw.clear()
         self.listw_l.setText('Frequencies from '+self.settings['Output file name'])
-        self.reader = get_reader(self.settings['Program'],[ self.settings['Output file name'] ], self.settings['QM program'] )
+        self.reader = pdgui_get_reader(self.settings['Program'],[ self.settings['Output file name'] ], self.settings['QM program'] )
         if self.reader is None:
             print('Error in reading files - program  is ',self.settings['Program'])
             print('Error in reading files - filename is ',self.settings['Output file name'])

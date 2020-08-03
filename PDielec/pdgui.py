@@ -33,7 +33,7 @@ def main():
             show_splash = False
         elif token == '-h' or token == '-help' or token == '--help':
             print('pdgui - graphical user interface to the PDielec package')
-            print('pdgui [-help] [-debug] [program] [filename] [spreadsheet] [-script scriptname] [-nosplash] [-threads] [-cpus ncpus] [-version] [-exit]')
+            print('pdgui [-help] [-debug] [program] filename [spreadsheet] [-script scriptname] [-nosplash] [-threads] [-cpus ncpus] [-version] [-exit]')
             print('      Version ',version)
             exit()
         elif token == '-v' or token == '-version' or token == '--version':

@@ -5,16 +5,10 @@ import numpy as np
 import os, sys
 import psutil
 from PDielec.Constants import amu, wavenumber, angstrom, isotope_masses, average_masses
-from PDielec.VaspOutputReader import VaspOutputReader
-from PDielec.CastepOutputReader import CastepOutputReader
-from PDielec.GulpOutputReader import GulpOutputReader
-from PDielec.CrystalOutputReader import CrystalOutputReader
-from PDielec.AbinitOutputReader import AbinitOutputReader
-from PDielec.QEOutputReader import QEOutputReader
-from PDielec.PhonopyOutputReader import PhonopyOutputReader
 from multiprocess import Pool
 import dill as pickle
 import PDielec.Calculator as Calculator
+import PDielec.Utilities as Utilities
 import PDielec.__init__
 version = PDielec.__init__.__version__
 
@@ -24,117 +18,9 @@ def set_affinity_on_worker():
     #JK for the time being this is simply commented out, but might be useful at some point
     #os.system("taskset -p 0xff %d > /dev/null" % os.getpid())
 
-def find_program_from_name( filename ):
-    # Determine the program to use from the file name being used
-    head,tail = os.path.split(filename)
-    root,ext = os.path.splitext(tail)
-    if head == '':
-        head = './'
-    else:
-        head = head+'/'
-    if tail == 'OUTCAR':
-        if os.path.isfile(head+'phonopy.yaml'):
-            return 'phonopy'
-        else:
-            return 'vasp'
-    if ext == '.gout':
-        return 'gulp'
-    if ext == '.born':
-        return 'phonopy'
-    if ext == '.castep':
-        return 'castep'
-    if ext ==  '.out':
-        if os.path.isfile(head+root+'.files'):
-            return 'abinit'
-        elif os.path.isfile(head+root+'.dynG'):
-            return 'qe'
-        else:
-            return 'crystal'
-    if ext ==  '.dynG':
-        return 'qe'
-    print('Error unable to automatically assign program to ',filename)
-    exit(1)
-
 def read_a_file( calling_parameters):
     name, eckart, neutral, mass_definition, mass_dictionary, global_no_calculation, program, hessian_symmetrisation, qmprogram, debug = calling_parameters
-    fulldirname = name
-    head,tail = os.path.split(fulldirname)
-    root,ext = os.path.splitext(tail)
-    if program == "castep":
-        names = [ name ]
-        reader = CastepOutputReader( names )
-    elif program == "vasp":
-#jk        name1 = os.path.join(head,'OUTCAR')
-        name1 = name
-        name2 = os.path.join(head,'KPOINTS')
-        names = [ name1, name2 ]
-        reader = VaspOutputReader( names )
-    elif program == "gulp":
-        names = [ name ]
-        reader = GulpOutputReader( names )
-    elif program == "crystal":
-        names = [ name ]
-        reader = CrystalOutputReader( names )
-    elif program == "abinit":
-        names = [ name ]
-        reader = AbinitOutputReader( names )
-    elif program == "qe":
-        tail1 = root+'.dynG'
-        tail2 = root+'.log'
-        tail3 = root+'.out'
-        name1 = os.path.join(head,tail2)
-        name2 = os.path.join(head,tail3)
-        name3 = os.path.join(head,tail)
-        # We want the dynG entry last rounding causes problems otherwise
-        name4 = os.path.join(head,tail1)
-        names = []
-        for n in [ name1, name2, name3, name4 ]:
-            if os.path.isfile(n):
-                if not n in names:
-                    names.append(n)
-        reader = QEOutputReader( names )
-    elif program == "phonopy":
-        # The order is important
-        pname1 = os.path.join(head,'qpoints.yaml')
-        pname2 = os.path.join(head,'phonopy.yaml')
-        # Only works for VASP at the moment
-#jk        vname1 = os.path.join(head,'OUTCAR')
-        vname1 = name
-        vname2 = os.path.join(head,'KPOINTS')
-        pnames = [ pname1, pname2 ]
-        vnames = [ vname1, vname2 ]
-        pnames.extend(vnames)
-        names = pnames
-        # Which QM program was used by PHONOPY?
-        if qmprogram == "castep":
-            print("Error in qmreader",qmprogram)
-            exit()
-            qmreader = CastepOutputReader(names)
-        elif qmprogram == "vasp":
-            qmreader = VaspOutputReader(vnames)
-        elif qmprogram == "gulp":
-            print("Error in qmreader",qmprogram)
-            exit()
-            qmreader = GulpOutputReader(names)
-        elif qmprogram == "crystal":
-            print("Error in qmreader",qmprogram)
-            exit()
-            qmreader = CrystalOutputReader(names)
-        elif qmprogram == "abinit":
-            print("Error in qmreader",qmprogram)
-            exit()
-            qmreader = AbinitOutputReader(names)
-        elif qmprogram == "qe":
-            print("Error in qmreader",qmprogram)
-            exit()
-            qmreader = QEOutputReader(names)
-        # The QM reader is used to get info about the QM calculation
-        reader = PhonopyOutputReader(pnames,qmreader)
-    else:
-        print('Program name not recognized',program,file=sys.stderr)
-        exit()
-
-    #jk print('  Analysing ',names, file=sys.stderr)
+    reader = Utilities.get_reader(name,program,qmprogram)
     # The order that the settings are applied is important
     # Symmetry is applied before the file is read, it is an integral part of the hessian
     # Eckart and neutral are applied after the file has been read, this way the original frequencies are those before any calculations
@@ -266,7 +152,7 @@ def read_a_file( calling_parameters):
     c13 = str(carray[0,2])
     c23 = str(carray[1,2])
     # Assemble the output line for the unprojected frequencies and all the other data
-    header = fulldirname + ',Read from program'
+    header = name + ',Read from program'
     string = ''
     string = string + ',' + str(reader.electrons)
     string = string + ',' + str(reader.magnetization)
@@ -298,19 +184,19 @@ def read_a_file( calling_parameters):
             option_string = option_string+' neutral'
         option_string = option_string+' hessian_symmetrisation='+hessian_symmetrisation
         option_string = option_string+' mass_definition='+mass_definition
-        header = fulldirname+','+option_string
+        header = name+','+option_string
         string = header + common_output
         for f in modified_frequencies_cm1:
             string = string + ',' + str(f)
         results_string.append(string)
         option_string = 'Calculated Intensities (Debye2/Angs2/amu)'
-        header = fulldirname+','+option_string
+        header = name+','+option_string
         string = header + common_output
         for f in intensities:
             string = string + ',' + str(f)
         results_string.append(string)
         option_string = 'Calculated Integrated Molar Absorption (L/mole/cm/cm)'
-        header = fulldirname+','+option_string
+        header = name+','+option_string
         string = header + common_output
         for f in intensities:
             string = string + ',' + str(f*4225.6)
@@ -357,7 +243,7 @@ def main():
     files = []
     eckart = False
     neutral = False
-    hessian_symmetrisation = "symm"
+    hessian_symmetrisation = None
     mass_definition = "average"
     mass_dictionary = {}
     global_no_calculation = False
@@ -420,6 +306,11 @@ def main():
         elif token == "-program":
             itoken += 1
             program = tokens[itoken]
+            if hessian_symmetrisation == None:
+                if program == 'crystal':
+                    hessian_symmetrisation = 'crystal'
+                else:
+                    hessian_symmetrisation = 'symm'
             if program == 'phonopy':
                 itoken += 1
                 qmprogram = tokens[itoken]
@@ -480,6 +371,11 @@ def main():
         prog = program
         if program == "auto":
             prog = find_program_from_name(name)
+            if hessian_symmetrisation == None:
+                if prog == 'crystal':
+                    hessian_symmetrisation = 'crystal'
+                else:
+                    hessian_symmetrisation = 'symm'
             print('  Analysing {} generated by {}'.format(name,prog),file=sys.stderr)
         calling_parameters.append( (name, eckart, neutral, mass_definition, mass_dictionary, global_no_calculation, prog, hessian_symmetrisation, qmprogram, debug) )
     # Calculate the results in parallel
