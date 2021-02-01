@@ -58,10 +58,10 @@ class CastepOutputReader(GenericOutputReader):
         self._ion_type_index         = {}
         self._ion_index_type         = {}
         self._intensities             = None
-        self._de_ion                  = []
-        self._fmax                    = []
-        self._dr_max                  = []
-        self._smax                    = []
+        self.de_ion                  = []
+        self.fmax                    = []
+        self.dr_max                  = []
+        self.smax                    = []
         return
 
     def _read_output_files(self):
@@ -161,15 +161,15 @@ class CastepOutputReader(GenericOutputReader):
         self.unit_cells.append(UnitCell(avector, bvector, cvector))
         self.ncells = len(self.unit_cells)
         line = self._read_till_phrase(re.compile(' *Lattice*'))
-        line = self.file_descriptor.readline()
-        self.alengths.append(float(line.split()[2]))
-        self.alphas.append(float(line.split()[5]))
-        line = self.file_descriptor.readline()
-        self.blengths.append(float(line.split()[2]))
-        self.betas.append(float(line.split()[5]))
-        line = self.file_descriptor.readline()
-        self.clengths.append(float(line.split()[2]))
-        self.gammas.append(float(line.split()[5]))        
+        # line = self.file_descriptor.readline()
+        # self.alengths.append(float(line.split()[2]))
+        # self.alphas.append(float(line.split()[5]))
+        # line = self.file_descriptor.readline()
+        # self.blengths.append(float(line.split()[2]))
+        # self.betas.append(float(line.split()[5]))
+        # line = self.file_descriptor.readline()
+        # self.clengths.append(float(line.split()[2]))
+        # self.gammas.append(float(line.split()[5]))        
         line = self._read_till_phrase(re.compile(' *Current cell volume'))
         self.volume = float(line.split()[4])
         self.volumes.append(float(line.split()[4]))
@@ -353,13 +353,13 @@ class CastepOutputReader(GenericOutputReader):
         line = self.file_descriptor.readline()
         line = self.file_descriptor.readline()
         line = self.file_descriptor.readline()
-        self._de_ion.append(float(line.split()[3]))
+        self.de_ion.append(float(line.split()[3]))
         line = self.file_descriptor.readline()
-        self._fmax.append(float(line.split()[3]))
+        self.fmax.append(float(line.split()[3]))
         line = self.file_descriptor.readline()
-        self._dr_max.append(float(line.split()[3]))
+        self.dr_max.append(float(line.split()[3]))
         line = self.file_descriptor.readline()
-        self._smax.append(float(line.split()[3]))
+        self.smax.append(float(line.split()[3]))
         line = self.file_descriptor.readline()
         return    
         

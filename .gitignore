@@ -68,3 +68,8 @@ pdgui.out
 gh-pages
 _build
 Sphinx/.doctrees
+
+# Andrew Burnett
+*.ipynb
+**/.ipynb_checkpoints
+**/Data
