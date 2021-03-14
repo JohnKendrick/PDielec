@@ -1,3 +1,6 @@
+version 6.5.0
+Added a new VibAnalysis module based on the work of filipe teixeira https://github.com/teixeirafilipe/vibAnalysis
+
 version 6.4.4
 Added an option in viewerTab to write the vibrating molecule as a cif file.
 Modified the cif output format so it is more like that of Mercury

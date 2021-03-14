@@ -1,0 +1,655 @@
+###############################################################
+#                                                             #
+#   vibAnalysis - version 1.2.2                               #
+#   A set of tools to analyse vibrational modes in terms of   #
+#   localized internal coordinates.                           #
+#                                                             #
+#   (c) Filipe Teixeira, 2017-2019                            #
+#   filipe _dot_ teixeira _at_ fc _dot_ up _dot_ pt           #
+#                                                             #
+###############################################################
+
+Opening using PDielec library : OUTCAR
+
+
+Mass-weighting the atomic displacements...
+
+
+Generating Internal Coordinates...
+Internal Coordinates Generated: 86
+
+This is the list of Internal Coordinates generated for
+this run. Please use these indexes if you whish to animate
+any one of these coordinates. If you added some user-defined
+coordinates, please be sure to re-run this program with the
+same added coordinates.
+
+
+List of Internal Coordinates and their values
+    1 BOND Na1 O2                  2.370
+    2 BOND Na1 O3                  2.334
+    3 BOND Na1 O4                  2.469
+    4 BOND Na1 O5                  2.549
+    5 BOND Na1 Na6                 3.582
+    6 BOND Na1 O7                  2.374
+    7 BOND Na1 O8                  2.384
+    8 BOND O2 Na6                  2.374
+    9 BOND O2 S9                   1.455
+   10 BOND O3 S10                  1.456
+   11 BOND Na6 O7                  2.370
+   12 BOND S9 O11                  1.655
+   13 BOND S10 O12                 1.655
+   14 ANGLE O2 Na1 O3            104.384
+   15 ANGLE O2 Na1 O4             76.617
+   16 ANGLE O2 Na1 O5             86.568
+   17 ANGLE O2 Na1 Na6            40.999
+   18 ANGLE O2 Na1 O7             81.918
+   19 ANGLE O2 Na1 O8            151.563
+   20 ANGLE Na1 O2 Na6            98.082
+   21 ANGLE Na1 O2 S9            127.889
+   22 ANGLE O3 Na1 O4            126.982
+   23 ANGLE O3 Na1 O5             76.696
+   24 ANGLE O3 Na1 Na6           139.440
+   25 ANGLE O3 Na1 O7            153.964
+   26 ANGLE O3 Na1 O8             99.287
+   27 ANGLE Na1 O3 S10           136.554
+   28 ANGLE O4 Na1 O5            153.538
+   29 ANGLE O4 Na1 Na6            73.747
+   30 ANGLE O4 Na1 O7             78.972
+   31 ANGLE O4 Na1 O8             76.625
+   32 ANGLE O5 Na1 Na6            80.138
+   33 ANGLE O5 Na1 O7             78.539
+   34 ANGLE O5 Na1 O8            114.376
+   35 ANGLE Na6 Na1 O7            40.919
+   36 ANGLE Na6 Na1 O8           120.604
+   37 ANGLE Na1 Na6 O2            40.919
+   38 ANGLE Na1 Na6 O7            40.999
+   39 ANGLE O7 Na1 O8             83.707
+   40 ANGLE Na1 O7 Na6            98.082
+   41 ANGLE Na6 O2 S9            134.027
+   42 ANGLE O2 Na6 O7             81.918
+   43 ANGLE O2 S9 O11            106.225
+   44 ANGLE O3 S10 O12           107.197
+   45 OUT O2 Na1 Na6 O7          180.000
+   46 OUT Na1 O2 Na6 S9          180.545
+   47 OUT O3 Na1 O4 O7           177.713
+   48 TORSION O3 Na1 O2 Na6      205.778
+   49 TORSION O3 Na1 O2 S9        26.275
+   50 TORSION O2 Na1 O3 S10      246.205
+   51 TORSION O4 Na1 O2 Na6      279.486
+   52 TORSION O4 Na1 O2 S9        98.990
+   53 TORSION O5 Na1 O2 Na6       78.899
+   54 TORSION O5 Na1 O2 S9       258.403
+   55 TORSION Na6 Na1 O2 S9      179.504
+   56 TORSION O2 Na1 Na6 O7      180.000
+   57 TORSION O7 Na1 O2 Na6        0.000
+   58 TORSION O7 Na1 O2 S9       179.504
+   59 TORSION O2 Na1 O7 Na6      360.000
+   60 TORSION O8 Na1 O2 Na6       60.348
+   61 TORSION O8 Na1 O2 S9       240.845
+   62 TORSION Na1 O2 Na6 O7      360.000
+   63 TORSION Na1 O2 S9 O11      260.614
+   64 TORSION O4 Na1 O3 S10      330.120
+   65 TORSION O5 Na1 O3 S10      196.663
+   66 TORSION Na6 Na1 O3 S10     220.180
+   67 TORSION O3 Na1 Na6 O2       40.379
+   68 TORSION O3 Na1 Na6 O7      220.379
+   69 TORSION O7 Na1 O3 S10      145.001
+   70 TORSION O3 Na1 O7 Na6      106.317
+   71 TORSION O8 Na1 O3 S10       50.315
+   72 TORSION Na1 O3 S10 O12     356.293
+   73 TORSION O4 Na1 Na6 O2       88.159
+   74 TORSION O4 Na1 Na6 O7      268.159
+   75 TORSION O4 Na1 O7 Na6       77.848
+   76 TORSION O5 Na1 Na6 O2      263.837
+   77 TORSION O5 Na1 Na6 O7       83.837
+   78 TORSION O5 Na1 O7 Na6      271.886
+   79 TORSION O7 Na1 Na6 O2      180.000
+   80 TORSION O8 Na1 Na6 O2      208.738
+   81 TORSION O8 Na1 Na6 O7       28.738
+   82 TORSION Na1 Na6 O2 S9      180.545
+   83 TORSION O8 Na1 O7 Na6      155.396
+   84 TORSION Na1 O7 Na6 O2        0.000
+   85 TORSION S9 O2 Na6 O7       179.455
+   86 TORSION Na6 O2 S9 O11       81.298
+
+
+Starting: Vibrational Mode Automatic Relevance Determination
+ More internal coordinates than frequencies, expect
+ some (possibly unwanted) redundancy in the results
+
+Ending: Vibrational Mode Automatic Relevance Determination
+
+
+*** Vibrational Mode Automatic Relevance Determination (VMARD) ***
+
+Mode   0:     0.00 cm-1 (IR:   0.0)
+  -2.1585 ( 15.1%) ANGLE O4 Na1 O5
+  +1.3926 (  9.7%) TORSION O5 Na1 O2 Na6
+  -1.3805 (  9.6%) TORSION O4 Na1 O2 Na6
+  -1.1131 (  7.8%) BOND Na1 O2
+  -1.0055 (  7.0%) TORSION O5 Na1 O7 Na6
+  +0.9847 (  6.9%) TORSION O4 Na1 O7 Na6
+  +0.8112 (  5.7%) BOND O3 S10
+  +0.8104 (  5.7%) BOND Na1 O3
+  +0.7206 (  5.0%) ANGLE Na6 O2 S9
+ Shown Composition:   26.4% BOND,  27.7% ANGLE,   0.0% OUT,  45.9% TOR
+ Total Composition:   22.8% BOND,  30.9% ANGLE,   0.2% OUT,  46.1% TOR
+ R**2 = 0.9842
+ Explained Variance =  98.3 %
+
+Mode   1:     0.00 cm-1 (IR:   0.0)
+  -0.8010 ( 11.1%) TORSION O2 Na1 O7 Na6
+  -0.6380 (  8.8%) TORSION O3 Na1 O2 Na6
+  +0.5392 (  7.5%) BOND O2 S9
+  +0.5064 (  7.0%) TORSION Na1 Na6 O2 S9
+  -0.3662 (  5.1%) ANGLE Na1 O3 S10
+  +0.3574 (  4.9%) BOND O3 S10
+ Shown Composition:   27.9% BOND,  11.4% ANGLE,   0.0% OUT,  60.6% TOR
+ Total Composition:   26.2% BOND,  19.4% ANGLE,   2.5% OUT,  51.9% TOR
+ R**2 = 1.0000
+ Explained Variance = 100.0 %
+
+Mode   2:     0.00 cm-1 (IR:   0.0)
+  +0.9841 ( 10.9%) ANGLE O2 Na1 O4
+  -0.9559 ( 10.6%) TORSION O4 Na1 O7 Na6
+  +0.7964 (  8.8%) TORSION O5 Na1 O7 Na6
+  +0.7812 (  8.7%) ANGLE O2 Na1 O5
+  +0.6458 (  7.2%) BOND Na1 O2
+  +0.5253 (  5.8%) TORSION O7 Na1 O3 S10
+  +0.4032 (  4.5%) TORSION Na1 Na6 O2 S9
+ Shown Composition:   12.7% BOND,  34.7% ANGLE,   0.0% OUT,  52.6% TOR
+ Total Composition:   22.2% BOND,  34.0% ANGLE,   0.0% OUT,  43.8% TOR
+ R**2 = 0.9987
+ Explained Variance =  99.9 %
+
+Mode   3:    90.89 cm-1 (IR: 1778.3)
+  +1.1639 ( 14.5%) ANGLE Na1 O3 S10
+  +1.0431 ( 13.0%) ANGLE O3 S10 O12
+  -0.6789 (  8.5%) TORSION Na1 O7 Na6 O2
+  +0.6592 (  8.2%) BOND O3 S10
+  +0.5716 (  7.1%) ANGLE O2 S9 O11
+  +0.4639 (  5.8%) TORSION Na1 Na6 O2 S9
+  +0.4599 (  5.7%) TORSION Na1 O2 S9 O11
+  -0.3896 (  4.9%) BOND Na1 O5
+  +0.3604 (  4.5%) BOND Na1 Na6
+ Shown Composition:   24.3% BOND,  48.0% ANGLE,   0.0% OUT,  27.7% TOR
+ Total Composition:   30.6% BOND,  42.7% ANGLE,   0.0% OUT,  26.7% TOR
+ R**2 = 0.9892
+ Explained Variance =  98.9 %
+
+Mode   4:   107.89 cm-1 (IR:   0.0)
+  -0.8632 ( 10.6%) BOND Na1 O2
+  -0.8351 ( 10.2%) ANGLE O3 Na1 Na6
+  +0.6015 (  7.4%) ANGLE O5 Na1 O8
+  -0.5770 (  7.1%) TORSION O2 Na1 O7 Na6
+  -0.4742 (  5.8%) TORSION O8 Na1 O2 Na6
+  -0.4309 (  5.3%) TORSION O5 Na1 O7 Na6
+  +0.3995 (  4.9%) ANGLE O7 Na1 O8
+  +0.3788 (  4.6%) TORSION Na6 Na1 O3 S10
+  +0.3618 (  4.4%) TORSION Na1 O2 Na6 O7
+ Shown Composition:   17.5% BOND,  37.3% ANGLE,   0.0% OUT,  45.2% TOR
+ Total Composition:   24.9% BOND,  34.8% ANGLE,   0.0% OUT,  40.3% TOR
+ R**2 = 0.9996
+ Explained Variance = 100.0 %
+
+Mode   5:   113.15 cm-1 (IR:   0.0)
+  +0.6039 (  9.7%) TORSION O3 Na1 O7 Na6
+  +0.4725 (  7.6%) TORSION O5 Na1 O7 Na6
+  +0.4686 (  7.5%) BOND O3 S10
+  -0.4344 (  7.0%) TORSION O3 Na1 O2 Na6
+  -0.4323 (  6.9%) TORSION O8 Na1 O2 S9
+  +0.4055 (  6.5%) ANGLE O4 Na1 Na6
+  +0.4047 (  6.5%) ANGLE O3 S10 O12
+  +0.3975 (  6.4%) TORSION Na1 O7 Na6 O2
+  -0.3881 (  6.2%) ANGLE O2 S9 O11
+  +0.2897 (  4.6%) ANGLE O2 Na6 O7
+ Shown Composition:   10.9% BOND,  34.6% ANGLE,   0.0% OUT,  54.5% TOR
+ Total Composition:   17.3% BOND,  31.5% ANGLE,   0.0% OUT,  51.2% TOR
+ R**2 = 0.9895
+ Explained Variance =  98.9 %
+
+Mode   6:   120.53 cm-1 (IR: 6428.1)
+  -0.5982 (  9.8%) TORSION Na1 Na6 O2 S9
+  -0.4500 (  7.3%) ANGLE Na1 O3 S10
+  -0.3896 (  6.3%) ANGLE O3 Na1 O8
+  -0.3795 (  6.2%) TORSION O4 Na1 O2 Na6
+  -0.3685 (  6.0%) TORSION O4 Na1 O2 S9
+  +0.3660 (  6.0%) ANGLE O2 Na1 O5
+  -0.3207 (  5.2%) ANGLE O2 S9 O11
+  -0.2693 (  4.4%) ANGLE O3 S10 O12
+ Shown Composition:    0.0% BOND,  57.2% ANGLE,   0.0% OUT,  42.8% TOR
+ Total Composition:   17.3% BOND,  40.9% ANGLE,   2.7% OUT,  39.0% TOR
+ R**2 = 0.9999
+ Explained Variance = 100.0 %
+
+Mode   7:   124.54 cm-1 (IR:   0.0)
+  -0.7637 ( 12.1%) BOND Na1 O3
+  -0.7081 ( 11.3%) ANGLE Na1 O3 S10
+  +0.5894 (  9.4%) ANGLE Na6 Na1 O8
+  -0.5825 (  9.3%) BOND O3 S10
+  +0.4795 (  7.6%) ANGLE O2 Na1 O7
+  +0.4702 (  7.5%) TORSION O4 Na1 O2 Na6
+  +0.4319 (  6.9%) BOND O2 S9
+  -0.3478 (  5.5%) ANGLE O3 S10 O12
+ Shown Composition:   40.7% BOND,  48.6% ANGLE,   0.0% OUT,  10.8% TOR
+ Total Composition:   33.7% BOND,  50.5% ANGLE,   0.0% OUT,  15.7% TOR
+ R**2 = 0.9760
+ Explained Variance =  97.5 %
+
+Mode   8:   134.05 cm-1 (IR: 12597.6)
+  +0.7141 ( 12.4%) ANGLE O2 Na1 O4
+  +0.5171 (  9.0%) TORSION O3 Na1 Na6 O2
+  -0.4586 (  8.0%) ANGLE O2 Na1 Na6
+  -0.4467 (  7.7%) TORSION O4 Na1 O7 Na6
+  -0.3848 (  6.7%) BOND O2 S9
+  -0.3383 (  5.9%) ANGLE O2 S9 O11
+  -0.3310 (  5.7%) OUT Na1 O2 Na6 S9
+  +0.3223 (  5.6%) ANGLE Na6 Na1 O8
+ Shown Composition:   11.0% BOND,  52.2% ANGLE,   9.4% OUT,  27.4% TOR
+ Total Composition:   20.1% BOND,  40.8% ANGLE,   5.7% OUT,  33.3% TOR
+ R**2 = 0.9991
+ Explained Variance =  99.9 %
+
+Mode   9:   141.99 cm-1 (IR:   0.0)
+  -0.6465 ( 11.2%) BOND Na1 O2
+  -0.5336 (  9.3%) TORSION O2 Na1 O7 Na6
+  -0.4781 (  8.3%) ANGLE O3 Na1 O5
+  +0.4716 (  8.2%) ANGLE Na6 O2 S9
+  -0.4436 (  7.7%) BOND Na1 O3
+  -0.3518 (  6.1%) BOND O3 S10
+  +0.2544 (  4.4%) BOND O2 S9
+  +0.2489 (  4.3%) ANGLE O2 Na1 Na6
+  -0.2435 (  4.2%) ANGLE O3 Na1 Na6
+ Shown Composition:   46.2% BOND,  39.3% ANGLE,   0.0% OUT,  14.5% TOR
+ Total Composition:   37.1% BOND,  38.3% ANGLE,   0.0% OUT,  24.6% TOR
+ R**2 = 0.9997
+ Explained Variance = 100.0 %
+
+Mode  10:   180.97 cm-1 (IR:   0.0)
+  -0.9484 (  9.0%) ANGLE Na1 O3 S10
+  -0.8450 (  8.0%) ANGLE O3 S10 O12
+  +0.7103 (  6.7%) ANGLE O2 S9 O11
+  -0.6672 (  6.3%) TORSION O2 Na1 O7 Na6
+  -0.6505 (  6.2%) BOND O3 S10
+  +0.6447 (  6.1%) BOND O2 S9
+  +0.4924 (  4.7%) TORSION O3 Na1 Na6 O7
+  -0.4732 (  4.5%) BOND Na1 O5
+ Shown Composition:   32.6% BOND,  46.1% ANGLE,   0.0% OUT,  21.3% TOR
+ Total Composition:   25.6% BOND,  30.3% ANGLE,   3.0% OUT,  41.1% TOR
+ R**2 = 0.9995
+ Explained Variance = 100.0 %
+
+Mode  11:   181.77 cm-1 (IR: 2220.4)
+  +0.5502 (  7.7%) TORSION Na1 O7 Na6 O2
+  -0.5218 (  7.3%) ANGLE O2 S9 O11
+  +0.5009 (  7.0%) ANGLE Na1 O2 Na6
+  -0.4422 (  6.2%) TORSION Na1 O3 S10 O12
+  -0.4306 (  6.0%) TORSION O3 Na1 Na6 O7
+  -0.4036 (  5.7%) BOND Na1 O4
+  -0.3931 (  5.5%) TORSION O2 Na1 O7 Na6
+  -0.3724 (  5.2%) BOND O2 S9
+  +0.3694 (  5.2%) TORSION O5 Na1 O7 Na6
+  +0.3299 (  4.6%) TORSION Na6 O2 S9 O11
+ Shown Composition:   18.0% BOND,  23.7% ANGLE,   0.0% OUT,  58.3% TOR
+ Total Composition:   28.2% BOND,  21.2% ANGLE,   0.0% OUT,  50.6% TOR
+ R**2 = 0.9991
+ Explained Variance =  99.9 %
+
+Mode  12:   208.13 cm-1 (IR:   0.0)
+  +0.8212 ( 18.1%) BOND Na1 Na6
+  +0.3943 (  8.7%) TORSION O3 Na1 Na6 O2
+  +0.3859 (  8.5%) ANGLE Na1 O3 S10
+  +0.2305 (  5.1%) TORSION O4 Na1 O2 Na6
+  -0.2282 (  5.0%) OUT O2 Na1 Na6 O7
+  +0.1983 (  4.4%) BOND Na1 O2
+ Shown Composition:   45.1% BOND,  17.1% ANGLE,  10.1% OUT,  27.7% TOR
+ Total Composition:   33.8% BOND,  25.0% ANGLE,   7.0% OUT,  34.2% TOR
+ R**2 = 0.9999
+ Explained Variance = 100.0 %
+
+Mode  13:   208.64 cm-1 (IR: 13917.4)
+  +0.7173 ( 14.4%) TORSION O2 Na1 O7 Na6
+  -0.3513 (  7.1%) ANGLE Na1 O2 Na6
+  +0.2832 (  5.7%) ANGLE Na1 O3 S10
+  +0.2664 (  5.4%) BOND O2 Na6
+  -0.2565 (  5.2%) ANGLE O2 S9 O11
+  -0.2457 (  4.9%) TORSION O3 Na1 O7 Na6
+  +0.2415 (  4.9%) BOND Na1 O3
+  -0.2380 (  4.8%) BOND Na1 O4
+  +0.2218 (  4.5%) BOND Na1 O2
+ Shown Composition:   34.3% BOND,  31.6% ANGLE,   0.0% OUT,  34.1% TOR
+ Total Composition:   23.6% BOND,  27.7% ANGLE,   0.0% OUT,  48.7% TOR
+ R**2 = 0.9996
+ Explained Variance = 100.0 %
+
+Mode  14:   230.01 cm-1 (IR:   0.0)
+  +0.6598 ( 10.0%) BOND Na1 O2
+  -0.5716 (  8.7%) TORSION O2 Na1 O7 Na6
+  -0.4237 (  6.4%) ANGLE Na1 O3 S10
+  +0.3595 (  5.5%) BOND O2 S9
+  -0.3547 (  5.4%) ANGLE Na6 O2 S9
+  -0.3404 (  5.2%) TORSION O3 Na1 Na6 O2
+  -0.3201 (  4.9%) ANGLE O3 Na1 O8
+  -0.2990 (  4.6%) BOND Na1 O8
+  +0.2952 (  4.5%) BOND O3 S10
+ Shown Composition:   44.5% BOND,  30.3% ANGLE,   0.0% OUT,  25.2% TOR
+ Total Composition:   45.5% BOND,  29.7% ANGLE,   0.0% OUT,  24.8% TOR
+ R**2 = 0.9995
+ Explained Variance =  99.9 %
+
+Mode  15:   235.31 cm-1 (IR: 15476.8)
+  -0.6053 ( 14.1%) ANGLE Na1 Na6 O2
+  +0.4030 (  9.4%) BOND Na1 O3
+  +0.3941 (  9.2%) ANGLE O4 Na1 O5
+  +0.3591 (  8.4%) ANGLE Na6 O2 S9
+  +0.2861 (  6.7%) BOND Na6 O7
+  -0.2423 (  5.7%) TORSION O2 Na1 O7 Na6
+  +0.2158 (  5.0%) BOND O3 S10
+  -0.2109 (  4.9%) ANGLE O2 Na6 O7
+  +0.2068 (  4.8%) BOND O2 Na6
+  +0.2017 (  4.7%) BOND Na1 O8
+  +0.1828 (  4.3%) TORSION O4 Na1 O2 Na6
+ Shown Composition:   39.7% BOND,  47.4% ANGLE,   0.0% OUT,  12.9% TOR
+ Total Composition:   37.4% BOND,  45.4% ANGLE,   0.0% OUT,  17.1% TOR
+ R**2 = 0.9995
+ Explained Variance = 100.0 %
+
+Mode  16:   260.64 cm-1 (IR:   0.0)
+  -0.6587 (  9.4%) ANGLE Na1 O3 S10
+  -0.6334 (  9.0%) BOND Na1 O3
+  +0.6079 (  8.7%) ANGLE O3 Na1 O7
+  +0.5277 (  7.5%) BOND O2 Na6
+  -0.4594 (  6.5%) TORSION O3 Na1 O2 S9
+  +0.4194 (  6.0%) BOND Na1 O5
+  -0.3473 (  4.9%) TORSION O2 Na1 O7 Na6
+  +0.3247 (  4.6%) ANGLE O5 Na1 Na6
+  +0.3133 (  4.5%) BOND O2 S9
+  -0.3024 (  4.3%) ANGLE Na1 O2 S9
+ Shown Composition:   41.2% BOND,  41.2% ANGLE,   0.0% OUT,  17.6% TOR
+ Total Composition:   33.7% BOND,  38.2% ANGLE,   0.0% OUT,  28.1% TOR
+ R**2 = 0.9980
+ Explained Variance =  99.8 %
+
+Mode  17:   340.12 cm-1 (IR:   0.0)
+  -0.8043 ( 13.3%) BOND Na1 O4
+  +0.4831 (  8.0%) BOND Na1 O2
+  -0.4613 (  7.6%) ANGLE O2 Na1 O8
+  +0.3902 (  6.5%) ANGLE Na1 O2 S9
+  -0.3016 (  5.0%) TORSION O8 Na1 O7 Na6
+  +0.2842 (  4.7%) BOND Na1 O8
+ Shown Composition:   57.7% BOND,  31.2% ANGLE,   0.0% OUT,  11.1% TOR
+ Total Composition:   39.1% BOND,  27.8% ANGLE,   5.1% OUT,  28.0% TOR
+ R**2 = 1.0000
+ Explained Variance = 100.0 %
+
+Mode  18:   379.29 cm-1 (IR: 428.2)
+  -0.7940 ( 10.5%) ANGLE Na1 O3 S10
+  -0.7276 (  9.7%) ANGLE O3 S10 O12
+  -0.5534 (  7.3%) ANGLE O2 S9 O11
+  -0.5508 (  7.3%) ANGLE O3 Na1 O4
+  +0.4283 (  5.7%) ANGLE O3 Na1 O5
+  -0.4136 (  5.5%) BOND Na1 O5
+  -0.3942 (  5.2%) BOND Na1 O3
+  +0.3551 (  4.7%) TORSION O7 Na1 O2 S9
+  +0.3545 (  4.7%) TORSION O8 Na1 O2 Na6
+  +0.3349 (  4.4%) TORSION O5 Na1 O2 Na6
+ Shown Composition:   16.5% BOND,  62.2% ANGLE,   0.0% OUT,  21.3% TOR
+ Total Composition:   23.3% BOND,  49.5% ANGLE,   0.0% OUT,  27.2% TOR
+ R**2 = 0.9987
+ Explained Variance =  99.9 %
+
+Mode  19:   402.60 cm-1 (IR:   0.0)
+  +0.9286 ( 10.3%) ANGLE Na1 O3 S10
+  +0.8834 (  9.8%) ANGLE O3 S10 O12
+  -0.8251 (  9.2%) ANGLE O2 S9 O11
+  -0.6395 (  7.1%) OUT Na1 O2 Na6 S9
+  +0.5275 (  5.9%) BOND Na1 O3
+  -0.4853 (  5.4%) BOND O2 S9
+  +0.4375 (  4.9%) BOND O3 S10
+  -0.4030 (  4.5%) BOND Na1 O5
+  -0.3798 (  4.2%) TORSION Na1 O2 S9 O11
+ Shown Composition:   33.6% BOND,  47.9% ANGLE,  11.6% OUT,   6.9% TOR
+ Total Composition:   26.8% BOND,  42.0% ANGLE,   7.1% OUT,  24.1% TOR
+ R**2 = 0.9991
+ Explained Variance =  99.9 %
+
+Mode  20:   445.19 cm-1 (IR: 1041.8)
+  +0.5045 (  6.9%) TORSION O8 Na1 Na6 O7
+  -0.4484 (  6.2%) ANGLE O2 Na1 O7
+  +0.4470 (  6.2%) BOND Na1 O4
+  -0.4374 (  6.0%) TORSION Na1 O3 S10 O12
+  +0.4250 (  5.8%) ANGLE O3 S10 O12
+  +0.4151 (  5.7%) BOND Na1 O3
+  +0.4072 (  5.6%) TORSION O5 Na1 Na6 O7
+  +0.3658 (  5.0%) ANGLE Na1 O3 S10
+  +0.3639 (  5.0%) BOND Na1 O2
+  -0.3623 (  5.0%) ANGLE O2 S9 O11
+  -0.3162 (  4.4%) TORSION O3 Na1 O7 Na6
+  +0.3141 (  4.3%) TORSION Na1 O2 S9 O11
+  +0.3077 (  4.2%) BOND Na1 O5
+ Shown Composition:   30.0% BOND,  31.3% ANGLE,   0.0% OUT,  38.7% TOR
+ Total Composition:   32.3% BOND,  33.4% ANGLE,   1.6% OUT,  32.7% TOR
+ R**2 = 0.9994
+ Explained Variance =  99.9 %
+
+Mode  21:   528.12 cm-1 (IR: 25745.2)
+  -0.6231 (  7.9%) ANGLE Na1 O3 S10
+  +0.5167 (  6.6%) ANGLE O2 S9 O11
+  -0.4298 (  5.5%) BOND Na1 O4
+  +0.4241 (  5.4%) TORSION O8 Na1 O2 S9
+  +0.4034 (  5.1%) TORSION Na1 O7 Na6 O2
+  -0.3955 (  5.0%) TORSION O8 Na1 Na6 O2
+  +0.3868 (  4.9%) BOND Na1 O5
+  +0.3712 (  4.7%) ANGLE O3 Na1 O7
+  +0.3702 (  4.7%) TORSION O5 Na1 Na6 O2
+  +0.3327 (  4.2%) ANGLE O2 Na1 O3
+ Shown Composition:   19.2% BOND,  43.3% ANGLE,   0.0% OUT,  37.5% TOR
+ Total Composition:   21.0% BOND,  36.9% ANGLE,   0.0% OUT,  42.1% TOR
+ R**2 = 0.9994
+ Explained Variance =  99.9 %
+
+Mode  22:   530.23 cm-1 (IR:   0.0)
+  +0.4494 (  7.2%) TORSION O5 Na1 O3 S10
+  +0.4427 (  7.1%) ANGLE O2 Na1 O5
+  +0.4244 (  6.8%) BOND Na1 O7
+  +0.4160 (  6.7%) BOND O2 S9
+  +0.3790 (  6.1%) ANGLE O4 Na1 Na6
+  -0.3412 (  5.5%) ANGLE O2 Na1 O3
+  -0.3338 (  5.3%) TORSION O8 Na1 O7 Na6
+  -0.3098 (  5.0%) TORSION O8 Na1 O2 S9
+  -0.3030 (  4.9%) ANGLE Na1 O3 S10
+  +0.2617 (  4.2%) ANGLE O3 Na1 O5
+ Shown Composition:   23.0% BOND,  47.2% ANGLE,   0.0% OUT,  29.9% TOR
+ Total Composition:   31.1% BOND,  41.7% ANGLE,   0.0% OUT,  27.2% TOR
+ R**2 = 0.9999
+ Explained Variance = 100.0 %
+
+Mode  23:   532.38 cm-1 (IR: 13926.0)
+  -0.6747 (  7.9%) TORSION O2 Na1 O7 Na6
+  +0.5782 (  6.8%) TORSION O3 Na1 O7 Na6
+  -0.5619 (  6.6%) ANGLE Na1 O3 S10
+  +0.5165 (  6.1%) OUT Na1 O2 Na6 S9
+  +0.4510 (  5.3%) BOND O3 S10
+  +0.4388 (  5.2%) BOND O2 S9
+  +0.4308 (  5.1%) BOND Na1 O3
+  -0.3648 (  4.3%) TORSION O3 Na1 Na6 O2
+ Shown Composition:   32.9% BOND,  14.0% ANGLE,  12.9% OUT,  40.3% TOR
+ Total Composition:   30.3% BOND,  29.7% ANGLE,   6.1% OUT,  34.0% TOR
+ R**2 = 0.9998
+ Explained Variance = 100.0 %
+
+Mode  24:   547.33 cm-1 (IR:   0.0)
+  -0.5582 (  8.1%) BOND Na1 O3
+  -0.5510 (  8.0%) ANGLE Na1 O2 S9
+  +0.4999 (  7.2%) ANGLE O2 Na1 O7
+  +0.4941 (  7.1%) ANGLE O3 Na1 O8
+  -0.4739 (  6.9%) BOND O3 S10
+  +0.3936 (  5.7%) ANGLE Na1 O3 S10
+  -0.3884 (  5.6%) ANGLE O3 Na1 O5
+  +0.3725 (  5.4%) ANGLE O4 Na1 O7
+  -0.3567 (  5.2%) TORSION O8 Na1 Na6 O7
+  +0.2947 (  4.3%) TORSION O3 Na1 Na6 O7
+  +0.2945 (  4.3%) OUT O2 Na1 Na6 O7
+ Shown Composition:   22.1% BOND,  57.7% ANGLE,   6.3% OUT,  13.9% TOR
+ Total Composition:   25.8% BOND,  51.8% ANGLE,   4.3% OUT,  18.1% TOR
+ R**2 = 0.9998
+ Explained Variance = 100.0 %
+
+Mode  25:   565.02 cm-1 (IR: 8023.5)
+  +0.6953 (  9.9%) ANGLE Na1 O2 S9
+  -0.4709 (  6.7%) ANGLE O7 Na1 O8
+  -0.3867 (  5.5%) BOND Na1 O7
+  +0.3794 (  5.4%) TORSION O8 Na1 O2 Na6
+  +0.3354 (  4.8%) TORSION Na6 Na1 O3 S10
+  +0.3300 (  4.7%) ANGLE Na1 O3 S10
+  +0.3002 (  4.3%) TORSION O3 Na1 O2 Na6
+  -0.2977 (  4.2%) BOND Na1 O8
+ Shown Composition:   21.4% BOND,  46.8% ANGLE,   0.0% OUT,  31.8% TOR
+ Total Composition:   27.6% BOND,  31.8% ANGLE,   3.2% OUT,  37.4% TOR
+ R**2 = 1.0000
+ Explained Variance = 100.0 %
+
+Mode  26:   617.20 cm-1 (IR:   0.0)
+  +0.8586 ( 14.2%) TORSION O3 Na1 O2 S9
+  +0.8361 ( 13.9%) ANGLE Na1 O3 S10
+  -0.4043 (  6.7%) BOND S9 O11
+  -0.3356 (  5.6%) TORSION O3 Na1 O7 Na6
+  +0.3055 (  5.1%) TORSION O2 Na1 O7 Na6
+  +0.2843 (  4.7%) ANGLE Na1 O2 S9
+ Shown Composition:   13.4% BOND,  37.0% ANGLE,   0.0% OUT,  49.6% TOR
+ Total Composition:   29.8% BOND,  32.6% ANGLE,   1.2% OUT,  36.4% TOR
+ R**2 = 0.9994
+ Explained Variance =  99.9 %
+
+Mode  27:   663.94 cm-1 (IR: 87271.4)
+  -0.6158 ( 15.7%) BOND S10 O12
+  +0.6042 ( 15.4%) BOND S9 O11
+  +0.2604 (  6.7%) TORSION O8 Na1 O3 S10
+  -0.2528 (  6.5%) ANGLE O2 S9 O11
+  -0.2364 (  6.0%) TORSION Na1 O3 S10 O12
+  +0.1973 (  5.0%) BOND Na1 O2
+  +0.1841 (  4.7%) ANGLE O2 Na1 O3
+  +0.1646 (  4.2%) TORSION Na1 O2 S9 O11
+ Shown Composition:   56.3% BOND,  17.4% ANGLE,   0.0% OUT,  26.3% TOR
+ Total Composition:   45.4% BOND,  29.7% ANGLE,   0.0% OUT,  24.9% TOR
+ R**2 = 0.9988
+ Explained Variance =  99.9 %
+
+Mode  28:   725.57 cm-1 (IR:   0.0)
+  -0.7730 ( 11.0%) TORSION Na1 O3 S10 O12
+  +0.7323 ( 10.5%) ANGLE O2 S9 O11
+  -0.5866 (  8.4%) TORSION Na6 O2 S9 O11
+  -0.5710 (  8.2%) ANGLE O2 Na1 O3
+  -0.5144 (  7.3%) BOND S9 O11
+  -0.4718 (  6.7%) TORSION Na6 Na1 O2 S9
+  +0.4163 (  5.9%) TORSION O3 Na1 O7 Na6
+  +0.4053 (  5.8%) TORSION Na1 O2 Na6 O7
+  -0.3588 (  5.1%) BOND S10 O12
+ Shown Composition:   18.1% BOND,  27.0% ANGLE,   0.0% OUT,  54.9% TOR
+ Total Composition:   18.0% BOND,  33.7% ANGLE,   0.8% OUT,  47.5% TOR
+ R**2 = 0.9980
+ Explained Variance =  99.8 %
+
+Mode  29:   818.42 cm-1 (IR:   0.0)
+  +0.6505 ( 11.5%) BOND S10 O12
+  +0.6200 ( 11.0%) BOND S9 O11
+  -0.4806 (  8.5%) TORSION Na1 O3 S10 O12
+  +0.4503 (  8.0%) ANGLE O2 S9 O11
+  +0.3345 (  5.9%) ANGLE O3 S10 O12
+  +0.3344 (  5.9%) BOND O2 S9
+  -0.2605 (  4.6%) TORSION Na6 O2 S9 O11
+ Shown Composition:   51.3% BOND,  25.1% ANGLE,   0.0% OUT,  23.7% TOR
+ Total Composition:   41.0% BOND,  27.6% ANGLE,   3.1% OUT,  28.3% TOR
+ R**2 = 0.9999
+ Explained Variance = 100.0 %
+
+Mode  30:  1000.91 cm-1 (IR: 34361.5)
+  +0.5751 (  9.9%) BOND Na1 O3
+  -0.4680 (  8.0%) BOND Na1 O8
+  +0.4483 (  7.7%) ANGLE Na1 O3 S10
+  +0.4302 (  7.4%) TORSION O8 Na1 Na6 O7
+  -0.4085 (  7.0%) ANGLE O3 Na1 O5
+  -0.3425 (  5.9%) TORSION O7 Na1 O2 Na6
+  +0.2987 (  5.1%) TORSION O5 Na1 O2 S9
+  -0.2637 (  4.5%) ANGLE O2 Na1 O4
+  -0.2580 (  4.4%) BOND Na1 O5
+ Shown Composition:   37.3% BOND,  32.1% ANGLE,   0.0% OUT,  30.7% TOR
+ Total Composition:   30.8% BOND,  35.4% ANGLE,   4.0% OUT,  29.8% TOR
+ R**2 = 0.9991
+ Explained Variance =  99.9 %
+
+Mode  31:  1028.52 cm-1 (IR:   0.0)
+  +0.4966 (  9.7%) BOND Na1 O8
+  -0.3990 (  7.8%) TORSION O5 Na1 O2 S9
+  +0.3693 (  7.2%) ANGLE O4 Na1 O8
+  +0.3255 (  6.4%) BOND Na1 O3
+  +0.3251 (  6.4%) TORSION Na1 O2 Na6 O7
+  +0.2941 (  5.7%) BOND Na1 O7
+  -0.2868 (  5.6%) ANGLE O4 Na1 O5
+  +0.2772 (  5.4%) ANGLE Na1 O3 S10
+  +0.2662 (  5.2%) BOND Na1 O4
+  +0.2350 (  4.6%) BOND Na1 O5
+ Shown Composition:   49.4% BOND,  28.5% ANGLE,   0.0% OUT,  22.1% TOR
+ Total Composition:   40.5% BOND,  32.4% ANGLE,   0.0% OUT,  27.1% TOR
+ R**2 = 0.9999
+ Explained Variance = 100.0 %
+
+Mode  32:  1188.98 cm-1 (IR: 114908.7)
+  -0.7954 ( 13.2%) ANGLE Na6 O2 S9
+  +0.6891 ( 11.4%) ANGLE Na1 Na6 O2
+  -0.6809 ( 11.3%) BOND O3 S10
+  +0.4319 (  7.1%) ANGLE O2 Na1 O3
+  -0.3655 (  6.0%) BOND O2 S9
+  -0.3443 (  5.7%) ANGLE O5 Na1 O8
+ Shown Composition:   31.6% BOND,  68.4% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   27.5% BOND,  53.6% ANGLE,   0.0% OUT,  18.8% TOR
+ R**2 = 0.9993
+ Explained Variance =  99.9 %
+
+Mode  33:  1195.94 cm-1 (IR:   0.0)
+  +0.7140 ( 12.0%) BOND O2 S9
+  -0.5227 (  8.8%) BOND O3 S10
+  -0.4827 (  8.1%) ANGLE Na1 O3 S10
+  -0.4416 (  7.4%) TORSION O8 Na1 O3 S10
+  -0.4007 (  6.7%) BOND Na1 O3
+  -0.3938 (  6.6%) TORSION O8 Na1 O2 Na6
+  -0.3916 (  6.6%) TORSION O2 Na1 O7 Na6
+  +0.3861 (  6.5%) ANGLE Na6 O2 S9
+  +0.3813 (  6.4%) ANGLE O7 Na1 O8
+  +0.2855 (  4.8%) ANGLE O3 Na1 O5
+  -0.2637 (  4.4%) BOND Na1 O7
+ Shown Composition:   40.8% BOND,  32.9% ANGLE,   0.0% OUT,  26.3% TOR
+ Total Composition:   40.5% BOND,  32.7% ANGLE,   0.6% OUT,  26.2% TOR
+ R**2 = 0.9994
+ Explained Variance =  99.9 %
+
+Mode  34:  1205.54 cm-1 (IR: 98681.3)
+  -0.8250 ( 13.7%) BOND Na1 O2
+  -0.7139 ( 11.8%) TORSION O4 Na1 O3 S10
+  -0.5876 (  9.8%) BOND O2 S9
+  -0.4584 (  7.6%) ANGLE Na1 O2 S9
+  -0.4225 (  7.0%) BOND Na1 O8
+  -0.3368 (  5.6%) TORSION O2 Na1 O7 Na6
+  -0.2541 (  4.2%) ANGLE Na1 O3 S10
+ Shown Composition:   51.0% BOND,  19.8% ANGLE,   0.0% OUT,  29.2% TOR
+ Total Composition:   41.6% BOND,  28.0% ANGLE,   0.6% OUT,  29.7% TOR
+ R**2 = 0.9997
+ Explained Variance = 100.0 %
+
+Mode  35:  1223.93 cm-1 (IR:   0.0)
+  -0.9462 ( 13.5%) ANGLE Na1 O2 S9
+  -0.7489 ( 10.7%) ANGLE O2 Na1 O3
+  -0.7461 ( 10.7%) BOND Na1 O2
+  -0.5427 (  7.7%) BOND O3 S10
+  -0.4566 (  6.5%) ANGLE O4 Na1 O8
+  +0.3712 (  5.3%) ANGLE O3 Na1 O5
+  -0.3596 (  5.1%) BOND Na1 O8
+  -0.3552 (  5.1%) BOND O2 S9
+  +0.3516 (  5.0%) TORSION O3 Na1 Na6 O2
+ Shown Composition:   41.1% BOND,  51.7% ANGLE,   0.0% OUT,   7.2% TOR
+ Total Composition:   36.6% BOND,  42.8% ANGLE,   0.0% OUT,  20.6% TOR
+ R**2 = 0.9990
+ Explained Variance =  99.9 %
+
+*** End of Vibrational Mode Automatic Relevance Determination (VMARD) ***
