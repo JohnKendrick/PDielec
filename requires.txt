@@ -3,6 +3,7 @@ scipy
 PyQt5
 PyOpenGl
 PyMieScatt
+sklearn
 matplotlib
 xlsxwriter
 openpyxl

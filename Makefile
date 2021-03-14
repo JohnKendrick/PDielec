@@ -30,6 +30,7 @@ install:
 		cp -P p2cif      $(SCRIPTS)
 		cp -P pdcompare  $(SCRIPTS)
 		cp -P graphdatagenerator  $(SCRIPTS)
+		cp -P vibanalysis  $(SCRIPTS)
 		mkdir -p $(SCRIPTS)/PDielec
 		mkdir -p $(SCRIPTS)/PDielec/GUI
 		cp -r PDielec/*.py $(SCRIPTS)/PDielec
