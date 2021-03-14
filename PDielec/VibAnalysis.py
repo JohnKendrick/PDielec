@@ -411,7 +411,7 @@ def readPDielec(ifn):
         # Use as many defaults as possible
         # First determine the program used to create the output file
         program = Utilities.find_program_from_name(ifn)
-        qmprogram = ''
+        qmprogram = 'vasp'
         # Create the reader
         reader = Utilities.get_reader(ifn,program,qmprogram)
         # Assume that projection is going to be used
