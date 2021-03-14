@@ -3,7 +3,8 @@
 
 <html>
   <head>
-    <meta charset="utf-8" /><meta content="PDielec package for the calculation of infrared and terahertz absorption from QM calculations" name="description" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"><meta content="PDielec package for the calculation of infrared and terahertz absorption from QM calculations" name="description" />
 <meta content="Quantum Mechanics, Effective Field Theory, Maxwell, Garnett, Mie, Infrared, Terahertz, Castep, Abinit, VASP, GULP. QE" name="keywords" />
 
     <title>Installation &#8212; PDielec: John Kendrick &amp; Andrew Burnett</title>
@@ -15,7 +16,7 @@
     <script src="_static/underscore.js"></script>
     <script src="_static/doctools.js"></script>
     <script src="_static/language_data.js"></script>
-    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <script type="text/x-mathjax-config">MathJax.Hub.Config({"extensions": ["AMSmath.js"], "TeX": {"Macros": {"bm": ["{\\boldsymbol{#1}}", 1], "tensor": ["{\\bar{\\bar{#1}}}", 1], "tensorbs": ["{\\bar{\\bar{\\bm{#1}}}}", 1], "tensorbf": ["{\\bar{\\bar{\\bm{#1}}}}", 1], "fieldbf": ["{\\bar{\\bm{#1}}}", 1], "water": "\\H_{2}O"}}})</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -79,11 +80,18 @@ However, there are no example files installed, only the executables.
 Example files for each of the DFT packages supported can be downloaded from the Git repository.</p>
 <p>The cond-forge package has a python 3 environment included in the package:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">conda</span> <span class="n">create</span>  <span class="o">--</span><span class="n">name</span> <span class="n">pdielec</span>
-<span class="n">source</span> <span class="n">activate</span> <span class="n">pdielec</span>
+<span class="n">conda</span> <span class="n">activate</span> <span class="n">pdielec</span>
+<span class="n">conda</span> <span class="n">config</span> <span class="o">--</span><span class="n">add</span> <span class="n">channels</span> <span class="n">conda</span><span class="o">-</span><span class="n">forge</span>
 <span class="n">conda</span> <span class="n">install</span> <span class="o">-</span><span class="n">c</span> <span class="n">conda</span><span class="o">-</span><span class="n">forge</span> <span class="n">pdielec</span>
 <span class="n">pdgui</span>
 </pre></div>
 </div>
+<p>If at a later stage you want to update PDielec to the latest version from conda-forge, you should be able to update the environment in the following way:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">conda</span> <span class="n">activate</span> <span class="n">pdielec</span>
+<span class="n">conda</span> <span class="n">update</span> <span class="n">pdielec</span>
+</pre></div>
+</div>
+<p>This only works if the conda-forge channel has been added to the channel list for the environment.</p>
 </div>
 <div class="section" id="pypi">
 <h2><a class="toc-backref" href="#id2">PyPi</a><a class="headerlink" href="#pypi" title="Permalink to this headline">¶</a></h2>
@@ -122,6 +130,7 @@ cd to a directory where PDielec will be installed and use git to clone a copy of
 <span class="n">pyyaml</span>
 <span class="n">imageio</span>
 <span class="n">imageio</span><span class="o">-</span><span class="n">ffmpeg</span>
+<span class="n">sklearn</span>
 </pre></div>
 </div>
 </div>
@@ -181,6 +190,7 @@ A Windows 10 installation from the git repository which works for users without 
 <span class="n">pip</span> <span class="n">install</span> <span class="n">termcolor</span>
 <span class="n">pip</span> <span class="n">install</span> <span class="n">imageio</span>
 <span class="n">pip</span> <span class="n">install</span> <span class="n">imageio</span><span class="o">-</span><span class="n">ffmpeg</span>
+<span class="n">pip</span> <span class="n">install</span> <span class="n">sklearn</span>
 <span class="n">pdgui</span>
 </pre></div>
 </div>
@@ -260,7 +270,7 @@ A Windows 10 installation from the git repository which works for users without 
 
     <div class="footer" role="contentinfo">
         &#169; Copyright 2018, John Kendrick and Andrew Burnett.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.0.3.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.1.2.
     </div>
   </body>
 </html>

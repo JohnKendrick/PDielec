@@ -3,7 +3,8 @@
 
 <html>
   <head>
-    <meta charset="utf-8" /><meta content="PDielec package for the calculation of infrared and terahertz absorption from QM calculations" name="description" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"><meta content="PDielec package for the calculation of infrared and terahertz absorption from QM calculations" name="description" />
 <meta content="Quantum Mechanics, Effective Field Theory, Maxwell, Garnett, Mie, Infrared, Terahertz, Castep, Abinit, VASP, GULP. QE" name="keywords" />
 
     <title>Phonon Analysis &#8212; PDielec: John Kendrick &amp; Andrew Burnett</title>
@@ -15,7 +16,7 @@
     <script src="_static/underscore.js"></script>
     <script src="_static/doctools.js"></script>
     <script src="_static/language_data.js"></script>
-    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <script type="text/x-mathjax-config">MathJax.Hub.Config({"extensions": ["AMSmath.js"], "TeX": {"Macros": {"bm": ["{\\boldsymbol{#1}}", 1], "tensor": ["{\\bar{\\bar{#1}}}", 1], "tensorbs": ["{\\bar{\\bar{\\bm{#1}}}}", 1], "tensorbf": ["{\\bar{\\bar{\\bm{#1}}}}", 1], "fieldbf": ["{\\bar{\\bm{#1}}}", 1], "water": "\\H_{2}O"}}})</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -60,7 +61,7 @@
 <div class="section" id="phonon-analysis">
 <h1><a class="toc-backref" href="#id5">Phonon Analysis</a><a class="headerlink" href="#phonon-analysis" title="Permalink to this headline">¶</a></h1>
 <p>PDGui performs an analysis of a phonon mode in terms of the percentage
-of molecular centre-of-mass and rigid body rotational motion in each mode.  Using the results of the analysis it is possible to differentiate between inter- and intra-molecular phonon modes (see for instance Jepsen et al <a class="bibtex reference internal" href="zreferences.html#jepsen2007" id="id1">[1]</a>).  In addition, for those systems with more than one formula unit in the unit cell it is possible to break down the contribution of each molecule to a particular phonon mode.</p>
+of molecular centre-of-mass and rigid body rotational motion in each mode.  Using the results of the analysis it is possible to differentiate between inter- and intra-molecular phonon modes (see for instance Jepsen et al <span id="id1">[<a class="reference internal" href="zreferences.html#id62">40</a>]</span>).  In addition, for those systems with more than one formula unit in the unit cell it is possible to break down the contribution of each molecule to a particular phonon mode.</p>
 <div class="section" id="molecular-systems">
 <h2><a class="toc-backref" href="#id6">Molecular Systems</a><a class="headerlink" href="#molecular-systems" title="Permalink to this headline">¶</a></h2>
 <p>It is common in molecular calculations of
@@ -104,7 +105,7 @@ molecule in the unit cell, which will project out the motion of
 each <em>molecular</em> translational and rotational degree of freedom. Such projection operators will
 be used to separate the external from the internal modes and there will therefore
 be a projection operator for each external mode in the system.</p>
-<p>Hug and Haesler have shown <a class="bibtex reference internal" href="zreferences.html#hug2005c" id="id2">[2]</a> that the vibrational kinetic energy can be decomposed into single centre atomic contributions by considering the kinetic energy, <span class="math notranslate nohighlight">\(T_p\)</span>, of a normal mode <span class="math notranslate nohighlight">\(Q_p\)</span>;</p>
+<p>Hug and Haesler have shown <span id="id2">[<a class="reference internal" href="zreferences.html#id63">41</a>]</span> that the vibrational kinetic energy can be decomposed into single centre atomic contributions by considering the kinetic energy, <span class="math notranslate nohighlight">\(T_p\)</span>, of a normal mode <span class="math notranslate nohighlight">\(Q_p\)</span>;</p>
 <div class="math notranslate nohighlight" id="equation-eq-kep">
 <span class="eqno">(69)<a class="headerlink" href="#equation-eq-kep" title="Permalink to this equation">¶</a></span>\[T_p = \frac{1}{2} \dot{Q_p} =
 \sum\limits_{a}{T_{a,p}} =
@@ -120,7 +121,7 @@ Derivation of this expression has made use of the following
 relationship between the mass weighted normal mode;</p>
 <div class="math notranslate nohighlight" id="equation-eq-kinetic-energy">
 <span class="eqno">(70)<a class="headerlink" href="#equation-eq-kinetic-energy" title="Permalink to this equation">¶</a></span>\[\sqrt{ m_a } \fieldbf{\Delta x}_{a,p} = \fieldbf{L}_{a,p} Q_p\]</div>
-<p>As proposed by Hug and Haesler <a class="bibtex reference internal" href="zreferences.html#hug2005c" id="id3">[2]</a>, since the kinetic energy can be expressed as
+<p>As proposed by Hug and Haesler <span id="id3">[<a class="reference internal" href="zreferences.html#id63">41</a>]</span>, since the kinetic energy can be expressed as
 atomic contributions, consideration of the virial theorem indicates that
 this is true also for the potential energy. Using mass weighted
 Cartesian coordinates for convenience, an analysis of the phonon modes
@@ -572,7 +573,7 @@ For this example the default covalent radius of the Barium atoms has been change
 
     <div class="footer" role="contentinfo">
         &#169; Copyright 2018, John Kendrick and Andrew Burnett.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.0.3.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.1.2.
     </div>
   </body>
 </html>
