@@ -1,17 +1,19 @@
 import os
 import numpy as np
-from collections import deque
-from PyQt5.QtWidgets         import  QPushButton, QWidget
-from PyQt5.QtWidgets         import  QComboBox, QLabel, QLineEdit
-from PyQt5.QtWidgets         import  QVBoxLayout, QHBoxLayout, QFormLayout
-from PyQt5.QtWidgets         import  QSpinBox, QTabWidget, QDoubleSpinBox
-from PyQt5.QtWidgets         import  QSizePolicy, QColorDialog, QMessageBox, QApplication
-from PyQt5.QtCore            import  Qt
+from collections              import  deque
+from PyQt5.QtWidgets          import  QPushButton, QWidget
+from PyQt5.QtWidgets          import  QComboBox, QLabel, QLineEdit
+from PyQt5.QtWidgets          import  QVBoxLayout, QHBoxLayout, QFormLayout
+from PyQt5.QtWidgets          import  QSpinBox, QTabWidget, QDoubleSpinBox
+from PyQt5.QtWidgets          import  QSizePolicy, QColorDialog, QMessageBox, QApplication
+from PyQt5.QtCore             import  Qt
 from PDielec.Constants        import  wavenumber, angstrom
 from PDielec.Constants        import  elemental_colours
 # Import plotting requirements
 from PDielec.Utilities        import Debug
 from PDielec.GUI.OpenGLWidget import OpenGLWidget
+# Need the SuperCell class
+from PDielec.SuperCell        import SuperCell
 
 class ViewerTab(QWidget):
     def __init__(self, parent, debug=False ):
@@ -34,6 +36,7 @@ class ViewerTab(QWidget):
         self.settings['Arrow colour']          = [   0, 255,   0, 255 ]
         self.settings['Arrow radius']          = 0.07
         self.settings['Number of phase steps'] = 41
+        self.settings['Super Cell'] =  [ 1, 1, 1 ]
         self.light_switches = [False]*8
         self.light_switches[0] = True
         self.light_switches[1] = True
@@ -41,6 +44,7 @@ class ViewerTab(QWidget):
         self.plot_type_index = 1
         self.number_of_molecules = 0
         self.unit_cell = None
+        self.super_cell = None
         self.cell_edges = None
         self.cell_corners = None
         # element_colours is a dictionary
@@ -79,6 +83,24 @@ class ViewerTab(QWidget):
         self.frequency_le.setText('{}'.format(0.0))
         label = QLabel('Frequency (cm-1)', self)
         form.addRow(label, self.frequency_le)
+        #
+        # The super-cell
+        #
+        self.super_cell_widget = QWidget(self)
+        self.super_cell_widget.setToolTip('Generate a super-cell')
+        self.super_cell_hbox = QHBoxLayout()
+        self.super_cell_spinBoxes = []
+        super_cell_changed = [self.on_super_cell_changed_a, self.on_super_cell_changed_b, self.on_super_cell_changed_c]
+        super_cell_tooltip = ['Size in a', 'Size in b', 'Size in c']
+        for i,change_function,tip in zip(self.settings['Super Cell'],super_cell_changed,super_cell_tooltip):
+            spinBox = QSpinBox(self)
+            spinBox.setToolTip(tip)
+            spinBox.setRange(1,5)
+            spinBox.setSingleStep(1)
+            spinBox.valueChanged.connect(change_function)
+            self.super_cell_spinBoxes.append(spinBox)
+            self.super_cell_hbox.addWidget(spinBox)
+        self.super_cell_widget.setLayout(self.super_cell_hbox)
         #
         # The atom scaling
         #
@@ -190,6 +212,7 @@ class ViewerTab(QWidget):
         self.settingsTab.addTab(self.coloured_elements_widget, 'Elements')
         self.settingsTab.addTab(self.coloured_buttons_widget, 'Colours')
         self.settingsTab.addTab(self.atom_scaling_sb, 'Atom Scaling')
+        self.settingsTab.addTab(self.super_cell_widget, 'Super Cell')
         self.settingsTab.addTab(self.light_switches_cb, 'Lighting')
         self.settingsTab.addTab(self.maximum_displacement_sb, 'Maximum Displacement')
         self.settingsTab.addTab(self.bond_radius_sb, 'Bond Radius')
@@ -284,11 +307,35 @@ class ViewerTab(QWidget):
         QApplication.restoreOverrideCursor()
         return
 
+    def on_super_cell_changed_a(self,newa):
+        a,b,c = self.settings['Super Cell']
+        a = newa
+        self.settings['Super Cell'] =  [ a, b, c ]
+        self.dirty = True
+        self.refresh()
+
+    def on_super_cell_changed_b(self,newb):
+        a,b,c = self.settings['Super Cell']
+        b = newb
+        self.settings['Super Cell'] =  [ a, b, c ]
+        self.dirty = True
+        self.refresh()
+
+    def on_super_cell_changed_c(self,newc):
+        a,b,c = self.settings['Super Cell']
+        c = newc
+        self.settings['Super Cell'] =  [ a, b, c ]
+        self.dirty = True
+        self.refresh()
+
     def on_coloured_element_clicked(self,boolean):
         debugger.print('on coloured elements clicked')
         button = self.sender()
         text = button.text()
-        colour = QColorDialog.getColor(options=QColorDialog.DontUseNativeDialog)
+        colourChooser = QColorDialog()
+        if colourChooser.exec_() != QColorDialog.Accepted:
+            return
+        colour = colourChooser.currentColor()
         rgba = [ colour.red(), colour.green(), colour.blue(), colour.alpha() ]
         self.element_colours[text] = rgba
         self.dirty = True
@@ -298,7 +345,10 @@ class ViewerTab(QWidget):
         debugger.print('on coloured button clicked')
         button = self.sender()
         text = button.text()
-        colour = QColorDialog.getColor(options=QColorDialog.DontUseNativeDialog)
+        colourChooser = QColorDialog()
+        if colourChooser.exec_() != QColorDialog.Accepted:
+            return
+        colour = colourChooser.currentColor()
         rgba = [ colour.red(), colour.green(), colour.blue(), colour.alpha() ]
         if text == 'Background':
             self.settings['Background colour'] = rgba
@@ -394,19 +444,23 @@ class ViewerTab(QWidget):
         self.selected_mode_sb.setRange(0,len(self.frequencies_cm1)-1)
         # Get the cell with whole molecules from the analysis tab
         self.unit_cell = self.notebook.analysisTab.cell_of_molecules
+        # Generate a super cell
+        imageSpecifier = self.settings["Super Cell"]
+        self.super_cell = SuperCell(self.unit_cell,imageSpecifier)
         # if self.debug:
         #     self.unit_cell.printInfo()
-        self.normal_modes = self.notebook.analysisTab.new_normal_modes
-        self.bonds = self.unit_cell.bonds
+        self.normal_modes = self.super_cell.calculateNormalModes(self.notebook.analysisTab.new_normal_modes)
+        self.bonds = self.super_cell.calculateBonds()
         self.snapshot_number = 0
         self.nbonds = len(self.bonds)
         #
-        self.XYZ = self.unit_cell.xyz_coordinates
+        self.XYZ = self.super_cell.calculateXYZ()
         self.natoms = len(self.XYZ)
         self.number_of_modes = len(self.normal_modes)
-        # get the cell edges for the bounding box
-        self.cell_corners,self.cell_edges = self.unit_cell.getBoundingBox()
-        self.element_names = self.unit_cell.element_names
+        # get the cell edges for the bounding box, shifted to the centre of mass origin
+        totalMass,centreOfMassXYZ,centreOfMassABC = self.super_cell.calculateCentreOfMass(units=all)
+        self.cell_corners,self.cell_edges = self.super_cell.getBoundingBox(centreOfMassABC)
+        self.element_names = self.super_cell.getElementNames()
         self.species = self.reader.getSpecies()
         covalent_radii = self.notebook.analysisTab.element_radii
         self.radii = [self.settings['Atom scaling']*covalent_radii[el] for el in self.element_names ]
@@ -414,10 +468,8 @@ class ViewerTab(QWidget):
         # reorder the displacement info in the normal modes into U,V and W lists
         # Using deque here rather than a simple list as the memory allocation doesn't have to be contiguous
         self.UVW.clear()
-        # self.UVW = []
         for mode,displacements in enumerate(self.normal_modes):
             uvw = deque()
-            #uvw = []
             for i in range(0,len(displacements),3):
                 uvw.append( displacements[i:i+3] )
             self.UVW.append(uvw)
@@ -429,7 +481,7 @@ class ViewerTab(QWidget):
         self.opengl_widget.deleteArrows()
         for uvw in self.UVW[self.selected_mode]:
             self.opengl_widget.addArrows( self.settings['Arrow colour'],self.settings['Arrow radius'], uvw, arrow_scaling )
-        self.opengl_widget.setRotationCentre(self.unit_cell.calculateCentreOfMass() )
+        self.opengl_widget.setRotationCentre( centreOfMassXYZ )
         self.opengl_widget.setImageSize()
         self.dirty = False
         QApplication.restoreOverrideCursor()
@@ -474,7 +526,7 @@ class ViewerTab(QWidget):
                 self.opengl_widget.addSphere(col, rad, xyz, phase=phase_index )
             for p in self.cell_corners:
                 self.opengl_widget.addSphere(self.settings['Cell colour'], self.settings['Cell radius'], p, phase=phase_index )
-            for bond in self.unit_cell.bonds:
+            for bond in self.bonds:
                 i,j = bond
                 self.opengl_widget.addCylinder(self.settings['Bond colour'], self.settings['Bond radius'], self.newXYZ[phase_index,i], self.newXYZ[phase_index,j], phase=phase_index)
             for p1,p2 in self.cell_edges:
