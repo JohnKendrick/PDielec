@@ -235,6 +235,8 @@ class MainTab(QWidget):
         debugger.print('processing a return')
         if hasattr(self.notebook, 'settingsTab'):
             debugger.print('about to refresh settings')
+            # There is a subtle problem with the sigmas, they need to be reset on reading a new file
+            self.notebook.settingsTab.sigmas_cm1 = []
             self.notebook.settingsTab.refresh(True)
         # Update any scenarios
         if hasattr(self.notebook, 'scenarios'):
@@ -264,6 +266,8 @@ class MainTab(QWidget):
             debugger.print('notebook has no viewer tab yet')
         # Update the fitter tab
         if hasattr(self.notebook, 'fitterTab'):
+            # There is a subtle problem with the modes that are to be fitted, they need resetting
+            self.notebook.fitterTab.modes_fitted = []
             debugger.print('about to refresh fitterTab')
             self.notebook.fitterTab.refresh()
         else:
