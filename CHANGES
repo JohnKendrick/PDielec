@@ -1,5 +1,6 @@
 version 6.4.5
 Fixed a couple of problems when switching molecule using the GUI.  The sigmas array and the mode fitting flags are now reset when a new molecule/crystal is read in.
+Modified the ViewerTab to display super-cells
 Added a new VibAnalysis module based on the work of filipe teixeira https://github.com/teixeirafilipe/vibAnalysis
 Example output in Examples/Castep/AsparticAcid/phonon.nm (generated with 'vibanalysis phonon)
                   Examples/Vasp/Na2SO42/OUTCAR.nma (generated with 'vibanalysis OUTCAR)
