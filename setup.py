@@ -1,7 +1,7 @@
 import setuptools
 
 # Update this for every PyPi release
-version = "6.5.0"
+version = "6.4.5"
 
 with open("README.md", "r") as fh:
     long_description = fh.read()
