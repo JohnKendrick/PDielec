@@ -6,7 +6,7 @@ Example output in Examples/Castep/AsparticAcid/phonon.nm (generated with 'vibana
                   Examples/Vasp/Na2SO42/OUTCAR.nma (generated with 'vibanalysis OUTCAR)
 Added sklearn to the list of required packages
 
-version 6.4.4
+version 6.4.4 (Internal release only)
 Added an option in viewerTab to write the vibrating molecule as a cif file.
 Modified the cif output format so it is more like that of Mercury
 Introduced psutil.cpu_count as this will give the number of physical processors
