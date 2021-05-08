@@ -1,7 +1,6 @@
 import os.path
 import os
 import numpy as np
-osname = os.name
 from multiprocess import Array
 import PDielec.Calculator as Calculator
 from PyQt5.QtWidgets  import  QPushButton, QWidget
@@ -27,15 +26,15 @@ def set_affinity_on_worker():
     #JK os.system('taskset -p 0xff %d > /dev/null' % os.getpid())
 
 
-class PlottingTab(QWidget):
+class SingleCrystalTab(QWidget):
     def __init__(self, parent, debug=False ):
         super(QWidget, self).__init__(parent)
         global debugger
-        debugger = Debug(debug,'PlottingTab')
+        debugger = Debug(debug,'SingleCrystalTab')
         self.dirty = True
         self.settings = {}
         self.subplot = None
-        self.setWindowTitle('Plotting')
+        self.setWindowTitle('SingleCrystal')
         self.settings['Minimum frequency'] = 0
         self.settings['Maximum frequency'] = 400
         self.settings['Frequency increment'] = 0.2
@@ -43,16 +42,26 @@ class PlottingTab(QWidget):
         self.settings['Molar definition'] = 'Unit cells'
         self.settings['Number of atoms'] = 1
         self.settings['Plot title'] = 'Plot Title'
+        self.settings['Unique direction - h'] = 0
+        self.settings['Unique direction - k'] = 0
+        self.settings['Unique direction - l'] = 1
+        self.settings['Rotation about Z'] = 0.0
+        self.settings['Angle of incidence'] = 90.0
+        self.settings['Polarisation angle'] = 0.0
+        self.settings['Superstrate depth'] = 100.0
+        self.settings['Superstrate dielectric'] = 1.0
+        self.settings['Substrate depth'] = 10.0
+        self.settings['Substrate dielectric'] = 1.0
+        self.settings['Crystal depth'] = 1.0
         self.xaxes = []
         self.directions = []
-        self.depolarisations = []
         self.frequency_units = None
         self.molar_cb_current_index = 0
         # store the notebook
         self.notebook = parent
         # get the reader from the main tab
         self.reader = self.notebook.mainTab.reader
-        # Create last tab - PlottingTab
+        # Create last tab - SingleCrystalTab
         vbox = QVBoxLayout()
         form = QFormLayout()
         #
@@ -140,29 +149,135 @@ class PlottingTab(QWidget):
         label.setToolTip('Set the frequency units for the x-axis')
         form.addRow(label, self.funits_cb)
         #
+        # Define the slab surface in crystal coordinates
+        #
+        self.h_sb = QSpinBox(self)
+        self.h_sb.setToolTip('Define the h dimension of the unique direction')
+        self.h_sb.setRange(-20,20)
+        self.h_sb.setSingleStep(1)
+        self.h_sb.setValue(self.settings['Unique direction - h'])
+        self.h_sb.valueChanged.connect(self.on_h_sb_changed)
+        self.k_sb = QSpinBox(self)
+        self.k_sb.setToolTip('Define the k dimension of the unique direction')
+        self.k_sb.setRange(-20,20)
+        self.k_sb.setSingleStep(1)
+        self.k_sb.setValue(self.settings['Unique direction - k'])
+        self.k_sb.valueChanged.connect(self.on_k_sb_changed)
+        self.l_sb = QSpinBox(self)
+        self.l_sb.setToolTip('Define the l dimension of the unique direction')
+        self.l_sb.setRange(-20,20)
+        self.l_sb.setSingleStep(1)
+        self.l_sb.setValue(self.settings['Unique direction - l'])
+        self.l_sb.valueChanged.connect(self.on_l_sb_changed)
+        hbox = QHBoxLayout()
+        hbox.addWidget(self.h_sb)
+        hbox.addWidget(self.k_sb)
+        hbox.addWidget(self.l_sb)
+        self.hkl_label = QLabel('Crystal surface (hkl)',self)
+        self.hkl_label.setToolTip('Define the crystal surface (hkl). Defines the unique direction in crystallographic units.')
+        form.addRow(self.hkl_label, hbox)
+        #
+        # Define the rotation angle of the slab and the angle of incidence
+        #
+        self.rotation_about_z_sb = QSpinBox(self)
+        self.rotation_about_z_sb.setToolTip('Define the slab rotation angle around the Z-laboratory frame')
+        self.rotation_about_z_sb.setRange(0,360)
+        self.rotation_about_z_sb.setSingleStep(10)
+        self.rotation_about_z_sb.setValue(self.settings['Rotation around Z'])
+        self.rotation_about_z_sb.valueChanged.connect(self.on_rotation_about_z_sb_changed)
+        self.angle_of_incidence_sb = QSpinBox(self)
+        self.angle_of_incidence_sb.setToolTip('Define the angle of incidence')
+        self.angle_of_incidence_sb.setRange(0,180)
+        self.angle_of_incidence_sb.setSingleStep(10)
+        self.angle_of_incidence_sb.setValue(self.settings['Angle of incidence'])
+        self.angle_of_incidence_sb.valueChanged.connect(self.on_angle_of_incidence_sb_changed)
+        self.polarisation_angle_sb = QSpinBox(self)
+        self.polarisation_angle_sb.setToolTip('Define the polarisation angle')
+        self.polarisation_angle_sb.setRange(0,90)
+        self.polarisation_angle_sb.setSingleStep(10)
+        self.polarisation_angle_sb.setValue(self.settings['Polarisation angle'])
+        self.polarisation_angle_sb.valueChanged.connect(self.on_polarisation_angle_sb_changed)
+        hbox = QHBoxLayout()
+        hbox.addWidget(self.rotation_about_z_sb)
+        hbox.addWidget(self.angle of incidence_sb)
+        hbox.addWidget(self.polarisation_angle_sb)
+        self.angles_label = QLabel('Angles of surface orientation, incidence and polarisation',self)
+        self.angles_label.setToolTip('Define the angles of rotation about the Z-laboratory frame, the angle of incidence and the angle of polarisation relative.')
+        form.addRow(self.angles_label, hbox)
+        #
+        # Define the superstrate
+        #
+        self.superstrate_depth_sb = QSpinBox(self)
+        self.superstrate_depth_sb.setToolTip('Define the superstrate depth')
+        self.superstrate_depth_sb.setRange(0,1000)
+        self.superstrate_depth_sb.setSingleStep(10)
+        self.superstrate_depth_sb.setValue(self.settings['Superstrate depth'])
+        self.superstrate_depth_sb.valueChanged.connect(self.on_superstrate_depth_sb_change)
+        self.superstrate_depth_sb.setToolTip('Define the superstrate dielectric')
+        self.superstrate_depth_sb.setRange(1,1000)
+        self.superstrate_depth_sb.setSingleStep(0.1)
+        self.superstrate_depth_sb.setValue(self.settings['Superstrate dielectric'])
+        self.superstrate_depth_sb.valueChanged.connect(self.on_superstrate_dielectric_sb_change)
+        hbox = QHBoxLayout()
+        hbox.addWidget(self.superstrate_depth_sb_changed)
+        hbox.addWidget(self.angle of incidence_sb)
+        self.angles_label = QLabel('Superstrate depth(mm) and dielectric',self)
+        self.angles_label.setToolTip('Define the properties of the superstrate; depth in millimetres and dielectric constant.')
+        form.addRow(self.angles_label, hbox)
+        #
+        #
+        # Define the substrate
+        #
+        self.substrate_depth_sb = QSpinBox(self)
+        self.substrate_depth_sb.setToolTip('Define the substrate depth')
+        self.substrate_depth_sb.setRange(0,1000)
+        self.substrate_depth_sb.setSingleStep(10)
+        self.substrate_depth_sb.setValue(self.settings['Substrate depth'])
+        self.substrate_depth_sb.valueChanged.connect(self.on_substrate_depth_sb_change)
+        self.substrate_depth_sb.setToolTip('Define the substrate dielectric')
+        self.substrate_depth_sb.setRange(1,1000)
+        self.substrate_depth_sb.setSingleStep(0.1)
+        self.substrate_depth_sb.setValue(self.settings['Substrate dielectric'])
+        self.substrate_depth_sb.valueChanged.connect(self.on_substrate_dielectric_sb_change)
+        hbox = QHBoxLayout()
+        hbox.addWidget(self.substrate_depth_sb_changed)
+        hbox.addWidget(self.angle of incidence_sb)
+        self.angles_label = QLabel('Substrate depth(mm) and dielectric',self)
+        self.angles_label.setToolTip('Define the properties of the substrate; depth in millimetres and dielectric constant.')
+        form.addRow(self.angles_label, hbox)
+        #
+        #
+        # Define the crystal depth
+        #
+        self.crystal_depth_sb = QSpinBox(self)
+        self.crystal_depth_sb.setToolTip('Define the crystal depth')
+        self.crystal_depth_sb.setRange(0,1000)
+        self.crystal_depth_sb.setSingleStep(1)
+        self.crystal_depth_sb.setValue(self.settings['Crystal depth'])
+        self.crystal_depth_sb.valueChanged.connect(self.on_crystal_depth_sb_change)
+        hbox = QHBoxLayout()
+        hbox.addWidget(self.substrate_depth_sb_changed)
+        hbox.addWidget(self.angle of incidence_sb)
+        self.angles_label = QLabel('Crystal depth(mm)',self)
+        self.angles_label.setToolTip('Define the depth of the crystal in millimetres.')
+        form.addRow(self.angles_label, hbox)
+        #
+        #
         # Final button
         #
         hbox = QHBoxLayout()
         self.molarAbsorptionButton = QPushButton('Plot molar absorption')
-        self.molarAbsorptionButton.setToolTip('Plot the molar absorption using the scenarios')
+        self.molarAbsorptionButton.setToolTip('Plot the molar absorption')
         self.molarAbsorptionButton.clicked.connect(self.molarAbsorptionButtonClicked)
         hbox.addWidget(self.molarAbsorptionButton)
         self.absorptionButton = QPushButton('Plot absorption')
-        self.absorptionButton.setToolTip('Plot the absorption using the scenarios')
+        self.absorptionButton.setToolTip('Plot the absorption')
         self.absorptionButton.clicked.connect(self.absorptionButtonClicked)
         hbox.addWidget(self.absorptionButton)
-        self.realPermButton = QPushButton('Plot real permittivity')
-        self.realPermButton.setToolTip('Plot the real permittivity using the scenarios')
-        self.realPermButton.clicked.connect(self.realPermButtonClicked)
-        hbox.addWidget(self.realPermButton)
-        self.imagPermButton = QPushButton('Plot imaginary permittivity')
-        self.imagPermButton.setToolTip('Plot the imaginary permittivity using the scenarios')
-        self.imagPermButton.clicked.connect(self.imagPermButtonClicked)
-        hbox.addWidget(self.imagPermButton)
-        self.atrButton = QPushButton('Plot ATR')
-        self.atrButton.setToolTip('Plot Reflectance ATR')
-        self.atrButton.clicked.connect(self.atrButtonClicked)
-        hbox.addWidget(self.atrButton)
+        self.reflectivityButton = QPushButton('Plot relectivity')
+        self.reflectivityButton.setToolTip('Plot the reflectivity')
+        self.reflectivityButton.clicked.connect(self.reflectivityButtonCicked)
+        hbox.addWidget(self.reflectivityButton)
         form.addRow(hbox)
         # Add a progress bar
         self.progressbar = QProgressBar(self)
@@ -186,40 +301,97 @@ class PlottingTab(QWidget):
         self.setLayout(vbox)
         QCoreApplication.processEvents()
 
+    def self.on_superstrate_depth_sb_changed(self,value)
+        debugger.print('on_superstrate_depth_sb', value)
+        self.dirty = True
+        self.notebook.singleCrystalCalculationRequired = True
+        self.notebook.fittingCalculationRequired = True
+        self.settings['Superstrate depth'] = value
+
+    def self.on_superstrate_dielectric_sb_changed(self,value)
+        debugger.print('on_superstrate_dielectric_sb', value)
+        self.dirty = True
+        self.notebook.singleCrystalCalculationRequired = True
+        self.notebook.fittingCalculationRequired = True
+        self.settings['Superstrate dielectric'] = value
+
+    def self.on_substrate_depth_sb_changed(self,value)
+        debugger.print('on_substrate_depth_sb', value)
+        self.dirty = True
+        self.notebook.singleCrystalCalculationRequired = True
+        self.notebook.fittingCalculationRequired = True
+        self.settings['Substrate depth'] = value
+
+    def self.on_substrate_dielectric_sb_changed(self,value)
+        debugger.print('on_substrate_dielectric_sb', value)
+        self.dirty = True
+        self.notebook.singleCrystalCalculationRequired = True
+        self.notebook.fittingCalculationRequired = True
+        self.settings['Substrate dielectric'] = value
+
+    def self.on_rotation_about_z_sb_changed(self,value)
+        debugger.print('on_rotation_about_z_sb_changed', value)
+        self.dirty = True
+        self.notebook.singleCrystalCalculationRequired = True
+        self.notebook.fittingCalculationRequired = True
+        self.settings['Rotation about Z'] = value
+
+    def self.on_angle_of_incidence_sb_changed(self,value)
+        debugger.print('on_angle_of_incidence_sb_changed', value)
+        self.dirty = True
+        self.notebook.singleCrystalCalculationRequired = True
+        self.notebook.fittingCalculationRequired = True
+        self.settings['Angle of incidence'] = value
+
+    def self.on_polarisation_angle_sb_changed(self,value)
+        debugger.print('on_polarisation_angle_sb_changed', value)
+        self.dirty = True
+        self.notebook.singleCrystalCalculationRequired = True
+        self.notebook.fittingCalculationRequired = True
+        self.settings['Polarisation angle'] = value
+
+    def on_h_sb_changed(self,value):
+        debugger.print('on_h_sb_changed', value)
+        self.dirty = True
+        self.notebook.singleCrystalCalculationRequired = True
+        self.notebook.fittingCalculationRequired = True
+        self.settings['Unique direction - h'] = value
+
+    def on_k_sb_changed(self,value):
+        debugger.print('on_k_sb_changed', value)
+        self.dirty = True
+        self.notebook.singleCrystalCalculationRequired = True
+        self.notebook.fittingCalculationRequired = True
+        self.settings['Unique direction - k'] = value
+
+    def on_l_sb_changed(self,value):
+        debugger.print('on_l_sb_changed', value)
+        self.dirty = True
+        self.notebook.singleCrystalCalculationRequired = True
+        self.notebook.fittingCalculationRequired = True
+        self.settings['Unique direction - l'] = value
+
+
     def molarAbsorptionButtonClicked(self):
         debugger.print('molarAbsorptionButtonClicked pressed')
-        if self.notebook.plottingCalculationRequired:
+        if self.notebook.singleCrystalCalculationRequired:
             self.calculate()
-        if not self.notebook.plottingCalculationRequired:
+        if not self.notebook.singleCrystalCalculationRequired:
             self.plot(self.xaxes, self.molarAbsorptionCoefficients, r'Molar Absorption Coefficient $\mathdefault{(L mole^{-1} cm^{-1})}$')
 
     def absorptionButtonClicked(self):
         debugger.print('absorptionButtonClicked pressed')
-        if self.notebook.plottingCalculationRequired:
+        if self.notebook.singleCrystalCalculationRequired:
             self.calculate()
-        if not self.notebook.plottingCalculationRequired:
+        if not self.notebook.singleCrystalCalculationRequired:
             self.plot(self.xaxes, self.absorptionCoefficients, r'Absorption Coefficient $\mathdefault{(cm^{-1})}$')
 
-    def realPermButtonClicked(self):
-        debugger.print('realPermButtonClicked pressed')
-        if self.notebook.plottingCalculationRequired:
+    def reflectivityButtonClicked(self):
+        debugger.print('reflectivityButtonClicked pressed')
+        if self.notebook.singleCrystalCalculationRequired:
             self.calculate()
-        if not self.notebook.plottingCalculationRequired:
-            self.plot(self.xaxes, self.realPermittivities, 'Real Component of Permittivity')
-
-    def imagPermButtonClicked(self):
-        debugger.print('imagPermButtonClicked pressed')
-        if self.notebook.plottingCalculationRequired:
-            self.calculate()
-        if not self.notebook.plottingCalculationRequired:
-            self.plot(self.xaxes, self.imagPermittivities, 'Imaginary Component of Permittivity')
-
-    def atrButtonClicked(self):
-        debugger.print('atrButtonClicked pressed')
-        if self.notebook.plottingCalculationRequired:
-            self.calculate()
-        if not self.notebook.plottingCalculationRequired:
-            self.plot(self.xaxes, self.sp_atrs, 'ATR absorption')
+        if not self.notebook.singleCrystalCalculationRequired:
+            self.plot(self.xaxes, self.reflectivities, 'Reflectivities')
 
     def on_title_changed(self,text):
         self.settings['Plot title'] = text
@@ -230,7 +402,7 @@ class PlottingTab(QWidget):
 
     def on_vinc_changed(self,value):
         self.settings['Frequency increment'] = value
-        self.notebook.plottingCalculationRequired = True
+        self.notebook.singleCrystalCalculationRequired = True
         self.dirty = True
         self.progressbar.setValue(0)
         if self.notebook.progressbar is not None:
@@ -240,7 +412,7 @@ class PlottingTab(QWidget):
 
     def on_vmin_changed(self):
         self.settings['Minimum frequency'] = self.vmin_sb.value()
-        self.notebook.plottingCalculationRequired = True
+        self.notebook.singleCrystalCalculationRequired = True
         self.dirty = True
         self.progressbar.setValue(0)
         if self.notebook.progressbar is not None:
@@ -250,7 +422,7 @@ class PlottingTab(QWidget):
 
     def on_vmax_changed(self):
         self.settings['Maximum frequency'] = self.vmax_sb.value()
-        self.notebook.plottingCalculationRequired = True
+        self.notebook.singleCrystalCalculationRequired = True
         self.dirty = True
         self.progressbar.setValue(0)
         if self.notebook.progressbar is not None:
@@ -259,8 +431,8 @@ class PlottingTab(QWidget):
         debugger.print('on vmax change ', self.settings['Maximum frequency'])
 
     def refresh(self,force=False):
-        if not self.dirty and not force and not self.notebook.plottingCalculationRequired:
-            debugger.print('refreshing widget aborted', self.dirty,force,self.notebook.plottingCalculationRequired)
+        if not self.dirty and not force and not self.notebook.singleCrystalCalculationRequired:
+            debugger.print('refreshing widget aborted', self.dirty,force,self.notebook.singleCrystalCalculationRequired)
             return
         debugger.print('refreshing widget', force)
         #
@@ -285,14 +457,14 @@ class PlottingTab(QWidget):
         if self.reader is not None:
             self.settings['concentration'] = 1000.0 / (avogadro_si * self.reader.volume * 1.0e-24)
         # Flag a recalculation will be required
-        self.notebook.plottingCalculationRequired = True
+        self.notebook.singleCrystalCalculationRequired = True
         # Reset the progress bar
         self.progressbar.setValue(0)
         if self.notebook.progressbar is not None:
             self.notebook.progressbar.setValue(0)
         self.molarAbsorptionButtonClicked()
         self.dirty = False
-        self.notebook.plottingCalculationRequired = False
+        self.notebook.singleCrystalCalculationRequired = False
         #
         # Unblock signals after refresh
         #
@@ -302,7 +474,7 @@ class PlottingTab(QWidget):
         return
 
     def on_natoms_changed(self, value):
-        self.notebook.plottingCalculationRequired = True
+        self.notebook.singleCrystalCalculationRequired = True
         self.dirty = True
         self.progressbar.setValue(0)
         if self.notebook.progressbar is not None:
@@ -322,7 +494,7 @@ class PlottingTab(QWidget):
     def on_molar_cb_activated(self, index):
         self.molar_cb_current_index = index
         self.settings['Molar definition'] = self.molar_definitions[index]
-        self.notebook.plottingCalculationRequired = True
+        self.notebook.singleCrystalCalculationRequired = True
         self.dirty = True
         self.progressbar.setValue(0)
         if self.notebook.progressbar is not None:
@@ -340,7 +512,7 @@ class PlottingTab(QWidget):
         debugger.print('The concentration has been set', self.settings['Molar definition'], self.settings['concentration'])
 
     def calculate(self):
-        debugger.print('calculate')
+        debugger.print('Calculate')
         self.progressbar.setValue(0)
         if self.notebook.progressbar is not None:
             self.notebook.progressbar.setValue(0)
@@ -358,7 +530,7 @@ class PlottingTab(QWidget):
             return
         QApplication.setOverrideCursor(Qt.WaitCursor)
         # Assemble the settingsTab settings
-        self.notebook.plottingCalculationRequired = False
+        self.notebook.singleCrystalCalculationRequired = False
         settings = self.notebook.settingsTab.settings
         epsilon_inf = np.array(settings['Optical permittivity'])
         sigmas_cm1 = self.notebook.settingsTab.sigmas_cm1
@@ -379,44 +551,19 @@ class PlottingTab(QWidget):
         for mode_index,selected in enumerate(modes_selected):
             if selected:
                 mode_list.append(mode_index)
-        #debugger.print('mode_list', mode_list)
+        #
         # Calculate the ionic permittivity at zero frequency
+        #
         cell = reader.unit_cells[-1]
-        self.directions = []
-        self.depolarisations = []
-        # Process the shapes and the unique directions.
-        # and calculate the depolarisation matrices
         self.legends = []
-        for scenario in self.scenarios:
-            self.legends.append(scenario.settings['Legend'])
-            #debugger.print('Scenario ',scenario.scenarioIndex)
-            shape = scenario.settings['Particle shape']
-            #debugger.print('Particle shape ',shape)
-            hkl = [scenario.settings['Unique direction - h'], scenario.settings['Unique direction - k'], scenario.settings['Unique direction - l']]
-            aoverb = scenario.settings['Ellipsoid a/b']
-            if shape == 'Ellipsoid':
-                direction = cell.convert_abc_to_xyz(hkl)
-                depolarisation = Calculator.initialise_ellipsoid_depolarisation_matrix(direction,aoverb)
-            elif shape == 'Plate':
-                direction = cell.convert_hkl_to_xyz(hkl)
-                depolarisation = Calculator.initialise_plate_depolarisation_matrix(direction)
-            elif shape == 'Needle':
-                direction = cell.convert_abc_to_xyz(hkl)
-                depolarisation = Calculator.initialise_needle_depolarisation_matrix(direction)
-            else:
-                depolarisation = Calculator.initialise_sphere_depolarisation_matrix()
-                direction = np.array( [] )
-            direction = direction / np.linalg.norm(direction)
-            self.directions.append(direction)
-            #debugger.print('direction',direction)
-            self.depolarisations.append(depolarisation)
-        # Set up the parallel processing requirements before looping over the frequencies
+        # Set up parameters for the parallel execution
         call_parameters = []
         for v in np.arange(float(vmin), float(vmax)+0.5*float(vinc), float(vinc)):
             vau = v * wavenumber
             call_parameters.append( (v, vau, mode_list, frequencies, sigmas, oscillator_strengths,
                                      volume, epsilon_inf, drude, drude_plasma, drude_sigma) )
 
+        # Initialise the progress bare
         maximum_progress = len(call_parameters) * (1 + len(self.scenarios))
         progress = 0
         self.progressbar.setMaximum(maximum_progress)
@@ -424,9 +571,7 @@ class PlottingTab(QWidget):
             self.notebook.progressbar.setMaximum(maximum_progress)
         QCoreApplication.processEvents()
         number_of_processors = self.notebook.ncpus
-        #
         # Switch off mkl threading
-        #
         try:
             import mkl
             mkl.set_num_threads(1)
@@ -439,6 +584,7 @@ class PlottingTab(QWidget):
         else:
             from multiprocess import Pool
             pool = Pool(number_of_processors, initializer=set_affinity_on_worker, maxtasksperchild=10)
+        # start parallel execution of dielectric constant
         dielecv_results = []
         for result in pool.imap(Calculator.parallel_dielectric, call_parameters,chunksize=40):
             dielecv_results.append(result)
@@ -451,85 +597,61 @@ class PlottingTab(QWidget):
         QCoreApplication.processEvents()
         #jk print('Dielec calculation duration ', time.time()-start)
         nplots = len(dielecv_results)
-        # Allocate space for the shared memory, we need twice as much as we have a complex data type
-        shared_array_base = Array(ctypes.c_double, 2*nplots*9)
-        previous_solution_shared = np.ctypeslib.as_array(shared_array_base.get_obj())
-        # Convert the space allocated to complex
-        previous_solution_shared.dtype = np.complex128
-        # Reshape the array and fill everything with zero's
-        previous_solution_shared = previous_solution_shared.reshape(nplots, 3,3)
-        previous_solution_shared.fill(0.0+0.0j)
-        # Prepare parallel call parameters for the loop over frequencies, methods, volume fractions
+        # Prepare variables for setting up parameters for parallel call
         concentration = self.settings['concentration']
-        # Assemble each scenario settings
-        self.xaxes = []
-        self.realPermittivities = []
-        self.imagPermittivities = []
-        self.absorptionCoefficients = []
-        self.molarAbsorptionCoefficients = []
-        self.sp_atrs = []
-        #jk start = time.time()
+        hkl = [ self.settings['Unique direction - h'] , self.settings['Unique direction - k'], self.settings['Unique direction - l'] ]
+        rotz                  = self.settings['Rotation about Z']
+        angleOfIncidence      = self.settings['Angle of incidence']
+        polarisationAngle     = self.settings['Polarisation angle']
+        superstrateDepth      = self.settings['Superstrate depth']
+        superstrateDielectric = self.settings['Superstrate dielectric']
+        substrateDepth        = self.settings['Substrate depth']
+        substrateDielecitric  = self.settings['Substrate dielectric']
+        crystalDepth          = self.settings['Crystal depth']
+        # Prepare parallel processing options
         if self.notebook.threading:
             from multiprocess.dummy import Pool
             pool = Pool(number_of_processors)
         else:
             from multiprocess import Pool
             pool = Pool(number_of_processors, initializer=set_affinity_on_worker, maxtasksperchild=10)
-        for i,(scenario,L) in enumerate(zip(self.scenarios,self.depolarisations)):
-            #debugger.print('Scenario ',i,L)
-            method = scenario.settings['Effective medium method'].lower()
-            matrix_permittivity = np.identity(3) * scenario.settings['Matrix permittivity']
-            volume_fraction = scenario.settings['Volume fraction']
-            particle_size_mu = scenario.settings['Particle size(mu)']
-            particle_sigma_mu = scenario.settings['Particle size distribution sigma(mu)']
-            shape = scenario.settings['Particle shape'].lower()
-            hkl = [scenario.settings['Unique direction - h'], scenario.settings['Unique direction - k'], scenario.settings['Unique direction - l']]
-            atr_refractive_index = scenario.settings['ATR material refractive index']
-            atr_theta = scenario.settings['ATR theta']
-            atr_spolfraction = scenario.settings['ATR S polarisation fraction']
-            aoverb = scenario.settings['Ellipsoid a/b']
-            bubble_vf = scenario.settings['Bubble volume fraction']
-            bubble_radius = scenario.settings['Bubble radius']
-            vf_type = ''
-            call_parameters = []
-            nplot = 0
-            for v,vau,dielecv in dielecv_results:
-                # convert the size to a dimensionless number which is 2*pi*size/lambda
-                lambda_mu = 1.0E4 / (v + 1.0e-12)
-                if particle_size_mu < 1.0e-12:
-                    particle_size_mu = 1.0e-12
-                size = 2.0*PI*particle_size_mu / lambda_mu
-                data = ''
-                call_parameters.append( (v,vau,dielecv,method,volume_fraction,vf_type,particle_size_mu,particle_sigma_mu,size,nplot,
-                                         matrix_permittivity,shape,data,L,concentration,atr_refractive_index,atr_theta,atr_spolfraction,bubble_vf,bubble_radius,previous_solution_shared) )
-                nplot += 1
-            results = []
-            for result in pool.imap(Calculator.solve_effective_medium_equations, call_parameters, chunksize=40):
-                results.append(result)
-                progress += 1
-                self.progressbar.setValue(progress)
-                if self.notebook.progressbar is not None:
-                    self.notebook.progressbar.setValue(progress)
-            QCoreApplication.processEvents()
-            xaxis = []
-            realPermittivity = []
-            imagPermittivity = []
-            absorptionCoefficient = []
-            molarAbsorptionCoefficient = []
-            sp_atr = []
-            for v,nplot,method,vf_type,size_mu,size_sigma,shape,data,trace, absorption_coefficient,molar_absorption_coefficient,spatr in results:
-                 xaxis.append(v)
-                 realPermittivity.append(np.real(trace))
-                 imagPermittivity.append(np.imag(trace))
-                 absorptionCoefficient.append(absorption_coefficient)
-                 molarAbsorptionCoefficient.append(molar_absorption_coefficient)
-                 sp_atr.append(spatr)
-            self.xaxes.append(xaxis)
-            self.realPermittivities.append(realPermittivity)
-            self.imagPermittivities.append(imagPermittivity)
-            self.absorptionCoefficients.append(absorptionCoefficient)
-            self.molarAbsorptionCoefficients.append(molarAbsorptionCoefficient)
-            self.sp_atrs.append(sp_atr)
+        #
+        # Prepare parameters for a parallel call to the layered absorption / reflection
+        #
+        nplot = 0
+        # Assemble all the parameters we need for parallel execution
+        for v,vau,dielecv in dielecv_results:
+            data = ''
+            call_parameters.append( (v,vau,dielecv,
+                                     rotz                  ,
+                                     angleOfIncidence      ,
+                                     polarisationAngle     ,
+                                     superstrateDepth      ,
+                                     superstrateDielectric ,
+                                     substrateDepth        ,
+                                     substrateDielecitric  ,
+                                     crystalDepth
+                                     ) )
+            nplot += 1
+        results = []
+        for result in pool.imap(Calculator.solve_singleCrystalEquations, call_parameters, chunksize=40):
+            results.append(result)
+            progress += 1
+            self.progressbar.setValue(progress)
+            if self.notebook.progressbar is not None:
+                self.notebook.progressbar.setValue(progress)
+        QCoreApplication.processEvents()
+        # Initialise plotting variables
+        self.xaxes                       = []
+        self.reflectivities              = []
+        self.absorptionCoefficients      = []
+        self.molarAbsorptionCoefficients = []
+        for v,nplot,absorption_coefficient,molar_absorption_coefficient,reflectance in results:
+             self.xaxis.append(v)
+             self.reflectivities.append(np.real(trace))
+             self.absorptionCoefficient.append(absorption_coefficient)
+             self.molarAbsorptionCoefficient.append(molar_absorption_coefficient)
+        # Close parallel processing down
         pool.close()
         pool.join()
         #
@@ -550,28 +672,32 @@ class PlottingTab(QWidget):
     def write_spreadsheet(self):
         if self.notebook.spreadsheet is None:
             return
-        # Deal with Scenarios first
         sp = self.notebook.spreadsheet
-        sp.selectWorkSheet('Scenarios')
+        sp.selectWorkSheet('Single Crystal')
         sp.delete()
-        sp.writeNextRow(['A list of the scenarios used the calculation of the effective medium'],col=1)
-        for index,(scenario,direction,depolarisation) in enumerate(zip(self.scenarios,self.directions,self.depolarisations)):
-            sp.writeNextRow([''],col=1)
-            sp.writeNextRow(['Scenario '+str(index)],col=1,check=1)
-            settings = scenario.settings
-            for key in sorted(settings,key=str.lower):
-                sp.writeNextRow([key, settings[key]],col=1,check=1)
-            sp.writeNextRow(['Normalised unique direction']+direction.tolist(), col=1,check=1)
-            sp.writeNextRow(['Depolarisation matrix'], col=1,check=1)
-            sp.writeNextRow(depolarisation[0].tolist(), col=2, check=1)
-            sp.writeNextRow(depolarisation[1].tolist(), col=2, check=1)
-            sp.writeNextRow(depolarisation[2].tolist(), col=2, check=1)
-        # Now deal with Molar absorption, absorption, real and imaginary permittivity
-        self.write_results(sp, 'Molar Absorption',self.xaxes, self.molarAbsorptionCoefficients)
-        self.write_results(sp, 'Absorption',self.xaxes, self.absorptionCoefficients)
-        self.write_results(sp, 'Real Permittivity',self.xaxes, self.realPermittivities)
-        self.write_results(sp, 'Imaginary Permittivity',self.xaxes, self.imagPermittivities)
-        self.write_results(sp, 'ATR Reflectance',self.xaxes, self.sp_atrs)
+        sp.writeNextRow(['Settings for the single crystal calculation of absorption and reflection'],col=1)
+        sp.writeNextRow([''],col=1)
+        sp.writeNextRow([ 'Minimum frequency',            self.settings['Minimum frequency'] ])
+        sp.writeNextRow([ 'Maximum frequency',            self.settings['Maximum frequency'] ])
+        sp.writeNextRow([ 'Frequency increment',          self.settings['Frequency increment'] ])
+        sp.writeNextRow([ 'Molar definition',             self.settings['Molar definition'] ])
+        sp.writeNextRow([ 'Number of atoms in a molecule',self.settings['Number of atoms'] ])
+        sp.writeNextRow([ 'Plot title',                   self.settings['Plot title'] ])
+        sp.writeNextRow([ 'Surface definition (h)',       self.settings['Unique direction - h'] ])
+        sp.writeNextRow([ 'Surface definition (k)',       self.settings['Unique direction - k'] ])
+        sp.writeNextRow([ 'Surface definition (.)',       self.settings['Unique direction - l'] ])
+        sp.writeNextRow([ 'Rotation angle about Z',       self.settings['Rotation about Z'] ])
+        sp.writeNextRow([ 'Angle of incidence',           self.settings['Angle of incidence'] ])
+        sp.writeNextRow([ 'Polarisation angle',           self.settings['Polarisation angle'] ])
+        sp.writeNextRow([ 'Superstrate depth(mm)',        self.settings['Superstrate depth'] ])
+        sp.writeNextRow([ 'Superstrate dielectric',       self.settings['Superstrate dielectric'] ])
+        sp.writeNextRow([ 'Substrate depth(mm)',          self.settings['Substrate depth'] ])
+        sp.writeNextRow([ 'Substrate dielectric',         self.settings['Substrate dielectric'] ])
+        sp.writeNextRow([ 'Crystal depth(mm)',            self.settings['Crystal depth'] ])
+        # Now deal with Molar absorption, absorption, reflectivities
+        self.write_results(sp, 'Crystal Molar Absorption',self.xaxes, self.molarAbsorptionCoefficients)
+        self.write_results(sp, 'Crystal Absorption',      self.xaxes, self.absorptionCoefficients)
+        self.write_results(sp, 'Crystal Reflectance',     self.xaxes, self.reflectivities)
 
     def write_results(self, sp, name, vss, yss):
         sp.selectWorkSheet(name)

@@ -1462,6 +1462,39 @@ def reflectance_atr(ns,n0,theta,atrSPolFraction):
     RSP = -math.log10(RSP)
     return RSP
 
+def solve_single_crystal_equations( self, parameters ):
+    """ This is a parallel call to the single crystal equation solver """
+    # Extract the parameters from the call
+    (v,
+    vau,
+    dielecv,
+    rotz,
+    angleOfIncidence,
+    polarisationAngle,
+    superstrateDepth,
+    superstrateDielectric,
+    substrateDepth,
+    substrateDielecitric,
+    crystalDepth)                 = parameters
+    print('v',v)
+    print('vau',vau)
+    print('dielecv',dielecv)
+    print('rotz',rotz)
+    print('angleOfIncidence',angleOfIncidence)
+    print('polarisationAngle',polarisationAngle)
+    print('superstrateDepth',superstrateDepth)
+    print('superstrateDepth',superstrateDielectric)
+    print('substrateDepth',substrateDepth)
+    print('substrateDepth',substrateDielecitric)
+    print('crystalDepth',crystalDepth)
+    # Convert angles from degrees to radians
+    toradians = np.pi/180.0
+    rotz              *= toradians
+    angleOfIncidence  *= toradians
+    polarisationAngle *= toradians
+    print('rotz',rotz)
+    print('angleOfIncidence',angleOfIncidence)
+    print('polarisationAngle',polarisationAngle)
 
 
 def cleanup_symbol(s):
