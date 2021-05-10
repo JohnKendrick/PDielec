@@ -3,7 +3,6 @@ scipy
 PyQt5
 PyOpenGl
 PyMieScatt
-sklearn
 matplotlib
 xlsxwriter
 openpyxl
@@ -14,3 +13,4 @@ termcolor
 multiprocess
 dill
 psutil
+scikit-learn
