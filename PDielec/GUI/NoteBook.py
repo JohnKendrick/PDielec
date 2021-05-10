@@ -1,19 +1,20 @@
 import sys
 import copy
 import psutil
-from PyQt5.QtWidgets            import  QWidget, QTabWidget
-from PyQt5.QtWidgets            import  QVBoxLayout
-from PyQt5.QtWidgets            import  QApplication
-from PyQt5.QtWidgets            import  QFileDialog
-from PyQt5.QtCore               import  Qt
-from PDielec.GUI.MainTab         import  MainTab
-from PDielec.GUI.SettingsTab     import  SettingsTab
-from PDielec.GUI.ScenarioTab     import  ScenarioTab
-from PDielec.GUI.PlottingTab     import  PlottingTab
-from PDielec.GUI.AnalysisTab     import  AnalysisTab
-from PDielec.GUI.ViewerTab       import  ViewerTab
-from PDielec.GUI.FitterTab       import  FitterTab
-from PDielec.Utilities           import  Debug
+from PyQt5.QtWidgets              import  QWidget, QTabWidget
+from PyQt5.QtWidgets              import  QVBoxLayout
+from PyQt5.QtWidgets              import  QApplication
+from PyQt5.QtWidgets              import  QFileDialog
+from PyQt5.QtCore                 import  Qt
+from PDielec.GUI.MainTab          import  MainTab
+from PDielec.GUI.SettingsTab      import  SettingsTab
+from PDielec.GUI.ScenarioTab      import  ScenarioTab
+from PDielec.GUI.PlottingTab      import  PlottingTab
+from PDielec.GUI.SingleCrystalTab import  SingleCrystalTab
+from PDielec.GUI.AnalysisTab      import  AnalysisTab
+from PDielec.GUI.ViewerTab        import  ViewerTab
+from PDielec.GUI.FitterTab        import  FitterTab
+from PDielec.Utilities            import  Debug
 
 class NoteBook(QWidget):
 
@@ -71,6 +72,13 @@ class NoteBook(QWidget):
             debugger.print('Refreshing plotting because filename is set')
             self.plottingTab.refresh()
         #
+        # Open the singleCrystal tab
+        #
+        self.singleCrystalTab = SingleCrystalTab(self, debug=debug)
+        if filename != '' and not self.scripting:
+            debugger.print('Refreshing single crystal calculation because filename is set')
+            self.singleCrystalTab.refresh()
+        #
         # Open the Analysis tab
         #
         self.analysisTab = AnalysisTab(self, debug=debug)
@@ -93,6 +101,7 @@ class NoteBook(QWidget):
         for i,tab in enumerate(self.scenarios):
             self.tabs.addTab(tab,'Scenario '+str(i+1))
         self.tabs.addTab(self.plottingTab,'Plotting')
+        self.tabs.addTab(self.singleCrystalTab,'SingleCrystal')
         self.tabs.addTab(self.analysisTab,'Analysis')
         self.tabs.addTab(self.viewerTab,'3D Viewer')
         self.tabs.addTab(self.fitterTab,'Fitter')
@@ -137,6 +146,8 @@ class NoteBook(QWidget):
             requireNewScenario = True
         self.print_tab_settings(self.plottingTab, 'plottingTab',fd)
         print('tab.refresh(force=True)',file=fd)
+        self.print_tab_settings(self.singleCrystalTab, 'singleCrystalTab',fd)
+        print('tab.refresh(force=True)',file=fd)
         self.print_tab_settings(self.analysisTab, 'analysisTab',fd)
         print('tab.refresh(force=True)',file=fd)
         self.print_tab_settings(self.viewerTab, 'viewerTab',fd)
@@ -178,13 +189,15 @@ class NoteBook(QWidget):
             debugger.print('Notebook aborting refresh because of scripting')
             return
         debugger.print('Notebook refresh changed',force)
-        ntabs = 2 + len(self.scenarios) + 4
+        ntabs = 2 + len(self.scenarios) + 5
         self.mainTab.refresh(force=force)
         self.settingsTab.refresh(force=force)
         for tab in self.scenarios:
             tab.refresh(force=force)
-        self.tabs.setCurrentIndex(ntabs-5)
+        self.tabs.setCurrentIndex(ntabs-6)
         self.plottingTab.refresh(force=force)
+        self.tabs.setCurrentIndex(ntabs-5)
+        self.singleCrystalTab.refresh(force=force)
         self.tabs.setCurrentIndex(ntabs-4)
         self.analysisTab.refresh(force=force)
         self.tabs.setCurrentIndex(ntabs-3)
@@ -199,6 +212,7 @@ class NoteBook(QWidget):
         self.settingsTab.write_spreadsheet()
         self.analysisTab.write_spreadsheet()
         self.plottingTab.write_spreadsheet()
+        self.singleCrystalTab.write_spreadsheet()
 
     def on_tabs_currentChanged(self, tabindex):
         debugger.print('Tab index changed', tabindex)
@@ -212,7 +226,7 @@ class NoteBook(QWidget):
                 self.settingsTab.refresh()
         # end if
         #       Number of tabs
-        ntabs = 2 + len(self.scenarios) + 4
+        ntabs = 2 + len(self.scenarios) + 5
         if tabindex == ntabs-1:
             # fitter tab
             self.fitterTab.refresh()
@@ -225,6 +239,9 @@ class NoteBook(QWidget):
         elif tabindex == ntabs-4:
             # plottings tab
             self.plottingTab.refresh()
+        elif tabindex == ntabs-5:
+            # singleCrystal tab
+            self.singleCrystalTab.refresh()
         self.old_tab_index = tabindex
 
     def keyPressEvent(self, e):
