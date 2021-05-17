@@ -177,6 +177,8 @@ class Layer:
              function epsilon(frequency) for the second axis. If none, defaults to epsilon1.
     epsilon3 : complex function
              function epsilon(frequency) for the third axis. If none, defaults to epsilon1.
+    epsilon  : complex function
+             function epsilon(frequency) the full dielectric constant tensor, if not none all other epsilons are ignored
     theta : float
           Euler angle theta (colatitude) in rad
     phi : float
@@ -190,7 +192,7 @@ class Layer:
     Properties can be checked/changed dynamically using the corresponding get/set methods.
     """
 
-    def __init__(self, thickness=1.0e-6, epsilon1=None, epsilon2=None, epsilon3=None,
+    def __init__(self, thickness=1.0e-6, epsilon1=None, epsilon2=None, epsilon3=None,  epsilon=None,
                                          theta=0, phi=0, psi=0):
 
         self.epsilon = np.identity(3, dtype=np.complex128)
@@ -211,9 +213,10 @@ class Layer:
 
 
         self.euler = np.identity(3, dtype=np.complex128) ## rotation matrix
+        self.epsilon_tensor_function = None              ## Added by JK
 
         self.set_thickness(thickness) ## set the thickness, 1um by default
-        self.set_epsilon(epsilon1, epsilon2, epsilon3) # set epsilon, vacuum by default
+        self.set_epsilon(epsilon1, epsilon2, epsilon3, epsilon) # set epsilon, vacuum by default (JK change)
         self.set_euler(theta, phi, psi) ## set orientation of crystal axis w/ respect to the lab frame
 
 
@@ -232,7 +235,7 @@ class Layer:
         """
         self.thick = thickness
 
-    def set_epsilon(self, epsilon1=vacuum_eps, epsilon2=None, epsilon3=None):
+    def set_epsilon(self, epsilon1=vacuum_eps, epsilon2=None, epsilon3=None, epsilon=None):
         """
         Sets the dielectric functions for the three main axis.
 
@@ -244,6 +247,9 @@ class Layer:
                  function epsilon(frequency) for the second axis. If none, defaults to epsilon1.
         epsilon3 : complex function
                  function epsilon(frequency) for the third axis. If none, defaults to epsilon1.
+        epsilon  : complex function
+                 JK modification to allow the full dielectric matrix to be supplied.  If specified
+                 all other definitions are overridden
         func epsilon1: function returning the first (xx) component of the complex permittivity tensor in the crystal frame.
 
         Returns
@@ -258,21 +264,30 @@ class Layer:
         If no function is given for epsilon1, it defaults to :py:func:`vacuum_eps` (1.0 everywhere).
         epsilon2 and epsilon3 default to epsilon1: if None, a homogeneous material is assumed
         """
+        #print('jk set_epsilon',epsilon1, epsilon2, epsilon3, epsilon)
+        if epsilon == None:
+            if epsilon1==None:
+                self.epsilon1_f = vacuum_eps
+            else:
+                self.epsilon1_f = epsilon1
 
-        if epsilon1==None:
-            self.epsilon1_f = vacuum_eps
+            if epsilon2 == None:
+                self.epsilon2_f = self.epsilon1_f
+            else:
+                self.epsilon2_f = epsilon2
+            if epsilon3 == None:
+                self.epsilon3_f = self.epsilon1_f
+            else:
+                self.epsilon3_f = epsilon3
         else:
-            self.epsilon1_f = epsilon1
-
-        if epsilon2 == None:
-            self.epsilon2_f = self.epsilon1_f
-        else:
-            self.epsilon2_f = epsilon2
-        if epsilon3 == None:
-            self.epsilon3_f = self.epsilon1_f
-        else:
-            self.epsilon3_f = epsilon3
-
+            self.epsilon1_f = None
+            self.epsilon2_f = None
+            self.epsilon3_f = None
+            self.epsilon_tensor_function = epsilon
+        #print('jk set_epsilon epsilon1_f             ',self.epsilon1_f )
+        #print('jk set_epsilon epsilon2_f             ',self.epsilon2_f )
+        #print('jk set_epsilon epsilon3_f             ',self.epsilon3_f )
+        #print('jk set_epsilon epsilon_tensor_function',self.epsilon_tensor_function)
 
     def calculate_epsilon(self, f):
         """
@@ -293,12 +308,22 @@ class Layer:
         The rotation with respect to the lab frame is computed using the Euler angles.
 
         Use only explicitely if you *don't* use the :py:func:`Layer.update` function!
+        Modification by JK to allow the use of a full dielectric tensor
         """
-        epsilon_xstal = np.zeros((3,3), dtype=np.complex128)
-        epsilon_xstal[0,0] = self.epsilon1_f(f)
-        epsilon_xstal[1,1] = self.epsilon2_f(f)
-        epsilon_xstal[2,2] = self.epsilon3_f(f)
+        #print('jk calculate_epsilon',f)
+        if self.epsilon_tensor_function == None:
+            epsilon_xstal = np.zeros((3,3), dtype=np.complex128)
+            epsilon_xstal[0,0] = self.epsilon1_f(f)
+            epsilon_xstal[1,1] = self.epsilon2_f(f)
+            epsilon_xstal[2,2] = self.epsilon3_f(f)
+            #jk print('jk epsilon1_f',self.epsilon1_f(f))
+            #jk print('jk epsilon_xstal1',epsilon_xstal)
+        else:
+            epsilon_xstal = self.epsilon_tensor_function(f)
+            #jk print('jk epsilon_xstal2',epsilon_xstal)
+        #jk print('jk self.euler',self.euler)
         self.epsilon = np.matmul(lag.pinv(self.euler), np.matmul(epsilon_xstal,self.euler))
+        #jk print('jk calculate_epsilon',self,self.epsilon)
         return self.epsilon.copy()
 
 
@@ -448,7 +473,7 @@ class Layer:
                     kr = kr +1
         else:
             for km in range(0,4):
-                if np.real(qsunsorted[km])>0 :
+                if np.real(qsunsorted[km])>=0 :
                     transmode[kt] = km
                     kt = kt + 1
                 else:

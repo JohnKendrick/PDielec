@@ -19,6 +19,7 @@ import matplotlib.figure
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT as NavigationToolbar
 from PDielec.Utilities import Debug
+from PDielec.DielectricFunction import DielectricFunction
 
 def set_affinity_on_worker():
     '''When a new worker process is created, the affinity is set to all CPUs'''
@@ -410,14 +411,18 @@ class PlottingTab(QWidget):
             self.directions.append(direction)
             #debugger.print('direction',direction)
             self.depolarisations.append(depolarisation)
-        # Set up the parallel processing requirements before looping over the frequencies
-        call_parameters = []
-        for v in np.arange(float(vmin), float(vmax)+0.5*float(vinc), float(vinc)):
-            vau = v * wavenumber
-            call_parameters.append( (v, vau, mode_list, frequencies, sigmas, oscillator_strengths,
-                                     volume, epsilon_inf, drude, drude_plasma, drude_sigma) )
-
-        maximum_progress = len(call_parameters) * (1 + len(self.scenarios))
+        # Define the crystal dielectric function which will be used
+        self.CrystalDielectricConstant = DielectricFunction('calculate',parameters=(
+                                                     mode_list, frequencies, sigmas, oscillator_strengths,
+                                                     volume, epsilon_inf, drude, drude_plasma, drude_sigma) )
+        dielectricFunction = self.CrystalDielectricConstant.function()
+        # Assemble a list of frequencies which will be used in the function call
+        vs_cm1 = []
+        for v_cm1 in np.arange(float(vmin), float(vmax)+0.5*float(vinc), float(vinc)):
+            vs_cm1.append(v_cm1)
+            v_au = v_cm1 * wavenumber
+        # Initialise the progress indicator
+        maximum_progress = len(vs_cm1) * (1 + len(self.scenarios))
         progress = 0
         self.progressbar.setMaximum(maximum_progress)
         if self.notebook.progressbar is not None:
@@ -440,9 +445,12 @@ class PlottingTab(QWidget):
             from multiprocess import Pool
             pool = Pool(number_of_processors, initializer=set_affinity_on_worker, maxtasksperchild=10)
         dielecv_results = []
-        for result in pool.imap(Calculator.parallel_dielectric, call_parameters,chunksize=40):
-            dielecv_results.append(result)
+        index = 0
+        # Loop over the frequencies and calculate the crystal dielectric for each frequency
+        for dielecv in pool.imap(dielectricFunction, vs_cm1, chunksize=40):
+            dielecv_results.append((vs_cm1[index],vs_cm1[index]*wavenumber,dielecv))
             progress += 1
+            index += 1
             self.progressbar.setValue(progress)
             if self.notebook.progressbar is not None:
                 self.notebook.progressbar.setValue(progress)

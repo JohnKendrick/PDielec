@@ -22,7 +22,8 @@ import cmath
 import random
 import numpy as np
 import scipy.optimize as sc
-from PDielec.Constants import PI, d2byamuang2
+from PDielec.Constants import PI, d2byamuang2, speed_light_si
+import PDielec.GTMcore as GTM
 import string
 
 points_on_sphere = None
@@ -1462,39 +1463,18 @@ def reflectance_atr(ns,n0,theta,atrSPolFraction):
     RSP = -math.log10(RSP)
     return RSP
 
-def solve_single_crystal_equations( self, parameters ):
-    """ This is a parallel call to the single crystal equation solver """
+def solve_single_crystal_equations( parameters ):
+    """ This is a parallel call to the single crystal equation solver, 
+    system is a GTM system"""
     # Extract the parameters from the call
-    (v,
-    vau,
-    dielecv,
-    rotz,
-    angleOfIncidence,
-    polarisationAngle,
-    superstrateDepth,
-    superstrateDielectric,
-    substrateDepth,
-    substrateDielecitric,
-    crystalDepth)                 = parameters
-    print('v',v)
-    print('vau',vau)
-    print('dielecv',dielecv)
-    print('rotz',rotz)
-    print('angleOfIncidence',angleOfIncidence)
-    print('polarisationAngle',polarisationAngle)
-    print('superstrateDepth',superstrateDepth)
-    print('superstrateDepth',superstrateDielectric)
-    print('substrateDepth',substrateDepth)
-    print('substrateDepth',substrateDielecitric)
-    print('crystalDepth',crystalDepth)
-    # Convert angles from degrees to radians
-    toradians = np.pi/180.0
-    rotz              *= toradians
-    angleOfIncidence  *= toradians
-    polarisationAngle *= toradians
-    print('rotz',rotz)
-    print('angleOfIncidence',angleOfIncidence)
-    print('polarisationAngle',polarisationAngle)
+    v,angleOfIncidence,system = parameters
+    # convert cm-1 to frequency
+    freq = v * speed_light_si * 1e2
+    system.initialize_sys(freq)
+    zeta_sys = np.sin(angleOfIncidence)*np.sqrt(system.superstrate.epsilon[0,0])
+    Sys_Gamma = system.calculate_GammaStar(freq, zeta_sys)
+    r, R, t, T = system.calculate_r_t(zeta_sys)
+    return v,r,R,t,T
 
 
 def cleanup_symbol(s):

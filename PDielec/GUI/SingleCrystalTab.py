@@ -1,8 +1,7 @@
 import os.path
 import os
 import numpy as np
-from multiprocess import Array
-import PDielec.Calculator as Calculator
+import PDielec.Calculator         as Calculator
 from PyQt5.QtWidgets  import  QPushButton, QWidget
 from PyQt5.QtWidgets  import  QComboBox, QLabel, QLineEdit
 from PyQt5.QtWidgets  import  QProgressBar, QApplication
@@ -10,7 +9,8 @@ from PyQt5.QtWidgets  import  QVBoxLayout, QHBoxLayout, QFormLayout
 from PyQt5.QtWidgets  import  QSpinBox,QDoubleSpinBox
 from PyQt5.QtWidgets  import  QSizePolicy
 from PyQt5.QtCore     import  QCoreApplication, Qt
-from PDielec.Constants import  wavenumber, PI, avogadro_si, angstrom
+from PDielec.DielectricFunction import DielectricFunction
+from PDielec.Constants import  wavenumber, PI, avogadro_si, angstrom, speed_light_si
 import ctypes
 # Import plotting requirements
 import matplotlib
@@ -18,6 +18,7 @@ import matplotlib.figure
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT as NavigationToolbar
 from PDielec.Utilities import Debug
+import PDielec.GTMcore as GTM
 
 def set_affinity_on_worker():
     '''When a new worker process is created, the affinity is set to all CPUs'''
@@ -35,7 +36,7 @@ class SingleCrystalTab(QWidget):
         self.settings = {}
         self.subplot = None
         self.setWindowTitle('SingleCrystal')
-        self.settings['Minimum frequency'] = 0
+        self.settings['Minimum frequency'] = 100
         self.settings['Maximum frequency'] = 400
         self.settings['Frequency increment'] = 0.2
         self.molar_definitions = ['Unit cells','Atoms','Molecules']
@@ -45,15 +46,14 @@ class SingleCrystalTab(QWidget):
         self.settings['Unique direction - h'] = 0
         self.settings['Unique direction - k'] = 0
         self.settings['Unique direction - l'] = 1
-        self.settings['Rotation about Z'] = 0.0
-        self.settings['Angle of incidence'] = 90.0
-        self.settings['Polarisation angle'] = 0.0
-        self.settings['Superstrate depth'] = 100.0
+        self.settings['Azimuthal angle'] = 0.0
+        self.settings['Angle of incidence'] = 45.0
         self.settings['Superstrate dielectric'] = 1.0
-        self.settings['Substrate depth'] = 10.0
         self.settings['Substrate dielectric'] = 1.0
-        self.settings['Crystal depth'] = 1.0
-        self.xaxes = []
+        self.settings['Superstrate depth'] = 999.0
+        self.settings['Substrate depth'] = 999.0
+        self.settings['Crystal depth'] = 10.0
+        self.xaxis = []
         self.directions = []
         self.frequency_units = None
         self.molar_cb_current_index = 0
@@ -68,7 +68,7 @@ class SingleCrystalTab(QWidget):
         # The minimum frequency
         #
         self.vmin_sb = QSpinBox(self)
-        self.vmin_sb.setRange(0,9000)
+        self.vmin_sb.setRange(1,9000)
         self.vmin_sb.setValue(self.settings['Minimum frequency'])
         self.vmin_sb.setToolTip('Set the minimum frequency to be considered)')
         self.vmin_sb.valueChanged.connect(self.on_vmin_changed)
@@ -99,34 +99,34 @@ class SingleCrystalTab(QWidget):
         label = QLabel('Frequency increment', self)
         label.setToolTip('Choose an increment for the frequency when plotting')
         form.addRow(label, self.vinc_sb)
-        #
-        # Define molar quantity
-        #
-        self.molar_cb = QComboBox(self)
-        self.molar_cb.setToolTip('Define what a mole is.  \nIn the case of Molecules, the number of atoms in a molecule must be given')
-        self.molar_cb.addItems(self.molar_definitions)
-        try:
-            self.molar_cb_current_index = self.molar_definitions.index(self.settings["Molar definition"])
-        except:
-            self.molar_cb_current_index = 0
-            self.settings["Molar definition"] = self.molar_definitions[self.molar_cb_current_index]
-        self.molar_cb.setCurrentIndex(self.molar_cb_current_index)
-        self.molar_cb.activated.connect(self.on_molar_cb_activated)
-        label = QLabel('Molar definition', self)
-        label.setToolTip('Define what a mole is.  \nIn the case of Molecules, the number of atoms in a molecule must be given')
-        form.addRow(label, self.molar_cb)
-        #
-        # Number of atoms in a molecule
-        #
-        self.natoms_sb = QSpinBox(self)
-        self.natoms_sb.setToolTip('Set the number of atoms in a molecule. \nOnly need this if moles of molecules is needed')
-        self.natoms_sb.setRange(1,500)
-        self.natoms_sb.setValue(self.settings['Number of atoms'])
-        self.natoms_sb.valueChanged.connect(self.on_natoms_changed)
-        self.natoms_sb.setEnabled(False)
-        label = QLabel('Number of atoms per molecule', self)
-        label.setToolTip('Set the number of atoms in a molecule. \nOnly need this if moles of molecules is needed')
-        form.addRow(label, self.natoms_sb)
+        #jk #
+        #jk # Define molar quantity
+        #jk #
+        #jk self.molar_cb = QComboBox(self)
+        #jk self.molar_cb.setToolTip('Define what a mole is.  \nIn the case of Molecules, the number of atoms in a molecule must be given')
+        #jk self.molar_cb.addItems(self.molar_definitions)
+        #jk try:
+        #jk     self.molar_cb_current_index = self.molar_definitions.index(self.settings["Molar definition"])
+        #jk except:
+        #jk     self.molar_cb_current_index = 0
+        #jk     self.settings["Molar definition"] = self.molar_definitions[self.molar_cb_current_index]
+        #jk self.molar_cb.setCurrentIndex(self.molar_cb_current_index)
+        #jk self.molar_cb.activated.connect(self.on_molar_cb_activated)
+        #jk label = QLabel('Molar definition', self)
+        #jk label.setToolTip('Define what a mole is.  \nIn the case of Molecules, the number of atoms in a molecule must be given')
+        #jk form.addRow(label, self.molar_cb)
+        #jk #
+        #jk # Number of atoms in a molecule
+        #jk #
+        #jk self.natoms_sb = QSpinBox(self)
+        #jk self.natoms_sb.setToolTip('Set the number of atoms in a molecule. \nOnly need this if moles of molecules is needed')
+        #jk self.natoms_sb.setRange(1,500)
+        #jk self.natoms_sb.setValue(self.settings['Number of atoms'])
+        #jk self.natoms_sb.valueChanged.connect(self.on_natoms_changed)
+        #jk self.natoms_sb.setEnabled(False)
+        #jk label = QLabel('Number of atoms per molecule', self)
+        #jk label.setToolTip('Set the number of atoms in a molecule. \nOnly need this if moles of molecules is needed')
+        #jk form.addRow(label, self.natoms_sb)
         #
         # Set the plot title
         #
@@ -179,105 +179,69 @@ class SingleCrystalTab(QWidget):
         #
         # Define the rotation angle of the slab and the angle of incidence
         #
-        self.rotation_about_z_sb = QSpinBox(self)
-        self.rotation_about_z_sb.setToolTip('Define the slab rotation angle around the Z-laboratory frame')
-        self.rotation_about_z_sb.setRange(0,360)
-        self.rotation_about_z_sb.setSingleStep(10)
-        self.rotation_about_z_sb.setValue(self.settings['Rotation around Z'])
-        self.rotation_about_z_sb.valueChanged.connect(self.on_rotation_about_z_sb_changed)
-        self.angle_of_incidence_sb = QSpinBox(self)
+        self.azimuthal_angle_sb = QDoubleSpinBox(self)
+        self.azimuthal_angle_sb.setToolTip('Define the slab azimuthal angle')
+        self.azimuthal_angle_sb.setRange(0,360)
+        self.azimuthal_angle_sb.setSingleStep(10)
+        self.azimuthal_angle_sb.setValue(self.settings['Azimuthal angle'])
+        self.azimuthal_angle_sb.valueChanged.connect(self.on_azimuthal_angle_sb_changed)
+        self.angle_of_incidence_sb = QDoubleSpinBox(self)
         self.angle_of_incidence_sb.setToolTip('Define the angle of incidence')
         self.angle_of_incidence_sb.setRange(0,180)
         self.angle_of_incidence_sb.setSingleStep(10)
         self.angle_of_incidence_sb.setValue(self.settings['Angle of incidence'])
         self.angle_of_incidence_sb.valueChanged.connect(self.on_angle_of_incidence_sb_changed)
-        self.polarisation_angle_sb = QSpinBox(self)
-        self.polarisation_angle_sb.setToolTip('Define the polarisation angle')
-        self.polarisation_angle_sb.setRange(0,90)
-        self.polarisation_angle_sb.setSingleStep(10)
-        self.polarisation_angle_sb.setValue(self.settings['Polarisation angle'])
-        self.polarisation_angle_sb.valueChanged.connect(self.on_polarisation_angle_sb_changed)
         hbox = QHBoxLayout()
-        hbox.addWidget(self.rotation_about_z_sb)
-        hbox.addWidget(self.angle of incidence_sb)
-        hbox.addWidget(self.polarisation_angle_sb)
-        self.angles_label = QLabel('Angles of surface orientation, incidence and polarisation',self)
-        self.angles_label.setToolTip('Define the angles of rotation about the Z-laboratory frame, the angle of incidence and the angle of polarisation relative.')
+        hbox.addWidget(self.azimuthal_angle_sb)
+        hbox.addWidget(self.angle_of_incidence_sb)
+        self.angles_label = QLabel('Angles of surface orientation and incidence',self)
+        self.angles_label.setToolTip('Define the azimuthal angle and the angle of incidence.')
         form.addRow(self.angles_label, hbox)
         #
-        # Define the superstrate
+        # Define the superstrate and substrate dielectrics
         #
-        self.superstrate_depth_sb = QSpinBox(self)
-        self.superstrate_depth_sb.setToolTip('Define the superstrate depth')
-        self.superstrate_depth_sb.setRange(0,1000)
-        self.superstrate_depth_sb.setSingleStep(10)
-        self.superstrate_depth_sb.setValue(self.settings['Superstrate depth'])
-        self.superstrate_depth_sb.valueChanged.connect(self.on_superstrate_depth_sb_change)
-        self.superstrate_depth_sb.setToolTip('Define the superstrate dielectric')
-        self.superstrate_depth_sb.setRange(1,1000)
-        self.superstrate_depth_sb.setSingleStep(0.1)
-        self.superstrate_depth_sb.setValue(self.settings['Superstrate dielectric'])
-        self.superstrate_depth_sb.valueChanged.connect(self.on_superstrate_dielectric_sb_change)
+        self.superstrate_dielectric_sb = QDoubleSpinBox(self)
+        self.superstrate_dielectric_sb.setToolTip('Define the superstrate dielectric')
+        self.superstrate_dielectric_sb.setRange(1,1000)
+        self.superstrate_dielectric_sb.setSingleStep(0.1)
+        self.superstrate_dielectric_sb.setValue(self.settings['Superstrate dielectric'])
+        self.superstrate_dielectric_sb.valueChanged.connect(self.on_superstrate_dielectric_sb_changed)
+        self.substrate_dielectric_sb = QDoubleSpinBox(self)
+        self.substrate_dielectric_sb.setToolTip('Define the substrate dielectric')
+        self.substrate_dielectric_sb.setRange(1,1000)
+        self.substrate_dielectric_sb.setSingleStep(0.1)
+        self.substrate_dielectric_sb.setValue(self.settings['Substrate dielectric'])
+        self.substrate_dielectric_sb.valueChanged.connect(self.on_substrate_dielectric_sb_changed)
         hbox = QHBoxLayout()
-        hbox.addWidget(self.superstrate_depth_sb_changed)
-        hbox.addWidget(self.angle of incidence_sb)
-        self.angles_label = QLabel('Superstrate depth(mm) and dielectric',self)
-        self.angles_label.setToolTip('Define the properties of the superstrate; depth in millimetres and dielectric constant.')
-        form.addRow(self.angles_label, hbox)
-        #
-        #
-        # Define the substrate
-        #
-        self.substrate_depth_sb = QSpinBox(self)
-        self.substrate_depth_sb.setToolTip('Define the substrate depth')
-        self.substrate_depth_sb.setRange(0,1000)
-        self.substrate_depth_sb.setSingleStep(10)
-        self.substrate_depth_sb.setValue(self.settings['Substrate depth'])
-        self.substrate_depth_sb.valueChanged.connect(self.on_substrate_depth_sb_change)
-        self.substrate_depth_sb.setToolTip('Define the substrate dielectric')
-        self.substrate_depth_sb.setRange(1,1000)
-        self.substrate_depth_sb.setSingleStep(0.1)
-        self.substrate_depth_sb.setValue(self.settings['Substrate dielectric'])
-        self.substrate_depth_sb.valueChanged.connect(self.on_substrate_dielectric_sb_change)
-        hbox = QHBoxLayout()
-        hbox.addWidget(self.substrate_depth_sb_changed)
-        hbox.addWidget(self.angle of incidence_sb)
-        self.angles_label = QLabel('Substrate depth(mm) and dielectric',self)
-        self.angles_label.setToolTip('Define the properties of the substrate; depth in millimetres and dielectric constant.')
-        form.addRow(self.angles_label, hbox)
+        hbox.addWidget(self.superstrate_dielectric_sb)
+        hbox.addWidget(self.substrate_dielectric_sb)
+        self.superstrate_label = QLabel('Super- and substrate dielectrics',self)
+        self.superstrate_label.setToolTip('Define the dielectric constants of the superstrate and substrates')
+        form.addRow(self.superstrate_label, hbox)
         #
         #
         # Define the crystal depth
         #
-        self.crystal_depth_sb = QSpinBox(self)
+        self.crystal_depth_sb = QDoubleSpinBox(self)
         self.crystal_depth_sb.setToolTip('Define the crystal depth')
-        self.crystal_depth_sb.setRange(0,1000)
+        self.crystal_depth_sb.setRange(0,10000)
         self.crystal_depth_sb.setSingleStep(1)
         self.crystal_depth_sb.setValue(self.settings['Crystal depth'])
-        self.crystal_depth_sb.valueChanged.connect(self.on_crystal_depth_sb_change)
+        self.crystal_depth_sb.valueChanged.connect(self.on_crystal_depth_sb_changed)
         hbox = QHBoxLayout()
-        hbox.addWidget(self.substrate_depth_sb_changed)
-        hbox.addWidget(self.angle of incidence_sb)
-        self.angles_label = QLabel('Crystal depth(mm)',self)
-        self.angles_label.setToolTip('Define the depth of the crystal in millimetres.')
-        form.addRow(self.angles_label, hbox)
+        hbox.addWidget(self.crystal_depth_sb)
+        self.crystal_depth_label = QLabel('Crystal depth(mu)',self)
+        self.crystal_depth_label.setToolTip('Define the depth of the crystal in millimetres.')
+        form.addRow(self.crystal_depth_label, hbox)
         #
         #
         # Final button
         #
         hbox = QHBoxLayout()
-        self.molarAbsorptionButton = QPushButton('Plot molar absorption')
-        self.molarAbsorptionButton.setToolTip('Plot the molar absorption')
-        self.molarAbsorptionButton.clicked.connect(self.molarAbsorptionButtonClicked)
-        hbox.addWidget(self.molarAbsorptionButton)
-        self.absorptionButton = QPushButton('Plot absorption')
-        self.absorptionButton.setToolTip('Plot the absorption')
-        self.absorptionButton.clicked.connect(self.absorptionButtonClicked)
-        hbox.addWidget(self.absorptionButton)
-        self.reflectivityButton = QPushButton('Plot relectivity')
-        self.reflectivityButton.setToolTip('Plot the reflectivity')
-        self.reflectivityButton.clicked.connect(self.reflectivityButtonCicked)
-        hbox.addWidget(self.reflectivityButton)
+        self.plotButton = QPushButton('Plot transmission and reflection')
+        self.plotButton.setToolTip('Plot the molar absorption')
+        self.plotButton.clicked.connect(self.plotButtonClicked)
+        hbox.addWidget(self.plotButton)
         form.addRow(hbox)
         # Add a progress bar
         self.progressbar = QProgressBar(self)
@@ -301,54 +265,40 @@ class SingleCrystalTab(QWidget):
         self.setLayout(vbox)
         QCoreApplication.processEvents()
 
-    def self.on_superstrate_depth_sb_changed(self,value)
-        debugger.print('on_superstrate_depth_sb', value)
+    def on_crystal_depth_sb_changed(self,value):
+        debugger.print('on_crystal_depth_sb', value)
         self.dirty = True
         self.notebook.singleCrystalCalculationRequired = True
         self.notebook.fittingCalculationRequired = True
-        self.settings['Superstrate depth'] = value
+        self.settings['Crystal depth'] = value
 
-    def self.on_superstrate_dielectric_sb_changed(self,value)
+    def on_superstrate_dielectric_sb_changed(self,value):
         debugger.print('on_superstrate_dielectric_sb', value)
         self.dirty = True
         self.notebook.singleCrystalCalculationRequired = True
         self.notebook.fittingCalculationRequired = True
         self.settings['Superstrate dielectric'] = value
 
-    def self.on_substrate_depth_sb_changed(self,value)
-        debugger.print('on_substrate_depth_sb', value)
-        self.dirty = True
-        self.notebook.singleCrystalCalculationRequired = True
-        self.notebook.fittingCalculationRequired = True
-        self.settings['Substrate depth'] = value
-
-    def self.on_substrate_dielectric_sb_changed(self,value)
+    def on_substrate_dielectric_sb_changed(self,value):
         debugger.print('on_substrate_dielectric_sb', value)
         self.dirty = True
         self.notebook.singleCrystalCalculationRequired = True
         self.notebook.fittingCalculationRequired = True
         self.settings['Substrate dielectric'] = value
 
-    def self.on_rotation_about_z_sb_changed(self,value)
-        debugger.print('on_rotation_about_z_sb_changed', value)
+    def on_azimuthal_angle_sb_changed(self,value):
+        debugger.print('on_azimuthal_angl_sb_changed', value)
         self.dirty = True
         self.notebook.singleCrystalCalculationRequired = True
         self.notebook.fittingCalculationRequired = True
         self.settings['Rotation about Z'] = value
 
-    def self.on_angle_of_incidence_sb_changed(self,value)
+    def on_angle_of_incidence_sb_changed(self,value):
         debugger.print('on_angle_of_incidence_sb_changed', value)
         self.dirty = True
         self.notebook.singleCrystalCalculationRequired = True
         self.notebook.fittingCalculationRequired = True
         self.settings['Angle of incidence'] = value
-
-    def self.on_polarisation_angle_sb_changed(self,value)
-        debugger.print('on_polarisation_angle_sb_changed', value)
-        self.dirty = True
-        self.notebook.singleCrystalCalculationRequired = True
-        self.notebook.fittingCalculationRequired = True
-        self.settings['Polarisation angle'] = value
 
     def on_h_sb_changed(self,value):
         debugger.print('on_h_sb_changed', value)
@@ -372,26 +322,15 @@ class SingleCrystalTab(QWidget):
         self.settings['Unique direction - l'] = value
 
 
-    def molarAbsorptionButtonClicked(self):
-        debugger.print('molarAbsorptionButtonClicked pressed')
+    def plotButtonClicked(self):
+        debugger.print('plotButtonClicked pressed')
         if self.notebook.singleCrystalCalculationRequired:
             self.calculate()
         if not self.notebook.singleCrystalCalculationRequired:
-            self.plot(self.xaxes, self.molarAbsorptionCoefficients, r'Molar Absorption Coefficient $\mathdefault{(L mole^{-1} cm^{-1})}$')
-
-    def absorptionButtonClicked(self):
-        debugger.print('absorptionButtonClicked pressed')
-        if self.notebook.singleCrystalCalculationRequired:
-            self.calculate()
-        if not self.notebook.singleCrystalCalculationRequired:
-            self.plot(self.xaxes, self.absorptionCoefficients, r'Absorption Coefficient $\mathdefault{(cm^{-1})}$')
-
-    def reflectivityButtonClicked(self):
-        debugger.print('reflectivityButtonClicked pressed')
-        if self.notebook.singleCrystalCalculationRequired:
-            self.calculate()
-        if not self.notebook.singleCrystalCalculationRequired:
-            self.plot(self.xaxes, self.reflectivities, 'Reflectivities')
+            yaxes = [self.p_transmission, self.s_transmission, self.p_reflectivity, self.s_reflectivity, ]
+            legends = [ r'$T_p$', r'$T_s$', r'$R_p$', r'$R_s$']
+            ylabel = 'Arbitrary units'
+            self.plot(self.xaxis, yaxes, ylabel, legends)
 
     def on_title_changed(self,text):
         self.settings['Plot title'] = text
@@ -444,13 +383,13 @@ class SingleCrystalTab(QWidget):
         self.vmin_sb.setValue(self.settings['Minimum frequency'])
         self.vmax_sb.setValue(self.settings['Maximum frequency'])
         self.vinc_sb.setValue(self.settings['Frequency increment'])
-        try:
-            self.molar_cb_current_index = self.molar_definitions.index(self.settings["Molar definition"])
-        except:
-            self.molar_cb_current_index = 0
-            self.settings["Molar definition"] = self.molar_definitions[self.molar_cb_current_index]
-        self.molar_cb.setCurrentIndex(self.molar_cb_current_index)
-        self.natoms_sb.setValue(self.settings['Number of atoms'])
+        #jktry:
+        #jk    self.molar_cb_current_index = self.molar_definitions.index(self.settings["Molar definition"])
+        #jkexcept:
+        #jk    self.molar_cb_current_index = 0
+        #jk    self.settings["Molar definition"] = self.molar_definitions[self.molar_cb_current_index]
+        #jkself.molar_cb.setCurrentIndex(self.molar_cb_current_index)
+        #jkself.natoms_sb.setValue(self.settings['Number of atoms'])
         self.title_le.setText(self.settings['Plot title'])
         # Refresh the widgets that depend on the reader
         self.reader = self.notebook.reader
@@ -462,7 +401,7 @@ class SingleCrystalTab(QWidget):
         self.progressbar.setValue(0)
         if self.notebook.progressbar is not None:
             self.notebook.progressbar.setValue(0)
-        self.molarAbsorptionButtonClicked()
+        self.plotButtonClicked()
         self.dirty = False
         self.notebook.singleCrystalCalculationRequired = False
         #
@@ -597,17 +536,49 @@ class SingleCrystalTab(QWidget):
         QCoreApplication.processEvents()
         #jk print('Dielec calculation duration ', time.time()-start)
         nplots = len(dielecv_results)
+        # Set up the layered system using GTM calls
+        S = GTM.System()
+        # The dielectric variables are functions of frequency
+        superstrateDielectric = self.settings['Superstrate dielectric']
+        substrateDielectric   = self.settings['Substrate dielectric']
+        superstrateDielectricFunction = DielectricFunction(epsType='constant',value=superstrateDielectric).function()
+        substrateDielectricFunction   = DielectricFunction(epsType='constant',value=substrateDielectric).function()
+        # The crystal dielectric has already been defined in the PlottingTab
+        crystalDielectricFunction     = self.notebook.plottingTab.CrystalDielectricConstant.function()
+        for v,vau,dielecv in dielecv_results:
+            # Create a dictionary indexed by the frequency in units used by pyGMT
+            freq = int(v * speed_light_si * 1e2)
+        # Create 3 layers, thickness is converted from microns to metres
+        superstrateDepth = self.settings['Superstrate depth']
+        superstrate      = GTM.Layer(thickness=superstrateDepth*1e-6,epsilon1=superstrateDielectricFunction)
+        substrateDepth   = self.settings['Substrate depth']
+        substrate        = GTM.Layer(thickness=substrateDepth*1e-6,  epsilon1=substrateDielectricFunction)
+        crystalDepth     = self.settings['Crystal depth']
+        crystal          = GTM.Layer(thickness=crystalDepth*1e-6,    epsilon=crystalDielectricFunction)
+        # Creat the system with the layers 
+        system = GTM.System(substrate=substrate, superstrate=superstrate, layers=[crystal])
         # Prepare variables for setting up parameters for parallel call
         concentration = self.settings['concentration']
         hkl = [ self.settings['Unique direction - h'] , self.settings['Unique direction - k'], self.settings['Unique direction - l'] ]
-        rotz                  = self.settings['Rotation about Z']
-        angleOfIncidence      = self.settings['Angle of incidence']
-        polarisationAngle     = self.settings['Polarisation angle']
-        superstrateDepth      = self.settings['Superstrate depth']
-        superstrateDielectric = self.settings['Superstrate dielectric']
-        substrateDepth        = self.settings['Substrate depth']
-        substrateDielecitric  = self.settings['Substrate dielectric']
-        crystalDepth          = self.settings['Crystal depth']
+        # convert normal to plane to a direction in xyz coordinates
+        normal_to_plane_xyz = cell.convert_hkl_to_xyz(hkl)
+        normal_to_plane_xyz /=  np.linalg.norm(normal_to_plane_xyz)
+        # Rotate this normal so it becomes the laboratory Z- direction
+        labZ = np.array( [0,0,1] )
+        # Define the euler angles in radians; theta rotates z to Z and psi is the azimuthal angle
+        euler_theta           = np.arccos(np.dot(labZ,normal_to_plane_xyz))
+        euler_phi             = 0.0
+        euler_psi             = np.pi / 180.0 * self.settings['Azimuthal angle']
+        # Tricky setting for 90 degrees
+        angle = self.settings['Angle of incidence']
+        if angle >= 89.99:
+            angle = 89.99
+        angleOfIncidence      = np.pi / 180.0 * angle
+        # Rotate the dielectric constants to the laboratory frame
+        system.substrate.set_euler(theta=euler_theta, phi=euler_phi, psi=euler_psi)
+        system.superstrate.set_euler(theta=euler_theta, phi=euler_phi, psi=euler_psi)
+        for layer in system.layers:
+            layer.set_euler(theta=euler_theta, phi=euler_phi, psi=euler_psi)
         # Prepare parallel processing options
         if self.notebook.threading:
             from multiprocess.dummy import Pool
@@ -619,22 +590,16 @@ class SingleCrystalTab(QWidget):
         # Prepare parameters for a parallel call to the layered absorption / reflection
         #
         nplot = 0
+        call_parameters = []
         # Assemble all the parameters we need for parallel execution
+        # About to call
+        results = []
         for v,vau,dielecv in dielecv_results:
             data = ''
-            call_parameters.append( (v,vau,dielecv,
-                                     rotz                  ,
-                                     angleOfIncidence      ,
-                                     polarisationAngle     ,
-                                     superstrateDepth      ,
-                                     superstrateDielectric ,
-                                     substrateDepth        ,
-                                     substrateDielecitric  ,
-                                     crystalDepth
-                                     ) )
-            nplot += 1
-        results = []
-        for result in pool.imap(Calculator.solve_singleCrystalEquations, call_parameters, chunksize=40):
+            call_parameters.append( (v, angleOfIncidence, system) )
+            #jk nplot += 1
+            #jk results.append( Calculator.solve_single_crystal_equations( (v, angleOfIncidence, system) ) )
+        for result in pool.imap(Calculator.solve_single_crystal_equations, call_parameters, chunksize=40):
             results.append(result)
             progress += 1
             self.progressbar.setValue(progress)
@@ -642,15 +607,26 @@ class SingleCrystalTab(QWidget):
                 self.notebook.progressbar.setValue(progress)
         QCoreApplication.processEvents()
         # Initialise plotting variables
-        self.xaxes                       = []
-        self.reflectivities              = []
-        self.absorptionCoefficients      = []
-        self.molarAbsorptionCoefficients = []
-        for v,nplot,absorption_coefficient,molar_absorption_coefficient,reflectance in results:
-             self.xaxis.append(v)
-             self.reflectivities.append(np.real(trace))
-             self.absorptionCoefficient.append(absorption_coefficient)
-             self.molarAbsorptionCoefficient.append(molar_absorption_coefficient)
+        self.xaxis          = []
+        self.p_reflectivity = []
+        self.s_reflectivity = []
+        self.p_transmission = []
+        self.s_transmission = []
+        for v,r,R,t,T in results:
+            # print ('Frequency ',v)
+            # print ('R[0] ',R[0])
+            # print ('R[1] ',R[1])
+            # print ('T[0] ',T[0])
+            # print ('T[1] ',T[1])
+            # print ('r[0] ',r[0])
+            # print ('r[1] ',r[1])
+            # print ('t[0] ',t[0])
+            # print ('t[1] ',t[1])
+            self.xaxis.append(v)
+            self.p_reflectivity.append(R[0])
+            self.s_reflectivity.append(R[1])
+            self.p_transmission.append(T[0])
+            self.s_transmission.append(T[1])
         # Close parallel processing down
         pool.close()
         pool.join()
@@ -677,49 +653,51 @@ class SingleCrystalTab(QWidget):
         sp.delete()
         sp.writeNextRow(['Settings for the single crystal calculation of absorption and reflection'],col=1)
         sp.writeNextRow([''],col=1)
-        sp.writeNextRow([ 'Minimum frequency',            self.settings['Minimum frequency'] ])
-        sp.writeNextRow([ 'Maximum frequency',            self.settings['Maximum frequency'] ])
-        sp.writeNextRow([ 'Frequency increment',          self.settings['Frequency increment'] ])
-        sp.writeNextRow([ 'Molar definition',             self.settings['Molar definition'] ])
-        sp.writeNextRow([ 'Number of atoms in a molecule',self.settings['Number of atoms'] ])
-        sp.writeNextRow([ 'Plot title',                   self.settings['Plot title'] ])
-        sp.writeNextRow([ 'Surface definition (h)',       self.settings['Unique direction - h'] ])
-        sp.writeNextRow([ 'Surface definition (k)',       self.settings['Unique direction - k'] ])
-        sp.writeNextRow([ 'Surface definition (.)',       self.settings['Unique direction - l'] ])
-        sp.writeNextRow([ 'Rotation angle about Z',       self.settings['Rotation about Z'] ])
-        sp.writeNextRow([ 'Angle of incidence',           self.settings['Angle of incidence'] ])
-        sp.writeNextRow([ 'Polarisation angle',           self.settings['Polarisation angle'] ])
-        sp.writeNextRow([ 'Superstrate depth(mm)',        self.settings['Superstrate depth'] ])
-        sp.writeNextRow([ 'Superstrate dielectric',       self.settings['Superstrate dielectric'] ])
-        sp.writeNextRow([ 'Substrate depth(mm)',          self.settings['Substrate depth'] ])
-        sp.writeNextRow([ 'Substrate dielectric',         self.settings['Substrate dielectric'] ])
-        sp.writeNextRow([ 'Crystal depth(mm)',            self.settings['Crystal depth'] ])
+        sp.writeNextRow([ 'Minimum frequency',            self.settings['Minimum frequency'] ],col=1)
+        sp.writeNextRow([ 'Maximum frequency',            self.settings['Maximum frequency'] ],col=1)
+        sp.writeNextRow([ 'Frequency increment',          self.settings['Frequency increment'] ],col=1)
+        sp.writeNextRow([ 'Molar definition',             self.settings['Molar definition'] ],col=1)
+        sp.writeNextRow([ 'Number of atoms in a molecule',self.settings['Number of atoms'] ],col=1)
+        sp.writeNextRow([ 'Plot title',                   self.settings['Plot title'] ],col=1)
+        sp.writeNextRow([ 'Surface definition (h)',       self.settings['Unique direction - h'] ],col=1)
+        sp.writeNextRow([ 'Surface definition (k)',       self.settings['Unique direction - k'] ],col=1)
+        sp.writeNextRow([ 'Surface definition (l)',       self.settings['Unique direction - l'] ],col=1)
+        sp.writeNextRow([ 'Azimuthal angle',              self.settings['Azimuthal angle'] ],col=1)
+        sp.writeNextRow([ 'Angle of incidence',           self.settings['Angle of incidence'] ],col=1)
+        sp.writeNextRow([ 'Superstrate dielectric',       self.settings['Superstrate dielectric'] ],col=1)
+        sp.writeNextRow([ 'Substrate dielectric',         self.settings['Substrate dielectric'] ],col=1)
+        sp.writeNextRow([ 'Crystal depth(mu)',            self.settings['Crystal depth'] ],col=1)
         # Now deal with Molar absorption, absorption, reflectivities
-        self.write_results(sp, 'Crystal Molar Absorption',self.xaxes, self.molarAbsorptionCoefficients)
-        self.write_results(sp, 'Crystal Absorption',      self.xaxes, self.absorptionCoefficients)
-        self.write_results(sp, 'Crystal Reflectance',     self.xaxes, self.reflectivities)
+        headings = ['R_p', 'R_s', 'T_p', 'T_s']
+        self.write_results(sp, 'Crystal R&T',     self.xaxis, [self.p_reflectivity, self.s_reflectivity, self.p_transmission, self.s_transmission], headings)
 
-    def write_results(self, sp, name, vss, yss):
+    def write_results(self, sp, name, vs, yss, headings):
+        """ 
+        sp        is the spreadsheet object
+        name      is the worksheet name used for writing
+        vs        an np.array of the frequencies
+        yss       a list of np.arrays of the reflections and transmissions ] 
+        headings  the heading names for the yss
+        """
         sp.selectWorkSheet(name)
         sp.delete()
         headers = ['frequencies (cm-1)']
-        #for isc,ys in enumerate(yss):
-        #    headers.append('Scenario'+str(isc))
-        headers.extend(self.legends)
+        headers.extend(headings)
         sp.writeNextRow(headers,row=0, col=1)
-        for iv,v in enumerate(vss[0]):
+        for iv,v in enumerate(vs):
            output = [v]
            for ys in yss:
                output.append(ys[iv])
            sp.writeNextRow(output, col=1,check=1)
 
-    def plot(self,xs,ys,ylabel):
+    def plot(self,x,ys,ylabel,legends):
         # import matplotlib.pyplot as pl
         # mp.use('Qt5Agg')
         self.subplot = None
-        self.remember_xs = xs
+        self.remember_x  = x
         self.remember_ys = ys
         self.remember_ylabel = ylabel
+        self.remember_legends = legends
         self.figure.clf()
         if self.frequency_units == 'wavenumber':
             xlabel = r'Frequency $\mathdefault{(cm^{-1})}}$'
@@ -727,10 +705,9 @@ class SingleCrystalTab(QWidget):
         else:
             xlabel = r'THz'
             scale = 0.02998
+        x = np.array(x)
         self.subplot = self.figure.add_subplot(111)
-        for scenario,x,y in zip(self.scenarios,xs,ys):
-            x = np.array(x)
-            legend = scenario.settings['Legend']
+        for y,legend in zip(ys,legends):
             line, = self.subplot.plot(scale*x,y,lw=2, label=legend )
         self.subplot.set_xlabel(xlabel)
         self.subplot.set_ylabel(ylabel)
@@ -740,6 +717,6 @@ class SingleCrystalTab(QWidget):
 
     def replot(self):
         if self.subplot is not None:
-            self.plot(self.remember_xs, self.remember_ys, self.remember_ylabel)
+            self.plot(self.remember_x, self.remember_ys, self.remember_ylabel, self.remember_legends)
 
 

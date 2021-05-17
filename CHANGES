@@ -1,18 +1,25 @@
+version 7.0.1
+  Added a single crystal tab to show transmission and reflectance at a single crystal surface
+  The method used is that described by Passler et al
+  Rewrote the calculation of dielectric permittivity so that it would be much more general.
+  There is now a class which looks after dielectric permittivity information
+
+
 version 6.4.5
-Fixed a couple of problems when switching molecule using the GUI.  The sigmas array and the mode fitting flags are now reset when a new molecule/crystal is read in.
-Modified the ViewerTab to display super-cells
-Added a new VibAnalysis module based on the work of filipe teixeira https://github.com/teixeirafilipe/vibAnalysis
-Example output in Examples/Castep/AsparticAcid/phonon.nm (generated with 'vibanalysis phonon)
+  Fixed a couple of problems when switching molecule using the GUI.  The sigmas array and the mode fitting flags are now reset when a new molecule/crystal is read in.
+  Modified the ViewerTab to display super-cells
+  Added a new VibAnalysis module based on the work of filipe teixeira https://github.com/teixeirafilipe/vibAnalysis
+  Example output in Examples/Castep/AsparticAcid/phonon.nm (generated with 'vibanalysis phonon)
                   Examples/Vasp/Na2SO42/OUTCAR.nma (generated with 'vibanalysis OUTCAR)
-Added sklearn to the list of required packages
+  Added sklearn to the list of required packages
 
 version 6.4.4 (Internal release only)
-Added an option in viewerTab to write the vibrating molecule as a cif file.
-Modified the cif output format so it is more like that of Mercury
-Introduced psutil.cpu_count as this will give the number of physical processors
-Switched the multiprocessing module to the multiprocess module (pickling is better)
-Overrode the mkl environment variable for the number of threads.  PDgui now uses mkl threading, unless it is in multiprocessing mode.
-Used dill for the pickling itself.
+  Added an option in viewerTab to write the vibrating molecule as a cif file.
+  Modified the cif output format so it is more like that of Mercury
+  Introduced psutil.cpu_count as this will give the number of physical processors
+  Switched the multiprocessing module to the multiprocess module (pickling is better)
+  Overrode the mkl environment variable for the number of threads.  PDgui now uses mkl threading, unless it is in multiprocessing mode.
+  Used dill for the pickling itself.
 In preader added an option to pickle each of the readers that are created and store them in a file
 Added a script, pickled_reader which can read the pickled file.  The script is just an example of how the readers can be read in and the contents accessed.
 Modified UnitCell.py to use print_info instead of printInfo
