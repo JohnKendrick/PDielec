@@ -3,6 +3,8 @@ version 7.0.1
   The method used is that described by Passler et al
   Rewrote the calculation of dielectric permittivity so that it would be much more general.
   There is now a class which looks after dielectric permittivity information
+  The sign convention for the imaginary component of the permittivity has changed - e(real)-e(imag)j
+  Moved the CrystalPermittivity to the SettingsTab
 
 
 version 6.4.5
