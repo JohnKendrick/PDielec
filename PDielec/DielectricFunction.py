@@ -28,7 +28,7 @@ from PDielec.Constants import wavenumber
 
 class DielectricFunction:
     """Provide an interface to different dielectric functions"""
-    possible_epsTypes = ['constant','file','interpolate','calculate']
+    possible_epsTypes = ['constant','file','interpolate','calculate','fpsq']
     possible_units = ['cm-1','microns','mu','nm','thz','hz']
     def __init__(self, epsType=None, value=None, filename=None, parameters=None, values=None, units='cm-1' ):
         """
@@ -66,6 +66,8 @@ class DielectricFunction:
             self.setupInterpolation()
         elif epsType == 'calculate':
             self.setupParameters()
+        elif epsType == 'fpsq':
+            self.setupFpsq()
 
     def function(self):
         return  self.calculate
@@ -78,6 +80,12 @@ class DielectricFunction:
         exit()
         return
 
+    def setupFpsq(self):
+        """
+        Setup a fpsq model for the permittivity
+        """
+        #jk print('Setting up fpsq ',self.parameters)
+        return
     def setupParameters(self):
         """
         Read a dielectric function from a file
@@ -170,7 +178,7 @@ class DielectricFunction:
         if f <= 1.0e-8:
             f = 1.0e-8
         # Assume that the drude contribution is isotropic
-        dielectric = dielectric - unit * frequency*frequency / np.complex(-f*f, -sigma*f)
+        dielectric = dielectric - unit * frequency*frequency / np.complex(-f*f, +sigma*f)
         return dielectric * (4.0*np.pi/volume)
 
 
@@ -186,7 +194,7 @@ class DielectricFunction:
             v = frequencies[mode]
             sigma = sigmas[mode]
             strength = strengths[mode].astype(complex)
-            dielectric = dielectric + strength / np.complex((v*v - f*f), -sigma*f)
+            dielectric = dielectric + strength / np.complex((v*v - f*f), +sigma*f)
         return dielectric * (4.0*np.pi/volume)
 
 
