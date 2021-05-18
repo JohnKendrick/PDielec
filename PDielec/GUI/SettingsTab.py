@@ -238,6 +238,8 @@ class SettingsTab(QWidget):
         frequencies_au = wavenumber*np.array(self.frequencies_cm1)
         volume_au = self.reader.volume*angstrom*angstrom*angstrom
         self.epsilon_ionic = Calculator.ionic_permittivity(mode_list, self.oscillator_strengths, frequencies_au, volume_au )
+        # Make an np array of epsilon infinity
+        epsilon_inf = np.array(self.settings['Optical permittivity'])
         #
         # If the reader already has a Dielectric Constant then use this
         #
@@ -251,7 +253,7 @@ class SettingsTab(QWidget):
             sigmas_au = np.array(self.sigmas_cm1)*wavenumber
             self.CrystalPermittivity = DielectricFunction('calculate',parameters=(
                                          mode_list, frequencies_au, sigmas_au, self.oscillator_strengths,
-                                         volume_au, self.epsilon_ionic, drude, drude_plasma_au, drude_sigma_au) )
+                                         volume_au, epsilon_inf, drude, drude_plasma_au, drude_sigma_au) )
         #
         # Prepare to finish
         #
