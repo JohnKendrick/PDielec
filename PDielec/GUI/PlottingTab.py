@@ -19,7 +19,6 @@ import matplotlib.figure
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT as NavigationToolbar
 from PDielec.Utilities import Debug
-from PDielec.DielectricFunction import DielectricFunction
 
 def set_affinity_on_worker():
     '''When a new worker process is created, the affinity is set to all CPUs'''
@@ -361,26 +360,10 @@ class PlottingTab(QWidget):
         # Assemble the settingsTab settings
         self.notebook.plottingCalculationRequired = False
         settings = self.notebook.settingsTab.settings
-        epsilon_inf = np.array(settings['Optical permittivity'])
-        sigmas_cm1 = self.notebook.settingsTab.sigmas_cm1
-        sigmas = np.array(sigmas_cm1) * wavenumber
-        modes_selected = self.notebook.settingsTab.modes_selected
-        frequencies_cm1 = self.notebook.settingsTab.frequencies_cm1
-        frequencies = np.array(frequencies_cm1) * wavenumber
-        oscillator_strengths = self.notebook.settingsTab.oscillator_strengths
-        volume = reader.volume*angstrom*angstrom*angstrom
         vmin = self.settings['Minimum frequency']
         vmax = self.settings['Maximum frequency']
         vinc = self.settings['Frequency increment']
         self.scenarios = self.notebook.scenarios
-        mode_list = []
-        drude_sigma = 0
-        drude_plasma = 0
-        drude = False
-        for mode_index,selected in enumerate(modes_selected):
-            if selected:
-                mode_list.append(mode_index)
-        #debugger.print('mode_list', mode_list)
         # Calculate the ionic permittivity at zero frequency
         cell = reader.unit_cells[-1]
         self.directions = []
@@ -412,10 +395,8 @@ class PlottingTab(QWidget):
             #debugger.print('direction',direction)
             self.depolarisations.append(depolarisation)
         # Define the crystal dielectric function which will be used
-        self.CrystalDielectricConstant = DielectricFunction('calculate',parameters=(
-                                                     mode_list, frequencies, sigmas, oscillator_strengths,
-                                                     volume, epsilon_inf, drude, drude_plasma, drude_sigma) )
-        dielectricFunction = self.CrystalDielectricConstant.function()
+        self.CrystalPermittivity = self.notebook.settingsTab.CrystalPermittivity
+        dielectricFunction = self.CrystalPermittivity.function()
         # Assemble a list of frequencies which will be used in the function call
         vs_cm1 = []
         for v_cm1 in np.arange(float(vmin), float(vmax)+0.5*float(vinc), float(vinc)):

@@ -1,16 +1,17 @@
 # -*- coding: utf8 -*-
 import numpy as np
 import PDielec.Calculator as Calculator
-from PyQt5.QtWidgets  import  QWidget, QApplication
-from PyQt5.QtWidgets  import  QComboBox, QLabel
-from PyQt5.QtWidgets  import  QCheckBox
-from PyQt5.QtWidgets  import  QVBoxLayout, QFormLayout
-from PyQt5.QtWidgets  import  QDoubleSpinBox, QTableWidget, QTableWidgetItem
-from PyQt5.QtWidgets  import  QSizePolicy
-from PyQt5.QtCore     import  Qt, QSize, QCoreApplication
-from PDielec.Constants import  wavenumber, amu, PI, angstrom
-from PDielec.Constants import  average_masses, isotope_masses
-from PDielec.Utilities import  Debug
+from PyQt5.QtWidgets            import  QWidget, QApplication
+from PyQt5.QtWidgets            import  QComboBox, QLabel
+from PyQt5.QtWidgets            import  QCheckBox
+from PyQt5.QtWidgets            import  QVBoxLayout, QFormLayout
+from PyQt5.QtWidgets            import  QDoubleSpinBox, QTableWidget, QTableWidgetItem
+from PyQt5.QtWidgets            import  QSizePolicy
+from PyQt5.QtCore               import  Qt, QSize, QCoreApplication
+from PDielec.Constants          import  wavenumber, amu, PI, angstrom
+from PDielec.Constants          import  average_masses, isotope_masses
+from PDielec.Utilities          import  Debug
+from PDielec.DielectricFunction import  DielectricFunction
 
 class FixedQTableWidget(QTableWidget):
     def __init__(self, *args, parent=None, rows=None, columns=None):
@@ -63,6 +64,7 @@ class SettingsTab(QWidget):
         self.sigmas_cm1 = []
         self.oscillator_strengths = []
         self.mass_weighted_normal_modes = None
+        self.CrystalPermittivity = None
         # get the reader from the main tab
         self.reader = self.notebook.reader
         # Create second tab - SettingsTab
@@ -233,9 +235,26 @@ class SettingsTab(QWidget):
             else:
                 self.modes_selected.append(False)
         # Calculate the ionic contribution to the permittivity
-        frequencies = wavenumber*np.array(self.frequencies_cm1)
-        volume = self.reader.volume*angstrom*angstrom*angstrom
-        self.epsilon_ionic = Calculator.ionic_permittivity(mode_list, self.oscillator_strengths, frequencies, volume )
+        frequencies_au = wavenumber*np.array(self.frequencies_cm1)
+        volume_au = self.reader.volume*angstrom*angstrom*angstrom
+        self.epsilon_ionic = Calculator.ionic_permittivity(mode_list, self.oscillator_strengths, frequencies_au, volume_au )
+        #
+        # If the reader already has a Dielectric Constant then use this
+        #
+        if self.reader.CrystalPermittivity:
+            self.CrystalPermittivity = self.reader.CrystalPermittivity
+        else:
+            # Otherwise create one from the data that has been read in
+            drude = False
+            drude_plasma_au = 0
+            drude_sigma_au = 0
+            sigmas_au = np.array(self.sigmas_cm1)*wavenumber
+            self.CrystalPermittivity = DielectricFunction('calculate',parameters=(
+                                         mode_list, frequencies_au, sigmas_au, self.oscillator_strengths,
+                                         volume_au, self.epsilon_ionic, drude, drude_plasma_au, drude_sigma_au) )
+        #
+        # Prepare to finish
+        #
         self.output_tw.setRowCount(len(self.sigmas_cm1))
         self.output_tw.setColumnCount(5)
         self.output_tw.setHorizontalHeaderLabels(['   Sigma   \n(cm-1)', ' Frequency \n(cm-1)', '  Intensity  \n(Debye2/Å2/amu)', 'Integrated Molar Absorption\n(L/mole/cm2)', 'Absorption maximum\n(L/mole/cm)'])

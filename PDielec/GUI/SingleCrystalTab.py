@@ -543,8 +543,8 @@ class SingleCrystalTab(QWidget):
         substrateDielectric   = self.settings['Substrate dielectric']
         superstrateDielectricFunction = DielectricFunction(epsType='constant',value=superstrateDielectric).function()
         substrateDielectricFunction   = DielectricFunction(epsType='constant',value=substrateDielectric).function()
-        # The crystal dielectric has already been defined in the PlottingTab
-        crystalDielectricFunction     = self.notebook.plottingTab.CrystalDielectricConstant.function()
+        # The crystal dielectric has already been defined in the SettingsTab
+        crystalPermittivityFunction     = self.notebook.settingsTab.CrystalPermittivity.function()
         for v,vau,dielecv in dielecv_results:
             # Create a dictionary indexed by the frequency in units used by pyGMT
             freq = int(v * speed_light_si * 1e2)
@@ -554,7 +554,7 @@ class SingleCrystalTab(QWidget):
         substrateDepth   = self.settings['Substrate depth']
         substrate        = GTM.Layer(thickness=substrateDepth*1e-6,  epsilon1=substrateDielectricFunction)
         crystalDepth     = self.settings['Crystal depth']
-        crystal          = GTM.Layer(thickness=crystalDepth*1e-6,    epsilon=crystalDielectricFunction)
+        crystal          = GTM.Layer(thickness=crystalDepth*1e-6,    epsilon=crystalPermittivityFunction)
         # Creat the system with the layers 
         system = GTM.System(substrate=substrate, superstrate=superstrate, layers=[crystal])
         # Prepare variables for setting up parameters for parallel call
