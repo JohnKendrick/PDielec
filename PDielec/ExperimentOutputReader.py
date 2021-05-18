@@ -29,6 +29,7 @@ class ExperimentOutputReader(GenericOutputReader):
         GenericOutputReader.__init__(self, names)
         self.type                    = 'Experimental output'
         self._ion_type_index = {}
+        self.CrystalPermittivity = None
         return
 
     def _read_output_files(self):
@@ -38,10 +39,53 @@ class ExperimentOutputReader(GenericOutputReader):
         self.manage['species']      = (re.compile('species'), self._read_species)
         self.manage['fractional']   = (re.compile('unitcell'), self._read_fractional_coordinates)
         self.manage['static']       = (re.compile('static'), self._read_static_dielectric)
+        self.manage['epsinf']       = (re.compile('epsinf'), self._read_static_dielectric)
         self.manage['frequencies']  = (re.compile('frequencies'), self._read_frequencies)
+        self.manage['fpsq']  = (re.compile('fpsq'), self._read_fpsq_model)
         for f in self._outputfiles:
             self._read_output_file(f)
         return
+
+    def _read_fpsq_model(self, line):
+        """
+        Read in the fpsq model parameters
+        There is a seperator between each diagonal contribution to the permittivity
+        For alpha quartz the input looks like this;
+        epsxx 4 # 1.5K Data # A2 Phonon modes
+          360.7     1.5        384.8    1.5
+          497.9     3.1        553.6    2.8
+          773.7     5.4        789.9    6.3
+         1073.0     6.2       1238.7   12.4
+        epsyy 4
+          360.7     1.5        384.8    1.5
+          497.9     3.1        553.6    2.8
+          773.7     5.4        789.9    6.3
+         1073.0     6.2       1238.7   12.4
+        epszz 6 # E Phonon modes
+          391.5     1.5        403.0    1.5
+          454.0     2.6        510.5    1.5
+          695.9     4.9        698.4    4.0
+          797.2     4.8        810.0    4.3
+         1063.7     6.1       1230.7    8.2
+         1157.2     6.2       1154.9    6.1
+         """
+        line = self.file_descriptor.readline().split()
+        diag_eps = []
+        for diag in range(0,3):
+            element = line[0]
+            n = int(line[1])
+            contributions = []
+            for i in range(n):
+                line = self.file_descriptor.readline().split()
+                omega_to = float(line[0])
+                gamma_to = float(line[1])
+                omega_lo = float(line[2])
+                gamma_lo = float(line[3])
+                contributions.append( (omega_to, gamma_to, omega_lo, gamma_lo) )
+            # end for i
+            diags_eps.append(contributions)
+        # end for diag
+        self.CrystalPermittivity = DielectricFunction(type='fpsq', parameters=diag_eps)
 
     def _read_frequencies(self, line):
         nfreq = int(line.split()[1])
