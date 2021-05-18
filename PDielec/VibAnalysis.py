@@ -445,8 +445,8 @@ def readPDielec(ifn):
         scale = 1.1      # Scaling factor for covalent radii
         tolerance  = Opts['tol']  # Tolerance in bonding
         new_cell,natoms,original_atomic_order = cell.calculate_molecular_contents(scale, tolerance, covalent_radii)
-        print('Bonding tolerance',tolerance)
-        print('Number of molecules',len(new_cell.molecules))
+        #jk print('Bonding tolerance',tolerance)
+        #jk print('Number of molecules',len(new_cell.molecules))
         # Reorder the normal mode atoms so that the mass weighted normal modes order 
         # agrees with the ordering in the cell_of_molecules cell
         nmodes,nions,temp = np.shape(normal_modes)
