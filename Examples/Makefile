@@ -1,4 +1,3 @@
-
 test-preader:
 	@$(MAKE) --no-print-directory -C Castep/preader preader-test
 	@$(MAKE) --no-print-directory -C Vasp/preader preader-test
@@ -44,11 +43,28 @@ test-pdgui:
 	@$(MAKE) --no-print-directory -C ATR/AlAs pdgui
 	@$(MAKE) --no-print-directory -C ATR/Na2SO42 pdgui
 
+test-vibanalysis:
+	@$(MAKE) --no-print-directory -C VibAnalysis/AsparticAcid vibanalysis
+	@$(MAKE) --no-print-directory -C VibAnalysis/BaTiO3 vibanalysis
+	@$(MAKE) --no-print-directory -C VibAnalysis/Cocaine vibanalysis
+	@$(MAKE) --no-print-directory -C VibAnalysis/F-Apatite vibanalysis
+	@$(MAKE) --no-print-directory -C VibAnalysis/Isoleucine vibanalysis
+	@$(MAKE) --no-print-directory -C VibAnalysis/Leucine vibanalysis
+
+vibanalysis-regenerate:
+	@$(MAKE) --no-print-directory -C VibAnalysis/AsparticAcid vibanalysis-regenerate
+	@$(MAKE) --no-print-directory -C VibAnalysis/BaTiO3 vibanalysis-regenerate
+	@$(MAKE) --no-print-directory -C VibAnalysis/Cocaine vibanalysis-regenerate
+	@$(MAKE) --no-print-directory -C VibAnalysis/F-Apatite vibanalysis-regenerate
+	@$(MAKE) --no-print-directory -C VibAnalysis/Isoleucine vibanalysis-regenerate
+	@$(MAKE) --no-print-directory -C VibAnalysis/Leucine vibanalysis-regenerate
+
 clean:
 	@echo "Cleaning old results.xlsx files"
 	@find . -name results.xlsx -exec rm -f {} \;
 	@find . -name results.csv -exec rm -f {} \;
 	@find . -name all.cif -exec rm -f {} \;
+	@find . -name \*.nma -exec rm -f {} \;
 
 pdgui-regenerate:
 	@$(MAKE) --no-print-directory -C Castep/Isoleucine pdgui-regenerate
