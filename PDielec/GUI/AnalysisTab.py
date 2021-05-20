@@ -331,6 +331,7 @@ class AnalysisTab(QWidget):
             self.number_of_molecules = nmols
         self.molecules_le.setText('{}'.format(self.number_of_molecules))
         # get the normal modes from the mass weighted ones
+        print('JK:',mass_weighted_normal_modes)
         normal_modes = Calculator.normal_modes(atom_masses, mass_weighted_normal_modes)
         # Reorder the atoms so that the mass weighted normal modes order agrees with the ordering in the cell_of_molecules cell
         nmodes,nions,temp = np.shape(normal_modes)

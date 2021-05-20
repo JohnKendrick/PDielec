@@ -51,7 +51,7 @@ class MainTab(QWidget):
         self.program_cb.addItem('Gulp')
 #        self.program_cb.addItem('Phonopy - QE')
 #        self.program_cb.addItem('Phonopy - Crystal')
-#        self.program_cb.addItem('Experiment')
+        self.program_cb.addItem('Experiment')
         prtext = self.settings['Program'].capitalize()
         qmtext = self.settings['QM program'].capitalize()
         if prtext == 'Qe':
@@ -178,6 +178,8 @@ class MainTab(QWidget):
             sp.writeNextRow(ifreq, col=1, check=1)
 
     def read_output_file(self):
+        print('jk read_output_file')
+        print('jk read_output_file',self.settings['Output file name'])
         if self.settings['Output file name'] == '':
             return
         if not os.path.isfile(self.settings['Output file name']):
@@ -196,14 +198,19 @@ class MainTab(QWidget):
         #switch on debugging in the reader
         #self.reader.debug = self.debug
         self.reader.hessian_symmetrisation = self.settings['Hessian symmetrisation']
-        try:
+        if self.debug:
             self.reader.read_output()
-        except:
-            print('Error in reading output files - program  is ',self.settings['Program'])
-            print('Error in reading output files - filename is ',self.settings['Output file name'])
-            print('Need to choose the file and program properly')
-            QMessageBox.about(self,'Processing output file','Error on reading the output file using read_output(): '+self.settings['Output file name'])
-            return
+        else:
+            try:
+                self.reader.read_output()
+            except:
+                print('Error in reading output files - program  is ',self.settings['Program'])
+                print('Error in reading output files - filename is ',self.settings['Output file name'])
+                print('Need to choose the file and program properly')
+                QMessageBox.about(self,'Processing output file','Error on reading the output file using read_output(): '+self.settings['Output file name'])
+                return
+            # end try
+        # end if debug
         if len(self.reader.unit_cells) == 0:
             print('Error in reading output files - program  is ',self.settings['Program'])
             print('Error in reading output files - filename is ',self.settings['Output file name'])
@@ -308,7 +315,7 @@ class MainTab(QWidget):
         # Open a file chooser
         #options = QFileDialog.Options()
         #options |= QFileDialog.DontUseNativeDialog
-        filename, _ = QFileDialog.getOpenFileName(self,'Open MM/QM Output file','','Castep (*.castep);;Abinit (*.out);;Gulp (*.gout);;VASP (OUTCAR*);; QE (*.dynG);; Crystal 14 (*.out);; Phonopy (OUTCAR*);; All Files (*)')
+        filename, _ = QFileDialog.getOpenFileName(self,'Open MM/QM Output file','','Castep (*.castep);;Abinit (*.out);;Gulp (*.gout);;VASP (OUTCAR*);; QE (*.dynG);; Crystal 14 (*.out);; Phonopy (OUTCAR*);; Experiment (*.exp);; All Files (*)')
         if filename != '':
             self.settings['Output file name'] = filename
             self.file_le.setText(self.settings['Output file name'])

@@ -75,6 +75,7 @@ class GenericOutputReader:
         self.original_born_charges      = None
         self.original_born_charges_are_being_used = True
         self.CrystalPermittivity        = None
+        self.oscillator_strengths       = None
         return
 
     def read_output(self):

@@ -28,25 +28,15 @@ from PDielec.Constants import wavenumber
 
 class DielectricFunction:
     """Provide an interface to different dielectric functions"""
-    possible_epsTypes = ['constant','file','interpolate','calculate','fpsq']
+    possible_epsTypes = ['constant','file','interpolate','dft','fpsq']
     possible_units = ['cm-1','microns','mu','nm','thz','hz']
-    def __init__(self, epsType=None, value=None, filename=None, parameters=None, values=None, units='cm-1' ):
+    def __init__(self, epsType=None, volume=None, filename=None, parameters=None, units='cm-1' ):
         """
         Create a dielectricFunction
         epsType      - specifies the type of function
-        value      - used for a fixed constant value (can be real, complex or tensor)
         filename   - used to read an experimental or calculated dielectric constant tensor
         parameters - used to calculate a dielectric constant from DFT calculations
-                     mode_list,
-                     mode_frequencies,           (au)
-                     mode_sigmas,                (au)
-                     mode_oscillator_strengths,  (au)
-                     crystal_volume,             (au)
-                     epsilon_inf,
-                     drude,                      (true or false)
-                     drude_plasma,               (au)
-                     drude_sigma                 (au)
-        values     - used to set up an interpolation for the dielectric
+        volume     - volume in angstrom
         """
         if  epsType not in self.possible_epsTypes:
             print('Catastrophic error in DielectricFunction: type not recognised', epsType)
@@ -55,21 +45,26 @@ class DielectricFunction:
             print('Catastrophic error in DielectricFunction: units not recognised', units)
             exit()
         self.epsType              = epsType
-        self.value                = value
         self.filename             = filename
         self.parameters           = parameters
         self.frequency_units      = units
-        self.interpolation_values = values
+        self.epsilon_infinity     = None
+        self.volume_angs          = volume
         if epsType == 'file':
             self.readFile()
-        elif epsType == 'interpolate':
-            self.setupInterpolation()
-        elif epsType == 'calculate':
-            self.setupParameters()
-        elif epsType == 'fpsq':
-            self.setupFpsq()
+
+    def setVolume(self,vol):
+        """Set the volume for dielectric calculations"""
+        self.volume_angs     = vol
+        return
+
+    def setEpsilonInfinity(self,eps):
+        """ Set epsilon infinity for dielectric calculations"""
+        self.epsilon_infinity     = eps
+        return
 
     def function(self):
+        """Return the function to report the dielectric"""
         return  self.calculate
 
     def readFile(self):
@@ -79,28 +74,6 @@ class DielectricFunction:
         print('Reading file ',self.filename)
         exit()
         return
-
-    def setupFpsq(self):
-        """
-        Setup a fpsq model for the permittivity
-        """
-        #jk print('Setting up fpsq ',self.parameters)
-        return
-    def setupParameters(self):
-        """
-        Read a dielectric function from a file
-        """
-        #jk print('Setting up parameters ',self.parameters)
-        return
-
-    def setupInterpolate(self):
-        """
-        Interpolate a dielectric function from data
-        """
-        print('Setting up interpolation ',self.interpolation_values)
-        exit()
-        return
-
     def convert(self, f, units='cm-1'):
         """
         Convert frequency units to cm-1
@@ -128,13 +101,17 @@ class DielectricFunction:
             print('Error in DielectricFunction type is not set')
             exit()
         elif self.epsType == 'constant':
-            return self.value
+            return self.parameters
         elif self.epsType == 'filename':
             return  self.epsFromFile(frequency_cm1)
         elif self.epsType == 'interpolation':
             return  self.epsFromInterpolation(frequency_cm1)
-        elif self.epsType == 'calculate':
-            return  self.epsFromParameters(frequency_cm1)
+        elif self.epsType == 'dft':
+            return  self.epsFromDFT(frequency_cm1)
+        elif self.epsType == 'lorentz':
+            return  self.epsFromLorentz(frequency_cm1)
+        elif self.epsType == 'fpsq':
+            return  self.epsFromFpsq(frequency_cm1)
         else:
             print('Error in DielectricFunction type is not recognised: ', self.epsType)
             exit()
@@ -154,9 +131,20 @@ class DielectricFunction:
         print('epsFromInterpolation: ',f)
         return
 
-    def epsFromParameters(self, f):
+    def epsFromDFT(self, f):
         """
         Calculate the dielectric constant from DFT parameters
+        Used internally by the code as it expects input parameters to be in atomic units
+        parameter is a list of the following
+                     mode_list,
+                     mode_frequencies,           (au)
+                     mode_sigmas,                (au)
+                     mode_oscillator_strengths,  (au)
+                     crystal_volume,             (au)
+                     epsilon_inf,
+                     drude,                      (true or false)
+                     drude_plasma,               (au)
+                     drude_sigma                 (au)
         """
         mode_list, mode_frequencies, mode_sigmas, mode_oscillator_strengths, crystal_volume, epsilon_inf, drude, drude_plasma, drude_sigma = self.parameters
         v_cm1 = self.convert(f,self.frequency_units)
@@ -165,6 +153,34 @@ class DielectricFunction:
         if drude:
             eps = eps + self.dielectricContributionFromDrude(vau, drude_plasma, drude_sigma, crystal_volume)
         return eps + epsilon_inf
+
+    def epsFromIsoLorentz(self, f):
+        """
+        Setup a Lorentz model for the permittivity for an isotropic system
+        """
+        f_cm1 = self.convert(f,self.frequency_units)
+        f_au  = wavenumber*f_cm1
+        eps = np.zeros((3, 3), dtype=complex)
+        for mode in self.parameters:
+            v_cm, strength, sigma_cm = mode
+            v_au     = v_cm * wavenuumber
+            sigma_au = sigmas_cm * wavenumber
+            eps += dielectric + strength / np.complex((v_au*v_au - f_au*f_au), -sigma_au*f_au)
+        return eps * (4.0*np.pi/volume) + self.epsilon_infinity
+
+    def epsFromFpsq(self, f):
+        """
+        Setup a fpsq model for the permittivity
+        """
+        #jk print('Setting up fpsq ',self.parameters)
+        f_cm1 = self.convert(f,self.frequency_units)
+        f_au  = wavenumber*f_cm1
+        eps = self.epsilon_infinity
+        for xyz,contribution in enumerate(self.parameters):
+            for omega_to, gamma_to, omega_lo, gamma_lo  in parameters:
+                eps[xyz] *= (omega_to**2 - f_cm1**2 - np.complex(0,gamm_lo)*f_cm1)/(omega_to**2 - f_cm1**2 - np.complex(0,gamm_lo)*f_cm1)
+        return eps 
+
 
     def dielectriContributionsFromDrude(self, f, frequency, sigma, volume):
         """Calculate the dielectric function for a set of a Drude oscillator

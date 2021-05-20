@@ -20,6 +20,7 @@ import numpy as np
 from PDielec.UnitCell import UnitCell
 from PDielec.GenericOutputReader import GenericOutputReader
 from PDielec.Calculator          import initialise_diagonal_tensor
+from PDielec.DielectricFunction  import DielectricFunction
 
 
 class ExperimentOutputReader(GenericOutputReader):
@@ -30,20 +31,74 @@ class ExperimentOutputReader(GenericOutputReader):
         self.type                    = 'Experimental output'
         self._ion_type_index = {}
         self.CrystalPermittivity = None
+        self.zerof_optical_dielectric = None
+        self.oscillator_strengths = None
+        self.frequencies = None
         return
 
     def _read_output_files(self):
         """Read the Experiment files in the directory"""
         self.manage = {}   # Empty the dictionary matching phrases
-        self.manage['lattice']      = (re.compile('lattice'), self._read_lattice_vectors)
-        self.manage['species']      = (re.compile('species'), self._read_species)
-        self.manage['fractional']   = (re.compile('unitcell'), self._read_fractional_coordinates)
-        self.manage['static']       = (re.compile('static'), self._read_static_dielectric)
-        self.manage['epsinf']       = (re.compile('epsinf'), self._read_static_dielectric)
-        self.manage['frequencies']  = (re.compile('frequencies'), self._read_frequencies)
-        self.manage['fpsq']  = (re.compile('fpsq'), self._read_fpsq_model)
+        self.manage['lattice']      = (re.compile('lattice'),    self._read_lattice_vectors)
+        self.manage['species']      = (re.compile('species'),    self._read_species)
+        self.manage['fractional']   = (re.compile('unitcell'),   self._read_fractional_coordinates)
+        self.manage['static']       = (re.compile('static'),     self._read_static_dielectric)
+        self.manage['epsinf']       = (re.compile('epsinf'),     self._read_static_dielectric)
+        self.manage['fpsq']         = (re.compile('fpsq'),       self._read_fpsq_model)
+        self.manage['isolorentz']   = (re.compile('isolorentz'), self._read_isolorentz_model)
+        self.manage['constant']     = (re.compile('constant'),   self._read_constant_model)
         for f in self._outputfiles:
             self._read_output_file(f)
+        return
+
+    def _read_constant_model(self, line):
+        """
+        Read in a full constant dielectric tensor 3 values on each line
+        """
+        od = []
+        line = self.file_descriptor.readline()
+        od.append([complex(f) for f in line.split()[0:3]])
+        line = self.file_descriptor.readline()
+        od.append([complex(f) for f in line.split()[0:3]])
+        line = self.file_descriptor.readline()
+        od.append([complex(f) for f in line.split()[0:3]])
+        # If we have complex input return a complex list, otherwise return a real list
+        odc = np.array(od,dtype=complex)
+        odi = np.absolute(np.imag(odc))
+        sumi = np.sum(odi)
+        if sumi < 1.0e-12:
+            odc = np.real(odc)
+        parameters = odc.tolist()
+        self.CrystalPermittivity = DielectricFunction('constant',parameters=parameters)
+        if self.zerof_optical_dielectric:
+            self.CrystalPermittivity.setEpsilonInfinity(self.zerof_optical_dielectric)
+        if self.volume:
+            self.CrystalPermittivity.setVolume(self.volume)
+        return
+
+    def _read_isolorentz_model(self, line):
+        """
+        Read in the isotropic lorentz model parameters
+        A simple example 2 oscillator model is given below
+        Units are in cm-1 except for the oscillator strengths which is a.u.
+        isolorentz 2
+        100.0  200.0  10.0
+        500.0 1000.0  10.0
+        """
+        nterms = int(line.split()[1])
+        parameters = []
+        for i in range(nterms):
+            line = self.file_descriptor.readline()
+            frequency_cm = (float(line.split()[0]))
+            strength = float(line.split()[1])
+            sigma_cm = float(line.split()[1])
+            oscillator_strengths = initialise_diagonal_tensor( [strength, strength, strength] ) 
+            parameters.append(frequency_cm, oscillator_strengths, sigma_cm)
+        self.CrystalPermittivity = DielectricFunction('isolorentz',parameters=parameters)
+        if self.zerof_optical_dielectric:
+            self.CrystalPermittivity.setEpsilonInfinity(self.zerof_optical_dielectric)
+        if self.volume:
+            self.CrystalPermittivity.setVolume(self.volume)
         return
 
     def _read_fpsq_model(self, line):
@@ -85,7 +140,12 @@ class ExperimentOutputReader(GenericOutputReader):
             # end for i
             diags_eps.append(contributions)
         # end for diag
+        # Create a dielectric function for use in calculations
         self.CrystalPermittivity = DielectricFunction(type='fpsq', parameters=diag_eps)
+        if self.zerof_optical_dielectric:
+            self.CrystalPermittivity.setEpsilonInfinity(self.zerof_optical_dielectric)
+        if self.volume:
+            self.CrystalPermittivity.setVolume(self.volume)
 
     def _read_frequencies(self, line):
         nfreq = int(line.split()[1])
@@ -112,7 +172,8 @@ class ExperimentOutputReader(GenericOutputReader):
         return
 
     def _read_lattice_vectors(self, line):
-        scalar = float(line.split()[1])
+        line = self.file_descriptor.readline()
+        scalar = float(line.split()[0])
         line = self.file_descriptor.readline()
         avector = [scalar*float(line.split()[0]), scalar*float(line.split()[1]), scalar*float(line.split()[2])]
         line = self.file_descriptor.readline()
@@ -123,6 +184,8 @@ class ExperimentOutputReader(GenericOutputReader):
         self.unit_cells.append(cell)
         self.ncells = len(self.unit_cells)
         self.volume = cell.volume
+        if self.CrystalPermittivity:
+            self.CrystalPermittivity.setVolume(self.volume)
         return
 
     def _read_fractional_coordinates(self, line):
@@ -143,26 +206,33 @@ class ExperimentOutputReader(GenericOutputReader):
             self.masses.append(self.masses_per_type[index])
         self.unit_cells[-1].set_fractional_coordinates(ions)
         self.unit_cells[-1].set_element_names(species_list)
+        if self.oscillator_strengths == None:
+            self.oscillator_strengths = np.zeros( (3*self.nions,3,3) )
+        if self.frequencies == None:
+            self.frequencies = np.zeros( (3*self.nions) )
         return
 
     def _read_static_dielectric(self, line):
         # the is epsilon infinity
         od = []
         line = self.file_descriptor.readline()
-        od.append([complex(f) for f in line.split()[0:3]])
+        od.append([np.complex(f) for f in line.split()[0:3]])
         line = self.file_descriptor.readline()
-        od.append([complex(f) for f in line.split()[0:3]])
+        od.append([np.complex(f) for f in line.split()[0:3]])
         line = self.file_descriptor.readline()
-        od.append([complex(f) for f in line.split()[0:3]])
+        od.append([np.complex(f) for f in line.split()[0:3]])
         # If we have complex input return a complex list, otherwise return a real list
-        odc = np.array(od)
+        odc = np.array(od,dtype=complex)
         odi = np.absolute(np.imag(odc))
         sumi = np.sum(odi)
         if sumi < 1.0e-12:
             odc = np.real(odc)
         self.zerof_optical_dielectric = odc.tolist()
+        if self.CrystalPermittivity:
+            self.CrystalPermittivity.setEpsilonInfinity(self.zerof_optical_dielectric)
         return
 
     def calculate_mass_weighted_normal_modes(self):
         print("Calculate mass weighted normal modes is not needed")
-        return []
+        self.mass_weighted_normal_modes = np.zeros( (3*self.nions,self.nions,3) )
+        return self.mass_weighted_normal_modes

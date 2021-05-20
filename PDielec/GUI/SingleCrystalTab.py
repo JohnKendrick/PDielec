@@ -485,8 +485,8 @@ class SingleCrystalTab(QWidget):
         # The dielectric variables are functions of frequency
         superstrateDielectric = self.settings['Superstrate dielectric']
         substrateDielectric   = self.settings['Substrate dielectric']
-        superstrateDielectricFunction = DielectricFunction(epsType='constant',value=superstrateDielectric).function()
-        substrateDielectricFunction   = DielectricFunction(epsType='constant',value=substrateDielectric).function()
+        superstrateDielectricFunction = DielectricFunction(epsType='constant',parameters=superstrateDielectric).function()
+        substrateDielectricFunction   = DielectricFunction(epsType='constant',parameters=substrateDielectric).function()
         # The crystal dielectric has already been defined in the SettingsTab
         crystalPermittivityFunction     = self.notebook.settingsTab.CrystalPermittivity.function()
         # Create 3 layers, thickness is converted from microns to metres

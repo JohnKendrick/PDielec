@@ -207,9 +207,6 @@ class SettingsTab(QWidget):
         self.mass_weighted_normal_modes = self.reader.calculate_mass_weighted_normal_modes()
         # convert cm-1 to au
         self.frequencies_cm1 = self.reader.frequencies
-        # work out the degeneraceies
-        self.degenerate_lists = {}
-#        #
         frequencies = np.array(self.frequencies_cm1) * wavenumber
         if len(self.sigmas_cm1) == 0:
             self.sigmas_cm1 = [ self.settings['Sigma value'] for i in self.frequencies_cm1 ]
@@ -251,7 +248,7 @@ class SettingsTab(QWidget):
             drude_plasma_au = 0
             drude_sigma_au = 0
             sigmas_au = np.array(self.sigmas_cm1)*wavenumber
-            self.CrystalPermittivity = DielectricFunction('calculate',parameters=(
+            self.CrystalPermittivity = DielectricFunction('dft',parameters=(
                                          mode_list, frequencies_au, sigmas_au, self.oscillator_strengths,
                                          volume_au, epsilon_inf, drude, drude_plasma_au, drude_sigma_au) )
         #
@@ -307,8 +304,6 @@ class SettingsTab(QWidget):
 
     def redraw_output_tw(self):
         # If the frequencies haven't been set yet just don't try to do anything
-        if not self.frequencies_cm1:
-            return
         self.output_tw.blockSignals(True)
         for i,(f,sigma,intensity) in enumerate(zip(self.frequencies_cm1, self.sigmas_cm1, self.intensities)):
             # Sigma and check / unchecked column
