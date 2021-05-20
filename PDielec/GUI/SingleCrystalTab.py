@@ -383,13 +383,6 @@ class SingleCrystalTab(QWidget):
         self.vmin_sb.setValue(self.settings['Minimum frequency'])
         self.vmax_sb.setValue(self.settings['Maximum frequency'])
         self.vinc_sb.setValue(self.settings['Frequency increment'])
-        #jktry:
-        #jk    self.molar_cb_current_index = self.molar_definitions.index(self.settings["Molar definition"])
-        #jkexcept:
-        #jk    self.molar_cb_current_index = 0
-        #jk    self.settings["Molar definition"] = self.molar_definitions[self.molar_cb_current_index]
-        #jkself.molar_cb.setCurrentIndex(self.molar_cb_current_index)
-        #jkself.natoms_sb.setValue(self.settings['Number of atoms'])
         self.title_le.setText(self.settings['Plot title'])
         # Refresh the widgets that depend on the reader
         self.reader = self.notebook.reader
@@ -479,63 +472,14 @@ class SingleCrystalTab(QWidget):
         frequencies = np.array(frequencies_cm1) * wavenumber
         oscillator_strengths = self.notebook.settingsTab.oscillator_strengths
         volume = reader.volume*angstrom*angstrom*angstrom
+        self.scenarios = self.notebook.scenarios
+        # Get the last unit cell in the reader
+        cell = reader.unit_cells[-1]
+        # Calculate frequency range
         vmin = self.settings['Minimum frequency']
         vmax = self.settings['Maximum frequency']
         vinc = self.settings['Frequency increment']
-        self.scenarios = self.notebook.scenarios
-        mode_list = []
-        drude_sigma = 0
-        drude_plasma = 0
-        drude = False
-        for mode_index,selected in enumerate(modes_selected):
-            if selected:
-                mode_list.append(mode_index)
-        #
-        # Calculate the ionic permittivity at zero frequency
-        #
-        cell = reader.unit_cells[-1]
-        self.legends = []
-        # Set up parameters for the parallel execution
-        call_parameters = []
-        for v in np.arange(float(vmin), float(vmax)+0.5*float(vinc), float(vinc)):
-            vau = v * wavenumber
-            call_parameters.append( (v, vau, mode_list, frequencies, sigmas, oscillator_strengths,
-                                     volume, epsilon_inf, drude, drude_plasma, drude_sigma) )
-
-        # Initialise the progress bare
-        maximum_progress = len(call_parameters) * (1 + len(self.scenarios))
-        progress = 0
-        self.progressbar.setMaximum(maximum_progress)
-        if self.notebook.progressbar is not None:
-            self.notebook.progressbar.setMaximum(maximum_progress)
-        QCoreApplication.processEvents()
-        number_of_processors = self.notebook.ncpus
-        # Switch off mkl threading
-        try:
-            import mkl
-            mkl.set_num_threads(1)
-        except:
-            pass
-        #jk start = time.time()
-        if self.notebook.threading:
-            from multiprocess.dummy import Pool
-            pool = Pool(number_of_processors)
-        else:
-            from multiprocess import Pool
-            pool = Pool(number_of_processors, initializer=set_affinity_on_worker, maxtasksperchild=10)
-        # start parallel execution of dielectric constant
-        dielecv_results = []
-        for result in pool.imap(Calculator.parallel_dielectric, call_parameters,chunksize=40):
-            dielecv_results.append(result)
-            progress += 1
-            self.progressbar.setValue(progress)
-            if self.notebook.progressbar is not None:
-                self.notebook.progressbar.setValue(progress)
-        pool.close()
-        pool.join()
-        QCoreApplication.processEvents()
-        #jk print('Dielec calculation duration ', time.time()-start)
-        nplots = len(dielecv_results)
+        vs = np.arange(float(vmin), float(vmax)+0.5*float(vinc), float(vinc))
         # Set up the layered system using GTM calls
         S = GTM.System()
         # The dielectric variables are functions of frequency
@@ -545,9 +489,6 @@ class SingleCrystalTab(QWidget):
         substrateDielectricFunction   = DielectricFunction(epsType='constant',value=substrateDielectric).function()
         # The crystal dielectric has already been defined in the SettingsTab
         crystalPermittivityFunction     = self.notebook.settingsTab.CrystalPermittivity.function()
-        for v,vau,dielecv in dielecv_results:
-            # Create a dictionary indexed by the frequency in units used by pyGMT
-            freq = int(v * speed_light_si * 1e2)
         # Create 3 layers, thickness is converted from microns to metres
         superstrateDepth = self.settings['Superstrate depth']
         superstrate      = GTM.Layer(thickness=superstrateDepth*1e-6,epsilon1=superstrateDielectricFunction)
@@ -580,6 +521,7 @@ class SingleCrystalTab(QWidget):
         for layer in system.layers:
             layer.set_euler(theta=euler_theta, phi=euler_phi, psi=euler_psi)
         # Prepare parallel processing options
+        number_of_processors = self.notebook.ncpus
         if self.notebook.threading:
             from multiprocess.dummy import Pool
             pool = Pool(number_of_processors)
@@ -589,15 +531,14 @@ class SingleCrystalTab(QWidget):
         #
         # Prepare parameters for a parallel call to the layered absorption / reflection
         #
-        nplot = 0
         call_parameters = []
         # Assemble all the parameters we need for parallel execution
         # About to call
         results = []
-        for v,vau,dielecv in dielecv_results:
+        progress = 0
+        for v in vs:
             data = ''
             call_parameters.append( (v, angleOfIncidence, system) )
-            #jk nplot += 1
             #jk results.append( Calculator.solve_single_crystal_equations( (v, angleOfIncidence, system) ) )
         for result in pool.imap(Calculator.solve_single_crystal_equations, call_parameters, chunksize=40):
             results.append(result)
@@ -613,15 +554,6 @@ class SingleCrystalTab(QWidget):
         self.p_transmission = []
         self.s_transmission = []
         for v,r,R,t,T in results:
-            # print ('Frequency ',v)
-            # print ('R[0] ',R[0])
-            # print ('R[1] ',R[1])
-            # print ('T[0] ',T[0])
-            # print ('T[1] ',T[1])
-            # print ('r[0] ',r[0])
-            # print ('r[1] ',r[1])
-            # print ('t[0] ',t[0])
-            # print ('t[1] ',t[1])
             self.xaxis.append(v)
             self.p_reflectivity.append(R[0])
             self.s_reflectivity.append(R[1])
@@ -638,9 +570,6 @@ class SingleCrystalTab(QWidget):
             mkl.set_num_threads(number_of_processors)
         except:
             pass
-        #jk print('Dielec calculation duration ', time.time()-start)
-        #if self.notebook.spreadsheet is not None:
-        #    self.write_spreadsheet()
         self.dirty = False
         QApplication.restoreOverrideCursor()
         QCoreApplication.processEvents()

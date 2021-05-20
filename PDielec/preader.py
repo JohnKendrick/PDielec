@@ -5,6 +5,7 @@ import numpy as np
 import os, sys
 import psutil
 from PDielec.Constants import amu, wavenumber, angstrom, isotope_masses, average_masses
+from PDielec.DielectricFunction import DielectricFunction
 from multiprocess import Pool
 import dill as pickle
 import PDielec.Calculator as Calculator
@@ -35,6 +36,7 @@ def read_a_file( calling_parameters):
     mode_list = []
     ignore_modes = []
     sigmas = []
+    epsinf = np.array(reader.zerof_optical_dielectric)
     if not no_calculation:
         # apply the eckart conditions before we change the masses
         reader.eckart = eckart
@@ -117,7 +119,8 @@ def read_a_file( calling_parameters):
                     mode_list.remove(mode)
             # end loop over modes to be ignored
         # end of if ignore_modes
-        ionicv = Calculator.dielectric_contribution(0.0, mode_list, modified_frequencies*wavenumber, sigmas, oscillator_strengths, volume)
+        crystalPermittivity = DielectricFunction('calculate', parameters=(mode_list, modified_frequencies*wavenumber, sigmas, oscillator_strengths, volume, epsinf, False, 0.0, 0.0) )
+        ionicv = crystalPermittivity.calculate(0.0) - epsinf
     # absorption units here are L/mole/cm-1
     # Continue reading any data from the output file
     frequencies_cm1.sort()
@@ -127,7 +130,6 @@ def read_a_file( calling_parameters):
         eps0 = np.real(ionicv)
     else:
         eps0   = np.array(reader.zerof_static_dielectric)
-    epsinf = np.array(reader.zerof_optical_dielectric)
     eps0_xx = str(eps0[0,0])
     eps0_yy = str(eps0[1,1])
     eps0_zz = str(eps0[2,2])

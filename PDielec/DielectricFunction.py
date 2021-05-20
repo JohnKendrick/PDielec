@@ -178,7 +178,7 @@ class DielectricFunction:
         if f <= 1.0e-8:
             f = 1.0e-8
         # Assume that the drude contribution is isotropic
-        dielectric = dielectric - unit * frequency*frequency / np.complex(-f*f, +sigma*f)
+        dielectric = dielectric - unit * frequency*frequency / np.complex(-f*f, -sigma*f)
         return dielectric * (4.0*np.pi/volume)
 
 
@@ -194,7 +194,7 @@ class DielectricFunction:
             v = frequencies[mode]
             sigma = sigmas[mode]
             strength = strengths[mode].astype(complex)
-            dielectric = dielectric + strength / np.complex((v*v - f*f), +sigma*f)
+            dielectric = dielectric + strength / np.complex((v*v - f*f), -sigma*f)
         return dielectric * (4.0*np.pi/volume)
 
 

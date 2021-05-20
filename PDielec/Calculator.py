@@ -410,34 +410,6 @@ def absorption_from_mode_intensities(f, modes, frequencies, sigmas, intensities)
         absorption = absorption + 2.0 * 4225.6 * icastep / PI * (sigma / (4.0 * (f - v)*(f - v) + sigma*sigma))
     return absorption
 
-def dielectric_contribution(f, modes, frequencies, sigmas, strengths, volume):
-    """Calculate the dielectric function for a set of modes with their own widths and strengths
-       f is the frequency of the dielectric response in au
-       modes are a list of the modes
-       frequencies(au), sigmas(au) and strengths(au) are fairly obvious
-       The output from this calculation is a complex dielectric tensor"""
-    dielectric = np.zeros((3, 3), dtype=complex)
-    for mode in modes:
-        v = frequencies[mode]
-        sigma = sigmas[mode]
-        strength = strengths[mode].astype(complex)
-        dielectric = dielectric + strength / np.complex((v*v - f*f), -sigma*f)
-    return dielectric * (4.0*PI/volume)
-
-def drude_contribution(f, frequency, sigma, volume):
-    """Calculate the dielectric function for a set of a Drude oscillator
-       f is the frequency of the dielectric response in au
-       frequency(au), sigmas(au) are the plasma frequency and the width
-       The output from this calculation is a complex dielectric tensor"""
-    dielectric = np.zeros((3, 3), dtype=complex)
-    unit = initialise_unit_tensor()
-    # Avoid a divide by zero if f is small
-    if f <= 1.0e-8:
-        f = 1.0e-8
-    # Assume that the drude contribution is isotropic
-    dielectric = dielectric - unit * frequency*frequency / np.complex(-f*f, -sigma*f)
-    return dielectric * (4.0*PI/volume)
-
 def calculate_size_factor (x):
     """
     Calculate a size effect using Equations 10.38 and 10.39 in Sihvola
@@ -1119,20 +1091,6 @@ def direction_from_shape(data, reader):
     # else:
     #    print("The miller direction ", original, "is ", direction, "in xyz")
     return direction
-
-def parallel_dielectric(call_parameters):
-    # Call_parameters is a tuple
-    v, vau, mode_list, frequencies, sigmas, oscillator_strengths, volume, epsilon_inf, drude, drude_plasma, drude_sigma = call_parameters
-    # loop over all modes and calculate the contribution to the dielectric
-    ionicv = dielectric_contribution(vau, mode_list, frequencies, sigmas, oscillator_strengths, volume)
-    if drude:
-        ionicv = ionicv + drude_contribution(vau, drude_plasma, drude_sigma, volume)
-    # absorption units here are L/mole/cm-1
-    # molar_absorption_coefficient_from_mode_intensities_Lpmolpcm = absorption_from_mode_intensities(v, mode_list, frequencies_cm1, sigmas_cm1, intensities)
-    # Now the units are cm-1
-    # absorption_coefficient_from_mode_intensities_pcm = concentration * molar_absorption_coefficient_from_mode_intensities_Lpmolpcm
-    dielecv = ionicv + epsilon_inf
-    return v, vau, dielecv
 
 def solve_effective_medium_equations( call_parameters ):
     # call_parameters is a tuple

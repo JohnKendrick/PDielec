@@ -398,10 +398,7 @@ class PlottingTab(QWidget):
         self.CrystalPermittivity = self.notebook.settingsTab.CrystalPermittivity
         dielectricFunction = self.CrystalPermittivity.function()
         # Assemble a list of frequencies which will be used in the function call
-        vs_cm1 = []
-        for v_cm1 in np.arange(float(vmin), float(vmax)+0.5*float(vinc), float(vinc)):
-            vs_cm1.append(v_cm1)
-            v_au = v_cm1 * wavenumber
+        vs_cm1 = np.arange(float(vmin), float(vmax)+0.5*float(vinc), float(vinc))
         # Initialise the progress indicator
         maximum_progress = len(vs_cm1) * (1 + len(self.scenarios))
         progress = 0
