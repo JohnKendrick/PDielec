@@ -463,7 +463,8 @@ class Layer:
         kt = 0
         kr = 0;
         ## sort berremann qi's according to (12)
-        if any(np.abs(np.imag(qsunsorted))):
+        ##JK small modification to fix problems when qs are nearly real
+        if any(np.abs(np.imag(qsunsorted))>1.0E-8):
             for km in range(0,4):
                 if np.imag(qsunsorted[km])>=0 :
                     transmode[kt] = km
