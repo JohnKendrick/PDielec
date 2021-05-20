@@ -1,0 +1,9 @@
+phonon.scf.in   Input to a single point SCF at the optimised geometry
+phonon.ph.in    This is a phonon calculation using the wavefunction from the run above
+phonon.log      This is the log of the output files from the SCF and Phonon calculations
+phonon.dynG    This is the dynamical matrix from the phonon calculation
+
+phonon.dynG is used by PDielec to generate the absorption spectrum.
+
+There are two examples in the test given here.  The second test exposes a bug in the output of PWSCF for this calculation.
+The output indicates that the mass of Cl is 1.0.  Running the second examples uses isotopic molecular weights and corrects the error.

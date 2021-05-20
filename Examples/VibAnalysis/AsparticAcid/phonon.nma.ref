@@ -1,0 +1,965 @@
+###############################################################
+#                                                             #
+#   vibAnalysis - version 1.2.2                               #
+#   A set of tools to analyse vibrational modes in terms of   #
+#   localized internal coordinates.                           #
+#                                                             #
+#   (c) Filipe Teixeira, 2017-2019                            #
+#   filipe _dot_ teixeira _at_ fc _dot_ up _dot_ pt           #
+#                                                             #
+###############################################################
+
+Opening using PDielec library : phonon.castep
+
+
+Mass-weighting the atomic displacements...
+
+
+Generating Internal Coordinates...
+Internal Coordinates Generated: 88
+
+This is the list of Internal Coordinates generated for
+this run. Please use these indexes if you whish to animate
+any one of these coordinates. If you added some user-defined
+coordinates, please be sure to re-run this program with the
+same added coordinates.
+
+
+List of Internal Coordinates and their values
+    1 BOND H1 O2                   1.052
+    2 BOND O2 C3                   1.298
+    3 BOND C3 C4                   1.500
+    4 BOND C3 O5                   1.210
+    5 BOND C4 C6                   1.514
+    6 BOND C4 H7                   1.091
+    7 BOND C4 H8                   1.087
+    8 BOND C6 C9                   1.529
+    9 BOND C6 H10                  1.086
+   10 BOND C6 N11                  1.485
+   11 BOND C9 O15                  1.245
+   12 BOND C9 O16                  1.240
+   13 BOND N11 H12                 1.049
+   14 BOND N11 H13                 1.049
+   15 BOND N11 H14                 1.044
+   16 BOND H17 O18                 1.052
+   17 BOND O18 C19                 1.298
+   18 BOND C19 C20                 1.500
+   19 BOND C19 O21                 1.210
+   20 BOND C20 H22                 1.091
+   21 BOND C20 H23                 1.087
+   22 BOND C20 C24                 1.514
+   23 BOND C24 H25                 1.086
+   24 BOND C24 C26                 1.529
+   25 BOND C24 N27                 1.485
+   26 BOND C26 O31                 1.245
+   27 BOND C26 O32                 1.240
+   28 BOND N27 H28                 1.049
+   29 BOND N27 H29                 1.049
+   30 BOND N27 H30                 1.044
+   31 ANGLE H1 O2 C3             112.852
+   32 ANGLE O2 C3 C4             113.781
+   33 ANGLE O2 C3 O5             125.050
+   34 ANGLE C3 C4 C6             116.093
+   35 ANGLE C3 C4 H7             106.208
+   36 ANGLE C3 C4 H8             107.622
+   37 ANGLE C4 C6 C9             108.571
+   38 ANGLE C4 C6 H10            109.783
+   39 ANGLE C4 C6 N11            111.724
+   40 ANGLE C6 C9 O15            116.140
+   41 ANGLE C6 C9 O16            117.153
+   42 ANGLE C6 N11 H12           109.888
+   43 ANGLE C6 N11 H13           112.720
+   44 ANGLE C6 N11 H14           110.063
+   45 ANGLE H17 O18 C19          112.852
+   46 ANGLE O18 C19 C20          113.781
+   47 ANGLE O18 C19 O21          125.050
+   48 ANGLE C19 C20 H22          106.208
+   49 ANGLE C19 C20 H23          107.622
+   50 ANGLE C19 C20 C24          116.093
+   51 ANGLE C20 C24 H25          109.783
+   52 ANGLE C20 C24 C26          108.571
+   53 ANGLE C20 C24 N27          111.724
+   54 ANGLE C24 C26 O31          116.140
+   55 ANGLE C24 C26 O32          117.153
+   56 ANGLE C24 N27 H28          112.720
+   57 ANGLE C24 N27 H29          109.888
+   58 ANGLE C24 N27 H30          110.063
+   59 OUT O2 C3 C4 O5            182.365
+   60 OUT C6 C9 O15 O16          177.359
+   61 OUT O18 C19 C20 O21        182.365
+   62 OUT C24 C26 O31 O32        177.359
+   63 TORSION H1 O2 C3 C4        180.514
+   64 TORSION H1 O2 C3 O5          2.986
+   65 TORSION O2 C3 C4 C6         54.563
+   66 TORSION O2 C3 C4 H7        295.564
+   67 TORSION O2 C3 C4 H8        179.894
+   68 TORSION C3 C4 C6 C9        183.279
+   69 TORSION C3 C4 C6 H10       302.419
+   70 TORSION C3 C4 C6 N11        62.016
+   71 TORSION C4 C6 C9 O15       274.690
+   72 TORSION C4 C6 C9 O16        92.309
+   73 TORSION C4 C6 N11 H12      172.325
+   74 TORSION C4 C6 N11 H13      291.294
+   75 TORSION C4 C6 N11 H14       51.513
+   76 TORSION H17 O18 C19 C20    180.514
+   77 TORSION H17 O18 C19 O21      2.986
+   78 TORSION O18 C19 C20 H22    295.564
+   79 TORSION O18 C19 C20 H23    179.894
+   80 TORSION O18 C19 C20 C24     54.563
+   81 TORSION C19 C20 C24 H25    302.419
+   82 TORSION C19 C20 C24 C26    183.279
+   83 TORSION C19 C20 C24 N27     62.016
+   84 TORSION C20 C24 C26 O31    274.690
+   85 TORSION C20 C24 C26 O32     92.309
+   86 TORSION C20 C24 N27 H28    291.294
+   87 TORSION C20 C24 N27 H29    172.325
+   88 TORSION C20 C24 N27 H30     51.513
+
+
+Starting: Vibrational Mode Automatic Relevance Determination
+
+Ending: Vibrational Mode Automatic Relevance Determination
+
+
+*** Vibrational Mode Automatic Relevance Determination (VMARD) ***
+
+Mode   0:    -0.00 cm-1 (IR:   0.0)
+  +0.1144 ( 19.1%) BOND H1 O2
+  -0.1131 ( 18.9%) BOND H17 O18
+  +0.0788 ( 13.2%) OUT C6 C9 O15 O16
+  +0.0749 ( 12.5%) BOND N11 H13
+  -0.0677 ( 11.3%) BOND N27 H28
+ Shown Composition:   82.4% BOND,   0.0% ANGLE,  17.6% OUT,   0.0% TOR
+ Total Composition:   64.6% BOND,   3.7% ANGLE,  13.6% OUT,  18.1% TOR
+ R**2 = 0.1715
+ Explained Variance =  14.2 %
+
+Mode   1:    -0.00 cm-1 (IR:   0.0)
+  +0.3907 ( 17.9%) TORSION C3 C4 C6 C9
+  -0.3162 ( 14.5%) TORSION C19 C20 C24 C26
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT, 100.0% TOR
+ Total Composition:   40.3% BOND,  15.0% ANGLE,   5.7% OUT,  39.0% TOR
+ R**2 = 0.4326
+ Explained Variance =  37.8 %
+
+Mode   2:     0.00 cm-1 (IR:   0.0)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.3272 ( 10.2%) TORSION H1 O2 C3 C4
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:    5.8% BOND,  23.6% ANGLE,  18.9% OUT,  51.7% TOR
+ R**2 = 0.6570
+ Explained Variance =  64.6 %
+
+Mode   3:    50.00 cm-1 (IR:   0.5)
+  -0.5221 ( 24.9%) OUT O18 C19 C20 O21
+  -0.5137 ( 24.5%) OUT O2 C3 C4 O5
+ Shown Composition:    0.0% BOND,   0.0% ANGLE, 100.0% OUT,   0.0% TOR
+ Total Composition:    8.8% BOND,   7.2% ANGLE,  60.3% OUT,  23.7% TOR
+ R**2 = 0.7011
+ Explained Variance =  69.9 %
+
+Mode   4:    76.96 cm-1 (IR:   5.5)
+  +0.7436 ( 18.6%) TORSION C19 C20 C24 C26
+  +0.5795 ( 14.5%) TORSION C3 C4 C6 C9
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT, 100.0% TOR
+ Total Composition:   40.9% BOND,  13.7% ANGLE,   3.6% OUT,  41.7% TOR
+ R**2 = 0.6302
+ Explained Variance =  61.4 %
+
+Mode   5:    84.52 cm-1 (IR: 510.0)
+  +1.0002 ( 12.1%) TORSION H1 O2 C3 O5
+  +0.9779 ( 11.9%) TORSION C4 C6 C9 O15
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT, 100.0% TOR
+ Total Composition:    9.7% BOND,  15.2% ANGLE,  17.6% OUT,  57.5% TOR
+ R**2 = 0.8473
+ Explained Variance =  84.3 %
+
+Mode   6:   101.27 cm-1 (IR: 122.4)
+  -0.6044 ( 18.6%) OUT O2 C3 C4 O5
+  +0.4555 ( 14.0%) OUT O18 C19 C20 O21
+ Shown Composition:    0.0% BOND,   0.0% ANGLE, 100.0% OUT,   0.0% TOR
+ Total Composition:    7.1% BOND,  22.0% ANGLE,  32.6% OUT,  38.3% TOR
+ R**2 = 0.8962
+ Explained Variance =  89.5 %
+
+Mode   7:   104.72 cm-1 (IR: 862.2)
+  -0.2360 ( 11.9%) TORSION C20 C24 C26 O32
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT, 100.0% TOR
+ Total Composition:   14.9% BOND,  18.4% ANGLE,  24.7% OUT,  42.0% TOR
+ R**2 = 0.4472
+ Explained Variance =  42.4 %
+
+Mode   8:   105.96 cm-1 (IR: 1035.6)
+  -0.1469 ( 12.1%) TORSION C19 C20 C24 N27
+  +0.1416 ( 11.7%) TORSION C3 C4 C6 N11
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT, 100.0% TOR
+ Total Composition:   25.5% BOND,  22.8% ANGLE,   5.3% OUT,  46.4% TOR
+ R**2 = 0.2874
+ Explained Variance =  25.2 %
+
+Mode   9:   115.29 cm-1 (IR: 2017.4)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.3823 (  9.1%) TORSION O18 C19 C20 C24
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:    9.8% BOND,  28.1% ANGLE,  10.8% OUT,  51.2% TOR
+ R**2 = 0.7745
+ Explained Variance =  77.0 %
+
+Mode  10:   119.81 cm-1 (IR:   0.1)
+  +0.1388 ( 21.1%) BOND H1 O2
+  +0.1380 ( 21.0%) BOND H17 O18
+ Shown Composition:  100.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   64.1% BOND,   3.3% ANGLE,   0.7% OUT,  31.9% TOR
+ R**2 = 0.1657
+ Explained Variance =  13.5 %
+
+Mode  11:   137.27 cm-1 (IR: 2627.3)
+  -0.7355 ( 12.8%) TORSION O18 C19 C20 C24
+  +0.7192 ( 12.5%) TORSION O2 C3 C4 C6
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT, 100.0% TOR
+ Total Composition:    9.8% BOND,  38.8% ANGLE,   1.4% OUT,  50.1% TOR
+ R**2 = 0.9042
+ Explained Variance =  90.2 %
+
+Mode  12:   142.30 cm-1 (IR:   0.5)
+  +0.3606 ( 17.2%) TORSION C4 C6 C9 O15
+  +0.3496 ( 16.7%) TORSION C20 C24 C26 O31
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT, 100.0% TOR
+ Total Composition:    9.6% BOND,  36.9% ANGLE,   5.7% OUT,  47.7% TOR
+ R**2 = 0.4797
+ Explained Variance =  46.6 %
+
+Mode  13:   150.98 cm-1 (IR: 1112.2)
+  +0.4289 ( 16.9%) ANGLE H17 O18 C19
+  -0.4235 ( 16.7%) ANGLE H1 O2 C3
+  +0.2879 ( 11.4%) ANGLE O18 C19 O21
+  -0.2818 ( 11.1%) ANGLE O2 C3 O5
+ Shown Composition:    0.0% BOND, 100.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   15.5% BOND,  61.2% ANGLE,   0.0% OUT,  23.3% TOR
+ R**2 = 0.4468
+ Explained Variance =  43.1 %
+
+Mode  14:   153.25 cm-1 (IR: 953.6)
+  -0.5392 ( 18.1%) TORSION O2 C3 C4 C6
+  -0.5386 ( 18.1%) TORSION O18 C19 C20 C24
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT, 100.0% TOR
+ Total Composition:   21.8% BOND,   6.7% ANGLE,  13.6% OUT,  57.9% TOR
+ R**2 = 0.6927
+ Explained Variance =  68.8 %
+
+Mode  15:   165.88 cm-1 (IR: 843.3)
+  +0.4880 ( 24.8%) OUT C24 C26 O31 O32
+  -0.4788 ( 24.3%) OUT C6 C9 O15 O16
+ Shown Composition:    0.0% BOND,   0.0% ANGLE, 100.0% OUT,   0.0% TOR
+ Total Composition:   15.4% BOND,   3.9% ANGLE,  49.6% OUT,  31.1% TOR
+ R**2 = 0.7251
+ Explained Variance =  72.3 %
+
+Mode  16:   180.00 cm-1 (IR: 1792.5)
+  +1.6854 ( 12.4%) TORSION H17 O18 C19 O21
+  -1.6430 ( 12.1%) TORSION H1 O2 C3 O5
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT, 100.0% TOR
+ Total Composition:   16.1% BOND,  13.2% ANGLE,  21.6% OUT,  49.1% TOR
+ R**2 = 0.8202
+ Explained Variance =  81.4 %
+
+Mode  17:   196.13 cm-1 (IR: 531.8)
+  +0.2524 ( 19.5%) OUT C24 C26 O31 O32
+  +0.2513 ( 19.4%) OUT C6 C9 O15 O16
+ Shown Composition:    0.0% BOND,   0.0% ANGLE, 100.0% OUT,   0.0% TOR
+ Total Composition:    1.1% BOND,  58.8% ANGLE,  39.1% OUT,   1.0% TOR
+ R**2 = 0.3310
+ Explained Variance =  31.5 %
+
+Mode  18:   216.76 cm-1 (IR: 13223.4)
+  +0.1805 ( 19.8%) TORSION C20 C24 C26 O32
+  -0.1730 ( 18.9%) TORSION C4 C6 C9 O16
+  -0.1555 ( 17.0%) ANGLE C24 N27 H29
+  +0.1539 ( 16.9%) ANGLE C6 N11 H12
+ Shown Composition:    0.0% BOND,  46.7% ANGLE,   0.0% OUT,  53.3% TOR
+ Total Composition:   11.9% BOND,  47.9% ANGLE,   0.6% OUT,  39.6% TOR
+ R**2 = 0.2112
+ Explained Variance =  19.2 %
+
+Mode  19:   225.87 cm-1 (IR: 16230.1)
+  -0.2852 ( 14.2%) TORSION C20 C24 C26 O32
+  -0.2386 ( 11.9%) TORSION C4 C6 C9 O16
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT, 100.0% TOR
+ Total Composition:   37.8% BOND,  12.1% ANGLE,  19.6% OUT,  30.5% TOR
+ R**2 = 0.5304
+ Explained Variance =  52.0 %
+
+Mode  20:   291.88 cm-1 (IR: 676.7)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.4078 (  7.3%) TORSION C3 C4 C6 C9
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   38.4% BOND,  26.9% ANGLE,   0.1% OUT,  34.7% TOR
+ R**2 = 0.6940
+ Explained Variance =  67.0 %
+
+Mode  21:   293.33 cm-1 (IR:  46.9)
+  -0.4649 ( 14.2%) TORSION C3 C4 C6 N11
+  +0.4615 ( 14.1%) TORSION C19 C20 C24 N27
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT, 100.0% TOR
+ Total Composition:   17.0% BOND,  23.0% ANGLE,  18.9% OUT,  41.1% TOR
+ R**2 = 0.6272
+ Explained Variance =  61.5 %
+
+Mode  22:   371.13 cm-1 (IR: 1012.1)
+  -0.8497 ( 11.8%) ANGLE C4 C6 N11
+  -0.8460 ( 11.8%) ANGLE C20 C24 N27
+ Shown Composition:    0.0% BOND, 100.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   32.7% BOND,  56.3% ANGLE,   0.1% OUT,  10.9% TOR
+ R**2 = 0.9360
+ Explained Variance =  93.5 %
+
+Mode  23:   374.41 cm-1 (IR: 25646.7)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.4914 (  5.6%) ANGLE C4 C6 N11
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   39.8% BOND,  51.9% ANGLE,   0.0% OUT,   8.3% TOR
+ R**2 = 0.8334
+ Explained Variance =  82.5 %
+
+Mode  24:   385.31 cm-1 (IR: 3918.4)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.5708 (  7.2%) BOND C24 C26
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   41.0% BOND,  46.5% ANGLE,   0.0% OUT,  12.5% TOR
+ R**2 = 0.7648
+ Explained Variance =  75.2 %
+
+Mode  25:   414.89 cm-1 (IR: 35015.1)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.7019 (  8.5%) BOND C24 C26
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   30.8% BOND,  55.1% ANGLE,   0.1% OUT,  14.0% TOR
+ R**2 = 0.8841
+ Explained Variance =  88.0 %
+
+Mode  26:   455.49 cm-1 (IR: 16446.2)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.9761 (  9.7%) ANGLE O18 C19 C20
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   41.3% BOND,  51.6% ANGLE,   2.4% OUT,   4.7% TOR
+ R**2 = 0.9643
+ Explained Variance =  96.3 %
+
+Mode  27:   474.59 cm-1 (IR: 3493.2)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.9097 (  9.2%) ANGLE O18 C19 C20
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   36.1% BOND,  56.6% ANGLE,   3.9% OUT,   3.4% TOR
+ R**2 = 0.9566
+ Explained Variance =  95.5 %
+
+Mode  28:   544.88 cm-1 (IR: 2651.5)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.6199 (  9.3%) ANGLE C24 C26 O32
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   46.9% BOND,  39.4% ANGLE,   4.3% OUT,   9.4% TOR
+ R**2 = 0.8886
+ Explained Variance =  88.4 %
+
+Mode  29:   546.92 cm-1 (IR: 4410.9)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.4533 (  6.3%) ANGLE C24 C26 O32
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   51.2% BOND,  25.7% ANGLE,   0.9% OUT,  22.2% TOR
+ R**2 = 0.8507
+ Explained Variance =  84.1 %
+
+Mode  30:   560.63 cm-1 (IR: 484.1)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2698 (  3.0%) BOND C9 O15
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   43.4% BOND,  44.7% ANGLE,   0.0% OUT,  11.9% TOR
+ R**2 = 0.9781
+ Explained Variance =  97.8 %
+
+Mode  31:   561.86 cm-1 (IR: 6736.0)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.5230 (  5.7%) ANGLE C24 C26 O32
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   40.0% BOND,  38.9% ANGLE,   3.0% OUT,  18.0% TOR
+ R**2 = 0.9798
+ Explained Variance =  97.9 %
+
+Mode  32:   609.74 cm-1 (IR:   9.7)
+  -0.7873 ( 12.3%) ANGLE O2 C3 O5
+  -0.7815 ( 12.2%) ANGLE O18 C19 O21
+  +0.7090 ( 11.1%) BOND C3 C4
+ Shown Composition:   31.1% BOND,  68.9% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   41.9% BOND,  42.8% ANGLE,   4.2% OUT,  11.1% TOR
+ R**2 = 0.9262
+ Explained Variance =  92.5 %
+
+Mode  33:   610.10 cm-1 (IR: 5252.8)
+  -0.7962 ( 11.7%) ANGLE O2 C3 O5
+  +0.7919 ( 11.6%) ANGLE O18 C19 O21
+ Shown Composition:    0.0% BOND, 100.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   41.1% BOND,  44.6% ANGLE,   3.6% OUT,  10.7% TOR
+ R**2 = 0.9454
+ Explained Variance =  94.5 %
+
+Mode  34:   668.79 cm-1 (IR: 10278.2)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.7095 ( 10.5%) ANGLE C24 C26 O31
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   34.0% BOND,  47.1% ANGLE,   3.5% OUT,  15.4% TOR
+ R**2 = 0.9212
+ Explained Variance =  91.9 %
+
+Mode  35:   678.28 cm-1 (IR: 151.2)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.7053 ( 10.1%) ANGLE C6 C9 O15
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   35.0% BOND,  48.5% ANGLE,   3.6% OUT,  12.9% TOR
+ R**2 = 0.9239
+ Explained Variance =  92.2 %
+
+Mode  36:   761.04 cm-1 (IR: 1192.7)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.6546 (  8.8%) ANGLE C19 C20 C24
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   22.5% BOND,  55.0% ANGLE,   9.9% OUT,  12.7% TOR
+ R**2 = 0.9032
+ Explained Variance =  90.1 %
+
+Mode  37:   769.71 cm-1 (IR: 7104.0)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.6805 (  7.8%) ANGLE C19 C20 C24
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   19.2% BOND,  48.3% ANGLE,  12.3% OUT,  20.2% TOR
+ R**2 = 0.9202
+ Explained Variance =  91.9 %
+
+Mode  38:   787.32 cm-1 (IR: 788.1)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.5786 (  8.1%) ANGLE C20 C24 C26
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   50.9% BOND,  42.4% ANGLE,   5.3% OUT,   1.4% TOR
+ R**2 = 0.9165
+ Explained Variance =  91.4 %
+
+Mode  39:   793.59 cm-1 (IR:  32.3)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.5566 (  7.9%) ANGLE C4 C6 C9
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   49.4% BOND,  45.3% ANGLE,   5.1% OUT,   0.2% TOR
+ R**2 = 0.9194
+ Explained Variance =  91.8 %
+
+Mode  40:   867.67 cm-1 (IR:  33.0)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.5127 (  7.5%) BOND C6 N11
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   59.8% BOND,  26.3% ANGLE,   0.0% OUT,  13.9% TOR
+ R**2 = 0.9480
+ Explained Variance =  94.7 %
+
+Mode  41:   875.55 cm-1 (IR: 5171.2)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.5031 (  7.4%) BOND C6 N11
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   59.4% BOND,  29.3% ANGLE,   0.0% OUT,  11.3% TOR
+ R**2 = 0.9425
+ Explained Variance =  94.1 %
+
+Mode  42:   893.76 cm-1 (IR: 11774.7)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.4553 (  7.0%) BOND C24 C26
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   61.8% BOND,  24.9% ANGLE,   2.1% OUT,  11.2% TOR
+ R**2 = 0.9647
+ Explained Variance =  96.4 %
+
+Mode  43:   896.08 cm-1 (IR:   6.9)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2749 (  4.2%) BOND C19 C20
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   62.9% BOND,  24.6% ANGLE,   2.1% OUT,  10.4% TOR
+ R**2 = 0.9698
+ Explained Variance =  96.9 %
+
+Mode  44:   941.38 cm-1 (IR: 908.1)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.4378 (  6.8%) BOND O18 C19
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   60.0% BOND,  36.2% ANGLE,   0.3% OUT,   3.5% TOR
+ R**2 = 0.9549
+ Explained Variance =  95.4 %
+
+Mode  45:   941.59 cm-1 (IR: 742.3)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.3137 (  4.9%) ANGLE C20 C24 C26
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   59.6% BOND,  36.4% ANGLE,   0.4% OUT,   3.7% TOR
+ R**2 = 0.9610
+ Explained Variance =  96.0 %
+
+Mode  46:   998.58 cm-1 (IR: 913.2)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.5023 (  7.0%) BOND C4 C6
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   45.5% BOND,  32.9% ANGLE,   2.1% OUT,  19.5% TOR
+ R**2 = 0.9928
+ Explained Variance =  99.3 %
+
+Mode  47:   999.92 cm-1 (IR: 5383.7)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2183 (  3.3%) BOND C26 O32
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   51.7% BOND,  33.4% ANGLE,   0.0% OUT,  14.9% TOR
+ R**2 = 0.9814
+ Explained Variance =  98.1 %
+
+Mode  48:  1071.29 cm-1 (IR: 2732.6)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.3383 ( 10.6%) BOND C6 N11
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   54.6% BOND,  34.8% ANGLE,   2.9% OUT,   7.7% TOR
+ R**2 = 0.9639
+ Explained Variance =  96.4 %
+
+Mode  49:  1074.89 cm-1 (IR: 2883.8)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.3115 (  9.3%) BOND C24 N27
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   51.6% BOND,  36.8% ANGLE,   3.0% OUT,   8.6% TOR
+ R**2 = 0.9625
+ Explained Variance =  96.2 %
+
+Mode  50:  1127.70 cm-1 (IR: 302.0)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.4604 (  7.2%) BOND O2 C3
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   31.3% BOND,  42.2% ANGLE,   5.5% OUT,  21.1% TOR
+ R**2 = 0.9789
+ Explained Variance =  97.9 %
+
+Mode  51:  1128.39 cm-1 (IR: 24446.6)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2760 (  4.0%) TORSION O2 C3 C4 C6
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   17.7% BOND,  46.5% ANGLE,   1.5% OUT,  34.3% TOR
+ R**2 = 0.9877
+ Explained Variance =  98.7 %
+
+Mode  52:  1144.29 cm-1 (IR: 20813.5)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.3566 (  4.6%) BOND C26 O31
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   18.2% BOND,  31.6% ANGLE,   6.5% OUT,  43.7% TOR
+ R**2 = 0.9824
+ Explained Variance =  98.2 %
+
+Mode  53:  1147.30 cm-1 (IR: 673.7)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.4484 (  6.5%) TORSION H17 O18 C19 O21
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   23.1% BOND,  36.1% ANGLE,   8.7% OUT,  32.1% TOR
+ R**2 = 0.9359
+ Explained Variance =  93.4 %
+
+Mode  54:  1157.20 cm-1 (IR: 5022.4)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.3904 (  6.0%) BOND C24 N27
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   33.9% BOND,  43.6% ANGLE,   2.6% OUT,  19.9% TOR
+ R**2 = 0.9505
+ Explained Variance =  94.9 %
+
+Mode  55:  1165.08 cm-1 (IR: 46474.2)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.4331 (  5.7%) BOND O2 C3
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   37.6% BOND,  39.2% ANGLE,   2.5% OUT,  20.6% TOR
+ R**2 = 0.9760
+ Explained Variance =  97.5 %
+
+Mode  56:  1252.35 cm-1 (IR: 5976.4)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2914 (  5.0%) ANGLE C20 C24 H25
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   26.7% BOND,  56.5% ANGLE,   1.6% OUT,  15.3% TOR
+ R**2 = 0.9896
+ Explained Variance =  99.0 %
+
+Mode  57:  1252.87 cm-1 (IR:  42.7)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.1728 (  2.9%) BOND C19 O21
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   29.9% BOND,  53.9% ANGLE,   1.4% OUT,  14.8% TOR
+ R**2 = 0.9884
+ Explained Variance =  98.8 %
+
+Mode  58:  1265.59 cm-1 (IR: 15124.0)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.1385 (  2.9%) ANGLE O2 C3 O5
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   36.8% BOND,  49.5% ANGLE,   0.0% OUT,  13.7% TOR
+ R**2 = 0.9867
+ Explained Variance =  98.7 %
+
+Mode  59:  1269.11 cm-1 (IR: 14840.0)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.3975 (  8.2%) ANGLE C4 C6 N11
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   29.6% BOND,  54.3% ANGLE,   0.0% OUT,  16.1% TOR
+ R**2 = 0.9732
+ Explained Variance =  97.3 %
+
+Mode  60:  1287.34 cm-1 (IR: 7877.1)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2699 (  6.1%) BOND C9 O15
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   56.4% BOND,  39.7% ANGLE,   1.3% OUT,   2.6% TOR
+ R**2 = 0.9825
+ Explained Variance =  98.2 %
+
+Mode  61:  1289.95 cm-1 (IR: 234245.9)
+  -0.4619 ( 11.4%) BOND O18 C19
+  +0.4602 ( 11.4%) BOND O2 C3
+ Shown Composition:  100.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   59.5% BOND,  34.0% ANGLE,   2.4% OUT,   4.1% TOR
+ R**2 = 0.9918
+ Explained Variance =  99.2 %
+
+Mode  62:  1336.37 cm-1 (IR: 1397.8)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2356 (  4.6%) ANGLE C3 C4 H8
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   39.2% BOND,  46.6% ANGLE,   0.0% OUT,  14.2% TOR
+ R**2 = 0.9654
+ Explained Variance =  96.5 %
+
+Mode  63:  1340.62 cm-1 (IR: 4379.3)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.3425 (  5.0%) TORSION H17 O18 C19 O21
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   21.0% BOND,  38.9% ANGLE,   6.7% OUT,  33.4% TOR
+ R**2 = 0.9818
+ Explained Variance =  98.2 %
+
+Mode  64:  1351.73 cm-1 (IR: 2421.2)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2938 (  4.8%) ANGLE C20 C24 H25
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   26.7% BOND,  37.9% ANGLE,   5.3% OUT,  30.0% TOR
+ R**2 = 0.9903
+ Explained Variance =  99.0 %
+
+Mode  65:  1352.90 cm-1 (IR: 21943.3)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.3951 (  8.2%) BOND C9 O16
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   44.3% BOND,  37.9% ANGLE,   0.0% OUT,  17.8% TOR
+ R**2 = 0.9782
+ Explained Variance =  97.8 %
+
+Mode  66:  1385.68 cm-1 (IR: 246.5)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.1699 (  3.7%) BOND C24 C26
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   54.6% BOND,  28.9% ANGLE,   0.0% OUT,  16.5% TOR
+ R**2 = 0.9950
+ Explained Variance =  99.5 %
+
+Mode  67:  1397.65 cm-1 (IR: 20803.3)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.4308 (  9.7%) BOND C9 O15
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   58.6% BOND,  28.5% ANGLE,   0.0% OUT,  12.9% TOR
+ R**2 = 0.9944
+ Explained Variance =  99.4 %
+
+Mode  68:  1422.35 cm-1 (IR: 1380.0)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.8299 (  9.0%) TORSION H17 O18 C19 C20
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   15.2% BOND,  20.4% ANGLE,  12.5% OUT,  51.8% TOR
+ R**2 = 0.9594
+ Explained Variance =  95.8 %
+
+Mode  69:  1423.03 cm-1 (IR: 5230.1)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.8045 (  8.7%) TORSION H1 O2 C3 O5
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   16.2% BOND,  22.2% ANGLE,  11.1% OUT,  50.5% TOR
+ R**2 = 0.9573
+ Explained Variance =  95.6 %
+
+Mode  70:  1473.96 cm-1 (IR: 2261.3)
+  +0.4903 ( 11.8%) ANGLE H1 O2 C3
+  -0.4892 ( 11.8%) ANGLE H17 O18 C19
+ Shown Composition:    0.0% BOND, 100.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   43.8% BOND,  50.2% ANGLE,   0.0% OUT,   6.1% TOR
+ R**2 = 0.9821
+ Explained Variance =  98.2 %
+
+Mode  71:  1475.94 cm-1 (IR: 389.8)
+  -0.4645 ( 11.7%) ANGLE H17 O18 C19
+  -0.4617 ( 11.6%) ANGLE H1 O2 C3
+ Shown Composition:    0.0% BOND, 100.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   49.4% BOND,  43.3% ANGLE,   0.2% OUT,   7.2% TOR
+ R**2 = 0.9900
+ Explained Variance =  99.0 %
+
+Mode  72:  1507.13 cm-1 (IR: 6268.1)
+  +0.3921 ( 11.6%) BOND C26 O32
+  +0.3916 ( 11.5%) BOND C9 O16
+ Shown Composition:  100.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   64.2% BOND,  29.1% ANGLE,   1.1% OUT,   5.6% TOR
+ R**2 = 0.9932
+ Explained Variance =  99.3 %
+
+Mode  73:  1509.14 cm-1 (IR: 320700.1)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.4009 ( 10.7%) BOND C26 O32
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   61.8% BOND,  35.1% ANGLE,   0.3% OUT,   2.9% TOR
+ R**2 = 0.9940
+ Explained Variance =  99.4 %
+
+Mode  74:  1558.65 cm-1 (IR: 9957.6)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.3599 (  8.5%) BOND C26 O32
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   43.6% BOND,  47.3% ANGLE,   0.0% OUT,   9.1% TOR
+ R**2 = 0.9889
+ Explained Variance =  98.9 %
+
+Mode  75:  1578.30 cm-1 (IR: 56456.3)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2854 (  6.4%) BOND C3 O5
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   45.8% BOND,  51.0% ANGLE,   0.0% OUT,   3.3% TOR
+ R**2 = 0.9904
+ Explained Variance =  99.0 %
+
+Mode  76:  1613.33 cm-1 (IR: 12849.0)
+  -0.5340 ( 15.5%) BOND C3 O5
+  -0.5307 ( 15.4%) BOND C19 O21
+ Shown Composition:  100.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   50.7% BOND,  20.8% ANGLE,   0.0% OUT,  28.5% TOR
+ R**2 = 0.9543
+ Explained Variance =  95.4 %
+
+Mode  77:  1623.82 cm-1 (IR: 21914.5)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.4094 ( 10.8%) TORSION C20 C24 N27 H30
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   45.8% BOND,   9.6% ANGLE,   0.0% OUT,  44.6% TOR
+ R**2 = 0.7903
+ Explained Variance =  78.5 %
+
+Mode  78:  1638.70 cm-1 (IR: 47058.1)
+  -0.5334 ( 11.7%) BOND C3 O5
+  +0.5331 ( 11.7%) BOND C19 O21
+ Shown Composition:  100.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   47.6% BOND,  34.1% ANGLE,   0.0% OUT,  18.2% TOR
+ R**2 = 0.9974
+ Explained Variance =  99.7 %
+
+Mode  79:  1642.02 cm-1 (IR: 676.8)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.4869 ( 10.3%) BOND C3 O5
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   42.8% BOND,  18.4% ANGLE,   0.0% OUT,  38.8% TOR
+ R**2 = 0.9482
+ Explained Variance =  94.8 %
+
+Mode  80:  1655.64 cm-1 (IR: 8397.5)
+  +0.4763 ( 11.8%) BOND C19 O21
+  -0.4737 ( 11.7%) BOND C3 O5
+ Shown Composition:  100.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   57.4% BOND,  11.0% ANGLE,   0.6% OUT,  31.1% TOR
+ R**2 = 0.9500
+ Explained Variance =  95.0 %
+
+Mode  81:  1666.65 cm-1 (IR: 27584.5)
+  +0.5059 ( 16.1%) BOND C19 O21
+  +0.4971 ( 15.8%) BOND C3 O5
+ Shown Composition:  100.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   67.7% BOND,  12.1% ANGLE,   0.0% OUT,  20.3% TOR
+ R**2 = 0.9609
+ Explained Variance =  96.1 %
+
+Mode  82:  2288.49 cm-1 (IR: 787757.6)
+  +0.5746 ( 17.8%) BOND H1 O2
+  -0.5736 ( 17.7%) BOND H17 O18
+ Shown Composition:  100.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   78.8% BOND,  17.8% ANGLE,   0.0% OUT,   3.4% TOR
+ R**2 = 0.9975
+ Explained Variance =  99.8 %
+
+Mode  83:  2307.02 cm-1 (IR: 14930.7)
+  -0.6004 ( 19.1%) BOND H1 O2
+  -0.5975 ( 19.0%) BOND H17 O18
+ Shown Composition:  100.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   80.3% BOND,  14.5% ANGLE,   0.6% OUT,   4.7% TOR
+ R**2 = 0.9972
+ Explained Variance =  99.7 %
+
+Mode  84:  2945.93 cm-1 (IR: 437628.7)
+  +0.4887 ( 17.6%) BOND N11 H13
+  -0.4880 ( 17.5%) BOND N27 H28
+  -0.3749 ( 13.5%) BOND N11 H12
+  +0.3744 ( 13.4%) BOND N27 H29
+ Shown Composition:  100.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   80.4% BOND,  14.7% ANGLE,   0.0% OUT,   4.8% TOR
+ R**2 = 0.9983
+ Explained Variance =  99.8 %
+
+Mode  85:  2947.30 cm-1 (IR: 205071.5)
+  -0.6888 ( 33.1%) BOND N27 H29
+  -0.6884 ( 33.0%) BOND N11 H12
+ Shown Composition:  100.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   86.5% BOND,   8.3% ANGLE,   0.0% OUT,   5.2% TOR
+ R**2 = 0.9948
+ Explained Variance =  99.5 %
+
+Mode  86:  2960.71 cm-1 (IR: 30513.5)
+  -0.6683 ( 27.5%) BOND N27 H28
+  -0.6683 ( 27.5%) BOND N11 H13
+ Shown Composition:  100.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   76.4% BOND,  18.3% ANGLE,   0.0% OUT,   5.3% TOR
+ R**2 = 0.9972
+ Explained Variance =  99.7 %
+
+Mode  87:  2979.80 cm-1 (IR: 16010.6)
+  -0.6026 ( 16.9%) BOND N27 H29
+  +0.6026 ( 16.9%) BOND N11 H12
+  +0.4838 ( 13.5%) BOND N11 H13
+  -0.4830 ( 13.5%) BOND N27 H28
+ Shown Composition:  100.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   85.1% BOND,  11.5% ANGLE,   0.0% OUT,   3.4% TOR
+ R**2 = 0.9952
+ Explained Variance =  99.5 %
+
+Mode  88:  3018.24 cm-1 (IR: 2094.9)
+  +0.6665 ( 24.5%) BOND C20 H22
+  +0.6660 ( 24.4%) BOND C4 H7
+  +0.3787 ( 13.9%) BOND C4 H8
+  +0.3786 ( 13.9%) BOND C20 H23
+ Shown Composition:  100.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   85.0% BOND,  12.7% ANGLE,   0.0% OUT,   2.3% TOR
+ R**2 = 0.9973
+ Explained Variance =  99.7 %
+
+Mode  89:  3018.76 cm-1 (IR: 117.0)
+  -0.6677 ( 25.3%) BOND C20 H22
+  +0.6672 ( 25.3%) BOND C4 H7
+  -0.3771 ( 14.3%) BOND C20 H23
+  +0.3767 ( 14.3%) BOND C4 H8
+ Shown Composition:  100.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   85.3% BOND,  11.4% ANGLE,   0.0% OUT,   3.3% TOR
+ R**2 = 0.9976
+ Explained Variance =  99.8 %
+
+Mode  90:  3039.83 cm-1 (IR: 17870.6)
+  -0.6573 ( 23.7%) BOND N11 H14
+  -0.6567 ( 23.7%) BOND N27 H30
+ Shown Composition:  100.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   83.3% BOND,  12.7% ANGLE,   0.0% OUT,   4.0% TOR
+ R**2 = 0.9970
+ Explained Variance =  99.7 %
+
+Mode  91:  3053.67 cm-1 (IR: 187711.7)
+  -0.5661 ( 18.5%) BOND N11 H14
+  +0.5641 ( 18.5%) BOND N27 H30
+ Shown Composition:  100.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   82.3% BOND,  10.7% ANGLE,   0.0% OUT,   6.9% TOR
+ R**2 = 0.9984
+ Explained Variance =  99.8 %
+
+Mode  92:  3074.47 cm-1 (IR: 2318.6)
+  -0.5279 ( 15.8%) BOND C24 H25
+  -0.5223 ( 15.6%) BOND C6 H10
+ Shown Composition:  100.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   80.4% BOND,  13.7% ANGLE,   0.0% OUT,   5.8% TOR
+ R**2 = 0.9979
+ Explained Variance =  99.8 %
+
+Mode  93:  3075.11 cm-1 (IR: 19279.5)
+  -0.4814 ( 13.5%) BOND C24 H25
+  +0.4801 ( 13.5%) BOND C6 H10
+ Shown Composition:  100.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   83.2% BOND,  11.1% ANGLE,   0.0% OUT,   5.6% TOR
+ R**2 = 0.9978
+ Explained Variance =  99.8 %
+
+Mode  94:  3088.73 cm-1 (IR:   1.0)
+  -0.4707 ( 14.7%) BOND C4 H8
+  -0.4680 ( 14.6%) BOND C20 H23
+  +0.3879 ( 12.1%) BOND C24 H25
+  +0.3862 ( 12.1%) BOND C6 H10
+ Shown Composition:  100.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   77.0% BOND,  20.6% ANGLE,   0.0% OUT,   2.4% TOR
+ R**2 = 0.9975
+ Explained Variance =  99.7 %
+
+Mode  95:  3089.65 cm-1 (IR: 9732.5)
+  -0.4583 ( 13.7%) BOND C4 H8
+  +0.4558 ( 13.6%) BOND C20 H23
+  -0.3962 ( 11.8%) BOND C24 H25
+  +0.3943 ( 11.8%) BOND C6 H10
+ Shown Composition:  100.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   78.4% BOND,  18.4% ANGLE,   0.0% OUT,   3.2% TOR
+ R**2 = 0.9975
+ Explained Variance =  99.8 %
+
+*** End of Vibrational Mode Automatic Relevance Determination (VMARD) ***

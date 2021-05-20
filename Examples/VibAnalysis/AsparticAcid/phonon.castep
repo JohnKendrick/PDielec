@@ -1,0 +1,1418 @@
+ +-------------------------------------------------+
+ |                                                 |
+ |      CCC   AA    SSS  TTTTT  EEEEE  PPPP        |
+ |     C     A  A  S       T    E      P   P       |
+ |     C     AAAA   SS     T    EEE    PPPP        |
+ |     C     A  A     S    T    E      P           |
+ |      CCC  A  A  SSS     T    EEEEE  P           |
+ |                                                 |
+ +-------------------------------------------------+
+ |                                                 |
+ | Welcome to Academic Release CASTEP version 8.0  |
+ | Ab Initio Total Energy Program                  |
+ |                                                 |
+ | Authors:                                        |
+ | M. Segall, M. Probert, C. Pickard, P. Hasnip,   |
+ | S. Clark, K. Refson, J. R. Yates, M. Payne      |
+ |                                                 |
+ | Contributors:                                   |
+ | P. Lindan, P. Haynes, J. White, V. Milman,      |
+ | N. Govind, M. Gibson, P. Tulip, V. Cocula,      |
+ | B. Montanari, D. Quigley, M. Glover,            |
+ | L. Bernasconi, A. Perlov, M. Plummer,           |
+ | E. McNellis, J. Meyer, J. Gale, D. Jochym       |
+ | J. Aarons, B. Walker, R. Gillen, D. Jones       |
+ | T. Green                                        |
+ |                                                 |
+ | Copyright (c) 2000 - 2014                       |
+ |                                                 |
+ |     Distributed under the terms of an           |
+ |     Agreement between the United Kingdom        |
+ |     Car-Parrinello (UKCP) Consortium,           |
+ |     Daresbury Laboratory and Accelrys, Inc.     |
+ |                                                 |
+ | Please cite                                     |
+ |                                                 |
+ |     "First principles methods using CASTEP"     |
+ |                                                 |
+ |         Zeitschrift fuer Kristallographie       |
+ |           220(5-6) pp. 567-570 (2005)           |
+ |                                                 |
+ | S. J. Clark, M. D. Segall, C. J. Pickard,       |
+ | P. J. Hasnip, M. J. Probert, K. Refson,         |
+ | M. C. Payne                                     |
+ |                                                 |
+ |       in all publications arising from          |
+ |              your use of CASTEP                 |
+ |                                                 |
+ +-------------------------------------------------+
+ 
+ 
+ Compiled for linux_x86_64_ifort15 on Tue, 03 Mar 2015 15:01:09 +0000
+ from code version 7a66ba17f5c9+  Mon, 08 Dec 2014 20:23:19 +0000
+ Compiler: Intel Fortran 15.0.0.090; Optimisation: intermediate
+ MATHLIBS: Intel MKL(11.2.0) (LAPACK version 3.4.1)
+ FFT Lib : fftw3 version fftw-3.3.3-avx
+ Fundamental constants values: CODATA 2010
+ 
+ Run started: Thu, 26 Mar 2015 13:42:25 +0000
+ Warning - deprecated keyword PHONON_SUM_RULE found in input file
+         - preferred usage is PHONON_SUM_RULE_METHOD
+ +-------------------------------------------------+
+ |                                                 |
+ |  D D D D    F F F F F  P P P P     T T T T T    |
+ |  D       D  F          P       P       T        |
+ |  D       D  F F F F    P P P P         T        |
+ |  D       D  F          P               T        |
+ |  D D D D    F          P               T        |
+ |                                                 |
+ +-------------------------------------------------+
+ |                                                 |
+ | Welcome to Castep Linear Response (DFPT)        |
+ |                                                 |
+ | Copyright (c) 2006 - 2014                       |
+ |                                                 |
+ | Please cite the following publications in all   |
+ | work arising from your use of CASTEP LR.        |
+ |                                                 |
+ | K. Refson, S. J. Clark and P. R. Tulip          |
+ | Variational density functional perturbation     |
+ | theory for dielectrics and lattice dynamics     |
+ | Phys. Rev. B 73(15), 155114 (2006)              |
+ +-------------------------------------------------+
+ 
+ +---------------------------------------------------+
+ |                                                   |
+ |  Using DFT-SEDC - the DFT Semi-Empirical          |
+ |  Dispersion interaction Correction module         |
+ |  Copyright (c) 2008 Erik McNellis and Joerg Meyer |
+ |  Fritz-Haber-Institut der MPG. Distributed under  |
+ |  the GNU Lesser General Public License (LGPL).    |
+ |                                                   |
+ | Please cite the following publications in all     |
+ | work arising from your use of CASTEP SEDC.        |
+ |                                                   |
+ | Erik R. McNellis, Joerg Meyer, and Karsten Reuter |
+ | Phys. Rev. B 80, 205414 (2009)                    |
+ +---------------------------------------------------+
+ 
+ 
+ Pseudo atomic calculation performed for H 1s1
+ 
+ Converged in 21 iterations to a total energy of -12.4781 eV
+ 
+ 
+ Pseudo atomic calculation performed for C 2s2 2p2
+ 
+ Converged in 26 iterations to a total energy of -146.4297 eV
+ 
+ 
+ Pseudo atomic calculation performed for N 2s2 2p3
+ 
+ Converged in 36 iterations to a total energy of -263.6361 eV
+ 
+ 
+ Pseudo atomic calculation performed for O 2s2 2p4
+ 
+ Converged in 37 iterations to a total energy of -423.8867 eV
+ 
+ Calculation parallelised over 16 processes.
+ Data is distributed by G-vector(8-way) and k-point(2-way)
+
+ ************************************ Title ************************************
+ 
+
+ ***************************** General Parameters ******************************
+  
+ output verbosity                               : normal  (1)
+ write checkpoint data to                       : phonon.check
+ type of calculation                            : Phonon followed by E-field
+ stress calculation                             : on
+ density difference calculation                 : off
+ electron localisation func (ELF) calculation   : off
+ Hirshfeld analysis                             : off
+ unlimited duration calculation
+ timing information                             : on
+ memory usage estimate                          : on
+ write final potential to formatted file        : off
+ write final density to formatted file          : off
+ write BibTeX reference list                    : on
+ checkpoint writing                             : both castep_bin and check files
+  
+ output         length unit                     : A
+ output           mass unit                     : amu
+ output           time unit                     : ps
+ output         charge unit                     : e
+ output           spin unit                     : hbar/2
+ output         energy unit                     : eV
+ output          force unit                     : eV/A
+ output       velocity unit                     : A/ps
+ output       pressure unit                     : GPa
+ output     inv_length unit                     : 1/A
+ output      frequency unit                     : cm-1
+ output force constant unit                     : eV/A**2
+ output         volume unit                     : A**3
+ output   IR intensity unit                     : (D/A)**2/amu
+ output         dipole unit                     : D
+ output         efield unit                     : eV/A/e
+ output        entropy unit                     : J/mol/K
+  
+ wavefunctions paging                           : none
+ random number generator seed                   : randomised (134225764)
+ data distribution                              : optimal for this architecture
+ optimization strategy                          : maximize speed(+++)
+
+ *********************** Exchange-Correlation Parameters ***********************
+  
+ using functional                               : Perdew Burke Ernzerhof
+ Divergence correction                          : off
+ relativistic treatment                         : Koelling-Harmon
+ DFT+D: Semi-empirical dispersion correction    : on
+ SEDC with                                      : TS correction scheme
+ Damping fn: SR value for customised TS scheme  :     1.0000
+
+ ************************* Pseudopotential Parameters **************************
+  
+ pseudopotential representation                 : reciprocal space
+ <beta|phi> representation                      : reciprocal space
+
+ **************************** Basis Set Parameters *****************************
+  
+ plane wave basis set cut-off                   :  1000.0000   eV
+ size of standard grid                          :     2.0000
+ size of   fine   grid                          :     4.0000
+ size of   fine   gmax                          :    64.8035   1/A
+ largest prime factor in FFT                    :          5
+ finite basis set correction                    : automatic
+ number of sample energies                      :          3
+           sample  spacing                      :     5.0000   eV
+
+ **************************** Electronic Parameters ****************************
+  
+ number of  electrons                           :  104.0    
+ net charge of system                           :  0.000    
+ net spin   of system                           :  0.000    
+ number of  up  spins                           :  52.00    
+ number of down spins                           :  52.00    
+ treating system as non-spin-polarized
+ number of bands                                :         52
+
+ ********************* Electronic Minimization Parameters **********************
+  
+ Method: Treating system as non-metallic,
+         and number of  SD  steps               :          1
+         and number of  CG  steps               :          8
+  
+ total energy / atom convergence tol.           : 0.2219E-09   eV
+ max force / atom convergence tol.              : ignored
+ convergence tolerance window                   :          3   cycles
+ max. number of SCF cycles                      :         30
+ periodic dipole correction                     : NONE
+
+ *********************** Population Analysis Parameters ************************
+  
+ Population analysis with cutoff                :  3.000       A
+
+ ****************************** Phonon Parameters ******************************
+  
+ phonon calculation method                      : linear response
+ phonon convergence tolerance                   : 0.1000E-04   eV/A**2
+ max. number of phonon cycles                   :         50
+ max. number of phonon CG steps                 :          0
+ convergence tolerance window                   :          2   cycles
+ DFPT solver method                             : AllBands (Gonze variational method)
+ preconditioning scheme                         : TPA     
+ fine phonon calculation method                 : none
+ LO/TO splitting term                           : included
+ acoustic phonon sum rule                       : correct D(q) in recip-space
+ Born effective charges                         : calculated
+ Born charge sum rule                           : explicitly enforced
+ Raman intensities                              : not calculated
+ phonon k-points                                : use reduced set
+ phonon DOS                                     : not calculated
+ backups results every                          :       1800   seconds
+
+ ***************************** E-Field Parameters ******************************
+  
+ E-field convergence tolerance                  : 0.1000E-04   A**3
+ DFPT solver method                             : AllBands (Gonze variational method)
+ ionic contribution to permittivity             : included
+ treating system as a crystal, 
+ => ignoring 3 lowest modes when calculating ionic  contribution to permittivity
+ calculation with frequency spacing             : 0.4556E-05   cm-1
+ Q-factor for lineshape broadening              :    50.0000
+ max. number of E-field cycles                  :         50
+ max. number of E-field CG steps                :          0
+ convergence tolerance window                   :          2   cycles
+ band convergence tolerance                     : 0.1000E-08   eV
+
+ *******************************************************************************
+  
+ 
+                           -------------------------------
+                                      Unit Cell
+                           -------------------------------
+        Real Lattice(A)                      Reciprocal Lattice(1/A)
+   7.5966433   0.0000000   0.0727349        0.8258025   0.0000000   0.1355324
+   0.0000000   7.0282512   0.0000000        0.0000000   0.8939899   0.0000000
+  -0.8280272   0.0000000   5.0451936       -0.0119053   0.0000000   1.2434265
+ 
+                       Lattice parameters(A)       Cell Angles
+                    a =    7.596992          alpha =   90.000000
+                    b =    7.028251          beta  =   98.771837
+                    c =    5.112691          gamma =   90.000000
+ 
+                       Current cell volume =  269.791814       A**3
+ 
+                           -------------------------------
+                                     Cell Contents
+                           -------------------------------
+                         Total number of ions in cell =   32
+                      Total number of species in cell =    4
+                        Max number of any one species =   14
+ 
+            xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+            x  Element    Atom        Fractional coordinates of atoms  x
+            x            Number           u          v          w      x
+            x----------------------------------------------------------x
+            x  H            1         0.212236   0.008630   0.332875   x 
+            x  H            2         0.787764   0.508630   0.667125   x 
+            x  H            3         0.799635   0.809274   0.461441   x 
+            x  H            4         0.200365   0.309274   0.538559   x 
+            x  H            5         0.701890   0.830609   0.126992   x 
+            x  H            6         0.298110   0.330609   0.873008   x 
+            x  H            7         0.612366   0.157191   0.968386   x 
+            x  H            8         0.387634   0.657191   0.031614   x 
+            x  H            9         0.607509   0.341280   0.185888   x 
+            x  H           10         0.392491   0.841280   0.814112   x 
+            x  H           11         0.801115   0.274496   0.091066   x 
+            x  H           12         0.198885   0.774496   0.908934   x 
+            x  H           13         0.791123   0.152869   0.525292   x 
+            x  H           14         0.208877   0.652869   0.474708   x 
+            x  C            1         0.525080   0.042273   0.447911   x 
+            x  C            2         0.474920   0.542273   0.552089   x 
+            x  C            3         0.704880   0.086294   0.361893   x 
+            x  C            4         0.295120   0.586294   0.638107   x 
+            x  C            5         0.787022   0.901462   0.287993   x 
+            x  C            6         0.212978   0.401462   0.712007   x 
+            x  C            7         0.969763   0.915730   0.212429   x 
+            x  C            8         0.030237   0.415730   0.787571   x 
+            x  N            1         0.680070   0.222795   0.137533   x 
+            x  N            2         0.319930   0.722795   0.862467   x 
+            x  O            1         0.395420   0.031082   0.267618   x 
+            x  O            2         0.604580   0.531082   0.732382   x 
+            x  O            3         0.523882   0.015056   0.687344   x 
+            x  O            4         0.476118   0.515056   0.312656   x 
+            x  O            5         1.002365   0.848409   0.007361   x 
+            x  O            6        -0.002365   0.348409   0.992639   x 
+            x  O            7         0.085124  -0.001350   0.389517   x 
+            x  O            8         0.914876   0.498650   0.610483   x 
+            xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+ 
+ 
+                         No user defined ionic velocities
+ 
+                           -------------------------------
+                                   Details of Species
+                           -------------------------------
+ 
+                               Mass of species in AMU
+                                    H    1.0079400
+                                    C   12.0107000
+                                    N   14.0067400
+                                    O   15.9994000
+ 
+                          Electric Quadrupole Moment (Barn)
+                                    H    0.0028600 Isotope  2
+                                    C    0.0332700 Isotope 11
+                                    N    0.0204400 Isotope 14
+                                    O   -0.0255800 Isotope 17
+ 
+                          Files used for pseudopotentials:
+                                    H /home/ufaserv1_a/eenadbu/Pseudopotentials/MS/H_00.recpot
+                                    C /home/ufaserv1_a/eenadbu/Pseudopotentials/MS/C_00.recpot
+                                    N /home/ufaserv1_a/eenadbu/Pseudopotentials/MS/N_00.recpot
+                                    O /home/ufaserv1_a/eenadbu/Pseudopotentials/RB/o-optgga1.recpot
+ 
+                           -------------------------------
+                              k-Points For BZ Sampling
+                           -------------------------------
+                       MP grid size for SCF calculation is  2  2  2
+                            with an offset of   0.000  0.000  0.000
+                       Number of kpoints used =             2
+ 
+                           -------------------------------
+                               Symmetry and Constraints
+                           -------------------------------
+ 
+                      Maximum deviation from symmetry = 0.148256E-13     ANG
+ 
+                      Number of symmetry operations   =           2
+                      Number of ionic constraints     =           3
+                      Point group of crystal =     4: C2, 2, 2
+                      Space group of crystal =     4: P2_1, P 2yb
+ 
+             Set iprint > 1 for details on symmetry rotations/translations
+ 
+                         Centre of mass is constrained
+             Set iprint > 1 for details of linear ionic constraints
+ 
+                         Number of cell constraints= 2
+                         Cell constraints are:  1 2 3 0 5 0
+ 
+                         External pressure/stress (GPa)
+                          0.00000   0.00000   0.00000
+                                    0.00000   0.00000
+                                              0.00000
+ 
+                                --------------------
+                                  DFT-D parameters
+                                --------------------
+ 
+                          Dispersion-correction scheme : TS                                                                              
+                        Parameter sR :   1.000000 (customized)
+                        Parameter d  :  20.000000 (default)
+ 
+        xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+        x              Atomic DFT-D parameters                             x
+        x  Species      C6            alpha        R0                      x
+        x               eV A^6        A^3          A                       x
+        x------------------------------------------------------------------x
+        x  H             3.8839       0.6668       1.6404   (default)      x
+        x  C            27.8447       1.7782       1.8997   (default)      x
+        x  N            14.4601       1.0966       1.7675   (default)      x
+        x  O             9.3214       0.8002       1.6881   (default)      x
+        xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+ 
+  
++---------------- MEMORY AND SCRATCH DISK ESTIMATES PER PROCESS --------------+
+|                                                     Memory          Disk    |
+| Model and support data                               59.5 MB         0.0 MB |
+| Electronic energy minimisation requirements          24.5 MB         0.0 MB |
+|                                               ----------------------------- |
+| Approx. total storage required per process           84.0 MB         0.0 MB |
+|                                                                             |
+| Requirements will fluctuate during execution and may exceed these estimates |
++-----------------------------------------------------------------------------+
+Calculating finite basis set correction with  3 cut-off energies.
+Calculating total energy with cut-off of  990.000eV.
+------------------------------------------------------------------------ <-- SCF
+SCF loop      Energy                           Energy gain       Timer   <-- SCF
+                                               per atom          (sec)   <-- SCF
+------------------------------------------------------------------------ <-- SCF
+Initial   1.99241263E+003                                         44.54  <-- SCF
+      1  -5.42646715E+003                    2.31839993E+002     600.18  <-- SCF
+      2  -5.46640597E+003                    1.24808805E+000    1181.83  <-- SCF
+      3  -5.46676539E+003                    1.12319473E-002    1770.19  <-- SCF
+      4  -5.46676558E+003                    5.75908071E-006    2397.10  <-- SCF
+      5  -5.46676558E+003                    5.44387260E-009    3153.29  <-- SCF
+      6  -5.46676558E+003                    6.71886107E-012    4448.63  <-- SCF
+      7  -5.46676558E+003                    9.66742601E-013    5852.14  <-- SCF
+------------------------------------------------------------------------ <-- SCF
+ 
+Final energy =  -5466.765576483     eV
+(energy not corrected for finite basis set)
+ 
+ WARNING: Your unit cell might be too small to get accurate results for van der 
+ Waals
+
+Dispersion corrected final energy* =  -5468.420172025     eV
+
+ * not corrected for finite basis set
+
+Calculating total energy with cut-off of  995.000eV.
+------------------------------------------------------------------------ <-- SCF
+SCF loop      Energy                           Energy gain       Timer   <-- SCF
+                                               per atom          (sec)   <-- SCF
+------------------------------------------------------------------------ <-- SCF
+Initial  -5.46676558E+003                                       5979.83  <-- SCF
+      1  -5.46676671E+003                    3.53363033E-005    6992.36  <-- SCF
+      2  -5.46676671E+003                    3.14191345E-013    8610.71  <-- SCF
+      3  -5.46676671E+003                    1.45011390E-013   10200.09  <-- SCF
+------------------------------------------------------------------------ <-- SCF
+ 
+Final energy =  -5466.766707245     eV
+(energy not corrected for finite basis set)
+ 
+
+Dispersion corrected final energy* =  -5468.421301991     eV
+
+ * not corrected for finite basis set
+
+Calculating total energy with cut-off of 1000.000eV.
+------------------------------------------------------------------------ <-- SCF
+SCF loop      Energy                           Energy gain       Timer   <-- SCF
+                                               per atom          (sec)   <-- SCF
+------------------------------------------------------------------------ <-- SCF
+Initial  -5.46676671E+003                                      10325.09  <-- SCF
+      1  -5.46676786E+003                    3.61591274E-005   11166.67  <-- SCF
+      2  -5.46676786E+003                    5.55876995E-013   12413.57  <-- SCF
+      3  -5.46676786E+003                    1.45011390E-013   13741.81  <-- SCF
+------------------------------------------------------------------------ <-- SCF
+ 
+Final energy =  -5466.767864337     eV
+(energy not corrected for finite basis set)
+ 
+
+Dispersion corrected final energy* =  -5468.422458247     eV
+
+ * not corrected for finite basis set
+
+ For future reference: finite basis dEtot/dlog(Ecut) =      -0.224311eV
+ Total energy corrected for finite basis set =   -5468.422391 eV
+
+ Efield perturbation    1:  X                                         13963.59s
+  Parallel strategy changed for perturbation using 4 k-points
+  Data is distributed by G-vector(4-way) and k-point(4-way) and band(1-way)
+  +---------------- MEMORY AND SCRATCH DISK ESTIMATES PER PROCESS --------------+
+  |                                                     Memory          Disk    |
+  | Model and support data                               50.8 MB         0.0 MB |
+  | DFPT E-field response requirements                   78.9 MB         0.0 MB |
+  |                                               ----------------------------- |
+  | Approx. total storage required per process          129.7 MB         0.0 MB |
+  |                                                                             |
+  | Requirements will fluctuate during execution and may exceed these estimates |
+  +-----------------------------------------------------------------------------+
+
+ Efield perturbation    2:  Y                                         17543.21s
+  Parallel strategy changed for perturbation using 2 k-points
+  Data is distributed by G-vector(8-way) and k-point(2-way) and band(1-way)
+
+ Efield perturbation    3:  Z                                         19148.14s
+  Parallel strategy changed for perturbation using 4 k-points
+  Data is distributed by G-vector(4-way) and k-point(4-way) and band(1-way)
+
+Writing analysis data to phonon.castep_bin
+
+Writing model to phonon.check
+ Perturbation    1 (of   48): H     1 X at q=( 0.000, 0.000, 0.000):  21930.94s
+  Parallel strategy changed for perturbation using 4 k-points
+  Data is distributed by G-vector(4-way) and k-point(4-way) and band(1-way)
+  +---------------- MEMORY AND SCRATCH DISK ESTIMATES PER PROCESS --------------+
+  |                                                     Memory          Disk    |
+  | Model and support data                               50.8 MB         0.0 MB |
+  | DFPT phonon calculation requirements                 91.2 MB         0.0 MB |
+  |                                               ----------------------------- |
+  | Approx. total storage required per process          142.0 MB         0.0 MB |
+  |                                                                             |
+  | Requirements will fluctuate during execution and may exceed these estimates |
+  +-----------------------------------------------------------------------------+
+
+Writing analysis data to phonon.castep_bin
+
+Writing model to phonon.check
+ Perturbation    2 (of   48): H     3 X at q=( 0.000, 0.000, 0.000):  24930.83s
+
+Writing analysis data to phonon.castep_bin
+
+Writing model to phonon.check
+ Perturbation    3 (of   48): H     5 X at q=( 0.000, 0.000, 0.000):  27405.73s
+
+Writing analysis data to phonon.castep_bin
+
+Writing model to phonon.check
+ Perturbation    4 (of   48): H     7 X at q=( 0.000, 0.000, 0.000):  29900.84s
+
+Writing analysis data to phonon.castep_bin
+
+Writing model to phonon.check
+ Perturbation    5 (of   48): H     9 X at q=( 0.000, 0.000, 0.000):  32255.14s
+
+Writing analysis data to phonon.castep_bin
+
+Writing model to phonon.check
+ Perturbation    6 (of   48): H    11 X at q=( 0.000, 0.000, 0.000):  34679.87s
+
+Writing analysis data to phonon.castep_bin
+
+Writing model to phonon.check
+ Perturbation    7 (of   48): H    13 X at q=( 0.000, 0.000, 0.000):  37073.84s
+
+Writing analysis data to phonon.castep_bin
+
+Writing model to phonon.check
+ Perturbation    8 (of   48): C     1 X at q=( 0.000, 0.000, 0.000):  39337.70s
+
+Writing analysis data to phonon.castep_bin
+
+Writing model to phonon.check
+ Perturbation    9 (of   48): C     3 X at q=( 0.000, 0.000, 0.000):  42114.51s
+
+Writing analysis data to phonon.castep_bin
+
+Writing model to phonon.check
+ Perturbation   10 (of   48): C     5 X at q=( 0.000, 0.000, 0.000):  44950.83s
+
+Writing analysis data to phonon.castep_bin
+
+Writing model to phonon.check
+ Perturbation   11 (of   48): C     7 X at q=( 0.000, 0.000, 0.000):  47601.02s
+
+Writing analysis data to phonon.castep_bin
+
+Writing model to phonon.check
+ Perturbation   12 (of   48): N     1 X at q=( 0.000, 0.000, 0.000):  50462.21s
+
+Writing analysis data to phonon.castep_bin
+
+Writing model to phonon.check
+ Perturbation   13 (of   48): O     1 X at q=( 0.000, 0.000, 0.000):  53067.13s
+
+Writing analysis data to phonon.castep_bin
+
+Writing model to phonon.check
+ Perturbation   14 (of   48): O     3 X at q=( 0.000, 0.000, 0.000):  55781.62s
+
+Writing analysis data to phonon.castep_bin
+
+Writing model to phonon.check
+ Perturbation   15 (of   48): O     5 X at q=( 0.000, 0.000, 0.000):  58500.77s
+
+Writing analysis data to phonon.castep_bin
+
+Writing model to phonon.check
+ Perturbation   16 (of   48): O     7 X at q=( 0.000, 0.000, 0.000):  61268.81s
+
+Writing analysis data to phonon.castep_bin
+
+Writing model to phonon.check
+ Perturbation   17 (of   48): H     1 Y at q=( 0.000, 0.000, 0.000):  63941.15s
+
+Writing analysis data to phonon.castep_bin
+
+Writing model to phonon.check
+ Perturbation   18 (of   48): H     3 Y at q=( 0.000, 0.000, 0.000):  66235.24s
+
+Writing analysis data to phonon.castep_bin
+
+Writing model to phonon.check
+ Perturbation   19 (of   48): H     5 Y at q=( 0.000, 0.000, 0.000):  68397.38s
+
+Writing analysis data to phonon.castep_bin
+
+Writing model to phonon.check
+ Perturbation   20 (of   48): H     7 Y at q=( 0.000, 0.000, 0.000):  70420.43s
+
+Writing analysis data to phonon.castep_bin
+
+Writing model to phonon.check
+ Perturbation   21 (of   48): H     9 Y at q=( 0.000, 0.000, 0.000):  72544.75s
+
+Writing analysis data to phonon.castep_bin
+
+Writing model to phonon.check
+ Perturbation   22 (of   48): H    11 Y at q=( 0.000, 0.000, 0.000):  74500.36s
+
+Writing analysis data to phonon.castep_bin
+
+Writing model to phonon.check
+ Perturbation   23 (of   48): H    13 Y at q=( 0.000, 0.000, 0.000):  76669.66s
+
+Writing analysis data to phonon.castep_bin
+
+Writing model to phonon.check
+ Perturbation   24 (of   48): C     1 Y at q=( 0.000, 0.000, 0.000):  78695.13s
+
+Writing analysis data to phonon.castep_bin
+
+Writing model to phonon.check
+ Perturbation   25 (of   48): C     3 Y at q=( 0.000, 0.000, 0.000):  81361.80s
+
+Writing analysis data to phonon.castep_bin
+
+Writing model to phonon.check
+ Perturbation   26 (of   48): C     5 Y at q=( 0.000, 0.000, 0.000):  83787.18s
+
+Writing analysis data to phonon.castep_bin
+
+Writing model to phonon.check
+ Perturbation   27 (of   48): C     7 Y at q=( 0.000, 0.000, 0.000):  86166.18s
+
+Writing analysis data to phonon.castep_bin
+
+Writing model to phonon.check
+ Perturbation   28 (of   48): N     1 Y at q=( 0.000, 0.000, 0.000):  88855.96s
+
+Writing analysis data to phonon.castep_bin
+
+Writing model to phonon.check
+ Perturbation   29 (of   48): O     1 Y at q=( 0.000, 0.000, 0.000):  91252.19s
+
+Writing analysis data to phonon.castep_bin
+
+Writing model to phonon.check
+ Perturbation   30 (of   48): O     3 Y at q=( 0.000, 0.000, 0.000):  93828.10s
+
+Writing analysis data to phonon.castep_bin
+
+Writing model to phonon.check
+ Perturbation   31 (of   48): O     5 Y at q=( 0.000, 0.000, 0.000):  96215.23s
+
+Writing analysis data to phonon.castep_bin
+
+Writing model to phonon.check
+ Perturbation   32 (of   48): O     7 Y at q=( 0.000, 0.000, 0.000):  98739.82s
+
+Writing analysis data to phonon.castep_bin
+
+Writing model to phonon.check
+ Perturbation   33 (of   48): H     1 Z at q=( 0.000, 0.000, 0.000): 101112.39s
+
+Writing analysis data to phonon.castep_bin
+
+Writing model to phonon.check
+ Perturbation   34 (of   48): H     3 Z at q=( 0.000, 0.000, 0.000): 103098.96s
+
+Writing analysis data to phonon.castep_bin
+
+Writing model to phonon.check
+ Perturbation   35 (of   48): H     5 Z at q=( 0.000, 0.000, 0.000): 105124.42s
+ Perturbation   36 (of   48): H     7 Z at q=( 0.000, 0.000, 0.000): 106916.41s
+
+Writing analysis data to phonon.castep_bin
+
+Writing model to phonon.check
+ Perturbation   37 (of   48): H     9 Z at q=( 0.000, 0.000, 0.000): 108806.16s
+ Perturbation   38 (of   48): H    11 Z at q=( 0.000, 0.000, 0.000): 110563.73s
+
+Writing analysis data to phonon.castep_bin
+
+Writing model to phonon.check
+ Perturbation   39 (of   48): H    13 Z at q=( 0.000, 0.000, 0.000): 112417.97s
+
+Writing analysis data to phonon.castep_bin
+
+Writing model to phonon.check
+ Perturbation   40 (of   48): C     1 Z at q=( 0.000, 0.000, 0.000): 114300.38s
+
+Writing analysis data to phonon.castep_bin
+
+Writing model to phonon.check
+ Perturbation   41 (of   48): C     3 Z at q=( 0.000, 0.000, 0.000): 116634.95s
+
+Writing analysis data to phonon.castep_bin
+
+Writing model to phonon.check
+ Perturbation   42 (of   48): C     5 Z at q=( 0.000, 0.000, 0.000): 118884.35s
+
+Writing analysis data to phonon.castep_bin
+
+Writing model to phonon.check
+ Perturbation   43 (of   48): C     7 Z at q=( 0.000, 0.000, 0.000): 120996.96s
+
+Writing analysis data to phonon.castep_bin
+
+Writing model to phonon.check
+ Perturbation   44 (of   48): N     1 Z at q=( 0.000, 0.000, 0.000): 123286.44s
+
+Writing analysis data to phonon.castep_bin
+
+Writing model to phonon.check
+ Perturbation   45 (of   48): O     1 Z at q=( 0.000, 0.000, 0.000): 125409.31s
+
+Writing analysis data to phonon.castep_bin
+
+Writing model to phonon.check
+ Perturbation   46 (of   48): O     3 Z at q=( 0.000, 0.000, 0.000): 127623.95s
+
+Writing analysis data to phonon.castep_bin
+
+Writing model to phonon.check
+ Perturbation   47 (of   48): O     5 Z at q=( 0.000, 0.000, 0.000): 129863.20s
+
+Writing analysis data to phonon.castep_bin
+
+Writing model to phonon.check
+ Perturbation   48 (of   48): O     7 Z at q=( 0.000, 0.000, 0.000): 132071.39s
+
+Writing analysis data to phonon.castep_bin
+
+Writing model to phonon.check
+
+ Phonon calculation: q-point   1 (of    1) ( 0.000, 0.000, 0.000):   134377.57s
+ -------------------------------------------------------------------------------
+ 
+ ==============================================================================
+ +                           Vibrational Frequencies                          +
+ +                           -----------------------                          +
+ +                                                                            +
+ + Performing frequency calculation at  1 wavevector  (q-pt )                 +
+ + ========================================================================== +
+ +                                                                            +
+ + -------------------------------------------------------------------------- +
+ +  q-pt=    1 (  0.000000  0.000000  0.000000)     1.0000000000              +
+ + -------------------------------------------------------------------------- +
+ +  Acoustic sum rule correction <  16.247367 cm-1 applied                    +
+ +     N      Frequency irrep.    ir intensity active            raman active + 
+ +                (cm-1)         ((D/A)**2/amu)                               + 
+ +                                                                            +
+ +     1      -0.060041   a          0.0000000  N                       N     + 
+ +     2      -0.049265   a          0.0000000  N                       N     + 
+ +     3      -0.034699   b          0.0000000  N                       N     + 
+ +     4      50.016139   b          0.0001213  Y                       Y     + 
+ +     5      77.003454   b          0.0013300  Y                       Y     + 
+ +     6      84.517475   a          0.1196570  Y                       Y     + 
+ +     7     101.268442   a          0.0285589  Y                       Y     + 
+ +     8     104.719637   b          0.2024698  Y                       Y     + 
+ +     9     106.034680   a          0.2432572  Y                       Y     + 
+ +    10     115.289848   b          0.4740952  Y                       Y     + 
+ +    11     119.818700   b          0.0000101  Y                       Y     + 
+ +    12     137.266914   a          0.6173715  Y                       Y     + 
+ +    13     142.296787   b          0.0001066  Y                       Y     + 
+ +    14     150.985976   a          0.2613773  Y                       Y     + 
+ +    15     153.247018   b          0.2241207  Y                       Y     + 
+ +    16     165.883166   a          0.1981572  Y                       Y     + 
+ +    17     180.000989   a          0.4213361  Y                       Y     + 
+ +    18     196.133238   b          0.1249820  Y                       Y     + 
+ +    19     216.762878   a          3.1071581  Y                       Y     + 
+ +    20     225.868522   b          3.8138369  Y                       Y     + 
+ +    21     291.884164   b          0.1590021  Y                       Y     + 
+ +    22     293.337084   a          0.0110092  Y                       Y     + 
+ +    23     371.128415   b          0.2378248  Y                       Y     + 
+ +    24     374.411350   a          6.0267060  Y                       Y     + 
+ +    25     385.313251   b          0.9207651  Y                       Y     + 
+ +    26     414.892354   a          8.2279643  Y                       Y     + 
+ +    27     455.492260   a          3.8645446  Y                       Y     + 
+ +    28     474.591612   b          0.8208589  Y                       Y     + 
+ +    29     544.879007   b          0.6230329  Y                       Y     + 
+ +    30     546.920751   a          1.0365444  Y                       Y     + 
+ +    31     560.633909   b          0.1137714  Y                       Y     + 
+ +    32     561.864529   a          1.5828150  Y                       Y     + 
+ +    33     609.744687   b          0.0022885  Y                       Y     + 
+ +    34     610.102269   a          1.2343026  Y                       Y     + 
+ +    35     668.792187   a          2.4152100  Y                       Y     + 
+ +    36     678.278901   b          0.0355399  Y                       Y     + 
+ +    37     761.036275   b          0.2802643  Y                       Y     + 
+ +    38     769.705880   a          1.6693432  Y                       Y     + 
+ +    39     787.324253   b          0.1851929  Y                       Y     + 
+ +    40     793.593550   a          0.0076017  Y                       Y     + 
+ +    41     867.672764   b          0.0077670  Y                       Y     + 
+ +    42     875.549820   a          1.2151372  Y                       Y     + 
+ +    43     893.764685   a          2.7668894  Y                       Y     + 
+ +    44     896.082132   b          0.0016175  Y                       Y     + 
+ +    45     941.380391   a          0.2133690  Y                       Y     + 
+ +    46     941.592530   b          0.1744318  Y                       Y     + 
+ +    47     998.583928   a          0.2145943  Y                       Y     + 
+ +    48     999.915263   b          1.2650869  Y                       Y     + 
+ +    49    1071.294617   b          0.6421180  Y                       Y     + 
+ +    50    1074.888208   a          0.6776519  Y                       Y     + 
+ +    51    1127.695815   b          0.0709739  Y                       Y     + 
+ +    52    1128.391764   a          5.7447208  Y                       Y     + 
+ +    53    1144.286436   b          4.8908125  Y                       Y     + 
+ +    54    1147.301818   a          0.1583243  Y                       Y     + 
+ +    55    1157.198076   b          1.1802235  Y                       Y     + 
+ +    56    1165.081209   a         10.9206820  Y                       Y     + 
+ +    57    1252.346433   a          1.4044116  Y                       Y     + 
+ +    58    1252.866226   b          0.0100432  Y                       Y     + 
+ +    59    1265.590410   b          3.5539085  Y                       Y     + 
+ +    60    1269.106655   a          3.4871443  Y                       Y     + 
+ +    61    1287.336071   b          1.8510088  Y                       Y     + 
+ +    62    1289.954857   a         55.0442307  Y                       Y     + 
+ +    63    1336.370243   b          0.3284407  Y                       Y     + 
+ +    64    1340.623847   a          1.0290780  Y                       Y     + 
+ +    65    1351.730447   b          0.5688991  Y                       Y     + 
+ +    66    1352.899381   a          5.1563298  Y                       Y     + 
+ +    67    1385.682858   b          0.0579135  Y                       Y     + 
+ +    68    1397.650780   a          4.8884236  Y                       Y     + 
+ +    69    1422.353939   a          0.3242797  Y                       Y     + 
+ +    70    1423.025394   b          1.2290118  Y                       Y     + 
+ +    71    1473.962142   a          0.5314201  Y                       Y     + 
+ +    72    1475.943366   b          0.0916194  Y                       Y     + 
+ +    73    1507.128197   b          1.4729028  Y                       Y     + 
+ +    74    1509.137191   a         75.3592992  Y                       Y     + 
+ +    75    1558.647535   b          2.3398546  Y                       Y     + 
+ +    76    1578.301691   a         13.2666013  Y                       Y     + 
+ +    77    1613.333629   b          3.0192814  Y                       Y     + 
+ +    78    1623.823949   a          5.1494646  Y                       Y     + 
+ +    79    1638.698167   a         11.0579329  Y                       Y     + 
+ +    80    1642.016749   b          0.1590481  Y                       Y     + 
+ +    81    1655.640959   a          1.9733185  Y                       Y     + 
+ +    82    1666.651221   b          6.4819084  Y                       Y     + 
+ +    83    2288.488312   a        185.1112238  Y                       Y     + 
+ +    84    2307.021392   b          3.5085138  Y                       Y     + 
+ +    85    2945.928509   a        102.8357817  Y                       Y     + 
+ +    86    2947.296479   b         48.1882473  Y                       Y     + 
+ +    87    2960.706240   b          7.1706205  Y                       Y     + 
+ +    88    2979.802809   a          3.7622053  Y                       Y     + 
+ +    89    3018.235868   b          0.4922971  Y                       Y     + 
+ +    90    3018.755533   a          0.0274899  Y                       Y     + 
+ +    91    3039.833077   b          4.1993499  Y                       Y     + 
+ +    92    3053.667027   a         44.1094897  Y                       Y     + 
+ +    93    3074.469058   b          0.5448186  Y                       Y     + 
+ +    94    3075.105265   a          4.5302947  Y                       Y     + 
+ +    95    3088.733242   b          0.0002452  Y                       Y     + 
+ +    96    3089.649374   a          2.2869388  Y                       Y     + 
+ + .......................................................................... +
+ +        Character table from group theory analysis of eigenvectors          +
+ +                           Point Group =   4, C2                            +
+ + .......................................................................... +
+ +  Rep  Mul |    E   2                                                       +
+ +           | --------                                                       +
+ + a B    48 |    1  -1                                                       +
+ + b A    48 |    1   1                                                       +
+ + -------------------------------------------------------------------------- +
+ +  q-pt=    1 (  0.000000  0.000000  0.000000)     1.0000000000              +
+ +  q->0 along (  0.000000  0.000000  1.000000)                               +
+ + -------------------------------------------------------------------------- +
+ +  Acoustic sum rule correction <  16.247367 cm-1 applied                    +
+ +     N      Frequency irrep.    ir intensity active            raman active + 
+ +                (cm-1)         ((D/A)**2/amu)                               + 
+ +                                                                            +
+ +     1      -0.057524   a          0.0000000  N                       N     + 
+ +     2      -0.034699   b          0.0000000  N                       N     + 
+ +     3       0.389751   a          0.0000000  N                       N     + 
+ +     4      50.016139   b          0.0001213  Y                       Y     + 
+ +     5      77.003454   b          0.0013300  Y                       Y     + 
+ +     6      85.487469   a          0.0586237  Y                       Y     + 
+ +     7     101.495841   a          0.0084609  Y                       Y     + 
+ +     8     104.719637   b          0.2024698  Y                       Y     + 
+ +     9     106.516654   a          0.2373820  Y                       Y     + 
+ +    10     115.289848   b          0.4740952  Y                       Y     + 
+ +    11     119.818700   b          0.0000101  Y                       Y     + 
+ +    12     140.014684   a          0.2304157  Y                       Y     + 
+ +    13     142.296787   b          0.0001066  Y                       Y     + 
+ +    14     151.592814   a          0.2153666  Y                       Y     + 
+ +    15     153.247018   b          0.2241207  Y                       Y     + 
+ +    16     166.591274   a          0.1189065  Y                       Y     + 
+ +    17     181.621027   a          0.1981877  Y                       Y     + 
+ +    18     196.133238   b          0.1249820  Y                       Y     + 
+ +    19     225.868522   b          3.8138369  Y                       Y     + 
+ +    20     233.737492   a          2.0236813  Y                       Y     + 
+ +    21     291.884164   b          0.1590021  Y                       Y     + 
+ +    22     293.338072   a          0.0108990  Y                       Y     + 
+ +    23     371.128415   b          0.2378248  Y                       Y     + 
+ +    24     379.549859   a          6.5964419  Y                       Y     + 
+ +    25     385.313251   b          0.9207651  Y                       Y     + 
+ +    26     424.146695   a          6.9579621  Y                       Y     + 
+ +    27     455.731146   a          3.6308431  Y                       Y     + 
+ +    28     474.591612   b          0.8208589  Y                       Y     + 
+ +    29     544.879007   b          0.6230329  Y                       Y     + 
+ +    30     547.156460   a          0.9681596  Y                       Y     + 
+ +    31     560.633909   b          0.1137714  Y                       Y     + 
+ +    32     563.672135   a          1.6602671  Y                       Y     + 
+ +    33     609.744687   b          0.0022885  Y                       Y     + 
+ +    34     610.455910   a          1.3392440  Y                       Y     + 
+ +    35     669.825803   a          2.0893691  Y                       Y     + 
+ +    36     678.278901   b          0.0355399  Y                       Y     + 
+ +    37     761.036275   b          0.2802643  Y                       Y     + 
+ +    38     769.983152   a          1.5588328  Y                       Y     + 
+ +    39     787.324253   b          0.1851929  Y                       Y     + 
+ +    40     793.602453   a          0.0058197  Y                       Y     + 
+ +    41     867.672764   b          0.0077670  Y                       Y     + 
+ +    42     875.602674   a          1.1896550  Y                       Y     + 
+ +    43     893.958566   a          2.7926549  Y                       Y     + 
+ +    44     896.082132   b          0.0016175  Y                       Y     + 
+ +    45     941.503639   a          0.1993704  Y                       Y     + 
+ +    46     941.592530   b          0.1744318  Y                       Y     + 
+ +    47     998.810805   a          0.1484036  Y                       Y     + 
+ +    48     999.915263   b          1.2650869  Y                       Y     + 
+ +    49    1071.294617   b          0.6421180  Y                       Y     + 
+ +    50    1075.403629   a          0.5325321  Y                       Y     + 
+ +    51    1127.695815   b          0.0709739  Y                       Y     + 
+ +    52    1131.607520   a          2.9169438  Y                       Y     + 
+ +    53    1144.286436   b          4.8908125  Y                       Y     + 
+ +    54    1147.365165   a          0.1092346  Y                       Y     + 
+ +    55    1157.198076   b          1.1802235  Y                       Y     + 
+ +    56    1166.376496   a          9.8388397  Y                       Y     + 
+ +    57    1252.866226   b          0.0100432  Y                       Y     + 
+ +    58    1253.083444   a          0.9780880  Y                       Y     + 
+ +    59    1265.590410   b          3.5539085  Y                       Y     + 
+ +    60    1271.170241   a          3.9888889  Y                       Y     + 
+ +    61    1287.336071   b          1.8510088  Y                       Y     + 
+ +    62    1296.225007   a         48.6713863  Y                       Y     + 
+ +    63    1336.370243   b          0.3284407  Y                       Y     + 
+ +    64    1341.181500   a          0.8726392  Y                       Y     + 
+ +    65    1351.730447   b          0.5688991  Y                       Y     + 
+ +    66    1356.181489   a          2.4990567  Y                       Y     + 
+ +    67    1385.682858   b          0.0579135  Y                       Y     + 
+ +    68    1398.538967   a          4.1205001  Y                       Y     + 
+ +    69    1422.504564   a          0.1903397  Y                       Y     + 
+ +    70    1423.025394   b          1.2290118  Y                       Y     + 
+ +    71    1474.101843   a          0.1058590  Y                       Y     + 
+ +    72    1475.943366   b          0.0916194  Y                       Y     + 
+ +    73    1507.128197   b          1.4729028  Y                       Y     + 
+ +    74    1558.647535   b          2.3398546  Y                       Y     + 
+ +    75    1559.268994   a         19.7658752  Y                       Y     + 
+ +    76    1598.876383   a         44.8474962  Y                       Y     + 
+ +    77    1613.333629   b          3.0192814  Y                       Y     + 
+ +    78    1623.929509   a          6.3363081  Y                       Y     + 
+ +    79    1642.016749   b          0.1590481  Y                       Y     + 
+ +    80    1654.863827   a          6.3866430  Y                       Y     + 
+ +    81    1660.884463   a         41.2183487  Y                       Y     + 
+ +    82    1666.651221   b          6.4819084  Y                       Y     + 
+ +    83    2288.523173   a        184.6985496  Y                       Y     + 
+ +    84    2307.021392   b          3.5085138  Y                       Y     + 
+ +    85    2947.296479   b         48.1882473  Y                       Y     + 
+ +    86    2951.739916   a         94.5533586  Y                       Y     + 
+ +    87    2960.706240   b          7.1706205  Y                       Y     + 
+ +    88    2981.433303   a          4.9801971  Y                       Y     + 
+ +    89    3018.235868   b          0.4922971  Y                       Y     + 
+ +    90    3018.758607   a          0.0178993  Y                       Y     + 
+ +    91    3039.833077   b          4.1993499  Y                       Y     + 
+ +    92    3069.999784   a         12.0129809  Y                       Y     + 
+ +    93    3074.469058   b          0.5448186  Y                       Y     + 
+ +    94    3082.811245   a         22.9643542  Y                       Y     + 
+ +    95    3088.733242   b          0.0002452  Y                       Y     + 
+ +    96    3094.442636   a         29.4744116  Y                       Y     + 
+ + .......................................................................... +
+ +        Character table from group theory analysis of eigenvectors          +
+ +                           Point Group =   4, C2                            +
+ + (Due to LO/TO splitting this character table may not contain some symmetry +
+ +  operations of the full crystallographic point group.  Additional          +
+ +  representations may be also be present corresponding to split LO modes.   +
+ +  A conventional analysis can be generated by specifying an additional null +
+ +  (all zero) field direction or one along any unique crystallographic axis  +
+ +  in %BLOCK PHONON_GAMMA_DIRECTIONS in <seedname>.cell.)                    +
+ + .......................................................................... +
+ +  Rep  Mul |    E   2                                                       +
+ +           | --------                                                       +
+ + a B    48 |    1  -1                                                       +
+ + b A    48 |    1   1                                                       +
+ ==============================================================================
+
+ ===============================================================================
+        Optical Permittivity (f->infinity)             DC Permittivity (f=0)
+        ----------------------------------             ---------------------
+         2.68359     0.00000    -0.05896         4.57813     0.00000     0.16150
+         0.00000     2.20170     0.00000         0.00000     3.64606     0.00000
+        -0.05896     0.00000     2.56293         0.16150     0.00000     4.31117
+ ===============================================================================
+
+ ===============================================================================
+                                    Polarisabilities (A**3)
+                Optical (f->infinity)                       Static  (f=0)
+                ---------------------                       -------------
+        36.14557     0.00000    -1.26591        76.82015     0.00000     3.46722
+         0.00000    25.79974     0.00000         0.00000    56.80924     0.00000
+        -1.26591     0.00000    33.55516         3.46722     0.00000    71.08871
+ ===============================================================================
+ ===================================================
+                   Born Effective Charges
+                   ----------------------
+   H       1         2.20715     0.27526     0.30731
+                     0.18432     0.39582     0.00289
+                    -0.23420    -0.06542     0.22269
+   H       2         2.20715    -0.27526     0.30731
+                    -0.18432     0.39582    -0.00289
+                    -0.23420     0.06542     0.22269
+   H       3         0.09699     0.01093     0.03496
+                    -0.00284     0.16829    -0.01463
+                    -0.01902     0.01608     0.09202
+   H       4         0.09699    -0.01093     0.03496
+                     0.00284     0.16829     0.01463
+                    -0.01902    -0.01608     0.09202
+   H       5         0.01587     0.01644    -0.03277
+                     0.02435     0.09276    -0.05358
+                    -0.04375    -0.06920     0.09187
+   H       6         0.01587    -0.01644    -0.03277
+                    -0.02435     0.09276     0.05358
+                    -0.04375     0.06920     0.09187
+   H       7         0.31563     0.07582     0.17570
+                     0.06761     0.40320     0.36273
+                     0.14079     0.27090     0.99005
+   H       8         0.31563    -0.07582     0.17570
+                    -0.06761     0.40320    -0.36273
+                     0.14079    -0.27090     0.99005
+   H       9         0.55906    -0.40343    -0.29498
+                    -0.40088     0.79414     0.34550
+                    -0.19211     0.24896     0.45066
+   H      10         0.55906     0.40343    -0.29498
+                     0.40088     0.79414    -0.34550
+                    -0.19211    -0.24896     0.45066
+   H      11         1.03593     0.43443    -0.44618
+                     0.31334     0.43686    -0.16726
+                    -0.24730    -0.13648     0.41576
+   H      12         1.03593    -0.43443    -0.44618
+                    -0.31334     0.43686     0.16726
+                    -0.24730     0.13648     0.41576
+   H      13         0.08763    -0.01600    -0.03698
+                    -0.03320     0.03639     0.01552
+                    -0.00942     0.00594    -0.03382
+   H      14         0.08763     0.01600    -0.03698
+                     0.03320     0.03639    -0.01552
+                    -0.00942    -0.00594    -0.03382
+   C       1         1.84178     0.14254     0.09952
+                     0.32208     0.22410    -0.26727
+                     0.37752    -0.18875     2.72629
+   C       2         1.84178    -0.14254     0.09952
+                    -0.32208     0.22410     0.26727
+                     0.37752     0.18875     2.72629
+   C       3        -0.26258    -0.10021     0.13126
+                    -0.08330     0.59153    -0.29148
+                     0.03291    -0.25619     0.41911
+   C       4        -0.26258     0.10021     0.13126
+                     0.08330     0.59153     0.29148
+                     0.03291     0.25619     0.41911
+   C       5        -0.46158     0.00102     0.13931
+                    -0.14703    -0.07413     0.13759
+                     0.27431     0.02647    -0.12183
+   C       6        -0.46158    -0.00102     0.13931
+                     0.14703    -0.07413    -0.13759
+                     0.27431    -0.02647    -0.12183
+   C       7         2.00208     0.16375     0.03953
+                     0.38991     0.78574     0.84410
+                     0.03681     0.97057     2.15629
+   C       8         2.00208    -0.16375     0.03953
+                    -0.38991     0.78574    -0.84410
+                     0.03681    -0.97057     2.15629
+   N       1        -0.83877    -0.02561     0.32009
+                     0.05966    -0.84373    -0.09004
+                     0.14574     0.00990    -0.86184
+   N       2        -0.83877     0.02561     0.32009
+                    -0.05966    -0.84373     0.09004
+                     0.14574    -0.00990    -0.86184
+   O       1        -2.15640    -0.15371    -0.73192
+                    -0.24627    -0.59301    -0.05499
+                    -0.39859     0.03584    -1.46291
+   O       2        -2.15640     0.15371    -0.73192
+                     0.24627    -0.59301     0.05499
+                    -0.39859    -0.03584    -1.46291
+   O       3        -0.96029    -0.26168     0.43677
+                    -0.27954    -0.85650     0.21184
+                     0.03579     0.15461    -2.42342
+   O       4        -0.96029     0.26168     0.43677
+                     0.27954    -0.85650    -0.21184
+                     0.03579    -0.15461    -2.42342
+   O       5        -1.32087     0.42424     0.59875
+                     0.20000    -0.79553    -0.53725
+                     0.34522    -0.65887    -1.57918
+   O       6        -1.32087    -0.42424     0.59875
+                    -0.20000    -0.79553     0.53725
+                     0.34522     0.65887    -1.57918
+   O       7        -2.16163    -0.50692    -0.74037
+                    -0.36157    -0.76595    -0.41710
+                    -0.24472    -0.37857    -1.08173
+   O       8        -2.16163     0.50692    -0.74037
+                     0.36157    -0.76595     0.41710
+                    -0.24472     0.37857    -1.08173
+ ===================================================
+ 
+ ***************** Symmetrised Forces *****************
+ *                                                    *
+ *            Cartesian components (eV/A)             *
+ * -------------------------------------------------- *
+ *                   x            y            z      *
+ *                                                    *
+ * H         1     -0.00000     -0.00000      0.00000 *
+ * H         2      0.00000     -0.00000     -0.00000 *
+ * H         3     -0.00000     -0.00000      0.00000 *
+ * H         4      0.00000     -0.00000     -0.00000 *
+ * H         5     -0.00000     -0.00000     -0.00000 *
+ * H         6      0.00000     -0.00000      0.00000 *
+ * H         7      0.00000     -0.00000     -0.00000 *
+ * H         8     -0.00000     -0.00000      0.00000 *
+ * H         9      0.00000     -0.00000     -0.00000 *
+ * H        10     -0.00000     -0.00000      0.00000 *
+ * H        11     -0.00000     -0.00000     -0.00000 *
+ * H        12      0.00000     -0.00000      0.00000 *
+ * H        13      0.00000      0.00000      0.00000 *
+ * H        14     -0.00000      0.00000     -0.00000 *
+ * C         1      0.00000      0.00000     -0.00001 *
+ * C         2     -0.00000      0.00000      0.00001 *
+ * C         3     -0.00000     -0.00000     -0.00000 *
+ * C         4      0.00000     -0.00000      0.00000 *
+ * C         5      0.00000      0.00000     -0.00000 *
+ * C         6     -0.00000      0.00000      0.00000 *
+ * C         7      0.00000     -0.00000     -0.00001 *
+ * C         8     -0.00000     -0.00000      0.00001 *
+ * N         1      0.00000      0.00000      0.00000 *
+ * N         2     -0.00000      0.00000     -0.00000 *
+ * O         1     -0.00000     -0.00000     -0.00001 *
+ * O         2      0.00000     -0.00000      0.00001 *
+ * O         3     -0.00000     -0.00000      0.00001 *
+ * O         4      0.00000     -0.00000     -0.00001 *
+ * O         5     -0.00000      0.00000      0.00001 *
+ * O         6      0.00000      0.00000     -0.00001 *
+ * O         7      0.00001      0.00000     -0.00000 *
+ * O         8     -0.00001      0.00000      0.00000 *
+ *                                                    *
+ ******************************************************
+ 
+ *********** Symmetrised Stress Tensor ***********
+ *                                               *
+ *          Cartesian components (GPa)           *
+ * --------------------------------------------- *
+ *             x             y             z     *
+ *                                               *
+ *  x      0.007131      0.000000     -0.000018  *
+ *  y      0.000000      0.007113      0.000000  *
+ *  z     -0.000018      0.000000      0.007096  *
+ *                                               *
+ *  Pressure:   -0.0071                          *
+ *                                               *
+ *************************************************
+ 
+ Pseudo atomic calculation performed for H 1s1
+ 
+ Converged in 21 iterations to a total energy of -12.4781 eV
+ 
+ 
+ Pseudo atomic calculation performed for C 2s2 2p2
+ 
+ Converged in 26 iterations to a total energy of -146.4297 eV
+ 
+ 
+ Pseudo atomic calculation performed for N 2s2 2p3
+ 
+ Converged in 36 iterations to a total energy of -263.6361 eV
+ 
+ 
+ Pseudo atomic calculation performed for O 2s2 2p4
+ 
+ Converged in 37 iterations to a total energy of -423.8867 eV
+ 
+Charge spilling parameter for spin component 1 = 1.19%
+ 
+     Atomic Populations (Mulliken)
+     -----------------------------
+Species   Ion     s      p      d      f     Total  Charge (e)
+==============================================================
+  H        1     0.54   0.00   0.00   0.00   0.54     0.46
+  H        2     0.54   0.00   0.00   0.00   0.54     0.46
+  H        3     0.68   0.00   0.00   0.00   0.68     0.32
+  H        4     0.68   0.00   0.00   0.00   0.68     0.32
+  H        5     0.71   0.00   0.00   0.00   0.71     0.29
+  H        6     0.71   0.00   0.00   0.00   0.71     0.29
+  H        7     0.56   0.00   0.00   0.00   0.56     0.44
+  H        8     0.56   0.00   0.00   0.00   0.56     0.44
+  H        9     0.56   0.00   0.00   0.00   0.56     0.44
+  H       10     0.56   0.00   0.00   0.00   0.56     0.44
+  H       11     0.56   0.00   0.00   0.00   0.56     0.44
+  H       12     0.56   0.00   0.00   0.00   0.56     0.44
+  H       13     0.70   0.00   0.00   0.00   0.70     0.30
+  H       14     0.70   0.00   0.00   0.00   0.70     0.30
+  C        1     0.85   2.48   0.00   0.00   3.33     0.67
+  C        2     0.85   2.48   0.00   0.00   3.33     0.67
+  C        3     1.17   2.99   0.00   0.00   4.16    -0.16
+  C        4     1.17   2.99   0.00   0.00   4.16    -0.16
+  C        5     1.26   3.28   0.00   0.00   4.54    -0.54
+  C        6     1.26   3.28   0.00   0.00   4.54    -0.54
+  C        7     0.87   2.45   0.00   0.00   3.31     0.69
+  C        8     0.87   2.45   0.00   0.00   3.31     0.69
+  N        1     1.58   4.20   0.00   0.00   5.79    -0.79
+  N        2     1.58   4.20   0.00   0.00   5.79    -0.79
+  O        1     1.80   4.85   0.00   0.00   6.65    -0.65
+  O        2     1.80   4.85   0.00   0.00   6.65    -0.65
+  O        3     1.80   4.86   0.00   0.00   6.66    -0.66
+  O        4     1.80   4.86   0.00   0.00   6.66    -0.66
+  O        5     1.80   4.80   0.00   0.00   6.60    -0.60
+  O        6     1.80   4.80   0.00   0.00   6.60    -0.60
+  O        7     1.78   4.87   0.00   0.00   6.65    -0.65
+  O        8     1.78   4.87   0.00   0.00   6.65    -0.65
+==============================================================
+ 
+            Bond              Population      Length (A)
+============================================================
+         H 7  -- N 1               0.64        1.04372
+         H 8  -- N 2               0.64        1.04372
+         H 9  -- N 1               0.62        1.04881
+         H 10 -- N 2               0.62        1.04881
+         H 12 -- N 2               0.62        1.04916
+         H 11 -- N 1               0.62        1.04916
+         H 1  -- O 7               0.45        1.05195
+         H 2  -- O 8               0.45        1.05195
+         H 14 -- C 4               0.88        1.08590
+         H 13 -- C 3               0.88        1.08590
+         H 6  -- C 6               0.85        1.08695
+         H 5  -- C 5               0.85        1.08695
+         H 4  -- C 6               0.82        1.09062
+         H 3  -- C 5               0.82        1.09062
+          C 8 -- O 6               1.05        1.20982
+          C 7 -- O 5               1.05        1.20982
+          C 2 -- O 4               0.93        1.24041
+          C 1 -- O 3               0.93        1.24041
+          C 2 -- O 2               0.91        1.24467
+          C 1 -- O 1               0.91        1.24467
+          C 7 -- O 7               0.74        1.29825
+          C 8 -- O 8               0.74        1.29825
+          C 4 -- N 2               0.54        1.48518
+          C 3 -- N 1               0.54        1.48518
+         H 2  -- O 2               0.20        1.48813
+         H 1  -- O 1               0.20        1.48813
+          C 5 -- C 7               0.74        1.50007
+          C 6 -- C 8               0.74        1.50007
+          C 3 -- C 5               0.70        1.51381
+          C 4 -- C 6               0.70        1.51381
+          C 1 -- C 3               0.75        1.52910
+          C 2 -- C 4               0.75        1.52910
+         H 10 -- H 12             -0.08        1.68409
+         H 9  -- H 11             -0.08        1.68409
+         H 8  -- H 12             -0.08        1.68967
+         H 7  -- H 11             -0.08        1.68967
+         H 7  -- H 9              -0.07        1.71010
+         H 8  -- H 10             -0.07        1.71010
+         H 11 -- O 6               0.11        1.72660
+         H 12 -- O 5               0.11        1.72660
+         H 9  -- O 4               0.10        1.76221
+         H 10 -- O 3               0.10        1.76221
+         H 4  -- H 6              -0.08        1.76366
+         H 3  -- H 5              -0.08        1.76366
+         H 7  -- O 3               0.09        1.79438
+         H 8  -- O 4               0.09        1.79438
+         H 2  -- C 8              -0.16        1.96284
+         H 1  -- C 7              -0.16        1.96284
+         H 4  -- C 8              -0.13        2.08638
+         H 3  -- C 7              -0.13        2.08638
+         H 7  -- C 3              -0.12        2.08774
+         H 8  -- C 4              -0.12        2.08774
+         H 9  -- C 3              -0.11        2.08939
+         H 10 -- C 4              -0.11        2.08939
+         H 14 -- N 2              -0.13        2.09128
+         H 13 -- N 1              -0.13        2.09128
+         H 5  -- C 7              -0.15        2.10212
+         H 6  -- C 8              -0.15        2.10212
+         H 3  -- C 3              -0.12        2.11096
+         H 4  -- C 4              -0.12        2.11096
+         H 11 -- C 3              -0.10        2.12371
+         H 12 -- C 4              -0.10        2.12371
+         H 14 -- C 6              -0.13        2.14091
+         H 13 -- C 5              -0.13        2.14091
+         H 13 -- C 1              -0.13        2.14517
+         H 14 -- C 2              -0.13        2.14517
+         H 5  -- C 3              -0.12        2.15958
+         H 6  -- C 4              -0.12        2.15958
+          O 2 -- O 4              -0.20        2.22067
+          O 1 -- O 3              -0.20        2.22067
+          O 6 -- O 8              -0.19        2.22557
+          O 5 -- O 7              -0.19        2.22557
+          C 5 -- O 7              -0.22        2.34654
+          C 6 -- O 8              -0.22        2.34654
+          C 4 -- O 2              -0.22        2.35888
+          C 3 -- O 1              -0.22        2.35888
+          C 5 -- O 5              -0.20        2.36430
+          C 6 -- O 6              -0.20        2.36430
+         H 1  -- H 4              -0.03        2.36806
+         H 2  -- H 3              -0.03        2.36806
+          C 4 -- O 4              -0.21        2.36811
+          C 3 -- O 3              -0.21        2.36811
+         H 2  -- C 2              -0.08        2.37151
+         H 1  -- C 1              -0.08        2.37151
+         H 12 -- H 14             -0.04        2.39094
+         H 11 -- H 13             -0.04        2.39094
+         H 2  -- O 6              -0.02        2.40220
+         H 1  -- O 5              -0.02        2.40220
+         H 4  -- O 7              -0.01        2.43100
+         H 3  -- O 8              -0.01        2.43100
+         H 3  -- H 13             -0.03        2.43901
+         H 4  -- H 14             -0.03        2.43901
+         H 10 -- H 14             -0.02        2.44380
+         H 9  -- H 13             -0.02        2.44380
+         H 5  -- O 5              -0.03        2.45487
+         H 6  -- O 6              -0.03        2.45487
+          C 1 -- N 1              -0.14        2.46661
+          C 2 -- N 2              -0.14        2.46661
+          C 1 -- C 5              -0.15        2.47065
+          C 2 -- C 6              -0.15        2.47065
+          C 6 -- N 2              -0.14        2.48229
+          C 5 -- N 1              -0.14        2.48229
+         H 6  -- H 8              -0.01        2.49405
+         H 5  -- H 7              -0.01        2.49405
+         H 13 -- O 3              -0.02        2.50189
+         H 14 -- O 4              -0.02        2.50189
+          O 2 -- O 8              -0.14        2.53878
+          O 1 -- O 7              -0.14        2.53878
+          C 3 -- C 7              -0.13        2.55722
+          C 4 -- C 8              -0.13        2.55722
+         H 7  -- O 1               0.00        2.57128
+         H 8  -- O 2               0.00        2.57128
+         H 2  -- H 13             -0.01        2.60461
+         H 1  -- H 14             -0.01        2.60461
+         H 4  -- O 8              -0.02        2.61800
+         H 3  -- O 7              -0.02        2.61800
+         H 13 -- O 8              -0.01        2.61816
+         H 14 -- O 7              -0.01        2.61816
+         H 9  -- C 1              -0.04        2.61895
+         H 10 -- C 2              -0.04        2.61895
+         H 6  -- H 9              -0.01        2.63488
+         H 5  -- H 10             -0.01        2.63488
+         H 3  -- C 1              -0.04        2.64442
+         H 4  -- C 2              -0.04        2.64442
+         H 7  -- C 5              -0.04        2.64571
+         H 8  -- C 6              -0.04        2.64571
+         H 6  -- H 7              -0.01        2.65856
+         H 5  -- H 8              -0.01        2.65856
+         H 9  -- C 2              -0.04        2.66284
+         H 10 -- C 1              -0.04        2.66284
+         H 14 -- O 8               0.00        2.66800
+         H 13 -- O 7               0.00        2.66800
+         H 10 -- O 1              -0.01        2.67214
+         H 9  -- O 2              -0.01        2.67214
+         H 11 -- C 8              -0.04        2.69195
+         H 12 -- C 7              -0.04        2.69195
+         H 2  -- H 11             -0.01        2.71091
+         H 1  -- H 12             -0.01        2.71091
+          N 2 -- O 2              -0.03        2.71529
+          N 1 -- O 1              -0.03        2.71529
+         H 5  -- C 1              -0.04        2.71690
+         H 6  -- C 2              -0.04        2.71690
+         H 2  -- O 4              -0.01        2.75375
+         H 1  -- O 3              -0.01        2.75375
+         H 7  -- C 1              -0.06        2.75655
+         H 8  -- C 2              -0.06        2.75655
+         H 6  -- N 2              -0.03        2.76238
+         H 5  -- N 1              -0.03        2.76238
+         H 5  -- O 3              -0.00        2.76309
+         H 6  -- O 4              -0.00        2.76309
+          N 2 -- O 5              -0.11        2.77374
+          N 1 -- O 6              -0.11        2.77374
+         H 9  -- O 1              -0.00        2.78012
+         H 10 -- O 2              -0.00        2.78012
+         H 13 -- C 8              -0.03        2.78714
+         H 14 -- C 7              -0.03        2.78714
+         H 13 -- C 7              -0.04        2.80006
+         H 14 -- C 8              -0.04        2.80006
+          N 1 -- O 4              -0.10        2.80084
+          N 2 -- O 3              -0.10        2.80084
+         H 8  -- H 14              0.02        2.81344
+         H 7  -- H 13              0.02        2.81344
+         H 11 -- C 5              -0.02        2.81634
+         H 12 -- C 6              -0.02        2.81634
+         H 7  -- H 10             -0.01        2.81784
+         H 8  -- H 9              -0.01        2.81784
+          N 1 -- O 3              -0.08        2.82920
+          N 2 -- O 4              -0.08        2.82920
+         H 12 -- O 1              -0.00        2.83006
+         H 11 -- O 2              -0.00        2.83006
+         H 11 -- C 7              -0.01        2.85342
+         H 12 -- C 8              -0.01        2.85342
+         H 1  -- H 10             -0.00        2.87831
+         H 2  -- H 9              -0.00        2.87831
+         H 8  -- O 1              -0.00        2.88843
+         H 7  -- O 2              -0.00        2.88843
+         H 5  -- O 1               0.00        2.90403
+         H 6  -- O 2               0.00        2.90403
+         H 3  -- O 3               0.00        2.92442
+         H 4  -- O 4               0.00        2.92442
+         H 3  -- O 2              -0.00        2.92636
+         H 4  -- O 1              -0.00        2.92636
+         H 5  -- O 2               0.00        2.93149
+         H 6  -- O 1               0.00        2.93149
+          C 3 -- O 7              -0.03        2.93592
+          C 4 -- O 8              -0.03        2.93592
+         H 14 -- O 5              -0.01        2.98596
+         H 13 -- O 6              -0.01        2.98596
+         H 3  -- O 5               0.00        2.98779
+         H 4  -- O 6               0.00        2.98779
+          N 1 -- O 2              -0.02        2.99199
+          N 2 -- O 1              -0.02        2.99199
+============================================================
+ 
+
+Writing analysis data to phonon.castep_bin
+
+Writing model to phonon.check
+ 
+ A BibTeX formatted list of references used in this run has been written to 
+ phonon.bib
+ 
+Initialisation time =      2.64 s
+Calculation time    = 134478.48 s
+Finalisation time   =     28.15 s
+Total time          = 134509.27 s
+Peak Memory Use     = 556296 kB
+  
+Overall parallel efficiency rating: Very good (80%)                             
+  
+Data was distributed by:-
+G-vector (8-way); efficiency rating: Very good (82%)                            
+k-point (2-way); efficiency rating: Excellent (97%)                             
