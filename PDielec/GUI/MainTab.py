@@ -178,8 +178,6 @@ class MainTab(QWidget):
             sp.writeNextRow(ifreq, col=1, check=1)
 
     def read_output_file(self):
-        print('jk read_output_file')
-        print('jk read_output_file',self.settings['Output file name'])
         if self.settings['Output file name'] == '':
             return
         if not os.path.isfile(self.settings['Output file name']):

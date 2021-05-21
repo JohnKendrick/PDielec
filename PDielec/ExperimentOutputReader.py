@@ -233,6 +233,5 @@ class ExperimentOutputReader(GenericOutputReader):
         return
 
     def calculate_mass_weighted_normal_modes(self):
-        print("Calculate mass weighted normal modes is not needed")
         self.mass_weighted_normal_modes = np.zeros( (3*self.nions,self.nions,3) )
         return self.mass_weighted_normal_modes

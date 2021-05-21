@@ -217,6 +217,7 @@ class AnalysisTab(QWidget):
         sp.writeNextRow(headers,col=1)
         for imode,(freq,energies) in enumerate(zip(self.frequencies_cm1,self.mode_energies)):
            tote,cme,rote,vibe, molecular_energies = energies
+           tote = max(tote,1.0E-8)
            output = [ imode, freq, 100*cme/tote, 100*rote/tote, 100*vibe/tote ]
            for e in molecular_energies:
                output.append(100*e/tote)
@@ -331,7 +332,6 @@ class AnalysisTab(QWidget):
             self.number_of_molecules = nmols
         self.molecules_le.setText('{}'.format(self.number_of_molecules))
         # get the normal modes from the mass weighted ones
-        print('JK:',mass_weighted_normal_modes)
         normal_modes = Calculator.normal_modes(atom_masses, mass_weighted_normal_modes)
         # Reorder the atoms so that the mass weighted normal modes order agrees with the ordering in the cell_of_molecules cell
         nmodes,nions,temp = np.shape(normal_modes)
@@ -359,11 +359,13 @@ class AnalysisTab(QWidget):
         self.mode_energies = []
         for i,fi in enumerate(self.frequencies_cm1):
             tote,cme,rote,vibe,mole = mode_energies[i]
+            tote = max(tote,1.0E-8)
             sums = [0.0]*5
             sume = [0.0]*len(mole)
             degeneracy = len(degenerate_list[i])
             for j in degenerate_list[i]:
                 tote,cme,rote,vibe,mole = mode_energies[j]
+                tote = max(tote,1.0E-8)
                 sums[0] += tote / degeneracy
                 sums[1] += cme / degeneracy
                 sums[2] += rote / degeneracy
@@ -401,7 +403,7 @@ class AnalysisTab(QWidget):
         vmin = self.settings['Minimum frequency']
         vmax = self.settings['Maximum frequency']
         tote,cme,rote,vibe,mole = self.mode_energies[0]
-        mol_energies = None
+        tote = max(tote,1.0E-8)
         mol_energies = [ [] for _ in range(self.number_of_molecules) ]
         mol_bottoms  = [ [] for _ in range(self.number_of_molecules) ]
         for imode, frequency in enumerate(self.frequencies_cm1):
@@ -409,6 +411,7 @@ class AnalysisTab(QWidget):
                 mode_list.append(imode)
                 mode_list_text.append(str(imode))
                 tote,cme,rote,vibe,mole = self.mode_energies[imode]
+                tote = max(tote,1.0E-8)
                 for i,mol in enumerate(mole):
                     mol_energies[i].append(100.0*mol/tote)
                     if i == 0:
@@ -451,6 +454,8 @@ class AnalysisTab(QWidget):
                 mode_list.append(imode)
                 mode_list_text.append(str(imode))
                 tote,cme,rote,vibe,molecular_energies = self.mode_energies[imode]
+                molecular_energies = np.array(molecular_energies)
+                tote = max(tote,1.0E-8)
                 cme_energy.append(cme/tote*100.0)
                 rot_energy.append(rote/tote*100.0)
                 vib_energy.append(vibe/tote*100.0)
