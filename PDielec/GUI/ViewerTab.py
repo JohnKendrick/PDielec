@@ -40,7 +40,7 @@ class ViewerTab(QWidget):
         self.light_switches = [False]*8
         self.light_switches[0] = True
         self.light_switches[1] = True
-        self.plot_types = ['Animation','Arrows']
+        self.plot_types = ['Animation','Arrows','No arrows or animation']
         self.plot_type_index = 1
         self.number_of_molecules = 0
         self.unit_cell = None
@@ -411,6 +411,9 @@ class ViewerTab(QWidget):
         self.frequency_le.setText('{:.5f}'.format(self.notebook.settingsTab.frequencies_cm1[self.selected_mode]))
         self.opengl_widget.deleteArrows()
         maxR = np.max( np.abs(np.array(self.UVW[self.selected_mode])))
+        if maxR < 1.0E-8:
+            maxR = 1.0E-8
+            self.plot_type_index = 2
         arrow_scaling = self.settings['Maximum displacement'] / maxR
         for uvw in self.UVW[self.selected_mode]:
             self.opengl_widget.addArrows( self.settings['Arrow colour'],self.settings['Arrow radius'], uvw, arrow_scaling )
@@ -477,6 +480,9 @@ class ViewerTab(QWidget):
         self.calculatePhasePositions()
         # Add the arrows
         maxR = np.max( np.abs(np.array(self.UVW[self.selected_mode])))
+        if maxR < 1.0E-8:
+            maxR = 1.0E-8
+            self.plot_type_index = 2
         arrow_scaling = self.settings['Maximum displacement'] / maxR
         self.opengl_widget.deleteArrows()
         for uvw in self.UVW[self.selected_mode]:
@@ -506,6 +512,9 @@ class ViewerTab(QWidget):
             self.settings['Number of phase steps'] += 1
         UVW = np.array( self.UVW[self.selected_mode] )
         maxR = np.amax(np.abs(UVW))
+        if maxR < 1.0E-8:
+            maxR = 1.0E-8
+            self.plot_type_index = 2
         self.scale_vibrations = self.settings['Maximum displacement'] / maxR
         self.newXYZ       = np.zeros( (self.settings['Number of phase steps'], self.natoms, 3) )
         n2 = int(self.settings['Number of phase steps']/2)
@@ -556,8 +565,17 @@ class ViewerTab(QWidget):
             return
         if self.plot_type_index == 0:
             self.plot_animation()
-        else:
+        elif self.plot_type_index == 1:
             self.plot_arrows()
+        else:
+            self.plot_none()
+
+    def plot_none(self):
+        debugger.print('plot_animation')
+        self.opengl_widget.showArrows(False)
+        self.opengl_widget.stopAnimation()
+        self.opengl_widget.update()
+        return
 
     def plot_animation(self):
         debugger.print('plot_animation')
