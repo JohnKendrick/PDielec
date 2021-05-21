@@ -23,7 +23,7 @@ to pdielec and pdgui
 from __future__ import print_function
 import numpy as np
 import sys
-from PDielec.Constants import wavenumber
+from PDielec.Constants import wavenumber, angstrom, speed_light_si
 
 
 class DielectricFunction:
@@ -50,12 +50,23 @@ class DielectricFunction:
         self.frequency_units      = units
         self.epsilon_infinity     = None
         self.volume_angs          = volume
+        if self.volume_angs:
+            self.volume_au = volume*angstrom*angstrom*angstrom
         if epsType == 'file':
-            self.readFile()
+            self._readFile()
 
-    def setVolume(self,vol):
+    def setUnits(self,units):
         """Set the volume for dielectric calculations"""
-        self.volume_angs     = vol
+        if units not in self.possible_units:
+            print('Catastrophic error in DielectricFunction: units not recognised', units)
+            exit()
+        self.frequency_units      = units
+        return
+
+    def setVolume(self,volume):
+        """Set the volume for dielectric calculations"""
+        self.volume_angs     = volume
+        self.volume_au       = volume*angstrom*angstrom*angstrom
         return
 
     def setEpsilonInfinity(self,eps):
@@ -67,71 +78,75 @@ class DielectricFunction:
         """Return the function to report the dielectric"""
         return  self.calculate
 
-    def readFile(self):
+    def _readFile(self):
         """
         Read a dielectric function from a file
         """
         print('Reading file ',self.filename)
         exit()
         return
-    def convert(self, f, units='cm-1'):
+    def _convert(self, f):
         """
-        Convert frequency units to cm-1
+        Convert the incoming frequency units to cm-1
+        Internally it is assumed that everything is in cm-1
         """
+        units = self.frequency_units
         if units == 'cm-1':
-            return f                            # return cm-1
+            result = f                            # return cm-1
         elif units == 'microns' or units == 'mu':
-            return 1.0 / (f * 1.0E-6 *1.0E2 )   # convert microns to cm-1
+            result = 1.0 / (f * 1.0E-6 *1.0E2 )           # convert microns to cm-1
         elif units == 'nm':
-            return 1.0 / (f * 1.0E-9 *1.0E2 )   # convert nm to cm-1
+            result = 1.0 / (f * 1.0E-9 *1.0E2 )           # convert nm to cm-1
         elif units == 'thz':
-            return f * 0.0299792458             # convert thz to cm-1
+            result = f*1.0e12 / (speed_light_si *1.0e2)   # convert hz to cm-1
         elif units == 'hz':
-            return f * 0.0299792458 * 1.012     # convert thz to cm-1
+            result = f / (speed_light_si *1.0e2)          # convert hz to cm-1
         else:
             print('Units in DielectricFunction not recognised:',units)
             exit()
+        return result
 
     def calculate(self, frequency):
         """
         Calculate the dielectric constant at this frequency
+        The frequency units are defined by the convert function
         """
-        frequency_cm1 = self.convert(frequency,self.frequency_units)
+        frequency_cm1 = self._convert(frequency)
         if self.epsType == None:
             print('Error in DielectricFunction type is not set')
             exit()
         elif self.epsType == 'constant':
             return self.parameters
         elif self.epsType == 'filename':
-            return  self.epsFromFile(frequency_cm1)
+            return  self._epsFromFile(frequency_cm1)
         elif self.epsType == 'interpolation':
-            return  self.epsFromInterpolation(frequency_cm1)
+            return  self._epsFromInterpolation(frequency_cm1)
         elif self.epsType == 'dft':
-            return  self.epsFromDFT(frequency_cm1)
+            return  self._epsFromDFT(frequency_cm1)
         elif self.epsType == 'lorentz':
-            return  self.epsFromLorentz(frequency_cm1)
+            return  self._epsFromLorentz(frequency_cm1)
         elif self.epsType == 'fpsq':
-            return  self.epsFromFpsq(frequency_cm1)
+            return  self._epsFromFpsq(frequency_cm1)
         else:
             print('Error in DielectricFunction type is not recognised: ', self.epsType)
             exit()
         return
 
-    def epsFromFile(self, f):
+    def _epsFromFile(self, v_cm1):
         """
         Calculate the dielectric constant from file data
         """
-        print('epsFromFile: ',f)
+        print('_epsFromFile: ',v_cm1)
         return
 
-    def epsFromInterpolation(self, f):
+    def _epsFromInterpolation(self, v_cm1):
         """
         Calculate the dielectric constant from interpolation data
         """
-        print('epsFromInterpolation: ',f)
+        print('_epsFromInterpolation: ',v_cm1)
         return
 
-    def epsFromDFT(self, f):
+    def _epsFromDFT(self, v_cm1):
         """
         Calculate the dielectric constant from DFT parameters
         Used internally by the code as it expects input parameters to be in atomic units
@@ -147,18 +162,16 @@ class DielectricFunction:
                      drude_sigma                 (au)
         """
         mode_list, mode_frequencies, mode_sigmas, mode_oscillator_strengths, crystal_volume, epsilon_inf, drude, drude_plasma, drude_sigma = self.parameters
-        v_cm1 = self.convert(f,self.frequency_units)
         v_au = v_cm1 * wavenumber
         eps = self.dielectriContributionsFromModes(v_au, mode_list, mode_frequencies, mode_sigmas, mode_oscillator_strengths, crystal_volume)
         if drude:
             eps = eps + self.dielectricContributionFromDrude(vau, drude_plasma, drude_sigma, crystal_volume)
         return eps + epsilon_inf
 
-    def epsFromIsoLorentz(self, f):
+    def _epsFromIsoLorentz(self, f_cm1):
         """
         Setup a Lorentz model for the permittivity for an isotropic system
         """
-        f_cm1 = self.convert(f,self.frequency_units)
         f_au  = wavenumber*f_cm1
         eps = np.zeros((3, 3), dtype=complex)
         for mode in self.parameters:
@@ -166,19 +179,18 @@ class DielectricFunction:
             v_au     = v_cm * wavenuumber
             sigma_au = sigmas_cm * wavenumber
             eps += dielectric + strength / np.complex((v_au*v_au - f_au*f_au), -sigma_au*f_au)
-        return eps * (4.0*np.pi/volume) + self.epsilon_infinity
+        return eps * (4.0*np.pi/self.volume_au) + self.epsilon_infinity
 
-    def epsFromFpsq(self, f):
+    def _epsFromFpsq(self, f_cm1):
         """
         Setup a fpsq model for the permittivity
         """
         #jk print('Setting up fpsq ',self.parameters)
-        f_cm1 = self.convert(f,self.frequency_units)
         f_au  = wavenumber*f_cm1
-        eps = self.epsilon_infinity
+        eps = np.array(self.epsilon_infinity,dtype=complex)
         for xyz,contribution in enumerate(self.parameters):
-            for omega_to, gamma_to, omega_lo, gamma_lo  in parameters:
-                eps[xyz] *= (omega_to**2 - f_cm1**2 - np.complex(0,gamm_lo)*f_cm1)/(omega_to**2 - f_cm1**2 - np.complex(0,gamm_lo)*f_cm1)
+            for omega_to, gamma_to, omega_lo, gamma_lo  in contribution:
+                eps[xyz,xyz] *= (omega_lo**2 - f_cm1**2 - np.complex(0,gamma_lo)*f_cm1)/(omega_to**2 - f_cm1**2 - np.complex(0,gamma_to)*f_cm1)
         return eps 
 
 

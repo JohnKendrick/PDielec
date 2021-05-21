@@ -124,9 +124,9 @@ class ExperimentOutputReader(GenericOutputReader):
          1063.7     6.1       1230.7    8.2
          1157.2     6.2       1154.9    6.1
          """
-        line = self.file_descriptor.readline().split()
         diag_eps = []
         for diag in range(0,3):
+            line = self.file_descriptor.readline().split()
             element = line[0]
             n = int(line[1])
             contributions = []
@@ -138,10 +138,10 @@ class ExperimentOutputReader(GenericOutputReader):
                 gamma_lo = float(line[3])
                 contributions.append( (omega_to, gamma_to, omega_lo, gamma_lo) )
             # end for i
-            diags_eps.append(contributions)
+            diag_eps.append(contributions)
         # end for diag
         # Create a dielectric function for use in calculations
-        self.CrystalPermittivity = DielectricFunction(type='fpsq', parameters=diag_eps)
+        self.CrystalPermittivity = DielectricFunction('fpsq', parameters=diag_eps)
         if self.zerof_optical_dielectric:
             self.CrystalPermittivity.setEpsilonInfinity(self.zerof_optical_dielectric)
         if self.volume:

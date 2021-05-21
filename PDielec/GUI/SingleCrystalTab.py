@@ -464,15 +464,11 @@ class SingleCrystalTab(QWidget):
         # Assemble the settingsTab settings
         self.notebook.singleCrystalCalculationRequired = False
         settings = self.notebook.settingsTab.settings
-        epsilon_inf = np.array(settings['Optical permittivity'])
         sigmas_cm1 = self.notebook.settingsTab.sigmas_cm1
         sigmas = np.array(sigmas_cm1) * wavenumber
         modes_selected = self.notebook.settingsTab.modes_selected
         frequencies_cm1 = self.notebook.settingsTab.frequencies_cm1
         frequencies = np.array(frequencies_cm1) * wavenumber
-        oscillator_strengths = self.notebook.settingsTab.oscillator_strengths
-        volume = reader.volume*angstrom*angstrom*angstrom
-        self.scenarios = self.notebook.scenarios
         # Get the last unit cell in the reader
         cell = reader.unit_cells[-1]
         # Calculate frequency range
@@ -485,9 +481,11 @@ class SingleCrystalTab(QWidget):
         # The dielectric variables are functions of frequency
         superstrateDielectric = self.settings['Superstrate dielectric']
         substrateDielectric   = self.settings['Substrate dielectric']
-        superstrateDielectricFunction = DielectricFunction(epsType='constant',parameters=superstrateDielectric).function()
-        substrateDielectricFunction   = DielectricFunction(epsType='constant',parameters=substrateDielectric).function()
+        superstrateDielectricFunction = DielectricFunction(epsType='constant',units='hz',parameters=superstrateDielectric).function()
+        substrateDielectricFunction   = DielectricFunction(epsType='constant',units='hz',parameters=substrateDielectric).function()
         # The crystal dielectric has already been defined in the SettingsTab
+        # Make sure the system knows that frequency will be supplied using Hz
+        self.notebook.settingsTab.CrystalPermittivity.setUnits('hz')
         crystalPermittivityFunction     = self.notebook.settingsTab.CrystalPermittivity.function()
         # Create 3 layers, thickness is converted from microns to metres
         superstrateDepth = self.settings['Superstrate depth']
@@ -539,7 +537,7 @@ class SingleCrystalTab(QWidget):
         for v in vs:
             data = ''
             call_parameters.append( (v, angleOfIncidence, system) )
-            #jk results.append( Calculator.solve_single_crystal_equations( (v, angleOfIncidence, system) ) )
+            # results.append( Calculator.solve_single_crystal_equations( (v, angleOfIncidence, system) ) )
         for result in pool.imap(Calculator.solve_single_crystal_equations, call_parameters, chunksize=40):
             results.append(result)
             progress += 1

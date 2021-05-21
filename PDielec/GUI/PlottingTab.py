@@ -395,6 +395,8 @@ class PlottingTab(QWidget):
             #debugger.print('direction',direction)
             self.depolarisations.append(depolarisation)
         # Define the crystal dielectric function which will be used
+        # Make sure that the function knows we will be supplying frequencies in cm-1
+        self.notebook.settingsTab.CrystalPermittivity.setUnits('cm-1')
         self.CrystalPermittivity = self.notebook.settingsTab.CrystalPermittivity
         dielectricFunction = self.CrystalPermittivity.function()
         # Assemble a list of frequencies which will be used in the function call
