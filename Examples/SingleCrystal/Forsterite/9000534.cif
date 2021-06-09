@@ -1,0 +1,82 @@
+#------------------------------------------------------------------------------
+#$Date: 2016-02-16 14:49:47 +0200 (Tue, 16 Feb 2016) $
+#$Revision: 176465 $
+#$URL: svn://www.crystallography.net/cod/cif/9/00/05/9000534.cif $
+#------------------------------------------------------------------------------
+#
+# This file is available in the Crystallography Open Database (COD),
+# http://www.crystallography.net/. The original data for this entry
+# were provided the American Mineralogist Crystal Structure Database,
+# http://rruff.geo.arizona.edu/AMS/amcsd.php
+#
+# The file may be used within the scientific community so long as
+# proper attribution is given to the journal article from which the
+# data were obtained.
+#
+data_9000534
+loop_
+_publ_author_name
+'Hazen, R. M.'
+_publ_section_title
+;
+ Effects of temperature and pressure on the crystal structure of forsterite
+ T = -196 C, P = 1 atm
+ olivine
+;
+_journal_name_full               'American Mineralogist'
+_journal_page_first              1280
+_journal_page_last               1293
+_journal_volume                  61
+_journal_year                    1976
+_chemical_formula_sum            'Mg2 O4 Si'
+_chemical_name_mineral           Forsterite
+_space_group_IT_number           62
+_symmetry_space_group_name_Hall  '-P 2c 2ab'
+_symmetry_space_group_name_H-M   'P b n m'
+_cell_angle_alpha                90
+_cell_angle_beta                 90
+_cell_angle_gamma                90
+_cell_length_a                   4.746
+_cell_length_b                   10.18
+_cell_length_c                   5.976
+_cell_volume                     288.726
+_diffrn_ambient_pressure         100
+_diffrn_ambient_temperature      77.15
+_exptl_crystal_density_diffrn    3.237
+_cod_original_formula_sum        'Si Mg2 O4'
+_cod_database_code               9000534
+loop_
+_symmetry_equiv_pos_as_xyz
+x,y,z
+x,y,1/2-z
+-x,-y,1/2+z
+1/2+x,1/2-y,1/2+z
+1/2-x,1/2+y,1/2-z
+1/2-x,1/2+y,z
+1/2+x,1/2-y,-z
+-x,-y,-z
+loop_
+_atom_site_aniso_label
+_atom_site_aniso_U_11
+_atom_site_aniso_U_22
+_atom_site_aniso_U_33
+_atom_site_aniso_U_12
+_atom_site_aniso_U_13
+_atom_site_aniso_U_23
+Si -0.00205 0.00105 0.00036 0.00024 0.00000 0.00000
+Mg1 0.00023 0.00263 0.00036 0.00049 -0.00014 -0.00062
+Mg2 0.00011 0.00210 0.00072 0.00000 0.00000 0.00000
+O1 -0.00023 0.00263 0.00199 0.00122 0.00000 0.00000
+O2 -0.00023 0.00053 0.00145 0.00000 0.00000 0.00000
+O3 -0.00023 0.00210 0.00036 0.00000 0.00043 0.00000
+loop_
+_atom_site_label
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+Si 0.42610 0.09390 0.25000
+Mg1 0.00000 0.00000 0.00000
+Mg2 0.99140 0.27720 0.25000
+O1 0.76610 0.09190 0.25000
+O2 0.22020 0.44690 0.25000
+O3 0.27770 0.16280 0.03330
