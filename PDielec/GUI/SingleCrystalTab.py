@@ -238,9 +238,21 @@ class SingleCrystalTab(QWidget):
         # Final button
         #
         hbox = QHBoxLayout()
-        self.plotButton = QPushButton('Plot transmission and reflection')
-        self.plotButton.setToolTip('Plot the molar absorption')
+        self.plotTransmissionButton = QPushButton('Plot T')
+        self.plotTransmissionButton.setToolTip('Plot transmittance')
+        self.plotTransmissionButton.clicked.connect(self.plotTransmissionButtonClicked)
+        self.plotReflectanceButton = QPushButton('Plot R')
+        self.plotReflectanceButton.setToolTip('Plot reflectance')
+        self.plotReflectanceButton.clicked.connect(self.plotReflectanceButtonClicked)
+        self.plotTplusRButton = QPushButton('Plot T+R')
+        self.plotTplusRButton.setToolTip('Plot sum of transmittance and reflectance')
+        self.plotTplusRButton.clicked.connect(self.plotTplusRButtonClicked)
+        self.plotButton = QPushButton('Plot T and R')
+        self.plotButton.setToolTip('Plot both transmittance and reflectance')
         self.plotButton.clicked.connect(self.plotButtonClicked)
+        hbox.addWidget(self.plotTransmissionButton)
+        hbox.addWidget(self.plotReflectanceButton)
+        hbox.addWidget(self.plotTplusRButton)
         hbox.addWidget(self.plotButton)
         form.addRow(hbox)
         # Add a progress bar
@@ -321,6 +333,37 @@ class SingleCrystalTab(QWidget):
         self.notebook.fittingCalculationRequired = True
         self.settings['Unique direction - l'] = value
 
+    def plotTransmissionButtonClicked(self):
+        debugger.print('plotTransmissionButtonClicked pressed')
+        if self.notebook.singleCrystalCalculationRequired:
+            self.calculate()
+        if not self.notebook.singleCrystalCalculationRequired:
+            yaxes = [self.p_transmission, self.s_transmission, ]
+            legends = [ r'$T_p$', r'$T_s$']
+            ylabel = 'Arbitrary units'
+            self.plot(self.xaxis, yaxes, ylabel, legends)
+
+    def plotReflectanceButtonClicked(self):
+        debugger.print('plotReflectanceButtonClicked pressed')
+        if self.notebook.singleCrystalCalculationRequired:
+            self.calculate()
+        if not self.notebook.singleCrystalCalculationRequired:
+            yaxes = [self.p_reflectivity, self.s_reflectivity, ]
+            legends = [ r'$R_p$', r'$R_s$']
+            ylabel = 'Arbitrary units'
+            self.plot(self.xaxis, yaxes, ylabel, legends)
+
+    def plotTplusRButtonClicked(self):
+        debugger.print('plotTplusRButtonClicked pressed')
+        if self.notebook.singleCrystalCalculationRequired:
+            self.calculate()
+        tr_p = np.array( self.p_transmission ) + np.array( self.p_reflectivity )
+        tr_s = np.array( self.s_transmission ) + np.array( self.s_reflectivity )
+        if not self.notebook.singleCrystalCalculationRequired:
+            yaxes = [tr_p,tr_s, ]
+            legends = [ r'$T_p+R_p$', r'$T_s+R_s$']
+            ylabel = 'Arbitrary units'
+            self.plot(self.xaxis, yaxes, ylabel, legends)
 
     def plotButtonClicked(self):
         debugger.print('plotButtonClicked pressed')
@@ -537,13 +580,13 @@ class SingleCrystalTab(QWidget):
         for v in vs:
             data = ''
             call_parameters.append( (v, angleOfIncidence, system) )
-            # results.append( Calculator.solve_single_crystal_equations( (v, angleOfIncidence, system) ) )
-        for result in pool.imap(Calculator.solve_single_crystal_equations, call_parameters, chunksize=40):
-            results.append(result)
-            progress += 1
-            self.progressbar.setValue(progress)
-            if self.notebook.progressbar is not None:
-                self.notebook.progressbar.setValue(progress)
+            results.append( Calculator.solve_single_crystal_equations( (v, angleOfIncidence, system) ) )
+#        for result in pool.imap(Calculator.solve_single_crystal_equations, call_parameters, chunksize=40):
+#            results.append(result)
+#            progress += 1
+#            self.progressbar.setValue(progress)
+#            if self.notebook.progressbar is not None:
+#                self.notebook.progressbar.setValue(progress)
         QCoreApplication.processEvents()
         # Initialise plotting variables
         self.xaxis          = []
