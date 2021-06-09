@@ -669,6 +669,11 @@ class Layer:
 
         for ii in range(4):
             ## looks a lot like eqn (25). Why is K not Pi ?
+            #print('JK ii,f',ii,f)
+            #print('JK qs',self.qs[ii])
+            #print('JK thick',self.thick)
+            #print('JK c_const',c_const)
+            #print('JK',-1.0j*(2.0*np.pi*f*self.qs[ii]*self.thick)/c_const)
             self.Ki[ii,ii] = np.exp(-1.0j*(2.0*np.pi*f*self.qs[ii]*self.thick)/c_const)
 
         Aim1 = exact_inv(self.Ai.copy())
