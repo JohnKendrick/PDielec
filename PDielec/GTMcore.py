@@ -464,6 +464,7 @@ class Layer:
         kr = 0;
         ## sort berremann qi's according to (12)
         ##JK small modification to fix problems when qs are nearly real
+        print(qsunsorted)
         if any(np.abs(np.imag(qsunsorted))>1.0E-8):
             for km in range(0,4):
                 if np.imag(qsunsorted[km])>=0 :
@@ -474,7 +475,7 @@ class Layer:
                     kr = kr +1
         else:
             for km in range(0,4):
-                if np.real(qsunsorted[km])>=0 :
+                if np.real(qsunsorted[km])>=0 and kt < 2  :
                     transmode[kt] = km
                     kt = kt + 1
                 else:
@@ -669,12 +670,16 @@ class Layer:
 
         for ii in range(4):
             ## looks a lot like eqn (25). Why is K not Pi ?
-            #print('JK ii,f',ii,f)
-            #print('JK qs',self.qs[ii])
-            #print('JK thick',self.thick)
-            #print('JK c_const',c_const)
-            #print('JK',-1.0j*(2.0*np.pi*f*self.qs[ii]*self.thick)/c_const)
-            self.Ki[ii,ii] = np.exp(-1.0j*(2.0*np.pi*f*self.qs[ii]*self.thick)/c_const)
+            # JK Modification to cope with opaque materials
+            # JK the idea is to make sure there is still a very small amount of transmission
+            # JK This avoids divide by zero
+            exponent = -1.0j*(2.0*np.pi*f*self.qs[ii]*self.thick)/c_const
+            exponent_real = min(np.real(exponent),35.0)
+            exponent_imag = min(np.imag(exponent),35.0)
+            exponent = np.complex(exponent_real,exponent_imag)
+            self.Ki[ii,ii] = np.exp(exponent)
+            #  JK original line
+            # self.Ki[ii,ii] = np.exp(-1.0j*(2.0*np.pi*f*self.qs[ii]*self.thick)/c_const)
 
         Aim1 = exact_inv(self.Ai.copy())
         ## eqn (26)
@@ -916,6 +921,10 @@ class System:
         """
         Ai_super, Ki_super, Ai_inv_super, T_super = self.superstrate.update(f, zeta_sys)
         Ai_sub, Ki_sub, Ai_inv_sub, T_sub = self.substrate.update(f, zeta_sys)
+        # jk print('------')
+        # jk print('F     ',f,zeta_sys)
+        # jk print('Ai_sub',Ai_sub)
+        # jk print('Ai_sup',Ai_inv_sub)
 
         Delta1234 = np.array([[1,0,0,0],
                               [0,0,1,0],
@@ -933,6 +942,7 @@ class System:
 
         Gamma = np.matmul(Ai_inv_super,np.matmul(Tloc,Ai_sub))
         GammaStar = np.matmul(exact_inv(Delta1234),np.matmul(Gamma,Delta1234))
+        # jk print('GammaStar',GammaStar)
 
         self.Gamma = Gamma.copy()
         self.GammaStar = GammaStar.copy()
