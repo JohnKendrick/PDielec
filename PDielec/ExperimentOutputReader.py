@@ -36,6 +36,12 @@ class ExperimentOutputReader(GenericOutputReader):
         self.frequencies = None
         return
 
+    def _read_line(self):
+        line = self.file_descriptor.readline()
+        while line[0] == '#' or len(line) == 0:
+            line = self.file_descriptor.readline()
+        return line
+
     def _read_output_files(self):
         """Read the Experiment files in the directory"""
         self.manage = {}   # Empty the dictionary matching phrases
@@ -56,11 +62,11 @@ class ExperimentOutputReader(GenericOutputReader):
         Read in a full constant dielectric tensor 3 values on each line
         """
         od = []
-        line = self.file_descriptor.readline()
+        line = self._read_line()
         od.append([complex(f) for f in line.split()[0:3]])
-        line = self.file_descriptor.readline()
+        line = self._read_line()
         od.append([complex(f) for f in line.split()[0:3]])
-        line = self.file_descriptor.readline()
+        line = self._read_line()
         od.append([complex(f) for f in line.split()[0:3]])
         # If we have complex input return a complex list, otherwise return a real list
         odc = np.array(od,dtype=complex)
@@ -88,7 +94,7 @@ class ExperimentOutputReader(GenericOutputReader):
         nterms = int(line.split()[1])
         parameters = []
         for i in range(nterms):
-            line = self.file_descriptor.readline()
+            line = self._read_line()
             frequency_cm = (float(line.split()[0]))
             strength = float(line.split()[1])
             sigma_cm = float(line.split()[1])
@@ -126,12 +132,12 @@ class ExperimentOutputReader(GenericOutputReader):
          """
         diag_eps = []
         for diag in range(0,3):
-            line = self.file_descriptor.readline().split()
+            line = self._read_line().split()
             element = line[0]
             n = int(line[1])
             contributions = []
             for i in range(n):
-                line = self.file_descriptor.readline().split()
+                line = self._read_line().split()
                 omega_to = float(line[0])
                 gamma_to = float(line[1])
                 omega_lo = float(line[2])
@@ -152,7 +158,7 @@ class ExperimentOutputReader(GenericOutputReader):
         self.frequencies = []
         self.oscillator_strengths = []
         for i in range(nfreq):
-            line = self.file_descriptor.readline()
+            line = self._read_line()
             self.frequencies.append(float(line.split()[0]))
             strength = float(line.split()[1])
             self.oscillator_strengths.append(initialise_diagonal_tensor( [strength, strength, strength] ) )
@@ -163,7 +169,7 @@ class ExperimentOutputReader(GenericOutputReader):
         self.species = []
         self.masses_per_type = []
         for i in range(nspecies):
-            line = self.file_descriptor.readline()
+            line = self._read_line()
             species = line.split()[0]
             self.species.append(species)
             self.masses_per_type.append(float(line.split()[1]))
@@ -172,13 +178,13 @@ class ExperimentOutputReader(GenericOutputReader):
         return
 
     def _read_lattice_vectors(self, line):
-        line = self.file_descriptor.readline()
+        line = self._read_line()
         scalar = float(line.split()[0])
-        line = self.file_descriptor.readline()
+        line = self._read_line()
         avector = [scalar*float(line.split()[0]), scalar*float(line.split()[1]), scalar*float(line.split()[2])]
-        line = self.file_descriptor.readline()
+        line = self._read_line()
         bvector = [scalar*float(line.split()[0]), scalar*float(line.split()[1]), scalar*float(line.split()[2])]
-        line = self.file_descriptor.readline()
+        line = self._read_line()
         cvector = [scalar*float(line.split()[0]), scalar*float(line.split()[1]), scalar*float(line.split()[2])]
         cell = UnitCell(avector, bvector, cvector)
         self.unit_cells.append(cell)
@@ -196,7 +202,7 @@ class ExperimentOutputReader(GenericOutputReader):
         self.masses = []
         species_list = []
         for n in range(self.nions):
-            line = self.file_descriptor.readline()
+            line = self._read_line()
             species = line.split()[0]
             index = self._ion_type_index[species]
             self.atom_type_list.append(index)
@@ -215,11 +221,11 @@ class ExperimentOutputReader(GenericOutputReader):
     def _read_static_dielectric(self, line):
         # the is epsilon infinity
         od = []
-        line = self.file_descriptor.readline()
+        line = self._read_line()
         od.append([np.complex(f) for f in line.split()[0:3]])
-        line = self.file_descriptor.readline()
+        line = self._read_line()
         od.append([np.complex(f) for f in line.split()[0:3]])
-        line = self.file_descriptor.readline()
+        line = self._read_line()
         od.append([np.complex(f) for f in line.split()[0:3]])
         # If we have complex input return a complex list, otherwise return a real list
         odc = np.array(od,dtype=complex)
