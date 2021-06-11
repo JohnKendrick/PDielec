@@ -52,8 +52,9 @@ class SingleCrystalTab(QWidget):
         self.settings['Substrate dielectric'] = 1.0
         self.settings['Superstrate depth'] = 999.0
         self.settings['Substrate depth'] = 999.0
-        self.settings['Crystal depth'] = 10.0
-        self.xaxis = []
+        self.settings['Film thickness'] = 10.0
+        self.settings['Mode'] = 'Thick slab'
+        self.frequencies_cm1 = []
         self.directions = []
         self.frequency_units = None
         self.molar_cb_current_index = 0
@@ -65,6 +66,17 @@ class SingleCrystalTab(QWidget):
         vbox = QVBoxLayout()
         form = QFormLayout()
         #
+        # Chose mode of operation
+        #
+        self.mode_cb = QComboBox(self)
+        self.mode_cb.setToolTip('Set the frequency units for the x-axis')
+        self.mode_cb.addItems( ['Thick slab','Coherent thin film','Incoherent thick film'] )
+        self.settings['Mode'] = 'Thick slab'
+        self.mode_cb.activated.connect(self.on_mode_cb_activated)
+        label = QLabel('Single crystal mode', self)
+        label.setToolTip('Set mode of operation for the single crystal tab')
+        form.addRow(label, self.mode_cb)
+        #
         # The minimum frequency
         #
         self.vmin_sb = QSpinBox(self)
@@ -72,9 +84,7 @@ class SingleCrystalTab(QWidget):
         self.vmin_sb.setValue(self.settings['Minimum frequency'])
         self.vmin_sb.setToolTip('Set the minimum frequency to be considered)')
         self.vmin_sb.valueChanged.connect(self.on_vmin_changed)
-        label = QLabel('Minimum frequency:', self)
-        label.setToolTip('Set the minimum frequency to be considered)')
-        form.addRow(label, self.vmin_sb)
+        # form.addRow(label, self.vmin_sb)
         #
         # The maximum frequency
         #
@@ -83,9 +93,7 @@ class SingleCrystalTab(QWidget):
         self.vmax_sb.setValue(self.settings['Maximum frequency'])
         self.vmax_sb.setToolTip('Set the maximum frequency to be considered)')
         self.vmax_sb.valueChanged.connect(self.on_vmax_changed)
-        label = QLabel('Maximum frequency:', self)
-        label.setToolTip('Set the maximum frequency to be considered)')
-        form.addRow(label, self.vmax_sb)
+        # form.addRow(label, self.vmax_sb)
         #
         # Choose a suitable increment
         #
@@ -96,37 +104,15 @@ class SingleCrystalTab(QWidget):
         self.vinc_sb.setToolTip('Choose an increment for the frequency when plotting')
         self.vinc_sb.setValue(self.settings['Frequency increment'])
         self.vinc_sb.valueChanged.connect(self.on_vinc_changed)
-        label = QLabel('Frequency increment', self)
-        label.setToolTip('Choose an increment for the frequency when plotting')
-        form.addRow(label, self.vinc_sb)
-        #jk #
-        #jk # Define molar quantity
-        #jk #
-        #jk self.molar_cb = QComboBox(self)
-        #jk self.molar_cb.setToolTip('Define what a mole is.  \nIn the case of Molecules, the number of atoms in a molecule must be given')
-        #jk self.molar_cb.addItems(self.molar_definitions)
-        #jk try:
-        #jk     self.molar_cb_current_index = self.molar_definitions.index(self.settings["Molar definition"])
-        #jk except:
-        #jk     self.molar_cb_current_index = 0
-        #jk     self.settings["Molar definition"] = self.molar_definitions[self.molar_cb_current_index]
-        #jk self.molar_cb.setCurrentIndex(self.molar_cb_current_index)
-        #jk self.molar_cb.activated.connect(self.on_molar_cb_activated)
-        #jk label = QLabel('Molar definition', self)
-        #jk label.setToolTip('Define what a mole is.  \nIn the case of Molecules, the number of atoms in a molecule must be given')
-        #jk form.addRow(label, self.molar_cb)
-        #jk #
-        #jk # Number of atoms in a molecule
-        #jk #
-        #jk self.natoms_sb = QSpinBox(self)
-        #jk self.natoms_sb.setToolTip('Set the number of atoms in a molecule. \nOnly need this if moles of molecules is needed')
-        #jk self.natoms_sb.setRange(1,500)
-        #jk self.natoms_sb.setValue(self.settings['Number of atoms'])
-        #jk self.natoms_sb.valueChanged.connect(self.on_natoms_changed)
-        #jk self.natoms_sb.setEnabled(False)
-        #jk label = QLabel('Number of atoms per molecule', self)
-        #jk label.setToolTip('Set the number of atoms in a molecule. \nOnly need this if moles of molecules is needed')
-        #jk form.addRow(label, self.natoms_sb)
+        #
+        label = QLabel('Frequency min, max and increment', self)
+        label.setToolTip('Choose minimum, maximum and increment frequencies when plotting')
+        #
+        hbox = QHBoxLayout()
+        hbox.addWidget(self.vmin_sb)
+        hbox.addWidget(self.vmax_sb)
+        hbox.addWidget(self.vinc_sb)
+        form.addRow(label, hbox)
         #
         # Set the plot title
         #
@@ -201,13 +187,13 @@ class SingleCrystalTab(QWidget):
         # Define the superstrate and substrate dielectrics
         #
         self.superstrate_dielectric_sb = QDoubleSpinBox(self)
-        self.superstrate_dielectric_sb.setToolTip('Define the superstrate dielectric')
+        self.superstrate_dielectric_sb.setToolTip('Define the incident medium permittivity')
         self.superstrate_dielectric_sb.setRange(1,1000)
         self.superstrate_dielectric_sb.setSingleStep(0.1)
         self.superstrate_dielectric_sb.setValue(self.settings['Superstrate dielectric'])
         self.superstrate_dielectric_sb.valueChanged.connect(self.on_superstrate_dielectric_sb_changed)
         self.substrate_dielectric_sb = QDoubleSpinBox(self)
-        self.substrate_dielectric_sb.setToolTip('Define the substrate dielectric')
+        self.substrate_dielectric_sb.setToolTip('Define the substrate permittivity')
         self.substrate_dielectric_sb.setRange(1,1000)
         self.substrate_dielectric_sb.setSingleStep(0.1)
         self.substrate_dielectric_sb.setValue(self.settings['Substrate dielectric'])
@@ -215,24 +201,24 @@ class SingleCrystalTab(QWidget):
         hbox = QHBoxLayout()
         hbox.addWidget(self.superstrate_dielectric_sb)
         hbox.addWidget(self.substrate_dielectric_sb)
-        self.superstrate_label = QLabel('Super- and substrate dielectrics',self)
-        self.superstrate_label.setToolTip('Define the dielectric constants of the superstrate and substrates')
-        form.addRow(self.superstrate_label, hbox)
+        superstrate_label = QLabel('Incident medium and substrate permittivities',self)
+        superstrate_label.setToolTip('Define the permttivites of the incident medium and substrate')
+        form.addRow(superstrate_label, hbox)
         #
         #
-        # Define the crystal depth
+        # Define the Film thickness
         #
-        self.crystal_depth_sb = QDoubleSpinBox(self)
-        self.crystal_depth_sb.setToolTip('Define the crystal depth')
-        self.crystal_depth_sb.setRange(0,10000)
-        self.crystal_depth_sb.setSingleStep(1)
-        self.crystal_depth_sb.setValue(self.settings['Crystal depth'])
-        self.crystal_depth_sb.valueChanged.connect(self.on_crystal_depth_sb_changed)
+        self.film_thickness_sb = QDoubleSpinBox(self)
+        self.film_thickness_sb.setToolTip('Define the Film thickness')
+        self.film_thickness_sb.setRange(0,10000)
+        self.film_thickness_sb.setSingleStep(1)
+        self.film_thickness_sb.setValue(self.settings['Film thickness'])
+        self.film_thickness_sb.valueChanged.connect(self.on_film_thickness_sb_changed)
         hbox = QHBoxLayout()
-        hbox.addWidget(self.crystal_depth_sb)
-        self.crystal_depth_label = QLabel('Crystal depth(mu)',self)
-        self.crystal_depth_label.setToolTip('Define the depth of the crystal in millimetres.')
-        form.addRow(self.crystal_depth_label, hbox)
+        hbox.addWidget(self.film_thickness_sb)
+        film_thickness_label = QLabel('Film thickness(mu)',self)
+        film_thickness_label.setToolTip('Define the depth of the crystal in millimetres.')
+        form.addRow(film_thickness_label, hbox)
         #
         #
         # Final button
@@ -247,13 +233,17 @@ class SingleCrystalTab(QWidget):
         self.plotTplusRButton = QPushButton('Plot T+R')
         self.plotTplusRButton.setToolTip('Plot sum of transmittance and reflectance')
         self.plotTplusRButton.clicked.connect(self.plotTplusRButtonClicked)
-        self.plotButton = QPushButton('Plot T and R')
-        self.plotButton.setToolTip('Plot both transmittance and reflectance')
-        self.plotButton.clicked.connect(self.plotButtonClicked)
+        self.plotRealEButton = QPushButton('Plot real eps')
+        self.plotRealEButton.setToolTip('Plot real permittivity')
+        self.plotRealEButton.clicked.connect(self.plotRealEButtonClicked)
+        self.plotImagEButton = QPushButton('Plot imag eps')
+        self.plotImagEButton.setToolTip('Plot imaginary permittivity')
+        self.plotImagEButton.clicked.connect(self.plotImagEButtonClicked)
         hbox.addWidget(self.plotTransmissionButton)
         hbox.addWidget(self.plotReflectanceButton)
         hbox.addWidget(self.plotTplusRButton)
-        hbox.addWidget(self.plotButton)
+        hbox.addWidget(self.plotRealEButton)
+        hbox.addWidget(self.plotImagEButton)
         form.addRow(hbox)
         # Add a progress bar
         self.progressbar = QProgressBar(self)
@@ -277,12 +267,12 @@ class SingleCrystalTab(QWidget):
         self.setLayout(vbox)
         QCoreApplication.processEvents()
 
-    def on_crystal_depth_sb_changed(self,value):
-        debugger.print('on_crystal_depth_sb', value)
+    def on_film_thickness_sb_changed(self,value):
+        debugger.print('on_film_thickness_sb', value)
         self.dirty = True
         self.notebook.singleCrystalCalculationRequired = True
         self.notebook.fittingCalculationRequired = True
-        self.settings['Crystal depth'] = value
+        self.settings['Film thickness'] = value
 
     def on_superstrate_dielectric_sb_changed(self,value):
         debugger.print('on_superstrate_dielectric_sb', value)
@@ -337,21 +327,19 @@ class SingleCrystalTab(QWidget):
         debugger.print('plotTransmissionButtonClicked pressed')
         if self.notebook.singleCrystalCalculationRequired:
             self.calculate()
-        if not self.notebook.singleCrystalCalculationRequired:
-            yaxes = [self.p_transmission, self.s_transmission, ]
-            legends = [ r'$T_p$', r'$T_s$']
-            ylabel = 'Arbitrary units'
-            self.plot(self.xaxis, yaxes, ylabel, legends)
+        yaxes = [self.p_transmission, self.s_transmission, ]
+        legends = [ r'$T_p$', r'$T_s$']
+        ylabel = 'Arbitrary units'
+        self.plot(self.frequencies_cm1, yaxes, ylabel, legends, 'Transmitance')
 
     def plotReflectanceButtonClicked(self):
         debugger.print('plotReflectanceButtonClicked pressed')
         if self.notebook.singleCrystalCalculationRequired:
             self.calculate()
-        if not self.notebook.singleCrystalCalculationRequired:
-            yaxes = [self.p_reflectivity, self.s_reflectivity, ]
-            legends = [ r'$R_p$', r'$R_s$']
-            ylabel = 'Arbitrary units'
-            self.plot(self.xaxis, yaxes, ylabel, legends)
+        yaxes = [self.p_reflectivity, self.s_reflectivity, ]
+        legends = [ r'$R_p$', r'$R_s$']
+        ylabel = 'Arbitrary units'
+        self.plot(self.frequencies_cm1, yaxes, ylabel, legends, 'Reflectance')
 
     def plotTplusRButtonClicked(self):
         debugger.print('plotTplusRButtonClicked pressed')
@@ -359,21 +347,30 @@ class SingleCrystalTab(QWidget):
             self.calculate()
         tr_p = np.array( self.p_transmission ) + np.array( self.p_reflectivity )
         tr_s = np.array( self.s_transmission ) + np.array( self.s_reflectivity )
-        if not self.notebook.singleCrystalCalculationRequired:
-            yaxes = [tr_p,tr_s, ]
-            legends = [ r'$T_p+R_p$', r'$T_s+R_s$']
-            ylabel = 'Arbitrary units'
-            self.plot(self.xaxis, yaxes, ylabel, legends)
+        yaxes = [tr_p,tr_s, ]
+        legends = [ r'$T_p+R_p$', r'$T_s+R_s$']
+        ylabel = 'Arbitrary units'
+        self.plot(self.frequencies_cm1, yaxes, ylabel, legends, 'Transmitance+Reflectance')
 
-    def plotButtonClicked(self):
-        debugger.print('plotButtonClicked pressed')
+    def plotRealEButtonClicked(self):
+        debugger.print('plotRealEButtonClicked pressed')
         if self.notebook.singleCrystalCalculationRequired:
             self.calculate()
-        if not self.notebook.singleCrystalCalculationRequired:
-            yaxes = [self.p_transmission, self.s_transmission, self.p_reflectivity, self.s_reflectivity, ]
-            legends = [ r'$T_p$', r'$T_s$', r'$R_p$', r'$R_s$']
-            ylabel = 'Arbitrary units'
-            self.plot(self.xaxis, yaxes, ylabel, legends)
+        eps = np.real( self.epsilon )
+        yaxes = [eps[:,0,0], eps[:,1,1], eps[:,2,2], eps[:,0,1], eps[:,0,2], eps[:,1,2] ]
+        legends = [ r'$\epsilon_{xx}$', r'$\epsilon_{yy}$', r'$\epsilon_{zz}$', r'$\epsilon_{xy}$',r'$\epsilon_{xz}$',r'$\epsilon_{yz}$' ]
+        ylabel = 'Real permittivity'
+        self.plot(self.frequencies_cm1, yaxes, ylabel, legends, 'Real permittivity')
+
+    def plotImagEButtonClicked(self):
+        debugger.print('plotImagEButtonClicked pressed')
+        if self.notebook.singleCrystalCalculationRequired:
+            self.calculate()
+        eps = np.imag( self.epsilon )
+        yaxes = [eps[:,0,0], eps[:,1,1], eps[:,2,2], eps[:,0,1], eps[:,0,2], eps[:,1,2] ]
+        legends = [ r'$\epsilon_{xx}$', r'$\epsilon_{yy}$', r'$\epsilon_{zz}$', r'$\epsilon_{xy}$',r'$\epsilon_{xz}$',r'$\epsilon_{yz}$' ]
+        ylabel = 'Imaginary permittivity'
+        self.plot(self.frequencies_cm1, yaxes, ylabel, legends, 'Imaginary permittivity')
 
     def on_title_changed(self,text):
         self.settings['Plot title'] = text
@@ -437,7 +434,7 @@ class SingleCrystalTab(QWidget):
         self.progressbar.setValue(0)
         if self.notebook.progressbar is not None:
             self.notebook.progressbar.setValue(0)
-        self.plotButtonClicked()
+        self.plotReflectanceButtonClicked()
         self.dirty = False
         self.notebook.singleCrystalCalculationRequired = False
         #
@@ -448,15 +445,16 @@ class SingleCrystalTab(QWidget):
         QCoreApplication.processEvents()
         return
 
-    def on_natoms_changed(self, value):
+    def on_mode_cb_activated(self, index):
+        if index == 0:
+            self.settings['Mode'] = 'Thick slab'
+        elif index == 1:
+            self.settings['Mode'] = 'Coherent thin film'
+        else:
+            self.settings['Mode'] = 'Incoherent thin film'
         self.notebook.singleCrystalCalculationRequired = True
         self.dirty = True
-        self.progressbar.setValue(0)
-        if self.notebook.progressbar is not None:
-            self.notebook.progressbar.setValue(0)
-        QCoreApplication.processEvents()
-        self.settings['Number of atoms'] = value
-        debugger.print('on natoms changed ', self.settings['Number of atoms'])
+        debugger.print('Mode changed to ', self.settings['Mode'])
 
     def on_funits_cb_activated(self, index):
         if index == 0:
@@ -465,26 +463,6 @@ class SingleCrystalTab(QWidget):
             self.frequency_units = 'THz'
         self.replot()
         debugger.print('Frequency units changed to ', self.frequency_units)
-
-    def on_molar_cb_activated(self, index):
-        self.molar_cb_current_index = index
-        self.settings['Molar definition'] = self.molar_definitions[index]
-        self.notebook.singleCrystalCalculationRequired = True
-        self.dirty = True
-        self.progressbar.setValue(0)
-        if self.notebook.progressbar is not None:
-            self.notebook.progressbar.setValue(0)
-        QCoreApplication.processEvents()
-        if self.settings['Molar definition'] == 'Molecules':
-            self.settings['concentration'] = 1000.0 / (avogadro_si * self.reader.volume * 1.0e-24 * self.settings['Number of atoms'] / self.reader.nions)
-            self.natoms_sb.setEnabled(True)
-        elif self.settings['Molar definition'] == 'Unit cells':
-            self.settings['concentration'] = 1000.0 / (avogadro_si * self.reader.volume * 1.0e-24)
-            self.natoms_sb.setEnabled(False)
-        elif self.settings['Molar definition'] == 'Atoms':
-            self.settings['concentration'] = 1000.0 / (avogadro_si * self.reader.volume * 1.0e-24 / self.reader.nions)
-            self.natoms_sb.setEnabled(False)
-        debugger.print('The concentration has been set', self.settings['Molar definition'], self.settings['concentration'])
 
     def calculate(self):
         debugger.print('Calculate')
@@ -535,12 +513,16 @@ class SingleCrystalTab(QWidget):
         superstrate      = GTM.Layer(thickness=superstrateDepth*1e-6,epsilon1=superstrateDielectricFunction)
         substrateDepth   = self.settings['Substrate depth']
         substrate        = GTM.Layer(thickness=substrateDepth*1e-6,  epsilon1=substrateDielectricFunction)
-        crystalDepth     = self.settings['Crystal depth']
+        crystalDepth     = self.settings['Film thickness']
         crystal          = GTM.Layer(thickness=crystalDepth*1e-6,    epsilon=crystalPermittivityFunction)
         # Creat the system with the layers 
-        system = GTM.System(substrate=substrate, superstrate=superstrate, layers=[crystal])
+        if self.settings['Mode'] == 'Thick slab':
+            system = GTM.System(substrate=crystal, superstrate=superstrate, layers=[])
+        elif self.settings['Mode'] == 'Coherent thin film':
+            system = GTM.System(substrate=substrate, superstrate=superstrate, layers=[crystal])
+        else:
+            system = GTM.System(substrate=substrate, superstrate=superstrate, layers=[crystal])
         # Prepare variables for setting up parameters for parallel call
-        concentration = self.settings['concentration']
         hkl = [ self.settings['Unique direction - h'] , self.settings['Unique direction - k'], self.settings['Unique direction - l'] ]
         # convert normal to plane to a direction in xyz coordinates
         normal_to_plane_xyz = cell.convert_hkl_to_xyz(hkl)
@@ -553,8 +535,8 @@ class SingleCrystalTab(QWidget):
         euler_psi             = np.pi / 180.0 * self.settings['Azimuthal angle']
         # Tricky setting for 90 degrees
         angle = self.settings['Angle of incidence']
-        if angle >= 89.99:
-            angle = 89.99
+        if angle >= 90.00:
+            angle = 90.00
         angleOfIncidence      = np.pi / 180.0 * angle
         # Rotate the dielectric constants to the laboratory frame
         system.substrate.set_euler(theta=euler_theta, phi=euler_phi, psi=euler_psi)
@@ -580,26 +562,28 @@ class SingleCrystalTab(QWidget):
         for v in vs:
             data = ''
             call_parameters.append( (v, angleOfIncidence, system) )
-            results.append( Calculator.solve_single_crystal_equations( (v, angleOfIncidence, system) ) )
-#        for result in pool.imap(Calculator.solve_single_crystal_equations, call_parameters, chunksize=40):
-#            results.append(result)
-#            progress += 1
-#            self.progressbar.setValue(progress)
-#            if self.notebook.progressbar is not None:
-#                self.notebook.progressbar.setValue(progress)
+            # results.append( Calculator.solve_single_crystal_equations( (v, angleOfIncidence, system) ) )
+        for result in pool.imap(Calculator.solve_single_crystal_equations, call_parameters, chunksize=40):
+            results.append(result)
+            progress += 1
+            self.progressbar.setValue(progress)
+            if self.notebook.progressbar is not None:
+                self.notebook.progressbar.setValue(progress)
         QCoreApplication.processEvents()
         # Initialise plotting variables
-        self.xaxis          = []
+        self.frequencies_cm1          = []
         self.p_reflectivity = []
         self.s_reflectivity = []
         self.p_transmission = []
         self.s_transmission = []
-        for v,r,R,t,T in results:
-            self.xaxis.append(v)
+        self.epsilon = []
+        for v,r,R,t,T,epsilon in results:
+            self.frequencies_cm1.append(v)
             self.p_reflectivity.append(R[0])
             self.s_reflectivity.append(R[1])
             self.p_transmission.append(T[0])
             self.s_transmission.append(T[1])
+            self.epsilon.append(epsilon)
         # Close parallel processing down
         pool.close()
         pool.join()
@@ -623,11 +607,10 @@ class SingleCrystalTab(QWidget):
         sp.delete()
         sp.writeNextRow(['Settings for the single crystal calculation of absorption and reflection'],col=1)
         sp.writeNextRow([''],col=1)
+        sp.writeNextRow([ 'Single crystal mode',          self.settings['Mode'] ],col=1)
         sp.writeNextRow([ 'Minimum frequency',            self.settings['Minimum frequency'] ],col=1)
         sp.writeNextRow([ 'Maximum frequency',            self.settings['Maximum frequency'] ],col=1)
         sp.writeNextRow([ 'Frequency increment',          self.settings['Frequency increment'] ],col=1)
-        sp.writeNextRow([ 'Molar definition',             self.settings['Molar definition'] ],col=1)
-        sp.writeNextRow([ 'Number of atoms in a molecule',self.settings['Number of atoms'] ],col=1)
         sp.writeNextRow([ 'Plot title',                   self.settings['Plot title'] ],col=1)
         sp.writeNextRow([ 'Surface definition (h)',       self.settings['Unique direction - h'] ],col=1)
         sp.writeNextRow([ 'Surface definition (k)',       self.settings['Unique direction - k'] ],col=1)
@@ -636,10 +619,10 @@ class SingleCrystalTab(QWidget):
         sp.writeNextRow([ 'Angle of incidence',           self.settings['Angle of incidence'] ],col=1)
         sp.writeNextRow([ 'Superstrate dielectric',       self.settings['Superstrate dielectric'] ],col=1)
         sp.writeNextRow([ 'Substrate dielectric',         self.settings['Substrate dielectric'] ],col=1)
-        sp.writeNextRow([ 'Crystal depth(mu)',            self.settings['Crystal depth'] ],col=1)
+        sp.writeNextRow([ 'Film thickness(mu)',           self.settings['Film thickness'] ],col=1)
         # Now deal with Molar absorption, absorption, reflectivities
         headings = ['R_p', 'R_s', 'T_p', 'T_s']
-        self.write_results(sp, 'Crystal R&T',     self.xaxis, [self.p_reflectivity, self.s_reflectivity, self.p_transmission, self.s_transmission], headings)
+        self.write_results(sp, 'Crystal R&T',     self.frequencies_cm1, [self.p_reflectivity, self.s_reflectivity, self.p_transmission, self.s_transmission], headings)
 
     def write_results(self, sp, name, vs, yss, headings):
         """ 
@@ -660,7 +643,7 @@ class SingleCrystalTab(QWidget):
                output.append(ys[iv])
            sp.writeNextRow(output, col=1,check=1)
 
-    def plot(self,x,ys,ylabel,legends):
+    def plot(self,x,ys,ylabel,legends, subtitle):
         # import matplotlib.pyplot as pl
         # mp.use('Qt5Agg')
         self.subplot = None
@@ -668,6 +651,7 @@ class SingleCrystalTab(QWidget):
         self.remember_ys = ys
         self.remember_ylabel = ylabel
         self.remember_legends = legends
+        self.remember_subtitle = subtitle
         self.figure.clf()
         if self.frequency_units == 'wavenumber':
             xlabel = r'Frequency $\mathdefault{(cm^{-1})}}$'
@@ -682,11 +666,11 @@ class SingleCrystalTab(QWidget):
         self.subplot.set_xlabel(xlabel)
         self.subplot.set_ylabel(ylabel)
         self.subplot.legend(loc='best')
-        self.subplot.set_title(self.settings['Plot title'])
+        self.subplot.set_title(self.settings['Plot title']+' ('+subtitle+')')
         self.canvas.draw_idle()
 
     def replot(self):
         if self.subplot is not None:
-            self.plot(self.remember_x, self.remember_ys, self.remember_ylabel, self.remember_legends)
+            self.plot(self.remember_x, self.remember_ys, self.remember_ylabel, self.remember_legends, self.remember_subtitle)
 
 
