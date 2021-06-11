@@ -123,8 +123,10 @@ class DielectricFunction:
             return  self._epsFromInterpolation(frequency_cm1)
         elif self.epsType == 'dft':
             return  self._epsFromDFT(frequency_cm1)
-        elif self.epsType == 'lorentz':
-            return  self._epsFromLorentz(frequency_cm1)
+        elif self.epsType == 'lorentz_diagonal':
+            return  self._epsFromDiagonalLorentz(frequency_cm1)
+        elif self.epsType == 'lorentz_iso':
+            return  self._epsFromIsoLorentz(frequency_cm1)
         elif self.epsType == 'fpsq':
             return  self._epsFromFpsq(frequency_cm1)
         else:
@@ -168,18 +170,33 @@ class DielectricFunction:
             eps = eps + self.dielectricContributionFromDrude(vau, drude_plasma, drude_sigma, crystal_volume)
         return eps + epsilon_inf
 
+    def _epsFromDiagonalLorentz(self, f_cm1):
+        """
+        Setup a Lorentz model for a diagonal permittivity 
+        """
+        f_au  = wavenumber*f_cm1
+        eps = np.zeros( (3,3) )
+        for xyz,contribution in enumerate(self.parameters):
+            for mode in contribution:
+                v_cm, strength, sigma_cm = mode
+                v_au     = v_cm * wavenuumber
+                sigma_au = sigmas_cm * wavenumber
+                eps[xyz,xyz] += dielectric + strength / np.complex((v_au*v_au - f_au*f_au), -sigma_au*f_au)
+        return tensor + self.epsilon_infinity
+
     def _epsFromIsoLorentz(self, f_cm1):
         """
         Setup a Lorentz model for the permittivity for an isotropic system
         """
         f_au  = wavenumber*f_cm1
-        eps = np.zeros((3, 3), dtype=complex)
+        eps = 0.0
         for mode in self.parameters:
             v_cm, strength, sigma_cm = mode
             v_au     = v_cm * wavenuumber
             sigma_au = sigmas_cm * wavenumber
             eps += dielectric + strength / np.complex((v_au*v_au - f_au*f_au), -sigma_au*f_au)
-        return eps * (4.0*np.pi/self.volume_au) + self.epsilon_infinity
+        tensor = eps*np.identity(3)
+        return tensor + self.epsilon_infinity
 
     def _epsFromFpsq(self, f_cm1):
         """
@@ -190,7 +207,11 @@ class DielectricFunction:
         eps = np.array(self.epsilon_infinity,dtype=complex)
         for xyz,contribution in enumerate(self.parameters):
             for omega_to, gamma_to, omega_lo, gamma_lo  in contribution:
-                eps[xyz,xyz] *= (omega_lo**2 - f_cm1**2 - np.complex(0,gamma_lo)*f_cm1)/(omega_to**2 - f_cm1**2 - np.complex(0,gamma_to)*f_cm1)
+                contribution = (omega_lo**2 - f_cm1**2 - np.complex(0,gamma_lo)*f_cm1)/(omega_to**2 - f_cm1**2 - np.complex(0,gamma_to)*f_cm1)
+                # make sure the imaginary component is not negative!
+                real_contribution = np.real(contribution)
+                imag_contribution = max(0.0,np.imag(contribution))
+                eps[xyz,xyz] *= np.complex(real_contribution,imag_contribution)
         return eps 
 
 
