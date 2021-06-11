@@ -1432,7 +1432,11 @@ def solve_single_crystal_equations( parameters ):
     zeta_sys = np.sin(angleOfIncidence)*np.sqrt(system.superstrate.epsilon[0,0])
     Sys_Gamma = system.calculate_GammaStar(freq, zeta_sys)
     r, R, t, T = system.calculate_r_t(zeta_sys)
-    return v,r,R,t,T
+    if len(system.layers) > 0:
+        epsilon = system.layers[0].epsilon
+    else:
+        epsilon = system.substrate.epsilon
+    return v,r,R,t,T,epsilon
 
 
 def cleanup_symbol(s):
