@@ -673,9 +673,9 @@ class Layer:
             # JK the idea is to make sure there is still a very small amount of transmission
             # JK This avoids divide by zero
             exponent = -1.0j*(2.0*np.pi*f*self.qs[ii]*self.thick)/c_const
-            exponent_real = min(np.real(exponent),35.0)
-            exponent_imag = min(np.imag(exponent),35.0)
-            exponent = np.complex(exponent_real,exponent_imag)
+            # exponent_real = min(np.real(exponent),35.0)
+            # exponent_imag = min(np.imag(exponent),35.0)
+            # exponent = np.complex(exponent_real,exponent_imag)
             self.Ki[ii,ii] = np.exp(exponent)
             #  JK original line
             # self.Ki[ii,ii] = np.exp(-1.0j*(2.0*np.pi*f*self.qs[ii]*self.thick)/c_const)
