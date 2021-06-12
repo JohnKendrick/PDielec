@@ -58,7 +58,6 @@ class SingleCrystalTab(QWidget):
         self.s_transmission = []
         self.epsilon = []
         self.plotLastButtonPressed = self.plotReflectanceButtonClicked
-        print('Plot last',self.plotLastButtonPressed)
         self.frequencies_cm1 = []
         self.directions = []
         self.frequency_units = None
@@ -73,12 +72,12 @@ class SingleCrystalTab(QWidget):
         # Chose mode of operation
         #
         self.mode_cb = QComboBox(self)
-        self.mode_cb.setToolTip('Set the frequency units for the x-axis')
+        self.mode_cb.setToolTip('Set the mode of operation for this tab;\n Thick slab means that only reflections are significant (the film thickness has no effect and there are only two media; the incident and the crystal),\n Coherent thin film and incoherent thin film assumes there are three media; the incident, the crystal and the substrate')
         self.mode_cb.addItems( ['Thick slab','Coherent thin film','Incoherent thick film'] )
         self.settings['Mode'] = 'Thick slab'
         self.mode_cb.activated.connect(self.on_mode_cb_activated)
         label = QLabel('Single crystal mode', self)
-        label.setToolTip('Set mode of operation for the single crystal tab')
+        label.setToolTip('Set the mode of operation for this tab;\n Thick slab means that only reflections are significant (the film thickness has no effect and there are only two media; the incident and the crystal),\n Coherent thin film iand incoherent thin film assumes there are three media; the incident, the crystal and the substrate')
         form.addRow(label, self.mode_cb)
         #
         # The minimum frequency
@@ -177,8 +176,8 @@ class SingleCrystalTab(QWidget):
         self.azimuthal_angle_sb.valueChanged.connect(self.on_azimuthal_angle_sb_changed)
         self.angle_of_incidence_sb = QDoubleSpinBox(self)
         self.angle_of_incidence_sb.setToolTip('Define the angle of incidence')
-        self.angle_of_incidence_sb.setRange(0,180)
-        self.angle_of_incidence_sb.setSingleStep(10)
+        self.angle_of_incidence_sb.setRange(0,90)
+        self.angle_of_incidence_sb.setSingleStep(5)
         self.angle_of_incidence_sb.setValue(self.settings['Angle of incidence'])
         self.angle_of_incidence_sb.valueChanged.connect(self.on_angle_of_incidence_sb_changed)
         hbox = QHBoxLayout()
@@ -297,7 +296,7 @@ class SingleCrystalTab(QWidget):
         self.dirty = True
         self.notebook.singleCrystalCalculationRequired = True
         self.notebook.fittingCalculationRequired = True
-        self.settings['Rotation about Z'] = value
+        self.settings['Azimuthal angle'] = value
 
     def on_angle_of_incidence_sb_changed(self,value):
         debugger.print('on_angle_of_incidence_sb_changed', value)
