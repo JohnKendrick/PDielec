@@ -51,8 +51,9 @@ class ExperimentOutputReader(GenericOutputReader):
         self.manage['static']       = (re.compile('static'),     self._read_static_dielectric)
         self.manage['epsinf']       = (re.compile('epsinf'),     self._read_static_dielectric)
         self.manage['fpsq']         = (re.compile('fpsq'),       self._read_fpsq_model)
-        self.manage['isolorentz']   = (re.compile('isolorentz'), self._read_isolorentz_model)
+        self.manage['drude-lorentz']= (re.compile('drude-lorentz'), self._read_drude_lorentz_model)
         self.manage['constant']     = (re.compile('constant'),   self._read_constant_model)
+        self.manage['interpolate']  = (re.compile('interpolate'),   self._read_interpolate_model)
         for f in self._outputfiles:
             self._read_output_file(f)
         return
@@ -82,25 +83,79 @@ class ExperimentOutputReader(GenericOutputReader):
             self.CrystalPermittivity.setVolume(self.volume)
         return
 
-    def _read_isolorentz_model(self, line):
+    def _read_interpolate_model(self, line):
         """
-        Read in the isotropic lorentz model parameters
+        Read in a tabulated permittivity and use it for interpolation
+        A simple example is given below
+        All units are in cm-1
+        interpolate 3
+        # freq   eps(real)  eps(imag)
+         10.0   3.0         0.0
+        100.0   4.0         0.2
+        800.0   5.0         0.1
+        """
+        diag_eps = []
+        n = int(line[1])
+        contributions = []
+        for i in range(n):
+            line = self._read_line().split()
+            iso  = len(line)
+            if iso == 3:
+                omega  = float(line[0])
+                epsrxx = epsryy = epsrzz = float(line[1])
+                epsixx = epsiyy = epsizz = float(line[2])
+            elif iso == 7:
+                omega  = float(line[0])
+                epsrxx = float(line[1])
+                epsryy = float(line[2])
+                epsrzz = float(line[3])
+                epsixx = float(line[4])
+                epsiyy = float(line[5])
+                epsizz = float(line[6])
+            contributions.append( (omega, epsrxx, epsixx, epsryy, epsiyy, epsrzz, epsizz) )
+        # end for i
+        diag_eps.append(contributions)
+        # end for diag
+        # Create a dielectric function for use in calculations
+        self.CrystalPermittivity = DielectricFunction('interpolate', parameters=diag_eps)
+        # Force the interpolators to calculate the required spline functions again
+        self.CrystalPermittivity.interpolators = False
+        if self.zerof_optical_dielectric:
+            self.CrystalPermittivity.setEpsilonInfinity(self.zerof_optical_dielectric)
+        if self.volume:
+            self.CrystalPermittivity.setVolume(self.volume)
+        return
+
+    def _read_drude_lorentz_model(self, line):
+        """
+        Read in the drude_lorentz model parameters
         A simple example 2 oscillator model is given below
-        Units are in cm-1 except for the oscillator strengths which is a.u.
-        isolorentz 2
-        100.0  200.0  10.0
-        500.0 1000.0  10.0
+        All units are in cm-1
+        drude-lorentz
+        xx  1
+        413.7 1050.0  22.2
+        yy  1
+        413.7 1050.0  22.2
+        zz  1
+        413.7 1050.0  22.2
         """
-        nterms = int(line.split()[1])
-        parameters = []
-        for i in range(nterms):
-            line = self._read_line()
-            frequency_cm = (float(line.split()[0]))
-            strength = float(line.split()[1])
-            sigma_cm = float(line.split()[1])
-            oscillator_strengths = initialise_diagonal_tensor( [strength, strength, strength] ) 
-            parameters.append(frequency_cm, oscillator_strengths, sigma_cm)
-        self.CrystalPermittivity = DielectricFunction('isolorentz',parameters=parameters)
+        diag_eps = []
+        for diag in range(0,3):
+            line = self._read_line().split()
+            element = line[0]
+            n = int(line[1])
+            contributions = []
+            for i in range(n):
+                line = self._read_line().split()
+                omega    = float(line[0])
+                strength = float(line[1])
+                gamma    = float(line[2])
+                contributions.append( (omega, strength, gamma) )
+            # end for i
+            diag_eps.append(contributions)
+        # end for diag
+        # Create a dielectric function for use in calculations
+        self.CrystalPermittivity = DielectricFunction('drude-lorentz', parameters=diag_eps)
         if self.zerof_optical_dielectric:
             self.CrystalPermittivity.setEpsilonInfinity(self.zerof_optical_dielectric)
         if self.volume:
@@ -152,6 +207,7 @@ class ExperimentOutputReader(GenericOutputReader):
             self.CrystalPermittivity.setEpsilonInfinity(self.zerof_optical_dielectric)
         if self.volume:
             self.CrystalPermittivity.setVolume(self.volume)
+        return
 
     def _read_frequencies(self, line):
         nfreq = int(line.split()[1])
