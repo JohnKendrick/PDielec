@@ -655,3 +655,18 @@ It can be shown :cite:`Eilers2005` that this can be acheived by an iterative sol
 where :math:`\tensorbf{W}` is a diagonal matrix of weights modified during the iterations to make values of :math:`x` lie below those of :math:`y` and :math:`\tensorbf{D}` is a 3rd order differencing matrix.  Since the differencing matrix is very sparse, sparse matrix routines are used to solve the equations.
 
 In *PDGui* the value of :math:`\lambda` is supplied as :math:`\log \lambda`.
+
+Calculation of Single Crystal Optics
+------------------------------------
+
+The *SingleCrystal tab* enables the calculation of the optical behaviour of a single crystal (thick slab or film).  The method uses the pyGTM code available on GitHub :cite:`pygtm`.  This code implements a generalized transfer matrix method described by Passler et al. :cite:`Passler2020` and which builds on previous publications :cite:`Passler2017,Passler2017a`
+
+There are two coordinate systems to consider.  The first is the laboratory coordinate system (X,Y,Z).  
+It is assumed that the normal to the crystal surface is aligned with the Z-axis and that the incident radiation is in the X-Z plane.  P-polarised light is polarised parallel to this plane and S-polarised perpendicular (senkrecht) to this plane.  
+
+The other coordinate system of interest is that of the crystal.  The calculation of the permittivity tensor is performed in the crystal coordinate system (x,y,z).  The crystal place is defined by a set of miller indices (hkl) and the normal to the crystal surface is rotated to align the laboratory Z-axis.  Finally in the laboratory frame the crystal may be rotated around the Z-axis by the azimuthal angle :math:`\phi`.
+
+The calculation mode referred to as a "thick slab" assumes that there are only two media.  The media through which the incident light travels and the crystalline media by which it is reflected.  Transmission is not of interest in this case, as in the case of the a thick crystal it assumed that no absorption will take place and that there will be no internal reflection within the crystal.
+This mode is similar to a standard Fresnel calculation of reflectance but is appropriate for general permittivity tensors.
+
+The other modes of operation refer to a thin film and in these cases there are three media, an isotropic medium for the incident light, the crystal film (which now has a thickness) and the isotropic medium in which there is a detector.  In the case transmittance, reflectance and absorptance are all relevant.
