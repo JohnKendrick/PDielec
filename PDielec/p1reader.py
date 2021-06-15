@@ -10,7 +10,7 @@ version = PDielec.__init__.__version__
 def print_help():
     print('p1reader -program program [-hessian symm] [-version] filename', file=sys.stderr)
     print('  \"program\" must be one of \"abinit\", \"castep\", \"crystal\", \"gulp\"       ', file=sys.stderr)
-    print('           \"phonopy\", \"qe\", \"vasp\", \"auto\"                               ', file=sys.stderr)
+    print('           \"phonopy\", \"qe\", \"vasp\", \"experiment\", \"auto\"               ', file=sys.stderr)
     print('           The default is auto, so the program tries to guess the package from   ', file=sys.stderr)
     print('           the contents of the directory.  However this is not fool-proof!       ', file=sys.stderr)
     print('           If phonopy is used it must be followed by the QM package              ', file=sys.stderr)
@@ -67,7 +67,7 @@ def main():
         print('Please give a filename to be read in',file=sys.stderr)
         exit()
 
-    if not program in ['auto','abinit','castep','crystal','gulp','qe','vasp','phonopy']:
+    if not program in ['auto','abinit','castep','crystal','gulp','qe','vasp','phonopy','experiment']:
         print('Program is not recognised: ',program,file=sys.stderr)
         exit()
 

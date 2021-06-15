@@ -209,7 +209,7 @@ def read_a_file( calling_parameters):
 def print_help():
     print('preader -program program [-eckart] [-neutral] [-nocalculation] [-hessian symm] [-masses average] [-pickle name] [-version] filenames .....', file=sys.stderr)
     print('  \"program\" must be one of \"abinit\", \"castep\", \"crystal\", \"gulp\"       ', file=sys.stderr)
-    print('           \"phonopy\", \"qe\", \"vasp\", \"auto\"                               ', file=sys.stderr)
+    print('           \"phonopy\", \"qe\", \"vasp\", \"experiment\", \"auto\"               ', file=sys.stderr)
     print('           The default is auto, so the program tries to guess the package from   ', file=sys.stderr)
     print('           the contents of the directory.  However this is not fool-proof!       ', file=sys.stderr)
     print('           If phonopy is used it must be followed by the QM package              ', file=sys.stderr)
@@ -323,7 +323,7 @@ def main():
         print('Please use -program to define the package used to generate the output files',file=sys.stderr)
         exit()
 
-    if not program in ['auto','abinit','castep','crystal','gulp','qe','vasp','phonopy']:
+    if not program in ['auto','abinit','castep','crystal','gulp','qe','vasp','phonopy','experiment']:
         print('Program is not recognised: ',program,file=sys.stderr)
         exit()
 

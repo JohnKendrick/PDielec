@@ -55,6 +55,8 @@ def find_program_from_name( filename ):
             return 'crystal'
     if ext ==  '.dynG':
         return 'qe'
+    if ext ==  '.exp':
+        return 'experiment'
     print('Error unable to automatically assign program to ',filename)
     exit(1)
 
