@@ -24,11 +24,12 @@ from __future__ import print_function
 import numpy as np
 import sys
 from PDielec.Constants import wavenumber, angstrom, speed_light_si
+from scipy import interpolate
 
 
 class DielectricFunction:
     """Provide an interface to different dielectric functions"""
-    possible_epsTypes = ['constant','file','interpolate','dft','fpsq']
+    possible_epsTypes = ['constant','file','interpolate','dft','fpsq','drude-lorentz']
     possible_units = ['cm-1','microns','mu','nm','thz','hz']
     def __init__(self, epsType=None, volume=None, filename=None, parameters=None, units='cm-1' ):
         """
@@ -119,14 +120,12 @@ class DielectricFunction:
             return self.parameters
         elif self.epsType == 'filename':
             return  self._epsFromFile(frequency_cm1)
-        elif self.epsType == 'interpolation':
-            return  self._epsFromInterpolation(frequency_cm1)
+        elif self.epsType == 'interpolate':
+            return  self._epsFromInterpolate(frequency_cm1)
         elif self.epsType == 'dft':
             return  self._epsFromDFT(frequency_cm1)
-        elif self.epsType == 'lorentz_diagonal':
-            return  self._epsFromDiagonalLorentz(frequency_cm1)
-        elif self.epsType == 'lorentz_iso':
-            return  self._epsFromIsoLorentz(frequency_cm1)
+        elif self.epsType == 'drude-lorentz':
+            return  self._epsFromDrudeLorentz(frequency_cm1)
         elif self.epsType == 'fpsq':
             return  self._epsFromFpsq(frequency_cm1)
         else:
@@ -141,11 +140,41 @@ class DielectricFunction:
         print('_epsFromFile: ',v_cm1)
         return
 
-    def _epsFromInterpolation(self, v_cm1):
+    def _epsFromInterpolate(self, v_cm1):
         """
         Calculate the dielectric constant from interpolation data
         """
-        print('_epsFromInterpolation: ',v_cm1)
+        eps = np.zeros( (3,3), dtype=complex )
+        if not self.interpolators:
+            # If the interpolators do not exist we have to create them from the parameters
+            vs = []
+            rxxs = []
+            ryys = []
+            rzzs = []
+            ixxs = []
+            iyys = []
+            izzs = []
+            for v_cm1, epsrxx, epsixx, epsryy, epsiyy, epsrzz, epsizz in self.parameters:
+                vs.append(v_cm1)
+                rxxs.append(epsrxx)
+                ryys.append(epsryy)
+                rzzs.append(epsrzz)
+                ixxs.append(epsixx)
+                iyys.append(epsiyy)
+                izzs.append(epsizz)
+            self.interpolaterxx = interpolate.InterpolatedUnivariateSpline(vs,np.array(rxxs))
+            self.interpolateixx = interpolate.InterpolatedUnivariateSpline(vs,np.array(ixxs))
+            self.interpolateryy = interpolate.InterpolatedUnivariateSpline(vs,np.array(ryys))
+            self.interpolateiyy = interpolate.InterpolatedUnivariateSpline(vs,np.array(iyys))
+            self.interpolaterzz = interpolate.InterpolatedUnivariateSpline(vs,np.array(rzzs))
+            self.interpolateizz = interpolate.InterpolatedUnivariateSpline(vs,np.array(izzs))
+            self.interpolators = True
+        # Since the interpolators exist we can calculate the permittivity at the required frequency
+        eps[0,0] = complex(self.interpolaterxx(v_cm1),self.interpolateixx(v_cm1))
+        eps[1,1] = complex(self.interpolateryy(v_cm1),self.interpolateiyy(v_cm1))
+        eps[2,2] = complex(self.interpolaterzz(v_cm1),self.interpolateizz(v_cm1))
+        return eps + self.epsilon_infinity
+
         return
 
     def _epsFromDFT(self, v_cm1):
@@ -170,40 +199,22 @@ class DielectricFunction:
             eps = eps + self.dielectricContributionFromDrude(vau, drude_plasma, drude_sigma, crystal_volume)
         return eps + epsilon_inf
 
-    def _epsFromDiagonalLorentz(self, f_cm1):
+    def _epsFromDrudeLorentz(self, f_cm1):
         """
-        Setup a Lorentz model for a diagonal permittivity 
+        Setup a Drude-Lorentz model for a diagonal permittivity 
         """
-        f_au  = wavenumber*f_cm1
-        eps = np.zeros( (3,3) )
+        eps = np.zeros( (3,3), dtype=complex )
         for xyz,contribution in enumerate(self.parameters):
             for mode in contribution:
-                v_cm, strength, sigma_cm = mode
-                v_au     = v_cm * wavenuumber
-                sigma_au = sigmas_cm * wavenumber
-                eps[xyz,xyz] += dielectric + strength / np.complex((v_au*v_au - f_au*f_au), -sigma_au*f_au)
-        return tensor + self.epsilon_infinity
-
-    def _epsFromIsoLorentz(self, f_cm1):
-        """
-        Setup a Lorentz model for the permittivity for an isotropic system
-        """
-        f_au  = wavenumber*f_cm1
-        eps = 0.0
-        for mode in self.parameters:
-            v_cm, strength, sigma_cm = mode
-            v_au     = v_cm * wavenuumber
-            sigma_au = sigmas_cm * wavenumber
-            eps += dielectric + strength / np.complex((v_au*v_au - f_au*f_au), -sigma_au*f_au)
-        tensor = eps*np.identity(3)
-        return tensor + self.epsilon_infinity
+                v_cm1, strength_cm1, sigma_cm1 = mode
+                eps[xyz,xyz] += strength_cm1 * strength_cm1 / np.complex((v_cm1*v_cm1 - f_cm1*f_cm1), -sigma_cm1*f_cm1)
+        return eps + self.epsilon_infinity
 
     def _epsFromFpsq(self, f_cm1):
         """
         Setup a fpsq model for the permittivity
         """
         #jk print('Setting up fpsq ',self.parameters)
-        f_au  = wavenumber*f_cm1
         eps = np.array(self.epsilon_infinity,dtype=complex)
         for xyz,contribution in enumerate(self.parameters):
             for omega_to, gamma_to, omega_lo, gamma_lo  in contribution:
