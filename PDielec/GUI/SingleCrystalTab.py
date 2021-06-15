@@ -52,6 +52,7 @@ class SingleCrystalTab(QWidget):
         self.settings['Mode'] = 'Thick slab'
         self.settings['Plot title'] = 'Single crystal '+self.settings['Mode']
         self.settings['Use default plot title'] = True
+        self.settings['Frequency units'] = 'wavenumber'
         self.p_reflectivity = []
         self.s_reflectivity = []
         self.p_transmission = []
@@ -60,7 +61,6 @@ class SingleCrystalTab(QWidget):
         self.plotLastButtonPressed = self.plotReflectanceButtonClicked
         self.frequencies_cm1 = []
         self.directions = []
-        self.frequency_units = None
         # store the notebook
         self.notebook = parent
         # get the reader from the main tab
@@ -132,7 +132,7 @@ class SingleCrystalTab(QWidget):
         self.funits_cb = QComboBox(self)
         self.funits_cb.setToolTip('Set the frequency units for the x-axis')
         self.funits_cb.addItems( ['wavenumber','THz'] )
-        self.frequency_units = 'wavenumber'
+        self.settings['Frequency units'] = 'wavenumber'
         self.funits_cb.activated.connect(self.on_funits_cb_activated)
         label = QLabel('Frequency units for the x-axis', self)
         label.setToolTip('Set the frequency units for the x-axis')
@@ -437,6 +437,18 @@ class SingleCrystalTab(QWidget):
         self.vmax_sb.setValue(self.settings['Maximum frequency'])
         self.vinc_sb.setValue(self.settings['Frequency increment'])
         self.title_le.setText(self.settings['Plot title'])
+        self.h_sb.setValue(self.settings['Unique direction - h'])
+        self.k_sb.setValue(self.settings['Unique direction - k'])
+        self.l_sb.setValue(self.settings['Unique direction - l'])
+        self.azimuthal_angle_sb.setValue(self.settings['Azimuthal angle'])
+        self.angle_of_incidence_sb.setValue(self.settings['Angle of incidence'])
+        self.superstrate_dielectric_sb.setValue(self.settings['Superstrate dielectric'])
+        self.substrate_dielectric_sb.setValue(self.settings['Substrate dielectric'])
+        self.film_thickness_sb.setValue(self.settings['Film thickness'])
+        index = self.mode_cb.findText(self.settings['Mode'], Qt.MatchFixedString)
+        self.mode_cb.setCurrentIndex(index)
+        index = self.funits_cb.findText(self.settings['Frequency units'], Qt.MatchFixedString)
+        self.funits_cb.setCurrentIndex(index)
         # Refresh the widgets that depend on the reader
         self.reader = self.notebook.reader
         # Flag a recalculation will be required
@@ -446,7 +458,6 @@ class SingleCrystalTab(QWidget):
         if self.notebook.progressbar is not None:
             self.notebook.progressbar.setValue(0)
         self.plotLastButtonPressed()
-        # jk self.plotReflectanceButtonClicked()
         self.dirty = False
         self.notebook.singleCrystalCalculationRequired = False
         #
@@ -473,11 +484,11 @@ class SingleCrystalTab(QWidget):
 
     def on_funits_cb_activated(self, index):
         if index == 0:
-            self.frequency_units = 'wavenumber'
+            self.settings['Frequency units'] = 'wavenumber'
         else:
-            self.frequency_units = 'THz'
+            self.settings['Frequency units'] = 'THz'
         self.replot()
-        debugger.print('Frequency units changed to ', self.frequency_units)
+        debugger.print('Frequency units changed to ', self.settings['Frequency units'])
 
     def calculate(self):
         debugger.print('Calculate')
@@ -667,7 +678,7 @@ class SingleCrystalTab(QWidget):
         self.remember_legends = legends
         self.remember_subtitle = subtitle
         self.figure.clf()
-        if self.frequency_units == 'wavenumber':
+        if self.settings['Frequency units'] == 'wavenumber':
             xlabel = r'Frequency $\mathdefault{(cm^{-1})}}$'
             scale = 1.0
         else:
