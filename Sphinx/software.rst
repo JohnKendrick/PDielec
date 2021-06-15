@@ -72,9 +72,11 @@ After running the program the user sees a notebook interface with seven tabs.
 
     *Settings Tab* is used for changing the settings within the package
 
-    *Scenario Tab* specifies the material properties used to define the effective medium from which the  absorption characteristic are calculated.  This tab can also be used to change the algorithms used to calculate the effective medium.
+    *Scenario Tab* specifies the material properties used to define the effective medium from which the  absorption characteristic are calculated.  This tab can also be used to change the algorithms used to calculate the effective medium.  Several scenarios can be defined and plotted in the *Plotting Tab*.
 
-    *Plotting Tab* shows the absorption or permittivity as a function of frequency.
+    *Plotting Tab* shows the absorption or permittivity as a function of frequency for the effective medium theories given in the scenario tabs.
+
+    *SingleCrystal Tab* shows the transmittance and reflectance of a single crystal (slab or film) as a function of frequency.
 
     *Analysis Tab* shows the decomposition of the normal modes into molecular components.
 
@@ -134,7 +136,7 @@ The output table at the bottom of the tab shows the calculated frequencies and t
 Scenario Tabs
 -------------
 
-There can be more than one *Scenario Tab*.  Each one specifies a particular material, method or particle shape which will be used for the calculation of the effective medium.  The results of the calculations will be shown in the *Plotting Tab*.
+There can be more than one *Scenario Tab*.  Each one specifies a particular material, method or particle shape which will be used for the calculation of the effective medium.  The results of the calculations will be shown in the *Plotting Tab*. For each scenario it is assumed that the size of the particle embedded in the matrix is small compared with the wavelength of light.
 
 .. _fig-scenarioTab:
 
@@ -199,6 +201,30 @@ The title of the plot can be supplied by entering it into the *Plot title* text 
 
 The molar absorption, the absorption and the real or imaginary permittivity can be plotted.  Once a plot has been requested the calculation progress is shown in the progress bar.  Some settings can be changed without the whole plot being recalculated.
 
+SingleCrystal Tab
+-----------------
+
+The *SingleCrystal Tab* controls and plots the reflectance and transmittance of a single crystal.  There are options to to treat a thick crystal (where only reflectance is of importance) and coherent light reflectance and transmittance in a thin film.
+
+
+.. _fig-plottingTab:
+
+.. figure:: ./_static/Figures/SingleCrystalTab.png 
+   :scale: 80%
+
+   The SingleCrystal Tab
+
+The minimum and maximum frequencies can be specified along with the frequency increment.  
+A calculation of the reflectance and tranmittance is performed at each frequency between the minimum and maximum.
+
+The surface of the crystal which receives the incident light is defined by the crystal surface (hkl).  The normal to the surface is rotated to line up with the laboratory Z-axis.  The incident radiation is assumed to be at an angle :math:`\theta` to the normal.  Finaly the crystal can be rotated about Z by the azimuthal angle, :math:`\phi`.  It is assumed that the incident radiation propagates in laboratory X-Z plane.
+
+For the case of a thick slab, the permittivity of the incident can be specified, but the substrate permittivity is not used.  For the case of a thin film both permittivities are used.
+
+The title of the plot can be supplied by entering it into the *Plot title* text box and the frequency units used for the plot can also be changed from *wavenumber* to *THz*.  A default plot title is generated giving information about the type of plot being viewed.
+
+There are options to plot the transmittance and reflectance in the plane of the incoming beam (P-wave) and perpendicular to the plane of the incoming beam (S-wave) as well as the sum of the transmittance and reflectance, which is related to the absorption.  Note that for a thick crystal only the reflectance has any physical meaning.  The user can also plot the components of the permittivity tensor (real and imaginary).  These are plotted in the laboratory coordinate frame.
+
 Analysis Tab
 ------------
 
@@ -230,6 +256,7 @@ The atomic displacement of each phonon can either be shown as arrows or as an an
    The 3D Viewer Tab
 
 As well as being able to change the phonon mode being analysed.  The colours and many settings in the visualiser can be adjusted from the settings tab.
+There are also options to save the view as a png file or as an mp3 animation.  *Save as cif* results in all the geometries used to show the phonon animation being written out as a cif file.
 
 
 Fitter Tab
@@ -457,3 +484,151 @@ GULP
 -----
 
 The name on the command line is a file ending in .gout, containing the output of a GULP run. The contents of this file alone are sufficient to provide the unit cell, atomic masses, frequencies, normal modes, Born charge tensors and optical permittivity. Because GULP only writes out the Born charge matrices for the asymmetric unit, it is necessary to run a frequency calculation using P1 symmetry and a complete unit cell. The key words; nosymm, phonon, intensity, eigen and cart are recommended for the GULP calculation. In the case that no shells are used in the calculation the optical permittivity is not available in the output and it is necessary to provide it.
+
+Experimental File Format
+========================
+There is a way of reading in experimental or calculated permittivities and calculating the infrared optical behaviour of the material.  The uses the *experimental* file format which by default is assumed to be associated with files with *.exp* extention. 
+There are some significant limitations in providing the information in the manner.  Specifically as there is no Dynamical Matrix the normal modes are not known, so they will not be visible in the *Viewer tab*.   There may be little information about specific modes for the *Settings tab*.
+
+The general format of an experimental file is best shown by an example;::
+
+    lattice
+      5.027782
+      0.866025403784439  -0.500000000000000   0.000000000000000
+      0.000000000000000   1.000000000000000   0.000000000000000
+      0.000000000000000   0.000000000000000   1.097684415337773
+    species 2
+      Si 0.0
+       O 0.0
+    unitcell 9
+      Si 0.000000000000000   0.477290000000000   0.333333333333333 
+      Si 0.477290000000000   0.000000000000000   0.666666666666667 
+      Si 0.522710000000000   0.522710000000000   0.000000000000000 
+       O 0.160740000000000   0.745703000000000   0.537333670000000 
+       O 0.584963000000000   0.839260000000000   0.870667003333333 
+       O 0.415037000000000   0.254297000000000   0.795999663333333 
+       O 0.745703000000000   0.160740000000000   0.462666330000000 
+       O 0.839260000000000   0.584963000000000   0.129332996666667 
+       O 0.254297000000000   0.415037000000000   0.204000336666667 
+    epsinf
+    2.296 0.0   0.0
+    0.0   2.296 0.0
+    0.0   0.0   2.334
+    # model taken from Winta, C. J., Wolf, M., & Paarmann, A. (2019) Physical Review B, 99(14), 144308
+    fpsq
+    # 1.5K Data
+    # Omega(TO) Gamma(TO) Omega(LO) Gamma(LO) (<2 in Table is taken to be 1.0)
+    xx 6
+    # E Phonon modes
+      391.5     1.0        403.0    1.0
+      454.0     2.6        510.5    1.0
+      695.9     4.9        698.4    4.0
+      797.2     4.8        810.0    4.3
+     1063.7     6.1       1230.7    8.2
+     1157.2     6.2       1154.9    6.1
+    yy 6
+      391.5     1.0        403.0    1.0
+      454.0     2.6        510.5    1.0
+      695.9     4.9        698.4    4.0
+      797.2     4.8        810.0    4.3
+     1063.7     6.1       1230.7    8.2
+     1157.2     6.2       1154.9    6.1
+    zz 4
+    # A2 Phonon modes
+      360.7     1.0        384.8    1.0
+      497.9     3.1        553.6    2.8
+      773.7     5.4        789.9    6.3
+     1073.0     6.2       1238.7   12.4
+   
+The file starts with a definition of the lattice, the first number being a lattice constant followed by three lines specifying the a, b, and c directions of the unit-cell.
+
+The next directive species the species and their masses, by default PDGui uses its own internal mass scheme, so unless otherwise required these masses will be overwritten.
+
+The *unitcell* directive specifies the number of atoms in the unit-cell and their fractional coordinates.
+
+The *epsinf* directive gives the values of the :math:`\epsilon_{\infty}` tensor
+
+Finally a model for the specification of the frequency dependent perittivity is given.  In this case the four parameter semi-quantum model (fpsq)is employed.  Each diagonal component of the tensor is specified by the number of contributions and then each contribution provides the TO frequency and its :math:`\gamma` followed by the same for the LO frequency (all frequencies are in cm-1. Full details of each permittivity model available are shown below.
+
+
+Constant model (constant)
+--------------
+
+The constant model defines a frequency independent permittivity.  The data for such a model is shown below.::
+
+    constant
+    2.0+0.1j 0.0      0.0
+    0.0      2.0+0.1j 0.0
+    0.0      0.0      2.0+0.1j
+
+This would specify an isotropic permittivity with some absorption.
+    
+
+
+
+FPSQ model (fpsq)
+----------
+
+The fpsq model defines a frequency dependent permittivity using the Four Parameter Semi-Quantum model.  An example of the data for such a model is shown below.::
+
+    fpsq
+    xx 6
+    # E Phonon modes
+    # Omega(TO) Gamma(TO) Omega(LO) Gamma(LO) 
+      391.5     1.0        403.0    1.0
+      454.0     2.6        510.5    1.0
+      695.9     4.9        698.4    4.0
+      797.2     4.8        810.0    4.3
+     1063.7     6.1       1230.7    8.2
+     1157.2     6.2       1154.9    6.1
+    yy 6
+    # E Phonon modes
+    # Omega(TO) Gamma(TO) Omega(LO) Gamma(LO) 
+      391.5     1.0        403.0    1.0
+      454.0     2.6        510.5    1.0
+      695.9     4.9        698.4    4.0
+      797.2     4.8        810.0    4.3
+     1063.7     6.1       1230.7    8.2
+     1157.2     6.2       1154.9    6.1
+    zz 4
+    # A2 Phonon modes
+    # Omega(TO) Gamma(TO) Omega(LO) Gamma(LO) 
+      360.7     1.0        384.8    1.0
+      497.9     3.1        553.6    2.8
+      773.7     5.4        789.9    6.3
+     1073.0     6.2       1238.7   12.4
+   
+The model only allows for a diagonal permittivity tensor and each component of the tensor specified requires the number of terms in the expansion to the specified.  Each component of the permittivity tensor is generated using the following formula;
+
+.. math::
+   :label: eq-fpsq
+
+    \epsilon (\omega )=\epsilon _{\infty}\prod_{j} \frac{\Omega^2_{LO_j}-\omega ^2-i\gamma _{LO_j}\omega }{\Omega^2_{TO_j}-\omega ^2-i\gamma _{TO_j}\omega}
+
+
+Drude-Lorentz model (drude-lorentz)
+----------
+
+The drude-lorentz model defines a frequency dependent permittivity.  An example of he data for such a model describing MgO is shown below.::
+
+    drude-lorentz
+    xx 2
+    # T Phonon modes
+    # Frequency    Strength  Gamma
+      413.7           1050.0  22.2
+      652.2             90.0  64.6
+    yy 2
+      413.7           1050.0  22.2
+      652.2             90.0  64.6
+    zz 2
+      413.7           1050.0  22.2
+      652.2             90.0  64.6
+   
+The model only allows for a diagonal permittivity tensor and each component of the tensor specified requires the number of terms in the expansion to the specified.  Each component of the permittivity tensor is generated using the following formula;
+
+.. math::
+   :label: eq-fpsq
+
+    \epsilon (\omega )=\epsilon _{\infty}\sum{j} \frac{\Omega^2_{LO_j}-\omega ^2-i\gamma _{LO_j}\omega }{\Omega^2_{TO_j}-\omega ^2-i\gamma _{TO_j}\omega}
+
+
