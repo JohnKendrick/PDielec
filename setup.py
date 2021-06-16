@@ -22,6 +22,7 @@ setuptools.setup(
     url="https://github.com/JohnKendrick/PDielec",
     # packages=setuptools.find_packages(include=['PDielec','PDielec.*']),
     packages=['PDielec','PDielec/GUI'],
+    package_dir = { 'PDielec' : '' },
     license='MIT',
     keywords=['Infrared',' Infrared Spectroscopy','THz Spectroscopy','Terahertz Spectroscopy','Bruggeman','Maxwell-Garnett','Effective Medium'],
     install_requires=[
