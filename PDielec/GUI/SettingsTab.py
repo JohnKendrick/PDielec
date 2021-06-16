@@ -250,7 +250,9 @@ class SettingsTab(QWidget):
             sigmas_au = np.array(self.sigmas_cm1)*wavenumber
             self.CrystalPermittivity = DielectricFunction('dft',parameters=(
                                          mode_list, frequencies_au, sigmas_au, self.oscillator_strengths,
-                                         volume_au, epsilon_inf, drude, drude_plasma_au, drude_sigma_au) )
+                                         volume_au, drude, drude_plasma_au, drude_sigma_au) )
+        # Add the optical permittivity to the dielctric function
+        self.CrystalPermittivity.setEpsilonInfinity(epsilon_inf)
         #
         # Prepare to finish
         #
