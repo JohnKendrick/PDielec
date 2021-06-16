@@ -55,6 +55,8 @@ class DielectricFunction:
             self.volume_au = volume*angstrom*angstrom*angstrom
         if epsType == 'file':
             self._readFile()
+        elif epsType == 'interpolate':
+            self._generateInterpolators()
 
     def setUnits(self,units):
         """Set the volume for dielectric calculations"""
@@ -86,6 +88,31 @@ class DielectricFunction:
         print('Reading file ',self.filename)
         exit()
         return
+
+    def _generateInterpolators(self):
+        # If the interpolators do not exist we have to create them from the parameters
+        vs = []
+        rxxs = []
+        ryys = []
+        rzzs = []
+        ixxs = []
+        iyys = []
+        izzs = []
+        for v_cm1, epsrxx, epsixx, epsryy, epsiyy, epsrzz, epsizz in self.parameters:
+            vs.append(v_cm1)
+            rxxs.append(epsrxx)
+            ryys.append(epsryy)
+            rzzs.append(epsrzz)
+            ixxs.append(epsixx)
+            iyys.append(epsiyy)
+            izzs.append(epsizz)
+        self.interpolaterxx = interpolate.InterpolatedUnivariateSpline(vs,np.array(rxxs))
+        self.interpolateixx = interpolate.InterpolatedUnivariateSpline(vs,np.array(ixxs))
+        self.interpolateryy = interpolate.InterpolatedUnivariateSpline(vs,np.array(ryys))
+        self.interpolateiyy = interpolate.InterpolatedUnivariateSpline(vs,np.array(iyys))
+        self.interpolaterzz = interpolate.InterpolatedUnivariateSpline(vs,np.array(rzzs))
+        self.interpolateizz = interpolate.InterpolatedUnivariateSpline(vs,np.array(izzs))
+
     def _convert(self, f):
         """
         Convert the incoming frequency units to cm-1
@@ -145,37 +172,10 @@ class DielectricFunction:
         Calculate the dielectric constant from interpolation data
         """
         eps = np.zeros( (3,3), dtype=complex )
-        if not self.interpolators:
-            # If the interpolators do not exist we have to create them from the parameters
-            vs = []
-            rxxs = []
-            ryys = []
-            rzzs = []
-            ixxs = []
-            iyys = []
-            izzs = []
-            for v_cm1, epsrxx, epsixx, epsryy, epsiyy, epsrzz, epsizz in self.parameters:
-                vs.append(v_cm1)
-                rxxs.append(epsrxx)
-                ryys.append(epsryy)
-                rzzs.append(epsrzz)
-                ixxs.append(epsixx)
-                iyys.append(epsiyy)
-                izzs.append(epsizz)
-            self.interpolaterxx = interpolate.InterpolatedUnivariateSpline(vs,np.array(rxxs))
-            self.interpolateixx = interpolate.InterpolatedUnivariateSpline(vs,np.array(ixxs))
-            self.interpolateryy = interpolate.InterpolatedUnivariateSpline(vs,np.array(ryys))
-            self.interpolateiyy = interpolate.InterpolatedUnivariateSpline(vs,np.array(iyys))
-            self.interpolaterzz = interpolate.InterpolatedUnivariateSpline(vs,np.array(rzzs))
-            self.interpolateizz = interpolate.InterpolatedUnivariateSpline(vs,np.array(izzs))
-            self.interpolators = True
-        # Since the interpolators exist we can calculate the permittivity at the required frequency
         eps[0,0] = complex(self.interpolaterxx(v_cm1),self.interpolateixx(v_cm1))
         eps[1,1] = complex(self.interpolateryy(v_cm1),self.interpolateiyy(v_cm1))
         eps[2,2] = complex(self.interpolaterzz(v_cm1),self.interpolateizz(v_cm1))
         return eps + self.epsilon_infinity
-
-        return
 
     def _epsFromDFT(self, v_cm1):
         """
@@ -192,12 +192,12 @@ class DielectricFunction:
                      drude_plasma,               (au)
                      drude_sigma                 (au)
         """
-        mode_list, mode_frequencies, mode_sigmas, mode_oscillator_strengths, crystal_volume, epsilon_inf, drude, drude_plasma, drude_sigma = self.parameters
+        mode_list, mode_frequencies, mode_sigmas, mode_oscillator_strengths, crystal_volume, drude, drude_plasma, drude_sigma = self.parameters
         v_au = v_cm1 * wavenumber
         eps = self.dielectriContributionsFromModes(v_au, mode_list, mode_frequencies, mode_sigmas, mode_oscillator_strengths, crystal_volume)
         if drude:
             eps = eps + self.dielectricContributionFromDrude(vau, drude_plasma, drude_sigma, crystal_volume)
-        return eps + epsilon_inf
+        return eps + self.epsilon_infinity
 
     def _epsFromDrudeLorentz(self, f_cm1):
         """
