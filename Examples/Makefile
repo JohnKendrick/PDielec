@@ -42,6 +42,10 @@ test-pdgui:
 	@$(MAKE) --no-print-directory -C Mie/MgO_lognormal pdgui
 	@$(MAKE) --no-print-directory -C ATR/AlAs pdgui
 	@$(MAKE) --no-print-directory -C ATR/Na2SO42 pdgui
+	@$(MAKE) --no-print-directory -C Experiment/constant pdgui
+	@$(MAKE) --no-print-directory -C Experiment/fpsq pdgui
+	@$(MAKE) --no-print-directory -C Experiment/drude-lorentz pdgui
+	@$(MAKE) --no-print-directory -C Experiment/interpolation pdgui
 
 test-vibanalysis:
 	@$(MAKE) --no-print-directory -C VibAnalysis/AsparticAcid vibanalysis
@@ -98,3 +102,6 @@ pdgui-regenerate:
 	@$(MAKE) --no-print-directory -C Mie/MgO_lognormal pdgui-regenerate
 	@$(MAKE) --no-print-directory -C ATR/AlAs pdgui-regenerate
 	@$(MAKE) --no-print-directory -C ATR/Na2SO42 pdgui-regenerate
+	@$(MAKE) --no-print-directory -C Experiment/fpsq regenerate
+	@$(MAKE) --no-print-directory -C Experiment/drude-lorentz regenerate
+	@$(MAKE) --no-print-directory -C Experiment/interpolation regenerate
