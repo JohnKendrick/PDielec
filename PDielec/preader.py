@@ -119,7 +119,8 @@ def read_a_file( calling_parameters):
                     mode_list.remove(mode)
             # end loop over modes to be ignored
         # end of if ignore_modes
-        crystalPermittivity = DielectricFunction('dft', parameters=(mode_list, modified_frequencies*wavenumber, sigmas, oscillator_strengths, volume, epsinf, False, 0.0, 0.0) )
+        crystalPermittivity = DielectricFunction('dft', parameters=(mode_list, modified_frequencies*wavenumber, sigmas, oscillator_strengths, volume, False, 0.0, 0.0) )
+        crystalPermittivity.setEpsilonInfinity(epsinf)
         ionicv = crystalPermittivity.calculate(0.0) - epsinf
     # absorption units here are L/mole/cm-1
     # Continue reading any data from the output file
