@@ -95,7 +95,7 @@ class ExperimentOutputReader(GenericOutputReader):
         800.0   5.0         0.1
         """
         diag_eps = []
-        n = int(line[1])
+        n = int(line.split()[1])
         contributions = []
         for i in range(n):
             line = self._read_line().split()
@@ -112,14 +112,10 @@ class ExperimentOutputReader(GenericOutputReader):
                 epsixx = float(line[4])
                 epsiyy = float(line[5])
                 epsizz = float(line[6])
-            contributions.append( (omega, epsrxx, epsixx, epsryy, epsiyy, epsrzz, epsizz) )
+            diag_eps.append( (omega, epsrxx, epsixx, epsryy, epsiyy, epsrzz, epsizz) )
         # end for i
-        diag_eps.append(contributions)
-        # end for diag
         # Create a dielectric function for use in calculations
         self.CrystalPermittivity = DielectricFunction('interpolate', parameters=diag_eps)
-        # Force the interpolators to calculate the required spline functions again
-        self.CrystalPermittivity.interpolators = False
         if self.zerof_optical_dielectric:
             self.CrystalPermittivity.setEpsilonInfinity(self.zerof_optical_dielectric)
         if self.volume:
