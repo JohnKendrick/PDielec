@@ -286,16 +286,16 @@ Mode   1:    -0.00 cm-1 (IR:   0.0)
   +0.2185 (  7.3%) TORSION C49 C52 C54 C58
  Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
  Total Composition:   13.4% BOND,  30.9% ANGLE,  23.4% OUT,  32.4% TOR
- R**2 = 0.4110
+ R**2 = 0.4111
  Explained Variance =  39.2 %
 
-Mode   2:    -0.00 cm-1 (IR:   0.0)
+Mode   2:     0.00 cm-1 (IR:   0.0)
  Mode too disperse!
  Largest Contribution: 
   +0.1612 (  5.2%) TORSION N68 C71 C74 C77
  Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
- Total Composition:   24.2% BOND,  39.3% ANGLE,   9.9% OUT,  26.7% TOR
- R**2 = 0.4655
+ Total Composition:   24.2% BOND,  39.2% ANGLE,   9.9% OUT,  26.7% TOR
+ R**2 = 0.4654
  Explained Variance =  43.5 %
 
 Mode   3:    32.01 cm-1 (IR:   1.6)

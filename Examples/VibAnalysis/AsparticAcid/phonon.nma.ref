@@ -135,21 +135,21 @@ Mode   0:    -0.00 cm-1 (IR:   0.0)
  Explained Variance =  14.2 %
 
 Mode   1:    -0.00 cm-1 (IR:   0.0)
-  +0.3907 ( 17.9%) TORSION C3 C4 C6 C9
-  -0.3162 ( 14.5%) TORSION C19 C20 C24 C26
- Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT, 100.0% TOR
- Total Composition:   40.3% BOND,  15.0% ANGLE,   5.7% OUT,  39.0% TOR
- R**2 = 0.4326
- Explained Variance =  37.8 %
-
-Mode   2:     0.00 cm-1 (IR:   0.0)
  Mode too disperse!
  Largest Contribution: 
-  +0.3272 ( 10.2%) TORSION H1 O2 C3 C4
+  +0.3334 ( 10.3%) TORSION H1 O2 C3 O5
  Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
- Total Composition:    5.8% BOND,  23.6% ANGLE,  18.9% OUT,  51.7% TOR
- R**2 = 0.6570
- Explained Variance =  64.6 %
+ Total Composition:    5.5% BOND,  23.1% ANGLE,  19.0% OUT,  52.4% TOR
+ R**2 = 0.6556
+ Explained Variance =  64.5 %
+
+Mode   2:    -0.00 cm-1 (IR:   0.0)
+  -0.3789 ( 17.9%) TORSION C3 C4 C6 C9
+  +0.3125 ( 14.8%) TORSION C19 C20 C24 C26
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT, 100.0% TOR
+ Total Composition:   40.4% BOND,  15.6% ANGLE,   4.8% OUT,  39.2% TOR
+ R**2 = 0.4254
+ Explained Variance =  36.9 %
 
 Mode   3:    50.00 cm-1 (IR:   0.5)
   -0.5221 ( 24.9%) OUT O18 C19 C20 O21

@@ -289,8 +289,8 @@ Mode   1:     0.00 cm-1 (IR:   0.0)
  Largest Contribution: 
   +0.2815 (  6.4%) OUT O1 C2 C3 O4
  Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
- Total Composition:   15.9% BOND,  32.4% ANGLE,  22.5% OUT,  29.1% TOR
- R**2 = 0.6152
+ Total Composition:   16.0% BOND,  32.4% ANGLE,  22.5% OUT,  29.1% TOR
+ R**2 = 0.6151
  Explained Variance =  60.0 %
 
 Mode   2:     0.00 cm-1 (IR:   0.0)

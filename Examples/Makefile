@@ -102,6 +102,6 @@ pdgui-regenerate:
 	@$(MAKE) --no-print-directory -C Mie/MgO_lognormal pdgui-regenerate
 	@$(MAKE) --no-print-directory -C ATR/AlAs pdgui-regenerate
 	@$(MAKE) --no-print-directory -C ATR/Na2SO42 pdgui-regenerate
-	@$(MAKE) --no-print-directory -C Experiment/fpsq regenerate
-	@$(MAKE) --no-print-directory -C Experiment/drude-lorentz regenerate
-	@$(MAKE) --no-print-directory -C Experiment/interpolation regenerate
+	@$(MAKE) --no-print-directory -C Experiment/fpsq pdgui-regenerate
+	@$(MAKE) --no-print-directory -C Experiment/drude-lorentz pdgui-regenerate
+	@$(MAKE) --no-print-directory -C Experiment/interpolation pdgui-regenerate
