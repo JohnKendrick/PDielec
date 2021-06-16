@@ -69,4 +69,4 @@ gh-pages
 _build
 Sphinx/.doctrees
 jquery-3.5.1.js
-.nma
+*.nma
