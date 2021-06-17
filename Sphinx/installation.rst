@@ -83,6 +83,7 @@ As part of the installation you will have to install a number of Python packages
    pyyaml
    imageio
    imageio-ffmpeg
+   sklearn
 
 GitHub - Windows
 ================
@@ -149,6 +150,7 @@ Open a git bash console and type;::
   pip install termcolor
   pip install imageio
   pip install imageio-ffmpeg
+  pip install sklearn
   pdgui
 
 

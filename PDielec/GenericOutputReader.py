@@ -53,7 +53,9 @@ class GenericOutputReader:
         self.energiesDFT                = []
         self.energiesDFT_disp           = []
         self.final_free_energy          = 0.0
+        self.final_free_energies        = []
         self.final_energy_without_entropy = 0.0
+        self.final_energies_without_entropy = []
         self.kpoints                    = 1
         self.kpoint_grid                = [ 1, 1, 1 ]
         self.energy_cutoff              = 0.0
@@ -62,6 +64,7 @@ class GenericOutputReader:
         self.iterations                 = {}
         self.file_descriptor            = ''
         self.pressure                   = 0
+        self.pressures                  = []
         self.magnetization              = 0.0
         # this in epsilon infinity
         self.zerof_optical_dielectric   = [[0, 0, 0], [0, 0, 0], [0, 0, 0]]

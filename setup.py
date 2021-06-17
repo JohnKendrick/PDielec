@@ -1,7 +1,7 @@
 import setuptools
 
 # Update this for every PyPi release
-version = "6.4.3"
+version = "6.4.5"
 
 with open("README.md", "r") as fh:
     long_description = fh.read()
@@ -33,6 +33,7 @@ setuptools.setup(
         'matplotlib',
         'xlsxwriter',
         'openpyxl',
+        'sklearn',
         'imageio',
         'imageio-ffmpeg',
         'PyYAML',

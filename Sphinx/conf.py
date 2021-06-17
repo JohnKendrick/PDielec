@@ -62,6 +62,7 @@ extensions = [
     'sphinxcontrib.bibtex',
     'cloud_sptheme.ext.table_styling',
 ]
+bibtex_bibfiles = ['pdielec.bib']
 mathjax_config = {
     "extensions": ["AMSmath.js"] ,
     "TeX": {

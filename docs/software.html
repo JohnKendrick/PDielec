@@ -3,7 +3,8 @@
 
 <html>
   <head>
-    <meta charset="utf-8" /><meta content="PDielec package for the calculation of infrared and terahertz absorption from QM calculations" name="description" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"><meta content="PDielec package for the calculation of infrared and terahertz absorption from QM calculations" name="description" />
 <meta content="Quantum Mechanics, Effective Field Theory, Maxwell, Garnett, Mie, Infrared, Terahertz, Castep, Abinit, VASP, GULP. QE" name="keywords" />
 
     <title>Software components &#8212; PDielec: John Kendrick &amp; Andrew Burnett</title>
@@ -15,7 +16,7 @@
     <script src="_static/underscore.js"></script>
     <script src="_static/doctools.js"></script>
     <script src="_static/language_data.js"></script>
-    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <script type="text/x-mathjax-config">MathJax.Hub.Config({"extensions": ["AMSmath.js"], "TeX": {"Macros": {"bm": ["{\\boldsymbol{#1}}", 1], "tensor": ["{\\bar{\\bar{#1}}}", 1], "tensorbs": ["{\\bar{\\bar{\\bm{#1}}}}", 1], "tensorbf": ["{\\bar{\\bar{\\bm{#1}}}}", 1], "fieldbf": ["{\\bar{\\bm{#1}}}", 1], "water": "\\H_{2}O"}}})</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -66,15 +67,16 @@
 <li><p><a class="reference internal" href="#examples" id="id32">Examples</a></p></li>
 </ul>
 </li>
-<li><p><a class="reference internal" href="#mm-qm-interfaces" id="id33">MM/QM Interfaces</a></p>
+<li><p><a class="reference internal" href="#vibanalysis" id="id33">vibanalysis</a></p></li>
+<li><p><a class="reference internal" href="#mm-qm-interfaces" id="id34">MM/QM Interfaces</a></p>
 <ul>
-<li><p><a class="reference internal" href="#vasp" id="id34">VASP</a></p></li>
-<li><p><a class="reference internal" href="#castep" id="id35">CASTEP</a></p></li>
-<li><p><a class="reference internal" href="#crystal" id="id36">CRYSTAL</a></p></li>
-<li><p><a class="reference internal" href="#abinit" id="id37">ABINIT</a></p></li>
-<li><p><a class="reference internal" href="#qe" id="id38">QE</a></p></li>
-<li><p><a class="reference internal" href="#phonopy" id="id39">PHONOPY</a></p></li>
-<li><p><a class="reference internal" href="#gulp" id="id40">GULP</a></p></li>
+<li><p><a class="reference internal" href="#vasp" id="id35">VASP</a></p></li>
+<li><p><a class="reference internal" href="#castep" id="id36">CASTEP</a></p></li>
+<li><p><a class="reference internal" href="#crystal" id="id37">CRYSTAL</a></p></li>
+<li><p><a class="reference internal" href="#abinit" id="id38">ABINIT</a></p></li>
+<li><p><a class="reference internal" href="#qe" id="id39">QE</a></p></li>
+<li><p><a class="reference internal" href="#phonopy" id="id40">PHONOPY</a></p></li>
+<li><p><a class="reference internal" href="#gulp" id="id41">GULP</a></p></li>
 </ul>
 </li>
 </ul>
@@ -426,31 +428,41 @@ Unlike PDielec and PDGui it is not necessary to have performed a full calculatio
 <p>There are examples of preader being used in the Examples/’Package’/preader subdirectories of the distribution of PDielec.</p>
 </div>
 </div>
+<div class="section" id="vibanalysis">
+<h2><a class="toc-backref" href="#id33">vibanalysis</a><a class="headerlink" href="#vibanalysis" title="Permalink to this headline">¶</a></h2>
+<p>The vibanalysis command provides an interface the vibAnalysis package of Philipe Teixeira.  This package provides Vibrational Mode Decomposition of the phonon modes using a variety of methods including; Vibrational Mode Projection (VMP), Vibrational Mode Linear Decomposition (VMLD) and Vibrational Mode Automatic Relevance Determination (VMARD).  By default VMARD is used.</p>
+<p>The package options can be determined using;</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">vibanalysis</span> <span class="n">OUTCAR</span>
+<span class="n">vibanalysis</span> <span class="n">phonon</span><span class="o">.</span><span class="n">castep</span>
+</pre></div>
+</div>
+<p>Which will analyse a VASP and a CASTEP phonon calculation output to produce a summary in the files OUTCAR.nma and phonon.nma respectively.</p>
+</div>
 <div class="section" id="mm-qm-interfaces">
-<h2><a class="toc-backref" href="#id33">MM/QM Interfaces</a><a class="headerlink" href="#mm-qm-interfaces" title="Permalink to this headline">¶</a></h2>
-<p>The packages have interfaces to five solid state QM codes, VASP <a class="bibtex reference internal" href="zreferences.html#hafner2008c" id="id1">[7]</a>, CASTEP <a class="bibtex reference internal" href="zreferences.html#clark2005d" id="id2">[24]</a>, CRYSTAL14 <a class="bibtex reference internal" href="zreferences.html#dovesi2014" id="id3">[25]</a>, Abinit <a class="bibtex reference internal" href="zreferences.html#gonze2016" id="id4">[26]</a>, Quantum Espresso <a class="bibtex reference internal" href="zreferences.html#giannozzi2009" id="id5">[27]</a> and Phonopy <a class="bibtex reference internal" href="zreferences.html#togo2015" id="id6">[28]</a>.  In addition an interface is available for GULP <a class="bibtex reference internal" href="zreferences.html#gale2003" id="id7">[29]</a> which is a force field based solid state code. Finally an interface has been written to and ‘experiment’ file format which allows the preparation of a user defined file specifying the permittivities and absorption frequencies. The origin of the dataset(s) used for processing is determined by a command line switch, -program. An outline of the interfaces to these codes is given here. The package used for the calculation is described by the –program option. In addition a file name is given which contains the output which will be processed by PDielec.</p>
+<h2><a class="toc-backref" href="#id34">MM/QM Interfaces</a><a class="headerlink" href="#mm-qm-interfaces" title="Permalink to this headline">¶</a></h2>
+<p>The packages have interfaces to five solid state QM codes, VASP <span id="id1">[<a class="reference internal" href="zreferences.html#id55">1</a>]</span>, CASTEP <span id="id2">[<a class="reference internal" href="zreferences.html#id61">2</a>]</span>, CRYSTAL14 <span id="id3">[<a class="reference internal" href="zreferences.html#id14">3</a>]</span>, Abinit <span id="id4">[<a class="reference internal" href="zreferences.html#id13">4</a>]</span>, Quantum Espresso <span id="id5">[<a class="reference internal" href="zreferences.html#id12">5</a>]</span> and Phonopy <span id="id6">[<a class="reference internal" href="zreferences.html#id11">6</a>]</span>.  In addition an interface is available for GULP <span id="id7">[<a class="reference internal" href="zreferences.html#id10">7</a>]</span> which is a force field based solid state code. Finally an interface has been written to and ‘experiment’ file format which allows the preparation of a user defined file specifying the permittivities and absorption frequencies. The origin of the dataset(s) used for processing is determined by a command line switch, -program. An outline of the interfaces to these codes is given here. The package used for the calculation is described by the –program option. In addition a file name is given which contains the output which will be processed by PDielec.</p>
 <div class="section" id="vasp">
-<h3><a class="toc-backref" href="#id34">VASP</a><a class="headerlink" href="#vasp" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id35">VASP</a><a class="headerlink" href="#vasp" title="Permalink to this headline">¶</a></h3>
 <p>The name provided on the command line is an OUTCAR file. The OUTCAR is read by PDielec to determine the unit cell, atomic masses, frequencies, normal modes, Born charge tensors and optical permittivity. The VASP run can be a DFPT or numerical calculation of the response.</p>
 </div>
 <div class="section" id="castep">
-<h3><a class="toc-backref" href="#id35">CASTEP</a><a class="headerlink" href="#castep" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id36">CASTEP</a><a class="headerlink" href="#castep" title="Permalink to this headline">¶</a></h3>
 <p>The name provided on the command line is the seedname for the calculation. The corresponding seedname.castep file in the current directory is read and processed to determine the unit cell, atomic masses, optical permittivity and born charge tensors. The normal modes and their frequencies are determined from the seedname.phonon file. The CASTEP run needs to be a DFPT (phonon+efield) task.</p>
 </div>
 <div class="section" id="crystal">
-<h3><a class="toc-backref" href="#id36">CRYSTAL</a><a class="headerlink" href="#crystal" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id37">CRYSTAL</a><a class="headerlink" href="#crystal" title="Permalink to this headline">¶</a></h3>
 <p>The name on the command line is a file ending in .out, containing the output of a CRYSTAL14 run. The contents of this file alone are sufficient to provide the unit cell, atomic masses, frequencies, normal modes and Born charge tensors. However, the number of significant figures for the normal modes is not sufficient for an accurate calculation and it is therefore recommended that the HESSFREQ.DAT and BORN.DAT files are also made available. If they are present in the directory where PDielec is run from, it uses these files to calculate the Born charge tensors, frequencies and normal modes. The CRYSTAL calculation needs to be a frequency calculation (FREQCALC) with the infrared intensity (INTENS) selected. The default algorithm does not calculate the optical permittivity, so this needs to be provided on the command line. However, if the CPHF or CPKS algorithm is used for the frequency calculation, the optical permittivity is calculated and PDielec will automatically read it from the output file. By default CRYSTAL projects out the pure translational modes of the system before calculating the frequencies, this can also done by the PDielec package. Small differences in the calculated frequencies between the CRYSTAL program and PDielec have been observed. These have been found to be due to a slightly different method for symmetrising the 2<sup>nd</sup> derivative matrix, because of this an optional directive “-hessian crystal” can be used to indicate that PDielec should use the same symmetrisation as CRYSTAL14.</p>
 </div>
 <div class="section" id="abinit">
-<h3><a class="toc-backref" href="#id37">ABINIT</a><a class="headerlink" href="#abinit" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id38">ABINIT</a><a class="headerlink" href="#abinit" title="Permalink to this headline">¶</a></h3>
 <p>The output file should come from a run containing three datasets. One to calculate the wavefunction at the optimized geometry, one to calculate the field perturbations and one to calculate the second derivatives. Examples of input files and output files are available with the distribution.</p>
 </div>
 <div class="section" id="qe">
-<h3><a class="toc-backref" href="#id38">QE</a><a class="headerlink" href="#qe" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id39">QE</a><a class="headerlink" href="#qe" title="Permalink to this headline">¶</a></h3>
 <p>The output file is the dynamical matrix file, specified by “filedyn” in a run of the quantum espresso phonon package. Examples of input and output files are given in the PDielec distribution</p>
 </div>
 <div class="section" id="phonopy">
-<h3><a class="toc-backref" href="#id39">PHONOPY</a><a class="headerlink" href="#phonopy" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id40">PHONOPY</a><a class="headerlink" href="#phonopy" title="Permalink to this headline">¶</a></h3>
 <p>Phonopy calculates the dynamical matrix through numerical differentiation. It has interfaces to several programs, although PDielec has only used the VASP interface. In principle other interfaces could be used. The second parameter for the –program directive is the PHONOPY interface that was used to calculate the forces. Typically these would be generated by performing;</p>
 <blockquote>
 <div><p>phonopy –d –dim=”1 1 1”</p>
@@ -466,7 +478,7 @@ Unlike PDielec and PDGui it is not necessary to have performed a full calculatio
 <p>To calculate the infrared spectrum PDielec needs the Born charges for the atoms in the unit cell and these can be calculated using VASP and the optimized geometry of the unit cell. The OUTCAR file from this calculation can be copied to the current directory and renamed OUTCAR.born</p>
 </div>
 <div class="section" id="gulp">
-<h3><a class="toc-backref" href="#id40">GULP</a><a class="headerlink" href="#gulp" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id41">GULP</a><a class="headerlink" href="#gulp" title="Permalink to this headline">¶</a></h3>
 <p>The name on the command line is a file ending in .gout, containing the output of a GULP run. The contents of this file alone are sufficient to provide the unit cell, atomic masses, frequencies, normal modes, Born charge tensors and optical permittivity. Because GULP only writes out the Born charge matrices for the asymmetric unit, it is necessary to run a frequency calculation using P1 symmetry and a complete unit cell. The key words; nosymm, phonon, intensity, eigen and cart are recommended for the GULP calculation. In the case that no shells are used in the calculation the optical permittivity is not available in the output and it is necessary to provide it.</p>
 </div>
 </div>
@@ -488,7 +500,7 @@ Unlike PDielec and PDGui it is not necessary to have performed a full calculatio
 
     <div class="footer" role="contentinfo">
         &#169; Copyright 2018, John Kendrick and Andrew Burnett.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.0.3.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.1.2.
     </div>
   </body>
 </html>

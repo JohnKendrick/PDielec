@@ -398,6 +398,19 @@ This reads all the castep output files in the current and any of its subdirector
 
 There are examples of preader being used in the Examples/'Package'/preader subdirectories of the distribution of PDielec.
 
+vibanalysis
+===========
+
+The vibanalysis command provides an interface the vibAnalysis package of Philipe Teixeira.  This package provides Vibrational Mode Decomposition of the phonon modes using a variety of methods including; Vibrational Mode Projection (VMP), Vibrational Mode Linear Decomposition (VMLD) and Vibrational Mode Automatic Relevance Determination (VMARD).  By default VMARD is used.
+
+The package options can be determined using; 
+
+::
+
+       vibanalysis OUTCAR
+       vibanalysis phonon.castep
+
+Which will analyse a VASP and a CASTEP phonon calculation output to produce a summary in the files OUTCAR.nma and phonon.nma respectively.
 
 MM/QM Interfaces
 ================
