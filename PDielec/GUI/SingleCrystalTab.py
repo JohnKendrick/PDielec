@@ -584,6 +584,7 @@ class SingleCrystalTab(QWidget):
         # Assemble all the parameters we need for parallel execution
         # About to call
         results = []
+        self.progressbar.setMaximum(len(vs))
         progress = 0
         for v in vs:
             data = ''
