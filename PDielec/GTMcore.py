@@ -320,11 +320,14 @@ class Layer:
             #jk print('jk epsilon_xstal1',epsilon_xstal)
         else:
             epsilon_xstal = self.epsilon_tensor_function(f)
-            #jk print('jk epsilon_xstal2',epsilon_xstal)
+            # print('jk epsilon_xstal2',epsilon_xstal)
         #jk print('jk self.euler',self.euler)
-        self.epsilon = np.matmul(lag.pinv(self.euler), np.matmul(epsilon_xstal,self.euler))
-        #jk print('jk calculate_epsilon',self,self.epsilon)
-        return self.epsilon.copy()
+        # self.epsilon = np.matmul(self.euler_inverse, np.matmul(epsilon_xstal,self.euler))
+        #JK Changed the order of the transformation to a transformation of basis vectors
+        # rather than a transformation of the coordinates active->passive
+        self.epsilon = np.matmul(self.euler, np.matmul(epsilon_xstal,self.euler_inverse))
+        #jk print('jk calculate_epsilon',self.epsilon)
+        return self.epsilon
 
 
     def set_euler(self,theta,phi,psi):
@@ -357,6 +360,8 @@ class Layer:
         self.euler[2, 0] = np.sin(theta) * np.sin(psi)
         self.euler[2, 1] = np.sin(theta) * np.cos(psi)
         self.euler[2, 2] = np.cos(theta)
+        # Added the inverse calculation here so it is only done once
+        self.euler_inverse = lag.pinv(self.euler)
 
 
     def calculate_matrices(self, zeta):
@@ -569,7 +574,7 @@ class Layer:
             gamma12_num = self.mu*self.epsilon[1,2]*(self.mu*self.epsilon[2,0]+zeta*self.qs[0])
             gamma12_num = gamma12_num - self.mu*self.epsilon[1,0]*(self.mu*self.epsilon[2,2]-zeta**2)
             gamma12_denom = (self.mu*self.epsilon[2,2]-zeta**2)*(self.mu*self.epsilon[1,1]-zeta**2-self.qs[0]**2)
-            gamma12_denom = gamma12_denom - self.mu**2*self.epsilon[1,2]*self.epsilon[2,1]
+            gamma12_denom = gamma12_denom - self.mu**2*self.epsilon[1,2]*self.epsilon[2,1] + 1.0E-16
             gamma12 = gamma12_num/gamma12_denom
             if np.isnan(gamma12):
                 gamma12 = 0.0 + 0.0j
@@ -585,7 +590,7 @@ class Layer:
             gamma21_num = self.mu*self.epsilon[2,1]*(self.mu*self.epsilon[0,2]+zeta*self.qs[1])
             gamma21_num = gamma21_num-self.mu*self.epsilon[0,1]*(self.mu*self.epsilon[2,2]-zeta**2)
             gamma21_denom = (self.mu*self.epsilon[2,2]-zeta**2)*(self.mu*self.epsilon[0,0]-self.qs[1]**2)
-            gamma21_denom = gamma21_denom-(self.mu*self.epsilon[0,2]+zeta*self.qs[1])*(self.mu*self.epsilon[2,0]+zeta*self.qs[1])
+            gamma21_denom = gamma21_denom-(self.mu*self.epsilon[0,2]+zeta*self.qs[1])*(self.mu*self.epsilon[2,0]+zeta*self.qs[1]) + 1.0E-16
             gamma21 = gamma21_num/gamma21_denom
             if np.isnan(gamma21):
                 gamma21 = 0.0+0.0j
@@ -605,7 +610,7 @@ class Layer:
             gamma32_num = self.mu*self.epsilon[1,0]*(self.mu*self.epsilon[2,2]+zeta**2)
             gamma32_num = gamma32_num-self.mu*self.epsilon[1,2]*(self.mu*self.epsilon[2,0]+zeta*self.qs[2])
             gamma32_denom = (self.mu*self.epsilon[2,2]-zeta**2)*(self.mu*self.epsilon[1,1]-zeta**2-self.qs[2]**2)
-            gamma32_denom = gamma32_denom-self.mu**2*self.epsilon[1,2]*self.epsilon[2,1]
+            gamma32_denom = gamma32_denom-self.mu**2*self.epsilon[1,2]*self.epsilon[2,1] + 1.0E-16
             gamma32 = gamma32_num/gamma32_denom
             if np.isnan(gamma32):
                 gamma32 = 0.0 + 0.0j
@@ -619,7 +624,7 @@ class Layer:
             gamma41_num = self.mu*self.epsilon[2,1]*(self.mu*self.epsilon[0,2]+zeta*self.qs[3])
             gamma41_num = gamma41_num - self.mu*self.epsilon[0,1]*(self.mu*self.epsilon[2,2]-zeta**2)
             gamma41_denom = (self.mu*self.epsilon[2,2]-zeta**2)*(self.mu*self.epsilon[0,0]-self.qs[3]**2)
-            gamma41_denom = gamma41_denom - (self.mu*self.epsilon[0,2]+zeta*self.qs[3])*(self.mu*self.epsilon[2,0]+zeta*self.qs[3])
+            gamma41_denom = gamma41_denom - (self.mu*self.epsilon[0,2]+zeta*self.qs[3])*(self.mu*self.epsilon[2,0]+zeta*self.qs[3]) + 1.0E-16
             gamma41 = gamma41_num/gamma41_denom
             if np.isnan(gamma41):
                 gamma41 = 0.0 + 0.0j
@@ -987,7 +992,7 @@ class System:
 
         """
         # common denominator for all coefficients
-        Denom = self.GammaStar[0,0]*self.GammaStar[2,2]-self.GammaStar[0,2]*self.GammaStar[2,0]
+        Denom = self.GammaStar[0,0]*self.GammaStar[2,2]-self.GammaStar[0,2]*self.GammaStar[2,0] + 1.0E-16
 
         # field reflection coefficients
         rpp = self.GammaStar[1,0]*self.GammaStar[2,2]-self.GammaStar[1,2]*self.GammaStar[2,0]
