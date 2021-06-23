@@ -221,7 +221,7 @@ class DielectricFunction:
                 contribution = (omega_lo**2 - f_cm1**2 - np.complex(0,gamma_lo)*f_cm1)/(omega_to**2 - f_cm1**2 - np.complex(0,gamma_to)*f_cm1)
                 # make sure the imaginary component is not negative!
                 real_contribution = np.real(contribution)
-                imag_contribution = max(-5.0E-8,np.imag(contribution))
+                imag_contribution = max(-1.0E-12,np.imag(contribution))
                 eps[xyz,xyz] *= np.complex(real_contribution,imag_contribution)
         return eps 
 
