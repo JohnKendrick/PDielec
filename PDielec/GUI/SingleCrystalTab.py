@@ -67,7 +67,8 @@ class SingleCrystalTab(QWidget):
         # get the reader from the main tab
         self.reader = self.notebook.mainTab.reader
         # Get the last unit cell in the reader
-        self.cell = self.reader.unit_cells[-1]
+        if self.reader is not None:
+            self.cell = self.reader.unit_cells[-1]
         # Create last tab - SingleCrystalTab
         vbox = QVBoxLayout()
         form = QFormLayout()
@@ -451,6 +452,9 @@ class SingleCrystalTab(QWidget):
         for w in self.findChildren(QWidget):
             w.blockSignals(True)
         # Now refresh values
+        self.reader = self.notebook.mainTab.reader
+        if self.reader is not None:
+            self.cell = self.reader.unit_cells[-1]
         self.vmin_sb.setValue(self.settings['Minimum frequency'])
         self.vmax_sb.setValue(self.settings['Maximum frequency'])
         self.vinc_sb.setValue(self.settings['Frequency increment'])
