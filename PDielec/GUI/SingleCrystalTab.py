@@ -1,9 +1,10 @@
 import os.path
 import os
 import numpy as np
+import copy
 import PDielec.Calculator         as Calculator
 from PyQt5.QtWidgets  import  QPushButton, QWidget
-from PyQt5.QtWidgets  import  QComboBox, QLabel, QLineEdit
+from PyQt5.QtWidgets  import  QComboBox, QLabel, QLineEdit, QListWidget
 from PyQt5.QtWidgets  import  QProgressBar, QApplication
 from PyQt5.QtWidgets  import  QVBoxLayout, QHBoxLayout, QFormLayout
 from PyQt5.QtWidgets  import  QSpinBox,QDoubleSpinBox
@@ -43,7 +44,7 @@ class SingleCrystalTab(QWidget):
         self.settings['Unique direction - k'] = 0
         self.settings['Unique direction - l'] = 1
         self.settings['Azimuthal angle'] = 0.0
-        self.settings['Angle of incidence'] = 45.0
+        self.settings['Angle of incidence'] = 0.0
         self.settings['Superstrate dielectric'] = 1.0
         self.settings['Substrate dielectric'] = 1.0
         self.settings['Superstrate depth'] = 999.0
@@ -65,6 +66,8 @@ class SingleCrystalTab(QWidget):
         self.notebook = parent
         # get the reader from the main tab
         self.reader = self.notebook.mainTab.reader
+        # Get the last unit cell in the reader
+        self.cell = self.reader.unit_cells[-1]
         # Create last tab - SingleCrystalTab
         vbox = QVBoxLayout()
         form = QFormLayout()
@@ -170,12 +173,12 @@ class SingleCrystalTab(QWidget):
         #
         self.azimuthal_angle_sb = QDoubleSpinBox(self)
         self.azimuthal_angle_sb.setToolTip('Define the slab azimuthal angle')
-        self.azimuthal_angle_sb.setRange(0,360)
+        self.azimuthal_angle_sb.setRange(-180,360)
         self.azimuthal_angle_sb.setSingleStep(10)
         self.azimuthal_angle_sb.setValue(self.settings['Azimuthal angle'])
         self.azimuthal_angle_sb.valueChanged.connect(self.on_azimuthal_angle_sb_changed)
         self.angle_of_incidence_sb = QDoubleSpinBox(self)
-        self.angle_of_incidence_sb.setToolTip('Define the angle of incidence')
+        self.angle_of_incidence_sb.setToolTip('Define the angle of incidence, (normal incidence is 0 degrees)')
         self.angle_of_incidence_sb.setRange(0,90)
         self.angle_of_incidence_sb.setSingleStep(5)
         self.angle_of_incidence_sb.setValue(self.settings['Angle of incidence'])
@@ -184,8 +187,19 @@ class SingleCrystalTab(QWidget):
         hbox.addWidget(self.azimuthal_angle_sb)
         hbox.addWidget(self.angle_of_incidence_sb)
         angles_label = QLabel('Angles of surface orientation and incidence',self)
-        angles_label.setToolTip('Define the azimuthal angle and the angle of incidence.')
+        angles_label.setToolTip('Define the azimuthal angle and the angle of incidence, (normal incidence is 0 degrees).')
         form.addRow(angles_label, hbox)
+        #
+        # Provide information on the lab frame
+        #
+        labframe_l = QLabel('Lab frame information', self)
+        labframe_l.setToolTip('The normal to the surface defines the Z-axis in the  lab frame\nThe incident and reflected light lie in the XZ plane\nThe p-polarization is direction lies in the XZ plane, s-polarisation is parallel to Y')
+        self.labframe_w = QListWidget(self)
+        fm = self.labframe_w.fontMetrics()
+        h = fm.ascent() + fm.descent()
+        self.labframe_w.setMaximumHeight(6*h)
+        self.labframe_w.setToolTip('The normal to the surface defines the Z-axis in the  lab frame\nThe incident and reflected light lie in the XZ plane\nThe p-polarization is direction lies in the XZ plane, s-polarisation is parallel to Y')
+        form.addRow(labframe_l,self.labframe_w)
         #
         # Define the superstrate and substrate dielectrics
         #
@@ -297,6 +311,7 @@ class SingleCrystalTab(QWidget):
         self.notebook.singleCrystalCalculationRequired = True
         self.notebook.fittingCalculationRequired = True
         self.settings['Azimuthal angle'] = value
+        self.calculate_euler_angles()
 
     def on_angle_of_incidence_sb_changed(self,value):
         debugger.print('on_angle_of_incidence_sb_changed', value)
@@ -311,6 +326,7 @@ class SingleCrystalTab(QWidget):
         self.notebook.singleCrystalCalculationRequired = True
         self.notebook.fittingCalculationRequired = True
         self.settings['Unique direction - h'] = value
+        self.calculate_euler_angles()
 
     def on_k_sb_changed(self,value):
         debugger.print('on_k_sb_changed', value)
@@ -318,6 +334,7 @@ class SingleCrystalTab(QWidget):
         self.notebook.singleCrystalCalculationRequired = True
         self.notebook.fittingCalculationRequired = True
         self.settings['Unique direction - k'] = value
+        self.calculate_euler_angles()
 
     def on_l_sb_changed(self,value):
         debugger.print('on_l_sb_changed', value)
@@ -325,6 +342,7 @@ class SingleCrystalTab(QWidget):
         self.notebook.singleCrystalCalculationRequired = True
         self.notebook.fittingCalculationRequired = True
         self.settings['Unique direction - l'] = value
+        self.calculate_euler_angles()
 
     def plotTransmissionButtonClicked(self):
         debugger.print('plotTransmissionButtonClicked pressed')
@@ -333,7 +351,7 @@ class SingleCrystalTab(QWidget):
             self.calculate()
         yaxes = [self.p_transmission, self.s_transmission, ]
         legends = [ r'$T_p$', r'$T_s$']
-        ylabel = 'Arbitrary units'
+        ylabel = 'Fraction of incident light'
         self.plot(self.frequencies_cm1, yaxes, ylabel, legends, 'Transmitance')
 
     def plotReflectanceButtonClicked(self):
@@ -343,7 +361,7 @@ class SingleCrystalTab(QWidget):
             self.calculate()
         yaxes = [self.p_reflectivity, self.s_reflectivity, ]
         legends = [ r'$R_p$', r'$R_s$']
-        ylabel = 'Arbitrary units'
+        ylabel = 'Fraction of incident light'
         self.plot(self.frequencies_cm1, yaxes, ylabel, legends, 'Reflectance')
 
     def plotTplusRButtonClicked(self):
@@ -355,7 +373,7 @@ class SingleCrystalTab(QWidget):
         tr_s = np.array( self.s_transmission ) + np.array( self.s_reflectivity )
         yaxes = [tr_p,tr_s, ]
         legends = [ r'$T_p+R_p$', r'$T_s+R_s$']
-        ylabel = 'Arbitrary units'
+        ylabel = 'Fraction of incident light'
         self.plot(self.frequencies_cm1, yaxes, ylabel, legends, 'Transmitance+Reflectance')
 
     def plotRealEButtonClicked(self):
@@ -451,6 +469,7 @@ class SingleCrystalTab(QWidget):
         self.funits_cb.setCurrentIndex(index)
         # Refresh the widgets that depend on the reader
         self.reader = self.notebook.reader
+        self.calculate_euler_angles()
         # Flag a recalculation will be required
         self.notebook.singleCrystalCalculationRequired = True
         # Reset the progress bar
@@ -500,8 +519,7 @@ class SingleCrystalTab(QWidget):
         settings = self.notebook.mainTab.settings
         program = settings['Program']
         filename = settings['Output file name']
-        reader = self.notebook.mainTab.reader
-        if reader is None:
+        if self.reader is None:
             return
         if program == '':
             return
@@ -516,8 +534,6 @@ class SingleCrystalTab(QWidget):
         modes_selected = self.notebook.settingsTab.modes_selected
         frequencies_cm1 = self.notebook.settingsTab.frequencies_cm1
         frequencies = np.array(frequencies_cm1) * wavenumber
-        # Get the last unit cell in the reader
-        cell = reader.unit_cells[-1]
         # Calculate frequency range
         vmin = self.settings['Minimum frequency']
         vmax = self.settings['Maximum frequency']
@@ -548,27 +564,16 @@ class SingleCrystalTab(QWidget):
             system = GTM.System(substrate=substrate, superstrate=superstrate, layers=[crystal])
         else:
             system = GTM.System(substrate=substrate, superstrate=superstrate, layers=[crystal])
-        # Prepare variables for setting up parameters for parallel call
-        hkl = [ self.settings['Unique direction - h'] , self.settings['Unique direction - k'], self.settings['Unique direction - l'] ]
-        # convert normal to plane to a direction in xyz coordinates
-        normal_to_plane_xyz = cell.convert_hkl_to_xyz(hkl)
-        normal_to_plane_xyz /=  np.linalg.norm(normal_to_plane_xyz)
-        # Rotate this normal so it becomes the laboratory Z- direction
-        labZ = np.array( [0,0,1] )
-        # Define the euler angles in radians; theta rotates z to Z and psi is the azimuthal angle
-        euler_theta           = np.arccos(np.dot(labZ,normal_to_plane_xyz))
-        euler_phi             = 0.0
-        euler_psi             = np.pi / 180.0 * self.settings['Azimuthal angle']
-        # Tricky setting for 90 degrees
+        # Determine the euler angles
+        theta,phi,psi = self.calculate_euler_angles()
+        # Set the angle of incidence in radians
         angle = self.settings['Angle of incidence']
-        if angle >= 90.00:
-            angle = 90.00
         angleOfIncidence      = np.pi / 180.0 * angle
         # Rotate the dielectric constants to the laboratory frame
-        system.substrate.set_euler(theta=euler_theta, phi=euler_phi, psi=euler_psi)
-        system.superstrate.set_euler(theta=euler_theta, phi=euler_phi, psi=euler_psi)
+        system.substrate.set_euler(theta, phi, psi)
+        system.superstrate.set_euler(theta, phi, psi)
         for layer in system.layers:
-            layer.set_euler(theta=euler_theta, phi=euler_phi, psi=euler_psi)
+            layer.set_euler(theta, phi, psi)
         # Prepare parallel processing options
         number_of_processors = self.notebook.ncpus
         if self.notebook.threading:
@@ -581,16 +586,16 @@ class SingleCrystalTab(QWidget):
         # Prepare parameters for a parallel call to the layered absorption / reflection
         #
         call_parameters = []
+        results = []
         # Assemble all the parameters we need for parallel execution
         # About to call
-        results = []
         self.progressbar.setMaximum(len(vs))
         progress = 0
         for v in vs:
-            data = ''
+            #jk system = copy.deepcopy(system)
             call_parameters.append( (v, angleOfIncidence, system) )
             # results.append( Calculator.solve_single_crystal_equations( (v, angleOfIncidence, system) ) )
-        for result in pool.imap(Calculator.solve_single_crystal_equations, call_parameters, chunksize=40):
+        for result in pool.map(Calculator.solve_single_crystal_equations, call_parameters, chunksize=40):
             results.append(result)
             progress += 1
             self.progressbar.setValue(progress)
@@ -598,7 +603,7 @@ class SingleCrystalTab(QWidget):
                 self.notebook.progressbar.setValue(progress)
         QCoreApplication.processEvents()
         # Initialise plotting variables
-        self.frequencies_cm1          = []
+        self.frequencies_cm1= []
         self.p_reflectivity = []
         self.s_reflectivity = []
         self.p_transmission = []
@@ -606,8 +611,8 @@ class SingleCrystalTab(QWidget):
         self.epsilon = []
         for v,r,R,t,T,epsilon in results:
             self.frequencies_cm1.append(v)
-            self.p_reflectivity.append(R[0])
-            self.s_reflectivity.append(R[1])
+            self.p_reflectivity.append(R[0]+R[2])
+            self.s_reflectivity.append(R[1]+R[3])
             self.p_transmission.append(T[0])
             self.s_transmission.append(T[1])
             self.epsilon.append(epsilon)
@@ -699,4 +704,62 @@ class SingleCrystalTab(QWidget):
         if self.subplot is not None:
             self.plot(self.remember_x, self.remember_ys, self.remember_ylabel, self.remember_legends, self.remember_subtitle)
 
+    def calculate_euler_angles(self):
+        '''Calculate the Euler angles for the crystal to lab transformation'''
+        # Get plane specification
+        hkl = [ self.settings['Unique direction - h'] , self.settings['Unique direction - k'], self.settings['Unique direction - l'] ]
+        sum2 = hkl[0]*hkl[0] + hkl[1]*hkl[1] + hkl[2]*hkl[2]
+        if sum2 < 1:
+            return 0,0,0
+        x = 0
+        y = 1
+        z = 2
+        # convert normal to plane to a direction in xyz coordinates
+        planez = self.cell.convert_hkl_to_xyz(hkl)
+        planez /=  np.linalg.norm(planez)
+        plane = np.zeros( (3,3) )
+        lab   = np.identity(3)
+        plane[z] = planez
+        if plane[z][2] < 0.99999999 and plane[z][2] > -0.99999999:
+            plane[x] = np.cross(plane[z], lab[z])
+            plane[y] = np.cross(plane[z], plane[x])
+            plane[x] /= np.linalg.norm(plane[y])
+            plane[y] /= np.linalg.norm(plane[y])
+        else:
+            plane[x] = lab[x]
+            plane[y] = lab[y]
+            plane[z] = lab[z]
+        # Calculate the rotation matrix which transforms us to a unit matrix
+        rotation = np.linalg.pinv(plane)
+        # Because the formula used for the Euler transform is based on an active transform
+        # We calculate the angles using the transpose of the rotation matrix
+        rotation = rotation.T
+        # Negative sign for angles because of the passive / active problem
+        alpha = -np.arctan2(rotation[z][0],-rotation[z][1])
+        beta  = -np.arccos(rotation[z][2])
+        gamma = -np.arctan2(rotation[x][2],rotation[y][2])
+        gamma = -self.settings['Azimuthal angle'] * np.pi / 180.0
+        #
+        # Some confusion here as to the role of the euler angles
+        #
+        psi             = alpha
+        theta           = beta
+        phi             = gamma
+        normal_to_plane_lab = Calculator.euler_rotation(plane[z], theta, phi, psi)
+        if normal_to_plane_lab[2] < 0.9999 and normal_to_plane_lab[2] > -0.9999:
+            print('Error in Euler rotations - surface normal is not along Z-axis', normal_to_plane_lab)
+            exit()
+        a = Calculator.euler_rotation(self.cell.lattice[0], theta, phi, psi)
+        b = Calculator.euler_rotation(self.cell.lattice[1], theta, phi, psi)
+        c = Calculator.euler_rotation(self.cell.lattice[2], theta, phi, psi)
+        self.labframe_w.clear()
+        self.labframe_w.addItem('a-axis in lab frame: {: 3.5f}, {: 3.5f}, {: 3.5f}'.format(a[0],a[1],a[2]) )
+        self.labframe_w.addItem('b-axis in lab frame: {: 3.5f}, {: 3.5f}, {: 3.5f}'.format(b[0],b[1],b[2]) )
+        self.labframe_w.addItem('c-axis in lab frame: {: 3.5f}, {: 3.5f}, {: 3.5f}'.format(c[0],c[1],c[2]) )
+        a = a / np.linalg.norm(a)
+        b = b / np.linalg.norm(b)
+        c = c / np.linalg.norm(c)
+        # print('Projection of a,b,c onto the lab Y-axis (s-pol)', a[1],b[1],c[1])
+        # print('Projection of a,b,c onto the lab X-axis (p-pol)', a[0],b[0],c[0])
+        return (theta, phi, psi)
 
