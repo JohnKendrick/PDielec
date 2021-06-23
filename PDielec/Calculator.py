@@ -1447,3 +1447,17 @@ def cleanup_symbol(s):
         s = s.replace(i,'')
     return s
 
+def euler_rotation(vector, theta, phi, psi):
+     """Apply a passive Euler rotation to the vector"""
+     euler = np.zeros( (3,3) )
+     euler[0, 0] =  np.cos(psi) * np.cos(phi) - np.cos(theta) * np.sin(phi) * np.sin(psi)
+     euler[0, 1] = -np.sin(psi) * np.cos(phi) - np.cos(theta) * np.sin(phi) * np.cos(psi)
+     euler[0, 2] =  np.sin(theta) * np.sin(phi)
+     euler[1, 0] =  np.cos(psi) * np.sin(phi) + np.cos(theta) * np.cos(phi) * np.sin(psi)
+     euler[1, 1] = -np.sin(psi) * np.sin(phi) + np.cos(theta) * np.cos(phi) * np.cos(psi)
+     euler[1, 2] = -np.sin(theta) * np.cos(phi)
+     euler[2, 0] =  np.sin(theta) * np.sin(psi)
+     euler[2, 1] =  np.sin(theta) * np.cos(psi)
+     euler[2, 2] =  np.cos(theta)
+     result = np.matmul(euler, vector)
+     return result
