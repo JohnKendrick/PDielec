@@ -128,11 +128,19 @@ class MainTab(QWidget):
         form.addRow(self.calculation_button)
         # add form layout
         vbox.addLayout(form)
-        # output window
-        self.listw_l = QLabel('Frequencies from '+self.settings['Output file name'], self)
-        vbox.addWidget(self.listw_l)
-        self.listw = QListWidget(self)
-        vbox.addWidget(self.listw)
+        # output window for unit cell
+        self.cell_window_l = QLabel('Unit-cell (Angstrom) from '+self.settings['Output file name'], self)
+        vbox.addWidget(self.cell_window_l)
+        self.cell_window_w = QListWidget(self)
+        fm = self.cell_window_w.fontMetrics()
+        h = fm.ascent() + fm.descent()
+        self.cell_window_w.setMaximumHeight(6*h)
+        vbox.addWidget(self.cell_window_w)
+        # output window for frequencies
+        self.frequencies_window_l = QLabel('Frequencies from '+self.settings['Output file name'], self)
+        vbox.addWidget(self.frequencies_window_l)
+        self.frequencies_window = QListWidget(self)
+        vbox.addWidget(self.frequencies_window)
         # finalise the layout
         self.setLayout(vbox)
         QCoreApplication.processEvents()
@@ -183,9 +191,11 @@ class MainTab(QWidget):
         if not os.path.isfile(self.settings['Output file name']):
             QMessageBox.about(self,'Processing output file','The filename for the output file to be processed is not correct: '+self.settings['Output file name'])
             return
-        debugger.print('Read output file - clear list widget')
-        self.listw.clear()
-        self.listw_l.setText('Frequencies from '+self.settings['Output file name'])
+        debugger.print('Read output file - clear list widgets')
+        self.cell_window_w.clear()
+        self.cell_window_l.setText('Unit-cell (Angstrom) from '+self.settings['Output file name'])
+        self.frequencies_window.clear()
+        self.frequencies_window_l.setText('Frequencies from '+self.settings['Output file name'])
         self.reader = pdgui_get_reader(self.settings['Program'],[ self.settings['Output file name'] ], self.settings['QM program'] )
         if self.reader is None:
             print('Error in reading files - program  is ',self.settings['Program'])
@@ -233,9 +243,18 @@ class MainTab(QWidget):
         self.directory = os.path.dirname(self.settings['Output file name'])
         if self.debug:
             self.reader.print_info()
+        cell = self.reader.unit_cells[-1]
+        a = cell.lattice[0]
+        b = cell.lattice[1]
+        c = cell.lattice[2]
+        self.cell_window_w.addItem('                                  ')
+        self.cell_window_w.addItem(f'a = {a[0]: 4.5f}   {a[1]:4.5f}   {a[2]: 4.5f}')
+        self.cell_window_w.addItem(f'b = {b[0]: 4.5f}   {b[1]:4.5f}   {b[2]: 4.5f}')
+        self.cell_window_w.addItem(f'c = {c[0]: 4.5f}   {c[1]:4.5f}   {c[2]: 4.5f}')
+        self.cell_window_w.addItem('                                  ')
         self.frequencies_cm1 = np.sort(self.reader.frequencies)
         for f in self.frequencies_cm1:
-            self.listw.addItem('{0:.3f}'.format(f))
+            self.frequencies_window.addItem('{0:.3f}'.format(f))
         # tell the settings tab to update the widgets that depend on the contents of the reader
         debugger.print('processing a return')
         if hasattr(self.notebook, 'settingsTab'):
