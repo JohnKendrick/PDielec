@@ -1,0 +1,28 @@
+lattice
+  1.0
+  1.0                 0.0                 0.0              
+  0.0                 1.0                 0.0              
+  0.0                 0.0                 1.0                 
+species 2
+  Si 0.0
+   O 0.0
+unitcell 2
+  Si 0.000000000000000   0.000000000000000   0.000000000000000 
+   O 0.5                 0.5                 0.5               
+# The species above are redundant
+# The data for the test case is taken from
+# Mayerh, T. G. (2005). Symmetric Euler orientation representations for orientational averaging. 61, 2611–2621.
+# Spectrochimica Acta A 61 (2005) 2611-2621
+# https://doi.org/10.1016/j.saa.2004.10.002
+epsinf
+3.0   0.0   0.0
+0.0   2.0   0.0
+0.0   0.0   1.0  
+drude-lorentz
+xx 1
+200  500 10
+yy 1
+600  500 10
+zz 1
+1000  500 10
+
