@@ -8,7 +8,7 @@ from PDielec.Utilities import  Debug
 
 class ScenarioTab(QWidget):
     def __init__(self, parent, debug=False):
-    """This the base class for all ScenarioTabs"""
+        """This the base class for all ScenarioTabs"""
         super(QWidget, self).__init__(parent)
         global debugger
         debugger = Debug(debug,'ScenarioTab:')
