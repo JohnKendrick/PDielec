@@ -1,9 +1,6 @@
 # -*- coding: utf8 -*-
-from PyQt5.QtWidgets  import  QPushButton, QWidget
-from PyQt5.QtWidgets  import  QComboBox, QLabel, QLineEdit, QDoubleSpinBox
-from PyQt5.QtWidgets  import  QVBoxLayout, QHBoxLayout, QFormLayout
-from PyQt5.QtWidgets  import  QSpinBox
-from PyQt5.QtCore     import  Qt
+from PyQt5.QtWidgets   import  QWidget
+from PyQt5.QtCore      import  Qt
 from PDielec.Utilities import  Debug
 
 class ScenarioTab(QWidget):
@@ -17,19 +14,6 @@ class ScenarioTab(QWidget):
         self.notebook = parent
         self.notebook.plottingCalculationRequired = True
         self.notebook.fittingCalculationRequired = True
-        self.scenarioType = scenarioType
-        # Now call the real Scenario
-        if self.scenarioType == 'powder':
-            pass
-        elif self.scenarioType == 'crystal':
-            pass
-        else:
-            pass
-
-    def pushButton3Clicked(self):
-        # Delete a scenario
-        debugger.print('Button 3 pressed')
-        self.notebook.deleteScenario(self.scenarioIndex)
 
     def set_reader(self,reader):
         self.dirty = True
