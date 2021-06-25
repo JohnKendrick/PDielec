@@ -1,20 +1,21 @@
 import sys
 import copy
 import psutil
-from PyQt5.QtWidgets              import  QWidget, QTabWidget
-from PyQt5.QtWidgets              import  QVBoxLayout
-from PyQt5.QtWidgets              import  QApplication
-from PyQt5.QtWidgets              import  QFileDialog
-from PyQt5.QtCore                 import  Qt
-from PDielec.GUI.MainTab          import  MainTab
-from PDielec.GUI.SettingsTab      import  SettingsTab
-from PDielec.GUI.ScenarioTab      import  ScenarioTab
-from PDielec.GUI.PlottingTab      import  PlottingTab
-from PDielec.GUI.SingleCrystalTab import  SingleCrystalTab
-from PDielec.GUI.AnalysisTab      import  AnalysisTab
-from PDielec.GUI.ViewerTab        import  ViewerTab
-from PDielec.GUI.FitterTab        import  FitterTab
-from PDielec.Utilities            import  Debug
+from PyQt5.QtWidgets                import  QWidget, QTabWidget
+from PyQt5.QtWidgets                import  QVBoxLayout
+from PyQt5.QtWidgets                import  QApplication
+from PyQt5.QtWidgets                import  QFileDialog
+from PyQt5.QtCore                   import  Qt
+from PDielec.GUI.MainTab            import  MainTab
+from PDielec.GUI.SettingsTab        import  SettingsTab
+from PDielec.GUI.PowderScenarioTab  import  PowderScenarioTab
+from PDielec.GUI.CrystalScenarioTab import  CrystalScenarioTab
+from PDielec.GUI.PlottingTab        import  PlottingTab
+from PDielec.GUI.SingleCrystalTab   import  SingleCrystalTab
+from PDielec.GUI.AnalysisTab        import  AnalysisTab
+from PDielec.GUI.ViewerTab          import  ViewerTab
+from PDielec.GUI.FitterTab          import  FitterTab
+from PDielec.Utilities              import  Debug
 
 class NoteBook(QWidget):
 
@@ -26,6 +27,7 @@ class NoteBook(QWidget):
         self.progressbar=progressbar
         self.spreadsheet = None
         self.threading = threading
+        self.currentScenarioTab = PowderScenarioTab
         if ncpus == 0:
             self.ncpus = psutil.cpu_count(logical=False)
         else:
@@ -114,7 +116,7 @@ class NoteBook(QWidget):
     def addScenario(self,copyFromIndex=-2):
         debugger.print('Settings for scenario', copyFromIndex)
         self.plottingCalculationRequired = True
-        self.scenarios.append( ScenarioTab(self, self.debug) )
+        self.scenarios.append( self.currentScenarioTab(self, self.debug) )
         self.scenarios[-1].settings = copy.deepcopy(self.scenarios[copyFromIndex].settings)
         # debugger.print('Settings for new scenario')
         self.scenarios[-1].refresh(force=True)
