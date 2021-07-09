@@ -369,7 +369,6 @@ class PlottingTab(QWidget):
         headers = ['frequencies (cm-1)']
         headers.extend(headings)
         sp.writeNextRow(headers,row=0, col=1)
-        for ys in yss:
         for iv,v in enumerate(vs):
            output = [v]
            for ys in yss:
