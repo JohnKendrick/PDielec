@@ -1,9 +1,6 @@
 import os.path
 import os
 import numpy as np
-osname = os.name
-from multiprocess import Array
-import PDielec.Calculator as Calculator
 from PyQt5.QtWidgets  import  QPushButton, QWidget
 from PyQt5.QtWidgets  import  QComboBox, QLabel, QLineEdit
 from PyQt5.QtWidgets  import  QProgressBar, QApplication
@@ -11,8 +8,7 @@ from PyQt5.QtWidgets  import  QVBoxLayout, QHBoxLayout, QFormLayout
 from PyQt5.QtWidgets  import  QSpinBox,QDoubleSpinBox
 from PyQt5.QtWidgets  import  QSizePolicy
 from PyQt5.QtCore     import  QCoreApplication, Qt
-from PDielec.Constants import  wavenumber, PI, avogadro_si, angstrom
-import ctypes
+from PDielec.Constants import  PI, avogadro_si, angstrom
 # Import plotting requirements
 import matplotlib
 import matplotlib.figure
@@ -20,30 +16,23 @@ from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT as NavigationToolbar
 from PDielec.Utilities import Debug
 
-def set_affinity_on_worker():
-    '''When a new worker process is created, the affinity is set to all CPUs'''
-    #JK print('I'm the process %d, setting affinity to all CPUs.' % os.getpid())
-    #JK Commented out for the time being
-    #JK os.system('taskset -p 0xff %d > /dev/null' % os.getpid())
-
-
 class PlottingTab(QWidget):
     def __init__(self, parent, debug=False ):
         super(QWidget, self).__init__(parent)
         global debugger
         debugger = Debug(debug,'PlottingTab')
-        self.dirty = True
+        debugger.print('Plotting tab initialisaton')
         self.settings = {}
         self.subplot = None
         self.setWindowTitle('Plotting')
         self.settings['Minimum frequency'] = 0
-        self.settings['Maximum frequency'] = 400
+        self.settings['Maximum frequency'] = 200
         self.settings['Frequency increment'] = 0.2
         self.molar_definitions = ['Unit cells','Atoms','Molecules']
         self.settings['Molar definition'] = 'Unit cells'
         self.settings['Number of atoms'] = 1
         self.settings['Plot title'] = 'Plot Title'
-        self.xaxes = []
+        self.legends = []
         self.directions = []
         self.depolarisations = []
         self.frequency_units = None
@@ -63,9 +52,6 @@ class PlottingTab(QWidget):
         self.vmin_sb.setValue(self.settings['Minimum frequency'])
         self.vmin_sb.setToolTip('Set the minimum frequency to be considered)')
         self.vmin_sb.valueChanged.connect(self.on_vmin_changed)
-        label = QLabel('Minimum frequency:', self)
-        label.setToolTip('Set the minimum frequency to be considered)')
-        form.addRow(label, self.vmin_sb)
         #
         # The maximum frequency
         #
@@ -74,9 +60,6 @@ class PlottingTab(QWidget):
         self.vmax_sb.setValue(self.settings['Maximum frequency'])
         self.vmax_sb.setToolTip('Set the maximum frequency to be considered)')
         self.vmax_sb.valueChanged.connect(self.on_vmax_changed)
-        label = QLabel('Maximum frequency:', self)
-        label.setToolTip('Set the maximum frequency to be considered)')
-        form.addRow(label, self.vmax_sb)
         #
         # Choose a suitable increment
         #
@@ -87,9 +70,15 @@ class PlottingTab(QWidget):
         self.vinc_sb.setToolTip('Choose an increment for the frequency when plotting')
         self.vinc_sb.setValue(self.settings['Frequency increment'])
         self.vinc_sb.valueChanged.connect(self.on_vinc_changed)
-        label = QLabel('Frequency increment', self)
-        label.setToolTip('Choose an increment for the frequency when plotting')
-        form.addRow(label, self.vinc_sb)
+        #
+        label = QLabel('Frequency min, max and increment', self)
+        label.setToolTip('Choose minimum, maximum and increment for the frequency when plotting')
+        #
+        hbox = QHBoxLayout()
+        hbox.addWidget(self.vmin_sb)
+        hbox.addWidget(self.vmax_sb)
+        hbox.addWidget(self.vinc_sb)
+        form.addRow(label, hbox)
         #
         # Define molar quantity
         #
@@ -142,34 +131,55 @@ class PlottingTab(QWidget):
         #
         # Final button
         #
+        self.plot_type_cb = QComboBox(self)
+        self.plot_type_cb.setToolTip('Choose the which data to plot')
+        self.plot_types = [
+                            'Powder Molar Absorption',
+                            'Powder Absorption',
+                            'Powder Real Permittivity',
+                            'Powder Imaginary Permittivity',
+                            'Powder ATR',
+                            'Crystal Reflectance (P polarisation)',
+                            'Crystal Reflectance (S polarisation)',
+                            'Crystal Transmittance (P polarisation)',
+                            'Crystal Transmittance (S polarisation)',
+                            'Crystal Absorbtance (P polarisation)',
+                            'Crystal Absorbtance (S polarisation)',
+                          ]
+        self.plot_ylabels = {
+                     'Powder Molar Absorption': r'Molar Absorption Coefficient $\mathdefault{(L mole^{-1} cm^{-1})}$',
+                           'Powder Absorption': r'Absorption Coefficient $\mathdefault{(cm^{-1})}$',
+                    'Powder Real Permittivity': r'Real Component of Permittivity',
+               'Powder Imaginary Permittivity': r'Imaginary Component of Permittivity',
+                                  'Powder ATR': r'ATR absorption',
+        'Crystal Reflectance (P polarisation)': r'Fraction of p-polarised reflectance',
+        'Crystal Reflectance (S polarisation)': r'Fraction of s-polarised reflectance',
+      'Crystal Transmittance (P polarisation)': r'Fraction of p-polarised transmitted',
+      'Crystal Transmittance (S polarisation)': r'Fraction of s-polarised transmitted',
+        'Crystal Absorbtance (P polarisation)': r'Fraction of p-polarised absorbtance',
+        'Crystal Absorbtance (S polarisation)': r'Fraction of s-polarised absorbtance',
+                            }
+
+        self.plot_type_cb.activated.connect(self.on_plot_type_cb_activated)
+        self.plot_type_cb.addItems( self.plot_types )
+        label = QLabel('Choose plot type', self)
+        label.setToolTip('Choose the plot type')
+        self.settings['Plot type'] = self.plot_types[0]
+        index = self.plot_type_cb.findText(self.settings['Plot type'], Qt.MatchFixedString)
+        self.plot_type_cb.setCurrentIndex(index)
+        plot_button = QPushButton('Update plot')
+        plot_button.clicked.connect(self.plot)
+        plot_button.setToolTip('Update the plot')
         hbox = QHBoxLayout()
-        self.molarAbsorptionButton = QPushButton('Plot molar absorption')
-        self.molarAbsorptionButton.setToolTip('Plot the molar absorption using the scenarios')
-        self.molarAbsorptionButton.clicked.connect(self.molarAbsorptionButtonClicked)
-        hbox.addWidget(self.molarAbsorptionButton)
-        self.absorptionButton = QPushButton('Plot absorption')
-        self.absorptionButton.setToolTip('Plot the absorption using the scenarios')
-        self.absorptionButton.clicked.connect(self.absorptionButtonClicked)
-        hbox.addWidget(self.absorptionButton)
-        self.realPermButton = QPushButton('Plot real permittivity')
-        self.realPermButton.setToolTip('Plot the real permittivity using the scenarios')
-        self.realPermButton.clicked.connect(self.realPermButtonClicked)
-        hbox.addWidget(self.realPermButton)
-        self.imagPermButton = QPushButton('Plot imaginary permittivity')
-        self.imagPermButton.setToolTip('Plot the imaginary permittivity using the scenarios')
-        self.imagPermButton.clicked.connect(self.imagPermButtonClicked)
-        hbox.addWidget(self.imagPermButton)
-        self.atrButton = QPushButton('Plot ATR')
-        self.atrButton.setToolTip('Plot Reflectance ATR')
-        self.atrButton.clicked.connect(self.atrButtonClicked)
-        hbox.addWidget(self.atrButton)
-        form.addRow(hbox)
+        hbox.addWidget(self.plot_type_cb)
+        hbox.addWidget(plot_button)
+        form.addRow(label, hbox)
         # Add a progress bar
         self.progressbar = QProgressBar(self)
         self.progressbar.setToolTip('Show the progress of any calculations')
-        self.progressbar.setMinimum(0)
-        if self.notebook.progressbar is not None:
-            self.notebook.progressbar.setMinimum(0)
+        # Append the progress bar to the list of progress bars managed by the notebook
+        self.notebook.progressbars_add(self.progressbar)
+        self.notebook.progressbars_set_maximum(0)
         label = QLabel('Calculation progress', self)
         label.setToolTip('Show the progress of any calculations')
         form.addRow(label,self.progressbar)
@@ -185,93 +195,38 @@ class PlottingTab(QWidget):
         # finalise the layout
         self.setLayout(vbox)
         QCoreApplication.processEvents()
-
-    def molarAbsorptionButtonClicked(self):
-        debugger.print('molarAbsorptionButtonClicked pressed')
-        if self.notebook.plottingCalculationRequired:
-            self.calculate()
-        if not self.notebook.plottingCalculationRequired:
-            self.plot(self.xaxes, self.molarAbsorptionCoefficients, r'Molar Absorption Coefficient $\mathdefault{(L mole^{-1} cm^{-1})}$')
-
-    def absorptionButtonClicked(self):
-        debugger.print('absorptionButtonClicked pressed')
-        if self.notebook.plottingCalculationRequired:
-            self.calculate()
-        if not self.notebook.plottingCalculationRequired:
-            self.plot(self.xaxes, self.absorptionCoefficients, r'Absorption Coefficient $\mathdefault{(cm^{-1})}$')
-
-    def realPermButtonClicked(self):
-        debugger.print('realPermButtonClicked pressed')
-        if self.notebook.plottingCalculationRequired:
-            self.calculate()
-        if not self.notebook.plottingCalculationRequired:
-            self.plot(self.xaxes, self.realPermittivities, 'Real Component of Permittivity')
-
-    def imagPermButtonClicked(self):
-        debugger.print('imagPermButtonClicked pressed')
-        if self.notebook.plottingCalculationRequired:
-            self.calculate()
-        if not self.notebook.plottingCalculationRequired:
-            self.plot(self.xaxes, self.imagPermittivities, 'Imaginary Component of Permittivity')
-
-    def atrButtonClicked(self):
-        debugger.print('atrButtonClicked pressed')
-        if self.notebook.plottingCalculationRequired:
-            self.calculate()
-        if not self.notebook.plottingCalculationRequired:
-            self.plot(self.xaxes, self.sp_atrs, 'ATR absorption')
-
-    def on_title_changed(self,text):
-        self.settings['Plot title'] = text
-        if self.subplot is not None:
-            self.subplot.set_title(self.settings['Plot title'])
-            self.canvas.draw_idle()
-        debugger.print('on title change ', self.settings['Plot title'])
+        # Create the plot
+        debugger.print('Calling plot() from initialiser')
+        self.plot()
 
     def on_vinc_changed(self,value):
         self.settings['Frequency increment'] = value
-        self.notebook.plottingCalculationRequired = True
-        self.dirty = True
-        self.progressbar.setValue(0)
-        if self.notebook.progressbar is not None:
-            self.notebook.progressbar.setValue(0)
-        QCoreApplication.processEvents()
         debugger.print('on vinc change ', self.settings['Frequency increment'])
 
     def on_vmin_changed(self):
         self.settings['Minimum frequency'] = self.vmin_sb.value()
-        self.notebook.plottingCalculationRequired = True
-        self.dirty = True
-        self.progressbar.setValue(0)
-        if self.notebook.progressbar is not None:
-            self.notebook.progressbar.setValue(0)
-        QCoreApplication.processEvents()
+        self.notebook.fitterTab.dirty = True
         debugger.print('on vmin change ', self.settings['Minimum frequency'])
 
     def on_vmax_changed(self):
         self.settings['Maximum frequency'] = self.vmax_sb.value()
-        self.notebook.plottingCalculationRequired = True
-        self.dirty = True
-        self.progressbar.setValue(0)
-        if self.notebook.progressbar is not None:
-            self.notebook.progressbar.setValue(0)
-        QCoreApplication.processEvents()
+        self.notebook.fitterTab.dirty = True
         debugger.print('on vmax change ', self.settings['Maximum frequency'])
 
     def refresh(self,force=False):
-        if not self.dirty and not force and not self.notebook.plottingCalculationRequired:
-            debugger.print('refreshing widget aborted', self.dirty,force,self.notebook.plottingCalculationRequired)
-            return
         debugger.print('refreshing widget', force)
         #
         # Block signals during refresh
         #
+        self.greyed_out()
         for w in self.findChildren(QWidget):
             w.blockSignals(True)
         # Now refresh values
         self.vmin_sb.setValue(self.settings['Minimum frequency'])
         self.vmax_sb.setValue(self.settings['Maximum frequency'])
         self.vinc_sb.setValue(self.settings['Frequency increment'])
+        index = self.plot_type_cb.findText(self.settings['Plot type'], Qt.MatchFixedString)
+        self.plot_type_cb.setCurrentIndex(index)
         try:
             self.molar_cb_current_index = self.molar_definitions.index(self.settings["Molar definition"])
         except:
@@ -284,15 +239,9 @@ class PlottingTab(QWidget):
         self.reader = self.notebook.reader
         if self.reader is not None:
             self.settings['concentration'] = 1000.0 / (avogadro_si * self.reader.volume * 1.0e-24)
-        # Flag a recalculation will be required
-        self.notebook.plottingCalculationRequired = True
         # Reset the progress bar
-        self.progressbar.setValue(0)
-        if self.notebook.progressbar is not None:
-            self.notebook.progressbar.setValue(0)
-        self.molarAbsorptionButtonClicked()
-        self.dirty = False
-        self.notebook.plottingCalculationRequired = False
+        self.notebook.progressbars_set_maximum(0)
+        self.plot()
         #
         # Unblock signals after refresh
         #
@@ -302,32 +251,28 @@ class PlottingTab(QWidget):
         return
 
     def on_natoms_changed(self, value):
-        self.notebook.plottingCalculationRequired = True
-        self.dirty = True
-        self.progressbar.setValue(0)
-        if self.notebook.progressbar is not None:
-            self.notebook.progressbar.setValue(0)
-        QCoreApplication.processEvents()
         self.settings['Number of atoms'] = value
         debugger.print('on natoms changed ', self.settings['Number of atoms'])
+        self.notebook.fitterTab.dirty = True
+
+    def on_plot_type_cb_activated(self, index):
+        self.settings['Plot type'] = self.plot_type_cb.currentText()
+        debugger.print('Changed plot type to ', self.settings['Plot type'])
+        self.notebook.fitterTab.dirty = True
+        self.plot()
 
     def on_funits_cb_activated(self, index):
         if index == 0:
             self.frequency_units = 'wavenumber'
         else:
             self.frequency_units = 'THz'
-        self.replot()
+        self.notebook.fitterTab.dirty = True
         debugger.print('Frequency units changed to ', self.frequency_units)
+        self.plot()
 
     def on_molar_cb_activated(self, index):
         self.molar_cb_current_index = index
         self.settings['Molar definition'] = self.molar_definitions[index]
-        self.notebook.plottingCalculationRequired = True
-        self.dirty = True
-        self.progressbar.setValue(0)
-        if self.notebook.progressbar is not None:
-            self.notebook.progressbar.setValue(0)
-        QCoreApplication.processEvents()
         if self.settings['Molar definition'] == 'Molecules':
             self.settings['concentration'] = 1000.0 / (avogadro_si * self.reader.volume * 1.0e-24 * self.settings['Number of atoms'] / self.reader.nions)
             self.natoms_sb.setEnabled(True)
@@ -337,231 +282,103 @@ class PlottingTab(QWidget):
         elif self.settings['Molar definition'] == 'Atoms':
             self.settings['concentration'] = 1000.0 / (avogadro_si * self.reader.volume * 1.0e-24 / self.reader.nions)
             self.natoms_sb.setEnabled(False)
+        self.notebook.fitterTab.dirty = True
         debugger.print('The concentration has been set', self.settings['Molar definition'], self.settings['concentration'])
 
-    def calculate(self):
-        debugger.print('calculate')
-        self.progressbar.setValue(0)
-        if self.notebook.progressbar is not None:
-            self.notebook.progressbar.setValue(0)
-        QCoreApplication.processEvents()
-        # Assemble the mainTab settings
-        settings = self.notebook.mainTab.settings
-        program = settings['Program']
-        filename = settings['Output file name']
-        reader = self.notebook.mainTab.reader
-        if reader is None:
-            return
-        if program == '':
-            return
-        if filename == '':
-            return
-        QApplication.setOverrideCursor(Qt.WaitCursor)
-        # Assemble the settingsTab settings
-        self.notebook.plottingCalculationRequired = False
-        settings = self.notebook.settingsTab.settings
-        vmin = self.settings['Minimum frequency']
-        vmax = self.settings['Maximum frequency']
-        vinc = self.settings['Frequency increment']
-        self.scenarios = self.notebook.scenarios
-        # Calculate the ionic permittivity at zero frequency
-        cell = reader.unit_cells[-1]
-        self.directions = []
-        self.depolarisations = []
-        # Process the shapes and the unique directions.
-        # and calculate the depolarisation matrices
-        self.legends = []
-        for scenario in self.scenarios:
-            self.legends.append(scenario.settings['Legend'])
-            #debugger.print('Scenario ',scenario.scenarioIndex)
-            shape = scenario.settings['Particle shape']
-            #debugger.print('Particle shape ',shape)
-            hkl = [scenario.settings['Unique direction - h'], scenario.settings['Unique direction - k'], scenario.settings['Unique direction - l']]
-            aoverb = scenario.settings['Ellipsoid a/b']
-            if shape == 'Ellipsoid':
-                direction = cell.convert_abc_to_xyz(hkl)
-                depolarisation = Calculator.initialise_ellipsoid_depolarisation_matrix(direction,aoverb)
-            elif shape == 'Plate':
-                direction = cell.convert_hkl_to_xyz(hkl)
-                depolarisation = Calculator.initialise_plate_depolarisation_matrix(direction)
-            elif shape == 'Needle':
-                direction = cell.convert_abc_to_xyz(hkl)
-                depolarisation = Calculator.initialise_needle_depolarisation_matrix(direction)
-            else:
-                depolarisation = Calculator.initialise_sphere_depolarisation_matrix()
-                direction = np.array( [] )
-            direction = direction / np.linalg.norm(direction)
-            self.directions.append(direction)
-            #debugger.print('direction',direction)
-            self.depolarisations.append(depolarisation)
-        # Define the crystal dielectric function which will be used
-        # Make sure that the function knows we will be supplying frequencies in cm-1
-        self.notebook.settingsTab.CrystalPermittivity.setUnits('cm-1')
-        self.CrystalPermittivity = self.notebook.settingsTab.CrystalPermittivity
-        dielectricFunction = self.CrystalPermittivity.function()
-        # Assemble a list of frequencies which will be used in the function call
-        vs_cm1 = np.arange(float(vmin), float(vmax)+0.5*float(vinc), float(vinc))
-        # Initialise the progress indicator
-        maximum_progress = len(vs_cm1) * (1 + len(self.scenarios))
-        progress = 0
-        self.progressbar.setMaximum(maximum_progress)
-        if self.notebook.progressbar is not None:
-            self.notebook.progressbar.setMaximum(maximum_progress)
-        QCoreApplication.processEvents()
-        number_of_processors = self.notebook.ncpus
-        #
-        # Switch off mkl threading
-        #
-        try:
-            import mkl
-            mkl.set_num_threads(1)
-        except:
-            pass
-        #jk start = time.time()
-        if self.notebook.threading:
-            from multiprocess.dummy import Pool
-            pool = Pool(number_of_processors)
-        else:
-            from multiprocess import Pool
-            pool = Pool(number_of_processors, initializer=set_affinity_on_worker, maxtasksperchild=10)
-        dielecv_results = []
-        index = 0
-        # Loop over the frequencies and calculate the crystal dielectric for each frequency
-        for dielecv in pool.imap(dielectricFunction, vs_cm1, chunksize=40):
-            dielecv_results.append((vs_cm1[index],vs_cm1[index]*wavenumber,dielecv))
-            progress += 1
-            index += 1
-            self.progressbar.setValue(progress)
-            if self.notebook.progressbar is not None:
-                self.notebook.progressbar.setValue(progress)
-        pool.close()
-        pool.join()
-        QCoreApplication.processEvents()
-        #jk print('Dielec calculation duration ', time.time()-start)
-        nplots = len(dielecv_results)
-        # Allocate space for the shared memory, we need twice as much as we have a complex data type
-        shared_array_base = Array(ctypes.c_double, 2*nplots*9)
-        previous_solution_shared = np.ctypeslib.as_array(shared_array_base.get_obj())
-        # Convert the space allocated to complex
-        previous_solution_shared.dtype = np.complex128
-        # Reshape the array and fill everything with zero's
-        previous_solution_shared = previous_solution_shared.reshape(nplots, 3,3)
-        previous_solution_shared.fill(0.0+0.0j)
-        # Prepare parallel call parameters for the loop over frequencies, methods, volume fractions
-        concentration = self.settings['concentration']
-        # Assemble each scenario settings
-        self.xaxes = []
-        self.realPermittivities = []
-        self.imagPermittivities = []
-        self.absorptionCoefficients = []
-        self.molarAbsorptionCoefficients = []
-        self.sp_atrs = []
-        #jk start = time.time()
-        if self.notebook.threading:
-            from multiprocess.dummy import Pool
-            pool = Pool(number_of_processors)
-        else:
-            from multiprocess import Pool
-            pool = Pool(number_of_processors, initializer=set_affinity_on_worker, maxtasksperchild=10)
-        for i,(scenario,L) in enumerate(zip(self.scenarios,self.depolarisations)):
-            #debugger.print('Scenario ',i,L)
-            method = scenario.settings['Effective medium method'].lower()
-            matrix_permittivity = np.identity(3) * scenario.settings['Matrix permittivity']
-            volume_fraction = scenario.settings['Volume fraction']
-            particle_size_mu = scenario.settings['Particle size(mu)']
-            particle_sigma_mu = scenario.settings['Particle size distribution sigma(mu)']
-            shape = scenario.settings['Particle shape'].lower()
-            hkl = [scenario.settings['Unique direction - h'], scenario.settings['Unique direction - k'], scenario.settings['Unique direction - l']]
-            atr_refractive_index = scenario.settings['ATR material refractive index']
-            atr_theta = scenario.settings['ATR theta']
-            atr_spolfraction = scenario.settings['ATR S polarisation fraction']
-            aoverb = scenario.settings['Ellipsoid a/b']
-            bubble_vf = scenario.settings['Bubble volume fraction']
-            bubble_radius = scenario.settings['Bubble radius']
-            vf_type = ''
-            call_parameters = []
-            nplot = 0
-            for v,vau,dielecv in dielecv_results:
-                # convert the size to a dimensionless number which is 2*pi*size/lambda
-                lambda_mu = 1.0E4 / (v + 1.0e-12)
-                if particle_size_mu < 1.0e-12:
-                    particle_size_mu = 1.0e-12
-                size = 2.0*PI*particle_size_mu / lambda_mu
-                data = ''
-                call_parameters.append( (v,vau,dielecv,method,volume_fraction,vf_type,particle_size_mu,particle_sigma_mu,size,nplot,
-                                         matrix_permittivity,shape,data,L,concentration,atr_refractive_index,atr_theta,atr_spolfraction,bubble_vf,bubble_radius,previous_solution_shared) )
-                nplot += 1
-            results = []
-            for result in pool.imap(Calculator.solve_effective_medium_equations, call_parameters, chunksize=40):
-                results.append(result)
-                progress += 1
-                self.progressbar.setValue(progress)
-                if self.notebook.progressbar is not None:
-                    self.notebook.progressbar.setValue(progress)
-            QCoreApplication.processEvents()
-            xaxis = []
-            realPermittivity = []
-            imagPermittivity = []
-            absorptionCoefficient = []
-            molarAbsorptionCoefficient = []
-            sp_atr = []
-            for v,nplot,method,vf_type,size_mu,size_sigma,shape,data,trace, absorption_coefficient,molar_absorption_coefficient,spatr in results:
-                 xaxis.append(v)
-                 realPermittivity.append(np.real(trace))
-                 imagPermittivity.append(np.imag(trace))
-                 absorptionCoefficient.append(absorption_coefficient)
-                 molarAbsorptionCoefficient.append(molar_absorption_coefficient)
-                 sp_atr.append(spatr)
-            self.xaxes.append(xaxis)
-            self.realPermittivities.append(realPermittivity)
-            self.imagPermittivities.append(imagPermittivity)
-            self.absorptionCoefficients.append(absorptionCoefficient)
-            self.molarAbsorptionCoefficients.append(molarAbsorptionCoefficient)
-            self.sp_atrs.append(sp_atr)
-        pool.close()
-        pool.join()
-        #
-        # Switch on mkl threading
-        #
-        try:
-            import mkl
-            mkl.set_num_threads(number_of_processors)
-        except:
-            pass
-        #jk print('Dielec calculation duration ', time.time()-start)
-        #if self.notebook.spreadsheet is not None:
-        #    self.write_spreadsheet()
-        self.dirty = False
-        QApplication.restoreOverrideCursor()
-        QCoreApplication.processEvents()
-
     def write_spreadsheet(self):
+        debugger.print('write spreadsheet')
         if self.notebook.spreadsheet is None:
             return
-        # Deal with Scenarios first
+        # make sure the plottingTab is up to date
+        self.notebook.plottingTab.refresh()
+        # Handle powder plots
+        molarAbsorptionCoefficients = []
+        absorptionCoefficients      = []
+        realPermittivities          = []
+        imagPermittivities          = []
+        sp_atrs                     = []
+        vss                         = []
+        # Deal with Scenarios 
         sp = self.notebook.spreadsheet
         sp.selectWorkSheet('Scenarios')
         sp.delete()
         sp.writeNextRow(['A list of the scenarios used the calculation of the effective medium'],col=1)
-        for index,(scenario,direction,depolarisation) in enumerate(zip(self.scenarios,self.directions,self.depolarisations)):
-            sp.writeNextRow([''],col=1)
-            sp.writeNextRow(['Scenario '+str(index)],col=1,check=1)
-            settings = scenario.settings
-            for key in sorted(settings,key=str.lower):
-                sp.writeNextRow([key, settings[key]],col=1,check=1)
-            sp.writeNextRow(['Normalised unique direction']+direction.tolist(), col=1,check=1)
-            sp.writeNextRow(['Depolarisation matrix'], col=1,check=1)
-            sp.writeNextRow(depolarisation[0].tolist(), col=2, check=1)
-            sp.writeNextRow(depolarisation[1].tolist(), col=2, check=1)
-            sp.writeNextRow(depolarisation[2].tolist(), col=2, check=1)
+        for index,scenario in enumerate(self.notebook.scenarios):
+            if scenario.scenarioType == 'Powder':
+                direction = scenario.direction
+                depolarisation = scenario.depolarisation
+                sp.writeNextRow([''],col=1)
+                sp.writeNextRow(['Scenario '+str(index)],col=1,check=1)
+                settings = scenario.settings
+                for key in sorted(settings,key=str.lower):
+                    sp.writeNextRow([key, settings[key]],col=1,check=1)
+                sp.writeNextRow(['Normalised unique direction']+direction.tolist(), col=1,check=1)
+                sp.writeNextRow(['Depolarisation matrix'], col=1,check=1)
+                sp.writeNextRow(depolarisation[0].tolist(), col=2, check=1)
+                sp.writeNextRow(depolarisation[1].tolist(), col=2, check=1)
+                sp.writeNextRow(depolarisation[2].tolist(), col=2, check=1)
+                molarAbsorptionCoefficients.append( scenario.get_result(self.vs_cm1,self.plot_types[0] ) )
+                absorptionCoefficients.append( scenario.get_result(self.vs_cm1,self.plot_types[1] ) )
+                realPermittivities.append( scenario.get_result(self.vs_cm1,self.plot_types[2] ) )
+                imagPermittivities.append( scenario.get_result(self.vs_cm1,self.plot_types[3] ) )
+                sp_atrs.append( scenario.get_result(self.vs_cm1,self.plot_types[4] ) )
+                vss.append(self.vs_cm1)
         # Now deal with Molar absorption, absorption, real and imaginary permittivity
-        self.write_results(sp, 'Molar Absorption',self.xaxes, self.molarAbsorptionCoefficients)
-        self.write_results(sp, 'Absorption',self.xaxes, self.absorptionCoefficients)
-        self.write_results(sp, 'Real Permittivity',self.xaxes, self.realPermittivities)
-        self.write_results(sp, 'Imaginary Permittivity',self.xaxes, self.imagPermittivities)
-        self.write_results(sp, 'ATR Reflectance',self.xaxes, self.sp_atrs)
+        if len(molarAbsorptionCoefficients) > 0:
+            self.write_results(sp, 'Molar Absorption', vss, molarAbsorptionCoefficients)
+            self.write_results(sp, 'Absorption', vss, absorptionCoefficients)
+            self.write_results(sp, 'Real Permittivity', vss, realPermittivities)
+            self.write_results(sp, 'Imaginary Permittivity', vss, imagPermittivities)
+            self.write_results(sp, 'ATR Reflectance', vss, sp_atrs)
+        # Handle Single Crystal Plots (A temporary fix for one crystal tab only)
+        for index,scenario in enumerate(self.notebook.scenarios):
+            if scenario.scenarioType == 'Single crystal':
+                sp.selectWorkSheet('Single Crystal')
+                sp.delete()
+                sp.writeNextRow(['Settings for the single crystal calculation of absorption and reflection'],col=1)
+                sp.writeNextRow([''],col=1)
+                sp.writeNextRow([ 'Single crystal mode',          scenario.settings['Mode'] ],col=1)
+                sp.writeNextRow([ 'Minimum frequency',            self.notebook.plottingTab.settings['Minimum frequency'] ],col=1)
+                sp.writeNextRow([ 'Maximum frequency',            self.notebook.plottingTab.settings['Maximum frequency'] ],col=1)
+                sp.writeNextRow([ 'Frequency increment',          self.notebook.plottingTab.settings['Frequency increment'] ],col=1)
+                sp.writeNextRow([ 'Surface definition (h)',       scenario.settings['Unique direction - h'] ],col=1)
+                sp.writeNextRow([ 'Surface definition (k)',       scenario.settings['Unique direction - k'] ],col=1)
+                sp.writeNextRow([ 'Surface definition (l)',       scenario.settings['Unique direction - l'] ],col=1)
+                sp.writeNextRow([ 'Azimuthal angle',              scenario.settings['Azimuthal angle'] ],col=1)
+                sp.writeNextRow([ 'Angle of incidence',           scenario.settings['Angle of incidence'] ],col=1)
+                sp.writeNextRow([ 'Superstrate dielectric',       scenario.settings['Superstrate dielectric'] ],col=1)
+                sp.writeNextRow([ 'Substrate dielectric',         scenario.settings['Substrate dielectric'] ],col=1)
+                sp.writeNextRow([ 'Film thickness(nm)',           scenario.settings['Film thickness'] ],col=1)
+                headings = ['R_p', 'R_s', 'T_p', 'T_s']
+                self.write_crystal_results(sp, 'Crystal R&T',     self.vs_cm1, [scenario.p_reflectance, scenario.s_reflectance, scenario.p_transmittance, scenario.s_transmittance], headings )
+
+    def write_crystal_results(self, sp, name, vs, yss, headings):
+        """ 
+        sp        is the spreadsheet object
+        name      is the worksheet name used for writing
+        vs        an np.array of the frequencies
+        yss       a list of np.arrays of the reflections and transmittance ] 
+        headings  the heading names for the yss
+        """
+        debugger.print('write_crystal_results')
+        debugger.print('write_crystal_results name',name)
+        debugger.print('write_crystal_results headings',headings)
+        debugger.print('write_crystal_results length vs',len(vs))
+        sp.selectWorkSheet(name)
+        sp.delete()
+        headers = ['frequencies (cm-1)']
+        headers.extend(headings)
+        sp.writeNextRow(headers,row=0, col=1)
+        for ys in yss:
+        for iv,v in enumerate(vs):
+           output = [v]
+           for ys in yss:
+               output.append(ys[iv])
+           sp.writeNextRow(output, col=1,check=1)
+
 
     def write_results(self, sp, name, vss, yss):
+        debugger.print('write results')
         sp.selectWorkSheet(name)
         sp.delete()
         headers = ['frequencies (cm-1)']
@@ -575,13 +392,28 @@ class PlottingTab(QWidget):
                output.append(ys[iv])
            sp.writeNextRow(output, col=1,check=1)
 
-    def plot(self,xs,ys,ylabel):
+    def plot(self):
         # import matplotlib.pyplot as pl
         # mp.use('Qt5Agg')
+        debugger.print('plot')
+        QApplication.setOverrideCursor(Qt.WaitCursor)
+        # Assemble the mainTab settings
+        settings = self.notebook.mainTab.settings
+        program = settings['Program']
+        filename = settings['Output file name']
+        reader = self.notebook.mainTab.reader
+        if reader is None:
+            return
+        if program == '':
+            return
+        if filename == '':
+            return
+        vmin = self.settings['Minimum frequency']
+        vmax = self.settings['Maximum frequency']
+        vinc = self.settings['Frequency increment']
+        self.vs_cm1 = np.arange(float(vmin), float(vmax)+0.5*float(vinc), float(vinc))
+        debugger.print('plot')
         self.subplot = None
-        self.remember_xs = xs
-        self.remember_ys = ys
-        self.remember_ylabel = ylabel
         self.figure.clf()
         if self.frequency_units == 'wavenumber':
             xlabel = r'Frequency $\mathdefault{(cm^{-1})}}$'
@@ -589,19 +421,72 @@ class PlottingTab(QWidget):
         else:
             xlabel = r'THz'
             scale = 0.02998
+        x = np.array(self.vs_cm1)
         self.subplot = self.figure.add_subplot(111)
-        for scenario,x,y in zip(self.scenarios,xs,ys):
-            x = np.array(x)
+        self.notebook.progressbars_set_maximum(len(x)*len(self.notebook.scenarios))
+        self.legends = []
+        for scenario in self.notebook.scenarios:
             legend = scenario.settings['Legend']
-            line, = self.subplot.plot(scale*x,y,lw=2, label=legend )
+            self.legends.append(legend)
+            y = scenario.get_result(self.vs_cm1,self.settings['Plot type'])
+            if y is not None and len(y) > 0:
+                line, = self.subplot.plot(scale*x,y,lw=2, label=legend )
         self.subplot.set_xlabel(xlabel)
-        self.subplot.set_ylabel(ylabel)
+        self.subplot.set_ylabel(self.plot_ylabels[self.settings['Plot type']])
         self.subplot.legend(loc='best')
-        self.subplot.set_title(self.settings['Plot title'])
+        self.subplot.set_title(self.settings['Plot type'])
         self.canvas.draw_idle()
+        QApplication.restoreOverrideCursor()
 
-    def replot(self):
+
+    def on_title_changed(self,text):
+        self.settings['Plot title'] = text
         if self.subplot is not None:
-            self.plot(self.remember_xs, self.remember_ys, self.remember_ylabel)
+            self.subplot.set_title(self.settings['Plot title'])
+            self.canvas.draw_idle()
+        debugger.print('on title change ', self.settings['Plot title'])
 
-
+    def greyed_out(self):
+        """Handle items that should be greyed out if they are not needed"""
+        powder_scenarios_present = False
+        crystal_scenarios_present = False
+        for scenario in self.notebook.scenarios:
+            if scenario.scenarioType == 'Powder':
+                powder_scenarios_present = True
+            else:
+                crystal_scenarios_present = True
+        # end of for loop
+        # 
+        # Disable any plot types that are not needed
+        #
+        self.plot_type_cb.model().item(0).setEnabled(True)
+        self.plot_type_cb.model().item(1).setEnabled(True)
+        self.plot_type_cb.model().item(2).setEnabled(True)
+        self.plot_type_cb.model().item(3).setEnabled(True)
+        self.plot_type_cb.model().item(4).setEnabled(True)
+        self.plot_type_cb.model().item(5).setEnabled(True)
+        self.plot_type_cb.model().item(6).setEnabled(True)
+        self.plot_type_cb.model().item(7).setEnabled(True)
+        self.plot_type_cb.model().item(8).setEnabled(True)
+        self.plot_type_cb.model().item(9).setEnabled(True)
+        self.plot_type_cb.model().item(10).setEnabled(True)
+        index = self.plot_type_cb.findText(self.settings['Plot type'], Qt.MatchFixedString)
+        if not powder_scenarios_present:
+            self.plot_type_cb.model().item(0).setEnabled(False)
+            self.plot_type_cb.model().item(1).setEnabled(False)
+            self.plot_type_cb.model().item(2).setEnabled(False)
+            self.plot_type_cb.model().item(3).setEnabled(False)
+            self.plot_type_cb.model().item(4).setEnabled(False)
+            if index < 5:
+                self.plot_type_cb.setCurrentIndex(5)
+                self.settings['Plot type'] = self.plot_type_cb.currentText()
+        if not crystal_scenarios_present:
+            self.plot_type_cb.model().item(5).setEnabled(False)
+            self.plot_type_cb.model().item(6).setEnabled(False)
+            self.plot_type_cb.model().item(7).setEnabled(False)
+            self.plot_type_cb.model().item(8).setEnabled(False)
+            self.plot_type_cb.model().item(9).setEnabled(False)
+            self.plot_type_cb.model().item(10).setEnabled(False)
+            if index >= 5:
+                self.plot_type_cb.setCurrentIndex(0)
+                self.settings['Plot type'] = self.plot_type_cb.currentText()

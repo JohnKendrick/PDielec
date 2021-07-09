@@ -65,6 +65,8 @@ class SettingsTab(QWidget):
         self.oscillator_strengths = []
         self.mass_weighted_normal_modes = None
         self.CrystalPermittivity = None
+        self.vs_cm1 = []
+        self.crystal_permittivity = []
         # get the reader from the main tab
         self.reader = self.notebook.reader
         # Create second tab - SettingsTab
@@ -172,20 +174,15 @@ class SettingsTab(QWidget):
         self.masses_dict[element] = mass
         self.mass_cb.setCurrentIndex(3)
         self.set_masses_tw()
-        self.calculateButtonClicked()
+        self.createIntensityTable()
+        self.dirty = True
 
-    def calculateButtonClicked(self):
-        debugger.print('Button 1 pressed')
+    def createIntensityTable(self):
+        debugger.print('createIntensityTable')
         self.reader = self.notebook.reader
         # Only calculate if the reader is set
         if self.reader is None:
             return
-        QApplication.setOverrideCursor(Qt.WaitCursor)
-        # Flag the fact that we need new calculations and new analysis
-        self.notebook.plottingCalculationRequired = True
-        self.notebook.analysisCalculationRequired = True
-        self.notebook.fittingCalculationRequired = True
-        #self.reader.read_output()
         if self.settings['Neutral Born charges']:
             self.reader.neutralise_born_charges()
         else:
@@ -264,8 +261,6 @@ class SettingsTab(QWidget):
         QCoreApplication.processEvents()
         # if self.notebook.spreadsheet is not None:
         #     self.write_spreadsheet()
-        self.dirty = False
-        QApplication.restoreOverrideCursor()
         QCoreApplication.processEvents()
 
     def write_spreadsheet(self):
@@ -347,10 +342,8 @@ class SettingsTab(QWidget):
         self.settings['Sigma value'] = self.sigma_sb.value()
         self.sigmas_cm1 = [ self.settings['Sigma value'] for i in self.frequencies_cm1 ]
         self.redraw_output_tw()
-        self.notebook.plottingCalculationRequired = True
-        self.notebook.analysisCalculationRequired = True
-        self.notebook.fittingCalculationRequired = True
         debugger.print('on sigma change ', self.settings['Sigma value'])
+        self.dirty = True
 
     def on_mass_cb_activated(self,index):
         debugger.print('on mass combobox activated', self.mass_cb.currentText())
@@ -360,10 +353,8 @@ class SettingsTab(QWidget):
             self.mass_cb.model().item(3).setEnabled(False)
         # Modify the element masses
         self.set_masses_tw()
-        self.calculateButtonClicked()
-        self.notebook.plottingCalculationRequired = True
-        self.notebook.analysisCalculationRequired = True
-        self.notebook.fittingCalculationRequired = True
+        self.createIntensityTable()
+        self.dirty = True
         QCoreApplication.processEvents()
 
     def set_masses_tw(self):
@@ -433,9 +424,6 @@ class SettingsTab(QWidget):
                     print('Mass definition not processed', self.settings['Mass definition'])
             # unblock the table signals
             self.element_masses_tw.blockSignals(False)
-            self.notebook.plottingCalculationRequired = True
-            self.notebook.analysisCalculationRequired = True
-        self.notebook.fittingCalculationRequired = True
         QCoreApplication.processEvents()
 
     def on_output_tw_itemChanged(self, item):
@@ -457,9 +445,6 @@ class SettingsTab(QWidget):
             self.redraw_output_tw()
         else:
             self.redraw_output_tw()
-        self.notebook.plottingCalculationRequired = True
-        self.notebook.analysisCalculationRequired = True
-        self.notebook.fittingCalculationRequired = True
         QCoreApplication.processEvents()
 
     def on_element_masses_tw_itemClicked(self, item):
@@ -474,10 +459,7 @@ class SettingsTab(QWidget):
         self.settings['Mass definition'] = 'gui'
         self.mass_cb.setCurrentIndex(3)
         self.masses_dictionary[elements[col]] = float(item.text())
-        self.calculateButtonClicked()
-        self.notebook.plottingCalculationRequired = True
-        self.notebook.analysisCalculationRequired = True
-        self.notebook.fittingCalculationRequired = True
+        self.createIntensityTable()
         debugger.print('masses_dictionary', self.masses_dictionary)
 
     def on_optical_tw_itemChanged(self, item):
@@ -485,10 +467,9 @@ class SettingsTab(QWidget):
         self.settings['Optical permittivity'][item.row()][item.column()] = float(item.text())
         self.settings['Optical permittivity'][item.column()][item.row()] = float(item.text())
         self.settings['Optical permittivity edited'] = True
-        self.notebook.plottingCalculationRequired = True
-        self.notebook.analysisCalculationRequired = True
-        self.notebook.fittingCalculationRequired = True
         self.refresh_optical_permittivity_tw()
+        self.dirty = True
+        self.createIntensityTable()
         QCoreApplication.processEvents()
 
     def on_optical_tw_itemClicked(self, item):
@@ -500,10 +481,6 @@ class SettingsTab(QWidget):
         # Refresh the widgets that depend on the reader
         if not self.reader and self.notebook.reader:
             self.dirty = True
-        if not self.dirty and not force:
-            debugger.print('Aborting refresh readers are: ',self.reader,self.notebook.reader)
-            debugger.print('Aborting self.dirty and force ',self.dirty,  force)
-            return
         debugger.print('refresh ',force)
         #
         # Block signals during refresh
@@ -533,7 +510,7 @@ class SettingsTab(QWidget):
         #
         for w in self.findChildren(QWidget):
             w.blockSignals(False)
-        self.calculateButtonClicked()
+        self.createIntensityTable()
         QCoreApplication.processEvents()
 
     def refresh_optical_permittivity_tw(self):
@@ -550,25 +527,48 @@ class SettingsTab(QWidget):
     def set_optical_permittivity_tw(self):
         self.settings['Optical permittivity'] = self.reader.zerof_optical_dielectric
         self.refresh_optical_permittivity_tw()
+        self.dirty = True
+        self.createIntensityTable()
         QCoreApplication.processEvents()
 
     def on_born_changed(self):
         debugger.print('on born change ', self.born_cb.isChecked())
         self.settings['Neutral Born charges'] = self.born_cb.isChecked()
         debugger.print('on born change ', self.settings['Neutral Born charges'])
-        self.calculateButtonClicked()
-        self.notebook.plottingCalculationRequired = True
-        self.notebook.analysisCalculationRequired = True
-        self.notebook.fittingCalculationRequired = True
+        self.createIntensityTable()
         QCoreApplication.processEvents()
 
     def on_eckart_changed(self):
         debugger.print('on eckart change ', self.eckart_cb.isChecked())
         self.settings['Eckart flag'] = self.eckart_cb.isChecked()
         debugger.print('on eckart change ', self.settings['Eckart flag'])
-        self.calculateButtonClicked()
-        self.notebook.plottingCalculationRequired = True
-        self.notebook.analysisCalculationRequired = True
-        self.notebook.fittingCalculationRequired = True
+        self.dirty = True
+        self.createIntensityTable()
         QCoreApplication.processEvents()
+
+    def calculate(self,vs_cm1):
+        """Calculate the permittivity of the crystal over the range of frequencies in vs_cm1"""
+        debugger.print('calculate ')
+        self.vs_cm1 = vs_cm1.copy()
+        self.CrystalPermittivity.setUnits('cm-1')
+        dielectricFunction = self.CrystalPermittivity.function()
+        pool = Calculator.get_pool(self.notebook.ncpus, self.notebook.threading)
+        self.crystal_permittivity = []
+        # Loop over the frequencies and calculate the crystal dielectric for each frequency
+        for dielecv in pool.imap(dielectricFunction, vs_cm1, chunksize=40):
+            self.crystal_permittivity.append(dielecv)
+            self.notebook.progressbars_update()
+        pool.close()
+        pool.join()
+        QCoreApplication.processEvents()
+        self.dirty = False
+        #jk print('Dielec calculation duration ', time.time(
+
+    def get_crystal_permittivity(self,vs_cm1):
+        """Return the crystal permittivity"""
+        debugger.print('get_crystal_permittivity')
+        if self.dirty or  ( len(self.vs_cm1) != len(vs_cm1) ) or ( self.vs_cm1[0] != vs_cm1[0] ) or ( self.vs_cm1[1] != vs_cm1[1] ) :
+            self.refresh()
+            self.calculate(vs_cm1)
+        return self.crystal_permittivity
 

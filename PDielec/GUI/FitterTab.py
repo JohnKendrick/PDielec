@@ -2,8 +2,8 @@
 import os.path
 import numpy as np
 import PDielec.Calculator as Calculator
-from PyQt5.QtWidgets  import  QPushButton, QWidget
-from PyQt5.QtWidgets  import  QComboBox, QLabel, QLineEdit, QDoubleSpinBox
+from PyQt5.QtWidgets    import  QPushButton, QWidget, QProgressBar
+from PyQt5.QtWidgets    import  QComboBox, QLabel, QLineEdit, QDoubleSpinBox
 from PyQt5.QtWidgets    import  QVBoxLayout, QHBoxLayout, QFormLayout
 from PyQt5.QtWidgets    import  QSpinBox
 from PyQt5.QtWidgets    import  QFileDialog
@@ -33,22 +33,21 @@ class FitterTab(QWidget):
         self.calculationInProgress = False
         self.settings = {}
         self.notebook = parent
-        self.notebook.plottingCalculationRequired = True
         self.settings['Excel file name'] = ''
         self.settings['Plot title'] = 'Experimental and Calculated Spectral Comparison'
-        self.settings['Plot type'] = 'Molar absorption'
-        self.plot_type_definitions = ['Molar absorption', 'Absorption', 'ATR','Real','Imaginary']
         self.settings['Fitting type'] = 'Minimise x-correlation'
         self.fitting_type_definitions = ['Minimise x-correlation', 'Minimise spectral difference']
         self.settings['Number of iterations'] = 20
         self.settings['Frequency scaling factor'] = 1.0
         self.settings['Optimise frequency scaling'] = False
-        self.settings['Absorption scaling'] = False
-        self.settings['Absorption scaling factor'] = 1.0
+        self.settings['Spectrum scaling'] = False
+        self.settings['Spectrum scaling factor'] = 1.0
         self.settings['Independent y-axes'] = True
         self.settings['Spectral difference threshold'] = 0.05
         self.settings['HPFilter lambda'] = 7.0
         self.settings['Baseline removal'] = False
+        self.settings['Scenario index'] = len(self.notebook.scenarios) - 1
+        self.scenario_legends = [ scenario.settings['Legend'] for scenario in self.notebook.scenarios ]
         self.plot_frequency_shift = False
         self.xcorr0=0.0
         self.xcorr1=0.0
@@ -58,10 +57,10 @@ class FitterTab(QWidget):
         self.modes_fitted = []
         self.modes_selected = []
         self.excel_frequencies = []
-        self.excel_absorption = []
-        self.experimental_absorption = []
+        self.excel_spectrum = []
+        self.experimental_spectrum = []
         self.frequency_units = 'wavenumber'
-        # Create a scenario tab
+        # Create a tab
         vbox = QVBoxLayout()
         form = QFormLayout()
         #
@@ -83,11 +82,11 @@ class FitterTab(QWidget):
         #
         # Select the type of plot we are going to use
         #
-        self.plot_type_cb = QComboBox(self)
-        self.plot_type_cb.setToolTip('What type of data is stored in the experimental spreadsheet?')
-        self.plot_type_cb.addItems(self.plot_type_definitions)
-        self.plot_type_cb.activated.connect(self.on_plot_type_cb_activated)
-        self.plot_type_cb.setCurrentIndex(self.plot_type_definitions.index(self.settings['Plot type']))
+        self.scenario_cb = QComboBox(self)
+        self.scenario_cb.setToolTip('What type of data is stored in the experimental spreadsheet?')
+        self.scenario_cb.addItems(self.scenario_legends)
+        self.scenario_cb.activated.connect(self.on_scenario_cb_activated)
+        self.scenario_cb.setCurrentIndex(self.settings['Scenario index'])
         #
         # See if we want frequency scaling
         #
@@ -159,7 +158,7 @@ class FitterTab(QWidget):
         #
         self.settingsTab = QTabWidget(self)
         self.settingsTab.addTab(self.spectrafile_le, 'Experimental spectrum')
-        self.settingsTab.addTab(self.plot_type_cb, 'Plot type')
+        self.settingsTab.addTab(self.scenario_cb, 'Scenario')
         self.settingsTab.addTab(self.frequency_scaling_factor_sb, 'Frequency scaling factor')
         self.settingsTab.addTab(self.iterations_sb, 'No. of iterations')
         self.settingsTab.addTab(self.independent_yaxes_cb, 'Independent y-axes')
@@ -193,11 +192,11 @@ class FitterTab(QWidget):
         # Add a replot and recalculate button
         hbox = QHBoxLayout()
         self.replotButton1 = QPushButton('Replot')
-        self.replotButton1.setToolTip('Recalculate the absorption with the new sigma values')
+        self.replotButton1.setToolTip('Recalculate the spectrum with the new sigma values')
         self.replotButton1.clicked.connect(self.replotButton1Clicked)
         hbox.addWidget(self.replotButton1)
         self.replotButton2 = QPushButton('Replot with frequency shift')
-        self.replotButton2.setToolTip('Recalculate the absorption with the new sigma values, including a shft in the frequencies to maximise the cross-correlation')
+        self.replotButton2.setToolTip('Recalculate the spectrum with the new sigma values, including a shft in the frequencies to maximise the cross-correlation')
         self.replotButton2.clicked.connect(self.replotButton2Clicked)
         hbox.addWidget(self.replotButton2)
         # Add a fitting button
@@ -209,7 +208,9 @@ class FitterTab(QWidget):
         # Add a progress bar
         label = QLabel('Calculation progress', self)
         label.setToolTip('Show the progress of any calculations')
-        form.addRow(label,self.notebook.progressbar)
+        self.progressbar = QProgressBar(self)
+        form.addRow(label,self.progressbar)
+        self.notebook.progressbars_add(self.progressbar)
         # Add output of the cross correlation coefficient
         hbox = QHBoxLayout()
         self.cross_correlation_le = QLineEdit(self)
@@ -259,9 +260,9 @@ class FitterTab(QWidget):
         self.settings['Optimise frequency scaling'] = self.optimise_frequency_scaling_cb.isChecked()
         return
 
-    def on_absorption_scaling_cb_changed(self,value):
-        debugger.print('on_absorption_scaling_cb_changed',value)
-        self.settings['Absorption scaling'] = self.absorption_scaling_cb.isChecked()
+    def on_spectrum_scaling_cb_changed(self,value):
+        debugger.print('on_spectrum_scaling_cb_changed',value)
+        self.settings['Spectrum scaling'] = self.spectrum_scaling_cb.isChecked()
         return
 
     def on_hpfilter_lambda_sb_changed(self,value):
@@ -273,10 +274,10 @@ class FitterTab(QWidget):
         self.replot()
         return
 
-    def on_absorption_scaling_factor_sb_changed(self,value):
-        debugger.print('on_absorption_scaling_factor_cb_changed',value)
+    def on_spectrum_scaling_factor_sb_changed(self,value):
+        debugger.print('on_spectrum_scaling_factor_cb_changed',value)
         try:
-            self.settings['Absorption scaling factor'] = float(value)
+            self.settings['Spectrum scaling factor'] = float(value)
         except:
             print('Failed to convert to float', value)
         return
@@ -306,7 +307,6 @@ class FitterTab(QWidget):
     def replotButton1Clicked(self):
         debugger.print('replotButton1Clicked')
         self.dirty = True
-        self.notebook.plottingTab.refresh(force=True)
         self.plot_frequency_shift = False
         self.refresh(force=True)
         return
@@ -314,7 +314,6 @@ class FitterTab(QWidget):
     def replotButton2Clicked(self):
         debugger.print('replotButton2Clicked')
         self.dirty = True
-        self.notebook.plottingTab.refresh(force=True)
         self.plot_frequency_shift = True
         self.refresh(force=True)
         return
@@ -348,10 +347,11 @@ class FitterTab(QWidget):
             # scale_calc = scale
             scale_calc = scale * self.settings['Frequency scaling factor']
         for x,y,legend in zip(xs,ys,legends):
-            x = np.array(x)
-            line, = self.subplot1.plot(lag+scale_calc*x,y,lw=2, color=cmap(cmap_index), label=legend )
-            lines.append(line)
-            cmap_index += 1
+            if y is not None:
+               x = np.array(x)
+               line, = self.subplot1.plot(lag+scale_calc*x,y,lw=2, color=cmap(cmap_index), label=legend )
+               lines.append(line)
+               cmap_index += 1
         if len(experiment) > 0:
             # Use the x variables from the previous xs, ys
             line, = self.subplot2.plot(scale*x,experiment,lw=2, color=cmap(cmap_index), label='Experiment' )
@@ -360,9 +360,9 @@ class FitterTab(QWidget):
         if self.settings['Independent y-axes']:
             self.subplot2.set_ylabel('Experiment')
             self.subplot2.set_ylim(bottom=0.0)
-            self.subplot1.set_ylabel('Calculated '+self.settings['Plot type'] )
+            self.subplot1.set_ylabel('Calculated '+self.plot_label )
         else:
-            self.subplot1.set_ylabel(self.settings['Plot type'] )
+            self.subplot1.set_ylabel(self.plot_label )
         self.subplot1.set_xlabel(xlabel)
         self.subplot1.set_ylim(bottom=0.0)
         self.subplot1.legend(lines, labels, loc='best')
@@ -371,6 +371,7 @@ class FitterTab(QWidget):
 
     def fittingButtonClicked(self):
         debugger.print('fittingButtonClicked')
+        self.dirty = True
         if self.calculationInProgress:
             self.fittingButton.setText('Perform fitting')
             self.calculationInProgress = False
@@ -378,6 +379,7 @@ class FitterTab(QWidget):
             self.fittingButton.setText('Interupt fitting')
             self.calculationInProgress = True
         self.refresh()
+        final_point = self.optimiseFit()
         self.fittingButton.setText('Perform fitting')
         self.calculationInProgress = False
         return
@@ -397,10 +399,10 @@ class FitterTab(QWidget):
             initial_point.append(self.settings['Frequency scaling factor'])
         nvariables = len(initial_point)
         if nvariables > 0:
-            final_point = minimize(self.optimiseFunction, initial_point, method='nelder-mead', options={'xtol':1.0, 'disp':False, 'maxfev':nvariables+nvariables*self.settings['Number of iterations']} )
+            final_point = minimize(self.optimiseFunction, initial_point, method='nelder-mead', options={'xatol':0.01, 'disp':True, 'maxfev':nvariables+nvariables*self.settings['Number of iterations']} )
         else: 
-             print('No sigmas have been selected for optimisation')
-             final_point = []
+            print('No sigmas have been selected for optimisation')
+            final_point = []
         return final_point
 
     def optimiseFunction(self,variables) :
@@ -425,7 +427,6 @@ class FitterTab(QWidget):
             self.redraw_sigmas_tw()
             self.notebook.settingsTab.sigmas_cm1[index] = sigma
         self.notebook.settingsTab.redraw_output_tw()
-        self.notebook.plottingTab.refresh(force=True)
         self.refresh(force=True)
         # Returning the best correlation but made negative because we need to minimise
         if self.settings['Fitting type'] == 'Minimise x-correlation':
@@ -438,18 +439,18 @@ class FitterTab(QWidget):
     def calculateSpectralDifference(self,scaling_factor):
         debugger.print('calculateSpectralDifference',scaling_factor)
         # Calculate the spectral difference  between the experimental and the first scenario
-        if len(self.experimental_absorption) == 0:
+        if len(self.experimental_spectrum) == 0:
             return 0.0
-        # col1 contains the experimental absorption
-        col1 = np.array(self.experimental_absorption)
+        # col1 contains the experimental spectrum
+        col1 = np.array(self.experimental_spectrum)
         maxcol1 = np.max(col1)
         col1 = col1 / maxcol1
         col1[ col1< self.settings['Spectral difference threshold'] ] = 0.0
 #        for i,val in enumerate(col1):
 #            if val < self.settings['Spectral difference threshold']:
 #                col1[i] = 0.0
-        # col2 contains the calculated absorption
-        col2 = np.array(self.calculated_absorptions[0])
+        # col2 contains the calculated spectrum
+        col2 = np.array(self.calculated_spectrum)
         # The new xaxis for the calculated spectrum is scaling_factor*xaxis
         f = interp1d(scaling_factor*np.array(self.xaxis), col2, kind='cubic',fill_value='extrapolate')
         col2 = f(self.xaxis)
@@ -457,18 +458,20 @@ class FitterTab(QWidget):
         col1[ col1< self.settings['Spectral difference threshold'] ] = 0.0
         diff = col1 - col2
         rmse = np.sqrt(np.dot(diff,diff)/len(col2))
+        debugger.print('rmse',rmse)
         return rmse
 
     def calculateCrossCorrelation(self,scaling_factor):
         debugger.print('calculateCrossCorrelation',scaling_factor)
         # Calculate the cross correlation coefficient between the experimental and the first scenario
-        if len(self.experimental_absorption) == 0:
+        if len(self.experimental_spectrum) == 0:
+            debugger.print('calculateCrossCorrelation experimental_spectrum is not defined')
             return (0.0,0.0,0.0)
-        # col1 contains the experimental absorption
-        col1 = np.array(self.experimental_absorption)
+        # col1 contains the experimental spectrum
+        col1 = np.array(self.experimental_spectrum)
         col1 = ( col1 - np.mean(col1)) / ( np.std(col1) * np.sqrt(len(col1)) )
-        # col2 contains the calculated absorption
-        col2 = np.array(self.calculated_absorptions[0])
+        # col2 contains the calculated spectrum
+        col2 = np.array(self.calculated_spectrum)
         # The new xaxis for the calculated spectrum is scaling_factor*xaxis
         f = interp1d(scaling_factor*np.array(self.xaxis), col2, kind='cubic',fill_value='extrapolate')
         col2 = f(self.xaxis)
@@ -476,6 +479,7 @@ class FitterTab(QWidget):
         correlation = np.correlate(col1, col2,  mode='full')
         lag = np.argmax(correlation) - (len(correlation)-1)/2
         lag = (self.xaxis[1] - self.xaxis[0]) * lag
+        debugger.print('lag , max(corr), index', lag,np.max(correlation),correlation[int((len(correlation)-1)/2)])
         return (lag,np.max(correlation),correlation[int((len(correlation)-1)/2)])
 
 
@@ -524,11 +528,11 @@ class FitterTab(QWidget):
         self.dirty = True
         self.settings['Fitting type'] = self.fitting_type_definitions[index]
 
-    def on_plot_type_cb_activated(self,index):
-        # Change in plot type
-        debugger.print('on_plot_type_cb_activated', index)
+    def on_scenario_cb_activated(self,index):
+        # Change in Scenario to be used for fitting
+        debugger.print('on_scenario_cb_activated', index)
         self.dirty = True
-        self.settings['Plot type'] = self.plot_type_definitions[index]
+        self.settings['Scenario index'] = index
 
     def on_spectrafile_le_return(self):
         # Handle a return in the excel file name line editor
@@ -561,11 +565,13 @@ class FitterTab(QWidget):
         self.wb = load_workbook(filename=self.settings['Excel file name'], read_only=True)
         self.ws = self.wb.worksheets[0]
         self.excel_frequencies = []
-        self.excel_absorption = []
+        self.excel_spectrum = []
         for row in self.ws.rows:
-            self.excel_frequencies.append(row[0].value)
-            self.excel_absorption.append(row[1].value)
+            if isinstance(row[0].value, (int, float, complex)):
+                self.excel_frequencies.append(row[0].value)
+                self.excel_spectrum.append(row[1].value)
         self.excel_file_has_been_read = True
+        self.dirty = True
         return
 
     def on_spectrafile_le_changed(self,text):
@@ -592,34 +598,37 @@ class FitterTab(QWidget):
                 self.sigmas_cm1[row] = new_value
                 self.redraw_sigmas_tw()
                 self.notebook.settingsTab.sigmas_cm1[row] = new_value
+                self.notebook.settingsTab.dirty = True
                 self.notebook.settingsTab.redraw_output_tw()
             except:
-                 print('Failed to converto to float',item.txt())
+                 print('Failed to convert to float',item.txt())
         elif col == 1:
             self.redraw_sigmas_tw()
         else:
             self.redraw_sigmas_tw()
-        self.notebook.plottingCalculationRequired = True
-        self.notebook.analysisCalculationRequired = True
-        self.notebook.fittingCalculationRequired = True
+        self.dirty = True
         QCoreApplication.processEvents()
 
 
     def print_settings(self):
-        debugger.print('SETTINGS')
+        debugger.print('print_settings')
         for key in self.settings:
-            debugger.print(key, self.settings[key]) 
+            debugger.print(key, self.settings[key])
 
     def replot(self):
-        if len(self.excel_absorption) > 0:
-            self.resample_spectrum()
-        self.plot(self.experimental_absorption,self.calculated_frequencies,self.calculated_absorptions,self.legends,self.plot_label)
+        debugger.print('replot')
+        if len(self.excel_spectrum) > 0:
+            self.resample_experimental_spectrum()
+        self.plot(self.experimental_spectrum,self.calculated_frequencies,self.calculated_spectra,self.scenario_legends,self.plot_label)
 
     def refresh(self,force=False):
-        if not self.dirty and not force and not self.notebook.fittingCalculationRequired:
+        debugger.print('refresh', force)
+        if not self.dirty and not force:
             debugger.print('refresh aborted', self.dirty,force)
             return
-        debugger.print('refresh', force)
+        #
+        # Just in case make sure the plotting tab is also uptodate
+        self.notebook.plottingTab.refresh()
         #
         # Block signals during refresh
         # 
@@ -630,7 +639,15 @@ class FitterTab(QWidget):
         #
         self.spectrafile_le.setText(self.settings['Excel file name'])
         self.read_excel_file()
-        self.plot_type_cb.setCurrentIndex(self.plot_type_definitions.index(self.settings['Plot type']))
+        self.plot_label = self.notebook.plottingTab.settings['Plot type']
+        self.scenario_legends = [ scenario.settings['Legend'] for scenario in self.notebook.scenarios ]
+        self.scenario_cb.clear()
+        self.scenario_cb.addItems(self.scenario_legends)
+        self.scenario_cb.setCurrentIndex(self.settings['Scenario index'])
+        vs_cm1 = self.notebook.plottingTab.vs_cm1
+        self.calculated_spectra = [ scenario.get_result(vs_cm1, self.plot_label) for scenario in self.notebook.scenarios ]
+        self.calculated_spectrum = self.calculated_spectra[self.settings['Scenario index']]
+        debugger.print('refresh scenario index' , self.settings['Scenario index'])
         self.iterations_sb.setValue(self.settings['Number of iterations'])
         self.frequency_scaling_factor_sb.setValue(self.settings['Frequency scaling factor'])
         if self.settings['Independent y-axes']:
@@ -650,27 +667,9 @@ class FitterTab(QWidget):
             self.modes_fitted = [ False  for _ in self.modes_selected ]
         self.redraw_sigmas_tw()
         # Resample the spectrum
-        self.calculated_frequencies = self.notebook.plottingTab.xaxes
-        if len(self.excel_absorption) > 0:
-            self.resample_spectrum()
-        index = self.plot_type_cb.currentIndex()
-        self.settings['Plot type'] = self.plot_type_definitions[index]
-        if index == 0:
-            self.calculated_absorptions = self.notebook.plottingTab.molarAbsorptionCoefficients
-            self.plot_label = 'Molar absorption coefficient'
-        elif index == 1:
-            self.calculated_absorptions = self.notebook.plottingTab.absorptionCoefficients
-            self.plot_label = 'Absorption coefficient'
-        elif index == 2:
-            self.calculated_absorptions = self.notebook.plottingTab.sp_atrs
-            self.plot_label = 'Absorption coefficient'
-        elif index == 3:
-            self.calculated_absorptions = self.notebook.plottingTab.realPermittivities
-            self.plot_label = 'Real Permittivity'
-        elif index == 4:
-            self.calculated_absorptions = self.notebook.plottingTab.imagPermittivities
-            self.plot_label = 'Imaginary Permittivity'
-        self.legends = self.notebook.plottingTab.legends
+        self.calculated_frequencies = [ vs_cm1 for scenario in self.notebook.scenarios ]
+        if len(self.excel_spectrum) > 0:
+            self.resample_experimental_spectrum()
         scaling_factor = self.settings['Frequency scaling factor']
         self.lag,self.xcorr0,self.xcorr1 = self.calculateCrossCorrelation(scaling_factor)
         self.rmse = self.calculateSpectralDifference(scaling_factor)
@@ -685,15 +684,15 @@ class FitterTab(QWidget):
         for w in self.findChildren(QWidget):
             w.blockSignals(False)
         self.dirty = False
-        self.notebook.fittingCalculationRequired = False
         return
 
 
-    def resample_spectrum(self):
+    def resample_experimental_spectrum(self):
     #
     #  The experimental spectrum needs to be in the same range as the calculated spectrum
     #  It also needs to be calculated at the same frequencies as the calculated spectrum
     #
+        debugger.print('Resample_experimental_spectrim')
         self.xaxis = np.array(self.calculated_frequencies[0])
         # If the experimental frequencies starts at a higher frequency 
         # than the calculated frequencies then add new frequencies to pad the range out
@@ -703,23 +702,23 @@ class FitterTab(QWidget):
         padded_yaxis = np.array([ 0 for index in indices if index ])
         # Add the experimental frequencies
         padded_xaxis = np.append(padded_xaxis,self.excel_frequencies)
-        padded_yaxis = np.append(padded_yaxis,self.excel_absorption)
+        padded_yaxis = np.append(padded_yaxis,self.excel_spectrum)
         # If the experimental frequencies ends at a lower frequency 
         # than the calculated frequencies then add new frequencies to pad the range out
         indices = self.xaxis > self.excel_frequencies[-1]
         padded_xaxis = np.append(padded_xaxis,self.xaxis[indices])
         padded_yaxis = np.append(padded_yaxis, np.array([ 0 for index in indices if index ]) )
         # 
-        # Create a function using the padded frequencies to calculate the absorption at the calculated frequencies
+        # Create a function using the padded frequencies to calculate the spectrum at the calculated frequencies
         f = interp1d(padded_xaxis, padded_yaxis, kind='cubic',fill_value='extrapolate')
-        # Store the experimental absorption at the calculated frequencies
-        experimental_absorption = f(self.xaxis)
+        # Store the experimental spectrum at the calculated frequencies
+        experimental_spectrum = f(self.xaxis)
         if self.settings['Baseline removal']:
             # Apply a Hodrick-Prescott filter to remove the background
-            self.experimental_absorption = Calculator.hodrick_prescott_filter(
-                                          experimental_absorption, 0.01,
+            self.experimental_spectrum = Calculator.hodrick_prescott_filter(
+                                          experimental_spectrum, 0.01,
                                           self.settings['HPFilter lambda'], 10)
         else:
-            self.experimental_absorption = experimental_absorption
+            self.experimental_spectrum = experimental_spectrum
         return
-    
+

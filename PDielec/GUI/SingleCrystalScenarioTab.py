@@ -1,20 +1,21 @@
+# -*- coding: utf8 -*-
 import os.path
 import os
 import numpy as np
 import copy
-import PDielec.Calculator         as Calculator
-from PyQt5.QtWidgets  import  QPushButton, QWidget
-from PyQt5.QtWidgets  import  QComboBox, QLabel, QLineEdit, QListWidget
-from PyQt5.QtWidgets  import  QApplication
-from PyQt5.QtWidgets  import  QVBoxLayout, QHBoxLayout, QFormLayout
-from PyQt5.QtWidgets  import  QSpinBox,QDoubleSpinBox
-from PyQt5.QtWidgets  import  QSizePolicy
-from PyQt5.QtCore     import  QCoreApplication, Qt
-from PDielec.DielectricFunction import DielectricFunction
-from PDielec.Constants import  wavenumber, PI, avogadro_si, angstrom, speed_light_si
-import ctypes
-from PDielec.Utilities import Debug
+import PDielec.Calculator as Calculator
 import PDielec.GTMcore as GTM
+from PyQt5.QtWidgets            import QPushButton, QWidget
+from PyQt5.QtWidgets            import QComboBox, QLabel, QLineEdit, QListWidget
+from PyQt5.QtWidgets            import QApplication
+from PyQt5.QtWidgets            import QVBoxLayout, QHBoxLayout, QFormLayout
+from PyQt5.QtWidgets            import QSpinBox,QDoubleSpinBox
+from PyQt5.QtWidgets            import QSizePolicy
+from PyQt5.QtCore               import QCoreApplication, Qt
+from PDielec.DielectricFunction import DielectricFunction
+from PDielec.Constants          import wavenumber, PI, avogadro_si, angstrom, speed_light_si
+from PDielec.Utilities          import Debug
+from PDielec.GUI.ScenarioTab    import ScenarioTab
 
 def set_affinity_on_worker():
     '''When a new worker process is created, the affinity is set to all CPUs'''
@@ -23,14 +24,15 @@ def set_affinity_on_worker():
     #JK os.system('taskset -p 0xff %d > /dev/null' % os.getpid())
 
 
-class SingleCrystalTab(QWidget):
+class SingleCrystalScenarioTab(ScenarioTab):
     def __init__(self, parent, debug=False ):
-        super(QWidget, self).__init__(parent)
+        ScenarioTab.__init__(self,parent)
         global debugger
-        debugger = Debug(debug,'SingleCrystalTab')
+        debugger = Debug(debug,'SingleCrystalScenarioTab:')
+        debugger.print('In the initialiser')
         self.dirty = True
-        self.settings = {}
-        self.setWindowTitle('SingleCrystal')
+        self.scenarioType = 'Single crystal'
+        self.settings['Scenario type'] = 'Single crystal'
         self.settings['Unique direction - h'] = 0
         self.settings['Unique direction - k'] = 0
         self.settings['Unique direction - l'] = 1
@@ -40,14 +42,17 @@ class SingleCrystalTab(QWidget):
         self.settings['Substrate dielectric'] = 1.0
         self.settings['Superstrate depth'] = 999.0
         self.settings['Substrate depth'] = 999.0
-        self.settings['Film thickness'] = 10.0
+        self.settings['Film thickness'] = 100.0
         self.settings['Mode'] = 'Thick slab'
-        self.p_reflectivity = []
-        self.s_reflectivity = []
-        self.p_transmission = []
-        self.s_transmission = []
+        self.settings['Frequency units'] = 'wavenumber'
+        self.p_reflectance = []
+        self.s_reflectance = []
+        self.p_transmittance = []
+        self.s_transmittance = []
+        self.p_absorbtance = []
+        self.s_absorbtance = []
         self.epsilon = []
-        self.frequencies_cm1 = []
+        self.vs_cm1 = []
         self.directions = []
         # store the notebook
         self.notebook = parent
@@ -63,12 +68,12 @@ class SingleCrystalTab(QWidget):
         # Chose mode of operation
         #
         self.mode_cb = QComboBox(self)
-        self.mode_cb.setToolTip('Set the mode of operation for this tab;\n Thick slab means that only reflections are significant (the film thickness has no effect and there are only two media; the incident and the crystal),\n Coherent thin film and incoherent thin film assumes there are three media; the incident, the crystal and the substrate')
-        self.mode_cb.addItems( ['Thick slab','Coherent thin film','Incoherent thick film'] )
+        self.mode_cb.setToolTip('Set the mode of operation for this tab;\n Thick slab means that only reflections are significant (the film thickness has no effect and there are only two media; the incident and the crystal),\n Coherent thin film assumes there are three media; the incident, the crystal and the substrate')
+        self.mode_cb.addItems( ['Thick slab','Coherent thin film'] )
         self.settings['Mode'] = 'Thick slab'
         self.mode_cb.activated.connect(self.on_mode_cb_activated)
         label = QLabel('Single crystal mode', self)
-        label.setToolTip('Set the mode of operation for this tab;\n Thick slab means that only reflections are significant (the film thickness has no effect and there are only two media; the incident and the crystal),\n Coherent thin film iand incoherent thin film assumes there are three media; the incident, the crystal and the substrate')
+        label.setToolTip('Set the mode of operation for this tab;\n Thick slab means that only reflections are significant (the film thickness has no effect and there are only two media; the incident and the crystal),\n Coherent thin film assumes there are three media; the incident, the crystal and the substrate')
         form.addRow(label, self.mode_cb)
         #
         # Define the slab surface in crystal coordinates
@@ -107,18 +112,18 @@ class SingleCrystalTab(QWidget):
         self.azimuthal_angle_sb.setSingleStep(10)
         self.azimuthal_angle_sb.setValue(self.settings['Azimuthal angle'])
         self.azimuthal_angle_sb.valueChanged.connect(self.on_azimuthal_angle_sb_changed)
+        label = QLabel('Azimuthal angle',self)
+        label.setToolTip('Define the azimuthal angle (rotation of the crystal about the lab Z-axis)')
+        form.addRow(label, self.azimuthal_angle_sb)
         self.angle_of_incidence_sb = QDoubleSpinBox(self)
         self.angle_of_incidence_sb.setToolTip('Define the angle of incidence, (normal incidence is 0 degrees)')
         self.angle_of_incidence_sb.setRange(0,90)
         self.angle_of_incidence_sb.setSingleStep(5)
         self.angle_of_incidence_sb.setValue(self.settings['Angle of incidence'])
         self.angle_of_incidence_sb.valueChanged.connect(self.on_angle_of_incidence_sb_changed)
-        hbox = QHBoxLayout()
-        hbox.addWidget(self.azimuthal_angle_sb)
-        hbox.addWidget(self.angle_of_incidence_sb)
-        angles_label = QLabel('Angles of surface orientation and incidence',self)
-        angles_label.setToolTip('Define the azimuthal angle and the angle of incidence, (normal incidence is 0 degrees).')
-        form.addRow(angles_label, hbox)
+        label = QLabel('Angle of incidence',self)
+        label.setToolTip('Define the angle of incidence, (normal incidence is 0 degrees).')
+        form.addRow(label, self.angle_of_incidence_sb)
         #
         # Provide information on the lab frame
         #
@@ -156,19 +161,29 @@ class SingleCrystalTab(QWidget):
         # Define the Film thickness
         #
         self.film_thickness_sb = QDoubleSpinBox(self)
-        self.film_thickness_sb.setToolTip('Define the Film thickness')
-        self.film_thickness_sb.setRange(0,10000)
+        self.film_thickness_sb.setToolTip('Define the thin film thickness in nanometres')
+        self.film_thickness_sb.setRange(0,100000)
         self.film_thickness_sb.setSingleStep(1)
         self.film_thickness_sb.setValue(self.settings['Film thickness'])
         self.film_thickness_sb.valueChanged.connect(self.on_film_thickness_sb_changed)
         hbox = QHBoxLayout()
         hbox.addWidget(self.film_thickness_sb)
-        film_thickness_label = QLabel('Film thickness(mu)',self)
-        film_thickness_label.setToolTip('Define the depth of the crystal in millimetres.')
+        film_thickness_label = QLabel('Film thickness (nm)',self)
+        film_thickness_label.setToolTip('Define the depth of the thin film in nanometres.')
         form.addRow(film_thickness_label, hbox)
         #
+        # Add a legend option
         #
-        # Final button
+        self.legend_le = QLineEdit(self)
+        self.legend_le.setToolTip('The legend will be used to describe the results in the plot')
+        self.legend_le.setText('Scenario legend')
+        self.legend_le.textChanged.connect(self.on_legend_le_changed)
+        label = QLabel('Scenario legend',self)
+        label.setToolTip('The legend will be used to describe the results in the plot')
+        form.addRow(label, self.legend_le)
+        #
+        #
+        # Final buttons for changing/deleting and switching the scenarios
         #
         hbox = self.add_scenario_buttons()
         form.addRow(hbox)
@@ -221,87 +236,13 @@ class SingleCrystalTab(QWidget):
         self.settings['Unique direction - l'] = value
         self.calculate_euler_angles()
 
-    def plotTransmissionButtonClicked(self):
-        debugger.print('plotTransmissionButtonClicked pressed')
-        self.plotLastButtonPressed = self.plotTransmissionButtonClicked
-        self.calculate()
-        yaxes = [self.p_transmission, self.s_transmission, ]
-        legends = [ r'$T_p$', r'$T_s$']
-        ylabel = 'Fraction of incident light'
-        self.plot(self.frequencies_cm1, yaxes, ylabel, legends, 'Transmitance')
-
-    def plotReflectanceButtonClicked(self):
-        debugger.print('plotReflectanceButtonClicked pressed')
-        self.plotLastButtonPressed = self.plotReflectanceButtonClicked
-        self.calculate()
-        yaxes = [self.p_reflectivity, self.s_reflectivity, ]
-        legends = [ r'$R_p$', r'$R_s$']
-        ylabel = 'Fraction of incident light'
-        self.plot(self.frequencies_cm1, yaxes, ylabel, legends, 'Reflectance')
-
-    def plotTplusRButtonClicked(self):
-        debugger.print('plotTplusRButtonClicked pressed')
-        self.plotLastButtonPressed = self.plotTplusRButtonClicked
-        self.calculate()
-        tr_p = np.array( self.p_transmission ) + np.array( self.p_reflectivity )
-        tr_s = np.array( self.s_transmission ) + np.array( self.s_reflectivity )
-        yaxes = [tr_p,tr_s, ]
-        legends = [ r'$T_p+R_p$', r'$T_s+R_s$']
-        ylabel = 'Fraction of incident light'
-        self.plot(self.frequencies_cm1, yaxes, ylabel, legends, 'Transmitance+Reflectance')
-
-    def plotRealEButtonClicked(self):
-        debugger.print('plotRealEButtonClicked pressed')
-        self.plotLastButtonPressed = self.plotRealEButtonClicked
-        self.calculate()
-        eps = np.real( self.epsilon )
-        yaxes = [eps[:,0,0], eps[:,1,1], eps[:,2,2], eps[:,0,1], eps[:,0,2], eps[:,1,2] ]
-        legends = [ r'$\epsilon_{xx}$', r'$\epsilon_{yy}$', r'$\epsilon_{zz}$', r'$\epsilon_{xy}$',r'$\epsilon_{xz}$',r'$\epsilon_{yz}$' ]
-        ylabel = 'Real permittivity'
-        self.plot(self.frequencies_cm1, yaxes, ylabel, legends, 'Real permittivity')
-
-    def plotImagEButtonClicked(self):
-        debugger.print('plotImagEButtonClicked pressed')
-        self.plotLastButtonPressed = self.plotImagEButtonClicked
-        self.calculate()
-        eps = np.imag( self.epsilon )
-        yaxes = [eps[:,0,0], eps[:,1,1], eps[:,2,2], eps[:,0,1], eps[:,0,2], eps[:,1,2] ]
-        legends = [ r'$\epsilon_{xx}$', r'$\epsilon_{yy}$', r'$\epsilon_{zz}$', r'$\epsilon_{xy}$',r'$\epsilon_{xz}$',r'$\epsilon_{yz}$' ]
-        ylabel = 'Imaginary permittivity'
-        self.plot(self.frequencies_cm1, yaxes, ylabel, legends, 'Imaginary permittivity')
-
-    def on_title_changed(self,text):
-        self.settings['Plot title'] = text
-        if len(text) <= 0:
-            self.settings['Use default plot title'] == True
-        else:
-            self.settings['Use default plot title'] == False
-        self.settings['Plot title'] = text
-        if self.subplot is not None:
-            self.subplot.set_title(self.settings['Plot title'])
-            self.canvas.draw_idle()
-        debugger.print('on title change ', self.settings['Plot title'])
-
-    def on_vinc_changed(self,value):
-        self.settings['Frequency increment'] = value
-        self.dirty = True
-        debugger.print('on vinc change ', self.settings['Frequency increment'])
-
-    def on_vmin_changed(self):
-        self.settings['Minimum frequency'] = self.vmin_sb.value()
-        self.dirty = True
-        debugger.print('on vmin change ', self.settings['Minimum frequency'])
-
-    def on_vmax_changed(self):
-        self.settings['Maximum frequency'] = self.vmax_sb.value()
-        self.dirty = True
-        debugger.print('on vmax change ', self.settings['Maximum frequency'])
-
     def refresh(self,force=False):
-        if not self.dirty and not force:
+        if not self.dirty and not force :
             debugger.print('refreshing widget aborted', self.dirty,force)
             return
         debugger.print('refreshing widget', force)
+        # Change any greyed out items
+        self.greyed_out()
         #
         # Block signals during refresh
         #
@@ -321,11 +262,10 @@ class SingleCrystalTab(QWidget):
         self.film_thickness_sb.setValue(self.settings['Film thickness'])
         index = self.mode_cb.findText(self.settings['Mode'], Qt.MatchFixedString)
         self.mode_cb.setCurrentIndex(index)
+        self.legend_le.setText(self.settings['Legend'])
         # Refresh the widgets that depend on the reader
         self.reader = self.notebook.reader
         self.calculate_euler_angles()
-        self.plotLastButtonPressed()
-        self.dirty = False
         #
         # Unblock signals after refresh
         #
@@ -335,21 +275,20 @@ class SingleCrystalTab(QWidget):
         return
 
     def on_mode_cb_activated(self, index):
+        debugger.print('on_mode_cb_activated')
         if index == 0:
             self.settings['Mode'] = 'Thick slab'
         elif index == 1:
             self.settings['Mode'] = 'Coherent thin film'
         else:
             self.settings['Mode'] = 'Incoherent thin film'
-        if self.settings['Use default plot title'] == True:
-            self.settings['Plot title'] = 'Single crystal '+self.settings['Mode']
         self.dirty = True
         self.refresh()
         debugger.print('Mode changed to ', self.settings['Mode'])
 
     def calculate(self,vs_cm1):
-        """Calculate the  reflectivity and transmission of a single crystal"""
         debugger.print('Calculate')
+        QCoreApplication.processEvents()
         # Assemble the mainTab settings
         settings = self.notebook.mainTab.settings
         program = settings['Program']
@@ -360,7 +299,6 @@ class SingleCrystalTab(QWidget):
             return
         if filename == '':
             return
-        QApplication.setOverrideCursor(Qt.WaitCursor)
         # Assemble the settingsTab settings
         settings = self.notebook.settingsTab.settings
         sigmas_cm1 = self.notebook.settingsTab.sigmas_cm1
@@ -385,7 +323,7 @@ class SingleCrystalTab(QWidget):
         substrateDepth   = self.settings['Substrate depth']
         substrate        = GTM.Layer(thickness=substrateDepth*1e-6,  epsilon1=substrateDielectricFunction)
         crystalDepth     = self.settings['Film thickness']
-        crystal          = GTM.Layer(thickness=crystalDepth*1e-6,    epsilon=crystalPermittivityFunction)
+        crystal          = GTM.Layer(thickness=crystalDepth*1e-9,    epsilon=crystalPermittivityFunction)
         # Creat the system with the layers 
         if self.settings['Mode'] == 'Thick slab':
             system = GTM.System(substrate=crystal, superstrate=superstrate, layers=[])
@@ -404,10 +342,8 @@ class SingleCrystalTab(QWidget):
         for layer in system.layers:
             layer.set_euler(theta, phi, psi)
         # Get a pool of processors
-        pool = Calculator.get_pool(self.notebook.ncpus,self.notebook.threading)
-        #
+        pool = Calculator.get_pool(self.notebook.ncpus, self.notebook.threading)
         # Prepare parameters for a parallel call to the layered absorption / reflection
-        #
         call_parameters = []
         results = []
         # Assemble all the parameters we need for parallel execution
@@ -417,31 +353,35 @@ class SingleCrystalTab(QWidget):
             call_parameters.append( (v, angleOfIncidence, system) )
             # results.append( Calculator.solve_single_crystal_equations( (v, angleOfIncidence, system) ) )
         for result in pool.map(Calculator.solve_single_crystal_equations, call_parameters, chunksize=40):
+            self.notebook.progressbars_update()
             results.append(result)
-            self.notebook.progressbar_update()
         QCoreApplication.processEvents()
         # Initialise plotting variables
-        self.frequencies_cm1= []
-        self.p_reflectivity = []
-        self.s_reflectivity = []
-        self.p_transmission = []
-        self.s_transmission = []
+        self.vs_cm1= []
+        self.p_reflectance = []
+        self.s_reflectance = []
+        self.p_transmittance = []
+        self.s_transmittance = []
+        self.p_absorbtance = []
+        self.s_absorbtance = []
         self.epsilon = []
         for v,r,R,t,T,epsilon in results:
-            self.frequencies_cm1.append(v)
-            self.p_reflectivity.append(R[0]+R[2])
-            self.s_reflectivity.append(R[1]+R[3])
-            self.p_transmission.append(T[0])
-            self.s_transmission.append(T[1])
+            self.vs_cm1.append(v)
+            self.p_reflectance.append(R[0]+R[2])
+            self.s_reflectance.append(R[1]+R[3])
+            self.p_transmittance.append(T[0])
+            self.s_transmittance.append(T[1])
+            self.p_absorbtance.append(R[0]+R[2]+T[0])
+            self.s_absorbtance.append(R[1]+R[3]+T[1])
             self.epsilon.append(epsilon)
         # Close parallel processing down
         pool.close()
         pool.join()
         self.dirty = False
-        QApplication.restoreOverrideCursor()
         QCoreApplication.processEvents()
 
     def write_spreadsheet(self):
+        debugger.print('write_spreadsheet')
         if self.notebook.spreadsheet is None:
             return
         sp = self.notebook.spreadsheet
@@ -453,7 +393,6 @@ class SingleCrystalTab(QWidget):
         sp.writeNextRow([ 'Minimum frequency',            self.settings['Minimum frequency'] ],col=1)
         sp.writeNextRow([ 'Maximum frequency',            self.settings['Maximum frequency'] ],col=1)
         sp.writeNextRow([ 'Frequency increment',          self.settings['Frequency increment'] ],col=1)
-        sp.writeNextRow([ 'Plot title',                   self.settings['Plot title'] ],col=1)
         sp.writeNextRow([ 'Surface definition (h)',       self.settings['Unique direction - h'] ],col=1)
         sp.writeNextRow([ 'Surface definition (k)',       self.settings['Unique direction - k'] ],col=1)
         sp.writeNextRow([ 'Surface definition (l)',       self.settings['Unique direction - l'] ],col=1)
@@ -461,18 +400,19 @@ class SingleCrystalTab(QWidget):
         sp.writeNextRow([ 'Angle of incidence',           self.settings['Angle of incidence'] ],col=1)
         sp.writeNextRow([ 'Superstrate dielectric',       self.settings['Superstrate dielectric'] ],col=1)
         sp.writeNextRow([ 'Substrate dielectric',         self.settings['Substrate dielectric'] ],col=1)
-        sp.writeNextRow([ 'Film thickness(mu)',           self.settings['Film thickness'] ],col=1)
+        sp.writeNextRow([ 'Film thickness(nm)',           self.settings['Film thickness'] ],col=1)
         headings = ['R_p', 'R_s', 'T_p', 'T_s']
-        self.write_results(sp, 'Crystal R&T',     self.frequencies_cm1, [self.p_reflectivity, self.s_reflectivity, self.p_transmission, self.s_transmission], headings)
+        self.write_results(sp, 'Crystal R&T',     self.vs_cm1, [self.p_reflectance, self.s_reflectance, self.p_transmittance, self.s_transmittance], headings)
 
     def write_results(self, sp, name, vs, yss, headings):
         """ 
         sp        is the spreadsheet object
         name      is the worksheet name used for writing
         vs        an np.array of the frequencies
-        yss       a list of np.arrays of the reflections and transmissions ] 
+        yss       a list of np.arrays of the reflections and transmittance ] 
         headings  the heading names for the yss
         """
+        debugger.print('write_results')
         sp.selectWorkSheet(name)
         sp.delete()
         headers = ['frequencies (cm-1)']
@@ -542,4 +482,42 @@ class SingleCrystalTab(QWidget):
         # print('Projection of a,b,c onto the lab Y-axis (s-pol)', a[1],b[1],c[1])
         # print('Projection of a,b,c onto the lab X-axis (p-pol)', a[0],b[0],c[0])
         return (theta, phi, psi)
+
+    def get_result(self, vs_cm1, plot_type):
+        """Return a particular result"""
+        self.get_results(vs_cm1)
+        if plot_type   == 'Crystal Reflectance (P polarisation)':
+            return self.p_reflectance
+        elif plot_type == 'Crystal Reflectance (S polarisation)':
+            return self.s_reflectance
+        elif plot_type == 'Crystal Transmittance (P polarisation)':
+            return self.p_transmittance
+        elif plot_type == 'Crystal Transmittance (S polarisation)':
+            return self.s_transmittance
+        elif plot_type == 'Crystal Absorbtance (P polarisation)':
+            return self.p_absorbtance
+        elif plot_type == 'Crystal Absorbtance (S polarisation)':
+            return self.s_absorbtance
+        else:
+            print('Error in returning result from CrystalScenarioTab: ',plot_type)
+            return None
+
+
+    def get_results(self, vs_cm1):
+        """Return the results of the effective medium theory calculation"""
+        if self.dirty or len(self.vs_cm1) != len(vs_cm1) or self.vs_cm1[0] != vs_cm1[0] or self.vs_cm1[1] != vs_cm1[1] :
+            self.calculate(vs_cm1)
+        else:
+            self.notebook.progressbars_update(increment=len(vs_cm1))
+        return
+
+    def greyed_out(self):
+        """Have a look through the settings and see if we need to grey anything out"""
+        # If the single crystal mode is Thick Slab, there is no need for film thickness or substrate permittivity
+        if self.settings['Mode'] == 'Thick slab':
+            self.film_thickness_sb.setEnabled(False)
+            self.substrate_dielectric_sb.setEnabled(False)
+        else:
+            self.film_thickness_sb.setEnabled(True)
+            self.substrate_dielectric_sb.setEnabled(True)
 

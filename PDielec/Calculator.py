@@ -1096,7 +1096,7 @@ def solve_effective_medium_equations( call_parameters ):
     # call_parameters is a tuple
     # In the case of Bruggeman and coherent we can use the previous result to start the iteration/minimisation
     # However to do this we need some shared memory, this allocated in previous_solution_shared
-    v,vau,dielecv,method,vf,vf_type,size_mu,size_distribution_sigma,size,nplot,dielectric_medium,shape,data,L,concentration,atrPermittivity,atrTheta,atrSPol,bubble_vf,bubble_radius,previous_solution_shared = call_parameters
+    v,vau,dielecv,method,vf,size_mu,size_distribution_sigma,size,dielectric_medium,shape,data,L,concentration,atrPermittivity,atrTheta,atrSPol,bubble_vf,bubble_radius,previous_solution_shared = call_parameters
     # Calculate the effect of bubbles in the matrix by assuming they are embedded in an effective medium defined above
     refractive_index = math.sqrt(np.trace(dielectric_medium)/3.0)
     if refractive_index.imag < 0.0:
@@ -1113,23 +1113,23 @@ def solve_effective_medium_equations( call_parameters ):
     elif method == "maxwell_sihvola":
         effdielec = maxwell_sihvola(dielectric_medium, dielecv, shape, L, vf, size)
     elif method == "coherent":
-        eff  = previous_solution_shared[nplot]
+        eff  = previous_solution_shared
         if np.abs(np.trace(eff)) < 1.0e-8:
             eff = maxwell(dielectric_medium, dielecv, shape, L, vf, size)
         effdielec = coherent(dielectric_medium, dielecv, shape, L, vf, size, eff)
-        previous_solution_shared[nplot] = effdielec
+        previous_solution_shared = effdielec
     elif method == "bruggeman_minimise":
-        eff  = previous_solution_shared[nplot]
+        eff  = previous_solution_shared
         if np.abs(np.trace(eff)) < 1.0e-8:
             eff = maxwell(dielectric_medium, dielecv, shape, L, vf, size)
         effdielec = bruggeman_minimise(dielectric_medium, dielecv, shape, L, vf, size, eff)
-        previous_solution_shared[nplot] = effdielec
+        previous_solution_shared = effdielec
     elif method == "bruggeman" or method == "bruggeman_iter":
-        eff  = previous_solution_shared[nplot]
+        eff  = previous_solution_shared
         if np.abs(np.trace(eff)) < 1.0e-8:
             eff = maxwell(dielectric_medium, dielecv, shape, L, vf, size)
         effdielec = bruggeman_iter(dielectric_medium, dielecv, shape, L, vf, size, eff)
-        previous_solution_shared[nplot] = effdielec
+        previous_solution_shared = effdielec
     elif method == "anisotropic-mie":
         effdielec = anisotropic_mie_scattering(dielectric_medium, dielecv, shape, L, vf, size, size_mu, size_distribution_sigma)
     elif method == "mie":
@@ -1151,7 +1151,7 @@ def solve_effective_medium_equations( call_parameters ):
     molar_absorption_coefficient = absorption_coefficient / concentration / vf
     # calculate the ATR reflectance
     spatr = reflectance_atr(refractive_index,atrPermittivity,atrTheta,atrSPol)
-    return v,nplot,method,vf_type,size_mu,size_distribution_sigma,shape,data,trace,absorption_coefficient,molar_absorption_coefficient,spatr
+    return v,method,size_mu,size_distribution_sigma,shape,data,trace,absorption_coefficient,molar_absorption_coefficient,spatr
 
 def calculate_bubble_refractive_index(v_cm1, ri_medium, vf, radius_mu):
     """Calculate the scattering from bubbles embedded in a possibly, complex dielectric at v_cm1
@@ -1461,3 +1461,29 @@ def euler_rotation(vector, theta, phi, psi):
      euler[2, 2] =  np.cos(theta)
      result = np.matmul(euler, vector)
      return result
+
+def get_pool(ncpus, threading):
+     """Return a pool of processors given the number of cpus and whether threading is requested"""
+     # Switch off mkl threading
+     try:
+         import mkl
+         mkl.set_num_threads(1)
+     except:
+         pass
+     # see if threading has been requested
+     if threading:
+         from multiprocess.dummy import Pool
+         pool = Pool(ncpus)
+     else:
+         from multiprocess import Pool
+         pool = Pool(ncpus, initializer=set_affinity_on_worker, maxtasksperchild=10)
+     return pool
+
+def set_affinity_on_worker():
+    '''When a new worker process is created, the affinity is set to all CPUs'''
+    #JK print('I'm the process %d, setting affinity to all CPUs.' % os.getpid())
+    #JK Commented out for the time being
+    #JK os.system('taskset -p 0xff %d > /dev/null' % os.getpid())
+    return
+
+

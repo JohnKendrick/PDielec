@@ -593,7 +593,7 @@ class ViewerTab(QWidget):
 
     def refresh(self,force=False):
         debugger.print('refresh')
-        if not self.dirty and not force and not self.notebook.visualerCalculationRequired:
+        if not self.dirty and not force:
             debugger.print('refresh aborted',self.dirty,force)
             return
         debugger.print('refresh widget',force)

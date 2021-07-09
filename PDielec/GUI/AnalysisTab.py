@@ -267,8 +267,8 @@ class AnalysisTab(QWidget):
             self.plot()
 
     def refresh(self, force=False):
-        if not self.dirty and not force and not self.notebook.analysisCalculationRequired:
-            debugger.print('return with no refresh', self.dirty, force, self.notebook.analysisCalculationRequired)
+        if not self.dirty and not force:
+            debugger.print('return with no refresh', self.dirty, force)
             return
         debugger.print('Refreshing widget')
         #
@@ -287,7 +287,6 @@ class AnalysisTab(QWidget):
         self.calculate()
         self.set_radii_tw()
         self.plot()
-        self.notebook.analysisCalculationRequired = False
         #
         # Unlock signals after refresh
         #

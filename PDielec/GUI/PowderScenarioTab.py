@@ -1,20 +1,28 @@
 # -*- coding: utf8 -*-
-from PyQt5.QtWidgets  import  QPushButton, QWidget
-from PyQt5.QtWidgets  import  QComboBox, QLabel, QLineEdit, QDoubleSpinBox
-from PyQt5.QtWidgets  import  QVBoxLayout, QHBoxLayout, QFormLayout
-from PyQt5.QtWidgets  import  QSpinBox
-from PyQt5.QtCore     import  Qt
-from PDielec.Constants import  support_matrix_db
-from PDielec.Constants import  avogadro_si
-from PDielec.Utilities import  Debug
+from PyQt5.QtWidgets         import QPushButton, QWidget
+from PyQt5.QtWidgets         import QComboBox, QLabel, QLineEdit, QDoubleSpinBox
+from PyQt5.QtWidgets         import QVBoxLayout, QHBoxLayout, QFormLayout
+from PyQt5.QtWidgets         import QSpinBox
+from PyQt5.QtCore            import Qt, QCoreApplication
 
-class PowderScenarioTab(QWidget):
+from PDielec.Constants       import support_matrix_db
+from PDielec.Constants       import avogadro_si
+from PDielec.Utilities       import Debug
+from PDielec.GUI.ScenarioTab import ScenarioTab
+from multiprocess            import Array
+from PDielec.Constants       import wavenumber
+import ctypes
+import PDielec.Calculator as Calculator
+import numpy as np
+
+class PowderScenarioTab(ScenarioTab):
     def __init__(self, parent, debug=False):
-        ScenarioTab.__init__(self)
+        ScenarioTab.__init__(self,parent)
         # super(QWidget, self).__init__(parent)
         global debugger
         debugger = Debug(debug,'PowderScenarioTab:')
-        self.scenarioType = 'powder'
+        debugger.print('In the initialiser')
+        self.scenarioType = 'Powder'
         self.settings['Scenario type'] = 'Powder'
         matrix = 'ptfe'
         self.settings['Matrix'] = matrix
@@ -35,10 +43,16 @@ class PowderScenarioTab(QWidget):
         self.settings['ATR theta'] = 45.0
         self.settings['ATR S polarisation fraction'] = 0.5
         self.settings['Effective medium method'] = 'Maxwell-Garnett'
-        self.methods = ['Maxwell-Garnett', 'Bruggeman', 'Averaged Permittivity', 'Mie']
         self.settings['Particle shape'] = 'Sphere'
+        self.methods = ['Maxwell-Garnett', 'Bruggeman', 'Averaged Permittivity', 'Mie']
         self.shapes = ['Sphere', 'Needle', 'Plate', 'Ellipsoid']
         self.scenarioIndex = None
+        self.reader = None
+        self.realPermittivity = []
+        self.imagPermittivity = []
+        self.absorptionCoefficient = []
+        self.molarAbsorptionCoefficient = []
+        self.sp_atr = []
         # Create a scenario tab
         vbox = QVBoxLayout()
         form = QFormLayout()
@@ -270,40 +284,23 @@ class PowderScenarioTab(QWidget):
         #
         self.legend_le = QLineEdit(self)
         self.legend_le.setToolTip('The legend will be used to describe the results in the plot')
-        self.legend_le.setText('Scenario legend')
+        self.legend_le.setText('Powder scenario legend')
         self.legend_le.textChanged.connect(self.on_legend_le_changed)
-        label = QLabel('Scenario legend',self)
-        label.setToolTip('The legend will be used to describe the results in the plot')
+        label = QLabel('Powder scenario legend',self)
+        label.setToolTip('The legend will be used to describe the results in the plotting tab')
         form.addRow(label, self.legend_le)
 
         #
         # Final buttons
         #
-        hbox = QHBoxLayout()
-        self.pushButton1 = QPushButton('Add another scenario')
-        self.pushButton1.setToolTip('Use another scenario to calculate the effect of changing the material on the absorption and permittivity')
-        self.pushButton1.clicked.connect(self.pushButton1Clicked)
-        hbox.addWidget(self.pushButton1)
-        self.pushButton3 = QPushButton('Delete this scenario')
-        self.pushButton3.setToolTip('Delete the current scenario')
-        self.pushButton3.clicked.connect(self.pushButton3Clicked)
-        hbox.addWidget(self.pushButton3)
+        hbox = self.add_scenario_buttons()
         form.addRow(hbox)
+        #
         vbox.addLayout(form)
         # finalise the layout
         self.setLayout(vbox)
         # sort out greying of boxes
         self.change_greyed_out()
-
-    def pushButton1Clicked(self):
-        # Add another scenario
-        debugger.print('Button 1 pressed')
-        self.notebook.addScenario(copyFromIndex=self.scenarioIndex)
-
-    def pushButton3Clicked(self):
-        # Delete a scenario
-        debugger.print('Button 3 pressed')
-        self.notebook.deleteScenario(self.scenarioIndex)
 
     def crystal_density(self):
         if not self.reader:
@@ -317,31 +314,23 @@ class PowderScenarioTab(QWidget):
 
 
     def on_h_sb_changed(self,value):
-        debugger.print('on_h_sb_changed', value)
+        debugger.print(self.settings['Legend'],'on_h_sb_changed', value)
         self.dirty = True
-        self.notebook.plottingCalculationRequired = True
-        self.notebook.fittingCalculationRequired = True
         self.settings['Unique direction - h'] = value
 
     def on_k_sb_changed(self,value):
-        debugger.print('on_k_sb_changed', value)
+        debugger.print(self.settings['Legend'],'on_k_sb_changed', value)
         self.dirty = True
-        self.notebook.plottingCalculationRequired = True
-        self.notebook.fittingCalculationRequired = True
         self.settings['Unique direction - k'] = value
 
     def on_l_sb_changed(self,value):
-        debugger.print('on_l_sb_changed', value)
+        debugger.print(self.settings['Legend'],'on_l_sb_changed', value)
         self.dirty = True
-        self.notebook.plottingCalculationRequired = True
-        self.notebook.fittingCalculationRequired = True
         self.settings['Unique direction - l'] = value
 
     def on_shape_cb_activated(self,index):
-        debugger.print('on shape cb activated', index)
+        debugger.print(self.settings['Legend'],'on shape cb activated', index)
         self.dirty = True
-        self.notebook.plottingCalculationRequired = True
-        self.notebook.fittingCalculationRequired = True
         self.settings['Particle shape'] = self.shapes[index]
         if self.settings['Particle shape'] == 'Sphere':
             self.settings['Unique direction - h'] = 0
@@ -350,10 +339,8 @@ class PowderScenarioTab(QWidget):
         self.change_greyed_out()
 
     def on_methods_cb_activated(self,index):
-        debugger.print('on methods cb activated', index)
+        debugger.print(self.settings['Legend'],'on methods cb activated', index)
         self.dirty = True
-        self.notebook.plottingCalculationRequired = True
-        self.notebook.fittingCalculationRequired = True
         self.settings['Effective medium method'] = self.methods[index]
         if self.settings['Effective medium method'] == 'Mie':
             self.settings['Particle shape'] = 'Sphere'
@@ -369,10 +356,8 @@ class PowderScenarioTab(QWidget):
         self.change_greyed_out()
 
     def on_mf_sb_changed(self,value):
-        debugger.print('on mass fraction line edit changed', value)
+        debugger.print(self.settings['Legend'],'on mass fraction line edit changed', value)
         self.dirty = True
-        self.notebook.plottingCalculationRequired = True
-        self.notebook.fittingCalculationRequired = True
         self.settings['Mass or volume fraction'] = 'mass'
         self.settings['Mass fraction'] =  value/100.0
         self.update_vf_sb()
@@ -390,42 +375,34 @@ class PowderScenarioTab(QWidget):
         self.vf_sb.blockSignals(False)
         self.bubble_vf_sb.setRange(0.0, 100.0*(1.0-self.settings['Volume fraction']))
         self.vf_sb.setRange(0.0, 100.0*(1.0-self.settings['Bubble volume fraction']))
-        debugger.print('Update_vf_sb')
-        debugger.print('rho 1', rho1)
-        debugger.print('rho 2', rho2)
-        debugger.print('vf 1 ', vf1)
+        debugger.print(self.settings['Legend'],'Update_vf_sb')
+        debugger.print(self.settings['Legend'],'rho 1', rho1)
+        debugger.print(self.settings['Legend'],'rho 2', rho2)
+        debugger.print(self.settings['Legend'],'vf 1 ', vf1)
 
     def on_aoverb_sb_changed(self,value):
-        debugger.print('on_aoverb_le_changed',value)
+        debugger.print(self.settings['Legend'],'on_aoverb_le_changed',value)
         self.dirty = True
-        self.notebook.plottingCalculationRequired = True
-        self.notebook.fittingCalculationRequired = True
         self.settings['Ellipsoid a/b'] = value
 
     def on_legend_le_changed(self,text):
-        debugger.print('on legend change', text)
+        debugger.print(self.settings['Legend'],'on legend change', text)
         self.dirty = True
         self.settings['Legend'] = text
 
     def on_sigma_sb_changed(self,value):
-        debugger.print('on sigma line edit changed', value)
+        debugger.print(self.settings['Legend'],'on sigma line edit changed', value)
         self.dirty = True
-        self.notebook.plottingCalculationRequired = True
-        self.notebook.fittingCalculationRequired = True
         self.settings['Particle size distribution sigma(mu)'] = value
 
     def on_size_sb_changed(self,value):
-        debugger.print('on size line edit changed', value)
+        debugger.print(self.settings['Legend'],'on size line edit changed', value)
         self.dirty = True
-        self.notebook.plottingCalculationRequired = True
-        self.notebook.fittingCalculationRequired = True
         self.settings['Particle size(mu)'] = value
 
     def on_vf_sb_changed(self,value):
-        debugger.print('on volume fraction line edit changed', value)
+        debugger.print(self.settings['Legend'],'on volume fraction line edit changed', value)
         self.dirty = True
-        self.notebook.plottingCalculationRequired = True
-        self.notebook.fittingCalculationRequired = True
         self.settings['Mass or volume fraction'] = 'volume'
         self.settings['Volume fraction'] = value/100.0
         self.update_mf_sb()
@@ -441,17 +418,15 @@ class PowderScenarioTab(QWidget):
         self.mf_sb.blockSignals(True)
         self.mf_sb.setValue(100.0*mf1)
         self.mf_sb.blockSignals(False)
-        debugger.print('Update_mf_sb')
-        debugger.print('rho 1', rho1)
-        debugger.print('rho 2', rho2)
-        debugger.print('mf 1 ', mf1)
+        debugger.print(self.settings['Legend'],'Update_mf_sb')
+        debugger.print(self.settings['Legend'],'rho 1', rho1)
+        debugger.print(self.settings['Legend'],'rho 2', rho2)
+        debugger.print(self.settings['Legend'],'mf 1 ', mf1)
 
     def on_matrix_cb_activated(self,index):
-        debugger.print('on matrix combobox activated', index)
-        debugger.print('on matrix combobox activated', self.matrix_cb.currentText())
+        debugger.print(self.settings['Legend'],'on matrix combobox activated', index)
+        debugger.print(self.settings['Legend'],'on matrix combobox activated', self.matrix_cb.currentText())
         self.dirty = True
-        self.notebook.plottingCalculationRequired = True
-        self.notebook.fittingCalculationRequired = True
         matrix = self.matrix_cb.currentText()
         self.matrix_cb.blockSignals(True)
         self.density_sb.blockSignals(True)
@@ -481,10 +456,8 @@ class PowderScenarioTab(QWidget):
         else:
             self.update_vf_sb()
             self.update_mf_sb()
-        debugger.print('on density line edit changed', value)
+        debugger.print(self.settings['Legend'],'on density line edit changed', value)
         self.dirty = True
-        self.notebook.plottingCalculationRequired = True
-        self.notebook.fittingCalculationRequired = True
 
     def on_bubble_vf_sb_changed(self,value):
         self.settings['Bubble volume fraction'] = value/100.0
@@ -492,45 +465,33 @@ class PowderScenarioTab(QWidget):
             self.update_mf_sb()
         else:
             self.update_vf_sb()
-        debugger.print('on bubble volume fraction changed', value)
+        debugger.print(self.settings['Legend'],'on bubble volume fraction changed', value)
         self.dirty = True
-        self.notebook.plottingCalculationRequired = True
-        self.notebook.fittingCalculationRequired = True
 
     def on_bubble_radius_sb_changed(self,value):
         self.settings['Bubble radius'] = value
-        debugger.print('on permittivity line edit changed', value)
+        debugger.print(self.settings['Legend'],'on permittivity line edit changed', value)
         self.dirty = True
-        self.notebook.plottingCalculationRequired = True
-        self.notebook.fittingCalculationRequired = True
 
     def on_permittivity_sb_changed(self,value):
         self.settings['Matrix permittivity'] = value
-        debugger.print('on permittivity line edit changed', value)
+        debugger.print(self.settings['Legend'],'on permittivity line edit changed', value)
         self.dirty = True
-        self.notebook.plottingCalculationRequired = True
-        self.notebook.fittingCalculationRequired = True
 
     def on_atr_index_sb_changed(self,value):
         self.settings['ATR material refractive index'] = value
-        debugger.print('on atr index line edit changed', value)
+        debugger.print(self.settings['Legend'],'on atr index line edit changed', value)
         self.dirty = True
-        self.notebook.plottingCalculationRequired = True
-        self.notebook.fittingCalculationRequired = True
 
     def on_atr_incident_ang_sb_changed(self,value):
         self.settings['ATR theta'] = value
-        debugger.print('on atr incident angle line edit changed', value)
+        debugger.print(self.settings['Legend'],'on atr incident angle line edit changed', value)
         self.dirty = True
-        self.notebook.plottingCalculationRequired = True
-        self.notebook.fittingCalculationRequired = True
 
     def on_atr_spolfrac_sb_changed(self,value):
         self.settings['ATR S polarisation fraction'] = value
-        debugger.print('on atr spolfraction line edit changed', value)
+        debugger.print(self.settings['Legend'],'on atr spolfraction line edit changed', value)
         self.dirty = True
-        self.notebook.plottingCalculationRequired = True
-        self.notebook.fittingCalculationRequired = True
 
     def change_greyed_out(self):
         # Have a look through the settings and see if we need to grey anything out
@@ -598,14 +559,122 @@ class PowderScenarioTab(QWidget):
         else:
             print('ScenarioTab: Shape not recognised', self.settings['Particle shape'])
 
+    def calculate(self, vs_cm1):
+        """Calculate the powder absorption for the range of frequencies in vs_cm1"""
+        # Only allow a calculation if the plottingTab is defined
+        if self.notebook.plottingTab is None:
+            debugger.print(self.settings['Legend'],'calculate - immediate return because plottingTab unavailable')
+            return None
+        debugger.print(self.settings['Legend'],'calculate')
+        shape = self.settings['Particle shape']
+        hkl = [self.settings['Unique direction - h'], self.settings['Unique direction - k'], self.settings['Unique direction - l']]
+        if shape == 'Ellipsoid':
+            self.direction = cell.convert_abc_to_xyz(hkl)
+            self.depolarisation = Calculator.initialise_ellipsoid_depolarisation_matrix(direction,aoverb)
+        elif shape == 'Plate':
+            self.direction = cell.convert_hkl_to_xyz(hkl)
+            self.depolarisation = Calculator.initialise_plate_depolarisation_matrix(direction)
+        elif shape == 'Needle':
+            self.direction = cell.convert_abc_to_xyz(hkl)
+            self.depolarisation = Calculator.initialise_needle_depolarisation_matrix(direction)
+        else:
+            self.depolarisation = Calculator.initialise_sphere_depolarisation_matrix()
+            self.direction = np.array( [] )
+        self.direction = self.direction / np.linalg.norm(self.direction)
+        # Get the permittivity from the settings tab
+        crystal_permittivity = self.notebook.settingsTab.get_crystal_permittivity(vs_cm1)
+        # Allocate space for the shared memory, we need twice as much as we have a complex data type
+        shared_array_base = Array(ctypes.c_double, 18)
+        previous_solution_shared = np.ctypeslib.as_array(shared_array_base.get_obj())
+        # Convert the space allocated to complex
+        previous_solution_shared.dtype = np.complex128
+        # Reshape the array and fill everything with zero's
+        previous_solution_shared = previous_solution_shared.reshape(3,3)
+        previous_solution_shared.fill(0.0+0.0j)
+        # Prepare parallel call parameters for the loop over frequencies, methods, volume fractions
+        # The concentration is defined in the plottingTab, which may not exist yet
+        concentration = self.notebook.plottingTab.settings['concentration']
+        # Get a pool of processors
+        pool = Calculator.get_pool(self.notebook.ncpus, self.notebook.threading)
+        # Set the material parameters
+        method = self.settings['Effective medium method'].lower()
+        matrix_permittivity = np.identity(3) * self.settings['Matrix permittivity']
+        volume_fraction = self.settings['Volume fraction']
+        particle_size_mu = self.settings['Particle size(mu)']
+        particle_sigma_mu = self.settings['Particle size distribution sigma(mu)']
+        shape = self.settings['Particle shape'].lower()
+        atr_refractive_index = self.settings['ATR material refractive index']
+        atr_theta = self.settings['ATR theta']
+        atr_spolfraction = self.settings['ATR S polarisation fraction']
+        bubble_vf = self.settings['Bubble volume fraction']
+        bubble_radius = self.settings['Bubble radius']
+        call_parameters = []
+        results = []
+        for v_cm1,dielecv in zip(vs_cm1, crystal_permittivity):
+            vau = wavenumber * v_cm1
+            # convert the size to a dimensionless number which is 2*pi*size/lambda
+            lambda_mu = 1.0E4 / (v_cm1 + 1.0e-12)
+            if particle_size_mu < 1.0e-12:
+                particle_size_mu = 1.0e-12
+            size = 2.0*np.pi*particle_size_mu / lambda_mu
+            data = ''
+            call_parameters.append( (v_cm1,vau,dielecv,method,volume_fraction,particle_size_mu,particle_sigma_mu,size,matrix_permittivity,shape,data,self.depolarisation,concentration,atr_refractive_index,atr_theta,atr_spolfraction,bubble_vf,bubble_radius,previous_solution_shared) )
+            # results.append( Calculator.solve_effective_medium_equations( (v_cm1,vau,dielecv,method,volume_fraction,particle_size_mu,particle_sigma_mu,size,matrix_permittivity,shape,data,self.depolarisation,concentration,atr_refractive_index,atr_theta,atr_spolfraction,bubble_vf,bubble_radius,previous_solution_shared) ) )
+        for result in pool.imap(Calculator.solve_effective_medium_equations, call_parameters, chunksize=40):
+            results.append(result)
+            self.notebook.progressbars_update()
+        QCoreApplication.processEvents()
+        self.realPermittivity = []
+        self.imagPermittivity = []
+        self.absorptionCoefficient = []
+        self.molarAbsorptionCoefficient = []
+        self.sp_atr = []
+        for v,method,size_mu,size_sigma,shape,data,trace, absorption_coefficient,molar_absorption_coefficient,spatr in results:
+             self.realPermittivity.append(np.real(trace))
+             self.imagPermittivity.append(np.imag(trace))
+             self.absorptionCoefficient.append(absorption_coefficient)
+             self.molarAbsorptionCoefficient.append(molar_absorption_coefficient)
+             self.sp_atr.append(spatr)
+        pool.close()
+        pool.join()
+        self.dirty = False
+        debugger.print(self.settings['Legend'],'calculate finished')
+        QCoreApplication.processEvents()
+
+    def get_result(self, vs_cm1, plot_type):
+        """Return a particular result"""
+        debugger.print('get_result')
+        self.get_results(vs_cm1)
+        if plot_type   == 'Powder Molar Absorption':
+            return self.molarAbsorptionCoefficient
+        elif plot_type == 'Powder Absorption':
+            return self.absorptionCoefficient
+        elif plot_type == 'Powder Real Permittivity':
+            return self.realPermittivity
+        elif plot_type == 'Powder Imaginary Permittivity':
+            return self.imagPermittivity
+        elif plot_type == 'Powder ATR':
+            return self.sp_atr
+        else:
+            print('Error in returning result from PowderScenarioTab: ',plot_type)
+            return None
+
+
+    def get_results(self, vs_cm1):
+        """Return the results of the effective medium theory calculation"""
+        debugger.print('get_results')
+        if self.dirty or len(self.vs_cm1) != len(vs_cm1) or self.vs_cm1[0] != vs_cm1[0] or self.vs_cm1[1] .ne. vs_cm1 :
+            self.calculate(vs_cm1)
+        else:
+            self.notebook.progressbars_update(increment=len(vs_cm1))
+        return
+
+
     def refresh(self,force=False):
         if not self.dirty and not force:
-            debugger.print('refresh aborted', self.dirty,force)
+            debugger.print(self.settings['Legend'],'refresh aborted', self.dirty,force)
             return
-        debugger.print('refresh', force)
-        # Tell the main notebook that we need to recalculate any plot
-        self.notebook.plottingCalculationRequired = True
-        self.notebook.fittingCalculationRequired = True
+        debugger.print(self.settings['Legend'],'refresh', force)
         # First see if we can get the reader from the mainTab
         self.reader = self.notebook.mainTab.reader
         #
