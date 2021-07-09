@@ -33,6 +33,7 @@ class PlottingTab(QWidget):
         self.settings['Number of atoms'] = 1
         self.settings['Plot title'] = 'Plot Title'
         self.legends = []
+        self.vs_cm1 = []
         self.directions = []
         self.depolarisations = []
         self.frequency_units = None
