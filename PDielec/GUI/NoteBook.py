@@ -111,8 +111,26 @@ class NoteBook(QWidget):
         self.setLayout(self.layout)
         return
 
-    def addScenario(self,copyFromIndex=-2):
-        debugger.print('Settings for scenario', copyFromIndex)
+    def addScenario(self,scenarioType='Powder'):
+        """Add Scenario is used by the script to add a new scenario"""
+        debugger.print('addScenario for scenarioType', scenarioType)
+        if scenarioType == 'Powder':
+            self.currentScenarioTab = SingleCrystalScenarioTab
+        else:
+            self.currentScenarioTab = PowderScenarioTab
+        self.scenarios.append(self.currentScenarioTab(self, self.debug))
+        n = len(self.scenarios)
+        self.tabs.insertTab(self.tabOffSet+n-1,self.scenarios[-1],'Scenario '+str(n))
+        self.tabs.setCurrentIndex(self.tabOffSet+n-1)
+        for i,scenario in enumerate(self.scenarios):
+            scenario.setScenarioIndex(i)
+            self.tabs.setTabText(self.tabOffSet+i,'Scenario '+str(i+1))
+        return
+
+
+    def addScenarioCopy(self,copyFromIndex=-2):
+        """AddScenarioCopy is used by the button to add a new scenario"""
+        debugger.print('AddScenarioCopy', copyFromIndex)
         self.scenarios.append( self.currentScenarioTab(self, self.debug) )
         self.scenarios[-1].settings = copy.deepcopy(self.scenarios[copyFromIndex].settings)
         self.scenarios[-1].settings['Legend'] = 'Scenario '
