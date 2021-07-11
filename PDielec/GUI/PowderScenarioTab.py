@@ -629,12 +629,14 @@ class PowderScenarioTab(ScenarioTab):
         self.absorptionCoefficient = []
         self.molarAbsorptionCoefficient = []
         self.sp_atr = []
+        self.vs_cm1 = []
         for v,method,size_mu,size_sigma,shape,data,trace, absorption_coefficient,molar_absorption_coefficient,spatr in results:
              self.realPermittivity.append(np.real(trace))
              self.imagPermittivity.append(np.imag(trace))
              self.absorptionCoefficient.append(absorption_coefficient)
              self.molarAbsorptionCoefficient.append(molar_absorption_coefficient)
              self.sp_atr.append(spatr)
+             self.vs_cm1.append(v)
         pool.close()
         pool.join()
         self.dirty = False
@@ -662,10 +664,12 @@ class PowderScenarioTab(ScenarioTab):
 
     def get_results(self, vs_cm1):
         """Return the results of the effective medium theory calculation"""
-        debugger.print('get_results')
-        if len(vs_cm1) > 0 and ( self.dirty or len(self.vs_cm1) != len(vs_cm1) or self.vs_cm1[0] != vs_cm1[0] or self.vs_cm1[1] .ne. vs_cm1[1] ) :
+        debugger.print('get_results', len(vs_cm1))
+        if len(vs_cm1) > 0 and ( self.dirty or len(self.vs_cm1) != len(vs_cm1) or self.vs_cm1[0] != vs_cm1[0] or self.vs_cm1[1] != vs_cm1[1] ) :
+            debugger.print('get_results recalculating')
             self.calculate(vs_cm1)
         else:
+            debugger.print('get_results no need for recalculation')
             self.notebook.progressbars_update(increment=len(vs_cm1))
         return
 

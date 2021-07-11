@@ -514,6 +514,7 @@ class SettingsTab(QWidget):
         QCoreApplication.processEvents()
 
     def refresh_optical_permittivity_tw(self):
+        debugger.print('refresh_optical_permittivity')
         optical = self.settings['Optical permittivity']
         self.optical_tw.blockSignals(True)
         for i,row in enumerate(optical):
@@ -525,6 +526,7 @@ class SettingsTab(QWidget):
         QCoreApplication.processEvents()
 
     def set_optical_permittivity_tw(self):
+        debugger.print('set_optical_permittivity_tw')
         self.settings['Optical permittivity'] = self.reader.zerof_optical_dielectric
         self.refresh_optical_permittivity_tw()
         self.dirty = True
@@ -550,6 +552,7 @@ class SettingsTab(QWidget):
         """Calculate the permittivity of the crystal over the range of frequencies in vs_cm1"""
         debugger.print('calculate ')
         if len(vs_cm1) == 0:
+            debugger.print('calculate aborted vs_cm1 has not been set')
             return
         self.vs_cm1 = vs_cm1.copy()
         self.CrystalPermittivity.setUnits('cm-1')
@@ -568,8 +571,9 @@ class SettingsTab(QWidget):
 
     def get_crystal_permittivity(self,vs_cm1):
         """Return the crystal permittivity"""
-        debugger.print('get_crystal_permittivity')
+        debugger.print('get_crystal_permittivity', self.dirty)
         if self.dirty or  ( len(self.vs_cm1) != len(vs_cm1) ) or ( self.vs_cm1[0] != vs_cm1[0] ) or ( self.vs_cm1[1] != vs_cm1[1] ) :
+            debugger.print('get_crystal_permittivity refreshing and recalculating' )
             self.refresh()
             self.calculate(vs_cm1)
         return self.crystal_permittivity

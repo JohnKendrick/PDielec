@@ -503,15 +503,19 @@ class SingleCrystalScenarioTab(ScenarioTab):
 
     def get_results(self, vs_cm1):
         """Return the results of the effective medium theory calculation"""
+        debugger.print('get_results',len(vs_cm1))
         if len(vs_cm1)>0 and (self.dirty or len(self.vs_cm1) != len(vs_cm1) or self.vs_cm1[0] != vs_cm1[0] or self.vs_cm1[1] != vs_cm1[1]) :
+            debugger.print('get_results recalculating')
             self.calculate(vs_cm1)
         else:
+            debugger.print('get_results no need for recalculation')
             self.notebook.progressbars_update(increment=len(vs_cm1))
         return
 
     def greyed_out(self):
         """Have a look through the settings and see if we need to grey anything out"""
         # If the single crystal mode is Thick Slab, there is no need for film thickness or substrate permittivity
+        debugger.print('greyed_out')
         if self.settings['Mode'] == 'Thick slab':
             self.film_thickness_sb.setEnabled(False)
             self.substrate_dielectric_sb.setEnabled(False)
