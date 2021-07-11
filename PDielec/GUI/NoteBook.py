@@ -115,9 +115,9 @@ class NoteBook(QWidget):
         """Add Scenario is used by the script to add a new scenario"""
         debugger.print('addScenario for scenarioType', scenarioType)
         if scenarioType == 'Powder':
-            self.currentScenarioTab = SingleCrystalScenarioTab
-        else:
             self.currentScenarioTab = PowderScenarioTab
+        else:
+            self.currentScenarioTab = SingleCrystalScenarioTab
         self.scenarios.append(self.currentScenarioTab(self, self.debug))
         n = len(self.scenarios)
         self.tabs.insertTab(self.tabOffSet+n-1,self.scenarios[-1],'Scenario '+str(n))
