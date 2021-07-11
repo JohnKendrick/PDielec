@@ -33,8 +33,7 @@ class PlottingTab(QWidget):
         self.settings['Number of atoms'] = 1
         self.settings['Plot title'] = 'Plot Title'
         self.legends = []
-        self.directions = []
-        self.depolarisations = []
+        self.vs_cm1 = []
         self.frequency_units = None
         self.molar_cb_current_index = 0
         # store the notebook

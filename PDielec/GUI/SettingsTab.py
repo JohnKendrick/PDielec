@@ -549,6 +549,8 @@ class SettingsTab(QWidget):
     def calculate(self,vs_cm1):
         """Calculate the permittivity of the crystal over the range of frequencies in vs_cm1"""
         debugger.print('calculate ')
+        if len(vs_cm1) == 0:
+            return
         self.vs_cm1 = vs_cm1.copy()
         self.CrystalPermittivity.setUnits('cm-1')
         dielectricFunction = self.CrystalPermittivity.function()

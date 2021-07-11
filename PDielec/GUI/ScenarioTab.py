@@ -16,7 +16,7 @@ class ScenarioTab(QWidget):
         self.settings['Legend'] = 'Unset'
         self.scenarioType = None
         self.settings['Scenario type'] = 'Unset'
-        self.vs_cm1 = []
+        self.vs_cm1 = [0, 0]
 
     def set_reader(self,reader):
         self.dirty = True

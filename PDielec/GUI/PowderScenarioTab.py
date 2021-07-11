@@ -663,7 +663,7 @@ class PowderScenarioTab(ScenarioTab):
     def get_results(self, vs_cm1):
         """Return the results of the effective medium theory calculation"""
         debugger.print('get_results')
-        if self.dirty or len(self.vs_cm1) != len(vs_cm1) or self.vs_cm1[0] != vs_cm1[0] or self.vs_cm1[1] .ne. vs_cm1 :
+        if len(vs_cm1) > 0 and ( self.dirty or len(self.vs_cm1) != len(vs_cm1) or self.vs_cm1[0] != vs_cm1[0] or self.vs_cm1[1] .ne. vs_cm1[1] ) :
             self.calculate(vs_cm1)
         else:
             self.notebook.progressbars_update(increment=len(vs_cm1))
