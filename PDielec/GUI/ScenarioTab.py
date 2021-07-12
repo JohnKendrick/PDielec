@@ -66,7 +66,7 @@ class ScenarioTab(QWidget):
     def addScenarioButtonClicked(self):
         # Add another scenario
         debugger.print('addScenarioButtonClicked')
-        self.notebook.addScenario(copyFromIndex=self.scenarioIndex)
+        self.notebook.addScenarioCopy(copyFromIndex=self.scenarioIndex)
 
     def deleteScenarioButtonClicked(self):
         # Delete a scenario
