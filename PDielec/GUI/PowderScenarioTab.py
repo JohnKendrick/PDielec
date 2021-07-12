@@ -562,21 +562,22 @@ class PowderScenarioTab(ScenarioTab):
     def calculate(self, vs_cm1):
         """Calculate the powder absorption for the range of frequencies in vs_cm1"""
         # Only allow a calculation if the plottingTab is defined
-        if self.notebook.plottingTab is None:
-            debugger.print(self.settings['Legend'],'calculate - immediate return because plottingTab unavailable')
+        if self.notebook.plottingTab is None or self.reader is None:
+            debugger.print(self.settings['Legend'],'calculate - immediate return because plottingTab or reader unavailable')
             return None
         debugger.print(self.settings['Legend'],'calculate')
+        cell = self.reader.unit_cells[-1]
         shape = self.settings['Particle shape']
         hkl = [self.settings['Unique direction - h'], self.settings['Unique direction - k'], self.settings['Unique direction - l']]
         if shape == 'Ellipsoid':
             self.direction = cell.convert_abc_to_xyz(hkl)
-            self.depolarisation = Calculator.initialise_ellipsoid_depolarisation_matrix(direction,aoverb)
+            self.depolarisation = Calculator.initialise_ellipsoid_depolarisation_matrix(self.direction,self.aoverb)
         elif shape == 'Plate':
             self.direction = cell.convert_hkl_to_xyz(hkl)
-            self.depolarisation = Calculator.initialise_plate_depolarisation_matrix(direction)
+            self.depolarisation = Calculator.initialise_plate_depolarisation_matrix(self.direction)
         elif shape == 'Needle':
             self.direction = cell.convert_abc_to_xyz(hkl)
-            self.depolarisation = Calculator.initialise_needle_depolarisation_matrix(direction)
+            self.depolarisation = Calculator.initialise_needle_depolarisation_matrix(self.direction)
         else:
             self.depolarisation = Calculator.initialise_sphere_depolarisation_matrix()
             self.direction = np.array( [] )
@@ -667,6 +668,7 @@ class PowderScenarioTab(ScenarioTab):
         debugger.print('get_results', len(vs_cm1))
         if len(vs_cm1) > 0 and ( self.dirty or len(self.vs_cm1) != len(vs_cm1) or self.vs_cm1[0] != vs_cm1[0] or self.vs_cm1[1] != vs_cm1[1] ) :
             debugger.print('get_results recalculating')
+            self.refresh()
             self.calculate(vs_cm1)
         else:
             debugger.print('get_results no need for recalculation')
@@ -713,6 +715,7 @@ class PowderScenarioTab(ScenarioTab):
         self.l_sb.setValue(self.settings['Unique direction - l'])
         self.aoverb_sb.setValue(self.settings['Ellipsoid a/b'])
         self.legend_le.setText(self.settings['Legend'])
+        self.aoverb = self.settings['Ellipsoid a/b']
         self.change_greyed_out()
         #
         # Unblock signals after refresh

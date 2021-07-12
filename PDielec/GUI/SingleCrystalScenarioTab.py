@@ -506,6 +506,7 @@ class SingleCrystalScenarioTab(ScenarioTab):
         debugger.print('get_results',len(vs_cm1))
         if len(vs_cm1)>0 and (self.dirty or len(self.vs_cm1) != len(vs_cm1) or self.vs_cm1[0] != vs_cm1[0] or self.vs_cm1[1] != vs_cm1[1]) :
             debugger.print('get_results recalculating')
+            self.refresh()
             self.calculate(vs_cm1)
         else:
             debugger.print('get_results no need for recalculation')
