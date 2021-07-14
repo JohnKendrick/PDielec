@@ -284,7 +284,7 @@ class PowderScenarioTab(ScenarioTab):
         #
         self.legend_le = QLineEdit(self)
         self.legend_le.setToolTip('The legend will be used to describe the results in the plot')
-        self.legend_le.setText('Powder scenario legend')
+        self.legend_le.setText(self.settings['Legend'])
         self.legend_le.textChanged.connect(self.on_legend_le_changed)
         label = QLabel('Powder scenario legend',self)
         label.setToolTip('The legend will be used to describe the results in the plotting tab')
@@ -714,6 +714,7 @@ class PowderScenarioTab(ScenarioTab):
         self.k_sb.setValue(self.settings['Unique direction - k'])
         self.l_sb.setValue(self.settings['Unique direction - l'])
         self.aoverb_sb.setValue(self.settings['Ellipsoid a/b'])
+        print('Refreshing legend text in powderscenariotab',self.settings['Legend'])
         self.legend_le.setText(self.settings['Legend'])
         self.aoverb = self.settings['Ellipsoid a/b']
         self.change_greyed_out()
