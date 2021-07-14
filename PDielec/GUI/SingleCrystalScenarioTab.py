@@ -174,7 +174,7 @@ class SingleCrystalScenarioTab(ScenarioTab):
         #
         self.legend_le = QLineEdit(self)
         self.legend_le.setToolTip('The legend will be used to describe the results in the plot')
-        self.legend_le.setText('Scenario legend')
+        self.legend_le.setText(self.settings['Legend'])
         self.legend_le.textChanged.connect(self.on_legend_le_changed)
         label = QLabel('Scenario legend',self)
         label.setToolTip('The legend will be used to describe the results in the plot')
@@ -247,20 +247,20 @@ class SingleCrystalScenarioTab(ScenarioTab):
         for w in self.findChildren(QWidget):
             w.blockSignals(True)
         # Now refresh values
+        index = self.mode_cb.findText(self.settings['Mode'], Qt.MatchFixedString)
+        self.mode_cb.setCurrentIndex(index)
+        self.legend_le.setText(self.settings['Legend'])
+        self.h_sb.setValue(self.settings['Unique direction - h'])
+        self.k_sb.setValue(self.settings['Unique direction - k'])
+        self.l_sb.setValue(self.settings['Unique direction - l'])
+        self.azimuthal_angle_sb.setValue(self.settings['Azimuthal angle'])
+        self.angle_of_incidence_sb.setValue(self.settings['Angle of incidence'])
+        self.superstrate_dielectric_sb.setValue(self.settings['Superstrate dielectric'])
+        self.substrate_dielectric_sb.setValue(self.settings['Substrate dielectric'])
+        self.film_thickness_sb.setValue(self.settings['Film thickness'])
         self.reader = self.notebook.mainTab.reader
         if self.reader is not None:
             self.cell = self.reader.unit_cells[-1]
-            self.h_sb.setValue(self.settings['Unique direction - h'])
-            self.k_sb.setValue(self.settings['Unique direction - k'])
-            self.l_sb.setValue(self.settings['Unique direction - l'])
-            self.azimuthal_angle_sb.setValue(self.settings['Azimuthal angle'])
-            self.angle_of_incidence_sb.setValue(self.settings['Angle of incidence'])
-            self.superstrate_dielectric_sb.setValue(self.settings['Superstrate dielectric'])
-            self.substrate_dielectric_sb.setValue(self.settings['Substrate dielectric'])
-            self.film_thickness_sb.setValue(self.settings['Film thickness'])
-            index = self.mode_cb.findText(self.settings['Mode'], Qt.MatchFixedString)
-            self.mode_cb.setCurrentIndex(index)
-            self.legend_le.setText(self.settings['Legend'])
             # Refresh the widgets that depend on the reader
             self.reader = self.notebook.reader
             self.calculate_euler_angles()
