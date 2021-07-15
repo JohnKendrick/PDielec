@@ -72,6 +72,7 @@ class NoteBook(QWidget):
         self.scenarios = []
         self.scenarios.append( self.currentScenarioTab(self, debug=debug ) )
         self.scenarios[0].setScenarioIndex(0)
+        self.scenarios[0].settings['Legend'] = 'Scenario 1'
         #
         # Open the plotting tab
         #
@@ -100,6 +101,7 @@ class NoteBook(QWidget):
         self.tabs.addTab(self.mainTab,'Main')
         self.tabs.addTab(self.settingsTab,'Settings')
         for i,tab in enumerate(self.scenarios):
+            tab.refresh(force=True)
             self.tabs.addTab(tab,'Scenario '+str(i+1))
         self.tabs.addTab(self.plottingTab,'Plotting')
         self.tabs.addTab(self.analysisTab,'Analysis')
@@ -111,36 +113,37 @@ class NoteBook(QWidget):
         self.setLayout(self.layout)
         return
 
-    def addScenario(self,scenarioType='Powder'):
+    def addScenario(self,scenarioType='Powder',copyFromIndex=-2):
         """Add Scenario is used by the script to add a new scenario"""
-        debugger.print('addScenario for scenarioType', scenarioType)
+        debugger.print('addScenario for scenarioType', scenarioType,copyFromIndex)
+        if copyFromIndex != -2:
+            # If the copyFromIndex is not -2 then we override the scenarioType
+            last = self.scenarios[copyFromIndex]
+            scenarioType = last.scenarioType
+        else:
+            # copyFromIndex is default so we find the last scenario of the scenarioType in the list
+            last = None
+            for scenario in self.scenarios:
+                if scenarioType == scenario.scenarioType:
+                    last = scenario
+            # end for
+        # Create a new scenario
         if scenarioType == 'Powder':
             self.currentScenarioTab = PowderScenarioTab
         else:
             self.currentScenarioTab = SingleCrystalScenarioTab
+        # Add the scenario to the end of the list
         self.scenarios.append(self.currentScenarioTab(self, self.debug))
+        # If we have found a previous scenario of the same time set the settings to it
+        if last is not None:
+            self.scenarios[-1].settings = copy.deepcopy(last.settings)
+            self.scenarios[-1].refresh(force=True)
         n = len(self.scenarios)
         self.tabs.insertTab(self.tabOffSet+n-1,self.scenarios[-1],'Scenario '+str(n))
         self.tabs.setCurrentIndex(self.tabOffSet+n-1)
         for i,scenario in enumerate(self.scenarios):
             scenario.setScenarioIndex(i)
             self.tabs.setTabText(self.tabOffSet+i,'Scenario '+str(i+1))
-        return
-
-
-    def addScenarioCopy(self,copyFromIndex=-2):
-        """AddScenarioCopy is used by the button to add a new scenario"""
-        debugger.print('AddScenarioCopy', copyFromIndex)
-        self.scenarios.append( self.currentScenarioTab(self, self.debug) )
-        self.scenarios[-1].settings = copy.deepcopy(self.scenarios[copyFromIndex].settings)
-        self.scenarios[-1].settings['Legend'] = 'Scenario '
-        # debugger.print('Settings for new scenario')
-        self.scenarios[-1].refresh(force=True)
-        for i,scenario in enumerate(self.scenarios):
-            scenario.setScenarioIndex(i)
-        n = len(self.scenarios)
-        self.tabs.insertTab(self.tabOffSet+n-1,self.scenarios[-1],'Scenario '+str(n))
-        self.tabs.setCurrentIndex(self.tabOffSet+n-1)
         return
 
     def print_settings(self, filename=None):
@@ -202,7 +205,7 @@ class NoteBook(QWidget):
         return
 
     def switchScenario(self,index):
-        debugger.print('switch for scenario', index)
+        debugger.print('switch for scenario', index+1)
         # Replace the scenario with the other scenario type
         scenario = self.scenarios[index]
         debugger.print('Current scenario type', scenario.scenarioType)

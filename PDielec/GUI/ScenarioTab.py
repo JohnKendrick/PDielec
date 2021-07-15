@@ -10,7 +10,7 @@ class ScenarioTab(QWidget):
         global debugger
         debugger = Debug(debug,'ScenarioTab:')
         debugger.print('In the initialiser')
-        self.dirty = True
+        self.requireRefresh = True
         self.settings = {}
         self.notebook = parent
         self.settings['Legend'] = 'Unset'
@@ -19,13 +19,13 @@ class ScenarioTab(QWidget):
         self.vs_cm1 = [0, 0]
 
     def set_reader(self,reader):
-        self.dirty = True
+        self.requireRefresh = True
         self.reader = reader
 
     def setScenarioIndex(self,index):
         self.scenarioIndex = index
         text = self.legend_le.text()
-        if text.startswith('Scenario ') or text.startswith('Powder scenario ') or text.startswith('Crystal scenario '):
+        if text.startswith('Unset') or text.startswith('Scenario ') or text.startswith('Powder scenario ') or text.startswith('Crystal scenario '):
             self.legend_le.setText('Scenario '+str(index + 1))
         return
 
@@ -39,14 +39,14 @@ class ScenarioTab(QWidget):
 
     def on_legend_le_changed(self,text):
         debugger.print('on legend change', text)
-        self.dirty = True
+        self.requireRefresh = True
         self.settings['Legend'] = text
 
     def  add_scenario_buttons(self):
         """Add a set of scenario buttons in an hbox.  Return the hbox"""
         hbox = QHBoxLayout()
         self.addScenarioButton = QPushButton('Add another scenario')
-        self.addScenarioButton.setToolTip('Add another scenario the the notebook tabs')
+        self.addScenarioButton.setToolTip('Add another scenario the the notebook tabs, \nthe new scenario is added to the end of the current tab list')
         self.addScenarioButton.clicked.connect(self.addScenarioButtonClicked)
         hbox.addWidget(self.addScenarioButton)
         self.deleteScenarioButton = QPushButton('Delete this scenario')
@@ -66,7 +66,7 @@ class ScenarioTab(QWidget):
     def addScenarioButtonClicked(self):
         # Add another scenario
         debugger.print('addScenarioButtonClicked')
-        self.notebook.addScenarioCopy(copyFromIndex=self.scenarioIndex)
+        self.notebook.addScenario(copyFromIndex=self.scenarioIndex)
 
     def deleteScenarioButtonClicked(self):
         # Delete a scenario

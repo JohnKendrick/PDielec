@@ -15,7 +15,7 @@ class MainTab(QWidget):
         super(QWidget, self).__init__(parent)
         global debugger
         debugger = Debug(debug, 'MainTab')
-        debugger.print('Initialising ',program, filename,excelfile)
+        debugger.print('Initialising ',program, filename, excelfile)
         self.debug = debug
         self.settings = {}
         if program != '':
@@ -31,7 +31,8 @@ class MainTab(QWidget):
         self.notebook = parent
         self.reader = None
         self.frequencies_cm1 = None
-        self.dirty = True
+        self.refreshRequired = True
+        self.calculationRequired = True
         # Create first tab - MAIN
         vbox = QVBoxLayout()
         form = QFormLayout()
@@ -195,11 +196,10 @@ class MainTab(QWidget):
         # Read the output file
         #
         self.read_output_file()
-        self.dirty = False
+        self.calculationRequired = False
 
     def write_spreadsheet(self):
         sp = self.notebook.spreadsheet
-        print('write',self.notebook.spreadsheet)
         if sp is None:
             return
         debugger.print('Reading output file ', self.settings['Output file name'])
@@ -328,26 +328,26 @@ class MainTab(QWidget):
             self.settings['Hessian symmetrisation'] = 'crystal'
         else:
             self.settings['Hessian symmetrisation'] = 'symm'
-        self.dirty = True
+        self.calculationRequired = True
 
     def on_scriptsfile_le_changed(self, text):
         debugger.print('on scriptsfile changed', text)
         text = self.scriptsfile_le.text()
         self.settings['Script file name'] = text
-        self.dirty = True
+        self.calculationRequired = True
 
     def on_resultsfile_le_changed(self, text):
         debugger.print('on resultsfile changed', text)
         text = self.resultsfile_le.text()
         self.settings['Excel file name'] = text
-        self.dirty = True
+        self.calculationRequired = True
 
     def openSpreadSheet(self,text):
         if self.notebook.spreadsheet is not None:
             self.notebook.spreadsheet.close()
         if text[-5:] == '.xlsx':
             self.notebook.spreadsheet = SpreadSheetManager(text)
-            self.dirty = True
+            self.calculationRequired = True
         else:
            print('spreadsheet name not valid', text)
 
@@ -364,13 +364,13 @@ class MainTab(QWidget):
             self.file_le.setText(self.settings['Output file name'])
             debugger.print('new file name', self.settings['Output file name'])
             self.directory = os.path.dirname(self.settings['Output file name'])
-            self.dirty = True
+            self.calculationRequired = True
         return
 
     def on_file_le_changed(self, text):
         debugger.print('on file changed', text)
         self.settings['Output file name'] = text
-        self.dirty = True
+        self.calculationRequired = True
 
     def on_program_cb_activated(self,index):
         debugger.print('on program combobox activated', index)
@@ -398,11 +398,11 @@ class MainTab(QWidget):
             self.hessian_symmetry_cb.setEnabled(True)
             self.hessian_symmetry_cb.setCheckState(Qt.Unchecked)
             self.hessian_symmetry_cb.setEnabled(False)
-        self.dirty = True
+        self.calculationRequired = True
 
     def refresh(self,force=False):
         debugger.print('refresh', force)
-        if not self.dirty and not force:
+        if not self.refreshRequired and not force:
             return
         #
         # Block signals during refresh
@@ -440,8 +440,8 @@ class MainTab(QWidget):
             self.hessian_symmetry_cb.setEnabled(False)
         self.file_le.setText(self.settings['Output file name'])
         self.resultsfile_le.setText(self.settings['Excel file name'])
-        self.on_calculation_button_clicked()
-        self.dirty = False
+        # JK self.on_calculation_button_clicked()
+        self.refreshRequired = False
         #
         # UnBlock signals
         #

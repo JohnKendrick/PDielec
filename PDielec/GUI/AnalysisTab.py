@@ -30,7 +30,7 @@ class AnalysisTab(QWidget):
         self.settings['Covalent radius scaling'] = 1.1
         self.settings['Bonding tolerance'] = 0.1
         self.settings['Bar width'] = 0.5
-        self.dirty = True
+        self.requireRefresh = True
         self.plot_types = ['Internal vs External','Molecular Composition']
         self.plot_type_index = 0
         self.number_of_molecules = 0
@@ -232,14 +232,14 @@ class AnalysisTab(QWidget):
     def on_scale_changed(self,value):
         debugger.print('on scale_le changed ', value)
         self.settings['Covalent radius scaling'] = value
-        self.dirty = True
+        self.requireRefresh = True
         self.calculate()
         self.plot()
 
     def on_tolerance_changed(self,value):
         debugger.print('on_tolerance_le changed ', value)
         self.settings['Bonding tolerance'] = value
-        self.dirty = True
+        self.requireRefresh = True
         self.calculate()
         self.plot()
 
@@ -267,8 +267,8 @@ class AnalysisTab(QWidget):
             self.plot()
 
     def refresh(self, force=False):
-        if not self.dirty and not force:
-            debugger.print('return with no refresh', self.dirty, force)
+        if not self.requireRefresh and not force:
+            debugger.print('return with no refresh', self.requireRefresh, force)
             return
         debugger.print('Refreshing widget')
         #
@@ -377,7 +377,7 @@ class AnalysisTab(QWidget):
         # if self.notebook.spreadsheet is not None:
         #     self.write_spreadsheet()
         # Flag that a recalculation is not needed
-        self.dirty = False
+        self.requireRefresh = False
         QApplication.restoreOverrideCursor()
 
     def plot(self):

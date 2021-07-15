@@ -126,7 +126,7 @@ class App(QMainWindow):
         with open(scriptname,'r') as fd:
             exec(fd.read())
         self.notebook.scripting = False
-        self.notebook.refresh()
+        self.notebook.refresh(force=True)
         QCoreApplication.processEvents()
 
     def closeEvent(self, event):

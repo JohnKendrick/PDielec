@@ -23,6 +23,7 @@ class PlottingTab(QWidget):
         debugger = Debug(debug,'PlottingTab')
         debugger.print('Plotting tab initialisaton')
         self.settings = {}
+        self.refreshRequired = True
         self.subplot = None
         self.setWindowTitle('Plotting')
         self.settings['Minimum frequency'] = 0
@@ -198,22 +199,37 @@ class PlottingTab(QWidget):
         debugger.print('Calling plot() from initialiser')
         self.plot()
 
+    def requestScenarioRefresh(self):
+        self.notebook.settingsTab.requireRefresh = True
+        for scenario in self.notebook.scenarios:
+            scenario.requireRefresh = True
+
     def on_vinc_changed(self,value):
         self.settings['Frequency increment'] = value
+        self.notebook.fitterTab.refreshRequired = True
+        self.refreshRequired = True
+        self.requestScenarioRefresh()
         debugger.print('on vinc change ', self.settings['Frequency increment'])
 
     def on_vmin_changed(self):
         self.settings['Minimum frequency'] = self.vmin_sb.value()
-        self.notebook.fitterTab.dirty = True
+        self.notebook.fitterTab.refreshRequired = True
+        self.refreshRequired = True
+        self.requestScenarioRefresh()
         debugger.print('on vmin change ', self.settings['Minimum frequency'])
 
     def on_vmax_changed(self):
         self.settings['Maximum frequency'] = self.vmax_sb.value()
-        self.notebook.fitterTab.dirty = True
+        self.notebook.fitterTab.refreshRequired = True
+        self.refreshRequired = True
+        self.requestScenarioRefresh()
         debugger.print('on vmax change ', self.settings['Maximum frequency'])
 
     def refresh(self,force=False):
         debugger.print('refreshing widget', force)
+        if not self.refreshRequired and not force:
+            debugger.print('refreshing widget not required')
+            return
         #
         # Block signals during refresh
         #
@@ -247,17 +263,20 @@ class PlottingTab(QWidget):
         for w in self.findChildren(QWidget):
             w.blockSignals(False)
         QCoreApplication.processEvents()
+        refreshRequired = False
         return
 
     def on_natoms_changed(self, value):
         self.settings['Number of atoms'] = value
         debugger.print('on natoms changed ', self.settings['Number of atoms'])
-        self.notebook.fitterTab.dirty = True
+        self.notebook.fitterTab.refreshRequired = True
+        self.refreshRequired = True
 
     def on_plot_type_cb_activated(self, index):
         self.settings['Plot type'] = self.plot_type_cb.currentText()
         debugger.print('Changed plot type to ', self.settings['Plot type'])
-        self.notebook.fitterTab.dirty = True
+        self.notebook.fitterTab.refreshRequired = True
+        self.refreshRequired = True
         self.plot()
 
     def on_funits_cb_activated(self, index):
@@ -265,7 +284,8 @@ class PlottingTab(QWidget):
             self.frequency_units = 'wavenumber'
         else:
             self.frequency_units = 'THz'
-        self.notebook.fitterTab.dirty = True
+        self.notebook.fitterTab.refreshRequired = True
+        self.refreshRequired = True
         debugger.print('Frequency units changed to ', self.frequency_units)
         self.plot()
 
@@ -281,7 +301,8 @@ class PlottingTab(QWidget):
         elif self.settings['Molar definition'] == 'Atoms':
             self.settings['concentration'] = 1000.0 / (avogadro_si * self.reader.volume * 1.0e-24 / self.reader.nions)
             self.natoms_sb.setEnabled(False)
-        self.notebook.fitterTab.dirty = True
+        self.notebook.fitterTab.refreshRequired = True
+        self.refreshRequired = True
         debugger.print('The concentration has been set', self.settings['Molar definition'], self.settings['concentration'])
 
     def write_spreadsheet(self):
@@ -289,7 +310,7 @@ class PlottingTab(QWidget):
         if self.notebook.spreadsheet is None:
             return
         # make sure the plottingTab is up to date
-        self.notebook.plottingTab.refresh()
+        self.refresh()
         # Handle powder plots
         molarAbsorptionCoefficients = []
         absorptionCoefficients      = []
@@ -394,7 +415,6 @@ class PlottingTab(QWidget):
         # import matplotlib.pyplot as pl
         # mp.use('Qt5Agg')
         debugger.print('plot')
-        QApplication.setOverrideCursor(Qt.WaitCursor)
         # Assemble the mainTab settings
         settings = self.notebook.mainTab.settings
         program = settings['Program']
@@ -406,6 +426,7 @@ class PlottingTab(QWidget):
             return
         if filename == '':
             return
+        QApplication.setOverrideCursor(Qt.WaitCursor)
         vmin = self.settings['Minimum frequency']
         vmax = self.settings['Maximum frequency']
         vinc = self.settings['Frequency increment']
@@ -423,17 +444,20 @@ class PlottingTab(QWidget):
         self.subplot = self.figure.add_subplot(111)
         self.notebook.progressbars_set_maximum(len(x)*len(self.notebook.scenarios))
         self.legends = []
+        plots = 0
         for scenario in self.notebook.scenarios:
             legend = scenario.settings['Legend']
             self.legends.append(legend)
             y = scenario.get_result(self.vs_cm1,self.settings['Plot type'])
             if y is not None and len(y) > 0:
+                plots += 1
                 line, = self.subplot.plot(scale*x,y,lw=2, label=legend )
-        self.subplot.set_xlabel(xlabel)
-        self.subplot.set_ylabel(self.plot_ylabels[self.settings['Plot type']])
-        self.subplot.legend(loc='best')
-        self.subplot.set_title(self.settings['Plot type'])
-        self.canvas.draw_idle()
+        if plots > 0:
+            self.subplot.set_xlabel(xlabel)
+            self.subplot.set_ylabel(self.plot_ylabels[self.settings['Plot type']])
+            self.subplot.legend(loc='best')
+            self.subplot.set_title(self.settings['Plot type'])
+            self.canvas.draw_idle()
         QApplication.restoreOverrideCursor()
 
 
