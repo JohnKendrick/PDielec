@@ -25,6 +25,7 @@ class App(QMainWindow):
         itoken = 0
         ncpus = 0
         threading = False
+        default_scenario = 'powder'
         # Look at the environment to see if the number of cpus is specified
         token = os.getenv('PDIELEC_NUM_PROCESSORS')
         if token is not None:
@@ -62,6 +63,12 @@ class App(QMainWindow):
             elif token == '-cpus' or token == '--cpus':
                 itoken += 1
                 ncpus = int(tokens[itoken])
+            elif token == '-scenario' or token == '--scenario':
+                itoken += 1
+                default_scenario = tokens[itoken]
+                if default_scenario != 'powder' and default_scenario != 'crystal':
+                    print('Error in default scenario: must be \'powder\' or \'crystal\'')
+                    exit()
             elif token[0:0] == '-' or token == '-h' or token == '-help' or token == '--help':
                 print('pdgui - graphical user interface to the PDielec package')
                 print('pdgui [-help] [-debug] [program] filename [spreadsheet] [-script scriptname] [-nosplash] [-threading] [-cpus 0] [-version] [-exit]')
@@ -86,7 +93,7 @@ class App(QMainWindow):
             spreadsheet = parameters[2]
         else:
             print('Command line error',parameters)
-            print('pdgui [-help] [-debug] [program] filename [spreadsheet] [-script scriptname] [-nosplash] [-threading] [-cpus 0] [-version] [-exit]')
+            print('pdgui [-help] [-debug] [program] filename [spreadsheet] [-script scriptname] [-nosplash] [-threading] [-cpus 0] [-scenario powder|crystal] [-version] [-exit]')
         #
         # Continue
         #
@@ -104,9 +111,10 @@ class App(QMainWindow):
             print('Filename is', filename)
             print('Spreadsheet is', spreadsheet)
             print('Script is', self.scriptname)
+            print('The default scenario is', default_scenario)
             print('No. of cpus is', ncpus)
             print('Threading is', threading)
-        self.notebook = NoteBook(self, program, filename, spreadsheet, scripting=self.scripting, progressbar=progressbar, debug=self.debug, ncpus=ncpus, threading=threading)
+        self.notebook = NoteBook(self, program, filename, spreadsheet, scripting=self.scripting, progressbar=progressbar, debug=self.debug, ncpus=ncpus, threading=threading, default_scenario=default_scenario)
         self.setCentralWidget(self.notebook)
         if self.scripting:
             if self.debug:
@@ -116,7 +124,7 @@ class App(QMainWindow):
             if self.notebook.spreadsheet is not None:
                 if self.debug:
                     print('Closing spreadsheeet on exit',self.scriptname)
-                self.notebook.write_spreadsheet()
+                self.notebook.writeSpreadsheet()
                 self.notebook.spreadsheet.close()
             sys.exit()
         #self.show()
@@ -131,7 +139,7 @@ class App(QMainWindow):
 
     def closeEvent(self, event):
         # Make sure any spread sheet is closed
-        self.notebook.write_spreadsheet()
+        self.notebook.writeSpreadsheet()
         if self.debug:
             print('Close event has been captured')
         if self.notebook.spreadsheet is not None:

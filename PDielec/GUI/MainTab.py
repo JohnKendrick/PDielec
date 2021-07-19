@@ -1,12 +1,12 @@
 import os.path
-from PyQt5.QtWidgets  import  QWidget
-from PyQt5.QtWidgets  import  QListWidget, QComboBox, QLabel, QLineEdit
-from PyQt5.QtWidgets  import  QFileDialog, QPushButton, QCheckBox
-from PyQt5.QtWidgets  import  QFormLayout, QApplication
-from PyQt5.QtWidgets  import  QHBoxLayout, QVBoxLayout, QMessageBox
-from PyQt5.QtCore     import  Qt, QCoreApplication
-from PDielec.Utilities import  pdgui_get_reader, Debug
-from PDielec.GUI.SpreadSheetManager import SpreadSheetManager
+from PyQt5.QtWidgets                import  QWidget
+from PyQt5.QtWidgets                import  QListWidget, QComboBox, QLabel, QLineEdit
+from PyQt5.QtWidgets                import  QFileDialog, QPushButton, QCheckBox
+from PyQt5.QtWidgets                import  QFormLayout
+from PyQt5.QtWidgets                import  QHBoxLayout, QVBoxLayout, QMessageBox
+from PyQt5.QtCore                   import  Qt, QCoreApplication
+from PDielec.Utilities              import  pdgui_get_reader, Debug
+from PDielec.GUI.SpreadSheetManager import  SpreadSheetManager
 import numpy as np
 
 class MainTab(QWidget):
@@ -166,6 +166,7 @@ class MainTab(QWidget):
         # finalise the layout
         self.setLayout(vbox)
         QCoreApplication.processEvents()
+        self.open_excel_spreadsheet()
         # If the filename was given then force it to be read and processed
         if filename != '':
             debugger.print('Reading output file in maintab initialisation')
@@ -176,8 +177,8 @@ class MainTab(QWidget):
         debugger.print('on_script_button clicked')
         self.notebook.print_settings(filename=self.settings['Script file name'])
 
-    def on_excel_button_clicked(self):
-        debugger.print('on_excel_button clicked')
+    def open_excel_spreadsheet(self):
+        debugger.print('open_spreadsheet clicked')
         if len(self.settings['Excel file name']) > 5 and self.settings['Excel file name'][-5:] == '.xlsx':
             self.directory = os.path.dirname(self.settings['Output file name'])
             # open the file name with the directory of the output file name
@@ -185,10 +186,14 @@ class MainTab(QWidget):
         elif len(self.settings['Excel file name']) > 1 and self.settings['Excel file name'][-5:] != '.xlsx':
             # The file isn't valid so tell the user there is a problem
             QMessageBox.about(self,'Spreadsheet name','File name of spreadsheet must end in  .xlsx')
-            return
-        print('button',self.notebook.spreadsheet)
+        return
+
+    def on_excel_button_clicked(self):
+        debugger.print('on_excel_button clicked')
+        self.open_excel_spreadsheet()
         if self.notebook.spreadsheet is not None:
-            self.notebook.write_spreadsheet()
+            self.notebook.writeSpreadsheet()
+        return
 
     def on_calculation_button_clicked(self):
         debugger.print('Calculation button clicked')
@@ -198,14 +203,14 @@ class MainTab(QWidget):
         self.read_output_file()
         self.calculationRequired = False
 
-    def write_spreadsheet(self):
+    def writeSpreadsheet(self):
         sp = self.notebook.spreadsheet
         if sp is None:
             return
         debugger.print('Reading output file ', self.settings['Output file name'])
         sp.selectWorkSheet('Main')
         sp.delete()
-        debugger.print('write_spreadsheet',self.settings)
+        debugger.print('writeSpreadsheet',self.settings)
         sp.writeNextRow( ['Main Tab Settings'], col=1 )
         for item in sorted(self.settings):
             sp.writeNextRow([item,self.settings[item]], col=1, check=1)
@@ -441,6 +446,7 @@ class MainTab(QWidget):
         self.file_le.setText(self.settings['Output file name'])
         self.resultsfile_le.setText(self.settings['Excel file name'])
         # JK self.on_calculation_button_clicked()
+        self.open_excel_spreadsheet()
         self.refreshRequired = False
         #
         # UnBlock signals

@@ -239,7 +239,7 @@ class SingleCrystalScenarioTab(ScenarioTab):
         if not self.requireRefresh and not force :
             debugger.print(self.settings['Legend'],'refreshing widget aborted', self.requireRefresh,force)
             return
-        debugger.print(self.settings['Legend'],'refreshing widget', force)
+        debugger.print(self.settings['Legend'],'refreshing widget, force =', force)
         # Force recalculation
         self.requireCalculate = True
         # Change any greyed out items
@@ -291,17 +291,20 @@ class SingleCrystalScenarioTab(ScenarioTab):
         if not self.requireCalculate:
             debugger(self.settings['Legend'],'Calculate aborted because requireCalculate false')
             return
-        debugger.print(self.settings['Legend'],'Calculate')
+        debugger.print(self.settings['Legend'],'Calculate - number of frequencies',len(vs_cm1))
         QCoreApplication.processEvents()
         # Assemble the mainTab settings
         settings = self.notebook.mainTab.settings
         program = settings['Program']
         filename = settings['Output file name']
         if self.reader is None:
+            debugger.print(self.settings['Legend'],'Calculate aborting - no reader')
             return
         if program == '':
+            debugger.print(self.settings['Legend'],'Calculate aborting - no program')
             return
         if filename == '':
+            debugger.print(self.settings['Legend'],'Calculate aborting - no file')
             return
         # Assemble the settingsTab settings
         settings = self.notebook.settingsTab.settings
@@ -383,9 +386,10 @@ class SingleCrystalScenarioTab(ScenarioTab):
         pool.join()
         self.requireCalculate = False
         QCoreApplication.processEvents()
+        debugger.print(self.settings['Legend'],'Calculate finished')
 
-    def write_spreadsheet(self):
-        debugger.print(self.settings['Legend'],'write_spreadsheet')
+    def writeSpreadsheet(self):
+        debugger.print(self.settings['Legend'],'writeSpreadsheet')
         if self.notebook.spreadsheet is None:
             return
         sp = self.notebook.spreadsheet

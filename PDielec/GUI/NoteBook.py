@@ -18,7 +18,7 @@ from PDielec.Utilities                    import  Debug
 
 class NoteBook(QWidget):
 
-    def __init__(self, parent, program, filename, spreadsheet, debug=False, progressbar=None, scripting=False, ncpus=0, threading=False):
+    def __init__(self, parent, program, filename, spreadsheet, debug=False, progressbar=None, scripting=False, default_scenario='powder',ncpus=0, threading=False):
         super(QWidget, self).__init__(parent)
         global debugger
         debugger = Debug(debug,'NoteBook:')
@@ -30,7 +30,10 @@ class NoteBook(QWidget):
         self.progressbar_maximum = 0
         self.spreadsheet = None
         self.threading = threading
-        self.currentScenarioTab = PowderScenarioTab
+        if default_scenario == 'powder':
+            self.currentScenarioTab = PowderScenarioTab
+        else:
+            self.currentScenarioTab = SingleCrystalScenarioTab
         if ncpus == 0:
             self.ncpus = psutil.cpu_count(logical=False)
         else:
@@ -45,7 +48,7 @@ class NoteBook(QWidget):
             pass
         self.scripting = scripting
         self.debug = debug
-        self.old_tab_index = None
+        #jk self.old_tab_index = None
         self.layout = QVBoxLayout()
         # The number of tabs before we have scenarios
         self.tabOffSet = 2
@@ -245,39 +248,51 @@ class NoteBook(QWidget):
         self.fitterTab.refresh(force=force)
         self.tabs.setCurrentIndex(ntabs-1)
 
-    def write_spreadsheet(self):
+    def writeSpreadsheet(self):
         debugger.print('Write spreadsheet')
-        self.mainTab.write_spreadsheet()
-        self.settingsTab.write_spreadsheet()
-        self.analysisTab.write_spreadsheet()
-        self.plottingTab.write_spreadsheet()
+        self.mainTab.writeSpreadsheet()
+        self.settingsTab.writeSpreadsheet()
+        self.analysisTab.writeSpreadsheet()
+        self.plottingTab.writeSpreadsheet()
 
     def on_tabs_currentChanged(self, tabindex):
         debugger.print('Tab index changed', tabindex)
+        #jk if tabindex == 3:
+        #jk     import pdb
+        #jk     from PyQt5.QtCore import pyqtRemoveInputHook
+        #jk     pyqtRemoveInputHook()
+        #jk     pdb.set_trace()
+        # 
+        # If scripting do not refresh tabs
+        #
         if self.scripting:
             return
-        # See if we have to up date a tab we have left
-        if self.old_tab_index is not None:
-            if self.old_tab_index == 0:
-                self.mainTab.refresh()
-            elif self.old_tab_index == 1:
-                self.settingsTab.refresh()
-        # end if
+        # See if we have to update a tab we have left
+        #jk if self.old_tab_index is not None:
+        #jk     if self.old_tab_index == 0:
+        #jk         self.mainTab.refresh()
+        #jk     elif self.old_tab_index == 1:
+        #jk         self.settingsTab.refresh()
+        #jk # end if
         #       Number of tabs
         ntabs = 2 + len(self.scenarios) + 4
         if tabindex == ntabs-1:
             # fitter tab
+            debugger.print('Calling fitterTab refresh')
             self.fitterTab.refresh()
         elif tabindex == ntabs-2:
             # viewer tab
+            debugger.print('Calling viewerTab refresh')
             self.viewerTab.refresh()
         elif tabindex == ntabs-3:
             # analysis tab
+            debugger.print('Calling analysisTab refresh')
             self.analysisTab.refresh()
         elif tabindex == ntabs-4:
             # plottings tab
+            debugger.print('Calling plottingTab refresh')
             self.plottingTab.refresh()
-        self.old_tab_index = tabindex
+        #jk self.old_tab_index = tabindex
 
     def keyPressEvent(self, e):
         if (e.key() == Qt.Key_S)  and QApplication.keyboardModifiers() and Qt.ControlModifier:

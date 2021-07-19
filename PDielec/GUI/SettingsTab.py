@@ -260,10 +260,10 @@ class SettingsTab(QWidget):
         self.redraw_output_tw()
         QCoreApplication.processEvents()
         # if self.notebook.spreadsheet is not None:
-        #     self.write_spreadsheet()
+        #     self.writeSpreadsheet()
         QCoreApplication.processEvents()
 
-    def write_spreadsheet(self):
+    def writeSpreadsheet(self):
         sp = self.notebook.spreadsheet
         if sp is None:
             debugger.print('Aborting write of spreadsheet')
@@ -509,6 +509,7 @@ class SettingsTab(QWidget):
         for w in self.findChildren(QWidget):
             w.blockSignals(False)
         self.createIntensityTable()
+        requireRefresh = False
         QCoreApplication.processEvents()
 
     def refresh_optical_permittivity_tw(self):

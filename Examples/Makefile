@@ -16,6 +16,7 @@ test-pdgui:
 	@$(MAKE) --no-print-directory -C Castep/MgO pdgui
 	@$(MAKE) --no-print-directory -C Castep/Bubbles pdgui
 	@$(MAKE) --no-print-directory -C Castep/Na2SO42 pdgui
+	@$(MAKE) --no-print-directory -C Castep/Castep17 pdgui
 	@$(MAKE) --no-print-directory -C Vasp/F-Apatite pdgui
 	@$(MAKE) --no-print-directory -C Vasp/ZnO pdgui
 	@$(MAKE) --no-print-directory -C Vasp/Na2SO42 pdgui
@@ -76,6 +77,7 @@ pdgui-regenerate:
 	@$(MAKE) --no-print-directory -C Castep/MgO pdgui-regenerate
 	@$(MAKE) --no-print-directory -C Castep/Bubbles pdgui-regenerate
 	@$(MAKE) --no-print-directory -C Castep/Na2SO42 pdgui-regenerate
+	@$(MAKE) --no-print-directory -C Castep/Castep17 pdgui-regenerate
 	@$(MAKE) --no-print-directory -C Vasp/F-Apatite pdgui-regenerate
 	@$(MAKE) --no-print-directory -C Vasp/ZnO pdgui-regenerate
 	@$(MAKE) --no-print-directory -C Vasp/Na2SO42 pdgui-regenerate

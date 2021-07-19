@@ -445,7 +445,7 @@ class GenericOutputReader:
     def _born_charge_sum_rule(self):
         """Apply a simple charge sum rule to all the elements of the born matrices"""
         total = np.zeros((3, 3))
-        born_charges = np.array(self.born_charges)
+        born_charges = np.array(self.original_born_charges)
         new_born_charges = np.zeros_like(self.born_charges)
         total = np.sum(born_charges) / self.nions
         if self.debug:

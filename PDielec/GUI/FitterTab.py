@@ -29,6 +29,7 @@ class FitterTab(QWidget):
         super(QWidget, self).__init__(parent)
         global debugger
         debugger = Debug(debug,'FitterTab:')
+        debugger.print('Initialising')
         self.requireRefresh = True
         self.calculationInProgress = False
         self.settings = {}

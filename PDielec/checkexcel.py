@@ -56,23 +56,25 @@ max_percentage_error = 0.0
 # Loop over sheets
 #
 sheets = ['Main','Scenarios','Molar Absorption','Absorption','Real Permittivity','Imaginary Permittivity', 'ATR Reflectance', 'Analysis','Single Crystal','Crystal R&T']
+sheets = ['Molar Absorption','Absorption','Real Permittivity','Imaginary Permittivity', 'ATR Reflectance', 'Analysis']
 if full:
     sheets.append('Settings')
 for sheet in sheets:
+    print('Checking sheet ',sheet)
     ws1 = wb1[sheet]
     ws2 = wb2[sheet]
     max_rows1 = ws1.max_row
     max_rows2 = ws2.max_row
     max_columns1 = ws1.max_column
     max_columns2 = ws2.max_column
-    if max_rows1 != max_rows2:
-        print('Error - the number rows in the sheet are not the same',sheet,max_rows1,max_rows2)
-        nerrors += 1
-        continue
-    if max_columns1 != max_columns2:
-        print('Error - the number columns in the sheet are not the same',sheet,max_columns1,max_columns2)
-        nerrors += 1
-        continue
+#jk    if max_rows1 != max_rows2:
+#jk        print('Error - the number rows in the sheet are not the same',sheet,max_rows1,max_rows2)
+#jk        nerrors += 1
+#jk        continue
+#jk    if max_columns1 != max_columns2:
+#jk        print('Error - the number columns in the sheet are not the same',sheet,max_columns1,max_columns2)
+#jk        nerrors += 1
+#jk        continue
     #
     # Loop over rows
     #

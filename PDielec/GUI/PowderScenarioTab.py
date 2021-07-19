@@ -570,7 +570,7 @@ class PowderScenarioTab(ScenarioTab):
         if self.notebook.plottingTab is None or self.reader is None:
             debugger.print(self.settings['Legend'],'calculate - immediate return because plottingTab or reader unavailable')
             return None
-        debugger.print(self.settings['Legend'],'calculate')
+        debugger.print(self.settings['Legend'],'calculate - number of frequencies',len(vs_cm1))
         cell = self.reader.unit_cells[-1]
         shape = self.settings['Particle shape']
         hkl = [self.settings['Unique direction - h'], self.settings['Unique direction - k'], self.settings['Unique direction - l']]
@@ -685,7 +685,7 @@ class PowderScenarioTab(ScenarioTab):
         if not self.requireRefresh and not force:
             debugger.print(self.settings['Legend'],'refresh aborted', self.requireRefresh,force)
             return
-        debugger.print(self.settings['Legend'],'refresh', force)
+        debugger.print(self.settings['Legend'],'refresh, force =', force)
         # Force a recalculation
         self.requireCalculate = True
         # First see if we can get the reader from the mainTab

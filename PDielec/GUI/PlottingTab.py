@@ -21,7 +21,7 @@ class PlottingTab(QWidget):
         super(QWidget, self).__init__(parent)
         global debugger
         debugger = Debug(debug,'PlottingTab')
-        debugger.print('Plotting tab initialisaton')
+        debugger.print('Plotting tab initialisation')
         self.settings = {}
         self.refreshRequired = True
         self.subplot = None
@@ -32,6 +32,7 @@ class PlottingTab(QWidget):
         self.molar_definitions = ['Unit cells','Atoms','Molecules']
         self.settings['Molar definition'] = 'Unit cells'
         self.settings['Number of atoms'] = 1
+        self.settings['Plot type'] = 'Powder Molar Absorption'
         self.settings['Plot title'] = 'Plot Title'
         self.legends = []
         self.vs_cm1 = []
@@ -164,7 +165,6 @@ class PlottingTab(QWidget):
         self.plot_type_cb.addItems( self.plot_types )
         label = QLabel('Choose plot type', self)
         label.setToolTip('Choose the plot type')
-        self.settings['Plot type'] = self.plot_types[0]
         index = self.plot_type_cb.findText(self.settings['Plot type'], Qt.MatchFixedString)
         self.plot_type_cb.setCurrentIndex(index)
         plot_button = QPushButton('Update plot')
@@ -196,10 +196,11 @@ class PlottingTab(QWidget):
         self.setLayout(vbox)
         QCoreApplication.processEvents()
         # Create the plot
-        debugger.print('Calling plot() from initialiser')
-        self.plot()
+        #debugger.print('Calling plot() from initialiser')
+        #self.plot()
 
     def requestScenarioRefresh(self):
+        debugger.print('requestScenarioRefresh')
         self.notebook.settingsTab.requireRefresh = True
         for scenario in self.notebook.scenarios:
             scenario.requireRefresh = True
@@ -256,6 +257,7 @@ class PlottingTab(QWidget):
             self.settings['concentration'] = 1000.0 / (avogadro_si * self.reader.volume * 1.0e-24)
         # Reset the progress bar
         self.notebook.progressbars_set_maximum(0)
+        debugger.print('calling plot from refresh')
         self.plot()
         #
         # Unblock signals after refresh
@@ -277,7 +279,6 @@ class PlottingTab(QWidget):
         debugger.print('Changed plot type to ', self.settings['Plot type'])
         self.notebook.fitterTab.refreshRequired = True
         self.refreshRequired = True
-        self.plot()
 
     def on_funits_cb_activated(self, index):
         if index == 0:
@@ -287,7 +288,6 @@ class PlottingTab(QWidget):
         self.notebook.fitterTab.refreshRequired = True
         self.refreshRequired = True
         debugger.print('Frequency units changed to ', self.frequency_units)
-        self.plot()
 
     def on_molar_cb_activated(self, index):
         self.molar_cb_current_index = index
@@ -305,7 +305,7 @@ class PlottingTab(QWidget):
         self.refreshRequired = True
         debugger.print('The concentration has been set', self.settings['Molar definition'], self.settings['concentration'])
 
-    def write_spreadsheet(self):
+    def writeSpreadsheet(self):
         debugger.print('write spreadsheet')
         if self.notebook.spreadsheet is None:
             return
@@ -426,12 +426,13 @@ class PlottingTab(QWidget):
             return
         if filename == '':
             return
+        if self.notebook.settingsTab.CrystalPermittivity is None:
+            return
         QApplication.setOverrideCursor(Qt.WaitCursor)
         vmin = self.settings['Minimum frequency']
         vmax = self.settings['Maximum frequency']
         vinc = self.settings['Frequency increment']
         self.vs_cm1 = np.arange(float(vmin), float(vmax)+0.5*float(vinc), float(vinc))
-        debugger.print('plot')
         self.subplot = None
         self.figure.clf()
         if self.frequency_units == 'wavenumber':
