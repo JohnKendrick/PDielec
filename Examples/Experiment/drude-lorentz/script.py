@@ -4,11 +4,6 @@
 tab = self.notebook
 tab.switchScenario(0,scenarioType='Single crystal')
 #
-tab = self.notebook.mainTab
-tab.settings['Program'] = 'experiment'
-tab.settings['Output file name'] = 'constant.exp'
-tab.settings['QM program'] = ''
-#
 tab = self.notebook.scenarios[0]
 tab.settings['Unique direction - h'] =  0
 tab.settings['Unique direction - k'] =  0

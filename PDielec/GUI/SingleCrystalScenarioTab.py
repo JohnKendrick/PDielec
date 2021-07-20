@@ -288,6 +288,12 @@ class SingleCrystalScenarioTab(ScenarioTab):
         self.refresh()
         debugger.print(self.settings['Legend'],'Mode changed to ', self.settings['Mode'])
 
+    def initWorkers(self,function,system,angle):
+        # Initialiser the workers in the pool
+        function.angleOfIncidence = angle
+        function.system = system
+        return
+
     def calculate(self,vs_cm1):
         if not self.requireCalculate:
             debugger(self.settings['Legend'],'Calculate aborted because requireCalculate false')
@@ -350,17 +356,11 @@ class SingleCrystalScenarioTab(ScenarioTab):
         for layer in system.layers:
             layer.set_euler(theta, phi, psi)
         # Get a pool of processors
-        pool = Calculator.get_pool(self.notebook.ncpus, self.notebook.threading)
-        # Prepare parameters for a parallel call to the layered absorption / reflection
-        call_parameters = []
+        # Initialise each worker with the system and the angle of incidence
+        pool = Calculator.get_pool(self.notebook.ncpus, self.notebook.threading, initializer=self.initWorkers, initargs=(Calculator.solve_single_crystal_equations,system,angleOfIncidence) )
         results = []
-        # Assemble all the parameters we need for parallel execution
         # About to call
-        for v in vs_cm1:
-            #system = copy.deepcopy(system)
-            call_parameters.append( (v, angleOfIncidence, system) )
-            # results.append( Calculator.solve_single_crystal_equations( (v, angleOfIncidence, system) ) )
-        for result in pool.map(Calculator.solve_single_crystal_equations, call_parameters, chunksize=40):
+        for result in pool.map(Calculator.solve_single_crystal_equations, vs_cm1, chunksize=40):
             self.notebook.progressbars_update()
             results.append(result)
         QCoreApplication.processEvents()

@@ -379,7 +379,7 @@ class PlottingTab(QWidget):
             self.write_powder_results(sp, 'Imaginary Permittivity', self.vs_cm1, powder_legends, imagPermittivities)
             self.write_powder_results(sp, 'ATR Reflectance',        self.vs_cm1, powder_legends, sp_atrs)
         # Single Crystal results
-        if len(R_ps[0]) > 0:
+        if len(R_ps) > 0:
             self.write_crystal_results(sp, 'R_p', self.vs_cm1, crystal_legends, R_ps)
             self.write_crystal_results(sp, 'R_s', self.vs_cm1, crystal_legends, R_ss)
             self.write_crystal_results(sp, 'T_p', self.vs_cm1, crystal_legends, T_ps)

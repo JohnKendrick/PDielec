@@ -1421,11 +1421,14 @@ def reflectance_atr(ns,n0,theta,atrSPolFraction):
     RSP = -math.log10(RSP)
     return RSP
 
-def solve_single_crystal_equations( parameters ):
+def solve_single_crystal_equations( v ):
     """ This is a parallel call to the single crystal equation solver, 
     system is a GTM system"""
+    # system and angleOfincendence have been set by the pool initialiser
+    angleOfIncidence = solve_single_crystal_equations.angleOfIncidence
+    system = solve_single_crystal_equations.system
     # Extract the parameters from the call
-    v,angleOfIncidence,system = parameters
+    #jk v,angleOfIncidence,system = parameters
     # convert cm-1 to frequency
     freq = v * speed_light_si * 1e2
     system.initialize_sys(freq)
@@ -1462,7 +1465,7 @@ def euler_rotation(vector, theta, phi, psi):
      result = np.matmul(euler, vector)
      return result
 
-def get_pool(ncpus, threading):
+def get_pool(ncpus, threading, initializer=None, initargs=None ):
      """Return a pool of processors given the number of cpus and whether threading is requested"""
      # Switch off mkl threading
      try:
@@ -1473,10 +1476,10 @@ def get_pool(ncpus, threading):
      # see if threading has been requested
      if threading:
          from multiprocess.dummy import Pool
-         pool = Pool(ncpus)
+         pool = Pool(ncpus, initializer=initargs, initargs=initargs)
      else:
          from multiprocess import Pool
-         pool = Pool(ncpus, initializer=set_affinity_on_worker, maxtasksperchild=10)
+         pool = Pool(ncpus, initializer=initializer, initargs=initargs )
      return pool
 
 def set_affinity_on_worker():
