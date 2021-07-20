@@ -126,15 +126,19 @@ class NoteBook(QWidget):
         debugger.print('setRefreshRequest')
         return
 
-    def addScenario(self,scenarioType='Powder',copyFromIndex=-2):
+    def addScenario(self,scenarioType=None,copyFromIndex=-2):
         """Add Scenario is used by the script to add a new scenario"""
         debugger.print('addScenario for scenarioType', scenarioType,copyFromIndex)
         if copyFromIndex != -2:
             # If the copyFromIndex is not -2 then we override the scenarioType
             last = self.scenarios[copyFromIndex]
             scenarioType = last.scenarioType
+        elif scenarioType == None:
+            # The default behaviour with no parameters in the call, use the last scenario in the list
+            last = self.scenarios[-1]
+            scenarioType = last.scenarioType
         else:
-            # copyFromIndex is default so we find the last scenario of the scenarioType in the list
+            # copyFromIndex is default so we find the last scenario of scenarioType in the list
             last = None
             for scenario in self.scenarios:
                 if scenarioType == scenario.scenarioType:
@@ -169,21 +173,33 @@ class NoteBook(QWidget):
             return
         print('Current settings will be saved to '+filename)
         fd = open(filename,'w')
+        # Handle the special case of the first scenario
+        print('#',file=fd)
+        print('# Handle the special case of the first scenario',file=fd)
+        print('#',file=fd)
+        print('self.notebook.switchScenario(0,scenarioType=\"'+self.scenarios[0].scenarioType+'\")',file=fd )
+        print('#',file=fd)
+        # Print settings of mainTab
         self.print_tab_settings(self.mainTab, 'mainTab',fd)
         print('tab.refresh(force=True)',file=fd)
+        # Print settings of settingsTab
         self.print_tab_settings(self.settingsTab, 'settingsTab',fd)
         print('tab.sigmas_cm1 =',self.settingsTab.sigmas_cm1,file=fd)
         print('tab.refresh(force=True)',file=fd)
+        # Print settings of scenarios
         for i,tab in enumerate(self.scenarios):
-            self.print_tab_settings(tab, 'scenarios[{}]'.format(i), fd, new_scenario = True)
+            if i == 0:
+                self.print_tab_settings(tab, 'scenarios[{}]'.format(i), fd, new_scenario = False)
+            else:
+                self.print_tab_settings(tab, 'scenarios[{}]'.format(i), fd, new_scenario = True)
             print('tab.refresh(force=True)',file=fd)
-        self.print_tab_settings(self.plottingTab, 'plottingTab',fd)
-        print('tab.refresh(force=True)',file=fd)
         self.print_tab_settings(self.analysisTab, 'analysisTab',fd)
         print('tab.refresh(force=True)',file=fd)
         self.print_tab_settings(self.viewerTab, 'viewerTab',fd)
         print('tab.refresh(force=True)',file=fd)
         self.print_tab_settings(self.fitterTab, 'fitterTab',fd)
+        print('tab.refresh(force=True)',file=fd)
+        self.print_tab_settings(self.plottingTab, 'plottingTab',fd)
         print('tab.refresh(force=True)',file=fd)
         fd.close()
         return
@@ -192,7 +208,7 @@ class NoteBook(QWidget):
         print('#',file=fd)
         print('#',file=fd)
         if new_scenario:
-            print('self.notebook.addScenario()',file=fd)
+            print('self.notebook.addScenario(scenarioType=\"'+self.scenarios[0].scenarioType+'\")',file=fd )
         print('tab = self.notebook.'+title,file=fd)
         for item in tab.settings:
             if item == 'Optical permittivity' and not tab.settings['Optical permittivity edited']:

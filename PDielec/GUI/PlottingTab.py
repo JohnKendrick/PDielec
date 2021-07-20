@@ -33,7 +33,7 @@ class PlottingTab(QWidget):
         self.settings['Molar definition'] = 'Unit cells'
         self.settings['Number of atoms'] = 1
         self.settings['Plot type'] = 'Powder Molar Absorption'
-        self.settings['Plot title'] = 'Plot Title'
+        # self.settings['Plot title'] = 'Plot Title'
         self.legends = []
         self.vs_cm1 = []
         self.frequency_units = None
@@ -108,16 +108,16 @@ class PlottingTab(QWidget):
         label = QLabel('Number of atoms per molecule', self)
         label.setToolTip('Set the number of atoms in a molecule. \nOnly need this if moles of molecules is needed')
         form.addRow(label, self.natoms_sb)
-        #
-        # Set the plot title
-        #
-        self.title_le = QLineEdit(self)
-        self.title_le.setToolTip('Set the plot title')
-        self.title_le.setText(self.settings['Plot title'])
-        self.title_le.textChanged.connect(self.on_title_changed)
-        label = QLabel('Plot title', self)
-        label.setToolTip('Set the plot title')
-        form.addRow(label, self.title_le)
+        #jk #
+        #jk # Set the plot title
+        #jk #
+        #jk self.title_le = QLineEdit(self)
+        #jk self.title_le.setToolTip('Set the plot title')
+        #jk self.title_le.setText(self.settings['Plot title'])
+        #jk self.title_le.textChanged.connect(self.on_title_changed)
+        #jk label = QLabel('Plot title', self)
+        #jk label.setToolTip('Set the plot title')
+        #jk form.addRow(label, self.title_le)
         #
         # Set the x-axis frequency units
         #
@@ -255,7 +255,7 @@ class PlottingTab(QWidget):
             self.settings["Molar definition"] = self.molar_definitions[self.molar_cb_current_index]
         self.molar_cb.setCurrentIndex(self.molar_cb_current_index)
         self.natoms_sb.setValue(self.settings['Number of atoms'])
-        self.title_le.setText(self.settings['Plot title'])
+        #jk self.title_le.setText(self.settings['Plot title'])
         # Refresh the widgets that depend on the reader
         self.reader = self.notebook.reader
         if self.reader is not None:
@@ -277,13 +277,13 @@ class PlottingTab(QWidget):
         self.settings['Number of atoms'] = value
         debugger.print('on natoms changed ', self.settings['Number of atoms'])
         self.notebook.fitterTab.refreshRequired = True
-        self.refreshRequired = True
+        self.plot()
 
     def on_plot_type_cb_activated(self, index):
         self.settings['Plot type'] = self.plot_type_cb.currentText()
         debugger.print('Changed plot type to ', self.settings['Plot type'])
         self.notebook.fitterTab.refreshRequired = True
-        self.refreshRequired = True
+        self.plot()
 
     def on_funits_cb_activated(self, index):
         if index == 0:
@@ -291,7 +291,7 @@ class PlottingTab(QWidget):
         else:
             self.frequency_units = 'THz'
         self.notebook.fitterTab.refreshRequired = True
-        self.refreshRequired = True
+        self.plot()
         debugger.print('Frequency units changed to ', self.frequency_units)
 
     def on_molar_cb_activated(self, index):
@@ -307,7 +307,7 @@ class PlottingTab(QWidget):
             self.settings['concentration'] = 1000.0 / (avogadro_si * self.reader.volume * 1.0e-24 / self.reader.nions)
             self.natoms_sb.setEnabled(False)
         self.notebook.fitterTab.refreshRequired = True
-        self.refreshRequired = True
+        self.plot()
         debugger.print('The concentration has been set', self.settings['Molar definition'], self.settings['concentration'])
 
     def writeSpreadsheet(self):
@@ -413,7 +413,7 @@ class PlottingTab(QWidget):
             eps_xy_i = np.imag(eps[0][1])
             eps_xz_i = np.imag(eps[0][2])
             eps_yz_i = np.imag(eps[1][2])
-            output = [v, eps_xx_r, eps_yy_r, eps_zz_r, eps_xy_r, eps_xz_r, eps_yz_r ]
+            output = [v, eps_xx_i, eps_yy_i, eps_zz_i, eps_xy_i, eps_xz_i, eps_yz_i ]
             sp.writeNextRow(output, col=1,check=1)
 
     def write_crystal_results(self, sp, name, vs, legends, yss):
@@ -509,12 +509,12 @@ class PlottingTab(QWidget):
         QApplication.restoreOverrideCursor()
 
 
-    def on_title_changed(self,text):
-        self.settings['Plot title'] = text
-        if self.subplot is not None:
-            self.subplot.set_title(self.settings['Plot title'])
-            self.canvas.draw_idle()
-        debugger.print('on title change ', self.settings['Plot title'])
+    #jk def on_title_changed(self,text):
+    #jk     self.settings['Plot title'] = text
+    #jk     if self.subplot is not None:
+    #jk         self.subplot.set_title(self.settings['Plot title'])
+    #jk         self.canvas.draw_idle()
+    #jk     debugger.print('on title change ', self.settings['Plot title'])
 
     def greyed_out(self):
         """Handle items that should be greyed out if they are not needed"""

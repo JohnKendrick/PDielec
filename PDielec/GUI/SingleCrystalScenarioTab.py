@@ -357,7 +357,7 @@ class SingleCrystalScenarioTab(ScenarioTab):
         # Assemble all the parameters we need for parallel execution
         # About to call
         for v in vs_cm1:
-            #jk system = copy.deepcopy(system)
+            #system = copy.deepcopy(system)
             call_parameters.append( (v, angleOfIncidence, system) )
             # results.append( Calculator.solve_single_crystal_equations( (v, angleOfIncidence, system) ) )
         for result in pool.map(Calculator.solve_single_crystal_equations, call_parameters, chunksize=40):
