@@ -182,6 +182,7 @@ class SettingsTab(QWidget):
         self.reader = self.notebook.reader
         # Only calculate if the reader is set
         if self.reader is None:
+            debugger.print('createIntensityTable aborting as now reader available')
             return
         if self.settings['Neutral Born charges']:
             self.reader.neutralise_born_charges()
@@ -262,6 +263,12 @@ class SettingsTab(QWidget):
         # if self.notebook.spreadsheet is not None:
         #     self.writeSpreadsheet()
         QCoreApplication.processEvents()
+        debugger.print('createIntensityTable finshed')
+
+    def setRefreshRequest(self):
+        self.requireRefresh = True
+        debugger.print('setRefreshRequest')
+        return
 
     def writeSpreadsheet(self):
         sp = self.notebook.spreadsheet

@@ -160,7 +160,7 @@ class AnalysisTab(QWidget):
         self.setLayout(vbox)
         QCoreApplication.processEvents()
         #if self.notebook.spreadsheet is not None:
-        #    self.write_spreadsheet()
+        #    self.writeSpreadsheet()
         #QCoreApplication.processEvents()
 
     def on_element_radii_tw_itemClicked(self,item):
@@ -203,7 +203,7 @@ class AnalysisTab(QWidget):
         self.calculate()
         self.plot()
 
-    def write_spreadsheet(self):
+    def writeSpreadsheet(self):
         if self.notebook.spreadsheet is None:
             return
         sp = self.notebook.spreadsheet
@@ -375,7 +375,7 @@ class AnalysisTab(QWidget):
             self.mode_energies.append(sums)
         # Store the results in the spread shee
         # if self.notebook.spreadsheet is not None:
-        #     self.write_spreadsheet()
+        #     self.writeSpreadsheet()
         # Flag that a recalculation is not needed
         self.requireRefresh = False
         QApplication.restoreOverrideCursor()

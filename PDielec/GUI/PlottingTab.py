@@ -199,6 +199,11 @@ class PlottingTab(QWidget):
         #debugger.print('Calling plot() from initialiser')
         #self.plot()
 
+    def setRefreshRequest(self):
+        debugger.print('setRefreshRequest')
+        self.refreshRequired
+        return
+
     def requestScenarioRefresh(self):
         debugger.print('requestScenarioRefresh')
         self.notebook.settingsTab.requireRefresh = True
@@ -317,7 +322,12 @@ class PlottingTab(QWidget):
         realPermittivities          = []
         imagPermittivities          = []
         sp_atrs                     = []
-        vss                         = []
+        R_ps                        = []
+        R_ss                        = []
+        T_ps                        = []
+        T_ss                        = []
+        powder_legends              = []
+        crystal_legends             = []
         # Deal with Scenarios 
         sp = self.notebook.spreadsheet
         sp.selectWorkSheet('Scenarios')
@@ -342,37 +352,71 @@ class PlottingTab(QWidget):
                 realPermittivities.append( scenario.get_result(self.vs_cm1,self.plot_types[2] ) )
                 imagPermittivities.append( scenario.get_result(self.vs_cm1,self.plot_types[3] ) )
                 sp_atrs.append( scenario.get_result(self.vs_cm1,self.plot_types[4] ) )
-                vss.append(self.vs_cm1)
-        # Now deal with Molar absorption, absorption, real and imaginary permittivity
-        if len(molarAbsorptionCoefficients) > 0:
-            self.write_results(sp, 'Molar Absorption', vss, molarAbsorptionCoefficients)
-            self.write_results(sp, 'Absorption', vss, absorptionCoefficients)
-            self.write_results(sp, 'Real Permittivity', vss, realPermittivities)
-            self.write_results(sp, 'Imaginary Permittivity', vss, imagPermittivities)
-            self.write_results(sp, 'ATR Reflectance', vss, sp_atrs)
-        # Handle Single Crystal Plots (A temporary fix for one crystal tab only)
-        for index,scenario in enumerate(self.notebook.scenarios):
-            if scenario.scenarioType == 'Single crystal':
-                sp.selectWorkSheet('Single Crystal')
-                sp.delete()
-                sp.writeNextRow(['Settings for the single crystal calculation of absorption and reflection'],col=1)
+                powder_legends.append(scenario.settings['Legend'])
+            else:
                 sp.writeNextRow([''],col=1)
-                sp.writeNextRow([ 'Single crystal mode',          scenario.settings['Mode'] ],col=1)
-                sp.writeNextRow([ 'Minimum frequency',            self.notebook.plottingTab.settings['Minimum frequency'] ],col=1)
-                sp.writeNextRow([ 'Maximum frequency',            self.notebook.plottingTab.settings['Maximum frequency'] ],col=1)
-                sp.writeNextRow([ 'Frequency increment',          self.notebook.plottingTab.settings['Frequency increment'] ],col=1)
-                sp.writeNextRow([ 'Surface definition (h)',       scenario.settings['Unique direction - h'] ],col=1)
-                sp.writeNextRow([ 'Surface definition (k)',       scenario.settings['Unique direction - k'] ],col=1)
-                sp.writeNextRow([ 'Surface definition (l)',       scenario.settings['Unique direction - l'] ],col=1)
-                sp.writeNextRow([ 'Azimuthal angle',              scenario.settings['Azimuthal angle'] ],col=1)
-                sp.writeNextRow([ 'Angle of incidence',           scenario.settings['Angle of incidence'] ],col=1)
-                sp.writeNextRow([ 'Superstrate dielectric',       scenario.settings['Superstrate dielectric'] ],col=1)
-                sp.writeNextRow([ 'Substrate dielectric',         scenario.settings['Substrate dielectric'] ],col=1)
-                sp.writeNextRow([ 'Film thickness(nm)',           scenario.settings['Film thickness'] ],col=1)
-                headings = ['R_p', 'R_s', 'T_p', 'T_s']
-                self.write_crystal_results(sp, 'Crystal R&T',     self.vs_cm1, [scenario.p_reflectance, scenario.s_reflectance, scenario.p_transmittance, scenario.s_transmittance], headings )
+                sp.writeNextRow(['Scenario '+str(index)],col=1,check=1)
+                settings = scenario.settings
+                for key in sorted(settings,key=str.lower):
+                    sp.writeNextRow([key, settings[key]],col=1,check=1)
+                sp.writeNextRow(['Crystal axes in the laboratory frame'], col=1,check=1)
+                sp.writeNextRow(scenario.labframe_a.tolist(), col=2, check=1)
+                sp.writeNextRow(scenario.labframe_b.tolist(), col=2, check=1)
+                sp.writeNextRow(scenario.labframe_c.tolist(), col=2, check=1)
+                # Store the reflectance and transmittance
+                R_ps.append( scenario.get_result(self.vs_cm1,self.plot_types[5] ) )
+                R_ss.append( scenario.get_result(self.vs_cm1,self.plot_types[6] ) )
+                T_ps.append( scenario.get_result(self.vs_cm1,self.plot_types[7] ) )
+                T_ss.append( scenario.get_result(self.vs_cm1,self.plot_types[8] ) )
+                crystal_legends.append(scenario.settings['Legend'])
+        # Single crystal Permittivity
+        dielecv = self.notebook.settingsTab.get_crystal_permittivity(self.vs_cm1)
+        # Powder results
+        if len(molarAbsorptionCoefficients) > 0:
+            self.write_powder_results(sp, 'Molar Absorption',       self.vs_cm1, powder_legends, molarAbsorptionCoefficients)
+            self.write_powder_results(sp, 'Absorption',             self.vs_cm1, powder_legends, absorptionCoefficients)
+            self.write_powder_results(sp, 'Real Permittivity',      self.vs_cm1, powder_legends, realPermittivities)
+            self.write_powder_results(sp, 'Imaginary Permittivity', self.vs_cm1, powder_legends, imagPermittivities)
+            self.write_powder_results(sp, 'ATR Reflectance',        self.vs_cm1, powder_legends, sp_atrs)
+        # Single Crystal results
+        if len(R_ps[0]) > 0:
+            self.write_crystal_results(sp, 'R_p', self.vs_cm1, crystal_legends, R_ps)
+            self.write_crystal_results(sp, 'R_s', self.vs_cm1, crystal_legends, R_ss)
+            self.write_crystal_results(sp, 'T_p', self.vs_cm1, crystal_legends, T_ps)
+            self.write_crystal_results(sp, 'T_s', self.vs_cm1, crystal_legends, T_ss)
 
-    def write_crystal_results(self, sp, name, vs, yss, headings):
+        if len(dielecv) > 0:
+            self.write_eps_results(sp, self.vs_cm1, dielecv)
+
+    def write_eps_results(self, sp, vs, dielecv):
+        debugger.print('write_eps_results length vs',len(vs))
+        sp.selectWorkSheet('Real Crystal Permittivity')
+        sp.delete()
+        headers = ['frequencies (cm-1)', 'xx', 'yy', 'zz', 'xy', 'xz', 'yz' ]
+        sp.writeNextRow(headers,row=0, col=1)
+        for v,eps in zip(vs,dielecv):
+            eps_xx_r = np.real(eps[0][0])
+            eps_yy_r = np.real(eps[1][1])
+            eps_zz_r = np.real(eps[2][2])
+            eps_xy_r = np.real(eps[0][1])
+            eps_xz_r = np.real(eps[0][2])
+            eps_yz_r = np.real(eps[1][2])
+            output = [v, eps_xx_r, eps_yy_r, eps_zz_r, eps_xy_r, eps_xz_r, eps_yz_r ]
+            sp.writeNextRow(output, col=1,check=1)
+        sp.selectWorkSheet('Imag Crystal Permittivity')
+        sp.delete()
+        sp.writeNextRow(headers,row=0, col=1)
+        for v,eps in zip(vs,dielecv):
+            eps_xx_i = np.imag(eps[0][0])
+            eps_yy_i = np.imag(eps[1][1])
+            eps_zz_i = np.imag(eps[2][2])
+            eps_xy_i = np.imag(eps[0][1])
+            eps_xz_i = np.imag(eps[0][2])
+            eps_yz_i = np.imag(eps[1][2])
+            output = [v, eps_xx_r, eps_yy_r, eps_zz_r, eps_xy_r, eps_xz_r, eps_yz_r ]
+            sp.writeNextRow(output, col=1,check=1)
+
+    def write_crystal_results(self, sp, name, vs, legends, yss):
         """ 
         sp        is the spreadsheet object
         name      is the worksheet name used for writing
@@ -382,12 +426,12 @@ class PlottingTab(QWidget):
         """
         debugger.print('write_crystal_results')
         debugger.print('write_crystal_results name',name)
-        debugger.print('write_crystal_results headings',headings)
+        debugger.print('write_crystal_results legends',legends)
         debugger.print('write_crystal_results length vs',len(vs))
         sp.selectWorkSheet(name)
         sp.delete()
         headers = ['frequencies (cm-1)']
-        headers.extend(headings)
+        headers.extend(legends)
         sp.writeNextRow(headers,row=0, col=1)
         for iv,v in enumerate(vs):
            output = [v]
@@ -396,16 +440,19 @@ class PlottingTab(QWidget):
            sp.writeNextRow(output, col=1,check=1)
 
 
-    def write_results(self, sp, name, vss, yss):
-        debugger.print('write results')
+    def write_powder_results(self, sp, name, vs, legends, yss):
+        debugger.print('write powder results')
+        debugger.print('write_powder_results name',name)
+        debugger.print('write_powder_results legends',legends)
+        debugger.print('write_powder_results length vs',len(vs))
         sp.selectWorkSheet(name)
         sp.delete()
         headers = ['frequencies (cm-1)']
         #for isc,ys in enumerate(yss):
         #    headers.append('Scenario'+str(isc))
-        headers.extend(self.legends)
+        headers.extend(legends)
         sp.writeNextRow(headers,row=0, col=1)
-        for iv,v in enumerate(vss[0]):
+        for iv,v in enumerate(vs):
            output = [v]
            for ys in yss:
                output.append(ys[iv])

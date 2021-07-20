@@ -1,4 +1,8 @@
 #
+# Change the first scenario tab to single crystal
+#
+tab = self.notebook
+tab.switchScenario(0,scenarioType='Single crystal')
 #
 tab = self.notebook.mainTab
 tab.settings['Program'] = 'experiment'

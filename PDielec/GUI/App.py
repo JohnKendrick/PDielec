@@ -4,6 +4,7 @@ from PyQt5.QtWidgets import QMainWindow, QApplication
 from PyQt5.QtCore    import QCoreApplication
 from PDielec.GUI.NoteBook import NoteBook
 import PDielec.Utilities  as Utilities
+from PDielec.Utilities import Debug
 import PDielec.__init__
 version = PDielec.__init__.__version__
 
@@ -106,47 +107,55 @@ class App(QMainWindow):
         self.setGeometry(self.left, self.top, self.width, self.height)
         QCoreApplication.processEvents()
         if self.debug:
-            print('About to open the notebook')
-            print('Program is', program)
-            print('Filename is', filename)
-            print('Spreadsheet is', spreadsheet)
-            print('Script is', self.scriptname)
-            print('The default scenario is', default_scenario)
-            print('No. of cpus is', ncpus)
-            print('Threading is', threading)
+            print('App: About to open the notebook')
+            print('App: Program is', program)
+            print('App: Filename is', filename)
+            print('App: Spreadsheet is', spreadsheet)
+            print('App: Script is', self.scriptname)
+            print('App: The default scenario is', default_scenario)
+            print('App: No. of cpus is', ncpus)
+            print('App: Threading is', threading)
         self.notebook = NoteBook(self, program, filename, spreadsheet, scripting=self.scripting, progressbar=progressbar, debug=self.debug, ncpus=ncpus, threading=threading, default_scenario=default_scenario)
         self.setCentralWidget(self.notebook)
         if self.scripting:
             if self.debug:
-                print('Processing script',self.scriptname)
+                print('App: Processing script',self.scriptname)
             self.readScript(self.scriptname)
         if exit:
             if self.notebook.spreadsheet is not None:
                 if self.debug:
-                    print('Closing spreadsheeet on exit',self.scriptname)
+                    print('App: Closing spreadsheeet on exit',self.scriptname)
                 self.notebook.writeSpreadsheet()
                 self.notebook.spreadsheet.close()
             sys.exit()
         #self.show()
 
     def readScript(self,scriptname):
+        if self.debug:
+            print('App: readScript starting')
         self.notebook.scripting = True
         with open(scriptname,'r') as fd:
             exec(fd.read())
+        if self.debug:
+            print('App: readScript finished reading script')
         self.notebook.scripting = False
+        if self.debug:
+            print('App: readScript notebook refresh forced')
         self.notebook.refresh(force=True)
+        if self.debug:
+            print('App: readScript exiting')
         QCoreApplication.processEvents()
 
     def closeEvent(self, event):
         # Make sure any spread sheet is closed
         self.notebook.writeSpreadsheet()
         if self.debug:
-            print('Close event has been captured')
+            print('App: Close event has been captured')
         if self.notebook.spreadsheet is not None:
             self.notebook.spreadsheet.close()
         else:
             if self.debug:
-                print('Spreadsheet was not set')
+                print('App: Spreadsheet was not set')
         super(App, self).closeEvent(event)
 
 if __name__ == '__main__':

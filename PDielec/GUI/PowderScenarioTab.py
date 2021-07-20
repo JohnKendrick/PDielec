@@ -369,8 +369,12 @@ class PowderScenarioTab(ScenarioTab):
         mf2 = 1.0 - mf1
         rho1 = self.crystal_density()
         rho2 = self.settings['Matrix density']
+        #
+        # Avoid overflow through division by 0
+        #
+        mf2  = max(0.0,1.0E-18)
+        rho1 = max(0.0,1.0E-18)
         vf1 = ( 1.0 - self.settings['Bubble volume fraction'] ) * (mf1/mf2)*(rho2/rho1) / ( 1 + (mf1/mf2)*(rho2/rho1))
-#        vf1 = 1.0 / ( 1.0 + mf2/mf1 * (rho1/rho2) )
         self.settings['Volume fraction'] = vf1
         self.vf_sb.blockSignals(True)
         self.vf_sb.setValue(100.0*vf1)
@@ -567,8 +571,11 @@ class PowderScenarioTab(ScenarioTab):
         if not self.requireCalculate:
             debugger.print(self.settings['Legend'],'calculate - immediate return because requireCalculate false')
             return None
-        if self.notebook.plottingTab is None or self.reader is None:
-            debugger.print(self.settings['Legend'],'calculate - immediate return because plottingTab or reader unavailable')
+        if self.notebook.plottingTab is None:
+            debugger.print(self.settings['Legend'],'calculate - immediate return because plottingTab unavailable')
+            return None
+        if self.reader is None:
+            debugger.print(self.settings['Legend'],'calculate - immediate return because reader unavailable')
             return None
         debugger.print(self.settings['Legend'],'calculate - number of frequencies',len(vs_cm1))
         cell = self.reader.unit_cells[-1]

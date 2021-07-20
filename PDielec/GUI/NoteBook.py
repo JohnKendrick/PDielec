@@ -72,10 +72,12 @@ class NoteBook(QWidget):
         #
         # Open more windows
         #
+        debugger.print('Initialising the first scenario')
         self.scenarios = []
         self.scenarios.append( self.currentScenarioTab(self, debug=debug ) )
         self.scenarios[0].setScenarioIndex(0)
         self.scenarios[0].settings['Legend'] = 'Scenario 1'
+        debugger.print('Finished adding the first scenario')
         #
         # Open the plotting tab
         #
@@ -93,14 +95,17 @@ class NoteBook(QWidget):
         #
         # Open the Viewer tab
         #
+        debugger.print('Initialising the viewer tab')
         self.viewerTab = ViewerTab(self, debug=debug)
         #
         # Open the Fitter tab
         #
+        debugger.print('Initialising the fitter tab')
         self.fitterTab = FitterTab(self, debug=debug)
         #
         # Add tabs
         #
+        debugger.print('Adding all tabs to the notebook')
         self.tabs.addTab(self.mainTab,'Main')
         self.tabs.addTab(self.settingsTab,'Settings')
         for i,tab in enumerate(self.scenarios):
@@ -114,6 +119,11 @@ class NoteBook(QWidget):
         # Add the tab widget
         self.layout.addWidget(self.tabs)
         self.setLayout(self.layout)
+        return
+
+    def setRefreshRequest(self):
+        self.requireRefresh = True
+        debugger.print('setRefreshRequest')
         return
 
     def addScenario(self,scenarioType='Powder',copyFromIndex=-2):
@@ -207,15 +217,28 @@ class NoteBook(QWidget):
             self.tabs.setCurrentIndex(self.tabOffSet+index-1)
         return
 
-    def switchScenario(self,index):
+    def switchScenario(self,index,scenarioType=None):
         debugger.print('switch for scenario', index+1)
         # Replace the scenario with the other scenario type
         scenario = self.scenarios[index]
-        debugger.print('Current scenario type', scenario.scenarioType)
-        if scenario.scenarioType == 'Powder':
-            self.currentScenarioTab = SingleCrystalScenarioTab
+        debugger.print('Current scenario type', scenario.scenarioType, scenarioType)
+        #
+        # If scenarioType is specified in the call then force that type
+        # Otherwise switch type
+        #
+        if scenarioType == None:
+            if scenario.scenarioType == 'Powder':
+                self.currentScenarioTab = SingleCrystalScenarioTab
+            else:
+                self.currentScenarioTab = PowderScenarioTab
+            # end if
         else:
-            self.currentScenarioTab = PowderScenarioTab
+            if scenarioType == 'Powder':
+                self.currentScenarioTab = PowderScenarioTab
+            else:
+                self.currentScenarioTab = SingleCrystalScenarioTab
+            # end if
+        #end if
         self.scenarios[index] =  self.currentScenarioTab(self, self.debug)
         scenario = self.scenarios[index]
         debugger.print('Current scenario type now', scenario.scenarioType)
@@ -257,6 +280,7 @@ class NoteBook(QWidget):
 
     def on_tabs_currentChanged(self, tabindex):
         debugger.print('Tab index changed', tabindex)
+        debugger.print('on_tabs_currentChanged requireRefresh=',self.scenarios[0].requireRefresh)
         #jk if tabindex == 3:
         #jk     import pdb
         #jk     from PyQt5.QtCore import pyqtRemoveInputHook
@@ -291,6 +315,7 @@ class NoteBook(QWidget):
         elif tabindex == ntabs-4:
             # plottings tab
             debugger.print('Calling plottingTab refresh')
+            debugger.print('requireRefresh value before call',self.scenarios[0].requireRefresh)
             self.plottingTab.refresh()
         #jk self.old_tab_index = tabindex
 

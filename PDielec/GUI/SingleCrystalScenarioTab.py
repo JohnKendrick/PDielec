@@ -273,6 +273,7 @@ class SingleCrystalScenarioTab(ScenarioTab):
         for w in self.findChildren(QWidget):
             w.blockSignals(False)
         QCoreApplication.processEvents()
+        self.requireRefresh = False
         return
 
     def on_mode_cb_activated(self, index):
@@ -484,9 +485,12 @@ class SingleCrystalScenarioTab(ScenarioTab):
         self.labframe_w.addItem('a-axis in lab frame: {: 3.5f}, {: 3.5f}, {: 3.5f}'.format(a[0],a[1],a[2]) )
         self.labframe_w.addItem('b-axis in lab frame: {: 3.5f}, {: 3.5f}, {: 3.5f}'.format(b[0],b[1],b[2]) )
         self.labframe_w.addItem('c-axis in lab frame: {: 3.5f}, {: 3.5f}, {: 3.5f}'.format(c[0],c[1],c[2]) )
-        a = a / np.linalg.norm(a)
-        b = b / np.linalg.norm(b)
-        c = c / np.linalg.norm(c)
+        self.labframe_a = a
+        self.labframe_b = b
+        self.labframe_c = c
+        #a = a / np.linalg.norm(a)
+        #b = b / np.linalg.norm(b)
+        #c = c / np.linalg.norm(c)
         # print('Projection of a,b,c onto the lab Y-axis (s-pol)', a[1],b[1],c[1])
         # print('Projection of a,b,c onto the lab X-axis (p-pol)', a[0],b[0],c[0])
         return (theta, phi, psi)

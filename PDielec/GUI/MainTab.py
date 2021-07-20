@@ -291,31 +291,31 @@ class MainTab(QWidget):
             debugger.print('about to refresh settings')
             # There is a subtle problem with the sigmas, they need to be reset on reading a new file
             self.notebook.settingsTab.sigmas_cm1 = []
-            self.notebook.settingsTab.refresh(True)
+            self.notebook.settingsTab.refresh(force=True)
         # Update any scenarios
         if self.notebook.scenarios is not None:
             debugger.print('about to refresh scenarios')
             debugger.print('notebook has {} scenarios'.format(len(self.notebook.scenarios)))
             for tab in self.notebook.scenarios:
-                tab.refresh()
+                tab.refresh(force=True)
         else:
             debugger.print('notebook has no scenarios yet')
         # Update the plotting tab
         if self.notebook.plottingTab is not None:
             debugger.print('about to refresh plottingtab')
-            self.notebook.plottingTab.refresh()
+            self.notebook.plottingTab.refresh(force=True)
         else:
             debugger.print('notebook has no plotting tab yet')
         # Update the analysis tab
         if self.notebook.analysisTab is not None:
             debugger.print('about to refresh analysisTab')
-            self.notebook.analysisTab.refresh()
+            self.notebook.analysisTab.refresh(force=True)
         else:
             debugger.print('notebook has no analysis tab yet')
         # Update the viewer tab
         if self.notebook.viewerTab is not None:
             debugger.print('about to refresh viewerTab')
-            self.notebook.viewerTab.refresh()
+            self.notebook.viewerTab.refresh(force=True)
         else:
             debugger.print('notebook has no viewer tab yet')
         # Update the fitter tab
@@ -323,7 +323,7 @@ class MainTab(QWidget):
             # There is a subtle problem with the modes that are to be fitted, they need resetting
             self.notebook.fitterTab.modes_fitted = []
             debugger.print('about to refresh fitterTab')
-            self.notebook.fitterTab.refresh()
+            self.notebook.fitterTab.refresh(force=True)
         else:
             debugger.print('notebook has no fitter tab yet')
 

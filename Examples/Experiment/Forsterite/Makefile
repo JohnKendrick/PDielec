@@ -10,6 +10,5 @@ pdgui-regenerate:
 
 pdgui-view:
 	@echo "PDGui Viewing Single Crystal for forsterite experiment file...."
-	@../../../pdgui vasp OUTCAR -script script.py
 	@../../../pdgui experiment forsterite.exp -script script.py
 

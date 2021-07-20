@@ -440,7 +440,7 @@ class FitterTab(QWidget):
             self.redraw_sigmas_tw()
             self.notebook.settingsTab.sigmas_cm1[index] = sigma
             self.notebook.settingsTab.redraw_output_tw()
-            self.notebook.settingsTab.requireRefresh = True
+            self.notebook.settingsTab.requireRefresh()
         self.refresh(force=True)
         self.replot()
         # Returning the best correlation but made negative because we need to minimise
@@ -615,7 +615,7 @@ class FitterTab(QWidget):
                 self.sigmas_cm1[row] = new_value
                 self.redraw_sigmas_tw()
                 self.notebook.settingsTab.sigmas_cm1[row] = new_value
-                self.notebook.settingsTab.requireRefresh = True
+                self.notebook.settingsTab.requireRefresh()
                 self.notebook.settingsTab.redraw_output_tw()
             except:
                  print('Failed to convert to float',item.txt())
@@ -643,16 +643,20 @@ class FitterTab(QWidget):
         if not self.requireRefresh and not force:
             debugger.print('refresh aborted', self.requireRefresh,force)
             return
+        self.frequencies_cm1 = self.notebook.settingsTab.frequencies_cm1
+        if np.sum(self.frequencies_cm1) < 1.0E-10:
+            debugger.print('refresh aborted there are no frequencies')
+            return
         debugger.print('refresh', force)
         #
         # Flag all the scenarios as needing an update
         #
-        for scenario in self.notebook.scenarios:
-            scenario.requireRefresh = True
+        #jk for scenario in self.notebook.scenarios:
+        #jk     scenario.setRefreshRequest()
         #
-        # Now refresh the plotting tab is also up to date
+        # Now refresh the plotting tab 
         #
-        self.notebook.plottingTab.refresh()
+        self.notebook.plottingTab.setRefreshRequest()
         #
         # Block signals during refresh
         # 
@@ -685,7 +689,6 @@ class FitterTab(QWidget):
         if len(self.sigmas_cm1) < 1:
             return
         self.modes_selected = self.notebook.settingsTab.modes_selected
-        self.frequencies_cm1 = self.notebook.settingsTab.frequencies_cm1
         self.intensities = self.notebook.settingsTab.intensities
         if len(self.modes_fitted) == 0 and len(self.modes_selected) > 0:
             self.modes_fitted = [ False  for _ in self.modes_selected ]

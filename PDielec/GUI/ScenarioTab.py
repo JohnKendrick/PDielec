@@ -18,6 +18,11 @@ class ScenarioTab(QWidget):
         self.settings['Scenario type'] = 'Unset'
         self.vs_cm1 = [0, 0]
 
+    def setRefreshRequest(self):
+        self.requireRefresh = True
+        debugger.print('setRefreshRequest')
+        return
+
     def set_reader(self,reader):
         self.requireRefresh = True
         self.reader = reader
