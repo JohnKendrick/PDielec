@@ -3,7 +3,7 @@ class SpreadSheetManager():
     def __init__(self, filename):
         # Manage a spread sheet for PDielec / PDGui
         self.workbook = xlsx.Workbook(filename)
-        self.tab_names = ['Main', 'Settings', 'Scenarios', 'Molar Absorption','Absorption', 'Real Permittivity', 'Imaginary Permittivity', 'ATR Reflectance','Analysis','R_p','R_s', 'T_p', 'T_s', 'Real Crystal Permittivity', 'Imag Crystal Permittivity' ]
+        self.tab_names = ['Main', 'Settings', 'Scenarios', 'Powder Molar Absorption','Powder Absorption', 'Powder Real Permittivity', 'Powder Imaginary Permittivity', 'Powder ATR Reflectance','Analysis','Crystal R_p','Crystal R_s', 'Crystal T_p', 'Crystal T_s', 'Real Crystal Permittivity', 'Imag Crystal Permittivity' ]
         self.worksheets = {}
         # Positions points to where we write to next
         self.positions  = {}
