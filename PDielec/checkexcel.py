@@ -66,14 +66,14 @@ for sheet in sheets:
     max_rows2 = ws2.max_row
     max_columns1 = ws1.max_column
     max_columns2 = ws2.max_column
-#jk    if max_rows1 != max_rows2:
-#jk        print('Error - the number rows in the sheet are not the same',sheet,max_rows1,max_rows2)
-#jk        nerrors += 1
-#jk        continue
-#jk    if max_columns1 != max_columns2:
-#jk        print('Error - the number columns in the sheet are not the same',sheet,max_columns1,max_columns2)
-#jk        nerrors += 1
-#jk        continue
+    if max_rows1 != max_rows2:
+        print('Error - the number rows in the sheet are not the same',sheet,max_rows1,max_rows2)
+        nerrors += 1
+        continue
+    if max_columns1 != max_columns2:
+        print('Error - the number columns in the sheet are not the same',sheet,max_columns1,max_columns2)
+        nerrors += 1
+        continue
     #
     # Loop over rows
     #
