@@ -10,6 +10,5 @@ pdgui-regenerate:
 
 pdgui-view:
 	@echo "PDGui Viewing Single Crystal for Mayerhofer experiment file...."
-	@../../../pdgui vasp OUTCAR -script script.py
 	@../../../pdgui experiment mayerhofer.exp -script script.py
 
