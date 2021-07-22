@@ -109,12 +109,12 @@ class MainTab(QWidget):
         # Store results
         #
         self.resultsfile_le = QLineEdit(self)
-        self.resultsfile_le.setToolTip('Provide the name of an .xlsx file if results are to be stored in a spreadsheet')
+        self.resultsfile_le.setToolTip('Provide the name of an .xlsx file if results are to be stored in a spreadsheet.\nIf specified, the file will be written when the program exits.\nThe default directory is that of the QM/MM output file which has been read in.')
         self.resultsfile_le.setText(self.settings['Excel file name'])
         self.resultsfile_le.returnPressed.connect(self.on_excel_button_clicked)
         self.resultsfile_le.textChanged.connect(self.on_resultsfile_le_changed)
         label = QLabel('Excel spread sheet')
-        label.setToolTip('Provide the name of an .xlsx file if results are to be stored in a spreadsheet')
+        label.setToolTip('Provide the name of an .xlsx file if results are to be stored in a spreadsheet.\nIf specified the file will be written when the program exits.\nThe default directory is that of the QM/MM output file which has been read in.')
         excel_button = QPushButton('Save results  ')
         excel_button.setToolTip('Save the results of calculation to the excel spreadsheet specified')
         excel_button.clicked.connect(self.on_excel_button_clicked)
@@ -126,14 +126,14 @@ class MainTab(QWidget):
         # Store a script
         #
         self.scriptsfile_le = QLineEdit(self)
-        self.scriptsfile_le.setToolTip('Provide the name of a python script file to save the program settings to')
+        self.scriptsfile_le.setToolTip('Provide the name of a python script file to save the program settings to when the \"Save settings\" button is pressed.\nThe directory where the file is saved is the same as the directory containing the QM/MM output file read in.')
         self.scriptsfile_le.setText(self.settings['Script file name'])
         self.scriptsfile_le.returnPressed.connect(self.on_script_button_clicked)
         self.scriptsfile_le.textChanged.connect(self.on_scriptsfile_le_changed)
         label = QLabel('Script filename')
-        label.setToolTip('Provide the name of a python script file to save the program settings to')
+        label.setToolTip('Provide the name of a python script file to save the program settings to when the \"Save settings\" button is pressed.\nThe directory where the file is saved is the same as the directory containing the QM/MM output file read in.')
         script_button = QPushButton('Save settings')
-        script_button.setToolTip('Save the setttings of calculation to a python file')
+        script_button.setToolTip('Save the setttings of calculation to a python file.\nThe directory where the file is saved is the same as the directory containing the QM/MM output file read in.')
         script_button.clicked.connect(self.on_script_button_clicked)
         hbox = QHBoxLayout()
         hbox.addWidget(self.scriptsfile_le)
@@ -175,7 +175,9 @@ class MainTab(QWidget):
 
     def on_script_button_clicked(self):
         debugger.print('on_script_button clicked')
-        self.notebook.print_settings(filename=self.settings['Script file name'])
+        self.directory = os.path.dirname(self.settings['Output file name'])
+        debugger.print('on_script_button clicked, directory=',self.directory)
+        self.notebook.print_settings(filename=os.path.join(self.directory,self.settings['Script file name']))
 
     def open_excel_spreadsheet(self):
         debugger.print('open_spreadsheet clicked')
@@ -215,9 +217,10 @@ class MainTab(QWidget):
         for item in sorted(self.settings):
             sp.writeNextRow([item,self.settings[item]], col=1, check=1)
         sp.writeNextRow( [''], col=1 )
-        sp.writeNextRow( ['Frequencies (cm1) as read from the output file'], col=1 )
-        for ifreq in enumerate(self.frequencies_cm1):
-            sp.writeNextRow(ifreq, col=1, check=1)
+        if self.frequencies_cm1 is not None:
+            sp.writeNextRow( ['Frequencies (cm1) as read from the output file'], col=1 )
+            for ifreq in enumerate(self.frequencies_cm1):
+                sp.writeNextRow(ifreq, col=1, check=1)
 
     def read_output_file(self):
         if self.settings['Output file name'] == '':

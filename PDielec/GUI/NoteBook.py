@@ -165,8 +165,11 @@ class NoteBook(QWidget):
 
     def print_settings(self, filename=None):
         # Print the settings of all the settings that have been used to a file settings.py
+        debugger.print('print_settings, filename=',filename)
         qf = QFileDialog()
         qf.setWindowTitle('Save the program settings to a file')
+        debugger.print('print_settings, directory=',self.mainTab.directory)
+        qf.setDirectory(self.mainTab.directory)
         if filename == None:
             filename,selection = qf.getSaveFileName()
         if filename == '':

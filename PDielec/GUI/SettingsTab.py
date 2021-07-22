@@ -280,7 +280,7 @@ class SettingsTab(QWidget):
         sp.delete
         sp.writeNextRow(['Settings and calculations of frequencies and absorption'], row=0, col=1)
         for item in sorted(self.settings):
-            if item == 'Optical permittivity':
+            if item == 'Optical permittivity' and self.settings[item] is not None:
                sp.writeNextRow([item], col=1)
                sp.writeNextRow(self.settings[item][0], col=2, check=1)
                sp.writeNextRow(self.settings[item][1], col=2, check=1)

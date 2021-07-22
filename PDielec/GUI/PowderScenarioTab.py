@@ -46,6 +46,8 @@ class PowderScenarioTab(ScenarioTab):
         self.settings['Particle shape'] = 'Sphere'
         self.methods = ['Maxwell-Garnett', 'Bruggeman', 'Averaged Permittivity', 'Mie']
         self.shapes = ['Sphere', 'Needle', 'Plate', 'Ellipsoid']
+        self.direction = np.array([0,0,0])
+        self.depolarisation = np.array([0,0,0])
         self.scenarioIndex = None
         self.requireRefresh = True
         self.requireCalculate = False
@@ -372,8 +374,8 @@ class PowderScenarioTab(ScenarioTab):
         #
         # Avoid overflow through division by 0
         #
-        mf2  = max(0.0,1.0E-18)
-        rho1 = max(0.0,1.0E-18)
+        mf2  = max(mf2,1.0E-18)
+        rho1 = max(rho1,1.0E-18)
         vf1 = ( 1.0 - self.settings['Bubble volume fraction'] ) * (mf1/mf2)*(rho2/rho1) / ( 1 + (mf1/mf2)*(rho2/rho1))
         self.settings['Volume fraction'] = vf1
         self.vf_sb.blockSignals(True)
@@ -565,6 +567,27 @@ class PowderScenarioTab(ScenarioTab):
         else:
             print('ScenarioTab: Shape not recognised', self.settings['Particle shape'])
 
+    def initWorkers(self,function,vs_cm1,crystal_permittivity,method,vf,size_mu,size_distribution_sigma,dielectric_medium,shape,L,concentration,atrPermittivity,atrTheta,atrSPol,bubble_vf,bubble_radius,previous_solution_shared):
+        # Initialiser the workers in the pool
+        function.vs_cm1 = vs_cm1
+        function.crystal_permittivity = crystal_permittivity
+        function.method = method
+        function.vf = vf
+        function.size_mu = size_mu
+        function.size_distribution_sigma = size_distribution_sigma
+        function.dielectric_medium = dielectric_medium
+        function.shape = shape
+        function.L = L
+        function.concentration = concentration
+        function.atrPermittivity = atrPermittivity
+        function.atrTheta = atrTheta
+        function.atrSPol = atrSPol
+        function.bubble_vf = bubble_vf
+        function.bubble_radius = bubble_radius
+        function.previous_solution_shared = previous_solution_shared
+        return
+
+
     def calculate(self, vs_cm1):
         """Calculate the powder absorption for the range of frequencies in vs_cm1"""
         # Only allow a calculation if the plottingTab is defined
@@ -607,8 +630,6 @@ class PowderScenarioTab(ScenarioTab):
         # Prepare parallel call parameters for the loop over frequencies, methods, volume fractions
         # The concentration is defined in the plottingTab, which may not exist yet
         concentration = self.notebook.plottingTab.settings['concentration']
-        # Get a pool of processors
-        pool = Calculator.get_pool(self.notebook.ncpus, self.notebook.threading)
         # Set the material parameters
         method = self.settings['Effective medium method'].lower()
         matrix_permittivity = np.identity(3) * self.settings['Matrix permittivity']
@@ -621,19 +642,11 @@ class PowderScenarioTab(ScenarioTab):
         atr_spolfraction = self.settings['ATR S polarisation fraction']
         bubble_vf = self.settings['Bubble volume fraction']
         bubble_radius = self.settings['Bubble radius']
-        call_parameters = []
+        # Get a pool of processors and initialise the workers with the 'constant' parameters
+        pool = Calculator.get_pool(self.notebook.ncpus, self.notebook.threading, initializer=self.initWorkers, initargs=(Calculator.solve_effective_medium_equations, vs_cm1, crystal_permittivity, method,volume_fraction,particle_size_mu,particle_sigma_mu,matrix_permittivity,shape,self.depolarisation,concentration,atr_refractive_index,atr_theta,atr_spolfraction,bubble_vf,bubble_radius,previous_solution_shared) )
         results = []
-        for v_cm1,dielecv in zip(vs_cm1, crystal_permittivity):
-            vau = wavenumber * v_cm1
-            # convert the size to a dimensionless number which is 2*pi*size/lambda
-            lambda_mu = 1.0E4 / (v_cm1 + 1.0e-12)
-            if particle_size_mu < 1.0e-12:
-                particle_size_mu = 1.0e-12
-            size = 2.0*np.pi*particle_size_mu / lambda_mu
-            data = ''
-            call_parameters.append( (v_cm1,vau,dielecv,method,volume_fraction,particle_size_mu,particle_sigma_mu,size,matrix_permittivity,shape,data,self.depolarisation,concentration,atr_refractive_index,atr_theta,atr_spolfraction,bubble_vf,bubble_radius,previous_solution_shared) )
-            # results.append( Calculator.solve_effective_medium_equations( (v_cm1,vau,dielecv,method,volume_fraction,particle_size_mu,particle_sigma_mu,size,matrix_permittivity,shape,data,self.depolarisation,concentration,atr_refractive_index,atr_theta,atr_spolfraction,bubble_vf,bubble_radius,previous_solution_shared) ) )
-        for result in pool.imap(Calculator.solve_effective_medium_equations, call_parameters, chunksize=40):
+        indices = range(len(vs_cm1))
+        for result in pool.imap(Calculator.solve_effective_medium_equations, indices, chunksize=1):
             results.append(result)
             self.notebook.progressbars_update()
         QCoreApplication.processEvents()

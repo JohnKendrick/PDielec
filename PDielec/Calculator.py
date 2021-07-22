@@ -22,7 +22,7 @@ import cmath
 import random
 import numpy as np
 import scipy.optimize as sc
-from PDielec.Constants import PI, d2byamuang2, speed_light_si
+from   PDielec.Constants import PI, d2byamuang2, speed_light_si, wavenumber
 import PDielec.GTMcore as GTM
 import string
 
@@ -1092,11 +1092,36 @@ def direction_from_shape(data, reader):
     #    print("The miller direction ", original, "is ", direction, "in xyz")
     return direction
 
-def solve_effective_medium_equations( call_parameters ):
-    # call_parameters is a tuple
+def solve_effective_medium_equations( index ):
+    # call_parameters is an index into the frequency and dielectric arrays
     # In the case of Bruggeman and coherent we can use the previous result to start the iteration/minimisation
     # However to do this we need some shared memory, this allocated in previous_solution_shared
-    v,vau,dielecv,method,vf,size_mu,size_distribution_sigma,size,dielectric_medium,shape,data,L,concentration,atrPermittivity,atrTheta,atrSPol,bubble_vf,bubble_radius,previous_solution_shared = call_parameters
+    vs_cm1                   = solve_effective_medium_equations.vs_cm1
+    crystal_permittivity     = solve_effective_medium_equations.crystal_permittivity
+    method                   = solve_effective_medium_equations.method
+    vf                       = solve_effective_medium_equations.vf
+    size_mu                  = solve_effective_medium_equations.size_mu
+    size_distribution_sigma  = solve_effective_medium_equations.size_distribution_sigma
+    dielectric_medium        = solve_effective_medium_equations.dielectric_medium
+    shape                    = solve_effective_medium_equations.shape
+    L                        = solve_effective_medium_equations.L
+    concentration            = solve_effective_medium_equations.concentration
+    atrPermittivity          = solve_effective_medium_equations.atrPermittivity
+    atrTheta                 = solve_effective_medium_equations.atrTheta
+    atrSPol                  = solve_effective_medium_equations.atrSPol
+    bubble_vf                = solve_effective_medium_equations.bubble_vf
+    bubble_radius            = solve_effective_medium_equations.bubble_radius
+    previous_solution_shared = solve_effective_medium_equations.previous_solution_shared
+    v = vs_cm1[index]
+    vau = v * wavenumber
+    dielecv = crystal_permittivity[index]
+    # convert the size to a dimensionless number which is 2*pi*size/lambda
+    lambda_mu = 1.0E4 / (v + 1.0e-12)
+    if size_mu < 1.0e-12:
+        size_mu = 1.0e-12
+    size = 2.0*np.pi*size_mu / lambda_mu
+    data = ''
+    # dielecv,method,vf,size_mu,size_distribution_sigma,size,dielectric_medium,shape,data,L,concentration,atrPermittivity,atrTheta,atrSPol,bubble_vf,bubble_radius,previous_solution_shared = call_parameters
     # Calculate the effect of bubbles in the matrix by assuming they are embedded in an effective medium defined above
     refractive_index = math.sqrt(np.trace(dielectric_medium)/3.0)
     if refractive_index.imag < 0.0:
