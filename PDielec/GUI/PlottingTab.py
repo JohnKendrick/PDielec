@@ -373,17 +373,17 @@ class PlottingTab(QWidget):
         dielecv = self.notebook.settingsTab.get_crystal_permittivity(self.vs_cm1)
         # Powder results
         if len(molarAbsorptionCoefficients) > 0:
-            self.write_powder_results(sp, 'Molar Absorption',       self.vs_cm1, powder_legends, molarAbsorptionCoefficients)
-            self.write_powder_results(sp, 'Absorption',             self.vs_cm1, powder_legends, absorptionCoefficients)
-            self.write_powder_results(sp, 'Real Permittivity',      self.vs_cm1, powder_legends, realPermittivities)
-            self.write_powder_results(sp, 'Imaginary Permittivity', self.vs_cm1, powder_legends, imagPermittivities)
-            self.write_powder_results(sp, 'ATR Reflectance',        self.vs_cm1, powder_legends, sp_atrs)
+            self.write_powder_results(sp, 'Powder Molar Absorption',       self.vs_cm1, powder_legends, molarAbsorptionCoefficients)
+            self.write_powder_results(sp, 'Powder Absorption',             self.vs_cm1, powder_legends, absorptionCoefficients)
+            self.write_powder_results(sp, 'Powder Real Permittivity',      self.vs_cm1, powder_legends, realPermittivities)
+            self.write_powder_results(sp, 'Powder Imaginary Permittivity', self.vs_cm1, powder_legends, imagPermittivities)
+            self.write_powder_results(sp, 'Powder ATR Reflectance',        self.vs_cm1, powder_legends, sp_atrs)
         # Single Crystal results
         if len(R_ps) > 0:
-            self.write_crystal_results(sp, 'R_p', self.vs_cm1, crystal_legends, R_ps)
-            self.write_crystal_results(sp, 'R_s', self.vs_cm1, crystal_legends, R_ss)
-            self.write_crystal_results(sp, 'T_p', self.vs_cm1, crystal_legends, T_ps)
-            self.write_crystal_results(sp, 'T_s', self.vs_cm1, crystal_legends, T_ss)
+            self.write_crystal_results(sp, 'Crystal R_p', self.vs_cm1, crystal_legends, R_ps)
+            self.write_crystal_results(sp, 'Crystal R_s', self.vs_cm1, crystal_legends, R_ss)
+            self.write_crystal_results(sp, 'Crystal T_p', self.vs_cm1, crystal_legends, T_ps)
+            self.write_crystal_results(sp, 'Crystal T_s', self.vs_cm1, crystal_legends, T_ss)
 
         if len(dielecv) > 0:
             self.write_eps_results(sp, self.vs_cm1, dielecv)

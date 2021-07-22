@@ -55,8 +55,7 @@ max_percentage_error = 0.0
 #
 # Loop over sheets
 #
-sheets = ['Main','Scenarios','Molar Absorption','Absorption','Real Permittivity','Imaginary Permittivity', 'ATR Reflectance', 'Analysis','Single Crystal','Crystal R&T']
-sheets = ['Molar Absorption','Absorption','Real Permittivity','Imaginary Permittivity', 'ATR Reflectance', 'Analysis']
+sheets = ['Main','Scenarios','Powder Molar Absorption','Powder Absorption','Powder Real Permittivity','Powder Imaginary Permittivity', 'Powder ATR Reflectance', 'Analysis','Crystal R_p','Crystal R_s','Crystal T_p','Crystal T_s','Real Crystal Permittivity','Imag Crystal Permittivity']
 if full:
     sheets.append('Settings')
 for sheet in sheets:
