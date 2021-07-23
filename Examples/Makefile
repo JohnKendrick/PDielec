@@ -48,6 +48,8 @@ test-pdgui:
 	@$(MAKE) --no-print-directory -C Experiment/drude-lorentz pdgui
 	@$(MAKE) --no-print-directory -C Experiment/interpolation pdgui
 	@$(MAKE) --no-print-directory -C Experiment/Mayerhofer pdgui
+	@$(MAKE) --no-print-directory -C SingleCrystal/Bi2Se3 pdgui
+	@$(MAKE) --no-print-directory -C SingleCrystal/Bi2Se3_film pdgui
 
 test-vibanalysis:
 	@$(MAKE) --no-print-directory -C VibAnalysis/AsparticAcid vibanalysis
@@ -111,3 +113,5 @@ pdgui-regenerate:
 	@$(MAKE) --no-print-directory -C Experiment/drude-lorentz pdgui-regenerate
 	@$(MAKE) --no-print-directory -C Experiment/interpolation pdgui-regenerate
 	@$(MAKE) --no-print-directory -C Experiment/Mayerhofer pdgui-regenerate
+	@$(MAKE) --no-print-directory -C SingleCrystal/Bi2Se3 pdgui-regenerate
+	@$(MAKE) --no-print-directory -C SingleCrystal/Bi2Se3_film pdgui-regenerate
