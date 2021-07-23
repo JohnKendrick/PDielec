@@ -285,7 +285,6 @@ class SingleCrystalScenarioTab(ScenarioTab):
         else:
             self.settings['Mode'] = 'Incoherent thin film'
         self.requireRefresh = True
-        self.refresh()
         debugger.print(self.settings['Legend'],'Mode changed to ', self.settings['Mode'])
 
     def initWorkers(self,function,system,angle):
@@ -518,7 +517,7 @@ class SingleCrystalScenarioTab(ScenarioTab):
 
     def get_results(self, vs_cm1):
         """Return the results of the effective medium theory calculation"""
-        debugger.print(self.settings['Legend'],'get_results',len(vs_cm1))
+        debugger.print(self.settings['Legend'],'get_results',len(vs_cm1),self.requireRefresh)
         if len(vs_cm1)>0 and (self.requireRefresh or len(self.vs_cm1) != len(vs_cm1) or self.vs_cm1[0] != vs_cm1[0] or self.vs_cm1[1] != vs_cm1[1]) :
             debugger.print(self.settings['Legend'],'get_results recalculating')
             self.refresh()
