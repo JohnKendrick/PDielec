@@ -646,7 +646,7 @@ class PowderScenarioTab(ScenarioTab):
         pool = Calculator.get_pool(self.notebook.ncpus, self.notebook.threading, initializer=self.initWorkers, initargs=(Calculator.solve_effective_medium_equations, vs_cm1, crystal_permittivity, method,volume_fraction,particle_size_mu,particle_sigma_mu,matrix_permittivity,shape,self.depolarisation,concentration,atr_refractive_index,atr_theta,atr_spolfraction,bubble_vf,bubble_radius,previous_solution_shared) )
         results = []
         indices = range(len(vs_cm1))
-        for result in pool.imap(Calculator.solve_effective_medium_equations, indices, chunksize=1):
+        for result in pool.imap(Calculator.solve_effective_medium_equations, indices, chunksize=32):
             results.append(result)
             self.notebook.progressbars_update()
         QCoreApplication.processEvents()

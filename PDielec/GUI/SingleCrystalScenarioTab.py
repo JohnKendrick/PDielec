@@ -359,7 +359,7 @@ class SingleCrystalScenarioTab(ScenarioTab):
         pool = Calculator.get_pool(self.notebook.ncpus, self.notebook.threading, initializer=self.initWorkers, initargs=(Calculator.solve_single_crystal_equations,system,angleOfIncidence) )
         results = []
         # About to call
-        for result in pool.map(Calculator.solve_single_crystal_equations, vs_cm1, chunksize=40):
+        for result in pool.map(Calculator.solve_single_crystal_equations, vs_cm1, chunksize=16):
             self.notebook.progressbars_update()
             results.append(result)
         QCoreApplication.processEvents()
