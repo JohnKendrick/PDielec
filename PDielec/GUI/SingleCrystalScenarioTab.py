@@ -23,6 +23,11 @@ def set_affinity_on_worker():
     #JK Commented out for the time being
     #JK os.system('taskset -p 0xff %d > /dev/null' % os.getpid())
 
+def initWorkers(function,system,angle):
+    # Initialiser the workers in the pool
+    function.angleOfIncidence = angle
+    function.system = system
+    return
 
 class SingleCrystalScenarioTab(ScenarioTab):
     def __init__(self, parent, debug=False ):
@@ -287,12 +292,6 @@ class SingleCrystalScenarioTab(ScenarioTab):
         self.requireRefresh = True
         debugger.print(self.settings['Legend'],'Mode changed to ', self.settings['Mode'])
 
-    def initWorkers(self,function,system,angle):
-        # Initialiser the workers in the pool
-        function.angleOfIncidence = angle
-        function.system = system
-        return
-
     def calculate(self,vs_cm1):
         if not self.requireCalculate:
             debugger(self.settings['Legend'],'Calculate aborted because requireCalculate false')
@@ -356,7 +355,7 @@ class SingleCrystalScenarioTab(ScenarioTab):
             layer.set_euler(theta, phi, psi)
         # Get a pool of processors
         # Initialise each worker with the system and the angle of incidence
-        pool = Calculator.get_pool(self.notebook.ncpus, self.notebook.threading, initializer=self.initWorkers, initargs=(Calculator.solve_single_crystal_equations,system,angleOfIncidence) )
+        pool = Calculator.get_pool(self.notebook.ncpus, self.notebook.threading, initializer=initWorkers, initargs=(Calculator.solve_single_crystal_equations,system,angleOfIncidence) )
         results = []
         # About to call
         for result in pool.map(Calculator.solve_single_crystal_equations, vs_cm1, chunksize=16):
