@@ -15,6 +15,27 @@ import ctypes
 import PDielec.Calculator as Calculator
 import numpy as np
 
+def initWorkers(function,vs_cm1,crystal_permittivity,method,vf,size_mu,size_distribution_sigma,dielectric_medium,shape,L,concentration,atrPermittivity,atrTheta,atrSPol,bubble_vf,bubble_radius,previous_solution_shared):
+    # Initialiser the workers in the pool
+    function.vs_cm1 = vs_cm1
+    function.crystal_permittivity = crystal_permittivity
+    function.method = method
+    function.vf = vf
+    function.size_mu = size_mu
+    function.size_distribution_sigma = size_distribution_sigma
+    function.dielectric_medium = dielectric_medium
+    function.shape = shape
+    function.L = L
+    function.concentration = concentration
+    function.atrPermittivity = atrPermittivity
+    function.atrTheta = atrTheta
+    function.atrSPol = atrSPol
+    function.bubble_vf = bubble_vf
+    function.bubble_radius = bubble_radius
+    function.previous_solution_shared = previous_solution_shared
+    return
+
+
 class PowderScenarioTab(ScenarioTab):
     def __init__(self, parent, debug=False):
         ScenarioTab.__init__(self,parent)
@@ -567,27 +588,6 @@ class PowderScenarioTab(ScenarioTab):
         else:
             print('ScenarioTab: Shape not recognised', self.settings['Particle shape'])
 
-    def initWorkers(self,function,vs_cm1,crystal_permittivity,method,vf,size_mu,size_distribution_sigma,dielectric_medium,shape,L,concentration,atrPermittivity,atrTheta,atrSPol,bubble_vf,bubble_radius,previous_solution_shared):
-        # Initialiser the workers in the pool
-        function.vs_cm1 = vs_cm1
-        function.crystal_permittivity = crystal_permittivity
-        function.method = method
-        function.vf = vf
-        function.size_mu = size_mu
-        function.size_distribution_sigma = size_distribution_sigma
-        function.dielectric_medium = dielectric_medium
-        function.shape = shape
-        function.L = L
-        function.concentration = concentration
-        function.atrPermittivity = atrPermittivity
-        function.atrTheta = atrTheta
-        function.atrSPol = atrSPol
-        function.bubble_vf = bubble_vf
-        function.bubble_radius = bubble_radius
-        function.previous_solution_shared = previous_solution_shared
-        return
-
-
     def calculate(self, vs_cm1):
         """Calculate the powder absorption for the range of frequencies in vs_cm1"""
         # Only allow a calculation if the plottingTab is defined
@@ -643,7 +643,7 @@ class PowderScenarioTab(ScenarioTab):
         bubble_vf = self.settings['Bubble volume fraction']
         bubble_radius = self.settings['Bubble radius']
         # Get a pool of processors and initialise the workers with the 'constant' parameters
-        pool = Calculator.get_pool(self.notebook.ncpus, self.notebook.threading, initializer=self.initWorkers, initargs=(Calculator.solve_effective_medium_equations, vs_cm1, crystal_permittivity, method,volume_fraction,particle_size_mu,particle_sigma_mu,matrix_permittivity,shape,self.depolarisation,concentration,atr_refractive_index,atr_theta,atr_spolfraction,bubble_vf,bubble_radius,previous_solution_shared) )
+        pool = Calculator.get_pool(self.notebook.ncpus, self.notebook.threading, initializer=initWorkers, initargs=(Calculator.solve_effective_medium_equations, vs_cm1, crystal_permittivity, method,volume_fraction,particle_size_mu,particle_sigma_mu,matrix_permittivity,shape,self.depolarisation,concentration,atr_refractive_index,atr_theta,atr_spolfraction,bubble_vf,bubble_radius,previous_solution_shared) )
         results = []
         indices = range(len(vs_cm1))
         for result in pool.imap(Calculator.solve_effective_medium_equations, indices, chunksize=32):
