@@ -290,6 +290,7 @@ class SingleCrystalScenarioTab(ScenarioTab):
         else:
             self.settings['Mode'] = 'Incoherent thin film'
         self.requireRefresh = True
+        self.refresh()
         debugger.print(self.settings['Legend'],'Mode changed to ', self.settings['Mode'])
 
     def calculate(self,vs_cm1):
