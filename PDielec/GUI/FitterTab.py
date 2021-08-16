@@ -440,7 +440,7 @@ class FitterTab(QWidget):
             self.redraw_sigmas_tw()
             self.notebook.settingsTab.sigmas_cm1[index] = sigma
             self.notebook.settingsTab.redraw_output_tw()
-            self.notebook.settingsTab.requireRefresh()
+            self.notebook.settingsTab.setRefreshRequest()
         self.refresh(force=True)
         self.replot()
         # Returning the best correlation but made negative because we need to minimise
@@ -615,7 +615,7 @@ class FitterTab(QWidget):
                 self.sigmas_cm1[row] = new_value
                 self.redraw_sigmas_tw()
                 self.notebook.settingsTab.sigmas_cm1[row] = new_value
-                self.notebook.settingsTab.requireRefresh()
+                self.notebook.settingsTab.setRefreshRequest()
                 self.notebook.settingsTab.redraw_output_tw()
             except:
                  print('Failed to convert to float',item.txt())

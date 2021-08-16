@@ -206,9 +206,9 @@ class PlottingTab(QWidget):
 
     def requestScenarioRefresh(self):
         debugger.print('requestScenarioRefresh')
-        self.notebook.settingsTab.requireRefresh = True
+        self.notebook.settingsTab.setRefreshRequest()
         for scenario in self.notebook.scenarios:
-            scenario.requireRefresh = True
+            scenario.setRefreshRequest()
 
     def on_vinc_changed(self,value):
         self.settings['Frequency increment'] = value

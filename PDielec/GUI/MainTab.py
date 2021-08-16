@@ -241,7 +241,7 @@ class MainTab(QWidget):
             QMessageBox.about(self,'Processing output file','A reader has not be created for this filename: '+self.settings['Output file name'])
             return
         #switch on debugging in the reader
-        #self.reader.debug = self.debug
+        self.reader.debug = self.debug
         self.reader.hessian_symmetrisation = self.settings['Hessian symmetrisation']
         if self.debug:
             self.reader.read_output()

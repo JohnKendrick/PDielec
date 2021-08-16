@@ -49,7 +49,7 @@ class SettingsTab(QWidget):
         debugger = Debug(debug, 'SettingsTab:')
         self.notebook = parent
         self.requireRefresh = True
-        self.requireCalculate = False
+        self.requireCalculate = True
         self.settings = {}
         self.settings['Eckart flag'] = True
         self.settings['Neutral Born charges'] = False
@@ -176,6 +176,7 @@ class SettingsTab(QWidget):
         self.mass_cb.setCurrentIndex(3)
         self.set_masses_tw()
         self.requireRefresh = True
+        self.requireCalculate = True
 
     def createIntensityTable(self):
         debugger.print('createIntensityTable')
@@ -267,6 +268,7 @@ class SettingsTab(QWidget):
 
     def setRefreshRequest(self):
         self.requireRefresh = True
+        self.requireCalculate = True
         debugger.print('setRefreshRequest')
         return
 
@@ -351,6 +353,7 @@ class SettingsTab(QWidget):
         self.redraw_output_tw()
         debugger.print('on sigma change ', self.settings['Sigma value'])
         self.requireRefresh = True
+        self.requireCalculate = True
 
     def on_mass_cb_activated(self,index):
         debugger.print('on mass combobox activated', self.mass_cb.currentText())
@@ -361,6 +364,7 @@ class SettingsTab(QWidget):
         # Modify the element masses
         self.set_masses_tw()
         self.requireRefresh = True
+        self.requireCalculate = True
         QCoreApplication.processEvents()
 
     def set_masses_tw(self):
@@ -474,6 +478,7 @@ class SettingsTab(QWidget):
         self.settings['Optical permittivity edited'] = True
         self.refresh_optical_permittivity_tw()
         self.requireRefresh = True
+        self.requireCalculate = True
         QCoreApplication.processEvents()
 
     def on_optical_tw_itemClicked(self, item):
@@ -486,7 +491,6 @@ class SettingsTab(QWidget):
         if not self.reader and self.notebook.reader:
             self.requireRefresh = True
         debugger.print('refresh ',force)
-        self.requireCalculate = True
         #
         # Block signals during refresh
         #
@@ -536,6 +540,7 @@ class SettingsTab(QWidget):
         self.settings['Optical permittivity'] = self.reader.zerof_optical_dielectric
         self.refresh_optical_permittivity_tw()
         self.requireRefresh = True
+        self.requireCalculate = True
         QCoreApplication.processEvents()
 
     def on_born_changed(self):
@@ -549,6 +554,7 @@ class SettingsTab(QWidget):
         self.settings['Eckart flag'] = self.eckart_cb.isChecked()
         debugger.print('on eckart change ', self.settings['Eckart flag'])
         self.requireRefresh = True
+        self.requireCalculate = True
         QCoreApplication.processEvents()
 
     def calculate(self,vs_cm1):
