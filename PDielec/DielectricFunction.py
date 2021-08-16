@@ -29,7 +29,7 @@ from scipy import interpolate
 
 class DielectricFunction:
     """Provide an interface to different dielectric functions"""
-    possible_epsTypes = ['constant','file','interpolate','dft','fpsq','drude-lorentz']
+    possible_epsTypes = ['constant','file','interpolate_3','interpolate_6','dft','fpsq','drude-lorentz']
     possible_units = ['cm-1','microns','mu','nm','thz','hz']
     def __init__(self, epsType=None, volume=None, filename=None, parameters=None, units='cm-1' ):
         """
@@ -55,8 +55,12 @@ class DielectricFunction:
             self.volume_au = volume*angstrom*angstrom*angstrom
         if epsType == 'file':
             self._readFile()
+        elif epsType == 'interpolate_6':
+            self._generate6Interpolators()
+        elif epsType == 'interpolate_3':
+            self._generate3Interpolators()
         elif epsType == 'interpolate':
-            self._generateInterpolators()
+            self._generate3Interpolators()
 
     def setUnits(self,units):
         """Set the volume for dielectric calculations"""
@@ -89,7 +93,50 @@ class DielectricFunction:
         exit()
         return
 
-    def _generateInterpolators(self):
+    def _generate6Interpolators(self):
+        # If the interpolators do not exist we have to create them from the parameters
+        vs = []
+        rxxs = []
+        ryys = []
+        rzzs = []
+        ixxs = []
+        iyys = []
+        izzs = []
+        rxys = []
+        rxzs = []
+        ryzs = []
+        ixys = []
+        ixzs = []
+        iyzs = []
+        for v_cm1, epsrxx, epsixx, epsryy, epsiyy, epsrzz, epsizz, epsrxy, epsixy, epsrxz, epsixz, epsryz, epsiyz in self.parameters:
+            vs.append(v_cm1)
+            rxxs.append(epsrxx)
+            ryys.append(epsryy)
+            rzzs.append(epsrzz)
+            rxys.append(epsrzz)
+            rxzs.append(epsrzz)
+            ryzs.append(epsrzz)
+            ixxs.append(epsixx)
+            iyys.append(epsiyy)
+            izzs.append(epsizz)
+            ixys.append(epsizz)
+            ixzs.append(epsizz)
+            iyzs.append(epsizz)
+        self.interpolaterxx = interpolate.InterpolatedUnivariateSpline(vs,np.array(rxxs))
+        self.interpolateixx = interpolate.InterpolatedUnivariateSpline(vs,np.array(ixxs))
+        self.interpolateryy = interpolate.InterpolatedUnivariateSpline(vs,np.array(ryys))
+        self.interpolateiyy = interpolate.InterpolatedUnivariateSpline(vs,np.array(iyys))
+        self.interpolaterzz = interpolate.InterpolatedUnivariateSpline(vs,np.array(rzzs))
+        self.interpolateizz = interpolate.InterpolatedUnivariateSpline(vs,np.array(izzs))
+        self.interpolaterxy = interpolate.InterpolatedUnivariateSpline(vs,np.array(rxys))
+        self.interpolateixy = interpolate.InterpolatedUnivariateSpline(vs,np.array(ixys))
+        self.interpolaterxz = interpolate.InterpolatedUnivariateSpline(vs,np.array(rxzs))
+        self.interpolateixz = interpolate.InterpolatedUnivariateSpline(vs,np.array(ixzs))
+        self.interpolateryz = interpolate.InterpolatedUnivariateSpline(vs,np.array(ryzs))
+        self.interpolateiyz = interpolate.InterpolatedUnivariateSpline(vs,np.array(iyzs))
+        self.number_of_interpolators = 6
+
+    def _generate3Interpolators(self):
         # If the interpolators do not exist we have to create them from the parameters
         vs = []
         rxxs = []
@@ -112,6 +159,7 @@ class DielectricFunction:
         self.interpolateiyy = interpolate.InterpolatedUnivariateSpline(vs,np.array(iyys))
         self.interpolaterzz = interpolate.InterpolatedUnivariateSpline(vs,np.array(rzzs))
         self.interpolateizz = interpolate.InterpolatedUnivariateSpline(vs,np.array(izzs))
+        self.number_of_interpolators = 3
 
     def _convert(self, f):
         """
@@ -147,8 +195,12 @@ class DielectricFunction:
             return self.parameters
         elif self.epsType == 'filename':
             return  self._epsFromFile(frequency_cm1)
+        elif self.epsType == 'interpolate_6':
+            return  self._epsFromInterpolate6(frequency_cm1)
+        elif self.epsType == 'interpolate_3':
+            return  self._epsFromInterpolate3(frequency_cm1)
         elif self.epsType == 'interpolate':
-            return  self._epsFromInterpolate(frequency_cm1)
+            return  self._epsFromInterpolate3(frequency_cm1)
         elif self.epsType == 'dft':
             return  self._epsFromDFT(frequency_cm1)
         elif self.epsType == 'drude-lorentz':
@@ -167,7 +219,7 @@ class DielectricFunction:
         print('_epsFromFile: ',v_cm1)
         return
 
-    def _epsFromInterpolate(self, v_cm1):
+    def _epsFromInterpolate3(self, v_cm1):
         """
         Calculate the dielectric constant from interpolation data
         """
@@ -175,6 +227,22 @@ class DielectricFunction:
         eps[0,0] = complex(self.interpolaterxx(v_cm1),self.interpolateixx(v_cm1))
         eps[1,1] = complex(self.interpolateryy(v_cm1),self.interpolateiyy(v_cm1))
         eps[2,2] = complex(self.interpolaterzz(v_cm1),self.interpolateizz(v_cm1))
+        return eps + self.epsilon_infinity
+
+    def _epsFromInterpolate6(self, v_cm1):
+        """
+        Calculate the dielectric constant from interpolation data
+        """
+        eps = np.zeros( (3,3), dtype=complex )
+        eps[0,0] = complex(self.interpolaterxx(v_cm1),self.interpolateixx(v_cm1))
+        eps[1,1] = complex(self.interpolateryy(v_cm1),self.interpolateiyy(v_cm1))
+        eps[2,2] = complex(self.interpolaterzz(v_cm1),self.interpolateizz(v_cm1))
+        eps[0,1] = complex(self.interpolaterxy(v_cm1),self.interpolateixy(v_cm1))
+        eps[0,2] = complex(self.interpolaterxz(v_cm1),self.interpolateixz(v_cm1))
+        eps[1,2] = complex(self.interpolateryz(v_cm1),self.interpolateiyz(v_cm1))
+        eps[1,0] = eps[0,1]
+        eps[2,0] = eps[0,2]
+        eps[2,1] = eps[1,2]
         return eps + self.epsilon_infinity
 
     def _epsFromDFT(self, v_cm1):
