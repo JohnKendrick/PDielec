@@ -110,6 +110,12 @@ class DielectricFunction:
         iyzs = []
         for v_cm1, epsrxx, epsixx, epsryy, epsiyy, epsrzz, epsizz, epsrxy, epsixy, epsrxz, epsixz, epsryz, epsiyz in self.parameters:
             vs.append(v_cm1)
+            epsixx = min(0.0,epsixx)
+            epsiyy = min(0.0,epsiyy)
+            epsizz = min(0.0,epsizz)
+            epsixy = min(0.0,epsixy)
+            epsixz = min(0.0,epsixz)
+            epsiyz = min(0.0,epsiyz)
             rxxs.append(epsrxx)
             ryys.append(epsryy)
             rzzs.append(epsrzz)
@@ -147,6 +153,9 @@ class DielectricFunction:
         izzs = []
         for v_cm1, epsrxx, epsixx, epsryy, epsiyy, epsrzz, epsizz in self.parameters:
             vs.append(v_cm1)
+            epsixx = min(0.0,epsixx)
+            epsiyy = min(0.0,epsiyy)
+            epsizz = min(0.0,epsizz)
             rxxs.append(epsrxx)
             ryys.append(epsryy)
             rzzs.append(epsrzz)
