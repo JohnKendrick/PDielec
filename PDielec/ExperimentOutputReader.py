@@ -38,7 +38,7 @@ class ExperimentOutputReader(GenericOutputReader):
 
     def _read_line(self):
         line = self.file_descriptor.readline()
-        while line[0] == '#' or len(line) == 0:
+        while not line.strip() or line[0] == '#':
             line = self.file_descriptor.readline()
         return line
 
@@ -57,8 +57,10 @@ class ExperimentOutputReader(GenericOutputReader):
         self.manage['fpsq']          = (re.compile('fpsq'),             self._read_fpsq_model)
         self.manage['drude-lorentz'] = (re.compile('drude-lorentz'),    self._read_drude_lorentz_model)
         self.manage['constant']      = (re.compile('constant'),         self._read_constant_model)
-        self.manage['interpolate']   = (re.compile('interpolate'),      self._read_interpolate_model)
-        self.manage['cpk_eps']       = (re.compile('cpk_permittivity'), self._read_cpk_permittivity)
+        # The order of these interpolates is important !
+        self.manage['interpolate3']  = (re.compile('interpolate_3'),    self._read_interpolate3_model)
+        self.manage['interpolate6']  = (re.compile('interpolate_6'),    self._read_interpolate6_model)
+        self.manage['interpolate']   = (re.compile('interpolate'),      self._read_interpolate3_model)
         for f in self._outputfiles:
             self._read_output_file(f)
         return
@@ -88,7 +90,7 @@ class ExperimentOutputReader(GenericOutputReader):
             self.CrystalPermittivity.setVolume(self.volume)
         return
 
-    def _read_cpk_permittivity(self, line):
+    def _read_interpolate3_model(self, line):
         """
         Read in a tabulated permittivity and use it for interpolation -
         """
@@ -98,67 +100,60 @@ class ExperimentOutputReader(GenericOutputReader):
         line = line.lower()
         line = line.replace(',',' ')
         split_line = line.split()
-        while split_line[0] != '&end':
-            omega  = float(line[0])
-            epsrxx = float(line[1])
-            epsixx = float(line[2])
-            epsryy = float(line[3])
-            epsiyy = float(line[4])
-            epsrzz = float(line[5])
-            epsizz = float(line[6])
-            epsrxy = float(line[7])
-            epsixy = float(line[8])
-            epsrxz = float(line[9])
-            epsixz = float(line[10])
-            epsryz = float(line[11])
-            epsiyz = float(line[12])
-            full_eps.append( (omega, epsrxx, epsixx, epsryy, epsiyy, epsrzz, epsizz, epsrxy, epsixy, epsrxz, epsixz, epsryz, epsiz) )
+        while split_line[0] != '&end' and split_line[0] != 'end':
+            omega  = float(split_line[0])
+            epsrxx = float(split_line[1])
+            epsixx = float(split_line[2])
+            epsryy = float(split_line[3])
+            epsiyy = float(split_line[4])
+            epsrzz = float(split_line[5])
+            epsizz = float(split_line[6])
+            full_eps.append( (omega, epsrxx, epsixx, epsryy, epsiyy, epsrzz, epsizz) )
             line = self._read_line()
             line = line.lower()
             line = line.replace(',',' ')
             split_line = line.split()
         # end for i
         # Create a dielectric function for use in calculations
-        self.CrystalPermittivity = DielectricFunction('interpolate', parameters=full_eps)
+        self.CrystalPermittivity = DielectricFunction('interpolate_3', parameters=full_eps)
         if self.zerof_optical_dielectric:
             self.CrystalPermittivity.setEpsilonInfinity(self.zerof_optical_dielectric)
         if self.volume:
             self.CrystalPermittivity.setVolume(self.volume)
         return
 
-    def _read_interpolate_model(self, line):
+    def _read_interpolate6_model(self, line):
         """
-        Read in a tabulated permittivity and use it for interpolation
-        A simple example is given below
-        All units are in cm-1
-        interpolate 3
-        # freq   eps(real)  eps(imag)
-         10.0   3.0         0.0
-        100.0   4.0         0.2
-        800.0   5.0         0.1
+        Read in a tabulated permittivity and use it for interpolation -
         """
-        diag_eps = []
-        n = int(line.split()[1])
+        full_eps = []
         contributions = []
-        for i in range(n):
-            line = self._read_line().split()
-            iso  = len(line)
-            if iso == 3:
-                omega  = float(line[0])
-                epsrxx = epsryy = epsrzz = float(line[1])
-                epsixx = epsiyy = epsizz = float(line[2])
-            elif iso == 7:
-                omega  = float(line[0])
-                epsrxx = float(line[1])
-                epsryy = float(line[2])
-                epsrzz = float(line[3])
-                epsixx = float(line[4])
-                epsiyy = float(line[5])
-                epsizz = float(line[6])
-            diag_eps.append( (omega, epsrxx, epsixx, epsryy, epsiyy, epsrzz, epsizz) )
+        line = self._read_line()
+        line = line.lower()
+        line = line.replace(',',' ')
+        split_line = line.split()
+        while split_line[0] != '&end' and split_line[0] != 'end':
+            omega  = float(split_line[0])
+            epsrxx = float(split_line[1])
+            epsixx = float(split_line[2])
+            epsryy = float(split_line[3])
+            epsiyy = float(split_line[4])
+            epsrzz = float(split_line[5])
+            epsizz = float(split_line[6])
+            epsrxy = float(split_line[7])
+            epsixy = float(split_line[8])
+            epsrxz = float(split_line[9])
+            epsixz = float(split_line[10])
+            epsryz = float(split_line[11])
+            epsiyz = float(split_line[12])
+            full_eps.append( (omega, epsrxx, epsixx, epsryy, epsiyy, epsrzz, epsizz, epsrxy, epsixy, epsrxz, epsixz, epsryz, epsiyz) )
+            line = self._read_line()
+            line = line.lower()
+            line = line.replace(',',' ')
+            split_line = line.split()
         # end for i
         # Create a dielectric function for use in calculations
-        self.CrystalPermittivity = DielectricFunction('interpolate', parameters=diag_eps)
+        self.CrystalPermittivity = DielectricFunction('interpolate_6', parameters=full_eps)
         if self.zerof_optical_dielectric:
             self.CrystalPermittivity.setEpsilonInfinity(self.zerof_optical_dielectric)
         if self.volume:
@@ -279,7 +274,7 @@ class ExperimentOutputReader(GenericOutputReader):
         alpha = 90.0
         beta = 90.0
         gamma = 90.0
-        while split_line[0] != '&end':
+        while split_line[0] != '&end' and split_line[0] != 'end':
             if  split_line[0] == 'abc':
                 a = float(split_line[1])
                 b = float(split_line[2])
@@ -324,13 +319,16 @@ class ExperimentOutputReader(GenericOutputReader):
         line = line.replace(',',' ')
         split_line = line.split()
         species_list = []
-        while split_line[0] != '&end':
+        ions = []
+        self.nspecies = 0
+        while split_line[0] != '&end' and split_line[0] != 'end':
             self.nions += 1
             species = line.split()[0]
             if species not in self.species:
                 self.species.append(species)
                 self.masses_per_type.append(1.0)
                 self._ion_type_index[species] = self.nspecies
+                self.ions_per_type.append(1)
                 self.nspecies = len(self.species)
             index = self._ion_type_index[species]
             self.atom_type_list.append(index)
@@ -343,7 +341,7 @@ class ExperimentOutputReader(GenericOutputReader):
             line = line.replace(',',' ')
             split_line = line.split()
         # end while
-        self.unit_cells[-1].set_cartesian_coordinates(ions)
+        self.unit_cells[-1].set_xyz_coordinates(ions)
         self.unit_cells[-1].set_element_names(species_list)
         if self.oscillator_strengths == None:
             self.oscillator_strengths = np.zeros( (3*self.nions,3,3) )
