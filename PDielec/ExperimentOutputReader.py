@@ -45,15 +45,20 @@ class ExperimentOutputReader(GenericOutputReader):
     def _read_output_files(self):
         """Read the Experiment files in the directory"""
         self.manage = {}   # Empty the dictionary matching phrases
-        self.manage['lattice']      = (re.compile('lattice'),    self._read_lattice_vectors)
-        self.manage['species']      = (re.compile('species'),    self._read_species)
-        self.manage['fractional']   = (re.compile('unitcell'),   self._read_fractional_coordinates)
-        self.manage['static']       = (re.compile('static'),     self._read_static_dielectric)
-        self.manage['epsinf']       = (re.compile('epsinf'),     self._read_static_dielectric)
-        self.manage['fpsq']         = (re.compile('fpsq'),       self._read_fpsq_model)
-        self.manage['drude-lorentz']= (re.compile('drude-lorentz'), self._read_drude_lorentz_model)
-        self.manage['constant']     = (re.compile('constant'),   self._read_constant_model)
-        self.manage['interpolate']  = (re.compile('interpolate'),   self._read_interpolate_model)
+        self.manage['lattice']       = (re.compile('lattice'),          self._read_lattice_vectors)
+        self.manage['CPK_LATTICE']   = (re.compile('&CELL'),            self._read_cpk_lattice_vectors)
+        self.manage['cpk_lattice']   = (re.compile('&cell'),            self._read_cpk_lattice_vectors)
+        self.manage['species']       = (re.compile('species'),          self._read_species)
+        self.manage['fractional']    = (re.compile('unitcell'),         self._read_fractional_coordinates)
+        self.manage['CPK_CARTESIANS']= (re.compile('&COORD'),           self._read_cpk_coords)
+        self.manage['cpk_cartesians']= (re.compile('&coord'),           self._read_cpk_coords)
+        self.manage['static']        = (re.compile('static'),           self._read_static_dielectric)
+        self.manage['epsinf']        = (re.compile('epsinf'),           self._read_static_dielectric)
+        self.manage['fpsq']          = (re.compile('fpsq'),             self._read_fpsq_model)
+        self.manage['drude-lorentz'] = (re.compile('drude-lorentz'),    self._read_drude_lorentz_model)
+        self.manage['constant']      = (re.compile('constant'),         self._read_constant_model)
+        self.manage['interpolate']   = (re.compile('interpolate'),      self._read_interpolate_model)
+        self.manage['cpk_eps']       = (re.compile('cpk_permittivity'), self._read_cpk_permittivity)
         for f in self._outputfiles:
             self._read_output_file(f)
         return
@@ -77,6 +82,44 @@ class ExperimentOutputReader(GenericOutputReader):
             odc = np.real(odc)
         parameters = odc.tolist()
         self.CrystalPermittivity = DielectricFunction('constant',parameters=parameters)
+        if self.zerof_optical_dielectric:
+            self.CrystalPermittivity.setEpsilonInfinity(self.zerof_optical_dielectric)
+        if self.volume:
+            self.CrystalPermittivity.setVolume(self.volume)
+        return
+
+    def _read_cpk_permittivity(self, line):
+        """
+        Read in a tabulated permittivity and use it for interpolation -
+        """
+        full_eps = []
+        contributions = []
+        line = self._read_line()
+        line = line.lower()
+        line = line.replace(',',' ')
+        split_line = line.split()
+        while split_line[0] != '&end':
+            omega  = float(line[0])
+            epsrxx = float(line[1])
+            epsixx = float(line[2])
+            epsryy = float(line[3])
+            epsiyy = float(line[4])
+            epsrzz = float(line[5])
+            epsizz = float(line[6])
+            epsrxy = float(line[7])
+            epsixy = float(line[8])
+            epsrxz = float(line[9])
+            epsixz = float(line[10])
+            epsryz = float(line[11])
+            epsiyz = float(line[12])
+            full_eps.append( (omega, epsrxx, epsixx, epsryy, epsiyy, epsrzz, epsizz, epsrxy, epsixy, epsrxz, epsixz, epsryz, epsiz) )
+            line = self._read_line()
+            line = line.lower()
+            line = line.replace(',',' ')
+            split_line = line.split()
+        # end for i
+        # Create a dielectric function for use in calculations
+        self.CrystalPermittivity = DielectricFunction('interpolate', parameters=full_eps)
         if self.zerof_optical_dielectric:
             self.CrystalPermittivity.setEpsilonInfinity(self.zerof_optical_dielectric)
         if self.volume:
@@ -229,6 +272,35 @@ class ExperimentOutputReader(GenericOutputReader):
             self.nspecies = len(self.species)
         return
 
+    def _read_cpk_lattice_vectors(self, line):
+        """Process a cpk input file with cell information"""
+        line = line.lower()
+        split_line = line.split()
+        alpha = 90.0
+        beta = 90.0
+        gamma = 90.0
+        while split_line[0] != '&end':
+            if  split_line[0] == 'abc':
+                a = float(split_line[1])
+                b = float(split_line[2])
+                c = float(split_line[3])
+            elif split_line[0] == 'alpha_beta_gamma':
+                alpha = float(split_line[1])
+                beta = float(split_line[2])
+                gamma = float(split_line[3])
+            # end if split-line
+            line = self._read_line()
+            line = line.lower()
+            split_line = line.split()
+        # end while
+        cell = UnitCell(a,b,c,alpha,beta,gamma)
+        self.unit_cells.append(cell)
+        self.ncells = len(self.unit_cells)
+        self.volume = cell.volume
+        if self.CrystalPermittivity:
+            self.CrystalPermittivity.setVolume(self.volume)
+        return
+
     def _read_lattice_vectors(self, line):
         line = self._read_line()
         scalar = float(line.split()[0])
@@ -245,6 +317,38 @@ class ExperimentOutputReader(GenericOutputReader):
         if self.CrystalPermittivity:
             self.CrystalPermittivity.setVolume(self.volume)
         return
+
+    def _read_cpk_coords(self, line):
+        line = self._read_line()
+        line = line.lower()
+        line = line.replace(',',' ')
+        split_line = line.split()
+        species_list = []
+        while split_line[0] != '&end':
+            self.nions += 1
+            species = line.split()[0]
+            if species not in self.species:
+                self.species.append(species)
+                self.masses_per_type.append(1.0)
+                self._ion_type_index[species] = self.nspecies
+                self.nspecies = len(self.species)
+            index = self._ion_type_index[species]
+            self.atom_type_list.append(index)
+            species_list.append(species)
+            ions.append([float(f) for f in line.split()[1:4]])
+            self.ions_per_type[index] += 1
+            self.masses.append(self.masses_per_type[index])
+            line = self._read_line()
+            line = line.lower()
+            line = line.replace(',',' ')
+            split_line = line.split()
+        # end while
+        self.unit_cells[-1].set_cartesian_coordinates(ions)
+        self.unit_cells[-1].set_element_names(species_list)
+        if self.oscillator_strengths == None:
+            self.oscillator_strengths = np.zeros( (3*self.nions,3,3) )
+        if self.frequencies == None:
+            self.frequencies = np.zeros( (3*self.nions) )
 
     def _read_fractional_coordinates(self, line):
         n = 0
