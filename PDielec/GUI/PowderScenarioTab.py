@@ -684,7 +684,7 @@ class PowderScenarioTab(ScenarioTab):
         elif plot_type == 'Powder ATR':
             return self.sp_atr
         else:
-            print('Error in returning result from PowderScenarioTab: ',plot_type)
+            # print('Error in returning result from PowderScenarioTab: ',plot_type)
             return None
 
 

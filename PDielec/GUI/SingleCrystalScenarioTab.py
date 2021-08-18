@@ -291,6 +291,7 @@ class SingleCrystalScenarioTab(ScenarioTab):
             self.settings['Mode'] = 'Incoherent thin film'
         self.requireRefresh = True
         self.refresh()
+        self.requireRefresh = True
         debugger.print(self.settings['Legend'],'Mode changed to ', self.settings['Mode'])
 
     def calculate(self,vs_cm1):
@@ -511,7 +512,7 @@ class SingleCrystalScenarioTab(ScenarioTab):
         elif plot_type == 'Crystal Absorbtance (S polarisation)':
             return self.s_absorbtance
         else:
-            print('Error in returning result from CrystalScenarioTab: ',plot_type)
+            # print('Error in returning result from CrystalScenarioTab: ',plot_type)
             return None
 
 
