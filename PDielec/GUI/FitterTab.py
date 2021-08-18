@@ -651,12 +651,13 @@ class FitterTab(QWidget):
         #
         # Flag all the scenarios as needing an update
         #
-        #jk for scenario in self.notebook.scenarios:
-        #jk     scenario.setRefreshRequest()
+        for scenario in self.notebook.scenarios:
+            scenario.setRefreshRequest()
+        self.notebook.settingsTab.setRefreshRequest()
         #
         # Now refresh the plotting tab 
         #
-        self.notebook.plottingTab.setRefreshRequest()
+        self.notebook.plottingTab.refresh()
         #
         # Block signals during refresh
         # 
