@@ -276,12 +276,14 @@ class PlottingTab(QWidget):
     def on_natoms_changed(self, value):
         self.settings['Number of atoms'] = value
         debugger.print('on natoms changed ', self.settings['Number of atoms'])
+        self.refreshRequired = True
         self.notebook.fitterTab.refreshRequired = True
         self.plot()
 
     def on_plot_type_cb_activated(self, index):
         self.settings['Plot type'] = self.plot_type_cb.currentText()
         debugger.print('Changed plot type to ', self.settings['Plot type'])
+        self.refreshRequired = True
         self.notebook.fitterTab.refreshRequired = True
         self.plot()
 
@@ -290,6 +292,7 @@ class PlottingTab(QWidget):
             self.frequency_units = 'wavenumber'
         else:
             self.frequency_units = 'THz'
+        self.refreshRequired = True
         self.notebook.fitterTab.refreshRequired = True
         self.plot()
         debugger.print('Frequency units changed to ', self.frequency_units)
@@ -306,6 +309,7 @@ class PlottingTab(QWidget):
         elif self.settings['Molar definition'] == 'Atoms':
             self.settings['concentration'] = 1000.0 / (avogadro_si * self.reader.volume * 1.0e-24 / self.reader.nions)
             self.natoms_sb.setEnabled(False)
+        self.refreshRequired = True
         self.notebook.fitterTab.refreshRequired = True
         self.plot()
         debugger.print('The concentration has been set', self.settings['Molar definition'], self.settings['concentration'])
