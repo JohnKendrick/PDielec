@@ -259,7 +259,8 @@ class PlottingTab(QWidget):
         # Refresh the widgets that depend on the reader
         self.reader = self.notebook.reader
         if self.reader is not None:
-            self.settings['concentration'] = 1000.0 / (avogadro_si * self.reader.volume * 1.0e-24)
+            self.settings['concentration']      = 1000.0 / (avogadro_si * self.reader.volume * 1.0e-24)
+            self.settings['cell concentration'] = 1000.0 / (avogadro_si * self.reader.volume * 1.0e-24)
         # Reset the progress bar
         self.notebook.progressbars_set_maximum(0)
         debugger.print('calling plot from refresh')
@@ -276,6 +277,8 @@ class PlottingTab(QWidget):
     def on_natoms_changed(self, value):
         self.settings['Number of atoms'] = value
         debugger.print('on natoms changed ', self.settings['Number of atoms'])
+        self.settings['concentration'] = 1000.0 / (avogadro_si * self.reader.volume * 1.0e-24 * self.settings['Number of atoms'] / self.reader.nions)
+        debugger.print('The concentration has been set', self.settings['Molar definition'], self.settings['concentration'])
         self.refreshRequired = True
         self.notebook.fitterTab.refreshRequired = True
         self.plot()
@@ -304,7 +307,8 @@ class PlottingTab(QWidget):
             self.settings['concentration'] = 1000.0 / (avogadro_si * self.reader.volume * 1.0e-24 * self.settings['Number of atoms'] / self.reader.nions)
             self.natoms_sb.setEnabled(True)
         elif self.settings['Molar definition'] == 'Unit cells':
-            self.settings['concentration'] = 1000.0 / (avogadro_si * self.reader.volume * 1.0e-24)
+            self.settings['concentration']      = 1000.0 / (avogadro_si * self.reader.volume * 1.0e-24)
+            self.settings['cell concentration'] = 1000.0 / (avogadro_si * self.reader.volume * 1.0e-24)
             self.natoms_sb.setEnabled(False)
         elif self.settings['Molar definition'] == 'Atoms':
             self.settings['concentration'] = 1000.0 / (avogadro_si * self.reader.volume * 1.0e-24 / self.reader.nions)
@@ -377,7 +381,15 @@ class PlottingTab(QWidget):
         dielecv = self.notebook.settingsTab.get_crystal_permittivity(self.vs_cm1)
         # Powder results
         if len(molarAbsorptionCoefficients) > 0:
-            self.write_powder_results(sp, 'Powder Molar Absorption',       self.vs_cm1, powder_legends, molarAbsorptionCoefficients)
+            molarAbsorptionCoefficients = np.array(molarAbsorptionCoefficients) * self.settings['cell concentration']/self.settings['concentration']
+            if self.settings['Molar definition'] == 'Molecules':
+                sheet_name = 'Powder Molar Absorption (molecules)'
+            elif self.settings['Molar definition'] == 'Unit cells':
+                sheet_name = 'Powder Molar Absorption (cells)'
+            elif self.settings['Molar definition'] == 'Atoms':
+                sheet_name = 'Powder Molar Absorption (atoms)'
+                self.natoms_sb.setEnabled(False)
+            self.write_powder_results(sp, sheet_name,                      self.vs_cm1, powder_legends, molarAbsorptionCoefficients)
             self.write_powder_results(sp, 'Powder Absorption',             self.vs_cm1, powder_legends, absorptionCoefficients)
             self.write_powder_results(sp, 'Powder Real Permittivity',      self.vs_cm1, powder_legends, realPermittivities)
             self.write_powder_results(sp, 'Powder Imaginary Permittivity', self.vs_cm1, powder_legends, imagPermittivities)
@@ -472,12 +484,16 @@ class PlottingTab(QWidget):
         filename = settings['Output file name']
         reader = self.notebook.mainTab.reader
         if reader is None:
+            debugger.print('plot aborting because reader is NONE')
             return
         if program == '':
+            debugger.print('plot aborting because program is not set')
             return
         if filename == '':
+            debugger.print('plot aborting because filename is not set')
             return
         if self.notebook.settingsTab.CrystalPermittivity is None:
+            debugger.print('plot aborting because settingTab.CrystalPermittivity is not set')
             return
         QApplication.setOverrideCursor(Qt.WaitCursor)
         vmin = self.settings['Minimum frequency']
@@ -488,10 +504,10 @@ class PlottingTab(QWidget):
         self.figure.clf()
         if self.frequency_units == 'wavenumber':
             xlabel = r'Frequency $\mathdefault{(cm^{-1})}}$'
-            scale = 1.0
+            xscale = 1.0
         else:
             xlabel = r'THz'
-            scale = 0.02998
+            xscale = 0.02998
         x = np.array(self.vs_cm1)
         self.subplot = self.figure.add_subplot(111)
         self.notebook.progressbars_set_maximum(len(x)*len(self.notebook.scenarios))
@@ -502,8 +518,11 @@ class PlottingTab(QWidget):
             self.legends.append(legend)
             y = scenario.get_result(self.vs_cm1,self.settings['Plot type'])
             if y is not None and len(y) > 0:
+                y = np.array(y)
+                if self.settings['Plot type'] == 'Powder Molar Absorption':
+                    y = y * self.settings['cell concentration']/self.settings['concentration']
                 plots += 1
-                line, = self.subplot.plot(scale*x,y,lw=2, label=legend )
+                line, = self.subplot.plot(xscale*x,y,lw=2, label=legend )
         if plots > 0:
             self.subplot.set_xlabel(xlabel)
             self.subplot.set_ylabel(self.plot_ylabels[self.settings['Plot type']])

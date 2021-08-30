@@ -629,7 +629,7 @@ class PowderScenarioTab(ScenarioTab):
         previous_solution_shared.fill(0.0+0.0j)
         # Prepare parallel call parameters for the loop over frequencies, methods, volume fractions
         # The concentration is defined in the plottingTab, which may not exist yet
-        concentration = self.notebook.plottingTab.settings['concentration']
+        concentration = self.notebook.plottingTab.settings['cell concentration']
         # Set the material parameters
         method = self.settings['Effective medium method'].lower()
         matrix_permittivity = np.identity(3) * self.settings['Matrix permittivity']
