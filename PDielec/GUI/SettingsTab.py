@@ -171,6 +171,7 @@ class SettingsTab(QWidget):
         QCoreApplication.processEvents()
 
     def setElementMass(self,element,mass):
+        debugger.print('setElementMass',element,mass)
         self.settings['Mass definition'] = 'gui'
         self.masses_dict[element] = mass
         self.mass_cb.setCurrentIndex(3)
@@ -264,12 +265,12 @@ class SettingsTab(QWidget):
         # if self.notebook.spreadsheet is not None:
         #     self.writeSpreadsheet()
         QCoreApplication.processEvents()
-        debugger.print('createIntensityTable finshed')
+        debugger.print('createIntensityTable finished')
 
     def setRefreshRequest(self):
+        debugger.print('setRefreshRequest')
         self.requireRefresh = True
         self.requireCalculate = True
-        debugger.print('setRefreshRequest')
         return
 
     def writeSpreadsheet(self):
@@ -491,6 +492,10 @@ class SettingsTab(QWidget):
         if not self.reader and self.notebook.reader:
             self.requireRefresh = True
         debugger.print('refresh ',force)
+        if not self.requireRefresh:
+            debugger.print('refresh not required',force)
+            return
+
         #
         # Block signals during refresh
         #
@@ -520,7 +525,7 @@ class SettingsTab(QWidget):
         for w in self.findChildren(QWidget):
             w.blockSignals(False)
         self.createIntensityTable()
-        requireRefresh = False
+        self.requireRefresh = False
         QCoreApplication.processEvents()
 
     def refresh_optical_permittivity_tw(self):
@@ -547,6 +552,8 @@ class SettingsTab(QWidget):
         debugger.print('on born change ', self.born_cb.isChecked())
         self.settings['Neutral Born charges'] = self.born_cb.isChecked()
         debugger.print('on born change ', self.settings['Neutral Born charges'])
+        self.requireRefresh = True
+        self.requireCalculate = True
         QCoreApplication.processEvents()
 
     def on_eckart_changed(self):
