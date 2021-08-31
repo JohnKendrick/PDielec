@@ -383,6 +383,7 @@ class PlottingTab(QWidget):
         # Single crystal Permittivity
         dielecv = self.notebook.settingsTab.get_crystal_permittivity(self.vs_cm1)
         # Powder results
+        # Work out what molar units we are using
         if len(molarAbsorptionCoefficients) > 0:
             if self.settings['Molar definition'] == 'Molecules':
                 sheet_name = 'Powder Molar Absorption (mols)'
@@ -390,15 +391,16 @@ class PlottingTab(QWidget):
                 sheet_name = 'Powder Molar Absorption (cells)'
             elif self.settings['Molar definition'] == 'Atoms':
                 sheet_name = 'Powder Molar Absorption (atoms)'
-                self.natoms_sb.setEnabled(False)
-            self.write_powder_results(sp, 'Powder Molar Absorption',       self.vs_cm1, powder_legends, molarAbsorptionCoefficients)
-            # A bit of kludge here so that the xls file can be checked with previous versions
-            # So the molar absorption is written out twice but the first time is ALWAYS per mole of cell
-            molarAbsorptionCoefficients_mols = []
-            molar_scaling = self.settings['cell concentration']/self.settings['concentration']
-            for absorption in molarAbsorptionCoefficients:
-                molarAbsorptionCoefficients_mols.append(molar_scaling * np.array(absorption))
-            self.write_powder_results(sp, sheet_name,                      self.vs_cm1, powder_legends, molarAbsorptionCoefficients_mols)
+            # Always write out the moles of cell
+            self.write_powder_results(sp, 'Powder Molar Absorption (cells)', self.vs_cm1, powder_legends, molarAbsorptionCoefficients)
+            if not self.settings['Molar definition'] == 'Unit cells':
+                # If some other molar definition has been used then write that out too
+                molarAbsorptionCoefficients_mols = []
+                molar_scaling = self.settings['cell concentration']/self.settings['concentration']
+                for absorption in molarAbsorptionCoefficients:
+                    molarAbsorptionCoefficients_mols.append(molar_scaling * np.array(absorption))
+                self.write_powder_results(sp, sheet_name,                      self.vs_cm1, powder_legends, molarAbsorptionCoefficients_mols)
+            # end if
             self.write_powder_results(sp, 'Powder Absorption',             self.vs_cm1, powder_legends, absorptionCoefficients)
             self.write_powder_results(sp, 'Powder Real Permittivity',      self.vs_cm1, powder_legends, realPermittivities)
             self.write_powder_results(sp, 'Powder Imaginary Permittivity', self.vs_cm1, powder_legends, imagPermittivities)

@@ -60,7 +60,7 @@ class ExperimentOutputReader(GenericOutputReader):
         # The order of these interpolates is important !
         self.manage['interpolate3']  = (re.compile('interpolate_3'),    self._read_interpolate3_model)
         self.manage['interpolate6']  = (re.compile('interpolate_6'),    self._read_interpolate6_model)
-        self.manage['interpolate']   = (re.compile('interpolate'),      self._read_interpolate3_model)
+        self.manage['interpolate']   = (re.compile('interpolate'),      self._read_interpolate1_model)
         for f in self._outputfiles:
             self._read_output_file(f)
         return
@@ -84,6 +84,34 @@ class ExperimentOutputReader(GenericOutputReader):
             odc = np.real(odc)
         parameters = odc.tolist()
         self.CrystalPermittivity = DielectricFunction('constant',parameters=parameters)
+        if self.zerof_optical_dielectric:
+            self.CrystalPermittivity.setEpsilonInfinity(self.zerof_optical_dielectric)
+        if self.volume:
+            self.CrystalPermittivity.setVolume(self.volume)
+        return
+
+    def _read_interpolate1_model(self, line):
+        """
+        Read in a tabulated permittivity and use it for interpolation -
+        """
+        full_eps = []
+        contributions = []
+        line = self._read_line()
+        line = line.lower()
+        line = line.replace(',',' ')
+        split_line = line.split()
+        while split_line[0] != '&end' and split_line[0] != 'end':
+            omega  = float(split_line[0])
+            epsrxx = float(split_line[1])
+            epsixx = float(split_line[2])
+            full_eps.append( (omega, epsrxx, epsixx, epsrxx, epsixx, epsrxx, epsixx) )
+            line = self._read_line()
+            line = line.lower()
+            line = line.replace(',',' ')
+            split_line = line.split()
+        # end for i
+        # Create a dielectric function for use in calculations
+        self.CrystalPermittivity = DielectricFunction('interpolate_3', parameters=full_eps)
         if self.zerof_optical_dielectric:
             self.CrystalPermittivity.setEpsilonInfinity(self.zerof_optical_dielectric)
         if self.volume:
