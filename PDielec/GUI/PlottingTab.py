@@ -259,8 +259,7 @@ class PlottingTab(QWidget):
         # Refresh the widgets that depend on the reader
         self.reader = self.notebook.reader
         if self.reader is not None:
-            self.settings['concentration']      = 1000.0 / (avogadro_si * self.reader.volume * 1.0e-24)
-            self.settings['cell concentration'] = 1000.0 / (avogadro_si * self.reader.volume * 1.0e-24)
+            self.set_concentrations()
         # Reset the progress bar
         self.notebook.progressbars_set_maximum(0)
         debugger.print('calling plot from refresh')
@@ -303,6 +302,13 @@ class PlottingTab(QWidget):
     def on_molar_cb_activated(self, index):
         self.molar_cb_current_index = index
         self.settings['Molar definition'] = self.molar_definitions[index]
+        self.set_concentrations()
+        self.refreshRequired = True
+        self.notebook.fitterTab.refreshRequired = True
+        self.plot()
+        debugger.print('The concentration has been set', self.settings['Molar definition'], self.settings['concentration'])
+
+    def set_concentrations(self):
         if self.settings['Molar definition'] == 'Molecules':
             self.settings['concentration'] = 1000.0 / (avogadro_si * self.reader.volume * 1.0e-24 * self.settings['Number of atoms'] / self.reader.nions)
             self.natoms_sb.setEnabled(True)
@@ -313,10 +319,7 @@ class PlottingTab(QWidget):
         elif self.settings['Molar definition'] == 'Atoms':
             self.settings['concentration'] = 1000.0 / (avogadro_si * self.reader.volume * 1.0e-24 / self.reader.nions)
             self.natoms_sb.setEnabled(False)
-        self.refreshRequired = True
-        self.notebook.fitterTab.refreshRequired = True
-        self.plot()
-        debugger.print('The concentration has been set', self.settings['Molar definition'], self.settings['concentration'])
+        return
 
     def writeSpreadsheet(self):
         debugger.print('write spreadsheet')
@@ -381,15 +384,21 @@ class PlottingTab(QWidget):
         dielecv = self.notebook.settingsTab.get_crystal_permittivity(self.vs_cm1)
         # Powder results
         if len(molarAbsorptionCoefficients) > 0:
-            molarAbsorptionCoefficients = np.array(molarAbsorptionCoefficients) * self.settings['cell concentration']/self.settings['concentration']
             if self.settings['Molar definition'] == 'Molecules':
-                sheet_name = 'Powder Molar Absorption (molecules)'
+                sheet_name = 'Powder Molar Absorption (mols)'
             elif self.settings['Molar definition'] == 'Unit cells':
                 sheet_name = 'Powder Molar Absorption (cells)'
             elif self.settings['Molar definition'] == 'Atoms':
                 sheet_name = 'Powder Molar Absorption (atoms)'
                 self.natoms_sb.setEnabled(False)
-            self.write_powder_results(sp, sheet_name,                      self.vs_cm1, powder_legends, molarAbsorptionCoefficients)
+            self.write_powder_results(sp, 'Powder Molar Absorption',       self.vs_cm1, powder_legends, molarAbsorptionCoefficients)
+            # A bit of kludge here so that the xls file can be checked with previous versions
+            # So the molar absorption is written out twice but the first time is ALWAYS per mole of cell
+            molarAbsorptionCoefficients_mols = []
+            molar_scaling = self.settings['cell concentration']/self.settings['concentration']
+            for absorption in molarAbsorptionCoefficients:
+                molarAbsorptionCoefficients_mols.append(molar_scaling * np.array(absorption))
+            self.write_powder_results(sp, sheet_name,                      self.vs_cm1, powder_legends, molarAbsorptionCoefficients_mols)
             self.write_powder_results(sp, 'Powder Absorption',             self.vs_cm1, powder_legends, absorptionCoefficients)
             self.write_powder_results(sp, 'Powder Real Permittivity',      self.vs_cm1, powder_legends, realPermittivities)
             self.write_powder_results(sp, 'Powder Imaginary Permittivity', self.vs_cm1, powder_legends, imagPermittivities)
@@ -403,6 +412,10 @@ class PlottingTab(QWidget):
 
         if len(dielecv) > 0:
             self.write_eps_results(sp, self.vs_cm1, dielecv)
+        #
+        # Close the spreadsheet
+        #
+        sp.close()
 
     def write_eps_results(self, sp, vs, dielecv):
         debugger.print('write_eps_results length vs',len(vs))
