@@ -47,6 +47,9 @@ class NoteBook(QWidget):
         except:
             pass
         self.scripting = scripting
+        # Overwriting of files is not allowed with a prompt
+        # If scripting is used then overwriting is allowed
+        self.overwriting = False
         self.debug = debug
         #jk self.old_tab_index = None
         self.layout = QVBoxLayout()
@@ -109,7 +112,8 @@ class NoteBook(QWidget):
         self.tabs.addTab(self.mainTab,'Main')
         self.tabs.addTab(self.settingsTab,'Settings')
         for i,tab in enumerate(self.scenarios):
-            tab.refresh(force=True)
+            #jk tab.refresh(force=True)
+            tab.requestRefresh()
             self.tabs.addTab(tab,'Scenario '+str(i+1))
         self.tabs.addTab(self.plottingTab,'Plotting')
         self.tabs.addTab(self.analysisTab,'Analysis')
@@ -121,9 +125,9 @@ class NoteBook(QWidget):
         self.setLayout(self.layout)
         return
 
-    def setRefreshRequest(self):
-        self.requireRefresh = True
-        debugger.print('setRefreshRequest')
+    def requestRefresh(self):
+        self.refreshRequired = True
+        debugger.print('requestRefresh')
         return
 
     def addScenario(self,scenarioType=None,copyFromIndex=-2):
@@ -184,26 +188,26 @@ class NoteBook(QWidget):
         print('#',file=fd)
         # Print settings of mainTab
         self.print_tab_settings(self.mainTab, 'mainTab',fd)
-        print('tab.refresh(force=True)',file=fd)
+        print('tab.requestRefresh()',file=fd)
         # Print settings of settingsTab
         self.print_tab_settings(self.settingsTab, 'settingsTab',fd)
         print('tab.sigmas_cm1 =',self.settingsTab.sigmas_cm1,file=fd)
-        print('tab.refresh(force=True)',file=fd)
+        print('tab.requestRefresh()',file=fd)
         # Print settings of scenarios
         for i,tab in enumerate(self.scenarios):
             if i == 0:
                 self.print_tab_settings(tab, 'scenarios[{}]'.format(i), fd, new_scenario = False)
             else:
                 self.print_tab_settings(tab, 'scenarios[{}]'.format(i), fd, new_scenario = True)
-            print('tab.refresh(force=True)',file=fd)
+            print('tab.requestRefresh()',file=fd)
         self.print_tab_settings(self.analysisTab, 'analysisTab',fd)
-        print('tab.refresh(force=True)',file=fd)
+        print('tab.requestRefresh()',file=fd)
         self.print_tab_settings(self.viewerTab, 'viewerTab',fd)
-        print('tab.refresh(force=True)',file=fd)
+        print('tab.requestRefresh()',file=fd)
         self.print_tab_settings(self.fitterTab, 'fitterTab',fd)
-        print('tab.refresh(force=True)',file=fd)
+        print('tab.requestRefresh()',file=fd)
         self.print_tab_settings(self.plottingTab, 'plottingTab',fd)
-        print('tab.refresh(force=True)',file=fd)
+        print('tab.requestRefresh()',file=fd)
         fd.close()
         return
 
@@ -289,6 +293,29 @@ class NoteBook(QWidget):
         self.tabs.setCurrentIndex(ntabs-2)
         self.fitterTab.refresh(force=force)
         self.tabs.setCurrentIndex(ntabs-1)
+        # Sets the open tab to be the plotterTab
+        self.tabs.setCurrentIndex(ntabs-4)
+
+    def newrefresh(self,force=False):
+        if self.scripting:
+            debugger.print('Notebook aborting refresh because of scripting')
+            return
+        debugger.print('Notebook refresh changed',force)
+        ntabs = 2 + len(self.scenarios) + 4
+        self.mainTab.refresh(force=force)
+        self.settingsTab.requestRefresh()
+        for tab in self.scenarios:
+            tab.requestRefresh()
+        self.tabs.setCurrentIndex(ntabs-5)
+        self.plottingTab.requestRefresh()
+        self.tabs.setCurrentIndex(ntabs-4)
+        self.analysisTab.requestRefresh()
+        self.tabs.setCurrentIndex(ntabs-3)
+        self.viewerTab.requestRefresh()
+        self.tabs.setCurrentIndex(ntabs-2)
+        self.fitterTab.requestRefresh()
+        self.tabs.setCurrentIndex(ntabs-1)
+        self.tabs.setCurrentIndex(ntabs-4)
 
     def writeSpreadsheet(self):
         debugger.print('Write spreadsheet')
@@ -299,24 +326,12 @@ class NoteBook(QWidget):
 
     def on_tabs_currentChanged(self, tabindex):
         debugger.print('Tab index changed', tabindex)
-        debugger.print('on_tabs_currentChanged requireRefresh=',self.scenarios[0].requireRefresh)
-        #jk if tabindex == 3:
-        #jk     import pdb
-        #jk     from PyQt5.QtCore import pyqtRemoveInputHook
-        #jk     pyqtRemoveInputHook()
-        #jk     pdb.set_trace()
         # 
         # If scripting do not refresh tabs
         #
         if self.scripting:
+            debugger.print('Exiting on_tabs_currentChanged without refreshing')
             return
-        # See if we have to update a tab we have left
-        #jk if self.old_tab_index is not None:
-        #jk     if self.old_tab_index == 0:
-        #jk         self.mainTab.refresh()
-        #jk     elif self.old_tab_index == 1:
-        #jk         self.settingsTab.refresh()
-        #jk # end if
         #       Number of tabs
         ntabs = 2 + len(self.scenarios) + 4
         if tabindex == ntabs-1:
@@ -334,7 +349,6 @@ class NoteBook(QWidget):
         elif tabindex == ntabs-4:
             # plottings tab
             debugger.print('Calling plottingTab refresh')
-            debugger.print('requireRefresh value before call',self.scenarios[0].requireRefresh)
             self.plottingTab.refresh()
         #jk self.old_tab_index = tabindex
 

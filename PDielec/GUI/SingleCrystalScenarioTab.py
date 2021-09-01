@@ -35,8 +35,8 @@ class SingleCrystalScenarioTab(ScenarioTab):
         global debugger
         debugger = Debug(debug,'SingleCrystalScenarioTab:')
         debugger.print('In the initialiser')
-        self.requireRefresh = True
-        self.requireCalculate = False
+        self.refreshRequired = True
+        self.calculationRequired = False
         self.scenarioType = 'Single crystal'
         self.settings['Scenario type'] = 'Single crystal'
         self.settings['Unique direction - h'] = 0
@@ -198,55 +198,55 @@ class SingleCrystalScenarioTab(ScenarioTab):
 
     def on_film_thickness_sb_changed(self,value):
         debugger.print(self.settings['Legend'],'on_film_thickness_sb', value)
-        self.requireRefresh = True
+        self.refreshRequired = True
         self.settings['Film thickness'] = value
 
     def on_superstrate_dielectric_sb_changed(self,value):
         debugger.print(self.settings['Legend'],'on_superstrate_dielectric_sb', value)
-        self.requireRefresh = True
+        self.refreshRequired = True
         self.settings['Superstrate dielectric'] = value
 
     def on_substrate_dielectric_sb_changed(self,value):
         debugger.print(self.settings['Legend'],'on_substrate_dielectric_sb', value)
-        self.requireRefresh = True
+        self.refreshRequired = True
         self.settings['Substrate dielectric'] = value
 
     def on_azimuthal_angle_sb_changed(self,value):
         debugger.print(self.settings['Legend'],'on_azimuthal_angl_sb_changed', value)
-        self.requireRefresh = True
+        self.refreshRequired = True
         self.settings['Azimuthal angle'] = value
         self.calculate_euler_angles()
 
     def on_angle_of_incidence_sb_changed(self,value):
         debugger.print(self.settings['Legend'],'on_angle_of_incidence_sb_changed', value)
-        self.requireRefresh = True
+        self.refreshRequired = True
         self.settings['Angle of incidence'] = value
 
     def on_h_sb_changed(self,value):
         debugger.print(self.settings['Legend'],'on_h_sb_changed', value)
-        self.requireRefresh = True
+        self.refreshRequired = True
         self.settings['Unique direction - h'] = value
         self.calculate_euler_angles()
 
     def on_k_sb_changed(self,value):
         debugger.print(self.settings['Legend'],'on_k_sb_changed', value)
-        self.requireRefresh = True
+        self.refreshRequired = True
         self.settings['Unique direction - k'] = value
         self.calculate_euler_angles()
 
     def on_l_sb_changed(self,value):
         debugger.print(self.settings['Legend'],'on_l_sb_changed', value)
-        self.requireRefresh = True
+        self.refreshRequired = True
         self.settings['Unique direction - l'] = value
         self.calculate_euler_angles()
 
     def refresh(self,force=False):
-        if not self.requireRefresh and not force :
-            debugger.print(self.settings['Legend'],'refreshing widget aborted', self.requireRefresh,force)
+        if not self.refreshRequired and not force :
+            debugger.print(self.settings['Legend'],'refreshing widget aborted', self.refreshRequired,force)
             return
         debugger.print(self.settings['Legend'],'refreshing widget, force =', force)
         # Force recalculation
-        self.requireCalculate = True
+        self.calculationRequired = True
         # Change any greyed out items
         self.greyed_out()
         #
@@ -278,7 +278,7 @@ class SingleCrystalScenarioTab(ScenarioTab):
         for w in self.findChildren(QWidget):
             w.blockSignals(False)
         QCoreApplication.processEvents()
-        self.requireRefresh = False
+        self.refreshRequired = False
         return
 
     def on_mode_cb_activated(self, index):
@@ -289,14 +289,14 @@ class SingleCrystalScenarioTab(ScenarioTab):
             self.settings['Mode'] = 'Coherent thin film'
         else:
             self.settings['Mode'] = 'Incoherent thin film'
-        self.requireRefresh = True
+        self.refreshRequired = True
         self.refresh()
-        self.requireRefresh = True
+        self.refreshRequired = True
         debugger.print(self.settings['Legend'],'Mode changed to ', self.settings['Mode'])
 
     def calculate(self,vs_cm1):
-        if not self.requireCalculate:
-            debugger(self.settings['Legend'],'Calculate aborted because requireCalculate false')
+        if not self.calculationRequired:
+            debugger(self.settings['Legend'],'Calculate aborted because calculationRequired false')
             return
         debugger.print(self.settings['Legend'],'Calculate - number of frequencies',len(vs_cm1))
         QCoreApplication.processEvents()
@@ -385,7 +385,7 @@ class SingleCrystalScenarioTab(ScenarioTab):
         # Close parallel processing down
         pool.close()
         pool.join()
-        self.requireCalculate = False
+        self.calculationRequired = False
         QCoreApplication.processEvents()
         debugger.print(self.settings['Legend'],'Calculate finished')
 
@@ -518,8 +518,8 @@ class SingleCrystalScenarioTab(ScenarioTab):
 
     def get_results(self, vs_cm1):
         """Return the results of the effective medium theory calculation"""
-        debugger.print(self.settings['Legend'],'get_results',len(vs_cm1),self.requireRefresh)
-        if len(vs_cm1)>0 and (self.requireRefresh or len(self.vs_cm1) != len(vs_cm1) or self.vs_cm1[0] != vs_cm1[0] or self.vs_cm1[1] != vs_cm1[1]) :
+        debugger.print(self.settings['Legend'],'get_results',len(vs_cm1),self.refreshRequired)
+        if len(vs_cm1)>0 and (self.refreshRequired or len(self.vs_cm1) != len(vs_cm1) or self.vs_cm1[0] != vs_cm1[0] or self.vs_cm1[1] != vs_cm1[1]) :
             debugger.print(self.settings['Legend'],'get_results recalculating')
             self.refresh()
             self.calculate(vs_cm1)

@@ -70,8 +70,8 @@ class PowderScenarioTab(ScenarioTab):
         self.direction = np.array([0,0,0])
         self.depolarisation = np.array([0,0,0])
         self.scenarioIndex = None
-        self.requireRefresh = True
-        self.requireCalculate = False
+        self.refreshRequired = True
+        self.calculationRequired = False
         self.reader = None
         self.realPermittivity = []
         self.imagPermittivity = []
@@ -340,22 +340,22 @@ class PowderScenarioTab(ScenarioTab):
 
     def on_h_sb_changed(self,value):
         debugger.print(self.settings['Legend'],'on_h_sb_changed', value)
-        self.requireRefresh = True
+        self.refreshRequired = True
         self.settings['Unique direction - h'] = value
 
     def on_k_sb_changed(self,value):
         debugger.print(self.settings['Legend'],'on_k_sb_changed', value)
-        self.requireRefresh = True
+        self.refreshRequired = True
         self.settings['Unique direction - k'] = value
 
     def on_l_sb_changed(self,value):
         debugger.print(self.settings['Legend'],'on_l_sb_changed', value)
-        self.requireRefresh = True
+        self.refreshRequired = True
         self.settings['Unique direction - l'] = value
 
     def on_shape_cb_activated(self,index):
         debugger.print(self.settings['Legend'],'on shape cb activated', index)
-        self.requireRefresh = True
+        self.refreshRequired = True
         self.settings['Particle shape'] = self.shapes[index]
         if self.settings['Particle shape'] == 'Sphere':
             self.settings['Unique direction - h'] = 0
@@ -365,7 +365,7 @@ class PowderScenarioTab(ScenarioTab):
 
     def on_methods_cb_activated(self,index):
         debugger.print(self.settings['Legend'],'on methods cb activated', index)
-        self.requireRefresh = True
+        self.refreshRequired = True
         self.settings['Effective medium method'] = self.methods[index]
         if self.settings['Effective medium method'] == 'Mie':
             self.settings['Particle shape'] = 'Sphere'
@@ -382,7 +382,7 @@ class PowderScenarioTab(ScenarioTab):
 
     def on_mf_sb_changed(self,value):
         debugger.print(self.settings['Legend'],'on mass fraction line edit changed', value)
-        self.requireRefresh = True
+        self.refreshRequired = True
         self.settings['Mass or volume fraction'] = 'mass'
         self.settings['Mass fraction'] =  value/100.0
         self.update_vf_sb()
@@ -411,27 +411,27 @@ class PowderScenarioTab(ScenarioTab):
 
     def on_aoverb_sb_changed(self,value):
         debugger.print(self.settings['Legend'],'on_aoverb_le_changed',value)
-        self.requireRefresh = True
+        self.refreshRequired = True
         self.settings['Ellipsoid a/b'] = value
 
     def on_legend_le_changed(self,text):
         debugger.print(self.settings['Legend'],'on legend change', text)
-        self.requireRefresh = True
+        self.refreshRequired = True
         self.settings['Legend'] = text
 
     def on_sigma_sb_changed(self,value):
         debugger.print(self.settings['Legend'],'on sigma line edit changed', value)
-        self.requireRefresh = True
+        self.refreshRequired = True
         self.settings['Particle size distribution sigma(mu)'] = value
 
     def on_size_sb_changed(self,value):
         debugger.print(self.settings['Legend'],'on size line edit changed', value)
-        self.requireRefresh = True
+        self.refreshRequired = True
         self.settings['Particle size(mu)'] = value
 
     def on_vf_sb_changed(self,value):
         debugger.print(self.settings['Legend'],'on volume fraction line edit changed', value)
-        self.requireRefresh = True
+        self.refreshRequired = True
         self.settings['Mass or volume fraction'] = 'volume'
         self.settings['Volume fraction'] = value/100.0
         self.update_mf_sb()
@@ -455,7 +455,7 @@ class PowderScenarioTab(ScenarioTab):
     def on_matrix_cb_activated(self,index):
         debugger.print(self.settings['Legend'],'on matrix combobox activated', index)
         debugger.print(self.settings['Legend'],'on matrix combobox activated', self.matrix_cb.currentText())
-        self.requireRefresh = True
+        self.refreshRequired = True
         matrix = self.matrix_cb.currentText()
         self.matrix_cb.blockSignals(True)
         self.density_sb.blockSignals(True)
@@ -486,7 +486,7 @@ class PowderScenarioTab(ScenarioTab):
             self.update_vf_sb()
             self.update_mf_sb()
         debugger.print(self.settings['Legend'],'on density line edit changed', value)
-        self.requireRefresh = True
+        self.refreshRequired = True
 
     def on_bubble_vf_sb_changed(self,value):
         self.settings['Bubble volume fraction'] = value/100.0
@@ -495,32 +495,32 @@ class PowderScenarioTab(ScenarioTab):
         else:
             self.update_vf_sb()
         debugger.print(self.settings['Legend'],'on bubble volume fraction changed', value)
-        self.requireRefresh = True
+        self.refreshRequired = True
 
     def on_bubble_radius_sb_changed(self,value):
         self.settings['Bubble radius'] = value
         debugger.print(self.settings['Legend'],'on permittivity line edit changed', value)
-        self.requireRefresh = True
+        self.refreshRequired = True
 
     def on_permittivity_sb_changed(self,value):
         self.settings['Matrix permittivity'] = value
         debugger.print(self.settings['Legend'],'on permittivity line edit changed', value)
-        self.requireRefresh = True
+        self.refreshRequired = True
 
     def on_atr_index_sb_changed(self,value):
         self.settings['ATR material refractive index'] = value
         debugger.print(self.settings['Legend'],'on atr index line edit changed', value)
-        self.requireRefresh = True
+        self.refreshRequired = True
 
     def on_atr_incident_ang_sb_changed(self,value):
         self.settings['ATR theta'] = value
         debugger.print(self.settings['Legend'],'on atr incident angle line edit changed', value)
-        self.requireRefresh = True
+        self.refreshRequired = True
 
     def on_atr_spolfrac_sb_changed(self,value):
         self.settings['ATR S polarisation fraction'] = value
         debugger.print(self.settings['Legend'],'on atr spolfraction line edit changed', value)
-        self.requireRefresh = True
+        self.refreshRequired = True
 
     def change_greyed_out(self):
         # Have a look through the settings and see if we need to grey anything out
@@ -591,8 +591,8 @@ class PowderScenarioTab(ScenarioTab):
     def calculate(self, vs_cm1):
         """Calculate the powder absorption for the range of frequencies in vs_cm1"""
         # Only allow a calculation if the plottingTab is defined
-        if not self.requireCalculate:
-            debugger.print(self.settings['Legend'],'calculate - immediate return because requireCalculate false')
+        if not self.calculationRequired:
+            debugger.print(self.settings['Legend'],'calculate - immediate return because calculationRequired false')
             return None
         if self.notebook.plottingTab is None:
             debugger.print(self.settings['Legend'],'calculate - immediate return because plottingTab unavailable')
@@ -665,7 +665,7 @@ class PowderScenarioTab(ScenarioTab):
              self.vs_cm1.append(v)
         pool.close()
         pool.join()
-        self.requireCalculate = False
+        self.calculationRequired = False
         debugger.print(self.settings['Legend'],'calculate finished')
         QCoreApplication.processEvents()
 
@@ -691,7 +691,7 @@ class PowderScenarioTab(ScenarioTab):
     def get_results(self, vs_cm1):
         """Return the results of the effective medium theory calculation"""
         debugger.print(self.settings['Legend'],'get_results', len(vs_cm1))
-        if len(vs_cm1) > 0 and ( self.requireRefresh or len(self.vs_cm1) != len(vs_cm1) or self.vs_cm1[0] != vs_cm1[0] or self.vs_cm1[1] != vs_cm1[1] ) :
+        if len(vs_cm1) > 0 and ( self.refreshRequired or len(self.vs_cm1) != len(vs_cm1) or self.vs_cm1[0] != vs_cm1[0] or self.vs_cm1[1] != vs_cm1[1] ) :
             debugger.print(self.settings['Legend'],'get_results recalculating')
             self.refresh()
             self.calculate(vs_cm1)
@@ -702,12 +702,12 @@ class PowderScenarioTab(ScenarioTab):
 
 
     def refresh(self,force=False):
-        if not self.requireRefresh and not force:
-            debugger.print(self.settings['Legend'],'refresh aborted', self.requireRefresh,force)
+        if not self.refreshRequired and not force:
+            debugger.print(self.settings['Legend'],'refresh aborted', self.refreshRequired,force)
             return
         debugger.print(self.settings['Legend'],'refresh, force =', force)
         # Force a recalculation
-        self.requireCalculate = True
+        self.calculationRequired = True
         # First see if we can get the reader from the mainTab
         self.reader = self.notebook.mainTab.reader
         #
@@ -749,5 +749,5 @@ class PowderScenarioTab(ScenarioTab):
         #
         for w in self.findChildren(QWidget):
             w.blockSignals(False)
-        self.requireRefresh = False
+        self.refreshRequired = False
         return

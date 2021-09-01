@@ -21,7 +21,7 @@ class ViewerTab(QWidget):
         global debugger
         debugger = Debug(debug,'ViewerTab')
         self.debug = debug
-        self.requireRefresh = True
+        self.refreshRequired = True
         self.setWindowTitle('Viewer')
         self.selected_mode = 0
         self.settings = {}
@@ -311,21 +311,21 @@ class ViewerTab(QWidget):
         a,b,c = self.settings['Super Cell']
         a = newa
         self.settings['Super Cell'] =  [ a, b, c ]
-        self.requireRefresh = True
+        self.refreshRequired = True
         self.refresh()
 
     def on_super_cell_changed_b(self,newb):
         a,b,c = self.settings['Super Cell']
         b = newb
         self.settings['Super Cell'] =  [ a, b, c ]
-        self.requireRefresh = True
+        self.refreshRequired = True
         self.refresh()
 
     def on_super_cell_changed_c(self,newc):
         a,b,c = self.settings['Super Cell']
         c = newc
         self.settings['Super Cell'] =  [ a, b, c ]
-        self.requireRefresh = True
+        self.refreshRequired = True
         self.refresh()
 
     def on_coloured_element_clicked(self,boolean):
@@ -338,7 +338,7 @@ class ViewerTab(QWidget):
         colour = colourChooser.currentColor()
         rgba = [ colour.red(), colour.green(), colour.blue(), colour.alpha() ]
         self.element_colours[text] = rgba
-        self.requireRefresh = True
+        self.refreshRequired = True
         self.refresh()
 
     def on_coloured_button_clicked(self,boolean):
@@ -358,7 +358,7 @@ class ViewerTab(QWidget):
             self.settings['Bond colour'] = rgba
         elif text == 'Arrows':
             self.settings['Arrow colour'] = rgba
-        self.requireRefresh = True
+        self.refreshRequired = True
         self.refresh()
 
 
@@ -489,7 +489,7 @@ class ViewerTab(QWidget):
             self.opengl_widget.addArrows( self.settings['Arrow colour'],self.settings['Arrow radius'], uvw, arrow_scaling )
         self.opengl_widget.setRotationCentre( centreOfMassXYZ )
         self.opengl_widget.setImageSize()
-        self.requireRefresh = False
+        self.refreshRequired = False
         QApplication.restoreOverrideCursor()
         return
 
@@ -591,10 +591,13 @@ class ViewerTab(QWidget):
         self.opengl_widget.update()
         return
 
+    def requestRefresh(self):
+        self.refreshRequired = True
+
     def refresh(self,force=False):
         debugger.print('refresh')
-        if not self.requireRefresh and not force:
-            debugger.print('refresh aborted',self.requireRefresh,force)
+        if not self.refreshRequired and not force:
+            debugger.print('refresh aborted',self.refreshRequired,force)
             return
         debugger.print('refresh widget',force)
         QApplication.setOverrideCursor(Qt.WaitCursor)

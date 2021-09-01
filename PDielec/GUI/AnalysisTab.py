@@ -30,7 +30,7 @@ class AnalysisTab(QWidget):
         self.settings['Covalent radius scaling'] = 1.1
         self.settings['Bonding tolerance'] = 0.1
         self.settings['Bar width'] = 0.5
-        self.requireRefresh = True
+        self.refreshRequired = True
         self.plot_types = ['Internal vs External','Molecular Composition']
         self.plot_type_index = 0
         self.number_of_molecules = 0
@@ -232,14 +232,14 @@ class AnalysisTab(QWidget):
     def on_scale_changed(self,value):
         debugger.print('on scale_le changed ', value)
         self.settings['Covalent radius scaling'] = value
-        self.requireRefresh = True
+        self.refreshRequired = True
         self.calculate()
         self.plot()
 
     def on_tolerance_changed(self,value):
         debugger.print('on_tolerance_le changed ', value)
         self.settings['Bonding tolerance'] = value
-        self.requireRefresh = True
+        self.refreshRequired = True
         self.calculate()
         self.plot()
 
@@ -266,9 +266,12 @@ class AnalysisTab(QWidget):
         if vmax > vmin:
             self.plot()
 
+    def requestRefresh(self):
+        self.refreshRequired = True
+
     def refresh(self, force=False):
-        if not self.requireRefresh and not force:
-            debugger.print('return with no refresh', self.requireRefresh, force)
+        if not self.refreshRequired and not force:
+            debugger.print('return with no refresh', self.refreshRequired, force)
             return
         debugger.print('Refreshing widget')
         #
@@ -377,7 +380,7 @@ class AnalysisTab(QWidget):
         # if self.notebook.spreadsheet is not None:
         #     self.writeSpreadsheet()
         # Flag that a recalculation is not needed
-        self.requireRefresh = False
+        self.refreshRequired = False
         QApplication.restoreOverrideCursor()
 
     def plot(self):

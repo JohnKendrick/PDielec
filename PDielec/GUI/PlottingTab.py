@@ -199,34 +199,34 @@ class PlottingTab(QWidget):
         #debugger.print('Calling plot() from initialiser')
         #self.plot()
 
-    def setRefreshRequest(self):
-        debugger.print('setRefreshRequest')
+    def requestRefresh(self):
+        debugger.print('requestRefresh')
         self.refreshRequired
         return
 
     def requestScenarioRefresh(self):
         debugger.print('requestScenarioRefresh')
-        self.notebook.settingsTab.setRefreshRequest()
+        self.notebook.settingsTab.requestRefresh()
         for scenario in self.notebook.scenarios:
-            scenario.setRefreshRequest()
+            scenario.requestRefresh()
 
     def on_vinc_changed(self,value):
         self.settings['Frequency increment'] = value
-        self.notebook.fitterTab.refreshRequired = True
+        self.notebook.fitterTab.requestRefresh()
         self.refreshRequired = True
         self.requestScenarioRefresh()
         debugger.print('on vinc change ', self.settings['Frequency increment'])
 
     def on_vmin_changed(self):
         self.settings['Minimum frequency'] = self.vmin_sb.value()
-        self.notebook.fitterTab.refreshRequired = True
+        self.notebook.fitterTab.requestRefresh()
         self.refreshRequired = True
         self.requestScenarioRefresh()
         debugger.print('on vmin change ', self.settings['Minimum frequency'])
 
     def on_vmax_changed(self):
         self.settings['Maximum frequency'] = self.vmax_sb.value()
-        self.notebook.fitterTab.refreshRequired = True
+        self.notebook.fitterTab.requestRefresh()
         self.refreshRequired = True
         self.requestScenarioRefresh()
         debugger.print('on vmax change ', self.settings['Maximum frequency'])
@@ -279,14 +279,14 @@ class PlottingTab(QWidget):
         self.settings['concentration'] = 1000.0 / (avogadro_si * self.reader.volume * 1.0e-24 * self.settings['Number of atoms'] / self.reader.nions)
         debugger.print('The concentration has been set', self.settings['Molar definition'], self.settings['concentration'])
         self.refreshRequired = True
-        self.notebook.fitterTab.refreshRequired = True
+        self.notebook.fitterTab.requestRefresh()
         self.plot()
 
     def on_plot_type_cb_activated(self, index):
         self.settings['Plot type'] = self.plot_type_cb.currentText()
         debugger.print('Changed plot type to ', self.settings['Plot type'])
         self.refreshRequired = True
-        self.notebook.fitterTab.refreshRequired = True
+        self.notebook.fitterTab.requestRefresh()
         self.plot()
 
     def on_funits_cb_activated(self, index):
@@ -295,7 +295,7 @@ class PlottingTab(QWidget):
         else:
             self.frequency_units = 'THz'
         self.refreshRequired = True
-        self.notebook.fitterTab.refreshRequired = True
+        self.notebook.fitterTab.requestRefresh()
         self.plot()
         debugger.print('Frequency units changed to ', self.frequency_units)
 
@@ -304,7 +304,7 @@ class PlottingTab(QWidget):
         self.settings['Molar definition'] = self.molar_definitions[index]
         self.set_concentrations()
         self.refreshRequired = True
-        self.notebook.fitterTab.refreshRequired = True
+        self.notebook.fitterTab.requestRefresh()
         self.plot()
         debugger.print('The concentration has been set', self.settings['Molar definition'], self.settings['concentration'])
 

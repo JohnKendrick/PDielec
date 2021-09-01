@@ -177,7 +177,20 @@ class MainTab(QWidget):
         debugger.print('on_script_button clicked')
         self.directory = os.path.dirname(self.settings['Output file name'])
         debugger.print('on_script_button clicked, directory=',self.directory)
-        self.notebook.print_settings(filename=os.path.join(self.directory,self.settings['Script file name']))
+        filename=os.path.join(self.directory,self.settings['Script file name'])
+        if os.path.exists(filename):
+            debugger.print('Script file already exists',self.directory)
+            if self.notebook.overwriting:
+                debugger.print('Overwriting existing script anyway',filename)
+                self.notebook.print_settings(filename=filename)
+            else:
+                answer = QMessageBox.question(self,'','Script file already exists.  Continue?', QMessageBox.Yes | QMessageBox.No)
+                if answer == QMessageBox.Yes:
+                    debugger.print('Overwriting existing script',filename)
+                    self.notebook.print_settings(filename=filename)
+        else:
+            debugger.print('Creating a new script',filename)
+            self.notebook.print_settings(filename=filename)
 
     def open_excel_spreadsheet(self):
         debugger.print('open_spreadsheet clicked')
@@ -289,36 +302,36 @@ class MainTab(QWidget):
         for f in self.frequencies_cm1:
             self.frequencies_window.addItem('{0:.3f}'.format(f))
         # tell the settings tab to update the widgets that depend on the contents of the reader
-        debugger.print('processing a return')
+        debugger.print('processing a return in reading the output file')
         if self.notebook.settingsTab is not None:
             debugger.print('about to refresh settings')
             # There is a subtle problem with the sigmas, they need to be reset on reading a new file
             self.notebook.settingsTab.sigmas_cm1 = []
-            self.notebook.settingsTab.refresh(force=True)
+            self.notebook.settingsTab.requestRefresh()
         # Update any scenarios
         if self.notebook.scenarios is not None:
             debugger.print('about to refresh scenarios')
             debugger.print('notebook has {} scenarios'.format(len(self.notebook.scenarios)))
             for tab in self.notebook.scenarios:
-                tab.refresh(force=True)
+                tab.requestRefresh()
         else:
             debugger.print('notebook has no scenarios yet')
         # Update the plotting tab
         if self.notebook.plottingTab is not None:
             debugger.print('about to refresh plottingtab')
-            self.notebook.plottingTab.refresh(force=True)
+            self.notebook.plottingTab.requestRefresh()
         else:
             debugger.print('notebook has no plotting tab yet')
         # Update the analysis tab
         if self.notebook.analysisTab is not None:
             debugger.print('about to refresh analysisTab')
-            self.notebook.analysisTab.refresh(force=True)
+            self.notebook.analysisTab.requestRefresh()
         else:
             debugger.print('notebook has no analysis tab yet')
         # Update the viewer tab
         if self.notebook.viewerTab is not None:
             debugger.print('about to refresh viewerTab')
-            self.notebook.viewerTab.refresh(force=True)
+            self.notebook.viewerTab.requestRefresh()
         else:
             debugger.print('notebook has no viewer tab yet')
         # Update the fitter tab
@@ -326,7 +339,7 @@ class MainTab(QWidget):
             # There is a subtle problem with the modes that are to be fitted, they need resetting
             self.notebook.fitterTab.modes_fitted = []
             debugger.print('about to refresh fitterTab')
-            self.notebook.fitterTab.refresh(force=True)
+            self.notebook.fitterTab.requestRefresh()
         else:
             debugger.print('notebook has no fitter tab yet')
 
@@ -342,22 +355,32 @@ class MainTab(QWidget):
         debugger.print('on scriptsfile changed', text)
         text = self.scriptsfile_le.text()
         self.settings['Script file name'] = text
-        self.calculationRequired = True
 
     def on_resultsfile_le_changed(self, text):
         debugger.print('on resultsfile changed', text)
         text = self.resultsfile_le.text()
         self.settings['Excel file name'] = text
-        self.calculationRequired = True
 
-    def openSpreadSheet(self,text):
+    def openSpreadSheet(self,filename):
+        debugger.print('openSpreadSheet', filename)
         if self.notebook.spreadsheet is not None:
             self.notebook.spreadsheet.close()
-        if text[-5:] == '.xlsx':
-            self.notebook.spreadsheet = SpreadSheetManager(text)
-            self.calculationRequired = True
+        if filename[-5:] == '.xlsx':
+            if os.path.exists(filename):
+                debugger.print('Spreadsheet file already exists',self.directory)
+                if self.notebook.overwriting:
+                    debugger.print('Overwriting existing spreadsheet anyway',filename)
+                    self.notebook.spreadsheet = SpreadSheetManager(filename)
+                else:
+                    answer = QMessageBox.question(self,'','Spreadsheet already exists.  Continue?', QMessageBox.Yes | QMessageBox.No)
+                    if answer == QMessageBox.Yes:
+                        debugger.print('Overwriting existing spreadsheet',filename)
+                        self.notebook.spreadsheet = SpreadSheetManager(filename)
+            else:
+                debugger.print('Creating a new spreadsheet',filename)
+                self.notebook.spreadsheet = SpreadSheetManager(filename)
         else:
-           print('spreadsheet name not valid', text)
+           print('spreadsheet name not valid', filename)
 
     def on_file_le_return(self):
         debugger.print('on file return ', self.file_le.text())
@@ -408,6 +431,9 @@ class MainTab(QWidget):
             self.hessian_symmetry_cb.setEnabled(False)
         self.calculationRequired = True
 
+    def requestRefresh(self):
+        self.refreshRequired = True
+
     def refresh(self,force=False):
         debugger.print('refresh', force)
         if not self.refreshRequired and not force:
@@ -448,8 +474,10 @@ class MainTab(QWidget):
             self.hessian_symmetry_cb.setEnabled(False)
         self.file_le.setText(self.settings['Output file name'])
         self.resultsfile_le.setText(self.settings['Excel file name'])
-        # JK self.on_calculation_button_clicked()
-        self.open_excel_spreadsheet()
+        if self.calculationRequired:
+            debugger.print('on_calculation_button_clicked called from MainTab.refresh()')
+            self.on_calculation_button_clicked()
+        # self.open_excel_spreadsheet()
         self.refreshRequired = False
         #
         # UnBlock signals

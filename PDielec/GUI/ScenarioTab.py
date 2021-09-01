@@ -10,7 +10,7 @@ class ScenarioTab(QWidget):
         global debugger
         debugger = Debug(debug,'ScenarioTab:')
         debugger.print('In the initialiser')
-        self.requireRefresh = True
+        self.refreshRequired = True
         self.settings = {}
         self.notebook = parent
         self.settings['Legend'] = 'Unset'
@@ -18,13 +18,13 @@ class ScenarioTab(QWidget):
         self.settings['Scenario type'] = 'Unset'
         self.vs_cm1 = [0, 0]
 
-    def setRefreshRequest(self):
-        self.requireRefresh = True
-        debugger.print('setRefreshRequest')
+    def requestRefresh(self):
+        self.refreshRequired = True
+        debugger.print('requestRefresh')
         return
 
     def set_reader(self,reader):
-        self.requireRefresh = True
+        self.refreshRequired = True
         self.reader = reader
 
     def setScenarioIndex(self,index):
@@ -44,7 +44,7 @@ class ScenarioTab(QWidget):
 
     def on_legend_le_changed(self,text):
         debugger.print('on legend change', text)
-        self.requireRefresh = True
+        self.refreshRequired = True
         self.settings['Legend'] = text
 
     def  add_scenario_buttons(self):
