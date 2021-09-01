@@ -31,11 +31,6 @@ def main():
     for token in sys.argv:
         if token == '-nosplash' or token == '--nosplash':
             show_splash = False
-        elif token == '-h' or token == '-help' or token == '--help':
-            print('pdgui - graphical user interface to the PDielec package')
-            print('pdgui [-help] [-debug] [program] filename [spreadsheet] [-script scriptname] [-scenario powder|crystal] [-nosplash] [-threads] [-cpus ncpus] [-version] [-exit]')
-            print('      Version ',version)
-            exit()
         elif token == '-v' or token == '-version' or token == '--version':
             print('Version ',version)
             exit()
