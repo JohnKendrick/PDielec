@@ -22,6 +22,7 @@ class NoteBook(QWidget):
         super(QWidget, self).__init__(parent)
         global debugger
         debugger = Debug(debug,'NoteBook:')
+        debugger.print('Initialising')
         self.reader = None
         self.progressbars=[progressbar]
         if progressbar is None:
@@ -123,6 +124,7 @@ class NoteBook(QWidget):
         # Add the tab widget
         self.layout.addWidget(self.tabs)
         self.setLayout(self.layout)
+        debugger.print('Exiting initialisation ')
         return
 
     def requestRefresh(self):
@@ -334,6 +336,7 @@ class NoteBook(QWidget):
             return
         #       Number of tabs
         ntabs = 2 + len(self.scenarios) + 4
+        debugger.print('Number of tabs',ntabs)
         if tabindex == ntabs-1:
             # fitter tab
             debugger.print('Calling fitterTab refresh')
@@ -350,6 +353,7 @@ class NoteBook(QWidget):
             # plottings tab
             debugger.print('Calling plottingTab refresh')
             self.plottingTab.refresh()
+        debugger.print('Exiting on_tabs_currentChanged()')
         #jk self.old_tab_index = tabindex
 
     def keyPressEvent(self, e):
