@@ -217,7 +217,7 @@ class NoteBook(QWidget):
         print('#',file=fd)
         print('#',file=fd)
         if new_scenario:
-            print('self.notebook.addScenario(scenarioType=\"'+self.scenarios[0].scenarioType+'\")',file=fd )
+            print('self.notebook.addScenario(scenarioType=\"'+tab.scenarioType+'\")',file=fd )
         print('tab = self.notebook.'+title,file=fd)
         for item in tab.settings:
             if item == 'Optical permittivity' and not tab.settings['Optical permittivity edited']:
