@@ -178,6 +178,7 @@ class SettingsTab(QWidget):
         self.set_masses_tw()
         self.refreshRequired = True
         self.calculationRequired = True
+        self.refresh()
 
     def createIntensityTable(self):
         debugger.print('createIntensityTable')
@@ -271,6 +272,7 @@ class SettingsTab(QWidget):
         debugger.print('requestRefresh')
         self.refreshRequired = True
         self.calculationRequired = True
+        self.refresh()
         return
 
     def writeSpreadsheet(self):
@@ -355,6 +357,7 @@ class SettingsTab(QWidget):
         debugger.print('on sigma change ', self.settings['Sigma value'])
         self.refreshRequired = True
         self.calculationRequired = True
+        self.refresh()
 
     def on_mass_cb_activated(self,index):
         debugger.print('on mass combobox activated', self.mass_cb.currentText())
@@ -366,6 +369,7 @@ class SettingsTab(QWidget):
         self.set_masses_tw()
         self.refreshRequired = True
         self.calculationRequired = True
+        self.refresh()
         QCoreApplication.processEvents()
 
     def set_masses_tw(self):
@@ -471,6 +475,9 @@ class SettingsTab(QWidget):
         self.mass_cb.setCurrentIndex(3)
         self.masses_dictionary[elements[col]] = float(item.text())
         debugger.print('masses_dictionary', self.masses_dictionary)
+        self.refreshRequired = True
+        self.calculationRequired = True
+        self.refresh()
 
     def on_optical_tw_itemChanged(self, item):
         debugger.print('on_optical_itemChanged)', item.row(), item.column(), item.text() )
@@ -480,6 +487,7 @@ class SettingsTab(QWidget):
         self.refresh_optical_permittivity_tw()
         self.refreshRequired = True
         self.calculationRequired = True
+        self.refresh()
         QCoreApplication.processEvents()
 
     def on_optical_tw_itemClicked(self, item):
@@ -545,6 +553,7 @@ class SettingsTab(QWidget):
         self.refresh_optical_permittivity_tw()
         self.refreshRequired = True
         self.calculationRequired = True
+        self.refresh()
         QCoreApplication.processEvents()
 
     def on_born_changed(self):
@@ -553,6 +562,7 @@ class SettingsTab(QWidget):
         debugger.print('on born change ', self.settings['Neutral Born charges'])
         self.refreshRequired = True
         self.calculationRequired = True
+        self.refresh()
         QCoreApplication.processEvents()
 
     def on_eckart_changed(self):
@@ -561,6 +571,7 @@ class SettingsTab(QWidget):
         debugger.print('on eckart change ', self.settings['Eckart flag'])
         self.refreshRequired = True
         self.calculationRequired = True
+        self.refresh()
         QCoreApplication.processEvents()
 
     def calculate(self,vs_cm1):
@@ -591,7 +602,7 @@ class SettingsTab(QWidget):
     def get_crystal_permittivity(self,vs_cm1):
         """Return the crystal permittivity"""
         debugger.print('get_crystal_permittivity', self.refreshRequired)
-        if self.refreshRequired or  ( len(self.vs_cm1) != len(vs_cm1) ) or ( self.vs_cm1[0] != vs_cm1[0] ) or ( self.vs_cm1[1] != vs_cm1[1] ) :
+        if self.calculationRequired or self.refreshRequired or  ( len(self.vs_cm1) != len(vs_cm1) ) or ( self.vs_cm1[0] != vs_cm1[0] ) or ( self.vs_cm1[1] != vs_cm1[1] ) :
             debugger.print('get_crystal_permittivity refreshing and recalculating' )
             self.refresh()
             self.calculate(vs_cm1)
