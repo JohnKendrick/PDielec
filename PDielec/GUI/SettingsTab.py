@@ -496,7 +496,6 @@ class SettingsTab(QWidget):
         QCoreApplication.processEvents()
 
     def refresh(self, force=False):
-        # Refresh the widgets that depend on the reader
         if not self.reader and self.notebook.reader:
             self.refreshRequired = True
         debugger.print('refresh ',force)
@@ -533,6 +532,10 @@ class SettingsTab(QWidget):
             w.blockSignals(False)
         self.createIntensityTable()
         self.refreshRequired = False
+        # Refresh the scenarios that depend on this dielectric
+        if self.notebook.scenarios is not None:
+            for scenario in self.notebook.scenarios:
+                scenario.requestRefresh()
         QCoreApplication.processEvents()
 
     def refresh_optical_permittivity_tw(self):
