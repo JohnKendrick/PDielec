@@ -23,7 +23,7 @@ class ViewerTab(QWidget):
         self.debug = debug
         self.refreshRequired = True
         self.setWindowTitle('Viewer')
-        self.selected_mode = 0
+        self.selected_mode = 4
         self.settings = {}
         self.UVW = deque()
         self.settings['Atom scaling'] = 0.5
@@ -65,12 +65,13 @@ class ViewerTab(QWidget):
         form = QFormLayout()
         #
         # The selected mode
+        # Mode numbering starts at 1
         #
         self.selected_mode_sb = QSpinBox(self)
         if self.frequencies_cm1 is not None:
-            self.selected_mode_sb.setRange(0,len(self.frequencies_cm1)-1)
+            self.selected_mode_sb.setRange(1,len(self.frequencies_cm1))
         else:
-            self.selected_mode_sb.setRange(0,2000)
+            self.selected_mode_sb.setRange(1,2000)
         self.selected_mode_sb.setValue(self.selected_mode)
         self.selected_mode_sb.setToolTip('Set the mode to be visualised')
         self.selected_mode_sb.valueChanged.connect(self.on_selected_mode_changed)
@@ -408,14 +409,14 @@ class ViewerTab(QWidget):
         debugger.print('on_selected_mode_changed')
         self.selected_mode = self.selected_mode_sb.value()
         debugger.print('on selected_mode change ', self.selected_mode)
-        self.frequency_le.setText('{:.5f}'.format(self.notebook.settingsTab.frequencies_cm1[self.selected_mode]))
+        self.frequency_le.setText('{:.5f}'.format(self.notebook.settingsTab.frequencies_cm1[self.selected_mode-1]))
         self.opengl_widget.deleteArrows()
-        maxR = np.max( np.abs(np.array(self.UVW[self.selected_mode])))
+        maxR = np.max( np.abs(np.array(self.UVW[self.selected_mode-1])))
         if maxR < 1.0E-8:
             maxR = 1.0E-8
             self.plot_type_index = 2
         arrow_scaling = self.settings['Maximum displacement'] / maxR
-        for uvw in self.UVW[self.selected_mode]:
+        for uvw in self.UVW[self.selected_mode-1]:
             self.opengl_widget.addArrows( self.settings['Arrow colour'],self.settings['Arrow radius'], uvw, arrow_scaling )
         self.calculate()
         self.plot()
@@ -444,7 +445,7 @@ class ViewerTab(QWidget):
         # Assemble the settingsTab settings
         settings = self.notebook.settingsTab.settings
         self.frequencies_cm1 = self.notebook.settingsTab.frequencies_cm1
-        self.selected_mode_sb.setRange(0,len(self.frequencies_cm1)-1)
+        self.selected_mode_sb.setRange(1,len(self.frequencies_cm1))
         # Get the cell with whole molecules from the analysis tab
         self.unit_cell = self.notebook.analysisTab.cell_of_molecules
         # Generate a super cell
@@ -479,13 +480,13 @@ class ViewerTab(QWidget):
         # CalculatePhasePositions stores all the sphere and bond information
         self.calculatePhasePositions()
         # Add the arrows
-        maxR = np.max( np.abs(np.array(self.UVW[self.selected_mode])))
+        maxR = np.max( np.abs(np.array(self.UVW[self.selected_mode-1])))
         if maxR < 1.0E-8:
             maxR = 1.0E-8
             self.plot_type_index = 2
         arrow_scaling = self.settings['Maximum displacement'] / maxR
         self.opengl_widget.deleteArrows()
-        for uvw in self.UVW[self.selected_mode]:
+        for uvw in self.UVW[self.selected_mode-1]:
             self.opengl_widget.addArrows( self.settings['Arrow colour'],self.settings['Arrow radius'], uvw, arrow_scaling )
         self.opengl_widget.setRotationCentre( centreOfMassXYZ )
         self.opengl_widget.setImageSize()
@@ -510,7 +511,7 @@ class ViewerTab(QWidget):
         # we need the number of phase steps to be odd
         if self.settings['Number of phase steps']%2 == 0:
             self.settings['Number of phase steps'] += 1
-        UVW = np.array( self.UVW[self.selected_mode] )
+        UVW = np.array( self.UVW[self.selected_mode-1] )
         maxR = np.amax(np.abs(UVW))
         if maxR < 1.0E-8:
             maxR = 1.0E-8
@@ -555,7 +556,7 @@ class ViewerTab(QWidget):
         phases = np.arange(-1.0, 1.0+delta-1.0E-10, delta)
         with open(filename,'w') as fd:
             for phase_index,phase in enumerate(phases):
-                description = 'mode_'+str(self.selected_mode)+'_phase_'+str(phase)
+                description = 'mode_'+str(self.selected_mode-1)+'_phase_'+str(phase)
                 unitcell.set_xyz_coordinates(self.newXYZ[phase_index])
                 unitcell.write_cif(description,file_=fd)
 
@@ -608,7 +609,7 @@ class ViewerTab(QWidget):
             w.blockSignals(True)
         self.selected_mode_sb.setValue(self.selected_mode)
         try:
-            self.frequency_le.setText('{:.5f}'.format(self.notebook.settingsTab.frequencies_cm1[self.selected_mode]))
+            self.frequency_le.setText('{:.5f}'.format(self.notebook.settingsTab.frequencies_cm1[self.selected_mode-1]))
         except:
             self.frequency_le.setText('{:.5f}'.format(0.0))
         self.atom_scaling_sb.setValue(self.settings['Atom scaling'])
