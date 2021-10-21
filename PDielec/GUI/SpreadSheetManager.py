@@ -73,4 +73,7 @@ class SpreadSheetManager():
         self.max_row[self.name] = 0
 
     def close(self):
-        self.workbook.close()
+        try:
+            self.workbook.close()
+        except:
+            pass
