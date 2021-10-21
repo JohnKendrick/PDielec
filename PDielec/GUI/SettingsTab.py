@@ -301,6 +301,10 @@ class SettingsTab(QWidget):
                sp.writeNextRow(eps[0], col=2, check=1)
                sp.writeNextRow(eps[1], col=2, check=1)
                sp.writeNextRow(eps[2], col=2, check=1)
+            elif item == 'Mass definition':
+               sp.writeNextRow([item,self.settings[item]], col=1, check=1)
+               for c in self.masses_dictionary:
+                   sp.writeNextRow([c,self.masses_dictionary[c]],col=3,check=1)
             else:
                sp.writeNextRow([item,self.settings[item]], col=1, check=1)
         sp.writeNextRow([''], col=1)
@@ -536,7 +540,14 @@ class SettingsTab(QWidget):
         if self.notebook.scenarios is not None:
             for scenario in self.notebook.scenarios:
                 scenario.requestRefresh()
+        if self.notebook.plottingTab is not None:
+            self.notebook.plottingTab.requestRefresh()
+        if self.notebook.analysisTab is not None:
+            self.notebook.analysisTab.requestRefresh()
+        if self.notebook.fitterTab is not None:
+            self.notebook.fitterTab.requestRefresh()
         QCoreApplication.processEvents()
+        self.refreshRequired = False
 
     def refresh_optical_permittivity_tw(self):
         debugger.print('refresh_optical_permittivity')
