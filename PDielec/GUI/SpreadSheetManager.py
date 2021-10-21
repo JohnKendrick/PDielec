@@ -3,6 +3,7 @@ class SpreadSheetManager():
     def __init__(self, filename):
         # Manage a spread sheet for PDielec / PDGui
         self.workbook = xlsx.Workbook(filename)
+        self.closed = False
         self.tab_names = ['Main', 'Settings', 'Scenarios',
                 'Powder Molar Absorption (cells)',
                 'Powder Molar Absorption (atoms)',
@@ -73,7 +74,6 @@ class SpreadSheetManager():
         self.max_row[self.name] = 0
 
     def close(self):
-        try:
+        if not self.closed:
             self.workbook.close()
-        except:
-            pass
+        self.closed = True
