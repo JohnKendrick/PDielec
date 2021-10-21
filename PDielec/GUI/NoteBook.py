@@ -1,10 +1,12 @@
 import sys
 import copy
 import psutil
+import os
 from PyQt5.QtWidgets                      import  QWidget, QTabWidget
 from PyQt5.QtWidgets                      import  QVBoxLayout
 from PyQt5.QtWidgets                      import  QApplication
 from PyQt5.QtWidgets                      import  QFileDialog
+from PyQt5.QtWidgets                      import  QMessageBox
 from PyQt5.QtCore                         import  Qt
 from PDielec.GUI.MainTab                  import  MainTab
 from PDielec.GUI.SettingsTab              import  SettingsTab
@@ -15,6 +17,8 @@ from PDielec.GUI.AnalysisTab              import  AnalysisTab
 from PDielec.GUI.ViewerTab                import  ViewerTab
 from PDielec.GUI.FitterTab                import  FitterTab
 from PDielec.Utilities                    import  Debug
+from PDielec.GUI.SpreadSheetManager       import  SpreadSheetManager
+
 
 class NoteBook(QWidget):
 
@@ -222,6 +226,12 @@ class NoteBook(QWidget):
         for item in tab.settings:
             if item == 'Optical permittivity' and not tab.settings['Optical permittivity edited']:
                     pass
+            elif item == 'Mass definition':
+                print('tab.settings[\''+item+'\'] = \'{}\''.format(tab.settings[item]),file=fd)
+                # Check to see if the mass_definition is gui, if so set all the masses
+                if tab.settings[item] == 'gui':
+                    for c in tab.masses_dictionary:
+                        print('tab.masses_dictionary[\''+c+'\'] = ',tab.masses_dictionary[c],file=fd)
             else:
                 value = tab.settings[item]
                 if 'str' in str(type(value)):
@@ -321,10 +331,49 @@ class NoteBook(QWidget):
 
     def writeSpreadsheet(self):
         debugger.print('Write spreadsheet')
-        self.mainTab.writeSpreadsheet()
-        self.settingsTab.writeSpreadsheet()
-        self.analysisTab.writeSpreadsheet()
-        self.plottingTab.writeSpreadsheet()
+        self.open_excel_spreadsheet()
+        if self.spreadsheet is not None:
+            self.mainTab.writeSpreadsheet()
+            self.settingsTab.writeSpreadsheet()
+            self.analysisTab.writeSpreadsheet()
+            self.plottingTab.writeSpreadsheet()
+            self.spreadsheet.close()
+
+    def open_excel_spreadsheet(self):
+        debugger.print('open_spreadsheet clicked')
+        if len(self.mainTab.settings['Excel file name']) > 5 and self.mainTab.settings['Excel file name'][-5:] == '.xlsx':
+            self.directory = os.path.dirname(self.mainTab.settings['Output file name'])
+            # open the file name with the directory of the output file name
+            self.openSpreadSheet(os.path.join(self.directory,self.mainTab.settings['Excel file name']))
+        elif len(self.mainTab.settings['Excel file name']) > 1 and self.mainTab.settings['Excel file name'][-5:] != '.xlsx':
+            # The file isn't valid so tell the user there is a problem
+            debugger.print('open_spreadsheet spreadsheet name is not valid',self.mainTab.settings['Excel file name'])
+            QMessageBox.about(self,'Spreadsheet name','File name of spreadsheet must end in  .xlsx')
+        else:
+            debugger.print('open_spreadsheet spreadsheet name is empty')
+        return
+
+    def openSpreadSheet(self,filename):
+        debugger.print('openSpreadSheet', filename)
+        if self.spreadsheet is not None:
+            self.spreadsheet.close()
+        if filename[-5:] == '.xlsx':
+            if os.path.exists(filename):
+                debugger.print('Spreadsheet file already exists',self.directory)
+                if self.overwriting:
+                    debugger.print('Overwriting existing spreadsheet anyway',filename)
+                    self.spreadsheet = SpreadSheetManager(filename)
+                else:
+                    answer = QMessageBox.question(self,'','Spreadsheet already exists.  Continue?', QMessageBox.Yes | QMessageBox.No)
+                    if answer == QMessageBox.Yes:
+                        debugger.print('Overwriting existing spreadsheet',filename)
+                        self.spreadsheet = SpreadSheetManager(filename)
+            else:
+                debugger.print('Creating a new spreadsheet',filename)
+                self.spreadsheet = SpreadSheetManager(filename)
+        else:
+           print('spreadsheet name not valid', filename)
+
 
     def on_tabs_currentChanged(self, tabindex):
         debugger.print('Tab index changed', tabindex)
