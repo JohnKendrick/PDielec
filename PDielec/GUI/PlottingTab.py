@@ -414,10 +414,6 @@ class PlottingTab(QWidget):
 
         if len(dielecv) > 0:
             self.write_eps_results(sp, self.vs_cm1, dielecv)
-        #
-        # Close the spreadsheet
-        #
-        sp.close()
 
     def write_eps_results(self, sp, vs, dielecv):
         debugger.print('write_eps_results length vs',len(vs))
