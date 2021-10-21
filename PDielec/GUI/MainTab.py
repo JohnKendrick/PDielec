@@ -166,7 +166,6 @@ class MainTab(QWidget):
         # finalise the layout
         self.setLayout(vbox)
         QCoreApplication.processEvents()
-        self.open_excel_spreadsheet()
         # If the filename was given then force it to be read and processed
         if filename != '':
             debugger.print('Reading output file in maintab initialisation')
@@ -192,22 +191,9 @@ class MainTab(QWidget):
             debugger.print('Creating a new script',filename)
             self.notebook.print_settings(filename=filename)
 
-    def open_excel_spreadsheet(self):
-        debugger.print('open_spreadsheet clicked')
-        if len(self.settings['Excel file name']) > 5 and self.settings['Excel file name'][-5:] == '.xlsx':
-            self.directory = os.path.dirname(self.settings['Output file name'])
-            # open the file name with the directory of the output file name
-            self.openSpreadSheet(os.path.join(self.directory,self.settings['Excel file name']))
-        elif len(self.settings['Excel file name']) > 1 and self.settings['Excel file name'][-5:] != '.xlsx':
-            # The file isn't valid so tell the user there is a problem
-            QMessageBox.about(self,'Spreadsheet name','File name of spreadsheet must end in  .xlsx')
-        return
-
     def on_excel_button_clicked(self):
         debugger.print('on_excel_button clicked')
-        self.open_excel_spreadsheet()
-        if self.notebook.spreadsheet is not None:
-            self.notebook.writeSpreadsheet()
+        self.notebook.writeSpreadsheet()
         return
 
     def on_calculation_button_clicked(self):
@@ -361,27 +347,6 @@ class MainTab(QWidget):
         text = self.resultsfile_le.text()
         self.settings['Excel file name'] = text
 
-    def openSpreadSheet(self,filename):
-        debugger.print('openSpreadSheet', filename)
-        if self.notebook.spreadsheet is not None:
-            self.notebook.spreadsheet.close()
-        if filename[-5:] == '.xlsx':
-            if os.path.exists(filename):
-                debugger.print('Spreadsheet file already exists',self.directory)
-                if self.notebook.overwriting:
-                    debugger.print('Overwriting existing spreadsheet anyway',filename)
-                    self.notebook.spreadsheet = SpreadSheetManager(filename)
-                else:
-                    answer = QMessageBox.question(self,'','Spreadsheet already exists.  Continue?', QMessageBox.Yes | QMessageBox.No)
-                    if answer == QMessageBox.Yes:
-                        debugger.print('Overwriting existing spreadsheet',filename)
-                        self.notebook.spreadsheet = SpreadSheetManager(filename)
-            else:
-                debugger.print('Creating a new spreadsheet',filename)
-                self.notebook.spreadsheet = SpreadSheetManager(filename)
-        else:
-           print('spreadsheet name not valid', filename)
-
     def on_file_le_return(self):
         debugger.print('on file return ', self.file_le.text())
         # Does the file exist?
@@ -477,7 +442,6 @@ class MainTab(QWidget):
         if self.calculationRequired:
             debugger.print('on_calculation_button_clicked called from MainTab.refresh()')
             self.on_calculation_button_clicked()
-        # self.open_excel_spreadsheet()
         self.refreshRequired = False
         #
         # UnBlock signals
