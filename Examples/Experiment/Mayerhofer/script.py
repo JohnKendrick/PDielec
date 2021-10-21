@@ -12,7 +12,7 @@ tab.settings['Excel file name'] = ''
 tab.settings['Script file name'] = ''
 tab.settings['QM program'] = ''
 tab.settings['Hessian symmetrisation'] = 'symm'
-tab.refresh(force=True)
+tab.requestRefresh()
 #
 #
 tab = self.notebook.settingsTab
@@ -22,7 +22,7 @@ tab.settings['Sigma value'] =  5
 tab.settings['Mass definition'] = 'average'
 tab.settings['Optical permittivity edited'] =  False
 tab.sigmas_cm1 = [5, 5, 5, 5, 5, 5]
-tab.refresh(force=True)
+tab.requestRefresh()
 #
 #
 tab = self.notebook.scenarios[0]
@@ -40,7 +40,7 @@ tab.settings['Substrate depth'] =  999.0
 tab.settings['Film thickness'] =  100.0
 tab.settings['Mode'] = 'Thick slab'
 tab.settings['Frequency units'] = 'wavenumber'
-tab.refresh(force=True)
+tab.requestRefresh()
 #
 #
 self.notebook.addScenario(scenarioType="Single crystal")
@@ -59,7 +59,7 @@ tab.settings['Substrate depth'] =  999.0
 tab.settings['Film thickness'] =  100.0
 tab.settings['Mode'] = 'Thick slab'
 tab.settings['Frequency units'] = 'wavenumber'
-tab.refresh(force=True)
+tab.requestRefresh()
 #
 #
 self.notebook.addScenario(scenarioType="Single crystal")
@@ -78,7 +78,7 @@ tab.settings['Substrate depth'] =  999.0
 tab.settings['Film thickness'] =  100.0
 tab.settings['Mode'] = 'Thick slab'
 tab.settings['Frequency units'] = 'wavenumber'
-tab.refresh(force=True)
+tab.requestRefresh()
 #
 #
 tab = self.notebook.analysisTab
@@ -88,7 +88,7 @@ tab.settings['title'] = 'Analysis'
 tab.settings['Covalent radius scaling'] =  1.1
 tab.settings['Bonding tolerance'] =  0.1
 tab.settings['Bar width'] =  0.5
-tab.refresh(force=True)
+tab.requestRefresh()
 #
 #
 tab = self.notebook.viewerTab
@@ -103,7 +103,7 @@ tab.settings['Arrow colour'] =  [0, 255, 0, 255]
 tab.settings['Arrow radius'] =  0.07
 tab.settings['Number of phase steps'] =  41
 tab.settings['Super Cell'] =  [1, 1, 1]
-tab.refresh(force=True)
+tab.requestRefresh()
 #
 #
 tab = self.notebook.fitterTab
@@ -120,7 +120,7 @@ tab.settings['Spectral difference threshold'] =  0.05
 tab.settings['HPFilter lambda'] =  7.0
 tab.settings['Baseline removal'] =  False
 tab.settings['Scenario index'] =  0
-tab.refresh(force=True)
+tab.requestRefresh()
 #
 #
 tab = self.notebook.plottingTab
@@ -131,4 +131,4 @@ tab.settings['Molar definition'] = 'Unit cells'
 tab.settings['Number of atoms'] =  1
 tab.settings['Plot type'] = 'Crystal Reflectance (P polarisation)'
 tab.settings['concentration'] =  1660.538783162726
-tab.refresh(force=True)
+tab.requestRefresh()

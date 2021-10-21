@@ -5,6 +5,8 @@ version 7.0.1
   There is now a class which looks after dielectric permittivity information
   The sign convention for the imaginary component of the permittivity has changed - e(real)-e(imag)j
   Moved the CrystalPermittivity to the SettingsTab
+  Modified the scripting, scripts written before version 7 may not work. 
+  Modified the way masses are handled, so if the gui modifies the masses they are written out to the script.
 
 
 version 6.4.5
