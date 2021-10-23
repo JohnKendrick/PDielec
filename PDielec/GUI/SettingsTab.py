@@ -600,8 +600,9 @@ class SettingsTab(QWidget):
         self.vs_cm1 = vs_cm1.copy()
         self.CrystalPermittivity.setUnits('cm-1')
         dielectricFunction = self.CrystalPermittivity.function()
-        pool = Calculator.get_pool(self.notebook.ncpus, self.notebook.threading)
+        pool = Calculator.get_pool(self.notebook.ncpus, self.notebook.threading, debugger=debugger)
         self.crystal_permittivity = []
+        debugger.print('About to calculate settings crystal dielectric using pool')
         # Loop over the frequencies and calculate the crystal dielectric for each frequency
         for dielecv in pool.imap(dielectricFunction, vs_cm1, chunksize=40):
             self.crystal_permittivity.append(dielecv)

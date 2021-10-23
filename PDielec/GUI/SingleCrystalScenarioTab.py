@@ -357,9 +357,14 @@ class SingleCrystalScenarioTab(ScenarioTab):
             layer.set_euler(theta, phi, psi)
         # Get a pool of processors
         # Initialise each worker with the system and the angle of incidence
-        pool = Calculator.get_pool(self.notebook.ncpus, self.notebook.threading, initializer=initWorkers, initargs=(Calculator.solve_single_crystal_equations,system,angleOfIncidence) )
+        pool = Calculator.get_pool(self.notebook.ncpus, 
+                                   self.notebook.threading, 
+                                   initializer=initWorkers, 
+                                   initargs=(Calculator.solve_single_crystal_equations,system,angleOfIncidence), 
+                                   debugger=debugger )
         results = []
         # About to call
+        debugger.print(self.settings['Legend'],'About to calculate single crystal scenario using pool')
         for result in pool.map(Calculator.solve_single_crystal_equations, vs_cm1, chunksize=16):
             self.notebook.progressbars_update()
             results.append(result)
@@ -373,6 +378,7 @@ class SingleCrystalScenarioTab(ScenarioTab):
         self.p_absorbtance = []
         self.s_absorbtance = []
         self.epsilon = []
+        debugger.print(self.settings['Legend'],'About to extract results for single crystal scenario')
         for v,r,R,t,T,epsilon in results:
             self.vs_cm1.append(v)
             self.p_reflectance.append(R[0]+R[2])

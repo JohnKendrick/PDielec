@@ -18,6 +18,7 @@
 from __future__ import print_function
 import math
 import sys
+import os
 import cmath
 import random
 import numpy as np
@@ -1096,6 +1097,7 @@ def solve_effective_medium_equations( index ):
     # call_parameters is an index into the frequency and dielectric arrays
     # In the case of Bruggeman and coherent we can use the previous result to start the iteration/minimisation
     # However to do this we need some shared memory, this allocated in previous_solution_shared
+    # print('Here I am in process ',os.getpid())
     vs_cm1                   = solve_effective_medium_equations.vs_cm1
     crystal_permittivity     = solve_effective_medium_equations.crystal_permittivity
     method                   = solve_effective_medium_equations.method
@@ -1490,8 +1492,13 @@ def euler_rotation(vector, theta, phi, psi):
      result = np.matmul(euler, vector)
      return result
 
-def get_pool(ncpus, threading, initializer=None, initargs=None ):
+def get_pool(ncpus, threading, initializer=None, initargs=None, debugger=None ):
      """Return a pool of processors given the number of cpus and whether threading is requested"""
+     if debugger is not None:
+         debugger.print('get_pool ncpus = ',ncpus) 
+         debugger.print('get_pool threading = ',threading) 
+         debugger.print('get_pool initializer = ',initializer) 
+         #debugger.print('get_pool initargs = ',initargs) 
      # Switch off mkl threading
      try:
          import mkl

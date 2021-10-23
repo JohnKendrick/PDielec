@@ -643,7 +643,12 @@ class PowderScenarioTab(ScenarioTab):
         bubble_vf = self.settings['Bubble volume fraction']
         bubble_radius = self.settings['Bubble radius']
         # Get a pool of processors and initialise the workers with the 'constant' parameters
-        pool = Calculator.get_pool(self.notebook.ncpus, self.notebook.threading, initializer=initWorkers, initargs=(Calculator.solve_effective_medium_equations, vs_cm1, crystal_permittivity, method,volume_fraction,particle_size_mu,particle_sigma_mu,matrix_permittivity,shape,self.depolarisation,concentration,atr_refractive_index,atr_theta,atr_spolfraction,bubble_vf,bubble_radius,previous_solution_shared) )
+        pool = Calculator.get_pool(self.notebook.ncpus, 
+                                   self.notebook.threading, 
+                                   initializer=initWorkers, 
+                                   initargs=(Calculator.solve_effective_medium_equations, vs_cm1, crystal_permittivity, method,volume_fraction,particle_size_mu,particle_sigma_mu,matrix_permittivity,shape,self.depolarisation,concentration,atr_refractive_index,atr_theta,atr_spolfraction,bubble_vf,bubble_radius,previous_solution_shared), 
+                                   debugger=debugger )
+        debugger.print('About to use the pool to calculate effective medium equations')
         results = []
         indices = range(len(vs_cm1))
         for result in pool.imap(Calculator.solve_effective_medium_equations, indices, chunksize=32):
@@ -656,6 +661,7 @@ class PowderScenarioTab(ScenarioTab):
         self.molarAbsorptionCoefficient = []
         self.sp_atr = []
         self.vs_cm1 = []
+        debugger.print('Extracting results')
         for v,method,size_mu,size_sigma,shape,data,trace, absorption_coefficient,molar_absorption_coefficient,spatr in results:
              self.realPermittivity.append(np.real(trace))
              self.imagPermittivity.append(np.imag(trace))
@@ -668,6 +674,7 @@ class PowderScenarioTab(ScenarioTab):
         self.calculationRequired = False
         debugger.print(self.settings['Legend'],'calculate finished')
         QCoreApplication.processEvents()
+        debugger.print('Finished calculate')
 
     def get_result(self, vs_cm1, plot_type):
         """Return a particular result"""
