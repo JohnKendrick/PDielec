@@ -21,7 +21,7 @@ class PlottingTab(QWidget):
         super(QWidget, self).__init__(parent)
         global debugger
         debugger = Debug(debug,'PlottingTab')
-        debugger.print('Plotting tab initialisation')
+        debugger.print('Start:: Plotting tab initialisation')
         self.settings = {}
         self.refreshRequired = True
         self.subplot = None
@@ -196,45 +196,55 @@ class PlottingTab(QWidget):
         self.setLayout(vbox)
         QCoreApplication.processEvents()
         # Create the plot
-        #debugger.print('Calling plot() from initialiser')
         #self.plot()
+        debugger.print('Finished:: Plotting tab initialisation')
+        return
 
     def requestRefresh(self):
-        debugger.print('requestRefresh')
+        debugger.print('Start:: requestRefresh')
         self.refreshRequired
+        debugger.print('Finished:: requestRefresh')
         return
 
     def requestScenarioRefresh(self):
-        debugger.print('requestScenarioRefresh')
+        debugger.print('Start:: requestScenarioRefresh')
         self.notebook.settingsTab.requestRefresh()
         for scenario in self.notebook.scenarios:
             scenario.requestRefresh()
+        debugger.print('Finished:: requestScenarioRefresh')
+        return
 
     def on_vinc_changed(self,value):
+        debugger.print('Start:: on_vinc_changed', value)
         self.settings['Frequency increment'] = value
         self.notebook.fitterTab.requestRefresh()
         self.refreshRequired = True
         self.requestScenarioRefresh()
-        debugger.print('on vinc change ', self.settings['Frequency increment'])
+        debugger.print('on_vinc_change ', self.settings['Frequency increment'])
+        debugger.print('Finished:: on_vinc_changed', value)
 
     def on_vmin_changed(self):
+        debugger.print('Start:: on_vmin_changed')
         self.settings['Minimum frequency'] = self.vmin_sb.value()
         self.notebook.fitterTab.requestRefresh()
         self.refreshRequired = True
         self.requestScenarioRefresh()
-        debugger.print('on vmin change ', self.settings['Minimum frequency'])
+        debugger.print('on_vmin_change ', self.settings['Minimum frequency'])
+        debugger.print('Finished:: on_vmin_changed')
 
     def on_vmax_changed(self):
+        debugger.print('Start:: on_vmax_changed')
         self.settings['Maximum frequency'] = self.vmax_sb.value()
         self.notebook.fitterTab.requestRefresh()
         self.refreshRequired = True
         self.requestScenarioRefresh()
-        debugger.print('on vmax change ', self.settings['Maximum frequency'])
+        debugger.print('on_vmax_change ', self.settings['Maximum frequency'])
+        debugger.print('Finished:: on_vmax_changed')
 
     def refresh(self,force=False):
-        debugger.print('refreshing widget', force)
+        debugger.print('Start:: refresh', force)
         if not self.refreshRequired and not force:
-            debugger.print('refreshing widget not required')
+            debugger.print('Finished:: refreshing widget not required')
             return
         #
         # Block signals during refresh
@@ -271,9 +281,11 @@ class PlottingTab(QWidget):
             w.blockSignals(False)
         QCoreApplication.processEvents()
         refreshRequired = False
+        debugger.print('Finished:: refresh', force)
         return
 
     def on_natoms_changed(self, value):
+        debugger.print('Start:: on_natoms_changed', value)
         self.settings['Number of atoms'] = value
         debugger.print('on natoms changed ', self.settings['Number of atoms'])
         self.settings['concentration'] = 1000.0 / (avogadro_si * self.reader.volume * 1.0e-24 * self.settings['Number of atoms'] / self.reader.nions)
@@ -281,15 +293,19 @@ class PlottingTab(QWidget):
         self.refreshRequired = True
         self.notebook.fitterTab.requestRefresh()
         self.plot()
+        debugger.print('Finished:: on_natoms_changed', value)
 
     def on_plot_type_cb_activated(self, index):
+        debugger.print('Start:: on_plot_type_cb_activated', index)
         self.settings['Plot type'] = self.plot_type_cb.currentText()
         debugger.print('Changed plot type to ', self.settings['Plot type'])
         self.refreshRequired = True
         self.notebook.fitterTab.requestRefresh()
         self.plot()
+        debugger.print('Finished:: on_plot_type_cb_activated', index)
 
     def on_funits_cb_activated(self, index):
+        debugger.print('Start:: on_funits_cb_activated', index)
         if index == 0:
             self.frequency_units = 'wavenumber'
         else:
@@ -298,8 +314,10 @@ class PlottingTab(QWidget):
         self.notebook.fitterTab.requestRefresh()
         self.plot()
         debugger.print('Frequency units changed to ', self.frequency_units)
+        debugger.print('Finished:: on_funits_cb_activated', index)
 
     def on_molar_cb_activated(self, index):
+        debugger.print('Start:: on_molar_cb_activated', index)
         self.molar_cb_current_index = index
         self.settings['Molar definition'] = self.molar_definitions[index]
         self.set_concentrations()
@@ -307,8 +325,11 @@ class PlottingTab(QWidget):
         self.notebook.fitterTab.requestRefresh()
         self.plot()
         debugger.print('The concentration has been set', self.settings['Molar definition'], self.settings['concentration'])
+        debugger.print('Finished:: on_molar_cb_activated', index)
+        return
 
     def set_concentrations(self):
+        debugger.print('Start:: set_concentration')
         if self.settings['Molar definition'] == 'Molecules':
             self.settings['concentration'] = 1000.0 / (avogadro_si * self.reader.volume * 1.0e-24 * self.settings['Number of atoms'] / self.reader.nions)
             self.natoms_sb.setEnabled(True)
@@ -319,11 +340,13 @@ class PlottingTab(QWidget):
         elif self.settings['Molar definition'] == 'Atoms':
             self.settings['concentration'] = 1000.0 / (avogadro_si * self.reader.volume * 1.0e-24 / self.reader.nions)
             self.natoms_sb.setEnabled(False)
+        debugger.print('Finished:: set_concentration')
         return
 
     def writeSpreadsheet(self):
-        debugger.print('write spreadsheet')
+        debugger.print('Start::writeSpreadsheet')
         if self.notebook.spreadsheet is None:
+            debugger.print('Finished::writeSpreadsheet spreadsheet is None')
             return
         # make sure the plottingTab is up to date
         self.refresh()
@@ -414,9 +437,11 @@ class PlottingTab(QWidget):
 
         if len(dielecv) > 0:
             self.write_eps_results(sp, self.vs_cm1, dielecv)
+        debugger.print('Finished::writeSpreadsheet')
+        return
 
     def write_eps_results(self, sp, vs, dielecv):
-        debugger.print('write_eps_results length vs',len(vs))
+        debugger.print('Start:: write_eps_results length vs',len(vs))
         sp.selectWorkSheet('Real Crystal Permittivity')
         sp.delete()
         headers = ['frequencies (cm-1)', 'xx', 'yy', 'zz', 'xy', 'xz', 'yz' ]
@@ -442,6 +467,8 @@ class PlottingTab(QWidget):
             eps_yz_i = np.imag(eps[1][2])
             output = [v, eps_xx_i, eps_yy_i, eps_zz_i, eps_xy_i, eps_xz_i, eps_yz_i ]
             sp.writeNextRow(output, col=1,check=1)
+        debugger.print('Finished:: write_eps_results length vs',len(vs))
+        return
 
     def write_crystal_results(self, sp, name, vs, legends, yss):
         """ 
@@ -451,7 +478,7 @@ class PlottingTab(QWidget):
         yss       a list of np.arrays of the reflections and transmittance ] 
         headings  the heading names for the yss
         """
-        debugger.print('write_crystal_results')
+        debugger.print('Start:: write_crystal_results')
         debugger.print('write_crystal_results name',name)
         debugger.print('write_crystal_results legends',legends)
         debugger.print('write_crystal_results length vs',len(vs))
@@ -465,10 +492,12 @@ class PlottingTab(QWidget):
            for ys in yss:
                output.append(ys[iv])
            sp.writeNextRow(output, col=1,check=1)
+        debugger.print('Finished:: write_crystal_results')
+        return
 
 
     def write_powder_results(self, sp, name, vs, legends, yss):
-        debugger.print('write powder results')
+        debugger.print('Start:: write powder results')
         debugger.print('write_powder_results name',name)
         debugger.print('write_powder_results legends',legends)
         debugger.print('write_powder_results length vs',len(vs))
@@ -484,27 +513,29 @@ class PlottingTab(QWidget):
            for ys in yss:
                output.append(ys[iv])
            sp.writeNextRow(output, col=1,check=1)
+        debugger.print('Finished:: write powder results')
+        return
 
     def plot(self):
         # import matplotlib.pyplot as pl
         # mp.use('Qt5Agg')
-        debugger.print('plot')
+        debugger.print('Start:: plot')
         # Assemble the mainTab settings
         settings = self.notebook.mainTab.settings
         program = settings['Program']
         filename = settings['Output file name']
         reader = self.notebook.mainTab.reader
         if reader is None:
-            debugger.print('plot aborting because reader is NONE')
+            debugger.print('Finished:: plot aborting because reader is NONE')
             return
         if program == '':
-            debugger.print('plot aborting because program is not set')
+            debugger.print('Finished:: plot aborting because program is not set')
             return
         if filename == '':
-            debugger.print('plot aborting because filename is not set')
+            debugger.print('Finished:: plot aborting because filename is not set')
             return
         if self.notebook.settingsTab.CrystalPermittivity is None:
-            debugger.print('plot aborting because settingTab.CrystalPermittivity is not set')
+            debugger.print('Finished:: plot aborting because settingTab.CrystalPermittivity is not set')
             return
         QApplication.setOverrideCursor(Qt.WaitCursor)
         vmin = self.settings['Minimum frequency']
@@ -541,17 +572,11 @@ class PlottingTab(QWidget):
             self.subplot.set_title(self.settings['Plot type'])
             self.canvas.draw_idle()
         QApplication.restoreOverrideCursor()
-
-
-    #jk def on_title_changed(self,text):
-    #jk     self.settings['Plot title'] = text
-    #jk     if self.subplot is not None:
-    #jk         self.subplot.set_title(self.settings['Plot title'])
-    #jk         self.canvas.draw_idle()
-    #jk     debugger.print('on title change ', self.settings['Plot title'])
+        debugger.print('Finished:: plot')
 
     def greyed_out(self):
         """Handle items that should be greyed out if they are not needed"""
+        debugger.print('Start:: greyed_out')
         powder_scenarios_present = False
         crystal_scenarios_present = False
         for scenario in self.notebook.scenarios:
@@ -594,3 +619,4 @@ class PlottingTab(QWidget):
             if index >= 5:
                 self.plot_type_cb.setCurrentIndex(0)
                 self.settings['Plot type'] = self.plot_type_cb.currentText()
+        debugger.print('Finished:: greyed_out')

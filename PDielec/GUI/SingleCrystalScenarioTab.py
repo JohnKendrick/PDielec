@@ -34,7 +34,7 @@ class SingleCrystalScenarioTab(ScenarioTab):
         ScenarioTab.__init__(self,parent)
         global debugger
         debugger = Debug(debug,'SingleCrystalScenarioTab:')
-        debugger.print('In the initialiser')
+        debugger.print('Start:: initialiser')
         self.refreshRequired = True
         self.calculationRequired = False
         self.scenarioType = 'Single crystal'
@@ -195,56 +195,65 @@ class SingleCrystalScenarioTab(ScenarioTab):
         # finalise the layout
         self.setLayout(vbox)
         QCoreApplication.processEvents()
+        debugger.print('Finished:: initialiser')
 
     def on_film_thickness_sb_changed(self,value):
         debugger.print(self.settings['Legend'],'on_film_thickness_sb', value)
         self.refreshRequired = True
         self.settings['Film thickness'] = value
+        return
 
     def on_superstrate_dielectric_sb_changed(self,value):
         debugger.print(self.settings['Legend'],'on_superstrate_dielectric_sb', value)
         self.refreshRequired = True
         self.settings['Superstrate dielectric'] = value
+        return
 
     def on_substrate_dielectric_sb_changed(self,value):
         debugger.print(self.settings['Legend'],'on_substrate_dielectric_sb', value)
         self.refreshRequired = True
         self.settings['Substrate dielectric'] = value
+        return
 
     def on_azimuthal_angle_sb_changed(self,value):
         debugger.print(self.settings['Legend'],'on_azimuthal_angl_sb_changed', value)
         self.refreshRequired = True
         self.settings['Azimuthal angle'] = value
         self.calculate_euler_angles()
+        return
 
     def on_angle_of_incidence_sb_changed(self,value):
         debugger.print(self.settings['Legend'],'on_angle_of_incidence_sb_changed', value)
         self.refreshRequired = True
         self.settings['Angle of incidence'] = value
+        return
 
     def on_h_sb_changed(self,value):
         debugger.print(self.settings['Legend'],'on_h_sb_changed', value)
         self.refreshRequired = True
         self.settings['Unique direction - h'] = value
         self.calculate_euler_angles()
+        return
 
     def on_k_sb_changed(self,value):
         debugger.print(self.settings['Legend'],'on_k_sb_changed', value)
         self.refreshRequired = True
         self.settings['Unique direction - k'] = value
         self.calculate_euler_angles()
+        return
 
     def on_l_sb_changed(self,value):
         debugger.print(self.settings['Legend'],'on_l_sb_changed', value)
         self.refreshRequired = True
         self.settings['Unique direction - l'] = value
         self.calculate_euler_angles()
+        return
 
     def refresh(self,force=False):
+        debugger.print(self.settings['Legend'],'Start:: refresh, force =', force)
         if not self.refreshRequired and not force :
-            debugger.print(self.settings['Legend'],'refreshing widget aborted', self.refreshRequired,force)
+            debugger.print(self.settings['Legend'],'Finished:: refreshing widget aborted', self.refreshRequired,force)
             return
-        debugger.print(self.settings['Legend'],'refreshing widget, force =', force)
         # Force recalculation
         self.calculationRequired = True
         # Change any greyed out items
@@ -279,10 +288,11 @@ class SingleCrystalScenarioTab(ScenarioTab):
             w.blockSignals(False)
         QCoreApplication.processEvents()
         self.refreshRequired = False
+        debugger.print(self.settings['Legend'],'Finished:: refresh, force =', force)
         return
 
     def on_mode_cb_activated(self, index):
-        debugger.print(self.settings['Legend'],'on_mode_cb_activated')
+        debugger.print(self.settings['Legend'],'Start:: on_mode_cb_activated')
         if index == 0:
             self.settings['Mode'] = 'Thick slab'
         elif index == 1:
@@ -293,25 +303,27 @@ class SingleCrystalScenarioTab(ScenarioTab):
         self.refresh()
         self.refreshRequired = True
         debugger.print(self.settings['Legend'],'Mode changed to ', self.settings['Mode'])
+        debugger.print(self.settings['Legend'],'Finished:: on_mode_cb_activated')
+        return
 
     def calculate(self,vs_cm1):
+        debugger.print(self.settings['Legend'],'Start:: calculate - number of frequencies',len(vs_cm1))
         if not self.calculationRequired:
-            debugger(self.settings['Legend'],'Calculate aborted because calculationRequired false')
+            debugger(self.settings['Legend'],'Finished:: calculate aborted because calculationRequired false')
             return
-        debugger.print(self.settings['Legend'],'Calculate - number of frequencies',len(vs_cm1))
         QCoreApplication.processEvents()
         # Assemble the mainTab settings
         settings = self.notebook.mainTab.settings
         program = settings['Program']
         filename = settings['Output file name']
         if self.reader is None:
-            debugger.print(self.settings['Legend'],'Calculate aborting - no reader')
+            debugger.print(self.settings['Legend'],'Finished:: Calculate aborting - no reader')
             return
         if program == '':
-            debugger.print(self.settings['Legend'],'Calculate aborting - no program')
+            debugger.print(self.settings['Legend'],'Finished:: Calculate aborting - no program')
             return
         if filename == '':
-            debugger.print(self.settings['Legend'],'Calculate aborting - no file')
+            debugger.print(self.settings['Legend'],'Finished:: Calculate aborting - no file')
             return
         # Assemble the settingsTab settings
         settings = self.notebook.settingsTab.settings
@@ -393,11 +405,13 @@ class SingleCrystalScenarioTab(ScenarioTab):
         pool.join()
         self.calculationRequired = False
         QCoreApplication.processEvents()
-        debugger.print(self.settings['Legend'],'Calculate finished')
+        debugger.print(self.settings['Legend'],'Finished:: calculate - number of frequencies',len(vs_cm1))
+        return
 
     def writeSpreadsheet(self):
-        debugger.print(self.settings['Legend'],'writeSpreadsheet')
+        debugger.print(self.settings['Legend'],'Start:: writeSpreadsheet')
         if self.notebook.spreadsheet is None:
+            debugger.print(self.settings['Legend'],'Finished:: writeSpreadsheet')
             return
         sp = self.notebook.spreadsheet
         sp.selectWorkSheet('Single Crystal')
@@ -418,6 +432,8 @@ class SingleCrystalScenarioTab(ScenarioTab):
         sp.writeNextRow([ 'Film thickness(nm)',           self.settings['Film thickness'] ],col=1)
         headings = ['R_p', 'R_s', 'T_p', 'T_s']
         self.write_results(sp, 'Crystal R&T',     self.vs_cm1, [self.p_reflectance, self.s_reflectance, self.p_transmittance, self.s_transmittance], headings)
+        debugger.print(self.settings['Legend'],'Finished:: writeSpreadsheet')
+        return
 
     def write_results(self, sp, name, vs, yss, headings):
         """ 
@@ -427,7 +443,7 @@ class SingleCrystalScenarioTab(ScenarioTab):
         yss       a list of np.arrays of the reflections and transmittance ] 
         headings  the heading names for the yss
         """
-        debugger.print(self.settings['Legend'],'write_results')
+        debugger.print(self.settings['Legend'],'Start:: write_results')
         sp.selectWorkSheet(name)
         sp.delete()
         headers = ['frequencies (cm-1)']
@@ -438,13 +454,17 @@ class SingleCrystalScenarioTab(ScenarioTab):
            for ys in yss:
                output.append(ys[iv])
            sp.writeNextRow(output, col=1,check=1)
+        debugger.print(self.settings['Legend'],'Finished:: write_results')
+        return
 
     def calculate_euler_angles(self):
         '''Calculate the Euler angles for the crystal to lab transformation'''
+        debugger.print(self.settings['Legend'],'Start:: calculate_euler_angles')
         # Get plane specification
         hkl = [ self.settings['Unique direction - h'] , self.settings['Unique direction - k'], self.settings['Unique direction - l'] ]
         sum2 = hkl[0]*hkl[0] + hkl[1]*hkl[1] + hkl[2]*hkl[2]
         if sum2 < 1:
+            debugger.print(self.settings['Legend'],'Finished:: calculate_euler_angles')
             return 0,0,0
         x = 0
         y = 1
@@ -499,12 +519,14 @@ class SingleCrystalScenarioTab(ScenarioTab):
         #c = c / np.linalg.norm(c)
         # print('Projection of a,b,c onto the lab Y-axis (s-pol)', a[1],b[1],c[1])
         # print('Projection of a,b,c onto the lab X-axis (p-pol)', a[0],b[0],c[0])
+        debugger.print(self.settings['Legend'],'Finished:: calculate_euler_angles')
         return (theta, phi, psi)
 
     def get_result(self, vs_cm1, plot_type):
         """Return a particular result"""
-        debugger.print(self.settings['Legend'],'get_result',len(vs_cm1),plot_type)
+        debugger.print(self.settings['Legend'],'Start:: get_result',len(vs_cm1),plot_type)
         self.get_results(vs_cm1)
+        debugger.print(self.settings['Legend'],'Finished:: get_result',len(vs_cm1),plot_type)
         if plot_type   == 'Crystal Reflectance (P polarisation)':
             return self.p_reflectance
         elif plot_type == 'Crystal Reflectance (S polarisation)':
@@ -524,7 +546,7 @@ class SingleCrystalScenarioTab(ScenarioTab):
 
     def get_results(self, vs_cm1):
         """Return the results of the effective medium theory calculation"""
-        debugger.print(self.settings['Legend'],'get_results',len(vs_cm1),self.refreshRequired)
+        debugger.print(self.settings['Legend'],'Start:: get_results',len(vs_cm1),self.refreshRequired)
         if len(vs_cm1)>0 and (self.refreshRequired or len(self.vs_cm1) != len(vs_cm1) or self.vs_cm1[0] != vs_cm1[0] or self.vs_cm1[1] != vs_cm1[1]) :
             debugger.print(self.settings['Legend'],'get_results recalculating')
             self.refresh()
@@ -532,16 +554,18 @@ class SingleCrystalScenarioTab(ScenarioTab):
         else:
             debugger.print(self.settings['Legend'],'get_results no need for recalculation')
             self.notebook.progressbars_update(increment=len(vs_cm1))
+        debugger.print(self.settings['Legend'],'Finished:: get_results',len(vs_cm1),self.refreshRequired)
         return
 
     def greyed_out(self):
         """Have a look through the settings and see if we need to grey anything out"""
         # If the single crystal mode is Thick Slab, there is no need for film thickness or substrate permittivity
-        debugger.print(self.settings['Legend'],'greyed_out')
+        debugger.print(self.settings['Legend'],'Start:: greyed_out')
         if self.settings['Mode'] == 'Thick slab':
             self.film_thickness_sb.setEnabled(False)
             self.substrate_dielectric_sb.setEnabled(False)
         else:
             self.film_thickness_sb.setEnabled(True)
             self.substrate_dielectric_sb.setEnabled(True)
+        debugger.print(self.settings['Legend'],'Finished:: greyed_out')
 

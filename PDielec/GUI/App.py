@@ -108,7 +108,7 @@ class App(QMainWindow):
         QCoreApplication.processEvents()
         global debugger
         debugger = Debug(self.debug,'App:')
-        debugger.print('Initialising')
+        debugger.print('Start:: Initialising')
         debugger.print('About to open the notebook')
         debugger.print('Program is', program)
         debugger.print('Filename is', filename)
@@ -132,7 +132,7 @@ class App(QMainWindow):
             debugger.print('Exiting with sys.exit call')
             sys.exit()
         #self.show()
-        debugger.print('Exiting initialisation')
+        debugger.print('Finished:: Initialising')
 
     def print_usage(self):
         print('pdgui - graphical user interface to the PDielec package')
@@ -156,7 +156,7 @@ class App(QMainWindow):
         return
 
     def readScript(self,scriptname,spreadsheet_name):
-        debugger.print('readScript starting')
+        debugger.print('Start:: readScript')
         self.notebook.scripting = True
         # If a script is used there are no prompts for overwriting files etc.
         self.notebook.overwriting = True
@@ -174,8 +174,8 @@ class App(QMainWindow):
             self.notebook.mainTab.settings['Excel file name'] = spreadsheet_name
         debugger.print('readScript notebook refresh')
         self.notebook.refresh()
-        debugger.print('readScript exiting')
         QCoreApplication.processEvents()
+        debugger.print('Finished:: readScript')
 
     def closeEvent(self, event):
         # Make sure any spread sheet is closed

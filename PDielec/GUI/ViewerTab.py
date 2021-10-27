@@ -20,6 +20,7 @@ class ViewerTab(QWidget):
         super(QWidget, self).__init__(parent)
         global debugger
         debugger = Debug(debug,'ViewerTab')
+        debugger.print('Start:: initialisation')
         self.debug = debug
         self.refreshRequired = True
         self.setWindowTitle('Viewer')
@@ -260,14 +261,17 @@ class ViewerTab(QWidget):
         vbox.addLayout(form)
         # finalise the layout
         self.setLayout(vbox)
+        debugger.print('Finished:: initialisation')
 
     def on_filename_le_return(self):
         debugger.print('on filename le return pressed')
         self.on_filename_button_clicked(True)
+        return
 
     def on_filename_le_changed(self,text):
         debugger.print('on filename le changed', text)
         self.image_filename = text
+        return
 
     def on_filename_button_clicked(self,boolean):
         debugger.print('on filename button clicked')
@@ -314,6 +318,7 @@ class ViewerTab(QWidget):
         self.settings['Super Cell'] =  [ a, b, c ]
         self.refreshRequired = True
         self.refresh()
+        return
 
     def on_super_cell_changed_b(self,newb):
         a,b,c = self.settings['Super Cell']
@@ -321,6 +326,7 @@ class ViewerTab(QWidget):
         self.settings['Super Cell'] =  [ a, b, c ]
         self.refreshRequired = True
         self.refresh()
+        return
 
     def on_super_cell_changed_c(self,newc):
         a,b,c = self.settings['Super Cell']
@@ -328,6 +334,7 @@ class ViewerTab(QWidget):
         self.settings['Super Cell'] =  [ a, b, c ]
         self.refreshRequired = True
         self.refresh()
+        return
 
     def on_coloured_element_clicked(self,boolean):
         debugger.print('on coloured elements clicked')
@@ -341,6 +348,7 @@ class ViewerTab(QWidget):
         self.element_colours[text] = rgba
         self.refreshRequired = True
         self.refresh()
+        return
 
     def on_coloured_button_clicked(self,boolean):
         debugger.print('on coloured button clicked')
@@ -361,6 +369,7 @@ class ViewerTab(QWidget):
             self.settings['Arrow colour'] = rgba
         self.refreshRequired = True
         self.refresh()
+        return
 
 
     def on_light_switches_cb_activated(self, index):
@@ -374,36 +383,42 @@ class ViewerTab(QWidget):
         self.opengl_widget.defineLights()
         self.calculate()
         self.plot()
+        return
 
     def on_maximum_displacement_changed(self,value):
         debugger.print('on maximum_displacement changed ', value)
         self.settings['Maximum displacement'] = value
         self.calculate()
         self.plot()
+        return
 
     def on_atom_scaling_changed(self,value):
         debugger.print('on atom_scaling changed ', value)
         self.settings['Atom scaling'] = value
         self.calculate()
         self.plot()
+        return
 
     def on_arrow_radius_changed(self,value):
         debugger.print('on arrow_radius changed ', value)
         self.settings['Arrow radius'] = value
         self.calculate()
         self.plot()
+        return
 
     def on_cell_radius_changed(self,value):
         debugger.print('on cell_radius changed ', value)
         self.settings['Cell radius'] = value
         self.calculate()
         self.plot()
+        return
 
     def on_bond_radius_changed(self,value):
         debugger.print('on_bond_radius_changed')
         self.settings['Bond radius'] = value
         self.calculate()
         self.plot()
+        return
 
     def on_selected_mode_changed(self):
         debugger.print('on_selected_mode_changed')
@@ -420,15 +435,17 @@ class ViewerTab(QWidget):
             self.opengl_widget.addArrows( self.settings['Arrow colour'],self.settings['Arrow radius'], uvw, arrow_scaling )
         self.calculate()
         self.plot()
+        return
 
     def on_plottype_cb_changed(self, index):
         debugger.print('on_plottype_cb_changed')
         self.plot_type_index = index
         debugger.print('Plot type index changed to ', self.plot_type_index)
         self.plot()
+        return
 
     def calculate(self):
-        debugger.print('calculate')
+        debugger.print('Start:: calculate')
         # Assemble the mainTab settings
         settings = self.notebook.mainTab.settings
         program = settings['Program']
@@ -436,10 +453,13 @@ class ViewerTab(QWidget):
         debugger.print('calculate program file name',program, filename)
         self.reader = self.notebook.reader
         if self.reader is None:
+            debugger.print('Finished:: calculate - reader is None')
             return
         if program == '':
+            debugger.print('Finished:: calculate - program is blank')
             return
         if filename == '':
+            debugger.print('Finished:: calculate - filename is blank')
             return
         QApplication.setOverrideCursor(Qt.WaitCursor)
         # Assemble the settingsTab settings
@@ -492,6 +512,7 @@ class ViewerTab(QWidget):
         self.opengl_widget.setImageSize()
         self.refreshRequired = False
         QApplication.restoreOverrideCursor()
+        debugger.print('Finished:: calculate')
         return
 
     def setColour(self, element, colour):
@@ -505,6 +526,7 @@ class ViewerTab(QWidget):
         else:
             self.element_colours[element] = colour
         self.plot()
+        return
 
     def calculatePhasePositions(self):
         debugger.print('calculatePhasePositions')
@@ -561,8 +583,9 @@ class ViewerTab(QWidget):
                 unitcell.write_cif(description,file_=fd)
 
     def plot(self):
-        debugger.print('plot')
+        debugger.print('Start:: plot')
         if self.reader is None:
+            debugger.print('Finished:: plot reader is None')
             return
         if self.plot_type_index == 0:
             self.plot_animation()
@@ -570,35 +593,41 @@ class ViewerTab(QWidget):
             self.plot_arrows()
         else:
             self.plot_none()
+        debugger.print('Finished:: plot')
 
     def plot_none(self):
-        debugger.print('plot_animation')
+        debugger.print('Start:: plot_animation')
         self.opengl_widget.showArrows(False)
         self.opengl_widget.stopAnimation()
         self.opengl_widget.update()
+        debugger.print('Finished:: plot_animation')
         return
 
     def plot_animation(self):
-        debugger.print('plot_animation')
+        debugger.print('Start:: plot_animation')
         self.opengl_widget.showArrows(False)
         self.opengl_widget.update()
         self.opengl_widget.startAnimation()
+        debugger.print('Finished:: plot_animation')
         return
 
     def plot_arrows(self):
-        debugger.print('plot_arrows')
+        debugger.print('Start:: plot_arrows')
         self.opengl_widget.showArrows(True)
         self.opengl_widget.stopAnimation()
         self.opengl_widget.update()
+        debugger.print('Finished:: plot_arrows')
         return
 
     def requestRefresh(self):
+        debugger.print('Start:: requestRefresh')
         self.refreshRequired = True
+        debugger.print('Finished:: requestRefresh')
 
     def refresh(self,force=False):
-        debugger.print('refresh')
+        debugger.print('Start:: refresh')
         if not self.refreshRequired and not force:
-            debugger.print('refresh aborted',self.refreshRequired,force)
+            debugger.print('Finished:: refresh aborted',self.refreshRequired,force)
             return
         debugger.print('refresh widget',force)
         QApplication.setOverrideCursor(Qt.WaitCursor)
@@ -670,4 +699,5 @@ class ViewerTab(QWidget):
         self.calculate()
         self.plot()
         QApplication.restoreOverrideCursor()
+        debugger.print('Finished:: refresh')
         return

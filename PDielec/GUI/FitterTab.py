@@ -29,7 +29,7 @@ class FitterTab(QWidget):
         super(QWidget, self).__init__(parent)
         global debugger
         debugger = Debug(debug,'FitterTab:')
-        debugger.print('Initialising')
+        debugger.print('Start:: Initialising')
         self.refreshRequired = True
         self.calculationInProgress = False
         self.settings = {}
@@ -246,6 +246,7 @@ class FitterTab(QWidget):
         # finalise the layout
         self.setLayout(vbox)
         self.refreshRequired = True
+        debugger.print('Finished:: Initialising')
 
     def on_iterations_sb_changed(self):
         debugger.print('on_iterations_sb_changed')
@@ -314,25 +315,27 @@ class FitterTab(QWidget):
         return
 
     def replotButton1Clicked(self):
-        debugger.print('replotButton1Clicked')
+        debugger.print('Start:: replotButton1Clicked')
         self.refreshRequired = True
         self.plot_frequency_shift = False
         self.lastButtonPressed = self.replotButton1Clicked
         self.refresh()
+        debugger.print('Finished:: replotButton1Clicked')
         return
 
     def replotButton2Clicked(self):
-        debugger.print('replotButton2Clicked')
+        debugger.print('Start:: replotButton2Clicked')
         self.refreshRequired = True
         self.plot_frequency_shift = True
         self.lastButtonPressed = self.replotButton2Clicked
         self.refresh()
+        debugger.print('Finished:: replotButton2Clicked')
         return
 
     def plot(self,experiment,xs,ys,legends,label):
         # Plot the experimental values on the left y-axis
         # Plot all the others in xs, ys on the right x-axis
-        debugger.print('plot')
+        debugger.print('Start:: plot')
         self.subplot1 = None
         self.figure.clf()
         import matplotlib.pyplot as plt
@@ -379,9 +382,10 @@ class FitterTab(QWidget):
         self.subplot1.legend(lines, labels, loc='best')
         self.subplot1.set_title(self.settings['Plot title'])
         self.canvas.draw_idle()
+        debugger.print('Finished:: plot')
 
     def fittingButtonClicked(self):
-        debugger.print('fittingButtonClicked')
+        debugger.print('Start:: fittingButtonClicked')
         self.refreshRequired = True
         if self.calculationInProgress:
             self.fittingButton.setText('Perform fitting')
@@ -395,12 +399,13 @@ class FitterTab(QWidget):
         final_point = self.optimiseFit()
         self.fittingButton.setText('Perform fitting')
         self.calculationInProgress = False
+        debugger.print('Finished:: fittingButtonClicked')
         return
 
     def optimiseFit(self):
         # Optimise the fit of the first scenario to the experimental data
         # First determine who many variables we have
-        debugger.print('optimiseFit')
+        debugger.print('Start:: optimiseFit')
         self.functionCalls = 0
         self.fit_list = []
         for mode,fitted in enumerate(self.modes_fitted):
@@ -416,6 +421,7 @@ class FitterTab(QWidget):
         else: 
             print('No sigmas have been selected for optimisation')
             final_point = []
+        debugger.print('Finished:: optimiseFit')
         return final_point
 
     def optimiseFunction(self,variables) :
@@ -424,7 +430,7 @@ class FitterTab(QWidget):
         # print(variables)
         if not self.calculationInProgress:
             return -9.9E99
-        debugger.print('optimiseFunction',variables)
+        debugger.print('Start:: optimiseFunction',variables)
         self.functionCalls += 1
         nvariables = len(variables)
         self.fittingButton.setText('Interrupt fitting ({}/{})'.format(self.functionCalls,nvariables+1+nvariables*self.settings['Number of iterations']))
@@ -449,6 +455,7 @@ class FitterTab(QWidget):
         elif self.settings['Fitting type'] == 'Minimise spectral difference':
             function_value = self.rmse
         debugger.print('optimiseFunction - xcorr0,rmse',self.xcorr0,self.rmse)
+        debugger.print('Finished:: optimiseFunction',function_value)
         return function_value
 
     def calculateSpectralDifference(self,scaling_factor):
@@ -456,6 +463,7 @@ class FitterTab(QWidget):
         # Calculate the spectral difference  between the experimental and the first scenario
         if len(self.experimental_spectrum) == 0:
             return 0.0
+        debugger.print('Start:: optimiseFunction')
         # col1 contains the experimental spectrum
         col1 = np.array(self.experimental_spectrum)
         maxcol1 = np.max(col1)
@@ -474,13 +482,15 @@ class FitterTab(QWidget):
         diff = col1 - col2
         rmse = np.sqrt(np.dot(diff,diff)/len(col2))
         debugger.print('rmse',rmse)
+        debugger.print('Finished:: optimiseFunction')
         return rmse
 
     def calculateCrossCorrelation(self,scaling_factor):
-        debugger.print('calculateCrossCorrelation',scaling_factor)
+        debugger.print('Start:: calculateCrossCorrelation',scaling_factor)
         # Calculate the cross correlation coefficient between the experimental and the first scenario
         if len(self.experimental_spectrum) == 0:
             debugger.print('calculateCrossCorrelation experimental_spectrum is not defined')
+            debugger.print('Finshed:: calculateCrossCorrelation',scaling_factor)
             return (0.0,0.0,0.0)
         # col1 contains the experimental spectrum
         col1 = np.array(self.experimental_spectrum)
@@ -495,12 +505,14 @@ class FitterTab(QWidget):
         lag = np.argmax(correlation) - (len(correlation)-1)/2
         lag = (self.xaxis[1] - self.xaxis[0]) * lag
         debugger.print('lag , max(corr), index', lag,np.max(correlation),correlation[int((len(correlation)-1)/2)])
+        debugger.print('Finshed:: calculateCrossCorrelation',scaling_factor)
         return (lag,np.max(correlation),correlation[int((len(correlation)-1)/2)])
 
 
     def redraw_sigmas_tw(self):
-        debugger.print('redraw_sigmas_tw')
+        debugger.print('Start:: redraw_sigmas_tw')
         if len(self.sigmas_cm1) <= 0:
+            debugger.print('Finished:: redraw_sigmas_tw')
             return
         self.sigmas_tw.blockSignals(True)
         self.sigmas_tw.setRowCount(len(self.sigmas_cm1))
@@ -536,6 +548,7 @@ class FitterTab(QWidget):
         # Release the block on signals for the frequency output table
         self.sigmas_tw.blockSignals(False)
         QCoreApplication.processEvents()
+        debugger.print('Finished:: redraw_sigmas_tw')
 
     def on_fitting_type_cb_activated(self,index):
         # Change in fitting type
@@ -551,13 +564,14 @@ class FitterTab(QWidget):
 
     def on_spectrafile_le_return(self):
         # Handle a return in the excel file name line editor
-        debugger.print('on_spectrafile_le_return')
+        debugger.print('Start:: on_spectrafile_le_return')
         file_name = self.spectrafile_le.text()
         if not os.path.isfile(file_name):
             qfd = QFileDialog(self)
             qfd.setDirectory(self.notebook.mainTab.directory)
             file_name, _ = qfd.getOpenFileName(self,'Open Excel file','','Excel (*.xlsx);; All Files (*)')
         if not os.path.isfile(file_name):
+            debugger.print('Finished:: on_spectrafile_le_return')
             return
         self.settings['Excel file name'] = file_name
         self.spectrafile_le.setText(self.settings['Excel file name'])
@@ -566,15 +580,18 @@ class FitterTab(QWidget):
         self.excel_file_has_been_read = False
         # redo the plot if a return is pressed
         self.lastButtonPressed()
+        debugger.print('Finished:: on_spectrafile_le_return')
         return
 
     def read_excel_file(self):
         # 
-        debugger.print('read_excel_file')
+        debugger.print('Start:: read_excel_file')
         file_name = self.settings['Excel file name']
         if not os.path.isfile(file_name):
+            debugger.print('Finished:: read_excel_file does not exist')
             return
         if self.excel_file_has_been_read:
+            debugger.print('Finished:: read_excel_file has been read')
             return
         # 
         # Open the work book
@@ -589,6 +606,7 @@ class FitterTab(QWidget):
                 self.excel_spectrum.append(row[1].value)
         self.excel_file_has_been_read = True
         self.refreshRequired = True
+        debugger.print('Finished:: read_excel_file')
         return
 
     def on_spectrafile_le_changed(self,text):
@@ -599,7 +617,7 @@ class FitterTab(QWidget):
         self.excel_file_has_been_read = False
 
     def on_sigmas_tw_itemChanged(self, item):
-        debugger.print('on_sigmas_tw_itemChanged', item)
+        debugger.print('Start:: on_sigmas_tw_itemChanged', item)
         self.sigmas_tw.blockSignals(True)
         debugger.print('on_sigmas_tw_itemChanged)', item.row(), item.column() )
         col = item.column()
@@ -625,29 +643,35 @@ class FitterTab(QWidget):
             self.redraw_sigmas_tw()
         self.refreshRequired = True
         QCoreApplication.processEvents()
+        debugger.print('Finished:: on_sigmas_tw_itemChanged', item)
+        return
 
 
     def print_settings(self):
         debugger.print('print_settings')
         for key in self.settings:
             debugger.print(key, self.settings[key])
+        return
 
     def replot(self):
-        debugger.print('replot')
+        debugger.print('Start:: replot')
         if len(self.excel_spectrum) > 0:
             self.resample_experimental_spectrum()
         self.plot(self.experimental_spectrum,self.calculated_frequencies,self.calculated_spectra,self.scenario_legends,self.plot_label)
+        debugger.print('Finished:: replot')
+        return
 
     def refresh(self,force=False):
-        self.refreshRequired
+        debugger.print('Start:: refresh', force)
         if not self.refreshRequired and not force:
             debugger.print('refresh aborted', self.refreshRequired,force)
+            debugger.print('Finished:: refresh', force)
             return
         self.frequencies_cm1 = self.notebook.settingsTab.frequencies_cm1
         if np.sum(self.frequencies_cm1) < 1.0E-10:
             debugger.print('refresh aborted there are no frequencies')
+            debugger.print('Finished:: refresh', force)
             return
-        debugger.print('refresh', force)
         #
         # Flag all the scenarios as needing an update
         #
@@ -712,19 +736,21 @@ class FitterTab(QWidget):
         for w in self.findChildren(QWidget):
             w.blockSignals(False)
         self.refreshRequired = False
+        debugger.print('Finished:: refresh', force)
         return
 
     def requestRefresh(self):
         """Request a refresh of the interface"""
-        debugger.print('requestRefresh')
+        debugger.print('Start:: requestRefresh')
         self.refreshRequired = True
+        debugger.print('Finished:: requestRefresh')
 
     def resample_experimental_spectrum(self):
     #
     #  The experimental spectrum needs to be in the same range as the calculated spectrum
     #  It also needs to be calculated at the same frequencies as the calculated spectrum
     #
-        debugger.print('Resample_experimental_spectrim')
+        debugger.print('Start:: Resample_experimental_spectrum')
         self.xaxis = np.array(self.calculated_frequencies[0])
         # If the experimental frequencies starts at a higher frequency 
         # than the calculated frequencies then add new frequencies to pad the range out
@@ -752,5 +778,6 @@ class FitterTab(QWidget):
                                           self.settings['HPFilter lambda'], 10)
         else:
             self.experimental_spectrum = experimental_spectrum
+        debugger.print('Finished:: Resample_experimental_spectrum')
         return
 
