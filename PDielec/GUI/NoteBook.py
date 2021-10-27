@@ -295,7 +295,7 @@ class NoteBook(QWidget):
         debugger.print('Finished:: switch for scenario', index+1)
         return
 
-    def refresh(self,force=False):
+    def oldrefresh(self,force=False):
         debugger.print('Start:: refresh',force)
         if self.scripting:
             debugger.print('Finished:: refresh Notebook aborting refresh because of scripting')
@@ -305,38 +305,43 @@ class NoteBook(QWidget):
         self.settingsTab.refresh(force=force)
         for tab in self.scenarios:
             tab.refresh(force=force)
-        self.tabs.setCurrentIndex(ntabs-5)
+        # self.tabs.setCurrentIndex(ntabs-5)
         self.plottingTab.refresh(force=force)
-        self.tabs.setCurrentIndex(ntabs-4)
+        # self.tabs.setCurrentIndex(ntabs-4)
         self.analysisTab.refresh(force=force)
-        self.tabs.setCurrentIndex(ntabs-3)
+        # self.tabs.setCurrentIndex(ntabs-3)
         self.viewerTab.refresh(force=force)
-        self.tabs.setCurrentIndex(ntabs-2)
+        # self.tabs.setCurrentIndex(ntabs-2)
         self.fitterTab.refresh(force=force)
-        self.tabs.setCurrentIndex(ntabs-1)
+        # self.tabs.setCurrentIndex(ntabs-1)
         # Sets the open tab to be the plotterTab
         self.tabs.setCurrentIndex(ntabs-4)
         debugger.print('Finished:: refresh',force)
 
-    def newrefresh(self,force=False):
+    def refresh(self,force=False):
         debugger.print('Started:: newrefresh',force)
         if self.scripting:
             debugger.print('Finished:: newrefresh Notebook aborting refresh because of scripting')
             return
         ntabs = 2 + len(self.scenarios) + 4
+        # Do a refresh on the mainTab and the settingsTab
+        # This should caused anything that needs reading in to be read and processed
         self.mainTab.refresh(force=force)
-        self.settingsTab.requestRefresh()
+        self.settingsTab.refresh(force=force)
+        # Request refreshes on everything else
         for tab in self.scenarios:
             tab.requestRefresh()
-        self.tabs.setCurrentIndex(ntabs-5)
         self.plottingTab.requestRefresh()
-        self.tabs.setCurrentIndex(ntabs-4)
         self.analysisTab.requestRefresh()
-        self.tabs.setCurrentIndex(ntabs-3)
         self.viewerTab.requestRefresh()
-        self.tabs.setCurrentIndex(ntabs-2)
         self.fitterTab.requestRefresh()
-        self.tabs.setCurrentIndex(ntabs-1)
+        #self.tabs.setCurrentIndex(ntabs-5)
+        #self.tabs.setCurrentIndex(ntabs-4)
+        #self.tabs.setCurrentIndex(ntabs-2)
+        #self.tabs.setCurrentIndex(ntabs-1)
+        # In a script we do not change the tab index, but we need the analysis tab and the plotter tab to be refreshed
+        # So do it here, leave the GUI after a script showing the plotter tab
+        self.tabs.setCurrentIndex(ntabs-3)
         self.tabs.setCurrentIndex(ntabs-4)
         debugger.print('Finished:: newrefresh',force)
 
@@ -417,6 +422,10 @@ class NoteBook(QWidget):
             # plottings tab
             debugger.print('Calling plottingTab refresh')
             self.plottingTab.refresh()
+        elif tabindex == 1:
+            # settings tab
+            debugger.print('Calling settingsTab refresh')
+            self.settingsTab.refresh()
         debugger.print('Exiting on_tabs_currentChanged()')
         #jk self.old_tab_index = tabindex
         debugger.print('Finished:: on_tabs_currentChanged', tabindex)
