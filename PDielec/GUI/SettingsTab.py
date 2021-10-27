@@ -179,7 +179,6 @@ class SettingsTab(QWidget):
         self.mass_cb.setCurrentIndex(3)
         self.set_masses_tw()
         self.refreshRequired = True
-        self.calculationRequired = True
         self.refresh()
         debugger.print('Finished::  setElementMass',element,mass)
 
@@ -275,8 +274,7 @@ class SettingsTab(QWidget):
     def requestRefresh(self):
         debugger.print('Start:: requestRefresh')
         self.refreshRequired = True
-        self.calculationRequired = True
-        self.refresh()
+        # self.refresh()
         debugger.print('Finished:: requestRefresh')
         return
 
@@ -370,7 +368,6 @@ class SettingsTab(QWidget):
         self.redraw_output_tw()
         debugger.print('on sigma change ', self.settings['Sigma value'])
         self.refreshRequired = True
-        self.calculationRequired = True
         self.refresh()
         debugger.print('Finished:: on_sigma_changed')
 
@@ -383,7 +380,6 @@ class SettingsTab(QWidget):
         # Modify the element masses
         self.set_masses_tw()
         self.refreshRequired = True
-        self.calculationRequired = True
         self.refresh()
         QCoreApplication.processEvents()
         debugger.print('Finished:: on_mass_combobox_activated', self.mass_cb.currentText())
@@ -483,7 +479,7 @@ class SettingsTab(QWidget):
     def on_element_masses_tw_itemClicked(self, item):
         debugger.print('Start:: on_element_masses_tw_itemClicked)', item.row(),item.column() )
         self.element_masses_tw.blockSignals(False)
-        debugger.print('Finished:: on_element_masses_tw_itemClicked)', item.row(),item.column() )
+        debugger.print('Finished:: on_element_masses_tw_itemClicked)' )
 
     def on_element_masses_tw_itemChanged(self, item):
         debugger.print('Start:: on_element_masses_tw_itemChanged)', item.row(), item.column() )
@@ -495,9 +491,8 @@ class SettingsTab(QWidget):
         self.masses_dictionary[elements[col]] = float(item.text())
         debugger.print('masses_dictionary', self.masses_dictionary)
         self.refreshRequired = True
-        self.calculationRequired = True
         self.refresh()
-        debugger.print('Finished:: on_element_masses_tw_itemChanged)', item.row(), item.column() )
+        debugger.print('Finished:: on_element_masses_tw_itemChanged)' )
 
     def on_optical_tw_itemChanged(self, item):
         debugger.print('Start::on_optical_itemChanged)', item.row(), item.column(), item.text() )
@@ -506,17 +501,16 @@ class SettingsTab(QWidget):
         self.settings['Optical permittivity edited'] = True
         self.refresh_optical_permittivity_tw()
         self.refreshRequired = True
-        self.calculationRequired = True
         self.refresh()
         QCoreApplication.processEvents()
-        debugger.print('Finished::on_optical_itemChanged)', item.row(), item.column(), item.text() )
+        debugger.print('Finished::on_optical_itemChanged)')
         return
 
     def on_optical_tw_itemClicked(self, item):
         debugger.print('Start:: on_optical_itemClicked)', item.row(), item.column() )
         self.optical_tw.blockSignals(False)
         QCoreApplication.processEvents()
-        debugger.print('Finished:: on_optical_itemClicked)', item.row(), item.column() )
+        debugger.print('Finished:: on_optical_itemClicked)')
         return
 
     def refresh(self, force=False):
@@ -568,6 +562,7 @@ class SettingsTab(QWidget):
             self.notebook.fitterTab.requestRefresh()
         QCoreApplication.processEvents()
         self.refreshRequired = False
+        self.calculationRequired = True
         debugger.print('Finished:: refresh', force )
         return
 
@@ -590,8 +585,6 @@ class SettingsTab(QWidget):
         self.settings['Optical permittivity'] = self.reader.zerof_optical_dielectric
         self.refresh_optical_permittivity_tw()
         self.refreshRequired = True
-        self.calculationRequired = True
-        self.refresh()
         QCoreApplication.processEvents()
         debugger.print('Finished:: set_optical_permittivity_tw')
         return
@@ -601,7 +594,6 @@ class SettingsTab(QWidget):
         self.settings['Neutral Born charges'] = self.born_cb.isChecked()
         debugger.print('on born change ', self.settings['Neutral Born charges'])
         self.refreshRequired = True
-        self.calculationRequired = True
         self.refresh()
         QCoreApplication.processEvents()
         debugger.print('Finished:: on_born_change ', self.born_cb.isChecked())
@@ -612,7 +604,6 @@ class SettingsTab(QWidget):
         self.settings['Eckart flag'] = self.eckart_cb.isChecked()
         debugger.print('on eckart change ', self.settings['Eckart flag'])
         self.refreshRequired = True
-        self.calculationRequired = True
         self.refresh()
         QCoreApplication.processEvents()
         debugger.print('Finished:: on_eckart_change ', self.eckart_cb.isChecked())
@@ -621,9 +612,6 @@ class SettingsTab(QWidget):
     def calculate(self,vs_cm1):
         """Calculate the permittivity of the crystal over the range of frequencies in vs_cm1"""
         debugger.print('Start:: calculate ')
-        if not self.calculationRequired:
-            debugger.print('Finished:: calculate aborted calculationRequired is false')
-            return
         if len(vs_cm1) == 0:
             debugger.print('Finished:: calculate aborted vs_cm1 has not been set')
             return
@@ -640,7 +628,6 @@ class SettingsTab(QWidget):
         pool.close()
         pool.join()
         QCoreApplication.processEvents()
-        self.calculationRequired = False
         debugger.print('Finished:: calculate ')
         return
 
