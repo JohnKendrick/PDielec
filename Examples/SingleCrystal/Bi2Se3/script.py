@@ -25,7 +25,7 @@ tab.refresh(force=True)
 #
 #
 tab = self.notebook.scenarios[0]
-tab.settings['Legend'] = '(001) theta  0'
+tab.settings['Legend'] = '(001) theta 0'
 tab.settings['Scenario type'] = 'Single crystal'
 tab.settings['Unique direction - h'] =  0
 tab.settings['Unique direction - k'] =  0
@@ -40,7 +40,7 @@ tab.settings['Film thickness'] =  100.0
 tab.settings['Mode'] = 'Thick slab'
 tab.settings['Frequency units'] = 'wavenumber'
 tab.refresh(force=True)
-for az  in [ 0, 10, 20, 30, 40, 50, 60, 70, 80, 90]:
+for az  in [ 10, 20, 30, 40, 50, 60, 70, 80, 90]:
     self.notebook.addScenario(scenarioType="Single crystal")
     tab = self.notebook.scenarios[-1]
     tab.settings['Legend'] = '(001) theta {}'.format(az)
