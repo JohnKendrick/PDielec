@@ -49,10 +49,15 @@ tests-cli:	test-preader test-p2cif test-vibanalysis
 
 regenerate:	regenerate-pdgui regenerate-vibanalysis
 
-.PHONY:		pdgui
+.PHONY:		test-pdgui
 test-pdgui:		
 		@echo "Testing pdgui functionality....."
 		@( cd Examples; $(MAKE) --no-print-directory test-pdgui )
+
+.PHONY:		benchmark
+benchmark:		
+		@echo "Benchmarking....."
+		@( cd Examples; $(MAKE) --no-print-directory benchmark )
 
 .PHONY:		test-p2cif
 test-p2cif:		
