@@ -7,6 +7,9 @@ version 7.0.1
   Moved the CrystalPermittivity to the SettingsTab
   Modified the scripting, scripts written before version 7 may not work. 
   Modified the way masses are handled, so if the gui modifies the masses they are written out to the script.
+  Changed the communication between tabs, it was completed before and it still is unfortunately
+  Stopped setting the requestRefresh variable directly - now use a subroutine to do it.
+  Added a lot of debugging information to the tabs so it is much clearer what the flow is through the code
 
 
 version 6.4.5
