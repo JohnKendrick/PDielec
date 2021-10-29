@@ -410,11 +410,12 @@ class PowderScenarioTab(ScenarioTab):
         rho1 = max(rho1,1.0E-18)
         vf1 = ( 1.0 - self.settings['Bubble volume fraction'] ) * (mf1/mf2)*(rho2/rho1) / ( 1 + (mf1/mf2)*(rho2/rho1))
         self.settings['Volume fraction'] = vf1
+        blocking_state = self.vf_sb.signalsBlocked()
         self.vf_sb.blockSignals(True)
         self.vf_sb.setValue(100.0*vf1)
-        self.vf_sb.blockSignals(False)
         self.bubble_vf_sb.setRange(0.0, 100.0*(1.0-self.settings['Volume fraction']))
         self.vf_sb.setRange(0.0, 100.0*(1.0-self.settings['Bubble volume fraction']))
+        self.vf_sb.blockSignals(blocking_state)
         debugger.print(self.settings['Legend'],'Update_vf_sb')
         debugger.print(self.settings['Legend'],'rho 1', rho1)
         debugger.print(self.settings['Legend'],'rho 2', rho2)
@@ -446,14 +447,16 @@ class PowderScenarioTab(ScenarioTab):
         return
 
     def on_vf_sb_changed(self,value):
-        debugger.print(self.settings['Legend'],'on volume fraction line edit changed', value)
+        debugger.print(self.settings['Legend'],'Start:: on_vf_sb_changed', value)
         self.refreshRequired = True
         self.settings['Mass or volume fraction'] = 'volume'
         self.settings['Volume fraction'] = value/100.0
         self.update_mf_sb()
+        debugger.print(self.settings['Legend'],'Finished:: on_vf_sb_changed', value)
         return
 
     def update_mf_sb(self):
+        debugger.print(self.settings['Legend'],'Start:: update_mf_sb')
         vf1 = self.settings['Volume fraction']
         vf2 = 1.0 - vf1 - self.settings['Bubble volume fraction']
         rho1 = self.crystal_density()
@@ -461,13 +464,15 @@ class PowderScenarioTab(ScenarioTab):
         # mf1 = 1.0 / ( 1.0 + (vf2/vf1) * (rho2/rho1) )
         mf1 = rho1*vf1 / ( rho1*vf1 + rho2*vf2 )
         self.settings['Mass fraction'] = mf1
+        blocking_state = self.mf_sb.signalsBlocked()
         self.mf_sb.blockSignals(True)
         self.mf_sb.setValue(100.0*mf1)
-        self.mf_sb.blockSignals(False)
+        self.mf_sb.blockSignals(blocking_state)
         debugger.print(self.settings['Legend'],'Update_mf_sb')
         debugger.print(self.settings['Legend'],'rho 1', rho1)
         debugger.print(self.settings['Legend'],'rho 2', rho2)
         debugger.print(self.settings['Legend'],'mf 1 ', mf1)
+        debugger.print(self.settings['Legend'],'Finished:: update_mf_sb')
         return
 
     def on_matrix_cb_activated(self,index):
@@ -475,6 +480,9 @@ class PowderScenarioTab(ScenarioTab):
         debugger.print(self.settings['Legend'],'on matrix combobox activated', self.matrix_cb.currentText())
         self.refreshRequired = True
         matrix = self.matrix_cb.currentText()
+        m_blocking = self.matrix_cb.signalsBlocked()
+        d_blocking = self.density_sb.signalsBlocked()
+        p_blocking = self.permittivity_sb.signalsBlocked()
         self.matrix_cb.blockSignals(True)
         self.density_sb.blockSignals(True)
         self.permittivity_sb.blockSignals(True)
@@ -490,9 +498,9 @@ class PowderScenarioTab(ScenarioTab):
         else:
             self.update_vf_sb()
             self.update_mf_sb()
-        self.matrix_cb.blockSignals(False)
-        self.density_sb.blockSignals(False)
-        self.permittivity_sb.blockSignals(False)
+        self.matrix_cb.blockSignals(m_blocking)
+        self.density_sb.blockSignals(d_blocking)
+        self.permittivity_sb.blockSignals(p_blocking)
         return
 
     def on_density_sb_changed(self,value):
