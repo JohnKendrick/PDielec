@@ -181,7 +181,7 @@ class FitterTab(QWidget):
         if len(self.modes_fitted) == 0 and len(self.modes_selected) > 0:
             self.modes_selected = [ False  for _ in self.modes_selected ]
         #self.sigmas_tw = QTableWidget(self)
-        self.sigmas_tw = FixedQTableWidget(self,rows=6)
+        self.sigmas_tw = FixedQTableWidget(self,rows=5)
         self.sigmas_tw.setToolTip('Choose the sigmas which will be used in the fitting')
         self.sigmas_tw.itemChanged.connect(self.on_sigmas_tw_itemChanged)
         self.sigmas_tw.setRowCount(len(self.sigmas_cm1))
