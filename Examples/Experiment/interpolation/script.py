@@ -6,7 +6,6 @@ tab.settings['Output file name'] = 'interpolation.exp'
 tab.settings['Excel file name'] = 'results.xlsx'
 tab.settings['QM program'] = ''
 tab.settings['Hessian symmetrisation'] = 'symm'
-tab.refresh(force=True)
 #
 #
 tab = self.notebook.settingsTab
@@ -16,7 +15,6 @@ tab.settings['Sigma value'] =  5
 tab.settings['Mass definition'] = 'average'
 tab.settings['Optical permittivity edited'] =  False
 tab.sigmas_cm1 = [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]
-tab.refresh(force=True)
 #
 #
 tab = self.notebook.scenarios[0]
@@ -40,7 +38,6 @@ tab.settings['ATR S polarisation fraction'] =  0.5
 tab.settings['Effective medium method'] = 'Maxwell-Garnett'
 tab.settings['Particle shape'] = 'Sphere'
 tab.settings['Legend'] = 'Scenario 1'
-tab.refresh(force=True)
 #
 #
 tab = self.notebook.plottingTab
@@ -51,6 +48,5 @@ tab.settings['Molar definition'] = 'Unit cells'
 tab.settings['Number of atoms'] =  1
 tab.settings['Plot title'] = 'Plot Title'
 tab.settings['concentration'] =  13.743950329674377
-tab.refresh(force=True)
 #
 #

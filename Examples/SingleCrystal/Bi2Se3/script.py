@@ -11,7 +11,6 @@ tab.settings['Output file name'] = 'OUTCAR'
 tab.settings['Excel file name'] = ''
 tab.settings['QM program'] = 'vasp'
 tab.settings['Hessian symmetrisation'] = 'symm'
-tab.refresh(force=True)
 #
 #
 tab = self.notebook.settingsTab
@@ -21,7 +20,6 @@ tab.settings['Sigma value'] =  5
 tab.settings['Mass definition'] = 'average'
 tab.settings['Optical permittivity edited'] =  False
 tab.sigmas_cm1 = [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]
-tab.refresh(force=True)
 #
 #
 tab = self.notebook.scenarios[0]
@@ -39,17 +37,14 @@ tab.settings['Substrate depth'] =  999.0
 tab.settings['Film thickness'] =  100.0
 tab.settings['Mode'] = 'Thick slab'
 tab.settings['Frequency units'] = 'wavenumber'
-tab.refresh(force=True)
 for az  in [ 10, 20, 30, 40, 50, 60, 70, 80, 90]:
     self.notebook.addScenario(scenarioType="Single crystal")
     tab = self.notebook.scenarios[-1]
     tab.settings['Legend'] = '(001) theta {}'.format(az)
     tab.settings['Azimuthal angle'] =  az
-    tab.refresh(force=True)
 #
 tab = self.notebook.plottingTab
 tab.settings['Minimum frequency'] =  0
 tab.settings['Maximum frequency'] =  250
 tab.settings['Frequency increment'] =  0.2
 tab.settings['Plot type'] = 'Crystal Reflectance (P polarisation)'
-tab.refresh(force=True)

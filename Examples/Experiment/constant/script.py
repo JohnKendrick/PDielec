@@ -17,7 +17,6 @@ tab.settings['Angle of incidence'] =  45.0
 tab.settings['Superstrate dielectric'] =  1.0
 tab.settings['Substrate dielectric'] =  1.0
 tab.settings['Mode'] = 'Thick slab'
-tab.refresh(force=True)
 #
 #
 self.notebook.addScenario(scenarioType='Single crystal')
@@ -25,7 +24,6 @@ tab = self.notebook.scenarios[1]
 tab.settings['Legend'] = 'Film 10um'
 tab.settings['Mode'] = 'Coherent thin film'
 tab.settings['Film thickness'] =  10000.0
-tab.refresh(force=True)
 #
 #
 self.notebook.addScenario(scenarioType='Single crystal')
@@ -33,7 +31,6 @@ tab = self.notebook.scenarios[2]
 tab.settings['Legend'] = 'Film 20um'
 tab.settings['Mode'] = 'Coherent thin film'
 tab.settings['Film thickness'] =  20000.0
-tab.refresh(force=True)
 #
 #
 tab = self.notebook.plottingTab
@@ -42,6 +39,5 @@ tab.settings['Maximum frequency'] =  400
 tab.settings['Frequency increment'] =  0.2
 tab.settings['Plot title'] = 'Test of Constant Dielectric'
 tab.settings['Plot type'] = 'Crystal Reflectance (P polarisation)'
-tab.refresh(force=True)
 #
 #

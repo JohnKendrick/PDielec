@@ -12,7 +12,6 @@ tab.settings['Excel file name'] = 'results.xlsx'
 tab.settings['Script file name'] = ''
 tab.settings['QM program'] = ''
 tab.settings['Hessian symmetrisation'] = 'symm'
-tab.requestRefresh()
 #
 #
 tab = self.notebook.settingsTab
@@ -27,7 +26,6 @@ tab.masses_dictionary['O'] =  15.9949146223
 tab.masses_dictionary['H'] =  2.01410178
 tab.settings['Optical permittivity edited'] =  False
 tab.sigmas_cm1 = [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]
-tab.requestRefresh()
 #
 #
 tab = self.notebook.scenarios[0]
@@ -52,7 +50,6 @@ tab.settings['ATR theta'] =  45.0
 tab.settings['ATR S polarisation fraction'] =  0.5
 tab.settings['Effective medium method'] = 'Maxwell-Garnett'
 tab.settings['Particle shape'] = 'Sphere'
-tab.requestRefresh()
 #
 #
 tab = self.notebook.analysisTab
@@ -62,7 +59,6 @@ tab.settings['title'] = 'Analysis'
 tab.settings['Covalent radius scaling'] =  1.1
 tab.settings['Bonding tolerance'] =  0.1
 tab.settings['Bar width'] =  0.5
-tab.requestRefresh()
 #
 #
 tab = self.notebook.viewerTab
@@ -77,7 +73,6 @@ tab.settings['Arrow colour'] =  [0, 255, 0, 255]
 tab.settings['Arrow radius'] =  0.07
 tab.settings['Number of phase steps'] =  41
 tab.settings['Super Cell'] =  [1, 1, 1]
-tab.requestRefresh()
 #
 #
 tab = self.notebook.fitterTab
@@ -94,7 +89,6 @@ tab.settings['Spectral difference threshold'] =  0.05
 tab.settings['HPFilter lambda'] =  7.0
 tab.settings['Baseline removal'] =  False
 tab.settings['Scenario index'] =  0
-tab.requestRefresh()
 #
 #
 tab = self.notebook.plottingTab
@@ -107,4 +101,3 @@ tab.settings['Plot type'] = 'Powder Molar Absorption'
 tab.settings['Plot title'] = 'QE - Deuterated Cocaine'
 tab.settings['concentration'] =  0.9885397678150851
 tab.settings['cell concentration'] =  0.9885397678150851
-tab.requestRefresh()

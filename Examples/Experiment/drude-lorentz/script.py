@@ -16,7 +16,6 @@ tab.settings['Substrate depth'] =  999.0
 tab.settings['Film thickness'] =  10000.0
 tab.settings['Mode'] = 'Thick slab'
 tab.settings['Legend'] = 'Angle 10'
-tab.refresh(force=True)
 #
 #
 for degs in [ 20, 30, 40, 50, 60, 70, 80]:
@@ -24,7 +23,6 @@ for degs in [ 20, 30, 40, 50, 60, 70, 80]:
     tab = self.notebook.scenarios[-1]
     tab.settings['Angle of incidence'] =  degs
     tab.settings['Legend'] = 'Angle {}'.format(degs)
-    tab.refresh(force=True)
 #
 tab = self.notebook.plottingTab
 tab.settings['Minimum frequency'] =  100
@@ -32,6 +30,5 @@ tab.settings['Maximum frequency'] =  800
 tab.settings['Frequency increment'] =  0.2
 tab.settings['Plot title'] = 'Test of Drude-Lorentz Dielectric for MgO'
 tab.settings['Plot type'] = 'Crystal Reflectance (P polarisation)'
-tab.refresh(force=True)
 #
 #
