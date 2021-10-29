@@ -117,7 +117,6 @@ class NoteBook(QWidget):
         self.tabs.addTab(self.mainTab,'Main')
         self.tabs.addTab(self.settingsTab,'Settings')
         for i,tab in enumerate(self.scenarios):
-            #jk tab.refresh(force=True)
             tab.requestRefresh()
             self.tabs.addTab(tab,'Scenario '+str(i+1))
         self.tabs.addTab(self.plottingTab,'Plotting')
@@ -165,7 +164,7 @@ class NoteBook(QWidget):
         # If we have found a previous scenario of the same time set the settings to it
         if last is not None:
             self.scenarios[-1].settings = copy.deepcopy(last.settings)
-            self.scenarios[-1].refresh(force=True)
+            self.scenarios[-1].requestRefresh()
         n = len(self.scenarios)
         self.tabs.insertTab(self.tabOffSet+n-1,self.scenarios[-1],'Scenario '+str(n))
         self.tabs.setCurrentIndex(self.tabOffSet+n-1)
@@ -197,26 +196,26 @@ class NoteBook(QWidget):
         print('#',file=fd)
         # Print settings of mainTab
         self.print_tab_settings(self.mainTab, 'mainTab',fd)
-        print('tab.requestRefresh()',file=fd)
+        #print('tab.requestRefresh()',file=fd)
         # Print settings of settingsTab
         self.print_tab_settings(self.settingsTab, 'settingsTab',fd)
         print('tab.sigmas_cm1 =',self.settingsTab.sigmas_cm1,file=fd)
-        print('tab.requestRefresh()',file=fd)
+        #print('tab.requestRefresh()',file=fd)
         # Print settings of scenarios
         for i,tab in enumerate(self.scenarios):
             if i == 0:
                 self.print_tab_settings(tab, 'scenarios[{}]'.format(i), fd, new_scenario = False)
             else:
                 self.print_tab_settings(tab, 'scenarios[{}]'.format(i), fd, new_scenario = True)
-            print('tab.requestRefresh()',file=fd)
+            #print('tab.requestRefresh()',file=fd)
         self.print_tab_settings(self.analysisTab, 'analysisTab',fd)
-        print('tab.requestRefresh()',file=fd)
+        #print('tab.requestRefresh()',file=fd)
         self.print_tab_settings(self.viewerTab, 'viewerTab',fd)
-        print('tab.requestRefresh()',file=fd)
+        #print('tab.requestRefresh()',file=fd)
         self.print_tab_settings(self.fitterTab, 'fitterTab',fd)
-        print('tab.requestRefresh()',file=fd)
+        #print('tab.requestRefresh()',file=fd)
         self.print_tab_settings(self.plottingTab, 'plottingTab',fd)
-        print('tab.requestRefresh()',file=fd)
+        #print('tab.requestRefresh()',file=fd)
         fd.close()
         debugger.print('Finished:: print_settings, filename=',filename)
         return
@@ -291,7 +290,7 @@ class NoteBook(QWidget):
             scenario.setScenarioIndex(i)
             self.tabs.setTabText(self.tabOffSet+i,'Scenario '+str(i+1))
         self.tabs.setCurrentIndex(self.tabOffSet+index)
-        self.scenarios[index].refresh(force=True)
+        self.scenarios[index].requestRefresh()
         debugger.print('Finished:: switch for scenario', index+1)
         return
 
