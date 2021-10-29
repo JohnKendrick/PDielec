@@ -35,9 +35,11 @@ class ScenarioTab(QWidget):
     def setScenarioIndex(self,index):
         debugger.print('Start:: setScenarioIndex',index)
         self.scenarioIndex = index
-        text = self.legend_le.text()
+        text = self.settings['Legend']
         if text.startswith('Unset') or text.startswith('Scenario ') or text.startswith('Powder scenario ') or text.startswith('Crystal scenario '):
+            debugger.print('setScenarioIndex changing scenario legend','Scenario+str(index+1)')
             self.legend_le.setText('Scenario '+str(index + 1))
+            self.settings['Legend'] = 'Scenario '+str(index + 1)
         debugger.print('Finished:: setScenarioIndex',index)
         return
 
