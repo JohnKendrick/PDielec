@@ -50,7 +50,7 @@ class SettingsTab(QWidget):
         debugger.print('Start:: initialisation')
         self.notebook = parent
         self.refreshRequired = True
-        self.calculationRequired = True
+        self.calculationRequired = False
         self.settings = {}
         self.settings['Eckart flag'] = True
         self.settings['Neutral Born charges'] = False
@@ -628,6 +628,7 @@ class SettingsTab(QWidget):
         pool.close()
         pool.join()
         QCoreApplication.processEvents()
+        self.calculationRequired = False
         debugger.print('Finished:: calculate ')
         return
 
