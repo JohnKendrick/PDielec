@@ -221,7 +221,7 @@ class NoteBook(QWidget):
         return
 
     def print_tab_settings(self,tab,title,fd,new_scenario = False):
-        debugger.print('Start:: print_tab_settings, filename=',filename)
+        debugger.print('Start:: print_tab_settings')
         print('#',file=fd)
         print('#',file=fd)
         if new_scenario:
@@ -242,7 +242,7 @@ class NoteBook(QWidget):
                     print('tab.settings[\''+item+'\'] = \'{}\''.format(tab.settings[item]),file=fd)
                 else:
                     print('tab.settings[\''+item+'\'] = ', tab.settings[item],file=fd)
-        debugger.print('Finished:: print_tab_settings, filename=',filename)
+        debugger.print('Finished:: print_tab_settings')
 
     def deleteScenario(self,index):
         debugger.print('Start:: deleteScenario',index)
