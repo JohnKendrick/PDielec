@@ -3,6 +3,10 @@ pdgui:
 	@../../../pdgui -nosplash vasp OUTCAR results.xlsx -script script.py -exit
 	@../../../checkexcel results.xlsx results.ref.xlsx
 
+benchmark:	
+	@echo "PDGui benchmark Single Crystal for Bi2Se3 VASP calculation...."
+	@../../../pdgui -nosplash vasp OUTCAR -script script.py -exit
+
 pdgui-regenerate:
 	@echo "PDGui Regenerating Single Crystal for Bi2Se3 VASP calculation...."
 	@../../../pdgui -nosplash vasp OUTCAR results.xlsx -script script.py -exit

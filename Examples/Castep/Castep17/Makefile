@@ -3,6 +3,10 @@ pdgui:
 	@../../../pdgui -nosplash castep phonon.castep results.xlsx -exit -script ./script.py
 	@../../../checkexcel results.ref.xlsx results.xlsx
 
+benchmark:	
+	@echo "PDGui benchmark CASTEP17 test...."
+	@../../../pdgui -nosplash castep phonon.castep -exit -script ./script.py
+
 pdgui-regenerate:	
 	@echo "PDGui Regenerating CASTEP17 test...."
 	@../../../pdgui -nosplash castep phonon.castep results.xlsx -exit -script ./script.py

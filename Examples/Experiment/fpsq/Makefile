@@ -3,6 +3,10 @@ pdgui:
 	@../../../pdgui -nosplash experiment fpsq.exp results.xlsx -script script.py -exit
 	@../../../checkexcel results.xlsx results.ref.xlsx
 
+benchmark:	
+	@echo "PDGui benchmark Single Crystal for fpsq experiment file...."
+	@../../../pdgui -nosplash experiment fpsq.exp -script script.py -exit
+
 pdgui-regenerate:
 	@echo "PDGui Regenerating Single Crystal for fpsq experiment file...."
 	@../../../pdgui -nosplash experiment fpsq.exp results.xlsx -script script.py -exit

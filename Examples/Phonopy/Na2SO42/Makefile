@@ -3,6 +3,10 @@ pdgui:
 	@../../../pdgui -nosplash phonopy OUTCAR.born results.xlsx -script script.py -exit
 	@../../../checkexcel results.xlsx results.ref.xlsx
 
+benchmark:	
+	@echo "benchmark absorption for Na2(SO4)2 from PHONOPY...."
+	@../../../pdgui -nosplash phonopy OUTCAR.born -script script.py -exit
+
 pdgui-regenerate:
 	@echo "PDGui Regenerating reference files for Na2(SO4)2 from PHONOPY...."
 	@../../../pdgui -nosplash phonopy OUTCAR.born results.xlsx -script script.py -exit

@@ -3,6 +3,10 @@ pdgui:
 	@../../../pdgui -nosplash gulp na2so42.gout results.xlsx -script script.py -exit
 	@../../../checkexcel results.xlsx results.ref.xlsx
 
+benchmark:	
+	@echo "PDGui benchmark absorption for Na2(SO4)2 from GULP...."
+	@../../../pdgui -nosplash gulp na2so42.gout -script script.py -exit
+
 pdgui-regenerate:
 	@echo "PDGui Regenerating reference files for Na2(SO4)2 from GULP...."
 	@../../../pdgui -nosplash gulp na2so42.gout results.xlsx -script script.py -exit

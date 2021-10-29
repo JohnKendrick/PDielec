@@ -3,6 +3,10 @@ pdgui:
 	@../../../pdgui -nosplash qe phonon.dynG results.xlsx -script script.py -exit
 	@../../../checkexcel results.xlsx results.ref.xlsx
 
+benchmark:	
+	@echo "PDGui benchmark absorption for cocaine salt from Quantum Espresso...."
+	@../../../pdgui -nosplash qe phonon.dynG -script script.py -exit
+
 pdgui-regenerate:
 	@echo "PDGui Regenerating reference files for cocaine salt from Quantum Espresso...."
 	@../../../pdgui -nosplash qe phonon.dynG results.xlsx -script script.py -exit

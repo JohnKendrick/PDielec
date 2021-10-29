@@ -3,6 +3,10 @@ pdgui:
 	@../../../pdgui -nosplash abinit BaTiO3.out results.xlsx -script script.py -exit
 	@../../../checkexcel results.ref.xlsx results.xlsx
 
+benchmark:	
+	@echo "PDGui benchmark for absorption of BaTiO3 from Abinit...."
+	@../../../pdgui -nosplash abinit BaTiO3.out -script script.py -exit
+
 pdgui-regenerate:	
 	@echo "PDGui Regenerating for absorption of BaTiO3 from Abinit...."
 	@../../../pdgui -nosplash abinit BaTiO3.out results.xlsx -script script.py -exit
