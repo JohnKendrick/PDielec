@@ -86,7 +86,13 @@ class MainTab(QWidget):
         self.file_le.textChanged.connect(self.on_file_le_changed)
         label = QLabel('Analyse this output file')
         label.setToolTip('Choose output file for analysis (press return for a file chooser)')
-        form.addRow(label, self.file_le)
+        file_button = QPushButton('File Manager  ')
+        file_button.setToolTip('Open a file manager to choos a file for analysis')
+        file_button.clicked.connect(self.on_file_le_return)
+        hbox = QHBoxLayout()
+        hbox.addWidget(self.file_le)
+        hbox.addWidget(file_button)
+        form.addRow(label, hbox)
         #
         # The method for symmetrising the hessian
         #
