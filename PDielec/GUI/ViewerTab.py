@@ -467,6 +467,7 @@ class ViewerTab(QWidget):
         self.frequencies_cm1 = self.notebook.settingsTab.frequencies_cm1
         self.selected_mode_sb.setRange(1,len(self.frequencies_cm1))
         # Get the cell with whole molecules from the analysis tab
+        self.notebook.analysisTab.refresh()
         self.unit_cell = self.notebook.analysisTab.cell_of_molecules
         # Generate a super cell
         imageSpecifier = self.settings["Super Cell"]
@@ -661,6 +662,7 @@ class ViewerTab(QWidget):
             self.element_names = []
             self.species = []
         else:
+            self.notebook.analysisTab.refresh()
             self.unit_cell = self.notebook.analysisTab.cell_of_molecules
             self.element_names = self.unit_cell.element_names
             self.species = self.reader.getSpecies()
