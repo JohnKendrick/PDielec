@@ -37,6 +37,7 @@ class FixedQTableWidget(QTableWidget):
             rows = self.rows
         for i in range(rows):
             height += self.rowHeight(i)
+        height = rows * 80
         height += self.verticalHeader().sizeHint().width()
         height += self.horizontalScrollBar().sizeHint().height()
         height += self.frameWidth()*2
