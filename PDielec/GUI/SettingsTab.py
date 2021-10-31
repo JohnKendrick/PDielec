@@ -4,6 +4,7 @@ import PDielec.Calculator as Calculator
 from PyQt5.QtWidgets            import  QWidget, QApplication
 from PyQt5.QtWidgets            import  QComboBox, QLabel
 from PyQt5.QtWidgets            import  QCheckBox
+from PyQt5.QtFonts              import  QFont
 from PyQt5.QtWidgets            import  QVBoxLayout, QFormLayout
 from PyQt5.QtWidgets            import  QDoubleSpinBox, QTableWidget, QTableWidgetItem
 from PyQt5.QtWidgets            import  QSizePolicy
@@ -18,6 +19,10 @@ class FixedQTableWidget(QTableWidget):
         self.columns = columns
         self.rows = rows
         super(QTableWidget, self).__init__(*args)
+        fnt = QFont()
+        fnt.setPointSize(30)
+        fnt.setFamily("Arial")
+        self.setFont(fnt)
 
     def sizeHint(self):
         width = 0
@@ -36,8 +41,8 @@ class FixedQTableWidget(QTableWidget):
         else:
             rows = self.rows
         for i in range(rows):
+            print('Row ',i,self.rowHeight(i))
             height += self.rowHeight(i)
-        height = rows * 80
         height += self.verticalHeader().sizeHint().width()
         height += self.horizontalScrollBar().sizeHint().height()
         height += self.frameWidth()*2
