@@ -59,6 +59,9 @@ class App(QMainWindow):
             elif token == '-spreadsheet' or token == '--spreadsheet' or token == '-xls' or token == '--xls':
                 itoken += 1
                 spreadsheet_name = tokens[itoken]
+            elif token == '-program' or token == '--program':
+                itoken += 1
+                program = tokens[itoken]
             elif token == '-threading' or token == '--threading' or token == '-threads' or token == '--threads':
                 threading = True
             elif token == '-cpus' or token == '--cpus':
@@ -145,6 +148,7 @@ class App(QMainWindow):
         print('                  If this option is used program, filename must also be specified')
         print('   -scenario type Change the default scenario to \"type\"; either \"powder\" to \"crystal\"')
         print('-spreadsheet file An alternative way of specifying the spread sheet')
+        print('    -program      An alternative way of specifying the program')
         print('     -script file The initial commands are read from a script file')
         print('   -nosplash      No splash screen is presented (useful for batch running)')
         print('  -threading      Uses threads rather than multiprocessing')
