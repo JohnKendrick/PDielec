@@ -80,15 +80,15 @@ class MainTab(QWidget):
         # The file selector
         #
         self.file_le = QLineEdit(self)
-        self.file_le.setToolTip('Choose output file for analysis (press return for a file chooser)')
+        self.file_le.setToolTip('Enter output file for analysis (press return)')
         self.file_le.setText(self.settings['Output file name'])
         self.file_le.returnPressed.connect(self.on_file_le_return)
         self.file_le.textChanged.connect(self.on_file_le_changed)
         label = QLabel('Analyse this output file')
-        label.setToolTip('Choose output file for analysis (press return for a file chooser)')
+        label.setToolTip('Enter output file for analysis (press return)')
         file_button = QPushButton('File Manager  ')
-        file_button.setToolTip('Open a file manager to choos a file for analysis')
-        file_button.clicked.connect(self.on_file_le_return)
+        file_button.setToolTip('Open a file manager to choose a file for analysis')
+        file_button.clicked.connect(self.on_file_button_clicked)
         hbox = QHBoxLayout()
         hbox.addWidget(self.file_le)
         hbox.addWidget(file_button)
@@ -145,16 +145,16 @@ class MainTab(QWidget):
         hbox.addWidget(self.scriptsfile_le)
         hbox.addWidget(script_button)
         form.addRow(label, hbox)
-        #
-        # Calculation button
-        #
-        self.calculation_button = QPushButton('Read the output file and start the calculation')
-        self.calculation_button.setToolTip('Pressing this button initiates reading of the output file and processing of all the options')
-        self.calculation_button.clicked.connect(self.on_calculation_button_clicked)
-        #label = QLabel('Read and calculate')
-        #label.setToolTip('Pressing this button initiates reading of the output file and processing of all the options')
-        form.addRow(self.calculation_button)
-        # add form layout
+        #jk #
+        #jk # Calculation button
+        #jk #
+        #jk self.calculation_button = QPushButton('Read the output file and start the calculation')
+        #jk self.calculation_button.setToolTip('Pressing this button initiates reading of the output file and processing of all the options')
+        #jk self.calculation_button.clicked.connect(self.on_calculation_button_clicked)
+        #jk #label = QLabel('Read and calculate')
+        #jk #label.setToolTip('Pressing this button initiates reading of the output file and processing of all the options')
+        #jk form.addRow(self.calculation_button)
+        #jk # add form layout
         vbox.addLayout(form)
         # output window for unit cell
         self.cell_window_l = QLabel('Unit-cell (Angstrom) from '+self.settings['Output file name'], self)
@@ -375,9 +375,8 @@ class MainTab(QWidget):
         self.settings['Excel file name'] = text
         debugger.print('Finished:: on_resultsfile_changed', text)
 
-    def on_file_le_return(self):
-        debugger.print('Start:: on_file_return ', self.file_le.text())
-        # Does the file exist?
+    def on_file_button_clicked(self):
+        debugger.print('Start:: on_file_button_clicked ', self.file_le.text())
         self.settings['Output file name'] = self.file_le.text()
         # Open a file chooser
         #options = QFileDialog.Options()
@@ -407,7 +406,19 @@ class MainTab(QWidget):
             debugger.print('new file name', self.settings['Output file name'])
             self.directory = os.path.dirname(self.settings['Output file name'])
             self.calculationRequired = True
-        debugger.print('Finished:: on_file_return ', self.file_le.text())
+            self.on_calculation_button_clicked()
+        debugger.print('Finished:: on_file_button_clicked ', self.file_le.text())
+        return
+
+    def on_file_le_return(self):
+        debugger.print('Start:: on_file_le_return ', self.file_le.text())
+        self.settings['Output file name'] = self.file_le.text()
+        if self.settings['Output file name'] != '':
+            debugger.print('new file name', self.settings['Output file name'])
+            self.directory = os.path.dirname(self.settings['Output file name'])
+            self.calculationRequired = True
+            self.on_calculation_button_clicked()
+        debugger.print('Finished:: on_file_le_return ', self.file_le.text())
         return
 
     def on_file_le_changed(self, text):
