@@ -86,7 +86,7 @@ class MainTab(QWidget):
         self.file_le.textChanged.connect(self.on_file_le_changed)
         label = QLabel('Analyse this output file')
         label.setToolTip('Enter output file for analysis (press return)')
-        file_button = QPushButton('File Manager  ')
+        file_button = QPushButton('File Manager ')
         file_button.setToolTip('Open a file manager to choose a file for analysis')
         file_button.clicked.connect(self.on_file_button_clicked)
         hbox = QHBoxLayout()
@@ -121,7 +121,7 @@ class MainTab(QWidget):
         self.resultsfile_le.textChanged.connect(self.on_resultsfile_le_changed)
         label = QLabel('Excel spread sheet')
         label.setToolTip('Provide the name of an .xlsx file if results are to be stored in a spreadsheet.\nIf specified the file will be written when the program exits.\nThe default directory is that of the QM/MM output file which has been read in.')
-        excel_button = QPushButton('Save results  ')
+        excel_button = QPushButton('Save results ')
         excel_button.setToolTip('Save the results of calculation to the excel spreadsheet specified')
         excel_button.clicked.connect(self.on_excel_button_clicked)
         hbox = QHBoxLayout()
@@ -399,7 +399,7 @@ class MainTab(QWidget):
             selfilter = 'Experiment (*.exp)'
         else:
             selfilter = 'All files (*)'
-        filename, _ = QFileDialog.getOpenFileName(self,'Open MM/QM Output file','','All files(*);;Castep (*.castep);;Abinit (*.out);;Gulp (*.gout);;VASP (OUTCAR*);; QE (*.dynG);; Crystal 14 (*.out);; Phonopy (OUTCAR*);; Experiment (*.exp)',selfilter)
+        filename,myfilter = QFileDialog.getOpenFileName(self,'Open MM/QM Output file','','All files(*);;Castep (*.castep);;Abinit (*.out);;Gulp (*.gout);;VASP (OUTCAR*);; QE (*.dynG);; Crystal 14 (*.out);; Phonopy (OUTCAR*);; Experiment (*.exp)',selfilter)
         if filename != '':
             self.settings['Output file name'] = filename
             self.file_le.setText(self.settings['Output file name'])
