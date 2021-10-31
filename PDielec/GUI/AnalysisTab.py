@@ -94,7 +94,7 @@ class AnalysisTab(QWidget):
         label.setToolTip('Bonding is determined from scale*(radi+radj)+toler')
         form.addRow(label, hbox)
         # Add a table of covalent radii
-        self.element_radii_tw = FixedQTableWidget(self)
+        self.element_radii_tw = FixedQTableWidget(parent=self)
         self.element_radii_tw.setToolTip('Individual covalent radii used to determine bonding can be set here')
         self.element_radii_tw.itemClicked.connect(self.on_element_radii_tw_itemClicked)
         self.element_radii_tw.itemChanged.connect(self.on_element_radii_tw_itemChanged)

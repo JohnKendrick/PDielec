@@ -180,11 +180,12 @@ class FitterTab(QWidget):
         self.intensities = self.notebook.settingsTab.intensities
         if len(self.modes_fitted) == 0 and len(self.modes_selected) > 0:
             self.modes_selected = [ False  for _ in self.modes_selected ]
-        #self.sigmas_tw = QTableWidget(self)
-        self.sigmas_tw = FixedQTableWidget(self,rows=5)
+        self.sigmas_tw = FixedQTableWidget(parent=self,rows=7)
+        #jk sizePolicy = QSizePolicy(QSizePolicy.Minimum,QSizePolicy.Minimum)
+        #jk self.sigmas_tw.setSizePolicy(sizePolicy)
         self.sigmas_tw.setToolTip('Choose the sigmas which will be used in the fitting')
         self.sigmas_tw.itemChanged.connect(self.on_sigmas_tw_itemChanged)
-        self.sigmas_tw.setRowCount(len(self.sigmas_cm1))
+        self.sigmas_tw.setRowCount(max(8,len(self.sigmas_cm1)))
         self.sigmas_tw.setColumnCount(3)
         self.sigmas_tw.setHorizontalHeaderLabels(['   Sigma   \n(cm-1)', ' Frequency \n(cm-1)', '  Intensity  \n(Debye2/Å2/amu)'])
         self.redraw_sigmas_tw()

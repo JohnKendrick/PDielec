@@ -4,7 +4,7 @@ import PDielec.Calculator as Calculator
 from PyQt5.QtWidgets            import  QWidget, QApplication
 from PyQt5.QtWidgets            import  QComboBox, QLabel
 from PyQt5.QtWidgets            import  QCheckBox
-from PyQt5.QtFonts              import  QFont
+from PyQt5.QtGui                import  QFont
 from PyQt5.QtWidgets            import  QVBoxLayout, QFormLayout
 from PyQt5.QtWidgets            import  QDoubleSpinBox, QTableWidget, QTableWidgetItem
 from PyQt5.QtWidgets            import  QSizePolicy
@@ -19,10 +19,10 @@ class FixedQTableWidget(QTableWidget):
         self.columns = columns
         self.rows = rows
         super(QTableWidget, self).__init__(*args)
-        fnt = QFont()
-        fnt.setPointSize(30)
-        fnt.setFamily("Arial")
-        self.setFont(fnt)
+        # fnt = QFont()
+        # fnt.setPointSize(12)
+        # fnt.setFamily("Arial")
+        # self.setFont(fnt)
 
     def sizeHint(self):
         width = 0
@@ -41,7 +41,6 @@ class FixedQTableWidget(QTableWidget):
         else:
             rows = self.rows
         for i in range(rows):
-            print('Row ',i,self.rowHeight(i))
             height += self.rowHeight(i)
         height += self.verticalHeader().sizeHint().width()
         height += self.horizontalScrollBar().sizeHint().height()
@@ -127,7 +126,7 @@ class SettingsTab(QWidget):
         self.mass_cb.setCurrentIndex(0)
         form.addRow(QLabel('Atomic mass defintion:', self), self.mass_cb)
         # Create Table containing the masses - block signals until the table is loaded
-        self.element_masses_tw = FixedQTableWidget(self)
+        self.element_masses_tw = FixedQTableWidget(parent=self)
         self.element_masses_tw.setToolTip('Individual element masses can be modified here')
         self.element_masses_tw.itemClicked.connect(self.on_element_masses_tw_itemClicked)
         self.element_masses_tw.itemChanged.connect(self.on_element_masses_tw_itemChanged)
@@ -152,7 +151,7 @@ class SettingsTab(QWidget):
         #
         # Create the Optical permittivity table widget and block signals until a click on the widget
         #
-        self.optical_tw = FixedQTableWidget(3,3)
+        self.optical_tw = FixedQTableWidget(3,3,parent=self)
         self.optical_tw.setToolTip('The optical permittivity is taken from the calculation where this is possible.  If it is not availble suitbale values should be provided here')
         # Set the header names
         self.optical_tw.setHorizontalHeaderLabels(['x','y','z'])
@@ -167,7 +166,7 @@ class SettingsTab(QWidget):
         vbox.addLayout(form)
         # output window
         # Create Table containing the IR active modes
-        self.output_tw = FixedQTableWidget(self)
+        self.output_tw = FixedQTableWidget(parent=self)
         self.output_tw.setToolTip('Output showing the frequencies and strengths of the IR active modes only')
         self.output_tw.itemChanged.connect(self.on_output_tw_itemChanged)
         self.output_tw.setRowCount(1)
