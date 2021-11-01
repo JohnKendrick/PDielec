@@ -4,7 +4,7 @@ from PyQt5.QtWidgets                import  QListWidget, QComboBox, QLabel, QLin
 from PyQt5.QtWidgets                import  QFileDialog, QPushButton, QCheckBox
 from PyQt5.QtWidgets                import  QFormLayout
 from PyQt5.QtWidgets                import  QHBoxLayout, QVBoxLayout, QMessageBox
-from PyQt5.QtCore                   import  Qt, QCoreApplication
+from PyQt5.QtCore                   import  Qt, QCoreApplication, QSize
 from PDielec.Utilities              import  pdgui_get_reader, Debug
 from PDielec.GUI.SpreadSheetManager import  SpreadSheetManager
 import numpy as np
@@ -86,9 +86,11 @@ class MainTab(QWidget):
         self.file_le.textChanged.connect(self.on_file_le_changed)
         label = QLabel('Analyse this output file')
         label.setToolTip('Enter output file for analysis (press return)')
-        file_button = QPushButton('File Manager  ')
+        file_button = QPushButton(' File manager ')
         file_button.setToolTip('Open a file manager to choose a file for analysis')
         file_button.clicked.connect(self.on_file_button_clicked)
+        file_button.resize(file_button.sizeHint())
+        file_button_size = file_button.size()
         hbox = QHBoxLayout()
         hbox.addWidget(self.file_le)
         hbox.addWidget(file_button)
@@ -121,9 +123,11 @@ class MainTab(QWidget):
         self.resultsfile_le.textChanged.connect(self.on_resultsfile_le_changed)
         label = QLabel('Excel spread sheet')
         label.setToolTip('Provide the name of an .xlsx file if results are to be stored in a spreadsheet.\nIf specified the file will be written when the program exits.\nThe default directory is that of the QM/MM output file which has been read in.')
-        excel_button = QPushButton('Save results  ')
+        excel_button = QPushButton(' Save results ')
         excel_button.setToolTip('Save the results of calculation to the excel spreadsheet specified')
         excel_button.clicked.connect(self.on_excel_button_clicked)
+        excel_button.resize(excel_button.sizeHint())
+        excel_button_size = excel_button.size()
         hbox = QHBoxLayout()
         hbox.addWidget(self.resultsfile_le)
         hbox.addWidget(excel_button)
@@ -138,9 +142,17 @@ class MainTab(QWidget):
         self.scriptsfile_le.textChanged.connect(self.on_scriptsfile_le_changed)
         label = QLabel('Script filename')
         label.setToolTip('Provide the name of a python script file to save the program settings to when the \"Save settings\" button is pressed.\nThe directory where the file is saved is the same as the directory containing the QM/MM output file read in.')
-        script_button = QPushButton('Save settings')
+        script_button = QPushButton(' Save settings ')
         script_button.setToolTip('Save the setttings of calculation to a python file.\nThe directory where the file is saved is the same as the directory containing the QM/MM output file read in.')
         script_button.clicked.connect(self.on_script_button_clicked)
+        script_button.resize(script_button.sizeHint())
+        script_button_size = script_button.size()
+        maximum_button_width = max(script_button_size.width(), excel_button_size.width(), file_button_size.width())
+        maximum_button_height = max(script_button_size.height(), excel_button_size.height(), file_button_size.height())
+        new_button_size = QSize(maximum_button_width, maximum_button_height)
+        script_button.setFixedSize(new_button_size)
+        excel_button.setFixedSize(new_button_size)
+        file_button.setFixedSize(new_button_size)
         hbox = QHBoxLayout()
         hbox.addWidget(self.scriptsfile_le)
         hbox.addWidget(script_button)
