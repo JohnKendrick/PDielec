@@ -790,6 +790,9 @@ class PowderScenarioTab(ScenarioTab):
         self.aoverb_sb.setValue(self.settings['Ellipsoid a/b'])
         self.legend_le.setText(self.settings['Legend'])
         self.aoverb = self.settings['Ellipsoid a/b']
+        self.atr_index_sb.setValue(self.settings['ATR material refractive index'])
+        self.atr_incident_ang_sb.setValue(self.settings['ATR theta'])
+        self.atr_spolfrac_sb.setValue(self.settings['ATR S polarisation fraction'])
         self.change_greyed_out()
         #
         # Unblock signals after refresh
