@@ -419,6 +419,8 @@ class MainTab(QWidget):
             self.settings['Program'] = 'abinit'
         elif 'Gulp' in myfilter:
             self.settings['Program'] = 'gulp'
+        elif 'VASP' in myfilter:
+            self.settings['Program'] = 'vasp'
         elif 'QE' in myfilter:
             self.settings['Program'] = 'qe'
         elif 'Crystal' in myfilter:
