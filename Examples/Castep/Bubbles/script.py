@@ -1,4 +1,10 @@
 #
+# mainTab
+#
+tab = self.notebook.mainTab
+tab.settings['Program'] = 'castep'
+tab.settings['Output file name'] = 'phonon.castep'
+#
 #
 tab = self.notebook.mainTab
 tab.settings['Program'] = 'castep'

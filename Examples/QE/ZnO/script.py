@@ -1,4 +1,10 @@
 #
+# mainTab
+#
+tab = self.notebook.mainTab
+tab.settings['Program'] = 'qe'
+tab.settings['Output file name'] = 'phonon.dynG'
+#
 # SettingsTab
 #
 tab = self.notebook.settingsTab

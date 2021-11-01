@@ -1,4 +1,10 @@
 #
+# mainTab
+#
+tab = self.notebook.mainTab
+tab.settings['Program'] = 'experiment'
+tab.settings['Output file name'] = 'mayerhofer.exp'
+#
 # Handle the special case of the first scenario
 #
 self.notebook.switchScenario(0,scenarioType="Single crystal")

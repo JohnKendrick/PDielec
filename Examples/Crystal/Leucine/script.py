@@ -1,4 +1,10 @@
 #
+# mainTab
+#
+tab = self.notebook.mainTab
+tab.settings['Program'] = 'crystal'
+tab.settings['Output file name'] = 'LEUCINE_FREQUENCY_PBED3_631Gdp_FULLOPTIMIZATON.out'
+#
 # SettingsTab
 #
 tab = self.notebook.settingsTab

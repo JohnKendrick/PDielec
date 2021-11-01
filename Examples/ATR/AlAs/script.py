@@ -1,4 +1,10 @@
 #
+# mainTab
+#
+tab = self.notebook.mainTab
+tab.settings['Program'] = 'abinit'
+tab.settings['Output file name'] = 'AlAs.out'
+#
 # SettingsTab
 #
 tab = self.notebook.settingsTab
@@ -20,7 +26,7 @@ tab.settings['Unique direction - l'] = 1
 tab.settings['Effective medium method'] = 'Maxwell-Garnett'
 tab.settings['Particle shape'] = 'Sphere'
 tab.settings['Legend'] = 'theta=0'
-tab.settings['ATR theta'] = 10.0
+tab.settings['ATR theta'] = 0.0
 tab.settings['ATR S polarisation fraction'] = 0.5
 tab.settings['ATR material refractive index'] = 4.0
 # Add new scenarios

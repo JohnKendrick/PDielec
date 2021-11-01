@@ -1,4 +1,10 @@
 #
+# mainTab
+#
+tab = self.notebook.mainTab
+tab.settings['Program'] = 'qe'
+tab.settings['Output file name'] = 'phonon.dynG'
+#
 # Handle the special case of the first scenario
 #
 self.notebook.switchScenario(0,scenarioType="Powder")

@@ -1,4 +1,10 @@
 #
+# mainTab
+#
+tab = self.notebook.mainTab
+tab.settings['Program'] = 'gulp'
+tab.settings['Output file name'] = 'calcite.gout'
+#
 # SettingsTab
 #
 tab = self.notebook.settingsTab

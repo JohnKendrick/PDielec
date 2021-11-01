@@ -1,4 +1,10 @@
 #
+# mainTab
+#
+tab = self.notebook.mainTab
+tab.settings['Program'] = 'abinit'
+tab.settings['Output file name'] = 'AlAs.out'
+#
 # SettingsTab
 #
 tab = self.notebook.settingsTab

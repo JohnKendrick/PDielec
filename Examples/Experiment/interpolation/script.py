@@ -1,4 +1,10 @@
 #
+# mainTab
+#
+tab = self.notebook.mainTab
+tab.settings['Program'] = 'experiment'
+tab.settings['Output file name'] = 'interpolation.exp'
+#
 #
 tab = self.notebook.mainTab
 tab.settings['Program'] = 'experiment'

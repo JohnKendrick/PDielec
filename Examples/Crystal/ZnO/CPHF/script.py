@@ -1,4 +1,9 @@
+#
+# mainTab
+#
 tab = self.notebook.mainTab
+tab.settings['Program'] = 'crystal'
+tab.settings['Output file name'] = 'ZnO_CPHF.out'
 tab.settings['Hessian symmetrisation'] = 'crystal'
 #
 # SettingsTab

@@ -1,4 +1,10 @@
 #
+# mainTab
+#
+tab = self.notebook.mainTab
+tab.settings['Program'] = 'vasp'
+tab.settings['Output file name'] = 'name'
+#
 # SettingsTab
 #
 tab = self.notebook.settingsTab

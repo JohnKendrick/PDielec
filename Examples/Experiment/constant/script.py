@@ -1,4 +1,10 @@
 #
+# mainTab
+#
+tab = self.notebook.mainTab
+tab.settings['Program'] = 'experiment'
+tab.settings['Output file name'] = 'constant.exp'
+#
 # Change the first scenario tab to single crystal
 #
 tab = self.notebook
