@@ -1498,7 +1498,6 @@ def get_pool(ncpus, threading, initializer=None, initargs=None, debugger=None ):
          debugger.print('get_pool ncpus = ',ncpus) 
          debugger.print('get_pool threading = ',threading) 
          debugger.print('get_pool initializer = ',initializer) 
-         #debugger.print('get_pool initargs = ',initargs) 
      # Switch off mkl threading
      try:
          import mkl
@@ -1508,7 +1507,7 @@ def get_pool(ncpus, threading, initializer=None, initargs=None, debugger=None ):
      # see if threading has been requested
      if threading:
          from multiprocess.dummy import Pool
-         pool = Pool(ncpus, initializer=initargs, initargs=initargs)
+         pool = Pool(ncpus, initializer=initializer, initargs=initargs)
      else:
          from multiprocess import Pool
          pool = Pool(ncpus, initializer=initializer, initargs=initargs )
