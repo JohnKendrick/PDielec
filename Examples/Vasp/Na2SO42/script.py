@@ -3,7 +3,7 @@
 #
 tab = self.notebook.mainTab
 tab.settings['Program'] = 'vasp'
-tab.settings['Output file name'] = 'name'
+tab.settings['Output file name'] = 'OUTCAR'
 #
 # SettingsTab
 #

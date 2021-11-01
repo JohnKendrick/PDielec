@@ -3,7 +3,7 @@
 #
 tab = self.notebook.mainTab
 tab.settings['Program'] = 'crystal'
-tab.settings['Output file name'] = 'ZnO_noeckart'
+tab.settings['Output file name'] = 'ZnO_noeckart.out'
 tab.settings['Hessian symmetrisation'] = 'crystal'
 #
 # SettingsTab

@@ -3,7 +3,7 @@
 #
 tab = self.notebook.mainTab
 tab.settings['Program'] = 'qe'
-tab.settings['Output file name'] = 'phonon.dynG'
+tab.settings['Output file name'] = 'zno.ph.dynG'
 #
 # SettingsTab
 #
