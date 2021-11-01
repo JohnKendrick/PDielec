@@ -5,7 +5,7 @@ from PyQt5.QtWidgets                import  QFileDialog, QPushButton, QCheckBox
 from PyQt5.QtWidgets                import  QFormLayout
 from PyQt5.QtWidgets                import  QHBoxLayout, QVBoxLayout, QMessageBox
 from PyQt5.QtCore                   import  Qt, QCoreApplication, QSize
-from PDielec.Utilities              import  pdgui_get_reader, Debug
+from PDielec.Utilities              import  find_program_from_name, pdgui_get_reader, Debug
 from PDielec.GUI.SpreadSheetManager import  SpreadSheetManager
 import numpy as np
 
@@ -48,8 +48,7 @@ class MainTab(QWidget):
         self.program_cb.addItem('Phonopy - VASP')
         self.program_cb.addItem('Quantum Espresso')
         self.program_cb.addItem('Gulp')
-#        self.program_cb.addItem('Phonopy - QE')
-#        self.program_cb.addItem('Phonopy - Crystal')
+        self.program_cb.addItem('PDGui')
         self.program_cb.addItem('Experiment')
         prtext = self.settings['Program'].capitalize()
         qmtext = self.settings['QM program'].capitalize()
@@ -80,14 +79,14 @@ class MainTab(QWidget):
         # The file selector
         #
         self.file_le = QLineEdit(self)
-        self.file_le.setToolTip('Enter output file for analysis (press return)')
+        self.file_le.setToolTip('Enter output file or script for processing (press return)')
         self.file_le.setText(self.settings['Output file name'])
         self.file_le.returnPressed.connect(self.on_file_le_return)
         self.file_le.textChanged.connect(self.on_file_le_changed)
         label = QLabel('Analyse this output file')
-        label.setToolTip('Enter output file for analysis (press return)')
+        label.setToolTip('Enter output file for analysis or choose a script to process (press return)')
         file_button = QPushButton(' File manager ')
-        file_button.setToolTip('Open a file manager to choose a file for analysis')
+        file_button.setToolTip('Open a file manager to choose a file for analysis or choose a script to process')
         file_button.clicked.connect(self.on_file_button_clicked)
         file_button.resize(file_button.sizeHint())
         file_button_size = file_button.size()
@@ -409,15 +408,41 @@ class MainTab(QWidget):
             selfilter = 'Phonopy (OUTCAR*)'
         elif self.settings['Program'] == 'experiment':
             selfilter = 'Experiment (*.exp)'
+        elif self.settings['Program'] == 'pdgui':
+            selfilter = 'PDGui (*.py)'
         else:
             selfilter = 'All files (*)'
-        filename,myfilter = QFileDialog.getOpenFileName(self,'Open MM/QM Output file','','All files(*);;Castep (*.castep);;Abinit (*.out);;Gulp (*.gout);;VASP (OUTCAR*);; QE (*.dynG);; Crystal 14 (*.out);; Phonopy (OUTCAR*);; Experiment (*.exp)',selfilter)
+        filename,myfilter = QFileDialog.getOpenFileName(self,'Open MM/QM Output file','','All files(*);;Castep (*.castep);;Abinit (*.out);;Gulp (*.gout);;VASP (OUTCAR*);; QE (*.dynG);; Crystal 14 (*.out);; Phonopy (OUTCAR*);; Experiment (*.exp);; PDGui (*.py)',selfilter)
+        if 'Castep' in myfilter:
+            self.settings['Program'] = 'castep'
+        elif 'Abinit' in myfilter:
+            self.settings['Program'] = 'abinit'
+        elif 'Gulp' in myfilter:
+            self.settings['Program'] = 'gulp'
+        elif 'QE' in myfilter:
+            self.settings['Program'] = 'qe'
+        elif 'Crystal' in myfilter:
+            self.settings['Program'] = 'crystal'
+        elif 'Phonopy' in myfilter:
+            self.settings['Program'] = 'phonopy'
+        elif 'Experiment' in myfilter:
+            self.settings['Program'] = 'experiment'
+        elif 'PDGui' in myfilter:
+            self.settings['Program'] = 'pdgui'
+        else:
+            pass
+        # Process the filename
         if filename != '':
             self.settings['Output file name'] = filename
             self.file_le.setText(self.settings['Output file name'])
             debugger.print('new file name', self.settings['Output file name'])
             self.directory = os.path.dirname(self.settings['Output file name'])
+            self.notebook.deleteAllScenarios()
+            if self.settings['Program'] == 'pdgui':
+                self.notebook.app.readScript(self.settings['Output file name'])
+            self.refreshRequired = True
             self.calculationRequired = True
+            self.refresh()
             self.on_calculation_button_clicked()
         debugger.print('Finished:: on_file_button_clicked ', self.file_le.text())
         return
@@ -428,7 +453,13 @@ class MainTab(QWidget):
         if self.settings['Output file name'] != '':
             debugger.print('new file name', self.settings['Output file name'])
             self.directory = os.path.dirname(self.settings['Output file name'])
+            self.notebook.deleteAllScenarios()
+            self.settings['Program'] = find_program_from_name(self.settings['Output file name'])
+            if self.settings['Program'] == 'pdgui':
+                self.notebook.app.readScript(self.settings['Output file name'])
+            self.refreshRequired = True
             self.calculationRequired = True
+            self.refresh()
             self.on_calculation_button_clicked()
         debugger.print('Finished:: on_file_le_return ', self.file_le.text())
         return

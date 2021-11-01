@@ -27,6 +27,7 @@ class NoteBook(QWidget):
         global debugger
         debugger = Debug(debug,'NoteBook:')
         debugger.print('Start:: Initialising')
+        self.app = parent
         self.reader = None
         self.progressbars=[progressbar]
         if progressbar is None:
@@ -243,6 +244,17 @@ class NoteBook(QWidget):
                 else:
                     print('tab.settings[\''+item+'\'] = ', tab.settings[item],file=fd)
         debugger.print('Finished:: print_tab_settings')
+
+    def deleteAllScenarios(self):
+        debugger.print('Start:: deleteAllScenarios')
+        # Don't delete the last scenario
+        index = len(self.scenarios)-1
+        while len(self.scenarios) > 1:
+            self.tabs.removeTab(self.tabOffSet+index)
+            del self.scenarios[index]
+            index -= 1
+        debugger.print('Finished:: deleteAllScenarios')
+        return
 
     def deleteScenario(self,index):
         debugger.print('Start:: deleteScenario',index)

@@ -57,6 +57,8 @@ def find_program_from_name( filename ):
         return 'qe'
     if ext ==  '.exp':
         return 'experiment'
+    if ext ==  '.py':
+        return 'pdgui'
     print('Error unable to automatically assign program to ',filename)
     exit(1)
 

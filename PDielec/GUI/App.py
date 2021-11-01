@@ -126,7 +126,7 @@ class App(QMainWindow):
         debugger.print('Finished call setCentralWidget')
         if self.scripting:
             debugger.print('Processing script',self.scriptname)
-            self.readScript(self.scriptname,spreadsheet_name)
+            self.readScript(self.scriptname,spreadsheet_name=spreadsheet_name)
         if self.program_exit:
             if spreadsheet_name != '':
                 debugger.print('Writing spreadsheeet on exit',spreadsheet_name)
@@ -159,7 +159,7 @@ class App(QMainWindow):
         print('      -debug      Switches on debugging information')
         return
 
-    def readScript(self,scriptname,spreadsheet_name):
+    def readScript(self,scriptname,spreadsheet_name=''):
         debugger.print('Start:: readScript')
         self.notebook.scripting = True
         # If a script is used there are no prompts for overwriting files etc.
