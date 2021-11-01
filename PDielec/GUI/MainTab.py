@@ -411,7 +411,7 @@ class MainTab(QWidget):
             selfilter = 'Experiment (*.exp)'
         else:
             selfilter = 'All files (*)'
-        filename, _ = QFileDialog.getOpenFileName(self,'Open MM/QM Output file','','All files(*);;Castep (*.castep);;Abinit (*.out);;Gulp (*.gout);;VASP (OUTCAR*);; QE (*.dynG);; Crystal 14 (*.out);; Phonopy (OUTCAR*);; Experiment (*.exp)',selfilter)
+        filename,myfilter = QFileDialog.getOpenFileName(self,'Open MM/QM Output file','','All files(*);;Castep (*.castep);;Abinit (*.out);;Gulp (*.gout);;VASP (OUTCAR*);; QE (*.dynG);; Crystal 14 (*.out);; Phonopy (OUTCAR*);; Experiment (*.exp)',selfilter)
         if filename != '':
             self.settings['Output file name'] = filename
             self.file_le.setText(self.settings['Output file name'])
