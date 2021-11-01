@@ -10,6 +10,14 @@ version 7.0.1
   Changed the communication between tabs, it was completed before and it still is unfortunately
   Stopped setting the requestRefresh variable directly - now use a subroutine to do it.
   Added a lot of debugging information to the tabs so it is much clearer what the flow is through the code
+  Two new input file type has been added 'experimental' and 'pdgui'.
+    'experimental' allows an experimental dieletric to be specified this includes a lorentz type spectrum
+    'pdgui' allows a script to be read in and executed 'experimental' and 'pdgui'.
+    'experimental' allows an experimental dieletric to be specified this includes a lorentz type spectrum
+    'pdgui' allows a script to be read in and executed.  
+        Scripts read in like this must have the 'program' and 'output file name' specified in the mainTab.settings dictionary.
+  The mainTab gui no longer needs to have specified the 'program' name (eg. castep, or vasp). 
+      This is determined from the name of the file.
 
 
 version 6.4.5
