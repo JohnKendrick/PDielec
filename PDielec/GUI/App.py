@@ -101,7 +101,8 @@ class App(QMainWindow):
         #
         # Continue
         #
-        self.title = 'PDGui - Using PDielec library {} '.format(version)
+        self.version = version
+        self.title = 'PDGui - Using PDielec library {} '.format(self.version)
         self.left = 10
         self.top = 30
         self.width = 500
@@ -157,6 +158,11 @@ class App(QMainWindow):
         print('       -exit      Exit the program after executing any script')
         print('       -help      Prints out this help information')
         print('      -debug      Switches on debugging information')
+        return
+
+    def setMyWindowTitle(self,title):
+        self.title = 'PDGui {}  - '.format(self.version) + title
+        self.setWindowTitle(self.title)
         return
 
     def readScript(self,scriptname,spreadsheet_name=''):

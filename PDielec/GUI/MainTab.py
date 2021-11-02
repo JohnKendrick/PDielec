@@ -433,6 +433,7 @@ class MainTab(QWidget):
         # Process the filename
         if filename != '':
             self.directory = os.path.dirname(filename)
+            self.notebook.app.setMyWindowTitle(self.directory)
             self.settings['Output file name'] = os.path.basename(filename)
             self.file_le.setText(self.settings['Output file name'])
             debugger.print('new file name', self.directory, self.settings['Output file name'])
@@ -456,10 +457,15 @@ class MainTab(QWidget):
         debugger.print('Start:: on_file_le_return ', self.file_le.text())
         filename = self.file_le.text()
         if filename != '':
-            self.directory = filename
+            self.directory = os.path.dirname(os.path.abspath(filename))
+            self.notebook.app.setMyWindowTitle(self.directory)
             self.settings['Output file name'] = os.path.basename(filename)
             debugger.print('new file name', self.settings['Output file name'])
             self.notebook.deleteAllScenarios()
+            program = find_program_from_name(self.settings['Output file name'])
+            if program == '':
+                debugger.print('Finished:: on_file_le_return ')
+                return
             self.settings['Program'] = find_program_from_name(self.settings['Output file name'])
             if self.settings['Program'] == 'pdgui':
                 self.notebook.app.readScript(filename)

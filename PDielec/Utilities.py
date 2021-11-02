@@ -59,8 +59,7 @@ def find_program_from_name( filename ):
         return 'experiment'
     if ext ==  '.py':
         return 'pdgui'
-    print('Error unable to automatically assign program to ',filename)
-    exit(1)
+    return ''
 
 def get_reader( name, program, qmprogram):
     fulldirname = name
