@@ -330,7 +330,7 @@ class AnalysisTab(QWidget):
         # if the number of molecules has changed then tell the viewerTab that the cell has changed
         if self.number_of_molecules != nmols:
             #self.notebook.viewerTab.refresh(force=True)
-            self.notebook.visualerCalculationRquired = True
+            self.notebook.viewerTab.requestRefresh()
             self.number_of_molecules = nmols
         self.molecules_le.setText('{}'.format(self.number_of_molecules))
         # get the normal modes from the mass weighted ones
