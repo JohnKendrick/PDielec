@@ -429,7 +429,6 @@ class MainTab(QWidget):
             self.refreshRequired = True
             self.calculationRequired = True
             self.refresh()
-            self.on_calculation_button_clicked()
         debugger.print('Finished:: on_file_button_clicked ', self.file_le.text())
         return
 
@@ -459,7 +458,6 @@ class MainTab(QWidget):
             self.refreshRequired = True
             self.calculationRequired = True
             self.refresh()
-            self.on_calculation_button_clicked()
         debugger.print('Finished:: on_file_le_return ', self.file_le.text())
         return
 
