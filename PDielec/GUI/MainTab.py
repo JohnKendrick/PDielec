@@ -410,28 +410,14 @@ class MainTab(QWidget):
         else:
             selfilter = 'All files (*)'
         filename,myfilter = QFileDialog.getOpenFileName(self,'Open MM/QM Output file','','All files(*);;Castep (*.castep);;Abinit (*.out);;Gulp (*.gout);;VASP (OUTCAR*);; QE (*.dynG);; Crystal 14 (*.out);; Phonopy (OUTCAR*);; Experiment (*.exp);; PDGui (*.py)',selfilter)
-        if 'Castep' in myfilter:
-            self.settings['Program'] = 'castep'
-        elif 'Abinit' in myfilter:
-            self.settings['Program'] = 'abinit'
-        elif 'Gulp' in myfilter:
-            self.settings['Program'] = 'gulp'
-        elif 'VASP' in myfilter:
-            self.settings['Program'] = 'vasp'
-        elif 'QE' in myfilter:
-            self.settings['Program'] = 'qe'
-        elif 'Crystal' in myfilter:
-            self.settings['Program'] = 'crystal'
-        elif 'Phonopy' in myfilter:
-            self.settings['Program'] = 'phonopy'
-        elif 'Experiment' in myfilter:
-            self.settings['Program'] = 'experiment'
-        elif 'PDGui' in myfilter:
-            self.settings['Program'] = 'pdgui'
-        else:
-            pass
         # Process the filename
         if filename != '':
+            program = find_program_from_name(filename)
+            if program == '':
+                debugger.print('Program not found from filename',filename)
+                debugger.print('Finished:: on_file_le_return ')
+                return
+            self.settings['Program'] = program
             self.directory = os.path.dirname(filename)
             self.notebook.app.setMyWindowTitle(self.directory)
             self.settings['Output file name'] = os.path.basename(filename)
@@ -457,15 +443,16 @@ class MainTab(QWidget):
         debugger.print('Start:: on_file_le_return ', self.file_le.text())
         filename = self.file_le.text()
         if filename != '':
+            program = find_program_from_name(filename)
+            if program == '':
+                debugger.print('Finished:: on_file_le_return ')
+                return
+            self.settings['Program'] = program
             self.directory = os.path.dirname(os.path.abspath(filename))
             self.notebook.app.setMyWindowTitle(self.directory)
             self.settings['Output file name'] = os.path.basename(filename)
             debugger.print('new file name', self.settings['Output file name'])
             self.notebook.deleteAllScenarios()
-            program = find_program_from_name(self.settings['Output file name'])
-            if program == '':
-                debugger.print('Finished:: on_file_le_return ')
-                return
             self.settings['Program'] = find_program_from_name(self.settings['Output file name'])
             if self.settings['Program'] == 'pdgui':
                 self.notebook.app.readScript(filename)
