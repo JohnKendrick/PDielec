@@ -552,7 +552,7 @@ class PlottingTab(QWidget):
             xscale = 0.02998
         x = np.array(self.vs_cm1)
         self.subplot = self.figure.add_subplot(111)
-        self.notebook.progressbars_set_maximum(len(x)*len(self.notebook.scenarios))
+        self.notebook.progressbars_set_maximum(len(x)*(1+len(self.notebook.scenarios)))
         self.legends = []
         plots = 0
         for scenario in self.notebook.scenarios:
