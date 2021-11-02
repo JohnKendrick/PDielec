@@ -224,6 +224,7 @@ class MainTab(QWidget):
         #
         self.read_output_file()
         if self.notebook.settingsTab is not None:
+            self.notebook.settingsTab.settings['Optical permittivity'] = None
             self.notebook.settingsTab.refresh(force=True)
         self.calculationRequired = False
         debugger.print('Finished:: on_calculation_button_clicked')
