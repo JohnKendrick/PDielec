@@ -449,7 +449,7 @@ class ViewerTab(QWidget):
         # Assemble the mainTab settings
         settings = self.notebook.mainTab.settings
         program = settings['Program']
-        filename = settings['Output file name']
+        filename = self.notebook.mainTab.getFullFileName()
         debugger.print('calculate program file name',program, filename)
         self.reader = self.notebook.reader
         if self.reader is None:

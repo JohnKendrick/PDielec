@@ -307,7 +307,7 @@ class AnalysisTab(QWidget):
         # Assemble the mainTab settings
         settings = self.notebook.mainTab.settings
         program = settings['Program']
-        filename = settings['Output file name']
+        filename = self.notebook.mainTab.getFullFileName()
         self.reader = self.notebook.mainTab.reader
         if self.reader is None:
             return

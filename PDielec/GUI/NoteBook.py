@@ -370,7 +370,7 @@ class NoteBook(QWidget):
     def open_excel_spreadsheet(self):
         debugger.print('Start:: open_spreadsheet clicked')
         if len(self.mainTab.settings['Excel file name']) > 5 and self.mainTab.settings['Excel file name'][-5:] == '.xlsx':
-            self.directory = os.path.dirname(self.mainTab.settings['Output file name'])
+            self.directory = self.mainTab.directory
             # open the file name with the directory of the output file name
             self.openSpreadSheet(os.path.join(self.directory,self.mainTab.settings['Excel file name']))
         elif len(self.mainTab.settings['Excel file name']) > 1 and self.mainTab.settings['Excel file name'][-5:] != '.xlsx':

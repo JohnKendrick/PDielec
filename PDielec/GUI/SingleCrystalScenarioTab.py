@@ -315,7 +315,7 @@ class SingleCrystalScenarioTab(ScenarioTab):
         # Assemble the mainTab settings
         settings = self.notebook.mainTab.settings
         program = settings['Program']
-        filename = settings['Output file name']
+        filename = self.notebook.mainTab.getFullFileName()
         if self.reader is None:
             debugger.print(self.settings['Legend'],'Finished:: Calculate aborting - no reader')
             return

@@ -22,8 +22,8 @@ class MainTab(QWidget):
             self.settings['Program'] = program.lower()
         else:
             self.settings['Program'] = 'castep'
-        self.settings['Output file name'] = filename
-        self.directory = os.path.dirname(self.settings['Output file name'])
+        self.directory = os.path.dirname(filename)
+        self.settings['Output file name'] = os.path.basename(filename)
         self.settings['Excel file name'] = excelfile
         self.settings['Script file name'] = ''
         self.settings['QM program'] = ''
@@ -193,7 +193,6 @@ class MainTab(QWidget):
 
     def on_script_button_clicked(self):
         debugger.print('Start:: on_script_button clicked')
-        self.directory = os.path.dirname(self.settings['Output file name'])
         debugger.print('on_script_button clicked, directory=',self.directory)
         filename=os.path.join(self.directory,self.settings['Script file name'])
         if os.path.exists(filename):
@@ -235,7 +234,6 @@ class MainTab(QWidget):
         if sp is None:
             debugger.print('Finished:: writeSpreadsheet sp is None')
             return
-        debugger.print('Reading output file ', self.settings['Output file name'])
         sp.selectWorkSheet('Main')
         sp.delete()
         debugger.print('writeSpreadsheet',self.settings)
@@ -255,8 +253,9 @@ class MainTab(QWidget):
         if self.settings['Output file name'] == '':
             debugger.print('Finished:: read_output_file output file is blank')
             return
-        if not os.path.isfile(self.settings['Output file name']):
-            QMessageBox.about(self,'Processing output file','The filename for the output file to be processed is not correct: '+self.settings['Output file name'])
+        filename = os.path.join(self.directory,self.settings['Output file name'])
+        if not os.path.isfile(filename):
+            QMessageBox.about(self,'Processing output file','The filename for the output file to be processed is not correct: '+filename)
             debugger.print('Finished:: read_output_file output file does not exist')
             return
         debugger.print('Read output file - clear list widgets')
@@ -264,12 +263,12 @@ class MainTab(QWidget):
         self.cell_window_l.setText('Unit-cell (Angstrom) from '+self.settings['Output file name'])
         self.frequencies_window.clear()
         self.frequencies_window_l.setText('Frequencies from '+self.settings['Output file name'])
-        self.reader = pdgui_get_reader(self.settings['Program'],[ self.settings['Output file name'] ], self.settings['QM program'] )
+        self.reader = pdgui_get_reader(self.settings['Program'],[ filename ], self.settings['QM program'] )
         if self.reader is None:
             print('Error in reading files - program  is ',self.settings['Program'])
-            print('Error in reading files - filename is ',self.settings['Output file name'])
+            print('Error in reading files - filename is ',filename)
             print('Need to choose the file and program properly')
-            QMessageBox.about(self,'Processing output file','A reader has not be created for this filename: '+self.settings['Output file name'])
+            QMessageBox.about(self,'Processing output file','A reader has not be created for this filename: '+filename)
             debugger.print('Finished:: read_output_file reader is none')
             return
         #switch on debugging in the reader
@@ -282,18 +281,18 @@ class MainTab(QWidget):
                 self.reader.read_output()
             except:
                 print('Error in reading output files - program  is ',self.settings['Program'])
-                print('Error in reading output files - filename is ',self.settings['Output file name'])
+                print('Error in reading output files - filename is ',filename)
                 print('Need to choose the file and program properly')
-                QMessageBox.about(self,'Processing output file','Error on reading the output file using read_output(): '+self.settings['Output file name'])
+                QMessageBox.about(self,'Processing output file','Error on reading the output file using read_output(): '+filename)
                 debugger.print('Finished:: read_output_file error on reading')
                 return
             # end try
         # end if debug
         if len(self.reader.unit_cells) == 0:
             print('Error in reading output files - program  is ',self.settings['Program'])
-            print('Error in reading output files - filename is ',self.settings['Output file name'])
+            print('Error in reading output files - filename is ',filename)
             print('Need to choose the file and program properly')
-            QMessageBox.about(self,'Processing output file','The output file has no unit cells in it: '+self.settings['Output file name'])
+            QMessageBox.about(self,'Processing output file','The output file has no unit cells in it: '+filename)
             debugger.print('Finished:: read_output_file output file has no unit cell')
             return
         # Update the checkbox
@@ -307,7 +306,6 @@ class MainTab(QWidget):
         #jk     self.hessian_symmetry_cb.setEnabled(False)
         # tell the notebook that we have read the info and we have a reader
         self.notebook.reader = self.reader
-        self.directory = os.path.dirname(self.settings['Output file name'])
         if self.debug:
             self.reader.print_info()
         cell = self.reader.unit_cells[-1]
@@ -388,7 +386,6 @@ class MainTab(QWidget):
 
     def on_file_button_clicked(self):
         debugger.print('Start:: on_file_button_clicked ', self.file_le.text())
-        self.settings['Output file name'] = self.file_le.text()
         # Open a file chooser
         #options = QFileDialog.Options()
         #options |= QFileDialog.DontUseNativeDialog
@@ -435,13 +432,13 @@ class MainTab(QWidget):
             pass
         # Process the filename
         if filename != '':
-            self.settings['Output file name'] = filename
+            self.directory = os.path.dirname(filename)
+            self.settings['Output file name'] = os.path.basename(filename)
             self.file_le.setText(self.settings['Output file name'])
-            debugger.print('new file name', self.settings['Output file name'])
-            self.directory = os.path.dirname(self.settings['Output file name'])
+            debugger.print('new file name', self.directory, self.settings['Output file name'])
             self.notebook.deleteAllScenarios()
             if self.settings['Program'] == 'pdgui':
-                self.notebook.app.readScript(self.settings['Output file name'])
+                self.notebook.app.readScript(filename)
             self.refreshRequired = True
             self.calculationRequired = True
             self.refresh()
@@ -449,16 +446,23 @@ class MainTab(QWidget):
         debugger.print('Finished:: on_file_button_clicked ', self.file_le.text())
         return
 
+    def getFullFileName(self):
+        return os.path.join(self.directory,self.settings['Output file name'])
+
+    def getRelativeFileName(self):
+        return self.settings['Output file name']
+
     def on_file_le_return(self):
         debugger.print('Start:: on_file_le_return ', self.file_le.text())
-        self.settings['Output file name'] = self.file_le.text()
-        if self.settings['Output file name'] != '':
+        filename = self.file_le.text()
+        if filename != '':
+            self.directory = filename
+            self.settings['Output file name'] = os.path.basename(filename)
             debugger.print('new file name', self.settings['Output file name'])
-            self.directory = os.path.dirname(self.settings['Output file name'])
             self.notebook.deleteAllScenarios()
             self.settings['Program'] = find_program_from_name(self.settings['Output file name'])
             if self.settings['Program'] == 'pdgui':
-                self.notebook.app.readScript(self.settings['Output file name'])
+                self.notebook.app.readScript(filename)
             self.refreshRequired = True
             self.calculationRequired = True
             self.refresh()

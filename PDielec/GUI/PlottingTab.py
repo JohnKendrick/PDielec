@@ -523,7 +523,7 @@ class PlottingTab(QWidget):
         # Assemble the mainTab settings
         settings = self.notebook.mainTab.settings
         program = settings['Program']
-        filename = settings['Output file name']
+        filename = self.notebook.mainTab.getFullFileName()
         reader = self.notebook.mainTab.reader
         if reader is None:
             debugger.print('Finished:: plot aborting because reader is NONE')
