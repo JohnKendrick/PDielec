@@ -144,10 +144,12 @@ class NoteBook(QWidget):
             # If the copyFromIndex is not -2 then we override the scenarioType
             last = self.scenarios[copyFromIndex]
             scenarioType = last.scenarioType
+            debugger.print('scenario type has been set from copyFromIndex',scenarioType)
         elif scenarioType == None:
             # The default behaviour with no parameters in the call, use the last scenario in the list
             last = self.scenarios[-1]
             scenarioType = last.scenarioType
+            debugger.print('scenario type has been set from the last scenario',scenarioType)
         else:
             # copyFromIndex is default so we find the last scenario of scenarioType in the list
             last = None
@@ -155,17 +157,23 @@ class NoteBook(QWidget):
                 if scenarioType == scenario.scenarioType:
                     last = scenario
             # end for
+            if last is None:
+                debugger.print('Finished:: addScenario unable to add scenario')
+                return
         # Create a new scenario
         if scenarioType == 'Powder':
             self.currentScenarioTab = PowderScenarioTab
         else:
             self.currentScenarioTab = SingleCrystalScenarioTab
         # Add the scenario to the end of the list
+        debugger.print('Appending the new scenario')
         self.scenarios.append(self.currentScenarioTab(self, self.debug))
         # If we have found a previous scenario of the same time set the settings to it
+        debugger.print('Checking the value of last',last)
         if last is not None:
+            debugger.print('Copying settings from old to new scenario')
             self.scenarios[-1].settings = copy.deepcopy(last.settings)
-            self.scenarios[-1].requestRefresh()
+        self.scenarios[-1].refresh()
         n = len(self.scenarios)
         self.tabs.insertTab(self.tabOffSet+n-1,self.scenarios[-1],'Scenario '+str(n))
         self.tabs.setCurrentIndex(self.tabOffSet+n-1)
@@ -301,8 +309,8 @@ class NoteBook(QWidget):
         for i,scenario in enumerate(self.scenarios):
             scenario.setScenarioIndex(i)
             self.tabs.setTabText(self.tabOffSet+i,'Scenario '+str(i+1))
+        self.scenarios[index].refresh()
         self.tabs.setCurrentIndex(self.tabOffSet+index)
-        self.scenarios[index].requestRefresh()
         debugger.print('Finished:: switch for scenario', index+1)
         return
 
