@@ -428,9 +428,6 @@ class MainTab(QWidget):
             self.notebook.deleteAllScenarios()
             if self.settings['Program'] == 'pdgui':
                 self.notebook.app.readScript(filename)
-            self.refreshRequired = True
-            self.calculationRequired = True
-            self.refresh()
         debugger.print('Finished:: on_file_button_clicked ', self.file_le.text())
         return
 
