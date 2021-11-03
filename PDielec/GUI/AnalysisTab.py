@@ -220,7 +220,7 @@ class AnalysisTab(QWidget):
         for imode,(freq,energies) in enumerate(zip(self.frequencies_cm1,self.mode_energies)):
            tote,cme,rote,vibe, molecular_energies = energies
            tote = max(tote,1.0E-8)
-           output = [ imode, freq, 100*cme/tote, 100*rote/tote, 100*vibe/tote ]
+           output = [ imode+1, freq, 100*cme/tote, 100*rote/tote, 100*vibe/tote ]
            for e in molecular_energies:
                output.append(100*e/tote)
            sp.writeNextRow(output,col=1,check=1)
@@ -412,8 +412,8 @@ class AnalysisTab(QWidget):
         mol_bottoms  = [ [] for _ in range(self.number_of_molecules) ]
         for imode, frequency in enumerate(self.frequencies_cm1):
             if frequency >= vmin and frequency <= vmax:
-                mode_list.append(imode)
-                mode_list_text.append(str(imode))
+                mode_list.append(imode+1)
+                mode_list_text.append(str(imode+1))
                 tote,cme,rote,vibe,mole = self.mode_energies[imode]
                 tote = max(tote,1.0E-8)
                 for i,mol in enumerate(mole):
@@ -422,6 +422,8 @@ class AnalysisTab(QWidget):
                         mol_bottoms[i].append(0.0)
                     else:
                         mol_bottoms[i].append(mol_bottoms[i-1][-1]+mol_energies[i-1][-1])
+        if len(mol_list) < 3:
+            return
         width = self.settings['Bar width']
         plots = []
         colours = ['y','b','r','c','m','k']
@@ -455,8 +457,8 @@ class AnalysisTab(QWidget):
         colours = ['y','b','r','c','m','k']
         for imode, frequency in enumerate(self.frequencies_cm1):
             if frequency >= vmin and frequency <= vmax:
-                mode_list.append(imode)
-                mode_list_text.append(str(imode))
+                mode_list.append(imode+1)
+                mode_list_text.append(str(imode+1))
                 tote,cme,rote,vibe,molecular_energies = self.mode_energies[imode]
                 molecular_energies = np.array(molecular_energies)
                 tote = max(tote,1.0E-8)
@@ -465,6 +467,8 @@ class AnalysisTab(QWidget):
                 vib_energy.append(vibe/tote*100.0)
                 vib_bottom.append( (cme+rote)/tote*100.0 )
                 mol_energy.append(molecular_energies/tote*100)
+        if len(mode_list) < 3:
+            return
         width = self.settings['Bar width']
         p1 = self.subplot.bar(mode_list,cme_energy,width,color=colours[0])
         p2 = self.subplot.bar(mode_list,rot_energy,width,bottom=cme_energy,color=colours[1])
