@@ -175,7 +175,8 @@ class AnalysisTab(QWidget):
             self.element_radii[self.species[col]] = float(item.text())
             self.calculate()
             self.plot()
-            self.notebook.viewerTab.requestRefresh()
+            if self.notebook.viewerTab is not None:
+                self.notebook.viewerTab.requestRefresh()
         except:
             debugger.print('Failed Changing the element radius',col,item.text())
             pass
@@ -330,7 +331,8 @@ class AnalysisTab(QWidget):
         self.cell_of_molecules,nmols,self.original_atomic_order = cell.calculate_molecular_contents(scale, tolerance, covalent_radii)
         # if the number of molecules has changed then tell the viewerTab that the cell has changed
         if self.number_of_molecules != nmols:
-            self.notebook.viewerTab.requestRefresh()
+            if self.notebook.viewerTab is not None:
+                self.notebook.viewerTab.requestRefresh()
             self.number_of_molecules = nmols
         self.molecules_le.setText('{}'.format(self.number_of_molecules))
         # get the normal modes from the mass weighted ones
