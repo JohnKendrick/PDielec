@@ -44,12 +44,12 @@ class MainTab(QWidget):
         self.program_cb.addItem('Abinit')
         self.program_cb.addItem('Castep')
         self.program_cb.addItem('Crystal')
-        self.program_cb.addItem('Vasp')
+        self.program_cb.addItem('Experiment')
+        self.program_cb.addItem('Gulp')
         self.program_cb.addItem('Phonopy - VASP')
         self.program_cb.addItem('Quantum Espresso')
-        self.program_cb.addItem('Gulp')
+        self.program_cb.addItem('Vasp')
         self.program_cb.addItem('PDGui')
-        self.program_cb.addItem('Experiment')
         prtext = self.settings['Program'].capitalize()
         qmtext = self.settings['QM program'].capitalize()
         if prtext == 'Qe':
@@ -411,7 +411,7 @@ class MainTab(QWidget):
             selfilter = 'PDGui (*.py)'
         else:
             selfilter = 'All files (*)'
-        filename,myfilter = QFileDialog.getOpenFileName(self,'Open MM/QM Output file','','All files(*);;Castep (*.castep);;Abinit (*.out);;Gulp (*.gout);;VASP (OUTCAR*);; QE (*.dynG);; Crystal 14 (*.out);; Phonopy (OUTCAR*);; Experiment (*.exp);; PDGui (*.py)',selfilter)
+        filename,myfilter = QFileDialog.getOpenFileName(self,'Open MM/QM Output file','','Abinit (*.out);;Castep (*.castep);;Crystal 14 (*.out);;Experiment (*.exp);;Gulp (*.gout);;Phonopy (OUTCAR*);;QE (*.dynG);;VASP (OUTCAR*);;PDGui (*.py);;All files(*)',selfilter)
         # Process the filename
         if filename != '':
             program = find_program_from_name(filename)
