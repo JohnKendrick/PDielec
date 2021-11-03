@@ -422,7 +422,7 @@ class AnalysisTab(QWidget):
                         mol_bottoms[i].append(0.0)
                     else:
                         mol_bottoms[i].append(mol_bottoms[i-1][-1]+mol_energies[i-1][-1])
-        if len(mol_list) < 3:
+        if len(mode_list) < 3:
             return
         width = self.settings['Bar width']
         plots = []
