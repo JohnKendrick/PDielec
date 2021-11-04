@@ -27,7 +27,6 @@ class MainTab(QWidget):
         self.settings['Excel file name'] = excelfile
         self.settings['Script file name'] = ''
         self.settings['QM program'] = ''
-        self.settings['Hessian symmetrisation'] = 'symm'
         self.notebook = parent
         self.reader = None
         self.frequencies_cm1 = None
@@ -94,24 +93,6 @@ class MainTab(QWidget):
         hbox.addWidget(self.file_le)
         hbox.addWidget(file_button)
         form.addRow(label, hbox)
-        #jk #
-        #jk # The method for symmetrising the hessian
-        #jk #
-        #jk self.hessian_symmetry_cb = QCheckBox(self)
-        #jk self.hessian_symmetry_cb.setToolTip('The Crystal program uses a different method for symmetrising the hessian.  Check this flag if you want to use the same method as used by Crystal14')
-        #jk self.hessian_symmetry_cb.setText('')
-        #jk self.hessian_symmetry_cb.setLayoutDirection(Qt.RightToLeft)
-        #jk if self.settings['Program'] == 'crystal':
-        #jk     self.settings['Hessian symmetrisation'] = 'crystal'
-        #jk     self.hessian_symmetry_cb.setCheckState(Qt.Checked)
-        #jk     self.hessian_symmetry_cb.setEnabled(True)
-        #jk else:
-        #jk     self.hessian_symmetry_cb.setCheckState(Qt.Unchecked)
-        #jk     self.hessian_symmetry_cb.setEnabled(False)
-        #jk self.hessian_symmetry_cb.stateChanged.connect(self.on_hessian_symmetry_changed)
-        #jk label = QLabel('Symmetrise the hessian for Crystal14')
-        #jk label.setToolTip('The Crystal program uses a different method for symmetrising the hessian.  Check this flag if you want to use the same method as used by Crystal14')
-        #jk form.addRow(label, self.hessian_symmetry_cb)
         #
         # Store results
         #
@@ -275,7 +256,6 @@ class MainTab(QWidget):
             return
         #switch on debugging in the reader
         self.reader.debug = self.debug
-        self.reader.hessian_symmetrisation = self.settings['Hessian symmetrisation']
         if self.debug:
             self.reader.read_output()
         else:
@@ -297,15 +277,6 @@ class MainTab(QWidget):
             QMessageBox.about(self,'Processing output file','The output file has no unit cells in it: '+filename)
             debugger.print('Finished:: read_output_file output file has no unit cell')
             return
-        # Update the checkbox
-        #jk if self.settings['Hessian symmetrisation'] == 'crystal':
-        #jk     self.hessian_symmetry_cb.setCheckState(Qt.Checked)
-        #jk else:
-        #jk     self.hessian_symmetry_cb.setCheckState(Qt.Unchecked)
-        #jk if self.settings['Program'] == 'crystal':
-        #jk     self.hessian_symmetry_cb.setEnabled(True)
-        #jk else:
-        #jk     self.hessian_symmetry_cb.setEnabled(False)
         # tell the notebook that we have read the info and we have a reader
         self.notebook.reader = self.reader
         if self.debug:
@@ -364,15 +335,6 @@ class MainTab(QWidget):
         else:
             debugger.print('notebook has no fitter tab yet')
         debugger.print('Finished:: read_output_file')
-
-    #jk def on_hessian_symmetry_changed(self):
-    #jk     debugger.print('Start:: on_hessian_symmetry_changed')
-    #jk     if self.hessian_symmetry_cb.isChecked():
-    #jk         self.settings['Hessian symmetrisation'] = 'crystal'
-    #jk     else:
-    #jk         self.settings['Hessian symmetrisation'] = 'symm'
-    #jk     self.calculationRequired = True
-    #jk     debugger.print('Finished:: on_hessian_symmetry_changed')
 
     def on_scriptsfile_le_changed(self, text):
         debugger.print('Start:: on_scriptsfile_changed', text)
@@ -490,13 +452,6 @@ class MainTab(QWidget):
             self.settings['Program']   = 'qe'
         debugger.print('Program is now  ', self.settings['Program'])
         debugger.print('QM program is now', self.settings['QM program'])
-        #jk if self.settings['Program'] == 'crystal':
-        #jk     self.hessian_symmetry_cb.setEnabled(True)
-        #jk     self.hessian_symmetry_cb.setCheckState(Qt.Checked)
-        #jk else:
-        #jk     self.hessian_symmetry_cb.setEnabled(True)
-        #jk     self.hessian_symmetry_cb.setCheckState(Qt.Unchecked)
-        #jk     self.hessian_symmetry_cb.setEnabled(False)
         self.calculationRequired = True
         debugger.print('Finished:: on_program_combobox_activated', index)
 
@@ -535,14 +490,6 @@ class MainTab(QWidget):
             self.settings['Program'] = 'castep'
             index = 1
             self.program_cb.setCurrentIndex(index)
-        #jk if self.settings['Hessian symmetrisation'] == 'crystal':
-        #jk     self.hessian_symmetry_cb.setCheckState(Qt.Checked)
-        #jk else:
-        #jk     self.hessian_symmetry_cb.setCheckState(Qt.Unchecked)
-        #jk if self.settings['Program'] == 'crystal':
-        #jk     self.hessian_symmetry_cb.setEnabled(True)
-        #jk else:
-        #jk     self.hessian_symmetry_cb.setEnabled(False)
         self.file_le.setText(self.settings['Output file name'])
         self.resultsfile_le.setText(self.settings['Excel file name'])
         if self.calculationRequired:

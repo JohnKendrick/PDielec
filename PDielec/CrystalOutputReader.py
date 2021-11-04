@@ -32,6 +32,7 @@ class CrystalOutputReader(GenericOutputReader):
     def __init__(self, filenames):
         GenericOutputReader.__init__(self, filenames)
         self.type                    = 'Crystal output'
+        self.hessian_symmetrisation  = 'crystal'
         self._fractional_coordinates = []
         return
 
