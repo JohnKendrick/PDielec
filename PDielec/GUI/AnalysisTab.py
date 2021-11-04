@@ -11,6 +11,7 @@ from PDielec.Constants import  covalent_radii
 # Import plotting requirements
 import matplotlib
 import matplotlib.figure
+from matplotlib.ticker import MaxNLocator
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT as NavigationToolbar
 from PDielec.Utilities import Debug
@@ -253,20 +254,34 @@ class AnalysisTab(QWidget):
         debugger.print('on title change ', self.settings['title'])
 
     def on_vmin_changed(self):
-        self.settings['Minimum frequency'] = self.vmin_sb.value()
-        debugger.print('on vmin change ', self.settings['Minimum frequency'])
-        vmin = self.settings['Minimum frequency']
-        vmax = self.settings['Maximum frequency']
-        if vmax > vmin:
-            self.plot()
+        self.vmin_sb.blockSignals(True)
+        vmin = self.vmin_sb.value()
+        vmax = self.vmax_sb.value()
+        if vmin < vmax:
+            self.settings['Minimum frequency'] = vmin
+            debugger.print('on_vmin_changed new value', self.settings['Minimum frequency'])
+        else:
+            self.vmin_sb.setValue(self.settings['Maximum frequency']-1)
+            self.settings['Minimum frequency'] = self.settings['Maximum frequency']-1
+            debugger.print('on_vmin_changed restricting value to', self.settings['Minimum frequency'])
+        self.plot()
+        self.vmin_sb.blockSignals(False)
+        return
 
     def on_vmax_changed(self):
-        self.settings['Maximum frequency'] = self.vmax_sb.value()
-        debugger.print('on vmax change ', self.settings['Maximum frequency'])
-        vmin = self.settings['Minimum frequency']
-        vmax = self.settings['Maximum frequency']
+        self.vmin_sb.blockSignals(True)
+        vmin = self.vmin_sb.value()
+        vmax = self.vmax_sb.value()
         if vmax > vmin:
-            self.plot()
+            self.settings['Maximum frequency'] = vmax
+            debugger.print('on_vmax_changed new value', self.settings['Maximum frequency'])
+        else:
+            self.vmin_sb.setValue(self.settings['Minimum frequency']+1)
+            self.settings['Maximum frequency'] = self.settings['Minimum frequency']+1
+            debugger.print('on_vmax_changed restricting value to', self.settings['Maximum frequency'])
+        self.plot()
+        self.vmin_sb.blockSignals(False)
+        return
 
     def requestRefresh(self):
         self.refreshRequired = True
@@ -399,7 +414,8 @@ class AnalysisTab(QWidget):
         self.subplot = None
         self.figure.clf()
         self.subplot = self.figure.add_subplot(111)
-        xlabel = 'Molecule'
+        self.subplot.xaxis.set_major_locator(MaxNLocator(integer=True))
+        xlabel = 'Mode Number'
         ylabel = 'Percentage energy'
         # Decide which modes to analyse
         mode_list = []
@@ -442,6 +458,7 @@ class AnalysisTab(QWidget):
         self.subplot = None
         self.figure.clf()
         self.subplot = self.figure.add_subplot(111)
+        self.subplot.xaxis.set_major_locator(MaxNLocator(integer=True))
         xlabel = 'Mode Number'
         ylabel = 'Percentage energy'
         # Decide which modes to analyse

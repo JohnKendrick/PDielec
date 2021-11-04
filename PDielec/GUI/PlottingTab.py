@@ -216,29 +216,52 @@ class PlottingTab(QWidget):
 
     def on_vinc_changed(self,value):
         debugger.print('Start:: on_vinc_changed', value)
+        self.vinc_sb.blockSignals(True)
+        value = self.vinc_sb.value()
+        value  = min( self.settings['Maximum frequency'] - self.settings['Minimum frequency'], value)
+        self.vinc_sb.setValue(value)
         self.settings['Frequency increment'] = value
         self.notebook.fitterTab.requestRefresh()
         self.refreshRequired = True
         self.requestScenarioRefresh()
         debugger.print('on_vinc_change ', self.settings['Frequency increment'])
+        self.vinc_sb.blockSignals(False)
         debugger.print('Finished:: on_vinc_changed', value)
 
     def on_vmin_changed(self):
         debugger.print('Start:: on_vmin_changed')
-        self.settings['Minimum frequency'] = self.vmin_sb.value()
+        self.vmin_sb.blockSignals(True)
+        vmin = self.vmin_sb.value()
+        vmax = self.vmax_sb.value()
+        if vmin < vmax:
+            self.settings['Minimum frequency'] = vmin
+            debugger.print('on_vmin_changed setting vmin to', self.settings['Minimum frequency'])
+        else:
+            self.vmin_sb.setValue(self.settings['Maximum frequency']-1)
+            self.settings['Minimum frequency'] = self.settings['Maximum frequency'] - 1
+            debugger.print('on_vmin_changed restricting vmin to', self.settings['Minimum frequency'])
         self.notebook.fitterTab.requestRefresh()
         self.refreshRequired = True
         self.requestScenarioRefresh()
-        debugger.print('on_vmin_change ', self.settings['Minimum frequency'])
+        self.vmin_sb.blockSignals(False)
         debugger.print('Finished:: on_vmin_changed')
 
     def on_vmax_changed(self):
         debugger.print('Start:: on_vmax_changed')
-        self.settings['Maximum frequency'] = self.vmax_sb.value()
+        self.vmax_sb.blockSignals(True)
+        vmin = self.vmin_sb.value()
+        vmax = self.vmax_sb.value()
+        if vmax > vmin:
+            self.settings['Maximum frequency'] = vmax
+            debugger.print('on_vmax_changed setting vmax to ', self.settings['Maximum frequency'])
+        else:
+            self.vmax_sb.setValue(self.settings['Minimum frequency']+1)
+            self.settings['Maximum frequency'] = self.settings['Minimum frequency'] + 1
+            debugger.print('on_vmax_changed restricting vmax to', self.settings['Maximum frequency'])
         self.notebook.fitterTab.requestRefresh()
         self.refreshRequired = True
         self.requestScenarioRefresh()
-        debugger.print('on_vmax_change ', self.settings['Maximum frequency'])
+        self.vmax_sb.blockSignals(False)
         debugger.print('Finished:: on_vmax_changed')
 
     def refresh(self,force=False):
