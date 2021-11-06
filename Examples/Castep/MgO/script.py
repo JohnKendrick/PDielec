@@ -49,6 +49,7 @@ for vf in vfs:
     self.notebook.addScenario()
     tab = self.notebook.scenarios[-1]
     tab.settings['Volume fraction'] = vf
+    tab.settings['Legend'] = 'AP vf='+str(vf)
 self.notebook.deleteScenario(0)
 #
 # Plotting Tab
