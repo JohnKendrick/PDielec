@@ -340,8 +340,11 @@ class SingleCrystalScenarioTab(ScenarioTab):
         superstrateDielectricFunction = DielectricFunction(epsType='constant',units='hz',parameters=superstrateDielectric).function()
         substrateDielectricFunction   = DielectricFunction(epsType='constant',units='hz',parameters=substrateDielectric).function()
         # The crystal dielectric has already been defined in the SettingsTab
+        # Force a call to get the permittivity, if it needs recalculating it will be
+        temp = self.notebook.settingsTab.get_crystal_permittivity(vs_cm1)
         # Make sure the system knows that frequency will be supplied using Hz
         self.notebook.settingsTab.CrystalPermittivity.setUnits('hz')
+        # Actually use the permittivity function in what follows
         crystalPermittivityFunction     = self.notebook.settingsTab.CrystalPermittivity.function()
         # Create 3 layers, thickness is converted from microns to metres
         superstrateDepth = self.settings['Superstrate depth']
