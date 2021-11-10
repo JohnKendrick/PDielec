@@ -586,10 +586,10 @@ class FitterTab(QWidget):
 
     def read_excel_file(self):
         # 
-        debugger.print('Start:: read_excel_file')
+        debugger.print('Start:: read_excel_file',self.settings['Excel file name'])
         file_name = self.settings['Excel file name']
         if not os.path.isfile(file_name):
-            debugger.print('Finished:: read_excel_file does not exist')
+            debugger.print('Finished:: read_excel_file does not exist',self.settings['Excel file name'])
             return
         if self.excel_file_has_been_read:
             debugger.print('Finished:: read_excel_file has been read')
