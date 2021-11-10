@@ -205,8 +205,6 @@ class MainTab(QWidget):
         #
         self.read_output_file()
         if self.notebook.settingsTab is not None:
-            self.notebook.settingsTab.settings['Optical permittivity'] = None
-            self.notebook.settingsTab.settings['Mass definition'] = 'average'
             self.notebook.settingsTab.refresh(force=True)
         self.calculationRequired = False
         debugger.print('Finished:: on_calculation_button_clicked')
@@ -295,11 +293,6 @@ class MainTab(QWidget):
             self.frequencies_window.addItem('{0:.3f}'.format(f))
         # tell the settings tab to update the widgets that depend on the contents of the reader
         debugger.print('processing a return in reading the output file')
-        if self.notebook.settingsTab is not None:
-            debugger.print('about to refresh settings')
-            # There is a subtle problem with the sigmas, they need to be reset on reading a new file
-            self.notebook.settingsTab.sigmas_cm1 = []
-            self.notebook.settingsTab.requestRefresh()
         # Update any scenarios
         if self.notebook.scenarios is not None:
             debugger.print('about to refresh scenarios')
@@ -389,8 +382,25 @@ class MainTab(QWidget):
             debugger.print('new file name', self.directory, self.settings['Output file name'])
             self.notebook.deleteAllScenarios()
             if self.settings['Program'] == 'pdgui':
+                #
+                # If we have changed the file then reset some of the settingsTab settings
+                # before we read in the script.
+                #
+                if self.notebook.settingsTab is not None:
+                    self.notebook.settingsTab.settings['Optical permittivity'] = None
+                    self.notebook.settingsTab.settings['Mass definition'] = 'average'
+                    self.notebook.settingsTab.sigmas_cm1 = []
+                    self.notebook.settingsTab.requestRefresh()
                 self.notebook.app.readScript(filename)
             else:
+                #
+                # If we have changed the file then reset some of the settingsTab settings
+                #
+                if self.notebook.settingsTab is not None:
+                    self.notebook.settingsTab.settings['Optical permittivity'] = None
+                    self.notebook.settingsTab.settings['Mass definition'] = 'average'
+                    self.notebook.settingsTab.sigmas_cm1 = []
+                    self.notebook.settingsTab.requestRefresh()
                 self.refreshRequired = True
                 self.calculationRequired = True
                 self.refresh()
@@ -419,8 +429,23 @@ class MainTab(QWidget):
             self.notebook.deleteAllScenarios()
             self.settings['Program'] = find_program_from_name(self.settings['Output file name'])
             if self.settings['Program'] == 'pdgui':
+                #
+                # If we are reading a script the reset the defaults before reading the script
+                #
+                if self.notebook.settingsTab is not None:
+                    self.notebook.settingsTab.settings['Optical permittivity'] = None
+                    self.notebook.settingsTab.settings['Mass definition'] = 'average'
+                    self.notebook.settingsTab.sigmas_cm1 = []
                 self.notebook.app.readScript(filename)
             else:
+                #
+                # If we have changed the file then reset some of the settingsTab settings
+                # this is only done if it is not a script
+                #
+                if self.notebook.settingsTab is not None:
+                    self.notebook.settingsTab.settings['Optical permittivity'] = None
+                    self.notebook.settingsTab.settings['Mass definition'] = 'average'
+                    self.notebook.settingsTab.sigmas_cm1 = []
                 self.refreshRequired = True
                 self.calculationRequired = True
                 self.refresh()
