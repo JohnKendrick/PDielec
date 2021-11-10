@@ -1,2 +1,0 @@
-Problem on MacOS with anaconda.  Get a crash which appears to be due to the parallel processing.
-Introduced a threading option which seems to have cured it, but performance will be slow.
