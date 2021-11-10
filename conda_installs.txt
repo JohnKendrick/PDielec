@@ -1,0 +1,11 @@
+conda install -c anaconda qt
+conda install psutil
+conda install numpy
+conda install scipy
+conda install xlsxwriter
+conda install multiprocess
+conda install matplotlib
+conda install -c anaconda pyopengl
+conda install openpyxl
+conda install pyaml
+conda install pymiescatt
