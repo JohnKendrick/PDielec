@@ -46,7 +46,7 @@ tab.settings['Minimum frequency'] =   0
 tab.settings['Maximum frequency'] = 400
 tab.settings['Frequency increment'] = 0.2
 tab.settings['Molar definition'] = 'Unit cells'
-tab.settings['Plot title'] = 'AbInit AlAs Calculation'
+tab.settings['Plot title'] = 'AbInit BaTiO3 Calculation'
 #
 # Analysis Tab
 #

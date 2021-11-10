@@ -43,6 +43,7 @@ test-pdgui:
 	@$(MAKE) --no-print-directory -C Mie/MgO_lognormal pdgui
 	@$(MAKE) --no-print-directory -C ATR/AlAs pdgui
 	@$(MAKE) --no-print-directory -C ATR/Na2SO42 pdgui
+	@$(MAKE) --no-print-directory -C ATR/Na2SO42_fit pdgui
 	@$(MAKE) --no-print-directory -C Experiment/constant pdgui
 	@$(MAKE) --no-print-directory -C Experiment/fpsq pdgui
 	@$(MAKE) --no-print-directory -C Experiment/drude-lorentz pdgui
@@ -141,6 +142,7 @@ pdgui-regenerate:
 	@$(MAKE) --no-print-directory -C Mie/MgO_lognormal pdgui-regenerate
 	@$(MAKE) --no-print-directory -C ATR/AlAs pdgui-regenerate
 	@$(MAKE) --no-print-directory -C ATR/Na2SO42 pdgui-regenerate
+	@$(MAKE) --no-print-directory -C ATR/Na2SO42_fit pdgui-regenerate
 	@$(MAKE) --no-print-directory -C Experiment/fpsq pdgui-regenerate
 	@$(MAKE) --no-print-directory -C Experiment/constant pdgui-regenerate
 	@$(MAKE) --no-print-directory -C Experiment/Forsterite pdgui-regenerate

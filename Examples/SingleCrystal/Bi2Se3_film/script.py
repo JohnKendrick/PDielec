@@ -43,7 +43,7 @@ tab.settings['Substrate depth'] =  999.0
 tab.settings['Film thickness'] =  100.0
 tab.settings['Mode'] = 'Coherent thin film'
 tab.settings['Frequency units'] = 'wavenumber'
-for az  in [ 0, 10, 20, 30, 40, 50, 60, 70, 80, 90]:
+for az  in [ 10, 20, 30, 40, 50, 60, 70, 80, 90]:
     self.notebook.addScenario(scenarioType="Single crystal")
     tab = self.notebook.scenarios[-1]
     tab.settings['Legend'] = '(001) theta {}'.format(az)

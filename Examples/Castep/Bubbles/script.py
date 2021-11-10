@@ -11,7 +11,6 @@ tab.settings['Program'] = 'castep'
 tab.settings['Output file name'] = 'phonon.castep'
 tab.settings['Excel file name'] = ''
 tab.settings['QM program'] = ''
-tab.settings['Hessian symmetrisation'] = 'symm'
 #
 #
 tab = self.notebook.settingsTab
@@ -19,7 +18,6 @@ tab.settings['Eckart flag'] =  False
 tab.settings['Neutral Born charges'] =  False
 tab.settings['Sigma value'] =  10
 tab.settings['Mass definition'] = 'average'
-tab.settings['Optical permittivity'] =  [[3.13969, 0.0, 0.0], [0.0, 3.13969, 0.0], [0.0, 0.0, 3.13969]]
 tab.sigmas_cm1 = [10, 10, 10, 10, 10, 10]
 #
 #
