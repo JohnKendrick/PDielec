@@ -106,6 +106,7 @@ dominate the absorption.
    Effect of volume fraction on the Bruggeman molar absorption coefficient of MgO spheres in PTFE
 
 :numref:`fig-mgo-varying-permittivity` shows the effect of varying the permittivity of the supporting medium. The calculations were performed on spherical MgO particles with a 1% volume fraction. The lowest permittivity is that of a vacuum (or air) and shows the highest shift of the absorption maximum to higher frequencies. Increasing the permittivity lowers the shift until it becomes quite small. A similar effect is seen for the Bruggeman mixing model. However, the absorption resulting for particles in a low dielectric medium is considerable broader than that seen in the Maxwell-Garnet case. This broadening reduces as the permittivity of the medium increases (see :numref:`fig-mgo-varying-permittivity-brug`).
+The data for this calculation can be found by looking in the :ref:`Examples` section of the installation guide under the Castep/MgO example.
 
 .. _fig-mgo-varying-permittivity-brug:
 
@@ -120,6 +121,7 @@ ZnO using VASP
 
 Zinc oxide crystallizes in space group :math:`P6_3mc` (wurtzite). All calculations were performed by VASP :cite:`Hafner2008c` using projector augmented-wave PAW :cite:`Kresse1999a` pseudo-potentials, the PBE :cite:`Perdew1996a` density functional, an energy cutoff of 600 eV and a k-point resolution of approximately 0.1 Å\ :superscript:`-1`. The initial unit cell was taken from the ICSD :cite:`Hellenbrandt2015` with code ICSD-26170 :cite:`McNally2012a`. The unit cell and atom positions were optimized using
 VASP and the permittivity was calculated using DFPT and the results reported in :numref:`tab-zno-properties`. Only two of the bands showed any significant intensity, a doubly degenerate band (E) with a TO frequency of 372.1 |cm-1| and a non-degenerate band (A) with a TO frequency of 350.0 |cm-1|. The LO frequency of the non-degenerate band is shifted to 502.0 |cm-1| for a wave-vector with direction (001), whilst the degenerate modes are unaffected. In the case of the (010) direction the LO frequency of one of the E modes is shifted to 511.2 |cm-1|. It is known that ZnO can crystallize with a plate morphology :cite:`Yamamoto1977` with the (001) surface dominant. Calculations of the molar absorption were performed for a sphere, plate and needle like shapes with the unique directions of the plate and the needle being normal to the (001) surface. A volume fraction of 1% was chosen for these calculations and the predicted molar absorption coefficients for the Maxwell-Garnett mixing rule is shown in :numref:`fig-zno`.
+
 
 
 .. table:: Experimental and Calculated Properties of ZnO
@@ -162,17 +164,19 @@ VASP and the permittivity was calculated using DFPT and the results reported in 
 
 .. _fig-zno:
 
-.. figure:: ./_static/Figures/ZnO-Maxwell_Garnett.*
+.. figure:: ./_static/Figures/ZnO_Needle_Plate_Sphere.*
    :scale: 90%
 
    ZnO: Effect of shape on absorption
 
 For the Maxwell-Garnett mixing rule the sphere morphology results in the two absorption peaks shifting from their TO positions to higher wavenumber by about 80 |cm-1|. The plate morphology results in one of the peaks moving to higher wavenumber by about 130 |cm-1|, whilst the other remains at the TO position. The Maxwell-Garnett results are in close accord with some experimental results by Yamamoto et al :cite:`Yamamoto1977` who measured the infrared spectrum of ZnO smoke particles and observed peaks in the absorption at 380, 530 and 550 |cm-1|. Previous work :cite:`Rendon1981,Hayashi1977a` have also used effective medium theory to explain the observed spectrum.
+The data for this calculation can be found by looking in the :ref:`Examples` section of the installation guide under the Vasp/ZnO example.
 
 Calcite using GULP
 ==================
 
 Calcite is the most stable polymorph of calcium carbonate and the crystal structure belongs to the :math:`R\overline{3}c` space group. The force field and atomic structures used here are described in detail in work by Fisler :cite:`Fisler2000`. Briefly, the oxygen ions are described using a core-shell model :cite:`Dick1958`. The carbon - oxygen potential of the carbonate is taken to be a Morse potential and an additional 3 atom potential is used to maintain the O-C-O angle at 120\ :superscript:`o`. The van der Waals interactions between non bonded atoms are taken to be Buckingham potentials and the charges on the calcium, carbon and oxygen ions are +2, +1.3435 and -1.1145 respectively. The shell charge of the oxygen ion is -2.133 and the spring constant for the core-shell interaction is 52.74 eV/Å\ :superscript:`2`. The unit cell was optimized using the primitive unit cell and the full space group symmetry. The calculation of the phonon spectrum was performed without symmetry but still using the primitive cell of the lattice. A summary of the calculated properties is given in :numref:`tab-calcite-properties`.
+The data for this calculation can be found by looking in the :ref:`Examples` section of the installation guide under the Gulp/calcite example.
 
 
 .. table:: Experimental and Calculated Properties of Calcite
@@ -235,6 +239,7 @@ Fluoroapatite using VASP
 The line shapes of the infrared absorption of apatite and fluoroapatite were examined extensively by Balan *et al* :cite:`Balan2008b`. Their calculations included the effect of crystallite habit on the spectrum and the results reported here are similar to their conclusions. The method used by Balan *et al*. is an infinitely dilute Maxwell-Garnett model, so the only difference between the methods used by them and those reported here using PDielec are the incorporation of the volume fraction into the theory and the use of an ellipsoidal shape for comparison with the other shapes.
 
 All calculations were performed by VASP :cite:`Hafner2008c` using projector augmented-wave PAW :cite:`Kresse1999a` pseudo-potentials, the PBE :cite:`Perdew1996a` density functional, an energy cutoff of 600 eV and a k-point resolution of approximately 0.1 Å\ :superscript:`-1`. :numref:`tab-fluoroapatite-properties` summarises the results of the calculations. Only the 3 highest frequency bands are reported and discussed. The TO intensity of the highest frequency band at 1038 |cm-1| is low and will not be discussed further. The Bravais Friedel Donnay Harker (BFDH) :cite:`Donnay1937` crystal habit of the optimized crystal is shown in :numref:`fig-fluoroapatite-morphology`. The habit was calculated using the Mercury software package. :cite:`Macrae2008`. The BFDH crystal habit is often used to give an idea of the likely important faces of a crystal. It uses only the crystal lattice and space group to determine the crystal morphology. :numref:`fig-fluoroapatite-morphology` shows that the {100} surfaces form a tube which are capped by the {011} surfaces. The effect of different particle shapes on the predicted spectrum is shown in :numref:`fig-fluoroapatite-absorption`. The calculations of the spectra were performed with a damping parameter (σ) of 2 |cm-1|. The ellipsoid was chosen to have an aspect ratio, a/b, of 2 and a principle axis along [001], which was compatible with the morphology predicted by the BDFH method. The two TO absorption frequencies at 981 and 986 |cm-1| have A and E symmetry respectively. Spherical crystallites result in three absorption peaks at around 1000, 1010 and 1015 |cm-1|. Needle shaped crystallites leave the A symmetry TO absorption peak at 981 |cm-1| unaffected, but shift and split the E symmetry TO peak to 1020 and 1046 |cm-1|. A plate morphology with (100) surfaces results in the A and one component of the E TO absorption peak remaining at the TO frequencies, with the other component of the E shifting 85 |cm-1| to 1075 |cm-1|. The ellipsoidal morphology show three shifted peaks at 1000, 1018 and 1045 |cm-1|. These results are consistent with those of Balan *et al*. :cite:`Balan2008b`, who gave detailed results for hydroxyapatite.
+The data for this calculation can be found by looking in the :ref:`Examples` section of the installation guide under the Casp/F-Apatite example.
 
 
 .. table:: Experimental and Calculated Properties of Fluoroapatite
@@ -348,6 +353,7 @@ L-aspartic acid is a zwitterion in the solid state and so the shape of the parti
 
 
 The THz spectrum of L-aspartic acid has been reported by Juliano and Korter :cite:`Juliano2015` in the frequency range 0-90 |cm-1|. The infrared spectrum has been reported and assigned by Lopez *et al* :cite:`LopezNavarrete1994`. :numref:`fig-aspartica`, :numref:`fig-asparticb` and :numref:`fig-asparticc` shows the calculated absorption spectra for L-aspartic acid for three frequency ranges. The calculation of the spectra used the Maxwell-Garnett mixing rule with a 10% volume fraction of L-aspartic acid in PTFE and for comparison the TO mixing rule. A damping factor of 2 |cm-1| was used. Spherical and a variety of plate-like inclusions were used to illustrate their effect on the absorption spectra. :numref:`fig-aspartica` shows the frequency range from 60-130 |cm-1| which is that covered by THz spectroscopy. The shifts observed for the different particle morphologies are not large, but the change in intensities is significant. The molecular motions associated with phonons at these frequencies tend to be whole molecule motion involving rotation. :numref:`fig-asparticb` shows the frequency range from 1260-1340 |cm-1|. In this frequency range bending of the carboxylate anion contributes to the spectrum significantly. The three different plate morphologies show different and significant shifts in the TO absorption peak at 1290 |cm-1|. The spherical morphology shows a shift of around 25 |cm-1| to higher wavenumber. :numref:`fig-asparticc` shows the spectra in the frequency range 2900-3100 |cm-1|, which corresponds to the motion of O-H (below 2980 |cm-1|) and N-H (above 2980 |cm-1|) stretching. The effect of the different possible crystal morphologies is large with shifts to higher frequency of up to 50 |cm-1|. The spectra below 3000 |cm-1| arises from two TO absorptions at 2946 and 2947 |cm-1|. Because the motions associated with each mode interact differently with the internal field within each crystal they give rise to different shifts producing more complex spectra.
+The data for this calculation can be found by looking in the :ref:`Examples` section of the installation guide under the Castep/AsparticAcid example.
 
 .. _fig-aspartica:
 
@@ -376,6 +382,7 @@ MgO Example using Mie Scattering
 
 :numref:`fig-mgo-mie` compares a Mie scattering calculation with the results from Maxwell-Garnett effective medium theory. The same data set was used for the CASTEP, MgO example. A volume fraction of 1% was used with a small sphere radius (0.1 μm) and a broadening of 5 |cm-1| embedded in a matrix of PTFE. A power expansion in the size parameter of the Mie expressions
 indicates that for small sizes of particles, the Mie and the Maxwell-Garnett methods should be the same. This is verified in Figure 13.
+The data for this calculation can be found by looking in the :ref:`Examples` section of the installation guide under the Mie/MgO example.
 
 
 .. _fig-mgo-mie:
@@ -473,3 +480,207 @@ Figure :numref:`fig-zno-mie-sizes` shows that the variation of the Mie scatterin
 
    ZnO spheres using Mie
    Mie scattering of 10% volume fraction ZnO spheres in PTFE using a line broadening factor of 5 |cm-1|. 
+
+
+
+Fitting the ATR Spectrum of Na\ :subscript:`2`\ (SO\ :subscript:`4`\ )\ :subscript:`2`
+==============================
+
+To calculate the expected Attenuated Total Reflectance spectrum of Na\ :subscript:`2`\ (SO\ :subscript:`4`\ )\ :subscript:`2` a Vasp calculation was performed of the optimised structure followed by the dynamical matrix and the phonon spectrum at the :math:`\Gamma` point.
+After reading in the OUTCAR with PDGui, the scenario tab is modified to reflect the materials used in an ATR experiment.  The support matrix is set to air and the volume fraction of dielectric is set 80%.  When looking at the plot with the plotting tab, ensure that the 'Powder ATR' plot type is used.  This ensures that the fitter tab uses that plot for the fitting.  For the case of non polarised radiation the choice of 0.5 for the 'ATR S polarisation fraction' is appropriate.
+The settings tab will look like the tab shown below.
+
+.. _Na2SO42-scenario:
+
+.. figure:: ./_static/Figures/Na2SO42_Scenario_Fitting.png
+   :scale: 90%
+
+   Na\ :subscript:`2`\ (SO\ :subscript:`4`\ )\ :subscript:`2` Scenario Tab for ATR
+
+
+The initial fitter tab will look something like what is shown below.  A file has been specified holding the experimental ATR spectrum.  There is a list of Lorentzian widths for each phonon transition.  The *Replot* button re-plots the graph after any changes to the sigma widths of the transition.  Changes to the phonon transition widths made in the *Fitter Tab* are reflected in the *Settings tab*.
+
+If changes are made to the widths a re-plot will cause all the information needed (crystal permittivity and powder permittivity) to be recalculated.  Calculation progress is shown below the three buttons.  
+After a recalculation four items of data are show;
+
+- **X-correlation**
+        This is the maximum in the cross-correlation function calculated between the experimental and simulated spectrum.A value of 1.0 means that there is perfect agreement between the shapes of the calculated and experimental curves, a value of 0.0 indicates that they are not correlated at all.
+        
+- **frequency scale**
+        This shows the frequency scaling factor being used to scale the calculated frequency.  This can be set using the Settings at the top of the *Fitter tab*.  It is usually 1.0, but where a DFT method is known to show systematic errors in its calculated frequencies, it is possible to compensate for these using this value.
+
+- **shift**
+        This is the frequency at which the cross correlation function is a maximum, it is sometimes called the 'lag'.  By default the plot is shown without the frequency shift, but this can be changed by using the *Replot with frequency shift* button.
+
+- **rmse**
+        This is the root mean squared difference between the experimental and calculated spectra.  If the units of the two spectra are different then this is not a very useful measure of their similarity and any fitting should be done using the maximum in the cross-correlation function.
+
+
+.. _Na2SO42-fitter:
+
+.. figure:: ./_static/Figures/Na2SO42_Fitter.png
+   :scale: 90%
+
+   Na\ :subscript:`2`\ (SO\ :subscript:`4`\ )\ :subscript:`2` Fitter Tab for ATR
+
+In the situation above the calculated and experimental spectra have been plotted on the same scale, but very often the units used for absorption are confusing and if necessary separate scale for the experimental and calculated spectra can be used by toggling 'Independent y-axes' on the Fitter settings tab.
+
+Visual inspection of the spectra above indicates that the transition widths are too narrow and need broadening.  This is simply acheived by choosing a frequency range and editing the sigma values.  In the 1200 :math:`cm^{-1}` there are two transitions with similar initensities.  The values of both sigmas should be modified until the calculated peak height is similar to the experimental one.  Where possible the same values of sigma should be used for several transition and this process repeated for the important frequency ranges.  The table below shows the changes that can be made to improve the fit.  
+
+.. table:: Modified sigma parameters for Na\ :subscript:`2`\ (SO\ :subscript:`4`\ )\ :subscript:`2` after fitting
+   :name: na2so42-sigma-values
+   :widths: 1 1 1 1 
+   :column-dividers:   none none none  none  none  none
+   :header-alignment: center left left left
+   :column-alignment: center left left left
+
+   +------------+-----------------------+------------------+-------------+
+   | Mode       | Frequency (cm-1)      | Starting sigma   | Final sigma | 
+   +============+=======================+==================+=============+
+   | 21         | 445.1942              | 5                | 10          | 
+   +------------+-----------------------+------------------+-------------+
+   | 22         | 528.1156              | 5                | 200         | 
+   +------------+-----------------------+------------------+-------------+
+   | 24         | 532.3843              | 5                | 10          | 
+   +------------+-----------------------+------------------+-------------+
+   | 28         | 663.9357              | 5                | 100         | 
+   +------------+-----------------------+------------------+-------------+
+   | 31         | 1000.9066             | 5                | 35          | 
+   +------------+-----------------------+------------------+-------------+
+   | 33         | 1188.9832             | 5                | 130         | 
+   +------------+-----------------------+------------------+-------------+
+   | 35         | 120.5535              | 5                | 100         | 
+   +------------+-----------------------+------------------+-------------+
+
+The cross-correlation of this fit is 0.7369 at a frequency shift of 21.20 :math:`cm^{-1}`.  The plot below shows the comparison of the calculated and experimental curves and the plot was made incorporating the frequency shift.
+It is possible to further improve the quality of the agreement of the fit by selecting some of the sigmas for optimisation using the tick box next to each frequency and clicking on the 'Perform fitting' button.  If the 'Optimise scaling' option is selected in the Settings tab, then very often the value of the shift parameter is reduced considerably.
+The problem with doing the fitting automatically is that maximising the correlation function may not lead to comparisons which 'look' as good as simply making sure the peak heights of the experimental and calculated spectra are similar.
+The data for this calculation can be found by looking in the :ref:`Examples` section of the installation guide under the ATR/Na2SO42_fit example.
+
+
+.. _Na2SO42-fitted:
+
+.. figure:: ./_static/Figures/Na2SO42_Fitted.png
+   :scale: 90%
+
+   Na\ :subscript:`2`\ (SO\ :subscript:`4`\ )\ :subscript:`2` Fitted Spectra
+
+
+
+Single Crystal Study of Forsterite
+==================================
+
+In a publication on the interpretation of the experimental spectrum of forsterite :cite:`Pierre2013a` a Four Parameters Semi-Quantum (FPSQ) model for the single crystal infrared spectrum of this material was presented.   In this application note we use the experimental file format of PDielec to read in the FPSQ model parameters from the paper and use it to calculate the reflectance spectrum for comparison with that published in the paper.
+The FPSQ model is defined by the following equation.
+
+
+.. math::
+   :label: eq-fpsq
+
+    \epsilon (\omega )=\epsilon _{\infty}\prod_{j} \frac{\Omega^2_{LO_j}-\omega ^2-i\gamma _{LO_j}\omega }{\Omega^2_{TO_j}-\omega ^2-i\gamma _{TO_j}\omega}
+
+Forsterite is an orthosilicate belonging to an orthorhombic space group.  The permittivity matrix is diagonal when the x, y and z axes of the crystal are aligned with a, b and c axes of the unit cell.  The parameters for the FPSQ model are summarised in the tables below.
+
+.. table:: Optical Permittivity
+   :name: tab-optical
+   :column-alignment:  center right  right  right
+   :header-alignment:  center center center center 
+   :column-dividers:   none single single single none
+
+   +------------+------------+--------+--------+
+   |            |     X      | Y      |  Z     |
+   +------------+------------+--------+--------+
+   |    X       | 2.83       | 0.0    | 0.0    |
+   +------------+------------+--------+--------+
+   |    Y       | 0.0        | 2.69   | 0.0    |
+   +------------+------------+--------+--------+
+   |    Z       | 0.0        | 0.0    | 2.76   |
+   +------------+------------+--------+--------+
+
+
+
+.. table:: FPSQ Model Parameters for Forsterite
+   :name: tab-fpsq
+   :widths: 1 1 1 1 1 1 1 1 1 1 1 1
+   :column-dividers:   none single single single single single single single single single single single none
+   :header-alignment:  center center center center center center center center center center center center
+
+   +----------------------------------------+----------------------------------------+----------------------------------------+
+   | EPS(xx)                                | EPS(yy)                                | EPS(zz)                                |
+   +---------+---------+---------+----------+---------+---------+---------+----------+---------+---------+---------+----------+
+   | TO Freq | TO sigma| LO Freq | LO Sigma | TO Freq | TO sigma| LO Freq | LO Sigma | TO Freq | TO sigma| LO Freq | LO Sigma |
+   +=========+=========+=========+==========+=========+=========+=========+==========+=========+=========+=========+==========+
+   | 202.6   |0.18     |202.9    | 0.28     | 144.9   |0.09     |145.5    | 0.21     | 278.3   |0.50     | 278.9   | 0.54     |
+   +---------+---------+---------+----------+---------+---------+---------+----------+---------+---------+---------+----------+
+   | 276.6   |0.59     |277.1    | 0.84     | 278.6   |0.68     |278.9    | 0.79     | 292.7   |0.90     | 305.6   | 0.36     |
+   +---------+---------+---------+----------+---------+---------+---------+----------+---------+---------+---------+----------+
+   | 296.1   |0.79     |300.6    | 1.18     | 290.8   |1.28     |311.3    | 0.68     | 306.3   |0.39     | 316.7   | 0.53     |
+   +---------+---------+---------+----------+---------+---------+---------+----------+---------+---------+---------+----------+
+   | 321.1   |0.60     |322.5    | 0.88     | 351.7   |2.77     |376.7    | 1.02     | 411.6   |2.03     | 414.6   | 1.97     |
+   +---------+---------+---------+----------+---------+---------+---------+----------+---------+---------+---------+----------+
+   | 383.2   |1.52     |390.5    | 1.52     | 397.3   |2.15     |412.4    | 2.30     | 418.5   |3.19     | 456.4   | 1.88     |
+   +---------+---------+---------+----------+---------+---------+---------+----------+---------+---------+---------+----------+
+   | 405.4   |1.58     |468.9    | 2.90     | 419.8   |2.17     |444.1    | 2.75     | 425.0   |4.22     | 424.5   | 3.83     |
+   +---------+---------+---------+----------+---------+---------+---------+----------+---------+---------+---------+----------+
+   | 476.6   |4.46     |478.0    | 3.69     | 458.1   |4.39     |489.2    | 2.59     | 478.9   |3.22     | 487.2   | 3.99     |
+   +---------+---------+---------+----------+---------+---------+---------+----------+---------+---------+---------+----------+
+   | 504.7   |3.81     |532.6    | 5.65     | 507.8   |2.77     |513.7    | 4.16     | 506.2   |2.71     | 580.8   | 8.79     |
+   +---------+---------+---------+----------+---------+---------+---------+----------+---------+---------+---------+----------+
+   | 532.3   |5.67     |552.3    | 9.41     | 529.5   |4.62     |575.0    | 8.33     | 874.4   |4.17     | 996.8   | 4.32     |
+   +---------+---------+---------+----------+---------+---------+---------+----------+---------+---------+---------+----------+
+   | 606.6   |4.77     |651.6    | 12.10    | 838.6   |6.56     |844.5    | 7.63     |         |         |         |          |
+   +---------+---------+---------+----------+---------+---------+---------+----------+---------+---------+---------+----------+
+   | 840.8   |6.75     |841.5    | 7.03     | 872.9   |5.02     |965.2    | 3.33     |         |         |         |          |
+   +---------+---------+---------+----------+---------+---------+---------+----------+---------+---------+---------+----------+
+   | 959.9   |2.41     |965.5    | 3.30     | 986.3   |4.80     |994.8    | 2.96     |         |         |         |          |
+   +---------+---------+---------+----------+---------+---------+---------+----------+---------+---------+---------+----------+
+   | 978.5   |3.83     |1081.1   | 5.76     |         |         |         |          |         |         |         |          |
+   +---------+---------+---------+----------+---------+---------+---------+----------+---------+---------+---------+----------+
+
+
+The publication presents experimental polarized reflectance infrared spectra of single crystals of forsterite.  The incident beam angle to the sample was :math:`10^{\circ}`.  The s-polarized geometry was used and measurements made with the electric field parallel to the a-axis, b-axis and c-axis.
+
+In PDGui the laboratory frame is defined by XYZ, with the incident and reflected light in the surface in the XZ plane, with the surface normal aligned with the Z-axis.
+The surface is therefore in the XY plane.
+The azimuthal angle can be used to rotate the crystal about the normal until the crystal axis of interest is parallel to the Y axis of the laboratory frame.
+With this geometry the s-polarised wave field will be oscillating parallel to the chosen axis.
+The arrangement described is shown in the Figure below where :math:`E_s` and :math:`E_p` are the field directions of the incident light. 
+
+.. _fig-lab-coords:
+
+.. figure:: ./_static/Figures/SingleCrystalGeometry.png
+   :scale: 90%
+
+   Definition of single crystal laboratory coordinates in PDGui
+
+
+
+As can be seen :math:`E_s` is parallel to the laboratory Y-axis, so it is necessary to line up the crystal unit cell so that the cell direction being investigated is parallel to the Y-axis.
+In the single crystal scenario tab PDGui shows the crystal axes in terms of the laboratory coordinates so it is relatively straightforward to make sure that the cell direction of interest is aligned along the Y-axis.  It is possible to set each axis in one of two ways, depending on the surface being used.  For example to make sure the a-axis is aligned with laboratory Y-axis, we can use either the [001] or the [010] surfaces and simply choose the appropriate azimuthal angle
+
+The following geometries can be used by PDGui to ensure the relevant axis is aligned with the laboratory Y-axis;
+
+- For the a-axis; 
+    | the [001] surface with azimuthal angle =  90
+    | the [010] with azimuthal angle = 90
+- For the b-axis
+    | the [001] surface and azimuthal angle = 0
+    | the [100] surface and azimuthal = 90
+- for the c-axis
+    | the [100] surface azimuthal angle = 0
+    | the [010] surface azimuthal angle = 0
+
+
+The two figures below show the reflectance on s-polarised light along the a-axis and these figures show very good agreement with Figure 1 in the published experimental work :cite:`Pierre2013a`.
+The data for this calculation can be found by looking in the :ref:`Examples` section of the installation guide under the Experimental/forsterite example.
+
+
+.. _forsterite:
+
+.. figure:: ./_static/Figures/forsterite-100-1200.png
+   :scale: 90%
+.. figure:: ./_static/Figures/forsterite-350-600.png
+   :scale: 90%
+
+   Forsterite a-axis reflectance (upper figure 100 - 1200 cm-1, lower figure 350 - 600 cm-1)
+

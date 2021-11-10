@@ -13,76 +13,102 @@
 Software components
 ===================
 
-There are two programs within the PDielec package.  *Preader* is a command line program and *PDGui* a graphical interface to the features of the PDielec package.
+There are two programs within the PDielec package.  *preader* is a command line program and *pdgui* a graphical interface to the features of the PDielec package.
 
 
 PDGui
 =====
 
 
-pdgui is provides a graphical front end to the capabilities of PDielec.
-pdgui can be run from the command line without any parameters or the QM/MM program name followed by the file to be read can be provided.
+PDgui provides a graphical front end to the capabilities of PDielec.
+PDgui can be run from the command line without any parameters or followed by the file to be read in.  PDGui makes a best guess at the DFT/MM program used to create the output.
+It can also be used a command line tool without having to use the GUI, this needs a script file to be available.
+
 For example; ::
 
     pdgui
 
 or ::
 
-    pdgui vasp OUTCAR
+    pdgui OUTCAR                                                # A Vasp/Phonpy calculation
+    pdgui LEUCINE_FREQUENCY_PBED3_631Gdp_FULLOPTIMIZATON.out    # A Crystal calculation
+    pdgui run1.dynG                                             # A QE calculation
+    pdgui run2.out                                              # An Abinit calculation
+    pdgui run3.gout                                             # An Gulp calculation
+
+If running a script which contains program and output file information, then::
+
+    pdgui -script script.py
 
 If a spreadsheet of results is required the name of the spreadsheet can be provided on the command line. ::
 
-    pdgui vasp OUTCAR results.xlsx
+    pdgui OUTCAR -spreadsheet results.xlsx
     
 The spreadsheet name must have an .xlsx extension.
+To use as a command line tool an example would be; ::
+
+    pdgui OUTCAR -spreadsheet results.xlsx -script script.py -nosplash -exit
 
 There are several command line options which may be useful in running the package.
 
 .. table:: PDGui command line options
    :name: command_line_options
    :widths: 1 3 
-   :column-dividers:   none none  none  none
+   :column-dividers:   none none  none 
    :header-alignment: left left
    :column-alignment: left left
 
    +-----------------------+----------------------------------------+
    | Command line option   | Description                            |
    +=======================+========================================+
-   | -debug                | Debugging mode, only for developers    |
-   +-----------------------+----------------------------------------+
    | -script filename      | Specify a python script to run         |
    +-----------------------+----------------------------------------+
-   | -exit                 | Exit the program                       |
+   | -scenario type        | Changes the initialial scenario type,  |
+   |                       | type can be 'powder' or 'crystal',     |
+   |                       | the default is 'powder'                |
+   +-----------------------+----------------------------------------+
+   | -spreadsheet file     | An alternative way of defining the     |
+   |                       | spreadsheet                            |
+   +-----------------------+----------------------------------------+
+   | -program name         | An alternative way of defining the     |
+   |                       | program used to create the output      |
+   +-----------------------+----------------------------------------+
+   | -version              | Give information of the version no.    |
+   +-----------------------+----------------------------------------+
+   | -debug                | Debugging mode, only for developers    |
+   +-----------------------+----------------------------------------+
+   | -exit                 | Exit the program after running the     |
+   |                       | script                                 |
    +-----------------------+----------------------------------------+
    | -nosplash             | Do not show the splash screen          |
    +-----------------------+----------------------------------------+
-   | -threads              | Using threading for multiprocessing    |
-   +-----------------------+----------------------------------------+
    | -cpus 2               | Using 2 processors for multiprocessing |
+   |                       | or 2 threads if threading              |
+   +-----------------------+----------------------------------------+
+   | -threads              | Using threading for multiprocessing    |
    +-----------------------+----------------------------------------+
    | -h                    | Print out help information             |
    +-----------------------+----------------------------------------+
 
 
 
-The package requires the PyQt5 library.
 After running the program the user sees a notebook interface with seven tabs.
 
-    *Main Tab* allows the user to specify the program and filename which are to be anaylsed.  It is also possible to specify here the spreadsheet name of results are going to be saved.
+-   *Main Tab* allows the user to specify the program and filename which are to be anaylsed.  It is also possible to specify here the spreadsheet name to which results are saved to.  
 
-    *Settings Tab* is used for changing the settings within the package
+-   *Settings Tab* is used for changing the settings within the package
 
-    *Scenario Tab* specifies the material properties used to define the effective medium from which the  absorption characteristic are calculated.  This tab can also be used to change the algorithms used to calculate the effective medium.  Several scenarios can be defined and plotted in the *Plotting Tab*.
+-   *Scenario Tab* specifies the material properties used to define the effective medium from which the  absorption characteristic are calculated.  If single crystal calculations are to be performed this is specified here.  This tab can also be used to change the algorithms used to calculate the effective medium.  Several scenarios can be defined and plotted in the *Plotting Tab*.
 
-    *Plotting Tab* shows the absorption or permittivity as a function of frequency for the effective medium theories given in the scenario tabs.
+-   *Plotting Tab* shows the absorption or permittivity as a function of frequency for the effective medium theories given in the scenario tabs.
 
-    *SingleCrystal Tab* shows the transmittance and reflectance of a single crystal (slab or film) as a function of frequency.
+-   *SingleCrystal Tab* shows the transmittance and reflectance of a single crystal (slab or film) as a function of frequency.
 
-    *Analysis Tab* shows the decomposition of the normal modes into molecular components.
+-   *Analysis Tab* shows the decomposition of the normal modes into molecular components.
 
-    *Visualisation Tab* displays the normal modes as either arrows showing the atomic displacement or as an animation.
+-   *Visualisation Tab* displays the normal modes as either arrows showing the atomic displacement or as an animation.
 
-    *Fitter Tab* allows a user to display an experimental spectrum and compare it with the calculated spectrum.
+-   *Fitter Tab* allows a user to display an experimental spectrum and compare it with the calculated spectrum.
 
 
 Main Tab
@@ -97,11 +123,13 @@ The *Main Tab* is used to pick the MM/QM package and the output file which will 
 
    The Main Tab
 
-The QM/MM program can be chosen from the dropdown list.  The output file name can be input into the text box below it.  Any entry in this *Output file name* text box will be read when the 'Read the output file and start the calculation' button is pressed.  If the file is not valid a file chooser will pop-up and the user can select a file from that.
+The QM/MM program can be chosen from the dropdown list.  The output file name can be input into the text box below it, or it can be specified using the `File manager` button.  In addition to input files from QM/MM programs the program can read Python script files written by PDGui.  These should have a '.py' extension.
 
-If an Excel spreadsheet file name given, it must have the extensions .xlsx.  The spreadsheet is written when the program exits.
+If an Excel spreadsheet file name given, it must have the extensions .xlsx.  The spreadsheet is written when the `Save results` button is pressed.
 
-Once the file has been specified and read the frequencies found in the calculation file are reported in the output text box.
+If the current program settings need to be stored they can be stored as a Python script file by pressing the `Save settings` button.  Any settings saved in the way can be re-instated by reading in the script using the `File manager` and selecting the `PDGui (*.py)` option in the file types selection.
+
+Once the file has been specified and read, the unit cell is shown and the frequencies found in the calculation file are reported in the output text boxes.
 
 
 Settings Tab
@@ -131,19 +159,30 @@ The width (:math:`\sigma`) of all the absorptions can be set using the *Lorentzi
 
 Finally the optical permittivity at zero frequency is given in the *Optical permittivity* table.  In some cases it is necessary to enter the optical permittivity by hand.  This can be done by clicking each element in the table which needs changing and typing the new matrix element.
 
+When a new output file is read in the atomic masses and the optical permittivity matrix are reset.
+
 The output table at the bottom of the tab shows the calculated frequencies and their intensities.  Transitions which do not contribute to the Infrared absorption are greyed out.  These transitions will not be used in later calculations.  From this table it is possible to remove or add transitions to the later calculations and it is also possible to change the width of individual transitions.
 
 Scenario Tabs
 -------------
+There are two sorts of scenario tab, one for powder calculations and one for single crystal calculations.  By default it is assumed that powder calculations are being performed.  There is a button ( `Switch to crystal scenario` or `Switch to powder scenario`) at the bottom of the tabs which allows the user to switch between the two.
 
-There can be more than one *Scenario Tab*.  Each one specifies a particular material, method or particle shape which will be used for the calculation of the effective medium.  The results of the calculations will be shown in the *Plotting Tab*. For each scenario it is assumed that the size of the particle embedded in the matrix is small compared with the wavelength of light.
+Scenarios can be added or removed using the push buttons at the bottom of each *Scenario Tab*.  When a new scenario is created the settings are copied from the current scenario.  
 
-.. _fig-scenarioTab:
+There can be more than one *Scenario Tab*.  Each one specifies a particular material, method or particle shape which will be used for the calculation of the effective medium or single crystal.  The results of the calculations will be shown in the *Plotting Tab*.
 
-.. figure:: ./_static/Figures/ScenarioTab.png 
+Powder Scenarios
+................
+
+For each powder scenario it is assumed that the size of the particle embedded in the matrix is small compared with the wavelength of light.
+
+
+.. _fig-scenarioTab-Powder:
+
+.. figure:: ./_static/Figures/ScenarioTab-Powder.png 
    :scale: 80%
 
-   The Scenario Tab
+   The Scenario Tab for a Powder
 
 The support matrix into which the active dielectric material is dispersed can be selected from the *Support matrix* drop down menu.  The selected supporting material will change the density and permittivity shown in the respective text boxes.  The user can edit these values independently if necessary.  
 The supporting medium may have bubbles of air trapped in the matrix.  For the case that polyethylene spheres are used to make the sample, experimental information indicates a relationship between the size of the spheres and size of the air inclusions.
@@ -168,30 +207,54 @@ The supporting medium may have bubbles of air trapped in the matrix.  For the ca
 
 The size of the air inclusions (bubbles) can be specified in the *Scenario Tab* along with the volume fraction.  If a non-zero value for the volume fraction of air voids is given the scattering due to the air inclusions is calculated before the effective medium calculation is performed.  The forward and backward scattering amplitudes for a single scatterer are calculated using the Mie method and then used to calculated the scattering using the Waterman-Truell approximation.
 
-
-The amount of dielectric material to be considered can be entered either as mass fraction (in percent) or as a volume fraction (in percent).  If the matrix support density is changed the calculated mass fraction will be updated.  It is assumed that the volume fraction has precedence.  If an air void volume fraction is supplied then this has to be taken account of in the calculation of the volume and mass fractions.
+The amount of dielectric material can be entered either as a mass fraction (in percent) or as a volume fraction (in percent).  If the matrix support density is changed the calculated mass fraction will be updated.  It is assumed that the volume fraction has precedence.  If an air void volume fraction is supplied then this has to be taken account of in the calculation of the volume and mass fractions.
 
 The calculation of the effective medium can be performed using a variety of methods which can be chosen from the *Method* drop down menu.  If the *Mie* method is chosen the user can enter the particles radius (microns).  The *Particle sigma* specifies the width of a log-normal distribution.  If the width is 0.0 no sampling of the distribution is performed.
 
-For effective medium theories other than the Mie method the particle shape can be specfied using the *Shape* pull down menu.  Possible shapes are *Sphere*, *Needle*, *Plate* and *Ellipsoid*.  For the cases of *Needle* and *Ellipsoid* the unique direction is specifed by a direction \[abc\] in lattice units.  In the case of *Plate* the unique direction is specifies as the normal to a plane (hkl) in reciprical lattice units.  If an *Ellipsood* shape is used the eccentricy factor can be specified in the *Ellipsoid a/b eccentricity* text box.
+For effective medium theories other than the Mie method the particle shape can be specfied using the *Shape* pull down menu.  Possible shapes are *Sphere*, *Needle*, *Plate* and *Ellipsoid*.  For the cases of *Needle* and *Ellipsoid* the unique direction is specifed by a direction \[abc\] in lattice units.  In the case of *Plate* the unique direction is specifies as the normal to a plane (hkl) in reciprical lattice units.  If an *Ellipsoid* shape is used the eccentricy factor can be specified in the *Ellipsoid a/b eccentricity* text box.
 
 The plot in the *Plotting Tab* has a legend and the description used in the legend for each scenario can be set by filling out the text box associated with the *Scenario legend*.
 
-Scenarios can be added or removed using the push buttons at the bottom of each *Scenario Tab*.  When a new scenario is created the settings are copied from the current scenario.  
+
+Single Crystal Scenarios
+........................
+
+Single crystals are defined by a surface and can be either thin coherent films or thick slabs.  A thick slab assumes that the thickness is such that no radiation can be transmitted and all radiation is therefore reflected or absorbed.  As such only the reflectance has any meaning for thick slabs.
+
+
+
+.. _fig-scenarioTab-SingleCrystal:
+
+.. figure:: ./_static/Figures/ScenarioTab-SingleCrystal.png 
+   :scale: 80%
+
+   The Scenario Tab for a Single Crystal
+
+The mode of calculation is selected at the top of the tab, followed by the definition of the crystal surface, the azimuthal angle and the angle incidence.
+
+
+This information is sufficient to link the crystal axis system with the laboratory frame.  
+The laboratory axes are defined with Z- being the normal to the surface [hkl], and the incident and reflected beams lie in the XZ- plane, which means the laboratory Y- axis is perpendicular to the XZ- plane. 
+The incident radiation is assumed to be at an angle :math:`\theta` to the normal. 
+p-polarised light lies in the XZ- plane and s-polarised light is parallel with the Y-axis.  The azimuthal angle :math:`\phi` defines the rotation of the crystal around the Z-axis.
+To help understand the relationship between the crystal and laboratory co-ordinates the program outputs the direction of the lattice vectors in terms of the laboratory X-, Y- and Z- coordinates.
+
+The single crystal scenario also allows the specification of permittivities for the incident and substrate (in the case of thick slab this is not needed).  Finally from thin films the thickness of the film in nanometres is specified.
 
 
 Plotting Tab
 ------------
 
 The *Plotting Tab* controls and plots the absorption and permittivity as a function of frequency calculated for each scenario present in the pdgui notebook.
+The plots available depends on the availability of powder and single crystal scenarios.
 
 
-.. _fig-plottingTab:
+.. _fig-plottingTab-Powder:
 
-.. figure:: ./_static/Figures/PlottingTab.png 
+.. figure:: ./_static/Figures/PlottingTab-Powder.png 
    :scale: 80%
 
-   The Plotting Tab
+   The Plotting Tab Showing Powder Absorption
 
 The minimum and maximum frequencies can be specified along with the frequency increment.  An effective medium theory calculation will be performed for each scenario at every frequency between the minimum and maxmimum frequencies at the interval specified.
 
@@ -199,36 +262,27 @@ By default the calculation uses moles of unit cells to calculation the molar abs
 
 The title of the plot can be supplied by entering it into the *Plot title* text box and the frequency units used for the plot can also be changed from *wavenumber* to *THz*.
 
-The molar absorption, the absorption and the real or imaginary permittivity can be plotted.  Once a plot has been requested the calculation progress is shown in the progress bar.  Some settings can be changed without the whole plot being recalculated.
+For powder scenarios the molar absorption, the absorption and the real or imaginary permittivity can be plotted.  Once a plot has been requested the calculation progress is shown in the progress bar.  Some settings can be changed without the whole plot being recalculated.
 
-SingleCrystal Tab
------------------
+For single crystal plots the crystal reflectance and transmittance for s and p polarised radiation can be plotted along with the absorptance which is defined in terms of the reflectance (R) and the transmittance (T) as math::`1-R-T`.
+For thick slabs only the transmittance is of any revelance.  For thin films the absorptance is useful as it removes some of the oscilations that occur in the transmittance or reflectance due to the film thickness.
 
-The *SingleCrystal Tab* controls and plots the reflectance and transmittance of a single crystal.  There are options to to treat a thick crystal (where only reflectance is of importance) and coherent light reflectance and transmittance in a thin film.
+.. _fig-plottingTab-SingleCrystal:
 
-
-.. _fig-plottingTab:
-
-.. figure:: ./_static/Figures/SingleCrystalTab.png 
+.. figure:: ./_static/Figures/PlottingTab-SingleCrystal.png 
    :scale: 80%
 
-   The SingleCrystal Tab
-
-The minimum and maximum frequencies can be specified along with the frequency increment.  
-A calculation of the reflectance and tranmittance is performed at each frequency between the minimum and maximum.
-
-The surface of the crystal which receives the incident light is defined by the crystal surface (hkl).  The normal to the surface is rotated to line up with the laboratory Z-axis.  The incident radiation is assumed to be at an angle :math:`\theta` to the normal.  Finaly the crystal can be rotated about Z by the azimuthal angle, :math:`\phi`.  It is assumed that the incident radiation propagates in laboratory X-Z plane.
+   The Plotting Tab showing Single Crystal results
 
 For the case of a thick slab, the permittivity of the incident can be specified, but the substrate permittivity is not used.  For the case of a thin film both permittivities are used.
 
 The title of the plot can be supplied by entering it into the *Plot title* text box and the frequency units used for the plot can also be changed from *wavenumber* to *THz*.  A default plot title is generated giving information about the type of plot being viewed.
 
-There are options to plot the transmittance and reflectance in the plane of the incoming beam (P-wave) and perpendicular to the plane of the incoming beam (S-wave) as well as the sum of the transmittance and reflectance, which is related to the absorption.  Note that for a thick crystal only the reflectance has any physical meaning.  The user can also plot the components of the permittivity tensor (real and imaginary).  These are plotted in the laboratory coordinate frame.
 
 Analysis Tab
 ------------
 
-The *Analysis Tab* shows a breakdown of the phonon modes into molecular components.  The molecular structure of the unit cell is determined by the covalent radii of the atoms.  These can be speficied individually if needed.  The *Analysis Tab* shows the number of molecules that have been found in the analysis.
+The *Analysis Tab* shows a breakdown of the phonon modes into molecular components or into internal and external modes.  The molecular structure of the unit cell is determined by the covalent radii of the atoms.  These can be speficied individually if needed.  The *Analysis Tab* shows the number of molecules that have been found in the analysis.
 
 
 .. _fig-analysisTab:
@@ -238,14 +292,14 @@ The *Analysis Tab* shows a breakdown of the phonon modes into molecular componen
 
    The Analysis Tab
 
-The bar graph shows a break down of each normal mode in the chosen frequency range into either internal and external contributions or into molecular components.  The atom sizes and the molecular composition of the unit cell is displayed in the *3D viewer Tab*
+The bar graph shows a break down of each normal mode in the chosen frequency range into either internal and external contributions or into molecular components.  The atom sizes and the molecular composition of the unit cell is displayed in the *3D Viewer Tab*
 
 3D Viewer Tab
 -------------
 
-The *3d viewer Tab* shows the unit cell of the system using the molecular information and atomic sizes from the *Analysis Tab*.
+The *3D Viewer Tab* shows the unit cell of the system using the molecular information and atomic sizes from the *Analysis Tab*.
 
-The atomic displacement of each phonon can either be shown as arrows or as an animation.  The views and animations can be recorded in  .png and .mp4 files respectively.  If a .gif file is specified the animation is recorded but with reduced numbers of colours.
+The atomic displacement of each phonon can either be shown as arrows or as an animation.  The views and animations can be recorded in  .png and .mp4 files respectively.  If a .gif file is specified the animation is recorded but with reduced numbers of colours.  A series of cif files can also be generated which follows the motion of the mode being studied.
 
 
 .. _fig-viewerTab:
@@ -255,15 +309,15 @@ The atomic displacement of each phonon can either be shown as arrows or as an an
 
    The 3D Viewer Tab
 
-As well as being able to change the phonon mode being analysed.  The colours and many settings in the visualiser can be adjusted from the settings tab.
-There are also options to save the view as a png file or as an mp3 animation.  *Save as cif* results in all the geometries used to show the phonon animation being written out as a cif file.
+As well as being able to change the phonon mode being analysed.  The colours and many settings in the visualiser can be adjusted from the settings tab.  The unit cell can be shown as a supercell by altering the a, b, c parameters in the settings tab.  Other parameters affecting the display can also be modified.
 
 
 Fitter Tab
 -----------
 
-The *Fitter Tab* imports an experimental spectrum.  The spectrum is stored in an Excel spreadsheet.  The spreadsheet should contain a single sheet with two columns.  The first column should be the frequency in cm-1 and the second should be the measured signal.  The signal can be molar absorption, absorption, real permittivity, imaginary permittivity or ATR absorbance.  Once imported the experimental spectrum can be compared with the calculated spectrum.  The tab shows the frequencies contributing to the spectrum and allows the Lorentzian widths of the transitions to be altered.  The frequency range used for the display is the same as that used in the *plotting tab*.
-At the top of the Tab are some settings in a tabbed notebook.  The most important is the name of the Excel file containing the experimental spectrum.  In addition there are options to change the 'Plot type', include frequency scaling in any fitting, set the frequency scaling factor, set the number of iterations to be used when fitting, choose whether the plot should use indepent y-axes for the calculated and experimental spectra, set the method used to do the fitting and finally specifiy the spectral difference threshold.
+The *Fitter Tab* imports an experimental spectrum.  The spectrum is stored in an Excel spreadsheet.  The spreadsheet should contain a single sheet with two columns.  The first column should be the frequency in :math:`cm^{-1}` and the second should be the measured signal.  The signal can be molar absorption, absorption, real permittivity, imaginary permittivity, ATR absorbance or any of the single crystal propertie.  Once imported the experimental spectrum can be compared with the calculated spectrum.  The tab shows the frequencies contributing to the spectrum and allows the Lorentzian widths of the transitions to be altered.  The frequency range used for the display is the same as that used in the *plotting tab*.
+Indeed the calculated signal used for fitting is the same as that being shown in the *plotting tab*.
+At the top of the tab are some settings in a tabbed notebook.  The most important is the name of the Excel file containing the experimental spectrum.  In addition there are options to change the 'Plot type', include frequency scaling in any fitting, set the frequency scaling factor, set the number of iterations to be used when fitting, choose whether the plot should use indepent y-axes for the calculated and experimental spectra, set the method used to do the fitting and finally specifiy the spectral difference threshold.
 The spectrum is shown at the bottom of the tab and is recalculated when the *Replot* or *Replot with frequency shift* buttons are pressed.  The data type stored in the experimental spreadsheet is defined by the *Plot and data type* setting.  One of the settings options is the ability to remove a baseline from the experimental spectrum.
 If baseline removal is selected a Hodrick-Prescott filter is used. The value of the filter parameter is determined by the value in the *HP filter lambda* tab.  The actual value of lambda used in the filter is the value given in the tab raised by the power of 10.
 
@@ -282,61 +336,59 @@ It is also possible to automatically adjust the Lorentzian width factors with th
 
 Two algorithms for performing the fitting are supported.  Either the cross-correlation coefficient can be maximised or the root mean squared error between the spectra can be minimised.  In the latter case the error is only calculated for signal strengths above the spectral difference threshold (which defaults to 0.05).
 
+A summary of the optional settings available in the *Fitter Tab* is shown below;
 
-Support matrix
---------------
-From an experimental point of view it is often convenient to use a mass fraction rather than a volume fraction to indicate the amount of dielectrically active material present.  PDielec allows mass fractions to be specified instead of a volume fraction, but this requires that the density of the supporting matrix is known. For convenience the package has a small database of the common supporting materials shown in Table below.  These can be specified through the -matrix option. In the case that the properties of the support material are different the properties can be defined instead with the -dielectric and -density options. 
+.. table:: Fitter Tab options
+   :name: fitter_tab_options
+   :widths: 1 3 
+   :column-dividers:   none none  none 
+   :header-alignment: left left
+   :column-alignment: left left
 
-
-
-.. table:: Physical properties of matrix materials
-   :name: tab-matrix-properties
-   :widths: 1 1 1 3
-   :column-dividers:   none none  none  none
-   :header-alignment: right right right left
-   :column-alignment: right right right left
-
-   +--------+---------+--------------+-----------------------------+
-   | Name   | Density | Permittivity | Description                 |
-   +========+=========+==============+=============================+
-   | ptfe   | 2.200   | 2.000        | polytetrafluorethylene      |
-   +--------+---------+--------------+-----------------------------+
-   | air    | 0.000   | 1.000        | air                         |
-   +--------+---------+--------------+-----------------------------+
-   | vacuum | 0.000   | 1.000        | vacuum                      |
-   +--------+---------+--------------+-----------------------------+
-   | kbr    | 2.750   | 2.250        | potassium bromide           |
-   +--------+---------+--------------+-----------------------------+
-   | nujol  | 0.838   | 2.155        | Nujol                       |
-   +--------+---------+--------------+-----------------------------+
-   | hdpe   | 0.955   | 2.250        | high density polyethylene   |
-   +--------+---------+--------------+-----------------------------+
-   | mdpe   | 0.933   | 2.250        | medium density polyethylene |
-   +--------+---------+--------------+-----------------------------+
-   | ldpe   | 0.925   | 2.250        | low density polyethylene    |
-   +--------+---------+--------------+-----------------------------+
-
-
-
-Optical permittivity
---------------------
-
-The optical permittivity is normally calculated by the QM or MM program concerned. However, as this property reflects the electronic contribution to the permittivity at zero frequency, unless there is some treatment of electrons by the shell model, then in MM calculations the optical permittivity needs to be defined through the command line options -optical or -optical_tensor.  Unlike the other methods 'mie' method cannot work with particles of zero radius. All methods therefore use a default size of 10\ :superscript:`-12` μm. The Mie approach is only valid for dilute dispersions and for spherical particles. However, if other shapes are specified the Mie method will still be called and the results will be applicable to spheres of the specified size.
+   +--------------------------+-----------------------------------------------------+
+   | Fitter options           | Description                                         |
+   +==========================+=====================================================+
+   | Experimental spectrum    | Provide a file with the experimental                |
+   |                          | data. A return brings up a file manager             |
+   +--------------------------+-----------------------------------------------------+
+   | Scenario                 | Allows the user to choose which                     |
+   |                          | will be used in the fitting                         |
+   +--------------------------+-----------------------------------------------------+
+   | Frequency scaling factor | The calculated frequecnies are scaled               |
+   +--------------------------+-----------------------------------------------------+
+   | No. of iterations        | Number of iterations for automatic                  |
+   |                          | fitting                                             |
+   +--------------------------+-----------------------------------------------------+
+   | Independent y-axes       | The calculated spectrum uses the left               |
+   |                          | axis and the experimental the right                 |
+   +--------------------------+-----------------------------------------------------+
+   | Fitting type             | Refers to the method used for automatically fitting |
+   |                          |     - minimise x-correlation                        |
+   |                          |     - minimise spectral difference                  |
+   +--------------------------+-----------------------------------------------------+
+   | Optimise scaling         | Tick if frequency scaling is to be included in the  |
+   |                          | automatic optimisation                              |
+   +--------------------------+-----------------------------------------------------+
+   | Spectral difference      | Used if fitting type is minimise spectral difference|
+   | threshold                |                                                     |
+   +--------------------------+-----------------------------------------------------+
+   | Baseline removal?        | Tick to request that the Hodrick-Prescott (HP)      |
+   |                          | method is used to remove a sloping baseline         |
+   |                          | in the experimental data                            |
+   +--------------------------+-----------------------------------------------------+
+   | HP filter Lambda         | Provide the lambda value in the HP method           |
+   +--------------------------+-----------------------------------------------------+
 
 Scripting
 ---------
 Nearly all aspects of the program can be accessed through scripting.  
-The script is provided by the *-script* command line option.
-A very useful feature is the ability to save a script which reflects the current state of the program.
-By pressing *ctrlS* the user is able to save the settings to a file, which for this example will be called *settings.py*.
-The complete set of tabs and their settings are saved in the file and the state of the program can be recreated using;
+The script is provided by the *-script* command line option or by choosing the PDGui (\*.py) file type from the file manager on the *Main tab*.
+A very useful feature is the ability to save a script which reflects the current state of the program.  This is available from the *Main tab*.
 
-        pdgui -script settings.py
-
-There are several things to be aware of when using this option.  
+There are several things to be aware of when using this option to read in settings from one calculation into another.  
 The file will contain parameters which have been calculated whilst reading the input file.  
 For example the optical permittivities are calculated and stored in this file.  
-If the file is then used on another DFT calculation then the optical permittivity for the settings file will be used and not the one which shoiuld have been calculated.  To use the script for other calculations but with the same scenarios the optical permittivities should be removed.
+If the file is then used on another DFT calculation then the optical permittivity for the settings file will be used and not the one which should have been calculated.  This is also true if masses have been defined in once calculation, they may not be appropriate for a different molecule. To use the script for other calculations but with the same scenarios the optical permittivities should be removed and any mass specifications removed. 
 
 Parallelization and threads
 ---------------------------
@@ -370,24 +422,31 @@ will run `pdgui` on 4 processors.  By default the number of processors is determ
 
 will run `pdgui` using the threading multiprocessing options.
 
+.. _performance:
+
 Performance
 ------------
 
-PDielec has been written to make use of multiprocessor computers. On a 4 processor machine using multiprocessing the speed-up is nearly linear up to 4 processors, as can be seen in the Figure below.  Threading does not appear to be an efficient way of running `PDielec` and it is only recommended if the default multiprocessing options is failing for some reason.
+PDielec has been written to make use of multiprocessor computers. On an 8 processor (16 thread) machine using multiprocessing the speed-up soon slows down after a couple of processors, as there is a lot of the code which is not parallelised .  Threading does not appear to be an efficient way of running `PDielec` and it is only recommended if the default multiprocessing options is failing for some reason.
+The speedup is calculated by running the benchmark suite (make benchmark), which consists of 30 different examples of using the code and is therefore representative of the type of calculations performed.
 
 .. _fig-speedup:
 
 .. figure:: ./_static/Figures/SpeedUp.png 
    :scale: 90%
 
-   Speed-up on a four processor workstation
+   Speed-up on a eight processor workstation
+
+Using the same suite of benchmarks on an 8 processor Intel core i9-9900K running at 3.6GHz took 110s.
+
+On a Windows laptop with an Intel Skylake i7-650, which has 2 processors running at 2.5GHz, the benchmark ran in 1632 seconds.  On the same muchine but running the Linux operating system the benchmark suite took 346s, making the impact of Windows on performance a substantial four times slower.
 
 
 PReader
 =======
 
 preader is a 'helper' program which uses the underlying modules of PDielec to read output files and summarise the results of various MM/QM packages.  The program can be used to perform some straightforward calculations.  For instance projection of any remaining centre of mass motion of the crystal can be performed to make sure that there are three zero frequencies.  Also the masses used in the calculation of the dynamical matrix can be altered.
-Unlike PDielec and PDGui it is not necessary to have performed a full calculation of the dynamical matrix.  In the majority of cases preader will read geometry optimisation runs.
+Unlike PDGui it is not necessary to have performed a full calculation of the dynamical matrix.  In the majority of cases preader will read geometry optimisation runs.
 
 Command options
 ---------------
@@ -442,7 +501,8 @@ Which will analyse a VASP and a CASTEP phonon calculation output to produce a su
 MM/QM Interfaces
 ================
 
-The packages have interfaces to five solid state QM codes, VASP :cite:`Hafner2008c`, CASTEP :cite:`Clark2005d`, CRYSTAL14 :cite:`Dovesi2014`, Abinit :cite:`Gonze2016`, Quantum Espresso :cite:`Giannozzi2009` and Phonopy :cite:`Togo2015`.  In addition an interface is available for GULP :cite:`Gale2003` which is a force field based solid state code. Finally an interface has been written to and 'experiment' file format which allows the preparation of a user defined file specifying the permittivities and absorption frequencies. The origin of the dataset(s) used for processing is determined by a command line switch, -program. An outline of the interfaces to these codes is given here. The package used for the calculation is described by the --program option. In addition a file name is given which contains the output which will be processed by PDielec.
+The packages have interfaces to five solid state QM codes, VASP :cite:`Hafner2008c`, CASTEP :cite:`Clark2005d`, CRYSTAL14 :cite:`Dovesi2014`, Abinit :cite:`Gonze2016`, Quantum Espresso :cite:`Giannozzi2009` and Phonopy :cite:`Togo2015`.  In addition an interface is available for GULP :cite:`Gale2003` which is a force field based solid state code. Finally an interface has been written to and 'experiment' file format which allows the preparation of a user defined file specifying the permittivities and absorption frequencies. The origin of the dataset(s) used for processing is determined by a command line switch, -program. An outline of the interfaces to these codes is given here. 
+The package used for the calculation is described by the -program option. In addition a file name is given which contains the output which will be processed by PDielec.
 
 VASP 
 -----
@@ -552,7 +612,7 @@ Finally a model for the specification of the frequency dependent perittivity is 
 
 
 Constant model (constant)
---------------
+-------------------------
 
 The constant model defines a frequency independent permittivity.  The data for such a model is shown below.::
 
@@ -567,7 +627,7 @@ This would specify an isotropic permittivity with some absorption.
 
 
 FPSQ model (fpsq)
-----------
+-----------------
 
 The fpsq model defines a frequency dependent permittivity using the Four Parameter Semi-Quantum model.  An example of the data for such a model is shown below.::
 
@@ -607,9 +667,9 @@ The model only allows for a diagonal permittivity tensor and each component of t
 
 
 Drude-Lorentz model (drude-lorentz)
-----------
+-----------------------------------
 
-The drude-lorentz model defines a frequency dependent permittivity.  An example of he data for such a model describing MgO is shown below.::
+The drude-lorentz model defines a frequency dependent permittivity.  An example of the data for such a model describing MgO is shown below.::
 
     drude-lorentz
     xx 2
@@ -627,8 +687,61 @@ The drude-lorentz model defines a frequency dependent permittivity.  An example 
 The model only allows for a diagonal permittivity tensor and each component of the tensor specified requires the number of terms in the expansion to the specified.  Each component of the permittivity tensor is generated using the following formula;
 
 .. math::
-   :label: eq-fpsq
+   :label: eq-drude
 
     \epsilon (\omega )=\epsilon _{\infty}\sum{j} \frac{\Omega^2_{LO_j}-\omega ^2-i\gamma _{LO_j}\omega }{\Omega^2_{TO_j}-\omega ^2-i\gamma _{TO_j}\omega}
+
+
+The Format of the Excel Spreadsheet
+===================================
+
+The Excel spread sheet which can be written by the programs contains details of the system being anaylysed, a list of the scenario settings and tables of absorption, permittivity, reflection and transmission.
+The spreedsheet is devided into different sheets;
+
+-   **Main**
+        This stores the information concerning the file that is being analysed and the program associated with the output.  A list of the frequencies read in from the output file is given too.
+
+-   **Settings**
+        The information here comes from the settings tab.  Masses, permittivities and the frequencies which will be used in subsequent calculations.  These frequencies can include corrections to the dynamical matrix to project out translational modes, corrections to the Born charges to ensure they sum to zero and changes to the masses of the atoms.  Along with the frequencies the intensities, integrated absorption and absorption maximum are given.
+  
+-   **Analysis**
+        The analysis of the vibrational modes into molecular, internal and external contributions is summarised here.
+
+-   **Scenarios**
+        A complete list of the settings for every scenario used in the calculation is given.
+
+-   **Powder Molar Absorption (cells)**
+        The molar absorption in moles of cell is given as a function of frequency for each powder scenario.  The units are :math:`L mol^{-1} cm^{-1}`.
+
+-   **Powder Absorption**
+        The absorption for each powder scenario is tabulated as a function frequency.  The units are :math:`cm^{-1}`
+
+-   **Powder Real Permittivity**
+        The real component of the complex permittivity for each powder scenario is tabulated as a function frequency.  
+
+-   **Powder Imaginary Permittivity**
+        The imaginary component of the complex permittivity for each powder scenario is tabulated as a function frequency.  
+
+-   **Powder ATR Reflectance**
+        The extinction coefficient associated with the attenuated total reflectance for each powder scenario is tabulated as a function frequency.  See :ref:`ATR_theory` for more details.
+
+-   **Crystal R_p**
+        The P polarised component of the reflectance for each single crystal scenario is tabulated as a function of frequency.
+
+-   **Crystal R_s**
+        The S polarised component of the reflectance for each single crystal scenario is tabulated as a function of frequency.
+
+-   **Crystal T_p**
+        The P polarised component of the transmittance for each single crystal scenario is tabulated as a function of frequency.
+
+-   **Crystal T_s**
+        The S polarised component of the transmittance for each single crystal scenario is tabulated as a function of frequency.
+
+-   **Real Crystal Permittivity**
+        The real components of the crystal permittivity tensor are tabulated as a function of frequency.
+
+-   **Imag Crystal Permittivity**
+        The imaginary components of the crystal permittivity tensor are tabulated as a function of frequency.
+
 
 

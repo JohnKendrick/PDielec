@@ -573,9 +573,10 @@ Here :math:`N` is the number density of particles and :math:`k` is the wave-vect
 
 This approach to taking anisotropy into account when the embedded particles are anisotropic but randomly oriented is approximate, but has been shown to have a reasonably wide range of application :cite:`Stout2007`.
 
+.. _ATR_theory:
 
-Calculation of ATR Reflectance Spectra
---------------------------------------
+Calculation of ATR Extinction Spectra
+-------------------------------------
 
 Attenuated total reflectance spectroscopy (ATR) uses a medium of high refractive index contrast to modify the reflectance and transmission of the infrared radiation.  Balan has reported the calculation of the ATR spectrum of apatite :cite:`Aufort2016` and chrysotile :cite:`Brouder2002`.
 A similar approach is adopted by the PDielec package.  Denoting the angle of incidence by :math:`\theta` and the refractive index of high index, non-absorbing material by :math:`n_0` and that of the absorbing material by :math:`n_s`, the Fresnel amplitudes for reflection in the direction parallel (:math:`r_p`) and perpendicular (:math:`r_s`) to the incident radiation. :cite:`Milosevic2004`
@@ -589,7 +590,7 @@ A similar approach is adopted by the PDielec package.  Denoting the angle of inc
    \end{aligned} 
 
 
-The extinction is expressed in absorbance units as;
+Using :math:`f_p` and :math:`f_s` as the fractions of P and S polarized incident light, the extinction is expressed in absorbance units as;
 
 .. math::
    :label: eq-fresnel-extinction
@@ -597,6 +598,7 @@ The extinction is expressed in absorbance units as;
    \begin{aligned}
    e_s &= -log_{10}( r_s^*r_s ) \\
    e_p &= -log_{10}( r_p^*r_p ) \\
+   e_{total} &= -log_{10}( f_p r_p^*r_p + f_s r_s^*r_s ) \\
    \end{aligned} 
 
 The approach adopted by Balan and in the PDielec package is to use the calculated effective permittivity to determine the (complex) refractive index of the material being studied.  ATR measurements are taken with compressed powders of the material, so the appropriate effective medium can be determined from a high volume fraction of the crystal in air.

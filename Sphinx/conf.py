@@ -70,6 +70,7 @@ extensions = [
     'sphinx.ext.githubpages',
     'sphinxcontrib.bibtex',
     'cloud_sptheme.ext.table_styling',
+    'python_docs_theme',
 ]
 bibtex_bibfiles = ['pdielec.bib']
 mathjax_config = {
@@ -111,7 +112,7 @@ language = None
 exclude_patterns = ["_build", "index-latex.rst", "Thumbs.db", ".DS_Store"]
 
 # The name of the Pygments (syntax highlighting) style to use.
-pygments_style = 'sphinx'
+pygments_style = 'default'
 
 
 # -- Options for HTML output -------------------------------------------------
@@ -119,8 +120,10 @@ pygments_style = 'sphinx'
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-html_theme = 'alabaster'
 html_theme = 'haiku'
+html_theme = 'alabaster'
+html_theme = 'bizstyle'
+html_theme = 'python_docs_theme'
 
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
