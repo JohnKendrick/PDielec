@@ -169,7 +169,7 @@ class FitterTab(QWidget):
         self.settingsTab.addTab(self.spectral_difference_threshold_sb, 'Spectral difference threshold')
         self.settingsTab.addTab(self.baseline_cb, 'Baseline removal?')
         self.settingsTab.addTab(self.hpfilter_lambda_sb, 'HP Filter Lambda')
-        label = QLabel('Settings', self)
+        label = QLabel('Options:', self)
         form.addRow(label,self.settingsTab)
         # END OF THE SETTINGS TAB #################################################################################################
         # Add Lorentzian widths table
@@ -229,10 +229,10 @@ class FitterTab(QWidget):
         self.rmse_le.setEnabled(False)
         self.rmse_le.setText('{}'.format(0.0))
         hbox.addWidget(self.cross_correlation_le)
-        hbox.addWidget(self.frequency_scaling_le)
         hbox.addWidget(self.lag_frequency_le)
+        hbox.addWidget(self.frequency_scaling_le)
         hbox.addWidget(self.rmse_le)
-        label = QLabel('X-correlation, frequency scale, shift and rmse')
+        label = QLabel('X-correlation, shift/lag, frequency scale and rmse')
         label.setToolTip('The highest cross-correlation value and its associated frequency shift is shown followed by the spectral error')
         form.addRow(label, hbox)
         # Add the matplotlib figure to the bottom
@@ -729,7 +729,7 @@ class FitterTab(QWidget):
         self.cross_correlation_le.setText('{:6.4f}'.format(self.xcorr0))
         self.lag_frequency_le.setText('{:8.2f}'.format(self.lag))
         self.frequency_scaling_le.setText('{:8.2f}'.format(self.settings['Frequency scaling factor']))
-        self.rmse_le.setText('{:e}'.format(self.rmse))
+        self.rmse_le.setText('{:.2e}'.format(self.rmse))
         self.replot()
         #
         # Unblock signals after refresh
