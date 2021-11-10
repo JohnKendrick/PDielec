@@ -219,6 +219,7 @@ class MainTab(QWidget):
         sp.delete()
         debugger.print('writeSpreadsheet',self.settings)
         sp.writeNextRow( ['Main Tab Settings'], col=1 )
+        sp.writeNextRow( ['Directory',self.directory], col=1 )
         for item in sorted(self.settings):
             sp.writeNextRow([item,self.settings[item]], col=1, check=1)
         sp.writeNextRow( [''], col=1 )
