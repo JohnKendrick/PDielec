@@ -34,16 +34,28 @@ class GenericOutputReader:
         self.type                       = 'Unkown'
         self.ncells                     = 0
         self.unit_cells                 = []
+        # self.alengths                   = []
+        # self.blengths                   = []
+        # self.clengths                   = []
+        # self.alphas                   = []
+        # self.betas                   = []
+        # self.gammas                   = []
         self.nsteps                     = 0
         self.electrons                  = 0
         self.spin                       = 0
         self.nbands                     = 0
         self.volume                     = 0
+        self.volumes                    = []
         self.nions                      = 0
         self.nspecies                   = 0
+        self.geomsteps                  = 0
         self.species                    = []
+        self.energiesDFT                = []
+        self.energiesDFT_disp           = []
         self.final_free_energy          = 0.0
+        self.final_free_energies        = []
         self.final_energy_without_entropy = 0.0
+        self.final_energies_without_entropy = []
         self.kpoints                    = 1
         self.kpoint_grid                = [ 1, 1, 1 ]
         self.energy_cutoff              = 0.0
@@ -52,6 +64,7 @@ class GenericOutputReader:
         self.iterations                 = {}
         self.file_descriptor            = ''
         self.pressure                   = 0
+        self.pressures                  = []
         self.magnetization              = 0.0
         # this in epsilon infinity
         self.zerof_optical_dielectric   = [[0, 0, 0], [0, 0, 0], [0, 0, 0]]
@@ -151,6 +164,28 @@ class GenericOutputReader:
         print("")
         print("Energy cutoff (eV): {:f}".format(self.energy_cutoff))
         print("")
+        print("final_free_energy(eV): {:f}".format(self.final_free_energy))
+        print("")
+        print("geomsteps: {:f}".format(self.geomsteps))
+        print("")
+        print_reals("DFT energies (eV):", self.energiesDFT,format="{:10.8f}")
+        print("")
+        print_reals("DFT energies including dispersion (eV):", self.energiesDFT_disp,format="{:10.8f}")
+        print("")
+        print_reals("Volumes:", self.volumes,format="{:10.8f}")
+        print("")
+        print_reals("Length of a:", self.alengths,format="{:10.8f}")
+        print("")
+        print_reals("Length of b:", self.blengths,format="{:10.8f}")
+        print("")
+        print_reals("Length of c:", self.clengths,format="{:10.8f}")
+        print("")
+        print_reals("alpha:", self.alphas,format="{:10.8f}")
+        print("")
+        print_reals("beta:", self.betas,format="{:10.8f}")
+        print("")
+        print_reals("gamma:", self.gammas,format="{:10.8f}")
+        print("")        
         print_reals("Frequencies (cm-1):", self.frequencies)
         print_reals("Masses (amu):", self.masses,format="{:10.6f}")
         for i, charges in enumerate(self.born_charges):

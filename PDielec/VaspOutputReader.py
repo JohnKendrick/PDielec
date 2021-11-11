@@ -275,6 +275,7 @@ class VaspOutputReader(GenericOutputReader):
     def _read_external_pressure(self, line):
         # Vasp writes out kbar so convert to GPa
         self.pressure = float(line.split()[3])/10.0
+        self.pressures.append(float(line.split()[3])/10.0)
         self._pulay = float(line.split()[8])/10.0
         return
 
@@ -292,6 +293,7 @@ class VaspOutputReader(GenericOutputReader):
 
     def _read_lattice_vectors(self, line):
         self.volume = float(line.split()[4])
+        self.volumes.append(float(line.split()[4]))
         line = self.file_descriptor.readline()
         line = self.file_descriptor.readline()
         avector = [float(line.split()[0]), float(line.split()[1]), float(line.split()[2])]
@@ -352,7 +354,9 @@ class VaspOutputReader(GenericOutputReader):
         line = self.file_descriptor.readline()
         line = self.file_descriptor.readline()
         self.final_free_energy = float(line.split()[4])
+        self.final_free_energies.append(float(line.split()[4]))
         line = self.file_descriptor.readline()
         line = self.file_descriptor.readline()
         self.final_energy_without_entropy = float(line.split()[3])
+        self.final_energies_without_entropy.append(float(line.split()[3]))
         return
