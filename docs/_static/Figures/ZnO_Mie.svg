@@ -1,0 +1,658 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="126.735mm" height="96.8375mm"
+ viewBox="0 0 478 365"
+ xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"  version="1.2" baseProfile="tiny">
+<title>ZnO_Mie</title>
+<desc>Generated with QtiPlot</desc>
+<defs>
+</defs>
+<g fill="none" stroke="black" stroke-width="1" fill-rule="evenodd" stroke-linecap="square" stroke-linejoin="bevel" >
+
+<g fill="#ffffff" fill-opacity="1" stroke="none" transform="matrix(1,0,0,1,0,0)"
+font-family="Noto Sans [MONO]" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+<path vector-effect="non-scaling-stroke" fill-rule="evenodd" d="M0,0 L479,0 L479,366 L0,366 L0,0"/>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(1,0,0,1,0,0)"
+font-family="Noto Sans [MONO]" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffff" fill-opacity="0" stroke="none" transform="matrix(1,0,0,1,0,0)"
+font-family="Noto Sans [MONO]" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+<path vector-effect="non-scaling-stroke" fill-rule="evenodd" d="M6,5 L475,5 L475,356 L6,356 L6,5"/>
+</g>
+
+<g fill="none" stroke="none" transform="matrix(1,0,0,1,0,0)"
+font-family="Noto Sans [MONO]" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+<path vector-effect="non-scaling-stroke" fill-rule="evenodd" d="M6,5 L475,5 L475,356 L6,356 L6,5"/>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(1,0,0,1,0,0)"
+font-family="Noto Sans [MONO]" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffff" fill-opacity="0" stroke="none" transform="matrix(1,0,0,1,0,0)"
+font-family="Noto Sans [MONO]" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+<path vector-effect="non-scaling-stroke" fill-rule="evenodd" d="M63,13 L464,13 L464,313 L63,313 L63,13"/>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(1,0,0,1,0,0)"
+font-family="Noto Sans [MONO]" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffff" fill-opacity="0" stroke="none" transform="matrix(1,0,0,1,0,0)"
+font-family="Noto Sans [MONO]" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+<path vector-effect="non-scaling-stroke" fill-rule="evenodd" d="M63,13 L464,13 L464,313 L63,313 L63,13"/>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(1,0,0,1,0,0)"
+font-family="Noto Sans [MONO]" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(1,0,0,1,0,0)"
+font-family="Noto Sans [MONO]" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(1,0,0,1,0,0)"
+font-family="Noto Sans [MONO]" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="2" stroke-linecap="square" stroke-linejoin="miter" stroke-miterlimit="2" transform="matrix(1,0,0,1,0,0)"
+font-family="Noto Sans [MONO]" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+<polyline fill="none" vector-effect="non-scaling-stroke" points="63,312.262 63.802,312.256 64.604,312.25 66.208,312.237 67.01,312.231 67.812,312.224 68.614,312.218 70.218,312.204 71.02,312.197 71.822,312.191 72.624,312.184 74.228,312.169 75.03,312.162 75.832,312.155 76.634,312.147 78.238,312.132 79.04,312.124 79.842,312.116 80.644,312.108 82.248,312.092 83.05,312.084 83.852,312.075 84.654,312.067 86.258,312.049 87.06,312.041 87.862,312.032 88.664,312.022 90.268,312.004 91.07,311.994 91.872,311.985 92.674,311.975 94.278,311.955 95.08,311.945 95.882,311.934 96.684,311.924 98.288,311.902 99.09,311.891 99.892,311.88 100.694,311.869 102.298,311.846 103.1,311.834 103.902,311.822 104.704,311.81 105.506,311.797 107.11,311.772 107.912,311.759 108.714,311.746 109.516,311.733 111.12,311.705 111.922,311.691 112.724,311.677 113.526,311.662 115.13,311.633 115.932,311.617 116.734,311.602 117.536,311.586 119.14,311.554 119.942,311.537 120.744,311.521 121.546,311.503 122.348,311.486 123.15,311.468 123.952,311.45 124.754,311.432 125.556,311.413 127.16,311.375 127.962,311.355 128.764,311.335 129.566,311.314 131.17,311.272 131.972,311.251 132.774,311.229 133.576,311.206 135.18,311.16 135.982,311.136 136.784,311.112 137.586,311.087 139.19,311.036 139.992,311.01 140.794,310.983 141.596,310.956 143.2,310.899 144.002,310.87 144.804,310.84 145.606,310.81 147.21,310.747 148.012,310.715 148.814,310.682 149.616,310.648 151.22,310.578 152.022,310.542 152.824,310.505 153.626,310.467 155.23,310.388 156.032,310.348 156.834,310.306 157.636,310.264 159.24,310.175 160.042,310.13 160.844,310.083 161.646,310.034 163.25,309.934 164.052,309.882 164.854,309.829 165.656,309.774 167.26,309.66 168.062,309.601 168.864,309.54 169.666,309.477 171.27,309.346 172.072,309.278 172.874,309.208 173.676,309.135 175.28,308.984 176.082,308.905 176.884,308.823 177.686,308.739 179.29,308.563 180.092,308.471 180.894,308.375 181.696,308.276 183.3,308.069 184.102,307.96 184.904,307.847 185.706,307.73 186.508,307.609 187.31,307.483 188.112,307.353 188.914,307.217 189.716,307.077 190.518,306.931 192.122,306.623 192.924,306.459 193.726,306.288 194.528,306.111 196.132,305.733 196.934,305.531 197.736,305.321 198.538,305.101 200.142,304.631 200.944,304.379 201.746,304.114 202.548,303.837 204.152,303.24 204.954,302.919 205.756,302.58 206.558,302.224 208.162,301.45 208.964,301.03 209.766,300.585 210.568,300.115 212.172,299.085 212.974,298.522 213.776,297.922 214.578,297.282 216.182,295.871 216.984,295.09 217.786,294.254 218.588,293.356 219.39,292.39 220.192,291.351 220.994,290.23 221.796,289.019 222.598,287.709 223.4,286.289 224.202,284.748 225.004,283.072 225.806,281.246 226.608,279.256 227.41,277.081 228.212,274.703 229.014,272.099 229.816,269.245 230.618,266.114 231.42,262.68 232.222,258.915 233.024,254.79 233.826,250.279 234.628,245.36 235.43,240.021 236.232,234.26 237.034,228.096 237.836,221.576 238.638,214.779 239.44,207.833 240.242,200.914 241.044,194.252 241.846,188.121 242.648,182.827 243.45,178.67 244.252,175.912 245.054,174.735 245.856,175.206 246.658,177.271 247.46,180.761 248.262,185.422 249.064,190.955 249.866,197.055 250.668,203.442 251.47,209.878 252.272,216.182 253.074,222.218 253.876,227.9 254.678,233.176 255.48,238.022 256.282,242.435 257.084,246.426 257.886,250.011 258.688,253.215 259.49,256.064 260.292,258.582 261.094,260.795 261.896,262.726 262.698,264.396 263.5,265.824 264.302,267.028 265.104,268.023 265.906,268.819 266.708,269.429 267.51,269.861 269.114,270.215 269.916,270.144 270.718,269.912 271.52,269.517 272.322,268.958 273.124,268.231 273.926,267.331 274.728,266.252 275.53,264.983 276.332,263.515 277.134,261.835 277.936,259.926 278.738,257.771 279.54,255.349 280.342,252.637 281.144,249.608 281.946,246.231 282.748,242.473 283.55,238.295 284.352,233.655 285.154,228.507 285.956,222.803 286.758,216.491 287.56,209.518 288.362,201.834 289.164,193.395 289.966,184.168 290.768,174.137 291.57,163.321 292.372,151.778 293.174,139.626 293.976,127.062 294.778,114.37 295.58,101.935 296.382,90.239 297.184,79.8362 297.986,71.3093 298.788,65.2032 299.59,61.9479 301.194,64.7429 301.996,70.597 302.798,78.9453 303.6,89.2567 304.402,100.952 305.204,113.472 306.006,126.326 306.808,139.115 307.61,151.542 308.412,163.4 309.214,174.562 310.016,184.959 310.818,194.571 311.62,203.407 312.422,211.498 313.224,218.887 314.026,225.625 314.828,231.763 315.63,237.354 316.432,242.448 317.234,247.092 318.036,251.33 318.838,255.202 319.64,258.744 320.442,261.988 321.244,264.965 322.046,267.699 322.848,270.216 323.65,272.535 324.452,274.676 325.254,276.656 326.056,278.489 326.858,280.189 327.66,281.768 328.462,283.237 329.264,284.606 330.066,285.882 330.868,287.074 331.67,288.189 332.472,289.234 333.274,290.214 334.076,291.134 334.878,292 335.68,292.815 336.482,293.583 337.284,294.309 338.086,294.994 338.888,295.643 339.69,296.257 340.492,296.838 341.294,297.39 342.096,297.914 342.898,298.411 343.7,298.884 344.502,299.334 345.304,299.762 346.106,300.17 346.908,300.559 347.71,300.931 348.512,301.285 349.314,301.624 350.116,301.948 350.918,302.258 351.72,302.554 352.522,302.838 354.126,303.372 354.928,303.623 355.73,303.864 356.532,304.095 358.136,304.532 358.938,304.738 359.74,304.936 360.542,305.127 362.146,305.489 362.948,305.66 363.75,305.826 364.552,305.985 366.156,306.288 366.958,306.432 367.76,306.572 368.562,306.706 370.166,306.963 370.968,307.085 371.77,307.204 372.572,307.319 374.176,307.538 374.978,307.643 375.78,307.745 376.582,307.843 378.186,308.033 378.988,308.123 379.79,308.211 380.592,308.297 382.196,308.461 382.998,308.539 383.8,308.616 384.602,308.691 386.206,308.834 387.008,308.903 387.81,308.97 388.612,309.036 390.216,309.162 391.018,309.223 391.82,309.282 392.622,309.34 394.226,309.451 395.028,309.505 395.83,309.558 396.632,309.609 398.236,309.708 399.038,309.756 399.84,309.803 400.642,309.849 402.246,309.937 403.048,309.98 403.85,310.022 404.652,310.063 406.256,310.142 407.058,310.181 407.86,310.218 408.662,310.255 410.266,310.327 411.068,310.361 411.87,310.395 412.672,310.429 414.276,310.493 415.078,310.525 415.88,310.556 416.682,310.586 418.286,310.644 419.088,310.673 419.89,310.701 420.692,310.728 422.296,310.782 423.098,310.808 423.9,310.833 424.702,310.858 425.504,310.883 427.108,310.931 427.91,310.954 428.712,310.977 429.514,310.999 431.118,311.043 431.92,311.065 432.722,311.086 433.524,311.106 435.128,311.147 435.93,311.166 436.732,311.186 437.534,311.205 439.138,311.242 439.94,311.26 440.742,311.278 441.544,311.295 443.148,311.329 443.95,311.346 444.752,311.363 445.554,311.379 447.158,311.41 447.96,311.426 448.762,311.441 449.564,311.456 451.168,311.485 451.97,311.5 452.772,311.514 453.574,311.528 455.178,311.555 455.98,311.569 456.782,311.582 457.584,311.595 459.188,311.62 459.99,311.632 460.792,311.645 461.594,311.657 463.198,311.68 464,311.68 " />
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(1,0,0,1,0,0)"
+font-family="Noto Sans [MONO]" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(1,0,0,1,0,0)"
+font-family="Noto Sans [MONO]" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(1,0,0,1,0,0)"
+font-family="Noto Sans [MONO]" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="none" stroke="#ff0000" stroke-opacity="1" stroke-width="2" stroke-linecap="square" stroke-linejoin="miter" stroke-miterlimit="2" transform="matrix(1,0,0,1,0,0)"
+font-family="Noto Sans [MONO]" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+<polyline fill="none" vector-effect="non-scaling-stroke" points="63,312.262 63.802,312.256 64.604,312.25 66.208,312.237 67.01,312.231 67.812,312.224 68.614,312.218 70.218,312.204 71.02,312.197 71.822,312.191 72.624,312.184 74.228,312.169 75.03,312.162 75.832,312.155 76.634,312.147 78.238,312.132 79.04,312.124 79.842,312.116 80.644,312.108 82.248,312.092 83.05,312.084 83.852,312.075 84.654,312.067 86.258,312.049 87.06,312.041 87.862,312.032 88.664,312.022 90.268,312.004 91.07,311.994 91.872,311.985 92.674,311.975 94.278,311.955 95.08,311.945 95.882,311.934 96.684,311.924 98.288,311.902 99.09,311.891 99.892,311.88 100.694,311.869 102.298,311.846 103.1,311.834 103.902,311.822 104.704,311.81 105.506,311.797 107.11,311.772 107.912,311.759 108.714,311.746 109.516,311.733 111.12,311.705 111.922,311.691 112.724,311.677 113.526,311.662 115.13,311.633 115.932,311.617 116.734,311.602 117.536,311.586 119.14,311.554 119.942,311.537 120.744,311.521 121.546,311.503 122.348,311.486 123.15,311.468 123.952,311.45 124.754,311.432 125.556,311.413 127.16,311.375 127.962,311.355 128.764,311.335 129.566,311.314 131.17,311.272 131.972,311.251 132.774,311.229 133.576,311.206 135.18,311.16 135.982,311.136 136.784,311.112 137.586,311.087 139.19,311.036 139.992,311.01 140.794,310.983 141.596,310.956 143.2,310.899 144.002,310.87 144.804,310.84 145.606,310.81 147.21,310.747 148.012,310.715 148.814,310.682 149.616,310.648 151.22,310.578 152.022,310.542 152.824,310.505 153.626,310.467 155.23,310.388 156.032,310.348 156.834,310.306 157.636,310.264 159.24,310.175 160.042,310.13 160.844,310.083 161.646,310.034 163.25,309.934 164.052,309.882 164.854,309.829 165.656,309.774 167.26,309.66 168.062,309.601 168.864,309.54 169.666,309.477 171.27,309.346 172.072,309.278 172.874,309.208 173.676,309.135 175.28,308.984 176.082,308.905 176.884,308.823 177.686,308.739 179.29,308.563 180.092,308.471 180.894,308.375 181.696,308.276 183.3,308.069 184.102,307.96 184.904,307.847 185.706,307.73 186.508,307.609 187.31,307.483 188.112,307.353 188.914,307.217 189.716,307.077 190.518,306.931 192.122,306.623 192.924,306.459 193.726,306.288 194.528,306.111 196.132,305.733 196.934,305.531 197.736,305.321 198.538,305.101 200.142,304.631 200.944,304.379 201.746,304.114 202.548,303.837 204.152,303.24 204.954,302.919 205.756,302.58 206.558,302.224 208.162,301.45 208.964,301.03 209.766,300.585 210.568,300.115 212.172,299.085 212.974,298.522 213.776,297.922 214.578,297.282 216.182,295.871 216.984,295.09 217.786,294.254 218.588,293.356 219.39,292.39 220.192,291.351 220.994,290.23 221.796,289.019 222.598,287.709 223.4,286.289 224.202,284.748 225.004,283.072 225.806,281.246 226.608,279.256 227.41,277.081 228.212,274.703 229.014,272.099 229.816,269.245 230.618,266.114 231.42,262.68 232.222,258.915 233.024,254.79 233.826,250.279 234.628,245.36 235.43,240.021 236.232,234.26 237.034,228.096 237.836,221.576 238.638,214.779 239.44,207.833 240.242,200.914 241.044,194.252 241.846,188.121 242.648,182.827 243.45,178.67 244.252,175.912 245.054,174.735 245.856,175.206 246.658,177.271 247.46,180.761 248.262,185.422 249.064,190.955 249.866,197.055 250.668,203.442 251.47,209.878 252.272,216.182 253.074,222.218 253.876,227.9 254.678,233.176 255.48,238.022 256.282,242.435 257.084,246.426 257.886,250.011 258.688,253.215 259.49,256.064 260.292,258.582 261.094,260.795 261.896,262.726 262.698,264.396 263.5,265.824 264.302,267.028 265.104,268.023 265.906,268.819 266.708,269.429 267.51,269.861 269.114,270.215 269.916,270.144 270.718,269.912 271.52,269.517 272.322,268.958 273.124,268.231 273.926,267.331 274.728,266.252 275.53,264.983 276.332,263.515 277.134,261.835 277.936,259.926 278.738,257.771 279.54,255.349 280.342,252.637 281.144,249.608 281.946,246.231 282.748,242.473 283.55,238.295 284.352,233.655 285.154,228.507 285.956,222.803 286.758,216.491 287.56,209.518 288.362,201.834 289.164,193.395 289.966,184.168 290.768,174.137 291.57,163.321 292.372,151.778 293.174,139.626 293.976,127.062 294.778,114.37 295.58,101.935 296.382,90.239 297.184,79.8362 297.986,71.3093 298.788,65.2032 299.59,61.9479 301.194,64.7429 301.996,70.597 302.798,78.9453 303.6,89.2567 304.402,100.952 305.204,113.472 306.006,126.326 306.808,139.115 307.61,151.542 308.412,163.4 309.214,174.562 310.016,184.959 310.818,194.571 311.62,203.407 312.422,211.498 313.224,218.887 314.026,225.625 314.828,231.763 315.63,237.354 316.432,242.448 317.234,247.092 318.036,251.33 318.838,255.202 319.64,258.744 320.442,261.988 321.244,264.965 322.046,267.699 322.848,270.216 323.65,272.535 324.452,274.676 325.254,276.656 326.056,278.489 326.858,280.189 327.66,281.768 328.462,283.237 329.264,284.606 330.066,285.882 330.868,287.074 331.67,288.189 332.472,289.234 333.274,290.214 334.076,291.134 334.878,292 335.68,292.815 336.482,293.583 337.284,294.309 338.086,294.994 338.888,295.643 339.69,296.257 340.492,296.838 341.294,297.39 342.096,297.914 342.898,298.411 343.7,298.884 344.502,299.334 345.304,299.762 346.106,300.17 346.908,300.559 347.71,300.931 348.512,301.285 349.314,301.624 350.116,301.948 350.918,302.258 351.72,302.554 352.522,302.838 354.126,303.372 354.928,303.623 355.73,303.864 356.532,304.095 358.136,304.532 358.938,304.738 359.74,304.936 360.542,305.127 362.146,305.489 362.948,305.66 363.75,305.826 364.552,305.985 366.156,306.288 366.958,306.432 367.76,306.572 368.562,306.706 370.166,306.963 370.968,307.085 371.77,307.204 372.572,307.319 374.176,307.538 374.978,307.643 375.78,307.745 376.582,307.843 378.186,308.033 378.988,308.123 379.79,308.211 380.592,308.297 382.196,308.461 382.998,308.539 383.8,308.616 384.602,308.691 386.206,308.834 387.008,308.903 387.81,308.97 388.612,309.036 390.216,309.162 391.018,309.223 391.82,309.282 392.622,309.34 394.226,309.451 395.028,309.505 395.83,309.558 396.632,309.609 398.236,309.708 399.038,309.756 399.84,309.803 400.642,309.849 402.246,309.937 403.048,309.98 403.85,310.022 404.652,310.063 406.256,310.142 407.058,310.181 407.86,310.218 408.662,310.255 410.266,310.327 411.068,310.361 411.87,310.395 412.672,310.429 414.276,310.493 415.078,310.525 415.88,310.556 416.682,310.586 418.286,310.644 419.088,310.673 419.89,310.701 420.692,310.728 422.296,310.782 423.098,310.808 423.9,310.833 424.702,310.858 425.504,310.883 427.108,310.931 427.91,310.954 428.712,310.977 429.514,310.999 431.118,311.043 431.92,311.065 432.722,311.086 433.524,311.106 435.128,311.147 435.93,311.166 436.732,311.186 437.534,311.205 439.138,311.242 439.94,311.26 440.742,311.278 441.544,311.295 443.148,311.329 443.95,311.346 444.752,311.363 445.554,311.379 447.158,311.41 447.96,311.426 448.762,311.441 449.564,311.456 451.168,311.485 451.97,311.5 452.772,311.514 453.574,311.528 455.178,311.555 455.98,311.569 456.782,311.582 457.584,311.595 459.188,311.62 459.99,311.632 460.792,311.645 461.594,311.657 463.198,311.68 464,311.68 " />
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(1,0,0,1,0,0)"
+font-family="Noto Sans [MONO]" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(1,0,0,1,0,0)"
+font-family="Noto Sans [MONO]" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(1,0,0,1,0,0)"
+font-family="Noto Sans [MONO]" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="none" stroke="#00ff00" stroke-opacity="1" stroke-width="2" stroke-linecap="square" stroke-linejoin="miter" stroke-miterlimit="2" transform="matrix(1,0,0,1,0,0)"
+font-family="Noto Sans [MONO]" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+<polyline fill="none" vector-effect="non-scaling-stroke" points="63,312.262 63.802,312.256 64.604,312.25 66.208,312.237 67.01,312.231 67.812,312.224 68.614,312.218 70.218,312.204 71.02,312.197 71.822,312.191 72.624,312.184 74.228,312.169 75.03,312.162 75.832,312.155 76.634,312.147 78.238,312.132 79.04,312.124 79.842,312.116 80.644,312.108 82.248,312.092 83.05,312.084 83.852,312.075 84.654,312.067 86.258,312.049 87.06,312.041 87.862,312.032 88.664,312.022 90.268,312.004 91.07,311.994 91.872,311.985 92.674,311.975 94.278,311.955 95.08,311.945 95.882,311.934 96.684,311.924 98.288,311.902 99.09,311.891 99.892,311.88 100.694,311.869 102.298,311.846 103.1,311.834 103.902,311.822 104.704,311.81 105.506,311.797 107.11,311.772 107.912,311.759 108.714,311.746 109.516,311.733 111.12,311.705 111.922,311.691 112.724,311.677 113.526,311.662 115.13,311.633 115.932,311.617 116.734,311.602 117.536,311.586 119.14,311.554 119.942,311.537 120.744,311.521 121.546,311.503 122.348,311.486 123.15,311.468 123.952,311.45 124.754,311.432 125.556,311.413 127.16,311.375 127.962,311.355 128.764,311.335 129.566,311.314 131.17,311.272 131.972,311.251 132.774,311.229 133.576,311.206 135.18,311.16 135.982,311.136 136.784,311.112 137.586,311.087 139.19,311.036 139.992,311.01 140.794,310.983 141.596,310.956 143.2,310.899 144.002,310.87 144.804,310.84 145.606,310.81 147.21,310.747 148.012,310.715 148.814,310.682 149.616,310.648 151.22,310.578 152.022,310.542 152.824,310.505 153.626,310.467 155.23,310.388 156.032,310.348 156.834,310.306 157.636,310.264 159.24,310.175 160.042,310.13 160.844,310.083 161.646,310.034 163.25,309.934 164.052,309.882 164.854,309.829 165.656,309.774 167.26,309.66 168.062,309.601 168.864,309.54 169.666,309.477 171.27,309.346 172.072,309.278 172.874,309.208 173.676,309.135 175.28,308.984 176.082,308.905 176.884,308.823 177.686,308.739 179.29,308.563 180.092,308.471 180.894,308.375 181.696,308.276 183.3,308.069 184.102,307.96 184.904,307.847 185.706,307.73 186.508,307.609 187.31,307.483 188.112,307.353 188.914,307.217 189.716,307.077 190.518,306.931 192.122,306.623 192.924,306.459 193.726,306.288 194.528,306.111 196.132,305.733 196.934,305.531 197.736,305.321 198.538,305.101 200.142,304.631 200.944,304.379 201.746,304.114 202.548,303.837 204.152,303.24 204.954,302.919 205.756,302.58 206.558,302.224 208.162,301.45 208.964,301.03 209.766,300.585 210.568,300.115 212.172,299.085 212.974,298.522 213.776,297.922 214.578,297.282 216.182,295.871 216.984,295.09 217.786,294.254 218.588,293.356 219.39,292.39 220.192,291.351 220.994,290.23 221.796,289.019 222.598,287.709 223.4,286.289 224.202,284.748 225.004,283.072 225.806,281.246 226.608,279.256 227.41,277.081 228.212,274.703 229.014,272.099 229.816,269.245 230.618,266.114 231.42,262.68 232.222,258.915 233.024,254.79 233.826,250.279 234.628,245.36 235.43,240.021 236.232,234.26 237.034,228.096 237.836,221.576 238.638,214.779 239.44,207.833 240.242,200.914 241.044,194.252 241.846,188.121 242.648,182.827 243.45,178.67 244.252,175.912 245.054,174.735 245.856,175.206 246.658,177.271 247.46,180.761 248.262,185.422 249.064,190.955 249.866,197.055 250.668,203.442 251.47,209.878 252.272,216.182 253.074,222.218 253.876,227.9 254.678,233.176 255.48,238.022 256.282,242.435 257.084,246.426 257.886,250.011 258.688,253.215 259.49,256.064 260.292,258.582 261.094,260.795 261.896,262.726 262.698,264.396 263.5,265.824 264.302,267.028 265.104,268.023 265.906,268.819 266.708,269.429 267.51,269.861 269.114,270.215 269.916,270.144 270.718,269.912 271.52,269.517 272.322,268.958 273.124,268.231 273.926,267.331 274.728,266.252 275.53,264.983 276.332,263.515 277.134,261.835 277.936,259.926 278.738,257.771 279.54,255.349 280.342,252.637 281.144,249.608 281.946,246.231 282.748,242.473 283.55,238.295 284.352,233.655 285.154,228.507 285.956,222.803 286.758,216.491 287.56,209.518 288.362,201.834 289.164,193.395 289.966,184.168 290.768,174.137 291.57,163.321 292.372,151.778 293.174,139.626 293.976,127.062 294.778,114.37 295.58,101.935 296.382,90.239 297.184,79.8362 297.986,71.3093 298.788,65.2032 299.59,61.9479 301.194,64.7429 301.996,70.597 302.798,78.9453 303.6,89.2567 304.402,100.952 305.204,113.472 306.006,126.326 306.808,139.115 307.61,151.542 308.412,163.4 309.214,174.562 310.016,184.959 310.818,194.571 311.62,203.407 312.422,211.498 313.224,218.887 314.026,225.625 314.828,231.763 315.63,237.354 316.432,242.448 317.234,247.092 318.036,251.33 318.838,255.202 319.64,258.744 320.442,261.988 321.244,264.965 322.046,267.699 322.848,270.216 323.65,272.535 324.452,274.676 325.254,276.656 326.056,278.489 326.858,280.189 327.66,281.768 328.462,283.237 329.264,284.606 330.066,285.882 330.868,287.074 331.67,288.189 332.472,289.234 333.274,290.214 334.076,291.134 334.878,292 335.68,292.815 336.482,293.583 337.284,294.309 338.086,294.994 338.888,295.643 339.69,296.257 340.492,296.838 341.294,297.39 342.096,297.914 342.898,298.411 343.7,298.884 344.502,299.334 345.304,299.762 346.106,300.17 346.908,300.559 347.71,300.931 348.512,301.285 349.314,301.624 350.116,301.948 350.918,302.258 351.72,302.554 352.522,302.838 354.126,303.372 354.928,303.623 355.73,303.864 356.532,304.095 358.136,304.532 358.938,304.738 359.74,304.936 360.542,305.127 362.146,305.489 362.948,305.66 363.75,305.826 364.552,305.985 366.156,306.288 366.958,306.432 367.76,306.572 368.562,306.706 370.166,306.963 370.968,307.085 371.77,307.204 372.572,307.319 374.176,307.538 374.978,307.643 375.78,307.745 376.582,307.843 378.186,308.033 378.988,308.123 379.79,308.211 380.592,308.297 382.196,308.461 382.998,308.539 383.8,308.616 384.602,308.691 386.206,308.834 387.008,308.903 387.81,308.97 388.612,309.036 390.216,309.162 391.018,309.223 391.82,309.282 392.622,309.34 394.226,309.451 395.028,309.505 395.83,309.558 396.632,309.609 398.236,309.708 399.038,309.756 399.84,309.803 400.642,309.849 402.246,309.937 403.048,309.98 403.85,310.022 404.652,310.063 406.256,310.142 407.058,310.181 407.86,310.218 408.662,310.255 410.266,310.327 411.068,310.361 411.87,310.395 412.672,310.429 414.276,310.493 415.078,310.525 415.88,310.556 416.682,310.586 418.286,310.644 419.088,310.673 419.89,310.701 420.692,310.728 422.296,310.782 423.098,310.808 423.9,310.833 424.702,310.858 425.504,310.883 427.108,310.931 427.91,310.954 428.712,310.977 429.514,310.999 431.118,311.043 431.92,311.065 432.722,311.086 433.524,311.106 435.128,311.147 435.93,311.166 436.732,311.186 437.534,311.205 439.138,311.242 439.94,311.26 440.742,311.278 441.544,311.295 443.148,311.329 443.95,311.346 444.752,311.363 445.554,311.379 447.158,311.41 447.96,311.426 448.762,311.441 449.564,311.456 451.168,311.485 451.97,311.5 452.772,311.514 453.574,311.528 455.178,311.555 455.98,311.569 456.782,311.582 457.584,311.595 459.188,311.62 459.99,311.632 460.792,311.645 461.594,311.657 463.198,311.68 464,311.68 " />
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(1,0,0,1,0,0)"
+font-family="Noto Sans [MONO]" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(1,0,0,1,0,0)"
+font-family="Noto Sans [MONO]" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(1,0,0,1,0,0)"
+font-family="Noto Sans [MONO]" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0,-1,1,0,6,321)"
+font-family="Noto Sans UI" font-size="12" font-weight="400" font-style="italic" 
+>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0,-1,1,0,6,321)"
+font-family="Noto Sans UI" font-size="13.3333" font-weight="700" font-style="normal" 
+>
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="66" y="15" font-family="Noto Sans UI" font-size="13.3333" font-weight="700" font-style="normal" 
+ >Molar absorption (L/mol/cm)</text>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0,-1,1,0,6,321)"
+font-family="Noto Sans UI" font-size="12" font-weight="400" font-style="italic" 
+>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(1,0,0,1,0,0)"
+font-family="Noto Sans [MONO]" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(1,0,0,1,0,0)"
+font-family="Noto Sans UI" font-size="12" font-weight="400" font-style="italic" 
+>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="2" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(1,0,0,1,0,0)"
+font-family="Noto Sans UI" font-size="12" font-weight="400" font-style="italic" 
+>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(1,0,0,1,0,0)"
+font-family="Noto Sans UI" font-size="12" font-weight="400" font-style="italic" 
+>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(1,0,0,1,52,304)"
+font-family="Noto Sans UI" font-size="12" font-weight="400" font-style="italic" 
+>
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="0" y="13" font-family="Noto Sans UI" font-size="12" font-weight="400" font-style="italic" 
+ >0</text>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(1,0,0,1,52,304)"
+font-family="Noto Sans UI" font-size="12" font-weight="400" font-style="italic" 
+>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(1,0,0,1,0,0)"
+font-family="Noto Sans UI" font-size="12" font-weight="400" font-style="italic" 
+>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(1,0,0,1,38,244)"
+font-family="Noto Sans UI" font-size="12" font-weight="400" font-style="italic" 
+>
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="0" y="13" font-family="Noto Sans UI" font-size="12" font-weight="400" font-style="italic" 
+ >500</text>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(1,0,0,1,38,244)"
+font-family="Noto Sans UI" font-size="12" font-weight="400" font-style="italic" 
+>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(1,0,0,1,0,0)"
+font-family="Noto Sans UI" font-size="12" font-weight="400" font-style="italic" 
+>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(1,0,0,1,28,184)"
+font-family="Noto Sans UI" font-size="12" font-weight="400" font-style="italic" 
+>
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="0" y="13" font-family="Noto Sans UI" font-size="12" font-weight="400" font-style="italic" 
+ >1,000</text>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(1,0,0,1,28,184)"
+font-family="Noto Sans UI" font-size="12" font-weight="400" font-style="italic" 
+>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(1,0,0,1,0,0)"
+font-family="Noto Sans UI" font-size="12" font-weight="400" font-style="italic" 
+>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(1,0,0,1,28,124)"
+font-family="Noto Sans UI" font-size="12" font-weight="400" font-style="italic" 
+>
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="0" y="13" font-family="Noto Sans UI" font-size="12" font-weight="400" font-style="italic" 
+ >1,500</text>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(1,0,0,1,28,124)"
+font-family="Noto Sans UI" font-size="12" font-weight="400" font-style="italic" 
+>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(1,0,0,1,0,0)"
+font-family="Noto Sans UI" font-size="12" font-weight="400" font-style="italic" 
+>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(1,0,0,1,28,64)"
+font-family="Noto Sans UI" font-size="12" font-weight="400" font-style="italic" 
+>
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="0" y="13" font-family="Noto Sans UI" font-size="12" font-weight="400" font-style="italic" 
+ >2,000</text>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(1,0,0,1,28,64)"
+font-family="Noto Sans UI" font-size="12" font-weight="400" font-style="italic" 
+>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(1,0,0,1,0,0)"
+font-family="Noto Sans UI" font-size="12" font-weight="400" font-style="italic" 
+>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(1,0,0,1,28,4)"
+font-family="Noto Sans UI" font-size="12" font-weight="400" font-style="italic" 
+>
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="0" y="13" font-family="Noto Sans UI" font-size="12" font-weight="400" font-style="italic" 
+ >2,500</text>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(1,0,0,1,28,4)"
+font-family="Noto Sans UI" font-size="12" font-weight="400" font-style="italic" 
+>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(1,0,0,1,0,0)"
+font-family="Noto Sans UI" font-size="12" font-weight="400" font-style="italic" 
+>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="2" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(1,0,0,1,0,0)"
+font-family="Noto Sans UI" font-size="12" font-weight="400" font-style="italic" 
+>
+<polyline fill="none" vector-effect="non-scaling-stroke" points="63,253 64,253 " />
+<polyline fill="none" vector-effect="non-scaling-stroke" points="63,193 64,193 " />
+<polyline fill="none" vector-effect="non-scaling-stroke" points="63,133 64,133 " />
+<polyline fill="none" vector-effect="non-scaling-stroke" points="63,73 64,73 " />
+<polyline fill="none" vector-effect="non-scaling-stroke" points="63,13 64,13 " />
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="2" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(1,0,0,1,0,0)"
+font-family="Noto Sans UI" font-size="12" font-weight="400" font-style="italic" 
+>
+<polyline fill="none" vector-effect="non-scaling-stroke" points="63,13 63,313 " />
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="2" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(1,0,0,1,0,0)"
+font-family="Noto Sans UI" font-size="12" font-weight="400" font-style="italic" 
+>
+<polyline fill="none" vector-effect="non-scaling-stroke" points="64,253 72,253 " />
+<polyline fill="none" vector-effect="non-scaling-stroke" points="64,193 72,193 " />
+<polyline fill="none" vector-effect="non-scaling-stroke" points="64,133 72,133 " />
+<polyline fill="none" vector-effect="non-scaling-stroke" points="64,73 72,73 " />
+<polyline fill="none" vector-effect="non-scaling-stroke" points="64,13 72,13 " />
+<polyline fill="none" vector-effect="non-scaling-stroke" points="64,303 68,303 " />
+<polyline fill="none" vector-effect="non-scaling-stroke" points="64,293 68,293 " />
+<polyline fill="none" vector-effect="non-scaling-stroke" points="64,273 68,273 " />
+<polyline fill="none" vector-effect="non-scaling-stroke" points="64,263 68,263 " />
+<polyline fill="none" vector-effect="non-scaling-stroke" points="64,243 68,243 " />
+<polyline fill="none" vector-effect="non-scaling-stroke" points="64,233 68,233 " />
+<polyline fill="none" vector-effect="non-scaling-stroke" points="64,213 68,213 " />
+<polyline fill="none" vector-effect="non-scaling-stroke" points="64,203 68,203 " />
+<polyline fill="none" vector-effect="non-scaling-stroke" points="64,183 68,183 " />
+<polyline fill="none" vector-effect="non-scaling-stroke" points="64,173 68,173 " />
+<polyline fill="none" vector-effect="non-scaling-stroke" points="64,153 68,153 " />
+<polyline fill="none" vector-effect="non-scaling-stroke" points="64,143 68,143 " />
+<polyline fill="none" vector-effect="non-scaling-stroke" points="64,123 68,123 " />
+<polyline fill="none" vector-effect="non-scaling-stroke" points="64,113 68,113 " />
+<polyline fill="none" vector-effect="non-scaling-stroke" points="64,93 68,93 " />
+<polyline fill="none" vector-effect="non-scaling-stroke" points="64,83 68,83 " />
+<polyline fill="none" vector-effect="non-scaling-stroke" points="64,63 68,63 " />
+<polyline fill="none" vector-effect="non-scaling-stroke" points="64,53 68,53 " />
+<polyline fill="none" vector-effect="non-scaling-stroke" points="64,33 68,33 " />
+<polyline fill="none" vector-effect="non-scaling-stroke" points="64,23 68,23 " />
+<polyline fill="none" vector-effect="non-scaling-stroke" points="64,283 68,283 " />
+<polyline fill="none" vector-effect="non-scaling-stroke" points="64,223 68,223 " />
+<polyline fill="none" vector-effect="non-scaling-stroke" points="64,163 68,163 " />
+<polyline fill="none" vector-effect="non-scaling-stroke" points="64,103 68,103 " />
+<polyline fill="none" vector-effect="non-scaling-stroke" points="64,43 68,43 " />
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(1,0,0,1,0,0)"
+font-family="Noto Sans UI" font-size="12" font-weight="400" font-style="italic" 
+>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(1,0,0,1,0,0)"
+font-family="Noto Sans [MONO]" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(1,0,0,1,52,336)"
+font-family="Noto Sans UI" font-size="12" font-weight="400" font-style="italic" 
+>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(1,0,0,1,52,336)"
+font-family="Noto Sans UI" font-size="13.3333" font-weight="700" font-style="normal" 
+>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(1,0,0,1,52,337)"
+font-family="Noto Sans UI" font-size="13.3333" font-weight="700" font-style="normal" 
+>
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="147.5" y="15" font-family="Noto Sans UI" font-size="13.3333" font-weight="700" font-style="normal" 
+ >Wavenumber (cm</text>
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="263.5" y="9.5" font-family="Noto Sans UI" font-size="8" font-weight="700" font-style="normal" 
+ >-1</text>
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="271.5" y="15" font-family="Noto Sans UI" font-size="13.3333" font-weight="700" font-style="normal" 
+ >)</text>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(1,0,0,1,52,336)"
+font-family="Noto Sans UI" font-size="13.3333" font-weight="700" font-style="normal" 
+>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(1,0,0,1,52,336)"
+font-family="Noto Sans UI" font-size="12" font-weight="400" font-style="italic" 
+>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(1,0,0,1,0,0)"
+font-family="Noto Sans [MONO]" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(1,0,0,1,0,0)"
+font-family="Noto Sans UI" font-size="12" font-weight="400" font-style="italic" 
+>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="2" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(1,0,0,1,0,0)"
+font-family="Noto Sans UI" font-size="12" font-weight="400" font-style="italic" 
+>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(1,0,0,1,0,0)"
+font-family="Noto Sans UI" font-size="12" font-weight="400" font-style="italic" 
+>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(1,0,0,1,52,317)"
+font-family="Noto Sans UI" font-size="12" font-weight="400" font-style="italic" 
+>
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="0" y="13" font-family="Noto Sans UI" font-size="12" font-weight="400" font-style="italic" 
+ >400</text>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(1,0,0,1,52,317)"
+font-family="Noto Sans UI" font-size="12" font-weight="400" font-style="italic" 
+>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(1,0,0,1,0,0)"
+font-family="Noto Sans UI" font-size="12" font-weight="400" font-style="italic" 
+>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(1,0,0,1,132,317)"
+font-family="Noto Sans UI" font-size="12" font-weight="400" font-style="italic" 
+>
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="0" y="13" font-family="Noto Sans UI" font-size="12" font-weight="400" font-style="italic" 
+ >420</text>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(1,0,0,1,132,317)"
+font-family="Noto Sans UI" font-size="12" font-weight="400" font-style="italic" 
+>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(1,0,0,1,0,0)"
+font-family="Noto Sans UI" font-size="12" font-weight="400" font-style="italic" 
+>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(1,0,0,1,212,317)"
+font-family="Noto Sans UI" font-size="12" font-weight="400" font-style="italic" 
+>
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="0" y="13" font-family="Noto Sans UI" font-size="12" font-weight="400" font-style="italic" 
+ >440</text>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(1,0,0,1,212,317)"
+font-family="Noto Sans UI" font-size="12" font-weight="400" font-style="italic" 
+>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(1,0,0,1,0,0)"
+font-family="Noto Sans UI" font-size="12" font-weight="400" font-style="italic" 
+>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(1,0,0,1,293,317)"
+font-family="Noto Sans UI" font-size="12" font-weight="400" font-style="italic" 
+>
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="0" y="13" font-family="Noto Sans UI" font-size="12" font-weight="400" font-style="italic" 
+ >460</text>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(1,0,0,1,293,317)"
+font-family="Noto Sans UI" font-size="12" font-weight="400" font-style="italic" 
+>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(1,0,0,1,0,0)"
+font-family="Noto Sans UI" font-size="12" font-weight="400" font-style="italic" 
+>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(1,0,0,1,373,317)"
+font-family="Noto Sans UI" font-size="12" font-weight="400" font-style="italic" 
+>
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="0" y="13" font-family="Noto Sans UI" font-size="12" font-weight="400" font-style="italic" 
+ >480</text>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(1,0,0,1,373,317)"
+font-family="Noto Sans UI" font-size="12" font-weight="400" font-style="italic" 
+>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(1,0,0,1,0,0)"
+font-family="Noto Sans UI" font-size="12" font-weight="400" font-style="italic" 
+>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(1,0,0,1,453,317)"
+font-family="Noto Sans UI" font-size="12" font-weight="400" font-style="italic" 
+>
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="0" y="13" font-family="Noto Sans UI" font-size="12" font-weight="400" font-style="italic" 
+ >500</text>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(1,0,0,1,453,317)"
+font-family="Noto Sans UI" font-size="12" font-weight="400" font-style="italic" 
+>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(1,0,0,1,0,0)"
+font-family="Noto Sans UI" font-size="12" font-weight="400" font-style="italic" 
+>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="2" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(1,0,0,1,0,0)"
+font-family="Noto Sans UI" font-size="12" font-weight="400" font-style="italic" 
+>
+<polyline fill="none" vector-effect="non-scaling-stroke" points="143,313 143,312 " />
+<polyline fill="none" vector-effect="non-scaling-stroke" points="223,313 223,312 " />
+<polyline fill="none" vector-effect="non-scaling-stroke" points="304,313 304,312 " />
+<polyline fill="none" vector-effect="non-scaling-stroke" points="384,313 384,312 " />
+<polyline fill="none" vector-effect="non-scaling-stroke" points="464,313 464,312 " />
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="2" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(1,0,0,1,0,0)"
+font-family="Noto Sans UI" font-size="12" font-weight="400" font-style="italic" 
+>
+<polyline fill="none" vector-effect="non-scaling-stroke" points="63,313 464,313 " />
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="2" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(1,0,0,1,0,0)"
+font-family="Noto Sans UI" font-size="12" font-weight="400" font-style="italic" 
+>
+<polyline fill="none" vector-effect="non-scaling-stroke" points="143,312 143,304 " />
+<polyline fill="none" vector-effect="non-scaling-stroke" points="223,312 223,304 " />
+<polyline fill="none" vector-effect="non-scaling-stroke" points="304,312 304,304 " />
+<polyline fill="none" vector-effect="non-scaling-stroke" points="384,312 384,304 " />
+<polyline fill="none" vector-effect="non-scaling-stroke" points="464,312 464,304 " />
+<polyline fill="none" vector-effect="non-scaling-stroke" points="76,312 76,308 " />
+<polyline fill="none" vector-effect="non-scaling-stroke" points="90,312 90,308 " />
+<polyline fill="none" vector-effect="non-scaling-stroke" points="116,312 116,308 " />
+<polyline fill="none" vector-effect="non-scaling-stroke" points="130,312 130,308 " />
+<polyline fill="none" vector-effect="non-scaling-stroke" points="157,312 157,308 " />
+<polyline fill="none" vector-effect="non-scaling-stroke" points="170,312 170,308 " />
+<polyline fill="none" vector-effect="non-scaling-stroke" points="197,312 197,308 " />
+<polyline fill="none" vector-effect="non-scaling-stroke" points="210,312 210,308 " />
+<polyline fill="none" vector-effect="non-scaling-stroke" points="237,312 237,308 " />
+<polyline fill="none" vector-effect="non-scaling-stroke" points="250,312 250,308 " />
+<polyline fill="none" vector-effect="non-scaling-stroke" points="277,312 277,308 " />
+<polyline fill="none" vector-effect="non-scaling-stroke" points="290,312 290,308 " />
+<polyline fill="none" vector-effect="non-scaling-stroke" points="317,312 317,308 " />
+<polyline fill="none" vector-effect="non-scaling-stroke" points="330,312 330,308 " />
+<polyline fill="none" vector-effect="non-scaling-stroke" points="357,312 357,308 " />
+<polyline fill="none" vector-effect="non-scaling-stroke" points="370,312 370,308 " />
+<polyline fill="none" vector-effect="non-scaling-stroke" points="397,312 397,308 " />
+<polyline fill="none" vector-effect="non-scaling-stroke" points="411,312 411,308 " />
+<polyline fill="none" vector-effect="non-scaling-stroke" points="437,312 437,308 " />
+<polyline fill="none" vector-effect="non-scaling-stroke" points="451,312 451,308 " />
+<polyline fill="none" vector-effect="non-scaling-stroke" points="103,312 103,308 " />
+<polyline fill="none" vector-effect="non-scaling-stroke" points="183,312 183,308 " />
+<polyline fill="none" vector-effect="non-scaling-stroke" points="263,312 263,308 " />
+<polyline fill="none" vector-effect="non-scaling-stroke" points="344,312 344,308 " />
+<polyline fill="none" vector-effect="non-scaling-stroke" points="424,312 424,308 " />
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(1,0,0,1,0,0)"
+font-family="Noto Sans UI" font-size="12" font-weight="400" font-style="italic" 
+>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(1,0,0,1,0,0)"
+font-family="Noto Sans [MONO]" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="miter" stroke-miterlimit="2" transform="matrix(1,0,0,1,0,0)"
+font-family="Noto Sans [MONO]" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M73,23 L215,23 L215,85 L73,85 L73,23"/>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(1,0,0,1,0,0)"
+font-family="Noto Sans [MONO]" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(1,0,0,1,73,23)"
+font-family="Noto Sans [MONO]" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(1,0,0,1,73,23)"
+font-family="Noto Sans [MONO]" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="2" stroke-linecap="square" stroke-linejoin="miter" stroke-miterlimit="2" transform="matrix(1,0,0,1,73,23)"
+font-family="Noto Sans [MONO]" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+<polyline fill="none" vector-effect="non-scaling-stroke" points="11,14 43,14 " />
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(1,0,0,1,73,23)"
+font-family="Noto Sans [MONO]" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(1,0,0,1,73,23)"
+font-family="Noto Sans UI" font-size="12" font-weight="400" font-style="italic" 
+>
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="53" y="19" font-family="Noto Sans UI" font-size="12" font-weight="400" font-style="italic" 
+ >vf 10% 0.1 mu</text>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(1,0,0,1,73,23)"
+font-family="Noto Sans [MONO]" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(1,0,0,1,73,23)"
+font-family="Noto Sans [MONO]" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="none" stroke="#ff0000" stroke-opacity="1" stroke-width="2" stroke-linecap="square" stroke-linejoin="miter" stroke-miterlimit="2" transform="matrix(1,0,0,1,73,23)"
+font-family="Noto Sans [MONO]" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+<polyline fill="none" vector-effect="non-scaling-stroke" points="11,31 43,31 " />
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(1,0,0,1,73,23)"
+font-family="Noto Sans [MONO]" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(1,0,0,1,73,23)"
+font-family="Noto Sans UI" font-size="12" font-weight="400" font-style="italic" 
+>
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="53" y="36" font-family="Noto Sans UI" font-size="12" font-weight="400" font-style="italic" 
+ >vf 5% 0.1 mu</text>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(1,0,0,1,73,23)"
+font-family="Noto Sans [MONO]" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(1,0,0,1,73,23)"
+font-family="Noto Sans [MONO]" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="none" stroke="#00ff00" stroke-opacity="1" stroke-width="2" stroke-linecap="square" stroke-linejoin="miter" stroke-miterlimit="2" transform="matrix(1,0,0,1,73,23)"
+font-family="Noto Sans [MONO]" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+<polyline fill="none" vector-effect="non-scaling-stroke" points="11,48 43,48 " />
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(1,0,0,1,73,23)"
+font-family="Noto Sans [MONO]" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(1,0,0,1,73,23)"
+font-family="Noto Sans UI" font-size="12" font-weight="400" font-style="italic" 
+>
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="53" y="53" font-family="Noto Sans UI" font-size="12" font-weight="400" font-style="italic" 
+ >vf 1%, 0.1mu</text>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(1,0,0,1,73,23)"
+font-family="Noto Sans [MONO]" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(1,0,0,1,0,0)"
+font-family="Noto Sans [MONO]" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(1,0,0,1,0,0)"
+font-family="Noto Sans [MONO]" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+</g>
+</svg>

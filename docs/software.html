@@ -1,0 +1,1058 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+<meta content="PDielec package for the calculation of infrared and terahertz absorption from QM calculations" name="description" />
+<meta content="Quantum Mechanics, Effective Field Theory, Maxwell, Garnett, Mie, Infrared, Terahertz, Castep, Abinit, VASP, GULP. QE" name="keywords" />
+
+    <title>Software components &#8212; PDielec: John Kendrick &amp; Andrew Burnett</title><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/pydoctheme.css?2021.11.1" />
+    <link rel="stylesheet" type="text/css" href="_static/table_styling.css" />
+    
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"extensions": ["AMSmath.js"], "TeX": {"Macros": {"bm": ["{\\boldsymbol{#1}}", 1], "tensor": ["{\\bar{\\bar{#1}}}", 1], "tensorbs": ["{\\bar{\\bar{\\bm{#1}}}}", 1], "tensorbf": ["{\\bar{\\bar{\\bm{#1}}}}", 1], "fieldbf": ["{\\bar{\\bm{#1}}}", 1], "water": "\\H_{2}O"}}})</script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Theory" href="theory.html" />
+    <link rel="prev" title="Installation" href="installation.html" /><link rel="shortcut icon" type="image/png" href="_static/py.svg" />
+            <script type="text/javascript" src="_static/copybutton.js"></script>
+            <script type="text/javascript" src="_static/menu.js"></script> 
+  </head>
+<body>
+<div class="mobile-nav">
+    <input type="checkbox" id="menuToggler" class="toggler__input" aria-controls="navigation"
+           aria-pressed="false" aria-expanded="false" role="button" aria-label="Menu" />
+    <label for="menuToggler" class="toggler__label">
+        <span></span>
+    </label>
+    <nav class="nav-content" role="navigation">
+         <a href="https://www.python.org/" class="nav-logo">
+             <img src="_static/py.svg" alt="Logo"/>
+         </a>
+        <div class="version_switcher_placeholder"></div>
+        <form role="search" class="search" action="search.html" method="get">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" class="search-icon">
+                <path fill-rule="nonzero"
+                        d="M15.5 14h-.79l-.28-.27a6.5 6.5 0 001.48-5.34c-.47-2.78-2.79-5-5.59-5.34a6.505 6.505 0 00-7.27 7.27c.34 2.8 2.56 5.12 5.34 5.59a6.5 6.5 0 005.34-1.48l.27.28v.79l4.25 4.25c.41.41 1.08.41 1.49 0 .41-.41.41-1.08 0-1.49L15.5 14zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z" fill="#444"></path>
+            </svg>
+            <input type="text" name="q" aria-label="Quick search"/>
+            <input type="submit" value="Go"/>
+        </form>
+    </nav>
+    <div class="menu-wrapper">
+        <nav class="menu" role="navigation" aria-label="main navigation">
+            <div class="language_switcher_placeholder"></div>
+  <h3><a href="index.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Software components</a><ul>
+<li><a class="reference internal" href="#pdgui">PDGui</a><ul>
+<li><a class="reference internal" href="#main-tab">Main Tab</a></li>
+<li><a class="reference internal" href="#settings-tab">Settings Tab</a></li>
+<li><a class="reference internal" href="#scenario-tabs">Scenario Tabs</a><ul>
+<li><a class="reference internal" href="#powder-scenarios">Powder Scenarios</a></li>
+<li><a class="reference internal" href="#single-crystal-scenarios">Single Crystal Scenarios</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#plotting-tab">Plotting Tab</a></li>
+<li><a class="reference internal" href="#analysis-tab">Analysis Tab</a></li>
+<li><a class="reference internal" href="#d-viewer-tab">3D Viewer Tab</a></li>
+<li><a class="reference internal" href="#fitter-tab">Fitter Tab</a></li>
+<li><a class="reference internal" href="#scripting">Scripting</a></li>
+<li><a class="reference internal" href="#parallelization-and-threads">Parallelization and threads</a></li>
+<li><a class="reference internal" href="#performance">Performance</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#preader">PReader</a><ul>
+<li><a class="reference internal" href="#command-options">Command options</a></li>
+<li><a class="reference internal" href="#examples">Examples</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#vibanalysis">vibanalysis</a></li>
+<li><a class="reference internal" href="#mm-qm-interfaces">MM/QM Interfaces</a><ul>
+<li><a class="reference internal" href="#vasp">VASP</a></li>
+<li><a class="reference internal" href="#castep">CASTEP</a></li>
+<li><a class="reference internal" href="#crystal">CRYSTAL</a></li>
+<li><a class="reference internal" href="#abinit">ABINIT</a></li>
+<li><a class="reference internal" href="#qe">QE</a></li>
+<li><a class="reference internal" href="#phonopy">PHONOPY</a></li>
+<li><a class="reference internal" href="#gulp">GULP</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#experimental-file-format">Experimental File Format</a><ul>
+<li><a class="reference internal" href="#constant-model-constant">Constant model (constant)</a></li>
+<li><a class="reference internal" href="#fpsq-model-fpsq">FPSQ model (fpsq)</a></li>
+<li><a class="reference internal" href="#drude-lorentz-model-drude-lorentz">Drude-Lorentz model (drude-lorentz)</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#the-format-of-the-excel-spreadsheet">The Format of the Excel Spreadsheet</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="installation.html"
+                        title="previous chapter">Installation</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="theory.html"
+                        title="next chapter">Theory</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/software.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </nav>
+    </div>
+</div>
+  
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="theory.html" title="Theory"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="installation.html" title="Installation"
+             accesskey="P">previous</a> |</li>
+          <li><img src="_static/py.svg" alt="python logo" style="vertical-align: middle; margin-top: -1px"/></li>
+          <li><a href="https://www.python.org/">Python</a> &#187;</li>
+          <li class="switchers">
+            <div class="language_switcher_placeholder"></div>
+            <div class="version_switcher_placeholder"></div>
+          </li>
+          <li>
+              
+              <a href="index.html">PDielec: John Kendrick & Andrew Burnett</a> &#187;
+              
+          </li>
+        <li class="nav-item nav-item-this"><a href="">Software components</a></li>
+                <li class="right">
+                    
+
+    <div class="inline-search" role="search">
+        <form class="inline-search" action="search.html" method="get">
+          <input placeholder="Quick search" aria-label="Quick search" type="text" name="q" />
+          <input type="submit" value="Go" />
+          <input type="hidden" name="check_keywords" value="yes" />
+          <input type="hidden" name="area" value="default" />
+        </form>
+    </div>
+                     |
+                </li>
+            
+      </ul>
+    </div>    
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="contents local topic" id="contents">
+<ul class="simple">
+<li><p><a class="reference internal" href="#software-components" id="id19">Software components</a></p>
+<ul>
+<li><p><a class="reference internal" href="#pdgui" id="id20">PDGui</a></p>
+<ul>
+<li><p><a class="reference internal" href="#main-tab" id="id21">Main Tab</a></p></li>
+<li><p><a class="reference internal" href="#settings-tab" id="id22">Settings Tab</a></p></li>
+<li><p><a class="reference internal" href="#scenario-tabs" id="id23">Scenario Tabs</a></p>
+<ul>
+<li><p><a class="reference internal" href="#powder-scenarios" id="id24">Powder Scenarios</a></p></li>
+<li><p><a class="reference internal" href="#single-crystal-scenarios" id="id25">Single Crystal Scenarios</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#plotting-tab" id="id26">Plotting Tab</a></p></li>
+<li><p><a class="reference internal" href="#analysis-tab" id="id27">Analysis Tab</a></p></li>
+<li><p><a class="reference internal" href="#d-viewer-tab" id="id28">3D Viewer Tab</a></p></li>
+<li><p><a class="reference internal" href="#fitter-tab" id="id29">Fitter Tab</a></p></li>
+<li><p><a class="reference internal" href="#scripting" id="id30">Scripting</a></p></li>
+<li><p><a class="reference internal" href="#parallelization-and-threads" id="id31">Parallelization and threads</a></p></li>
+<li><p><a class="reference internal" href="#performance" id="id32">Performance</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#preader" id="id33">PReader</a></p>
+<ul>
+<li><p><a class="reference internal" href="#command-options" id="id34">Command options</a></p></li>
+<li><p><a class="reference internal" href="#examples" id="id35">Examples</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#vibanalysis" id="id36">vibanalysis</a></p></li>
+<li><p><a class="reference internal" href="#mm-qm-interfaces" id="id37">MM/QM Interfaces</a></p>
+<ul>
+<li><p><a class="reference internal" href="#vasp" id="id38">VASP</a></p></li>
+<li><p><a class="reference internal" href="#castep" id="id39">CASTEP</a></p></li>
+<li><p><a class="reference internal" href="#crystal" id="id40">CRYSTAL</a></p></li>
+<li><p><a class="reference internal" href="#abinit" id="id41">ABINIT</a></p></li>
+<li><p><a class="reference internal" href="#qe" id="id42">QE</a></p></li>
+<li><p><a class="reference internal" href="#phonopy" id="id43">PHONOPY</a></p></li>
+<li><p><a class="reference internal" href="#gulp" id="id44">GULP</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#experimental-file-format" id="id45">Experimental File Format</a></p>
+<ul>
+<li><p><a class="reference internal" href="#constant-model-constant" id="id46">Constant model (constant)</a></p></li>
+<li><p><a class="reference internal" href="#fpsq-model-fpsq" id="id47">FPSQ model (fpsq)</a></p></li>
+<li><p><a class="reference internal" href="#drude-lorentz-model-drude-lorentz" id="id48">Drude-Lorentz model (drude-lorentz)</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#the-format-of-the-excel-spreadsheet" id="id49">The Format of the Excel Spreadsheet</a></p></li>
+</ul>
+</li>
+</ul>
+</div>
+<section id="software-components">
+<h1><a class="toc-backref" href="#id19">Software components</a><a class="headerlink" href="#software-components" title="Permalink to this headline">¶</a></h1>
+<p>There are two programs within the PDielec package.  <em>preader</em> is a command line program and <em>pdgui</em> a graphical interface to the features of the PDielec package.</p>
+<section id="pdgui">
+<h2><a class="toc-backref" href="#id20">PDGui</a><a class="headerlink" href="#pdgui" title="Permalink to this headline">¶</a></h2>
+<p>PDgui provides a graphical front end to the capabilities of PDielec.
+PDgui can be run from the command line without any parameters or followed by the file to be read in.  PDGui makes a best guess at the DFT/MM program used to create the output.
+It can also be used a command line tool without having to use the GUI, this needs a script file to be available.</p>
+<p>For example;</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pdgui</span>
+</pre></div>
+</div>
+<p>or</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pdgui</span> <span class="n">OUTCAR</span>                                                <span class="c1"># A Vasp/Phonpy calculation</span>
+<span class="n">pdgui</span> <span class="n">LEUCINE_FREQUENCY_PBED3_631Gdp_FULLOPTIMIZATON</span><span class="o">.</span><span class="n">out</span>    <span class="c1"># A Crystal calculation</span>
+<span class="n">pdgui</span> <span class="n">run1</span><span class="o">.</span><span class="n">dynG</span>                                             <span class="c1"># A QE calculation</span>
+<span class="n">pdgui</span> <span class="n">run2</span><span class="o">.</span><span class="n">out</span>                                              <span class="c1"># An Abinit calculation</span>
+<span class="n">pdgui</span> <span class="n">run3</span><span class="o">.</span><span class="n">gout</span>                                             <span class="c1"># An Gulp calculation</span>
+</pre></div>
+</div>
+<p>If running a script which contains program and output file information, then:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pdgui</span> <span class="o">-</span><span class="n">script</span> <span class="n">script</span><span class="o">.</span><span class="n">py</span>
+</pre></div>
+</div>
+<p>If a spreadsheet of results is required the name of the spreadsheet can be provided on the command line.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pdgui</span> <span class="n">OUTCAR</span> <span class="o">-</span><span class="n">spreadsheet</span> <span class="n">results</span><span class="o">.</span><span class="n">xlsx</span>
+</pre></div>
+</div>
+<p>The spreadsheet name must have an .xlsx extension.
+To use as a command line tool an example would be;</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pdgui</span> <span class="n">OUTCAR</span> <span class="o">-</span><span class="n">spreadsheet</span> <span class="n">results</span><span class="o">.</span><span class="n">xlsx</span> <span class="o">-</span><span class="n">script</span> <span class="n">script</span><span class="o">.</span><span class="n">py</span> <span class="o">-</span><span class="n">nosplash</span> <span class="o">-</span><span class="n">exit</span>
+</pre></div>
+</div>
+<p>There are several command line options which may be useful in running the package.</p>
+<table class="colwidths-given styled-table docutils align-default" id="command-line-options">
+<caption><span class="caption-number">Table 2 </span><span class="caption-text">PDGui command line options</span><a class="headerlink" href="#command-line-options" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 75%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="left-align no-left-divider no-right-divider head"><p>Command line option</p></th>
+<th class="left-align no-left-divider no-right-divider head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="left-align no-left-divider no-right-divider"><p>-script filename</p></td>
+<td class="left-align no-left-divider no-right-divider"><p>Specify a python script to run</p></td>
+</tr>
+<tr class="row-odd"><td class="left-align no-left-divider no-right-divider"><p>-scenario type</p></td>
+<td class="left-align no-left-divider no-right-divider"><p>Changes the initialial scenario type,
+type can be ‘powder’ or ‘crystal’,
+the default is ‘powder’</p></td>
+</tr>
+<tr class="row-even"><td class="left-align no-left-divider no-right-divider"><p>-spreadsheet file</p></td>
+<td class="left-align no-left-divider no-right-divider"><p>An alternative way of defining the
+spreadsheet</p></td>
+</tr>
+<tr class="row-odd"><td class="left-align no-left-divider no-right-divider"><p>-program name</p></td>
+<td class="left-align no-left-divider no-right-divider"><p>An alternative way of defining the
+program used to create the output</p></td>
+</tr>
+<tr class="row-even"><td class="left-align no-left-divider no-right-divider"><p>-version</p></td>
+<td class="left-align no-left-divider no-right-divider"><p>Give information of the version no.</p></td>
+</tr>
+<tr class="row-odd"><td class="left-align no-left-divider no-right-divider"><p>-debug</p></td>
+<td class="left-align no-left-divider no-right-divider"><p>Debugging mode, only for developers</p></td>
+</tr>
+<tr class="row-even"><td class="left-align no-left-divider no-right-divider"><p>-exit</p></td>
+<td class="left-align no-left-divider no-right-divider"><p>Exit the program after running the
+script</p></td>
+</tr>
+<tr class="row-odd"><td class="left-align no-left-divider no-right-divider"><p>-nosplash</p></td>
+<td class="left-align no-left-divider no-right-divider"><p>Do not show the splash screen</p></td>
+</tr>
+<tr class="row-even"><td class="left-align no-left-divider no-right-divider"><p>-cpus 2</p></td>
+<td class="left-align no-left-divider no-right-divider"><p>Using 2 processors for multiprocessing
+or 2 threads if threading</p></td>
+</tr>
+<tr class="row-odd"><td class="left-align no-left-divider no-right-divider"><p>-threads</p></td>
+<td class="left-align no-left-divider no-right-divider"><p>Using threading for multiprocessing</p></td>
+</tr>
+<tr class="row-even"><td class="left-align no-left-divider no-right-divider"><p>-h</p></td>
+<td class="left-align no-left-divider no-right-divider"><p>Print out help information</p></td>
+</tr>
+</tbody>
+</table>
+<p>After running the program the user sees a notebook interface with seven tabs.</p>
+<ul class="simple">
+<li><p><em>Main Tab</em> allows the user to specify the program and filename which are to be anaylsed.  It is also possible to specify here the spreadsheet name to which results are saved to.</p></li>
+<li><p><em>Settings Tab</em> is used for changing the settings within the package</p></li>
+<li><p><em>Scenario Tab</em> specifies the material properties used to define the effective medium from which the  absorption characteristic are calculated.  If single crystal calculations are to be performed this is specified here.  This tab can also be used to change the algorithms used to calculate the effective medium.  Several scenarios can be defined and plotted in the <em>Plotting Tab</em>.</p></li>
+<li><p><em>Plotting Tab</em> shows the absorption or permittivity as a function of frequency for the effective medium theories given in the scenario tabs.</p></li>
+<li><p><em>SingleCrystal Tab</em> shows the transmittance and reflectance of a single crystal (slab or film) as a function of frequency.</p></li>
+<li><p><em>Analysis Tab</em> shows the decomposition of the normal modes into molecular components.</p></li>
+<li><p><em>Visualisation Tab</em> displays the normal modes as either arrows showing the atomic displacement or as an animation.</p></li>
+<li><p><em>Fitter Tab</em> allows a user to display an experimental spectrum and compare it with the calculated spectrum.</p></li>
+</ul>
+<section id="main-tab">
+<h3><a class="toc-backref" href="#id21">Main Tab</a><a class="headerlink" href="#main-tab" title="Permalink to this headline">¶</a></h3>
+<p>The <em>Main Tab</em> is used to pick the MM/QM package and the output file which will be analysed.</p>
+<figure class="align-default" id="id9">
+<span id="fig-maintab"></span><a class="reference internal image-reference" href="_images/MainTab.png"><img alt="_images/MainTab.png" src="_images/MainTab.png" style="width: 545.6px; height: 774.4000000000001px;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 1 </span><span class="caption-text">The Main Tab</span><a class="headerlink" href="#id9" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
+<p>The QM/MM program can be chosen from the dropdown list.  The output file name can be input into the text box below it, or it can be specified using the <cite>File manager</cite> button.  In addition to input files from QM/MM programs the program can read Python script files written by PDGui.  These should have a ‘.py’ extension.</p>
+<p>If an Excel spreadsheet file name given, it must have the extensions .xlsx.  The spreadsheet is written when the <cite>Save results</cite> button is pressed.</p>
+<p>If the current program settings need to be stored they can be stored as a Python script file by pressing the <cite>Save settings</cite> button.  Any settings saved in the way can be re-instated by reading in the script using the <cite>File manager</cite> and selecting the <cite>PDGui (*.py)</cite> option in the file types selection.</p>
+<p>Once the file has been specified and read, the unit cell is shown and the frequencies found in the calculation file are reported in the output text boxes.</p>
+</section>
+<section id="settings-tab">
+<h3><a class="toc-backref" href="#id22">Settings Tab</a><a class="headerlink" href="#settings-tab" title="Permalink to this headline">¶</a></h3>
+<p>The <em>Settings Tab</em> affects the calculation of the frequencies and their intensities.</p>
+<figure class="align-default" id="id10">
+<span id="fig-settingstab"></span><a class="reference internal image-reference" href="_images/SettingsTab.png"><img alt="_images/SettingsTab.png" src="_images/SettingsTab.png" style="width: 545.6px; height: 774.4000000000001px;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 2 </span><span class="caption-text">The Settings Tab</span><a class="headerlink" href="#id10" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
+<p>The Eckart conditions control whether 3 modes at zero frequency due to translational invariance are projected out of the dynamical matrix.  By default the Eckart conditions are applied and the 3 modes are projected out.</p>
+<p>There is an option to set the sum of the Born charge matrices to zero.  By default this is not applied.</p>
+<dl class="simple">
+<dt>The atomic masses can be specified in a variety of ways.  They can be chosen from;</dt><dd><ul class="simple">
+<li><p>The average natural abundance</p></li>
+<li><p>The masses used by the QM/MM program</p></li>
+<li><p>The isotopic mass of the most abundant isotope</p></li>
+</ul>
+</dd>
+</dl>
+<p>If necessary the mass of each element can be edited separately by clicking on the mass concerned and entering a new number.</p>
+<p>The width (<span class="math notranslate nohighlight">\(\sigma\)</span>) of all the absorptions can be set using the <em>Lorentzian width(sigma)</em>  spin box.</p>
+<p>Finally the optical permittivity at zero frequency is given in the <em>Optical permittivity</em> table.  In some cases it is necessary to enter the optical permittivity by hand.  This can be done by clicking each element in the table which needs changing and typing the new matrix element.</p>
+<p>When a new output file is read in the atomic masses and the optical permittivity matrix are reset.</p>
+<p>The output table at the bottom of the tab shows the calculated frequencies and their intensities.  Transitions which do not contribute to the Infrared absorption are greyed out.  These transitions will not be used in later calculations.  From this table it is possible to remove or add transitions to the later calculations and it is also possible to change the width of individual transitions.</p>
+</section>
+<section id="scenario-tabs">
+<h3><a class="toc-backref" href="#id23">Scenario Tabs</a><a class="headerlink" href="#scenario-tabs" title="Permalink to this headline">¶</a></h3>
+<p>There are two sorts of scenario tab, one for powder calculations and one for single crystal calculations.  By default it is assumed that powder calculations are being performed.  There is a button ( <cite>Switch to crystal scenario</cite> or <cite>Switch to powder scenario</cite>) at the bottom of the tabs which allows the user to switch between the two.</p>
+<p>Scenarios can be added or removed using the push buttons at the bottom of each <em>Scenario Tab</em>.  When a new scenario is created the settings are copied from the current scenario.</p>
+<p>There can be more than one <em>Scenario Tab</em>.  Each one specifies a particular material, method or particle shape which will be used for the calculation of the effective medium or single crystal.  The results of the calculations will be shown in the <em>Plotting Tab</em>.</p>
+<section id="powder-scenarios">
+<h4><a class="toc-backref" href="#id24">Powder Scenarios</a><a class="headerlink" href="#powder-scenarios" title="Permalink to this headline">¶</a></h4>
+<p>For each powder scenario it is assumed that the size of the particle embedded in the matrix is small compared with the wavelength of light.</p>
+<figure class="align-default" id="id11">
+<span id="fig-scenariotab-powder"></span><a class="reference internal image-reference" href="_images/ScenarioTab-Powder.png"><img alt="_images/ScenarioTab-Powder.png" src="_images/ScenarioTab-Powder.png" style="width: 545.6px; height: 774.4000000000001px;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 3 </span><span class="caption-text">The Scenario Tab for a Powder</span><a class="headerlink" href="#id11" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
+<p>The support matrix into which the active dielectric material is dispersed can be selected from the <em>Support matrix</em> drop down menu.  The selected supporting material will change the density and permittivity shown in the respective text boxes.  The user can edit these values independently if necessary.
+The supporting medium may have bubbles of air trapped in the matrix.  For the case that polyethylene spheres are used to make the sample, experimental information indicates a relationship between the size of the spheres and size of the air inclusions.</p>
+<table class="colwidths-given styled-table docutils align-default" id="tab-air-bubbles">
+<caption><span class="caption-number">Table 3 </span><span class="caption-text">Size of air inclusion (bubbles) in polyethylene</span><a class="headerlink" href="#tab-air-bubbles" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="right-align no-left-divider no-right-divider head"><p>PE Sphere Diameter (micron)</p></th>
+<th class="right-align no-left-divider no-right-divider head"><p>Porosity (%)</p></th>
+<th class="right-align no-left-divider no-right-divider head"><p>Void radius (micron)</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="right-align no-left-divider no-right-divider"><p>60</p></td>
+<td class="right-align no-left-divider no-right-divider"><p>2.200</p></td>
+<td class="right-align no-left-divider no-right-divider"><p>2.000</p></td>
+</tr>
+<tr class="row-odd"><td class="right-align no-left-divider no-right-divider"><p>70</p></td>
+<td class="right-align no-left-divider no-right-divider"><p>0.000</p></td>
+<td class="right-align no-left-divider no-right-divider"><p>1.000</p></td>
+</tr>
+<tr class="row-even"><td class="right-align no-left-divider no-right-divider"><p>360</p></td>
+<td class="right-align no-left-divider no-right-divider"><p>0.000</p></td>
+<td class="right-align no-left-divider no-right-divider"><p>1.000</p></td>
+</tr>
+</tbody>
+</table>
+<p>The size of the air inclusions (bubbles) can be specified in the <em>Scenario Tab</em> along with the volume fraction.  If a non-zero value for the volume fraction of air voids is given the scattering due to the air inclusions is calculated before the effective medium calculation is performed.  The forward and backward scattering amplitudes for a single scatterer are calculated using the Mie method and then used to calculated the scattering using the Waterman-Truell approximation.</p>
+<p>The amount of dielectric material can be entered either as a mass fraction (in percent) or as a volume fraction (in percent).  If the matrix support density is changed the calculated mass fraction will be updated.  It is assumed that the volume fraction has precedence.  If an air void volume fraction is supplied then this has to be taken account of in the calculation of the volume and mass fractions.</p>
+<p>The calculation of the effective medium can be performed using a variety of methods which can be chosen from the <em>Method</em> drop down menu.  If the <em>Mie</em> method is chosen the user can enter the particles radius (microns).  The <em>Particle sigma</em> specifies the width of a log-normal distribution.  If the width is 0.0 no sampling of the distribution is performed.</p>
+<p>For effective medium theories other than the Mie method the particle shape can be specfied using the <em>Shape</em> pull down menu.  Possible shapes are <em>Sphere</em>, <em>Needle</em>, <em>Plate</em> and <em>Ellipsoid</em>.  For the cases of <em>Needle</em> and <em>Ellipsoid</em> the unique direction is specifed by a direction [abc] in lattice units.  In the case of <em>Plate</em> the unique direction is specifies as the normal to a plane (hkl) in reciprical lattice units.  If an <em>Ellipsoid</em> shape is used the eccentricy factor can be specified in the <em>Ellipsoid a/b eccentricity</em> text box.</p>
+<p>The plot in the <em>Plotting Tab</em> has a legend and the description used in the legend for each scenario can be set by filling out the text box associated with the <em>Scenario legend</em>.</p>
+</section>
+<section id="single-crystal-scenarios">
+<h4><a class="toc-backref" href="#id25">Single Crystal Scenarios</a><a class="headerlink" href="#single-crystal-scenarios" title="Permalink to this headline">¶</a></h4>
+<p>Single crystals are defined by a surface and can be either thin coherent films or thick slabs.  A thick slab assumes that the thickness is such that no radiation can be transmitted and all radiation is therefore reflected or absorbed.  As such only the reflectance has any meaning for thick slabs.</p>
+<figure class="align-default" id="id12">
+<span id="fig-scenariotab-singlecrystal"></span><a class="reference internal image-reference" href="_images/ScenarioTab-SingleCrystal.png"><img alt="_images/ScenarioTab-SingleCrystal.png" src="_images/ScenarioTab-SingleCrystal.png" style="width: 545.6px; height: 774.4000000000001px;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 4 </span><span class="caption-text">The Scenario Tab for a Single Crystal</span><a class="headerlink" href="#id12" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
+<p>The mode of calculation is selected at the top of the tab, followed by the definition of the crystal surface, the azimuthal angle and the angle incidence.</p>
+<p>This information is sufficient to link the crystal axis system with the laboratory frame.
+The laboratory axes are defined with Z- being the normal to the surface [hkl], and the incident and reflected beams lie in the XZ- plane, which means the laboratory Y- axis is perpendicular to the XZ- plane.
+The incident radiation is assumed to be at an angle <span class="math notranslate nohighlight">\(\theta\)</span> to the normal.
+p-polarised light lies in the XZ- plane and s-polarised light is parallel with the Y-axis.  The azimuthal angle <span class="math notranslate nohighlight">\(\phi\)</span> defines the rotation of the crystal around the Z-axis.
+To help understand the relationship between the crystal and laboratory co-ordinates the program outputs the direction of the lattice vectors in terms of the laboratory X-, Y- and Z- coordinates.</p>
+<p>The single crystal scenario also allows the specification of permittivities for the incident and substrate (in the case of thick slab this is not needed).  Finally from thin films the thickness of the film in nanometres is specified.</p>
+</section>
+</section>
+<section id="plotting-tab">
+<h3><a class="toc-backref" href="#id26">Plotting Tab</a><a class="headerlink" href="#plotting-tab" title="Permalink to this headline">¶</a></h3>
+<p>The <em>Plotting Tab</em> controls and plots the absorption and permittivity as a function of frequency calculated for each scenario present in the pdgui notebook.
+The plots available depends on the availability of powder and single crystal scenarios.</p>
+<figure class="align-default" id="id13">
+<span id="fig-plottingtab-powder"></span><a class="reference internal image-reference" href="_images/PlottingTab-Powder.png"><img alt="_images/PlottingTab-Powder.png" src="_images/PlottingTab-Powder.png" style="width: 545.6px; height: 774.4000000000001px;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 5 </span><span class="caption-text">The Plotting Tab Showing Powder Absorption</span><a class="headerlink" href="#id13" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
+<p>The minimum and maximum frequencies can be specified along with the frequency increment.  An effective medium theory calculation will be performed for each scenario at every frequency between the minimum and maxmimum frequencies at the interval specified.</p>
+<p>By default the calculation uses moles of unit cells to calculation the molar absorption coefficient.  This can be altered using the the ‘Molar definition’ pull down menu.  Options include <em>Unit cells</em>, <em>Atoms</em> and <em>Molecules</em>.  In the case of <em>Molecules</em> it is necessary to supply the number of atoms in a formula unit of the compound in the <em>Number of atoms per molecule</em> text box.</p>
+<p>The title of the plot can be supplied by entering it into the <em>Plot title</em> text box and the frequency units used for the plot can also be changed from <em>wavenumber</em> to <em>THz</em>.</p>
+<p>For powder scenarios the molar absorption, the absorption and the real or imaginary permittivity can be plotted.  Once a plot has been requested the calculation progress is shown in the progress bar.  Some settings can be changed without the whole plot being recalculated.</p>
+<p>For single crystal plots the crystal reflectance and transmittance for s and p polarised radiation can be plotted along with the absorptance which is defined in terms of the reflectance (R) and the transmittance (T) as math::<cite>1-R-T</cite>.
+For thick slabs only the transmittance is of any revelance.  For thin films the absorptance is useful as it removes some of the oscilations that occur in the transmittance or reflectance due to the film thickness.</p>
+<figure class="align-default" id="id14">
+<span id="fig-plottingtab-singlecrystal"></span><a class="reference internal image-reference" href="_images/PlottingTab-SingleCrystal.png"><img alt="_images/PlottingTab-SingleCrystal.png" src="_images/PlottingTab-SingleCrystal.png" style="width: 545.6px; height: 774.4000000000001px;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 6 </span><span class="caption-text">The Plotting Tab showing Single Crystal results</span><a class="headerlink" href="#id14" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
+<p>For the case of a thick slab, the permittivity of the incident can be specified, but the substrate permittivity is not used.  For the case of a thin film both permittivities are used.</p>
+<p>The title of the plot can be supplied by entering it into the <em>Plot title</em> text box and the frequency units used for the plot can also be changed from <em>wavenumber</em> to <em>THz</em>.  A default plot title is generated giving information about the type of plot being viewed.</p>
+</section>
+<section id="analysis-tab">
+<h3><a class="toc-backref" href="#id27">Analysis Tab</a><a class="headerlink" href="#analysis-tab" title="Permalink to this headline">¶</a></h3>
+<p>The <em>Analysis Tab</em> shows a breakdown of the phonon modes into molecular components or into internal and external modes.  The molecular structure of the unit cell is determined by the covalent radii of the atoms.  These can be speficied individually if needed.  The <em>Analysis Tab</em> shows the number of molecules that have been found in the analysis.</p>
+<figure class="align-default" id="id15">
+<span id="fig-analysistab"></span><a class="reference internal image-reference" href="_images/AnalysisTab.png"><img alt="_images/AnalysisTab.png" src="_images/AnalysisTab.png" style="width: 545.6px; height: 774.4000000000001px;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 7 </span><span class="caption-text">The Analysis Tab</span><a class="headerlink" href="#id15" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
+<p>The bar graph shows a break down of each normal mode in the chosen frequency range into either internal and external contributions or into molecular components.  The atom sizes and the molecular composition of the unit cell is displayed in the <em>3D Viewer Tab</em></p>
+</section>
+<section id="d-viewer-tab">
+<h3><a class="toc-backref" href="#id28">3D Viewer Tab</a><a class="headerlink" href="#d-viewer-tab" title="Permalink to this headline">¶</a></h3>
+<p>The <em>3D Viewer Tab</em> shows the unit cell of the system using the molecular information and atomic sizes from the <em>Analysis Tab</em>.</p>
+<p>The atomic displacement of each phonon can either be shown as arrows or as an animation.  The views and animations can be recorded in  .png and .mp4 files respectively.  If a .gif file is specified the animation is recorded but with reduced numbers of colours.  A series of cif files can also be generated which follows the motion of the mode being studied.</p>
+<figure class="align-default" id="id16">
+<span id="fig-viewertab"></span><a class="reference internal image-reference" href="_images/ViewerTab.png"><img alt="_images/ViewerTab.png" src="_images/ViewerTab.png" style="width: 545.6px; height: 774.4000000000001px;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 8 </span><span class="caption-text">The 3D Viewer Tab</span><a class="headerlink" href="#id16" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
+<p>As well as being able to change the phonon mode being analysed.  The colours and many settings in the visualiser can be adjusted from the settings tab.  The unit cell can be shown as a supercell by altering the a, b, c parameters in the settings tab.  Other parameters affecting the display can also be modified.</p>
+</section>
+<section id="fitter-tab">
+<h3><a class="toc-backref" href="#id29">Fitter Tab</a><a class="headerlink" href="#fitter-tab" title="Permalink to this headline">¶</a></h3>
+<p>The <em>Fitter Tab</em> imports an experimental spectrum.  The spectrum is stored in an Excel spreadsheet.  The spreadsheet should contain a single sheet with two columns.  The first column should be the frequency in <span class="math notranslate nohighlight">\(cm^{-1}\)</span> and the second should be the measured signal.  The signal can be molar absorption, absorption, real permittivity, imaginary permittivity, ATR absorbance or any of the single crystal propertie.  Once imported the experimental spectrum can be compared with the calculated spectrum.  The tab shows the frequencies contributing to the spectrum and allows the Lorentzian widths of the transitions to be altered.  The frequency range used for the display is the same as that used in the <em>plotting tab</em>.
+Indeed the calculated signal used for fitting is the same as that being shown in the <em>plotting tab</em>.
+At the top of the tab are some settings in a tabbed notebook.  The most important is the name of the Excel file containing the experimental spectrum.  In addition there are options to change the ‘Plot type’, include frequency scaling in any fitting, set the frequency scaling factor, set the number of iterations to be used when fitting, choose whether the plot should use indepent y-axes for the calculated and experimental spectra, set the method used to do the fitting and finally specifiy the spectral difference threshold.
+The spectrum is shown at the bottom of the tab and is recalculated when the <em>Replot</em> or <em>Replot with frequency shift</em> buttons are pressed.  The data type stored in the experimental spreadsheet is defined by the <em>Plot and data type</em> setting.  One of the settings options is the ability to remove a baseline from the experimental spectrum.
+If baseline removal is selected a Hodrick-Prescott filter is used. The value of the filter parameter is determined by the value in the <em>HP filter lambda</em> tab.  The actual value of lambda used in the filter is the value given in the tab raised by the power of 10.</p>
+<figure class="align-default" id="id17">
+<span id="fig-fitter"></span><a class="reference internal image-reference" href="_images/FitterTab.png"><img alt="_images/FitterTab.png" src="_images/FitterTab.png" style="width: 545.6px; height: 774.4000000000001px;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 9 </span><span class="caption-text">The Fitter Tab</span><a class="headerlink" href="#id17" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
+<p>After a replot the cross-correlation coefficient, current frequency scaling factor, the frequency shift needed to maximise that cross-correlation coefficient, and the root mean squared error between the calculated and experimental spectra are shown.  It is possible to apply a frequency scaling to the calculated spectrum. The <em>Replot with frequency shift</em> shows the calculated spectrum with the frequencies shifted by the shift calculated to maximise the cross-correlation coefficient.  Care must be taken in comparing the calculated and experimental spectra as different y-axes are used for each.</p>
+<p>It is also possible to automatically adjust the Lorentzian width factors with the <em>Perform fitting</em> button.  However experience with this option shows that it maybe better to adjust the peak heights manually by altering the sigma values.  At the moment only 20 iterations are performed for each press of the button.  If requested the frequency scaling factor can be adjust too.</p>
+<p>Two algorithms for performing the fitting are supported.  Either the cross-correlation coefficient can be maximised or the root mean squared error between the spectra can be minimised.  In the latter case the error is only calculated for signal strengths above the spectral difference threshold (which defaults to 0.05).</p>
+<p>A summary of the optional settings available in the <em>Fitter Tab</em> is shown below;</p>
+<table class="colwidths-given styled-table docutils align-default" id="fitter-tab-options">
+<caption><span class="caption-number">Table 4 </span><span class="caption-text">Fitter Tab options</span><a class="headerlink" href="#fitter-tab-options" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 75%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="left-align no-left-divider no-right-divider head"><p>Fitter options</p></th>
+<th class="left-align no-left-divider no-right-divider head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="left-align no-left-divider no-right-divider"><p>Experimental spectrum</p></td>
+<td class="left-align no-left-divider no-right-divider"><p>Provide a file with the experimental
+data. A return brings up a file manager</p></td>
+</tr>
+<tr class="row-odd"><td class="left-align no-left-divider no-right-divider"><p>Scenario</p></td>
+<td class="left-align no-left-divider no-right-divider"><p>Allows the user to choose which
+will be used in the fitting</p></td>
+</tr>
+<tr class="row-even"><td class="left-align no-left-divider no-right-divider"><p>Frequency scaling factor</p></td>
+<td class="left-align no-left-divider no-right-divider"><p>The calculated frequecnies are scaled</p></td>
+</tr>
+<tr class="row-odd"><td class="left-align no-left-divider no-right-divider"><p>No. of iterations</p></td>
+<td class="left-align no-left-divider no-right-divider"><p>Number of iterations for automatic
+fitting</p></td>
+</tr>
+<tr class="row-even"><td class="left-align no-left-divider no-right-divider"><p>Independent y-axes</p></td>
+<td class="left-align no-left-divider no-right-divider"><p>The calculated spectrum uses the left
+axis and the experimental the right</p></td>
+</tr>
+<tr class="row-odd"><td class="left-align no-left-divider no-right-divider"><p>Fitting type</p></td>
+<td class="left-align no-left-divider no-right-divider"><dl class="simple">
+<dt>Refers to the method used for automatically fitting</dt><dd><ul class="simple">
+<li><p>minimise x-correlation</p></li>
+<li><p>minimise spectral difference</p></li>
+</ul>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="row-even"><td class="left-align no-left-divider no-right-divider"><p>Optimise scaling</p></td>
+<td class="left-align no-left-divider no-right-divider"><p>Tick if frequency scaling is to be included in the
+automatic optimisation</p></td>
+</tr>
+<tr class="row-odd"><td class="left-align no-left-divider no-right-divider"><p>Spectral difference
+threshold</p></td>
+<td class="left-align no-left-divider no-right-divider"><p>Used if fitting type is minimise spectral difference</p></td>
+</tr>
+<tr class="row-even"><td class="left-align no-left-divider no-right-divider"><p>Baseline removal?</p></td>
+<td class="left-align no-left-divider no-right-divider"><p>Tick to request that the Hodrick-Prescott (HP)
+method is used to remove a sloping baseline
+in the experimental data</p></td>
+</tr>
+<tr class="row-odd"><td class="left-align no-left-divider no-right-divider"><p>HP filter Lambda</p></td>
+<td class="left-align no-left-divider no-right-divider"><p>Provide the lambda value in the HP method</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="scripting">
+<h3><a class="toc-backref" href="#id30">Scripting</a><a class="headerlink" href="#scripting" title="Permalink to this headline">¶</a></h3>
+<p>Nearly all aspects of the program can be accessed through scripting.
+The script is provided by the <em>-script</em> command line option or by choosing the PDGui (*.py) file type from the file manager on the <em>Main tab</em>.
+A very useful feature is the ability to save a script which reflects the current state of the program.  This is available from the <em>Main tab</em>.</p>
+<p>There are several things to be aware of when using this option to read in settings from one calculation into another.
+The file will contain parameters which have been calculated whilst reading the input file.
+For example the optical permittivities are calculated and stored in this file.
+If the file is then used on another DFT calculation then the optical permittivity for the settings file will be used and not the one which should have been calculated.  This is also true if masses have been defined in once calculation, they may not be appropriate for a different molecule. To use the script for other calculations but with the same scenarios the optical permittivities should be removed and any mass specifications removed.</p>
+</section>
+<section id="parallelization-and-threads">
+<h3><a class="toc-backref" href="#id31">Parallelization and threads</a><a class="headerlink" href="#parallelization-and-threads" title="Permalink to this headline">¶</a></h3>
+<p>To improve the performance of the program python parallelization has been used to parallelize over the frequencies, shapes and methods. By default this parallelization spawns additional Python executables, depending on the number of cores available.</p>
+<p>In addition to this form of parallelization the NUMPY library can use multi-threaded BLAS. NUMPY can be compiled with several different BLAS libraries, including; MKL (from Intel), OPENBLAS and ATLAS, or indeed no optimized BLAS library is necessary. To explore the BLAS version compiled with your version of NUMPY please use the test_numpy_1, test_numpy_2 and test_numpy_3 scripts included in the Python/ subdirectory. If you are using MKL or OPENBLAS, the number of threads being used needs to be set with the MKL_NUM_THREADS or OPENBLAS _NUM_THREADS environment variable (sometimes OMP_NUM_THREADS is also used). Use the test routines to determine the optimum for your system. Experience indicates that no performance benefit is obtained with more than two threads.</p>
+<p>In the case of Phonopy the dynamical matrix is read from a yaml file. This has been found to be very slow unless the C parser is used. If the C parser is not available a warning is issued and the program reverts back to the Python parser.</p>
+<p>Finally the use of non-standard BLAS libraries seems to cause problems with the affinity settings for the multiprocessing. It has been noticed that the parallel processes can all end up executing on the same processor. In order to prevent this, before executing the pdielec and preader scripts it may be necessary to include;</p>
+<blockquote>
+<div><p>export OPENBLAS_MAIN_FREE=1</p>
+</div></blockquote>
+<p>For some reason this also works if the MKL library is being used.</p>
+<p>There have been issues in running PDielec on Catalina, MacOS.
+This appears to be due to the multiprocessing features of Python not working as expected on this operating system.
+A work around is to use;</p>
+<blockquote>
+<div><p>pdgui -threads -cpu 1</p>
+</div></blockquote>
+<p>This runs the program on a single processor using the threading library for multiprocessing.
+Sometimes it is more convenient to set these using the environment.  Two environment variables are read befor any command line options are processed;</p>
+<blockquote>
+<div><p>export PDIELEC_NUM_PROCESSORS=4</p>
+</div></blockquote>
+<p>will run <cite>pdgui</cite> on 4 processors.  By default the number of processors is determined by interrogating the computer.  This acheived by setting the value of PDIELEC_NUM_PROCESSORS to 0.</p>
+<blockquote>
+<div><p>export PDIELEC_THREADING=TRUE</p>
+</div></blockquote>
+<p>will run <cite>pdgui</cite> using the threading multiprocessing options.</p>
+</section>
+<section id="performance">
+<span id="id1"></span><h3><a class="toc-backref" href="#id32">Performance</a><a class="headerlink" href="#performance" title="Permalink to this headline">¶</a></h3>
+<p>PDielec has been written to make use of multiprocessor computers. On an 8 processor (16 thread) machine using multiprocessing the speed-up soon slows down after a couple of processors, as there is a lot of the code which is not parallelised .  Threading does not appear to be an efficient way of running <cite>PDielec</cite> and it is only recommended if the default multiprocessing options is failing for some reason.
+The speedup is calculated by running the benchmark suite (make benchmark), which consists of 30 different examples of using the code and is therefore representative of the type of calculations performed.</p>
+<figure class="align-default" id="id18">
+<span id="fig-speedup"></span><a class="reference internal image-reference" href="_images/SpeedUp.png"><img alt="_images/SpeedUp.png" src="_images/SpeedUp.png" style="width: 399.6px; height: 318.6px;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 10 </span><span class="caption-text">Speed-up on a eight processor workstation</span><a class="headerlink" href="#id18" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
+<p>Using the same suite of benchmarks on an 8 processor Intel core i9-9900K running at 3.6GHz took 110s.</p>
+<p>On a Windows laptop with an Intel Skylake i7-650, which has 2 processors running at 2.5GHz, the benchmark ran in 1632 seconds.  On the same muchine but running the Linux operating system the benchmark suite took 346s, making the impact of Windows on performance a substantial four times slower.</p>
+</section>
+</section>
+<section id="preader">
+<h2><a class="toc-backref" href="#id33">PReader</a><a class="headerlink" href="#preader" title="Permalink to this headline">¶</a></h2>
+<p>preader is a ‘helper’ program which uses the underlying modules of PDielec to read output files and summarise the results of various MM/QM packages.  The program can be used to perform some straightforward calculations.  For instance projection of any remaining centre of mass motion of the crystal can be performed to make sure that there are three zero frequencies.  Also the masses used in the calculation of the dynamical matrix can be altered.
+Unlike PDGui it is not necessary to have performed a full calculation of the dynamical matrix.  In the majority of cases preader will read geometry optimisation runs.</p>
+<section id="command-options">
+<h3><a class="toc-backref" href="#id34">Command options</a><a class="headerlink" href="#command-options" title="Permalink to this headline">¶</a></h3>
+<p>Examples of data sets for these packages are included with the distribution and can be found in the Examples/’Package’/preader directory. The program is run from the command line. There are several command options and these are summarized below. Those options which may be repeated are indicated by a ✔ .</p>
+<blockquote>
+<div><dl class="simple">
+<dt>-program program</dt><dd><p>Program can be “abinit”,  “castep”, “crystal”, “gulp”, “qe”, “experiment” or “vasp” and specifies the program which generated the results to be analysed</p>
+</dd>
+<dt>-neutral</dt><dd><p>Impose neutrality on the Born charge matrices</p>
+</dd>
+<dt>-nocalculation</dt><dd><p>No calculations are performed.  This results in a single line of output with just information from the program.  If -eckart, -mass, -masses, -neutral or -crystal have -hessian crystal have been specified they will be ignored</p>
+</dd>
+<dt>-eckart</dt><dd><p>Translational modes are  projected out of the hessian before diagonalisation</p>
+</dd>
+<dt>-hessian symm</dt><dd><p>The hessian can be symmetrised in one of two ways; either “crystal” or  “symm”.  In the case of “crystal” the  hessian is symmetrised using the same algorithm as Crystal14.</p>
+</dd>
+<dt>-masses average</dt><dd><p>The element mass_definition can be either “program”, “average” or “isotopic”, meaning that the masses used in the calculation of the frequencies are either taken from the QM program or are the average of the isotope abundances or are the most abundant isotope mass.</p>
+</dd>
+<dt>-mass element mass</dt><dd><p>The atomic mass of the element is set to mass.  This can be used to explore the effect of isotope substitution on the calculated frequencies</p>
+</dd>
+</dl>
+</div></blockquote>
+</section>
+<section id="examples">
+<h3><a class="toc-backref" href="#id35">Examples</a><a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>preader -program vasp `find . -name OUTCAR` &gt; results.csv
+</pre></div>
+</div>
+<p>This reads all the VASP OUTCAR files in the current and any of its subdirectories and summarises the results to results.csv.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>preader -program castep -eckart `find . -name \*.castep` &gt; results.csv
+</pre></div>
+</div>
+<p>This reads all the castep output files in the current and any of its subdirectories and summarises the results to results.csv.  For each file the centre of mass motion of the crystal is projected.  The results file contains both the unprojected and the projected results.</p>
+<p>There are examples of preader being used in the Examples/’Package’/preader subdirectories of the distribution of PDielec.</p>
+</section>
+</section>
+<section id="vibanalysis">
+<h2><a class="toc-backref" href="#id36">vibanalysis</a><a class="headerlink" href="#vibanalysis" title="Permalink to this headline">¶</a></h2>
+<p>The vibanalysis command provides an interface the vibAnalysis package of Philipe Teixeira.  This package provides Vibrational Mode Decomposition of the phonon modes using a variety of methods including; Vibrational Mode Projection (VMP), Vibrational Mode Linear Decomposition (VMLD) and Vibrational Mode Automatic Relevance Determination (VMARD).  By default VMARD is used.</p>
+<p>The package options can be determined using;</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">vibanalysis</span> <span class="n">OUTCAR</span>
+<span class="n">vibanalysis</span> <span class="n">phonon</span><span class="o">.</span><span class="n">castep</span>
+</pre></div>
+</div>
+<p>Which will analyse a VASP and a CASTEP phonon calculation output to produce a summary in the files OUTCAR.nma and phonon.nma respectively.</p>
+</section>
+<section id="mm-qm-interfaces">
+<h2><a class="toc-backref" href="#id37">MM/QM Interfaces</a><a class="headerlink" href="#mm-qm-interfaces" title="Permalink to this headline">¶</a></h2>
+<p>The packages have interfaces to five solid state QM codes, VASP <span id="id2">[<a class="reference internal" href="zreferences.html#id56">1</a>]</span>, CASTEP <span id="id3">[<a class="reference internal" href="zreferences.html#id62">2</a>]</span>, CRYSTAL14 <span id="id4">[<a class="reference internal" href="zreferences.html#id15">3</a>]</span>, Abinit <span id="id5">[<a class="reference internal" href="zreferences.html#id14">4</a>]</span>, Quantum Espresso <span id="id6">[<a class="reference internal" href="zreferences.html#id13">5</a>]</span> and Phonopy <span id="id7">[<a class="reference internal" href="zreferences.html#id12">6</a>]</span>.  In addition an interface is available for GULP <span id="id8">[<a class="reference internal" href="zreferences.html#id11">7</a>]</span> which is a force field based solid state code. Finally an interface has been written to and ‘experiment’ file format which allows the preparation of a user defined file specifying the permittivities and absorption frequencies. The origin of the dataset(s) used for processing is determined by a command line switch, -program. An outline of the interfaces to these codes is given here.
+The package used for the calculation is described by the -program option. In addition a file name is given which contains the output which will be processed by PDielec.</p>
+<section id="vasp">
+<h3><a class="toc-backref" href="#id38">VASP</a><a class="headerlink" href="#vasp" title="Permalink to this headline">¶</a></h3>
+<p>The name provided on the command line is an OUTCAR file. The OUTCAR is read by PDielec to determine the unit cell, atomic masses, frequencies, normal modes, Born charge tensors and optical permittivity. The VASP run can be a DFPT or numerical calculation of the response.</p>
+</section>
+<section id="castep">
+<h3><a class="toc-backref" href="#id39">CASTEP</a><a class="headerlink" href="#castep" title="Permalink to this headline">¶</a></h3>
+<p>The name provided on the command line is the seedname for the calculation. The corresponding seedname.castep file in the current directory is read and processed to determine the unit cell, atomic masses, optical permittivity and born charge tensors. The normal modes and their frequencies are determined from the seedname.phonon file. The CASTEP run needs to be a DFPT (phonon+efield) task.</p>
+</section>
+<section id="crystal">
+<h3><a class="toc-backref" href="#id40">CRYSTAL</a><a class="headerlink" href="#crystal" title="Permalink to this headline">¶</a></h3>
+<p>The name on the command line is a file ending in .out, containing the output of a CRYSTAL14 run. The contents of this file alone are sufficient to provide the unit cell, atomic masses, frequencies, normal modes and Born charge tensors. However, the number of significant figures for the normal modes is not sufficient for an accurate calculation and it is therefore recommended that the HESSFREQ.DAT and BORN.DAT files are also made available. If they are present in the directory where PDielec is run from, it uses these files to calculate the Born charge tensors, frequencies and normal modes. The CRYSTAL calculation needs to be a frequency calculation (FREQCALC) with the infrared intensity (INTENS) selected. The default algorithm does not calculate the optical permittivity, so this needs to be provided on the command line. However, if the CPHF or CPKS algorithm is used for the frequency calculation, the optical permittivity is calculated and PDielec will automatically read it from the output file. By default CRYSTAL projects out the pure translational modes of the system before calculating the frequencies, this can also done by the PDielec package. Small differences in the calculated frequencies between the CRYSTAL program and PDielec have been observed. These have been found to be due to a slightly different method for symmetrising the 2<sup>nd</sup> derivative matrix, because of this an optional directive “-hessian crystal” can be used to indicate that PDielec should use the same symmetrisation as CRYSTAL14.</p>
+</section>
+<section id="abinit">
+<h3><a class="toc-backref" href="#id41">ABINIT</a><a class="headerlink" href="#abinit" title="Permalink to this headline">¶</a></h3>
+<p>The output file should come from a run containing three datasets. One to calculate the wavefunction at the optimized geometry, one to calculate the field perturbations and one to calculate the second derivatives. Examples of input files and output files are available with the distribution.</p>
+</section>
+<section id="qe">
+<h3><a class="toc-backref" href="#id42">QE</a><a class="headerlink" href="#qe" title="Permalink to this headline">¶</a></h3>
+<p>The output file is the dynamical matrix file, specified by “filedyn” in a run of the quantum espresso phonon package. Examples of input and output files are given in the PDielec distribution</p>
+</section>
+<section id="phonopy">
+<h3><a class="toc-backref" href="#id43">PHONOPY</a><a class="headerlink" href="#phonopy" title="Permalink to this headline">¶</a></h3>
+<p>Phonopy calculates the dynamical matrix through numerical differentiation. It has interfaces to several programs, although PDielec has only used the VASP interface. In principle other interfaces could be used. The second parameter for the –program directive is the PHONOPY interface that was used to calculate the forces. Typically these would be generated by performing;</p>
+<blockquote>
+<div><p>phonopy –d –dim=”1 1 1”</p>
+</div></blockquote>
+<p>to calculate the displacements in a set of POSCAR-* files. After running VASP a single point VASP calculation for each displacement. The FORCE_SETS file can then be calculated using for example;</p>
+<blockquote>
+<div><p>phonopy –f DISP-*/vasprun.xml</p>
+</div></blockquote>
+<p>where the DISP-* directories are where the VASP calculation was performed. Finally a dynamical is written out using;</p>
+<blockquote>
+<div><p>phonopy –dim=”1 1 1” –qpoints=”0 0 0” –writedm</p>
+</div></blockquote>
+<p>To calculate the infrared spectrum PDielec needs the Born charges for the atoms in the unit cell and these can be calculated using VASP and the optimized geometry of the unit cell. The OUTCAR file from this calculation can be copied to the current directory and renamed OUTCAR.born</p>
+</section>
+<section id="gulp">
+<h3><a class="toc-backref" href="#id44">GULP</a><a class="headerlink" href="#gulp" title="Permalink to this headline">¶</a></h3>
+<p>The name on the command line is a file ending in .gout, containing the output of a GULP run. The contents of this file alone are sufficient to provide the unit cell, atomic masses, frequencies, normal modes, Born charge tensors and optical permittivity. Because GULP only writes out the Born charge matrices for the asymmetric unit, it is necessary to run a frequency calculation using P1 symmetry and a complete unit cell. The key words; nosymm, phonon, intensity, eigen and cart are recommended for the GULP calculation. In the case that no shells are used in the calculation the optical permittivity is not available in the output and it is necessary to provide it.</p>
+</section>
+</section>
+<section id="experimental-file-format">
+<h2><a class="toc-backref" href="#id45">Experimental File Format</a><a class="headerlink" href="#experimental-file-format" title="Permalink to this headline">¶</a></h2>
+<p>There is a way of reading in experimental or calculated permittivities and calculating the infrared optical behaviour of the material.  The uses the <em>experimental</em> file format which by default is assumed to be associated with files with <em>.exp</em> extention.
+There are some significant limitations in providing the information in the manner.  Specifically as there is no Dynamical Matrix the normal modes are not known, so they will not be visible in the <em>Viewer tab</em>.   There may be little information about specific modes for the <em>Settings tab</em>.</p>
+<p>The general format of an experimental file is best shown by an example;:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">lattice</span>
+  <span class="mf">5.027782</span>
+  <span class="mf">0.866025403784439</span>  <span class="o">-</span><span class="mf">0.500000000000000</span>   <span class="mf">0.000000000000000</span>
+  <span class="mf">0.000000000000000</span>   <span class="mf">1.000000000000000</span>   <span class="mf">0.000000000000000</span>
+  <span class="mf">0.000000000000000</span>   <span class="mf">0.000000000000000</span>   <span class="mf">1.097684415337773</span>
+<span class="n">species</span> <span class="mi">2</span>
+  <span class="n">Si</span> <span class="mf">0.0</span>
+   <span class="n">O</span> <span class="mf">0.0</span>
+<span class="n">unitcell</span> <span class="mi">9</span>
+  <span class="n">Si</span> <span class="mf">0.000000000000000</span>   <span class="mf">0.477290000000000</span>   <span class="mf">0.333333333333333</span>
+  <span class="n">Si</span> <span class="mf">0.477290000000000</span>   <span class="mf">0.000000000000000</span>   <span class="mf">0.666666666666667</span>
+  <span class="n">Si</span> <span class="mf">0.522710000000000</span>   <span class="mf">0.522710000000000</span>   <span class="mf">0.000000000000000</span>
+   <span class="n">O</span> <span class="mf">0.160740000000000</span>   <span class="mf">0.745703000000000</span>   <span class="mf">0.537333670000000</span>
+   <span class="n">O</span> <span class="mf">0.584963000000000</span>   <span class="mf">0.839260000000000</span>   <span class="mf">0.870667003333333</span>
+   <span class="n">O</span> <span class="mf">0.415037000000000</span>   <span class="mf">0.254297000000000</span>   <span class="mf">0.795999663333333</span>
+   <span class="n">O</span> <span class="mf">0.745703000000000</span>   <span class="mf">0.160740000000000</span>   <span class="mf">0.462666330000000</span>
+   <span class="n">O</span> <span class="mf">0.839260000000000</span>   <span class="mf">0.584963000000000</span>   <span class="mf">0.129332996666667</span>
+   <span class="n">O</span> <span class="mf">0.254297000000000</span>   <span class="mf">0.415037000000000</span>   <span class="mf">0.204000336666667</span>
+<span class="n">epsinf</span>
+<span class="mf">2.296</span> <span class="mf">0.0</span>   <span class="mf">0.0</span>
+<span class="mf">0.0</span>   <span class="mf">2.296</span> <span class="mf">0.0</span>
+<span class="mf">0.0</span>   <span class="mf">0.0</span>   <span class="mf">2.334</span>
+<span class="c1"># model taken from Winta, C. J., Wolf, M., &amp; Paarmann, A. (2019) Physical Review B, 99(14), 144308</span>
+<span class="n">fpsq</span>
+<span class="c1"># 1.5K Data</span>
+<span class="c1"># Omega(TO) Gamma(TO) Omega(LO) Gamma(LO) (&lt;2 in Table is taken to be 1.0)</span>
+<span class="n">xx</span> <span class="mi">6</span>
+<span class="c1"># E Phonon modes</span>
+  <span class="mf">391.5</span>     <span class="mf">1.0</span>        <span class="mf">403.0</span>    <span class="mf">1.0</span>
+  <span class="mf">454.0</span>     <span class="mf">2.6</span>        <span class="mf">510.5</span>    <span class="mf">1.0</span>
+  <span class="mf">695.9</span>     <span class="mf">4.9</span>        <span class="mf">698.4</span>    <span class="mf">4.0</span>
+  <span class="mf">797.2</span>     <span class="mf">4.8</span>        <span class="mf">810.0</span>    <span class="mf">4.3</span>
+ <span class="mf">1063.7</span>     <span class="mf">6.1</span>       <span class="mf">1230.7</span>    <span class="mf">8.2</span>
+ <span class="mf">1157.2</span>     <span class="mf">6.2</span>       <span class="mf">1154.9</span>    <span class="mf">6.1</span>
+<span class="n">yy</span> <span class="mi">6</span>
+  <span class="mf">391.5</span>     <span class="mf">1.0</span>        <span class="mf">403.0</span>    <span class="mf">1.0</span>
+  <span class="mf">454.0</span>     <span class="mf">2.6</span>        <span class="mf">510.5</span>    <span class="mf">1.0</span>
+  <span class="mf">695.9</span>     <span class="mf">4.9</span>        <span class="mf">698.4</span>    <span class="mf">4.0</span>
+  <span class="mf">797.2</span>     <span class="mf">4.8</span>        <span class="mf">810.0</span>    <span class="mf">4.3</span>
+ <span class="mf">1063.7</span>     <span class="mf">6.1</span>       <span class="mf">1230.7</span>    <span class="mf">8.2</span>
+ <span class="mf">1157.2</span>     <span class="mf">6.2</span>       <span class="mf">1154.9</span>    <span class="mf">6.1</span>
+<span class="n">zz</span> <span class="mi">4</span>
+<span class="c1"># A2 Phonon modes</span>
+  <span class="mf">360.7</span>     <span class="mf">1.0</span>        <span class="mf">384.8</span>    <span class="mf">1.0</span>
+  <span class="mf">497.9</span>     <span class="mf">3.1</span>        <span class="mf">553.6</span>    <span class="mf">2.8</span>
+  <span class="mf">773.7</span>     <span class="mf">5.4</span>        <span class="mf">789.9</span>    <span class="mf">6.3</span>
+ <span class="mf">1073.0</span>     <span class="mf">6.2</span>       <span class="mf">1238.7</span>   <span class="mf">12.4</span>
+</pre></div>
+</div>
+<p>The file starts with a definition of the lattice, the first number being a lattice constant followed by three lines specifying the a, b, and c directions of the unit-cell.</p>
+<p>The next directive species the species and their masses, by default PDGui uses its own internal mass scheme, so unless otherwise required these masses will be overwritten.</p>
+<p>The <em>unitcell</em> directive specifies the number of atoms in the unit-cell and their fractional coordinates.</p>
+<p>The <em>epsinf</em> directive gives the values of the <span class="math notranslate nohighlight">\(\epsilon_{\infty}\)</span> tensor</p>
+<p>Finally a model for the specification of the frequency dependent perittivity is given.  In this case the four parameter semi-quantum model (fpsq)is employed.  Each diagonal component of the tensor is specified by the number of contributions and then each contribution provides the TO frequency and its <span class="math notranslate nohighlight">\(\gamma\)</span> followed by the same for the LO frequency (all frequencies are in cm-1. Full details of each permittivity model available are shown below.</p>
+<section id="constant-model-constant">
+<h3><a class="toc-backref" href="#id46">Constant model (constant)</a><a class="headerlink" href="#constant-model-constant" title="Permalink to this headline">¶</a></h3>
+<p>The constant model defines a frequency independent permittivity.  The data for such a model is shown below.:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">constant</span>
+<span class="mf">2.0</span><span class="o">+</span><span class="mf">0.1</span><span class="n">j</span> <span class="mf">0.0</span>      <span class="mf">0.0</span>
+<span class="mf">0.0</span>      <span class="mf">2.0</span><span class="o">+</span><span class="mf">0.1</span><span class="n">j</span> <span class="mf">0.0</span>
+<span class="mf">0.0</span>      <span class="mf">0.0</span>      <span class="mf">2.0</span><span class="o">+</span><span class="mf">0.1</span><span class="n">j</span>
+</pre></div>
+</div>
+<p>This would specify an isotropic permittivity with some absorption.</p>
+</section>
+<section id="fpsq-model-fpsq">
+<h3><a class="toc-backref" href="#id47">FPSQ model (fpsq)</a><a class="headerlink" href="#fpsq-model-fpsq" title="Permalink to this headline">¶</a></h3>
+<p>The fpsq model defines a frequency dependent permittivity using the Four Parameter Semi-Quantum model.  An example of the data for such a model is shown below.:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fpsq</span>
+<span class="n">xx</span> <span class="mi">6</span>
+<span class="c1"># E Phonon modes</span>
+<span class="c1"># Omega(TO) Gamma(TO) Omega(LO) Gamma(LO)</span>
+  <span class="mf">391.5</span>     <span class="mf">1.0</span>        <span class="mf">403.0</span>    <span class="mf">1.0</span>
+  <span class="mf">454.0</span>     <span class="mf">2.6</span>        <span class="mf">510.5</span>    <span class="mf">1.0</span>
+  <span class="mf">695.9</span>     <span class="mf">4.9</span>        <span class="mf">698.4</span>    <span class="mf">4.0</span>
+  <span class="mf">797.2</span>     <span class="mf">4.8</span>        <span class="mf">810.0</span>    <span class="mf">4.3</span>
+ <span class="mf">1063.7</span>     <span class="mf">6.1</span>       <span class="mf">1230.7</span>    <span class="mf">8.2</span>
+ <span class="mf">1157.2</span>     <span class="mf">6.2</span>       <span class="mf">1154.9</span>    <span class="mf">6.1</span>
+<span class="n">yy</span> <span class="mi">6</span>
+<span class="c1"># E Phonon modes</span>
+<span class="c1"># Omega(TO) Gamma(TO) Omega(LO) Gamma(LO)</span>
+  <span class="mf">391.5</span>     <span class="mf">1.0</span>        <span class="mf">403.0</span>    <span class="mf">1.0</span>
+  <span class="mf">454.0</span>     <span class="mf">2.6</span>        <span class="mf">510.5</span>    <span class="mf">1.0</span>
+  <span class="mf">695.9</span>     <span class="mf">4.9</span>        <span class="mf">698.4</span>    <span class="mf">4.0</span>
+  <span class="mf">797.2</span>     <span class="mf">4.8</span>        <span class="mf">810.0</span>    <span class="mf">4.3</span>
+ <span class="mf">1063.7</span>     <span class="mf">6.1</span>       <span class="mf">1230.7</span>    <span class="mf">8.2</span>
+ <span class="mf">1157.2</span>     <span class="mf">6.2</span>       <span class="mf">1154.9</span>    <span class="mf">6.1</span>
+<span class="n">zz</span> <span class="mi">4</span>
+<span class="c1"># A2 Phonon modes</span>
+<span class="c1"># Omega(TO) Gamma(TO) Omega(LO) Gamma(LO)</span>
+  <span class="mf">360.7</span>     <span class="mf">1.0</span>        <span class="mf">384.8</span>    <span class="mf">1.0</span>
+  <span class="mf">497.9</span>     <span class="mf">3.1</span>        <span class="mf">553.6</span>    <span class="mf">2.8</span>
+  <span class="mf">773.7</span>     <span class="mf">5.4</span>        <span class="mf">789.9</span>    <span class="mf">6.3</span>
+ <span class="mf">1073.0</span>     <span class="mf">6.2</span>       <span class="mf">1238.7</span>   <span class="mf">12.4</span>
+</pre></div>
+</div>
+<p>The model only allows for a diagonal permittivity tensor and each component of the tensor specified requires the number of terms in the expansion to the specified.  Each component of the permittivity tensor is generated using the following formula;</p>
+<div class="math notranslate nohighlight" id="equation-eq-fpsq">
+<span class="eqno">(1)<a class="headerlink" href="#equation-eq-fpsq" title="Permalink to this equation">¶</a></span>\[ \epsilon (\omega )=\epsilon _{\infty}\prod_{j} \frac{\Omega^2_{LO_j}-\omega ^2-i\gamma _{LO_j}\omega }{\Omega^2_{TO_j}-\omega ^2-i\gamma _{TO_j}\omega}\]</div>
+</section>
+<section id="drude-lorentz-model-drude-lorentz">
+<h3><a class="toc-backref" href="#id48">Drude-Lorentz model (drude-lorentz)</a><a class="headerlink" href="#drude-lorentz-model-drude-lorentz" title="Permalink to this headline">¶</a></h3>
+<p>The drude-lorentz model defines a frequency dependent permittivity.  An example of the data for such a model describing MgO is shown below.:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">drude</span><span class="o">-</span><span class="n">lorentz</span>
+<span class="n">xx</span> <span class="mi">2</span>
+<span class="c1"># T Phonon modes</span>
+<span class="c1"># Frequency    Strength  Gamma</span>
+  <span class="mf">413.7</span>           <span class="mf">1050.0</span>  <span class="mf">22.2</span>
+  <span class="mf">652.2</span>             <span class="mf">90.0</span>  <span class="mf">64.6</span>
+<span class="n">yy</span> <span class="mi">2</span>
+  <span class="mf">413.7</span>           <span class="mf">1050.0</span>  <span class="mf">22.2</span>
+  <span class="mf">652.2</span>             <span class="mf">90.0</span>  <span class="mf">64.6</span>
+<span class="n">zz</span> <span class="mi">2</span>
+  <span class="mf">413.7</span>           <span class="mf">1050.0</span>  <span class="mf">22.2</span>
+  <span class="mf">652.2</span>             <span class="mf">90.0</span>  <span class="mf">64.6</span>
+</pre></div>
+</div>
+<p>The model only allows for a diagonal permittivity tensor and each component of the tensor specified requires the number of terms in the expansion to the specified.  Each component of the permittivity tensor is generated using the following formula;</p>
+<div class="math notranslate nohighlight" id="equation-eq-drude">
+<span class="eqno">(2)<a class="headerlink" href="#equation-eq-drude" title="Permalink to this equation">¶</a></span>\[ \epsilon (\omega )=\epsilon _{\infty}\sum{j} \frac{\Omega^2_{LO_j}-\omega ^2-i\gamma _{LO_j}\omega }{\Omega^2_{TO_j}-\omega ^2-i\gamma _{TO_j}\omega}\]</div>
+</section>
+</section>
+<section id="the-format-of-the-excel-spreadsheet">
+<h2><a class="toc-backref" href="#id49">The Format of the Excel Spreadsheet</a><a class="headerlink" href="#the-format-of-the-excel-spreadsheet" title="Permalink to this headline">¶</a></h2>
+<p>The Excel spread sheet which can be written by the programs contains details of the system being anaylysed, a list of the scenario settings and tables of absorption, permittivity, reflection and transmission.
+The spreedsheet is devided into different sheets;</p>
+<ul class="simple">
+<li><dl class="simple">
+<dt><strong>Main</strong></dt><dd><p>This stores the information concerning the file that is being analysed and the program associated with the output.  A list of the frequencies read in from the output file is given too.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>Settings</strong></dt><dd><p>The information here comes from the settings tab.  Masses, permittivities and the frequencies which will be used in subsequent calculations.  These frequencies can include corrections to the dynamical matrix to project out translational modes, corrections to the Born charges to ensure they sum to zero and changes to the masses of the atoms.  Along with the frequencies the intensities, integrated absorption and absorption maximum are given.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>Analysis</strong></dt><dd><p>The analysis of the vibrational modes into molecular, internal and external contributions is summarised here.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>Scenarios</strong></dt><dd><p>A complete list of the settings for every scenario used in the calculation is given.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>Powder Molar Absorption (cells)</strong></dt><dd><p>The molar absorption in moles of cell is given as a function of frequency for each powder scenario.  The units are <span class="math notranslate nohighlight">\(L mol^{-1} cm^{-1}\)</span>.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>Powder Absorption</strong></dt><dd><p>The absorption for each powder scenario is tabulated as a function frequency.  The units are <span class="math notranslate nohighlight">\(cm^{-1}\)</span></p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>Powder Real Permittivity</strong></dt><dd><p>The real component of the complex permittivity for each powder scenario is tabulated as a function frequency.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>Powder Imaginary Permittivity</strong></dt><dd><p>The imaginary component of the complex permittivity for each powder scenario is tabulated as a function frequency.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>Powder ATR Reflectance</strong></dt><dd><p>The extinction coefficient associated with the attenuated total reflectance for each powder scenario is tabulated as a function frequency.  See <a class="reference internal" href="theory.html#atr-theory"><span class="std std-ref">Calculation of ATR Extinction Spectra</span></a> for more details.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>Crystal R_p</strong></dt><dd><p>The P polarised component of the reflectance for each single crystal scenario is tabulated as a function of frequency.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>Crystal R_s</strong></dt><dd><p>The S polarised component of the reflectance for each single crystal scenario is tabulated as a function of frequency.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>Crystal T_p</strong></dt><dd><p>The P polarised component of the transmittance for each single crystal scenario is tabulated as a function of frequency.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>Crystal T_s</strong></dt><dd><p>The S polarised component of the transmittance for each single crystal scenario is tabulated as a function of frequency.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>Real Crystal Permittivity</strong></dt><dd><p>The real components of the crystal permittivity tensor are tabulated as a function of frequency.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>Imag Crystal Permittivity</strong></dt><dd><p>The imaginary components of the crystal permittivity tensor are tabulated as a function of frequency.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Software components</a><ul>
+<li><a class="reference internal" href="#pdgui">PDGui</a><ul>
+<li><a class="reference internal" href="#main-tab">Main Tab</a></li>
+<li><a class="reference internal" href="#settings-tab">Settings Tab</a></li>
+<li><a class="reference internal" href="#scenario-tabs">Scenario Tabs</a><ul>
+<li><a class="reference internal" href="#powder-scenarios">Powder Scenarios</a></li>
+<li><a class="reference internal" href="#single-crystal-scenarios">Single Crystal Scenarios</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#plotting-tab">Plotting Tab</a></li>
+<li><a class="reference internal" href="#analysis-tab">Analysis Tab</a></li>
+<li><a class="reference internal" href="#d-viewer-tab">3D Viewer Tab</a></li>
+<li><a class="reference internal" href="#fitter-tab">Fitter Tab</a></li>
+<li><a class="reference internal" href="#scripting">Scripting</a></li>
+<li><a class="reference internal" href="#parallelization-and-threads">Parallelization and threads</a></li>
+<li><a class="reference internal" href="#performance">Performance</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#preader">PReader</a><ul>
+<li><a class="reference internal" href="#command-options">Command options</a></li>
+<li><a class="reference internal" href="#examples">Examples</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#vibanalysis">vibanalysis</a></li>
+<li><a class="reference internal" href="#mm-qm-interfaces">MM/QM Interfaces</a><ul>
+<li><a class="reference internal" href="#vasp">VASP</a></li>
+<li><a class="reference internal" href="#castep">CASTEP</a></li>
+<li><a class="reference internal" href="#crystal">CRYSTAL</a></li>
+<li><a class="reference internal" href="#abinit">ABINIT</a></li>
+<li><a class="reference internal" href="#qe">QE</a></li>
+<li><a class="reference internal" href="#phonopy">PHONOPY</a></li>
+<li><a class="reference internal" href="#gulp">GULP</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#experimental-file-format">Experimental File Format</a><ul>
+<li><a class="reference internal" href="#constant-model-constant">Constant model (constant)</a></li>
+<li><a class="reference internal" href="#fpsq-model-fpsq">FPSQ model (fpsq)</a></li>
+<li><a class="reference internal" href="#drude-lorentz-model-drude-lorentz">Drude-Lorentz model (drude-lorentz)</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#the-format-of-the-excel-spreadsheet">The Format of the Excel Spreadsheet</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="installation.html"
+                        title="previous chapter">Installation</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="theory.html"
+                        title="next chapter">Theory</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/software.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>  
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="theory.html" title="Theory"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="installation.html" title="Installation"
+             >previous</a> |</li>
+          <li><img src="_static/py.svg" alt="python logo" style="vertical-align: middle; margin-top: -1px"/></li>
+          <li><a href="https://www.python.org/">Python</a> &#187;</li>
+          <li class="switchers">
+            <div class="language_switcher_placeholder"></div>
+            <div class="version_switcher_placeholder"></div>
+          </li>
+          <li>
+              
+              <a href="index.html">PDielec: John Kendrick & Andrew Burnett</a> &#187;
+              
+          </li>
+        <li class="nav-item nav-item-this"><a href="">Software components</a></li>
+                <li class="right">
+                    
+
+    <div class="inline-search" role="search">
+        <form class="inline-search" action="search.html" method="get">
+          <input placeholder="Quick search" aria-label="Quick search" type="text" name="q" />
+          <input type="submit" value="Go" />
+          <input type="hidden" name="check_keywords" value="yes" />
+          <input type="hidden" name="area" value="default" />
+        </form>
+    </div>
+                     |
+                </li>
+            
+      </ul>
+    </div>  
+    <div class="footer">
+    &copy; Copyright 2018, John Kendrick and Andrew Burnett.
+    <br />
+    This page is licensed under the Python Software Foundation License Version 2.
+    <br />
+    Examples, recipes, and other code in the documentation are additionally licensed under the Zero Clause BSD License.
+    <br />
+    See <a href="">History and License</a> for more information.
+    <br /><br />
+
+    The Python Software Foundation is a non-profit corporation.
+<a href="https://www.python.org/psf/donations/">Please donate.</a>
+<br />
+    <br />
+
+    Last updated on None.
+    
+    <br />
+
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.0.2.
+    </div>
+
+  </body>
+</html>

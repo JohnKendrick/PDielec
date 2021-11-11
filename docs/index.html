@@ -1,0 +1,295 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+<meta content="PDielec package for the calculation of infrared and terahertz absorption from QM calculations" name="description" />
+<meta content="Quantum Mechanics, Effective Field Theory, Maxwell, Garnett, Mie, Infrared, Terahertz, Castep, Abinit, VASP, GULP. QE" name="keywords" />
+
+    <title>Contents &#8212; PDielec: John Kendrick &amp; Andrew Burnett</title><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/pydoctheme.css?2021.11.1" />
+    <link rel="stylesheet" type="text/css" href="_static/table_styling.css" />
+    
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"extensions": ["AMSmath.js"], "TeX": {"Macros": {"bm": ["{\\boldsymbol{#1}}", 1], "tensor": ["{\\bar{\\bar{#1}}}", 1], "tensorbs": ["{\\bar{\\bar{\\bm{#1}}}}", 1], "tensorbf": ["{\\bar{\\bar{\\bm{#1}}}}", 1], "fieldbf": ["{\\bar{\\bm{#1}}}", 1], "water": "\\H_{2}O"}}})</script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Introduction" href="introduction.html" /><link rel="shortcut icon" type="image/png" href="_static/py.svg" />
+            <script type="text/javascript" src="_static/copybutton.js"></script>
+            <script type="text/javascript" src="_static/menu.js"></script> 
+  </head>
+<body>
+<div class="mobile-nav">
+    <input type="checkbox" id="menuToggler" class="toggler__input" aria-controls="navigation"
+           aria-pressed="false" aria-expanded="false" role="button" aria-label="Menu" />
+    <label for="menuToggler" class="toggler__label">
+        <span></span>
+    </label>
+    <nav class="nav-content" role="navigation">
+         <a href="https://www.python.org/" class="nav-logo">
+             <img src="_static/py.svg" alt="Logo"/>
+         </a>
+        <div class="version_switcher_placeholder"></div>
+        <form role="search" class="search" action="search.html" method="get">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" class="search-icon">
+                <path fill-rule="nonzero"
+                        d="M15.5 14h-.79l-.28-.27a6.5 6.5 0 001.48-5.34c-.47-2.78-2.79-5-5.59-5.34a6.505 6.505 0 00-7.27 7.27c.34 2.8 2.56 5.12 5.34 5.59a6.5 6.5 0 005.34-1.48l.27.28v.79l4.25 4.25c.41.41 1.08.41 1.49 0 .41-.41.41-1.08 0-1.49L15.5 14zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z" fill="#444"></path>
+            </svg>
+            <input type="text" name="q" aria-label="Quick search"/>
+            <input type="submit" value="Go"/>
+        </form>
+    </nav>
+    <div class="menu-wrapper">
+        <nav class="menu" role="navigation" aria-label="main navigation">
+            <div class="language_switcher_placeholder"></div>
+  <h3><a href="#">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Contents</a><ul>
+<li><a class="reference internal" href="#search">Search</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Next topic</h4>
+  <p class="topless"><a href="introduction.html"
+                        title="next chapter">Introduction</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/index.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </nav>
+    </div>
+</div>
+  
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="introduction.html" title="Introduction"
+             accesskey="N">next</a> |</li>
+          <li><img src="_static/py.svg" alt="python logo" style="vertical-align: middle; margin-top: -1px"/></li>
+          <li><a href="https://www.python.org/">Python</a> &#187;</li>
+          <li class="switchers">
+            <div class="language_switcher_placeholder"></div>
+            <div class="version_switcher_placeholder"></div>
+          </li>
+          <li>
+              
+              <a href="#">PDielec: John Kendrick & Andrew Burnett</a> &#187;
+              
+          </li>
+        <li class="nav-item nav-item-this"><a href="">Contents</a></li>
+                <li class="right">
+                    
+
+    <div class="inline-search" role="search">
+        <form class="inline-search" action="search.html" method="get">
+          <input placeholder="Quick search" aria-label="Quick search" type="text" name="q" />
+          <input type="submit" value="Go" />
+          <input type="hidden" name="check_keywords" value="yes" />
+          <input type="hidden" name="area" value="default" />
+        </form>
+    </div>
+                     |
+                </li>
+            
+      </ul>
+    </div>    
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="contents">
+<h1>Contents<a class="headerlink" href="#contents" title="Permalink to this headline">¶</a></h1>
+<p>This is the documentation for the PDielec package.  Using effective medium theory, the package calculates the effect of shape and particle size on the Infrared and Terahertz absorption of small crystals embedded in a non-absorbing support.</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#anaconda">Anaconda</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#pypi">PyPi</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#github-linux">GitHub - Linux</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#github-windows">GitHub - Windows</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#github-pdielec-directory-structure">GitHub - PDielec directory structure</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#examples">Examples</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="software.html">Software components</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="software.html#pdgui">PDGui</a></li>
+<li class="toctree-l2"><a class="reference internal" href="software.html#preader">PReader</a></li>
+<li class="toctree-l2"><a class="reference internal" href="software.html#vibanalysis">vibanalysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="software.html#mm-qm-interfaces">MM/QM Interfaces</a></li>
+<li class="toctree-l2"><a class="reference internal" href="software.html#experimental-file-format">Experimental File Format</a></li>
+<li class="toctree-l2"><a class="reference internal" href="software.html#the-format-of-the-excel-spreadsheet">The Format of the Excel Spreadsheet</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="theory.html">Theory</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="theory.html#molecular-approach-to-absorption-intensity">Molecular approach to absorption intensity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="theory.html#solid-state-approach-to-absorption-intensity">Solid state approach to absorption intensity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="theory.html#effect-of-particle-shape-on-infrared-absorption">Effect of particle shape on infrared absorption</a></li>
+<li class="toctree-l2"><a class="reference internal" href="theory.html#particle-size-effects">Particle size effects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="theory.html#light-scattering-by-spherical-particles-using-mie-theory">Light scattering by spherical particles using Mie theory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="theory.html#calculation-of-atr-extinction-spectra">Calculation of ATR Extinction Spectra</a></li>
+<li class="toctree-l2"><a class="reference internal" href="theory.html#scattering-effects-due-to-air-inclusions">Scattering Effects due to Air Inclusions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="theory.html#removing-baseline-artifacts-from-experiment">Removing Baseline Artifacts from Experiment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="theory.html#calculation-of-single-crystal-optics">Calculation of Single Crystal Optics</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="analysis.html">Phonon Analysis</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="analysis.html#molecular-systems">Molecular Systems</a></li>
+<li class="toctree-l2"><a class="reference internal" href="analysis.html#periodic-systems">Periodic Systems</a></li>
+<li class="toctree-l2"><a class="reference internal" href="analysis.html#implementation">Implementation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="analysis.html#isoleucine">Isoleucine</a></li>
+<li class="toctree-l2"><a class="reference internal" href="analysis.html#batio3">BaTiO<sub>3</sub></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="application_notes_1.html">Applications</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="application_notes_1.html#mgo-using-castep">MgO using CASTEP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="application_notes_1.html#zno-using-vasp">ZnO using VASP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="application_notes_1.html#calcite-using-gulp">Calcite using GULP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="application_notes_1.html#fluoroapatite-using-vasp">Fluoroapatite using VASP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="application_notes_1.html#l-aspartic-acid-using-castep">L-aspartic Acid using CASTEP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="application_notes_1.html#mgo-example-using-mie-scattering">MgO Example using Mie Scattering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="application_notes_1.html#zno-example-using-mie-scattering">ZnO Example using Mie Scattering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="application_notes_1.html#fitting-the-atr-spectrum-of-na2-so4-2">Fitting the ATR Spectrum of Na<sub>2</sub>(SO<sub>4</sub>)<sub>2</sub></a></li>
+<li class="toctree-l2"><a class="reference internal" href="application_notes_1.html#single-crystal-study-of-forsterite">Single Crystal Study of Forsterite</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="zreferences.html">References</a></li>
+</ul>
+</div>
+<section id="search">
+<h2>Search<a class="headerlink" href="#search" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></p></li>
+</ul>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="#">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Contents</a><ul>
+<li><a class="reference internal" href="#search">Search</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Next topic</h4>
+  <p class="topless"><a href="introduction.html"
+                        title="next chapter">Introduction</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/index.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>  
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="introduction.html" title="Introduction"
+             >next</a> |</li>
+          <li><img src="_static/py.svg" alt="python logo" style="vertical-align: middle; margin-top: -1px"/></li>
+          <li><a href="https://www.python.org/">Python</a> &#187;</li>
+          <li class="switchers">
+            <div class="language_switcher_placeholder"></div>
+            <div class="version_switcher_placeholder"></div>
+          </li>
+          <li>
+              
+              <a href="#">PDielec: John Kendrick & Andrew Burnett</a> &#187;
+              
+          </li>
+        <li class="nav-item nav-item-this"><a href="">Contents</a></li>
+                <li class="right">
+                    
+
+    <div class="inline-search" role="search">
+        <form class="inline-search" action="search.html" method="get">
+          <input placeholder="Quick search" aria-label="Quick search" type="text" name="q" />
+          <input type="submit" value="Go" />
+          <input type="hidden" name="check_keywords" value="yes" />
+          <input type="hidden" name="area" value="default" />
+        </form>
+    </div>
+                     |
+                </li>
+            
+      </ul>
+    </div>  
+    <div class="footer">
+    &copy; Copyright 2018, John Kendrick and Andrew Burnett.
+    <br />
+    This page is licensed under the Python Software Foundation License Version 2.
+    <br />
+    Examples, recipes, and other code in the documentation are additionally licensed under the Zero Clause BSD License.
+    <br />
+    See <a href="">History and License</a> for more information.
+    <br /><br />
+
+    The Python Software Foundation is a non-profit corporation.
+<a href="https://www.python.org/psf/donations/">Please donate.</a>
+<br />
+    <br />
+
+    Last updated on None.
+    
+    <br />
+
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.0.2.
+    </div>
+
+  </body>
+</html>
