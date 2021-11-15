@@ -23,9 +23,12 @@ import cmath
 import random
 import numpy as np
 import scipy.optimize as sc
-from   PDielec.Constants import PI, d2byamuang2, speed_light_si, wavenumber
 import PDielec.GTMcore as GTM
 import string
+from   PDielec.Constants import PI, d2byamuang2, speed_light_si, wavenumber
+from   PDielec.Mie import MieS1S2
+from   scipy.integrate import trapz
+from   scipy.stats import lognorm
 
 points_on_sphere = None
 
@@ -466,9 +469,6 @@ def spherical_averaged_mie_scattering(dielectric_medium, dielecv, shape, L, vf, 
        The anisotropy of the permittivity is accounted for by sampling many directions
        and calculating the scattering in each direction
        The routine returns the effective dielectric constant"""
-    from scipy.integrate import trapz
-    from scipy.stats import lognorm
-    from PyMieScatt.Mie import MieS1S2
     global points_on_sphere
     # define i as a complex number
     i = complex(0,1)
@@ -566,9 +566,6 @@ def mie_scattering(dielectric_medium, dielecv, shape, L, vf, size, size_mu, size
        Then the permittivity of the isodtropic sphere that would give the same average permittivity is calculated
        Then the Mie scattering of that sphere is calculated
        The routine returns the effective dielectric constant"""
-    from scipy.integrate import trapz
-    from scipy.stats import lognorm
-    from PyMieScatt.Mie import MieS1S2
     #
     # Calculate the MG permittivity with no size effects
     #
@@ -666,9 +663,6 @@ def anisotropic_mie_scattering(dielectric_medium, dielecv, shape, L, vf, size, s
        vf is the volume fraction of filler
        Mie only works for spherical particles, so shape, and L parameters are ignored
        The routine returns the effective dielectric constant"""
-    from scipy.integrate import trapz
-    from scipy.stats import lognorm
-    from PyMieScatt.Mie import MieS1S2
     # define i as a complex number
     i = complex(0,1)
     # We need to taken account of the change in wavelength and the change in size parameter due to the
@@ -1220,7 +1214,6 @@ def foldy_scattering(lambda_vacuum_nm, N_nm,radius_nm,ri_medium):
     # radius_nm is the radius of the bubble
     # ri_medium is the refractive index of the medium the bubble is in
     #
-    from PyMieScatt.Mie import MieS1S2
     #
     k_nm = 2*PI*ri_medium/lambda_vacuum_nm
     # The size parameter is now also complex and dimensionless
@@ -1243,7 +1236,6 @@ def waterman_truell_scattering(lambda_vacuum_nm, N_nm,radius_nm,ri_medium):
     # radius_nm is the radius of the bubble
     # ri_medium is the refractive index of the medium the bubble is in
     #
-    from PyMieScatt.Mie import MieS1S2
     #
     k_nm = 2*PI*ri_medium/lambda_vacuum_nm
     # The size parameter is now also complex and dimensionless
@@ -1449,7 +1441,7 @@ def reflectance_atr(ns,n0,theta,atrSPolFraction):
     return RSP
 
 def solve_single_crystal_equations( v ):
-    """ This is a parallel call to the single crystal equation solver, 
+    """ This is a parallel call to the single crystal equation solver,
     system is a GTM system"""
     # system and angleOfincendence have been set by the pool initialiser
     angleOfIncidence = solve_single_crystal_equations.angleOfIncidence
@@ -1495,9 +1487,9 @@ def euler_rotation(vector, theta, phi, psi):
 def get_pool(ncpus, threading, initializer=None, initargs=None, debugger=None ):
      """Return a pool of processors given the number of cpus and whether threading is requested"""
      if debugger is not None:
-         debugger.print('get_pool ncpus = ',ncpus) 
-         debugger.print('get_pool threading = ',threading) 
-         debugger.print('get_pool initializer = ',initializer) 
+         debugger.print('get_pool ncpus = ',ncpus)
+         debugger.print('get_pool threading = ',threading)
+         debugger.print('get_pool initializer = ',initializer)
      # Switch off mkl threading
      try:
          import mkl
