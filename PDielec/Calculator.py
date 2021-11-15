@@ -26,11 +26,18 @@ import scipy.optimize as sc
 import PDielec.GTMcore as GTM
 import string
 from   PDielec.Constants import PI, d2byamuang2, speed_light_si, wavenumber
-from   PDielec.Mie import MieS1S2
 from   scipy.integrate import trapz
 from   scipy.stats import lognorm
 
+#
+# Modify the crossover used in the PyMieScatt Mie routines
+# The Mie routine is taken from PyMieScatt by B. Sumlin and can be found on github
+#
+from   PDielec import Mie
+Mie.crossover = 0.01
+
 points_on_sphere = None
+
 
 def initialise_unit_tensor():
     '''Initialise a 3x3 tensor, the argument is a list of 3 real numbers for the diagonals, the returned tensor is an array'''
@@ -521,7 +528,7 @@ def spherical_averaged_mie_scattering(dielectric_medium, dielecv, shape, L, vf, 
                 # The size parameter is 2pi r / lambda
                 x = 2 * PI * r / lambda_vacuum_mu
                 # Calculate the S1 and S2 scattering factors, and store in a list
-                s1,s2 = MieS1S2(refractive_index, x*refractive_index_medium, 1)
+                s1,s2 = Mie.MieS1S2(refractive_index, x*refractive_index_medium, 1)
                 s1_factors.append(s1)
             # Now integrate
             s1 = trapz(s1_factors*ndp,dp)
@@ -538,7 +545,7 @@ def spherical_averaged_mie_scattering(dielectric_medium, dielecv, shape, L, vf, 
         else:
             # Calculate the scattering factors at 0 degrees
             #jk print("refractive_index, size, refractive_index_medium", refractive_index, size, refractive_index_medium)
-            s1,s2 = MieS1S2(refractive_index, size*refractive_index_medium, 1)
+            s1,s2 = Mie.MieS1S2(refractive_index, size*refractive_index_medium, 1)
         # See van de Hulst page 129, 130
         # Refractive index of material is
         # the sign of the imaginary component has changed for compatibility with MG/Bruggeman
@@ -624,7 +631,7 @@ def mie_scattering(dielectric_medium, dielecv, shape, L, vf, size, size_mu, size
             # The size parameter is 2pi r / lambda
             x = 2 * PI * r / lambda_vacuum_mu
             # Calculate the S1 and S2 scattering factors, and store in a list
-            s1,s2 = MieS1S2(refractive_index, x*refractive_index_medium, 1)
+            s1,s2 = Mie.MieS1S2(refractive_index, x*refractive_index_medium, 1)
             s1_factors.append(s1)
         # Now integrate
         s1 = trapz(s1_factors*ndp,dp)
@@ -641,7 +648,7 @@ def mie_scattering(dielectric_medium, dielecv, shape, L, vf, size, size_mu, size
     else:
         # Calculate the scattering factors at 0 degrees
         #jk print("refractive_index, size, refractive_index_medium", refractive_index, size, refractive_index_medium)
-        s1,s2 = MieS1S2(refractive_index, size*refractive_index_medium, 1)
+        s1,s2 = Mie.MieS1S2(refractive_index, size*refractive_index_medium, 1)
     # See van de Hulst page 129, 130
     # Refractive index of material is
     # the sign of the imaginary component has changed for compatibility with MG/Bruggeman
@@ -716,7 +723,7 @@ def anisotropic_mie_scattering(dielectric_medium, dielecv, shape, L, vf, size, s
                 # The size parameter is 2pi r / lambda
                 x = 2 * PI * r / lambda_vacuum_mu
                 # Calculate the S1 and S2 scattering factors, and store in a list
-                s1,s2 = MieS1S2(refractive_index, x*refractive_index_medium, 1)
+                s1,s2 = Mie.MieS1S2(refractive_index, x*refractive_index_medium, 1)
                 s1_factors.append(s1)
             # Now integrate
             s1 = trapz(s1_factors*ndp,dp)
@@ -733,7 +740,7 @@ def anisotropic_mie_scattering(dielectric_medium, dielecv, shape, L, vf, size, s
         else:
             # Calculate the scattering factors at 0 degrees
             #jk print("refractive_index, size, refractive_index_medium", refractive_index, size, refractive_index_medium)
-            s1,s2 = MieS1S2(refractive_index, size*refractive_index_medium, 1)
+            s1,s2 = Mie.MieS1S2(refractive_index, size*refractive_index_medium, 1)
         # See van de Hulst page 129, 130
         # Refractive index of material is
         # the sign of the imaginary component has changed for compatibility with MG/Bruggeman
@@ -1220,7 +1227,7 @@ def foldy_scattering(lambda_vacuum_nm, N_nm,radius_nm,ri_medium):
     size = k_nm*radius_nm
     refractive_index = 1.0 / ri_medium
     # Calculate the forward and backward scattering amplitude
-    s10,s20 = MieS1S2(refractive_index, size*ri_medium, 1)
+    s10,s20 = Mie.MieS1S2(refractive_index, size*ri_medium, 1)
     i = complex(0,1)
     f0 = i * s10 / k_nm
     new_k = np.sqrt( k_nm*k_nm + 4*PI*N_nm*f0 )
@@ -1242,8 +1249,8 @@ def waterman_truell_scattering(lambda_vacuum_nm, N_nm,radius_nm,ri_medium):
     size = k_nm*radius_nm
     refractive_index = 1.0 / ri_medium
     # Calculate the forward and backward scattering amplitude
-    s10,s20 = MieS1S2(refractive_index, size*ri_medium, 1)
-    s11,s21 = MieS1S2(refractive_index, size*ri_medium,-1)
+    s10,s20 = Mie.MieS1S2(refractive_index, size*ri_medium, 1)
+    s11,s21 = Mie.MieS1S2(refractive_index, size*ri_medium,-1)
     # the normalisation by 1/k_nm is performed when f is calculated
     i = complex(0,1)
     f0 = i*s10

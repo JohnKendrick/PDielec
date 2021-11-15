@@ -109,7 +109,7 @@ def Mie_ab(m,x):
 
   chx = -sx*yv(nu,x) #
   ch1x = np.append(np.cos(x), chx[0:int(nmax)-1]) #
-  
+
   gsx = px-(0+1j)*chx #
   gs1x = p1x-(0+1j)*ch1x #
 
