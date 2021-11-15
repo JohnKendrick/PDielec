@@ -159,7 +159,7 @@ The width (:math:`\sigma`) of all the absorptions can be set using the *Lorentzi
 
 Finally the optical permittivity at zero frequency is given in the *Optical permittivity* table.  In some cases it is necessary to enter the optical permittivity by hand.  This can be done by clicking each element in the table which needs changing and typing the new matrix element.
 
-When a new output file is read in the atomic masses and the optical permittivity matrix are reset.
+When a new output file is read the atomic masses and the optical permittivity matrix are reset.
 
 The output table at the bottom of the tab shows the calculated frequencies and their intensities.  Transitions which do not contribute to the Infrared absorption are greyed out.  These transitions will not be used in later calculations.  From this table it is possible to remove or add transitions to the later calculations and it is also possible to change the width of individual transitions.
 
@@ -211,7 +211,7 @@ The amount of dielectric material can be entered either as a mass fraction (in p
 
 The calculation of the effective medium can be performed using a variety of methods which can be chosen from the *Method* drop down menu.  If the *Mie* method is chosen the user can enter the particles radius (microns).  The *Particle sigma* specifies the width of a log-normal distribution.  If the width is 0.0 no sampling of the distribution is performed.
 
-For effective medium theories other than the Mie method the particle shape can be specfied using the *Shape* pull down menu.  Possible shapes are *Sphere*, *Needle*, *Plate* and *Ellipsoid*.  For the cases of *Needle* and *Ellipsoid* the unique direction is specifed by a direction \[abc\] in lattice units.  In the case of *Plate* the unique direction is specifies as the normal to a plane (hkl) in reciprical lattice units.  If an *Ellipsoid* shape is used the eccentricy factor can be specified in the *Ellipsoid a/b eccentricity* text box.
+For effective medium theories other than the Mie method, the particle shape can be specfied using the *Shape* pull down menu.  Possible shapes are *Sphere*, *Needle*, *Plate* and *Ellipsoid*.  For the cases of *Needle* and *Ellipsoid* the unique direction is specifed by a direction \[abc\] in lattice units.  In the case of *Plate* the unique direction is specifies as the normal to a plane (hkl) in reciprical lattice units.  If an *Ellipsoid* shape is used the eccentricity factor can be specified in the *Ellipsoid a/b eccentricity* text box.
 
 The plot in the *Plotting Tab* has a legend and the description used in the legend for each scenario can be set by filling out the text box associated with the *Scenario legend*.
 
@@ -332,7 +332,7 @@ If baseline removal is selected a Hodrick-Prescott filter is used. The value of 
 
 After a replot the cross-correlation coefficient, current frequency scaling factor, the frequency shift needed to maximise that cross-correlation coefficient, and the root mean squared error between the calculated and experimental spectra are shown.  It is possible to apply a frequency scaling to the calculated spectrum. The *Replot with frequency shift* shows the calculated spectrum with the frequencies shifted by the shift calculated to maximise the cross-correlation coefficient.  Care must be taken in comparing the calculated and experimental spectra as different y-axes are used for each.
 
-It is also possible to automatically adjust the Lorentzian width factors with the *Perform fitting* button.  However experience with this option shows that it maybe better to adjust the peak heights manually by altering the sigma values.  At the moment only 20 iterations are performed for each press of the button.  If requested the frequency scaling factor can be adjust too.
+It is also possible to automatically adjust the Lorentzian width factors with the *Perform fitting* button.  However experience with this option shows that it maybe better to adjust the peak heights manually by altering the sigma values.  At the moment only 20 iterations are performed for each press of the button.  If requested the frequency scaling factor can be adjusted too.
 
 Two algorithms for performing the fitting are supported.  Either the cross-correlation coefficient can be maximised or the root mean squared error between the spectra can be minimised.  In the latter case the error is only calculated for signal strengths above the spectral difference threshold (which defaults to 0.05).
 
@@ -354,7 +354,7 @@ A summary of the optional settings available in the *Fitter Tab* is shown below;
    | Scenario                 | Allows the user to choose which                     |
    |                          | will be used in the fitting                         |
    +--------------------------+-----------------------------------------------------+
-   | Frequency scaling factor | The calculated frequecnies are scaled               |
+   | Frequency scaling factor | The calculated frequencies are scaled               |
    +--------------------------+-----------------------------------------------------+
    | No. of iterations        | Number of iterations for automatic                  |
    |                          | fitting                                             |
@@ -390,12 +390,12 @@ The file will contain parameters which have been calculated whilst reading the i
 For example the optical permittivities are calculated and stored in this file.  
 If the file is then used on another DFT calculation then the optical permittivity for the settings file will be used and not the one which should have been calculated.  This is also true if masses have been defined in once calculation, they may not be appropriate for a different molecule. To use the script for other calculations but with the same scenarios the optical permittivities should be removed and any mass specifications removed. 
 
-Parallelization and threads
+Parallelisation and threads
 ---------------------------
 
-To improve the performance of the program python parallelization has been used to parallelize over the frequencies, shapes and methods. By default this parallelization spawns additional Python executables, depending on the number of cores available.
+To improve the performance of the program python parallelisation has been used to parallelise over the frequencies, shapes and methods. By default this parallelisation spawns additional Python executables, depending on the number of cores available.
 
-In addition to this form of parallelization the NUMPY library can use multi-threaded BLAS. NUMPY can be compiled with several different BLAS libraries, including; MKL (from Intel), OPENBLAS and ATLAS, or indeed no optimized BLAS library is necessary. To explore the BLAS version compiled with your version of NUMPY please use the test_numpy_1, test_numpy_2 and test_numpy_3 scripts included in the Python/ subdirectory. If you are using MKL or OPENBLAS, the number of threads being used needs to be set with the MKL_NUM_THREADS or OPENBLAS _NUM_THREADS environment variable (sometimes OMP_NUM_THREADS is also used). Use the test routines to determine the optimum for your system. Experience indicates that no performance benefit is obtained with more than two threads. 
+In addition to this form of parallelisation the NUMPY library can use multi-threaded BLAS. NUMPY can be compiled with several different BLAS libraries, including; MKL (from Intel), OPENBLAS and ATLAS, or indeed no optimised BLAS library is necessary. To explore the BLAS version compiled with your version of NUMPY please use the test_numpy_1, test_numpy_2 and test_numpy_3 scripts included in the Python/ subdirectory. If you are using MKL or OPENBLAS, the number of threads being used needs to be set with the MKL_NUM_THREADS or OPENBLAS _NUM_THREADS environment variable (sometimes OMP_NUM_THREADS is also used). Use the test routines to determine the optimum for your system. Experience indicates that no performance benefit is obtained with more than two threads. 
 
 In the case of Phonopy the dynamical matrix is read from a yaml file. This has been found to be very slow unless the C parser is used. If the C parser is not available a warning is issued and the program reverts back to the Python parser.
 
@@ -412,11 +412,11 @@ A work around is to use;
         pdgui -threads -cpu 1
 
 This runs the program on a single processor using the threading library for multiprocessing.  
-Sometimes it is more convenient to set these using the environment.  Two environment variables are read befor any command line options are processed;
+Sometimes it is more convenient to set these using the environment.  Two environment variables are read before any command line options are processed;
 
         export PDIELEC_NUM_PROCESSORS=4
 
-will run `pdgui` on 4 processors.  By default the number of processors is determined by interrogating the computer.  This acheived by setting the value of PDIELEC_NUM_PROCESSORS to 0.
+will run `pdgui` on 4 processors.  By default the number of processors is determined by interrogating the computer.  This is acheived by setting the value of PDIELEC_NUM_PROCESSORS to 0.
 
         export PDIELEC_THREADING=TRUE
 
@@ -439,7 +439,7 @@ The speedup is calculated by running the benchmark suite (make benchmark), which
 
 Using the same suite of benchmarks on an 8 processor Intel core i9-9900K running at 3.6GHz took 110s.
 
-On a Windows laptop with an Intel Skylake i7-650, which has 2 processors running at 2.5GHz, the benchmark ran in 1632 seconds.  On the same muchine but running the Linux operating system the benchmark suite took 346s, making the impact of Windows on performance a substantial four times slower.
+On a Windows laptop with an Intel Skylake i7-650, which has 2 processors running at 2.5GHz, the benchmark ran in 1632 seconds.  On the same machine but running the Linux operating system the benchmark suite took 346s, making the impact of Windows on performance a substantial four times slower.
 
 
 PReader
@@ -451,7 +451,7 @@ Unlike PDGui it is not necessary to have performed a full calculation of the dyn
 Command options
 ---------------
 
-Examples of data sets for these packages are included with the distribution and can be found in the Examples/'Package'/preader directory. The program is run from the command line. There are several command options and these are summarized below. Those options which may be repeated are indicated by a ✔ .
+Examples of data sets for these packages are included with the distribution and can be found in the Examples/'Package'/preader directory. The program is run from the command line. There are several command options and these are summarised below. Those options which may be repeated are indicated by a ✔ .
 
   \-program program
     Program can be “abinit”,  “castep”, “crystal”, “gulp”, “qe”, “experiment” or “vasp” and specifies the program which generated the results to be analysed
@@ -464,7 +464,7 @@ Examples of data sets for these packages are included with the distribution and 
   \-hessian symm
     The hessian can be symmetrised in one of two ways; either “crystal” or  “symm”.  In the case of “crystal” the  hessian is symmetrised using the same algorithm as Crystal14. 
   \-masses average
-    The element mass_definition can be either “program”, “average” or “isotopic”, meaning that the masses used in the calculation of the frequencies are either taken from the QM program or are the average of the isotope abundances or are the most abundant isotope mass.
+    The element mass_definition can be either “program”, “average” or “isotopic”, meaning that the masses used in the calculation of the frequencies are either taken from the QM program or are the average of the isotope abundancies or are the most abundant isotope mass.
   \-mass element mass
     The atomic mass of the element is set to mass.  This can be used to explore the effect of isotope substitution on the calculated frequencies
 
@@ -496,13 +496,13 @@ The package options can be determined using;
        vibanalysis OUTCAR
        vibanalysis phonon.castep
 
-Which will analyse a VASP and a CASTEP phonon calculation output to produce a summary in the files OUTCAR.nma and phonon.nma respectively.
+which will analyse a VASP and a CASTEP phonon calculation output to produce a summary in the files OUTCAR.nma and phonon.nma respectively.
 
 MM/QM Interfaces
 ================
 
-The packages have interfaces to five solid state QM codes, VASP :cite:`Hafner2008c`, CASTEP :cite:`Clark2005d`, CRYSTAL14 :cite:`Dovesi2014`, Abinit :cite:`Gonze2016`, Quantum Espresso :cite:`Giannozzi2009` and Phonopy :cite:`Togo2015`.  In addition an interface is available for GULP :cite:`Gale2003` which is a force field based solid state code. Finally an interface has been written to and 'experiment' file format which allows the preparation of a user defined file specifying the permittivities and absorption frequencies. The origin of the dataset(s) used for processing is determined by a command line switch, -program. An outline of the interfaces to these codes is given here. 
-The package used for the calculation is described by the -program option. In addition a file name is given which contains the output which will be processed by PDielec.
+The packages have interfaces to five solid state QM codes, VASP :cite:`Hafner2008c`, CASTEP :cite:`Clark2005d`, CRYSTAL14 :cite:`Dovesi2014`, Abinit :cite:`Gonze2016`, Quantum Espresso :cite:`Giannozzi2009` and Phonopy :cite:`Togo2015`.  In addition an interface is available for GULP :cite:`Gale2003` which is a force field based solid state code. Finally an interface has been written to an 'experiment' file format which allows the preparation of a user defined file specifying the permittivities and absorption frequencies. The origin of the dataset(s) used for processing is determined by a command line switch, -program. An outline of the interfaces to these codes is given here. 
+The package used for the calculation is described by the -program option. In addition, a file name is given which contains the output to be processed by PDielec.
 
 VASP 
 -----
@@ -518,7 +518,7 @@ The name on the command line is a file ending in .out, containing the output of 
 
 ABINIT
 ------
-The output file should come from a run containing three datasets. One to calculate the wavefunction at the optimized geometry, one to calculate the field perturbations and one to calculate the second derivatives. Examples of input files and output files are available with the distribution.
+The output file should come from a run containing three datasets. One to calculate the wavefunction at the optimised geometry, one to calculate the field perturbations and one to calculate the second derivatives. Examples of input files and output files are available with the distribution.
 
 QE 
 ---
@@ -538,7 +538,7 @@ where the DISP-\* directories are where the VASP calculation was performed. Fina
 
         phonopy --dim="1 1 1" --qpoints="0 0 0" --writedm
 
-To calculate the infrared spectrum PDielec needs the Born charges for the atoms in the unit cell and these can be calculated using VASP and the optimized geometry of the unit cell. The OUTCAR file from this calculation can be copied to the current directory and renamed OUTCAR.born
+To calculate the infrared spectrum PDielec needs the Born charges for the atoms in the unit cell and these can be calculated using VASP and the optimised geometry of the unit cell. The OUTCAR file from this calculation can be copied to the current directory and renamed OUTCAR.born
 
 GULP 
 -----
@@ -602,13 +602,13 @@ The general format of an experimental file is best shown by an example;::
    
 The file starts with a definition of the lattice, the first number being a lattice constant followed by three lines specifying the a, b, and c directions of the unit-cell.
 
-The next directive species the species and their masses, by default PDGui uses its own internal mass scheme, so unless otherwise required these masses will be overwritten.
+The next directive specifies the species and their masses, by default PDGui uses its own internal mass scheme, so unless otherwise required these masses will be overwritten.
 
 The *unitcell* directive specifies the number of atoms in the unit-cell and their fractional coordinates.
 
 The *epsinf* directive gives the values of the :math:`\epsilon_{\infty}` tensor
 
-Finally a model for the specification of the frequency dependent perittivity is given.  In this case the four parameter semi-quantum model (fpsq)is employed.  Each diagonal component of the tensor is specified by the number of contributions and then each contribution provides the TO frequency and its :math:`\gamma` followed by the same for the LO frequency (all frequencies are in cm-1. Full details of each permittivity model available are shown below.
+Finally a model for the specification of the frequency dependent permittivity is given.  In this case the four parameter semi-quantum model (fpsq) is employed.  Each diagonal component of the tensor is specified by the number of contributions and then each contribution provides the TO frequency and its :math:`\gamma` followed by the same for the LO frequency (all frequencies are in cm-1. Full details of each permittivity model available are shown below.
 
 
 Constant model (constant)
@@ -695,8 +695,8 @@ The model only allows for a diagonal permittivity tensor and each component of t
 The Format of the Excel Spreadsheet
 ===================================
 
-The Excel spread sheet which can be written by the programs contains details of the system being anaylysed, a list of the scenario settings and tables of absorption, permittivity, reflection and transmission.
-The spreedsheet is devided into different sheets;
+The Excel spread sheet, which can be written by the program, contains details of the system being anaylysed, a list of the scenario settings and tables of absorption, permittivity, reflection and transmission.
+The spreedsheet is divided into different sheets;
 
 -   **Main**
         This stores the information concerning the file that is being analysed and the program associated with the output.  A list of the frequencies read in from the output file is given too.

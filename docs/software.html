@@ -68,7 +68,7 @@
 <li><a class="reference internal" href="#d-viewer-tab">3D Viewer Tab</a></li>
 <li><a class="reference internal" href="#fitter-tab">Fitter Tab</a></li>
 <li><a class="reference internal" href="#scripting">Scripting</a></li>
-<li><a class="reference internal" href="#parallelization-and-threads">Parallelization and threads</a></li>
+<li><a class="reference internal" href="#parallelisation-and-threads">Parallelisation and threads</a></li>
 <li><a class="reference internal" href="#performance">Performance</a></li>
 </ul>
 </li>
@@ -116,7 +116,7 @@
   <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="search.html" method="get">
-      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
       <input type="submit" value="Go" />
     </form>
     </div>
@@ -191,7 +191,7 @@
 <li><p><a class="reference internal" href="#d-viewer-tab" id="id28">3D Viewer Tab</a></p></li>
 <li><p><a class="reference internal" href="#fitter-tab" id="id29">Fitter Tab</a></p></li>
 <li><p><a class="reference internal" href="#scripting" id="id30">Scripting</a></p></li>
-<li><p><a class="reference internal" href="#parallelization-and-threads" id="id31">Parallelization and threads</a></p></li>
+<li><p><a class="reference internal" href="#parallelisation-and-threads" id="id31">Parallelisation and threads</a></p></li>
 <li><p><a class="reference internal" href="#performance" id="id32">Performance</a></p></li>
 </ul>
 </li>
@@ -359,7 +359,7 @@ or 2 threads if threading</p></td>
 <p>If necessary the mass of each element can be edited separately by clicking on the mass concerned and entering a new number.</p>
 <p>The width (<span class="math notranslate nohighlight">\(\sigma\)</span>) of all the absorptions can be set using the <em>Lorentzian width(sigma)</em>  spin box.</p>
 <p>Finally the optical permittivity at zero frequency is given in the <em>Optical permittivity</em> table.  In some cases it is necessary to enter the optical permittivity by hand.  This can be done by clicking each element in the table which needs changing and typing the new matrix element.</p>
-<p>When a new output file is read in the atomic masses and the optical permittivity matrix are reset.</p>
+<p>When a new output file is read the atomic masses and the optical permittivity matrix are reset.</p>
 <p>The output table at the bottom of the tab shows the calculated frequencies and their intensities.  Transitions which do not contribute to the Infrared absorption are greyed out.  These transitions will not be used in later calculations.  From this table it is possible to remove or add transitions to the later calculations and it is also possible to change the width of individual transitions.</p>
 </section>
 <section id="scenario-tabs">
@@ -409,7 +409,7 @@ The supporting medium may have bubbles of air trapped in the matrix.  For the ca
 <p>The size of the air inclusions (bubbles) can be specified in the <em>Scenario Tab</em> along with the volume fraction.  If a non-zero value for the volume fraction of air voids is given the scattering due to the air inclusions is calculated before the effective medium calculation is performed.  The forward and backward scattering amplitudes for a single scatterer are calculated using the Mie method and then used to calculated the scattering using the Waterman-Truell approximation.</p>
 <p>The amount of dielectric material can be entered either as a mass fraction (in percent) or as a volume fraction (in percent).  If the matrix support density is changed the calculated mass fraction will be updated.  It is assumed that the volume fraction has precedence.  If an air void volume fraction is supplied then this has to be taken account of in the calculation of the volume and mass fractions.</p>
 <p>The calculation of the effective medium can be performed using a variety of methods which can be chosen from the <em>Method</em> drop down menu.  If the <em>Mie</em> method is chosen the user can enter the particles radius (microns).  The <em>Particle sigma</em> specifies the width of a log-normal distribution.  If the width is 0.0 no sampling of the distribution is performed.</p>
-<p>For effective medium theories other than the Mie method the particle shape can be specfied using the <em>Shape</em> pull down menu.  Possible shapes are <em>Sphere</em>, <em>Needle</em>, <em>Plate</em> and <em>Ellipsoid</em>.  For the cases of <em>Needle</em> and <em>Ellipsoid</em> the unique direction is specifed by a direction [abc] in lattice units.  In the case of <em>Plate</em> the unique direction is specifies as the normal to a plane (hkl) in reciprical lattice units.  If an <em>Ellipsoid</em> shape is used the eccentricy factor can be specified in the <em>Ellipsoid a/b eccentricity</em> text box.</p>
+<p>For effective medium theories other than the Mie method, the particle shape can be specfied using the <em>Shape</em> pull down menu.  Possible shapes are <em>Sphere</em>, <em>Needle</em>, <em>Plate</em> and <em>Ellipsoid</em>.  For the cases of <em>Needle</em> and <em>Ellipsoid</em> the unique direction is specifed by a direction [abc] in lattice units.  In the case of <em>Plate</em> the unique direction is specifies as the normal to a plane (hkl) in reciprical lattice units.  If an <em>Ellipsoid</em> shape is used the eccentricity factor can be specified in the <em>Ellipsoid a/b eccentricity</em> text box.</p>
 <p>The plot in the <em>Plotting Tab</em> has a legend and the description used in the legend for each scenario can be set by filling out the text box associated with the <em>Scenario legend</em>.</p>
 </section>
 <section id="single-crystal-scenarios">
@@ -492,7 +492,7 @@ If baseline removal is selected a Hodrick-Prescott filter is used. The value of 
 </figcaption>
 </figure>
 <p>After a replot the cross-correlation coefficient, current frequency scaling factor, the frequency shift needed to maximise that cross-correlation coefficient, and the root mean squared error between the calculated and experimental spectra are shown.  It is possible to apply a frequency scaling to the calculated spectrum. The <em>Replot with frequency shift</em> shows the calculated spectrum with the frequencies shifted by the shift calculated to maximise the cross-correlation coefficient.  Care must be taken in comparing the calculated and experimental spectra as different y-axes are used for each.</p>
-<p>It is also possible to automatically adjust the Lorentzian width factors with the <em>Perform fitting</em> button.  However experience with this option shows that it maybe better to adjust the peak heights manually by altering the sigma values.  At the moment only 20 iterations are performed for each press of the button.  If requested the frequency scaling factor can be adjust too.</p>
+<p>It is also possible to automatically adjust the Lorentzian width factors with the <em>Perform fitting</em> button.  However experience with this option shows that it maybe better to adjust the peak heights manually by altering the sigma values.  At the moment only 20 iterations are performed for each press of the button.  If requested the frequency scaling factor can be adjusted too.</p>
 <p>Two algorithms for performing the fitting are supported.  Either the cross-correlation coefficient can be maximised or the root mean squared error between the spectra can be minimised.  In the latter case the error is only calculated for signal strengths above the spectral difference threshold (which defaults to 0.05).</p>
 <p>A summary of the optional settings available in the <em>Fitter Tab</em> is shown below;</p>
 <table class="colwidths-given styled-table docutils align-default" id="fitter-tab-options">
@@ -516,7 +516,7 @@ data. A return brings up a file manager</p></td>
 will be used in the fitting</p></td>
 </tr>
 <tr class="row-even"><td class="left-align no-left-divider no-right-divider"><p>Frequency scaling factor</p></td>
-<td class="left-align no-left-divider no-right-divider"><p>The calculated frequecnies are scaled</p></td>
+<td class="left-align no-left-divider no-right-divider"><p>The calculated frequencies are scaled</p></td>
 </tr>
 <tr class="row-odd"><td class="left-align no-left-divider no-right-divider"><p>No. of iterations</p></td>
 <td class="left-align no-left-divider no-right-divider"><p>Number of iterations for automatic
@@ -565,10 +565,10 @@ The file will contain parameters which have been calculated whilst reading the i
 For example the optical permittivities are calculated and stored in this file.
 If the file is then used on another DFT calculation then the optical permittivity for the settings file will be used and not the one which should have been calculated.  This is also true if masses have been defined in once calculation, they may not be appropriate for a different molecule. To use the script for other calculations but with the same scenarios the optical permittivities should be removed and any mass specifications removed.</p>
 </section>
-<section id="parallelization-and-threads">
-<h3><a class="toc-backref" href="#id31">Parallelization and threads</a><a class="headerlink" href="#parallelization-and-threads" title="Permalink to this headline">¶</a></h3>
-<p>To improve the performance of the program python parallelization has been used to parallelize over the frequencies, shapes and methods. By default this parallelization spawns additional Python executables, depending on the number of cores available.</p>
-<p>In addition to this form of parallelization the NUMPY library can use multi-threaded BLAS. NUMPY can be compiled with several different BLAS libraries, including; MKL (from Intel), OPENBLAS and ATLAS, or indeed no optimized BLAS library is necessary. To explore the BLAS version compiled with your version of NUMPY please use the test_numpy_1, test_numpy_2 and test_numpy_3 scripts included in the Python/ subdirectory. If you are using MKL or OPENBLAS, the number of threads being used needs to be set with the MKL_NUM_THREADS or OPENBLAS _NUM_THREADS environment variable (sometimes OMP_NUM_THREADS is also used). Use the test routines to determine the optimum for your system. Experience indicates that no performance benefit is obtained with more than two threads.</p>
+<section id="parallelisation-and-threads">
+<h3><a class="toc-backref" href="#id31">Parallelisation and threads</a><a class="headerlink" href="#parallelisation-and-threads" title="Permalink to this headline">¶</a></h3>
+<p>To improve the performance of the program python parallelisation has been used to parallelise over the frequencies, shapes and methods. By default this parallelisation spawns additional Python executables, depending on the number of cores available.</p>
+<p>In addition to this form of parallelisation the NUMPY library can use multi-threaded BLAS. NUMPY can be compiled with several different BLAS libraries, including; MKL (from Intel), OPENBLAS and ATLAS, or indeed no optimised BLAS library is necessary. To explore the BLAS version compiled with your version of NUMPY please use the test_numpy_1, test_numpy_2 and test_numpy_3 scripts included in the Python/ subdirectory. If you are using MKL or OPENBLAS, the number of threads being used needs to be set with the MKL_NUM_THREADS or OPENBLAS _NUM_THREADS environment variable (sometimes OMP_NUM_THREADS is also used). Use the test routines to determine the optimum for your system. Experience indicates that no performance benefit is obtained with more than two threads.</p>
 <p>In the case of Phonopy the dynamical matrix is read from a yaml file. This has been found to be very slow unless the C parser is used. If the C parser is not available a warning is issued and the program reverts back to the Python parser.</p>
 <p>Finally the use of non-standard BLAS libraries seems to cause problems with the affinity settings for the multiprocessing. It has been noticed that the parallel processes can all end up executing on the same processor. In order to prevent this, before executing the pdielec and preader scripts it may be necessary to include;</p>
 <blockquote>
@@ -582,11 +582,11 @@ A work around is to use;</p>
 <div><p>pdgui -threads -cpu 1</p>
 </div></blockquote>
 <p>This runs the program on a single processor using the threading library for multiprocessing.
-Sometimes it is more convenient to set these using the environment.  Two environment variables are read befor any command line options are processed;</p>
+Sometimes it is more convenient to set these using the environment.  Two environment variables are read before any command line options are processed;</p>
 <blockquote>
 <div><p>export PDIELEC_NUM_PROCESSORS=4</p>
 </div></blockquote>
-<p>will run <cite>pdgui</cite> on 4 processors.  By default the number of processors is determined by interrogating the computer.  This acheived by setting the value of PDIELEC_NUM_PROCESSORS to 0.</p>
+<p>will run <cite>pdgui</cite> on 4 processors.  By default the number of processors is determined by interrogating the computer.  This is acheived by setting the value of PDIELEC_NUM_PROCESSORS to 0.</p>
 <blockquote>
 <div><p>export PDIELEC_THREADING=TRUE</p>
 </div></blockquote>
@@ -603,7 +603,7 @@ The speedup is calculated by running the benchmark suite (make benchmark), which
 </figcaption>
 </figure>
 <p>Using the same suite of benchmarks on an 8 processor Intel core i9-9900K running at 3.6GHz took 110s.</p>
-<p>On a Windows laptop with an Intel Skylake i7-650, which has 2 processors running at 2.5GHz, the benchmark ran in 1632 seconds.  On the same muchine but running the Linux operating system the benchmark suite took 346s, making the impact of Windows on performance a substantial four times slower.</p>
+<p>On a Windows laptop with an Intel Skylake i7-650, which has 2 processors running at 2.5GHz, the benchmark ran in 1632 seconds.  On the same machine but running the Linux operating system the benchmark suite took 346s, making the impact of Windows on performance a substantial four times slower.</p>
 </section>
 </section>
 <section id="preader">
@@ -612,7 +612,7 @@ The speedup is calculated by running the benchmark suite (make benchmark), which
 Unlike PDGui it is not necessary to have performed a full calculation of the dynamical matrix.  In the majority of cases preader will read geometry optimisation runs.</p>
 <section id="command-options">
 <h3><a class="toc-backref" href="#id34">Command options</a><a class="headerlink" href="#command-options" title="Permalink to this headline">¶</a></h3>
-<p>Examples of data sets for these packages are included with the distribution and can be found in the Examples/’Package’/preader directory. The program is run from the command line. There are several command options and these are summarized below. Those options which may be repeated are indicated by a ✔ .</p>
+<p>Examples of data sets for these packages are included with the distribution and can be found in the Examples/’Package’/preader directory. The program is run from the command line. There are several command options and these are summarised below. Those options which may be repeated are indicated by a ✔ .</p>
 <blockquote>
 <div><dl class="simple">
 <dt>-program program</dt><dd><p>Program can be “abinit”,  “castep”, “crystal”, “gulp”, “qe”, “experiment” or “vasp” and specifies the program which generated the results to be analysed</p>
@@ -625,7 +625,7 @@ Unlike PDGui it is not necessary to have performed a full calculation of the dyn
 </dd>
 <dt>-hessian symm</dt><dd><p>The hessian can be symmetrised in one of two ways; either “crystal” or  “symm”.  In the case of “crystal” the  hessian is symmetrised using the same algorithm as Crystal14.</p>
 </dd>
-<dt>-masses average</dt><dd><p>The element mass_definition can be either “program”, “average” or “isotopic”, meaning that the masses used in the calculation of the frequencies are either taken from the QM program or are the average of the isotope abundances or are the most abundant isotope mass.</p>
+<dt>-masses average</dt><dd><p>The element mass_definition can be either “program”, “average” or “isotopic”, meaning that the masses used in the calculation of the frequencies are either taken from the QM program or are the average of the isotope abundancies or are the most abundant isotope mass.</p>
 </dd>
 <dt>-mass element mass</dt><dd><p>The atomic mass of the element is set to mass.  This can be used to explore the effect of isotope substitution on the calculated frequencies</p>
 </dd>
@@ -653,12 +653,12 @@ Unlike PDGui it is not necessary to have performed a full calculation of the dyn
 <span class="n">vibanalysis</span> <span class="n">phonon</span><span class="o">.</span><span class="n">castep</span>
 </pre></div>
 </div>
-<p>Which will analyse a VASP and a CASTEP phonon calculation output to produce a summary in the files OUTCAR.nma and phonon.nma respectively.</p>
+<p>which will analyse a VASP and a CASTEP phonon calculation output to produce a summary in the files OUTCAR.nma and phonon.nma respectively.</p>
 </section>
 <section id="mm-qm-interfaces">
 <h2><a class="toc-backref" href="#id37">MM/QM Interfaces</a><a class="headerlink" href="#mm-qm-interfaces" title="Permalink to this headline">¶</a></h2>
-<p>The packages have interfaces to five solid state QM codes, VASP <span id="id2">[<a class="reference internal" href="zreferences.html#id56">1</a>]</span>, CASTEP <span id="id3">[<a class="reference internal" href="zreferences.html#id62">2</a>]</span>, CRYSTAL14 <span id="id4">[<a class="reference internal" href="zreferences.html#id15">3</a>]</span>, Abinit <span id="id5">[<a class="reference internal" href="zreferences.html#id14">4</a>]</span>, Quantum Espresso <span id="id6">[<a class="reference internal" href="zreferences.html#id13">5</a>]</span> and Phonopy <span id="id7">[<a class="reference internal" href="zreferences.html#id12">6</a>]</span>.  In addition an interface is available for GULP <span id="id8">[<a class="reference internal" href="zreferences.html#id11">7</a>]</span> which is a force field based solid state code. Finally an interface has been written to and ‘experiment’ file format which allows the preparation of a user defined file specifying the permittivities and absorption frequencies. The origin of the dataset(s) used for processing is determined by a command line switch, -program. An outline of the interfaces to these codes is given here.
-The package used for the calculation is described by the -program option. In addition a file name is given which contains the output which will be processed by PDielec.</p>
+<p>The packages have interfaces to five solid state QM codes, VASP <span id="id2">[<a class="reference internal" href="zreferences.html#id56" title="Jurgen Hafner. Ab-initio simulations of materials using VASP: Density-functional theory and beyond. Journal of Computational Chemistry, 29(13):2044-2078, Oct 2008. arXiv:NIHMS150003, doi:10.1002/jcc.21057.">1</a>]</span>, CASTEP <span id="id3">[<a class="reference internal" href="zreferences.html#id62" title="Stewart J. Clark, Matthew D. Segall, Chris J. Pickard, Phil J. Hasnip, M. I J Probert, Keith Refson, and Mike C. Payne. First principles methods using CASTEP. Zeitschrift fur Kristallographie, 220(5-6):567-570, Jan 2005. doi:10.1524/zkri.220.5.567.65075.">2</a>]</span>, CRYSTAL14 <span id="id4">[<a class="reference internal" href="zreferences.html#id15" title="Roberto Dovesi, Roberto Orlando, Alessandro Erba, Claudio M. Zicovich-Wilson, Bartolomeo Civalleri, Silvia Casassa, Lorenzo Maschio, Matteo Ferrabone, Marco De La Pierre, Philippe D'Arco, Yves Noel, Mauro Causa, Michel Rerat, and Bernard Kirtman. CRYSTAL14: A program for the ab initio investigation of crystalline solids. International Journal of Quantum Chemistry, 114(19):1287-1317, Oct 2014. doi:10.1002/qua.24658.">3</a>]</span>, Abinit <span id="id5">[<a class="reference internal" href="zreferences.html#id14" title="X. Gonze, F. Jollet, F. Abreu Araujo, D. Adams, B. Amadon, T. Applencourt, C. Audouze, J. M. Beuken, J. Bieder, A. Bokhanchuk, E. Bousquet, F. Bruneval, D. Caliste, M. Cote, F. Dahm, F. Da Pieve, M. Delaveau, M. Di Gennaro, B. Dorado, C. Espejo, G. Geneste, L. Genovese, A. Gerossier, M. Giantomassi, Y. Gillet, D. R. Hamann, L. He, G. Jomard, J. Laflamme Janssen, S. Le Roux, A. Levitt, A. Lherbier, F. Liu, I. Lukacevic, A. Martin, C. Martins, M. J.T. Oliveira, S. Ponce, Y. Pouillon, T. Rangel, G. M. Rignanese, A. H. Romero, B. Rousseau, O. Rubel, A. A. Shukri, M. Stankovski, M. Torrent, M. J. Van Setten, B. Van Troeye, M. J. Verstraete, D. Waroquiers, J. Wiktor, B. Xu, A. Zhou, and J. W. Zwanziger. Recent developments in the ABINIT software package. Computer Physics Communications, 205:106-131, Aug 2016. doi:10.1016/j.cpc.2016.04.003.">4</a>]</span>, Quantum Espresso <span id="id6">[<a class="reference internal" href="zreferences.html#id13" title="Paolo Giannozzi, Stefano Baroni, Nicola Bonini, Matteo Calandra, Roberto Car, Carlo Cavazzoni, Davide Ceresoli, Guido L. Chiarotti, Matteo Cococcioni, Ismaila Dabo, Andrea Dal Corso, Stefano De Gironcoli, Stefano Fabris, Guido Fratesi, Ralph Gebauer, Uwe Gerstmann, Christos Gougoussis, Anton Kokalj, Michele Lazzeri, Layla Martin-Samos, Nicola Marzari, Francesco Mauri, Riccardo Mazzarello, Stefano Paolini, Alfredo Pasquarello, Lorenzo Paulatto, Carlo Sbraccia, Sandro Scandolo, Gabriele Sclauzero, Ari P. Seitsonen, Alexander Smogunov, Paolo Umari, and Renata M. Wentzcovitch. QUANTUM ESPRESSO: A modular and open-source software project for quantum simulations of materials. Journal of Physics Condensed Matter, 21(39):395502, Sep 2009. arXiv:0906.2569, doi:10.1088/0953-8984/21/39/395502.">5</a>]</span> and Phonopy <span id="id7">[<a class="reference internal" href="zreferences.html#id12" title="Atsushi Togo and Isao Tanaka. First principles phonon calculations in materials science. Scripta Materialia, 108:1-5, Nov 2015. arXiv:1506.08498, doi:10.1016/j.scriptamat.2015.07.021.">6</a>]</span>.  In addition an interface is available for GULP <span id="id8">[<a class="reference internal" href="zreferences.html#id11" title="Julian D. Gale and Andrew L. Rohl. The General Utility Lattice Program (GULP). Molecular Simulation, 29(5):291-341, May 2003. arXiv:arXiv:1011.1669v3, doi:10.1080/0892702031000104887.">7</a>]</span> which is a force field based solid state code. Finally an interface has been written to an ‘experiment’ file format which allows the preparation of a user defined file specifying the permittivities and absorption frequencies. The origin of the dataset(s) used for processing is determined by a command line switch, -program. An outline of the interfaces to these codes is given here.
+The package used for the calculation is described by the -program option. In addition, a file name is given which contains the output to be processed by PDielec.</p>
 <section id="vasp">
 <h3><a class="toc-backref" href="#id38">VASP</a><a class="headerlink" href="#vasp" title="Permalink to this headline">¶</a></h3>
 <p>The name provided on the command line is an OUTCAR file. The OUTCAR is read by PDielec to determine the unit cell, atomic masses, frequencies, normal modes, Born charge tensors and optical permittivity. The VASP run can be a DFPT or numerical calculation of the response.</p>
@@ -673,7 +673,7 @@ The package used for the calculation is described by the -program option. In add
 </section>
 <section id="abinit">
 <h3><a class="toc-backref" href="#id41">ABINIT</a><a class="headerlink" href="#abinit" title="Permalink to this headline">¶</a></h3>
-<p>The output file should come from a run containing three datasets. One to calculate the wavefunction at the optimized geometry, one to calculate the field perturbations and one to calculate the second derivatives. Examples of input files and output files are available with the distribution.</p>
+<p>The output file should come from a run containing three datasets. One to calculate the wavefunction at the optimised geometry, one to calculate the field perturbations and one to calculate the second derivatives. Examples of input files and output files are available with the distribution.</p>
 </section>
 <section id="qe">
 <h3><a class="toc-backref" href="#id42">QE</a><a class="headerlink" href="#qe" title="Permalink to this headline">¶</a></h3>
@@ -693,7 +693,7 @@ The package used for the calculation is described by the -program option. In add
 <blockquote>
 <div><p>phonopy –dim=”1 1 1” –qpoints=”0 0 0” –writedm</p>
 </div></blockquote>
-<p>To calculate the infrared spectrum PDielec needs the Born charges for the atoms in the unit cell and these can be calculated using VASP and the optimized geometry of the unit cell. The OUTCAR file from this calculation can be copied to the current directory and renamed OUTCAR.born</p>
+<p>To calculate the infrared spectrum PDielec needs the Born charges for the atoms in the unit cell and these can be calculated using VASP and the optimised geometry of the unit cell. The OUTCAR file from this calculation can be copied to the current directory and renamed OUTCAR.born</p>
 </section>
 <section id="gulp">
 <h3><a class="toc-backref" href="#id44">GULP</a><a class="headerlink" href="#gulp" title="Permalink to this headline">¶</a></h3>
@@ -755,10 +755,10 @@ There are some significant limitations in providing the information in the manne
 </pre></div>
 </div>
 <p>The file starts with a definition of the lattice, the first number being a lattice constant followed by three lines specifying the a, b, and c directions of the unit-cell.</p>
-<p>The next directive species the species and their masses, by default PDGui uses its own internal mass scheme, so unless otherwise required these masses will be overwritten.</p>
+<p>The next directive specifies the species and their masses, by default PDGui uses its own internal mass scheme, so unless otherwise required these masses will be overwritten.</p>
 <p>The <em>unitcell</em> directive specifies the number of atoms in the unit-cell and their fractional coordinates.</p>
 <p>The <em>epsinf</em> directive gives the values of the <span class="math notranslate nohighlight">\(\epsilon_{\infty}\)</span> tensor</p>
-<p>Finally a model for the specification of the frequency dependent perittivity is given.  In this case the four parameter semi-quantum model (fpsq)is employed.  Each diagonal component of the tensor is specified by the number of contributions and then each contribution provides the TO frequency and its <span class="math notranslate nohighlight">\(\gamma\)</span> followed by the same for the LO frequency (all frequencies are in cm-1. Full details of each permittivity model available are shown below.</p>
+<p>Finally a model for the specification of the frequency dependent permittivity is given.  In this case the four parameter semi-quantum model (fpsq) is employed.  Each diagonal component of the tensor is specified by the number of contributions and then each contribution provides the TO frequency and its <span class="math notranslate nohighlight">\(\gamma\)</span> followed by the same for the LO frequency (all frequencies are in cm-1. Full details of each permittivity model available are shown below.</p>
 <section id="constant-model-constant">
 <h3><a class="toc-backref" href="#id46">Constant model (constant)</a><a class="headerlink" href="#constant-model-constant" title="Permalink to this headline">¶</a></h3>
 <p>The constant model defines a frequency independent permittivity.  The data for such a model is shown below.:</p>
@@ -829,8 +829,8 @@ There are some significant limitations in providing the information in the manne
 </section>
 <section id="the-format-of-the-excel-spreadsheet">
 <h2><a class="toc-backref" href="#id49">The Format of the Excel Spreadsheet</a><a class="headerlink" href="#the-format-of-the-excel-spreadsheet" title="Permalink to this headline">¶</a></h2>
-<p>The Excel spread sheet which can be written by the programs contains details of the system being anaylysed, a list of the scenario settings and tables of absorption, permittivity, reflection and transmission.
-The spreedsheet is devided into different sheets;</p>
+<p>The Excel spread sheet, which can be written by the program, contains details of the system being anaylysed, a list of the scenario settings and tables of absorption, permittivity, reflection and transmission.
+The spreedsheet is divided into different sheets;</p>
 <ul class="simple">
 <li><dl class="simple">
 <dt><strong>Main</strong></dt><dd><p>This stores the information concerning the file that is being analysed and the program associated with the output.  A list of the frequencies read in from the output file is given too.</p>
@@ -934,7 +934,7 @@ The spreedsheet is devided into different sheets;</p>
 <li><a class="reference internal" href="#d-viewer-tab">3D Viewer Tab</a></li>
 <li><a class="reference internal" href="#fitter-tab">Fitter Tab</a></li>
 <li><a class="reference internal" href="#scripting">Scripting</a></li>
-<li><a class="reference internal" href="#parallelization-and-threads">Parallelization and threads</a></li>
+<li><a class="reference internal" href="#parallelisation-and-threads">Parallelisation and threads</a></li>
 <li><a class="reference internal" href="#performance">Performance</a></li>
 </ul>
 </li>
@@ -982,7 +982,7 @@ The spreedsheet is devided into different sheets;</p>
   <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="search.html" method="get">
-      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
       <input type="submit" value="Go" />
     </form>
     </div>
@@ -1051,7 +1051,7 @@ The spreedsheet is devided into different sheets;</p>
     
     <br />
 
-    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.0.2.
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.2.0.
     </div>
 
   </body>
