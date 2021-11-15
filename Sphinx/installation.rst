@@ -14,8 +14,6 @@ Installation
 Anaconda
 ========
 
-Anaconda is a Python package manager and is useful when trying out different versions of Python as there is a very convenient environment manager.  Anaconda can be installed as a user program and so root access to the computer is not needed.
-The software can be downloaded from https://conda.io/miniconda.html or https://www.anaconda.com/download/.
 Unless you are interested in the full package, miniconda installation should be sufficient for installing the rest of the modules needed for the PDielec installation.
 A miniconda is the recommended environment for installing PDielec.  On windows it is necessary to run the commands in an Anaconda command terminal, which will be added to the user's menu when miniconda is installed.
 
@@ -23,7 +21,7 @@ PDielec is available on the conda-forge channel and installation using Anaconda 
 However, there are no example files installed, only the executables.  
 Example files for each of the DFT packages supported can be downloaded from the Git repository.
 
-The cond-forge package has a Python 3 environment included in the package.  After installation of miniconda or anaconda, a new evironment should be created in which to install the package::
+The conda-forge package has a Python 3 environment included in the package.  After installation of miniconda or anaconda, a new evironment should be created in which to install the package::
 
    conda create  --name pdielec
    conda activate pdielec
@@ -211,7 +209,7 @@ GitHub - PDielec directory structure
 Examples
 ========
 
-Each example directory has the relevant input data sets use to run the QM/MM program and the output files from that run which are post-processed by PDielec.  There is a file `script.py` which contains an of PDGui usage line and which has been used to create the reference output file `results.ref.xlsx`.  The example can be run interactively::
+Each example directory has the relevant input data sets used to run the QM/MM program and the output files from that run, which are post-processed by PDielec.  There is a file `script.py` which contains an of PDGui usage line and which has been used to create the reference output file `results.ref.xlsx`.  The example can be run interactively::
 
  make pdgui-view
 
@@ -307,9 +305,9 @@ A summary of the different examples and their purpose is shown below;
    +---------------------------+------------------+---------------+-------------------------------------------------------------------------------------------------------------------------------------------------+
    | QE/ZnO                    | Quantum Espresso | ZnO           | Maxwell-Garnett and Bruggeman on needle, ellipsoid and plate                                                                                    |
    +---------------------------+------------------+---------------+-------------------------------------------------------------------------------------------------------------------------------------------------+
-   | SingleCrystal/Bi2Se3      | Vasp             | Bi2Se3        | Single crystal example of thick slab, angle of incedence varies from 0 to   90                                                                  |
+   | SingleCrystal/Bi2Se3      | Vasp             | Bi2Se3        | Single crystal example of thick slab, angle of incidence varies from 0 to   90                                                                  |
    +---------------------------+------------------+---------------+-------------------------------------------------------------------------------------------------------------------------------------------------+
-   | SingleCrystal/Bi2Se3_film | Vasp             | Bi2Se3        | Single crystal example of thin film, angle of incedence varies from 0 to   90                                                                   |
+   | SingleCrystal/Bi2Se3_film | Vasp             | Bi2Se3        | Single crystal example of thin film, angle of incidence varies from 0 to   90                                                                   |
    +---------------------------+------------------+---------------+-------------------------------------------------------------------------------------------------------------------------------------------------+
    | SizeEffects/BaTiO3        | Abinit           | BaTiO3        | Exploration of size effects in Bruggeman effective medium theory                                                                                |
    +---------------------------+------------------+---------------+-------------------------------------------------------------------------------------------------------------------------------------------------+
