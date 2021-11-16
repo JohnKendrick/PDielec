@@ -8,4 +8,3 @@ conda install matplotlib
 conda install -c anaconda pyopengl
 conda install openpyxl
 conda install pyaml
-conda install pymiescatt
