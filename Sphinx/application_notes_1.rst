@@ -1,7 +1,9 @@
 .. include:: preamble.txt
 
-.. contents::
-   :local:
+..
+    .. contents::
+       :local:
+..
 
 
 .. meta::
@@ -26,28 +28,28 @@ Magnesium oxide is an isotropic medium, the initial unit cell and the space grou
 .. table:: Experimental and Calculated Properties of MgO
    :name: tab-mgo-properties
    :widths: 1 1 1
-   :column-dividers:   none none  none  
-   :header-alignment: right right right 
-   :column-alignment: right right right 
+   :column-dividers:   single single single single  single
+   :header-alignment:         center center center 
+   :column-alignment:         right  center center 
 
    +------------------------------------------+-----------------------------+--------------------------------------+
    | Property                                 | Experimental                | Calculated                           |
    +==========================================+=============================+======================================+
-   | Unit cell dimensions (Å)                 | 2.107                       | 2.1234                               |
+   | Unit cell dimensions (Å):                | 2.107                       | 2.1234                               |
    +------------------------------------------+-----------------------------+--------------------------------------+
-   | Space group                              | :math:`Fm\bar{3}m`          |                                      |
+   | Space group:                             | :math:`Fm\bar{3}m`          |                                      |
    +------------------------------------------+-----------------------------+--------------------------------------+
-   | Optical permittivity                     |                             | 3.1400                               |
+   | Optical permittivity:                    |                             | 3.1400                               |
    +------------------------------------------+-----------------------------+--------------------------------------+
-   | Static permittivity                      |                             | 10.000                               |
+   | Static permittivity:                     |                             | 10.000                               |
    +------------------------------------------+-----------------------------+--------------------------------------+
    | **TO phonons**                           |  **Frequency** (|cm-1|)     | **Intensity** (|D2A-2amu-1|)         | 
    +------------------------------------------+-----------------------------+--------------------------------------+
-   | T                                        | 388.3                       | 9.29                                 |
+   | T:                                       | 388.3                       | 9.29                                 |
    +------------------------------------------+-----------------------------+--------------------------------------+
    | **LO phonons**                           |                             |                                      |
    +------------------------------------------+-----------------------------+--------------------------------------+
-   | T (001)                                  | 693.7                       |                                      |
+   | T (001):                                 | 693.7                       |                                      |
    +------------------------------------------+-----------------------------+--------------------------------------+
 
 
@@ -135,26 +137,26 @@ VASP and the permittivity was calculated using DFPT and the results reported in 
 .. table:: Experimental and Calculated Properties of ZnO
    :name: tab-zno-properties
    :widths: 1 1 1
-   :column-dividers:   none none  none  
-   :header-alignment: right right right 
-   :column-alignment: right right right 
+   :column-dividers:   single single single single  single
+   :header-alignment:         right center center 
+   :column-alignment:         right center center 
 
    +------------------------------------------+-----------------------------+--------------------------------------+
    | Property                                 | Experimental                | Calculated                           |
    +==========================================+=============================+======================================+
-   | Unit cell dimensions a,b (Å)             | 3.250                       | 3.295                                |
+   | Unit cell dimensions a,b (Å):            | 3.250                       | 3.295                                |
    +------------------------------------------+-----------------------------+--------------------------------------+
-   | Unit cell dimensions a   (Å)             | 5.207                       | 5.285                                |
+   | Unit cell dimensions a   (Å):            | 5.207                       | 5.285                                |
    +------------------------------------------+-----------------------------+--------------------------------------+
-   | Space group                              | :math:`P6_3mc`              |                                      |
+   | Space group:                             | :math:`P6_3mc`              |                                      |
    +------------------------------------------+-----------------------------+--------------------------------------+
-   | Optical permittivity   xx,yy             |                             | 5.09                                 |
+   | Optical permittivity   xx,yy:            |                             | 5.09                                 |
    +------------------------------------------+-----------------------------+--------------------------------------+
-   | Optical permittivity   zz                |                             | 6.00                                 |
+   | Optical permittivity   zz:               |                             | 6.00                                 |
    +------------------------------------------+-----------------------------+--------------------------------------+
-   | Static permittivity    xx, yy            |                             | 10.83                                |
+   | Static permittivity    xx, yy:           |                             | 10.83                                |
    +------------------------------------------+-----------------------------+--------------------------------------+
-   | Static permittivity    zz                |                             | 11.67                                |
+   | Static permittivity    zz:               |                             | 11.67                                |
    +------------------------------------------+-----------------------------+--------------------------------------+
    | **TO phonons**                           |  **Frequency (|cm-1|)**     | **Intensity** (|D2A-2amu-1|)         | 
    +------------------------------------------+-----------------------------+--------------------------------------+
@@ -164,9 +166,9 @@ VASP and the permittivity was calculated using DFPT and the results reported in 
    +------------------------------------------+-----------------------------+--------------------------------------+
    | **LO phonons**                           |                             |                                      |
    +------------------------------------------+-----------------------------+--------------------------------------+
-   | (001) A                                  | 502.0                       |                                      |
+   | A (001):                                 | 502.0                       |                                      |
    +------------------------------------------+-----------------------------+--------------------------------------+
-   | (010) E                                  | 511.2                       |                                      |
+   | E (010):                                 | 511.2                       |                                      |
    +------------------------------------------+-----------------------------+--------------------------------------+
 
 
@@ -183,51 +185,59 @@ The data for this calculation can be found by looking in the :ref:`Examples` sec
 Calcite using GULP
 ==================
 
-Calcite is the most stable polymorph of calcium carbonate and the crystal structure belongs to the :math:`R\overline{3}c` space group. The force field and atomic structures used here are described in detail in work by Fisler :cite:`Fisler2000`. Briefly, the oxygen ions are described using a core-shell model :cite:`Dick1958`. The carbon - oxygen potential of the carbonate is taken to be a Morse potential and an additional 3 atom potential is used to maintain the O-C-O angle at 120\ :superscript:`o`. The van der Waals interactions between non bonded atoms are taken to be Buckingham potentials and the charges on the calcium, carbon and oxygen ions are +2, +1.3435 and -1.1145 respectively. The shell charge of the oxygen ion is -2.133 and the spring constant for the core-shell interaction is 52.74 eV/Å\ :superscript:`2`. The unit cell was optimised using the primitive unit cell and the full space group symmetry. The calculation of the phonon spectrum was performed without symmetry but still using the primitive cell of the lattice. A summary of the calculated properties is given in :numref:`tab-calcite-properties`.
+Calcite is the most stable polymorph of calcium carbonate and the crystal structure belongs to the :math:`R\overline{3}c` space group.
+The force field and atomic structures used here are described in detail in work by Fisler :cite:`Fisler2000`.
+Briefly, the oxygen ions are described using a core-shell model :cite:`Dick1958`.
+The carbon - oxygen potential of the carbonate is taken to be a Morse potential and an additional 3 atom potential is used to maintain the O-C-O angle at 120\ :superscript:`o`.
+The van der Waals interactions between non bonded atoms are taken to be Buckingham potentials and the charges on the calcium, carbon and oxygen ions are +2, +1.3435 and -1.1145 respectively.
+The shell charge of the oxygen ion is -2.133 and the spring constant for the core-shell interaction is 52.74 eV/Å\ :superscript:`2`.
+The unit cell was optimised using the primitive unit cell and the full space group symmetry.
+The calculation of the phonon spectrum was performed without symmetry but still using the primitive cell of the lattice.
+A summary of the calculated properties is given in :numref:`tab-calcite-properties`.
 The data for this calculation can be found by looking in the :ref:`Examples` section of the installation guide under the Gulp/calcite example.
 
 
 .. table:: Experimental and Calculated Properties of Calcite
    :name: tab-calcite-properties
    :widths: 1 1 1
-   :column-dividers:   none none  none  
-   :header-alignment: right right right 
-   :column-alignment: right right right 
+   :column-dividers:   single single single single  single
+   :header-alignment:         center center center 
+   :column-alignment:         right   center center 
 
    +------------------------------------------+-----------------------------+--------------------------------------+
    | Property                                 | Experimental                | Calculated                           |
    +==========================================+=============================+======================================+
-   | Unit cell dimensions a,b,c (Å)           | 6.375                       | 6.376                                |
+   | Unit cell dimensions a,b,c (Å):          | 6.375                       | 6.376                                |
    +------------------------------------------+-----------------------------+--------------------------------------+
-   | Unit cell angles                         | 46.1                        | 46.1                                 |
+   | Unit cell angles:                        | 46.1                        | 46.1                                 |
    +------------------------------------------+-----------------------------+--------------------------------------+
-   | Space group                              | :math:`R\overline{3}c`      |                                      |
+   | Space group:                             | :math:`R\overline{3}c`      |                                      |
    +------------------------------------------+-----------------------------+--------------------------------------+
-   | Optical permittivity   xx,yy             |                             | 1.91                                 |
+   | Optical permittivity   xx,yy:            |                             | 1.91                                 |
    +------------------------------------------+-----------------------------+--------------------------------------+
-   | Optical permittivity   zz                |                             | 2.00                                 |
+   | Optical permittivity   zz:               |                             | 2.00                                 |
    +------------------------------------------+-----------------------------+--------------------------------------+
-   | Static permittivity    xx, yy            |                             | 6.70                                 |
+   | Static permittivity    xx, yy:           |                             | 6.70                                 |
    +------------------------------------------+-----------------------------+--------------------------------------+
-   | Static permittivity    zz                |                             | 7.10                                 |
+   | Static permittivity    zz:               |                             | 7.10                                 |
    +------------------------------------------+-----------------------------+--------------------------------------+
    | **TO phonons**                           |  **Frequency** (|cm-1|)     | **Intensity** (|D2A-2amu-1|)         | 
    +------------------------------------------+-----------------------------+--------------------------------------+
-   | E                                        | 114.8                       | 2.39                                 |
+   | E:                                       | 114.8                       | 2.39                                 |
    +------------------------------------------+-----------------------------+--------------------------------------+
-   | A                                        | 127.4                       | 3.36                                 |
+   | A:                                       | 127.4                       | 3.36                                 |
    +------------------------------------------+-----------------------------+--------------------------------------+
-   | A                                        | 249.3                       | 1.23                                 |
+   | A:                                       | 249.3                       | 1.23                                 |
    +------------------------------------------+-----------------------------+--------------------------------------+
-   | E                                        | 320.7                       | 5.82                                 |
+   | E:                                       | 320.7                       | 5.82                                 |
    +------------------------------------------+-----------------------------+--------------------------------------+
-   | A                                        | 338.1                       | 4.14                                 |
+   | A:                                       | 338.1                       | 4.14                                 |
    +------------------------------------------+-----------------------------+--------------------------------------+
-   | E                                        | 620.1                       | 3.38                                 |
+   | E:                                       | 620.1                       | 3.38                                 |
    +------------------------------------------+-----------------------------+--------------------------------------+
-   | A                                        | 732.0                       | 26.89                                |
+   | A:                                       | 732.0                       | 26.89                                |
    +------------------------------------------+-----------------------------+--------------------------------------+
-   | E                                        | 1463.6                      | 16.97                                |
+   | E:                                       | 1463.6                      | 16.97                                |
    +------------------------------------------+-----------------------------+--------------------------------------+
 
 
@@ -254,34 +264,34 @@ The data for this calculation can be found by looking in the :ref:`Examples` sec
 .. table:: Experimental and Calculated Properties of Fluoroapatite
    :name: tab-fluoroapatite-properties
    :widths: 1 1 1
-   :column-dividers:   none none  none  
-   :header-alignment: right right right 
-   :column-alignment: right right right 
+   :column-dividers:   single single single single  single
+   :header-alignment:         center center center 
+   :column-alignment:         right   center center 
 
    +------------------------------------------+---------------------------------+------------------------------+
    | Property                                 | Experimental :cite:`Hughes1989` | Calculated                   |
    +==========================================+=================================+==============================+
-   | Unit cell dimensions a,b (Å)             | 9.417                           | 9.447                        |
+   | Unit cell dimensions a,b (Å):            | 9.417                           | 9.447                        |
    +------------------------------------------+---------------------------------+------------------------------+
-   | Unit cell dimensions c (Å)               | 6.875                           | 6.926                        |
+   | Unit cell dimensions c (Å):              | 6.875                           | 6.926                        |
    +------------------------------------------+---------------------------------+------------------------------+
-   | Space group                              | :math:P6_3m`                    |                              |
+   | Space group:                             | :math:P6_3m`                    |                              |
    +------------------------------------------+---------------------------------+------------------------------+
-   | Optical permittivity   xx,yy             |                                 | 2.891                        |
+   | Optical permittivity   xx,yy:            |                                 | 2.891                        |
    +------------------------------------------+---------------------------------+------------------------------+
-   | Optical permittivity   zz                |                                 | 2.894                        |
+   | Optical permittivity   zz:               |                                 | 2.894                        |
    +------------------------------------------+---------------------------------+------------------------------+
-   | Static permittivity    xx, yy            |                                 | 12.081                       |
+   | Static permittivity    xx,yy:            |                                 | 12.081                       |
    +------------------------------------------+---------------------------------+------------------------------+
-   | Static permittivity    zz                |                                 | 8.841                        |
+   | Static permittivity    zz:               |                                 | 8.841                        |
    +------------------------------------------+---------------------------------+------------------------------+
    | **TO phonons**                           |  **Frequency** (|cm-1|)         | **Intensity** (|D2A-2amu-1|) | 
    +------------------------------------------+---------------------------------+------------------------------+
-   | A                                        | 981.8                           | 112.6                        |
+   | A:                                       | 981.8                           | 112.6                        |
    +------------------------------------------+---------------------------------+------------------------------+
-   | E                                        | 986.3                           | 101.0                        |
+   | E:                                       | 986.3                           | 101.0                        |
    +------------------------------------------+---------------------------------+------------------------------+
-   | E                                        | 1038.1                          | 7.92                         |
+   | E:                                       | 1038.1                          | 7.92                         |
    +------------------------------------------+---------------------------------+------------------------------+
 
 
@@ -309,35 +319,35 @@ L-aspartic acid is a zwitterion in the solid state and so the shape of the parti
 
 .. table:: Experimental and calculated properties of L-aspartic acid
    :name: tab-aspartic-properties
-   :widths: 1 1 1
-   :column-dividers:   none none  none  
-   :header-alignment: right right right 
-   :column-alignment: right right right 
+   :widths:                   1      1      1
+   :column-dividers:   single single single single  single
+   :header-alignment:         center center center 
+   :column-alignment:         right  center center 
 
    +------------------------------------------+-----------------------------------+------------------------------+
    | Property                                 | Experimental :cite:`Derissen1968` | Calculated                   |
    +==========================================+===================================+==============================+
-   | Unit cell dimensions a (Å)               | 7.617                             | 7.597                        |
+   | Unit cell dimensions a (Å):              | 7.617                             | 7.597                        |
    +------------------------------------------+-----------------------------------+------------------------------+
-   | Unit cell dimensions b (Å)               | 6.982                             | 7.028                        |
+   | Unit cell dimensions b (Å):              | 6.982                             | 7.028                        |
    +------------------------------------------+-----------------------------------+------------------------------+
-   | Unit cell dimensions c (Å)               | 5.142                             | 5.113                        |
+   | Unit cell dimensions c (Å):              | 5.142                             | 5.113                        |
    +------------------------------------------+-----------------------------------+------------------------------+
-   | Unit cell angle :math:`\beta`            | 99.84                             | 98.77                        |
+   | Unit cell angle :math:`\beta`:           | 99.84                             | 98.77                        |
    +------------------------------------------+-----------------------------------+------------------------------+
-   | Space group                              | :math:`P2_1`                      |                              |
+   | Space group:                             | :math:`P2_1`                      |                              |
    +------------------------------------------+-----------------------------------+------------------------------+
-   | Optical permittivity   xx                |                                   | 2.68                         |
+   | Optical permittivity   xx:               |                                   | 2.68                         |
    +------------------------------------------+-----------------------------------+------------------------------+
-   | Optical permittivity   yy                |                                   | 2.20                         |
+   | Optical permittivity   yy:               |                                   | 2.20                         |
    +------------------------------------------+-----------------------------------+------------------------------+
-   | Optical permittivity   zz                |                                   | 2.56                         |
+   | Optical permittivity   zz:               |                                   | 2.56                         |
    +------------------------------------------+-----------------------------------+------------------------------+
-   | Static permittivity    xx                |                                   | 4.58                         |
+   | Static permittivity    xx:               |                                   | 4.58                         |
    +------------------------------------------+-----------------------------------+------------------------------+
-   | Static permittivity    yy                |                                   | 3.65                         |
+   | Static permittivity    yy:               |                                   | 3.65                         |
    +------------------------------------------+-----------------------------------+------------------------------+
-   | Static permittivity    zz                |                                   | 3.65                         |
+   | Static permittivity    zz:               |                                   | 3.65                         |
    +------------------------------------------+-----------------------------------+------------------------------+
    | **TO phonons**                           |  **Frequency** (|cm-1|)          | **Intensity** (|D2A-2amu-1|)  | 
    +------------------------------------------+-----------------------------------+------------------------------+
@@ -405,14 +415,14 @@ To better understand what makes particles large or small :numref:`tab-mgo-mie-si
 
 .. table:: Variation of size parameter with wavenumber and radius of sphere
    :name: tab-mgo-mie-sizes
-   :widths: 1 1 1 1 1 1
-   :column-dividers:   none none none  none  none  none
-   :header-alignment: right right right right right right
-   :column-alignment: right right right right right right
+   :widths:                  1      1      1      1       1       1
+   :column-dividers:  single double single single single single single single
+   :header-alignment:        center center center center center center
+   :column-alignment:        right  center center center center center
 
    +------------+-----------------------+--------+--------+--------+---------+
-   | Wavenumber | Radius of sphere (μm)                                      |
-   +------------+-----------------------+--------+--------+--------+---------+
+   |            | Radius of sphere (μm)                                      |
+   + Wavenumber +-----------------------+--------+--------+--------+---------+
    | (cm-1)     | 0.001                 | 0.01   | 0.1    | 1      | 10      |
    +============+=======================+========+========+========+=========+
    | 100        | 0.0009                | 0.0089 | 0.0888 | 0.8884 | 8.8841  |
@@ -495,7 +505,7 @@ The data for this calculation can be found by looking in the :ref:`Examples` sec
 
 
 Fitting the ATR Spectrum of Na\ :subscript:`2`\ (SO\ :subscript:`4`\ )\ :subscript:`2`
-==============================
+======================================================================================
 
 To calculate the expected Attenuated Total Reflectance spectrum of Na\ :subscript:`2`\ (SO\ :subscript:`4`\ )\ :subscript:`2` a VASP calculation was performed of the optimised structure followed by the dynamical matrix and the phonon spectrum at the :math:`\Gamma` point.
 After reading in the OUTCAR with PDGui, the scenario tab is modified to reflect the materials used in an ATR experiment.  The support matrix is set to air and the volume fraction of the dielectric is set 80%.  When looking at the plot with the plotting tab, ensure that the 'Powder ATR' plot type is used.  This ensures that the fitter tab uses that plot for the fitting.  For the case of non polarised radiation the choice of 0.5 for the 'ATR S polarisation fraction' is appropriate.
@@ -506,7 +516,7 @@ The settings tab will look like the tab shown below.
 .. figure:: ./_static/Figures/Na2SO42_Scenario_Fitting.png
    :scale: 90%
 
-   Na\ :subscript:`2`\ (SO\ :subscript:`4`\ )\ :subscript:`2` Scenario Tab for ATR
+   Na\ :subscript:`2`\ (SO\ :subscript:`4`\ )\ :subscript:`2` Scenario Tab for an ATR scenario
 
 
 The initial fitter tab will look something like what is shown below.  A file has been specified holding the experimental ATR spectrum.  There is a list of Lorentzian widths for each phonon transition.  The *Replot* button re-plots the graph after any changes to the sigma widths of the transition.  Changes to the phonon transition widths made in the *Fitter Tab* are reflected in the *Settings tab*.
@@ -515,16 +525,16 @@ If changes are made to the widths a re-plot will cause all the information neede
 After a recalculation four items of data are show;
 
 - **X-correlation**
-        This is the maximum in the cross-correlation function calculated between the experimental and simulated spectrum.A value of 1.0 means that there is perfect agreement between the shapes of the calculated and experimental curves, a value of 0.0 indicates that they are not correlated at all.
+        | This is the maximum in the cross-correlation function calculated between the experimental and simulated spectrum.A value of 1.0 means that there is perfect agreement between the shapes of the calculated and experimental curves, a value of 0.0 indicates that they are not correlated at all.
         
 - **frequency scale**
-        This shows the frequency scaling factor being used to scale the calculated frequency.  This can be set using the Settings at the top of the *Fitter tab*.  It is usually 1.0, but where a DFT method is known to show systematic errors in its calculated frequencies, it is possible to compensate for these using this value.
+        | This shows the frequency scaling factor being used to scale the calculated frequency.  This can be set using the Settings at the top of the *Fitter tab*.  It is usually 1.0, but where a DFT method is known to show systematic errors in its calculated frequencies, it is possible to compensate for these using this value.
 
 - **shift**
-        This is the frequency at which the cross correlation function is a maximum, it is sometimes called the 'lag'.  By default the plot is shown without the frequency shift, but this can be changed by using the *Replot with frequency shift* button.
+        | This is the frequency at which the cross correlation function is a maximum, it is sometimes called the 'lag'.  By default the plot is shown without the frequency shift, but this can be changed by using the *Replot with frequency shift* button.
 
 - **rmse**
-        This is the root mean squared difference between the experimental and calculated spectra.  If the units of the two spectra are different then this is not a very useful measure of their similarity and any fitting should be done using the maximum in the cross-correlation function.
+        | This is the root mean squared difference between the experimental and calculated spectra.  If the units of the two spectra are different then this is not a very useful measure of their similarity and any fitting should be done using the maximum in the cross-correlation function.
 
 
 .. _Na2SO42-fitter:
@@ -532,38 +542,38 @@ After a recalculation four items of data are show;
 .. figure:: ./_static/Figures/Na2SO42_Fitter.png
    :scale: 90%
 
-   Na\ :subscript:`2`\ (SO\ :subscript:`4`\ )\ :subscript:`2` Fitter Tab for ATR
+   Na\ :subscript:`2`\ (SO\ :subscript:`4`\ )\ :subscript:`2` Fitter Tab for fitting ATR spectra
 
 In the situation above the calculated and experimental spectra have been plotted on the same scale, but very often the units used for absorption are confusing and if necessary a separate scale for the experimental and calculated spectra can be used by toggling 'Independent y-axes' on the Fitter settings tab.
 
-Visual inspection of the spectra above indicates that the transition widths are too narrow and need broadening.  This is simply acheived by choosing a frequency range and editing the sigma values.  In the 1200 :math:`cm^{-1}` there are two transitions with similar initensities.  The values of both sigmas should be modified until the calculated peak height is similar to the experimental one.  Where possible the same values of sigma should be used for several transitions and this process repeated for the important frequency ranges.  The table below shows the changes that can be made to improve the fit.  
+Visual inspection of the spectra above indicates that the transition widths are too narrow and need broadening.  This is simply acheived by choosing a frequency range and editing the sigma values.  In the 1200 |cm-1| there are two transitions with similar initensities.  The values of both sigmas should be modified until the calculated peak height is similar to the experimental one.  Where possible the same values of sigma should be used for several transitions and this process repeated for the important frequency ranges.  The table below shows the changes that can be made to improve the fit.  
 
 .. table:: Modified sigma parameters for Na\ :subscript:`2`\ (SO\ :subscript:`4`\ )\ :subscript:`2` after fitting
    :name: na2so42-sigma-values
-   :widths: 1 1 1 1 
-   :column-dividers:   none none none  none  none  none
-   :header-alignment: center left left left
-   :column-alignment: center left left left
+   :widths:                   1      1      1      1 
+   :column-dividers:   single double single single single single
+   :header-alignment:         center center center center center
+   :column-alignment:         right  center center center center
 
    +------------+-----------------------+------------------+-------------+
    | Mode       | Frequency (cm-1)      | Starting sigma   | Final sigma | 
    +============+=======================+==================+=============+
-   | 21         | 445.1942              | 5                | 10          | 
+   | 21         | 445.2                 | 5                | 10          | 
    +------------+-----------------------+------------------+-------------+
-   | 22         | 528.1156              | 5                | 200         | 
+   | 22         | 528.1                 | 5                | 200         | 
    +------------+-----------------------+------------------+-------------+
-   | 24         | 532.3843              | 5                | 10          | 
+   | 24         | 532.4                 | 5                | 10          | 
    +------------+-----------------------+------------------+-------------+
-   | 28         | 663.9357              | 5                | 100         | 
+   | 28         | 663.9                 | 5                | 100         | 
    +------------+-----------------------+------------------+-------------+
-   | 31         | 1000.9066             | 5                | 35          | 
+   | 31         | 1000.9                | 5                | 35          | 
    +------------+-----------------------+------------------+-------------+
-   | 33         | 1188.9832             | 5                | 130         | 
+   | 33         | 1189.0                | 5                | 130         | 
    +------------+-----------------------+------------------+-------------+
-   | 35         | 120.5535              | 5                | 100         | 
+   | 35         | 120.6                 | 5                | 100         | 
    +------------+-----------------------+------------------+-------------+
 
-The cross-correlation of this fit is 0.7369 at a frequency shift of 21.20 :math:`cm^{-1}`.  The plot below shows the comparison of the calculated and experimental curves and the plot was made incorporating the frequency shift.
+The cross-correlation of this fit is 0.7369 at a frequency shift of 21.20 |cm-1|.  The plot below shows the comparison of the calculated and experimental curves and the plot was made incorporating the frequency shift.
 It is possible to further improve the quality of the agreement of the fit by selecting some of the sigmas for optimisation using the tick box next to each frequency and clicking on the 'Perform fitting' button.  If the 'Optimise scaling' option is selected in the Settings tab, then very often the value of the shift parameter is reduced considerably.
 The problem with doing the fitting automatically is that maximising the correlation function may not lead to comparisons which 'look' as good as simply making sure the peak heights of the experimental and calculated spectra are similar.
 The data for this calculation can be found by looking in the :ref:`Examples` section of the installation guide under the ATR/Na2SO42_fit example.
@@ -586,7 +596,7 @@ The FPSQ model is defined by the following equation.
 
 
 .. math::
-   :label: eq-fpsq
+   :label: eq-fpsqa
 
     \epsilon (\omega )=\epsilon _{\infty}\prod_{j} \frac{\Omega^2_{LO_j}-\omega ^2-i\gamma _{LO_j}\omega }{\Omega^2_{TO_j}-\omega ^2-i\gamma _{TO_j}\omega}
 
@@ -611,15 +621,16 @@ Forsterite is an orthosilicate belonging to an orthorhombic space group.  The pe
 
 
 .. table:: FPSQ Model Parameters for Forsterite
-   :name: tab-fpsq
-   :widths: 1 1 1 1 1 1 1 1 1 1 1 1
-   :column-dividers:   none single single single single single single single single single single single none
-   :header-alignment:  center center center center center center center center center center center center
+   :name: tab-fpsqa
+   :widths:                   1      1      1      1      1      1      1      1      1      1      1      1
+   :column-dividers:   single single single single single single single single single single single single single single
+   :column-alignment:         center center center center center center center center center center center center
+   :header-alignment:         right  right  right  right  right  right  right  right  right  right  right  right 
 
    +----------------------------------------+----------------------------------------+----------------------------------------+
    | EPS(xx)                                | EPS(yy)                                | EPS(zz)                                |
    +---------+---------+---------+----------+---------+---------+---------+----------+---------+---------+---------+----------+
-   | TO Freq | TO sigma| LO Freq | LO Sigma | TO Freq | TO sigma| LO Freq | LO Sigma | TO Freq | TO sigma| LO Freq | LO Sigma |
+   | TO Freq | TO sigma| LO Freq | LO sigma | TO Freq | TO sigma| LO Freq | LO sigma | TO Freq | TO sigma| LO Freq | LO sigma |
    +=========+=========+=========+==========+=========+=========+=========+==========+=========+=========+=========+==========+
    | 202.6   |0.18     |202.9    | 0.28     | 144.9   |0.09     |145.5    | 0.21     | 278.3   |0.50     | 278.9   | 0.54     |
    +---------+---------+---------+----------+---------+---------+---------+----------+---------+---------+---------+----------+
@@ -693,5 +704,5 @@ The data for this calculation can be found by looking in the :ref:`Examples` sec
 .. figure:: ./_static/Figures/forsterite-350-600.png
    :scale: 90%
 
-   Forsterite a-axis reflectance (upper figure 100 - 1200 cm-1, lower figure 350 - 600 cm-1)
+   Forsterite a-axis reflectance (upper figure 100 - 1200 |cm-1|, lower figure 350 - 600 |cm-1|)
 

@@ -15,6 +15,8 @@ PDielec post processes the output of solid state quantum mechanical and molecula
 
 Using an effective medium method, the package calculates the internal electric field arising from different particle morphologies and calculates the resulting shift in absorption frequency and intensity arising from the coupling between a phonon and the internal field. The theory of the approach is described, followed by a description of the implementation within PDielec. For the specific case of a low concentration of spherical particles, calculations based on Mie scattering allow the exploration of particle size effects. A section providing several examples of its application is given.
 
+For spherical, isotropic particles, embedded in a supporting matrix the Mie method is available to calculate the absorption of infrared radiation.  The method uses the routines of PyMieScatt by B. Sumlin :cite:`Sumlin2018a,pymiescatt`.
+
 The attenuated total reflection (ATR) spectrum can be calculated for a powdered material next to a high refractive index material such as diamond or germanium.
 
 The calculation of the optical behaviour of a single crystal (thick slab or film) is performed using the pyGTM code available on GitHub :cite:`pygtm`.  This code implements a generalised transfer matrix method described by Passler et al. :cite:`Passler2020` and which builds on previous publications :cite:`Passler2017,Passler2017a`.  

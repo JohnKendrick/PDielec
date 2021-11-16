@@ -2,9 +2,10 @@
 Installation
 ============
 
-.. contents::
-   :local:
-
+..
+    .. contents::
+       :local:
+..
 
 .. meta::
    :description: PDielec package for the calculation of infrared and terahertz absorption from QM calculations
@@ -79,7 +80,6 @@ As part of the installation you will have to install a number of Python packages
    openpyxl
    pyyaml
    xlsxwriter
-   pymiescatt
    termcolor
    imageio
    imageio-ffmpeg
@@ -91,16 +91,10 @@ GitHub - Windows
 An Anaconda installation is now the recommended way of installing to a Windows machine.  See the section on Anaconda above.  If the user still wishes to proceed with a local installation based purely on the GitHub releases, see below.
 
 
-Standalone installation
------------------------
-
-For older releases there is a Windows 10 installation script available on the GitHub at https://github.com/JohnKendrick/PDielec/releases is no longer supported, but an old copy of the package will remain available there.
-Releases after version 4.0 have a Windows installable script which installs all the software required to run PDielec, PDGui and PReader.  The installation includes Python 3, and all the modules that are required.  The downloadable executable is very large so be be patient.  The imageio library uses ffmpeg to create videos.  ffmpeg is not distributed with the installation script.  Instead, when creating a video of the phonon motion, PDGui checks for the availability of ffmpeg.  If it is not present then it is downloaded automatically.
-
 Installation from repository
 ----------------------------
 
-This Windows installation is only needed if the standalone version is found to be too cumbersome.
+This Windows installation method is only needed if installation through Anaconda is not possible.
 A Windows 10 installation from the git repository which works for users without administrator rights involves a few steps but gives an installation which can run all the test cases.  In the following instructions replace 'yourusername' with your user name.
 
 Install git
@@ -152,7 +146,6 @@ Open a git bash console and type;::
    pip install openpyxl
    pip install pyyaml
    pip install xlsxwriter
-   pip install pymiescatt
    pip install termcolor
    pip install imageio
    pip install imageio-ffmpeg
@@ -226,11 +219,11 @@ This runs a range of calculations on different systems and provides a real world
 A summary of the different examples and their purpose is shown below;
 
 .. table:: Summary of the Examples available in the Examples/ directory
-   :widths: 2 1 2 8
+   :widths: 2 1 1 8
    :header-alignment: center center center center
    :column-alignment: left center left left
    :column-wrapping: false false false true
-   :column-dividers: none single single single none
+   :column-dividers: single single single single single
 
    +---------------------------+------------------+---------------+-------------------------------------------------------------------------------------------------------------------------------------------------+
    | Directory                 | Program          | Molecule      | Description                                                                                                                                     |

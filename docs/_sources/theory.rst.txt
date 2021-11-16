@@ -1,7 +1,9 @@
 .. include:: preamble.txt
 
-.. contents::
-   :local:
+..
+    .. contents::
+       :local:
+..
 
 
 .. meta::
@@ -463,7 +465,7 @@ Equation :eq:`eq-ap` defines an isotropic permittivity which can be used to calc
 Particle size effects
 ---------------------
 
-Meier and Wokaun :cite:`Meier1983` outlined an approach to treating large (metal) spherical particles, where particle size is incorporating terms up to 3^rd^ order in the wave vector *k*. Using Equations :eq:`eq-PolarisationDensity` and :eq:`eq-InternalField` we can write;
+Meier and Wokaun :cite:`Meier1983` outlined an approach to treating large (metal) spherical particles, where particle size is incorporating terms up to 3\ :sup:`rd` order in the wave vector *k*. Using Equations :eq:`eq-PolarisationDensity` and :eq:`eq-InternalField` we can write;
 
 .. math::
    :label: eq-PolarisationWithSize
@@ -514,12 +516,12 @@ This leads to a modified equation for the polarisability of spherical particles;
 
 Using the modified, sized dependent polarisability all the Bruggeman and Maxwell mixing schemes can be implemented in a way that incorporates size effects.  Generally speaking the on-set of changes in the calculated absorption is an indication that size effects are important and should be treated properly.
 
-Light scattering by spherical particles using Mie theory
---------------------------------------------------------
+Mie Theory of Light scattering
+------------------------------
 
-For particles which are comparable in size to the wavelength of light, the theory developed by Mie and described fully by van de Hulst :cite:`VanDeHulst1981` can be used. Unfortunately this theory is only applicable to spherical, isotropic particles where the separation between the particles is large compared with the wavelength of light.
+For spherical particles which are comparable in size to the wavelength of light, the theory developed by Mie and described fully by van de Hulst :cite:`VanDeHulst1981` can be used. Unfortunately this theory is only applicable to spherical, isotropic, particles where the separation between the particles is large compared with the wavelength of light.
 
-PDielec implements a form of Mie theory using the Python library PyMieScatt :cite:`Sumlin2018a`. In order to treat systems which are anisotropic, PDielec first of all calculates the Maxwell-Garnett permittivity for the anisotropic sphere embedded with random orientation in the supporting matrix.  The program then calculates the required permittivity of an isotropic sphere which would give the same Maxwell-Garnett permittivity as the anisotropic system.  The Mie scattering is then performed on this isotropic sphere.
+PDielec applies Mie theory using the Python library PyMieScatt :cite:`Sumlin2018a`. In order to treat systems which are anisotropic, PDielec first of all calculates the Maxwell-Garnett permittivity for the anisotropic sphere embedded with random orientation in the supporting matrix.  The program then calculates the required permittivity of an isotropic sphere which would give the same Maxwell-Garnett permittivity as the anisotropic system.  The Mie scattering is then performed on this isotropic sphere.
 
 An alternative method which diagonalises the real permittivity and then transforms the complex permittivity into the new basis was found to cause anomolous absorptions at the TO frequencies and so the method is no longer used.  However, the theory is given here in case it ever has to be revived.
 
@@ -670,8 +672,20 @@ There are two coordinate systems to consider.  The first is the laboratory coord
 It is assumed that the normal to the crystal surface is aligned with the Z-axis and that the incident radiation is in the X-Z plane.  P-polarised light is polarised parallel to this plane and S-polarised perpendicular (senkrecht) to this plane.  
 
 The other coordinate system of interest is that of the crystal.  The calculation of the permittivity tensor is performed in the crystal coordinate system (x,y,z).  The crystal place is defined by a set of Miller indices (hkl) and the normal to the crystal surface is rotated to align the laboratory Z-axis.  Finally in the laboratory frame the crystal may be rotated around the Z-axis by the azimuthal angle :math:`\phi`.
+The arrangement described is illustrated in the Figure below where :math:`E_s` and :math:`E_p` are the field directions of the S- and P polarised incident light respectively. 
 
-The calculation mode referred to as a "thick slab" assumes that there are only two media.  The media through which the incident light travels and the crystalline media by which it is reflected.  Transmission is not of interest in this case, as in the case of the a thick crystal it assumed that no absorption will take place and that there will be no internal reflection within the crystal.
+
+.. _fig-lab-coords2:
+
+.. figure:: ./_static/Figures/SingleCrystalGeometry.png
+   :scale: 90%
+
+   Definition of single crystal laboratory coordinates in PDGui
+
+
+
+
+The calculation mode referred to as a "thick slab" assumes that there are only two media.  The media through which the incident light travels and the crystalline media by which it is reflected.  Transmission is not of interest in this case, as in the case of the a thick crystal it assumed that total absorption will take place and that there will be no internal reflection within the crystal.
 This mode is similar to a standard Fresnel calculation of reflectance but is appropriate for general permittivity tensors.
 
 The other modes of operation refer to a thin film and in these cases there are three media, an isotropic medium for the incident light, the crystal film (which now has a thickness) and the isotropic medium in which there is a detector.  In this case transmittance, reflectance and absorptance are all relevant.

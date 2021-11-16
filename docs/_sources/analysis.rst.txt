@@ -1,7 +1,9 @@
 .. include:: preamble.txt
 
-.. contents::
-   :local:
+..
+    .. contents::
+       :local:
+..
 
 
 .. meta::
@@ -216,6 +218,10 @@ The program first finds the four molecules of isoleucine in the unit cell of the
 
 .. table:: Molecular constituents of the isoleucine unit cell (centre-of-mass is in fractional coordinates)
    :name: tab-isoleucine-mols
+   :column-dividers:  single single single single single single single 
+   :widths:                  1      1      1      1      1      
+   :column-alignment:        center center center center center
+   :header-alignment:        center center center center center
    :align: center
 
    +----------+---------+--------------------+--------------------+---------------------+
@@ -235,10 +241,14 @@ The program first finds the four molecules of isoleucine in the unit cell of the
 
 .. table:: Isoleucine: percentage contributions of the centre-of-mass and the rotational molecular modes to each phonon mode
    :name: tab-isoleucine-results
+   :column-dividers:  single single single single single single single single single single
+   :column-alignment:        right  right  right  right  right  right  right  right
+   :header-alignment:        center center center center center center center center
+   :widths:                  1      1      1      1      1      1      1      1    
    :align: center
 
    +--------------+----------+----------+------+--------+--------+--------+--------+
-   | Freq(|cm-1|) | %mol-cme | %mol-rot | %vib | %mol-0 | %mol-1 | %mol-2 | %mol-3 |
+   | Freq(|cm-1|) | %cm      | %rot     | %vib | %mol-0 | %mol-1 | %mol-2 | %mol-3 |
    +==============+==========+==========+======+========+========+========+========+
    | -0.07        | 99.5     | 0.5      | 0.0  | 26.9   | 26.9   | 23.1   | 23.1   |
    +--------------+----------+----------+------+--------+--------+--------+--------+
@@ -294,10 +304,14 @@ The results of the analysis are shown in :numref:`tab-batio3-results` below.  In
 
 .. table:: BaTiO\ :subscript:`3`: percentage contributions of the centre-of-mass and the rotational molecular modes to each phonon mode
    :name: tab-batio3-results
+   :column-dividers:  single single single single single single single single 
+   :column-alignment:        right  right  right  right  right  right  
+   :header-alignment:        center center center center center center 
+   :widths:                  1      1      1      1      1      1      
    :align: center
 
    +--------------+----------+----------+------+--------+--------+
-   | Freq(|cm-1|) | %mol-cme | %mol-rot | %vib | %mol-0 | %mol-1 |
+   | Freq(|cm-1|) | %cm      | %rot     | %vib | %mol-0 | %mol-1 |
    +==============+==========+==========+======+========+========+
    | 0.00         | 100.0    | 0.0      | 0.0  | 41.1   | 58.9   |
    +--------------+----------+----------+------+--------+--------+

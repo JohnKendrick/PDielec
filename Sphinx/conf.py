@@ -70,8 +70,8 @@ extensions = [
     'sphinx.ext.githubpages',
     'sphinxcontrib.bibtex',
     'cloud_sptheme.ext.table_styling',
-    'python_docs_theme',
 ]
+
 bibtex_bibfiles = ['pdielec.bib']
 mathjax_config = {
     "extensions": ["AMSmath.js"] ,
@@ -124,6 +124,7 @@ html_theme = 'haiku'
 html_theme = 'alabaster'
 html_theme = 'bizstyle'
 html_theme = 'python_docs_theme'
+html_theme = 'cloud'
 
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the

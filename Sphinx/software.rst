@@ -1,7 +1,9 @@
 .. include:: preamble.txt
 
-.. contents::
-   :local:
+..
+    .. contents::
+       :local:
+..
 
 
 .. meta::
@@ -13,7 +15,7 @@
 Software components
 ===================
 
-There are two programs within the PDielec package.  *preader* is a command line program and *pdgui* a graphical interface to the features of the PDielec package.
+There are two programs within the PDielec package.  *preader* is a command line program, which allows the user to process and ectract information from QM/MM package output, and *pdgui* a graphical interface to the features of the PDielec library.
 
 
 PDGui
@@ -54,7 +56,7 @@ There are several command line options which may be useful in running the packag
 .. table:: PDGui command line options
    :name: command_line_options
    :widths: 1 3 
-   :column-dividers:   none none  none 
+   :column-dividers:   single single  single 
    :header-alignment: left left
    :column-alignment: left left
 
@@ -315,7 +317,7 @@ As well as being able to change the phonon mode being analysed.  The colours and
 Fitter Tab
 -----------
 
-The *Fitter Tab* imports an experimental spectrum.  The spectrum is stored in an Excel spreadsheet.  The spreadsheet should contain a single sheet with two columns.  The first column should be the frequency in :math:`cm^{-1}` and the second should be the measured signal.  The signal can be molar absorption, absorption, real permittivity, imaginary permittivity, ATR absorbance or any of the single crystal propertie.  Once imported the experimental spectrum can be compared with the calculated spectrum.  The tab shows the frequencies contributing to the spectrum and allows the Lorentzian widths of the transitions to be altered.  The frequency range used for the display is the same as that used in the *plotting tab*.
+The *Fitter Tab* imports an experimental spectrum.  The spectrum is stored in an Excel spreadsheet.  The spreadsheet should contain a single sheet with two columns.  The first column should be the frequency in |cm-1| and the second should be the measured signal.  The signal can be molar absorption, absorption, real permittivity, imaginary permittivity, ATR absorbance or any of the single crystal propertie.  Once imported the experimental spectrum can be compared with the calculated spectrum.  The tab shows the frequencies contributing to the spectrum and allows the Lorentzian widths of the transitions to be altered.  The frequency range used for the display is the same as that used in the *plotting tab*.
 Indeed the calculated signal used for fitting is the same as that being shown in the *plotting tab*.
 At the top of the tab are some settings in a tabbed notebook.  The most important is the name of the Excel file containing the experimental spectrum.  In addition there are options to change the 'Plot type', include frequency scaling in any fitting, set the frequency scaling factor, set the number of iterations to be used when fitting, choose whether the plot should use indepent y-axes for the calculated and experimental spectra, set the method used to do the fitting and finally specifiy the spectral difference threshold.
 The spectrum is shown at the bottom of the tab and is recalculated when the *Replot* or *Replot with frequency shift* buttons are pressed.  The data type stored in the experimental spreadsheet is defined by the *Plot and data type* setting.  One of the settings options is the ability to remove a baseline from the experimental spectrum.
@@ -451,22 +453,20 @@ Unlike PDGui it is not necessary to have performed a full calculation of the dyn
 Command options
 ---------------
 
-Examples of data sets for these packages are included with the distribution and can be found in the Examples/'Package'/preader directory. The program is run from the command line. There are several command options and these are summarised below. Those options which may be repeated are indicated by a ✔ .
+Examples of data sets for these packages are included with the distribution and can be found in the Examples/'Package'/preader directory. The program is run from the command line. There are several command options and these are summarised below. Some options may be repeated.
 
-  \-program program
-    Program can be “abinit”,  “castep”, “crystal”, “gulp”, “qe”, “experiment” or “vasp” and specifies the program which generated the results to be analysed
-  \-neutral
-    Impose neutrality on the Born charge matrices
-  \-nocalculation
-    No calculations are performed.  This results in a single line of output with just information from the program.  If -eckart, -mass, -masses, -neutral or -crystal have -hessian crystal have been specified they will be ignored
-  \-eckart
-    Translational modes are  projected out of the hessian before diagonalisation
-  \-hessian symm
-    The hessian can be symmetrised in one of two ways; either “crystal” or  “symm”.  In the case of “crystal” the  hessian is symmetrised using the same algorithm as Crystal14. 
-  \-masses average
-    The element mass_definition can be either “program”, “average” or “isotopic”, meaning that the masses used in the calculation of the frequencies are either taken from the QM program or are the average of the isotope abundancies or are the most abundant isotope mass.
-  \-mass element mass
-    The atomic mass of the element is set to mass.  This can be used to explore the effect of isotope substitution on the calculated frequencies
+  - \-program program_name
+       | Program_name can be “abinit”,  “castep”, “crystal”, “gulp”, “qe”, “experiment” or “vasp” and specifies the program which generated the results to be analysed
+  - \-neutral
+       | Impose neutrality on the Born charge matrices
+  - \-nocalculation
+       | No calculations are performed.  This results in a single line of output with just information from the program.  If -eckart, -mass, -masses, -neutral or -crystal have -hessian crystal have been specified they will be ignored
+  - \-eckart
+       | Translational modes are  projected out of the hessian before diagonalisation
+  - \-masses average
+       | The element mass_definition can be either “program”, “average” or “isotopic”, meaning that the masses used in the calculation of the frequencies are either taken from the QM program or are the average of the isotope abundancies or are the most abundant isotope mass.
+  - \-mass element mass
+       | The atomic mass of the element is set to mass.  This can be used to explore the effect of isotope substitution on the calculated frequencies
 
 
 Examples
@@ -484,7 +484,7 @@ This reads all the castep output files in the current and any of its subdirector
 
 There are examples of preader being used in the Examples/'Package'/preader subdirectories of the distribution of PDielec.
 
-vibanalysis
+Vibanalysis
 ===========
 
 The vibanalysis command provides an interface the vibAnalysis package of Philipe Teixeira.  This package provides Vibrational Mode Decomposition of the phonon modes using a variety of methods including; Vibrational Mode Projection (VMP), Vibrational Mode Linear Decomposition (VMLD) and Vibrational Mode Automatic Relevance Determination (VMARD).  By default VMARD is used.
@@ -661,7 +661,7 @@ The fpsq model defines a frequency dependent permittivity using the Four Paramet
 The model only allows for a diagonal permittivity tensor and each component of the tensor specified requires the number of terms in the expansion to the specified.  Each component of the permittivity tensor is generated using the following formula;
 
 .. math::
-   :label: eq-fpsq
+   :label: eq-fpsqb
 
     \epsilon (\omega )=\epsilon _{\infty}\prod_{j} \frac{\Omega^2_{LO_j}-\omega ^2-i\gamma _{LO_j}\omega }{\Omega^2_{TO_j}-\omega ^2-i\gamma _{TO_j}\omega}
 
@@ -699,49 +699,49 @@ The Excel spread sheet, which can be written by the program, contains details of
 The spreedsheet is divided into different sheets;
 
 -   **Main**
-        This stores the information concerning the file that is being analysed and the program associated with the output.  A list of the frequencies read in from the output file is given too.
+        | This stores the information concerning the file that is being analysed and the program associated with the output.  A list of the frequencies read in from the output file is given too.
 
 -   **Settings**
-        The information here comes from the settings tab.  Masses, permittivities and the frequencies which will be used in subsequent calculations.  These frequencies can include corrections to the dynamical matrix to project out translational modes, corrections to the Born charges to ensure they sum to zero and changes to the masses of the atoms.  Along with the frequencies the intensities, integrated absorption and absorption maximum are given.
+        | The information here comes from the settings tab.  Masses, permittivities and the frequencies which will be used in subsequent calculations.  These frequencies can include corrections to the dynamical matrix to project out translational modes, corrections to the Born charges to ensure they sum to zero and changes to the masses of the atoms.  Along with the frequencies the intensities, integrated absorption and absorption maximum are given.
   
 -   **Analysis**
-        The analysis of the vibrational modes into molecular, internal and external contributions is summarised here.
+        | The analysis of the vibrational modes into molecular, internal and external contributions is summarised here.
 
 -   **Scenarios**
-        A complete list of the settings for every scenario used in the calculation is given.
+        | A complete list of the settings for every scenario used in the calculation is given.
 
 -   **Powder Molar Absorption (cells)**
-        The molar absorption in moles of cell is given as a function of frequency for each powder scenario.  The units are :math:`L mol^{-1} cm^{-1}`.
+        | The molar absorption in moles of cell is given as a function of frequency for each powder scenario.  The units are |Lmol-1cm-1|.
 
 -   **Powder Absorption**
-        The absorption for each powder scenario is tabulated as a function frequency.  The units are :math:`cm^{-1}`
+        | The absorption for each powder scenario is tabulated as a function frequency.  The units are |cm-1|
 
 -   **Powder Real Permittivity**
-        The real component of the complex permittivity for each powder scenario is tabulated as a function frequency.  
+        | The real component of the complex permittivity for each powder scenario is tabulated as a function frequency.  
 
 -   **Powder Imaginary Permittivity**
-        The imaginary component of the complex permittivity for each powder scenario is tabulated as a function frequency.  
+        | The imaginary component of the complex permittivity for each powder scenario is tabulated as a function frequency.  
 
 -   **Powder ATR Reflectance**
-        The extinction coefficient associated with the attenuated total reflectance for each powder scenario is tabulated as a function frequency.  See :ref:`ATR_theory` for more details.
+        | The extinction coefficient associated with the attenuated total reflectance for each powder scenario is tabulated as a function frequency.  See :ref:`ATR_theory` for more details.
 
 -   **Crystal R_p**
-        The P polarised component of the reflectance for each single crystal scenario is tabulated as a function of frequency.
+        | The P polarised component of the reflectance for each single crystal scenario is tabulated as a function of frequency.
 
 -   **Crystal R_s**
-        The S polarised component of the reflectance for each single crystal scenario is tabulated as a function of frequency.
+        | The S polarised component of the reflectance for each single crystal scenario is tabulated as a function of frequency.
 
 -   **Crystal T_p**
-        The P polarised component of the transmittance for each single crystal scenario is tabulated as a function of frequency.
+        | The P polarised component of the transmittance for each single crystal scenario is tabulated as a function of frequency.
 
 -   **Crystal T_s**
-        The S polarised component of the transmittance for each single crystal scenario is tabulated as a function of frequency.
+        | The S polarised component of the transmittance for each single crystal scenario is tabulated as a function of frequency.
 
 -   **Real Crystal Permittivity**
-        The real components of the crystal permittivity tensor are tabulated as a function of frequency.
+        | The real components of the crystal permittivity tensor are tabulated as a function of frequency.
 
 -   **Imag Crystal Permittivity**
-        The imaginary components of the crystal permittivity tensor are tabulated as a function of frequency.
+        | The imaginary components of the crystal permittivity tensor are tabulated as a function of frequency.
 
 
 

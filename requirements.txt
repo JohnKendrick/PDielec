@@ -14,3 +14,5 @@ multiprocess
 dill
 psutil
 scikit-learn
+sphinx
+cloud_sptheme
