@@ -20,6 +20,7 @@ version 7.0.1
       This is determined from the name of the file.
   Added a new example of using the fitter and the fitting tab
   Revised all the documentation
+  Added the Mie module from PyMieScatt as there were some issues about crossover
 
 
 version 6.4.5
