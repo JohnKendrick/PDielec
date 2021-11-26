@@ -627,7 +627,7 @@ class SettingsTab(QWidget):
         self.crystal_permittivity = []
         debugger.print('About to calculate settings crystal dielectric using pool')
         # Loop over the frequencies and calculate the crystal dielectric for each frequency
-        for dielecv in pool.imap(dielectricFunction, vs_cm1, chunksize=40):
+        for dielecv in pool.imap(dielectricFunction, vs_cm1, chunksize=20):
             self.crystal_permittivity.append(dielecv)
             self.notebook.progressbars_update()
         pool.close()

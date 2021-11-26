@@ -372,15 +372,15 @@ class SingleCrystalScenarioTab(ScenarioTab):
             layer.set_euler(theta, phi, psi)
         # Get a pool of processors
         # Initialise each worker with the system and the angle of incidence
-        pool = Calculator.get_pool(self.notebook.ncpus, 
-                                   self.notebook.threading, 
-                                   initializer=initWorkers, 
-                                   initargs=(Calculator.solve_single_crystal_equations,system,angleOfIncidence), 
+        pool = Calculator.get_pool(self.notebook.ncpus,
+                                   self.notebook.threading,
+                                   initializer=initWorkers,
+                                   initargs=(Calculator.solve_single_crystal_equations,system,angleOfIncidence),
                                    debugger=debugger )
         results = []
         # About to call
         debugger.print(self.settings['Legend'],'About to calculate single crystal scenario using pool')
-        for result in pool.map(Calculator.solve_single_crystal_equations, vs_cm1, chunksize=16):
+        for result in pool.imap(Calculator.solve_single_crystal_equations, vs_cm1, chunksize=20):
             self.notebook.progressbars_update()
             results.append(result)
         QCoreApplication.processEvents()
