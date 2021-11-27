@@ -16,7 +16,6 @@ with open('io_test.tmp', 'r') as fin:
     while line:
         line = fin.readline()
 td = time.time() - t
-print(td*1000)
 print("Read line ms",1000*td)
 
 t = time.time()
