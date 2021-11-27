@@ -1450,12 +1450,36 @@ def reflectance_atr(ns,n0,theta,atrSPolFraction):
 def solve_single_crystal_equations( v ):
     """ This is a parallel call to the single crystal equation solver,
     system is a GTM system"""
-    # system and angleOfincendence have been set by the pool initialiser
-    angleOfIncidence = solve_single_crystal_equations.angleOfIncidence
-    system = solve_single_crystal_equations.system
-    # Extract the parameters from the call
-    #jk v,angleOfIncidence,system = parameters
+    superstrateDielectricFunction = solve_single_crystal_equations.superstrateDielectricFunction
+    substrateDielectricFunction   = solve_single_crystal_equations.substrateDielectricFunction
+    crystalPermittivityFunction   = solve_single_crystal_equations.crystalPermittivityFunction
+    superstrateDepth              = solve_single_crystal_equations.superstrateDepth
+    substrateDepth                = solve_single_crystal_equations.substrateDepth
+    crystalDepth                  = solve_single_crystal_equations.crystalDepth
+    mode                          = solve_single_crystal_equations.mode
+    theta                         = solve_single_crystal_equations.theta
+    phi                           = solve_single_crystal_equations.phi
+    psi                           = solve_single_crystal_equations.psi
+    angleOfIncidence              = solve_single_crystal_equations.angleOfIncidence
+    # Create 3 layers, thickness is converted from microns to metres
+    superstrate      = GTM.Layer(thickness=superstrateDepth*1e-6,epsilon1=superstrateDielectricFunction)
+    substrate        = GTM.Layer(thickness=substrateDepth*1e-6,  epsilon1=substrateDielectricFunction)
+    crystal          = GTM.Layer(thickness=crystalDepth*1e-9,    epsilon=crystalPermittivityFunction)
+    # Creat the system with the layers 
+    if mode == 'Thick slab':
+        system = GTM.System(substrate=crystal, superstrate=superstrate, layers=[])
+    elif mode == 'Coherent thin film':
+        system = GTM.System(substrate=substrate, superstrate=superstrate, layers=[crystal])
+    else:
+        system = GTM.System(substrate=substrate, superstrate=superstrate, layers=[crystal])
+    # Rotate the dielectric constants to the laboratory frame
+    system.substrate.set_euler(theta, phi, psi)
+    system.superstrate.set_euler(theta, phi, psi)
+    for layer in system.layers:
+        layer.set_euler(theta, phi, psi)
+    # 
     # convert cm-1 to frequency
+    #
     freq = v * speed_light_si * 1e2
     system.initialize_sys(freq)
     zeta_sys = np.sin(angleOfIncidence)*np.sqrt(system.superstrate.epsilon[0,0])

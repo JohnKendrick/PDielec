@@ -4,7 +4,6 @@ import os
 import numpy as np
 import copy
 import PDielec.Calculator as Calculator
-import PDielec.GTMcore as GTM
 from PyQt5.QtWidgets            import QPushButton, QWidget
 from PyQt5.QtWidgets            import QComboBox, QLabel, QLineEdit, QListWidget
 from PyQt5.QtWidgets            import QApplication
@@ -23,10 +22,19 @@ def set_affinity_on_worker():
     #JK Commented out for the time being
     #JK os.system('taskset -p 0xff %d > /dev/null' % os.getpid())
 
-def initWorkers(function,system,angle):
+def initWorkers(function, superstrateDielectricFunction, substrateDielectricFunction, crystalPermittivityFunction, superstrateDepth, substrateDepth, crystalDepth, mode, theta, phi, psi, angleOfIncidence):
     # Initialiser the workers in the pool
-    function.angleOfIncidence = angle
-    function.system = system
+    function.superstrateDielectricFunction = superstrateDielectricFunction
+    function.substrateDielectricFunction = substrateDielectricFunction
+    function.crystalPermittivityFunction = crystalPermittivityFunction
+    function.superstrateDepth = superstrateDepth
+    function.substrateDepth = substrateDepth
+    function.crystalDepth = crystalDepth
+    function.mode = mode
+    function.theta = theta
+    function.phi = phi
+    function.psi = psi
+    function.angleOfIncidence = angleOfIncidence
     return
 
 class SingleCrystalScenarioTab(ScenarioTab):
@@ -332,8 +340,6 @@ class SingleCrystalScenarioTab(ScenarioTab):
         modes_selected = self.notebook.settingsTab.modes_selected
         frequencies_cm1 = self.notebook.settingsTab.frequencies_cm1
         frequencies = np.array(frequencies_cm1) * wavenumber
-        # Set up the layered system using GTM calls
-        S = GTM.System()
         # The dielectric variables are functions of frequency
         superstrateDielectric = self.settings['Superstrate dielectric']
         substrateDielectric   = self.settings['Substrate dielectric']
@@ -348,34 +354,33 @@ class SingleCrystalScenarioTab(ScenarioTab):
         crystalPermittivityFunction     = self.notebook.settingsTab.CrystalPermittivity.function()
         # Create 3 layers, thickness is converted from microns to metres
         superstrateDepth = self.settings['Superstrate depth']
-        superstrate      = GTM.Layer(thickness=superstrateDepth*1e-6,epsilon1=superstrateDielectricFunction)
         substrateDepth   = self.settings['Substrate depth']
-        substrate        = GTM.Layer(thickness=substrateDepth*1e-6,  epsilon1=substrateDielectricFunction)
         crystalDepth     = self.settings['Film thickness']
-        crystal          = GTM.Layer(thickness=crystalDepth*1e-9,    epsilon=crystalPermittivityFunction)
-        # Creat the system with the layers 
-        if self.settings['Mode'] == 'Thick slab':
-            system = GTM.System(substrate=crystal, superstrate=superstrate, layers=[])
-        elif self.settings['Mode'] == 'Coherent thin film':
-            system = GTM.System(substrate=substrate, superstrate=superstrate, layers=[crystal])
-        else:
-            system = GTM.System(substrate=substrate, superstrate=superstrate, layers=[crystal])
         # Determine the euler angles
         theta,phi,psi = self.calculate_euler_angles()
         # Set the angle of incidence in radians
         angle = self.settings['Angle of incidence']
         angleOfIncidence      = np.pi / 180.0 * angle
-        # Rotate the dielectric constants to the laboratory frame
-        system.substrate.set_euler(theta, phi, psi)
-        system.superstrate.set_euler(theta, phi, psi)
-        for layer in system.layers:
-            layer.set_euler(theta, phi, psi)
+        mode = self.settings['Mode']
+        #
         # Get a pool of processors
-        # Initialise each worker with the system and the angle of incidence
+        # Initialise each worker with the enough information to generate a GTM system
+        #
         pool = Calculator.get_pool(self.notebook.ncpus,
                                    self.notebook.threading,
                                    initializer=initWorkers,
-                                   initargs=(Calculator.solve_single_crystal_equations,system,angleOfIncidence),
+                                   initargs=(Calculator.solve_single_crystal_equations,
+                                       superstrateDielectricFunction,
+                                       substrateDielectricFunction,
+                                       crystalPermittivityFunction,
+                                       superstrateDepth,
+                                       substrateDepth,
+                                       crystalDepth,
+                                       mode,
+                                       theta,
+                                       phi,
+                                       psi,
+                                       angleOfIncidence),
                                    debugger=debugger )
         results = []
         # About to call
