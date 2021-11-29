@@ -1,0 +1,220 @@
+#!/usr/bin/python
+# The script was taken from the intel web-site and modified
+# https://software.intel.com/sites/default/files/0f/a7/mkl_benchmark.py
+import os
+import sys
+import timeit
+import numpy as np
+import GTMcore as GTM
+from PDielec.DielectricFunction import DielectricFunction
+from PDielec.Constants import wavenumber, speed_light_si
+from functools import partial
+import time
+
+# Setting the following environment variable in the shell executing the script allows
+# you limit the maximal number threads used for computation
+THREADS_LIMIT_ENV = 'MKL_NUM_THREADS'
+
+def get_pathos_pool(ncpus, threading, initializer=None, initargs=None, debugger=None ):
+     """Return a pool of processors given the number of cpus and whether threading is requested"""
+     if debugger is not None:
+         debugger.print('get_pool ncpus = ',ncpus)
+         debugger.print('get_pool threading = ',threading)
+         debugger.print('get_pool initializer = ',initializer)
+     # Switch off mkl threading
+     try:
+         import mkl
+         print('Setting number of mkl threads to 1')
+         mkl.set_num_threads(1)
+     except:
+         pass
+     # see if threading has been requested
+     if threading:
+         from pathos.threading import ThreadPool
+         pool = ThreadPool(ncpus, initializer=initializer, initargs=initargs)
+     else:
+         from pathos.pools import ProcessPool
+         pool = ProcessPool(ncpus, initializer=initializer, initargs=initargs )
+     return pool
+
+def get_ray_pool(ncpus, threading, initializer=None, initargs=None, debugger=None ):
+     """Return a pool of processors given the number of cpus and whether threading is requested"""
+     if debugger is not None:
+         debugger.print('get_pool ncpus = ',ncpus)
+         debugger.print('get_pool threading = ',threading)
+         debugger.print('get_pool initializer = ',initializer)
+     # Switch off mkl threading
+     try:
+         import mkl
+         mkl.set_num_threads(1)
+     except:
+         pass
+     # see if threading has been requested
+     if threading:
+         from ray.util.multiprocessing.dummy import Pool
+         pool = Pool(ncpus, initializer=initializer, initargs=initargs)
+     else:
+         from ray.util.multiprocessing import Pool
+         pool = Pool(ncpus, initializer=initializer, initargs=initargs )
+     return pool
+
+def get_pool(ncpus, threading, initializer=None, initargs=None, debugger=None ):
+     """Return a pool of processors given the number of cpus and whether threading is requested"""
+     print('get_pool ncpus = ',ncpus)
+     print('get_pool threading = ',threading)
+     print('get_pool initializer = ',initializer)
+     print('get_pool initargs = ',initargs)
+     # Switch off mkl threading
+     try:
+         import mkl
+         mkl.set_num_threads(1)
+     except:
+         pass
+     # see if threading has been requested
+     if threading:
+         from multiprocess.dummy import Pool
+         pool = Pool(ncpus, initializer=initializer, initargs=initargs)
+     else:
+         from multiprocess import Pool
+         pool = Pool(ncpus, initializer=initializer, initargs=initargs )
+     return pool
+
+
+
+def initWorkers(function, superstrateDielectricFunction, substrateDielectricFunction, crystalPermittivityFunction, superstrateDepth, substrateDepth, crystalDepth, mode, theta, phi, psi, angleOfIncidence):
+    # Initialiser the workers in the pool
+    function.superstrateDielectricFunction = superstrateDielectricFunction
+    function.substrateDielectricFunction = substrateDielectricFunction
+    function.crystalPermittivityFunction = crystalPermittivityFunction
+    function.superstrateDepth = superstrateDepth
+    function.substrateDepth = substrateDepth
+    function.crystalDepth = crystalDepth
+    function.mode = mode
+    function.theta = theta
+    function.phi = phi
+    function.psi = psi
+    function.angleOfIncidence = angleOfIncidence
+    return
+
+def set_no_of_threads_on_worker(nthreads):
+    '''Set default number of threads'''
+    if THREADS_LIMIT_ENV in os.environ:
+        print("Maximum number of threads used for computation is : %s" % os.environ[THREADS_LIMIT_ENV])
+    os.environ['MKL_NUM_THREADS'] = nthreads
+
+def set_affinity_on_worker():
+    '''When a new worker process is created, the affinity is set to all CPUs'''
+    #JK print('I'm the process %d, setting affinity to all CPUs.' % os.getpid())
+    #JK Commented out for the time being
+    #JK os.system('taskset -p 0xff %d > /dev/null' % os.getpid())
+
+def solve_single_crystal_equations( 
+    superstrateDielectricFunction,
+    substrateDielectricFunction,
+    crystalPermittivityFunction,
+    superstrateDepth,
+    substrateDepth,
+    crystalDepth,
+    mode,
+    theta,
+    phi,
+    psi,
+    angleOfIncidence,
+    v):
+    """ This is a parallel call to the single crystal equation solver,
+    system is a GTM system"""
+    # Create 3 layers, thickness is converted from microns to metres
+    superstrate      = GTM.Layer(thickness=superstrateDepth*1e-6,epsilon1=superstrateDielectricFunction)
+    substrate        = GTM.Layer(thickness=substrateDepth*1e-6,  epsilon1=substrateDielectricFunction)
+    crystal          = GTM.Layer(thickness=crystalDepth*1e-9,    epsilon=crystalPermittivityFunction)
+    # Creat the system with the layers 
+    if mode == 'Thick slab':
+        system = GTM.System(substrate=crystal, superstrate=superstrate, layers=[])
+    elif mode == 'Coherent thin film':
+        system = GTM.System(substrate=substrate, superstrate=superstrate, layers=[crystal])
+    else:
+        system = GTM.System(substrate=substrate, superstrate=superstrate, layers=[crystal])
+    # Rotate the dielectric constants to the laboratory frame
+    system.substrate.set_euler(theta, phi, psi)
+    system.superstrate.set_euler(theta, phi, psi)
+    for layer in system.layers:
+        layer.set_euler(theta, phi, psi)
+    # 
+    # convert cm-1 to frequency
+    #
+    freq = v * speed_light_si * 1e2
+    system.initialize_sys(freq)
+    zeta_sys = np.sin(angleOfIncidence)*np.sqrt(system.superstrate.epsilon[0,0])
+    Sys_Gamma = system.calculate_GammaStar(freq, zeta_sys)
+    r, R, t, T = system.calculate_r_t(zeta_sys)
+    if len(system.layers) > 0:
+        epsilon = system.layers[0].epsilon
+    else:
+        epsilon = system.substrate.epsilon
+    return v,r,R,t,T,epsilon
+
+
+
+def setup_partial_func():
+    superstrateDielectric = 2.0
+    substrateDielectric   = 2.0
+    crystalDielectric     = 2.0 + 0.01j
+    superstrateDielectricFunction = DielectricFunction(epsType='constant',units='hz',parameters=superstrateDielectric).function()
+    substrateDielectricFunction   = DielectricFunction(epsType='constant',units='hz',parameters=substrateDielectric).function()
+    # Actually use the permittivity function in what follows
+    crystalPermittivityFunction     = DielectricFunction(epsType='constant_tensor',units='hz',parameters=crystalDielectric).function()
+    # Create 3 layers, thickness is converted from microns to metres
+    superstrateDepth = 80
+    substrateDepth   = 80
+    crystalDepth     = 80
+    # Determine the euler angles
+    theta,phi,psi = 20, 20, 70
+    # Set the angle of incidence in radians
+    angle = 85
+    angleOfIncidence      = np.pi / 180.0 * angle
+    mode = 'Thin Film'
+    partial_func = partial(solve_single_crystal_equations,
+         superstrateDielectricFunction,
+         substrateDielectricFunction,
+         crystalPermittivityFunction,
+         superstrateDepth,
+         substrateDepth,
+         crystalDepth,
+         mode,
+         theta,
+         phi,
+         psi,
+         angleOfIncidence)
+    return partial_func
+
+
+
+def start_benchmark():
+    print("""Benchmark is parallel processing""")
+    if THREADS_LIMIT_ENV in os.environ:
+        print("Maximum number of threads used for computation is : %s" % os.environ[THREADS_LIMIT_ENV])
+    np.seterr(all='ignore')
+    print(("-" * 80))
+    print("Starting timing with numpy %s\nVersion: %s" % (np.__version__, sys.version))
+    partial_func = setup_partial_func()
+    vs = [ v for v in np.arange(1,2000) ]
+    chunksize = 20
+    threading = False
+    nthreads = 1
+    # for threading in [False, True]:
+    for ncpus in range(1,9):
+        # for chunksize in [2, 4, 8, 16, 32, 64, 128, 256, 512, 1024]:
+        pool = get_pool(ncpus, threading, initializer=set_no_of_threads_on_worker,initargs=[nthreads])
+        #pool = get_ray_pool(ncpus, threading)
+        for chunksize in [16, 32, 64]:
+            t = time.time()
+            results = []
+            for result in pool.imap(partial_func, vs, chunksize=chunksize):
+                results.append(result)
+            td = time.time() - t
+            print('ncpus = {}, threading = {}, chunksize = {}, time = {}'.format(ncpus,threading,chunksize,td))
+        pool.close()
+        pool.join()
+
+if __name__ == '__main__':
+    start_benchmark()
