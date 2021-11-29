@@ -29,7 +29,7 @@ from scipy import interpolate
 
 class DielectricFunction:
     """Provide an interface to different dielectric functions"""
-    possible_epsTypes = ['constant','file','interpolate_3','interpolate_6','dft','fpsq','drude-lorentz']
+    possible_epsTypes = ['constant','constant_tensor','file','interpolate_3','interpolate_6','dft','fpsq','drude-lorentz']
     possible_units = ['cm-1','microns','mu','nm','thz','hz']
     def __init__(self, epsType=None, volume=None, filename=None, parameters=None, units='cm-1' ):
         """
@@ -202,6 +202,8 @@ class DielectricFunction:
             exit()
         elif self.epsType == 'constant':
             return self.parameters
+        elif self.epsType == 'constant_tensor':
+            return self.parameters*np.eye(3)
         elif self.epsType == 'filename':
             return  self._epsFromFile(frequency_cm1)
         elif self.epsType == 'interpolate_6':
