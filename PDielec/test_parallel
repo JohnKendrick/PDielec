@@ -10,6 +10,7 @@ from PDielec.DielectricFunction import DielectricFunction
 from PDielec.Constants import wavenumber, speed_light_si
 from functools import partial
 import time
+import psutil
 
 # Setting the following environment variable in the shell executing the script allows
 # you limit the maximal number threads used for computation
@@ -378,6 +379,8 @@ if __name__ == '__main__':
     possible_parallel_types = ['multiprocess', 'pathos','ray']
     variable_type = 'partial'
     parallel_type = 'multiprocess'
+    cpu_count = psutil.cpu_count(logical=False)
+    cpu_range = range(1,cpu_count+1)
     threading = False
     tokens = sys.argv[1:]
     itoken = -1
