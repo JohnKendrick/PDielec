@@ -370,7 +370,7 @@ def usage():
     print('        -range    start end                       ')
     print('                  Defines the range of cpus or threads to be tested                     ')
 
-if __name__ == '__main__':
+def main():
     global variable_type
     global parallel_type
     global threading
@@ -415,3 +415,6 @@ if __name__ == '__main__':
         import ray
         ray.init()
     start_benchmark()
+
+if __name__ == '__main__':
+    main()
