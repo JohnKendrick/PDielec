@@ -21,6 +21,8 @@ def get_pool(ncpus, threading, initializer=None, initargs=None, debugger=None ):
     global parallel_type
     if parallel_type == 'multiprocess':
         pool = get_multiprocess_pool(ncpus, threading, initializer, initargs, debugger)
+    elif parallel_type == 'multiprocessing':
+        pool = get_multiprocessing_pool(ncpus, threading, initializer, initargs, debugger)
     elif parallel_type == 'pathos':
         pool = get_pathos_pool(ncpus, threading, initializer, initargs, debugger)
     elif parallel_type == 'ray':
@@ -34,10 +36,16 @@ def get_pathos_pool(ncpus, threading, initializer=None, initargs=None, debugger=
      """Return a pool of processors given the number of cpus and whether threading is requested"""
      if threading:
          from pathos.threading import ThreadPool
-         pool = ThreadPool(ncpus, initializer=initializer, initargs=initargs)
+         if initargs is None:
+             pool = ThreadPool(ncpus, initializer=initializer)
+         else:
+             pool = ThreadPool(ncpus, initializer=initializer, initargs=initargs)
      else:
          from pathos.pools import ProcessPool
-         pool = ProcessPool(ncpus, initializer=initializer, initargs=initargs )
+         if initargs is None:
+             pool = ProcessPool(ncpus, initializer=initializer)
+         else:
+             pool = ProcessPool(ncpus, initializer=initializer, initargs=initargs )
      return pool
 
 def get_ray_pool(ncpus, threading, initializer=None, initargs=None, debugger=None ):
@@ -45,26 +53,57 @@ def get_ray_pool(ncpus, threading, initializer=None, initargs=None, debugger=Non
      import ray
      if threading:
          from ray.util.multiprocessing.dummy import Pool
-         pool = Pool(ncpus, initializer=initializer, initargs=initargs)
+         if initargs is None:
+             pool = Pool(ncpus, initializer=initializer)
+         else:
+             pool = Pool(ncpus, initializer=initializer, initargs=initargs)
      else:
          from ray.util.multiprocessing import Pool
-         pool = Pool(ncpus, initializer=initializer, initargs=initargs )
+         if initargs is None:
+             pool = Pool(ncpus, initializer=initializer)
+         else:
+             pool = Pool(ncpus, initializer=initializer, initargs=initargs)
+     return pool
+
+def get_multiprocessing_pool(ncpus, threading, initializer=None, initargs=None, debugger=None ):
+     """Return a pool of processors given the number of cpus and whether threading is requested"""
+     from multiprocessing import set_start_method
+     set_start_method('spawn',force=True)
+     if threading:
+         from multiprocessing.dummy import Pool
+         if initargs is None:
+             pool = Pool(ncpus, initializer=initializer)
+         else:
+             pool = Pool(ncpus, initializer=initializer, initargs=initargs)
+     else:
+         from multiprocessing import Pool
+         if initargs is None:
+             pool = Pool(ncpus, initializer=initializer)
+         else:
+             pool = Pool(ncpus, initializer=initializer, initargs=initargs )
      return pool
 
 def get_multiprocess_pool(ncpus, threading, initializer=None, initargs=None, debugger=None ):
      """Return a pool of processors given the number of cpus and whether threading is requested"""
      if threading:
          from multiprocess.dummy import Pool
-         pool = Pool(ncpus, initializer=initializer, initargs=initargs)
+         if initargs is None:
+             pool = Pool(ncpus, initializer=initializer)
+         else:
+             pool = Pool(ncpus, initializer=initializer, initargs=initargs)
      else:
          from multiprocess import Pool
-         pool = Pool(ncpus, initializer=initializer, initargs=initargs )
+         if initargs is None:
+             pool = Pool(ncpus, initializer=initializer)
+         else:
+             pool = Pool(ncpus, initializer=initializer, initargs=initargs)
      return pool
 
 
 
 def init_local(function, superstrateDielectricFunction, substrateDielectricFunction, crystalPermittivityFunction, superstrateDepth, substrateDepth, crystalDepth, mode, theta, phi, psi, angleOfIncidence):
     # Initialiser the workers in the pool
+    print('init_local, function id',id(function))
     function.superstrateDielectricFunction = superstrateDielectricFunction
     function.substrateDielectricFunction = substrateDielectricFunction
     function.crystalPermittivityFunction = crystalPermittivityFunction
@@ -93,6 +132,7 @@ def set_affinity_on_worker():
 def solve_single_crystal_equations_local(v):
     """ This is a parallel call to the single crystal equation solver,
     system is a GTM system"""
+    # print('solve_single_crystal_equations_local ',id(solve_single_crystal_equations_local))
     superstrateDielectricFunction = solve_single_crystal_equations_local.superstrateDielectricFunction
     substrateDielectricFunction   = solve_single_crystal_equations_local.substrateDielectricFunction
     crystalPermittivityFunction   = solve_single_crystal_equations_local.crystalPermittivityFunction
@@ -225,7 +265,7 @@ def solve_single_crystal_equations_partial(
 
 
 
-def setup_globals():
+def init_global():
     global superstrateDielectricFunction
     global substrateDielectricFunction
     global crystalPermittivityFunction
@@ -324,6 +364,7 @@ def start_benchmark():
     global parallel_type
     global threading
     global cpu_range
+    global chunk_range
     if THREADS_LIMIT_ENV in os.environ:
         print("Maximum number of threads used for computation is : %s" % os.environ[THREADS_LIMIT_ENV])
     np.seterr(all='ignore')
@@ -333,20 +374,18 @@ def start_benchmark():
         func = setup_partial_func()
     elif variable_type == 'global':
         func = solve_single_crystal_equations_global
-        setup_globals()
     elif variable_type == 'local':
         func = solve_single_crystal_equations_local
         init_local_args = setup_local_args()
     vs = [ v for v in np.arange(1,2000) ]
-    chunksize = 20
     for ncpus in cpu_range:
         if variable_type == 'partial':
             pool = get_pool(ncpus, threading, initializer=None,initargs=None)
         elif variable_type == 'global':
-            pool = get_pool(ncpus, threading, initializer=None,initargs=None)
+            pool = get_pool(ncpus, threading, initializer=init_global)
         elif variable_type == 'local':
             pool = get_pool(ncpus, threading, initializer=init_local,initargs=init_local_args)
-        for chunksize in [16, 32, 64]:
+        for chunksize in chunk_range:
             t = time.time()
             results = []
             for result in pool.map(func, vs, chunksize=chunksize):
@@ -364,9 +403,12 @@ def usage():
     print('                  global  - variables are passed using the global variable              ')
     print('                  local   - variables are passed using a local variable in the function ')
     print('        -parallel_type choices are                ')
-    print('                  multiprocess - for the standard python parallelism                    ')
-    print('                  pathos       - for the pathos fork of multiprocess                    ')
-    print('                  ray          - for the ray implementation of multiprocess             ')
+    print('                  multiprocess    - for the pathos multiprocessing api                     ')
+    print('                  multiprocessing - for the standard python parallelism                    ')
+    print('                  pathos          - for the pathos fork of multiprocess                    ')
+    print('                  ray             - for the ray implementation of multiprocess             ')
+    print('        -chunks   start end                       ')
+    print('                  Defines the range of chunkSizes to be tested                          ')
     print('        -range    start end                       ')
     print('                  Defines the range of cpus or threads to be tested                     ')
 
@@ -375,12 +417,14 @@ def main():
     global parallel_type
     global threading
     global cpu_range
+    global chunk_range
     possible_variable_types = ['partial', 'global','local']
-    possible_parallel_types = ['multiprocess', 'pathos','ray']
+    possible_parallel_types = ['multiprocessing', 'multiprocess', 'pathos','ray']
     variable_type = 'partial'
     parallel_type = 'multiprocess'
     cpu_count = psutil.cpu_count(logical=False)
     cpu_range = range(1,cpu_count+1)
+    chunk_range = [10, 20, 30, 40, 50, 60]
     threading = False
     tokens = sys.argv[1:]
     itoken = -1
@@ -391,16 +435,24 @@ def main():
         if token == '-variable_type' or token == '--variable_type':
             itoken += 1
             variable_type = tokens[itoken]
-        if token == '-parallel_type' or token == '--parallel_type':
+        elif token == '-parallel_type' or token == '--parallel_type':
             itoken += 1
             parallel_type = tokens[itoken]
-        if token == '-threading' or token == '--threading':
+        elif token == '-threading' or token == '--threading':
             threading = True
-        if token == '-range' or token == '--range':
+        elif token == '-chunks' or token == '--chunks':
+            itoken += 1; start = int(tokens[itoken])
+            itoken += 1; end   = int(tokens[itoken])+1
+            itoken += 1; step  = int(tokens[itoken])
+            chunk_range = range(start,end,step)
+        elif token == '-range' or token == '--range':
             itoken += 1; start = int(tokens[itoken])
             itoken += 1; end   = int(tokens[itoken])+1
             cpu_range = range(start,end)
-        if token == '-h' or token == '--help':
+        elif token == '-h' or token == '--help':
+            usage()
+            exit()
+        else:
             usage()
             exit()
     if variable_type not in possible_variable_types:
