@@ -20,7 +20,6 @@ import matplotlib
 import matplotlib.figure
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT as NavigationToolbar
-from openpyxl import load_workbook
 from scipy.interpolate import interp1d
 from scipy.optimize import minimize
 
@@ -586,6 +585,7 @@ class FitterTab(QWidget):
 
     def read_excel_file(self):
         # 
+        from openpyxl import load_workbook
         debugger.print('Start:: read_excel_file',self.settings['Excel file name'])
         file_name = self.settings['Excel file name']
         if not os.path.isfile(file_name):
