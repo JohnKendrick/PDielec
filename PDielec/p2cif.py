@@ -11,7 +11,7 @@ from PDielec.AbinitOutputReader import AbinitOutputReader
 from PDielec.QEOutputReader import QEOutputReader
 from PDielec.PhonopyOutputReader import PhonopyOutputReader
 import PDielec.Utilities as Utilities
-from multiprocess import Pool
+from multiprocessing import Pool
 
 def set_affinity_on_worker():
     """When a new worker process is created, the affinity is set to all CPUs"""

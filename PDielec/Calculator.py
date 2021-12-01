@@ -1529,10 +1529,10 @@ def get_pool(ncpus, threading, initializer=None, initargs=None, debugger=None ):
          pass
      # see if threading has been requested
      if threading:
-         from multiprocess.dummy import Pool
+         from multiprocessing.dummy import Pool
          pool = Pool(ncpus, initializer=initializer, initargs=initargs)
      else:
-         from multiprocess import Pool
+         from multiprocessing import Pool
          pool = Pool(ncpus, initializer=initializer, initargs=initargs )
      return pool
 

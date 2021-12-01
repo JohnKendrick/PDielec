@@ -9,7 +9,7 @@ from PDielec.Constants       import support_matrix_db
 from PDielec.Constants       import avogadro_si
 from PDielec.Utilities       import Debug
 from PDielec.GUI.ScenarioTab import ScenarioTab
-from multiprocess            import Array
+from multiprocessing         import Array
 from PDielec.Constants       import wavenumber
 import ctypes
 import PDielec.Calculator as Calculator
