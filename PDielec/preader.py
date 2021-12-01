@@ -6,7 +6,7 @@ import os, sys
 import psutil
 from PDielec.Constants import amu, wavenumber, angstrom, isotope_masses, average_masses
 from PDielec.DielectricFunction import DielectricFunction
-from multiprocessing import Pool
+from multiprocessing.dummy import Pool
 import dill as pickle
 import PDielec.Calculator as Calculator
 import PDielec.Utilities as Utilities
