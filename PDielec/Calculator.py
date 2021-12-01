@@ -1098,7 +1098,8 @@ def solve_effective_medium_equations( index ):
     # call_parameters is an index into the frequency and dielectric arrays
     # In the case of Bruggeman and coherent we can use the previous result to start the iteration/minimisation
     # However to do this we need some shared memory, this allocated in previous_solution_shared
-    # print('Here I am in process ',os.getpid())
+    print('Here I am in process ',os.getpid())
+    print(globals())
     vs_cm1                   = solve_effective_medium_equations.vs_cm1
     crystal_permittivity     = solve_effective_medium_equations.crystal_permittivity
     method                   = solve_effective_medium_equations.method
