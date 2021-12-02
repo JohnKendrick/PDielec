@@ -21,6 +21,9 @@ version 7.0.1
   Added a new example of using the fitter and the fitting tab
   Revised all the documentation
   Added the Mie module from PyMieScatt as there were some issues about crossover
+  Major changes to the parallel methods used by the code.  Now using 'partial' from functools
+      also removed sending the whole crystal_permittivity array at once.
+      also create the pool in the notebook and keep reusing it.
 
 
 version 6.4.5
