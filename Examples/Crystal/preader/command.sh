@@ -1,7 +1,7 @@
 python=$1
 shift
 params=$*
-$python ../../../preader $params -program crystal -hessian crystal -eckart -masses program  \
+$python ../../../preader $params -program crystal -eckart -masses program  \
        ../Leucine/LEUCINE_DIELECTRC_PBED_6311Gdp.out \
        ../Leucine/LEUCINE_FREQUENCY_PBED3_631Gdp_FULLOPTIMIZATON.out \
        ../Na2SO42/Na2SO42.out \
