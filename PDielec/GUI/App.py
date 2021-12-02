@@ -134,6 +134,8 @@ class App(QMainWindow):
                 self.notebook.writeSpreadsheet()
                 self.notebook.spreadsheet.close()
             debugger.print('Exiting with sys.exit call')
+            self.notebook.pool.close()
+            self.notebook.pool.join()
             sys.exit()
         #self.show()
         debugger.print('Finished:: Initialising')
@@ -190,10 +192,14 @@ class App(QMainWindow):
     def closeEvent(self, event):
         # Make sure any spread sheet is closed
         debugger.print('Close event has been captured')
+        self.notebook.pool.close()
+        self.notebook.pool.join()
         super(App, self).closeEvent(event)
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
     ex = App(sys.argv)
     ex.show()
+    self.notebook.pool.close()
+    self.notebook.pool.join()
     sys.exit(app.exec_())

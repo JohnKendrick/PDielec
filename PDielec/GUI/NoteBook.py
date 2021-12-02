@@ -18,6 +18,7 @@ from PDielec.GUI.ViewerTab                import  ViewerTab
 from PDielec.GUI.FitterTab                import  FitterTab
 from PDielec.Utilities                    import  Debug
 from PDielec.GUI.SpreadSheetManager       import  SpreadSheetManager
+import PDielec.Calculator                 as      Calculator
 
 
 class NoteBook(QWidget):
@@ -44,14 +45,7 @@ class NoteBook(QWidget):
             self.ncpus = psutil.cpu_count(logical=False)
         else:
             self.ncpus = ncpus
-        #
-        # Set threading for mkl
-        #
-        try:
-            import mkl
-            mkl.set_num_threads(self.ncpus)
-        except:
-            pass
+        self.pool = Calculator.get_pool(self.ncpus,self.threading, debugger = debugger)
         self.scripting = scripting
         # Overwriting of files is not allowed with a prompt
         # If scripting is used then overwriting is allowed

@@ -13,6 +13,7 @@ from PDielec.Constants          import  wavenumber, amu, PI, angstrom
 from PDielec.Constants          import  average_masses, isotope_masses
 from PDielec.Utilities          import  Debug
 from PDielec.DielectricFunction import  DielectricFunction
+from functools                  import  partial
 
 class FixedQTableWidget(QTableWidget):
     def __init__(self, *args, parent=None, rows=None, columns=None):
@@ -623,15 +624,13 @@ class SettingsTab(QWidget):
         self.vs_cm1 = vs_cm1.copy()
         self.CrystalPermittivity.setUnits('cm-1')
         dielectricFunction = self.CrystalPermittivity.function()
-        pool = Calculator.get_pool(self.notebook.ncpus, self.notebook.threading, debugger=debugger)
+        # 
         self.crystal_permittivity = []
         debugger.print('About to calculate settings crystal dielectric using pool')
         # Loop over the frequencies and calculate the crystal dielectric for each frequency
-        for dielecv in pool.imap(dielectricFunction, vs_cm1, chunksize=20):
+        for dielecv in self.notebook.pool.imap(dielectricFunction, vs_cm1, chunksize=20):
             self.crystal_permittivity.append(dielecv)
             self.notebook.progressbars_update()
-        pool.close()
-        pool.join()
         QCoreApplication.processEvents()
         self.calculationRequired = False
         debugger.print('Finished:: calculate ')

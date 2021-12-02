@@ -15,27 +15,7 @@ from PDielec.DielectricFunction import DielectricFunction
 from PDielec.Constants          import wavenumber, PI, avogadro_si, angstrom, speed_light_si
 from PDielec.Utilities          import Debug
 from PDielec.GUI.ScenarioTab    import ScenarioTab
-
-def set_affinity_on_worker():
-    '''When a new worker process is created, the affinity is set to all CPUs'''
-    #JK print('I'm the process %d, setting affinity to all CPUs.' % os.getpid())
-    #JK Commented out for the time being
-    #JK os.system('taskset -p 0xff %d > /dev/null' % os.getpid())
-
-def initWorkers(function, superstrateDielectricFunction, substrateDielectricFunction, crystalPermittivityFunction, superstrateDepth, substrateDepth, crystalDepth, mode, theta, phi, psi, angleOfIncidence):
-    # Initialiser the workers in the pool
-    function.superstrateDielectricFunction = superstrateDielectricFunction
-    function.substrateDielectricFunction = substrateDielectricFunction
-    function.crystalPermittivityFunction = crystalPermittivityFunction
-    function.superstrateDepth = superstrateDepth
-    function.substrateDepth = substrateDepth
-    function.crystalDepth = crystalDepth
-    function.mode = mode
-    function.theta = theta
-    function.phi = phi
-    function.psi = psi
-    function.angleOfIncidence = angleOfIncidence
-    return
+from functools                  import partial
 
 class SingleCrystalScenarioTab(ScenarioTab):
     def __init__(self, parent, debug=False ):
@@ -363,13 +343,9 @@ class SingleCrystalScenarioTab(ScenarioTab):
         angleOfIncidence      = np.pi / 180.0 * angle
         mode = self.settings['Mode']
         #
-        # Get a pool of processors
-        # Initialise each worker with the enough information to generate a GTM system
+        # Initialise the partial function to pass through to the pool
         #
-        pool = Calculator.get_pool(self.notebook.ncpus,
-                                   self.notebook.threading,
-                                   initializer=initWorkers,
-                                   initargs=(Calculator.solve_single_crystal_equations,
+        partial_function = partial(Calculator.solve_single_crystal_equations,
                                        superstrateDielectricFunction,
                                        substrateDielectricFunction,
                                        crystalPermittivityFunction,
@@ -380,12 +356,11 @@ class SingleCrystalScenarioTab(ScenarioTab):
                                        theta,
                                        phi,
                                        psi,
-                                       angleOfIncidence),
-                                   debugger=debugger )
+                                       angleOfIncidence)
         results = []
         # About to call
         debugger.print(self.settings['Legend'],'About to calculate single crystal scenario using pool')
-        for result in pool.imap(Calculator.solve_single_crystal_equations, vs_cm1, chunksize=20):
+        for result in self.notebook.pool.imap(partial_function, vs_cm1, chunksize=20):
             self.notebook.progressbars_update()
             results.append(result)
         QCoreApplication.processEvents()
@@ -408,9 +383,6 @@ class SingleCrystalScenarioTab(ScenarioTab):
             self.p_absorbtance.append(R[0]+R[2]+T[0])
             self.s_absorbtance.append(R[1]+R[3]+T[1])
             self.epsilon.append(epsilon)
-        # Close parallel processing down
-        pool.close()
-        pool.join()
         self.calculationRequired = False
         QCoreApplication.processEvents()
         debugger.print(self.settings['Legend'],'Finished:: calculate - number of frequencies',len(vs_cm1))
