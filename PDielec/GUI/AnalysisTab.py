@@ -52,7 +52,7 @@ class AnalysisTab(QWidget):
         #
         # The minimum frequency
         #
-        self.vmin_sb = QSpinBox(self)
+        self.vmin_sb = QDoubleSpinBox(self)
         self.vmin_sb.setRange(-100,9000)
         self.vmin_sb.setValue(self.settings['Minimum frequency'])
         self.vmin_sb.setToolTip('Set the minimum frequency to be considered)')
@@ -63,7 +63,7 @@ class AnalysisTab(QWidget):
         #
         # The maximum frequency
         #
-        self.vmax_sb = QSpinBox(self)
+        self.vmax_sb = QDoubleSpinBox(self)
         self.vmax_sb.setRange(0,9000)
         self.vmax_sb.setValue(self.settings['Maximum frequency'])
         self.vmax_sb.setToolTip('Set the maximum frequency to be considered)')
@@ -194,7 +194,7 @@ class AnalysisTab(QWidget):
         for i,(radius,element) in enumerate(zip(radii,self.species)):
             qw = QTableWidgetItem()
             qw.setText('{0:.6f}'.format(radius))
-            qw.setTextAlignment(Qt.AlignHCenter | Qt.AlignVCenter)
+            qw.setTextAlignment(int(Qt.AlignHCenter | Qt.AlignVCenter))
             self.element_radii_tw.setItem(0,i, qw )
         self.element_radii_tw.blockSignals(False)
         # end if

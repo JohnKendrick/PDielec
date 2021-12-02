@@ -542,7 +542,7 @@ class FitterTab(QWidget):
             itemFlags.append( otherFlags )
             for j,(item,flag) in enumerate(zip(items,itemFlags)):
                 item.setFlags(flag)
-                item.setTextAlignment(Qt.AlignHCenter | Qt.AlignVCenter)
+                item.setTextAlignment(int(Qt.AlignHCenter | Qt.AlignVCenter))
                 self.sigmas_tw.setItem(i, j, item )
         self.sigmas_tw.resizeColumnsToContents()
         # Release the block on signals for the frequency output table

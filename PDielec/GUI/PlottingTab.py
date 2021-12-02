@@ -48,7 +48,7 @@ class PlottingTab(QWidget):
         #
         # The minimum frequency
         #
-        self.vmin_sb = QSpinBox(self)
+        self.vmin_sb = QDoubleSpinBox(self)
         self.vmin_sb.setRange(0,9000)
         self.vmin_sb.setValue(self.settings['Minimum frequency'])
         self.vmin_sb.setToolTip('Set the minimum frequency to be considered)')
@@ -56,7 +56,7 @@ class PlottingTab(QWidget):
         #
         # The maximum frequency
         #
-        self.vmax_sb = QSpinBox(self)
+        self.vmax_sb = QDoubleSpinBox(self)
         self.vmax_sb.setRange(0,9000)
         self.vmax_sb.setValue(self.settings['Maximum frequency'])
         self.vmax_sb.setToolTip('Set the maximum frequency to be considered)')

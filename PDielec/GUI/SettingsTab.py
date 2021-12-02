@@ -359,7 +359,7 @@ class SettingsTab(QWidget):
             itemFlags.append( otherFlags )
             for j,(item,flag) in enumerate(zip(items,itemFlags)):
                 item.setFlags(flag)
-                item.setTextAlignment(Qt.AlignHCenter | Qt.AlignVCenter)
+                item.setTextAlignment(int(Qt.AlignHCenter | Qt.AlignVCenter))
                 self.output_tw.setItem(i, j, item )
         # Release the block on signals for the frequency output table
         self.output_tw.resizeColumnsToContents()
@@ -433,24 +433,24 @@ class SettingsTab(QWidget):
                 if self.settings['Mass definition'] == 'program':
                     self.element_masses_tw.blockSignals(True)
                     qw.setText('{0:.6f}'.format(mass))
-                    qw.setTextAlignment(Qt.AlignHCenter | Qt.AlignVCenter)
+                    qw.setTextAlignment(int(Qt.AlignHCenter | Qt.AlignVCenter))
                     self.element_masses_tw.setItem(0,i, qw )
                 elif self.settings['Mass definition'] == 'average':
                     self.element_masses_tw.blockSignals(True)
                     qw.setText('{0:.6f}'.format(average_masses[element]))
-                    qw.setTextAlignment(Qt.AlignHCenter | Qt.AlignVCenter)
+                    qw.setTextAlignment(int(Qt.AlignHCenter | Qt.AlignVCenter))
                     debugger.print('average',average_masses[element])
                     self.element_masses_tw.setItem(0,i, qw )
                 elif  self.settings['Mass definition'] == 'isotope':
                     self.element_masses_tw.blockSignals(True)
                     qw.setText('{0:.6f}'.format(isotope_masses[element]))
-                    qw.setTextAlignment(Qt.AlignHCenter | Qt.AlignVCenter)
+                    qw.setTextAlignment(int(Qt.AlignHCenter | Qt.AlignVCenter))
                     debugger.print('isotope',isotope_masses[element])
                     self.element_masses_tw.setItem(0,i, qw )
                 elif  self.settings['Mass definition'] == 'gui':
                     self.element_masses_tw.blockSignals(True)
                     qw.setText('{0:.6f}'.format(self.masses_dictionary[element]))
-                    qw.setTextAlignment(Qt.AlignHCenter | Qt.AlignVCenter)
+                    qw.setTextAlignment(int(Qt.AlignHCenter | Qt.AlignVCenter))
                     debugger.print('gui',self.masses_dictionary[element])
                     self.element_masses_tw.setItem(0,i, qw )
                 else:
@@ -579,7 +579,7 @@ class SettingsTab(QWidget):
         for i,row in enumerate(optical):
             for j, value in enumerate(row):
                 qw = QTableWidgetItem('{0:.4f}'.format(value) )
-                qw.setTextAlignment(Qt.AlignHCenter | Qt.AlignVCenter)
+                qw.setTextAlignment(int(Qt.AlignHCenter | Qt.AlignVCenter))
                 self.optical_tw.setItem(i,j,qw)
         self.optical_tw.blockSignals(False)
         QCoreApplication.processEvents()
