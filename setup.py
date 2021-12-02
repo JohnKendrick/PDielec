@@ -45,7 +45,7 @@ setuptools.setup(
         'Pygments',
         'beautifulsoup4',
         'psutil',
-        'multiprocess',
+        'multiprocessing',
         'dill',
         'requests',
     ],
@@ -110,14 +110,13 @@ setuptools.setup(
         'Pygments',
         'beautifulsoup4',
         'psutil',
-        'multiprocess',
+        'multiprocessing',
         'dill',
         'requests',
     ],
     include_package_data=True,   # Assume all information is in MANIFEST.in
     classifiers=[
         "Development Status :: 5 - Production/Stable",
-        "Programming Language :: Python :: 2.7",
         "Programming Language :: Python :: 3",
         "Programming Language :: Python :: 3.5",
         "Programming Language :: Python :: 3.6",
@@ -126,7 +125,7 @@ setuptools.setup(
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
     ],
-    python_requires='>=2.7',
+    python_requires='>=3.0',
     entry_points= {
         'console_scripts': [
             'preader=preader:main',

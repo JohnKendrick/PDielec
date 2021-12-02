@@ -9,7 +9,7 @@ imageio
 imageio-ffmpeg
 PyYAML
 termcolor
-multiprocess
+multiprocessing
 dill
 psutil
 scikit-learn

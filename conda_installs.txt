@@ -3,7 +3,7 @@ conda install psutil
 conda install numpy
 conda install scipy
 conda install xlsxwriter
-conda install multiprocess
+conda install multiprocessing
 conda install matplotlib
 conda install -c anaconda pyopengl
 conda install openpyxl
