@@ -15,8 +15,8 @@ Installation
 Anaconda
 ========
 
-Unless you are interested in the full package, miniconda installation should be sufficient for installing the rest of the modules needed for the PDielec installation.
-A miniconda is the recommended environment for installing PDielec.  On windows it is necessary to run the commands in an Anaconda command terminal, which will be added to the user's menu when miniconda is installed.
+Unless you are interested in the full Anaconda package, a miniconda installation should be sufficient for installing the rest of the modules needed for the PDielec installation.
+Miniconda is the recommended environment for installing PDielec.  On windows it is necessary to run the commands in an Anaconda command terminal, which will be added to the user's menu when miniconda is installed.
 
 PDielec is available on the conda-forge channel and installation using Anaconda can be performed on Linux, Windows and Mac systems.
 However, there are no example files installed, only the executables.  
@@ -74,7 +74,6 @@ As part of the installation you will have to install a number of Python packages
    numpy
    scipy
    dill
-   multiprocess
    matplotlib
    pyopengl
    openpyxl
@@ -140,7 +139,6 @@ Open a git bash console and type;::
    pip install numpy
    pip install scipy
    pip install dill
-   pip install multiprocess
    pip install matplotlib
    pip install pyopengl
    pip install openpyxl
