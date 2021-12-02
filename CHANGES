@@ -24,6 +24,8 @@ version 7.0.1
   Major changes to the parallel methods used by the code.  Now using 'partial' from functools
       also removed sending the whole crystal_permittivity array at once.
       also create the pool in the notebook and keep reusing it.
+      also switch back to multiprocessing 
+  MKL threads are no longer changed by the code
 
 
 version 6.4.5
