@@ -23,6 +23,7 @@ import numpy as np
 from PDielec.Constants  import wavenumber, avogadro_si, amu
 from PDielec.Plotter    import print3x3, print_reals, print_strings, print_ints
 from PDielec.Calculator import cleanup_symbol
+from PDielec.IO         import pdielec_io
 
 class GenericOutputReader:
     """Generic reader of output files.  Actual reader should inherit from this class"""
@@ -216,7 +217,7 @@ class GenericOutputReader:
             print("Warning file is not present: ", name, file=sys.stderr)
             return
         # Open file and store file name and directory
-        self.file_descriptor = open(name, 'r')
+        self.file_descriptor = pdielec_io(name, 'r')
         self.open_filename = name
         self.open_directory = os.path.dirname(name)
         if self.open_directory == "":
