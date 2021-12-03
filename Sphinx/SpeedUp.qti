@@ -3,17 +3,17 @@
 <qti app="QtiPlot" version="1.0.0-rc15" dpi="96" arch="Gnu64" script="muParser" windows="2" expand="1">
 	<window type="1" name="Table1" date="2459523.6099869" x="0" y="0" w="600" h="536">
 		<tab rows="30" cols="3" labels="0">
-			<col name="Processors" type="6" num="0" prec="13" plot="1" width="100" stat="0" data="1;2;3;4;5;6;7;8;9;10;11;12;13;14;15;16;"/>
-			<col name="Speedup" type="6" num="0" prec="13" plot="2" width="100" stat="0" data="1;1.85595681;2.417789598;2.842284444;3.200015645;3.477473648;3.63829598;3.756910644;3.720014549;3.662727191;3.681846818;3.657160737;3.619304609;3.613230878;3.560710245;3.534560221;"/>
-			<col name="Ideal" type="6" num="0" prec="13" plot="2" width="100" stat="0" data="1;2;3;4;5;6;7;8;9;10;11;12;13;14;15;16;"/>
+			<col name="Processors" type="6" num="0" prec="13" plot="1" width="100" stat="0" data="1;2;3;4;5;6;7;8;"/>
+			<col name="Speedup" type="6" num="0" prec="13" plot="2" width="100" stat="0" data="1;2.07;2.7;3.0887;3.4838;3.7215;3.992;4.139;"/>
+			<col name="Ideal" type="6" num="0" prec="13" plot="2" width="100" stat="0" data="1;2;3;4;5;6;7;8;"/>
 		</tab>
 	</window>
-	<window type="3" name="Graph1" date="2459523.6115428" x="600" y="0" w="492" h="438" active="1" dpi="96">
+	<window type="3" name="Graph1" date="2459523.6115428" x="529" y="23" w="492" h="438" active="1" dpi="96">
 		<layout cw="484" ch="390" w="400" h="300" left="5" right="5" top="5" bottom="5" rows="1" cols="1" vSpace="5" hSpace="5" hAlign="0" vAlign="0" align="0" common="0" link="0" scale="0" currentLayer="0" sPrint="0" cmPrint="0" atUnits="1" atdIndex="0" atPolicy="1" alMode="0" luMode="2"/>
-		<tab x="11" y="23" w="444" h="354" autoscale="0" maxMajorTicks="20" axesLayout="0" antialias="1" sync="1" gap="1" scaleFont="1" dataMargins="1">
-			<page x="0.0227273" y="0.0589744" w="0.917355" h="0.907692"/>
+		<tab x="11" y="23" w="460" h="366" autoscale="0" maxMajorTicks="20" axesLayout="0" antialias="1" sync="1" gap="1" scaleFont="1" dataMargins="1">
+			<page x="0.0227273" y="0.0589744" w="0.950413" h="0.938462"/>
 			<frame bg="#ffffff,0"/>
-			<canvas x="52" y="32" w="398" h="294" fixRatio="1.33333" bg="#ffffff,0"/>
+			<canvas x="52" y="44" w="398" h="294" fixRatio="1.33333" bg="#ffffff,0"/>
 			<grid xAxis="2" yAxis="0"/>
 			<curve type="2" z="21" table="Table1" x="Processors" y="Speedup" from="0" to="-1" line="1" lc="#000000" lw="2" ls="0" brc="#000000" brs="0">
 				<symbol style="1" size="7" lc="#000000" lw="1" ls="0" brc="#000000"/>
@@ -30,6 +30,7 @@
 			<axis id="1" on="1" type="0" format="0" prec="6" lw="1">
 				<div from="1" to="8" step="0" maj="8" min="4" type="0"/>
 				<ticks maj="3" majl="9" min="3" minl="5"/>
+				<title text=" " color="#000000" font="Cantarell,11,-1,5,50,0,0,0,0,0" align="132" space="2" fmw="3"/>
 			</axis>
 			<axis id="2" on="1" type="0" format="0" prec="6" lw="1">
 				<div from="1" to="8" step="0" maj="8" min="4" type="0"/>
@@ -40,8 +41,9 @@
 			<axis id="3" on="1" type="0" format="0" prec="6" lw="1">
 				<div from="1" to="8" step="0" maj="8" min="4" type="0"/>
 				<ticks maj="3" majl="9" min="3" minl="5"/>
+				<title text=" " color="#000000" font="Cantarell,11,-1,5,50,0,0,0,0,0" align="132" space="2" fmw="3"/>
 			</axis>
-			<item type="2" x="1.28070175438596" y="7.76588628762542" frame="1" lc="#000000" lw="1" ls="0" bg="#ffffff,204" onTop="1" at="0" on="1" auto="1" font="Cantarell,9,-1,5,50,0,0,0,0,0" text="\l(1)%(1)&#10;\l(2)%(2)"/>
+			<item type="2" x="1.28211586901763" y="7.76109215017065" frame="1" lc="#000000" lw="1" ls="0" bg="#ffffff,204" onTop="1" at="0" on="1" auto="1" font="Cantarell,9,-1,5,50,0,0,0,0,0" text="\l(1)%(1)&#10;\l(2)%(2)"/>
 		</tab>
 	</window>
 </qti>

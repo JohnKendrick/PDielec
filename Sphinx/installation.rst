@@ -16,7 +16,7 @@ Anaconda
 ========
 
 Unless you are interested in the full Anaconda package, a miniconda installation should be sufficient for installing the rest of the modules needed for the PDielec installation.
-Miniconda is the recommended environment for installing PDielec.  On windows it is necessary to run the commands in an Anaconda command terminal, which will be added to the user's menu when miniconda is installed.
+Miniconda is the recommended environment for installing PDielec.  On Windows it is necessary to run the commands in an Anaconda command terminal, which will be added to the user's menu when miniconda is installed.
 
 PDielec is available on the conda-forge channel and installation using Anaconda can be performed on Linux, Windows and Mac systems.
 However, there are no example files installed, only the executables.  
@@ -162,11 +162,11 @@ This should create a directory in Software called PDielec.  The "-c core.symlink
 Testing PDielec
 ...............
 
-Open a git bash console.  If you have installed Python using anaconda then you need to 'source activate' the environment you have established before typing;::
+Open a git bash console.  If you have installed Python using Anaconda then you need to 'source activate' the environment you have established before typing;::
 
   cd Software/PDielec
-  make test_preader
-  make test_pdgui
+  make test-preader
+  make test-pdgui
 
 Installing PDielec to run in any git bash console
 .................................................
@@ -200,11 +200,11 @@ GitHub - PDielec directory structure
 Examples
 ========
 
-Each example directory has the relevant input data sets used to run the QM/MM program and the output files from that run, which are post-processed by PDielec.  There is a file `script.py` which contains an of PDGui usage line and which has been used to create the reference output file `results.ref.xlsx`.  The example can be run interactively::
+Each example directory has the relevant input data sets used to run the QM/MM program and the output files from that run, which are post-processed by PDielec.  There is a file `script.py` which which has been used to create the reference output file `results.ref.xlsx`.  The example can be run interactively::
 
  make pdgui-view
 
-The output can be compared with the reference data to see if the program is working correctly.  The checkexcell command can be used to do this automatically.
+The output can be compared with the reference data to see if the program is working correctly.  The checkexcel command can be used to do this automatically.
 
 The main Examples/ directory also has a  Makefile file which can be used to verify the correct working of the package.  Simply by typing `make tests` in the Examples directory each example will be run automatically and the output compared with the reference files.  To remove the intermediate files after running the tests automatically, type `make clean`.
 
