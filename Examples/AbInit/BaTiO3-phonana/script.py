@@ -1,4 +1,10 @@
 #
+# mainTab
+#
+tab = self.notebook.mainTab
+tab.settings['Program'] = 'abinit'
+tab.settings['Output file name'] = 'BaTiO3.out'
+#
 # SettingsTab
 #
 tab = self.notebook.settingsTab
@@ -40,7 +46,7 @@ tab.settings['Minimum frequency'] =   0
 tab.settings['Maximum frequency'] = 400
 tab.settings['Frequency increment'] = 0.2
 tab.settings['Molar definition'] = 'Unit cells'
-tab.settings['Plot title'] = 'AbInit AlAs Calculation'
+tab.settings['Plot title'] = 'AbInit BaTiO3 Calculation'
 #
 # Analysis Tab
 #

@@ -3,6 +3,10 @@ pdgui:
 	@../../../pdgui -nosplash castep phonon.castep results.xlsx -script script.py -exit 
 	@../../../checkexcel results.ref.xlsx results.xlsx
 
+benchmark:	
+	@echo "PDGui benchmark absorption for Na2(SO4)2 from CASTEP...."
+	@../../../pdgui -nosplash castep phonon.castep -script script.py -exit 
+
 pdgui-regenerate:
 	@echo "PDGui Regenerating reference files for Na2(SO4)2 from CASTEP...."
 	@../../../pdgui -nosplash castep phonon.castep results.xlsx -script script.py -exit

@@ -19,9 +19,9 @@ from __future__ import print_function
 import os
 import sys
 from PDielec.GUI.App  import App
-from PyQt5.QtGui     import QPixmap
-from PyQt5.QtWidgets import QApplication, QSplashScreen, QProgressBar
-from multiprocessing import freeze_support
+from PyQt5.QtGui      import QPixmap
+from PyQt5.QtWidgets  import QApplication, QSplashScreen, QProgressBar
+from multiprocessing  import freeze_support
 import PDielec.__init__
 version = PDielec.__init__.__version__
 
@@ -31,11 +31,6 @@ def main():
     for token in sys.argv:
         if token == '-nosplash' or token == '--nosplash':
             show_splash = False
-        elif token == '-h' or token == '-help' or token == '--help':
-            print('pdgui - graphical user interface to the PDielec package')
-            print('pdgui [-help] [-debug] [program] filename [spreadsheet] [-script scriptname] [-nosplash] [-threads] [-cpus ncpus] [-version] [-exit]')
-            print('      Version ',version)
-            exit()
         elif token == '-v' or token == '-version' or token == '--version':
             print('Version ',version)
             exit()

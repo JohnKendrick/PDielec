@@ -17,8 +17,10 @@ default:
 		@echo " or  'make test-preader'"
 		@echo " or  'make test-pdgui'"
 		@echo " or  'make test-p2cif'"
+		@echo " or  'make test-vibanalysis'"
 		@echo " or  'make test-cli'"
 		@echo " or  'make regenerate'"
+		@echo " or  'make regenerate-vibanalysis'"
 		@echo " or  'make pypi'"
 		@echo " or  'make pyinstaller'"
 		@echo " or  'make clean'"
@@ -41,34 +43,51 @@ test:		test-pdgui test-cli
 
 tests:		test-pdgui test-cli
 
-test-cli:	test-preader test-p2cif
+test-cli:	test-preader test-p2cif test-vibanalysis
 
-tests-cli:	test-preader test-p2cif
+tests-cli:	test-preader test-p2cif test-vibanalysis
 
-.PHONY:		pdgui
+regenerate:	regenerate-pdgui regenerate-vibanalysis
+
+.PHONY:		test-pdgui
 test-pdgui:		
 		@echo "Testing pdgui functionality....."
-		@( cd Examples; make --no-print-directory test-pdgui )
+		@( cd Examples; $(MAKE) --no-print-directory test-pdgui )
+
+.PHONY:		benchmark
+benchmark:		
+		@echo "Benchmarking....."
+		@( cd Examples; $(MAKE) --no-print-directory benchmark )
 
 .PHONY:		test-p2cif
 test-p2cif:		
 		@echo "Testing preader functionality....."
-		@( cd Examples; make --no-print-directory test-p2cif )
+		@( cd Examples; $(MAKE) --no-print-directory test-p2cif )
 
 .PHONY:		test-preader
 test-preader:		
 		@echo "Testing preader functionality....."
-		@( cd Examples; make --no-print-directory test-preader )
+		@( cd Examples; $(MAKE) --no-print-directory test-preader )
 
-.PHONY:		regenerate
-regenerate:		
+.PHONY:		test-vibanalysis
+test-vibanalysis:		
+		@echo "Testing vibanalysis functionality....."
+		@( cd Examples; $(MAKE) --no-print-directory test-vibanalysis )
+
+.PHONY:		regenerate-pdgui
+regenerate-pdgui:		
 		@echo "Regenerating all reference data for pdgui"
-		@( cd Examples; make --no-print-directory pdgui-regenerate )
+		@( cd Examples; $(MAKE) --no-print-directory pdgui-regenerate )
+
+.PHONY:		regenerate-vibanalysis
+regenerate-vibanalysis:		
+		@echo "Regenerating all reference data for vibanalysis"
+		@( cd Examples; $(MAKE) --no-print-directory vibanalysis-regenerate )
 
 .PHONY:		clean
 clean:		
 		@echo "Cleaning distribution and tests"
-		@( cd Examples; make --no-print-directory clean )
+		@( cd Examples; $(MAKE) --no-print-directory clean )
 
 .PHONY:		pyinstaller
 pyinstaller:

@@ -55,8 +55,11 @@ def find_program_from_name( filename ):
             return 'crystal'
     if ext ==  '.dynG':
         return 'qe'
-    print('Error unable to automatically assign program to ',filename)
-    exit(1)
+    if ext ==  '.exp':
+        return 'experiment'
+    if ext ==  '.py':
+        return 'pdgui'
+    return ''
 
 def get_reader( name, program, qmprogram):
     fulldirname = name
@@ -240,13 +243,15 @@ def pdgui_get_reader(program,names,qmprogram):
     return reader
 
 class Debug():
-    def __init__(self,debug,text):
+    def __init__(self,debug,text,level=0):
         self.debug = debug
         self.text  = text
+        self.level = level
         return
-    def print(self,*args):
 
+    def print(self,*args,level=0):
         if self.debug:
-            print(self.text,*args)
+            if level <= self.level:
+                print(self.text,*args)
         return
 

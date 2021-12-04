@@ -1,0 +1,4424 @@
+###############################################################
+#                                                             #
+#   vibAnalysis - version 1.2.2                               #
+#   A set of tools to analyse vibrational modes in terms of   #
+#   localized internal coordinates.                           #
+#                                                             #
+#   (c) Filipe Teixeira, 2017-2019                            #
+#   filipe _dot_ teixeira _at_ fc _dot_ up _dot_ pt           #
+#                                                             #
+###############################################################
+
+Opening using PDielec library : phonon.dynG
+
+
+Mass-weighting the atomic displacements...
+
+
+Generating Internal Coordinates...
+Internal Coordinates Generated: 604
+
+This is the list of Internal Coordinates generated for
+this run. Please use these indexes if you whish to animate
+any one of these coordinates. If you added some user-defined
+coordinates, please be sure to re-run this program with the
+same added coordinates.
+
+
+List of Internal Coordinates and their values
+    1 BOND C2 C3                   1.541
+    2 BOND C2 C4                   1.540
+    3 BOND C2 H5                   1.093
+    4 BOND C2 N6                   1.515
+    5 BOND C3 C7                   1.549
+    6 BOND C3 C8                   1.527
+    7 BOND C3 H9                   1.107
+    8 BOND C4 C16                  1.551
+    9 BOND C4 H20                  1.098
+   10 BOND C4 H21                  1.096
+   11 BOND N6 C13                  1.517
+   12 BOND N6 H26                  1.070
+   13 BOND N6 C27                  1.488
+   14 BOND C7 C10                  1.526
+   15 BOND C7 H11                  1.099
+   16 BOND C7 O12                  1.448
+   17 BOND C8 O22                  1.223
+   18 BOND C8 O23                  1.352
+   19 BOND C10 C13                 1.534
+   20 BOND C10 H14                 1.099
+   21 BOND C10 H15                 1.102
+   22 BOND O12 C24                 1.362
+   23 BOND C13 C16                 1.539
+   24 BOND C13 H17                 1.097
+   25 BOND C16 H18                 1.098
+   26 BOND C16 H19                 1.097
+   27 BOND O23 C25                 1.448
+   28 BOND C24 C28                 1.487
+   29 BOND C24 O29                 1.228
+   30 BOND C25 H40                 1.098
+   31 BOND C25 H41                 1.094
+   32 BOND C25 H42                 1.094
+   33 BOND C27 H43                 1.095
+   34 BOND C27 H44                 1.094
+   35 BOND C27 H45                 1.098
+   36 BOND C28 C30                 1.403
+   37 BOND C28 C31                 1.404
+   38 BOND C30 C32                 1.395
+   39 BOND C30 H33                 1.089
+   40 BOND C31 C36                 1.394
+   41 BOND C31 H39                 1.090
+   42 BOND C32 C34                 1.397
+   43 BOND C32 H35                 1.094
+   44 BOND C34 C36                 1.400
+   45 BOND C34 H37                 1.091
+   46 BOND C36 H38                 1.092
+   47 BOND C46 C47                 1.526
+   48 BOND C46 H48                 1.099
+   49 BOND C46 O49                 1.448
+   50 BOND C46 C50                 1.549
+   51 BOND C47 C51                 1.534
+   52 BOND C47 H52                 1.099
+   53 BOND C47 H53                 1.102
+   54 BOND O49 C63                 1.362
+   55 BOND C50 C62                 1.541
+   56 BOND C50 C67                 1.527
+   57 BOND C50 H68                 1.107
+   58 BOND C51 C54                 1.539
+   59 BOND C51 H55                 1.097
+   60 BOND C51 N56                 1.517
+   61 BOND C54 C57                 1.551
+   62 BOND C54 H58                 1.098
+   63 BOND C54 H59                 1.097
+   64 BOND N56 C62                 1.515
+   65 BOND N56 C64                 1.488
+   66 BOND N56 H65                 1.070
+   67 BOND C57 H60                 1.098
+   68 BOND C57 H61                 1.096
+   69 BOND C57 C62                 1.540
+   70 BOND C62 H66                 1.093
+   71 BOND C63 C69                 1.487
+   72 BOND C63 O70                 1.228
+   73 BOND C64 H83                 1.095
+   74 BOND C64 H84                 1.094
+   75 BOND C64 H85                 1.098
+   76 BOND C67 O81                 1.223
+   77 BOND C67 O82                 1.352
+   78 BOND C69 C71                 1.403
+   79 BOND C69 C72                 1.404
+   80 BOND C71 C73                 1.395
+   81 BOND C71 H74                 1.089
+   82 BOND C72 C77                 1.394
+   83 BOND C72 H80                 1.090
+   84 BOND C73 C75                 1.397
+   85 BOND C73 H76                 1.094
+   86 BOND C75 C77                 1.400
+   87 BOND C75 H78                 1.091
+   88 BOND C77 H79                 1.092
+   89 BOND O82 C86                 1.448
+   90 BOND C86 H87                 1.098
+   91 BOND C86 H88                 1.094
+   92 BOND C86 H89                 1.094
+   93 BOND O90 C91                 1.448
+   94 BOND O90 C92                 1.362
+   95 BOND C91 C93                 1.549
+   96 BOND C91 C94                 1.526
+   97 BOND C91 H95                 1.099
+   98 BOND C92 O108                1.228
+   99 BOND C92 C109                1.487
+  100 BOND C93 C105                1.541
+  101 BOND C93 C123                1.527
+  102 BOND C93 H124                1.107
+  103 BOND C94 C96                 1.534
+  104 BOND C94 H97                 1.099
+  105 BOND C94 H98                 1.102
+  106 BOND C96 N99                 1.517
+  107 BOND C96 C100                1.539
+  108 BOND C96 H101                1.097
+  109 BOND N99 C105                1.515
+  110 BOND N99 C120                1.488
+  111 BOND N99 H121                1.070
+  112 BOND C100 C102               1.551
+  113 BOND C100 H103               1.098
+  114 BOND C100 H104               1.097
+  115 BOND C102 C105               1.540
+  116 BOND C102 H106               1.098
+  117 BOND C102 H107               1.096
+  118 BOND C105 H122               1.093
+  119 BOND C109 C110               1.403
+  120 BOND C109 C111               1.404
+  121 BOND C110 C112               1.395
+  122 BOND C110 H113               1.089
+  123 BOND C111 C116               1.394
+  124 BOND C111 H119               1.090
+  125 BOND C112 C114               1.397
+  126 BOND C112 H115               1.094
+  127 BOND C114 C116               1.400
+  128 BOND C114 H117               1.091
+  129 BOND C116 H118               1.092
+  130 BOND C120 H127               1.095
+  131 BOND C120 H128               1.094
+  132 BOND C120 H129               1.098
+  133 BOND C123 O125               1.223
+  134 BOND C123 O126               1.352
+  135 BOND O126 C130               1.448
+  136 BOND C130 H131               1.098
+  137 BOND C130 H132               1.094
+  138 BOND C130 H133               1.094
+  139 BOND O137 C138               1.448
+  140 BOND O137 C139               1.362
+  141 BOND C138 C140               1.549
+  142 BOND C138 C141               1.526
+  143 BOND C138 H142               1.099
+  144 BOND C139 O155               1.228
+  145 BOND C139 C156               1.487
+  146 BOND C140 C152               1.541
+  147 BOND C140 C170               1.527
+  148 BOND C140 H171               1.107
+  149 BOND C141 C143               1.534
+  150 BOND C141 H144               1.099
+  151 BOND C141 H145               1.102
+  152 BOND C143 N146               1.517
+  153 BOND C143 C147               1.539
+  154 BOND C143 H148               1.097
+  155 BOND N146 C152               1.515
+  156 BOND N146 C167               1.488
+  157 BOND N146 H168               1.070
+  158 BOND C147 C149               1.551
+  159 BOND C147 H150               1.098
+  160 BOND C147 H151               1.097
+  161 BOND C149 C152               1.540
+  162 BOND C149 H153               1.098
+  163 BOND C149 H154               1.096
+  164 BOND C152 H169               1.093
+  165 BOND C156 C157               1.403
+  166 BOND C156 C158               1.404
+  167 BOND C157 C159               1.395
+  168 BOND C157 H160               1.089
+  169 BOND C158 C163               1.394
+  170 BOND C158 H166               1.090
+  171 BOND C159 C161               1.397
+  172 BOND C159 H162               1.094
+  173 BOND C161 C163               1.400
+  174 BOND C161 H164               1.091
+  175 BOND C163 H165               1.092
+  176 BOND C167 H174               1.095
+  177 BOND C167 H175               1.094
+  178 BOND C167 H176               1.098
+  179 BOND C170 O172               1.352
+  180 BOND C170 O173               1.223
+  181 BOND O172 C177               1.448
+  182 BOND C177 H178               1.098
+  183 BOND C177 H179               1.094
+  184 BOND C177 H180               1.094
+  185 ANGLE C3 C2 C4             113.854
+  186 ANGLE C3 C2 H5             110.519
+  187 ANGLE C3 C2 N6             108.574
+  188 ANGLE C2 C3 C7             108.146
+  189 ANGLE C2 C3 C8             113.267
+  190 ANGLE C2 C3 H9             106.201
+  191 ANGLE C2 C4 C16            105.642
+  192 ANGLE C2 C4 H20            109.583
+  193 ANGLE C2 C4 H21            110.960
+  194 ANGLE C2 N6 C13            101.781
+  195 ANGLE C2 N6 H26            115.006
+  196 ANGLE C2 N6 C27            112.572
+  197 ANGLE C3 C7 C10            111.977
+  198 ANGLE C3 C7 H11            106.379
+  199 ANGLE C3 C7 O12            114.290
+  200 ANGLE C3 C8 O22            124.882
+  201 ANGLE C3 C8 O23            111.495
+  202 ANGLE C4 C16 C13           104.556
+  203 ANGLE C4 C16 H18           110.286
+  204 ANGLE C4 C16 H19           112.558
+  205 ANGLE N6 C13 C10           106.605
+  206 ANGLE N6 C13 C16           102.578
+  207 ANGLE N6 C13 H17           108.258
+  208 ANGLE N6 C27 H43           107.971
+  209 ANGLE N6 C27 H44           107.041
+  210 ANGLE N6 C27 H45           111.283
+  211 ANGLE C7 C10 C13           110.212
+  212 ANGLE C7 C10 H14           109.558
+  213 ANGLE C7 C10 H15           110.595
+  214 ANGLE C7 O12 C24           116.506
+  215 ANGLE C8 O23 C25           117.233
+  216 ANGLE O12 C24 C28          112.481
+  217 ANGLE O12 C24 O29          123.281
+  218 ANGLE O23 C25 H40          108.159
+  219 ANGLE O23 C25 H41          110.846
+  220 ANGLE O23 C25 H42          105.606
+  221 ANGLE C24 C28 C30          122.360
+  222 ANGLE C24 C28 C31          118.180
+  223 ANGLE C28 C30 C32          120.197
+  224 ANGLE C28 C30 H33          120.011
+  225 ANGLE C28 C31 C36          120.374
+  226 ANGLE C28 C31 H39          119.418
+  227 ANGLE C30 C32 C34          119.959
+  228 ANGLE C30 C32 H35          118.560
+  229 ANGLE C31 C36 C34          119.724
+  230 ANGLE C31 C36 H38          119.692
+  231 ANGLE C32 C34 C36          120.278
+  232 ANGLE C32 C34 H37          120.020
+  233 ANGLE C47 C46 H48          109.511
+  234 ANGLE C47 C46 O49          107.951
+  235 ANGLE C47 C46 C50          111.977
+  236 ANGLE C46 C47 C51          110.212
+  237 ANGLE C46 C47 H52          109.558
+  238 ANGLE C46 C47 H53          110.595
+  239 ANGLE C46 O49 C63          116.506
+  240 ANGLE C46 C50 C62          108.146
+  241 ANGLE C46 C50 C67          115.633
+  242 ANGLE C46 C50 H68          109.270
+  243 ANGLE C47 C51 C54          113.626
+  244 ANGLE C47 C51 H55          111.131
+  245 ANGLE C47 C51 N56          106.605
+  246 ANGLE O49 C63 C69          112.481
+  247 ANGLE O49 C63 O70          123.281
+  248 ANGLE C50 C62 N56          108.574
+  249 ANGLE C50 C62 C57          113.854
+  250 ANGLE C50 C62 H66          110.519
+  251 ANGLE C50 C67 O81          124.882
+  252 ANGLE C50 C67 O82          111.495
+  253 ANGLE C51 C54 C57          104.556
+  254 ANGLE C51 C54 H58          111.215
+  255 ANGLE C51 C54 H59          110.845
+  256 ANGLE C51 N56 C62          101.781
+  257 ANGLE C51 N56 C64          113.528
+  258 ANGLE C51 N56 H65          108.796
+  259 ANGLE C54 C57 H60          109.979
+  260 ANGLE C54 C57 H61          113.142
+  261 ANGLE C54 C57 C62          105.642
+  262 ANGLE N56 C64 H83          107.971
+  263 ANGLE N56 C64 H84          107.041
+  264 ANGLE N56 C64 H85          111.283
+  265 ANGLE C63 C69 C71          122.360
+  266 ANGLE C63 C69 C72          118.180
+  267 ANGLE C67 O82 C86          117.233
+  268 ANGLE C69 C71 C73          120.197
+  269 ANGLE C69 C71 H74          120.011
+  270 ANGLE C69 C72 C77          120.374
+  271 ANGLE C69 C72 H80          119.418
+  272 ANGLE C71 C73 C75          119.959
+  273 ANGLE C71 C73 H76          118.560
+  274 ANGLE C72 C77 C75          119.724
+  275 ANGLE C72 C77 H79          119.692
+  276 ANGLE C73 C75 C77          120.278
+  277 ANGLE C73 C75 H78          120.020
+  278 ANGLE O82 C86 H87          108.159
+  279 ANGLE O82 C86 H88          110.846
+  280 ANGLE O82 C86 H89          105.606
+  281 ANGLE C91 O90 C92          116.506
+  282 ANGLE O90 C91 C93          114.290
+  283 ANGLE O90 C91 C94          107.951
+  284 ANGLE O90 C91 H95          106.523
+  285 ANGLE O90 C92 O108         123.281
+  286 ANGLE O90 C92 C109         112.481
+  287 ANGLE C91 C93 C105         108.146
+  288 ANGLE C91 C93 C123         115.633
+  289 ANGLE C91 C93 H124         109.270
+  290 ANGLE C91 C94 C96          110.212
+  291 ANGLE C91 C94 H97          109.558
+  292 ANGLE C91 C94 H98          110.595
+  293 ANGLE C92 C109 C110        122.360
+  294 ANGLE C92 C109 C111        118.180
+  295 ANGLE C93 C105 N99         108.574
+  296 ANGLE C93 C105 C102        113.854
+  297 ANGLE C93 C105 H122        110.519
+  298 ANGLE C93 C123 O125        124.882
+  299 ANGLE C93 C123 O126        111.495
+  300 ANGLE C94 C96 N99          106.605
+  301 ANGLE C94 C96 C100         113.626
+  302 ANGLE C94 C96 H101         111.131
+  303 ANGLE C96 N99 C105         101.781
+  304 ANGLE C96 N99 C120         113.528
+  305 ANGLE C96 N99 H121         108.796
+  306 ANGLE C96 C100 C102        104.556
+  307 ANGLE C96 C100 H103        111.215
+  308 ANGLE C96 C100 H104        110.845
+  309 ANGLE N99 C120 H127        107.971
+  310 ANGLE N99 C120 H128        107.041
+  311 ANGLE N99 C120 H129        111.283
+  312 ANGLE C100 C102 C105       105.642
+  313 ANGLE C100 C102 H106       109.979
+  314 ANGLE C100 C102 H107       113.142
+  315 ANGLE C109 C110 C112       120.197
+  316 ANGLE C109 C110 H113       120.011
+  317 ANGLE C109 C111 C116       120.374
+  318 ANGLE C109 C111 H119       119.418
+  319 ANGLE C110 C112 C114       119.959
+  320 ANGLE C110 C112 H115       118.560
+  321 ANGLE C111 C116 C114       119.724
+  322 ANGLE C111 C116 H118       119.692
+  323 ANGLE C112 C114 C116       120.278
+  324 ANGLE C112 C114 H117       120.020
+  325 ANGLE C123 O126 C130       117.233
+  326 ANGLE O126 C130 H131       108.159
+  327 ANGLE O126 C130 H132       110.846
+  328 ANGLE O126 C130 H133       105.606
+  329 ANGLE C138 O137 C139       116.506
+  330 ANGLE O137 C138 C140       114.290
+  331 ANGLE O137 C138 C141       107.951
+  332 ANGLE O137 C138 H142       106.523
+  333 ANGLE O137 C139 O155       123.281
+  334 ANGLE O137 C139 C156       112.481
+  335 ANGLE C138 C140 C152       108.146
+  336 ANGLE C138 C140 C170       115.633
+  337 ANGLE C138 C140 H171       109.270
+  338 ANGLE C138 C141 C143       110.212
+  339 ANGLE C138 C141 H144       109.558
+  340 ANGLE C138 C141 H145       110.595
+  341 ANGLE C139 C156 C157       122.360
+  342 ANGLE C139 C156 C158       118.180
+  343 ANGLE C140 C152 N146       108.574
+  344 ANGLE C140 C152 C149       113.854
+  345 ANGLE C140 C152 H169       110.519
+  346 ANGLE C140 C170 O172       111.495
+  347 ANGLE C140 C170 O173       124.882
+  348 ANGLE C141 C143 N146       106.605
+  349 ANGLE C141 C143 C147       113.626
+  350 ANGLE C141 C143 H148       111.131
+  351 ANGLE C143 N146 C152       101.781
+  352 ANGLE C143 N146 C167       113.528
+  353 ANGLE C143 N146 H168       108.796
+  354 ANGLE C143 C147 C149       104.556
+  355 ANGLE C143 C147 H150       111.215
+  356 ANGLE C143 C147 H151       110.845
+  357 ANGLE N146 C167 H174       107.971
+  358 ANGLE N146 C167 H175       107.041
+  359 ANGLE N146 C167 H176       111.283
+  360 ANGLE C147 C149 C152       105.642
+  361 ANGLE C147 C149 H153       109.979
+  362 ANGLE C147 C149 H154       113.142
+  363 ANGLE C156 C157 C159       120.197
+  364 ANGLE C156 C157 H160       120.011
+  365 ANGLE C156 C158 C163       120.374
+  366 ANGLE C156 C158 H166       119.418
+  367 ANGLE C157 C159 C161       119.959
+  368 ANGLE C157 C159 H162       118.560
+  369 ANGLE C158 C163 C161       119.724
+  370 ANGLE C158 C163 H165       119.692
+  371 ANGLE C159 C161 C163       120.278
+  372 ANGLE C159 C161 H164       120.020
+  373 ANGLE C170 O172 C177       117.233
+  374 ANGLE O172 C177 H178       108.159
+  375 ANGLE O172 C177 H179       110.846
+  376 ANGLE O172 C177 H180       105.606
+  377 OUT C3 C8 O22 O23          175.676
+  378 OUT O12 C24 C28 O29        179.657
+  379 OUT C24 C28 C30 C31        179.773
+  380 OUT C28 C30 C32 H33        180.227
+  381 OUT C28 C31 C36 H39        181.176
+  382 OUT C30 C32 C34 H35        180.453
+  383 OUT C31 C36 C34 H38        179.205
+  384 OUT C32 C34 C36 H37        180.123
+  385 OUT O49 C63 C69 O70        179.657
+  386 OUT C50 C67 O81 O82        175.676
+  387 OUT C63 C69 C71 C72        179.773
+  388 OUT C69 C71 C73 H74        180.227
+  389 OUT C69 C72 C77 H80        181.176
+  390 OUT C71 C73 C75 H76        180.453
+  391 OUT C72 C77 C75 H79        179.205
+  392 OUT C73 C75 C77 H78        180.123
+  393 OUT O90 C92 O108 C109      180.379
+  394 OUT C92 C109 C110 C111     179.773
+  395 OUT C93 C123 O125 O126     175.676
+  396 OUT C109 C110 C112 H113    180.227
+  397 OUT C109 C111 C116 H119    181.176
+  398 OUT C110 C112 C114 H115    180.453
+  399 OUT C111 C116 C114 H118    179.205
+  400 OUT C112 C114 C116 H117    180.123
+  401 OUT O137 C139 O155 C156    180.379
+  402 OUT C139 C156 C157 C158    179.773
+  403 OUT C140 C170 O172 O173    183.811
+  404 OUT C156 C157 C159 H160    180.227
+  405 OUT C156 C158 C163 H166    181.176
+  406 OUT C157 C159 C161 H162    180.453
+  407 OUT C158 C163 C161 H165    179.205
+  408 OUT C159 C161 C163 H164    180.123
+  409 TORSION C4 C2 C3 C7        309.648
+  410 TORSION C4 C2 C3 C8        180.119
+  411 TORSION C4 C2 C3 H9         66.834
+  412 TORSION C3 C2 C4 C16        87.952
+  413 TORSION C3 C2 C4 H20       206.389
+  414 TORSION C3 C2 C4 H21       324.975
+  415 TORSION C3 C2 N6 C13       286.069
+  416 TORSION C3 C2 N6 H26        43.486
+  417 TORSION C3 C2 N6 C27       164.177
+  418 TORSION C2 C3 C7 C10       310.361
+  419 TORSION C2 C3 C7 H11        69.966
+  420 TORSION C2 C3 C7 O12       187.215
+  421 TORSION C2 C3 C8 O22       166.952
+  422 TORSION C2 C3 C8 O23       343.078
+  423 TORSION C2 C4 C16 C13        0.489
+  424 TORSION C2 C4 C16 H18      120.131
+  425 TORSION C2 C4 C16 H19      240.095
+  426 TORSION C2 N6 C13 C10       73.120
+  427 TORSION C2 N6 C13 C16      313.448
+  428 TORSION C2 N6 C13 H17      192.758
+  429 TORSION C2 N6 C27 H43      303.177
+  430 TORSION C2 N6 C27 H44      184.662
+  431 TORSION C2 N6 C27 H45       63.936
+  432 TORSION C3 C7 C10 C13       51.288
+  433 TORSION C3 C7 C10 H14      170.744
+  434 TORSION C3 C7 C10 H15      290.127
+  435 TORSION C3 C7 O12 C24      275.692
+  436 TORSION C3 C8 O23 C25      178.035
+  437 TORSION C4 C16 C13 N6       27.919
+  438 TORSION N6 C13 C10 C7      296.393
+  439 TORSION C7 O12 C24 C28     182.021
+  440 TORSION C7 O12 C24 O29       1.682
+  441 TORSION C8 O23 C25 H40     278.755
+  442 TORSION C8 O23 C25 H41      40.380
+  443 TORSION C8 O23 C25 H42     160.290
+  444 TORSION O12 C24 C28 C30      2.687
+  445 TORSION O12 C24 C28 C31    182.463
+  446 TORSION C24 C28 C30 C32    179.422
+  447 TORSION C24 C28 C30 H33    359.650
+  448 TORSION C24 C28 C31 C36    181.177
+  449 TORSION C24 C28 C31 H39      2.344
+  450 TORSION C28 C30 C32 C34    359.613
+  451 TORSION C28 C30 C32 H35    180.053
+  452 TORSION C28 C31 C36 C34    359.177
+  453 TORSION C28 C31 C36 H38    178.389
+  454 TORSION C30 C32 C34 C36      0.527
+  455 TORSION C30 C32 C34 H37    180.651
+  456 TORSION C31 C36 C34 C32      0.077
+  457 TORSION H48 C46 C47 C51    293.538
+  458 TORSION H48 C46 C47 H52     52.993
+  459 TORSION H48 C46 C47 H53    172.377
+  460 TORSION C47 C46 O49 C63    150.395
+  461 TORSION C47 C46 C50 C62    310.361
+  462 TORSION C47 C46 C50 C67     78.555
+  463 TORSION C47 C46 C50 H68    195.171
+  464 TORSION C46 C47 C51 C54     48.633
+  465 TORSION C46 C47 C51 H55    178.634
+  466 TORSION C46 C47 C51 N56    296.393
+  467 TORSION C46 O49 C63 C69    182.021
+  468 TORSION C46 O49 C63 O70      1.682
+  469 TORSION C46 C50 C62 N56     62.261
+  470 TORSION C46 C50 C62 C57    309.648
+  471 TORSION C46 C50 C62 H66    181.745
+  472 TORSION C46 C50 C67 O81     41.337
+  473 TORSION C46 C50 C67 O82    217.463
+  474 TORSION C47 C51 C54 C57    273.261
+  475 TORSION C47 C51 C54 H58    154.246
+  476 TORSION C47 C51 C54 H59     34.792
+  477 TORSION C47 C51 N56 C62     73.120
+  478 TORSION C47 C51 N56 C64    194.350
+  479 TORSION C47 C51 N56 H65    311.309
+  480 TORSION O49 C63 C69 C71      2.687
+  481 TORSION O49 C63 C69 C72    182.463
+  482 TORSION C50 C62 N56 C51    286.069
+  483 TORSION C50 C62 C57 C54     87.952
+  484 TORSION C50 C67 O82 C86    178.035
+  485 TORSION C51 C54 C57 H60    242.316
+  486 TORSION C51 C54 C57 H61    122.067
+  487 TORSION C51 C54 C57 C62      0.489
+  488 TORSION C51 N56 C64 H83    188.207
+  489 TORSION C51 N56 C64 H84     69.692
+  490 TORSION C51 N56 C64 H85    308.966
+  491 TORSION C63 C69 C71 C73    179.422
+  492 TORSION C63 C69 C71 H74    359.650
+  493 TORSION C63 C69 C72 C77    181.177
+  494 TORSION C63 C69 C72 H80      2.344
+  495 TORSION C67 O82 C86 H87    278.755
+  496 TORSION C67 O82 C86 H88     40.380
+  497 TORSION C67 O82 C86 H89    160.290
+  498 TORSION C69 C71 C73 C75    359.613
+  499 TORSION C69 C71 C73 H76    180.053
+  500 TORSION C69 C72 C77 C75    359.177
+  501 TORSION C69 C72 C77 H79    178.389
+  502 TORSION C71 C73 C75 C77      0.527
+  503 TORSION C71 C73 C75 H78    180.651
+  504 TORSION C72 C77 C75 C73      0.077
+  505 TORSION C92 O90 C91 C93    275.692
+  506 TORSION C92 O90 C91 C94    150.395
+  507 TORSION C92 O90 C91 H95     32.859
+  508 TORSION C91 O90 C92 O108     1.682
+  509 TORSION C91 O90 C92 C109   182.021
+  510 TORSION O90 C91 C93 C105   187.215
+  511 TORSION O90 C91 C93 C123   315.409
+  512 TORSION O90 C91 C93 H124    72.026
+  513 TORSION O90 C91 C94 C96    177.946
+  514 TORSION O90 C91 C94 H97    297.401
+  515 TORSION O90 C91 C94 H98     56.785
+  516 TORSION O90 C92 C109 C110    2.687
+  517 TORSION O90 C92 C109 C111  182.463
+  518 TORSION C91 C93 C105 N99    62.261
+  519 TORSION C91 C93 C105 C102  309.648
+  520 TORSION C91 C93 C105 H122  181.745
+  521 TORSION C91 C93 C123 O125   41.337
+  522 TORSION C91 C93 C123 O126  217.463
+  523 TORSION C91 C94 C96 N99    296.393
+  524 TORSION C91 C94 C96 C100    48.633
+  525 TORSION C91 C94 C96 H101   178.634
+  526 TORSION C92 C109 C110 C112  179.422
+  527 TORSION C92 C109 C110 H113  359.650
+  528 TORSION C92 C109 C111 C116  181.177
+  529 TORSION C92 C109 C111 H119    2.344
+  530 TORSION C93 C105 N99 C96   286.069
+  531 TORSION C93 C105 C102 C100   87.952
+  532 TORSION C93 C123 O126 C130  178.035
+  533 TORSION C94 C96 N99 C105    73.120
+  534 TORSION C94 C96 N99 C120   194.350
+  535 TORSION C94 C96 N99 H121   311.309
+  536 TORSION C94 C96 C100 C102  273.261
+  537 TORSION C94 C96 C100 H103  154.246
+  538 TORSION C94 C96 C100 H104   34.792
+  539 TORSION C96 N99 C120 H127  188.207
+  540 TORSION C96 N99 C120 H128   69.692
+  541 TORSION C96 N99 C120 H129  308.966
+  542 TORSION C96 C100 C102 C105    0.489
+  543 TORSION C96 C100 C102 H106  242.316
+  544 TORSION C96 C100 C102 H107  122.067
+  545 TORSION C109 C110 C112 C114  359.613
+  546 TORSION C109 C110 C112 H115  180.053
+  547 TORSION C109 C111 C116 C114  359.177
+  548 TORSION C109 C111 C116 H118  178.389
+  549 TORSION C110 C112 C114 C116    0.527
+  550 TORSION C110 C112 C114 H117  180.651
+  551 TORSION C111 C116 C114 C112    0.077
+  552 TORSION C123 O126 C130 H131  278.755
+  553 TORSION C123 O126 C130 H132   40.380
+  554 TORSION C123 O126 C130 H133  160.290
+  555 TORSION C139 O137 C138 C140  275.692
+  556 TORSION C139 O137 C138 C141  150.395
+  557 TORSION C139 O137 C138 H142   32.859
+  558 TORSION C138 O137 C139 O155    1.682
+  559 TORSION C138 O137 C139 C156  182.021
+  560 TORSION O137 C138 C140 C152  187.215
+  561 TORSION O137 C138 C140 C170  315.409
+  562 TORSION O137 C138 C140 H171   72.026
+  563 TORSION O137 C138 C141 C143  177.946
+  564 TORSION O137 C138 C141 H144  297.401
+  565 TORSION O137 C138 C141 H145   56.785
+  566 TORSION O137 C139 C156 C157    2.687
+  567 TORSION O137 C139 C156 C158  182.463
+  568 TORSION C138 C140 C152 N146   62.261
+  569 TORSION C138 C140 C152 C149  309.648
+  570 TORSION C138 C140 C152 H169  181.745
+  571 TORSION C138 C140 C170 O172  217.463
+  572 TORSION C138 C140 C170 O173   41.337
+  573 TORSION C138 C141 C143 N146  296.393
+  574 TORSION C138 C141 C143 C147   48.633
+  575 TORSION C138 C141 C143 H148  178.634
+  576 TORSION C139 C156 C157 C159  179.422
+  577 TORSION C139 C156 C157 H160  359.650
+  578 TORSION C139 C156 C158 C163  181.177
+  579 TORSION C139 C156 C158 H166    2.344
+  580 TORSION C140 C152 N146 C143  286.069
+  581 TORSION C140 C152 C149 C147   87.952
+  582 TORSION C140 C170 O172 C177  178.035
+  583 TORSION C141 C143 N146 C152   73.120
+  584 TORSION C141 C143 N146 C167  194.350
+  585 TORSION C141 C143 N146 H168  311.309
+  586 TORSION C141 C143 C147 C149  273.261
+  587 TORSION C141 C143 C147 H150  154.246
+  588 TORSION C141 C143 C147 H151   34.792
+  589 TORSION C143 N146 C167 H174  188.207
+  590 TORSION C143 N146 C167 H175   69.692
+  591 TORSION C143 N146 C167 H176  308.966
+  592 TORSION C143 C147 C149 C152    0.489
+  593 TORSION C143 C147 C149 H153  242.316
+  594 TORSION C143 C147 C149 H154  122.067
+  595 TORSION C156 C157 C159 C161  359.613
+  596 TORSION C156 C157 C159 H162  180.053
+  597 TORSION C156 C158 C163 C161  359.177
+  598 TORSION C156 C158 C163 H165  178.389
+  599 TORSION C157 C159 C161 C163    0.527
+  600 TORSION C157 C159 C161 H164  180.651
+  601 TORSION C158 C163 C161 C159    0.077
+  602 TORSION C170 O172 C177 H178  278.755
+  603 TORSION C170 O172 C177 H179   40.380
+  604 TORSION C170 O172 C177 H180  160.290
+
+
+Starting: Normal Mode Projection
+ More internal coordinates than frequencies, expect
+ some (possibly unwanted) redundancy in the results
+
+Ending: Normal Mode Projection
+
+
+*** Vibrational Mode Projection (VMP) ***
+
+Mode   0:  -102.21 cm-1 (IR:   0.0)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.1607 (  1.2%) TORSION O90 C91 C94 C96
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   28.3% BOND,  17.7% ANGLE,   1.8% OUT,  52.2% TOR
+
+Mode   1:   -41.69 cm-1 (IR:   0.0)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.1545 (  1.2%) TORSION O90 C91 C94 C96
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   21.6% BOND,  18.5% ANGLE,   2.0% OUT,  58.0% TOR
+
+Mode   2:   -12.82 cm-1 (IR:   0.0)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.1298 (  0.9%) TORSION C94 C96 N99 C120
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   22.7% BOND,  19.7% ANGLE,   2.5% OUT,  55.0% TOR
+
+Mode   3:    -6.44 cm-1 (IR:   0.0)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.1163 (  1.0%) TORSION O137 C138 C141 C143
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   25.0% BOND,  17.5% ANGLE,   5.0% OUT,  52.4% TOR
+
+Mode   4:    -0.00 cm-1 (IR:   0.0)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.1113 (  0.9%) TORSION C91 C93 C123 O126
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   21.5% BOND,  19.2% ANGLE,   5.5% OUT,  53.7% TOR
+
+Mode   5:    -0.00 cm-1 (IR:   0.0)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.1186 (  1.0%) TORSION O137 C138 C140 C152
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   25.5% BOND,  18.8% ANGLE,   4.3% OUT,  51.3% TOR
+
+Mode   6:    -0.00 cm-1 (IR:   0.0)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.1285 (  1.1%) TORSION C2 C3 C7 O12
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   23.6% BOND,  16.9% ANGLE,   4.3% OUT,  55.1% TOR
+
+Mode   7:    10.54 cm-1 (IR: 334.5)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.0825 (  0.8%) TORSION O90 C92 C109 C111
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   24.0% BOND,  22.3% ANGLE,   6.3% OUT,  47.3% TOR
+
+Mode   8:    20.44 cm-1 (IR: 217.1)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.0845 (  0.8%) OUT C3 C8 O22 O23
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   25.2% BOND,  22.1% ANGLE,   5.4% OUT,  47.3% TOR
+
+Mode   9:    32.85 cm-1 (IR:   0.0)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.1394 (  1.2%) TORSION C2 C3 C8 O22
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   23.4% BOND,  17.1% ANGLE,   5.4% OUT,  54.1% TOR
+
+Mode  10:    34.84 cm-1 (IR: 430.3)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.0822 (  1.0%) TORSION C46 C50 C67 O82
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   23.2% BOND,  18.9% ANGLE,   2.4% OUT,  55.5% TOR
+
+Mode  11:    39.32 cm-1 (IR:   0.0)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.1321 (  1.2%) TORSION O49 C63 C69 C72
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   19.1% BOND,  20.0% ANGLE,   4.5% OUT,  56.4% TOR
+
+Mode  12:    40.28 cm-1 (IR: 100.3)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.1162 (  1.0%) OUT C93 C123 O125 O126
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   23.1% BOND,  16.1% ANGLE,   5.1% OUT,  55.7% TOR
+
+Mode  13:    44.29 cm-1 (IR: 2257.1)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.1286 (  1.2%) OUT O90 C92 O108 C109
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   17.2% BOND,  24.6% ANGLE,   7.6% OUT,  50.6% TOR
+
+Mode  14:    45.27 cm-1 (IR:   0.0)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.0706 (  0.6%) TORSION O90 C91 C94 C96
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   25.7% BOND,  22.1% ANGLE,   4.6% OUT,  47.7% TOR
+
+Mode  15:    45.89 cm-1 (IR:  15.2)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.1358 (  1.1%) TORSION O90 C92 C109 C111
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   19.3% BOND,  23.4% ANGLE,   4.1% OUT,  53.3% TOR
+
+Mode  16:    55.74 cm-1 (IR:   0.0)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.1229 (  1.0%) OUT O49 C63 C69 O70
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   18.5% BOND,  25.4% ANGLE,   9.4% OUT,  46.8% TOR
+
+Mode  17:    55.75 cm-1 (IR:  29.5)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.1213 (  0.9%) OUT O49 C63 C69 O70
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   24.3% BOND,  21.7% ANGLE,   5.5% OUT,  48.5% TOR
+
+Mode  18:    59.57 cm-1 (IR: 187.0)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.1545 (  1.1%) OUT C140 C170 O172 O173
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   19.6% BOND,  23.8% ANGLE,   7.1% OUT,  49.4% TOR
+
+Mode  19:    62.07 cm-1 (IR:   6.6)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2198 (  1.6%) OUT C140 C170 O172 O173
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   18.8% BOND,  23.1% ANGLE,   7.8% OUT,  50.3% TOR
+
+Mode  20:    63.33 cm-1 (IR:  12.6)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.1512 (  1.3%) OUT O49 C63 C69 O70
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   15.0% BOND,  16.0% ANGLE,  10.2% OUT,  58.9% TOR
+
+Mode  21:    66.39 cm-1 (IR: 451.5)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.0549 (  0.8%) OUT O137 C139 O155 C156
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   23.7% BOND,  26.2% ANGLE,   6.2% OUT,  43.9% TOR
+
+Mode  22:    67.24 cm-1 (IR: 746.9)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.1228 (  0.9%) TORSION C92 C109 C111 C116
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   16.4% BOND,  15.0% ANGLE,   8.8% OUT,  59.8% TOR
+
+Mode  23:    68.15 cm-1 (IR:   0.0)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.1343 (  1.2%) TORSION C92 C109 C111 C116
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   19.1% BOND,  13.6% ANGLE,   6.4% OUT,  60.9% TOR
+
+Mode  24:    70.25 cm-1 (IR: 305.2)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.1437 (  1.1%) OUT C50 C67 O81 O82
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   20.1% BOND,  20.3% ANGLE,   9.8% OUT,  49.8% TOR
+
+Mode  25:    73.41 cm-1 (IR: 821.1)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.1445 (  1.1%) OUT O49 C63 C69 O70
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   20.2% BOND,  22.8% ANGLE,   6.8% OUT,  50.2% TOR
+
+Mode  26:    74.63 cm-1 (IR: 207.8)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.0695 (  0.8%) TORSION O49 C63 C69 C71
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   24.2% BOND,  17.9% ANGLE,   4.6% OUT,  53.3% TOR
+
+Mode  27:    74.85 cm-1 (IR:   0.0)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2799 (  2.6%) OUT O137 C139 O155 C156
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   13.1% BOND,  17.3% ANGLE,  16.2% OUT,  53.3% TOR
+
+Mode  28:    75.33 cm-1 (IR: 1373.5)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.1513 (  1.2%) TORSION C63 C69 C72 C77
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   17.6% BOND,  22.7% ANGLE,   6.1% OUT,  53.6% TOR
+
+Mode  29:    75.94 cm-1 (IR:   0.0)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.1964 (  2.1%) OUT O12 C24 C28 O29
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   17.2% BOND,  13.8% ANGLE,  15.1% OUT,  53.9% TOR
+
+Mode  30:    76.99 cm-1 (IR:   1.3)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2040 (  2.3%) OUT C50 C67 O81 O82
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   17.6% BOND,  16.1% ANGLE,  14.6% OUT,  51.7% TOR
+
+Mode  31:    77.12 cm-1 (IR:  60.8)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.1456 (  1.7%) OUT O137 C139 O155 C156
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   15.1% BOND,  16.0% ANGLE,  11.5% OUT,  57.4% TOR
+
+Mode  32:    81.13 cm-1 (IR:   9.7)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2166 (  1.8%) TORSION C138 O137 C139 O155
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   13.3% BOND,  15.6% ANGLE,  14.1% OUT,  57.0% TOR
+
+Mode  33:    82.40 cm-1 (IR: 3228.6)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2714 (  2.2%) OUT O49 C63 C69 O70
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   11.3% BOND,  12.4% ANGLE,  17.0% OUT,  59.3% TOR
+
+Mode  34:    83.16 cm-1 (IR:   0.0)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.0935 (  1.0%) TORSION C30 C32 C34 C36
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   19.9% BOND,  21.9% ANGLE,   6.8% OUT,  51.5% TOR
+
+Mode  35:    84.74 cm-1 (IR: 765.9)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2590 (  2.5%) OUT C140 C170 O172 O173
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   11.9% BOND,  16.1% ANGLE,  18.0% OUT,  54.1% TOR
+
+Mode  36:    87.90 cm-1 (IR:   0.0)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2310 (  2.0%) OUT C140 C170 O172 O173
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   14.5% BOND,  18.2% ANGLE,  13.4% OUT,  53.9% TOR
+
+Mode  37:    91.07 cm-1 (IR: 1194.9)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.1611 (  1.4%) OUT C140 C170 O172 O173
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   18.7% BOND,  21.5% ANGLE,   7.0% OUT,  52.8% TOR
+
+Mode  38:    91.37 cm-1 (IR: 1878.1)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2373 (  2.0%) OUT O12 C24 C28 O29
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   13.6% BOND,  14.3% ANGLE,  16.6% OUT,  55.5% TOR
+
+Mode  39:    93.76 cm-1 (IR: 707.7)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.3793 (  3.2%) OUT O12 C24 C28 O29
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   12.2% BOND,  15.0% ANGLE,  14.4% OUT,  58.3% TOR
+
+Mode  40:    94.91 cm-1 (IR:   0.0)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.1150 (  1.3%) TORSION C2 C3 C8 O23
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   17.9% BOND,  26.8% ANGLE,   4.6% OUT,  50.6% TOR
+
+Mode  41:   100.03 cm-1 (IR: 336.5)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.1055 (  1.2%) TORSION C46 C50 C67 O82
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   20.0% BOND,  25.5% ANGLE,  10.1% OUT,  44.4% TOR
+
+Mode  42:   100.49 cm-1 (IR: 1516.1)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.0937 (  1.2%) OUT C3 C8 O22 O23
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   23.4% BOND,  18.5% ANGLE,   8.0% OUT,  50.1% TOR
+
+Mode  43:   102.67 cm-1 (IR: 8629.9)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.1268 (  1.6%) OUT C93 C123 O125 O126
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   20.9% BOND,  19.0% ANGLE,   9.5% OUT,  50.6% TOR
+
+Mode  44:   110.09 cm-1 (IR:   0.0)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.1789 (  1.6%) OUT C140 C170 O172 O173
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   15.8% BOND,  20.2% ANGLE,   9.3% OUT,  54.6% TOR
+
+Mode  45:   110.54 cm-1 (IR: 962.2)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.1744 (  1.8%) OUT C50 C67 O81 O82
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   15.3% BOND,  19.0% ANGLE,   9.9% OUT,  55.8% TOR
+
+Mode  46:   113.36 cm-1 (IR: 343.9)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2769 (  2.7%) TORSION C110 C112 C114 C116
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   11.9% BOND,  12.7% ANGLE,   7.4% OUT,  68.0% TOR
+
+Mode  47:   114.76 cm-1 (IR:  47.1)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2444 (  2.3%) TORSION C71 C73 C75 C77
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   10.5% BOND,  12.3% ANGLE,   7.7% OUT,  69.4% TOR
+
+Mode  48:   115.14 cm-1 (IR:  48.5)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.1856 (  1.4%) TORSION C110 C112 C114 C116
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   18.7% BOND,  21.2% ANGLE,   5.3% OUT,  54.7% TOR
+
+Mode  49:   118.35 cm-1 (IR:   0.0)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.1568 (  1.3%) TORSION C139 C156 C157 C159
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   14.1% BOND,  15.0% ANGLE,   6.8% OUT,  64.2% TOR
+
+Mode  50:   124.55 cm-1 (IR: 8579.3)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.1263 (  1.1%) OUT C3 C8 O22 O23
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   16.7% BOND,  26.5% ANGLE,   6.6% OUT,  50.2% TOR
+
+Mode  51:   126.58 cm-1 (IR: 1376.1)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2023 (  1.9%) OUT C3 C8 O22 O23
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   18.7% BOND,  21.0% ANGLE,   9.7% OUT,  50.6% TOR
+
+Mode  52:   132.53 cm-1 (IR: 6702.1)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.1412 (  1.4%) TORSION C2 C3 C8 O23
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   21.2% BOND,  19.7% ANGLE,   6.2% OUT,  52.9% TOR
+
+Mode  53:   132.56 cm-1 (IR:   0.0)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.1207 (  1.2%) TORSION C2 C3 C8 O23
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   21.4% BOND,  19.7% ANGLE,   6.5% OUT,  52.4% TOR
+
+Mode  54:   135.42 cm-1 (IR:   0.0)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.1234 (  0.8%) TORSION C47 C51 C54 C57
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   24.1% BOND,  25.1% ANGLE,   3.8% OUT,  47.0% TOR
+
+Mode  55:   135.95 cm-1 (IR: 1971.2)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.1822 (  1.7%) TORSION C2 C3 C8 O23
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   19.5% BOND,  18.1% ANGLE,   7.9% OUT,  54.5% TOR
+
+Mode  56:   138.45 cm-1 (IR:   0.0)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.1214 (  0.9%) TORSION C138 C140 C170 O172
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   24.0% BOND,  26.5% ANGLE,   2.0% OUT,  47.5% TOR
+
+Mode  57:   140.09 cm-1 (IR: 5740.7)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.1210 (  0.9%) TORSION C72 C77 C75 C73
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   20.0% BOND,  23.3% ANGLE,   4.1% OUT,  52.7% TOR
+
+Mode  58:   141.05 cm-1 (IR: 1017.2)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.1081 (  1.2%) TORSION C91 C93 C123 O126
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   26.6% BOND,  19.8% ANGLE,   5.3% OUT,  48.4% TOR
+
+Mode  59:   142.63 cm-1 (IR: 1911.7)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.0876 (  0.9%) TORSION C46 C50 C67 O82
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   25.5% BOND,  26.3% ANGLE,   4.4% OUT,  43.8% TOR
+
+Mode  60:   148.69 cm-1 (IR:   0.0)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.0552 (  0.7%) OUT C93 C123 O125 O126
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   23.3% BOND,  28.3% ANGLE,   4.8% OUT,  43.6% TOR
+
+Mode  61:   149.30 cm-1 (IR: 1171.0)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.1136 (  1.1%) TORSION C67 O82 C86 H87
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   19.5% BOND,  26.7% ANGLE,   4.7% OUT,  49.1% TOR
+
+Mode  62:   149.80 cm-1 (IR: 917.3)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.0841 (  0.8%) TORSION C67 O82 C86 H89
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   20.8% BOND,  27.4% ANGLE,   4.1% OUT,  47.7% TOR
+
+Mode  63:   150.62 cm-1 (IR: 346.7)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.1518 (  1.1%) TORSION C170 O172 C177 H180
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   20.2% BOND,  24.8% ANGLE,   4.5% OUT,  50.5% TOR
+
+Mode  64:   153.60 cm-1 (IR:   0.0)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.0905 (  1.0%) TORSION C50 C62 C57 C54
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   30.5% BOND,  24.2% ANGLE,   2.2% OUT,  43.1% TOR
+
+Mode  65:   154.36 cm-1 (IR: 6042.9)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.0999 (  1.0%) TORSION C3 C2 C4 C16
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   28.7% BOND,  24.4% ANGLE,   2.8% OUT,  44.0% TOR
+
+Mode  66:   159.56 cm-1 (IR: 2245.5)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.0812 (  0.7%) TORSION C109 C111 C116 C114
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   21.4% BOND,  25.5% ANGLE,   3.6% OUT,  49.5% TOR
+
+Mode  67:   160.60 cm-1 (IR: 247.2)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.1144 (  1.0%) TORSION O90 C92 C109 C111
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   19.3% BOND,  23.5% ANGLE,   3.5% OUT,  53.7% TOR
+
+Mode  68:   165.11 cm-1 (IR:   0.0)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2109 (  1.4%) TORSION C28 C30 C32 C34
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   12.1% BOND,  18.7% ANGLE,   9.6% OUT,  59.5% TOR
+
+Mode  69:   167.09 cm-1 (IR: 7047.7)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.1603 (  1.1%) TORSION C69 C72 C77 C75
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   15.5% BOND,  22.0% ANGLE,   8.0% OUT,  54.5% TOR
+
+Mode  70:   167.70 cm-1 (IR:  10.6)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.1796 (  1.7%) TORSION C109 C111 C116 C114
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   12.6% BOND,  14.5% ANGLE,  10.4% OUT,  62.5% TOR
+
+Mode  71:   169.37 cm-1 (IR: 5553.7)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.1219 (  0.9%) TORSION O49 C63 C69 C72
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   19.8% BOND,  22.5% ANGLE,   6.0% OUT,  51.7% TOR
+
+Mode  72:   175.16 cm-1 (IR: 3353.6)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.1510 (  1.0%) TORSION C69 C71 C73 C75
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   21.0% BOND,  25.9% ANGLE,   5.1% OUT,  48.0% TOR
+
+Mode  73:   176.06 cm-1 (IR:  81.9)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2409 (  1.5%) TORSION C28 C31 C36 C34
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   14.2% BOND,  22.9% ANGLE,   8.3% OUT,  54.5% TOR
+
+Mode  74:   178.62 cm-1 (IR:   0.0)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.1834 (  1.2%) TORSION C28 C31 C36 C34
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   18.0% BOND,  24.7% ANGLE,   7.0% OUT,  50.3% TOR
+
+Mode  75:   179.58 cm-1 (IR: 3710.2)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2174 (  1.4%) TORSION C109 C110 C112 C114
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   14.5% BOND,  23.8% ANGLE,   7.0% OUT,  54.8% TOR
+
+Mode  76:   195.87 cm-1 (IR:   0.0)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.1327 (  0.8%) ANGLE C100 C102 H107
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   26.0% BOND,  31.4% ANGLE,   2.0% OUT,  40.5% TOR
+
+Mode  77:   196.32 cm-1 (IR: 1555.4)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.1567 (  0.9%) ANGLE O23 C25 H40
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   25.8% BOND,  32.0% ANGLE,   1.9% OUT,  40.2% TOR
+
+Mode  78:   197.32 cm-1 (IR: 173.0)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.1685 (  0.9%) ANGLE O126 C130 H131
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   23.1% BOND,  28.5% ANGLE,   3.4% OUT,  45.1% TOR
+
+Mode  79:   198.45 cm-1 (IR: 3650.8)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.1805 (  1.0%) ANGLE O126 C130 H131
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   23.0% BOND,  26.7% ANGLE,   3.7% OUT,  46.6% TOR
+
+Mode  80:   210.58 cm-1 (IR: 860.3)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2074 (  1.2%) TORSION C46 C50 C67 O82
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   21.8% BOND,  33.0% ANGLE,   2.5% OUT,  42.7% TOR
+
+Mode  81:   210.63 cm-1 (IR:   0.0)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2140 (  1.3%) ANGLE O126 C130 H131
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   23.0% BOND,  33.7% ANGLE,   1.1% OUT,  42.2% TOR
+
+Mode  82:   211.20 cm-1 (IR: 2430.3)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2072 (  1.2%) ANGLE O82 C86 H87
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   21.0% BOND,  30.5% ANGLE,   2.3% OUT,  46.2% TOR
+
+Mode  83:   212.13 cm-1 (IR:  45.1)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2146 (  1.4%) ANGLE O23 C25 H40
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   22.8% BOND,  33.0% ANGLE,   1.9% OUT,  42.3% TOR
+
+Mode  84:   220.47 cm-1 (IR:   0.0)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.1275 (  0.7%) ANGLE C100 C102 H107
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   21.7% BOND,  37.0% ANGLE,   2.0% OUT,  39.2% TOR
+
+Mode  85:   220.47 cm-1 (IR:  16.3)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.1272 (  0.7%) ANGLE C100 C102 H107
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   22.7% BOND,  36.6% ANGLE,   1.2% OUT,  39.5% TOR
+
+Mode  86:   222.95 cm-1 (IR: 1088.8)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.1388 (  0.8%) ANGLE C54 C57 H61
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   21.8% BOND,  35.3% ANGLE,   1.3% OUT,  41.5% TOR
+
+Mode  87:   224.08 cm-1 (IR: 3917.1)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.1519 (  0.9%) ANGLE C100 C102 H107
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   22.8% BOND,  34.9% ANGLE,   0.9% OUT,  41.5% TOR
+
+Mode  88:   230.06 cm-1 (IR: 1174.6)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2417 (  1.5%) TORSION C2 C3 C8 O23
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   18.8% BOND,  29.2% ANGLE,   3.6% OUT,  48.4% TOR
+
+Mode  89:   230.33 cm-1 (IR:   0.0)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2417 (  1.5%) TORSION C2 C3 C8 O23
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   18.5% BOND,  29.1% ANGLE,   3.5% OUT,  48.8% TOR
+
+Mode  90:   232.30 cm-1 (IR: 6357.0)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2222 (  1.3%) TORSION C2 C3 C8 O23
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   18.3% BOND,  28.8% ANGLE,   4.1% OUT,  48.8% TOR
+
+Mode  91:   234.16 cm-1 (IR: 199.7)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.1569 (  0.9%) TORSION C46 C50 C67 O82
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   19.4% BOND,  28.1% ANGLE,   4.1% OUT,  48.4% TOR
+
+Mode  92:   264.71 cm-1 (IR: 929.7)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.1574 (  0.9%) TORSION C94 C96 N99 C120
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   23.3% BOND,  39.9% ANGLE,   0.8% OUT,  36.0% TOR
+
+Mode  93:   265.38 cm-1 (IR: 808.9)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.1677 (  1.0%) TORSION C141 C143 N146 C167
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   23.0% BOND,  38.2% ANGLE,   1.1% OUT,  37.7% TOR
+
+Mode  94:   266.08 cm-1 (IR:   0.0)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.1240 (  0.7%) ANGLE O23 C25 H42
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   24.1% BOND,  40.0% ANGLE,   1.2% OUT,  34.6% TOR
+
+Mode  95:   267.11 cm-1 (IR: 949.6)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.1354 (  0.8%) TORSION C141 C143 N146 C167
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   24.4% BOND,  39.6% ANGLE,   1.0% OUT,  35.0% TOR
+
+Mode  96:   272.92 cm-1 (IR:   0.0)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2657 (  1.6%) TORSION O49 C63 C69 C71
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   17.1% BOND,  33.8% ANGLE,   1.3% OUT,  47.8% TOR
+
+Mode  97:   274.06 cm-1 (IR: 154.9)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2700 (  1.6%) TORSION O49 C63 C69 C71
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   15.8% BOND,  33.3% ANGLE,   1.6% OUT,  49.3% TOR
+
+Mode  98:   274.11 cm-1 (IR: 1096.5)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2388 (  1.5%) TORSION O137 C139 C156 C157
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   16.6% BOND,  35.2% ANGLE,   1.6% OUT,  46.6% TOR
+
+Mode  99:   274.38 cm-1 (IR:  73.2)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2482 (  1.5%) TORSION O49 C63 C69 C71
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   17.3% BOND,  34.5% ANGLE,   1.4% OUT,  46.7% TOR
+
+Mode 100:   290.53 cm-1 (IR: 780.6)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2247 (  1.4%) TORSION C94 C96 C100 C102
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   27.4% BOND,  39.6% ANGLE,   0.7% OUT,  32.3% TOR
+
+Mode 101:   291.71 cm-1 (IR:   0.0)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2154 (  1.3%) TORSION C4 C16 C13 N6
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   26.6% BOND,  39.7% ANGLE,   0.4% OUT,  33.2% TOR
+
+Mode 102:   291.80 cm-1 (IR: 409.1)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2139 (  1.3%) TORSION C47 C51 C54 C57
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   26.7% BOND,  38.6% ANGLE,   0.7% OUT,  34.0% TOR
+
+Mode 103:   293.17 cm-1 (IR:  95.5)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.1978 (  1.1%) TORSION C4 C16 C13 N6
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   25.6% BOND,  38.5% ANGLE,   0.6% OUT,  35.3% TOR
+
+Mode 104:   304.77 cm-1 (IR: 4953.3)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.1683 (  1.0%) ANGLE C96 N99 C120
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   20.9% BOND,  41.8% ANGLE,   0.9% OUT,  36.4% TOR
+
+Mode 105:   305.62 cm-1 (IR:   1.6)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.1604 (  1.0%) TORSION C4 C16 C13 N6
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   21.8% BOND,  43.9% ANGLE,   1.0% OUT,  33.4% TOR
+
+Mode 106:   306.20 cm-1 (IR:   0.0)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.1622 (  1.0%) TORSION C4 C16 C13 N6
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   22.0% BOND,  43.8% ANGLE,   0.8% OUT,  33.4% TOR
+
+Mode 107:   310.12 cm-1 (IR: 4714.0)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.1638 (  1.0%) ANGLE C51 N56 C64
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   21.5% BOND,  43.5% ANGLE,   0.7% OUT,  34.3% TOR
+
+Mode 108:   326.69 cm-1 (IR: 6224.1)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.1866 (  1.3%) ANGLE C123 O126 C130
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   23.6% BOND,  47.2% ANGLE,   0.9% OUT,  28.2% TOR
+
+Mode 109:   326.86 cm-1 (IR:   0.0)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.1859 (  1.3%) ANGLE C123 O126 C130
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   23.3% BOND,  46.1% ANGLE,   1.0% OUT,  29.6% TOR
+
+Mode 110:   332.18 cm-1 (IR: 216.8)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.1811 (  1.3%) ANGLE C170 O172 C177
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   23.2% BOND,  46.7% ANGLE,   0.9% OUT,  29.2% TOR
+
+Mode 111:   333.22 cm-1 (IR: 507.5)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.1827 (  1.3%) ANGLE C123 O126 C130
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   23.1% BOND,  47.5% ANGLE,   1.0% OUT,  28.4% TOR
+
+Mode 112:   357.32 cm-1 (IR: 603.4)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.1068 (  0.7%) ANGLE C141 C143 C147
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   22.3% BOND,  37.0% ANGLE,   1.3% OUT,  39.4% TOR
+
+Mode 113:   358.44 cm-1 (IR: 593.2)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.1152 (  0.7%) TORSION C47 C51 N56 C64
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   22.6% BOND,  37.1% ANGLE,   1.3% OUT,  39.0% TOR
+
+Mode 114:   359.10 cm-1 (IR:   0.0)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.1041 (  0.7%) TORSION C47 C46 C50 C62
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   22.1% BOND,  37.7% ANGLE,   1.5% OUT,  38.6% TOR
+
+Mode 115:   360.60 cm-1 (IR: 8094.5)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.1124 (  0.7%) ANGLE O137 C138 C141
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   19.7% BOND,  38.1% ANGLE,   1.5% OUT,  40.7% TOR
+
+Mode 116:   377.93 cm-1 (IR:   0.5)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2142 (  1.1%) ANGLE C94 C96 C100
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   17.9% BOND,  39.9% ANGLE,   1.7% OUT,  40.5% TOR
+
+Mode 117:   378.29 cm-1 (IR: 308.9)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2457 (  1.3%) ANGLE C94 C96 C100
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   20.3% BOND,  41.0% ANGLE,   1.2% OUT,  37.5% TOR
+
+Mode 118:   378.32 cm-1 (IR: 2643.0)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2136 (  1.2%) ANGLE C47 C51 C54
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   19.4% BOND,  41.3% ANGLE,   1.5% OUT,  37.8% TOR
+
+Mode 119:   378.55 cm-1 (IR:   0.0)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.1549 (  0.8%) ANGLE C141 C143 N146
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   18.7% BOND,  40.5% ANGLE,   1.8% OUT,  39.0% TOR
+
+Mode 120:   382.31 cm-1 (IR:   0.0)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.0970 (  0.6%) ANGLE C47 C46 O49
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   17.8% BOND,  41.8% ANGLE,   0.9% OUT,  39.4% TOR
+
+Mode 121:   382.55 cm-1 (IR: 370.4)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.1428 (  0.8%) ANGLE C93 C123 O125
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   18.3% BOND,  42.2% ANGLE,   0.8% OUT,  38.7% TOR
+
+Mode 122:   383.03 cm-1 (IR: 2024.6)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.1416 (  0.8%) TORSION C141 C143 C147 C149
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   15.8% BOND,  41.2% ANGLE,   1.4% OUT,  41.6% TOR
+
+Mode 123:   383.10 cm-1 (IR: 1091.3)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.1408 (  0.8%) ANGLE C3 C8 O22
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   17.1% BOND,  41.3% ANGLE,   1.3% OUT,  40.2% TOR
+
+Mode 124:   410.81 cm-1 (IR: 176.7)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.1850 (  1.8%) TORSION O90 C92 C109 C110
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   13.3% BOND,  27.6% ANGLE,   8.1% OUT,  51.0% TOR
+
+Mode 125:   410.89 cm-1 (IR:  82.8)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.1839 (  1.8%) TORSION O90 C92 C109 C110
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   13.5% BOND,  25.9% ANGLE,   8.5% OUT,  52.1% TOR
+
+Mode 126:   411.54 cm-1 (IR:   0.0)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.0468 (  0.5%) ANGLE C139 C156 C157
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   12.5% BOND,  27.9% ANGLE,   7.6% OUT,  52.0% TOR
+
+Mode 127:   412.07 cm-1 (IR: 125.9)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.1765 (  2.0%) TORSION C63 C69 C72 C77
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   10.6% BOND,  20.5% ANGLE,   9.6% OUT,  59.4% TOR
+
+Mode 128:   415.49 cm-1 (IR: 314.2)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.1059 (  0.7%) ANGLE C139 C156 C157
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   20.7% BOND,  46.5% ANGLE,   2.5% OUT,  30.3% TOR
+
+Mode 129:   415.94 cm-1 (IR: 1233.4)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.1048 (  0.7%) ANGLE C139 C156 C157
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   20.1% BOND,  46.1% ANGLE,   2.8% OUT,  31.0% TOR
+
+Mode 130:   416.01 cm-1 (IR: 293.1)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.1091 (  0.7%) ANGLE C139 C156 C157
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   20.7% BOND,  46.5% ANGLE,   2.3% OUT,  30.5% TOR
+
+Mode 131:   417.16 cm-1 (IR:   0.0)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.1053 (  0.7%) ANGLE C63 C69 C71
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   19.5% BOND,  44.0% ANGLE,   3.0% OUT,  33.6% TOR
+
+Mode 132:   443.80 cm-1 (IR: 331.5)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2613 (  2.0%) OUT C139 C156 C157 C158
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:    8.5% BOND,  18.3% ANGLE,  15.3% OUT,  57.9% TOR
+
+Mode 133:   444.00 cm-1 (IR: 182.6)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2596 (  2.0%) OUT C24 C28 C30 C31
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:    8.5% BOND,  18.0% ANGLE,  14.9% OUT,  58.6% TOR
+
+Mode 134:   444.38 cm-1 (IR:   0.0)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2614 (  2.0%) OUT C139 C156 C157 C158
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:    7.8% BOND,  17.5% ANGLE,  15.2% OUT,  59.5% TOR
+
+Mode 135:   444.62 cm-1 (IR:   9.2)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2612 (  2.0%) OUT C139 C156 C157 C158
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:    8.3% BOND,  18.0% ANGLE,  15.3% OUT,  58.4% TOR
+
+Mode 136:   482.10 cm-1 (IR:   0.0)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.1250 (  0.7%) ANGLE C51 N56 C64
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   19.7% BOND,  42.9% ANGLE,   1.9% OUT,  35.5% TOR
+
+Mode 137:   482.50 cm-1 (IR:  14.3)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.1340 (  0.7%) ANGLE O90 C92 C109
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   19.5% BOND,  42.7% ANGLE,   2.2% OUT,  35.7% TOR
+
+Mode 138:   483.75 cm-1 (IR: 1648.6)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.1322 (  0.7%) ANGLE O49 C63 C69
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   19.7% BOND,  42.4% ANGLE,   1.9% OUT,  36.0% TOR
+
+Mode 139:   484.78 cm-1 (IR: 194.2)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.1315 (  0.7%) ANGLE O49 C63 C69
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   19.6% BOND,  42.3% ANGLE,   2.2% OUT,  35.9% TOR
+
+Mode 140:   537.32 cm-1 (IR: 714.2)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.1955 (  0.9%) TORSION C46 C47 C51 C54
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   16.5% BOND,  33.9% ANGLE,   2.4% OUT,  47.3% TOR
+
+Mode 141:   537.55 cm-1 (IR:   0.0)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.1636 (  0.7%) TORSION C7 O12 C24 C28
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   16.6% BOND,  34.0% ANGLE,   2.2% OUT,  47.2% TOR
+
+Mode 142:   537.65 cm-1 (IR: 1264.5)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.1991 (  0.9%) TORSION C91 C94 C96 C100
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   16.3% BOND,  33.9% ANGLE,   2.3% OUT,  47.5% TOR
+
+Mode 143:   538.44 cm-1 (IR: 820.8)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.1989 (  0.9%) TORSION C91 C94 C96 C100
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   16.4% BOND,  34.2% ANGLE,   2.2% OUT,  47.2% TOR
+
+Mode 144:   554.19 cm-1 (IR: 2905.2)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2292 (  0.9%) TORSION C96 C100 C102 C105
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   17.1% BOND,  37.6% ANGLE,   1.0% OUT,  44.3% TOR
+
+Mode 145:   554.62 cm-1 (IR:  18.1)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2340 (  1.0%) TORSION C2 C4 C16 C13
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   16.9% BOND,  38.0% ANGLE,   1.1% OUT,  44.0% TOR
+
+Mode 146:   555.59 cm-1 (IR:   0.0)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.1769 (  0.7%) TORSION C47 C51 N56 C62
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   16.6% BOND,  37.2% ANGLE,   1.2% OUT,  44.9% TOR
+
+Mode 147:   555.94 cm-1 (IR: 7949.1)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2297 (  0.9%) TORSION C143 C147 C149 C152
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   16.7% BOND,  37.5% ANGLE,   1.2% OUT,  44.6% TOR
+
+Mode 148:   566.59 cm-1 (IR: 1012.2)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.1904 (  1.0%) TORSION C4 C2 C3 C8
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   17.8% BOND,  30.3% ANGLE,   2.7% OUT,  49.1% TOR
+
+Mode 149:   567.02 cm-1 (IR: 519.7)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.1751 (  0.9%) TORSION C92 O90 C91 C93
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   17.8% BOND,  30.3% ANGLE,   2.9% OUT,  49.0% TOR
+
+Mode 150:   567.14 cm-1 (IR: 1755.3)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.1707 (  0.9%) TORSION C3 C7 O12 C24
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   17.6% BOND,  30.5% ANGLE,   2.7% OUT,  49.2% TOR
+
+Mode 151:   567.62 cm-1 (IR:   0.0)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.1850 (  0.9%) TORSION C4 C2 C3 C8
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   17.8% BOND,  30.3% ANGLE,   2.8% OUT,  49.1% TOR
+
+Mode 152:   608.47 cm-1 (IR:   0.0)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2280 (  2.3%) ANGLE C30 C32 C34
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   31.7% BOND,  63.4% ANGLE,   0.3% OUT,   4.6% TOR
+
+Mode 153:   608.89 cm-1 (IR: 153.3)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2347 (  2.4%) ANGLE C158 C163 C161
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   31.8% BOND,  62.9% ANGLE,   0.3% OUT,   5.0% TOR
+
+Mode 154:   610.53 cm-1 (IR:  35.8)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2328 (  2.4%) ANGLE C31 C36 C34
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   31.1% BOND,  62.0% ANGLE,   0.4% OUT,   6.5% TOR
+
+Mode 155:   610.64 cm-1 (IR: 946.1)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2326 (  2.3%) ANGLE C72 C77 C75
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   31.1% BOND,  61.2% ANGLE,   0.5% OUT,   7.2% TOR
+
+Mode 156:   626.80 cm-1 (IR: 1282.9)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.1252 (  0.6%) ANGLE N6 C13 C16
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   25.2% BOND,  49.1% ANGLE,   0.8% OUT,  25.0% TOR
+
+Mode 157:   627.06 cm-1 (IR:   0.0)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.1488 (  0.8%) ANGLE C2 N6 C27
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   25.1% BOND,  49.1% ANGLE,   0.8% OUT,  25.0% TOR
+
+Mode 158:   627.71 cm-1 (IR:  16.1)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.1489 (  0.8%) ANGLE C2 N6 C27
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   25.0% BOND,  49.1% ANGLE,   0.9% OUT,  24.9% TOR
+
+Mode 159:   627.83 cm-1 (IR: 159.4)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.1245 (  0.6%) ANGLE N6 C13 C16
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   25.1% BOND,  49.2% ANGLE,   0.9% OUT,  24.8% TOR
+
+Mode 160:   672.08 cm-1 (IR:   0.0)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.1878 (  1.1%) ANGLE O90 C92 O108
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   26.2% BOND,  52.1% ANGLE,   0.2% OUT,  21.5% TOR
+
+Mode 161:   672.43 cm-1 (IR: 774.0)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2356 (  1.4%) ANGLE C32 C34 C36
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   26.2% BOND,  52.0% ANGLE,   0.3% OUT,  21.5% TOR
+
+Mode 162:   673.09 cm-1 (IR: 469.5)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2365 (  1.4%) ANGLE C112 C114 C116
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   25.6% BOND,  50.6% ANGLE,   0.5% OUT,  23.2% TOR
+
+Mode 163:   673.43 cm-1 (IR: 706.4)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2351 (  1.4%) ANGLE C112 C114 C116
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   25.3% BOND,  50.1% ANGLE,   0.6% OUT,  24.0% TOR
+
+Mode 164:   690.95 cm-1 (IR:   0.1)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2948 (  1.9%) TORSION C24 C28 C30 C32
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:    4.1% BOND,   7.3% ANGLE,   9.7% OUT,  78.8% TOR
+
+Mode 165:   690.96 cm-1 (IR: 344.9)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2960 (  1.9%) TORSION C63 C69 C71 C73
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:    4.1% BOND,   7.7% ANGLE,   9.6% OUT,  78.6% TOR
+
+Mode 166:   691.42 cm-1 (IR:  81.1)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2980 (  1.9%) TORSION C63 C69 C71 C73
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:    4.6% BOND,   7.0% ANGLE,   9.5% OUT,  78.8% TOR
+
+Mode 167:   691.43 cm-1 (IR:   0.0)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2892 (  1.9%) TORSION C63 C69 C72 C77
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:    4.6% BOND,   7.2% ANGLE,   9.5% OUT,  78.7% TOR
+
+Mode 168:   714.18 cm-1 (IR: 13439.7)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2076 (  0.9%) ANGLE C147 C149 C152
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   19.2% BOND,  24.9% ANGLE,   8.4% OUT,  47.5% TOR
+
+Mode 169:   715.41 cm-1 (IR: 613.9)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2526 (  1.2%) ANGLE C2 C4 C16
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   23.8% BOND,  31.3% ANGLE,   3.3% OUT,  41.6% TOR
+
+Mode 170:   715.43 cm-1 (IR:   0.0)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2274 (  1.1%) ANGLE C143 C147 C149
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   22.8% BOND,  31.0% ANGLE,   3.6% OUT,  42.6% TOR
+
+Mode 171:   715.99 cm-1 (IR: 2386.5)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2476 (  1.1%) ANGLE C147 C149 C152
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   22.4% BOND,  30.6% ANGLE,   4.1% OUT,  42.9% TOR
+
+Mode 172:   717.38 cm-1 (IR: 29223.4)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2048 (  0.9%) ANGLE C54 C57 C62
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   18.3% BOND,  25.6% ANGLE,   8.6% OUT,  47.6% TOR
+
+Mode 173:   717.66 cm-1 (IR:   0.0)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.1307 (  0.7%) TORSION C92 C109 C111 H119
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   12.0% BOND,  17.2% ANGLE,  14.9% OUT,  55.9% TOR
+
+Mode 174:   717.86 cm-1 (IR: 17442.9)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2230 (  1.1%) OUT C92 C109 C110 C111
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   13.0% BOND,  18.2% ANGLE,  14.0% OUT,  54.7% TOR
+
+Mode 175:   719.40 cm-1 (IR: 7025.5)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2787 (  1.6%) TORSION C92 O90 C91 C94
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   11.0% BOND,  16.4% ANGLE,  16.1% OUT,  56.5% TOR
+
+Mode 176:   743.38 cm-1 (IR:   0.0)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2931 (  1.5%) ANGLE C51 N56 C62
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   30.2% BOND,  40.6% ANGLE,   1.3% OUT,  27.9% TOR
+
+Mode 177:   743.61 cm-1 (IR: 7141.5)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2927 (  1.5%) ANGLE C51 N56 C62
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   30.4% BOND,  40.8% ANGLE,   1.0% OUT,  27.8% TOR
+
+Mode 178:   745.10 cm-1 (IR: 503.3)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2950 (  1.5%) ANGLE C143 N146 C152
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   30.5% BOND,  40.3% ANGLE,   1.0% OUT,  28.2% TOR
+
+Mode 179:   745.87 cm-1 (IR: 782.3)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2950 (  1.5%) ANGLE C2 N6 C13
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   30.4% BOND,  39.9% ANGLE,   1.1% OUT,  28.5% TOR
+
+Mode 180:   767.81 cm-1 (IR: 5234.7)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2535 (  1.4%) ANGLE C170 O172 C177
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   25.8% BOND,  37.5% ANGLE,   1.6% OUT,  35.1% TOR
+
+Mode 181:   768.34 cm-1 (IR:   0.0)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.1370 (  0.8%) BOND C8 O23
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   24.9% BOND,  37.8% ANGLE,   1.9% OUT,  35.4% TOR
+
+Mode 182:   768.37 cm-1 (IR: 229.6)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2508 (  1.4%) ANGLE C123 O126 C130
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   24.7% BOND,  37.6% ANGLE,   1.8% OUT,  35.9% TOR
+
+Mode 183:   768.63 cm-1 (IR: 1253.2)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2499 (  1.4%) ANGLE C8 O23 C25
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   24.6% BOND,  37.7% ANGLE,   1.9% OUT,  35.9% TOR
+
+Mode 184:   775.75 cm-1 (IR: 625.8)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.1925 (  0.9%) BOND C143 N146
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   29.3% BOND,  27.2% ANGLE,   1.6% OUT,  41.9% TOR
+
+Mode 185:   775.77 cm-1 (IR:   0.0)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.1677 (  0.7%) TORSION C47 C46 C50 C67
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   30.1% BOND,  26.1% ANGLE,   1.6% OUT,  42.1% TOR
+
+Mode 186:   775.87 cm-1 (IR: 540.0)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.1909 (  0.8%) BOND C96 N99
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   30.3% BOND,  26.2% ANGLE,   1.7% OUT,  41.8% TOR
+
+Mode 187:   775.98 cm-1 (IR: 311.1)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.1947 (  0.9%) BOND C143 N146
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   30.4% BOND,  26.5% ANGLE,   1.4% OUT,  41.6% TOR
+
+Mode 188:   800.43 cm-1 (IR: 2170.9)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.3358 (  1.5%) OUT C63 C69 C71 C72
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   16.3% BOND,  18.2% ANGLE,  10.5% OUT,  55.1% TOR
+
+Mode 189:   800.97 cm-1 (IR:   0.0)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.3774 (  2.1%) OUT C63 C69 C71 C72
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:    8.2% BOND,  10.4% ANGLE,  14.8% OUT,  66.6% TOR
+
+Mode 190:   801.57 cm-1 (IR: 479.7)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.1834 (  0.7%) TORSION C138 C141 C143 N146
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   26.4% BOND,  29.6% ANGLE,   4.4% OUT,  39.6% TOR
+
+Mode 191:   802.61 cm-1 (IR: 360.5)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2001 (  0.8%) OUT C63 C69 C71 C72
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   23.6% BOND,  26.4% ANGLE,   6.3% OUT,  43.8% TOR
+
+Mode 192:   802.67 cm-1 (IR:   0.0)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.1730 (  0.7%) BOND N146 C152
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   29.8% BOND,  33.1% ANGLE,   2.4% OUT,  34.8% TOR
+
+Mode 193:   802.84 cm-1 (IR: 142.4)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.1921 (  0.8%) TORSION C91 C94 C96 N99
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   28.3% BOND,  31.6% ANGLE,   3.3% OUT,  36.8% TOR
+
+Mode 194:   804.08 cm-1 (IR: 215.4)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.3773 (  2.0%) OUT C92 C109 C110 C111
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:    8.7% BOND,  11.9% ANGLE,  14.5% OUT,  65.0% TOR
+
+Mode 195:   804.24 cm-1 (IR: 5929.6)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.3663 (  1.8%) OUT C63 C69 C71 C72
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   11.6% BOND,  14.3% ANGLE,  13.1% OUT,  61.1% TOR
+
+Mode 196:   818.82 cm-1 (IR: 2717.7)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.1612 (  0.7%) ANGLE O12 C24 O29
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   33.3% BOND,  35.4% ANGLE,   0.9% OUT,  30.4% TOR
+
+Mode 197:   819.06 cm-1 (IR: 1159.2)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.1632 (  0.7%) ANGLE O12 C24 O29
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   33.1% BOND,  35.3% ANGLE,   1.1% OUT,  30.4% TOR
+
+Mode 198:   820.02 cm-1 (IR: 2480.7)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.1544 (  0.7%) ANGLE O137 C139 O155
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   33.0% BOND,  35.0% ANGLE,   1.1% OUT,  30.9% TOR
+
+Mode 199:   820.09 cm-1 (IR:   0.0)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.1321 (  0.6%) ANGLE C138 O137 C139
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   32.9% BOND,  34.7% ANGLE,   1.2% OUT,  31.2% TOR
+
+Mode 200:   832.96 cm-1 (IR:   0.0)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2008 (  0.8%) TORSION O90 C91 C93 C123
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   27.7% BOND,  42.1% ANGLE,   0.9% OUT,  29.3% TOR
+
+Mode 201:   833.46 cm-1 (IR: 7790.8)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2160 (  0.9%) ANGLE C91 O90 C92
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   28.0% BOND,  42.3% ANGLE,   0.7% OUT,  28.9% TOR
+
+Mode 202:   833.63 cm-1 (IR:  25.1)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2209 (  0.9%) ANGLE C7 O12 C24
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   27.4% BOND,  41.9% ANGLE,   1.0% OUT,  29.6% TOR
+
+Mode 203:   834.37 cm-1 (IR: 1460.8)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2227 (  0.9%) ANGLE C138 O137 C139
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   27.5% BOND,  42.1% ANGLE,   0.8% OUT,  29.5% TOR
+
+Mode 204:   851.45 cm-1 (IR: 234.6)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.1899 (  0.8%) TORSION C2 C3 C7 O12
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   29.6% BOND,  40.8% ANGLE,   0.7% OUT,  28.8% TOR
+
+Mode 205:   852.37 cm-1 (IR:   0.0)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.1953 (  0.8%) TORSION C2 C3 C7 O12
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   29.6% BOND,  40.9% ANGLE,   1.0% OUT,  28.6% TOR
+
+Mode 206:   854.59 cm-1 (IR: 125.1)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.1818 (  0.7%) TORSION O90 C91 C93 C105
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   29.5% BOND,  40.7% ANGLE,   0.8% OUT,  29.0% TOR
+
+Mode 207:   855.14 cm-1 (IR: 187.3)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.1855 (  0.8%) TORSION O90 C91 C93 C105
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   29.7% BOND,  40.6% ANGLE,   0.8% OUT,  28.9% TOR
+
+Mode 208:   869.84 cm-1 (IR:  19.3)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.3368 (  2.5%) TORSION C157 C159 C161 C163
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:    9.5% BOND,  11.7% ANGLE,  17.0% OUT,  61.7% TOR
+
+Mode 209:   869.95 cm-1 (IR: 131.7)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.3361 (  2.6%) TORSION C110 C112 C114 C116
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   10.3% BOND,  11.4% ANGLE,  17.1% OUT,  61.2% TOR
+
+Mode 210:   870.28 cm-1 (IR:   0.0)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.3298 (  2.1%) TORSION C110 C112 C114 C116
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   12.9% BOND,  16.2% ANGLE,  14.4% OUT,  56.5% TOR
+
+Mode 211:   870.45 cm-1 (IR: 296.1)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.3286 (  2.1%) TORSION C110 C112 C114 C116
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   14.5% BOND,  14.6% ANGLE,  14.5% OUT,  56.3% TOR
+
+Mode 212:   889.58 cm-1 (IR: 846.9)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2723 (  1.3%) BOND C100 C102
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   35.7% BOND,  34.8% ANGLE,   0.5% OUT,  29.0% TOR
+
+Mode 213:   889.80 cm-1 (IR:   0.0)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2779 (  1.3%) BOND C100 C102
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   35.0% BOND,  33.9% ANGLE,   0.9% OUT,  30.2% TOR
+
+Mode 214:   889.84 cm-1 (IR: 787.8)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2791 (  1.3%) BOND C100 C102
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   35.4% BOND,  34.4% ANGLE,   0.5% OUT,  29.7% TOR
+
+Mode 215:   889.91 cm-1 (IR: 178.8)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2697 (  1.2%) BOND C54 C57
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   35.1% BOND,  34.4% ANGLE,   1.0% OUT,  29.5% TOR
+
+Mode 216:   908.70 cm-1 (IR:  73.7)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2097 (  0.8%) BOND C3 C7
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   32.0% BOND,  36.1% ANGLE,   0.7% OUT,  31.2% TOR
+
+Mode 217:   909.71 cm-1 (IR: 1145.7)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2090 (  0.8%) BOND C46 C50
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   32.3% BOND,  36.3% ANGLE,   0.6% OUT,  30.8% TOR
+
+Mode 218:   909.87 cm-1 (IR: 2163.9)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2091 (  0.8%) BOND C3 C7
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   32.4% BOND,  36.6% ANGLE,   0.4% OUT,  30.5% TOR
+
+Mode 219:   910.04 cm-1 (IR:   0.0)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2100 (  0.8%) BOND C3 C7
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   32.3% BOND,  36.5% ANGLE,   0.5% OUT,  30.7% TOR
+
+Mode 220:   938.44 cm-1 (IR:   0.0)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.3045 (  1.3%) ANGLE C100 C102 C105
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   34.2% BOND,  35.2% ANGLE,   1.2% OUT,  29.4% TOR
+
+Mode 221:   938.47 cm-1 (IR: 428.1)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.3071 (  1.3%) ANGLE C2 C4 C16
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   34.9% BOND,  35.5% ANGLE,   0.7% OUT,  28.9% TOR
+
+Mode 222:   938.52 cm-1 (IR: 2003.2)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.3051 (  1.3%) ANGLE C147 C149 C152
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   35.0% BOND,  35.1% ANGLE,   0.7% OUT,  29.2% TOR
+
+Mode 223:   938.60 cm-1 (IR: 591.8)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.3074 (  1.4%) ANGLE C100 C102 C105
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   35.7% BOND,  35.4% ANGLE,   0.2% OUT,  28.7% TOR
+
+Mode 224:   946.26 cm-1 (IR:   0.0)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2823 (  1.7%) OUT C92 C109 C110 C111
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   15.1% BOND,  16.8% ANGLE,  16.1% OUT,  52.0% TOR
+
+Mode 225:   946.38 cm-1 (IR: 1703.1)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2865 (  1.8%) OUT C63 C69 C71 C72
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   12.6% BOND,  15.7% ANGLE,  17.6% OUT,  54.2% TOR
+
+Mode 226:   949.53 cm-1 (IR:  16.5)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2771 (  1.7%) OUT C63 C69 C71 C72
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   14.7% BOND,  17.0% ANGLE,  16.3% OUT,  52.0% TOR
+
+Mode 227:   949.71 cm-1 (IR: 129.6)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2806 (  1.8%) OUT C24 C28 C30 C31
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   10.3% BOND,  17.4% ANGLE,  17.9% OUT,  54.4% TOR
+
+Mode 228:   965.92 cm-1 (IR: 10164.1)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2765 (  1.1%) BOND O126 C130
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   30.5% BOND,  40.8% ANGLE,   0.5% OUT,  28.2% TOR
+
+Mode 229:   966.83 cm-1 (IR: 843.2)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2707 (  1.1%) BOND O23 C25
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   31.1% BOND,  40.2% ANGLE,   0.4% OUT,  28.3% TOR
+
+Mode 230:   968.60 cm-1 (IR: 825.1)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2724 (  1.1%) BOND O126 C130
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   30.2% BOND,  40.0% ANGLE,   0.9% OUT,  28.9% TOR
+
+Mode 231:   968.79 cm-1 (IR:   0.0)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2769 (  1.1%) BOND O126 C130
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   31.3% BOND,  39.5% ANGLE,   0.8% OUT,  28.4% TOR
+
+Mode 232:   977.25 cm-1 (IR:   0.0)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2099 (  1.0%) BOND C140 C152
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   41.4% BOND,  33.4% ANGLE,   0.3% OUT,  24.9% TOR
+
+Mode 233:   977.45 cm-1 (IR: 990.8)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2089 (  1.0%) BOND O82 C86
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   41.9% BOND,  31.9% ANGLE,   0.5% OUT,  25.7% TOR
+
+Mode 234:   978.12 cm-1 (IR: 1063.1)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2086 (  1.0%) BOND O172 C177
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   42.6% BOND,  31.4% ANGLE,   0.5% OUT,  25.5% TOR
+
+Mode 235:   978.24 cm-1 (IR: 2047.2)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2097 (  1.0%) BOND O82 C86
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   42.2% BOND,  32.2% ANGLE,   0.5% OUT,  25.1% TOR
+
+Mode 236:   989.55 cm-1 (IR:   0.0)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2415 (  1.3%) ANGLE C69 C72 C77
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   31.5% BOND,  51.9% ANGLE,   2.7% OUT,  13.9% TOR
+
+Mode 237:   989.94 cm-1 (IR: 5057.4)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2540 (  1.4%) ANGLE C71 C73 C75
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   30.7% BOND,  53.0% ANGLE,   2.8% OUT,  13.6% TOR
+
+Mode 238:   990.33 cm-1 (IR: 2671.0)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.1978 (  0.9%) ANGLE C30 C32 C34
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   29.9% BOND,  44.8% ANGLE,   3.7% OUT,  21.6% TOR
+
+Mode 239:   990.34 cm-1 (IR: 6887.8)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.1954 (  0.9%) ANGLE C71 C73 C75
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   29.6% BOND,  44.2% ANGLE,   3.8% OUT,  22.5% TOR
+
+Mode 240:   993.43 cm-1 (IR: 691.9)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2204 (  0.9%) ANGLE C156 C157 C159
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   30.0% BOND,  48.9% ANGLE,   1.2% OUT,  19.9% TOR
+
+Mode 241:   993.56 cm-1 (IR:  24.4)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2640 (  1.1%) BOND O137 C138
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   31.2% BOND,  33.1% ANGLE,   3.9% OUT,  31.7% TOR
+
+Mode 242:   993.71 cm-1 (IR:   0.0)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.1947 (  0.8%) ANGLE O137 C138 C141
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   30.9% BOND,  35.7% ANGLE,   2.9% OUT,  30.5% TOR
+
+Mode 243:   993.83 cm-1 (IR:  80.1)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2245 (  0.9%) ANGLE C156 C157 C159
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   29.6% BOND,  49.4% ANGLE,   1.3% OUT,  19.8% TOR
+
+Mode 244:   996.67 cm-1 (IR:   0.0)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.1901 (  0.8%) ANGLE C31 C36 C34
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   27.2% BOND,  43.0% ANGLE,   4.8% OUT,  25.0% TOR
+
+Mode 245:   997.98 cm-1 (IR:   0.3)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2111 (  0.8%) BOND O137 C138
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   26.7% BOND,  42.9% ANGLE,   3.9% OUT,  26.5% TOR
+
+Mode 246:   998.93 cm-1 (IR: 1010.3)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2125 (  0.9%) BOND O137 C138
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   28.7% BOND,  36.1% ANGLE,   5.3% OUT,  30.0% TOR
+
+Mode 247:   999.21 cm-1 (IR: 1647.8)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2045 (  0.9%) BOND O90 C91
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   28.8% BOND,  36.1% ANGLE,   5.1% OUT,  30.1% TOR
+
+Mode 248:  1002.32 cm-1 (IR: 2364.7)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2593 (  1.1%) BOND O126 C130
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   37.4% BOND,  37.5% ANGLE,   0.5% OUT,  24.6% TOR
+
+Mode 249:  1002.38 cm-1 (IR: 8456.1)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2513 (  1.1%) BOND O82 C86
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   37.9% BOND,  35.9% ANGLE,   0.8% OUT,  25.5% TOR
+
+Mode 250:  1003.29 cm-1 (IR: 4450.6)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2623 (  1.1%) BOND O82 C86
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   37.0% BOND,  35.3% ANGLE,   0.8% OUT,  26.9% TOR
+
+Mode 251:  1003.59 cm-1 (IR:   0.0)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2064 (  0.9%) BOND C94 C96
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   35.5% BOND,  35.5% ANGLE,   1.1% OUT,  27.9% TOR
+
+Mode 252:  1009.97 cm-1 (IR:  13.6)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2675 (  1.0%) ANGLE C47 C46 C50
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   36.5% BOND,  37.9% ANGLE,   0.7% OUT,  24.9% TOR
+
+Mode 253:  1009.97 cm-1 (IR:   0.0)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.1741 (  0.7%) BOND O82 C86
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   36.6% BOND,  36.3% ANGLE,   1.0% OUT,  26.0% TOR
+
+Mode 254:  1011.50 cm-1 (IR: 4951.5)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2593 (  1.0%) ANGLE C3 C7 C10
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   37.1% BOND,  38.1% ANGLE,   0.6% OUT,  24.2% TOR
+
+Mode 255:  1012.17 cm-1 (IR: 12791.8)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.1879 (  0.7%) BOND O82 C86
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   38.3% BOND,  36.8% ANGLE,   0.8% OUT,  24.1% TOR
+
+Mode 256:  1014.36 cm-1 (IR:  16.1)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2208 (  1.6%) TORSION C31 C36 C34 C32
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   21.7% BOND,  17.5% ANGLE,  14.8% OUT,  46.0% TOR
+
+Mode 257:  1014.42 cm-1 (IR: 2383.9)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2197 (  1.3%) TORSION C72 C77 C75 C73
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   23.6% BOND,  20.8% ANGLE,  12.2% OUT,  43.5% TOR
+
+Mode 258:  1015.09 cm-1 (IR: 16825.6)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.1963 (  0.9%) BOND C7 O12
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   36.2% BOND,  32.8% ANGLE,   4.9% OUT,  26.1% TOR
+
+Mode 259:  1015.62 cm-1 (IR:   0.0)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.1348 (  0.7%) BOND C34 H37
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   36.8% BOND,  33.0% ANGLE,   5.2% OUT,  25.0% TOR
+
+Mode 260:  1017.48 cm-1 (IR: 6699.4)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.1619 (  0.9%) BOND C75 C77
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   33.7% BOND,  28.5% ANGLE,   7.8% OUT,  30.0% TOR
+
+Mode 261:  1017.48 cm-1 (IR:   0.0)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.1403 (  0.9%) TORSION C92 C109 C110 C112
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   35.0% BOND,  27.9% ANGLE,   8.3% OUT,  28.8% TOR
+
+Mode 262:  1018.03 cm-1 (IR: 2221.9)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2188 (  1.2%) BOND C34 C36
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   43.4% BOND,  36.8% ANGLE,   2.7% OUT,  17.1% TOR
+
+Mode 263:  1018.49 cm-1 (IR: 16569.1)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2171 (  1.2%) BOND C75 C77
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   43.4% BOND,  36.7% ANGLE,   2.6% OUT,  17.2% TOR
+
+Mode 264:  1043.27 cm-1 (IR: 2614.9)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2396 (  0.9%) ANGLE N6 C13 C16
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   34.3% BOND,  34.2% ANGLE,   0.3% OUT,  31.2% TOR
+
+Mode 265:  1043.75 cm-1 (IR: 1721.6)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2408 (  0.9%) ANGLE N6 C13 C16
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   33.5% BOND,  34.3% ANGLE,   0.4% OUT,  31.8% TOR
+
+Mode 266:  1043.87 cm-1 (IR: 4917.3)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.1896 (  0.7%) BOND C102 C105
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   33.0% BOND,  34.5% ANGLE,   0.4% OUT,  32.1% TOR
+
+Mode 267:  1044.08 cm-1 (IR:   0.0)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2411 (  0.9%) ANGLE N6 C13 C16
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   33.1% BOND,  34.2% ANGLE,   0.4% OUT,  32.4% TOR
+
+Mode 268:  1059.88 cm-1 (IR: 31695.2)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.3061 (  1.2%) BOND N146 C167
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   33.6% BOND,  43.8% ANGLE,   0.1% OUT,  22.5% TOR
+
+Mode 269:  1060.23 cm-1 (IR:  21.4)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.3265 (  1.3%) BOND N99 C120
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   32.1% BOND,  44.8% ANGLE,   0.1% OUT,  23.1% TOR
+
+Mode 270:  1060.66 cm-1 (IR:   0.0)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.3324 (  1.3%) BOND N56 C64
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   31.8% BOND,  45.1% ANGLE,   0.1% OUT,  23.0% TOR
+
+Mode 271:  1060.86 cm-1 (IR:  22.9)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.4069 (  2.0%) BOND N56 C64
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   31.1% BOND,  41.8% ANGLE,   0.3% OUT,  26.8% TOR
+
+Mode 272:  1060.90 cm-1 (IR: 1513.7)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.3050 (  1.2%) BOND N56 C64
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   33.3% BOND,  38.8% ANGLE,   0.4% OUT,  27.4% TOR
+
+Mode 273:  1061.01 cm-1 (IR: 4994.1)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2937 (  1.1%) BOND N56 C64
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   32.9% BOND,  38.5% ANGLE,   0.4% OUT,  28.2% TOR
+
+Mode 274:  1061.10 cm-1 (IR:   0.0)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2155 (  0.8%) ANGLE C94 C96 N99
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   32.7% BOND,  38.2% ANGLE,   0.4% OUT,  28.8% TOR
+
+Mode 275:  1061.70 cm-1 (IR: 10523.2)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2821 (  1.0%) ANGLE C46 C50 C62
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   32.6% BOND,  38.0% ANGLE,   0.2% OUT,  29.2% TOR
+
+Mode 276:  1067.01 cm-1 (IR:  87.3)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2166 (  1.3%) BOND C111 C116
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   44.5% BOND,  39.3% ANGLE,   0.7% OUT,  15.4% TOR
+
+Mode 277:  1067.06 cm-1 (IR: 33528.2)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2331 (  1.2%) BOND O137 C139
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   42.0% BOND,  38.7% ANGLE,   0.4% OUT,  18.9% TOR
+
+Mode 278:  1069.03 cm-1 (IR:   0.0)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2074 (  1.4%) BOND C111 C116
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   46.0% BOND,  38.2% ANGLE,   0.6% OUT,  15.1% TOR
+
+Mode 279:  1069.43 cm-1 (IR: 39829.6)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2312 (  1.5%) BOND O12 C24
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   45.5% BOND,  41.2% ANGLE,   0.6% OUT,  12.7% TOR
+
+Mode 280:  1089.56 cm-1 (IR:   0.0)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2007 (  1.3%) BOND C46 O49
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   42.3% BOND,  40.2% ANGLE,   0.7% OUT,  16.8% TOR
+
+Mode 281:  1090.50 cm-1 (IR: 64256.3)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.3311 (  2.4%) BOND O12 C24
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   41.9% BOND,  40.8% ANGLE,   0.7% OUT,  16.5% TOR
+
+Mode 282:  1092.10 cm-1 (IR: 48884.8)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.3244 (  2.1%) BOND O137 C139
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   43.7% BOND,  39.8% ANGLE,   0.4% OUT,  16.1% TOR
+
+Mode 283:  1092.53 cm-1 (IR: 12827.6)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.3315 (  2.2%) BOND O90 C92
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   43.4% BOND,  39.7% ANGLE,   0.4% OUT,  16.5% TOR
+
+Mode 284:  1111.54 cm-1 (IR:   0.0)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2137 (  0.8%) BOND C138 C140
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   33.4% BOND,  38.1% ANGLE,   0.2% OUT,  28.4% TOR
+
+Mode 285:  1111.73 cm-1 (IR: 11037.7)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2150 (  0.8%) BOND C93 C105
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   33.8% BOND,  38.5% ANGLE,   0.2% OUT,  27.6% TOR
+
+Mode 286:  1114.35 cm-1 (IR: 22193.6)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2155 (  0.8%) BOND C91 C93
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   33.8% BOND,  36.9% ANGLE,   0.1% OUT,  29.2% TOR
+
+Mode 287:  1114.74 cm-1 (IR: 178.0)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2197 (  0.8%) BOND C50 C62
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   31.6% BOND,  37.1% ANGLE,   0.2% OUT,  31.1% TOR
+
+Mode 288:  1116.75 cm-1 (IR: 10472.8)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2614 (  1.1%) ANGLE C51 N56 C64
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   25.3% BOND,  44.8% ANGLE,   0.6% OUT,  29.2% TOR
+
+Mode 289:  1117.71 cm-1 (IR: 525.7)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2428 (  1.0%) ANGLE C143 N146 C167
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   28.1% BOND,  43.3% ANGLE,   0.4% OUT,  28.1% TOR
+
+Mode 290:  1120.86 cm-1 (IR: 3086.7)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.1926 (  0.8%) ANGLE C51 N56 C64
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   31.4% BOND,  40.9% ANGLE,   0.5% OUT,  27.2% TOR
+
+Mode 291:  1121.21 cm-1 (IR:   0.0)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.1522 (  0.6%) ANGLE N56 C64 H85
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   31.5% BOND,  40.2% ANGLE,   0.6% OUT,  27.7% TOR
+
+Mode 292:  1123.49 cm-1 (IR: 3669.6)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2726 (  1.2%) ANGLE O126 C130 H131
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   29.3% BOND,  44.2% ANGLE,   0.3% OUT,  26.2% TOR
+
+Mode 293:  1123.52 cm-1 (IR: 1412.1)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2989 (  1.4%) ANGLE O126 C130 H131
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   30.0% BOND,  42.8% ANGLE,   0.4% OUT,  26.8% TOR
+
+Mode 294:  1124.04 cm-1 (IR:   0.0)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2636 (  1.2%) ANGLE O126 C130 H131
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   27.1% BOND,  44.5% ANGLE,   0.2% OUT,  28.1% TOR
+
+Mode 295:  1124.15 cm-1 (IR:  15.0)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2689 (  1.2%) ANGLE O126 C130 H131
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   27.3% BOND,  44.2% ANGLE,   0.3% OUT,  28.2% TOR
+
+Mode 296:  1133.90 cm-1 (IR: 7807.0)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2221 (  0.8%) BOND C7 C10
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   30.6% BOND,  43.2% ANGLE,   0.3% OUT,  26.0% TOR
+
+Mode 297:  1134.04 cm-1 (IR:   0.0)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2311 (  0.9%) BOND C7 C10
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   29.9% BOND,  43.0% ANGLE,   0.3% OUT,  26.8% TOR
+
+Mode 298:  1135.55 cm-1 (IR: 11421.5)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2124 (  0.8%) BOND C7 C10
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   31.4% BOND,  42.3% ANGLE,   0.3% OUT,  26.1% TOR
+
+Mode 299:  1136.46 cm-1 (IR:  42.3)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2371 (  0.9%) BOND C7 C10
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   30.4% BOND,  41.2% ANGLE,   0.2% OUT,  28.1% TOR
+
+Mode 300:  1150.33 cm-1 (IR:   0.0)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.1586 (  1.1%) BOND C158 C163
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   41.7% BOND,  40.5% ANGLE,   0.8% OUT,  17.0% TOR
+
+Mode 301:  1151.15 cm-1 (IR: 4003.9)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2549 (  1.6%) BOND C34 C36
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   42.8% BOND,  39.0% ANGLE,   0.7% OUT,  17.4% TOR
+
+Mode 302:  1153.02 cm-1 (IR: 2924.9)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2108 (  1.1%) BOND C114 C116
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   36.5% BOND,  43.4% ANGLE,   0.6% OUT,  19.6% TOR
+
+Mode 303:  1153.06 cm-1 (IR: 2670.5)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.1896 (  0.7%) ANGLE O137 C138 C141
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   34.1% BOND,  40.7% ANGLE,   0.3% OUT,  24.9% TOR
+
+Mode 304:  1153.26 cm-1 (IR: 8227.8)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2144 (  0.8%) ANGLE C47 C46 O49
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   32.3% BOND,  41.1% ANGLE,   0.2% OUT,  26.4% TOR
+
+Mode 305:  1153.34 cm-1 (IR: 17109.9)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2422 (  1.8%) BOND C159 C161
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   44.3% BOND,  42.2% ANGLE,   0.7% OUT,  12.7% TOR
+
+Mode 306:  1154.10 cm-1 (IR:   0.0)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.1522 (  0.6%) ANGLE O137 C138 C141
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   35.5% BOND,  43.6% ANGLE,   0.3% OUT,  20.5% TOR
+
+Mode 307:  1154.98 cm-1 (IR: 456.9)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2108 (  0.8%) ANGLE C51 N56 C64
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   32.6% BOND,  44.3% ANGLE,   0.2% OUT,  22.9% TOR
+
+Mode 308:  1157.40 cm-1 (IR: 2220.5)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.1785 (  0.9%) ANGLE C8 O23 C25
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   38.9% BOND,  43.2% ANGLE,   0.5% OUT,  17.5% TOR
+
+Mode 309:  1157.50 cm-1 (IR:   0.0)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.1705 (  0.8%) ANGLE C51 N56 C64
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   38.3% BOND,  39.4% ANGLE,   0.4% OUT,  21.9% TOR
+
+Mode 310:  1157.88 cm-1 (IR: 8733.9)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.1847 (  0.8%) ANGLE C143 N146 C167
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   37.5% BOND,  43.5% ANGLE,   0.4% OUT,  18.7% TOR
+
+Mode 311:  1157.89 cm-1 (IR: 1205.6)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.3161 (  2.0%) ANGLE C8 O23 C25
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   37.7% BOND,  47.3% ANGLE,   0.5% OUT,  14.5% TOR
+
+Mode 312:  1158.61 cm-1 (IR: 5289.1)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.3472 (  2.1%) ANGLE C8 O23 C25
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   32.2% BOND,  47.0% ANGLE,   0.3% OUT,  20.5% TOR
+
+Mode 313:  1159.27 cm-1 (IR:   0.0)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2666 (  1.5%) ANGLE O23 C25 H41
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   29.0% BOND,  47.2% ANGLE,   0.3% OUT,  23.5% TOR
+
+Mode 314:  1159.82 cm-1 (IR: 359.8)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2555 (  1.2%) ANGLE C67 O82 C86
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   36.9% BOND,  44.0% ANGLE,   0.4% OUT,  18.7% TOR
+
+Mode 315:  1160.12 cm-1 (IR: 845.1)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.3127 (  1.5%) ANGLE C170 O172 C177
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   31.7% BOND,  45.3% ANGLE,   0.3% OUT,  22.7% TOR
+
+Mode 316:  1186.08 cm-1 (IR: 43578.2)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.3210 (  1.4%) BOND C123 O126
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   38.0% BOND,  39.5% ANGLE,   0.3% OUT,  22.2% TOR
+
+Mode 317:  1188.25 cm-1 (IR: 212.8)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.3803 (  2.1%) BOND C67 O82
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   38.3% BOND,  39.6% ANGLE,   0.4% OUT,  21.7% TOR
+
+Mode 318:  1188.50 cm-1 (IR:   0.0)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2430 (  1.4%) BOND C3 C8
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   38.5% BOND,  39.2% ANGLE,   0.3% OUT,  21.9% TOR
+
+Mode 319:  1188.59 cm-1 (IR:  28.5)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2771 (  1.2%) BOND C123 O126
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   37.0% BOND,  37.0% ANGLE,   0.4% OUT,  25.7% TOR
+
+Mode 320:  1190.80 cm-1 (IR:   0.0)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.1949 (  0.8%) BOND C91 C94
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   31.6% BOND,  40.0% ANGLE,   0.2% OUT,  28.2% TOR
+
+Mode 321:  1191.51 cm-1 (IR: 465.2)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.1950 (  0.8%) BOND C91 C94
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   32.1% BOND,  39.9% ANGLE,   0.2% OUT,  27.9% TOR
+
+Mode 322:  1196.91 cm-1 (IR: 34875.1)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2638 (  1.3%) BOND C170 O172
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   33.3% BOND,  42.4% ANGLE,   0.1% OUT,  24.1% TOR
+
+Mode 323:  1198.50 cm-1 (IR:   0.3)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2797 (  1.5%) BOND C67 O82
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   34.2% BOND,  41.0% ANGLE,   0.3% OUT,  24.6% TOR
+
+Mode 324:  1202.16 cm-1 (IR:   0.0)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2597 (  1.1%) BOND C57 C62
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   32.2% BOND,  40.3% ANGLE,   0.2% OUT,  27.3% TOR
+
+Mode 325:  1202.31 cm-1 (IR: 2340.8)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2531 (  1.1%) BOND C102 C105
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   32.5% BOND,  39.3% ANGLE,   0.3% OUT,  27.8% TOR
+
+Mode 326:  1206.02 cm-1 (IR: 31331.7)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2882 (  1.4%) BOND C170 O172
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   35.0% BOND,  40.3% ANGLE,   0.2% OUT,  24.5% TOR
+
+Mode 327:  1207.32 cm-1 (IR: 437.2)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.3115 (  1.5%) BOND C123 O126
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   37.2% BOND,  40.2% ANGLE,   0.1% OUT,  22.4% TOR
+
+Mode 328:  1215.99 cm-1 (IR:   0.0)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.1880 (  0.8%) ANGLE C4 C16 H19
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   28.6% BOND,  39.8% ANGLE,   0.3% OUT,  31.4% TOR
+
+Mode 329:  1216.25 cm-1 (IR: 6209.6)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.1806 (  0.7%) ANGLE C4 C16 H19
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   28.2% BOND,  39.7% ANGLE,   0.4% OUT,  31.8% TOR
+
+Mode 330:  1217.29 cm-1 (IR: 455.4)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.1785 (  0.7%) ANGLE C46 C50 H68
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   29.4% BOND,  39.1% ANGLE,   0.3% OUT,  31.2% TOR
+
+Mode 331:  1217.70 cm-1 (IR: 124.0)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.1719 (  0.7%) ANGLE C138 C140 H171
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   28.5% BOND,  39.4% ANGLE,   0.4% OUT,  31.8% TOR
+
+Mode 332:  1223.00 cm-1 (IR:   0.0)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2505 (  0.9%) BOND C13 C16
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   32.8% BOND,  42.0% ANGLE,   0.1% OUT,  25.0% TOR
+
+Mode 333:  1224.46 cm-1 (IR: 424.0)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2527 (  0.9%) BOND C51 C54
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   31.7% BOND,  42.4% ANGLE,   0.1% OUT,  25.9% TOR
+
+Mode 334:  1224.96 cm-1 (IR: 27639.8)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2140 (  0.8%) BOND C143 C147
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   35.1% BOND,  41.2% ANGLE,   0.1% OUT,  23.6% TOR
+
+Mode 335:  1225.07 cm-1 (IR: 15031.2)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2296 (  0.9%) BOND C13 C16
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   32.8% BOND,  41.3% ANGLE,   0.1% OUT,  25.8% TOR
+
+Mode 336:  1239.48 cm-1 (IR: 70643.0)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.3321 (  1.6%) BOND C63 C69
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   35.0% BOND,  44.9% ANGLE,   0.2% OUT,  19.9% TOR
+
+Mode 337:  1241.15 cm-1 (IR:   0.0)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2324 (  1.1%) BOND O49 C63
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   34.2% BOND,  45.0% ANGLE,   0.2% OUT,  20.7% TOR
+
+Mode 338:  1242.13 cm-1 (IR: 77819.2)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.3139 (  1.4%) BOND C24 C28
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   35.5% BOND,  44.6% ANGLE,   0.2% OUT,  19.7% TOR
+
+Mode 339:  1242.43 cm-1 (IR: 46255.0)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.3058 (  1.4%) BOND C24 C28
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   34.2% BOND,  44.8% ANGLE,   0.2% OUT,  20.8% TOR
+
+Mode 340:  1253.90 cm-1 (IR: 2353.4)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.3028 (  1.4%) BOND C139 C156
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   35.8% BOND,  42.0% ANGLE,   0.2% OUT,  22.0% TOR
+
+Mode 341:  1254.55 cm-1 (IR:   0.0)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2934 (  1.3%) BOND C139 C156
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   35.4% BOND,  42.2% ANGLE,   0.2% OUT,  22.2% TOR
+
+Mode 342:  1254.68 cm-1 (IR: 5030.6)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2635 (  1.1%) BOND C63 C69
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   35.1% BOND,  42.1% ANGLE,   0.2% OUT,  22.5% TOR
+
+Mode 343:  1255.69 cm-1 (IR: 45233.4)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2803 (  1.3%) BOND C24 C28
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   35.4% BOND,  42.2% ANGLE,   0.2% OUT,  22.2% TOR
+
+Mode 344:  1278.66 cm-1 (IR: 2446.7)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2642 (  1.1%) ANGLE C91 C94 H97
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   26.7% BOND,  45.3% ANGLE,   0.2% OUT,  27.8% TOR
+
+Mode 345:  1278.86 cm-1 (IR:   0.0)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2645 (  1.1%) ANGLE C91 C94 H97
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   26.8% BOND,  44.2% ANGLE,   0.2% OUT,  28.8% TOR
+
+Mode 346:  1280.01 cm-1 (IR: 2125.7)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2626 (  1.0%) ANGLE C138 C141 H144
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   27.2% BOND,  43.8% ANGLE,   0.2% OUT,  28.8% TOR
+
+Mode 347:  1280.14 cm-1 (IR: 313.9)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2586 (  1.0%) ANGLE C7 C10 H14
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   27.1% BOND,  43.1% ANGLE,   0.2% OUT,  29.6% TOR
+
+Mode 348:  1281.14 cm-1 (IR:  82.9)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2185 (  0.9%) BOND C47 C51
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   24.7% BOND,  39.6% ANGLE,   0.4% OUT,  35.3% TOR
+
+Mode 349:  1281.21 cm-1 (IR:   0.0)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2032 (  0.8%) BOND C10 C13
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   25.2% BOND,  38.5% ANGLE,   0.5% OUT,  35.8% TOR
+
+Mode 350:  1281.25 cm-1 (IR: 971.9)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2256 (  0.9%) BOND C10 C13
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   24.3% BOND,  39.7% ANGLE,   0.4% OUT,  35.5% TOR
+
+Mode 351:  1281.27 cm-1 (IR: 5250.0)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2022 (  0.8%) BOND C10 C13
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   25.4% BOND,  38.0% ANGLE,   0.4% OUT,  36.2% TOR
+
+Mode 352:  1293.73 cm-1 (IR:   0.0)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2884 (  1.5%) ANGLE C92 C109 C110
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   26.7% BOND,  57.2% ANGLE,   0.3% OUT,  15.8% TOR
+
+Mode 353:  1294.00 cm-1 (IR: 776.7)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.3050 (  1.8%) ANGLE C24 C28 C30
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   27.1% BOND,  60.3% ANGLE,   0.4% OUT,  12.3% TOR
+
+Mode 354:  1294.15 cm-1 (IR:  22.2)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.3185 (  2.1%) ANGLE C63 C69 C71
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   28.7% BOND,  61.9% ANGLE,   0.4% OUT,   8.9% TOR
+
+Mode 355:  1294.50 cm-1 (IR: 1977.4)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.3017 (  1.8%) ANGLE C92 C109 C110
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   27.2% BOND,  59.5% ANGLE,   0.4% OUT,  12.9% TOR
+
+Mode 356:  1296.04 cm-1 (IR: 3452.8)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2050 (  0.9%) ANGLE C96 C100 H103
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   22.4% BOND,  49.8% ANGLE,   0.3% OUT,  27.6% TOR
+
+Mode 357:  1296.50 cm-1 (IR: 808.7)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2008 (  0.9%) ANGLE C143 C147 H150
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   21.9% BOND,  50.4% ANGLE,   0.2% OUT,  27.4% TOR
+
+Mode 358:  1296.62 cm-1 (IR: 109.2)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2194 (  1.1%) ANGLE C143 C147 H150
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   22.5% BOND,  48.1% ANGLE,   0.1% OUT,  29.3% TOR
+
+Mode 359:  1297.07 cm-1 (IR:   0.0)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2160 (  1.0%) ANGLE C96 C100 H103
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   23.3% BOND,  51.9% ANGLE,   0.2% OUT,  24.6% TOR
+
+Mode 360:  1310.78 cm-1 (IR: 1873.7)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2495 (  1.0%) BOND C141 C143
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   28.0% BOND,  38.8% ANGLE,   0.1% OUT,  33.1% TOR
+
+Mode 361:  1311.29 cm-1 (IR:   0.0)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2408 (  0.9%) BOND C94 C96
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   27.3% BOND,  39.7% ANGLE,   0.1% OUT,  32.9% TOR
+
+Mode 362:  1311.91 cm-1 (IR: 552.1)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2354 (  0.9%) ANGLE C143 C147 H150
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   28.3% BOND,  37.7% ANGLE,   0.2% OUT,  33.8% TOR
+
+Mode 363:  1312.02 cm-1 (IR: 1634.4)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2396 (  0.9%) ANGLE C96 C100 H103
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   27.9% BOND,  38.3% ANGLE,   0.1% OUT,  33.6% TOR
+
+Mode 364:  1316.03 cm-1 (IR: 2580.8)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2521 (  1.0%) ANGLE C93 C105 H122
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   26.7% BOND,  39.4% ANGLE,   0.2% OUT,  33.7% TOR
+
+Mode 365:  1316.04 cm-1 (IR:   0.0)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2505 (  1.0%) ANGLE C93 C105 H122
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   26.7% BOND,  39.8% ANGLE,   0.2% OUT,  33.3% TOR
+
+Mode 366:  1317.40 cm-1 (IR: 596.3)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2415 (  0.9%) TORSION C2 C4 C16 C13
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   27.2% BOND,  41.0% ANGLE,   0.2% OUT,  31.6% TOR
+
+Mode 367:  1317.44 cm-1 (IR: 7788.9)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2407 (  0.9%) TORSION C2 C4 C16 C13
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   27.0% BOND,  41.3% ANGLE,   0.2% OUT,  31.4% TOR
+
+Mode 368:  1337.00 cm-1 (IR: 751.7)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2312 (  0.9%) ANGLE C3 C2 H5
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   28.0% BOND,  38.1% ANGLE,   0.1% OUT,  33.8% TOR
+
+Mode 369:  1337.01 cm-1 (IR:   0.0)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2328 (  0.9%) ANGLE C3 C2 H5
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   28.2% BOND,  38.2% ANGLE,   0.1% OUT,  33.5% TOR
+
+Mode 370:  1337.16 cm-1 (IR:  78.8)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2221 (  0.9%) ANGLE C93 C105 H122
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   28.1% BOND,  38.4% ANGLE,   0.1% OUT,  33.5% TOR
+
+Mode 371:  1337.31 cm-1 (IR: 237.0)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2272 (  0.9%) ANGLE C140 C152 H169
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   28.0% BOND,  38.6% ANGLE,   0.1% OUT,  33.3% TOR
+
+Mode 372:  1343.59 cm-1 (IR:   0.0)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2034 (  0.8%) ANGLE C141 C143 H148
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   22.8% BOND,  40.0% ANGLE,   0.1% OUT,  37.1% TOR
+
+Mode 373:  1343.59 cm-1 (IR: 10352.2)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.3050 (  1.3%) BOND C91 C94
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   23.0% BOND,  39.9% ANGLE,   0.1% OUT,  37.0% TOR
+
+Mode 374:  1344.56 cm-1 (IR: 123.3)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.3186 (  1.3%) BOND C7 C10
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   23.5% BOND,  38.9% ANGLE,   0.1% OUT,  37.4% TOR
+
+Mode 375:  1344.75 cm-1 (IR: 301.8)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.3192 (  1.3%) BOND C91 C94
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   22.9% BOND,  39.1% ANGLE,   0.1% OUT,  37.8% TOR
+
+Mode 376:  1356.21 cm-1 (IR: 484.3)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2588 (  2.3%) BOND C69 C71
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   59.3% BOND,  36.0% ANGLE,   0.1% OUT,   4.6% TOR
+
+Mode 377:  1356.29 cm-1 (IR: 6273.5)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2588 (  2.4%) BOND C28 C30
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   61.0% BOND,  35.6% ANGLE,   0.1% OUT,   3.3% TOR
+
+Mode 378:  1357.27 cm-1 (IR:   1.7)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2582 (  2.2%) BOND C69 C71
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   57.5% BOND,  36.4% ANGLE,   0.1% OUT,   5.9% TOR
+
+Mode 379:  1357.32 cm-1 (IR:   0.0)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2553 (  2.2%) BOND C69 C72
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   58.1% BOND,  35.8% ANGLE,   0.1% OUT,   6.0% TOR
+
+Mode 380:  1360.95 cm-1 (IR:   0.0)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2233 (  0.9%) ANGLE C2 N6 H26
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   30.1% BOND,  42.1% ANGLE,   0.2% OUT,  27.7% TOR
+
+Mode 381:  1361.09 cm-1 (IR: 10555.9)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2668 (  1.1%) ANGLE C96 N99 H121
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   27.7% BOND,  42.8% ANGLE,   0.1% OUT,  29.4% TOR
+
+Mode 382:  1362.12 cm-1 (IR: 6008.9)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2587 (  1.1%) ANGLE C143 N146 H168
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   28.7% BOND,  43.1% ANGLE,   0.1% OUT,  28.1% TOR
+
+Mode 383:  1362.36 cm-1 (IR: 11841.6)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2510 (  1.0%) ANGLE C143 N146 H168
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   28.8% BOND,  43.2% ANGLE,   0.1% OUT,  27.9% TOR
+
+Mode 384:  1367.91 cm-1 (IR: 136.8)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.1855 (  0.7%) ANGLE C51 N56 H65
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   28.1% BOND,  46.8% ANGLE,   0.1% OUT,  25.0% TOR
+
+Mode 385:  1367.99 cm-1 (IR:   0.0)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2605 (  1.0%) ANGLE O90 C91 H95
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   27.1% BOND,  46.8% ANGLE,   0.1% OUT,  26.0% TOR
+
+Mode 386:  1368.01 cm-1 (IR: 23386.5)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2662 (  1.1%) ANGLE O90 C91 H95
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   27.1% BOND,  46.7% ANGLE,   0.1% OUT,  26.1% TOR
+
+Mode 387:  1368.10 cm-1 (IR: 4434.1)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2369 (  0.9%) ANGLE O90 C91 H95
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   27.1% BOND,  47.4% ANGLE,   0.1% OUT,  25.4% TOR
+
+Mode 388:  1398.25 cm-1 (IR:  78.0)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2456 (  1.9%) ANGLE O172 C177 H180
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   34.3% BOND,  50.8% ANGLE,   0.2% OUT,  14.6% TOR
+
+Mode 389:  1398.51 cm-1 (IR: 7969.9)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2456 (  1.8%) ANGLE O172 C177 H180
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   33.1% BOND,  50.8% ANGLE,   0.2% OUT,  15.9% TOR
+
+Mode 390:  1398.65 cm-1 (IR:   0.0)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2466 (  2.0%) ANGLE O172 C177 H180
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   34.6% BOND,  50.1% ANGLE,   0.2% OUT,  15.1% TOR
+
+Mode 391:  1398.93 cm-1 (IR: 11859.5)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2443 (  1.8%) ANGLE O172 C177 H180
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   33.6% BOND,  50.4% ANGLE,   0.2% OUT,  15.7% TOR
+
+Mode 392:  1408.67 cm-1 (IR:   0.0)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.1821 (  1.1%) BOND N146 C167
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   30.8% BOND,  39.2% ANGLE,   0.3% OUT,  29.7% TOR
+
+Mode 393:  1408.73 cm-1 (IR: 1711.6)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2262 (  1.3%) ANGLE N146 C167 H176
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   30.8% BOND,  39.5% ANGLE,   0.2% OUT,  29.4% TOR
+
+Mode 394:  1410.68 cm-1 (IR: 484.3)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2462 (  1.5%) ANGLE N99 C120 H129
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   29.4% BOND,  42.6% ANGLE,   0.2% OUT,  27.8% TOR
+
+Mode 395:  1410.80 cm-1 (IR:   4.9)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2463 (  1.5%) ANGLE N56 C64 H85
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   29.5% BOND,  43.0% ANGLE,   0.2% OUT,  27.4% TOR
+
+Mode 396:  1416.03 cm-1 (IR: 3374.8)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.1731 (  1.4%) TORSION C170 O172 C177 H179
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   31.3% BOND,  28.4% ANGLE,   0.4% OUT,  39.9% TOR
+
+Mode 397:  1416.36 cm-1 (IR: 1353.2)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.1716 (  1.3%) TORSION C8 O23 C25 H41
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   31.7% BOND,  27.7% ANGLE,   0.4% OUT,  40.2% TOR
+
+Mode 398:  1419.99 cm-1 (IR:   0.0)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2263 (  1.4%) ANGLE N146 C167 H175
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   29.5% BOND,  41.1% ANGLE,   0.1% OUT,  29.3% TOR
+
+Mode 399:  1420.05 cm-1 (IR: 5055.0)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2274 (  1.3%) ANGLE N146 C167 H175
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   28.8% BOND,  42.0% ANGLE,   0.1% OUT,  29.0% TOR
+
+Mode 400:  1421.88 cm-1 (IR:   0.0)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.1939 (  1.0%) ANGLE C96 N99 H121
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   29.4% BOND,  38.2% ANGLE,   0.2% OUT,  32.3% TOR
+
+Mode 401:  1422.02 cm-1 (IR: 813.0)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.1903 (  1.0%) ANGLE C143 N146 H168
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   29.3% BOND,  38.2% ANGLE,   0.2% OUT,  32.4% TOR
+
+Mode 402:  1422.15 cm-1 (IR: 10197.9)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.1971 (  1.2%) ANGLE N99 C120 H127
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   26.3% BOND,  43.6% ANGLE,   0.2% OUT,  29.9% TOR
+
+Mode 403:  1422.20 cm-1 (IR: 446.0)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.1982 (  1.2%) ANGLE N99 C120 H127
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   26.3% BOND,  44.6% ANGLE,   0.2% OUT,  28.9% TOR
+
+Mode 404:  1432.73 cm-1 (IR: 12796.3)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2596 (  1.8%) ANGLE C73 C75 H78
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   38.7% BOND,  57.3% ANGLE,   0.1% OUT,   4.0% TOR
+
+Mode 405:  1433.98 cm-1 (IR: 424.1)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2564 (  1.7%) ANGLE C73 C75 H78
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   38.2% BOND,  56.7% ANGLE,   0.1% OUT,   4.9% TOR
+
+Mode 406:  1435.20 cm-1 (IR: 8469.2)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2585 (  1.7%) ANGLE C112 C114 H117
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   38.3% BOND,  55.8% ANGLE,   0.1% OUT,   5.8% TOR
+
+Mode 407:  1435.63 cm-1 (IR:   0.0)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2351 (  1.6%) BOND C157 C159
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   38.4% BOND,  55.7% ANGLE,   0.1% OUT,   5.8% TOR
+
+Mode 408:  1438.36 cm-1 (IR:   0.0)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.1414 (  0.8%) ANGLE C143 C147 C149
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   27.4% BOND,  35.2% ANGLE,   0.3% OUT,  37.1% TOR
+
+Mode 409:  1438.65 cm-1 (IR: 7201.6)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.1663 (  0.9%) TORSION C47 C51 C54 H58
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   28.4% BOND,  38.3% ANGLE,   0.3% OUT,  32.9% TOR
+
+Mode 410:  1440.50 cm-1 (IR: 3087.2)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.1651 (  0.9%) ANGLE C143 C147 C149
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   28.5% BOND,  36.4% ANGLE,   0.2% OUT,  34.9% TOR
+
+Mode 411:  1441.07 cm-1 (IR: 4831.3)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.1846 (  1.1%) ANGLE C51 C54 C57
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   28.1% BOND,  33.4% ANGLE,   0.2% OUT,  38.3% TOR
+
+Mode 412:  1443.23 cm-1 (IR: 3334.9)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.1629 (  0.9%) TORSION C141 C143 N146 C167
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   28.2% BOND,  33.5% ANGLE,   0.3% OUT,  38.1% TOR
+
+Mode 413:  1443.49 cm-1 (IR:   0.0)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.1525 (  0.7%) TORSION C94 C96 N99 C120
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   30.3% BOND,  38.8% ANGLE,   0.2% OUT,  30.6% TOR
+
+Mode 414:  1444.48 cm-1 (IR: 1841.5)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.1692 (  0.9%) TORSION C94 C96 N99 C120
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   28.3% BOND,  33.9% ANGLE,   0.2% OUT,  37.5% TOR
+
+Mode 415:  1444.88 cm-1 (IR:   1.1)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.1574 (  0.8%) TORSION C47 C51 N56 C64
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   30.9% BOND,  38.0% ANGLE,   0.2% OUT,  30.9% TOR
+
+Mode 416:  1449.18 cm-1 (IR:  78.0)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.1816 (  1.2%) TORSION C67 O82 C86 H87
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   36.0% BOND,  28.3% ANGLE,   0.4% OUT,  35.3% TOR
+
+Mode 417:  1449.29 cm-1 (IR: 951.5)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.1839 (  1.3%) TORSION C67 O82 C86 H87
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   36.6% BOND,  27.1% ANGLE,   0.4% OUT,  35.9% TOR
+
+Mode 418:  1452.59 cm-1 (IR:   0.0)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.1190 (  0.9%) BOND C86 H89
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   32.2% BOND,  30.7% ANGLE,   0.4% OUT,  36.7% TOR
+
+Mode 419:  1452.62 cm-1 (IR: 713.3)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.1920 (  1.5%) TORSION C8 O23 C25 H40
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   31.7% BOND,  30.8% ANGLE,   0.3% OUT,  37.2% TOR
+
+Mode 420:  1463.26 cm-1 (IR:   0.0)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.1294 (  0.9%) ANGLE C51 N56 H65
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   33.3% BOND,  31.9% ANGLE,   0.3% OUT,  34.5% TOR
+
+Mode 421:  1463.30 cm-1 (IR: 314.2)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.1766 (  1.2%) TORSION C2 N6 C27 H45
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   33.3% BOND,  32.4% ANGLE,   0.3% OUT,  34.0% TOR
+
+Mode 422:  1463.85 cm-1 (IR: 3845.8)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.1606 (  1.1%) TORSION C143 N146 C167 H176
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   32.5% BOND,  31.7% ANGLE,   0.4% OUT,  35.4% TOR
+
+Mode 423:  1463.90 cm-1 (IR: 2123.4)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.1569 (  1.1%) TORSION C143 N146 C167 H176
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   32.4% BOND,  30.9% ANGLE,   0.4% OUT,  36.3% TOR
+
+Mode 424:  1467.55 cm-1 (IR: 24219.4)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.1809 (  1.1%) ANGLE N6 C27 H45
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   33.1% BOND,  37.0% ANGLE,   0.3% OUT,  29.6% TOR
+
+Mode 425:  1468.28 cm-1 (IR: 7057.5)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2052 (  1.2%) ANGLE C96 N99 C105
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   30.8% BOND,  38.6% ANGLE,   0.2% OUT,  30.5% TOR
+
+Mode 426:  1468.43 cm-1 (IR:   0.0)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.1977 (  1.2%) ANGLE N6 C27 H45
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   30.4% BOND,  38.8% ANGLE,   0.2% OUT,  30.7% TOR
+
+Mode 427:  1468.53 cm-1 (IR: 1572.9)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.1668 (  1.1%) ANGLE N6 C27 H45
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   33.3% BOND,  35.2% ANGLE,   0.3% OUT,  31.2% TOR
+
+Mode 428:  1469.51 cm-1 (IR:   0.0)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.1748 (  1.0%) BOND C96 C100
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   33.9% BOND,  34.8% ANGLE,   0.2% OUT,  31.1% TOR
+
+Mode 429:  1469.89 cm-1 (IR: 2275.0)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.1690 (  0.9%) BOND C143 C147
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   35.1% BOND,  37.3% ANGLE,   0.2% OUT,  27.4% TOR
+
+Mode 430:  1472.52 cm-1 (IR: 5451.3)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.1900 (  0.9%) ANGLE C143 N146 H168
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   35.3% BOND,  40.1% ANGLE,   0.1% OUT,  24.5% TOR
+
+Mode 431:  1472.67 cm-1 (IR: 136.8)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2072 (  1.1%) ANGLE C143 N146 H168
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   34.1% BOND,  39.4% ANGLE,   0.1% OUT,  26.4% TOR
+
+Mode 432:  1475.79 cm-1 (IR:   0.0)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2305 (  1.8%) BOND C109 C111
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   45.1% BOND,  51.6% ANGLE,   0.2% OUT,   3.1% TOR
+
+Mode 433:  1475.98 cm-1 (IR:   0.2)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2648 (  1.9%) ANGLE C31 C36 H38
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   44.3% BOND,  50.7% ANGLE,   0.2% OUT,   4.9% TOR
+
+Mode 434:  1476.04 cm-1 (IR:   2.4)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2567 (  1.8%) ANGLE C72 C77 H79
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   44.1% BOND,  49.3% ANGLE,   0.2% OUT,   6.4% TOR
+
+Mode 435:  1476.22 cm-1 (IR:  70.7)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2562 (  1.9%) ANGLE C31 C36 H38
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   44.7% BOND,  50.3% ANGLE,   0.2% OUT,   4.8% TOR
+
+Mode 436:  1576.73 cm-1 (IR: 1174.2)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2881 (  2.1%) BOND C114 C116
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   43.5% BOND,  55.2% ANGLE,   0.1% OUT,   1.2% TOR
+
+Mode 437:  1576.97 cm-1 (IR: 1167.6)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2887 (  2.1%) BOND C161 C163
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   43.4% BOND,  55.2% ANGLE,   0.1% OUT,   1.3% TOR
+
+Mode 438:  1577.11 cm-1 (IR:   4.5)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2876 (  2.1%) BOND C34 C36
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   43.8% BOND,  55.0% ANGLE,   0.1% OUT,   1.1% TOR
+
+Mode 439:  1577.18 cm-1 (IR:   0.0)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2798 (  2.0%) BOND C112 C114
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   43.8% BOND,  55.0% ANGLE,   0.1% OUT,   1.1% TOR
+
+Mode 440:  1593.23 cm-1 (IR: 280.8)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.3174 (  2.2%) BOND C111 C116
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   46.7% BOND,  52.1% ANGLE,   0.1% OUT,   1.2% TOR
+
+Mode 441:  1593.27 cm-1 (IR: 11026.4)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.3174 (  2.2%) BOND C158 C163
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   46.6% BOND,  52.1% ANGLE,   0.1% OUT,   1.2% TOR
+
+Mode 442:  1594.34 cm-1 (IR:   0.0)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.3174 (  2.3%) BOND C158 C163
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   46.5% BOND,  52.2% ANGLE,   0.1% OUT,   1.1% TOR
+
+Mode 443:  1594.36 cm-1 (IR: 5351.3)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.3169 (  2.3%) BOND C31 C36
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   46.5% BOND,  52.2% ANGLE,   0.1% OUT,   1.2% TOR
+
+Mode 444:  1679.33 cm-1 (IR: 61687.7)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.4833 (  4.3%) BOND C63 O70
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   44.2% BOND,  49.1% ANGLE,   0.3% OUT,   6.4% TOR
+
+Mode 445:  1681.33 cm-1 (IR: 107421.2)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.4817 (  4.3%) BOND C24 O29
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   44.1% BOND,  49.0% ANGLE,   0.3% OUT,   6.6% TOR
+
+Mode 446:  1682.84 cm-1 (IR: 3782.4)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.4793 (  4.2%) BOND C24 O29
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   43.0% BOND,  49.7% ANGLE,   0.3% OUT,   7.0% TOR
+
+Mode 447:  1683.20 cm-1 (IR:   0.0)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.4821 (  4.3%) BOND C24 O29
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   42.9% BOND,  49.9% ANGLE,   0.3% OUT,   6.9% TOR
+
+Mode 448:  1702.79 cm-1 (IR:   0.0)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.1868 (  1.9%) BOND C50 C67
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   43.6% BOND,  43.4% ANGLE,   0.1% OUT,  12.8% TOR
+
+Mode 449:  1702.97 cm-1 (IR: 143777.4)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.4877 (  4.9%) BOND C123 O125
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   43.7% BOND,  43.4% ANGLE,   0.1% OUT,  12.7% TOR
+
+Mode 450:  1707.50 cm-1 (IR: 3706.6)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.4895 (  4.9%) BOND C123 O125
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   44.0% BOND,  43.1% ANGLE,   0.1% OUT,  12.8% TOR
+
+Mode 451:  1708.15 cm-1 (IR: 98653.5)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.4856 (  4.7%) BOND C8 O22
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   43.7% BOND,  43.7% ANGLE,   0.1% OUT,  12.4% TOR
+
+Mode 452:  2699.45 cm-1 (IR:   0.0)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.1688 (  1.8%) ANGLE N6 C13 C16
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   35.3% BOND,  46.5% ANGLE,   0.1% OUT,  18.1% TOR
+
+Mode 453:  2699.46 cm-1 (IR: 418659.6)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.4962 (  5.1%) BOND N99 H121
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   35.3% BOND,  46.5% ANGLE,   0.1% OUT,  18.1% TOR
+
+Mode 454:  2714.06 cm-1 (IR: 398292.1)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.4959 (  4.9%) BOND N99 H121
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   35.8% BOND,  46.3% ANGLE,   0.3% OUT,  17.7% TOR
+
+Mode 455:  2722.51 cm-1 (IR: 11635.3)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.4957 (  4.8%) BOND N6 H26
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   35.9% BOND,  46.2% ANGLE,   0.2% OUT,  17.6% TOR
+
+Mode 456:  2917.24 cm-1 (IR: 25911.3)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.4986 (  4.8%) BOND C93 H124
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   32.4% BOND,  36.4% ANGLE,   0.0% OUT,  31.2% TOR
+
+Mode 457:  2917.26 cm-1 (IR:   0.0)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2276 (  2.2%) TORSION C50 C67 O82 C86
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   32.3% BOND,  36.5% ANGLE,   0.0% OUT,  31.1% TOR
+
+Mode 458:  2917.48 cm-1 (IR: 7751.8)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.4984 (  4.7%) BOND C93 H124
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   31.9% BOND,  37.1% ANGLE,   0.0% OUT,  31.0% TOR
+
+Mode 459:  2917.52 cm-1 (IR: 2758.3)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.4983 (  4.7%) BOND C3 H9
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   32.0% BOND,  36.9% ANGLE,   0.0% OUT,  31.0% TOR
+
+Mode 460:  2960.86 cm-1 (IR: 164.3)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.4079 (  3.2%) BOND C10 H15
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   38.7% BOND,  27.7% ANGLE,   0.0% OUT,  33.6% TOR
+
+Mode 461:  2961.00 cm-1 (IR: 2057.9)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.4072 (  3.2%) BOND C94 H98
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   38.6% BOND,  27.7% ANGLE,   0.0% OUT,  33.7% TOR
+
+Mode 462:  2961.02 cm-1 (IR: 190.6)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.4136 (  3.3%) BOND C10 H15
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   36.9% BOND,  27.6% ANGLE,   0.0% OUT,  35.5% TOR
+
+Mode 463:  2961.03 cm-1 (IR:   0.0)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.1945 (  1.6%) TORSION C94 C96 N99 C120
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   36.9% BOND,  27.6% ANGLE,   0.0% OUT,  35.4% TOR
+
+Mode 464:  2965.80 cm-1 (IR:   0.0)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.3844 (  4.9%) BOND C64 H85
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   57.6% BOND,  28.9% ANGLE,   0.1% OUT,  13.5% TOR
+
+Mode 465:  2965.80 cm-1 (IR: 11907.7)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.3850 (  4.9%) BOND C64 H85
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   57.7% BOND,  28.8% ANGLE,   0.1% OUT,  13.4% TOR
+
+Mode 466:  2966.99 cm-1 (IR: 11483.9)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.3757 (  4.2%) BOND C64 H85
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   54.0% BOND,  28.8% ANGLE,   0.1% OUT,  17.1% TOR
+
+Mode 467:  2967.23 cm-1 (IR: 12022.4)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.3750 (  4.1%) BOND C64 H85
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   54.1% BOND,  28.9% ANGLE,   0.1% OUT,  16.9% TOR
+
+Mode 468:  2975.27 cm-1 (IR:  73.6)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.3399 (  4.8%) BOND C130 H131
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   61.3% BOND,  27.3% ANGLE,   0.1% OUT,  11.2% TOR
+
+Mode 469:  2975.27 cm-1 (IR:   0.0)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.1410 (  2.0%) BOND O172 C177
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   61.4% BOND,  27.2% ANGLE,   0.1% OUT,  11.3% TOR
+
+Mode 470:  2975.52 cm-1 (IR: 10846.6)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.3414 (  4.9%) BOND C130 H131
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   60.2% BOND,  27.7% ANGLE,   0.1% OUT,  12.0% TOR
+
+Mode 471:  2975.82 cm-1 (IR: 13869.8)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.3409 (  4.8%) BOND C86 H87
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   60.9% BOND,  27.3% ANGLE,   0.1% OUT,  11.8% TOR
+
+Mode 472:  2996.43 cm-1 (IR: 1546.7)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.4834 (  3.3%) BOND C91 H95
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   25.8% BOND,  31.5% ANGLE,   0.0% OUT,  42.7% TOR
+
+Mode 473:  2996.52 cm-1 (IR:   0.0)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2137 (  1.5%) TORSION C138 C140 C152 N146
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   26.0% BOND,  31.4% ANGLE,   0.0% OUT,  42.5% TOR
+
+Mode 474:  2996.53 cm-1 (IR:   4.4)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.4831 (  3.3%) BOND C7 H11
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   25.9% BOND,  31.4% ANGLE,   0.0% OUT,  42.6% TOR
+
+Mode 475:  2996.73 cm-1 (IR: 5677.8)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.4822 (  3.3%) BOND C91 H95
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   26.4% BOND,  31.6% ANGLE,   0.0% OUT,  41.9% TOR
+
+Mode 476:  3000.19 cm-1 (IR: 4506.3)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.3939 (  4.4%) BOND C149 H153
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   51.3% BOND,  30.3% ANGLE,   0.1% OUT,  18.3% TOR
+
+Mode 477:  3000.22 cm-1 (IR:   0.0)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.3932 (  4.3%) BOND C149 H153
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   51.2% BOND,  30.3% ANGLE,   0.1% OUT,  18.5% TOR
+
+Mode 478:  3000.34 cm-1 (IR:  17.2)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.3874 (  4.2%) BOND C102 H106
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   50.9% BOND,  30.5% ANGLE,   0.1% OUT,  18.5% TOR
+
+Mode 479:  3000.34 cm-1 (IR: 1263.6)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.3829 (  3.9%) BOND C149 H153
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   49.9% BOND,  30.5% ANGLE,   0.1% OUT,  19.5% TOR
+
+Mode 480:  3000.88 cm-1 (IR:   0.0)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.3642 (  3.9%) BOND C16 H18
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   53.9% BOND,  29.2% ANGLE,   0.0% OUT,  16.9% TOR
+
+Mode 481:  3000.96 cm-1 (IR:  18.5)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.3574 (  3.8%) BOND C100 H103
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   55.0% BOND,  28.0% ANGLE,   0.1% OUT,  16.8% TOR
+
+Mode 482:  3000.98 cm-1 (IR: 125.4)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.3549 (  3.6%) BOND C16 H18
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   55.4% BOND,  27.2% ANGLE,   0.0% OUT,  17.4% TOR
+
+Mode 483:  3000.99 cm-1 (IR: 2381.3)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.3650 (  3.9%) BOND C147 H150
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   53.7% BOND,  29.5% ANGLE,   0.1% OUT,  16.7% TOR
+
+Mode 484:  3027.80 cm-1 (IR:   5.5)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.4188 (  3.0%) BOND C10 H14
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   32.0% BOND,  29.7% ANGLE,   0.0% OUT,  38.3% TOR
+
+Mode 485:  3027.87 cm-1 (IR:   0.0)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.4191 (  3.0%) BOND C141 H144
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   32.0% BOND,  29.7% ANGLE,   0.0% OUT,  38.3% TOR
+
+Mode 486:  3027.91 cm-1 (IR: 102.2)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.4188 (  3.0%) BOND C141 H144
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   31.9% BOND,  29.7% ANGLE,   0.0% OUT,  38.4% TOR
+
+Mode 487:  3028.02 cm-1 (IR:  33.0)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.4195 (  3.0%) BOND C141 H144
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   32.0% BOND,  29.6% ANGLE,   0.0% OUT,  38.3% TOR
+
+Mode 488:  3034.04 cm-1 (IR: 1491.5)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.4791 (  3.5%) BOND C13 H17
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   34.8% BOND,  37.1% ANGLE,   0.1% OUT,  28.1% TOR
+
+Mode 489:  3034.06 cm-1 (IR:   0.0)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.1457 (  1.1%) ANGLE C2 N6 C13
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   34.7% BOND,  37.2% ANGLE,   0.1% OUT,  28.1% TOR
+
+Mode 490:  3034.33 cm-1 (IR: 147.9)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.4797 (  3.5%) BOND C96 H101
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   34.8% BOND,  37.1% ANGLE,   0.1% OUT,  28.1% TOR
+
+Mode 491:  3034.37 cm-1 (IR: 124.2)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.4811 (  3.6%) BOND C13 H17
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   34.6% BOND,  37.4% ANGLE,   0.1% OUT,  27.9% TOR
+
+Mode 492:  3045.02 cm-1 (IR: 189.0)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.3015 (  2.5%) BOND C147 H151
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   42.3% BOND,  37.4% ANGLE,   0.0% OUT,  20.3% TOR
+
+Mode 493:  3045.08 cm-1 (IR: 126.7)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.3018 (  2.5%) BOND C100 H104
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   42.1% BOND,  37.5% ANGLE,   0.0% OUT,  20.3% TOR
+
+Mode 494:  3045.22 cm-1 (IR:   0.0)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.3009 (  2.5%) BOND C100 H104
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   41.9% BOND,  37.5% ANGLE,   0.1% OUT,  20.5% TOR
+
+Mode 495:  3045.26 cm-1 (IR: 476.7)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2984 (  2.5%) BOND C16 H19
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   42.0% BOND,  37.6% ANGLE,   0.1% OUT,  20.4% TOR
+
+Mode 496:  3057.78 cm-1 (IR: 770.8)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.3246 (  2.9%) BOND C102 H107
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   50.4% BOND,  28.3% ANGLE,   0.1% OUT,  21.2% TOR
+
+Mode 497:  3057.78 cm-1 (IR:   0.0)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.3235 (  3.0%) BOND C102 H107
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   50.4% BOND,  28.1% ANGLE,   0.1% OUT,  21.5% TOR
+
+Mode 498:  3057.83 cm-1 (IR: 1057.7)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.3213 (  2.9%) BOND C4 H21
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   50.5% BOND,  27.9% ANGLE,   0.0% OUT,  21.5% TOR
+
+Mode 499:  3057.83 cm-1 (IR: 167.8)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.3243 (  3.0%) BOND C4 H21
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   50.6% BOND,  28.0% ANGLE,   0.1% OUT,  21.3% TOR
+
+Mode 500:  3068.11 cm-1 (IR: 8373.2)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.4413 (  4.1%) BOND C112 H115
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   50.2% BOND,  44.3% ANGLE,   0.1% OUT,   5.3% TOR
+
+Mode 501:  3068.31 cm-1 (IR:  96.5)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.4544 (  4.4%) BOND C73 H76
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   50.2% BOND,  44.4% ANGLE,   0.1% OUT,   5.4% TOR
+
+Mode 502:  3068.46 cm-1 (IR:   0.0)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.1773 (  1.9%) ANGLE C112 C114 C116
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   49.8% BOND,  46.2% ANGLE,   0.1% OUT,   3.9% TOR
+
+Mode 503:  3068.51 cm-1 (IR: 11959.1)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.4781 (  4.9%) BOND C112 H115
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   49.3% BOND,  47.0% ANGLE,   0.1% OUT,   3.6% TOR
+
+Mode 504:  3069.86 cm-1 (IR:   0.0)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2958 (  2.6%) BOND C120 H127
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   54.4% BOND,  32.1% ANGLE,   0.0% OUT,  13.5% TOR
+
+Mode 505:  3069.88 cm-1 (IR: 6020.3)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.3345 (  2.9%) BOND C167 H176
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   54.3% BOND,  32.2% ANGLE,   0.0% OUT,  13.5% TOR
+
+Mode 506:  3070.49 cm-1 (IR: 11629.2)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.3218 (  2.7%) BOND C27 H45
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   54.4% BOND,  33.2% ANGLE,   0.0% OUT,  12.4% TOR
+
+Mode 507:  3070.54 cm-1 (IR:  18.9)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.3102 (  2.5%) BOND C27 H45
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   53.8% BOND,  34.3% ANGLE,   0.1% OUT,  11.8% TOR
+
+Mode 508:  3071.78 cm-1 (IR: 1207.4)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.3732 (  3.8%) BOND C25 H40
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   55.6% BOND,  29.8% ANGLE,   0.0% OUT,  14.6% TOR
+
+Mode 509:  3071.81 cm-1 (IR: 120.0)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.3771 (  3.9%) BOND C25 H40
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   55.6% BOND,  29.6% ANGLE,   0.0% OUT,  14.7% TOR
+
+Mode 510:  3071.83 cm-1 (IR: 2959.5)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.3741 (  4.2%) BOND C86 H87
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   56.6% BOND,  27.6% ANGLE,   0.0% OUT,  15.8% TOR
+
+Mode 511:  3071.84 cm-1 (IR:   0.0)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2664 (  3.0%) BOND C86 H88
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   56.4% BOND,  27.7% ANGLE,   0.1% OUT,  15.8% TOR
+
+Mode 512:  3078.30 cm-1 (IR: 5784.0)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.4955 (  4.6%) BOND C105 H122
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   37.9% BOND,  41.5% ANGLE,   0.0% OUT,  20.6% TOR
+
+Mode 513:  3078.32 cm-1 (IR:   0.0)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.4955 (  4.6%) BOND C152 H169
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   37.8% BOND,  41.6% ANGLE,   0.0% OUT,  20.5% TOR
+
+Mode 514:  3078.64 cm-1 (IR:  40.0)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.4968 (  4.8%) BOND C62 H66
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   37.2% BOND,  41.8% ANGLE,   0.0% OUT,  21.0% TOR
+
+Mode 515:  3078.67 cm-1 (IR: 877.3)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.4965 (  4.7%) BOND C152 H169
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   37.5% BOND,  41.8% ANGLE,   0.1% OUT,  20.6% TOR
+
+Mode 516:  3089.83 cm-1 (IR:  15.3)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.4725 (  5.7%) BOND C163 H165
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   54.5% BOND,  43.7% ANGLE,   0.2% OUT,   1.6% TOR
+
+Mode 517:  3090.04 cm-1 (IR:   0.0)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.2018 (  2.5%) ANGLE C159 C161 C163
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   52.2% BOND,  46.2% ANGLE,   0.2% OUT,   1.5% TOR
+
+Mode 518:  3090.09 cm-1 (IR:  23.6)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.4684 (  5.7%) BOND C36 H38
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   52.2% BOND,  46.1% ANGLE,   0.2% OUT,   1.5% TOR
+
+Mode 519:  3090.31 cm-1 (IR: 1506.0)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.4692 (  5.6%) BOND C163 H165
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   54.3% BOND,  43.9% ANGLE,   0.2% OUT,   1.6% TOR
+
+Mode 520:  3098.23 cm-1 (IR: 866.3)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.4025 (  5.9%) BOND C25 H42
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   56.5% BOND,  39.2% ANGLE,   0.0% OUT,   4.3% TOR
+
+Mode 521:  3098.24 cm-1 (IR: 942.9)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.4034 (  5.9%) BOND C86 H89
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   56.5% BOND,  38.8% ANGLE,   0.0% OUT,   4.7% TOR
+
+Mode 522:  3098.28 cm-1 (IR: 3369.7)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.4021 (  6.1%) BOND C177 H180
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   56.7% BOND,  38.9% ANGLE,   0.0% OUT,   4.4% TOR
+
+Mode 523:  3098.30 cm-1 (IR:   0.0)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.4037 (  6.1%) BOND C86 H89
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   56.7% BOND,  38.5% ANGLE,   0.0% OUT,   4.8% TOR
+
+Mode 524:  3104.83 cm-1 (IR:   0.0)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.4212 (  5.8%) BOND C27 H44
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   52.8% BOND,  34.7% ANGLE,   0.1% OUT,  12.4% TOR
+
+Mode 525:  3104.85 cm-1 (IR:  32.6)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.4213 (  5.9%) BOND C27 H44
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   52.8% BOND,  34.6% ANGLE,   0.1% OUT,  12.5% TOR
+
+Mode 526:  3104.86 cm-1 (IR:   3.5)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.4198 (  5.6%) BOND C167 H175
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   52.8% BOND,  35.1% ANGLE,   0.1% OUT,  12.0% TOR
+
+Mode 527:  3104.91 cm-1 (IR: 107.4)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.4205 (  5.8%) BOND C27 H44
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   52.8% BOND,  34.6% ANGLE,   0.1% OUT,  12.5% TOR
+
+Mode 528:  3109.18 cm-1 (IR: 352.1)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.4713 (  6.5%) BOND C161 H164
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   62.6% BOND,  36.0% ANGLE,   0.1% OUT,   1.3% TOR
+
+Mode 529:  3109.34 cm-1 (IR: 553.7)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.4696 (  6.4%) BOND C114 H117
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   62.7% BOND,  35.9% ANGLE,   0.1% OUT,   1.2% TOR
+
+Mode 530:  3109.41 cm-1 (IR: 126.3)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.4620 (  5.8%) BOND C34 H37
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   62.1% BOND,  35.9% ANGLE,   0.2% OUT,   1.9% TOR
+
+Mode 531:  3109.59 cm-1 (IR:   0.0)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.4625 (  6.0%) BOND C114 H117
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   62.2% BOND,  36.0% ANGLE,   0.2% OUT,   1.7% TOR
+
+Mode 532:  3124.55 cm-1 (IR: 2774.1)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.4910 (  6.4%) BOND C31 H39
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   52.6% BOND,  44.7% ANGLE,   0.3% OUT,   2.4% TOR
+
+Mode 533:  3124.78 cm-1 (IR: 891.2)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.4905 (  6.4%) BOND C158 H166
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   53.2% BOND,  44.2% ANGLE,   0.3% OUT,   2.3% TOR
+
+Mode 534:  3125.35 cm-1 (IR:   0.0)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.1616 (  2.2%) BOND C111 C116
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   57.7% BOND,  40.1% ANGLE,   0.3% OUT,   1.9% TOR
+
+Mode 535:  3125.38 cm-1 (IR: 823.9)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.4825 (  6.4%) BOND C158 H166
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   57.9% BOND,  40.0% ANGLE,   0.3% OUT,   1.8% TOR
+
+Mode 536:  3135.58 cm-1 (IR:  15.3)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.4968 (  6.4%) BOND C110 H113
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   48.4% BOND,  44.1% ANGLE,   0.1% OUT,   7.4% TOR
+
+Mode 537:  3136.21 cm-1 (IR:  68.1)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.4973 (  6.5%) BOND C71 H74
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   48.0% BOND,  44.5% ANGLE,   0.1% OUT,   7.4% TOR
+
+Mode 538:  3137.09 cm-1 (IR:   0.0)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.4971 (  6.5%) BOND C71 H74
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   47.6% BOND,  44.9% ANGLE,   0.1% OUT,   7.4% TOR
+
+Mode 539:  3137.37 cm-1 (IR: 374.3)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.4969 (  6.4%) BOND C110 H113
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   47.8% BOND,  44.8% ANGLE,   0.1% OUT,   7.4% TOR
+
+*** End of Vibrational Mode Projection (VMP) ***

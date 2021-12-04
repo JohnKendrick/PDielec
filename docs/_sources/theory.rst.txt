@@ -1,7 +1,9 @@
 .. include:: preamble.txt
 
-.. contents::
-   :local:
+..
+    .. contents::
+       :local:
+..
 
 
 .. meta::
@@ -13,9 +15,10 @@
 Theory
 ======
 
-The theory underlying the Python package PDielec is described.  PDielec calculates the infrared absorption characteristics of a crystalline material supported in a non-absorbing medium.  PDielec post processes solid state quantum mechanical and molecular mechanical calculations of the phonons and dielectric response of the crystalline material. The molecular and solid state quantum mechanical (QM) calculations of response properties such as the frequencies and intensities of infrared (IR) and terahertz (THz) radiation absorption has become generally available in many molecular and solid state computer programs. A common approach is to assume the harmonic approximation and calculate the mass weighted force constant matrix (for molecules) or the dynamical matrix at the gamma point (for periodic solids). Diagonalisation of the matrix gives the frequencies for absorption and the normal modes (molecules) or phonon displacements (periodic solids). The calculation of the absorption intensity for each mode requires the calculation of the change in dipole moment caused by the displacement of the atoms for that mode. For solids where there is a large separation of charge, there can be a large coupling between a phonon mode and the internal field within a particle resulting from its morphology. 
+The theory underlying the Python package PDielec is described.  PDielec calculates the infrared absorption characteristics of a crystalline material supported in a non-absorbing medium.  PDielec post processes solid state quantum mechanical and molecular mechanical calculations of the phonons and dielectric response of the crystalline material. The molecular and solid state quantum mechanical (QM) calculations of response properties, such as the frequencies and intensities of infrared (IR) and terahertz (THz) radiation absorption, has become generally available in many molecular and solid state computer programs.
+A common approach is to assume the harmonic approximation and calculate the mass weighted force constant matrix (for molecules) or the dynamical matrix at the gamma point (for periodic solids). Diagonalisation of the matrix gives the frequencies for absorption and the normal modes (molecules) or phonon displacements (periodic solids). The calculation of the absorption intensity for each mode requires the calculation of the change in dipole moment caused by the displacement of the atoms for that mode. For solids where there is a large separation of charge, there can be a large coupling between a phonon mode and the internal field within a particle resulting from its morphology. 
 
-PDielec post processes the output of solid state quantum mechanical and molecular mechanics (MM) based codes such as VASP :cite:`Hafner2008c`, CASTEP :cite:`Clark2005d`, CRYSTAL :cite:`Dovesi2014`, Abinit :cite:`Gonze2016`, Quantum Espresso :cite:`Giannozzi2009`, Phonopy :cite:`Togo2015`, and GULP :cite:`Gale2003` to predict the infrared absorption of crystalline insulator materials whose crystal size is small compared with the wavelength of the absorbing radiation. The package is suited for the calculation of the complex, frequency dependent permittivity and its associated absorption of infrared radiation for a finely ground crystalline material dispersed in a low loss dielectric medium such KBr or Polytetrafluoroethylene (PTFE). A particular feature of the program is its ability to take into account the constant permittivity of the supporting medium and the particle shape of the material of interest through an effective medium theory. The paper outlines the theory used by the program and gives some examples of the application of the program for ionic and molecular materials.
+PDielec post processes the output of solid state quantum mechanical and molecular mechanics (MM) based codes such as; VASP :cite:`Hafner2008c`, CASTEP :cite:`Clark2005d`, CRYSTAL :cite:`Dovesi2014`, Abinit :cite:`Gonze2016`, Quantum Espresso :cite:`Giannozzi2009`, Phonopy :cite:`Togo2015`, and GULP :cite:`Gale2003`, to predict the infrared absorption of crystalline insulator materials whose crystal size is small compared with the wavelength of the absorbing radiation. The package is suited for the calculation of the complex, frequency dependent permittivity and its associated absorption of infrared radiation for a finely ground crystalline material dispersed in a low loss dielectric medium such KBr or Polytetrafluoroethylene (PTFE). A particular feature of the program is its ability to take into account the constant permittivity of the supporting medium and the particle shape of the material of interest through an effective medium theory. The paper outlines the theory used by the program and gives some examples of the application of the program for ionic and molecular materials.
 
 Equations :eq:`eq-beer1` and :eq:`eq-beer2` describe Beer-Lambert's law :cite:`Bertie2006` where :math:`\alpha` is the (decadic) absorption coefficient (usually given in |cm-1|), :math:`I` and :math:`I_0` are the intensities after and before absorption respectively and :math:`d` is the path length.
 
@@ -224,7 +227,7 @@ Figure :numref:`fig-polarisation` shows a schematic of the field and polarisatio
 
    Schematic showing the various terms used to define the effective medium of an inclusion
 
-The figure show the field and polarisation inside an inclusion with non-isotropic permittivity :math:`{\tensorbf{\varepsilon}}_{i}` embedded in a supporting medium with permittivity :math:`\varepsilon_e`. The internal field within the inclusion is indicated by :math:`\fieldbf{E}_i`, the external, applied field is indicated by :math:`\fieldbf{E}_e` and the induced polarisation in the inclusion is shown by :math:`\fieldbf{P}`
+The figure shows the field and polarisation inside an inclusion with non-isotropic permittivity :math:`{\tensorbf{\varepsilon}}_{i}` embedded in a supporting medium with permittivity :math:`\varepsilon_e`. The internal field within the inclusion is indicated by :math:`\fieldbf{E}_i`, the external, applied field is indicated by :math:`\fieldbf{E}_e` and the induced polarisation in the inclusion is shown by :math:`\fieldbf{P}`
 
 
 The electric field internal to the inclusion gives rise to a polarisation density which is no longer necessarily aligned with the field because the material is non-isotropic. The polarisation density in the inclusion can be expressed as the tensor product of the permittivity contrast between the inclusion and the supporting medium and the (as yet unknown) internal field.
@@ -267,7 +270,7 @@ The internal field is the sum of the external field and the depolarisation field
    \fieldbf{E}_{i} = \fieldbf{E}_{e} + \fieldbf{E}_{d}
 
 
-The depolarisation matrix is determined from the shape of the crystallite.  For an ellipse, slab or needle a unique axis \[hkl\] using the crystal axes of the unit cell is specified. PDielec transforms these to a cartesian coordinate system using the unit cell lattice vectors. In the case of a slab morphology the unique direction is a normal to the surface specified by its Miller indices \(hkl\). The definitions of the various depolarisation tensors are indicated in Table below.
+The depolarisation matrix is determined from the shape of the crystallite.  For an ellipse, slab or needle, a unique axis \[hkl\] using the crystal axes of the unit cell is specified. PDielec transforms these to a cartesian coordinate system using the unit cell lattice vectors. In the case of a slab morphology the unique direction is a normal to the surface specified by its Miller indices \(hkl\). The definitions of the various depolarisation tensors are indicated in Table below.
 
 .. table:: Definitions used for the depolarisation tensor
    :name: tab-depolarisation
@@ -304,7 +307,7 @@ For z \< 1 the ellipsoid is oblate
 
 
 
-The depolarisation tensor acts as a projection or screening operator describing the effect of the geometry of the inclusion on the depolarisation field which results from its polarisation. For instance, in the case of a needle, only polarisation perpendicular to the needle axis contributes to the depolarizing field, whilst for a slab only polarization perpendicular to the slab face may contribute. Similarly for a sphere, all directions contribute and so the depolarisation matrix is diagonal with a value of 1/3 for each diagonal element, as the trace of the depolarisation tensor must be 1. It follows from Equations :eq:`eq-PolarisationDensity`, :eq:`eq-DepolarisationField` and :eq:`eq-InternalField` that;
+The depolarisation tensor acts as a projection or screening operator describing the effect of the geometry of the inclusion on the depolarisation field which results from its polarisation. For instance, in the case of a needle, only polarisation perpendicular to the needle axis contributes to the depolarising field, whilst for a slab only polarisation perpendicular to the slab face may contribute. Similarly for a sphere, all directions contribute and so the depolarisation matrix is diagonal with a value of 1/3 for each diagonal element, as the trace of the depolarisation tensor must be 1. It follows from Equations :eq:`eq-PolarisationDensity`, :eq:`eq-DepolarisationField` and :eq:`eq-InternalField` that;
 
 .. math::
    :label: eq-InternalField2
@@ -390,12 +393,12 @@ The Maxwell-Garnett approach for treating the properties of heterogeneous mixtur
    \tensorbs{\varepsilon}_{mg} = \tensorbf{1} + \left( \tensorbf{1} - \frac{n\left\langle {\tensorbs{\alpha}}{\tensorbf{L}} \right\rangle}{\varepsilon_e} \right)^{- 1}n\left\langle \tensorbs{\alpha} \right\rangle 
 
 
-The fact that the polarisability tensor has a volume term in it (Equation :eq:`eq-polarisation`) means that the terms in Equation :eq:`eq-mg` containing :math:`n\tensorbs{\alpha}` depend on the volume fraction :math:`f`. Although written as a tensor, because the assumption has been made that the inclusions are randomly orientated, the effective permittivity has to be diagonal with equal complex values. Since the polarisability is complex and frequency dependent the effective permittivity is also and its calculation using Equations :eq:`eq-mg` and :eq:`eq-polarisation` need to be calculated over the frequency range of interest.
+The fact that the polarisability tensor has a volume term in it (Equation :eq:`eq-polarisation`) means that the terms in Equation :eq:`eq-mg` containing :math:`n\tensorbs{\alpha}` depend on the volume fraction :math:`f`. Although written as a tensor, because the assumption has been made that the inclusions are randomly orientated, the effective permittivity has to be diagonal with equal complex values. Since the polarisability is complex and frequency dependent, the effective permittivity is also and its calculation using Equations :eq:`eq-mg` and :eq:`eq-polarisation` need to be calculated over the frequency range of interest.
 
 Bruggeman mixing rule
 ^^^^^^^^^^^^^^^^^^^^^
 
-In the Maxwell-Garnett mixing formalism there is a distinction between the inclusion and the supporting medium which results in an asymmetry in the treatment of the two species in the mixture. Instead the Bruggeman mixing rule assumes that each species is polarized against the background of the effective medium and therefore the polarisation in the two components cancel each other out;
+In the Maxwell-Garnett mixing formalism there is a distinction between the inclusion and the supporting medium which results in an asymmetry in the treatment of the two species in the mixture. Instead the Bruggeman mixing rule assumes that each species is polarised against the background of the effective medium and therefore the polarisation in the two components cancel each other out;
 
 .. math::
    :label: eq-EqualPolarisation
@@ -419,7 +422,7 @@ Substituting Equation :eq:`eq-polarisation1` into Equation :eq:`eq-EqualPolarisa
    n_1\left\langle \tensorbs{\alpha}_1 \right\rangle + n_2\left\langle \tensorbs{\alpha}_2 \right\rangle = 0
 
 
-Taking Equation 19 and generalizing it for species :math:`i`, (where :math:`i` is 1 or 2) embedded in an effective permittivity given by :math:`\tensorbs{\varepsilon}_{br}`;
+Taking Equation 19 and generalising it for species :math:`i`, (where :math:`i` is 1 or 2) embedded in an effective permittivity given by :math:`\tensorbs{\varepsilon}_{br}`;
 
 .. math::
    :label: eq-bruggemanpolarisability2
@@ -428,8 +431,9 @@ Taking Equation 19 and generalizing it for species :math:`i`, (where :math:`i` i
    \left( \tensorbs{\varepsilon}_{br} + \tensorbf{L} \left( \tensorbs{\varepsilon}_i - \tensorbs{\varepsilon}_{br} \right) \right)^{- 1}
 
 
-Equation :eq:`eq-bruggemanpolarisability1` has to be solved for:math:`\tensorbs{\varepsilon}_{br}`. Since the systems considered here are isotropic with random inclusions, a solution has to be found for a complex value of the Bruggeman permittivity at each frequency considered.  An issue in the use of Equation :eq:`eq-bruggemanpolarisability2` is that the same depolarisation matrix is being used for both species, which is clearly not always appropriate. The solution of Equation :eq:`eq-bruggemanpolarisability1` can be achieved either by iteration or by casting the equation as a minimization problem. The iterative approach implemented in PDielec involves repeated application of Equation 29 until convergence :cite:`Mackay2009`.  The starting point for the iterations is taken as the Maxwell-Garnett solution for the first frequency and then the solution at the previous
-frequency is used to start the iterations.
+Equation :eq:`eq-bruggemanpolarisability1` has to be solved for :math:`\tensorbs{\varepsilon}_{br}`.
+Since the systems considered here are isotropic with random inclusions, a solution has to be found for a complex value of the Bruggeman permittivity at each frequency considered.  An issue in the use of Equation :eq:`eq-bruggemanpolarisability2` is that the same depolarisation matrix is being used for both species, which is clearly not always appropriate. The solution of Equation :eq:`eq-bruggemanpolarisability1` can be achieved either by iteration or by casting the equation as a minimisation problem. The iterative approach implemented in PDielec involves repeated application of :eq:`eq-br` until convergence :cite:`Mackay2009`.  The starting point for the iterations is taken as the Maxwell-Garnett solution for the first frequency and then the solution at the previous
+frequency is used to start the next iteration.
 
 .. math::
    :label: eq-br
@@ -441,7 +445,7 @@ frequency is used to start the iterations.
 
 Although the Bruggeman permittivity is written here as a tensor, the polarisabilities in Equation :eq:`eq-bruggemanpolarisability1` have to be averaged over the random orientation of the inclusions and therefore the homogenized material is isotropic with a single complex value for the diagonal tensor.  Also, as with the Maxwell-Garnett mixing rule, since the polarisability is complex and frequency dependent, the effective permittivity is also, and its calculation using Equation :eq:`eq-mg` needs to be performed over the frequency range of interest.
 
-The choice between using the Bruggeman or Maxwell-Garnett model is often governed by the assumption that the Maxwell-Garnett model works well at low concentrations and the Bruggeman model works better at higher concentrations. Work by Karkkainen *et al*. using a finite difference method for random mixtures of non-absorbing materials indicated that the Bruggeman approximation works best when there is some clustering of the inclusions and the Maxwell Garnett model works best when there is no clustering :cite:`Karkkainen2001`.
+The choice between using the Bruggeman or Maxwell-Garnett model is often governed by the assumption that the Maxwell-Garnett model works well at low concentrations and the Bruggeman model works better at higher concentrations. Work by Karkkainen *et al*., using a finite difference method for random mixtures of non-absorbing materials, indicated that the Bruggeman approximation works best when there is some clustering of the inclusions and the Maxwell Garnett model works best when there is no clustering :cite:`Karkkainen2001`.
 
 The Bruggeman solution has been shown to be unphysical in certain circumstances :cite:`Jamaian2010`.  In particular when the real components of the permittivity have different signs and when the absolute values of the real components are much larger than those of the imaginary components. Unfortunately, it may be that these conditions will apply to modelling infrared absorption. As a result only a few of the examples discussed below will include results using the Bruggeman mixing rule; the majority will use the Maxwell-Garnett mixing rule.
 
@@ -461,7 +465,7 @@ Equation :eq:`eq-ap` defines an isotropic permittivity which can be used to calc
 Particle size effects
 ---------------------
 
-Meier and Wokaun :cite:`Meier1983` outlined an approach to treating large (metal) spherical particles, where particle size is incorporating terms up to 3^rd^ order in the wave vector *k*. Using Equations :eq:`eq-PolarisationDensity` and :eq:`eq-InternalField` we can write;
+Meier and Wokaun :cite:`Meier1983` outlined an approach to treating large (metal) spherical particles, where particle size is incorporating terms up to 3\ :sup:`rd` order in the wave vector *k*. Using Equations :eq:`eq-PolarisationDensity` and :eq:`eq-InternalField` we can write;
 
 .. math::
    :label: eq-PolarisationWithSize
@@ -478,9 +482,9 @@ Meier and Wokaun :cite:`Meier1983` outlined an approach to treating large (metal
    \end{aligned}
 
 
-Here :math:`a` is the radius of thespherical particle and :math:`x` is the dimensionless 'size' of the particle with respect to the wavelength of the incident light. The first term relating the depolarisation field to the polarisability is the same as that used above in Equation :eq:`eq-DepolarisationField`. The second term is a dynamic depolarisation term and the third term is a radiation damping correction to the electrostatic solution :cite:`Meier1983`.
+Here :math:`a` is the radius of the spherical particle and :math:`x` is the dimensionless 'size' of the particle with respect to the wavelength of the incident light. The first term relating the depolarisation field to the polarisability is the same as that used above in Equation :eq:`eq-DepolarisationField`. The second term is a dynamic depolarisation term and the third term is a radiation damping correction to the electrostatic solution :cite:`Meier1983`.
 
-A slightly different, but related, approach is presented by :cite:`Sihvola`.  Starting from Equation :eq:`eq-InternalField2`, a size dependent term :math:`G(x)` is introduced as indicated by the work of Peltoniemi :cite:`Peltoniemi1996`;
+A slightly different, but related, approach is presented by Shivola :cite:`Sihvola`.  Starting from Equation :eq:`eq-InternalField2`, a size dependent term :math:`G(x)` is introduced as indicated by the work of Peltoniemi :cite:`Peltoniemi1996`;
 
 .. math::
    :label: eq-SizeTerms
@@ -512,12 +516,12 @@ This leads to a modified equation for the polarisability of spherical particles;
 
 Using the modified, sized dependent polarisability all the Bruggeman and Maxwell mixing schemes can be implemented in a way that incorporates size effects.  Generally speaking the on-set of changes in the calculated absorption is an indication that size effects are important and should be treated properly.
 
-Light scattering by spherical particles using Mie theory
---------------------------------------------------------
+Mie Theory of Light scattering
+------------------------------
 
-For particles which are comparable in size to the wavelength of light, the theory developed by Mie and described fully by van de Hulst :cite:`VanDeHulst1981` can be used. Unfortunately this theory is only applicable to spherical, isotropic particles where the separation between the particles is large compared with the wavelength of light.
+For spherical particles which are comparable in size to the wavelength of light, the theory developed by Mie and described fully by van de Hulst :cite:`VanDeHulst1981` can be used. Unfortunately this theory is only applicable to spherical, isotropic, particles where the separation between the particles is large compared with the wavelength of light.
 
-PDielec implements a form of Mie theory using the Python library PyMieScatt :cite:`Sumlin2018a`. In order to treat systems which are anisotropic, PDielec first of all calculates the Maxwell-Garnett permittivity for the anisotropic sphere embedded with random orientation in the supporting matrix.  The program then calculates the required permittivity of an isotropic sphere which would give the same Maxwell-Garnett permittivity as the anisotropic system.  The Mie scattering is then performed on this isotropic sphere.
+PDielec applies Mie theory using the Python library PyMieScatt :cite:`Sumlin2018a`. In order to treat systems which are anisotropic, PDielec first of all calculates the Maxwell-Garnett permittivity for the anisotropic sphere embedded with random orientation in the supporting matrix.  The program then calculates the required permittivity of an isotropic sphere which would give the same Maxwell-Garnett permittivity as the anisotropic system.  The Mie scattering is then performed on this isotropic sphere.
 
 An alternative method which diagonalises the real permittivity and then transforms the complex permittivity into the new basis was found to cause anomolous absorptions at the TO frequencies and so the method is no longer used.  However, the theory is given here in case it ever has to be revived.
 
@@ -530,7 +534,7 @@ An alternative method which diagonalises the real permittivity and then transfor
    \end{aligned} 
 
 
-The core of Mie theory is the calculation of efficiency factors S1(θ) and S2(θ) (page 125 in reference :cite:`VanDeHulst1981`.  These factors depend upon the size of the particle with relative to the wavelength of the light (:math:`x`) and the refractive index of infrared active material (:math:`m_1`) relative to that of the supporting medium (:math:`m_2`). Both refractive indices are scalars, :math:`m_1` is complex as light is absorbed by the material and :math:`m_2` is assumed to be real.
+The core of Mie theory is the calculation of efficiency factors S1(θ) and S2(θ) (page 125 in reference :cite:`VanDeHulst1981`.  These factors depend upon the size of the particle relative to the wavelength of the light (:math:`x`) and the refractive index of infrared active material (:math:`m_1`) relative to that of the supporting medium (:math:`m_2`). Both refractive indices are scalars, :math:`m_1` is complex as light is absorbed by the material and :math:`m_2` is assumed to be real.
 
 For each of the three diagonal elements of :math:`\tensorbs{\varepsilon}_{new}` the relative refractive index, :math:`m` is calculated;
 
@@ -560,7 +564,7 @@ Using the routines available in PyMieScatt :cite:`Sumlin2018a` the efficiency fa
    \end{aligned}
 
 
-Here :math:`N` is the number density of particles and :math:`k` is the wave-vector of the light in the surrounding medium. The subscript :math:`w` indicates that there are three values for the effective refractive index, depending on which diagonal value of the permittivity tensor is taken. There is a change in sign from the expressions given by Hulst, this to make the imaginary component compatible with the effective permittivities.  Once the effective refractive index is known in each direction the effective permittivity can be calculated using the one third rule :cite:`Stout2007`;
+Here :math:`N` is the number density of particles and :math:`k` is the wave-vector of the light in the surrounding medium. The subscript :math:`w` indicates that there are three values for the effective refractive index, depending on which diagonal value of the permittivity tensor is taken. There is a change in sign from the expressions given by Hulst, this is to make the imaginary component compatible with the effective permittivities.  Once the effective refractive index is known in each direction the effective permittivity can be calculated using the one third rule :cite:`Stout2007`;
 
 .. math::
    :label: eq-effectiveri
@@ -573,12 +577,14 @@ Here :math:`N` is the number density of particles and :math:`k` is the wave-vect
 
 This approach to taking anisotropy into account when the embedded particles are anisotropic but randomly oriented is approximate, but has been shown to have a reasonably wide range of application :cite:`Stout2007`.
 
+.. _ATR_theory:
 
-Calculation of ATR Reflectance Spectra
---------------------------------------
+Calculation of ATR Extinction Spectra
+-------------------------------------
 
 Attenuated total reflectance spectroscopy (ATR) uses a medium of high refractive index contrast to modify the reflectance and transmission of the infrared radiation.  Balan has reported the calculation of the ATR spectrum of apatite :cite:`Aufort2016` and chrysotile :cite:`Brouder2002`.
-A similar approach is adopted by the PDielec package.  Denoting the angle of incidence by :math:`\theta` and the refractive index of high index, non-absorbing material by :math:`n_0` and that of the absorbing material by :math:`n_s`, the Fresnel amplitudes for reflection in the direction parallel (:math:`r_p`) and perpendicular (:math:`r_s`) to the incident radiation. :cite:`Milosevic2004`
+A similar approach is adopted by the PDielec package.
+Denoting the angle of incidence by :math:`\theta` and the refractive index of the high index, non-absorbing material by :math:`n_0` and that of the absorbing material by :math:`n_s`, the Fresnel amplitudes of reflection of the parallel polarised component (:math:`r_p`) and perpendicular polarised component (:math:`r_s`) is given as follows; :cite:`Milosevic2004`
 
 .. math::
    :label: eq-fresnel
@@ -589,7 +595,7 @@ A similar approach is adopted by the PDielec package.  Denoting the angle of inc
    \end{aligned} 
 
 
-The extinction is expressed in absorbance units as;
+Using :math:`f_p` and :math:`f_s` as the fractions of P and S polarised incident light, the extinction is expressed in absorbance units as;
 
 .. math::
    :label: eq-fresnel-extinction
@@ -597,6 +603,7 @@ The extinction is expressed in absorbance units as;
    \begin{aligned}
    e_s &= -log_{10}( r_s^*r_s ) \\
    e_p &= -log_{10}( r_p^*r_p ) \\
+   e_{total} &= -log_{10}( f_p r_p^*r_p + f_s r_s^*r_s ) \\
    \end{aligned} 
 
 The approach adopted by Balan and in the PDielec package is to use the calculated effective permittivity to determine the (complex) refractive index of the material being studied.  ATR measurements are taken with compressed powders of the material, so the appropriate effective medium can be determined from a high volume fraction of the crystal in air.
@@ -612,7 +619,7 @@ A common method for taking a terahertz spectrum is to dilute the active dielectr
    K = \sqrt{ k^2 [ 1 + \frac{ 2 \pi N f(0)}{k^2} ]^2 - [ \frac { 2 \pi N f(\pi)}{k^2} ]^2 }
 
 
-Where :math:`N` is the number density of voids, :math:`K` is the effective wavenumber of the wave in the material, :math:`k` is the wavenumber of the wave in the support without air inclusions and  :math:`f(0)` and :math:`f(\pi)` are the forward and backwared amplitude scattering factors.  
+Where :math:`N` is the number density of voids, :math:`K` is the effective wavenumber of the wave in the material, :math:`k` is the wavenumber of the wave in the support without air inclusions and  :math:`f(0)` and :math:`f(\pi)` are the forward and backward amplitude scattering factors.  
 
 
 .. math::
@@ -655,3 +662,30 @@ It can be shown :cite:`Eilers2005` that this can be acheived by an iterative sol
 where :math:`\tensorbf{W}` is a diagonal matrix of weights modified during the iterations to make values of :math:`x` lie below those of :math:`y` and :math:`\tensorbf{D}` is a 3rd order differencing matrix.  Since the differencing matrix is very sparse, sparse matrix routines are used to solve the equations.
 
 In *PDGui* the value of :math:`\lambda` is supplied as :math:`\log \lambda`.
+
+Calculation of Single Crystal Optics
+------------------------------------
+
+The *SingleCrystal tab* enables the calculation of the optical behaviour of a single crystal (thick slab or film).  The method uses the pyGTM code available on GitHub :cite:`pygtm`.  This code implements a generalised transfer matrix method described by Passler et al. :cite:`Passler2020` and which builds on previous publications :cite:`Passler2017,Passler2017a`
+
+There are two coordinate systems to consider.  The first is the laboratory coordinate system (X,Y,Z).  
+It is assumed that the normal to the crystal surface is aligned with the Z-axis and that the incident radiation is in the X-Z plane.  P-polarised light is polarised parallel to this plane and S-polarised perpendicular (senkrecht) to this plane.  
+
+The other coordinate system of interest is that of the crystal.  The calculation of the permittivity tensor is performed in the crystal coordinate system (x,y,z).  The crystal place is defined by a set of Miller indices (hkl) and the normal to the crystal surface is rotated to align the laboratory Z-axis.  Finally in the laboratory frame the crystal may be rotated around the Z-axis by the azimuthal angle :math:`\phi`.
+The arrangement described is illustrated in the Figure below where :math:`E_s` and :math:`E_p` are the field directions of the S- and P polarised incident light respectively. 
+
+
+.. _fig-lab-coords2:
+
+.. figure:: ./_static/Figures/SingleCrystalGeometry.png
+   :scale: 90%
+
+   Definition of single crystal laboratory coordinates in PDGui
+
+
+
+
+The calculation mode referred to as a "thick slab" assumes that there are only two media.  The media through which the incident light travels and the crystalline media by which it is reflected.  Transmission is not of interest in this case, as in the case of the a thick crystal it assumed that total absorption will take place and that there will be no internal reflection within the crystal.
+This mode is similar to a standard Fresnel calculation of reflectance but is appropriate for general permittivity tensors.
+
+The other modes of operation refer to a thin film and in these cases there are three media, an isotropic medium for the incident light, the crystal film (which now has a thickness) and the isotropic medium in which there is a detector.  In this case transmittance, reflectance and absorptance are all relevant.

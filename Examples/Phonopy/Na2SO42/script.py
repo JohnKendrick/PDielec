@@ -1,4 +1,10 @@
 #
+# mainTab
+#
+tab = self.notebook.mainTab
+tab.settings['Program'] = 'phonopy'
+tab.settings['Output file name'] = 'OUTCAR.born'
+#
 # SettingsTab
 #
 tab = self.notebook.settingsTab

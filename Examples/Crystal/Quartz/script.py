@@ -1,5 +1,9 @@
+#
+# mainTab
+#
 tab = self.notebook.mainTab
-tab.settings['Hessian symmetrisation'] = 'crystal'
+tab.settings['Program'] = 'crystal'
+tab.settings['Output file name'] = 'qua_hf_2d_f_ir-int.out'
 #
 # SettingsTab
 #

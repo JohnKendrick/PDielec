@@ -1,5 +1,9 @@
+#
+# mainTab
+#
 tab = self.notebook.mainTab
-tab.settings['Hessian symmetrisation'] = 'crystal'
+tab.settings['Program'] = 'crystal'
+tab.settings['Output file name'] = 'Na2SO42.out'
 #
 # SettingsTab
 #

@@ -1,44 +1,74 @@
 
+
+
 <!DOCTYPE html>
 
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"><meta content="PDielec package for the calculation of infrared and terahertz absorption from QM calculations" name="description" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+<meta content="PDielec package for the calculation of infrared and terahertz absorption from QM calculations" name="description" />
 <meta content="Quantum Mechanics, Effective Field Theory, Maxwell, Garnett, Mie, Infrared, Terahertz, Castep, Abinit, VASP, GULP. QE" name="keywords" />
 
     <title>Contents &#8212; PDielec: John Kendrick &amp; Andrew Burnett</title>
-    <link rel="stylesheet" href="_static/haiku.css" type="text/css" />
-    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/cloud.css" />
     <link rel="stylesheet" type="text/css" href="_static/table_styling.css" />
-    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noticia+Text:400,i,b,bi|Open+Sans:400,i,b,bi|Roboto+Mono:400,i,b,bi&amp;display=swap" type="text/css" />
+    
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
     <script src="_static/doctools.js"></script>
-    <script src="_static/language_data.js"></script>
-    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <script type="text/x-mathjax-config">MathJax.Hub.Config({"extensions": ["AMSmath.js"], "TeX": {"Macros": {"bm": ["{\\boldsymbol{#1}}", 1], "tensor": ["{\\bar{\\bar{#1}}}", 1], "tensorbs": ["{\\bar{\\bar{\\bm{#1}}}}", 1], "tensorbf": ["{\\bar{\\bar{\\bm{#1}}}}", 1], "fieldbf": ["{\\bar{\\bm{#1}}}", 1], "water": "\\H_{2}O"}}})</script>
+
+    
+    
+     
+        <script src="_static/jquery.cookie.js"></script>
+    
+
+    
+     
+        <script src="_static/cloud.base.js"></script>
+    
+
+    
+     
+        <script src="_static/cloud.js"></script>
+    
+
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Introduction" href="introduction.html" /> 
+        <meta name="viewport" content="width=device-width, initial-scale=1">
   </head><body>
-      <div class="header" role="banner"><h1 class="heading"><a href="#">
-          <span>PDielec: John Kendrick &amp; Andrew Burnett</span></a></h1>
-        <h2 class="heading"><span>Contents</span></h2>
-      </div>
-      <div class="topnav" role="navigation" aria-label="top navigation">
-      
-        <p>
-        <a class="uplink" href="#">Contents</a>
-        &#160;&#160;::&#160;&#160;
-        <a href="introduction.html">Introduction</a>&#160;&#160;»
-        </p>
+    <div class="relbar-top">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="introduction.html" title="Introduction"
+             accesskey="N">next</a> &nbsp; &nbsp;</li>
+    <li><a href="#">PDielec: John Kendrick &amp; Andrew Burnett</a> &#187;</li>
 
-      </div>
-      <div class="content" role="main">
-        
-        
-  <div class="section" id="contents">
+        <li class="nav-item nav-item-this"><a href="">Contents</a></li> 
+      </ul>
+    </div>
+    </div>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="contents">
 <h1>Contents<a class="headerlink" href="#contents" title="Permalink to this headline">¶</a></h1>
 <p>This is the documentation for the PDielec package.  Using effective medium theory, the package calculates the effect of shape and particle size on the Infrared and Terahertz absorption of small crystals embedded in a non-absorbing support.</p>
 <div class="toctree-wrapper compound">
@@ -56,8 +86,10 @@
 <li class="toctree-l1"><a class="reference internal" href="software.html">Software components</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="software.html#pdgui">PDGui</a></li>
 <li class="toctree-l2"><a class="reference internal" href="software.html#preader">PReader</a></li>
-<li class="toctree-l2"><a class="reference internal" href="software.html#vibanalysis">vibanalysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="software.html#vibanalysis">Vibanalysis</a></li>
 <li class="toctree-l2"><a class="reference internal" href="software.html#mm-qm-interfaces">MM/QM Interfaces</a></li>
+<li class="toctree-l2"><a class="reference internal" href="software.html#experimental-file-format">Experimental File Format</a></li>
+<li class="toctree-l2"><a class="reference internal" href="software.html#the-format-of-the-excel-spreadsheet">The Format of the Excel Spreadsheet</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="theory.html">Theory</a><ul>
@@ -65,10 +97,11 @@
 <li class="toctree-l2"><a class="reference internal" href="theory.html#solid-state-approach-to-absorption-intensity">Solid state approach to absorption intensity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="theory.html#effect-of-particle-shape-on-infrared-absorption">Effect of particle shape on infrared absorption</a></li>
 <li class="toctree-l2"><a class="reference internal" href="theory.html#particle-size-effects">Particle size effects</a></li>
-<li class="toctree-l2"><a class="reference internal" href="theory.html#light-scattering-by-spherical-particles-using-mie-theory">Light scattering by spherical particles using Mie theory</a></li>
-<li class="toctree-l2"><a class="reference internal" href="theory.html#calculation-of-atr-reflectance-spectra">Calculation of ATR Reflectance Spectra</a></li>
+<li class="toctree-l2"><a class="reference internal" href="theory.html#mie-theory-of-light-scattering">Mie Theory of Light scattering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="theory.html#calculation-of-atr-extinction-spectra">Calculation of ATR Extinction Spectra</a></li>
 <li class="toctree-l2"><a class="reference internal" href="theory.html#scattering-effects-due-to-air-inclusions">Scattering Effects due to Air Inclusions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="theory.html#removing-baseline-artifacts-from-experiment">Removing Baseline Artifacts from Experiment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="theory.html#calculation-of-single-crystal-optics">Calculation of Single Crystal Optics</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="analysis.html">Phonon Analysis</a><ul>
@@ -87,34 +120,102 @@
 <li class="toctree-l2"><a class="reference internal" href="application_notes_1.html#l-aspartic-acid-using-castep">L-aspartic Acid using CASTEP</a></li>
 <li class="toctree-l2"><a class="reference internal" href="application_notes_1.html#mgo-example-using-mie-scattering">MgO Example using Mie Scattering</a></li>
 <li class="toctree-l2"><a class="reference internal" href="application_notes_1.html#zno-example-using-mie-scattering">ZnO Example using Mie Scattering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="application_notes_1.html#fitting-the-atr-spectrum-of-na2-so4-2">Fitting the ATR Spectrum of Na<sub>2</sub>(SO<sub>4</sub>)<sub>2</sub></a></li>
+<li class="toctree-l2"><a class="reference internal" href="application_notes_1.html#single-crystal-study-of-forsterite">Single Crystal Study of Forsterite</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="zreferences.html">References</a></li>
 </ul>
 </div>
-<div class="section" id="search">
+<section id="search">
 <h2>Search<a class="headerlink" href="#search" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></p></li>
 </ul>
-</div>
-</div>
+</section>
+</section>
 
 
+            <div class="clearer"></div>
+          </div>
+        </div>
       </div>
-      <div class="bottomnav" role="navigation" aria-label="bottom navigation">
-      
-        <p>
-        <a class="uplink" href="#">Contents</a>
-        &#160;&#160;::&#160;&#160;
-        <a href="introduction.html">Introduction</a>&#160;&#160;»
-        </p>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="sphinx-toc sphinxlocaltoc">
+    <h3><a href="#">Page contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">Contents</a><ul>
+<li><a class="reference internal" href="#search">Search</a></li>
+</ul>
+</li>
+</ul>
 
+  </div>
+  <div class="sphinxnext">
+    <h4>Next page</h4>
+    <p class="topless"><a href="introduction.html"
+                          title="Next page">&rarr; Introduction</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/index.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
       </div>
+    
+    
+        <div class="sidebar-toggle-group no-js">
+            
+            <button class="sidebar-toggle" id="sidebar-hide" title="Hide the sidebar menu">
+                 «
+                <span class="show-for-small">hide menu</span>
+                
+            </button>
+            <button class="sidebar-toggle" id="sidebar-show" title="Show the sidebar menu">
+                
+                <span class="show-for-small">menu</span>
+                <span class="hide-for-small">sidebar</span>
+                 »
+            </button>
+        </div>
+    
+      <div class="clearer"></div>
+    </div>
+    <div class="relbar-bottom">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="introduction.html" title="Introduction"
+             >next</a> &nbsp; &nbsp;</li>
+    <li><a href="#">PDielec: John Kendrick &amp; Andrew Burnett</a> &#187;</li>
+
+        <li class="nav-item nav-item-this"><a href="">Contents</a></li> 
+      </ul>
+    </div>
+    </div>
 
     <div class="footer" role="contentinfo">
         &#169; Copyright 2018, John Kendrick and Andrew Burnett.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.1.2.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.2.0.
     </div>
+    <!-- cloud_sptheme 1.4 -->
   </body>
 </html>

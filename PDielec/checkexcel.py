@@ -55,10 +55,15 @@ max_percentage_error = 0.0
 #
 # Loop over sheets
 #
-sheets = ['Main','Scenarios','Molar Absorption','Absorption','Real Permittivity','Imaginary Permittivity', 'ATR Reflectance', 'Analysis']
+sheets = ['Main','Scenarios','Powder Molar Absorption (cells)','Powder Absorption','Powder Real Permittivity','Powder Imaginary Permittivity', 'Powder ATR Reflectance', 'Analysis','Crystal R_p','Crystal R_s','Crystal T_p','Crystal T_s','Real Crystal Permittivity','Imag Crystal Permittivity']
 if full:
     sheets.append('Settings')
 for sheet in sheets:
+    if not sheet in  wb1 :
+        continue
+    if not sheet in  wb2 :
+        continue
+    print('Checking sheet ',sheet)
     ws1 = wb1[sheet]
     ws2 = wb2[sheet]
     max_rows1 = ws1.max_row

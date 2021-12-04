@@ -18,14 +18,26 @@
 from __future__ import print_function
 import math
 import sys
+import os
 import cmath
 import random
 import numpy as np
 import scipy.optimize as sc
-from PDielec.Constants import PI, d2byamuang2
+import PDielec.GTMcore as GTM
 import string
+from   PDielec.Constants import PI, d2byamuang2, speed_light_si, wavenumber
+from   scipy.integrate import trapz
+from   scipy.stats import lognorm
+
+#
+# Modify the crossover used in the PyMieScatt Mie routines
+# The Mie routine is taken from PyMieScatt by B. Sumlin and can be found on github
+#
+from   PDielec import Mie
+Mie.crossover = 0.01
 
 points_on_sphere = None
+
 
 def initialise_unit_tensor():
     '''Initialise a 3x3 tensor, the argument is a list of 3 real numbers for the diagonals, the returned tensor is an array'''
@@ -409,34 +421,6 @@ def absorption_from_mode_intensities(f, modes, frequencies, sigmas, intensities)
         absorption = absorption + 2.0 * 4225.6 * icastep / PI * (sigma / (4.0 * (f - v)*(f - v) + sigma*sigma))
     return absorption
 
-def dielectric_contribution(f, modes, frequencies, sigmas, strengths, volume):
-    """Calculate the dielectric function for a set of modes with their own widths and strengths
-       f is the frequency of the dielectric response in au
-       modes are a list of the modes
-       frequencies(au), sigmas(au) and strengths(au) are fairly obvious
-       The output from this calculation is a complex dielectric tensor"""
-    dielectric = np.zeros((3, 3), dtype=complex)
-    for mode in modes:
-        v = frequencies[mode]
-        sigma = sigmas[mode]
-        strength = strengths[mode].astype(complex)
-        dielectric = dielectric + strength / np.complex((v*v - f*f), -sigma*f)
-    return dielectric * (4.0*PI/volume)
-
-def drude_contribution(f, frequency, sigma, volume):
-    """Calculate the dielectric function for a set of a Drude oscillator
-       f is the frequency of the dielectric response in au
-       frequency(au), sigmas(au) are the plasma frequency and the width
-       The output from this calculation is a complex dielectric tensor"""
-    dielectric = np.zeros((3, 3), dtype=complex)
-    unit = initialise_unit_tensor()
-    # Avoid a divide by zero if f is small
-    if f <= 1.0e-8:
-        f = 1.0e-8
-    # Assume that the drude contribution is isotropic
-    dielectric = dielectric - unit * frequency*frequency / np.complex(-f*f, -sigma*f)
-    return dielectric * (4.0*PI/volume)
-
 def calculate_size_factor (x):
     """
     Calculate a size effect using Equations 10.38 and 10.39 in Sihvola
@@ -450,39 +434,39 @@ def calculate_size_factor (x):
         result = 1 - g1 - g2
     return result
 
-def averaged_permittivity(dielectric_medium, dielecv, shape, L, vf, size):
+def averaged_permittivity(dielectric_medium, crystal_permittivity, shape, L, vf, size):
     """Calculate the effective constant permittivity using the averaged permittivity method
        dielectric_medium is the dielectric constant tensor of the medium
-       dielecv is the total frequency dielectric constant tensor at the current frequency
+       crystal_permittivity is the total frequency dielectric constant tensor at the current frequency
        shape is the name of the current shape
        L is the shapes depolarisation matrix
        size is the dimensionless size parameter for the frequency under consideration (not used)
        The routine returns the effective dielectric constant"""
-    effd = vf * dielecv + (1.0-vf) * dielectric_medium
+    effd = vf * crystal_permittivity + (1.0-vf) * dielectric_medium
     trace = np.trace(effd) / 3.0
     effdielec = np.array([[trace, 0, 0], [0, trace, 0], [0, 0, trace]])
     return effdielec
 
-def balan(dielectric_medium, dielecv, shape, L, vf, size):
+def balan(dielectric_medium, crystal_permittivity, shape, L, vf, size):
     """Calculate the effective constant permittivity using the method of balan
        dielectric_medium is the dielectric constant tensor of the medium
-       dielecv is the total frequency dielectric constant tensor at the current frequency
+       crystal_permittivity is the total frequency dielectric constant tensor at the current frequency
        shape is the name of the current shape
        L is the shapes depolarisation matrix
        size is the dimensionless size parameter for the frequency under consideration (not used)
        The routine returns the effective dielectric constant"""
     unit = initialise_unit_tensor()
-    dielecvm1 = (dielecv - unit)
-    deformation  = np.dot(dielectric_medium, np.linalg.inv(dielectric_medium + np.dot(L, (dielecv - dielectric_medium))))
+    dielecvm1 = (crystal_permittivity - unit)
+    deformation  = np.dot(dielectric_medium, np.linalg.inv(dielectric_medium + np.dot(L, (crystal_permittivity - dielectric_medium))))
     effd          = unit + np.dot(deformation, dielecvm1)
     trace = vf * np.trace(effd) / 3.0
     effdielec = np.array([[trace, 0, 0], [0, trace, 0], [0, 0, trace]])
     return effdielec
 
-def spherical_averaged_mie_scattering(dielectric_medium, dielecv, shape, L, vf, size, size_mu, size_distribution_sigma):
+def spherical_averaged_mie_scattering(dielectric_medium, crystal_permittivity, shape, L, vf, size, size_mu, size_distribution_sigma):
     """Calculate the effective constant permittivity using a Mie scattering approach
        dielectric_medium is the dielectric constant tensor of the medium
-       dielecv is the total frequency dielectric constant tensor at the current frequency
+       crystal_permittivity is the total frequency dielectric constant tensor at the current frequency
        shape is the name of the current shape (NOT USED)
        L is the shapes depolarisation matrix (NOT USED)
        size is the dimensionless size parameter for the frequency under consideration
@@ -492,9 +476,6 @@ def spherical_averaged_mie_scattering(dielectric_medium, dielecv, shape, L, vf, 
        The anisotropy of the permittivity is accounted for by sampling many directions
        and calculating the scattering in each direction
        The routine returns the effective dielectric constant"""
-    from scipy.integrate import trapz
-    from scipy.stats import lognorm
-    from PyMieScatt.Mie import MieS1S2
     global points_on_sphere
     # define i as a complex number
     i = complex(0,1)
@@ -535,7 +516,7 @@ def spherical_averaged_mie_scattering(dielectric_medium, dielecv, shape, L, vf, 
     # Now take the average of each direction on the sphere
     for point in points_on_sphere:
         point = np.array(point)
-        rotated_dielec = np.dot(point, np.dot(point, dielecv))
+        rotated_dielec = np.dot(point, np.dot(point, crystal_permittivity))
         refractive_index = calculate_refractive_index_scalar(rotated_dielec) / refractive_index_medium
         # print('refractive_index', refractive_index)
         # print('refractive_index_medium', refractive_index_medium)
@@ -547,7 +528,7 @@ def spherical_averaged_mie_scattering(dielectric_medium, dielecv, shape, L, vf, 
                 # The size parameter is 2pi r / lambda
                 x = 2 * PI * r / lambda_vacuum_mu
                 # Calculate the S1 and S2 scattering factors, and store in a list
-                s1,s2 = MieS1S2(refractive_index, x*refractive_index_medium, 1)
+                s1,s2 = Mie.MieS1S2(refractive_index, x*refractive_index_medium, 1)
                 s1_factors.append(s1)
             # Now integrate
             s1 = trapz(s1_factors*ndp,dp)
@@ -564,7 +545,7 @@ def spherical_averaged_mie_scattering(dielectric_medium, dielecv, shape, L, vf, 
         else:
             # Calculate the scattering factors at 0 degrees
             #jk print("refractive_index, size, refractive_index_medium", refractive_index, size, refractive_index_medium)
-            s1,s2 = MieS1S2(refractive_index, size*refractive_index_medium, 1)
+            s1,s2 = Mie.MieS1S2(refractive_index, size*refractive_index_medium, 1)
         # See van de Hulst page 129, 130
         # Refractive index of material is
         # the sign of the imaginary component has changed for compatibility with MG/Bruggeman
@@ -579,10 +560,10 @@ def spherical_averaged_mie_scattering(dielectric_medium, dielecv, shape, L, vf, 
     return effdielec
 
 
-def mie_scattering(dielectric_medium, dielecv, shape, L, vf, size, size_mu, size_distribution_sigma):
+def mie_scattering(dielectric_medium, crystal_permittivity, shape, L, vf, size, size_mu, size_distribution_sigma):
     """Calculate the effective constant permittivity using a Mie scattering approach
        dielectric_medium is the dielectric constant tensor of the medium
-       dielecv is the total frequency dielectric constant tensor at the current frequency
+       crystal_permittivity is the total frequency dielectric constant tensor at the current frequency
        shape is the name of the current shape (NOT USED)
        L is the shapes depolarisation matrix (NOT USED)
        size is the dimensionless size parameter for the frequency under consideration
@@ -592,17 +573,14 @@ def mie_scattering(dielectric_medium, dielecv, shape, L, vf, size, size_mu, size
        Then the permittivity of the isodtropic sphere that would give the same average permittivity is calculated
        Then the Mie scattering of that sphere is calculated
        The routine returns the effective dielectric constant"""
-    from scipy.integrate import trapz
-    from scipy.stats import lognorm
-    from PyMieScatt.Mie import MieS1S2
     #
     # Calculate the MG permittivity with no size effects
     #
-    mg_permittivity = maxwell(dielectric_medium, dielecv, shape, L, vf, 0.0000001)
+    mg_permittivity = maxwell(dielectric_medium, crystal_permittivity, shape, L, vf, 0.0000001)
     # Use scalar quantities to calculate the dielectric constant of the equivalent isotropic sphere
     ef = np.trace(mg_permittivity) / 3.0
     em = np.trace(dielectric_medium) / 3.0
-    # print('dielecv',dielecv)
+    # print('crystal_permittivity',crystal_permittivity)
     # print('Maxwell',ef)
     # print('EMedium',em)
     # Calculate the permittivity of an isotropic sphere that has the same effective permittivity
@@ -653,7 +631,7 @@ def mie_scattering(dielectric_medium, dielecv, shape, L, vf, size, size_mu, size
             # The size parameter is 2pi r / lambda
             x = 2 * PI * r / lambda_vacuum_mu
             # Calculate the S1 and S2 scattering factors, and store in a list
-            s1,s2 = MieS1S2(refractive_index, x*refractive_index_medium, 1)
+            s1,s2 = Mie.MieS1S2(refractive_index, x*refractive_index_medium, 1)
             s1_factors.append(s1)
         # Now integrate
         s1 = trapz(s1_factors*ndp,dp)
@@ -670,7 +648,7 @@ def mie_scattering(dielectric_medium, dielecv, shape, L, vf, size, size_mu, size
     else:
         # Calculate the scattering factors at 0 degrees
         #jk print("refractive_index, size, refractive_index_medium", refractive_index, size, refractive_index_medium)
-        s1,s2 = MieS1S2(refractive_index, size*refractive_index_medium, 1)
+        s1,s2 = Mie.MieS1S2(refractive_index, size*refractive_index_medium, 1)
     # See van de Hulst page 129, 130
     # Refractive index of material is
     # the sign of the imaginary component has changed for compatibility with MG/Bruggeman
@@ -681,10 +659,10 @@ def mie_scattering(dielectric_medium, dielecv, shape, L, vf, size, size_mu, size
     #print ("radius_nm, eff", radius_nm, eff)
     return effdielec
 
-def anisotropic_mie_scattering(dielectric_medium, dielecv, shape, L, vf, size, size_mu, size_distribution_sigma):
+def anisotropic_mie_scattering(dielectric_medium, crystal_permittivity, shape, L, vf, size, size_mu, size_distribution_sigma):
     """Calculate the effective constant permittivity using a Mie scattering approach
        dielectric_medium is the dielectric constant tensor of the medium
-       dielecv is the total frequency dielectric constant tensor at the current frequency
+       crystal_permittivity is the total frequency dielectric constant tensor at the current frequency
        shape is the name of the current shape (NOT USED)
        L is the shapes depolarisation matrix (NOT USED)
        size is the dimensionless size parameter for the frequency under consideration
@@ -692,9 +670,6 @@ def anisotropic_mie_scattering(dielectric_medium, dielecv, shape, L, vf, size, s
        vf is the volume fraction of filler
        Mie only works for spherical particles, so shape, and L parameters are ignored
        The routine returns the effective dielectric constant"""
-    from scipy.integrate import trapz
-    from scipy.stats import lognorm
-    from PyMieScatt.Mie import MieS1S2
     # define i as a complex number
     i = complex(0,1)
     # We need to taken account of the change in wavelength and the change in size parameter due to the
@@ -709,10 +684,10 @@ def anisotropic_mie_scattering(dielectric_medium, dielecv, shape, L, vf, size, s
     radius_nm = size_mu * 1000
     # To account for anisotropy we diagonalise the real part of the dielectric matrix and transform
     # the full matrix with the eigenvectors, U
-    # Find U and E, such that UT. D. U = E (where D is the real part of dielecv)
-    E,U = np.linalg.eig(np.real(dielecv))
+    # Find U and E, such that UT. D. U = E (where D is the real part of crystal_permittivity)
+    E,U = np.linalg.eig(np.real(crystal_permittivity))
     # Transform the full dielectric matrix
-    rotated_dielec = np.matmul(U.T,np.matmul(dielecv,U))
+    rotated_dielec = np.matmul(U.T,np.matmul(crystal_permittivity,U))
     # The wavevector in nm-1
     k_nm = 2 * PI / wavelength_nm
     # volume of a particle in nm^3
@@ -748,7 +723,7 @@ def anisotropic_mie_scattering(dielectric_medium, dielecv, shape, L, vf, size, s
                 # The size parameter is 2pi r / lambda
                 x = 2 * PI * r / lambda_vacuum_mu
                 # Calculate the S1 and S2 scattering factors, and store in a list
-                s1,s2 = MieS1S2(refractive_index, x*refractive_index_medium, 1)
+                s1,s2 = Mie.MieS1S2(refractive_index, x*refractive_index_medium, 1)
                 s1_factors.append(s1)
             # Now integrate
             s1 = trapz(s1_factors*ndp,dp)
@@ -765,7 +740,7 @@ def anisotropic_mie_scattering(dielectric_medium, dielecv, shape, L, vf, size, s
         else:
             # Calculate the scattering factors at 0 degrees
             #jk print("refractive_index, size, refractive_index_medium", refractive_index, size, refractive_index_medium)
-            s1,s2 = MieS1S2(refractive_index, size*refractive_index_medium, 1)
+            s1,s2 = Mie.MieS1S2(refractive_index, size*refractive_index_medium, 1)
         # See van de Hulst page 129, 130
         # Refractive index of material is
         # the sign of the imaginary component has changed for compatibility with MG/Bruggeman
@@ -779,10 +754,10 @@ def anisotropic_mie_scattering(dielectric_medium, dielecv, shape, L, vf, size, s
     #print ("radius_nm, eff", radius_nm, eff)
     return effdielec
 
-def maxwell(dielectric_medium, dielecv, shape, L, vf, size):
+def maxwell(dielectric_medium, crystal_permittivity, shape, L, vf, size):
     """Calculate the effective constant permittivity using the maxwell garnett method
        dielectric_medium is the dielectric constant tensor of the medium
-       dielecv is the total frequency dielectric constant tensor at the current frequency
+       crystal_permittivity is the total frequency dielectric constant tensor at the current frequency
        shape is the name of the current shape
        L is the shapes depolarisation matrix
        size is the dimensionless size parameter for the frequency under consideration
@@ -793,7 +768,7 @@ def maxwell(dielectric_medium, dielecv, shape, L, vf, size):
     # If appropriate calculate a size effect using Equations 10.38 and 10.39 in Sihvola
     size_factor = calculate_size_factor(size)
     # Equation 5.78 in Sihvola
-    nalpha = emedium*vf*np.dot((dielecv - dielectric_medium), np.linalg.inv(dielectric_medium + size_factor * np.dot(L, (dielecv-dielectric_medium))))
+    nalpha = emedium*vf*np.dot((crystal_permittivity - dielectric_medium), np.linalg.inv(dielectric_medium + size_factor * np.dot(L, (crystal_permittivity-dielectric_medium))))
     nalphal = np.dot((nalpha/emedium), L)
     # average the polarisability over orientation
     nalpha = np.trace(nalpha) / 3.0 * unit
@@ -805,10 +780,10 @@ def maxwell(dielectric_medium, dielecv, shape, L, vf, size):
     effdielec = np.array([[trace, 0, 0], [0, trace, 0], [0, 0, trace]])
     return effdielec
 
-def maxwell_sihvola(dielectric_medium, dielecv, shape, L, vf, size):
+def maxwell_sihvola(dielectric_medium, crystal_permittivity, shape, L, vf, size):
     """Calculate the effective constant permittivity using the maxwell garnett method
        dielectric_medium is the dielectric constant tensor of the medium
-       dielecv is the total frequency dielectric constant tensor at the current frequency
+       crystal_permittivity is the total frequency dielectric constant tensor at the current frequency
        shape is the name of the current shape
        L is the shapes depolarisation matrix
        size is the dimensionless size parameter for the frequency under consideration
@@ -821,7 +796,7 @@ def maxwell_sihvola(dielectric_medium, dielecv, shape, L, vf, size):
     Me = dielectric_medium
     # assume that the medium is isotropic calculate the inverse of the dielectric
     Mem1 = 3.0 / np.trace(Me)
-    Mi = dielecv
+    Mi = crystal_permittivity
     # If appropriate calculate a size effect using Equations 10.38 and 10.39 in Sihvola
     size_factor = calculate_size_factor(size)
     # calculate the polarisability matrix x the number density of inclusions
@@ -844,16 +819,16 @@ def maxwell_sihvola(dielectric_medium, dielecv, shape, L, vf, size):
     effdielec = np.array([[trace, 0, 0], [0, trace, 0], [0, 0, trace]])
     return effdielec
 
-def coherent(dielectric_medium, dielecv, shape, L, vf, size, dielectric_apparent):
+def coherent(dielectric_medium, crystal_permittivity, shape, L, vf, size, dielectric_apparent):
     """Driver for coherent2 method"""
     for i in range(10):
-        dielectric_apparent = 0.1 * dielectric_apparent + 0.9 * coherent2(dielectric_medium, dielectric_apparent, dielecv, shape, L, vf, size)
+        dielectric_apparent = 0.1 * dielectric_apparent + 0.9 * coherent2(dielectric_medium, dielectric_apparent, crystal_permittivity, shape, L, vf, size)
     return dielectric_apparent
 
-def coherent2(dielectric_medium, dielectric_apparent, dielecv, shape, L, vf, size):
+def coherent2(dielectric_medium, dielectric_apparent, crystal_permittivity, shape, L, vf, size):
     """Calculate the effective constant permittivity using the maxwell garnett method
        dielectric_medium is the dielectric constant tensor of the medium
-       dielecv is the total frequency dielectric constant tensor at the current frequency
+       crystal_permittivity is the total frequency dielectric constant tensor at the current frequency
        shape is the name of the current shape
        L is the shapes depolarisation matrix
        size is the dimensionless size parameter for the frequency under consideration
@@ -865,7 +840,7 @@ def coherent2(dielectric_medium, dielectric_apparent, dielecv, shape, L, vf, siz
     # If appropriate calculate a size effect using Equations 10.38 and 10.39 in Sihvola
     size_factor = calculate_size_factor(size)
     # Equation 5.78 in Sihvola
-    nalpha = emedium*vf*np.dot((dielecv - dielectric_medium), np.linalg.inv(dielectric_medium + size_factor * np.dot(L, (dielecv-dielectric_medium))))
+    nalpha = emedium*vf*np.dot((crystal_permittivity - dielectric_medium), np.linalg.inv(dielectric_medium + size_factor * np.dot(L, (crystal_permittivity-dielectric_medium))))
     nalphal = np.dot((nalpha/eapparent), L)
     # average the polarisability over orientation
     nalpha = np.trace(nalpha) / 3.0 * unit
@@ -1119,25 +1094,34 @@ def direction_from_shape(data, reader):
     #    print("The miller direction ", original, "is ", direction, "in xyz")
     return direction
 
-def parallel_dielectric(call_parameters):
-    # Call_parameters is a tuple
-    v, vau, mode_list, frequencies, sigmas, oscillator_strengths, volume, epsilon_inf, drude, drude_plasma, drude_sigma = call_parameters
-    # loop over all modes and calculate the contribution to the dielectric
-    ionicv = dielectric_contribution(vau, mode_list, frequencies, sigmas, oscillator_strengths, volume)
-    if drude:
-        ionicv = ionicv + drude_contribution(vau, drude_plasma, drude_sigma, volume)
-    # absorption units here are L/mole/cm-1
-    # molar_absorption_coefficient_from_mode_intensities_Lpmolpcm = absorption_from_mode_intensities(v, mode_list, frequencies_cm1, sigmas_cm1, intensities)
-    # Now the units are cm-1
-    # absorption_coefficient_from_mode_intensities_pcm = concentration * molar_absorption_coefficient_from_mode_intensities_Lpmolpcm
-    dielecv = ionicv + epsilon_inf
-    return v, vau, dielecv
-
-def solve_effective_medium_equations( call_parameters ):
-    # call_parameters is a tuple
+def solve_effective_medium_equations( 
+        method                   ,
+        vf                       ,
+        size_mu                  ,
+        size_distribution_sigma  ,
+        dielectric_medium        ,
+        shape                    ,
+        L                        ,
+        concentration            ,
+        atrPermittivity          ,
+        atrTheta                 ,
+        atrSPol                  ,
+        bubble_vf                ,
+        bubble_radius            ,
+        previous_solution_shared ,
+        params                  ,
+        ):
+    # call_parameters is an index into the frequency and dielectric arrays
     # In the case of Bruggeman and coherent we can use the previous result to start the iteration/minimisation
     # However to do this we need some shared memory, this allocated in previous_solution_shared
-    v,vau,dielecv,method,vf,vf_type,size_mu,size_distribution_sigma,size,nplot,dielectric_medium,shape,data,L,concentration,atrPermittivity,atrTheta,atrSPol,bubble_vf,bubble_radius,previous_solution_shared = call_parameters
+    v,crystal_permittivity = params
+    vau = v * wavenumber
+    # convert the size to a dimensionless number which is 2*pi*size/lambda
+    lambda_mu = 1.0E4 / (v + 1.0e-12)
+    if size_mu < 1.0e-12:
+        size_mu = 1.0e-12
+    size = 2.0*np.pi*size_mu / lambda_mu
+    data = ''
     # Calculate the effect of bubbles in the matrix by assuming they are embedded in an effective medium defined above
     refractive_index = math.sqrt(np.trace(dielectric_medium)/3.0)
     if refractive_index.imag < 0.0:
@@ -1146,35 +1130,35 @@ def solve_effective_medium_equations( call_parameters ):
         effdielec,refractive_index = calculate_bubble_refractive_index(v, refractive_index, bubble_vf, bubble_radius)
         dielectric_medium = effdielec
     if method == "balan":
-        effdielec = balan(dielectric_medium, dielecv, shape, L, vf, size)
+        effdielec = balan(dielectric_medium, crystal_permittivity, shape, L, vf, size)
     elif method == "ap" or method == "averagedpermittivity" or method == "averaged permittivity" or method == "average permittivity":
-            effdielec = averaged_permittivity(dielectric_medium, dielecv, shape, L, vf, size)
+            effdielec = averaged_permittivity(dielectric_medium, crystal_permittivity, shape, L, vf, size)
     elif method == "maxwell" or method == "maxwell-garnett":
-        effdielec = maxwell(dielectric_medium, dielecv, shape, L, vf, size)
+        effdielec = maxwell(dielectric_medium, crystal_permittivity, shape, L, vf, size)
     elif method == "maxwell_sihvola":
-        effdielec = maxwell_sihvola(dielectric_medium, dielecv, shape, L, vf, size)
+        effdielec = maxwell_sihvola(dielectric_medium, crystal_permittivity, shape, L, vf, size)
     elif method == "coherent":
-        eff  = previous_solution_shared[nplot]
+        eff  = previous_solution_shared
         if np.abs(np.trace(eff)) < 1.0e-8:
-            eff = maxwell(dielectric_medium, dielecv, shape, L, vf, size)
-        effdielec = coherent(dielectric_medium, dielecv, shape, L, vf, size, eff)
-        previous_solution_shared[nplot] = effdielec
+            eff = maxwell(dielectric_medium, crystal_permittivity, shape, L, vf, size)
+        effdielec = coherent(dielectric_medium, crystal_permittivity, shape, L, vf, size, eff)
+        previous_solution_shared = effdielec
     elif method == "bruggeman_minimise":
-        eff  = previous_solution_shared[nplot]
+        eff  = previous_solution_shared
         if np.abs(np.trace(eff)) < 1.0e-8:
-            eff = maxwell(dielectric_medium, dielecv, shape, L, vf, size)
-        effdielec = bruggeman_minimise(dielectric_medium, dielecv, shape, L, vf, size, eff)
-        previous_solution_shared[nplot] = effdielec
+            eff = maxwell(dielectric_medium, crystal_permittivity, shape, L, vf, size)
+        effdielec = bruggeman_minimise(dielectric_medium, crystal_permittivity, shape, L, vf, size, eff)
+        previous_solution_shared = effdielec
     elif method == "bruggeman" or method == "bruggeman_iter":
-        eff  = previous_solution_shared[nplot]
+        eff  = previous_solution_shared
         if np.abs(np.trace(eff)) < 1.0e-8:
-            eff = maxwell(dielectric_medium, dielecv, shape, L, vf, size)
-        effdielec = bruggeman_iter(dielectric_medium, dielecv, shape, L, vf, size, eff)
-        previous_solution_shared[nplot] = effdielec
+            eff = maxwell(dielectric_medium, crystal_permittivity, shape, L, vf, size)
+        effdielec = bruggeman_iter(dielectric_medium, crystal_permittivity, shape, L, vf, size, eff)
+        previous_solution_shared = effdielec
     elif method == "anisotropic-mie":
-        effdielec = anisotropic_mie_scattering(dielectric_medium, dielecv, shape, L, vf, size, size_mu, size_distribution_sigma)
+        effdielec = anisotropic_mie_scattering(dielectric_medium, crystal_permittivity, shape, L, vf, size, size_mu, size_distribution_sigma)
     elif method == "mie":
-        effdielec = mie_scattering(dielectric_medium, dielecv, shape, L, vf, size, size_mu, size_distribution_sigma)
+        effdielec = mie_scattering(dielectric_medium, crystal_permittivity, shape, L, vf, size, size_mu, size_distribution_sigma)
     else:
         print('Unkown dielectric method: {}'.format(method))
         exit(1)
@@ -1192,7 +1176,7 @@ def solve_effective_medium_equations( call_parameters ):
     molar_absorption_coefficient = absorption_coefficient / concentration / vf
     # calculate the ATR reflectance
     spatr = reflectance_atr(refractive_index,atrPermittivity,atrTheta,atrSPol)
-    return v,nplot,method,vf_type,size_mu,size_distribution_sigma,shape,data,trace,absorption_coefficient,molar_absorption_coefficient,spatr
+    return v,method,size_mu,size_distribution_sigma,shape,data,trace,absorption_coefficient,molar_absorption_coefficient,spatr
 
 def calculate_bubble_refractive_index(v_cm1, ri_medium, vf, radius_mu):
     """Calculate the scattering from bubbles embedded in a possibly, complex dielectric at v_cm1
@@ -1234,14 +1218,13 @@ def foldy_scattering(lambda_vacuum_nm, N_nm,radius_nm,ri_medium):
     # radius_nm is the radius of the bubble
     # ri_medium is the refractive index of the medium the bubble is in
     #
-    from PyMieScatt.Mie import MieS1S2
     #
     k_nm = 2*PI*ri_medium/lambda_vacuum_nm
     # The size parameter is now also complex and dimensionless
     size = k_nm*radius_nm
     refractive_index = 1.0 / ri_medium
     # Calculate the forward and backward scattering amplitude
-    s10,s20 = MieS1S2(refractive_index, size*ri_medium, 1)
+    s10,s20 = Mie.MieS1S2(refractive_index, size*ri_medium, 1)
     i = complex(0,1)
     f0 = i * s10 / k_nm
     new_k = np.sqrt( k_nm*k_nm + 4*PI*N_nm*f0 )
@@ -1257,15 +1240,14 @@ def waterman_truell_scattering(lambda_vacuum_nm, N_nm,radius_nm,ri_medium):
     # radius_nm is the radius of the bubble
     # ri_medium is the refractive index of the medium the bubble is in
     #
-    from PyMieScatt.Mie import MieS1S2
     #
     k_nm = 2*PI*ri_medium/lambda_vacuum_nm
     # The size parameter is now also complex and dimensionless
     size = k_nm*radius_nm
     refractive_index = 1.0 / ri_medium
     # Calculate the forward and backward scattering amplitude
-    s10,s20 = MieS1S2(refractive_index, size*ri_medium, 1)
-    s11,s21 = MieS1S2(refractive_index, size*ri_medium,-1)
+    s10,s20 = Mie.MieS1S2(refractive_index, size*ri_medium, 1)
+    s11,s21 = Mie.MieS1S2(refractive_index, size*ri_medium,-1)
     # the normalisation by 1/k_nm is performed when f is calculated
     i = complex(0,1)
     f0 = i*s10
@@ -1462,6 +1444,50 @@ def reflectance_atr(ns,n0,theta,atrSPolFraction):
     RSP = -math.log10(RSP)
     return RSP
 
+def solve_single_crystal_equations( 
+        superstrateDielectricFunction ,
+        substrateDielectricFunction   ,
+        crystalPermittivityFunction   ,
+        superstrateDepth              ,
+        substrateDepth                ,
+        crystalDepth                  ,
+        mode                          ,
+        theta                         ,
+        phi                           ,
+        psi                           ,
+        angleOfIncidence              ,
+        v ):
+    """ This is a parallel call to the single crystal equation solver,
+    system is a GTM system"""
+    # Create 3 layers, thickness is converted from microns to metres
+    superstrate      = GTM.Layer(thickness=superstrateDepth*1e-6,epsilon1=superstrateDielectricFunction)
+    substrate        = GTM.Layer(thickness=substrateDepth*1e-6,  epsilon1=substrateDielectricFunction)
+    crystal          = GTM.Layer(thickness=crystalDepth*1e-9,    epsilon=crystalPermittivityFunction)
+    # Creat the system with the layers 
+    if mode == 'Thick slab':
+        system = GTM.System(substrate=crystal, superstrate=superstrate, layers=[])
+    elif mode == 'Coherent thin film':
+        system = GTM.System(substrate=substrate, superstrate=superstrate, layers=[crystal])
+    else:
+        system = GTM.System(substrate=substrate, superstrate=superstrate, layers=[crystal])
+    # Rotate the dielectric constants to the laboratory frame
+    system.substrate.set_euler(theta, phi, psi)
+    system.superstrate.set_euler(theta, phi, psi)
+    for layer in system.layers:
+        layer.set_euler(theta, phi, psi)
+    # 
+    # convert cm-1 to frequency
+    #
+    freq = v * speed_light_si * 1e2
+    system.initialize_sys(freq)
+    zeta_sys = np.sin(angleOfIncidence)*np.sqrt(system.superstrate.epsilon[0,0])
+    Sys_Gamma = system.calculate_GammaStar(freq, zeta_sys)
+    r, R, t, T = system.calculate_r_t(zeta_sys)
+    if len(system.layers) > 0:
+        epsilon = system.layers[0].epsilon
+    else:
+        epsilon = system.substrate.epsilon
+    return v,r,R,t,T,epsilon
 
 
 def cleanup_symbol(s):
@@ -1471,4 +1497,48 @@ def cleanup_symbol(s):
     for i in string.digits:
         s = s.replace(i,'')
     return s
+
+def euler_rotation(vector, theta, phi, psi):
+     """Apply a passive Euler rotation to the vector"""
+     euler = np.zeros( (3,3) )
+     euler[0, 0] =  np.cos(psi) * np.cos(phi) - np.cos(theta) * np.sin(phi) * np.sin(psi)
+     euler[0, 1] = -np.sin(psi) * np.cos(phi) - np.cos(theta) * np.sin(phi) * np.cos(psi)
+     euler[0, 2] =  np.sin(theta) * np.sin(phi)
+     euler[1, 0] =  np.cos(psi) * np.sin(phi) + np.cos(theta) * np.cos(phi) * np.sin(psi)
+     euler[1, 1] = -np.sin(psi) * np.sin(phi) + np.cos(theta) * np.cos(phi) * np.cos(psi)
+     euler[1, 2] = -np.sin(theta) * np.cos(phi)
+     euler[2, 0] =  np.sin(theta) * np.sin(psi)
+     euler[2, 1] =  np.sin(theta) * np.cos(psi)
+     euler[2, 2] =  np.cos(theta)
+     result = np.matmul(euler, vector)
+     return result
+
+def get_pool(ncpus, threading, initializer=None, initargs=None, debugger=None ):
+     """Return a pool of processors given the number of cpus and whether threading is requested"""
+     if debugger is not None:
+         debugger.print('get_pool ncpus = ',ncpus)
+         debugger.print('get_pool threading = ',threading)
+         debugger.print('get_pool initializer = ',initializer)
+     # Switch off mkl threading
+     try:
+         import mkl
+         mkl.set_num_threads(1)
+     except:
+         pass
+     # see if threading has been requested
+     if threading:
+         from multiprocessing.dummy import Pool
+         pool = Pool(ncpus, initializer=initializer, initargs=initargs)
+     else:
+         from multiprocessing import Pool
+         pool = Pool(ncpus, initializer=initializer, initargs=initargs )
+     return pool
+
+def set_affinity_on_worker():
+    '''When a new worker process is created, the affinity is set to all CPUs'''
+    #JK print('I'm the process %d, setting affinity to all CPUs.' % os.getpid())
+    #JK Commented out for the time being
+    #JK os.system('taskset -p 0xff %d > /dev/null' % os.getpid())
+    return
+
 

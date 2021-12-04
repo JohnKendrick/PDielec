@@ -58,6 +58,10 @@ class CastepOutputReader(GenericOutputReader):
         self._ion_type_index         = {}
         self._ion_index_type         = {}
         self._intensities             = None
+        self.de_ion                  = []
+        self.fmax                    = []
+        self.dr_max                  = []
+        self.smax                    = []
         return
 
     def _read_output_files(self):
@@ -70,10 +74,11 @@ class CastepOutputReader(GenericOutputReader):
         self.manage['masses']        = (re.compile(' *Mass of species in AMU'), self._read_masses)
         self.manage['kpoints']       = (re.compile(' *Number of kpoints used'), self._read_kpoints)
         self.manage['kpoint_grid']   = (re.compile(' *MP grid size for SCF'), self._read_kpoint_grid)
-        self.manage['finalenergy']   = (re.compile(' *Final energy, E'), self._read_energies)
-        self.manage['finalenergy2']   = (re.compile('Final energy ='), self._read_energies2)
-        self.manage['finalenergy3']   = (re.compile('Dispersion corrected final energy'), self._read_energies3)
+        self.manage['energies']   = (re.compile(' *Final energy, E'), self._read_energies)
+        self.manage['energies2']   = (re.compile('Final energy ='), self._read_energies2)
+        self.manage['energies3']        = (re.compile('Dispersion corrected final energy'), self._read_energies3)
         self.manage['energy_cutoff'] = (re.compile(' *plane wave basis set cut'), self._read_energy_cutoff)
+        self.manage['convergence'] = (re.compile('.*finished iteration'), self._read_convergence)
         self.manage['nbands']        = (re.compile(' *number of bands'), self._read_nbands)
         self.manage['pressure']      = (re.compile(' *\* *Pressure: '), self._read_external_pressure)
         self.manage['opticalDielectric']  = (re.compile(' *Optical Permittivity'), self._read_dielectric)
@@ -155,8 +160,10 @@ class CastepOutputReader(GenericOutputReader):
         cvector = [float(line.split()[0]), float(line.split()[1]), float(line.split()[2])]
         self.unit_cells.append(UnitCell(avector, bvector, cvector))
         self.ncells = len(self.unit_cells)
+        line = self._read_till_phrase(re.compile(' *Lattice*'))
         line = self._read_till_phrase(re.compile(' *Current cell volume'))
         self.volume = float(line.split()[4])
+        self.volumes.append(float(line.split()[4]))
         if self.nions == 0:
             line = self._read_till_phrase(re.compile(' *Total number of ions in cell'))
             if len(self.unit_cells) == 1:
@@ -309,18 +316,43 @@ class CastepOutputReader(GenericOutputReader):
         return
 
     def _read_energies(self, line):
+        self.energiesDFT.append(float(line.split()[4]))
         self.final_energy_without_entropy = float(line.split()[4])
         line = self.file_descriptor.readline()
         self.final_free_energy = float(line.split()[5])
+        self.geomsteps = int(len(self.energiesDFT))
         return
 
     def _read_energies2(self, line):
+        self.energiesDFT.append(float(line.split()[3]))
         self.final_energy_without_entropy = float(line.split()[3])
         self.final_free_energy = float(line.split()[3])
+        self.geomsteps = int(len(self.energiesDFT))
         return
 
+        
     def _read_energies3(self, line):
+        self.energiesDFT_disp.append(float(line.split()[5]))
         self.final_energy_without_entropy = float(line.split()[5])
         self.final_free_energy = float(line.split()[5])
+        self.geomsteps = int(len(self.energiesDFT_disp))
         return
+        
+    def _read_convergence(self, line):
+        line = self.file_descriptor.readline()
+        line = self.file_descriptor.readline()
+        line = self.file_descriptor.readline()
+        line = self.file_descriptor.readline()
+        line = self.file_descriptor.readline()
+        self.de_ion.append(float(line.split()[3]))
+        line = self.file_descriptor.readline()
+        self.fmax.append(float(line.split()[3]))
+        line = self.file_descriptor.readline()
+        self.dr_max.append(float(line.split()[3]))
+        line = self.file_descriptor.readline()
+        self.smax.append(float(line.split()[3]))
+        line = self.file_descriptor.readline()
+        return    
+        
+            
 

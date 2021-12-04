@@ -3,6 +3,10 @@ pdgui:
 	@../../../pdgui -nosplash castep phonon.castep results.xlsx -script script.py -exit
 	@../../../checkexcel results.xlsx results.ref.xlsx
 
+benchmark:	
+	@echo "PDGui benchmark Mie absorption for MgO with a log normal distribution from CASTEP...."
+	@../../../pdgui -nosplash castep phonon.castep -script script.py -exit
+
 pdgui-regenerate:
 	@echo "PDGui Regenerating reference files for Mie absorption in MgO from CASTEP...."
 	@../../../pdgui -nosplash castep phonon.castep results.xlsx -script script.py -exit

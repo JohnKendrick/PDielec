@@ -1,4 +1,10 @@
 #
+# mainTab
+#
+tab = self.notebook.mainTab
+tab.settings['Program'] = 'phonopy'
+tab.settings['Output file name'] = 'OUTCAR.born'
+#
 # SettingsTab
 #
 tab = self.notebook.settingsTab
@@ -16,7 +22,7 @@ tab.settings['Mass fraction'] = 0.01
 tab.settings['Ellipsoid a/b'] = 0.5
 tab.settings['Unique direction - h'] = 0
 tab.settings['Unique direction - k'] = 0
-tab.settings['Unique direction - l'] = 1
+tab.settings['Unique direction - l'] = 0
 tab.settings['Effective medium method'] = 'Averaged permittivity'
 tab.settings['Particle shape'] = 'Sphere'
 tab.settings['Particle size(mu)'] = 0.0
@@ -35,6 +41,7 @@ for method in methods:
             for size,sigma in zip(sizes,sigmas):
                 self.notebook.addScenario()
                 tab = self.notebook.scenarios[-1]
+                tab.settings['Mass or volume fraction'] = 'volume'
                 tab.settings['Volume fraction'] = vf
                 tab.settings['Particle shape'] = shape
                 tab.settings['Particle size(mu)'] = size

@@ -24,6 +24,7 @@ import numpy as np
 from PDielec.Constants import amu, hartree2ev
 from PDielec.UnitCell import UnitCell
 from PDielec.GenericOutputReader import GenericOutputReader
+from PDielec.IO import pdielec_io
 
 
 class CrystalOutputReader(GenericOutputReader):
@@ -32,6 +33,7 @@ class CrystalOutputReader(GenericOutputReader):
     def __init__(self, filenames):
         GenericOutputReader.__init__(self, filenames)
         self.type                    = 'Crystal output'
+        self.hessian_symmetrisation  = 'crystal'
         self._fractional_coordinates = []
         return
 
@@ -130,7 +132,7 @@ class CrystalOutputReader(GenericOutputReader):
         return
 
     def _read_hessfreq_dat(self,filename):
-        fd2 = open(filename, 'r')
+        fd2 = pdielec_io(filename, 'r')
         nmodes = self.nions*3
         # Create a mass weighting vector
         n = 0
@@ -225,7 +227,7 @@ class CrystalOutputReader(GenericOutputReader):
         return
 
     def _read_born_charges_from_born_dat(self,filename):
-        fd2 = open(filename, 'r')
+        fd2 = pdielec_io(filename, 'r')
         self.born_charges = []
         for i in range(self.nions):
             b = []

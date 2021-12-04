@@ -3,6 +3,10 @@ pdgui:
 	@../../../pdgui -nosplash vasp OUTCAR results.xlsx -script script.py -exit
 	@../../../checkexcel results.xlsx results.ref.xlsx
 
+benchmark:	
+	@echo "PDGui benchmark absorption for Na2(SO4)2 from VASP...."
+	@../../../pdgui -nosplash vasp OUTCAR -script script.py -exit
+
 pdgui-regenerate:
 	@echo "PDGui Regenerating reference files for Na2(SO4)2 from VASP...."
 	@../../../pdgui -nosplash vasp OUTCAR results.xlsx -script script.py -exit

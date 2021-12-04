@@ -3,6 +3,10 @@ pdgui:
 	@../../../pdgui -nosplash crystal qua_hf_2d_f_ir-int.out results.xlsx -script script.py -exit
 	@../../../checkexcel results.xlsx results.ref.xlsx
 
+benchmark:	
+	@echo "PDGui benchmark absorption for Quartz from Crystal...."
+	@../../../pdgui -nosplash crystal qua_hf_2d_f_ir-int.out -script script.py -exit
+
 pdgui-regenerate:
 	@echo "PDGui Regenerating reference files for Quartz from Crystal...."
 	@../../../pdgui -nosplash crystal qua_hf_2d_f_ir-int.out results.xlsx -script script.py -exit

@@ -1,7 +1,11 @@
 pdgui:	
-	@echo "PDGui Calculating absorption for ZnO (default settings) from Crystal...."
+	@echo "PDGui calculation absorption for ZnO (default settings) from Crystal...."
 	@../../../../pdgui -nosplash crystal ZnO_default.out results.xlsx -script script.py -exit
 	@../../../../checkexcel results.ref.xlsx results.xlsx
+
+benchmark:	
+	@echo "PDGui benchmark absorption for ZnO (default settings) from Crystal...."
+	@../../../../pdgui -nosplash crystal ZnO_default.out -script script.py -exit
 
 pdgui-regenerate:
 	@echo "PDGui Regenerating reference files for ZnO (default settings) from Crystal ...."

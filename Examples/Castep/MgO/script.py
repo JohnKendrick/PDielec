@@ -1,4 +1,10 @@
 #
+# mainTab
+#
+tab = self.notebook.mainTab
+tab.settings['Program'] = 'castep'
+tab.settings['Output file name'] = 'phonon.castep'
+#
 # SettingsTab
 #
 tab = self.notebook.settingsTab
@@ -43,6 +49,7 @@ for vf in vfs:
     self.notebook.addScenario()
     tab = self.notebook.scenarios[-1]
     tab.settings['Volume fraction'] = vf
+    tab.settings['Legend'] = 'AP vf='+str(vf)
 self.notebook.deleteScenario(0)
 #
 # Plotting Tab

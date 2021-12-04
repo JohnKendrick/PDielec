@@ -1,84 +1,85 @@
 
+
+
 <!DOCTYPE html>
 
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"><meta content="PDielec package for the calculation of infrared and terahertz absorption from QM calculations" name="description" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+<meta content="PDielec package for the calculation of infrared and terahertz absorption from QM calculations" name="description" />
 <meta content="Quantum Mechanics, Effective Field Theory, Maxwell, Garnett, Mie, Infrared, Terahertz, Castep, Abinit, VASP, GULP. QE" name="keywords" />
 
     <title>Installation &#8212; PDielec: John Kendrick &amp; Andrew Burnett</title>
-    <link rel="stylesheet" href="_static/haiku.css" type="text/css" />
-    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/cloud.css" />
     <link rel="stylesheet" type="text/css" href="_static/table_styling.css" />
-    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noticia+Text:400,i,b,bi|Open+Sans:400,i,b,bi|Roboto+Mono:400,i,b,bi&amp;display=swap" type="text/css" />
+    
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
     <script src="_static/doctools.js"></script>
-    <script src="_static/language_data.js"></script>
-    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <script type="text/x-mathjax-config">MathJax.Hub.Config({"extensions": ["AMSmath.js"], "TeX": {"Macros": {"bm": ["{\\boldsymbol{#1}}", 1], "tensor": ["{\\bar{\\bar{#1}}}", 1], "tensorbs": ["{\\bar{\\bar{\\bm{#1}}}}", 1], "tensorbf": ["{\\bar{\\bar{\\bm{#1}}}}", 1], "fieldbf": ["{\\bar{\\bm{#1}}}", 1], "water": "\\H_{2}O"}}})</script>
+
+    
+    
+     
+        <script src="_static/jquery.cookie.js"></script>
+    
+
+    
+     
+        <script src="_static/cloud.base.js"></script>
+    
+
+    
+     
+        <script src="_static/cloud.js"></script>
+    
+
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Software components" href="software.html" />
     <link rel="prev" title="Introduction" href="introduction.html" /> 
+        <meta name="viewport" content="width=device-width, initial-scale=1">
   </head><body>
-      <div class="header" role="banner"><h1 class="heading"><a href="index.html">
-          <span>PDielec: John Kendrick &amp; Andrew Burnett</span></a></h1>
-        <h2 class="heading"><span>Installation</span></h2>
-      </div>
-      <div class="topnav" role="navigation" aria-label="top navigation">
-      
-        <p>
-        «&#160;&#160;<a href="introduction.html">Introduction</a>
-        &#160;&#160;::&#160;&#160;
-        <a class="uplink" href="index.html">Contents</a>
-        &#160;&#160;::&#160;&#160;
-        <a href="software.html">Software components</a>&#160;&#160;»
-        </p>
+    <div class="relbar-top">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="software.html" title="Software components"
+             accesskey="N">next</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="introduction.html" title="Introduction"
+             accesskey="P">previous</a> &nbsp; &nbsp;</li>
+    <li><a href="index.html">PDielec: John Kendrick &amp; Andrew Burnett</a> &#187;</li>
 
-      </div>
-      <div class="content" role="main">
-        
-        
-  <div class="section" id="installation">
+        <li class="nav-item nav-item-this"><a href="">Installation</a></li> 
+      </ul>
+    </div>
+    </div>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="installation">
 <h1>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h1>
-<div class="contents local topic" id="contents">
-<ul class="simple">
-<li><p><a class="reference internal" href="#anaconda" id="id1">Anaconda</a></p></li>
-<li><p><a class="reference internal" href="#pypi" id="id2">PyPi</a></p></li>
-<li><p><a class="reference internal" href="#github-linux" id="id3">GitHub - Linux</a></p></li>
-<li><p><a class="reference internal" href="#github-windows" id="id4">GitHub - Windows</a></p>
-<ul>
-<li><p><a class="reference internal" href="#standalone-installation" id="id5">Standalone installation</a></p></li>
-<li><p><a class="reference internal" href="#installation-from-repository" id="id6">Installation from repository</a></p>
-<ul>
-<li><p><a class="reference internal" href="#install-git" id="id7">Install git</a></p></li>
-<li><p><a class="reference internal" href="#install-make" id="id8">Install make</a></p></li>
-<li><p><a class="reference internal" href="#install-python" id="id9">Install Python</a></p></li>
-<li><p><a class="reference internal" href="#install-pdielec" id="id10">Install PDielec</a></p></li>
-<li><p><a class="reference internal" href="#testing-pdielec" id="id11">Testing PDielec</a></p></li>
-<li><p><a class="reference internal" href="#installing-pdielec-to-run-in-any-git-bash-console" id="id12">Installing PDielec to run in any git bash console</a></p></li>
-<li><p><a class="reference internal" href="#updating-pdielec-from-the-git-repository" id="id13">Updating PDielec from the git repository</a></p></li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p><a class="reference internal" href="#github-pdielec-directory-structure" id="id14">GitHub - PDielec directory structure</a></p></li>
-<li><p><a class="reference internal" href="#examples" id="id15">Examples</a></p></li>
-</ul>
-</div>
-<div class="section" id="anaconda">
-<h2><a class="toc-backref" href="#id1">Anaconda</a><a class="headerlink" href="#anaconda" title="Permalink to this headline">¶</a></h2>
-<p>Anaconda is a Python package manager and is useful when trying out different versions of Python as there is a very convenient environment manager.  Anaconda can be installed as a user program and so root access to the computer is not needed.
-The software can be downloaded from <a class="reference external" href="https://conda.io/miniconda.html">https://conda.io/miniconda.html</a> or <a class="reference external" href="https://www.anaconda.com/download/">https://www.anaconda.com/download/</a>.
-Unless you are interested in the full package, miniconda installation should be sufficient for installing the rest of the modules needed for the PDielec installation.
+<section id="anaconda">
+<h2>Anaconda<a class="headerlink" href="#anaconda" title="Permalink to this headline">¶</a></h2>
+<p>Unless you are interested in the full package, miniconda installation should be sufficient for installing the rest of the modules needed for the PDielec installation.
 A miniconda is the recommended environment for installing PDielec.  On windows it is necessary to run the commands in an Anaconda command terminal, which will be added to the user’s menu when miniconda is installed.</p>
-<p>PDielec is available on the conda-forge channel and can be installed as show in the following couple of examples.</p>
-<p>Installation using Anaconda can be performed on Linux, Windows and Mac systems.
+<p>PDielec is available on the conda-forge channel and installation using Anaconda can be performed on Linux, Windows and Mac systems.
 However, there are no example files installed, only the executables.
 Example files for each of the DFT packages supported can be downloaded from the Git repository.</p>
-<p>The cond-forge package has a python 3 environment included in the package:</p>
+<p>The conda-forge package has a Python 3 environment included in the package.  After installation of miniconda or anaconda, a new evironment should be created in which to install the package:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">conda</span> <span class="n">create</span>  <span class="o">--</span><span class="n">name</span> <span class="n">pdielec</span>
 <span class="n">conda</span> <span class="n">activate</span> <span class="n">pdielec</span>
 <span class="n">conda</span> <span class="n">config</span> <span class="o">--</span><span class="n">add</span> <span class="n">channels</span> <span class="n">conda</span><span class="o">-</span><span class="n">forge</span>
@@ -92,17 +93,17 @@ Example files for each of the DFT packages supported can be downloaded from the 
 </pre></div>
 </div>
 <p>This only works if the conda-forge channel has been added to the channel list for the environment.</p>
-</div>
-<div class="section" id="pypi">
-<h2><a class="toc-backref" href="#id2">PyPi</a><a class="headerlink" href="#pypi" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="pypi">
+<h2>PyPi<a class="headerlink" href="#pypi" title="Permalink to this headline">¶</a></h2>
 <p>If you really dont want to use Anaconda, PDielec is available on pypi.org and can be installed using pip.:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="o">--</span><span class="n">user</span> <span class="n">pdielec</span>
 <span class="n">pdgui</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="github-linux">
-<h2><a class="toc-backref" href="#id3">GitHub - Linux</a><a class="headerlink" href="#github-linux" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="github-linux">
+<h2>GitHub - Linux<a class="headerlink" href="#github-linux" title="Permalink to this headline">¶</a></h2>
 <p>The package is available on GitHub and can be downloaded from <a class="reference external" href="https://github.com/JohnKendrick/PDielec">https://github.com/JohnKendrick/PDielec</a>.
 cd to a directory where PDielec will be installed and use git to clone a copy of the program.  I use a ‘Software/’ directory in my home directory to store programs, so for me the commands to obtain PDielec would look like this.:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="o">~/</span><span class="n">Software</span>
@@ -119,59 +120,57 @@ cd to a directory where PDielec will be installed and use git to clone a copy of
 </pre></div>
 </div>
 <p>As part of the installation you will have to install a number of Python packages into your enviroment.  The full list of packages is as follows;:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">numpy</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pyqt5</span>
+<span class="n">psutil</span>
+<span class="n">numpy</span>
 <span class="n">scipy</span>
-<span class="n">pyopengl</span>
+<span class="n">dill</span>
+<span class="n">multiprocess</span>
 <span class="n">matplotlib</span>
-<span class="n">pyyaml</span>
-<span class="n">termcolor</span>
-<span class="n">xlsxwriter</span>
+<span class="n">pyopengl</span>
 <span class="n">openpyxl</span>
 <span class="n">pyyaml</span>
+<span class="n">xlsxwriter</span>
+<span class="n">termcolor</span>
 <span class="n">imageio</span>
 <span class="n">imageio</span><span class="o">-</span><span class="n">ffmpeg</span>
 <span class="n">sklearn</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="github-windows">
-<h2><a class="toc-backref" href="#id4">GitHub - Windows</a><a class="headerlink" href="#github-windows" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="github-windows">
+<h2>GitHub - Windows<a class="headerlink" href="#github-windows" title="Permalink to this headline">¶</a></h2>
 <p>An Anaconda installation is now the recommended way of installing to a Windows machine.  See the section on Anaconda above.  If the user still wishes to proceed with a local installation based purely on the GitHub releases, see below.</p>
-<div class="section" id="standalone-installation">
-<h3><a class="toc-backref" href="#id5">Standalone installation</a><a class="headerlink" href="#standalone-installation" title="Permalink to this headline">¶</a></h3>
-<p>For older releases there is a Windows 10 installation script available on the GitHub at <a class="reference external" href="https://github.com/JohnKendrick/PDielec/releases">https://github.com/JohnKendrick/PDielec/releases</a> is no longer supported, but an old copy of the package will remain available there.
-Releases after version 4.0 have a Windows installable script which installs all the software required to run PDielec, PDGui and PReader.  The installation includes Python 3, and all the modules that are required.  The downloadable executable is very large so be be patient.  The imageio library uses ffmpeg to create videos.  ffmpeg is not distributed with the installation script.  Instead, when creating a video of the phonon motion, PDGui checks for the availability of ffmpeg.  If it is not present then it is downloaded automatically.</p>
-</div>
-<div class="section" id="installation-from-repository">
-<h3><a class="toc-backref" href="#id6">Installation from repository</a><a class="headerlink" href="#installation-from-repository" title="Permalink to this headline">¶</a></h3>
-<p>This Windows installation is only needed if the standalone version is found to be too cumbersome.
+<section id="installation-from-repository">
+<h3>Installation from repository<a class="headerlink" href="#installation-from-repository" title="Permalink to this headline">¶</a></h3>
+<p>This Windows installation method is only needed if installation through Anaconda is not possible.
 A Windows 10 installation from the git repository which works for users without administrator rights involves a few steps but gives an installation which can run all the test cases.  In the following instructions replace ‘yourusername’ with your user name.</p>
-<div class="section" id="install-git">
-<h4><a class="toc-backref" href="#id7">Install git</a><a class="headerlink" href="#install-git" title="Permalink to this headline">¶</a></h4>
+<section id="install-git">
+<h4>Install git<a class="headerlink" href="#install-git" title="Permalink to this headline">¶</a></h4>
 <p>First of all install a Windows version of git from www.git-scm.com. A 64 bit version of Windows 10 will be assumed for the following instructions.</p>
 <ul class="simple">
 <li><p>From the download page download and run the 64 bit Git for Windows setup.</p></li>
 <li><p>During the installation install the Quick Launch and Desktop icons as these make using the program easier.</p></li>
 <li><p>If you are not familar with the vi or vim editor, it is probably best to use the Nano editor, although if you wish you can install Notepad++ and use that as the default editor.</p></li>
-<li><p>In the section concerning the PATH environment I would recommend the last option “Use git and optional Unix tools from the Windows Command prompt”.  This option will mean that some Windows commands eg. find and sort will be replace by the Unix commands.</p></li>
+<li><p>In the section concerning the PATH environment I would recommend the last option “Use git and optional Unix tools from the Windows Command prompt”.  This option will mean that some Windows commands eg. find and sort will be replaced by the Unix commands, so be careful.</p></li>
 <li><p>Leave the https certificate choice as the default, namely the OpenSSL library.</p></li>
 <li><p>Line endings are best left to the default setting of Windows-style for checkout and Unix-style for check-in.</p></li>
 <li><p>The Console I use is the MinTTY console it has a larger scrolling buffer than the Windows console.</p></li>
 <li><p>Under the “Configuring extra options” I leave everything as the default.</p></li>
 </ul>
 <p>I have seen a few hickups in the installation of Git.  Occasionally I have to do the installation twice and occasionally I am left with the Setup Installing window indicating that I should wait, when in fact the installation has completed.  When this happens I kill the setup process with the task manager</p>
-</div>
-<div class="section" id="install-make">
-<h4><a class="toc-backref" href="#id8">Install make</a><a class="headerlink" href="#install-make" title="Permalink to this headline">¶</a></h4>
+</section>
+<section id="install-make">
+<h4>Install make<a class="headerlink" href="#install-make" title="Permalink to this headline">¶</a></h4>
 <p>Once you have Git installed open the “Git bash” shell and create the following directories in your home directory;:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">mkdir</span> <span class="nb">bin</span>
 <span class="n">mkdir</span> <span class="n">Software</span>
 </pre></div>
 </div>
 <p>From the web url <a class="reference external" href="http://www.equation.com/servlet/equation.cmd?fa=make">http://www.equation.com/servlet/equation.cmd?fa=make</a> download the 64-bit version of make.exe and copy it into your bin/ directory.  You should find this directory in c:usersyourusernamebin in the file manager.</p>
-</div>
-<div class="section" id="install-python">
-<h4><a class="toc-backref" href="#id9">Install Python</a><a class="headerlink" href="#install-python" title="Permalink to this headline">¶</a></h4>
+</section>
+<section id="install-python">
+<h4>Install Python<a class="headerlink" href="#install-python" title="Permalink to this headline">¶</a></h4>
 <ul class="simple">
 <li><p>From <a class="reference external" href="https://www.python.org/downloads/windows/">https://www.python.org/downloads/windows/</a> download and run the Windows x86-64 executable installer for the latest Python 3.x version</p></li>
 <li><p>Uncheck install launcher for all users</p></li>
@@ -180,97 +179,428 @@ A Windows 10 installation from the git repository which works for users without 
 <li><p>Check installation ran OK by running the Idle python environment</p></li>
 </ul>
 <p>Open a git bash console and type;:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">numpy</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">pyqt5</span>
+<span class="n">pip</span> <span class="n">install</span> <span class="n">psutil</span>
+<span class="n">pip</span> <span class="n">install</span> <span class="n">numpy</span>
 <span class="n">pip</span> <span class="n">install</span> <span class="n">scipy</span>
-<span class="n">pip</span> <span class="n">install</span> <span class="n">pyopengl</span>
+<span class="n">pip</span> <span class="n">install</span> <span class="n">dill</span>
+<span class="n">pip</span> <span class="n">install</span> <span class="n">multiprocess</span>
 <span class="n">pip</span> <span class="n">install</span> <span class="n">matplotlib</span>
-<span class="n">pip</span> <span class="n">install</span> <span class="n">PyYaml</span>
-<span class="n">pip</span> <span class="n">install</span> <span class="n">XlsxWriter</span>
+<span class="n">pip</span> <span class="n">install</span> <span class="n">pyopengl</span>
 <span class="n">pip</span> <span class="n">install</span> <span class="n">openpyxl</span>
+<span class="n">pip</span> <span class="n">install</span> <span class="n">pyyaml</span>
+<span class="n">pip</span> <span class="n">install</span> <span class="n">xlsxwriter</span>
 <span class="n">pip</span> <span class="n">install</span> <span class="n">termcolor</span>
 <span class="n">pip</span> <span class="n">install</span> <span class="n">imageio</span>
 <span class="n">pip</span> <span class="n">install</span> <span class="n">imageio</span><span class="o">-</span><span class="n">ffmpeg</span>
 <span class="n">pip</span> <span class="n">install</span> <span class="n">sklearn</span>
-<span class="n">pdgui</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="install-pdielec">
-<h4><a class="toc-backref" href="#id10">Install PDielec</a><a class="headerlink" href="#install-pdielec" title="Permalink to this headline">¶</a></h4>
+</section>
+<section id="install-pdielec">
+<h4>Install PDielec<a class="headerlink" href="#install-pdielec" title="Permalink to this headline">¶</a></h4>
 <p>Open a git bash console and type;:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="n">Software</span>
 <span class="n">git</span> <span class="n">clone</span> <span class="o">-</span><span class="n">c</span> <span class="n">core</span><span class="o">.</span><span class="n">symlinks</span><span class="o">=</span><span class="n">true</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">JohnKendrick</span><span class="o">/</span><span class="n">PDielec</span><span class="o">.</span><span class="n">git</span>
 </pre></div>
 </div>
-<p>This should create a directory in Software called PDielec.  The “-c core.symlinks=true” means that the commands; pdielec, pdgui and preader are treated as windows symlinks to their equivalent .py file.</p>
-</div>
-<div class="section" id="testing-pdielec">
-<h4><a class="toc-backref" href="#id11">Testing PDielec</a><a class="headerlink" href="#testing-pdielec" title="Permalink to this headline">¶</a></h4>
+<p>This should create a directory in Software called PDielec.  The “-c core.symlinks=true” means that the commands; pdgui and preader are treated as windows symlinks to their equivalent .py file.</p>
+</section>
+<section id="testing-pdielec">
+<h4>Testing PDielec<a class="headerlink" href="#testing-pdielec" title="Permalink to this headline">¶</a></h4>
 <p>Open a git bash console.  If you have installed Python using anaconda then you need to ‘source activate’ the environment you have established before typing;:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="n">Software</span><span class="o">/</span><span class="n">PDielec</span>
 <span class="n">make</span> <span class="n">test_preader</span>
 <span class="n">make</span> <span class="n">test_pdgui</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="installing-pdielec-to-run-in-any-git-bash-console">
-<h4><a class="toc-backref" href="#id12">Installing PDielec to run in any git bash console</a><a class="headerlink" href="#installing-pdielec-to-run-in-any-git-bash-console" title="Permalink to this headline">¶</a></h4>
+</section>
+<section id="installing-pdielec-to-run-in-any-git-bash-console">
+<h4>Installing PDielec to run in any git bash console<a class="headerlink" href="#installing-pdielec-to-run-in-any-git-bash-console" title="Permalink to this headline">¶</a></h4>
 <p>Open a git bash console and type;:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="n">Software</span><span class="o">/</span><span class="n">PDielec</span>
 <span class="n">export</span> <span class="n">SCRIPTS</span><span class="o">=~/</span><span class="nb">bin</span>
 <span class="n">make</span> <span class="n">install</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="updating-pdielec-from-the-git-repository">
-<h4><a class="toc-backref" href="#id13">Updating PDielec from the git repository</a><a class="headerlink" href="#updating-pdielec-from-the-git-repository" title="Permalink to this headline">¶</a></h4>
+</section>
+<section id="updating-pdielec-from-the-git-repository">
+<h4>Updating PDielec from the git repository<a class="headerlink" href="#updating-pdielec-from-the-git-repository" title="Permalink to this headline">¶</a></h4>
 <p>Open a git bash console and type;:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="n">Software</span><span class="o">/</span><span class="n">PDielec</span>
 <span class="n">git</span> <span class="n">pull</span>
 </pre></div>
 </div>
-</div>
-</div>
-</div>
-<div class="section" id="github-pdielec-directory-structure">
-<h2><a class="toc-backref" href="#id14">GitHub - PDielec directory structure</a><a class="headerlink" href="#github-pdielec-directory-structure" title="Permalink to this headline">¶</a></h2>
+</section>
+</section>
+</section>
+<section id="github-pdielec-directory-structure">
+<h2>GitHub - PDielec directory structure<a class="headerlink" href="#github-pdielec-directory-structure" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li><p>PDielec/ is the home directory and contains the <cite>pdielec</cite> and <cite>preader</cite> commands</p></li>
-<li><p>PDielec/Python holds the source for the modules used by the pdielec and preader commands</p></li>
-<li><p>PDielec/Python/GUI holds the python code for PDGui</p></li>
+<li><p>PDielec/ is the home directory and contains the <cite>pdgui</cite> and <cite>preader</cite> commands</p></li>
+<li><p>PDielec/PDielec holds the source for the modules used by the pdielec and preader commands</p></li>
+<li><p>PDielec/PDielec/GUI holds the python code for PDGui</p></li>
 <li><p>PDielec/Examples a set of examples are available for Abinit, Crystal14, CASTEP, GULP, Phonopy, Mie and VASP.  Each example directory holds the input files to the QM/MM program and the relevant output files which are post processed by PDielec.  For each program there is also a preader directory which holds test output for the preader command.</p></li>
 <li><p>PDielec/Sphinx holds the documentation as restructured text documents (.rst).  Sphinx can be used to build the documentation in either html or pdf format.</p></li>
 <li><p>PDielec/docs holds the final html documentation.</p></li>
 </ul>
-</div>
-<div class="section" id="examples">
-<h2><a class="toc-backref" href="#id15">Examples</a><a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
-<p>Each example directory has the relevant input data sets use to run the QM/MM program and the output files from that run which are post-processed by PDielec.  There is a file <cite>script.py</cite> which contains an of PDGui usage line and which has been used to create the reference output file <cite>results.ref.xlsx</cite>.  The example can be run interactively:</p>
+</section>
+<section id="examples">
+<span id="id1"></span><h2>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
+<p>Each example directory has the relevant input data sets used to run the QM/MM program and the output files from that run, which are post-processed by PDielec.  There is a file <cite>script.py</cite> which contains an of PDGui usage line and which has been used to create the reference output file <cite>results.ref.xlsx</cite>.  The example can be run interactively:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">make</span> <span class="n">pdgui</span><span class="o">-</span><span class="n">view</span>
 </pre></div>
 </div>
-<p>The output can be compared with the reference data to see if the program is working correctly.</p>
-<p>The main Examples/ directory also has a  Makefile file which can be used to verify the correct working of the package.  Simply by typing <cite>make</cite> in the Examples directory each example will be run automatically and the output compared with the reference files.  To remove the intermediate files after running the tests automatically, type <cite>make clean</cite>.</p>
+<p>The output can be compared with the reference data to see if the program is working correctly.  The checkexcell command can be used to do this automatically.</p>
+<p>The main Examples/ directory also has a  Makefile file which can be used to verify the correct working of the package.  Simply by typing <cite>make tests</cite> in the Examples directory each example will be run automatically and the output compared with the reference files.  To remove the intermediate files after running the tests automatically, type <cite>make clean</cite>.</p>
+<p>A benchmark can be run for comparison of the performance of PDielec on different platforms by typing;</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">make</span> <span class="n">benchmark</span>
+</pre></div>
 </div>
+<p>This runs a range of calculations on different systems and provides a real world view of the performance.  An indication of the likely performance of the program is given in the <a class="reference internal" href="software.html#performance"><span class="std std-ref">Performance</span></a> section of the documentation.</p>
+<p>A summary of the different examples and their purpose is shown below;</p>
+<table class="colwidths-given styled-table docutils align-default" id="id2">
+<caption><span class="caption-number">Table 1 </span><span class="caption-text">Summary of the Examples available in the Examples/ directory</span><a class="headerlink" href="#id2" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col style="width: 17%" />
+<col style="width: 8%" />
+<col style="width: 8%" />
+<col style="width: 67%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="center-align nowrap single-left-divider single-right-divider head"><p>Directory</p></th>
+<th class="center-align nowrap single-left-divider single-right-divider head"><p>Program</p></th>
+<th class="center-align nowrap single-left-divider single-right-divider head"><p>Molecule</p></th>
+<th class="center-align single-left-divider single-right-divider head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="left-align nowrap single-left-divider single-right-divider"><p>ATR/AlAs</p></td>
+<td class="center-align nowrap single-left-divider single-right-divider"><p>AbInit</p></td>
+<td class="left-align nowrap single-left-divider single-right-divider"><p>AlAs</p></td>
+<td class="left-align single-left-divider single-right-divider"><p>Maxwell Garnett calculation of the ATR spectrum of an ellipsoid along   [001].  The incident angle varies from   0 to 80 degrees.</p></td>
+</tr>
+<tr class="row-odd"><td class="left-align nowrap single-left-divider single-right-divider"><p>ATR/Na2SO42</p></td>
+<td class="center-align nowrap single-left-divider single-right-divider"><p>Vasp</p></td>
+<td class="left-align nowrap single-left-divider single-right-divider"><p>Na2(SO4)2</p></td>
+<td class="left-align single-left-divider single-right-divider"><p>Maxwel-Garnett calculation of the ATR spectrum, change the S polarisation   component from 0 to 100%</p></td>
+</tr>
+<tr class="row-even"><td class="left-align nowrap single-left-divider single-right-divider"><p>ATR/Na2SO42_fit</p></td>
+<td class="center-align nowrap single-left-divider single-right-divider"><p>Vasp</p></td>
+<td class="left-align nowrap single-left-divider single-right-divider"><p>Na2(SO4)2</p></td>
+<td class="left-align single-left-divider single-right-divider"><p>Maxwel-Garnett calculation of the ATR spectrum, example of fitting the spectrum to experiment</p></td>
+</tr>
+<tr class="row-odd"><td class="left-align nowrap single-left-divider single-right-divider"><p>AbInit/AlAs</p></td>
+<td class="center-align nowrap single-left-divider single-right-divider"><p>AbInit</p></td>
+<td class="left-align nowrap single-left-divider single-right-divider"><p>AlAs</p></td>
+<td class="left-align single-left-divider single-right-divider"><p>Average permittivity and Maxwell Garnett calculation of sphere, plate and   ellipsoid</p></td>
+</tr>
+<tr class="row-even"><td class="left-align nowrap single-left-divider single-right-divider"><p>AbInit/BaTiO3</p></td>
+<td class="center-align nowrap single-left-divider single-right-divider"><p>AbInit</p></td>
+<td class="left-align nowrap single-left-divider single-right-divider"><p>BaTiO3</p></td>
+<td class="left-align single-left-divider single-right-divider"><p>Average permittivity and Maxwell-Garnett calculations of sphere, plate   and ellipsoid, using average isotope masses</p></td>
+</tr>
+<tr class="row-odd"><td class="left-align nowrap single-left-divider single-right-divider"><p>AbInit/BaTiO3-phonana</p></td>
+<td class="center-align nowrap single-left-divider single-right-divider"><p>AbInit</p></td>
+<td class="left-align nowrap single-left-divider single-right-divider"><p>BaTiO3</p></td>
+<td class="left-align single-left-divider single-right-divider"><p>Average permittivity and Maxwell-Garnett calculations of sphere, plate   and ellipsoid, using program defined masses</p></td>
+</tr>
+<tr class="row-even"><td class="left-align nowrap single-left-divider single-right-divider"><p>AbInit/Na2SO42</p></td>
+<td class="center-align nowrap single-left-divider single-right-divider"><p>AbInit</p></td>
+<td class="left-align nowrap single-left-divider single-right-divider"><p>Na2(SO4)2</p></td>
+<td class="left-align single-left-divider single-right-divider"><p>Average permittivity and Maxwell-Garnett calculations of Na2(SO4)2,   sphere, plate and ellipsoid, using program defined masses</p></td>
+</tr>
+<tr class="row-odd"><td class="left-align nowrap single-left-divider single-right-divider"><p>Castep/AsparticAcid</p></td>
+<td class="center-align nowrap single-left-divider single-right-divider"><p>Castep</p></td>
+<td class="left-align nowrap single-left-divider single-right-divider"><p>Aspartic Acid</p></td>
+<td class="left-align single-left-divider single-right-divider"><p>Average permittivity and Maxwell-Garnett calculations of sphere, plate   and ellipsoid, using program defined masses</p></td>
+</tr>
+<tr class="row-even"><td class="left-align nowrap single-left-divider single-right-divider"><p>Castep/Bubbles</p></td>
+<td class="center-align nowrap single-left-divider single-right-divider"><p>Castep</p></td>
+<td class="left-align nowrap single-left-divider single-right-divider"><p>MgO</p></td>
+<td class="left-align single-left-divider single-right-divider"><p>Maxwell-Garnett calculation showing the effect of air bubbles at 24%   volume fraction and 30 micron radius</p></td>
+</tr>
+<tr class="row-odd"><td class="left-align nowrap single-left-divider single-right-divider"><p>Castep/Castep17</p></td>
+<td class="center-align nowrap single-left-divider single-right-divider"><p>Castep</p></td>
+<td class="left-align nowrap single-left-divider single-right-divider"><p>beta-Lactose</p></td>
+<td class="left-align single-left-divider single-right-divider"><p>Castep 17,Maxwell-Garnett sphere and plates with 3 surfaces</p></td>
+</tr>
+<tr class="row-even"><td class="left-align nowrap single-left-divider single-right-divider"><p>Castep/Isoleucine</p></td>
+<td class="center-align nowrap single-left-divider single-right-divider"><p>Castep</p></td>
+<td class="left-align nowrap single-left-divider single-right-divider"><p>Isoleucine</p></td>
+<td class="left-align single-left-divider single-right-divider"><p>Maxwell-Garnett sphere</p></td>
+</tr>
+<tr class="row-odd"><td class="left-align nowrap single-left-divider single-right-divider"><p>Castep/MgO</p></td>
+<td class="center-align nowrap single-left-divider single-right-divider"><p>Castep</p></td>
+<td class="left-align nowrap single-left-divider single-right-divider"><p>MgO</p></td>
+<td class="left-align single-left-divider single-right-divider"><p>Comparison of MG, Bruggeman and AP methods changing shapes and volume   fractions</p></td>
+</tr>
+<tr class="row-even"><td class="left-align nowrap single-left-divider single-right-divider"><p>Castep/Na2SO42</p></td>
+<td class="center-align nowrap single-left-divider single-right-divider"><p>Castep</p></td>
+<td class="left-align nowrap single-left-divider single-right-divider"><p>Na2(SO4)2</p></td>
+<td class="left-align single-left-divider single-right-divider"><p>Comparison of MG and Bruggeman, for needle, ellipsoid and plate shapes</p></td>
+</tr>
+<tr class="row-odd"><td class="left-align nowrap single-left-divider single-right-divider"><p>Crystal/Leucine</p></td>
+<td class="center-align nowrap single-left-divider single-right-divider"><p>Crystal</p></td>
+<td class="left-align nowrap single-left-divider single-right-divider"><p>Leuscine</p></td>
+<td class="left-align single-left-divider single-right-divider"><p>Comparison of MG, plates and ellipsoids</p></td>
+</tr>
+<tr class="row-even"><td class="left-align nowrap single-left-divider single-right-divider"><p>Crystal/Na2SO42</p></td>
+<td class="center-align nowrap single-left-divider single-right-divider"><p>Crystal</p></td>
+<td class="left-align nowrap single-left-divider single-right-divider"><p>Na2(SO4)2</p></td>
+<td class="left-align single-left-divider single-right-divider"><p>Comparison of MG for needle, ellipsoid and plate shapes</p></td>
+</tr>
+<tr class="row-odd"><td class="left-align nowrap single-left-divider single-right-divider"><p>Crystal/Na2SO42_C17</p></td>
+<td class="center-align nowrap single-left-divider single-right-divider"><p>Crystal</p></td>
+<td class="left-align nowrap single-left-divider single-right-divider"><p>Na2(SO4)2</p></td>
+<td class="left-align single-left-divider single-right-divider"><p>Comparison of MG for needle, ellipsoid and plate shapes, reading output   from Crystal 17</p></td>
+</tr>
+<tr class="row-even"><td class="left-align nowrap single-left-divider single-right-divider"><p>Crystal/Quartz</p></td>
+<td class="center-align nowrap single-left-divider single-right-divider"><p>Crystal</p></td>
+<td class="left-align nowrap single-left-divider single-right-divider"><p>Quartz</p></td>
+<td class="left-align single-left-divider single-right-divider"><p>Comparison of MG for needle, ellipsoid and plate shapes</p></td>
+</tr>
+<tr class="row-odd"><td class="left-align nowrap single-left-divider single-right-divider"><p>Crystal/ZnO/CPHF</p></td>
+<td class="center-align nowrap single-left-divider single-right-divider"><p>Crystal</p></td>
+<td class="left-align nowrap single-left-divider single-right-divider"><p>ZnO</p></td>
+<td class="left-align single-left-divider single-right-divider"><p>Coupled Hartree-Fock, Maxwell-Garnett Sphere, Needle and Plate</p></td>
+</tr>
+<tr class="row-even"><td class="left-align nowrap single-left-divider single-right-divider"><p>Crystal/ZnO/Default</p></td>
+<td class="center-align nowrap single-left-divider single-right-divider"><p>Crystal</p></td>
+<td class="left-align nowrap single-left-divider single-right-divider"><p>ZnO</p></td>
+<td class="left-align single-left-divider single-right-divider"><p>Default Crystal calculation of IR spectrum, Maxwell-Garnett Sphere,   Needle and Plate</p></td>
+</tr>
+<tr class="row-odd"><td class="left-align nowrap single-left-divider single-right-divider"><p>Crystal/ZnO/NoEckart</p></td>
+<td class="center-align nowrap single-left-divider single-right-divider"><p>Crystal</p></td>
+<td class="left-align nowrap single-left-divider single-right-divider"><p>ZnO</p></td>
+<td class="left-align single-left-divider single-right-divider"><p>As above, but no Eckart projection in Crystal,  Maxwell-Garnett Sphere, Needle and Plate</p></td>
+</tr>
+<tr class="row-even"><td class="left-align nowrap single-left-divider single-right-divider"><p>Experiment/Forsterite</p></td>
+<td class="center-align nowrap single-left-divider single-right-divider"><p>Experiment</p></td>
+<td class="left-align nowrap single-left-divider single-right-divider"><p>Forsterite</p></td>
+<td class="left-align single-left-divider single-right-divider"><p>Single crystal calculations of a thick slab, for a, b and c axis   alignments with polarisation direction.    Uses FPSQ model for permittivity.</p></td>
+</tr>
+<tr class="row-odd"><td class="left-align nowrap single-left-divider single-right-divider"><p>Experiment/Mayerhofer</p></td>
+<td class="center-align nowrap single-left-divider single-right-divider"><p>Experiment</p></td>
+<td class="left-align nowrap single-left-divider single-right-divider"><p>Toy model</p></td>
+<td class="left-align single-left-divider single-right-divider"><p>Example of a Drude Lorentz model permittivity</p></td>
+</tr>
+<tr class="row-even"><td class="left-align nowrap single-left-divider single-right-divider"><p>Experiment/constant</p></td>
+<td class="center-align nowrap single-left-divider single-right-divider"><p>Experiment</p></td>
+<td class="left-align nowrap single-left-divider single-right-divider"><p>Constant</p></td>
+<td class="left-align single-left-divider single-right-divider"><p>Example of a constant permittivity with loss</p></td>
+</tr>
+<tr class="row-odd"><td class="left-align nowrap single-left-divider single-right-divider"><p>Experiment/drude-lorentz</p></td>
+<td class="center-align nowrap single-left-divider single-right-divider"><p>Experiment</p></td>
+<td class="left-align nowrap single-left-divider single-right-divider"><p>MgO</p></td>
+<td class="left-align single-left-divider single-right-divider"><p>A Drude-Lorentz model for MgO, varying the angle of incidence</p></td>
+</tr>
+<tr class="row-even"><td class="left-align nowrap single-left-divider single-right-divider"><p>Experiment/fpsq</p></td>
+<td class="center-align nowrap single-left-divider single-right-divider"><p>Experiment</p></td>
+<td class="left-align nowrap single-left-divider single-right-divider"><p>Quartz</p></td>
+<td class="left-align single-left-divider single-right-divider"><p>An FPSQ model for Quartz, showing polarisation on along different axes   and different incident angles.</p></td>
+</tr>
+<tr class="row-odd"><td class="left-align nowrap single-left-divider single-right-divider"><p>Experiment/interpolation</p></td>
+<td class="center-align nowrap single-left-divider single-right-divider"><p>Experiment</p></td>
+<td class="left-align nowrap single-left-divider single-right-divider"><p>Quartz</p></td>
+<td class="left-align single-left-divider single-right-divider"><p>Under development</p></td>
+</tr>
+<tr class="row-even"><td class="left-align nowrap single-left-divider single-right-divider"><p>Gulp/Na2SO42</p></td>
+<td class="center-align nowrap single-left-divider single-right-divider"><p>Gulp</p></td>
+<td class="left-align nowrap single-left-divider single-right-divider"><p>Na2(SO4)2</p></td>
+<td class="left-align single-left-divider single-right-divider"><p>Maxwell-Garnett and Bruggeman on needle, ellipsoid and plate</p></td>
+</tr>
+<tr class="row-odd"><td class="left-align nowrap single-left-divider single-right-divider"><p>Gulp/calcite</p></td>
+<td class="center-align nowrap single-left-divider single-right-divider"><p>Gulp</p></td>
+<td class="left-align nowrap single-left-divider single-right-divider"><p>Calcite</p></td>
+<td class="left-align single-left-divider single-right-divider"><p>Maxwell-Garnett method on Sphere and Plate</p></td>
+</tr>
+<tr class="row-even"><td class="left-align nowrap single-left-divider single-right-divider"><p>Mie/MgO</p></td>
+<td class="center-align nowrap single-left-divider single-right-divider"><p>Castep</p></td>
+<td class="left-align nowrap single-left-divider single-right-divider"><p>MgO</p></td>
+<td class="left-align single-left-divider single-right-divider"><p>Mie method with varying volume fractions and sphere sizes</p></td>
+</tr>
+<tr class="row-odd"><td class="left-align nowrap single-left-divider single-right-divider"><p>Mie/MgO_lognormal</p></td>
+<td class="center-align nowrap single-left-divider single-right-divider"><p>Castep</p></td>
+<td class="left-align nowrap single-left-divider single-right-divider"><p>MgO</p></td>
+<td class="left-align single-left-divider single-right-divider"><p>Mie method with varying volume fractions and sphere size distributions</p></td>
+</tr>
+<tr class="row-even"><td class="left-align nowrap single-left-divider single-right-divider"><p>Phonopy/Na2SO42</p></td>
+<td class="center-align nowrap single-left-divider single-right-divider"><p>Phonopy</p></td>
+<td class="left-align nowrap single-left-divider single-right-divider"><p>Na2(SO4)2</p></td>
+<td class="left-align single-left-divider single-right-divider"><p>Maxwell-Garnett and Bruggeman method for needle, ellipsoid and plate   shapes, with varying volume fractions</p></td>
+</tr>
+<tr class="row-odd"><td class="left-align nowrap single-left-divider single-right-divider"><p>Phonopy/ZnO</p></td>
+<td class="center-align nowrap single-left-divider single-right-divider"><p>Phonopy</p></td>
+<td class="left-align nowrap single-left-divider single-right-divider"><p>ZnO</p></td>
+<td class="left-align single-left-divider single-right-divider"><p>Maxwell-Garnett and Bruggeman method for needle, ellipsoid and plate   shapes</p></td>
+</tr>
+<tr class="row-even"><td class="left-align nowrap single-left-divider single-right-divider"><p>QE/Cocaine</p></td>
+<td class="center-align nowrap single-left-divider single-right-divider"><p>Quantum Espresso</p></td>
+<td class="left-align nowrap single-left-divider single-right-divider"><p>Cocaine</p></td>
+<td class="left-align single-left-divider single-right-divider"><p>Maxwel-Garnett sphere</p></td>
+</tr>
+<tr class="row-odd"><td class="left-align nowrap single-left-divider single-right-divider"><p>QE/Na2SO42</p></td>
+<td class="center-align nowrap single-left-divider single-right-divider"><p>Quantum Espresso</p></td>
+<td class="left-align nowrap single-left-divider single-right-divider"><p>Na2(SO4)2</p></td>
+<td class="left-align single-left-divider single-right-divider"><p>Maxwell-Garnett and Bruggeman on needle, ellipsoid and plate</p></td>
+</tr>
+<tr class="row-even"><td class="left-align nowrap single-left-divider single-right-divider"><p>QE/ZnO</p></td>
+<td class="center-align nowrap single-left-divider single-right-divider"><p>Quantum Espresso</p></td>
+<td class="left-align nowrap single-left-divider single-right-divider"><p>ZnO</p></td>
+<td class="left-align single-left-divider single-right-divider"><p>Maxwell-Garnett and Bruggeman on needle, ellipsoid and plate</p></td>
+</tr>
+<tr class="row-odd"><td class="left-align nowrap single-left-divider single-right-divider"><p>SingleCrystal/Bi2Se3</p></td>
+<td class="center-align nowrap single-left-divider single-right-divider"><p>Vasp</p></td>
+<td class="left-align nowrap single-left-divider single-right-divider"><p>Bi2Se3</p></td>
+<td class="left-align single-left-divider single-right-divider"><p>Single crystal example of thick slab, angle of incidence varies from 0 to   90</p></td>
+</tr>
+<tr class="row-even"><td class="left-align nowrap single-left-divider single-right-divider"><p>SingleCrystal/Bi2Se3_film</p></td>
+<td class="center-align nowrap single-left-divider single-right-divider"><p>Vasp</p></td>
+<td class="left-align nowrap single-left-divider single-right-divider"><p>Bi2Se3</p></td>
+<td class="left-align single-left-divider single-right-divider"><p>Single crystal example of thin film, angle of incidence varies from 0 to   90</p></td>
+</tr>
+<tr class="row-odd"><td class="left-align nowrap single-left-divider single-right-divider"><p>SizeEffects/BaTiO3</p></td>
+<td class="center-align nowrap single-left-divider single-right-divider"><p>Abinit</p></td>
+<td class="left-align nowrap single-left-divider single-right-divider"><p>BaTiO3</p></td>
+<td class="left-align single-left-divider single-right-divider"><p>Exploration of size effects in Bruggeman effective medium theory</p></td>
+</tr>
+<tr class="row-even"><td class="left-align nowrap single-left-divider single-right-divider"><p>SizeEffects/MgO</p></td>
+<td class="center-align nowrap single-left-divider single-right-divider"><p>Castep</p></td>
+<td class="left-align nowrap single-left-divider single-right-divider"><p>MgO</p></td>
+<td class="left-align single-left-divider single-right-divider"><p>Exploration of size effects in Bruggeman and Maxwell-Garnett effective   medium theories</p></td>
+</tr>
+<tr class="row-odd"><td class="left-align nowrap single-left-divider single-right-divider"><p>SizeEffects/ZnO</p></td>
+<td class="center-align nowrap single-left-divider single-right-divider"><p>Vasp</p></td>
+<td class="left-align nowrap single-left-divider single-right-divider"><p>ZnO</p></td>
+<td class="left-align single-left-divider single-right-divider"><p>Exploration of size effects in Maxwell-Garnett effective medium theory</p></td>
+</tr>
+<tr class="row-even"><td class="left-align nowrap single-left-divider single-right-divider"><p>Vasp/F-Apatite</p></td>
+<td class="center-align nowrap single-left-divider single-right-divider"><p>Vasp</p></td>
+<td class="left-align nowrap single-left-divider single-right-divider"><p>F-Apatite</p></td>
+<td class="left-align single-left-divider single-right-divider"><p>Maxwell-Garnett, sphere plates and needles</p></td>
+</tr>
+<tr class="row-odd"><td class="left-align nowrap single-left-divider single-right-divider"><p>Vasp/Na2SO42</p></td>
+<td class="center-align nowrap single-left-divider single-right-divider"><p>Vasp</p></td>
+<td class="left-align nowrap single-left-divider single-right-divider"><p>Na2(SO4)2</p></td>
+<td class="left-align single-left-divider single-right-divider"><p>Maxwell-Garnett and Bruggeman, needle, plate and needle</p></td>
+</tr>
+<tr class="row-even"><td class="left-align nowrap single-left-divider single-right-divider"><p>Vasp/ZnO</p></td>
+<td class="center-align nowrap single-left-divider single-right-divider"><p>Vasp</p></td>
+<td class="left-align nowrap single-left-divider single-right-divider"><p>ZnO</p></td>
+<td class="left-align single-left-divider single-right-divider"><p>Maxwell-Garnett and Bruggeman, needle, plate and needle, mass fraction</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="sphinx-toc sphinxlocaltoc">
+    <h3><a href="index.html">Page contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">Installation</a><ul>
+<li><a class="reference internal" href="#anaconda">Anaconda</a></li>
+<li><a class="reference internal" href="#pypi">PyPi</a></li>
+<li><a class="reference internal" href="#github-linux">GitHub - Linux</a></li>
+<li><a class="reference internal" href="#github-windows">GitHub - Windows</a><ul>
+<li><a class="reference internal" href="#installation-from-repository">Installation from repository</a><ul>
+<li><a class="reference internal" href="#install-git">Install git</a></li>
+<li><a class="reference internal" href="#install-make">Install make</a></li>
+<li><a class="reference internal" href="#install-python">Install Python</a></li>
+<li><a class="reference internal" href="#install-pdielec">Install PDielec</a></li>
+<li><a class="reference internal" href="#testing-pdielec">Testing PDielec</a></li>
+<li><a class="reference internal" href="#installing-pdielec-to-run-in-any-git-bash-console">Installing PDielec to run in any git bash console</a></li>
+<li><a class="reference internal" href="#updating-pdielec-from-the-git-repository">Updating PDielec from the git repository</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#github-pdielec-directory-structure">GitHub - PDielec directory structure</a></li>
+<li><a class="reference internal" href="#examples">Examples</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div class="sphinxprev">
+    <h4>Previous page</h4>
+    <p class="topless"><a href="introduction.html"
+                          title="Previous page">&larr; Introduction</a></p>
+  </div>
+  <div class="sphinxnext">
+    <h4>Next page</h4>
+    <p class="topless"><a href="software.html"
+                          title="Next page">&rarr; Software components</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/installation.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
 </div>
-
-
+<script>$('#searchbox').show(0);</script>
+        </div>
       </div>
-      <div class="bottomnav" role="navigation" aria-label="bottom navigation">
-      
-        <p>
-        «&#160;&#160;<a href="introduction.html">Introduction</a>
-        &#160;&#160;::&#160;&#160;
-        <a class="uplink" href="index.html">Contents</a>
-        &#160;&#160;::&#160;&#160;
-        <a href="software.html">Software components</a>&#160;&#160;»
-        </p>
+    
+    
+        <div class="sidebar-toggle-group no-js">
+            
+            <button class="sidebar-toggle" id="sidebar-hide" title="Hide the sidebar menu">
+                 «
+                <span class="show-for-small">hide menu</span>
+                
+            </button>
+            <button class="sidebar-toggle" id="sidebar-show" title="Show the sidebar menu">
+                
+                <span class="show-for-small">menu</span>
+                <span class="hide-for-small">sidebar</span>
+                 »
+            </button>
+        </div>
+    
+      <div class="clearer"></div>
+    </div>
+    <div class="relbar-bottom">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="software.html" title="Software components"
+             >next</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="introduction.html" title="Introduction"
+             >previous</a> &nbsp; &nbsp;</li>
+    <li><a href="index.html">PDielec: John Kendrick &amp; Andrew Burnett</a> &#187;</li>
 
-      </div>
+        <li class="nav-item nav-item-this"><a href="">Installation</a></li> 
+      </ul>
+    </div>
+    </div>
 
     <div class="footer" role="contentinfo">
         &#169; Copyright 2018, John Kendrick and Andrew Burnett.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.1.2.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.2.0.
     </div>
+    <!-- cloud_sptheme 1.4 -->
   </body>
 </html>

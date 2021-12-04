@@ -1,4 +1,10 @@
 #
+# mainTab
+#
+tab = self.notebook.mainTab
+tab.settings['Program'] = 'vasp'
+tab.settings['Output file name'] = 'OUTCAR'
+#
 # SettingsTab
 #
 tab = self.notebook.settingsTab
@@ -34,6 +40,7 @@ for method in methods:
                 self.notebook.addScenario()
                 tab = self.notebook.scenarios[-1]
                 tab.settings['Mass fraction'] = mf
+                tab.settings['Mass or volume fraction'] = 'mass'
                 tab.settings['Particle shape'] = shape
                 tab.settings['Particle size(mu)'] = size
                 tab.settings['Effective medium method'] = method

@@ -52,16 +52,26 @@ preamble = r'''
 \newcommand{\fieldbf}[1]{\bar{\bm{#1}}}
 '''
 
+preamble_maths = r'''
+\newcommand{\water}{H_{2}O}
+\newcommand{\tensor}[1]{\bar{\bar{#1}}}
+\newcommand{\tensorbs}[1]{\bar{\bar{\bm{#1}}}}
+\newcommand{\tensorbf}[1]{\bar{\bar{\bm{#1}}}}
+\newcommand{\fieldbf}[1]{\bar{\bm{#1}}}
+'''
+
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 #mathjax_path = 'https://cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js'
+mathjax_path = 'https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML'
 extensions = [
     'sphinx.ext.mathjax',
     'sphinx.ext.githubpages',
     'sphinxcontrib.bibtex',
     'cloud_sptheme.ext.table_styling',
 ]
+
 bibtex_bibfiles = ['pdielec.bib']
 mathjax_config = {
     "extensions": ["AMSmath.js"] ,
@@ -102,7 +112,7 @@ language = None
 exclude_patterns = ["_build", "index-latex.rst", "Thumbs.db", ".DS_Store"]
 
 # The name of the Pygments (syntax highlighting) style to use.
-pygments_style = 'sphinx'
+pygments_style = 'default'
 
 
 # -- Options for HTML output -------------------------------------------------
@@ -110,8 +120,11 @@ pygments_style = 'sphinx'
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-html_theme = 'alabaster'
 html_theme = 'haiku'
+html_theme = 'alabaster'
+html_theme = 'bizstyle'
+html_theme = 'python_docs_theme'
+html_theme = 'cloud'
 
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
@@ -186,7 +199,7 @@ latex_documents = [
      'John Kendrick and Andrew Burnett', 'manual'),
 ]
 
-pngmath_latex_preamble = preamble
+pngmath_latex_preamble = preamble_maths
 
 # -- Options for manual page output ------------------------------------------
 

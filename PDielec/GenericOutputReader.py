@@ -23,6 +23,7 @@ import numpy as np
 from PDielec.Constants  import wavenumber, avogadro_si, amu
 from PDielec.Plotter    import print3x3, print_reals, print_strings, print_ints
 from PDielec.Calculator import cleanup_symbol
+from PDielec.IO         import pdielec_io
 
 class GenericOutputReader:
     """Generic reader of output files.  Actual reader should inherit from this class"""
@@ -34,16 +35,28 @@ class GenericOutputReader:
         self.type                       = 'Unkown'
         self.ncells                     = 0
         self.unit_cells                 = []
+        # self.alengths                   = []
+        # self.blengths                   = []
+        # self.clengths                   = []
+        # self.alphas                   = []
+        # self.betas                   = []
+        # self.gammas                   = []
         self.nsteps                     = 0
         self.electrons                  = 0
         self.spin                       = 0
         self.nbands                     = 0
         self.volume                     = 0
+        self.volumes                    = []
         self.nions                      = 0
         self.nspecies                   = 0
+        self.geomsteps                  = 0
         self.species                    = []
+        self.energiesDFT                = []
+        self.energiesDFT_disp           = []
         self.final_free_energy          = 0.0
+        self.final_free_energies        = []
         self.final_energy_without_entropy = 0.0
+        self.final_energies_without_entropy = []
         self.kpoints                    = 1
         self.kpoint_grid                = [ 1, 1, 1 ]
         self.energy_cutoff              = 0.0
@@ -52,6 +65,7 @@ class GenericOutputReader:
         self.iterations                 = {}
         self.file_descriptor            = ''
         self.pressure                   = 0
+        self.pressures                  = []
         self.magnetization              = 0.0
         # this in epsilon infinity
         self.zerof_optical_dielectric   = [[0, 0, 0], [0, 0, 0], [0, 0, 0]]
@@ -74,6 +88,8 @@ class GenericOutputReader:
         self.nomass_hessian_has_been_set= False
         self.original_born_charges      = None
         self.original_born_charges_are_being_used = True
+        self.CrystalPermittivity        = None
+        self.oscillator_strengths       = None
         return
 
     def read_output(self):
@@ -149,6 +165,28 @@ class GenericOutputReader:
         print("")
         print("Energy cutoff (eV): {:f}".format(self.energy_cutoff))
         print("")
+        print("final_free_energy(eV): {:f}".format(self.final_free_energy))
+        print("")
+        print("geomsteps: {:f}".format(self.geomsteps))
+        print("")
+        print_reals("DFT energies (eV):", self.energiesDFT,format="{:10.8f}")
+        print("")
+        print_reals("DFT energies including dispersion (eV):", self.energiesDFT_disp,format="{:10.8f}")
+        print("")
+        print_reals("Volumes:", self.volumes,format="{:10.8f}")
+        print("")
+        # print_reals("Length of a:", self.alengths,format="{:10.8f}")
+        # print("")
+        # print_reals("Length of b:", self.blengths,format="{:10.8f}")
+        # print("")
+        # print_reals("Length of c:", self.clengths,format="{:10.8f}")
+        # print("")
+        # print_reals("alpha:", self.alphas,format="{:10.8f}")
+        # print("")
+        # print_reals("beta:", self.betas,format="{:10.8f}")
+        # print("")
+        # print_reals("gamma:", self.gammas,format="{:10.8f}")
+        # print("")
         print_reals("Frequencies (cm-1):", self.frequencies)
         print_reals("Masses (amu):", self.masses,format="{:10.6f}")
         for i, charges in enumerate(self.born_charges):
@@ -179,7 +217,7 @@ class GenericOutputReader:
             print("Warning file is not present: ", name, file=sys.stderr)
             return
         # Open file and store file name and directory
-        self.file_descriptor = open(name, 'r')
+        self.file_descriptor = pdielec_io(name, 'r')
         self.open_filename = name
         self.open_directory = os.path.dirname(name)
         if self.open_directory == "":
@@ -443,7 +481,7 @@ class GenericOutputReader:
     def _born_charge_sum_rule(self):
         """Apply a simple charge sum rule to all the elements of the born matrices"""
         total = np.zeros((3, 3))
-        born_charges = np.array(self.born_charges)
+        born_charges = np.array(self.original_born_charges)
         new_born_charges = np.zeros_like(self.born_charges)
         total = np.sum(born_charges) / self.nions
         if self.debug:

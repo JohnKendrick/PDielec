@@ -20,10 +20,11 @@ class ViewerTab(QWidget):
         super(QWidget, self).__init__(parent)
         global debugger
         debugger = Debug(debug,'ViewerTab')
+        debugger.print('Start:: initialisation')
         self.debug = debug
-        self.dirty = True
+        self.refreshRequired = True
         self.setWindowTitle('Viewer')
-        self.selected_mode = 0
+        self.selected_mode = 4
         self.settings = {}
         self.UVW = deque()
         self.settings['Atom scaling'] = 0.5
@@ -40,7 +41,7 @@ class ViewerTab(QWidget):
         self.light_switches = [False]*8
         self.light_switches[0] = True
         self.light_switches[1] = True
-        self.plot_types = ['Animation','Arrows']
+        self.plot_types = ['Animation','Arrows','No arrows or animation']
         self.plot_type_index = 1
         self.number_of_molecules = 0
         self.unit_cell = None
@@ -65,12 +66,13 @@ class ViewerTab(QWidget):
         form = QFormLayout()
         #
         # The selected mode
+        # Mode numbering starts at 1
         #
         self.selected_mode_sb = QSpinBox(self)
         if self.frequencies_cm1 is not None:
-            self.selected_mode_sb.setRange(0,len(self.frequencies_cm1)-1)
+            self.selected_mode_sb.setRange(1,len(self.frequencies_cm1))
         else:
-            self.selected_mode_sb.setRange(0,2000)
+            self.selected_mode_sb.setRange(1,2000)
         self.selected_mode_sb.setValue(self.selected_mode)
         self.selected_mode_sb.setToolTip('Set the mode to be visualised')
         self.selected_mode_sb.valueChanged.connect(self.on_selected_mode_changed)
@@ -259,14 +261,17 @@ class ViewerTab(QWidget):
         vbox.addLayout(form)
         # finalise the layout
         self.setLayout(vbox)
+        debugger.print('Finished:: initialisation')
 
     def on_filename_le_return(self):
         debugger.print('on filename le return pressed')
         self.on_filename_button_clicked(True)
+        return
 
     def on_filename_le_changed(self,text):
         debugger.print('on filename le changed', text)
         self.image_filename = text
+        return
 
     def on_filename_button_clicked(self,boolean):
         debugger.print('on filename button clicked')
@@ -311,22 +316,25 @@ class ViewerTab(QWidget):
         a,b,c = self.settings['Super Cell']
         a = newa
         self.settings['Super Cell'] =  [ a, b, c ]
-        self.dirty = True
+        self.refreshRequired = True
         self.refresh()
+        return
 
     def on_super_cell_changed_b(self,newb):
         a,b,c = self.settings['Super Cell']
         b = newb
         self.settings['Super Cell'] =  [ a, b, c ]
-        self.dirty = True
+        self.refreshRequired = True
         self.refresh()
+        return
 
     def on_super_cell_changed_c(self,newc):
         a,b,c = self.settings['Super Cell']
         c = newc
         self.settings['Super Cell'] =  [ a, b, c ]
-        self.dirty = True
+        self.refreshRequired = True
         self.refresh()
+        return
 
     def on_coloured_element_clicked(self,boolean):
         debugger.print('on coloured elements clicked')
@@ -338,8 +346,9 @@ class ViewerTab(QWidget):
         colour = colourChooser.currentColor()
         rgba = [ colour.red(), colour.green(), colour.blue(), colour.alpha() ]
         self.element_colours[text] = rgba
-        self.dirty = True
+        self.refreshRequired = True
         self.refresh()
+        return
 
     def on_coloured_button_clicked(self,boolean):
         debugger.print('on coloured button clicked')
@@ -358,8 +367,9 @@ class ViewerTab(QWidget):
             self.settings['Bond colour'] = rgba
         elif text == 'Arrows':
             self.settings['Arrow colour'] = rgba
-        self.dirty = True
+        self.refreshRequired = True
         self.refresh()
+        return
 
 
     def on_light_switches_cb_activated(self, index):
@@ -373,76 +383,91 @@ class ViewerTab(QWidget):
         self.opengl_widget.defineLights()
         self.calculate()
         self.plot()
+        return
 
     def on_maximum_displacement_changed(self,value):
         debugger.print('on maximum_displacement changed ', value)
         self.settings['Maximum displacement'] = value
         self.calculate()
         self.plot()
+        return
 
     def on_atom_scaling_changed(self,value):
         debugger.print('on atom_scaling changed ', value)
         self.settings['Atom scaling'] = value
         self.calculate()
         self.plot()
+        return
 
     def on_arrow_radius_changed(self,value):
         debugger.print('on arrow_radius changed ', value)
         self.settings['Arrow radius'] = value
         self.calculate()
         self.plot()
+        return
 
     def on_cell_radius_changed(self,value):
         debugger.print('on cell_radius changed ', value)
         self.settings['Cell radius'] = value
         self.calculate()
         self.plot()
+        return
 
     def on_bond_radius_changed(self,value):
         debugger.print('on_bond_radius_changed')
         self.settings['Bond radius'] = value
         self.calculate()
         self.plot()
+        return
 
     def on_selected_mode_changed(self):
         debugger.print('on_selected_mode_changed')
         self.selected_mode = self.selected_mode_sb.value()
         debugger.print('on selected_mode change ', self.selected_mode)
-        self.frequency_le.setText('{:.5f}'.format(self.notebook.settingsTab.frequencies_cm1[self.selected_mode]))
+        self.frequency_le.setText('{:.5f}'.format(self.notebook.settingsTab.frequencies_cm1[self.selected_mode-1]))
         self.opengl_widget.deleteArrows()
-        maxR = np.max( np.abs(np.array(self.UVW[self.selected_mode])))
+        maxR = np.max( np.abs(np.array(self.UVW[self.selected_mode-1])))
+        if maxR < 1.0E-8:
+            maxR = 1.0E-8
+            self.plot_type_index = 2
         arrow_scaling = self.settings['Maximum displacement'] / maxR
-        for uvw in self.UVW[self.selected_mode]:
+        for uvw in self.UVW[self.selected_mode-1]:
             self.opengl_widget.addArrows( self.settings['Arrow colour'],self.settings['Arrow radius'], uvw, arrow_scaling )
         self.calculate()
         self.plot()
+        return
 
     def on_plottype_cb_changed(self, index):
         debugger.print('on_plottype_cb_changed')
         self.plot_type_index = index
         debugger.print('Plot type index changed to ', self.plot_type_index)
         self.plot()
+        return
 
     def calculate(self):
-        debugger.print('calculate')
+        debugger.print('Start:: calculate')
         # Assemble the mainTab settings
         settings = self.notebook.mainTab.settings
         program = settings['Program']
-        filename = settings['Output file name']
+        filename = self.notebook.mainTab.getFullFileName()
         debugger.print('calculate program file name',program, filename)
         self.reader = self.notebook.reader
         if self.reader is None:
+            debugger.print('Finished:: calculate - reader is None')
             return
         if program == '':
+            debugger.print('Finished:: calculate - program is blank')
             return
         if filename == '':
+            debugger.print('Finished:: calculate - filename is blank')
             return
         QApplication.setOverrideCursor(Qt.WaitCursor)
         # Assemble the settingsTab settings
         settings = self.notebook.settingsTab.settings
         self.frequencies_cm1 = self.notebook.settingsTab.frequencies_cm1
-        self.selected_mode_sb.setRange(0,len(self.frequencies_cm1)-1)
+        self.selected_mode_sb.setRange(1,len(self.frequencies_cm1))
         # Get the cell with whole molecules from the analysis tab
+        self.notebook.analysisTab.refresh()
         self.unit_cell = self.notebook.analysisTab.cell_of_molecules
         # Generate a super cell
         imageSpecifier = self.settings["Super Cell"]
@@ -476,15 +501,19 @@ class ViewerTab(QWidget):
         # CalculatePhasePositions stores all the sphere and bond information
         self.calculatePhasePositions()
         # Add the arrows
-        maxR = np.max( np.abs(np.array(self.UVW[self.selected_mode])))
+        maxR = np.max( np.abs(np.array(self.UVW[self.selected_mode-1])))
+        if maxR < 1.0E-8:
+            maxR = 1.0E-8
+            self.plot_type_index = 2
         arrow_scaling = self.settings['Maximum displacement'] / maxR
         self.opengl_widget.deleteArrows()
-        for uvw in self.UVW[self.selected_mode]:
+        for uvw in self.UVW[self.selected_mode-1]:
             self.opengl_widget.addArrows( self.settings['Arrow colour'],self.settings['Arrow radius'], uvw, arrow_scaling )
         self.opengl_widget.setRotationCentre( centreOfMassXYZ )
         self.opengl_widget.setImageSize()
-        self.dirty = False
+        self.refreshRequired = False
         QApplication.restoreOverrideCursor()
+        debugger.print('Finished:: calculate')
         return
 
     def setColour(self, element, colour):
@@ -498,14 +527,18 @@ class ViewerTab(QWidget):
         else:
             self.element_colours[element] = colour
         self.plot()
+        return
 
     def calculatePhasePositions(self):
         debugger.print('calculatePhasePositions')
         # we need the number of phase steps to be odd
         if self.settings['Number of phase steps']%2 == 0:
             self.settings['Number of phase steps'] += 1
-        UVW = np.array( self.UVW[self.selected_mode] )
+        UVW = np.array( self.UVW[self.selected_mode-1] )
         maxR = np.amax(np.abs(UVW))
+        if maxR < 1.0E-8:
+            maxR = 1.0E-8
+            self.plot_type_index = 2
         self.scale_vibrations = self.settings['Maximum displacement'] / maxR
         self.newXYZ       = np.zeros( (self.settings['Number of phase steps'], self.natoms, 3) )
         n2 = int(self.settings['Number of phase steps']/2)
@@ -546,37 +579,56 @@ class ViewerTab(QWidget):
         phases = np.arange(-1.0, 1.0+delta-1.0E-10, delta)
         with open(filename,'w') as fd:
             for phase_index,phase in enumerate(phases):
-                description = 'mode_'+str(self.selected_mode)+'_phase_'+str(phase)
+                description = 'mode_'+str(self.selected_mode-1)+'_phase_'+str(phase)
                 unitcell.set_xyz_coordinates(self.newXYZ[phase_index])
                 unitcell.write_cif(description,file_=fd)
 
     def plot(self):
-        debugger.print('plot')
+        debugger.print('Start:: plot')
         if self.reader is None:
+            debugger.print('Finished:: plot reader is None')
             return
         if self.plot_type_index == 0:
             self.plot_animation()
-        else:
+        elif self.plot_type_index == 1:
             self.plot_arrows()
+        else:
+            self.plot_none()
+        debugger.print('Finished:: plot')
+
+    def plot_none(self):
+        debugger.print('Start:: plot_animation')
+        self.opengl_widget.showArrows(False)
+        self.opengl_widget.stopAnimation()
+        self.opengl_widget.update()
+        debugger.print('Finished:: plot_animation')
+        return
 
     def plot_animation(self):
-        debugger.print('plot_animation')
+        debugger.print('Start:: plot_animation')
         self.opengl_widget.showArrows(False)
         self.opengl_widget.update()
         self.opengl_widget.startAnimation()
+        debugger.print('Finished:: plot_animation')
         return
 
     def plot_arrows(self):
-        debugger.print('plot_arrows')
+        debugger.print('Start:: plot_arrows')
         self.opengl_widget.showArrows(True)
         self.opengl_widget.stopAnimation()
         self.opengl_widget.update()
+        debugger.print('Finished:: plot_arrows')
         return
 
+    def requestRefresh(self):
+        debugger.print('Start:: requestRefresh')
+        self.refreshRequired = True
+        debugger.print('Finished:: requestRefresh')
+
     def refresh(self,force=False):
-        debugger.print('refresh')
-        if not self.dirty and not force and not self.notebook.visualerCalculationRequired:
-            debugger.print('refresh aborted',self.dirty,force)
+        debugger.print('Start:: refresh')
+        if not self.refreshRequired and not force:
+            debugger.print('Finished:: refresh aborted',self.refreshRequired,force)
             return
         debugger.print('refresh widget',force)
         QApplication.setOverrideCursor(Qt.WaitCursor)
@@ -587,7 +639,7 @@ class ViewerTab(QWidget):
             w.blockSignals(True)
         self.selected_mode_sb.setValue(self.selected_mode)
         try:
-            self.frequency_le.setText('{:.5f}'.format(self.notebook.settingsTab.frequencies_cm1[self.selected_mode]))
+            self.frequency_le.setText('{:.5f}'.format(self.notebook.settingsTab.frequencies_cm1[self.selected_mode-1]))
         except:
             self.frequency_le.setText('{:.5f}'.format(0.0))
         self.atom_scaling_sb.setValue(self.settings['Atom scaling'])
@@ -610,6 +662,7 @@ class ViewerTab(QWidget):
             self.element_names = []
             self.species = []
         else:
+            self.notebook.analysisTab.refresh()
             self.unit_cell = self.notebook.analysisTab.cell_of_molecules
             self.element_names = self.unit_cell.element_names
             self.species = self.reader.getSpecies()
@@ -648,4 +701,5 @@ class ViewerTab(QWidget):
         self.calculate()
         self.plot()
         QApplication.restoreOverrideCursor()
+        debugger.print('Finished:: refresh')
         return

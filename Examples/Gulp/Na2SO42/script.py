@@ -1,4 +1,10 @@
 #
+# MainTab
+#
+tab = self.notebook.mainTab
+tab.settings['Program'] = 'gulp'
+tab.settings['Output file name'] = 'na2so42.gout'
+#
 # SettingsTab
 #
 tab = self.notebook.settingsTab

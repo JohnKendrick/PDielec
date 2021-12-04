@@ -1,0 +1,16 @@
+numpy
+scipy
+PyQt5
+PyOpenGl
+matplotlib
+xlsxwriter
+openpyxl
+imageio
+imageio-ffmpeg
+PyYAML
+termcolor
+dill
+psutil
+scikit-learn
+sphinx
+cloud_sptheme

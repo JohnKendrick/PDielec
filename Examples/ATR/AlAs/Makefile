@@ -3,6 +3,10 @@ pdgui:
 	@../../../pdgui -nosplash abinit AlAs.out results.xlsx -script script.py -exit
 	@../../../checkexcel results.ref.xlsx results.xlsx
 
+benchmark:
+	@echo "PDGui benchmark for absorption of AlAs from Abinit...."
+	@../../../pdgui -nosplash abinit AlAs.out -script script.py -exit
+
 pdgui-regenerate:
 	@echo "PDGui Regenerating reference files for AlAs from Abinit...."
 	@../../../pdgui -nosplash abinit AlAs.out results.xlsx -script script.py -exit

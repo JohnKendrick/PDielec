@@ -5,7 +5,8 @@ import numpy as np
 import os, sys
 import psutil
 from PDielec.Constants import amu, wavenumber, angstrom, isotope_masses, average_masses
-from multiprocess import Pool
+from PDielec.DielectricFunction import DielectricFunction
+from multiprocessing.dummy import Pool
 import dill as pickle
 import PDielec.Calculator as Calculator
 import PDielec.Utilities as Utilities
@@ -19,13 +20,11 @@ def set_affinity_on_worker():
     #os.system("taskset -p 0xff %d > /dev/null" % os.getpid())
 
 def read_a_file( calling_parameters):
-    name, eckart, neutral, mass_definition, mass_dictionary, global_no_calculation, program, hessian_symmetrisation, qmprogram, debug = calling_parameters
+    name, eckart, neutral, mass_definition, mass_dictionary, global_no_calculation, program, qmprogram, debug = calling_parameters
     reader = Utilities.get_reader(name,program,qmprogram)
     # The order that the settings are applied is important
-    # Symmetry is applied before the file is read, it is an integral part of the hessian
     # Eckart and neutral are applied after the file has been read, this way the original frequencies are those before any calculations
     reader.debug = debug
-    reader.hessian_symmetrisation = hessian_symmetrisation
     reader.read_output()
     frequencies_cm1 = reader.frequencies
     frequencies = np.array(frequencies_cm1)
@@ -35,6 +34,7 @@ def read_a_file( calling_parameters):
     mode_list = []
     ignore_modes = []
     sigmas = []
+    epsinf = np.array(reader.zerof_optical_dielectric)
     if not no_calculation:
         # apply the eckart conditions before we change the masses
         reader.eckart = eckart
@@ -117,7 +117,9 @@ def read_a_file( calling_parameters):
                     mode_list.remove(mode)
             # end loop over modes to be ignored
         # end of if ignore_modes
-        ionicv = Calculator.dielectric_contribution(0.0, mode_list, modified_frequencies*wavenumber, sigmas, oscillator_strengths, volume)
+        crystalPermittivity = DielectricFunction('dft', parameters=(mode_list, modified_frequencies*wavenumber, sigmas, oscillator_strengths, volume, False, 0.0, 0.0) )
+        crystalPermittivity.setEpsilonInfinity(epsinf)
+        ionicv = crystalPermittivity.calculate(0.0) - epsinf
     # absorption units here are L/mole/cm-1
     # Continue reading any data from the output file
     frequencies_cm1.sort()
@@ -127,7 +129,6 @@ def read_a_file( calling_parameters):
         eps0 = np.real(ionicv)
     else:
         eps0   = np.array(reader.zerof_static_dielectric)
-    epsinf = np.array(reader.zerof_optical_dielectric)
     eps0_xx = str(eps0[0,0])
     eps0_yy = str(eps0[1,1])
     eps0_zz = str(eps0[2,2])
@@ -174,7 +175,7 @@ def read_a_file( calling_parameters):
     for f in frequencies_cm1:
         string = string + ',' + str(f)
     results_string = [ string ]
-    # Assemble the next line if any of eckart/neutral/symm have been used
+    # Assemble the next line if any of eckart/neutral have been used
     option_string = ''
     if not no_calculation:
         option_string = 'Calculated frequencies (cm-1)'
@@ -182,7 +183,6 @@ def read_a_file( calling_parameters):
             option_string = option_string+' eckart'
         if neutral :
             option_string = option_string+' neutral'
-        option_string = option_string+' hessian_symmetrisation='+hessian_symmetrisation
         option_string = option_string+' mass_definition='+mass_definition
         header = name+','+option_string
         string = header + common_output
@@ -205,9 +205,9 @@ def read_a_file( calling_parameters):
     return reader,name,results_string
 
 def print_help():
-    print('preader -program program [-eckart] [-neutral] [-nocalculation] [-hessian symm] [-masses average] [-pickle name] [-version] filenames .....', file=sys.stderr)
+    print('preader -program program [-eckart] [-neutral] [-nocalculation] [-masses average] [-pickle name] [-version] filenames .....', file=sys.stderr)
     print('  \"program\" must be one of \"abinit\", \"castep\", \"crystal\", \"gulp\"       ', file=sys.stderr)
-    print('           \"phonopy\", \"qe\", \"vasp\", \"auto\"                               ', file=sys.stderr)
+    print('           \"phonopy\", \"qe\", \"vasp\", \"experiment\", \"auto\"               ', file=sys.stderr)
     print('           The default is auto, so the program tries to guess the package from   ', file=sys.stderr)
     print('           the contents of the directory.  However this is not fool-proof!       ', file=sys.stderr)
     print('           If phonopy is used it must be followed by the QM package              ', file=sys.stderr)
@@ -219,10 +219,6 @@ def print_help():
     print('  -eckart projects out the translational components. Default is no projection    ', file=sys.stderr)
     print('  -neutral imposes neutrality on the Born charges of the molecule.               ', file=sys.stderr)
     print('           Default is no neutrality is imposed                                   ', file=sys.stderr)
-    print('  -hessian [symm|crystal] defines the symmetrisation of the hessian              ', file=sys.stderr)
-    print('           \"crystal\" imposes Crystal14 symmetrisation                          ', file=sys.stderr)
-    print('           \"symm\" symmetrises by averaging the hessian with its transpose      ', file=sys.stderr)
-    print('           \"symm\" is the default                                               ', file=sys.stderr)
     print('  -nocalculation requests no calculations are performed                          ', file=sys.stderr)
     print('           A single line is output with results obtained by reading the output   ', file=sys.stderr)
     print('           any of -mass -masses -eckart -neutral or -crystal are ignored         ', file=sys.stderr)
@@ -243,7 +239,6 @@ def main():
     files = []
     eckart = False
     neutral = False
-    hessian_symmetrisation = None
     mass_definition = "average"
     mass_dictionary = {}
     global_no_calculation = False
@@ -266,12 +261,6 @@ def main():
             eckart = True
         elif token == "-neutral":
             neutral = True
-        elif token == "-hessian":
-            itoken += 1
-            hessian_symmetrisation = tokens[itoken]
-            if (not hessian_symmetrisation == "symm") and ( not hessian_symmetrisation == "crystal" ):
-                print('-hessian must be followed by \"symm\" or \"crystal\"',file=sys.stderr)
-                exit()
         elif token == "-masses":
             itoken += 1
             token = tokens[itoken]
@@ -306,11 +295,6 @@ def main():
         elif token == "-program":
             itoken += 1
             program = tokens[itoken]
-            if hessian_symmetrisation == None:
-                if program == 'crystal':
-                    hessian_symmetrisation = 'crystal'
-                else:
-                    hessian_symmetrisation = 'symm'
             if program == 'phonopy':
                 itoken += 1
                 qmprogram = tokens[itoken]
@@ -321,7 +305,7 @@ def main():
         print('Please use -program to define the package used to generate the output files',file=sys.stderr)
         exit()
 
-    if not program in ['auto','abinit','castep','crystal','gulp','qe','vasp','phonopy']:
+    if not program in ['auto','abinit','castep','crystal','gulp','qe','vasp','phonopy','experiment']:
         print('Program is not recognised: ',program,file=sys.stderr)
         exit()
 
@@ -341,7 +325,6 @@ def main():
     if global_no_calculation:
         print('  No calculations has been requested',file=sys.stderr)
         print('  The frequencies (if present) will come from the QM/MM program    ',file=sys.stderr)
-        print('  No hessian symmetrisation be performed',file=sys.stderr)
         if eckart:
             print('  The -eckart flag will be ignored',file=sys.stderr)
             eckart = False
@@ -358,7 +341,6 @@ def main():
         print('  Eckart is ',eckart,file=sys.stderr)
         print('  Neutral is ',neutral,file=sys.stderr)
         print('  Mass definition is ',mass_definition,file=sys.stderr)
-        print('  Hessian symmetrisation is ',hessian_symmetrisation,file=sys.stderr)
     #
     # Create a pool of processors to handle reading the files
     #
@@ -371,13 +353,8 @@ def main():
         prog = program
         if program == "auto":
             prog = find_program_from_name(name)
-            if hessian_symmetrisation == None:
-                if prog == 'crystal':
-                    hessian_symmetrisation = 'crystal'
-                else:
-                    hessian_symmetrisation = 'symm'
             print('  Analysing {} generated by {}'.format(name,prog),file=sys.stderr)
-        calling_parameters.append( (name, eckart, neutral, mass_definition, mass_dictionary, global_no_calculation, prog, hessian_symmetrisation, qmprogram, debug) )
+        calling_parameters.append( (name, eckart, neutral, mass_definition, mass_dictionary, global_no_calculation, prog, qmprogram, debug) )
     # Calculate the results in parallel
     results_map_object = p.map_async(read_a_file,calling_parameters)
     results_map_object.wait()

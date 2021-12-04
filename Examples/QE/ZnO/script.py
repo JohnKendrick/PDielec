@@ -1,4 +1,10 @@
 #
+# mainTab
+#
+tab = self.notebook.mainTab
+tab.settings['Program'] = 'qe'
+tab.settings['Output file name'] = 'zno.ph.dynG'
+#
 # SettingsTab
 #
 tab = self.notebook.settingsTab

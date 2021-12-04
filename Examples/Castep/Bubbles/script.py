@@ -1,12 +1,16 @@
 #
+# mainTab
+#
+tab = self.notebook.mainTab
+tab.settings['Program'] = 'castep'
+tab.settings['Output file name'] = 'phonon.castep'
+#
 #
 tab = self.notebook.mainTab
 tab.settings['Program'] = 'castep'
 tab.settings['Output file name'] = 'phonon.castep'
 tab.settings['Excel file name'] = ''
 tab.settings['QM program'] = ''
-tab.settings['Hessian symmetrisation'] = 'symm'
-tab.refresh(force=True)
 #
 #
 tab = self.notebook.settingsTab
@@ -14,9 +18,7 @@ tab.settings['Eckart flag'] =  False
 tab.settings['Neutral Born charges'] =  False
 tab.settings['Sigma value'] =  10
 tab.settings['Mass definition'] = 'average'
-tab.settings['Optical permittivity'] =  [[3.13969, 0.0, 0.0], [0.0, 3.13969, 0.0], [0.0, 0.0, 3.13969]]
 tab.sigmas_cm1 = [10, 10, 10, 10, 10, 10]
-tab.refresh(force=True)
 #
 #
 tab = self.notebook.scenarios[0]
@@ -40,7 +42,6 @@ tab.settings['ATR S polarisation fraction'] =  0.5
 tab.settings['Effective medium method'] = 'Maxwell-Garnett'
 tab.settings['Particle shape'] = 'Sphere'
 tab.settings['Legend'] = 'Maxwell-Garnett vf=0.1 Sphere'
-tab.refresh(force=True)
 #
 #
 self.notebook.addScenario()
@@ -65,7 +66,6 @@ tab.settings['ATR S polarisation fraction'] =  0.5
 tab.settings['Effective medium method'] = 'Maxwell-Garnett'
 tab.settings['Particle shape'] = 'Sphere'
 tab.settings['Legend'] = 'Maxwell-Garnett bubbles'
-tab.refresh(force=True)
 #
 #
 tab = self.notebook.plottingTab
@@ -76,7 +76,6 @@ tab.settings['Molar definition'] = 'Unit cells'
 tab.settings['Number of atoms'] =  1
 tab.settings['Plot title'] = 'Castep MgO'
 tab.settings['concentration'] =  86.71312720248292
-tab.refresh(force=True)
 #
 #
 tab = self.notebook.analysisTab
@@ -86,7 +85,6 @@ tab.settings['title'] = 'Analysis'
 tab.settings['Covalent radius scaling'] =  1.1
 tab.settings['Bonding tolerance'] =  0.1
 tab.settings['Bar width'] =  0.5
-tab.refresh(force=True)
 #
 #
 tab = self.notebook.viewerTab
@@ -100,7 +98,6 @@ tab.settings['Background colour'] =  [120, 120, 120, 255]
 tab.settings['Arrow colour'] =  [0, 255, 0, 255]
 tab.settings['Arrow radius'] =  0.07
 tab.settings['Number of phase steps'] =  41
-tab.refresh(force=True)
 #
 #
 tab = self.notebook.fitterTab
@@ -117,4 +114,3 @@ tab.settings['Independent y-axes'] =  True
 tab.settings['Spectral difference threshold'] =  0.05
 tab.settings['HPFilter lambda'] =  7.0
 tab.settings['Baseline removal'] =  False
-tab.refresh(force=True)

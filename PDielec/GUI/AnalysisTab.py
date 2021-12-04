@@ -11,6 +11,7 @@ from PDielec.Constants import  covalent_radii
 # Import plotting requirements
 import matplotlib
 import matplotlib.figure
+from matplotlib.ticker import MaxNLocator
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT as NavigationToolbar
 from PDielec.Utilities import Debug
@@ -30,7 +31,7 @@ class AnalysisTab(QWidget):
         self.settings['Covalent radius scaling'] = 1.1
         self.settings['Bonding tolerance'] = 0.1
         self.settings['Bar width'] = 0.5
-        self.dirty = True
+        self.refreshRequired = True
         self.plot_types = ['Internal vs External','Molecular Composition']
         self.plot_type_index = 0
         self.number_of_molecules = 0
@@ -51,7 +52,7 @@ class AnalysisTab(QWidget):
         #
         # The minimum frequency
         #
-        self.vmin_sb = QSpinBox(self)
+        self.vmin_sb = QDoubleSpinBox(self)
         self.vmin_sb.setRange(-100,9000)
         self.vmin_sb.setValue(self.settings['Minimum frequency'])
         self.vmin_sb.setToolTip('Set the minimum frequency to be considered)')
@@ -62,7 +63,7 @@ class AnalysisTab(QWidget):
         #
         # The maximum frequency
         #
-        self.vmax_sb = QSpinBox(self)
+        self.vmax_sb = QDoubleSpinBox(self)
         self.vmax_sb.setRange(0,9000)
         self.vmax_sb.setValue(self.settings['Maximum frequency'])
         self.vmax_sb.setToolTip('Set the maximum frequency to be considered)')
@@ -94,7 +95,7 @@ class AnalysisTab(QWidget):
         label.setToolTip('Bonding is determined from scale*(radi+radj)+toler')
         form.addRow(label, hbox)
         # Add a table of covalent radii
-        self.element_radii_tw = FixedQTableWidget(self)
+        self.element_radii_tw = FixedQTableWidget(parent=self)
         self.element_radii_tw.setToolTip('Individual covalent radii used to determine bonding can be set here')
         self.element_radii_tw.itemClicked.connect(self.on_element_radii_tw_itemClicked)
         self.element_radii_tw.itemChanged.connect(self.on_element_radii_tw_itemChanged)
@@ -160,7 +161,7 @@ class AnalysisTab(QWidget):
         self.setLayout(vbox)
         QCoreApplication.processEvents()
         #if self.notebook.spreadsheet is not None:
-        #    self.write_spreadsheet()
+        #    self.writeSpreadsheet()
         #QCoreApplication.processEvents()
 
     def on_element_radii_tw_itemClicked(self,item):
@@ -175,6 +176,8 @@ class AnalysisTab(QWidget):
             self.element_radii[self.species[col]] = float(item.text())
             self.calculate()
             self.plot()
+            if self.notebook.viewerTab is not None:
+                self.notebook.viewerTab.requestRefresh()
         except:
             debugger.print('Failed Changing the element radius',col,item.text())
             pass
@@ -191,7 +194,7 @@ class AnalysisTab(QWidget):
         for i,(radius,element) in enumerate(zip(radii,self.species)):
             qw = QTableWidgetItem()
             qw.setText('{0:.6f}'.format(radius))
-            qw.setTextAlignment(Qt.AlignHCenter | Qt.AlignVCenter)
+            qw.setTextAlignment(int(Qt.AlignHCenter | Qt.AlignVCenter))
             self.element_radii_tw.setItem(0,i, qw )
         self.element_radii_tw.blockSignals(False)
         # end if
@@ -203,7 +206,7 @@ class AnalysisTab(QWidget):
         self.calculate()
         self.plot()
 
-    def write_spreadsheet(self):
+    def writeSpreadsheet(self):
         if self.notebook.spreadsheet is None:
             return
         sp = self.notebook.spreadsheet
@@ -217,7 +220,8 @@ class AnalysisTab(QWidget):
         sp.writeNextRow(headers,col=1)
         for imode,(freq,energies) in enumerate(zip(self.frequencies_cm1,self.mode_energies)):
            tote,cme,rote,vibe, molecular_energies = energies
-           output = [ imode, freq, 100*cme/tote, 100*rote/tote, 100*vibe/tote ]
+           tote = max(tote,1.0E-8)
+           output = [ imode+1, freq, 100*cme/tote, 100*rote/tote, 100*vibe/tote ]
            for e in molecular_energies:
                output.append(100*e/tote)
            sp.writeNextRow(output,col=1,check=1)
@@ -231,14 +235,14 @@ class AnalysisTab(QWidget):
     def on_scale_changed(self,value):
         debugger.print('on scale_le changed ', value)
         self.settings['Covalent radius scaling'] = value
-        self.dirty = True
+        self.refreshRequired = True
         self.calculate()
         self.plot()
 
     def on_tolerance_changed(self,value):
         debugger.print('on_tolerance_le changed ', value)
         self.settings['Bonding tolerance'] = value
-        self.dirty = True
+        self.refreshRequired = True
         self.calculate()
         self.plot()
 
@@ -250,24 +254,41 @@ class AnalysisTab(QWidget):
         debugger.print('on title change ', self.settings['title'])
 
     def on_vmin_changed(self):
-        self.settings['Minimum frequency'] = self.vmin_sb.value()
-        debugger.print('on vmin change ', self.settings['Minimum frequency'])
-        vmin = self.settings['Minimum frequency']
-        vmax = self.settings['Maximum frequency']
-        if vmax > vmin:
-            self.plot()
+        self.vmin_sb.blockSignals(True)
+        vmin = self.vmin_sb.value()
+        vmax = self.vmax_sb.value()
+        if vmin < vmax:
+            self.settings['Minimum frequency'] = vmin
+            debugger.print('on_vmin_changed new value', self.settings['Minimum frequency'])
+        else:
+            self.vmin_sb.setValue(self.settings['Maximum frequency']-1)
+            self.settings['Minimum frequency'] = self.settings['Maximum frequency']-1
+            debugger.print('on_vmin_changed restricting value to', self.settings['Minimum frequency'])
+        self.plot()
+        self.vmin_sb.blockSignals(False)
+        return
 
     def on_vmax_changed(self):
-        self.settings['Maximum frequency'] = self.vmax_sb.value()
-        debugger.print('on vmax change ', self.settings['Maximum frequency'])
-        vmin = self.settings['Minimum frequency']
-        vmax = self.settings['Maximum frequency']
+        self.vmin_sb.blockSignals(True)
+        vmin = self.vmin_sb.value()
+        vmax = self.vmax_sb.value()
         if vmax > vmin:
-            self.plot()
+            self.settings['Maximum frequency'] = vmax
+            debugger.print('on_vmax_changed new value', self.settings['Maximum frequency'])
+        else:
+            self.vmin_sb.setValue(self.settings['Minimum frequency']+1)
+            self.settings['Maximum frequency'] = self.settings['Minimum frequency']+1
+            debugger.print('on_vmax_changed restricting value to', self.settings['Maximum frequency'])
+        self.plot()
+        self.vmin_sb.blockSignals(False)
+        return
+
+    def requestRefresh(self):
+        self.refreshRequired = True
 
     def refresh(self, force=False):
-        if not self.dirty and not force and not self.notebook.analysisCalculationRequired:
-            debugger.print('return with no refresh', self.dirty, force, self.notebook.analysisCalculationRequired)
+        if not self.refreshRequired and not force:
+            debugger.print('return with no refresh', self.refreshRequired, force)
             return
         debugger.print('Refreshing widget')
         #
@@ -286,7 +307,6 @@ class AnalysisTab(QWidget):
         self.calculate()
         self.set_radii_tw()
         self.plot()
-        self.notebook.analysisCalculationRequired = False
         #
         # Unlock signals after refresh
         #
@@ -304,7 +324,7 @@ class AnalysisTab(QWidget):
         # Assemble the mainTab settings
         settings = self.notebook.mainTab.settings
         program = settings['Program']
-        filename = settings['Output file name']
+        filename = self.notebook.mainTab.getFullFileName()
         self.reader = self.notebook.mainTab.reader
         if self.reader is None:
             return
@@ -326,8 +346,8 @@ class AnalysisTab(QWidget):
         self.cell_of_molecules,nmols,self.original_atomic_order = cell.calculate_molecular_contents(scale, tolerance, covalent_radii)
         # if the number of molecules has changed then tell the viewerTab that the cell has changed
         if self.number_of_molecules != nmols:
-            #self.notebook.viewerTab.refresh(force=True)
-            self.notebook.visualerCalculationRquired = True
+            if self.notebook.viewerTab is not None:
+                self.notebook.viewerTab.requestRefresh()
             self.number_of_molecules = nmols
         self.molecules_le.setText('{}'.format(self.number_of_molecules))
         # get the normal modes from the mass weighted ones
@@ -358,11 +378,13 @@ class AnalysisTab(QWidget):
         self.mode_energies = []
         for i,fi in enumerate(self.frequencies_cm1):
             tote,cme,rote,vibe,mole = mode_energies[i]
+            tote = max(tote,1.0E-8)
             sums = [0.0]*5
             sume = [0.0]*len(mole)
             degeneracy = len(degenerate_list[i])
             for j in degenerate_list[i]:
                 tote,cme,rote,vibe,mole = mode_energies[j]
+                tote = max(tote,1.0E-8)
                 sums[0] += tote / degeneracy
                 sums[1] += cme / degeneracy
                 sums[2] += rote / degeneracy
@@ -373,9 +395,9 @@ class AnalysisTab(QWidget):
             self.mode_energies.append(sums)
         # Store the results in the spread shee
         # if self.notebook.spreadsheet is not None:
-        #     self.write_spreadsheet()
+        #     self.writeSpreadsheet()
         # Flag that a recalculation is not needed
-        self.dirty = False
+        self.refreshRequired = False
         QApplication.restoreOverrideCursor()
 
     def plot(self):
@@ -392,7 +414,8 @@ class AnalysisTab(QWidget):
         self.subplot = None
         self.figure.clf()
         self.subplot = self.figure.add_subplot(111)
-        xlabel = 'Molecule'
+        self.subplot.xaxis.set_major_locator(MaxNLocator(integer=True))
+        xlabel = 'Mode Number'
         ylabel = 'Percentage energy'
         # Decide which modes to analyse
         mode_list = []
@@ -400,20 +423,23 @@ class AnalysisTab(QWidget):
         vmin = self.settings['Minimum frequency']
         vmax = self.settings['Maximum frequency']
         tote,cme,rote,vibe,mole = self.mode_energies[0]
-        mol_energies = None
+        tote = max(tote,1.0E-8)
         mol_energies = [ [] for _ in range(self.number_of_molecules) ]
         mol_bottoms  = [ [] for _ in range(self.number_of_molecules) ]
         for imode, frequency in enumerate(self.frequencies_cm1):
             if frequency >= vmin and frequency <= vmax:
-                mode_list.append(imode)
-                mode_list_text.append(str(imode))
+                mode_list.append(imode+1)
+                mode_list_text.append(str(imode+1))
                 tote,cme,rote,vibe,mole = self.mode_energies[imode]
+                tote = max(tote,1.0E-8)
                 for i,mol in enumerate(mole):
                     mol_energies[i].append(100.0*mol/tote)
                     if i == 0:
                         mol_bottoms[i].append(0.0)
                     else:
                         mol_bottoms[i].append(mol_bottoms[i-1][-1]+mol_energies[i-1][-1])
+        if len(mode_list) < 3:
+            return
         width = self.settings['Bar width']
         plots = []
         colours = ['y','b','r','c','m','k']
@@ -432,6 +458,7 @@ class AnalysisTab(QWidget):
         self.subplot = None
         self.figure.clf()
         self.subplot = self.figure.add_subplot(111)
+        self.subplot.xaxis.set_major_locator(MaxNLocator(integer=True))
         xlabel = 'Mode Number'
         ylabel = 'Percentage energy'
         # Decide which modes to analyse
@@ -447,14 +474,18 @@ class AnalysisTab(QWidget):
         colours = ['y','b','r','c','m','k']
         for imode, frequency in enumerate(self.frequencies_cm1):
             if frequency >= vmin and frequency <= vmax:
-                mode_list.append(imode)
-                mode_list_text.append(str(imode))
+                mode_list.append(imode+1)
+                mode_list_text.append(str(imode+1))
                 tote,cme,rote,vibe,molecular_energies = self.mode_energies[imode]
+                molecular_energies = np.array(molecular_energies)
+                tote = max(tote,1.0E-8)
                 cme_energy.append(cme/tote*100.0)
                 rot_energy.append(rote/tote*100.0)
                 vib_energy.append(vibe/tote*100.0)
                 vib_bottom.append( (cme+rote)/tote*100.0 )
                 mol_energy.append(molecular_energies/tote*100)
+        if len(mode_list) < 3:
+            return
         width = self.settings['Bar width']
         p1 = self.subplot.bar(mode_list,cme_energy,width,color=colours[0])
         p2 = self.subplot.bar(mode_list,rot_energy,width,bottom=cme_energy,color=colours[1])

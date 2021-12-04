@@ -2,6 +2,7 @@
 #
 import time
 import random
+import mmap
 
 # Open a file and write it
 nlines = 1000000
@@ -16,7 +17,6 @@ with open('io_test.tmp', 'r') as fin:
     while line:
         line = fin.readline()
 td = time.time() - t
-print(td*1000)
 print("Read line ms",1000*td)
 
 t = time.time()
@@ -34,4 +34,13 @@ with open('io_test.tmp', 'r') as fin:
         l = line
 td = time.time() - t
 print("Read everything ms", 1000*td)
+
+t = time.time()
+with open('io_test.tmp', 'r') as fin:
+    with mmap.mmap(fin.fileno(), length=0,access=mmap.ACCESS_READ):
+        line = fin.readline()
+        while line:
+            line = fin.readline()
+td = time.time() - t
+print("Read mmap ms", 1000*td)
 
