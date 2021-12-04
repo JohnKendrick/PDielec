@@ -46,7 +46,7 @@ git push origin v7.0.1
 
 ```
 
-Update github.com with a new release.  The process of releasing the code will give it a tag on the master branch, so issue a final pull on the local machine to download the new tag.
+GitHub should have the new release tag now.  If necessary check that all is in order on the website.
 
 ## Testing
 
