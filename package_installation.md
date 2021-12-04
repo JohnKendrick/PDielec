@@ -27,12 +27,22 @@ Use keyring to store the passwords for the repositories.  Note, in the examples 
 Update the CHANGES file to reflect the version number.  If you are working on a development branch, merge the changes.
 
 ```
-git status       # On development branch to make sure there are no pending commits needed
-git checkout master
+# On development branch to make sure there are no pending commits needed
+git status                
+# If all is OK switch to the master branch and make sure it is upto date
+git switch master
 git pull
-git merge --no-ff develop  # --no-ff keeps a track of all the commits in develop
+# Apply a tag to this release before we do an update, then update the remote
+git tag -a v6.5.1 -m "Release before final update" 
+git push origin v6.5.1
+# Merge all the commits in develop keeping track of the commits
+git merge --no-ff develop  
+# Delete the develop branch
 git branch -d develop
-git push                   # Check that the tags are valid on the remote github
+git push
+# Add a new tag to this release
+git tag -a v7.0.1
+git push origin v7.0.1
 
 ```
 
