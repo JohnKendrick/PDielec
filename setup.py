@@ -24,7 +24,7 @@ setuptools.setup(
     url="https://github.com/JohnKendrick/PDielec",
     # packages=setuptools.find_packages(include=['PDielec','PDielec.*']),
     packages=['PDielec','PDielec/GUI'],
-    package_dir = { 'PDielec' : '' },
+    #package_dir = { '' : 'PDielec' },
     include_package_data=True,
     license='MIT',
     keywords=['Infrared',' Infrared Spectroscopy','THz Spectroscopy','Terahertz Spectroscopy','Bruggeman','Maxwell-Garnett','Effective Medium'],
@@ -60,15 +60,17 @@ setuptools.setup(
         "Operating System :: OS Independent",
     ],
     python_requires='>=3.0',
+    # scripts = ['PDielec/preader.py','PDielec/p2cif.py','PDielec/pdcompare.py','PDielec/pickled_reader.py','PDielec/pdgui.py'],
     entry_points= {
         'console_scripts': [
-            'preader=preader:main',
-            'p2cif=p2cif:main',
-            'pdcompare=pdcompare:main',
-            'pickled_reader=pickled_reader:main',
+            'preader=PDielec.preader:main',
+            'p2cif=PDielec.p2cif:main',
+            'pdcompare=PDielec.pdcompare:main',
+            'pickled_reader=PDielec.pickled_reader:main',
+            'vibanalysis=PDielec.vibanalysis:main',
         ],
         'gui_scripts': [
-            'pdgui=pdgui:main',
+            'pdgui=PDielec.pdgui:main',
         ],
     },
 )
