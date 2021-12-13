@@ -171,6 +171,8 @@ class App(QMainWindow):
         debugger.print('Start:: readScript')
         self.notebook.scripting = True
         directory = os.path.dirname(scriptname)
+        scriptname = os.path.basename(scriptname)
+        print('Directory',directory)
         # chdir to the directory that the script is in
         os.chdir(directory)
         # If a script is used there are no prompts for overwriting files etc.
