@@ -1,0 +1,12 @@
+Phonons at Gamma Point with IR
+ &inputph
+  tr2_ph=1.0d-14,
+  epsil=.true.,
+  lraman=.false.,
+  outdir='.',
+  fildyn='Na2SO42.dynG',
+ /
+0.0 0.0 0.0
+1.0 0.0 0.0
+0.0 1.0 0.0
+0.0 0.0 1.0
