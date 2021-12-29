@@ -1,3 +1,6 @@
+version 7.0.2
+  Bug fix for changing directory when calling a script
+
 version 7.0.1
   Added a single crystal tab to show transmission and reflectance at a single crystal surface
   The method used is that described by Passler et al
