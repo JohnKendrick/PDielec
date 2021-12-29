@@ -172,7 +172,9 @@ class App(QMainWindow):
         self.notebook.scripting = True
         directory = os.path.dirname(scriptname)
         # chdir to the directory that the script is in
-        os.chdir(directory)
+        if directory != '':
+            os.chdir(directory)
+        scriptname = os.path.basename(scriptname)
         # If a script is used there are no prompts for overwriting files etc.
         self.notebook.overwriting = True
         with open(scriptname,'r') as fd:
