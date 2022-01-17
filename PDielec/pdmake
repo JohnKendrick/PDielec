@@ -1,0 +1,94 @@
+#!/usr/bin/env python
+"""Replace the old Makefile system for testing and installing """
+
+def main():
+    # Start processing the directories
+    if len(sys.argv) <= 1 :
+        print('pdmake [install]', file=sys.stderr)
+        print('  install' , file=sys.stderr)
+        print('           install the executables to ~/bin' , file=sys.stderr)
+        print('  test   ' , file=sys.stderr)
+        print('           run all the tests               ' , file=sys.stderr)
+        print('  test-preader' , file=sys.stderr)
+        print('           run all the preader tests' , file=sys.stderr)
+        print('  test-pdgui' , file=sys.stderr)
+        print('           run all the pdgui tests' , file=sys.stderr)
+        print('  test-p2cif' , file=sys.stderr)
+        print('           run all the p2cif tests' , file=sys.stderr)
+        print('  test-vibanalysis' , file=sys.stderr)
+        print('           run all the vibanalysis tests' , file=sys.stderr)
+        print('  regenerate      ' , file=sys.stderr)
+        print('           regenerate all the test reference data' , file=sys.stderr)
+        print('  pypi      ' , file=sys.stderr)
+        print('           prepare for pypi uploading' , file=sys.stderr)
+        print('  pyinstaller' , file=sys.stderr)
+        print('           prepare for pypinstaller' , file=sys.stderr)
+        print('  clean' , file=sys.stderr)
+        print('           clean up' , file=sys.stderr)
+        exit()
+
+    option = []
+    tokens = sys.argv[1:]
+    ntokens = len(tokens)-1
+    itoken = -1
+    while itoken < ntokens:
+        itoken += 1
+        token = tokens[itoken]
+        if token == "test":
+            option = "testing"
+            itoken += 1
+        elif token == "-program":
+            itoken += 1
+            program = tokens[itoken]
+            if program == 'phonopy':
+                itoken += 1
+                qmprogram = tokens[itoken]
+        else:
+            files.append(token)
+
+    if len(program) < 1:
+        print('Please use -program to define the package used to generate the output files',file=sys.stderr)
+        exit()
+
+    if not program in ['abinit','castep','crystal','gulp','qe','vasp','phonopy','experiment','auto']:
+        print('Program is not recognised: ',program,file=sys.stderr)
+        exit()
+
+    if program == 'phonopy':
+        if not qmprogram in ['abinit','castep','crystal','gulp','qe','vasp']:
+            print('Phonopy QM program is not recognised: ',qmprogram,file=sys.stderr)
+            exit()
+        print('  QM program used by Phonopy is: ',qmprogram,file=sys.stderr)
+
+    print('  Program is ',program,file=sys.stderr)
+
+    for f in files:
+        if not os.path.isfile(f):
+            print('Error file requested for analysis does not exist',f,file=sys.stderr)
+            exit()
+
+    #
+    # Create a pool of processors to handle reading the files
+    #
+    number_of_processors = psutil.cpu_count(logical=False)
+    p = Pool(number_of_processors,initializer=set_affinity_on_worker)
+    # Create a tuple list of calling parameters
+    calling_parameters = []
+    files.sort()
+    for name in files:
+        prog = program
+        if program == 'auto':
+            prog = Utilities.find_program_from_name(name)
+        calling_parameters.append( (name, prog, qmprogram, debug) )
+    # Calculate the results in parallel
+    results_map_object = p.map_async(read_a_file,calling_parameters)
+    results_map_object.wait()
+    results = results_map_object.get()
+    for name,cell in results:
+        cell.write_cif(filename=name,file_=sys.stdout)
+    #
+    exit()
+# end of def main
+
+if __name__ == "__main__":
+    main(sys)
