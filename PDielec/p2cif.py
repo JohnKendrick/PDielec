@@ -105,4 +105,4 @@ def main():
 # end of def main
 
 if __name__ == "__main__":
-    main(sys)
+    main()

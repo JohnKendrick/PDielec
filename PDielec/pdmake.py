@@ -3,10 +3,16 @@
 
 import os
 import sys
-from PDielec.preader import main as main_preader
-from PDielec.checkcsv import main as main_checkcsv
+from PDielec.preader    import main as main_preader
+from PDielec.pdgui      import main as main_pdgui
+from PDielec.checkcsv   import main as main_checkcsv
+from PDielec.checkexcel import main as main_checkexcel
 import contextlib
 from termcolor import colored
+from shutil import copyfile
+
+debug = False
+viewing = False
 
 test_preader = [
 	'Castep/preader',
@@ -123,10 +129,14 @@ def usage():
     print('           run all the vibanalysis tests' , file=sys.stderr)
     print('  benchmarks      ' , file=sys.stderr)
     print('           run the benchmarks   ' , file=sys.stderr)
-    print('  regenerate      ' , file=sys.stderr)
+    print('  -regenerate      ' , file=sys.stderr)
     print('           regenerate all the test reference data' , file=sys.stderr)
-    print('  root directory  ' , file=sys.stderr)
+    print('  -root directory  ' , file=sys.stderr)
     print('           sets the root directory for the installation' , file=sys.stderr)
+    print('  -view  ' , file=sys.stderr)
+    print('           run pdgui with windowing on' , file=sys.stderr)
+    print('  -debug ' , file=sys.stderr)
+    print('           run with debug options switched on' , file=sys.stderr)
     print('  pypi      ' , file=sys.stderr)
     print('           Only use on linux installations...          ' , file=sys.stderr)
     print('           prepare for pypi uploading' , file=sys.stderr)
@@ -139,7 +149,7 @@ def usage():
     print('  install' , file=sys.stderr)
     print('           Only use on linux installations...          ' , file=sys.stderr)
     print('           install the executables to the scripts directory' , file=sys.stderr)
-    print('  scripts directory' , file=sys.stderr)
+    print('  -scripts directory' , file=sys.stderr)
     print('           Only use on linux installations...          ' , file=sys.stderr)
     print('           Set the scripts directory to be used for installation' , file=sys.stderr)
     print('           the default is ~/bin                       ' , file=sys.stderr)
@@ -170,7 +180,9 @@ def redirect(file):
             self.log = fd
 
         def write(self, message):
-            #self.terminal.write(message)
+            global debug
+            if debug:
+                self.terminal.write(message)
             self.log.write(message)
 
         def __getattr__(self, attr):
@@ -179,16 +191,48 @@ def redirect(file):
     logger = Logger(file)
 
     sys.stdout = logger
-    sys.stderr = open('/dev/null','w')
+    if not debug:
+        sys.stderr = open('/dev/null','w')
     try:
         yield logger.log
     finally:
         sys.stdout = sys.__stdout__
-        sys.stderr = sys.__stderr__
+        if not debug:
+            sys.stderr = sys.__stderr__
 
 
 
-def runPreaderTest(title,instructions, regenerate):
+def runP2CifTest(title, instructions, regenerate):
+    '''Run a test on p2cif'''
+    sys.argv = []
+    sys.argv.append('p2cif')
+    sys.argv.extend(instructions)
+    outputfile = 'all.cif'
+    if regenerate:
+        outputfile = 'all.ref.cif'
+    with redirect(outputfile):
+        result = main_p2cif()
+    # If not doing a regeneration perform a check
+    if not regenerate:
+        sys.argv = ['checkcsv', 'command.ref.csv','command.csv']
+        with redirect('/dev/null'):
+            result = main_checkcsv()
+        nerrors,keep_line_number,keep_word1,keep_word2,max_percentage_error = result
+        if nerrors > 0:
+            print(title+colored(' ERRORS:','red')+"LARGEST ON LINE {} -- max %error={}".format(nerrors, keep_line_number, max_percentage_error))
+        else:
+            print(title+colored(' OK:','blue')+" -- max %error={}" .format(max_percentage_error))
+        # end if
+    else:
+        print(title+colored(' Regenerated:','blue'))
+    # end if
+    return
+
+
+
+
+
+def runPreaderTest(title, instructions, regenerate):
     '''Run a preader test
     title is the title in the pdmake file
     instructions are the command line parameters
@@ -212,7 +256,39 @@ def runPreaderTest(title,instructions, regenerate):
         else:
             print(title+colored(' OK:','blue')+" -- max %error={}" .format(max_percentage_error))
         # end if
-    # end
+    else:
+        print(title+colored(' Regenerated:','blue'))
+    # end if
+    return
+
+def runPDGuiTest(title, instructions, regenerate):
+    '''Run a pdgui test
+    title is the title in the pdmake file
+    instructions are the command line parameters
+    regenerate is set to true if the reference file is overwritten'''
+    global viewing
+    sys.argv = []
+    sys.argv.append('pdgui')
+    sys.argv.extend(instructions)
+    with redirect('/dev/null'):
+        result = main_pdgui()
+    if not viewing:
+        # If not doing a regeneration perform a check
+        if not regenerate:
+            sys.argv = ['checkexcel', 'results.ref.xlsx','results.xlsx']
+            with redirect('/dev/null'):
+                result = main_checkexcel()
+            nerrors,row,col,sheet,file1,value1,file2,value2,max_percentage_error = result
+            if nerrors > 0:
+                print(title+colored('{} ERRORS:','red').format(nerrors)+"{}@{},{} -- max %error={}".format(sheet,row,col, max_percentage_error))
+            else:
+                print(title+colored(' OK:','blue')+" -- max %error={}" .format(max_percentage_error))
+            # end if
+        else:
+            copyfile('results.xlsx','results.ref.xlsx')
+            print(title+colored(' Regenerated:','blue'))
+        # end if not regenerate
+    #end if not viewing
     return
 
 def runTests(testlist, testType, regenerate):
@@ -224,28 +300,18 @@ def runTests(testlist, testType, regenerate):
     from PDielec.p2cif import main as main_p2cif
     from PDielec.VibAnalysis import main as main_vibanalysis
     arguments_pdgui = [ 'pdgui','-nosplash', '-excel results.xlsx' '-script script.py', '-exit']
-    arguments_preader = [ 'preader','-nosplash', '-excel results.xlsx' '-script script.py', '-exit']
+    pdmakefile = 'command.pdmake'
     for directory in testlist:
-        print('Testing {} in directory {}'.format(testType,directory))
         if not os.path.isdir(directory):
             print('Error: command needs to be executed in the PDielec home directory')
             print('       current directory is {}'.format(homedir))
             print('       required directory is {}'.format(directory))
             exit()
         mychdir(directory)
-        if testType == 'pdgui':
-            main_pdgui( arguments )
-        elif testType == 'preader':
-            main_preader( arguments)
-        elif testType == 'p2cif':
-            main_p2cif( arguments)
-        elif testType == 'vibanalysis':
-            main_vibanalysis( arguments)
-        elif testType == 'benchmarks':
-            main_pdgui( arguments )
+        if testType == 'benchmarks':
+            runPdMakefile(pdmakefile,regenerate)
         else:
-            print('Error in runTests, unkown testType')
-            exit()
+            runPdMakefile(pdmakefile,regenerate)
         mychdir(homedir)
     # end for
     print('Tests complete')
@@ -255,17 +321,21 @@ def readPdMakefile(filename):
     # The first word is the dictionary key, the rest is its value
     instructions = {}
     with open(filename,'r') as fd:
-        line = fd.readline()
-        title = line[:-1].ljust(30)
-        line = fd.readline()
+        line = fd.readline()[:-1]
+        title = line.ljust(30)
+        line = fd.readline()[:-1]
         while line:
             if len(line)>0 and not line.startswith('#'):
-                splits = line.split()
+                full_line = line.replace('\\','')
+                while line.endswith('\\'):
+                    line = fd.readline()[:-1]
+                    full_line += line.replace('\\','')
+                splits = full_line.split()
                 key = splits[0]
                 value = splits[1:]
                 instructions[key] = value
             # end if
-            line = fd.readline()
+            line = fd.readline()[:-1]
         # end while
     #end open
     return title,instructions
@@ -284,6 +354,7 @@ def mychdir(directory):
 
 def runPdMakefile(pdmakefile,regenerate):
     '''Run specific pdMakefile'''
+    global debug
     homedir = os.getcwd()
     directory,filename = os.path.split(pdmakefile)
     mychdir(directory)
@@ -292,6 +363,16 @@ def runPdMakefile(pdmakefile,regenerate):
         parameters = instructions[key]
         if key == 'preader':
             runPreaderTest(title,parameters,regenerate)
+        elif key == 'p2cif':
+            runP2CifTest(title,parameters,regenerate)
+        elif key == 'pdgui':
+            if viewing:
+                parameters.extend(['-script', 'script.py'])
+            else:
+                parameters.extend(['-nosplash', 'results.xlsx', '-exit', '-script', 'script.py'])
+            if debug:
+                parameters.append('-d')
+            runPDGuiTest(title,parameters,regenerate)
     mychdir(homedir)
 
 def runClean():
@@ -312,6 +393,8 @@ def runPyPi():
     os.popen('rm -rf build dist PDielec.egg-info; python setup.py sdist bdist_wheel')
 
 def main():
+    global debug
+    global viewing
     # Start processing the directories
     originalDirectory = os.getcwd()
     if len(sys.argv) <= 1 :
@@ -331,51 +414,41 @@ def main():
         token = tokens[itoken]
         if token == 'test' or token == 'tests':
             actions.append('test all')
-            itoken += 1
         elif token == 'test-preader':
             actions.append('test preader')
-            itoken += 1
         elif token == 'test-p2cif':
             actions.append('test preader')
-            itoken += 1
         elif token == 'test-pdgui':
             actions.append('test pdgui')
-            itoken += 1
         elif token == 'test-vibanalysis':
             actions.append('test vibanalysis')
-            itoken += 1
         elif token == 'benchmarks':
             actions.append('run benchmarks')
-            itoken += 1
-        elif token == 'root':
+        elif token == '-root' or token == 'root':
             itoken += 1
             rootDirectory = tokens[itoken]
-            itoken += 1
-        elif token == 'regenerate':
+        elif token == '-debug' or token == '-d':
+            debug = True
+        elif token == '-view' or token == '-v':
+            viewing = True
+        elif token == 'regenerate' or token == '-regenerate':
             regenerate = True
-            itoken += 1
         elif token == 'pypi':
             actions.append('run pypi')
             runPyPi()
-            itoken += 1
         elif token == 'runPyInstaller':
             actions.append('run pypinstaller')
             runPyInstaller()
-            itoken += 1
         elif token == 'runClean':
             actions.append('run clean')
-            itoken += 1
         elif token == 'install':
             actions.append('install')
             install(scriptsDirectory)
-            itoken += 1
-        elif token == 'scripts':
+        elif token == 'scripts' or token == '-scripts':
             itoken += 1
             scriptsDirectory = tokens[itoken]
-            itoken += 1
         elif token.endswith('.pdmake'):
             pdmakefiles.append(token)
-            itoken += 1
         else:
             usage()
             exit();

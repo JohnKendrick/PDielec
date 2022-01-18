@@ -1,0 +1,38 @@
+Testing p2cif
+p2cif  \
+    ../AbInit/AlAs/AlAs.out \
+    ../AbInit/BaTiO3/BaTiO3.out \
+    ../AbInit/BaTiO3-phonana/BaTiO3.out \
+    ../AbInit/Na2SO42/Na2SO42.out \
+    ../ATR/AlAs/AlAs.out \
+    ../ATR/Na2SO42/OUTCAR \
+    ../Castep/AsparticAcid/phonon.castep \
+    ../Castep/Bubbles/phonon.castep \
+    ../Castep/Castep17/phonon.castep \
+    ../Castep/Isoleucine/phonon.castep \
+    ../Castep/MgO/phonon.castep \
+    ../Castep/Na2SO42/phonon.castep \
+    ../Crystal/Leucine/LEUCINE_DIELECTRC_PBED_6311Gdp.out \
+    ../Crystal/Leucine/LEUCINE_FREQUENCY_PBED3_631Gdp_FULLOPTIMIZATON.out \
+    ../Crystal/Na2SO42_C17/Na2SO42.out \
+    ../Crystal/Na2SO42/Na2SO42.out \
+    ../Crystal/Quartz/qua_hf_2d_f_ir-int.out \
+    ../Crystal/Quartz/qua_hf_2d_f_lo-to.out \
+    ../Crystal/ZnO/CPHF/ZnO_CPHF.out \
+    ../Crystal/ZnO/Default/ZnO_default.out \
+    ../Crystal/ZnO/NoEckart/ZnO_noeckart.out \
+    ../Gulp/calcite/calcite.gout \
+    ../Gulp/Na2SO42/na2so42.gout \
+    ../Mie/MgO_lognormal/phonon.castep \
+    ../Mie/MgO/phonon.castep \
+    ../Phonopy/Na2SO42/OUTCAR.born \
+    ../Phonopy/ZnO/OUTCAR.born \
+    ../QE/Cocaine/phonon.dynG \
+    ../QE/Na2SO42/Na2SO42.dynG \
+    ../QE/ZnO/zno.ph.dynG \
+    ../SizeEffects/BaTiO3/BaTiO3.out \
+    ../SizeEffects/MgO/phonon.castep \
+    ../SizeEffects/ZnO/OUTCAR \
+    ../Vasp/F-Apatite/OUTCAR \
+    ../Vasp/Na2SO42/OUTCAR \
+    ../Vasp/ZnO/OUTCAR 

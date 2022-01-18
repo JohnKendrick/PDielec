@@ -28,12 +28,15 @@ version = PDielec.__init__.__version__
 
 def main():
     show_splash = True
+    force_exit = False
     for token in sys.argv:
         if token == '-nosplash' or token == '--nosplash':
             show_splash = False
         elif token == '-v' or token == '-version' or token == '--version':
             print('Version ',version)
             exit()
+        elif token == '-exit' or token == '--exit':
+            force_exit = True
 
     app = QApplication(sys.argv)
 
@@ -48,10 +51,11 @@ def main():
         progressbar = QProgressBar()
         progressbar = None
     ex = App(sys.argv, progressbar)
-    ex.show()
-    if show_splash:
-        splash.finish(ex)
-    sys.exit(app.exec_())
+    if not force_exit:
+        ex.show()
+        if show_splash:
+            splash.finish(ex)
+        app.exec_()
 
 if __name__ == '__main__':
     freeze_support()
