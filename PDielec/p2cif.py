@@ -85,7 +85,7 @@ def main():
     # Create a pool of processors to handle reading the files
     #
     number_of_processors = psutil.cpu_count(logical=False)
-    p = Pool(number_of_processors,initializer=set_affinity_on_worker)
+    p = Pool(number_of_processors)
     # Create a tuple list of calling parameters
     calling_parameters = []
     files.sort()
@@ -101,7 +101,9 @@ def main():
     for name,cell in results:
         cell.write_cif(filename=name,file_=sys.stdout)
     #
-    exit()
+    p.close()
+    p.join()
+    return
 # end of def main
 
 if __name__ == "__main__":

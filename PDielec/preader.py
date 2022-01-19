@@ -377,6 +377,11 @@ def main():
         for string in results_dictionary[name]:
             print(string)
     #
+    # Close the pool down
+    #
+    p.close()
+    p.join()
+    #
     # Process the observables switch
     # ( for the time being this is commented out )
     if False:

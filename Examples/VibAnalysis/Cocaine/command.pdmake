@@ -1,0 +1,2 @@
+Vibanalysis QE for cocaine salt
+vibanalysis --autosel --vmp --novmard qe phonon.dynG 
