@@ -712,7 +712,7 @@ def main():
     # Handle any pdmake files there might be
     #
     for pdmakefile in pdmakefiles:
-        runPdMakefile(os.path.join(originalDirectory,pdmakefile),regenerate)
+        runPdMakefile(directory,pdmakefile,regenerate)
     #
     # Now loop over the actions
     #
