@@ -449,6 +449,8 @@ def runTests(testlist, testType, regenerate):
        regenerate causes the test data to be regenerated'''
     global start_time
     global debug
+    mychdir(os.path.join(rootDirectory,'Examples'))
+    homedir = os.getcwd()
     convertTestType={}
     convertTestType['pdgui'] = 'PDGui tests'
     convertTestType['vibanalysis'] = 'VibAnalysis tests'
@@ -460,7 +462,6 @@ def runTests(testlist, testType, regenerate):
     print(convertTestType[testType],'starting' )
     start_time = time.time()
     test_start_time = start_time
-    homedir = os.getcwd()
     if debug:
         print('RunTests: homedir=',homedir)
     pdmakefile = 'command.pdmake'
@@ -472,12 +473,10 @@ def runTests(testlist, testType, regenerate):
             print('       current directory is {}'.format(homedir))
             print('       required directory is {}'.format(directory))
             exit()
-        mychdir(directory)
         if testType == 'benchmarks':
             runPdMakefile(directory,pdmakefile,regenerate,benchmarks=True)
         else:
             runPdMakefile(directory,pdmakefile,regenerate)
-        mychdir(homedir)
     # end for
     elapsed_time = time.time() - test_start_time
     print('--------------------------------------------------')
@@ -524,7 +523,8 @@ def mychdir(directory):
             result = os.chdir(directory)
             newdir = os.getcwd()
         else:
-            print('Error directory does not exist',directory)
+            print('mychdir: Error directory does not exist',directory)
+            print('mychdir: Current directory is          ',os.getcwd())
         # end if
     # end if
     return
@@ -537,12 +537,13 @@ def runPdMakefile(directory,pdmakefile,regenerate,benchmarks=False):
         print('RunPdMakefile: directory =',directory)
         print('RunPdMakefile: pdmakefile =',pdmakefile)
         print('RunPdMakefile: cwd =',homedir)
-    directory_,filename = os.path.split(pdmakefile)
-    if debug:
-        print('RunPdMakefile: directory_ =',directory_)
-        print('RunPdMakefile: filename =',filename)
-    mychdir(directory_)
-    title,instructions = readPdMakefile(directory,filename)
+    #directory_,filename = os.path.split(pdmakefile)
+    #if debug:
+    #    print('RunPdMakefile: directory_ =',directory_)
+    #    print('RunPdMakefile: filename =',filename)
+    #mychdir(directory_)
+    mychdir(directory)
+    title,instructions = readPdMakefile(directory,pdmakefile)
     if debug:
         print('RunPdMakefile: title =',title)
         print('RunPdMakefile: instructions =',instructions)
