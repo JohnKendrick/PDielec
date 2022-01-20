@@ -231,7 +231,7 @@ def redirect(file):
 
     sys.stdout = logger
     if not debug:
-        sys.stderr = open('/dev/null','w')
+        sys.stderr = open(os.devnull,'w')
     try:
         yield logger.log
     finally:
@@ -351,7 +351,7 @@ def runPreaderTest(title, instructions, regenerate):
     # If not doing a regeneration perform a check
     if not regenerate:
         sys.argv = ['checkcsv', 'command.ref.csv','command.csv']
-        with redirect('/dev/null'):
+        with redirect(os.devnull):
             result = main_checkcsv()
         nerrors,keep_line_number,keep_word1,keep_word2,max_percentage_error = result
         if nerrors > 0:
@@ -388,7 +388,7 @@ def runPDGuiTest(title, instructions, regenerate, benchmarks=False):
         # If not doing a regeneration perform a check
         if not regenerate and not benchmarks:
             sys.argv = ['checkexcel', 'results.ref.xlsx','results.xlsx']
-            with redirect('/dev/null'):
+            with redirect(os.devnull):
                 result = main_checkexcel()
             nerrors,row,col,sheet,file1,value1,file2,value2,max_percentage_error = result
             if nerrors > 0:
