@@ -1,7 +1,7 @@
 import setuptools
 
 # Update this for every PyPi release
-version = "7.0.2"
+version = "7.1.0"
 
 with open("README.md", "r") as fh:
     long_description = fh.read()
@@ -59,7 +59,7 @@ setuptools.setup(
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
     ],
-    python_requires='>=3.0',
+    python_requires='>=3.6',
     # scripts = ['PDielec/preader.py','PDielec/p2cif.py','PDielec/pdcompare.py','PDielec/pickled_reader.py','PDielec/pdgui.py'],
     entry_points= {
         'console_scripts': [
@@ -68,6 +68,7 @@ setuptools.setup(
             'pdcompare=PDielec.pdcompare:main',
             'pickled_reader=PDielec.pickled_reader:main',
             'vibanalysis=PDielec.vibanalysis:main',
+            'pdmake=PDielec.pdmake:main',
         ],
         'gui_scripts': [
             'pdgui=PDielec.pdgui:main',

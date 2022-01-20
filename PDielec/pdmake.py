@@ -21,6 +21,7 @@ settings['title'] = 'title'
 
 debug = False
 viewing = False
+useLocal = True
 
 test_preader = [
 	'Castep/preader',
@@ -137,52 +138,76 @@ def usage():
     print('           run all the vibanalysis tests' , file=sys.stderr)
     print('  benchmarks      ' , file=sys.stderr)
     print('           run the benchmarks   ' , file=sys.stderr)
-    print('  -regenerate      ' , file=sys.stderr)
+    print('  --regenerate      ' , file=sys.stderr)
     print('           regenerate all the test reference data' , file=sys.stderr)
-    print('  -root directory  ' , file=sys.stderr)
+    print('  --root directory  ' , file=sys.stderr)
     print('           sets the root directory for the installation' , file=sys.stderr)
-    print('  -title title', file=sys.stderr)
-    print('           title: output the title from the pdmake file' , file=sys.stderr)
-    print('           dir:   output the directory                 ' , file=sys.stderr)
-    print('  -padding 60', file=sys.stderr)
+    print('  --directory', file=sys.stderr)
+    print('           Use the directory when listing the tests' , file=sys.stderr)
+    print('  --padding 60', file=sys.stderr)
     print('           change the width of the output title field' , file=sys.stderr)
-    print('  -view  ' , file=sys.stderr)
+    print('  --view  ' , file=sys.stderr)
     print('           run pdgui with windowing on' , file=sys.stderr)
-    print('  -debug ' , file=sys.stderr)
+    print('  --usesystem ' , file=sys.stderr)
+    print('           Force the use of system executables' , file=sys.stderr)
+    print('  --debug ' , file=sys.stderr)
     print('           run with debug options switched on' , file=sys.stderr)
     if os.name != 'nt':
         print('  pypi      ' , file=sys.stderr)
         print('           Only use on linux installations...          ' , file=sys.stderr)
         print('           prepare for pypi uploading' , file=sys.stderr)
-        print('  pyinstaller' , file=sys.stderr)
-        print('           Only use on linux installations...          ' , file=sys.stderr)
-        print('           prepare for pypinstaller' , file=sys.stderr)
         print('  clean' , file=sys.stderr)
         print('           Only use on linux installations...          ' , file=sys.stderr)
         print('           clean up' , file=sys.stderr)
         print('  install' , file=sys.stderr)
         print('           Only use on linux installations...          ' , file=sys.stderr)
         print('           install the executables to the scripts directory' , file=sys.stderr)
-        print('  -scripts directory' , file=sys.stderr)
+        print('  --scripts directory' , file=sys.stderr)
         print('           Only use on linux installations...          ' , file=sys.stderr)
         print('           Set the scripts directory to be used for installation' , file=sys.stderr)
         print('           the default is ~/bin                       ' , file=sys.stderr)
     exit()
 
+def checkLocalExecutables():
+    '''Check to see if the rootDirectory has the executables we need'''
+    os.chdir(rootDirectory)
+    if not os.path.isfile('preader'):
+        return False
+    if not os.path.isfile('p2cif'):
+        return False
+    if not os.path.isfile('pdgui'):
+        return False
+    if not os.path.isfile('vibanalysis'):
+        return False
+    return True
+
 def install(scripts):
     print('Performing installation of scripts into ',scripts)
-    os.popen('echo cp -P preader {}'.format(scripts))
-    os.popen('echo cp -P p1reader {}'.format(scripts))
-    os.popen('echo cp -P pdgui {}'.format(scripts))
-    os.popen('echo cp -P p2cif {}'.format(scripts))
-    os.popen('echo cp -P pdcompare {}'.format(scripts))
-    os.popen('echo cp -P graphdatagenerator {}'.format(scripts))
-    os.popen('echo cp -P vibanalysis {}'.format(scripts))
-    os.popen('echo mkdir -p {}/PDielec'.format(scripts))
-    os.popen('echo mkdir -p {}/PDielec/GUI'.format(scripts))
-    os.popen('echo cp -r PDielec/*.py {}/PDielec'.format(scripts))
-    os.popen('echo cp -r PDielec/GUI/*.py {}/PDielec/GUI/'.format(scripts))
-    os.popen('echo cp -r PDielec/GUI/*.png {}/PDielec/GUI/'.format(scripts))
+    global rootDirectory
+    mychdir(rootDirectory)
+    print('Installing preader',end='')
+    subprocess.run('cp -P preader {}'.format(scripts),shell=True)
+    print(',p1reader',end='')
+    subprocess.run('cp -P p1reader {}'.format(scripts),shell=True)
+    print(',pdgui',end='')
+    subprocess.run('cp -P pdgui {}'.format(scripts),shell=True)
+    print(',p2cif',end='')
+    subprocess.run('cp -P p2cif {}'.format(scripts),shell=True)
+    print(',pdcompare',end='')
+    subprocess.run('cp -P pdcompare {}'.format(scripts),shell=True)
+    print(',graphdatagenerator',end='')
+    subprocess.run('cp -P graphdatagenerator {}'.format(scripts),shell=True)
+    print(',vibanalysis',end='')
+    subprocess.run('cp -P vibanalysis {}'.format(scripts),shell=True)
+    print(',pdmake',end='')
+    subprocess.run('cp -P pdmake {}'.format(scripts),shell=True)
+    print(',python scripts')
+    subprocess.run('mkdir -p {}/PDielec'.format(scripts),shell=True)
+    subprocess.run('mkdir -p {}/PDielec/GUI'.format(scripts),shell=True)
+    subprocess.run('cp -r PDielec/*.py {}/PDielec'.format(scripts),shell=True)
+    subprocess.run('cp -r PDielec/GUI/*.py {}/PDielec/GUI/'.format(scripts),shell=True)
+    subprocess.run('cp -r PDielec/GUI/*.png {}/PDielec/GUI/'.format(scripts),shell=True)
+    print('Finished installation of scripts into ',scripts)
 
 @contextlib.contextmanager
 def redirect(file):
@@ -229,15 +254,24 @@ def compareFiles(file1,file2):
 
 def runP2CifTest(title, instructions, regenerate):
     '''Run a test on p2cif'''
-    sys.argv = []
-    sys.argv.append('p2cif')
+    global rootDirectory
+    global useLocal
+    if useLocal:
+        sys.argv = ['python']
+        sys.argv.append(os.path.join(rootDirectory,'p2cif'))
+    else:
+        sys.argv = ['p2cif']
     sys.argv.extend(instructions)
     outputfile = 'all.cif'
     if regenerate:
         outputfile = 'all.ref.cif'
     with open(outputfile,'w') as stdout:
-        with open('/dev/null','w') as stderr:
-            result = subprocess.run(sys.argv,stdout=stdout,stderr=stderr)
+        if debug:
+            result = subprocess.run(sys.argv,stdout=stdout)
+        else:
+            result = subprocess.run(sys.argv,stdout=stdout,stderr=subprocess.DEVNULL)
+        # end if debug
+    # end with open
     # If not doing a regeneration perform a check
     if not regenerate:
         nerrors = compareFiles('all.cif', 'all.ref.cif')
@@ -256,8 +290,13 @@ def runVibAnalysis(title, instructions, regenerate):
     title is the title in the pdmake file
     instructions are the command line parameters
     regenerate is set to true if the reference file is overwritten'''
-    sys.argv = []
-    sys.argv.append('vibanalysis')
+    global rootDirectory
+    global useLocal
+    if useLocal:
+        sys.argv = ['python']
+        sys.argv.append(os.path.join(rootDirectory,'vibanalysis'))
+    else:
+        sys.argv = ['vibanalysis']
     sys.argv.extend(instructions)
     filename = None
     for option in instructions:
@@ -270,10 +309,10 @@ def runVibAnalysis(title, instructions, regenerate):
     header = os.path.splitext(filename)[0]
     nmafile = header+'.nma'
     reffile = header+'.nma.ref'
-    outputfile = '/dev/null'
-    with open(outputfile,'w') as stdout:
-        with open('/dev/null','w') as stderr:
-            result = subprocess.run(sys.argv,stdout=stdout,stderr=stderr)
+    if debug:
+        result = subprocess.run(sys.argv)
+    else:
+        result = subprocess.run(sys.argv,stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL)
     # If not doing a regeneration perform a check
     if not regenerate:
         nerrors = compareFiles(nmafile, reffile)
@@ -293,15 +332,22 @@ def runPreaderTest(title, instructions, regenerate):
     title is the title in the pdmake file
     instructions are the command line parameters
     regenerate is set to true if the reference file is overwritten'''
-    sys.argv = []
-    sys.argv.append('preader')
+    global debug
+    global rootDirectory
+    global useLocal
+    if useLocal:
+        sys.argv = ['python']
+        sys.argv.append(os.path.join(rootDirectory,'preader'))
+    else:
+        sys.argv = ['preader']
     sys.argv.extend(instructions)
     outputfile = 'command.csv'
     if regenerate:
         outputfile = 'command.ref.csv'
-    with open(outputfile,'w') as stdout:
-        with open('/dev/null','w') as stderr:
-            result = subprocess.run(sys.argv,stdout=stdout,stderr=stderr)
+    if debug:
+        result = subprocess.run(sys.argv)
+    else:
+        result = subprocess.run(sys.argv,stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL)
     # If not doing a regeneration perform a check
     if not regenerate:
         sys.argv = ['checkcsv', 'command.ref.csv','command.csv']
@@ -309,9 +355,9 @@ def runPreaderTest(title, instructions, regenerate):
             result = main_checkcsv()
         nerrors,keep_line_number,keep_word1,keep_word2,max_percentage_error = result
         if nerrors > 0:
-            print(title+colored(' ERRORS:','red')+"LARGEST ON LINE {} -- max %error={}".format(nerrors, keep_line_number, max_percentage_error))
+            print(title+colored(' ERRORS:','red')+"LARGEST ON LINE {} - max %error={}".format(nerrors, keep_line_number, max_percentage_error))
         else:
-            print(title+colored(' OK:','blue')+" -- max %error={}" .format(max_percentage_error))
+            print(title+colored(' OK:','blue')+" - max %error={}" .format(max_percentage_error))
         # end if
     else:
         print(title+colored(' Regenerated:','blue'))
@@ -325,12 +371,19 @@ def runPDGuiTest(title, instructions, regenerate, benchmarks=False):
     regenerate is set to true if the reference file is overwritten'''
     global viewing
     global start_time
-    sys.argv = []
-    sys.argv.append('pdgui')
+    global debug
+    global rootDirectory
+    global useLocal
+    if useLocal:
+        sys.argv = ['python']
+        sys.argv.append(os.path.join(rootDirectory,'pdgui'))
+    else:
+        sys.argv = ['pdgui']
     sys.argv.extend(instructions)
-    with open('/dev/null','w') as stdout:
-        with open('/dev/null','w') as stderr:
-            result = subprocess.run(sys.argv,stdout=stdout,stderr=stderr)
+    if debug:
+        result = subprocess.run(sys.argv)
+    else:
+        result = subprocess.run(sys.argv,stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL)
     if not viewing:
         # If not doing a regeneration perform a check
         if not regenerate and not benchmarks:
@@ -339,15 +392,15 @@ def runPDGuiTest(title, instructions, regenerate, benchmarks=False):
                 result = main_checkexcel()
             nerrors,row,col,sheet,file1,value1,file2,value2,max_percentage_error = result
             if nerrors > 0:
-                print(title+colored('{} ERRORS:','red').format(nerrors)+"{}@{},{} -- max %error={}".format(sheet,row,col, max_percentage_error))
+                print(title+colored('{} ERRORS:','red').format(nerrors)+"{}@{},{} - max %error={}".format(sheet,row,col, max_percentage_error))
             else:
-                print(title+colored(' OK:','blue')+" -- max %error={}" .format(max_percentage_error))
+                print(title+colored(' OK:','blue')+" - max %error={}" .format(max_percentage_error))
             # end if
         elif benchmarks:
             end_time = time.time()
             elapsed_time = end_time - start_time
             start_time = end_time
-            print(title+colored(' OK:','blue')+" -- elapsed time {}" .format(elapsed_time))
+            print(title+colored(' OK:','blue')+" - elapsed time {:.3f}s" .format(elapsed_time))
         elif not benchmarks:
             # If we asked for a benchmarking then don't do a regenerate
             copyfile('results.xlsx','results.ref.xlsx')
@@ -355,6 +408,14 @@ def runPDGuiTest(title, instructions, regenerate, benchmarks=False):
         # end if not regenerate
     #end if not viewing
     return
+
+def changePadding(all):
+    maxlen = 0
+    for d in all:
+        maxlen = max(maxlen,len(d))
+    if maxlen < settings['padding']:
+        maxlen = settings['padding']
+    return maxlen
 
 def runTests(testlist, testType, regenerate):
     '''Run the tests given in the directories stored in testlist
@@ -367,6 +428,8 @@ def runTests(testlist, testType, regenerate):
     convertTestType['preader'] = 'PReader tests'
     convertTestType['p2cif'] = 'P2Cif tests'
     convertTestType['benchmarks'] = 'BenchMarks'
+    print('')
+    print('--------------------------------------------------')
     print(convertTestType[testType],'starting' )
     start_time = time.time()
     test_start_time = start_time
@@ -380,13 +443,14 @@ def runTests(testlist, testType, regenerate):
             exit()
         mychdir(directory)
         if testType == 'benchmarks':
-            runPdMakefile(pdmakefile,regenerate,benchmarks=True)
+            runPdMakefile(directory,pdmakefile,regenerate,benchmarks=True)
         else:
-            runPdMakefile(pdmakefile,regenerate)
+            runPdMakefile(directory,pdmakefile,regenerate)
         mychdir(homedir)
     # end for
     elapsed_time = time.time() - test_start_time
-    print(convertTestType[testType],'complete in',elapsed_time)
+    print('--------------------------------------------------')
+    print(convertTestType[testType],'completed in {:.3f}s'.format(elapsed_time))
 
 def readPdMakefile(directory,filename):
     # Return a dictionary of instructions
@@ -398,7 +462,10 @@ def readPdMakefile(directory,filename):
         if settings['title'] == 'title':
             title = line.ljust(settings['padding'])
         else:
-            title = directory.ljust(settings['padding'])
+            if len(directory)>1:
+                title = directory.ljust(settings['padding'])
+            else:
+                title = os.getcwd().ljust(settings['padding'])
         line = fd.readline()[:-1]
         while line:
             if len(line)>0 and not line.startswith('#'):
@@ -428,12 +495,12 @@ def mychdir(directory):
     # end if
     return
 
-def runPdMakefile(pdmakefile,regenerate,benchmarks=False):
+def runPdMakefile(directory,pdmakefile,regenerate,benchmarks=False):
     '''Run specific pdMakefile'''
     global debug
     homedir = os.getcwd()
-    directory,filename = os.path.split(pdmakefile)
-    mychdir(directory)
+    directory_,filename = os.path.split(pdmakefile)
+    mychdir(directory_)
     title,instructions = readPdMakefile(directory,filename)
     for key in instructions:
         parameters = instructions[key]
@@ -456,26 +523,64 @@ def runPdMakefile(pdmakefile,regenerate,benchmarks=False):
     mychdir(homedir)
 
 def runClean():
-    print('Cleaning old results from the examples directory')
-    os.popen('echo find . -name results.xlsx -exec rm -f {} \;')
-    os.popen('echo find . -name results.csv -exec rm -f {} \;')
-    os.popen('echo find . -name all.cif -exec rm -f {} \;')
-    os.popen('echo find . -name \*.nma -exec rm -f {} \;')
+    if os.name == 'nt':
+        print('Unable to clean installation in Windows')
+        return
+    print('Cleaning old results from the Examples directory')
+    os.chdir(rootDirectory)
+    subprocess.run('find . -name results.xlsx -exec rm -f {} \;',shell=True)
+    subprocess.run('find . -name results.csv -exec rm -f {} \;',shell=True)
+    subprocess.run('find . -name all.cif -exec rm -f {} \;',shell=True)
+    subprocess.run('find . -name \*.nma -exec rm -f {} \;',shell=True)
     print('Cleaning complete')
 
 def runPyInstaller():
+    if os.name == 'nt':
+        print('Unable to create pyInstaller installation in Windows')
+        return
     print('Creating pyinstaller files in dis/pdgui         ')
-    os.popen('pyinstaller pdgui.spec -y')
-    os.popen('cp -r dist/pdgui/PyQt5/Qt/plugins/platforms dist/pdgui')
+    os.chdir(rootDirectory)
+    subprocess.run('pyinstaller pdgui.spec -y',shell=True)
+    subprocess.run('cp -r dist/pdgui/PyQt5/Qt/plugins/platforms dist/pdgui',shell=True)
 
 def runPyPi():
+    if os.name == 'nt':
+        print('Unable to create PyPi installation in Windows')
+        return
     print('Creating PyPi distribution files')
-    os.popen('rm -rf build dist PDielec.egg-info; python setup.py sdist bdist_wheel')
+    os.chdir(rootDirectory)
+    subprocess.run('rm -rf build dist PDielec.egg-info; python setup.py sdist bdist_wheel',shell=True)
+
+def testForRootDirectory(path):
+    test = os.path.join(path,'Examples')
+    if not os.path.isdir(test):
+        return False
+#    test = os.path.join(path,'PDielec')
+#    if not os.path.isdir(test):
+#        return False
+#    test = os.path.join(path,'Sphinx')
+#    if not os.path.isdir(test):
+#        return False
+    return True
+
+def findRootDirectory(start):
+    '''Find the root directory starting from start'''
+    lastpath = start
+    path = os.path.join(start,'Examples')
+    while path != lastpath:
+        lastpath = path
+        path,tail=os.path.split(path)
+        if testForRootDirectory(path):
+            return path
+    print('Unable to locate root directory')
+    exit()
 
 def main():
     global debug
     global viewing
     global settings
+    global rootDirectory
+    global useLocal
     # Start processing the directories
     originalDirectory = os.getcwd()
     if len(sys.argv) <= 1 :
@@ -486,9 +591,11 @@ def main():
     regenerate = False
     scriptsDirectory='~/bin'
     command = sys.argv[0]
-    rootDirectory,command = os.path.split(command)
-    if rootDirectory == '':
-        rootDirectory = originalDirectory
+    #rootDirectory,command = os.path.split(command)
+    #if rootDirectory == '':
+    #    rootDirectory = originalDirectory
+    rootDirectory = originalDirectory
+    rootDirectory = findRootDirectory(rootDirectory)
     actions = []
     pdmakefiles = []
     # Loop over the tokens on the command line
@@ -500,39 +607,38 @@ def main():
         elif token == 'test-preader':
             actions.append('test preader')
         elif token == 'test-p2cif':
-            actions.append('test preader')
+            actions.append('test p2cif')
         elif token == 'test-pdgui':
             actions.append('test pdgui')
         elif token == 'test-vibanalysis':
             actions.append('test vibanalysis')
         elif token == 'benchmarks':
             actions.append('run benchmarks')
-        elif token == '-root' or token == 'root':
+        elif token == '-root' or token == '--root':
             itoken += 1
             rootDirectory = tokens[itoken]
-        elif token == '-debug' or token == '-d':
+        elif token == '-debug' or token == '--debug' or token == '-d':
             debug = True
-        elif token == '-view' or token == '-v':
+        elif token == '-usesystem':
+            useLocal = False
+        elif token == '-view' or token == '--view' or token == '-v':
             viewing = True
-        elif token == 'regenerate' or token == '-regenerate':
+        elif token == '-regenerate' or token == '--regenerate':
             regenerate = True
-        elif token == '-padding':
+        elif token == '-padding' or token == '--padding':
             itoken += 1
             settings['padding'] = int(tokens[itoken])
-        elif token == '-title':
+        elif token == '-directory' or token == '--directory':
             itoken += 1
-            settings['title'] = tokens[itoken]
+            settings['title'] = 'directory'
         elif token == 'pypi':
             actions.append('run pypi')
-            runPyPi()
-        elif token == 'runPyInstaller':
-            actions.append('run pypinstaller')
-            runPyInstaller()
-        elif token == 'runClean':
+#        elif token == 'pyinstaller':
+#            actions.append('run pyinstaller')
+        elif token == 'clean':
             actions.append('run clean')
         elif token == 'install':
             actions.append('install')
-            install(scriptsDirectory)
         elif token == 'scripts' or token == '-scripts':
             itoken += 1
             scriptsDirectory = tokens[itoken]
@@ -549,6 +655,15 @@ def main():
         print('Error: The root directory is not valid',rootDirectory)
         exit()
     mychdir(rootDirectory)
+    #
+    # Check to see if the required executables are present
+    # If the are then use them
+    # 
+    if useLocal:
+        if checkLocalExecutables():
+            useLocal = True
+        else:
+            useLocal = False
     # Change directory to the Examples directory
     if not os.path.isdir('Examples'):
         print('Error: command needs to be executed in the PDielec home directory')
@@ -562,6 +677,14 @@ def main():
     # Now loop over the actions
     #
     mychdir('Examples')
+    if settings['title'] != 'title':
+        test_all = []
+        test_all.extend(test_p2cif)
+        test_all.extend(test_preader)
+        test_all.extend(test_pdgui)
+        test_all.extend(test_vibanalysis)
+        settings['padding'] = changePadding(test_all)
+    #
     for action in actions:
         if action == 'test all':
             runTests(test_p2cif      ,'p2cif'      ,regenerate)
