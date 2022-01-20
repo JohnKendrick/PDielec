@@ -239,6 +239,7 @@ def redirect(file):
             sys.stderr = sys.__stderr__
 
 def compareFiles(file1,file2):
+    global debug
     fd1 = open(file1,'r')
     fd2 = open(file2,'r')
     lines1 = fd1.readlines()
@@ -257,9 +258,17 @@ def compareFiles(file1,file2):
                 float2 = float(word2)
                 if abs(float1)+abs(float2) > 1.e-12:
                     if 2*abs(float1-float2)/(abs(float1)+abs(float2)) > 1.0e-4:
+                        if debug:
+                            write('Float difference',float1,float2)
+                            write('Line 1',line1)
+                            write('Line 2',line1)
                         nerrors += 1
             except:
                 if word1 != word2:
+                    if debug:
+                        write('Word difference',word1,word2)
+                        write('Line 1',line1)
+                        write('Line 2',line1)
                     nerrors += 1
     return nerrors
 
