@@ -259,16 +259,16 @@ def compareFiles(file1,file2):
                 if abs(float1)+abs(float2) > 1.e-12:
                     if 2*abs(float1-float2)/(abs(float1)+abs(float2)) > 1.0e-4:
                         if debug:
-                            write('Float difference',float1,float2)
-                            write('Line 1',line1)
-                            write('Line 2',line1)
+                            print('Float difference',float1,float2)
+                            print('Line 1',line1)
+                            print('Line 2',line1)
                         nerrors += 1
             except:
                 if word1 != word2:
                     if debug:
-                        write('Word difference',word1,word2)
-                        write('Line 1',line1)
-                        write('Line 2',line1)
+                        print('Word difference',word1,word2)
+                        print('Line 1',line1)
+                        print('Line 2',line1)
                     nerrors += 1
     return nerrors
 
