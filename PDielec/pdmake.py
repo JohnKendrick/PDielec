@@ -346,10 +346,12 @@ def runPreaderTest(title, instructions, regenerate):
     outputfile = 'command.csv'
     if regenerate:
         outputfile = 'command.ref.csv'
-    if debug:
-        result = subprocess.run(sys.argv)
-    else:
-        result = subprocess.run(sys.argv,stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL)
+    with open(outputfile,'w') as fd:
+        if debug:
+            result = subprocess.run(sys.argv,stdout=fd)
+        else:
+            result = subprocess.run(sys.argv,stdout=fd,stderr=subprocess.DEVNULL)
+    # end with
     # If not doing a regeneration perform a check
     if not regenerate:
         sys.argv = ['checkcsv', 'command.ref.csv','command.csv']
