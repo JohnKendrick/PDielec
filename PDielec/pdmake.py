@@ -532,11 +532,15 @@ def mychdir(directory):
 def runPdMakefile(directory,pdmakefile,regenerate,benchmarks=False):
     '''Run specific pdMakefile'''
     global debug
+    homedir = os.getcwd()
     if debug:
         print('RunPdMakefile: directory =',directory)
         print('RunPdMakefile: pdmakefile =',pdmakefile)
-    homedir = os.getcwd()
+        print('RunPdMakefile: cwd =',homedir)
     directory_,filename = os.path.split(pdmakefile)
+    if debug:
+        print('RunPdMakefile: directory_ =',directory_)
+        print('RunPdMakefile: filename =',filename)
     mychdir(directory_)
     title,instructions = readPdMakefile(directory,filename)
     if debug:
