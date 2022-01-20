@@ -10,7 +10,6 @@ from PDielec.checkexcel  import main as main_checkexcel
 from PDielec.p2cif       import main as main_p2cif
 from PDielec.VibAnalysis import main as main_vibanalysis
 import contextlib
-from termcolor import colored
 from shutil import copyfile
 import subprocess
 import time
@@ -276,12 +275,12 @@ def runP2CifTest(title, instructions, regenerate):
     if not regenerate:
         nerrors = compareFiles('all.cif', 'all.ref.cif')
         if nerrors > 0:
-            print(title+colored(' {} ERRORS:'.format(nerrors),'red'))
+            print(title+' {} ERRORS:'.format(nerrors))
         else:
-            print(title+colored(' OK:','blue'))
+            print(title+' OK:')
         # end if
     else:
-        print(title+colored(' Regenerated:','blue'))
+        print(title+' Regenerated:')
     # end if
     return
 
@@ -317,13 +316,13 @@ def runVibAnalysis(title, instructions, regenerate):
     if not regenerate:
         nerrors = compareFiles(nmafile, reffile)
         if nerrors > 0:
-            print(title+colored(' {} ERRORS:'.format(nerrors),'red'))
+            print(title+' {} ERRORS:'.format(nerrors))
         else:
-            print(title+colored(' OK:','blue'))
+            print(title+' OK:')
         # end if
     else:
         copyfile(nmafile,reffile)
-        print(title+colored(' Regenerated:','blue'))
+        print(title+' Regenerated:')
     # end if
     return
 
@@ -355,12 +354,12 @@ def runPreaderTest(title, instructions, regenerate):
             result = main_checkcsv()
         nerrors,keep_line_number,keep_word1,keep_word2,max_percentage_error = result
         if nerrors > 0:
-            print(title+colored(' ERRORS:','red')+"LARGEST ON LINE {} - max %error={}".format(nerrors, keep_line_number, max_percentage_error))
+            print(title+' ERRORS:'+"LARGEST ON LINE {} - max %error={}".format(nerrors, keep_line_number, max_percentage_error))
         else:
-            print(title+colored(' OK:','blue')+" - max %error={}" .format(max_percentage_error))
+            print(title+' OK:')+" - max %error={}" .format(max_percentage_error))
         # end if
     else:
-        print(title+colored(' Regenerated:','blue'))
+        print(title+' Regenerated:')
     # end if
     return
 
@@ -392,19 +391,19 @@ def runPDGuiTest(title, instructions, regenerate, benchmarks=False):
                 result = main_checkexcel()
             nerrors,row,col,sheet,file1,value1,file2,value2,max_percentage_error = result
             if nerrors > 0:
-                print(title+colored('{} ERRORS:','red').format(nerrors)+"{}@{},{} - max %error={}".format(sheet,row,col, max_percentage_error))
+                print(title+'{} ERRORS:'.format(nerrors)+"{}@{},{} - max %error={}".format(sheet,row,col, max_percentage_error))
             else:
-                print(title+colored(' OK:','blue')+" - max %error={}" .format(max_percentage_error))
+                print(title+' OK:'+" - max %error={}" .format(max_percentage_error))
             # end if
         elif benchmarks:
             end_time = time.time()
             elapsed_time = end_time - start_time
             start_time = end_time
-            print(title+colored(' OK:','blue')+" - elapsed time {:.3f}s" .format(elapsed_time))
+            print(title+' OK:'+" - elapsed time {:.3f}s" .format(elapsed_time))
         elif not benchmarks:
             # If we asked for a benchmarking then don't do a regenerate
             copyfile('results.xlsx','results.ref.xlsx')
-            print(title+colored(' Regenerated:','blue'))
+            print(title+' Regenerated:')
         # end if not regenerate
     #end if not viewing
     return
