@@ -712,6 +712,7 @@ def main():
     # Handle any pdmake files there might be
     #
     for pdmakefile in pdmakefiles:
+        directory = originalDirectory
         runPdMakefile(directory,pdmakefile,regenerate)
     #
     # Now loop over the actions
