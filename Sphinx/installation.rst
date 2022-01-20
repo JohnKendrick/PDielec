@@ -60,7 +60,7 @@ cd to a directory where PDielec will be installed and use git to clone a copy of
 This will create a directory \~/Software/PDielec.  To make the program generally available to the user;::
 
   cd ~/Software/PDielec
-  make install
+  pdmake install
 
 This copies the commands and modules to the \~/bin directory which should be included in your PATH environment variable.::
 
@@ -112,16 +112,6 @@ First of all install a Windows version of git from www.git-scm.com. A 64 bit ver
 
 I have seen a few hickups in the installation of Git.  Occasionally I have to do the installation twice and occasionally I am left with the Setup Installing window indicating that I should wait, when in fact the installation has completed.  When this happens I kill the setup process with the task manager
 
-Install make
-............
-
-Once you have Git installed open the "Git bash" shell and create the following directories in your home directory;::
-
-  mkdir bin
-  mkdir Software
-
-From the web url http://www.equation.com/servlet/equation.cmd?fa=make download the 64-bit version of make.exe and copy it into your bin/ directory.  You should find this directory in c:\users\yourusername\bin in the file manager.
-
 Install Python
 ..............
 
@@ -165,8 +155,8 @@ Testing PDielec
 Open a git bash console.  If you have installed Python using Anaconda then you need to 'source activate' the environment you have established before typing;::
 
   cd Software/PDielec
-  make test-preader
-  make test-pdgui
+  pdmake test-preader
+  pdmake test-pdgui
 
 Installing PDielec to run in any git bash console
 .................................................
@@ -175,7 +165,7 @@ Open a git bash console and type;::
 
   cd Software/PDielec
   export SCRIPTS=~/bin
-  make install
+  pdmake install
 
 Updating PDielec from the git repository
 ........................................
@@ -202,7 +192,7 @@ Examples
 
 Each example directory has the relevant input data sets used to run the QM/MM program and the output files from that run, which are post-processed by PDielec.  There is a file `script.py` which which has been used to create the reference output file `results.ref.xlsx`.  The example can be run interactively::
 
- make pdgui-view
+ pdmake view
 
 The output can be compared with the reference data to see if the program is working correctly.  The checkexcel command can be used to do this automatically.
 
@@ -210,7 +200,7 @@ The main Examples/ directory also has a  Makefile file which can be used to veri
 
 A benchmark can be run for comparison of the performance of PDielec on different platforms by typing; ::
 
-    make benchmark
+    pdmake benchmarks
 
 This runs a range of calculations on different systems and provides a real world view of the performance.  An indication of the likely performance of the program is given in the :ref:`performance` section of the documentation.
 

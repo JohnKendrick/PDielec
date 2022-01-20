@@ -439,7 +439,7 @@ Performance
 ------------
 
 PDielec has been written to make use of multiprocessor computers. On an 8 processor (16 thread) machine using multiprocessing the speed-up soon slows down after three processors, as there is a lot of the code which is not parallelised .  Threading does not appear to be an efficient way of running `PDielec` and it is only recommended if the default multiprocessing options is failing for some reason.
-The speedup is calculated by running the benchmark suite (make benchmark), which consists of 30 different examples of using the code and is therefore representative of the type of calculations performed.
+The speedup is calculated by running the benchmark suite (pdmake benchmarks), which consists of 30 different examples of using the code and is therefore representative of the type of calculations performed.
 
 .. _fig-speedup:
 
