@@ -359,7 +359,7 @@ def runPreaderTest(title, instructions, regenerate):
         if nerrors > 0:
             print(title+' ERRORS:'+"LARGEST ON LINE {} - max %error={}".format(nerrors, keep_line_number, max_percentage_error))
         else:
-            print(title+' OK:')+" - max %error={}" .format(max_percentage_error))
+            print(title+' OK:'+" - max %error={}" .format(max_percentage_error))
         # end if
     else:
         print(title+' Regenerated:')
