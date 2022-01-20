@@ -334,6 +334,9 @@ def runPreaderTest(title, instructions, regenerate):
     global debug
     global rootDirectory
     global useLocal
+    global debug
+    if debug:
+        print('runPreaderTest:',title,instructions)
     if useLocal:
         sys.argv = ['python']
         sys.argv.append(os.path.join(rootDirectory,'preader'))
@@ -421,6 +424,7 @@ def runTests(testlist, testType, regenerate):
        testType can be pdgui, preader, p2cif or benchmark
        regenerate causes the test data to be regenerated'''
     global start_time
+    global debug
     convertTestType={}
     convertTestType['pdgui'] = 'PDGui tests'
     convertTestType['vibanalysis'] = 'VibAnalysis tests'
@@ -433,8 +437,12 @@ def runTests(testlist, testType, regenerate):
     start_time = time.time()
     test_start_time = start_time
     homedir = os.getcwd()
+    if debug:
+        print('RunTests: homedir=',homedir)
     pdmakefile = 'command.pdmake'
     for directory in testlist:
+        if debug:
+            print('RunTest: directory=',directory)
         if not os.path.isdir(directory):
             print('Error: command needs to be executed in the PDielec home directory')
             print('       current directory is {}'.format(homedir))
@@ -455,7 +463,10 @@ def readPdMakefile(directory,filename):
     # Return a dictionary of instructions
     # The first word is the dictionary key, the rest is its value
     global settings
+    global debug
     instructions = {}
+    if debug:
+        print('ReadPdMakefile:',directory,filename)
     with open(filename,'r') as fd:
         line = fd.readline()[:-1]
         if settings['title'] == 'title':
@@ -497,10 +508,16 @@ def mychdir(directory):
 def runPdMakefile(directory,pdmakefile,regenerate,benchmarks=False):
     '''Run specific pdMakefile'''
     global debug
+    if debug:
+        print('RunPdMakefile: directory =',directory)
+        print('RunPdMakefile: pdmakefile =',pdmakefile)
     homedir = os.getcwd()
     directory_,filename = os.path.split(pdmakefile)
     mychdir(directory_)
     title,instructions = readPdMakefile(directory,filename)
+    if debug:
+        print('RunPdMakefile: title =',title)
+        print('RunPdMakefile: instructions =',instructions)
     for key in instructions:
         parameters = instructions[key]
         if key == 'preader':
