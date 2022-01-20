@@ -245,9 +245,22 @@ def compareFiles(file1,file2):
     lines2 = fd2.readlines()
     nerrors = 0
     for line1,line2 in  zip(lines1,lines2):
-        for word1,word2 in zip(line1,line2):
-            if word1 != word2:
-                nerrors += 1
+        for word1,word2 in zip(line1.split(),line2.split()):
+            word1 = word1.replace('(','')
+            word1 = word1.replace(')','')
+            word1 = word1.replace('%','')
+            word2 = word2.replace('(','')
+            word2 = word2.replace(')','')
+            word2 = word2.replace('%','')
+            try:
+                float1 = float(word1)
+                float2 = float(word2)
+                if abs(float1)+abs(float2) > 1.e-12:
+                    if 2*abs(float1-float2)/(abs(float1)+abs(float2)) > 1.0e-4:
+                        nerrors += 1
+            except:
+                if word1 != word2:
+                    nerrors += 1
     return nerrors
 
 
