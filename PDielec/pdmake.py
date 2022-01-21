@@ -8,7 +8,7 @@ from PDielec.pdgui       import main as main_pdgui
 from PDielec.checkcsv    import main as main_checkcsv
 from PDielec.checkexcel  import main as main_checkexcel
 from PDielec.p2cif       import main as main_p2cif
-from PDielec.VibAnalysis import main as main_vibanalysis
+from PDielec.vibanalysis import main as main_vibanalysis
 import numpy as np
 import contextlib
 from shutil import copyfile

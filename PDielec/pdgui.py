@@ -47,11 +47,17 @@ def main():
     if show_splash:
         dirname = os.path.dirname(os.path.realpath(sys.argv[0]))
         splashfile = os.path.join(dirname, 'PDielec/GUI/splash.png')
+        if debug:
+            print('Looking for ',splashfile)
         if not os.path.isfile(splashfile):
             splashfile = os.path.join(dirname, '../../lib/site-packages/PDielec/GUI/splash.png')
+            if debug:
+                print('Looking for ',splashfile)
         if not os.path.isfile(splashfile):
             for f in sys.path:
                 splashfile = os.path.join(f,'PDielec/GUI/splash.png')
+                if debug:
+                    print('Looking for ',splashfile)
                 if os.path.isfile(splashfile):
                     break
         if debug:

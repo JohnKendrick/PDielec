@@ -1,7 +1,7 @@
 import setuptools
 
 # Update this for every PyPi release
-version = "7.1.0"
+version = "7.1.1"
 
 with open("README.md", "r") as fh:
     long_description = fh.read()
@@ -26,6 +26,7 @@ setuptools.setup(
     packages=['PDielec','PDielec/GUI'],
     #package_dir = { '' : 'PDielec' },
     include_package_data=True,
+    package_data={'':['*.png']},
     license='MIT',
     keywords=['Infrared',' Infrared Spectroscopy','THz Spectroscopy','Terahertz Spectroscopy','Bruggeman','Maxwell-Garnett','Effective Medium'],
     install_requires=[
@@ -56,6 +57,8 @@ setuptools.setup(
         "Programming Language :: Python :: 3.6",
         "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
+        "Programming Language :: Python :: 3.9",
+        "Programming Language :: Python :: 3.10",
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
     ],
