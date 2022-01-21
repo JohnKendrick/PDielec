@@ -29,6 +29,7 @@ version = PDielec.__init__.__version__
 def main():
     show_splash = True
     force_exit = False
+    debug = False
     for token in sys.argv:
         if token == '-nosplash' or token == '--nosplash':
             show_splash = False
@@ -37,12 +38,18 @@ def main():
             exit()
         elif token == '-exit' or token == '--exit':
             force_exit = True
+        elif token == '-d' or token == '-debug' or token == '--debug':
+            debug = True
+
 
     app = QApplication(sys.argv)
 
     if show_splash:
         dirname = os.path.dirname(os.path.realpath(sys.argv[0]))
         splashfile = os.path.join(dirname, 'PDielec/GUI/splash.png')
+        debug = True
+        if debug:
+            print('pdgui: ',splashfile,dirname)
         pixmap = QPixmap(splashfile)
         splash = QSplashScreen(pixmap)
         progressbar = QProgressBar(splash)
