@@ -9,6 +9,7 @@ from PDielec.checkcsv    import main as main_checkcsv
 from PDielec.checkexcel  import main as main_checkexcel
 from PDielec.p2cif       import main as main_p2cif
 from PDielec.VibAnalysis import main as main_vibanalysis
+import numpy as np
 import contextlib
 from shutil import copyfile
 import subprocess
@@ -238,6 +239,48 @@ def redirect(file):
         if not debug:
             sys.stderr = sys.__stderr__
 
+def readNmaFile(file):
+    nmodes = 0
+    frequencies = []
+    rsquared = []
+    explained = []
+    with open(file,'r') as fd:
+        line = fd.readline()
+        while line:
+            splits = line.split()
+            if len(splits) > 0:
+                if splits[0] == 'Mode':
+                    if splits[1] != 'too':
+                        nmodes += 1
+                        frequencies.append(float(splits[2]))
+                elif splits[0] == 'R**2':
+                    rsquared.append(float(splits[2]))
+                elif splits[0] == 'Explained':
+                    explained.append(float(splits[3]))
+                # end if
+            # end if
+            line = fd.readline()
+        #end while
+    #end with open
+    f = np.array(frequencies[3:])
+    r = np.array(rsquared[3:])
+    e = np.array(explained[3:])
+    return np.sum(f),np.sum(r),np.sum(e)
+
+def compareNmaFiles(file1,file2):
+    f1,r1,e1 = readNmaFile(file1)
+    f2,r2,e2 = readNmaFile(file2)
+    print('f1,r1,e1',f1,r1,e1)
+    print('f2,r2,e2',f2,r2,e2)
+    nerrors = 0
+    if abs(f1 - f2) > 1.0e-6:
+        nerrors += 1
+    if abs(r1 - r2) > 1.0e-6:
+        nerrors += 1
+    if abs(e1 - e2) > 1.0e-6:
+        nerrors += 1
+    return nerrors
+
 def compareFiles(file1,file2):
     global debug
     fd1 = open(file1,'r')
@@ -336,7 +379,7 @@ def runVibAnalysis(title, instructions, regenerate):
         result = subprocess.run(sys.argv,stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL)
     # If not doing a regeneration perform a check
     if not regenerate:
-        nerrors = compareFiles(nmafile, reffile)
+        nerrors = compareNmaFiles(nmafile, reffile)
         if nerrors > 0:
             print(title+' {} ERRORS:'.format(nerrors))
         else:
