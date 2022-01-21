@@ -23,9 +23,14 @@ import os
 import logging
 import sklearn.linear_model as sklm
 import sklearn.metrics as skmt
+from importlib import reload
 
-class VaOpts():
+def InitialiseVaOpts():
     """Define default options for the Vibanalysis package"""
+    global Opts
+    global Symbols
+    global Masses
+    global Radii
     # General Options
     Opts={}
     Opts['isLinear']=False
@@ -67,13 +72,6 @@ class VaOpts():
     sangles=1.0
     souts=1.0
     storsions=1.0
-
-global Opts 
-Opts = VaOpts.Opts
-Symbols = VaOpts.Symbols
-Masses = VaOpts.Masses
-Radii = VaOpts.Radii
-
 ## Object Classes ##
 
 class Atom():
@@ -445,8 +443,8 @@ def readPDielec(ifn):
         scale = 1.1      # Scaling factor for covalent radii
         tolerance  = Opts['tol']  # Tolerance in bonding
         new_cell,natoms,original_atomic_order = cell.calculate_molecular_contents(scale, tolerance, covalent_radii)
-        print('Bonding tolerance',tolerance)
-        print('Number of molecules',len(new_cell.molecules))
+        print('Bonding tolerance',tolerance,file=sys.stderr)
+        print('Number of molecules',len(new_cell.molecules),file=sys.stderr)
         # Reorder the normal mode atoms so that the mass weighted normal modes order 
         # agrees with the ordering in the cell_of_molecules cell
         nmodes,nions,temp = np.shape(normal_modes)
@@ -1157,6 +1155,14 @@ def VMARD(of,s):
 
 def main():
 ## Main executable ##
+        # Force a reset of the options
+        global Opts
+        global Symbols
+        global Masses
+        global Radii
+        InitialiseVaOpts()
+        logging.shutdown()
+        reload(logging)
         # Set flags and filenames
         Linear=False # if true, internal coords will be 3N-5m instead of 3N-6
         Transition=False #if true, get the first mode and exclude the next 6 (or 5)
@@ -1380,8 +1386,8 @@ Options:
         if(debug):
                 logging.basicConfig(filename=ofn+'.debug',
                                     filemode='w',
-                                                                                                format="%(levelname)s:%(funcName)s: %(message)s",
-                                                                                                level=logging.DEBUG)
+                                    format="%(levelname)s:%(funcName)s: %(message)s",
+                                    level=logging.DEBUG)
         else:
                 logging.basicConfig(level=logging.WARNING,format="%(levelname)s:%(funcName)s: %(message)s")
         of=open(ofn+'.nma','w')

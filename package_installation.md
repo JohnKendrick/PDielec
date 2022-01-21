@@ -59,7 +59,7 @@ Edit CHANGES file to record what changes have been made, don't use the developem
 
 Run the following commands to remove the old installation create a new one;
 
-    make pypi
+    pdmake pypi
     # rm -r build dist
     # python setup.py sdist bdist_wheel
 
@@ -94,13 +94,13 @@ To remove the conda testing environment;
 
 Edit the setup.py file and remove the development designation from the project version
 
-    make pypi
+    pdmake pypi
     # rm -r build dist
     # python setup.py sdist bdist_wheel
 	twine upload --repository pypi dist/*
     # pip install PDielec
 
-The make pypi command runs setup.py which creates a PDielec/\_\_init\_\_.py file with the version number in.
+The pdmake pypi command runs setup.py which creates a PDielec/\_\_init\_\_.py file with the version number in.
 
 # Update the conda-forge installation
 There is a bot (@regro-cf-autotick-bot) which seems to monitor pypi.org to see if there is a new release.  

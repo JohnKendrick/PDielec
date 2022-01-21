@@ -1,0 +1,2 @@
+Vibanalysis Castep for Isoleucine
+vibanalysis --autosel castep phonon.castep 

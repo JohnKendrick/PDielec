@@ -1,0 +1,2 @@
+Vibanalysis Vasp for F-Apatite
+vibanalysis --autosel vasp OUTCAR

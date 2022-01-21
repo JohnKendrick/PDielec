@@ -1,0 +1,2 @@
+Vibanalysis Castep for L-Aspartic acid
+vibanalysis --autosel phonon.castep

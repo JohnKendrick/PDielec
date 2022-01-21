@@ -377,67 +377,73 @@ def main():
         for string in results_dictionary[name]:
             print(string)
     #
+    # Close the pool down
+    #
+    p.close()
+    p.join()
+    #
     # Process the observables switch
     # ( for the time being this is commented out )
-    exit()
-    for name in files :
-        if observables:
-            filename = directory+'.observables'
-            if directory == '.' :
-                filename = 'dot.observables'
-            filename = filename.replace("/","_")
-            print('filename', filename, file=sys.stderr)
-            fd = open(filename,'w')
-            print('observables', file=fd)
-            if eps0[0,0] != 0.0 :
-                print('sdlc', file=fd)
-                print('1 1 ', eps0[0,0], file=fd)
-                print('sdlc', file=fd)
-                print('2 2 ', eps0[1,1], file=fd)
-                print('sdlc', file=fd)
-                print('3 3 ', eps0[2,2], file=fd)
-                print('hfdlc', file=fd)
-                print('1 1 ', epsinf[0,0], file=fd)
-                print('hfdlc', file=fd)
-                print('2 2 ', epsinf[1,1], file=fd)
-                print('hfdlc', file=fd)
-                print('3 3 ', epsinf[2,2], file=fd)
-            if carray[0,0] != 0.0:
-                print('elastic', file=fd)
-                print('1 1 ', carray[0,0], file=fd)
-                print('elastic', file=fd)
-                print('2 2 ', carray[1,1], file=fd)
-                print('elastic', file=fd)
-                print('3 3 ', carray[2,2], file=fd)
-                print('elastic', file=fd)
-                print('4 4 ', carray[3,3], file=fd)
-                print('elastic', file=fd)
-                print('5 5 ', carray[4,4], file=fd)
-                print('elastic', file=fd)
-                print('6 6 ', carray[5,5], file=fd)
-                print('elastic', file=fd)
-                print('1 2 ', carray[0,1], file=fd)
-                print('elastic', file=fd)
-                print('1 3 ', carray[0,2], file=fd)
-                print('elastic', file=fd)
-                print('2 3 ', carray[1,2], file=fd)
-            nfreq = len(frequencies_cm1)
-            if nfreq > 4 :
-                for n in range(nfreq):
-                    nlast = n
-                    if frequencies_cm1[n].real > 1.0E-6:
-                        break
-                    # end of if
-                # end of for
-                if frequencies_cm1[nlast].real > 1.0E-8 :
-                    n = nlast
-                    print('frequency', nfreq - nlast, file=fd)
-                    for f in frequencies_cm1[nlast:] :
-                        n = n + 1
-                        print(n, f, file=fd)
-            print('end', file=fd)
-            fd.close()
-    # End of for loop over files
+    if False:
+        for name in files :
+            if observables:
+                filename = directory+'.observables'
+                if directory == '.' :
+                    filename = 'dot.observables'
+                filename = filename.replace("/","_")
+                print('filename', filename, file=sys.stderr)
+                fd = open(filename,'w')
+                print('observables', file=fd)
+                if eps0[0,0] != 0.0 :
+                    print('sdlc', file=fd)
+                    print('1 1 ', eps0[0,0], file=fd)
+                    print('sdlc', file=fd)
+                    print('2 2 ', eps0[1,1], file=fd)
+                    print('sdlc', file=fd)
+                    print('3 3 ', eps0[2,2], file=fd)
+                    print('hfdlc', file=fd)
+                    print('1 1 ', epsinf[0,0], file=fd)
+                    print('hfdlc', file=fd)
+                    print('2 2 ', epsinf[1,1], file=fd)
+                    print('hfdlc', file=fd)
+                    print('3 3 ', epsinf[2,2], file=fd)
+                if carray[0,0] != 0.0:
+                    print('elastic', file=fd)
+                    print('1 1 ', carray[0,0], file=fd)
+                    print('elastic', file=fd)
+                    print('2 2 ', carray[1,1], file=fd)
+                    print('elastic', file=fd)
+                    print('3 3 ', carray[2,2], file=fd)
+                    print('elastic', file=fd)
+                    print('4 4 ', carray[3,3], file=fd)
+                    print('elastic', file=fd)
+                    print('5 5 ', carray[4,4], file=fd)
+                    print('elastic', file=fd)
+                    print('6 6 ', carray[5,5], file=fd)
+                    print('elastic', file=fd)
+                    print('1 2 ', carray[0,1], file=fd)
+                    print('elastic', file=fd)
+                    print('1 3 ', carray[0,2], file=fd)
+                    print('elastic', file=fd)
+                    print('2 3 ', carray[1,2], file=fd)
+                nfreq = len(frequencies_cm1)
+                if nfreq > 4 :
+                    for n in range(nfreq):
+                        nlast = n
+                        if frequencies_cm1[n].real > 1.0E-6:
+                            break
+                        # end of if
+                    # end of for
+                    if frequencies_cm1[nlast].real > 1.0E-8 :
+                        n = nlast
+                        print('frequency', nfreq - nlast, file=fd)
+                        for f in frequencies_cm1[nlast:] :
+                            n = n + 1
+                            print(n, f, file=fd)
+                print('end', file=fd)
+                fd.close()
+        # End of for loop over files
+    # end of if False
 # end of def main
 
 if __name__ == "__main__":
