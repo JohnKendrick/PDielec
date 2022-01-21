@@ -1,3 +1,5 @@
+version 7.1.1
+  Minor changes to include the splash image and altered the case of the vibanalysis command
 version 7.1.0
   Major changes to the testing system.  Reliance on make has been removed.
   A new command pdmake has been introduced.
