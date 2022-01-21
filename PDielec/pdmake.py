@@ -270,8 +270,6 @@ def readNmaFile(file):
 def compareNmaFiles(file1,file2):
     f1,r1,e1 = readNmaFile(file1)
     f2,r2,e2 = readNmaFile(file2)
-    print('f1,r1,e1',f1,r1,e1)
-    print('f2,r2,e2',f2,r2,e2)
     nerrors = 0
     if abs(f1 - f2) > 1.0e-6:
         nerrors += 1
