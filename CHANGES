@@ -2,7 +2,13 @@ version 7.1.0
   Major changes to the testing system.  Reliance on make has been removed.
   A new command pdmake has been introduced.
       pdmake tests
-  will run all the tests
+      pdmake test-preader
+      pdmake test-p2cif
+      pdmake vibanalysis
+  Each directory in the Examples has a command.pdmake file which describes the test
+  A particular test can be started using;
+      pdmake command.pdmake
+      pdmake --view command.pdmake
 
 version 7.0.2
   Bug fix for changing directory when calling a script
