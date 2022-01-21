@@ -507,6 +507,57 @@ The package options can be determined using;
 
 which will analyse a VASP and a CASTEP phonon calculation output to produce a summary in the files OUTCAR.nma and phonon.nma respectively.
 
+pdmake
+======
+The testing suite is run use the the pdmake command.  The command line options are summarised below.
+
+   +-----------------------+----------------------------------------+
+   | Command line option   | Description                            |
+   +=======================+========================================+
+   | test                  | Run all the tests                      |
+   | tests                 | Run all the tests                      |
+   +-----------------------+----------------------------------------+
+   | test-preader          | Run preader tests                      |
+   +-----------------------+----------------------------------------+
+   | test-pdgui            | Run pdgui tests                        |
+   +-----------------------+----------------------------------------+
+   | test-p2cif            | Run p2cif tests                        |
+   +-----------------------+----------------------------------------+
+   | test-vibanalysis      | Run vibanalysis tests                  |
+   +-----------------------+----------------------------------------+
+   | benchmarks            | Run the benchmark suite (no testing)   |
+   +-----------------------+----------------------------------------+
+   | --regenerate          | Regenerate the reference data          |
+   +-----------------------+----------------------------------------+
+   | --root adirectory     | Set the root directory to adirectory   |
+   +-----------------------+----------------------------------------+
+   | --directory           | Print the directory name for the test  |
+   +-----------------------+----------------------------------------+
+   | --debug               | Switch on debugging                    |
+   +-----------------------+----------------------------------------+
+   | --view                | Use windowing with pdgui               |
+   +-----------------------+----------------------------------------+
+   | --padding 60          | Set the size of the title field to 60  |
+   +-----------------------+----------------------------------------+
+   | --usesystem           | Force the use of system executables    |
+   +-----------------------+----------------------------------------+
+
+
+The command can also be use in an examples directory.  There will be a file, command.pdmake, which contains the instructions to run the test.
+The first line of the file is a title that is used to identify the test.
+The second line is the command to be used in the test followed by the command parameters required.
+
+Examples of the use of the command are;::
+
+        pdmake                              # prints a help summary
+        pdmake tests                        # runs all the tests
+        pdmake command.pdmake               # runs the test in command.pdmake
+        pdmake --debug command.pdmake       # run the test with debugging
+        pdmake --view command.pdmake        # Bring up the GUI interface
+
+
+
+
 MM/QM Interfaces
 ================
 
