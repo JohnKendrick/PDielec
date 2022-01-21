@@ -47,9 +47,10 @@ def main():
     if show_splash:
         dirname = os.path.dirname(os.path.realpath(sys.argv[0]))
         splashfile = os.path.join(dirname, 'PDielec/GUI/splash.png')
-        debug = True
+        if not os.path.isfile(splashfile):
+            splashfile = os.path.join(dirname, '../../Lib/site-packages/PDielec/GUI/splash.png')
         if debug:
-            print('pdgui: ',splashfile,dirname)
+            print('pdgui: splashfile ',dirname, splashfile)
         pixmap = QPixmap(splashfile)
         splash = QSplashScreen(pixmap)
         progressbar = QProgressBar(splash)
