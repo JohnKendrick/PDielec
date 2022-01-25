@@ -100,11 +100,9 @@ After running the program the user sees a notebook interface with seven tabs.
 
 -   *Settings Tab* is used for changing the settings within the package
 
--   *Scenario Tab* specifies the material properties used to define the effective medium from which the  absorption characteristic are calculated.  If single crystal calculations are to be performed this is specified here.  This tab can also be used to change the algorithms used to calculate the effective medium.  Several scenarios can be defined and plotted in the *Plotting Tab*.
+-   *Scenario Tab* can be a powder scenario or a single crystal scenario.  In the case of a powder scenario the tab specifies the material properties used to define the effective medium from which the  absorption characteristic are calculated.  In the case of a single crystal the orientation of the the crystal can be defined and the angle of incidence of the radiation.
 
--   *Plotting Tab* shows the absorption or permittivity as a function of frequency for the effective medium theories given in the scenario tabs.
-
--   *SingleCrystal Tab* shows the transmittance and reflectance of a single crystal (slab or film) as a function of frequency.
+-   *Plotting Tab* shows the results of all the scenario tabs in one place.
 
 -   *Analysis Tab* shows the decomposition of the normal modes into molecular components.
 
@@ -187,7 +185,7 @@ For each powder scenario it is assumed that the size of the particle embedded in
    The Scenario Tab for a Powder
 
 The support matrix into which the active dielectric material is dispersed can be selected from the *Support matrix* drop down menu.  The selected supporting material will change the density and permittivity shown in the respective text boxes.  The user can edit these values independently if necessary.  
-The supporting medium may have bubbles of air trapped in the matrix.  For the case that polyethylene spheres are used to make the sample, experimental information indicates a relationship between the size of the spheres and size of the air inclusions.
+The supporting medium may have bubbles of air trapped in the matrix.  For the case that polyethylene spheres are used to make the sample, experimental information indicates a relationship between the size of the spheres and size of the air inclusions :cite:`Kaushik2014`.
 
 
 .. table:: Size of air inclusion (bubbles) in polyethylene
@@ -200,20 +198,31 @@ The supporting medium may have bubbles of air trapped in the matrix.  For the ca
    +-------------------------------+--------------+----------------------+
    | PE Sphere Diameter (micron)   | Porosity (%) | Void radius (micron) |
    +===============================+==============+======================+
-   | 60                            | 2.200        | 2.000                |
+   | 60                            | 24           | 24.0                 |
    +-------------------------------+--------------+----------------------+
-   | 70                            | 0.000        | 1.000                |
+   | 72                            | 25           | 28.0                 |
    +-------------------------------+--------------+----------------------+
-   | 360                           | 0.000        | 1.000                |
+   | 360                           | 44.5         | 90.0                 |
    +-------------------------------+--------------+----------------------+
 
-The size of the air inclusions (bubbles) can be specified in the *Scenario Tab* along with the volume fraction.  If a non-zero value for the volume fraction of air voids is given the scattering due to the air inclusions is calculated before the effective medium calculation is performed.  The forward and backward scattering amplitudes for a single scatterer are calculated using the Mie method and then used to calculated the scattering using the Waterman-Truell approximation.
+The size of the air inclusions (bubbles) can be specified in the *Scenario Tab* along with the volume fraction.  If a non-zero value for the volume fraction of air voids is given, the scattering due to the air inclusions is calculated before the effective medium calculation is performed.
+The forward and backward scattering amplitudes for a single scatterer are calculated using the Mie method and then used to calculated the scattering using the Waterman-Truell approximation.
 
-The amount of dielectric material can be entered either as a mass fraction (in percent) or as a volume fraction (in percent).  If the matrix support density is changed the calculated mass fraction will be updated.  It is assumed that the volume fraction has precedence.  If an air void volume fraction is supplied then this has to be taken account of in the calculation of the volume and mass fractions.
+The amount of dielectric material can be entered either as a mass fraction (in percent) or as a volume fraction (in percent).
+If the matrix support density is changed the calculated mass fraction will be updated.
+It is assumed that the volume fraction has precedence.
+If an air void volume fraction is supplied then this is taken account of in the calculation of the volume and mass fractions.
 
-The calculation of the effective medium can be performed using a variety of methods which can be chosen from the *Method* drop down menu.  If the *Mie* method is chosen the user can enter the particles radius (microns).  The *Particle sigma* specifies the width of a log-normal distribution.  If the width is 0.0 no sampling of the distribution is performed.
+The calculation of the effective medium can be performed using a variety of methods which can be chosen from the *Method* drop down menu.
+If the *Mie* method is chosen the user can enter the particles radius (microns).
+*Particle sigma* specifies the width of a log-normal distribution.
+If the width is 0.0 no sampling of the distribution is performed.
 
-For effective medium theories other than the Mie method, the particle shape can be specfied using the *Shape* pull down menu.  Possible shapes are *Sphere*, *Needle*, *Plate* and *Ellipsoid*.  For the cases of *Needle* and *Ellipsoid* the unique direction is specifed by a direction \[abc\] in lattice units.  In the case of *Plate* the unique direction is specifies as the normal to a plane (hkl) in reciprical lattice units.  If an *Ellipsoid* shape is used the eccentricity factor can be specified in the *Ellipsoid a/b eccentricity* text box.
+For effective medium theories, the particle shape can be specfied using the *Shape* pull down menu.
+Possible shapes are *Sphere*, *Needle*, *Plate* and *Ellipsoid*.
+For the cases of *Needle* and *Ellipsoid* the unique direction is specifed by a direction \[abc\] in lattice units.
+In the case of *Plate* the unique direction is specifies as the normal to a plane (hkl) in reciprical lattice units.
+If an *Ellipsoid* shape is used the eccentricity factor can be specified in the *Ellipsoid a/b eccentricity* text box.
 
 The plot in the *Plotting Tab* has a legend and the description used in the legend for each scenario can be set by filling out the text box associated with the *Scenario legend*.
 
@@ -236,7 +245,7 @@ The mode of calculation is selected at the top of the tab, followed by the defin
 
 
 This information is sufficient to link the crystal axis system with the laboratory frame.  
-The laboratory axes are defined with Z- being the normal to the surface [hkl], and the incident and reflected beams lie in the XZ- plane, which means the laboratory Y- axis is perpendicular to the XZ- plane. 
+The laboratory axes are defined with Z- being the normal to the surface (hkl), and the incident and reflected beams lie in the XZ- plane, which means the laboratory Y- axis is perpendicular to the XZ- plane. 
 The incident radiation is assumed to be at an angle :math:`\theta` to the normal. 
 p-polarised light lies in the XZ- plane and s-polarised light is parallel with the Y-axis.  The azimuthal angle :math:`\phi` defines the rotation of the crystal around the Z-axis.
 To help understand the relationship between the crystal and laboratory co-ordinates the program outputs the direction of the lattice vectors in terms of the laboratory X-, Y- and Z- coordinates.
@@ -266,7 +275,7 @@ The title of the plot can be supplied by entering it into the *Plot title* text 
 
 For powder scenarios the molar absorption, the absorption and the real or imaginary permittivity can be plotted.  Once a plot has been requested the calculation progress is shown in the progress bar.  Some settings can be changed without the whole plot being recalculated.
 
-For single crystal plots the crystal reflectance and transmittance for s and p polarised radiation can be plotted along with the absorptance which is defined in terms of the reflectance (R) and the transmittance (T) as math::`1-R-T`.
+For single crystal plots the crystal reflectance and transmittance for s and p polarised radiation can be plotted along with the absorptance which is defined in terms of the reflectance (R) and the transmittance (T) as :math:`1-R-T`.
 For thick slabs only the transmittance is of any revelance.  For thin films the absorptance is useful as it removes some of the oscilations that occur in the transmittance or reflectance due to the film thickness.
 
 .. _fig-plottingTab-SingleCrystal:
@@ -429,8 +438,8 @@ will run `pdgui` using the threading multiprocessing options.
 Performance
 ------------
 
-PDielec has been written to make use of multiprocessor computers. On an 8 processor (16 thread) machine using multiprocessing the speed-up soon slows down after a couple of processors, as there is a lot of the code which is not parallelised .  Threading does not appear to be an efficient way of running `PDielec` and it is only recommended if the default multiprocessing options is failing for some reason.
-The speedup is calculated by running the benchmark suite (make benchmark), which consists of 30 different examples of using the code and is therefore representative of the type of calculations performed.
+PDielec has been written to make use of multiprocessor computers. On an 8 processor (16 thread) machine using multiprocessing the speed-up soon slows down after three processors, as there is a lot of the code which is not parallelised .  Threading does not appear to be an efficient way of running `PDielec` and it is only recommended if the default multiprocessing options is failing for some reason.
+The speedup is calculated by running the benchmark suite (pdmake benchmarks), which consists of 30 different examples of using the code and is therefore representative of the type of calculations performed.
 
 .. _fig-speedup:
 
@@ -439,9 +448,9 @@ The speedup is calculated by running the benchmark suite (make benchmark), which
 
    Speed-up on a eight processor workstation
 
-Using the same suite of benchmarks on an 8 processor Intel core i9-9900K running at 3.6GHz took 110s.
+Using the same suite of benchmarks on an 8 processor Intel core i9-9900K running at 3.6GHz took 92.6s.
 
-On a Windows laptop with an Intel Skylake i7-650, which has 2 processors running at 2.5GHz, the benchmark ran in 1632 seconds.  On the same machine but running the Linux operating system the benchmark suite took 346s, making the impact of Windows on performance a substantial four times slower.
+On a Windows laptop with an Intel Skylake i7-650, which has 2 processors running at 2.5GHz, the benchmark ran in 432s seconds.  On the same machine but running the Linux operating system the benchmark suite took 358s, making the impact of Windows on performance a factor of 1.2 times slower.
 
 
 PReader
@@ -497,6 +506,57 @@ The package options can be determined using;
        vibanalysis phonon.castep
 
 which will analyse a VASP and a CASTEP phonon calculation output to produce a summary in the files OUTCAR.nma and phonon.nma respectively.
+
+pdmake
+======
+The testing suite is run use the the pdmake command.  The command line options are summarised below.
+
+   +-----------------------+----------------------------------------+
+   | Command line option   | Description                            |
+   +=======================+========================================+
+   | test                  | Run all the tests                      |
+   | tests                 | Run all the tests                      |
+   +-----------------------+----------------------------------------+
+   | test-preader          | Run preader tests                      |
+   +-----------------------+----------------------------------------+
+   | test-pdgui            | Run pdgui tests                        |
+   +-----------------------+----------------------------------------+
+   | test-p2cif            | Run p2cif tests                        |
+   +-----------------------+----------------------------------------+
+   | test-vibanalysis      | Run vibanalysis tests                  |
+   +-----------------------+----------------------------------------+
+   | benchmarks            | Run the benchmark suite (no testing)   |
+   +-----------------------+----------------------------------------+
+   | --regenerate          | Regenerate the reference data          |
+   +-----------------------+----------------------------------------+
+   | --root adirectory     | Set the root directory to adirectory   |
+   +-----------------------+----------------------------------------+
+   | --directory           | Print the directory name for the test  |
+   +-----------------------+----------------------------------------+
+   | --debug               | Switch on debugging                    |
+   +-----------------------+----------------------------------------+
+   | --view                | Use windowing with pdgui               |
+   +-----------------------+----------------------------------------+
+   | --padding 60          | Set the size of the title field to 60  |
+   +-----------------------+----------------------------------------+
+   | --usesystem           | Force the use of system executables    |
+   +-----------------------+----------------------------------------+
+
+
+The command can also be use in an examples directory.  There will be a file, command.pdmake, which contains the instructions to run the test.
+The first line of the file is a title that is used to identify the test.
+The second line is the command to be used in the test followed by the command parameters required.
+
+Examples of the use of the command are;::
+
+        pdmake                              # prints a help summary
+        pdmake tests                        # runs all the tests
+        pdmake command.pdmake               # runs the test in command.pdmake
+        pdmake --debug command.pdmake       # run the test with debugging
+        pdmake --view command.pdmake        # Bring up the GUI interface
+
+
+
 
 MM/QM Interfaces
 ================

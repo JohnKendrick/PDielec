@@ -75,6 +75,7 @@ def main():
         if show_splash:
             splash.finish(ex)
         app.exec_()
+    return ex.notebook
 
 if __name__ == '__main__':
     freeze_support()

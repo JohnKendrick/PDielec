@@ -14,13 +14,13 @@
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="_static/cloud.css" />
     <link rel="stylesheet" type="text/css" href="_static/table_styling.css" />
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noticia+Text:400,i,b,bi|Open+Sans:400,i,b,bi|Roboto+Mono:400,i,b,bi&amp;display=swap" type="text/css" />
+    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Noticia+Text|Open+Sans|Droid+Sans+Mono" type="text/css" />
     
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
     <script src="_static/doctools.js"></script>
-    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <script type="text/x-mathjax-config">MathJax.Hub.Config({"extensions": ["AMSmath.js"], "TeX": {"Macros": {"bm": ["{\\boldsymbol{#1}}", 1], "tensor": ["{\\bar{\\bar{#1}}}", 1], "tensorbs": ["{\\bar{\\bar{\\bm{#1}}}}", 1], "tensorbf": ["{\\bar{\\bar{\\bm{#1}}}}", 1], "fieldbf": ["{\\bar{\\bm{#1}}}", 1], "water": "\\H_{2}O"}}})</script>
 
     
@@ -75,7 +75,7 @@
   <section id="phonon-analysis">
 <h1>Phonon Analysis<a class="headerlink" href="#phonon-analysis" title="Permalink to this headline">¶</a></h1>
 <p>PDGui performs an analysis of a phonon mode in terms of the percentage
-of molecular centre-of-mass and rigid body rotational motion in each mode.  Using the results of the analysis it is possible to differentiate between inter- and intra-molecular phonon modes (see for instance Jepsen et al <span id="id1">[<a class="reference internal" href="zreferences.html#id64" title="Peter Uhd Jepsen and Stewart J. Clark. Precise ab-initio prediction of terahertz vibrational modes in crystalline systems. Chemical Physics Letters, 442(4-6):275–280, Jul 2007. doi:10.1016/j.cplett.2007.05.112.">45</a>]</span>).  In addition, for those systems with more than one formula unit in the unit cell it is possible to break down the contribution of each molecule to a particular phonon mode.</p>
+of molecular centre-of-mass and rigid body rotational motion in each mode.  Using the results of the analysis it is possible to differentiate between inter- and intra-molecular phonon modes (see for instance Jepsen et al <span id="id1">[<a class="reference internal" href="zreferences.html#id64">46</a>]</span>).  In addition, for those systems with more than one formula unit in the unit cell it is possible to break down the contribution of each molecule to a particular phonon mode.</p>
 <section id="molecular-systems">
 <h2>Molecular Systems<a class="headerlink" href="#molecular-systems" title="Permalink to this headline">¶</a></h2>
 <p>It is common in molecular calculations of
@@ -119,7 +119,7 @@ molecule in the unit cell, which will project out the motion of
 each molecular translational and rotational degree of freedom.
 Such projection operators will be used to separate the external from the internal modes and there will therefore
 be a projection operator for each external mode in the system.</p>
-<p>Hug and Haesler have shown <span id="id2">[<a class="reference internal" href="zreferences.html#id65" title="Werner Hug and Jacques Haesler. Is the Vibrational Optical Activity of (R)‐[2H1, 2H2, 2H3]‐neopentane measurable? Quantum Chemistry, 104:695–715, 2005. doi:10.1002/qua.20600.">46</a>]</span> that the vibrational kinetic energy can be decomposed into single centre atomic contributions by considering the kinetic energy, <span class="math notranslate nohighlight">\(T_p\)</span>, of a normal mode <span class="math notranslate nohighlight">\(Q_p\)</span>;</p>
+<p>Hug and Haesler have shown <span id="id2">[<a class="reference internal" href="zreferences.html#id65">47</a>]</span> that the vibrational kinetic energy can be decomposed into single centre atomic contributions by considering the kinetic energy, <span class="math notranslate nohighlight">\(T_p\)</span>, of a normal mode <span class="math notranslate nohighlight">\(Q_p\)</span>;</p>
 <div class="math notranslate nohighlight" id="equation-eq-kep">
 <span class="eqno">(71)<a class="headerlink" href="#equation-eq-kep" title="Permalink to this equation">¶</a></span>\[T_p = \frac{1}{2} \dot{Q_p} =
 \sum\limits_{a}{T_{a,p}} =
@@ -135,7 +135,7 @@ Derivation of this expression has made use of the following
 relationship between the mass weighted normal mode;</p>
 <div class="math notranslate nohighlight" id="equation-eq-kinetic-energy">
 <span class="eqno">(72)<a class="headerlink" href="#equation-eq-kinetic-energy" title="Permalink to this equation">¶</a></span>\[\sqrt{ m_a } \fieldbf{\Delta x}_{a,p} = \fieldbf{L}_{a,p} Q_p\]</div>
-<p>As proposed by Hug and Haesler <span id="id3">[<a class="reference internal" href="zreferences.html#id65" title="Werner Hug and Jacques Haesler. Is the Vibrational Optical Activity of (R)‐[2H1, 2H2, 2H3]‐neopentane measurable? Quantum Chemistry, 104:695–715, 2005. doi:10.1002/qua.20600.">46</a>]</span>, since the kinetic energy can be expressed as
+<p>As proposed by Hug and Haesler <span id="id3">[<a class="reference internal" href="zreferences.html#id65">47</a>]</span>, since the kinetic energy can be expressed as
 atomic contributions, consideration of the Virial theorem indicates that
 this is true also for the potential energy. Using mass weighted
 Cartesian coordinates for convenience, an analysis of the phonon modes
@@ -667,7 +667,7 @@ For this example the default covalent radius of the Barium atoms has been change
 
     <div class="footer" role="contentinfo">
         &#169; Copyright 2018, John Kendrick and Andrew Burnett.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.2.0.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.3.0.
     </div>
     <!-- cloud_sptheme 1.4 -->
   </body>
