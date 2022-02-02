@@ -663,6 +663,8 @@ class PowderScenarioTab(ScenarioTab):
         # Use the pool of processors already available
         # define a partial function to use with the pool
         partial_function = partial(Calculator.solve_effective_medium_equations, method,volume_fraction,particle_size_mu,particle_sigma_mu,matrix_permittivity,shape,self.depolarisation,concentration,atr_refractive_index,atr_theta,atr_spolfraction,bubble_vf,bubble_radius,previous_solution_shared)
+        if self.notebook.pool is None:
+            self.notebook.startPool()
         debugger.print('About to use the pool to calculate effective medium equations')
         results = []
         indices = range(len(vs_cm1))

@@ -360,6 +360,8 @@ class SingleCrystalScenarioTab(ScenarioTab):
         results = []
         # About to call
         debugger.print(self.settings['Legend'],'About to calculate single crystal scenario using pool')
+        if self.notebook.pool is None:
+            self.notebook.startPool()
         for result in self.notebook.pool.imap(partial_function, vs_cm1, chunksize=20):
             self.notebook.progressbars_update()
             results.append(result)

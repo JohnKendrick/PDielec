@@ -45,7 +45,7 @@ class NoteBook(QWidget):
             self.ncpus = psutil.cpu_count(logical=False)
         else:
             self.ncpus = ncpus
-        self.pool = Calculator.get_pool(self.ncpus,self.threading, debugger = debugger)
+        self.startPool()
         self.scripting = scripting
         # Overwriting of files is not allowed with a prompt
         # If scripting is used then overwriting is allowed
@@ -123,6 +123,11 @@ class NoteBook(QWidget):
         self.layout.addWidget(self.tabs)
         self.setLayout(self.layout)
         debugger.print('Finished:: Initialising')
+        return
+
+    def startPool(self):
+        global debugger
+        self.pool = Calculator.get_pool(self.ncpus,self.threading, debugger = debugger)
         return
 
     def requestRefresh(self):
@@ -310,7 +315,7 @@ class NoteBook(QWidget):
 
     def oldrefresh(self,force=False):
         debugger.print('Start:: refresh',force)
-        if self.scripting:
+        if not force and self.scripting:
             debugger.print('Finished:: refresh Notebook aborting refresh because of scripting')
             return
         ntabs = 2 + len(self.scenarios) + 4
@@ -333,7 +338,7 @@ class NoteBook(QWidget):
 
     def refresh(self,force=False):
         debugger.print('Started:: newrefresh',force)
-        if self.scripting:
+        if not force and self.scripting:
             debugger.print('Finished:: newrefresh Notebook aborting refresh because of scripting')
             return
         ntabs = 2 + len(self.scenarios) + 4

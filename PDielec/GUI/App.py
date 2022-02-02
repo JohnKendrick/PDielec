@@ -136,6 +136,7 @@ class App(QMainWindow):
             debugger.print('Exiting with sys.exit call')
             self.notebook.pool.close()
             self.notebook.pool.join()
+            self.notebook.pool = None
         debugger.print('Finished:: Initialising')
 
     def print_usage(self):
