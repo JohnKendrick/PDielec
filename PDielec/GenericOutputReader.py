@@ -90,6 +90,7 @@ class GenericOutputReader:
         self.original_born_charges_are_being_used = True
         self.CrystalPermittivity        = None
         self.oscillator_strengths       = None
+        self.edited_masses              = None
         return
 
     def read_output(self):
@@ -118,9 +119,29 @@ class GenericOutputReader:
             print("new mass_dictionary", dictionary)
         return dictionary
 
+    def set_edited_masses(masses):
+        # The edited masses can be used to override anything that has been read in
+        # Once it is set massess will always be these stored in self.edited_masses
+        if len(masses) == len(self.masses):
+            self.edited_masses = masses
+        else:
+            print('Error unable to edited_masses')
+            self.edited_masses = None
+        return
+
     def change_masses(self, new_masses, mass_dictionary):
         # Change the masses of the species stored, using the new_masses dictionary
         # if any of the elements are in the mass_dictionary then use that mass instead
+        # First of all lets see if the edited_masses variable is in use
+        if self.edited_masses:
+            # This is pretty crude!  If the reader has this variable set then we
+            # only use the masses stored in the edit_masses list
+            # Once this variable has been set then only these masses are used
+            if self.debug:
+                print("Using the edited masses")
+            self.masses = self.edited_masses
+            return
+        # 
         if not self.program_mass_dictionary:
             # We only want to do this once - remember the program masses as a dictionary
             if self.debug:
