@@ -138,6 +138,7 @@ class App(QMainWindow):
             self.notebook.pool.join()
             self.notebook.pool = None
         debugger.print('Finished:: Initialising')
+        return
 
     def print_usage(self):
         print('pdgui - graphical user interface to the PDielec package')
