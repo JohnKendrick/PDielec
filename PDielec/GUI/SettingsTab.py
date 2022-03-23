@@ -479,6 +479,8 @@ class SettingsTab(QWidget):
             self.redraw_output_tw()
         else:
             self.redraw_output_tw()
+        self.refreshRequired = True
+        self.refresh()
         QCoreApplication.processEvents()
         debugger.print('Finished:: on_output_tw_itemChanged')
 
