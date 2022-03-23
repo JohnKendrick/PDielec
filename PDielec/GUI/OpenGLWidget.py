@@ -495,17 +495,22 @@ class Sphere():
 
 class Cylinder():
     def __init__(self, colour, radius, pos1, pos2):
-        a = np.array(pos1)
-        b = np.array(pos2)
+        if pos1[2] > pos2[2]:
+            a = np.array(pos1)
+            b = np.array(pos2)
+        else:
+            b = np.array(pos1)
+            a = np.array(pos2)
         self.colour= np.array(colour)/255.0
         self.radius = radius
         self.position1 = a
         self.position2 = b
         z = np.array( [0.0, 0.0, 1.0] )
         p = a - b
-        t = np.cross(z, p)
         height = math.sqrt(np.dot(p,p))
-        angle = 180.0 / PI * math.acos( np.dot(z,p) / height )
+        p = p / height
+        t = np.cross(z, p)
+        angle = 180.0 / PI * math.acos( np.dot(z,p) )
         self.angle = angle
         self.height = height
         self.rotation = t
