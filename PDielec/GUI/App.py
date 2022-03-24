@@ -43,6 +43,7 @@ class App(QMainWindow):
         else:
             threading = False
         parameters = []
+        program_has_been_specified = False
         # Process any instructions on the input line
         while itoken < ntokens:
             token = tokens[itoken]
@@ -62,6 +63,7 @@ class App(QMainWindow):
             elif token == '-program' or token == '--program':
                 itoken += 1
                 program = tokens[itoken]
+                program_has_been_specified = True
             elif token == '-threading' or token == '--threading' or token == '-threads' or token == '--threads':
                 threading = True
             elif token == '-cpus' or token == '--cpus':
@@ -87,11 +89,16 @@ class App(QMainWindow):
             pass
         elif len(parameters) == 1:
             filename = parameters[0]
-            program = Utilities.find_program_from_name(filename)
+            if not program_has_been_specified:
+                program = Utilities.find_program_from_name(filename)
         elif len(parameters) == 2:
+            if program_has_been_specified:
+                print('Warning: program has been specified twice')
             program = parameters[0]
             filename = parameters[1]
         elif len(parameters) == 3:
+            if program_has_been_specified:
+                print('Warning: program has been specified twice')
             program = parameters[0]
             filename = parameters[1]
             spreadsheet_name = parameters[2]
