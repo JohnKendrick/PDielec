@@ -50,6 +50,7 @@ class ViewerTab(QWidget):
         self.cell_corners = None
         # element_colours is a dictionary
         self.element_colours = elemental_colours
+        self.settings['Element colours'] = None
         self.element_names = []
         self.species       = []
         self.element_coloured_buttons = []
@@ -346,6 +347,7 @@ class ViewerTab(QWidget):
         colour = colourChooser.currentColor()
         rgba = [ colour.red(), colour.green(), colour.blue(), colour.alpha() ]
         self.element_colours[text] = rgba
+        self.settings['Element colours'] = [ self.element_colours[el] for el in self.species ]
         self.refreshRequired = True
         self.refresh()
         return
@@ -671,6 +673,11 @@ class ViewerTab(QWidget):
             self.element_names = self.unit_cell.element_names
             self.species = self.reader.getSpecies()
             debugger.print('refresh - species ',self.species)
+            if self.settings['Element colours'] is not None:
+                debugger.print('refresh - processing colours ',self.species)
+                for el,colour in zip(self.species,self.settings['Element colours']):
+                    self.element_colours[el] = colour
+            self.settings['Element colours'] = [ self.element_colours[el] for el in self.species ]
         count = self.element_coloured_hbox.count()
         if count == 0:
             debugger.print('initialising element colours widget')
