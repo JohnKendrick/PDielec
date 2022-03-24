@@ -25,6 +25,7 @@ class AnalysisTab(QWidget):
         self.settings = {}
         self.subplot = None
         self.setWindowTitle('Analysis')
+        self.settings['Radii'] = None
         self.settings['Minimum frequency'] = -1
         self.settings['Maximum frequency'] = 400
         self.settings['title'] = 'Analysis'
@@ -173,7 +174,8 @@ class AnalysisTab(QWidget):
         col = item.column()
         try:
             debugger.print('Changing the element radius',col,item.text())
-            self.element_radii[self.species[col]] = float(item.text())
+            #self.element_radii[self.species[col]] = float(item.text())
+            self.settings['Radii'][col] = float(item.text())
             self.calculate()
             self.plot()
             if self.notebook.viewerTab is not None:
@@ -183,11 +185,28 @@ class AnalysisTab(QWidget):
             pass
 
     def set_radii_tw(self):
+        self.reader = self.notebook.mainTab.reader
+        program = self.notebook.mainTab.settings['Program']
+        filename = self.notebook.mainTab.getFullFileName()
         if self.reader is None:
+            debugger.print('set_radii_tw aborting - no reader')
             return
+        if program == '':
+            debugger.print('set_radii_tw aborting - no program')
+            return
+        if filename == '':
+            debugger.print('set_radii_tw aborting - no filename')
+            return
+        debugger.print('set_radii_tw starting')
         self.element_radii_tw.blockSignals(True)
         self.species = self.reader.getSpecies()
-        radii = [ self.element_radii[el] for el in self.species ]
+        if self.settings['Radii'] is None:
+            radii = [ self.element_radii[el] for el in self.species ]
+        else:
+            radii = self.settings['Radii']
+            print('Radii',radii)
+            for sp,rad in zip(self.species,self.settings['Radii']):
+               self.element_radii[sp] = rad
         self.element_radii_tw.setColumnCount(len(self.species))
         self.element_radii_tw.setHorizontalHeaderLabels(self.species)
         self.element_radii_tw.setVerticalHeaderLabels([''])
@@ -197,7 +216,8 @@ class AnalysisTab(QWidget):
             qw.setTextAlignment(int(Qt.AlignHCenter | Qt.AlignVCenter))
             self.element_radii_tw.setItem(0,i, qw )
         self.element_radii_tw.blockSignals(False)
-        # end if
+        self.settings['Radii'] = radii
+        debugger.print('set_radii_tw finishing')
         return
 
     def setCovalentRadius(self,element,radius):
@@ -304,8 +324,8 @@ class AnalysisTab(QWidget):
         self.width_sp.setValue(self.settings['Bar width'])
         self.title_le.setText(self.settings['title'])
         self.plottype_cb.setCurrentIndex(self.plot_type_index)
-        self.calculate()
         self.set_radii_tw()
+        self.calculate()
         self.plot()
         #
         # Unlock signals after refresh
@@ -332,6 +352,8 @@ class AnalysisTab(QWidget):
             return
         if filename == '':
             return
+        for sp,rad in zip(self.species,self.settings['Radii']):
+           self.element_radii[sp] = rad
         QApplication.setOverrideCursor(Qt.WaitCursor)
         # Assemble the settingsTab settings
         settings = self.notebook.settingsTab.settings
@@ -343,7 +365,7 @@ class AnalysisTab(QWidget):
         cell = self.reader.unit_cells[-1]
         atom_masses = self.reader.masses
         cell.set_atomic_masses(atom_masses)
-        self.cell_of_molecules,nmols,self.original_atomic_order = cell.calculate_molecular_contents(scale, tolerance, covalent_radii)
+        self.cell_of_molecules,nmols,self.original_atomic_order = cell.calculate_molecular_contents(scale, tolerance, self.element_radii)
         # if the number of molecules has changed then tell the viewerTab that the cell has changed
         if self.number_of_molecules != nmols:
             if self.notebook.viewerTab is not None:
