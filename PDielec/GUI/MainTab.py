@@ -373,9 +373,10 @@ class MainTab(QWidget):
             program = find_program_from_name(filename)
             if program == '':
                 debugger.print('Program not found from filename',filename)
-                debugger.print('Finished:: on_file_le_return ')
-                return
-            self.settings['Program'] = program
+                debugger.print('Proceeding with defaults',self.settings['Program'])
+            else:
+                debugger.print('Program found from filename',program,filename)
+                self.settings['Program'] = program
             self.directory = os.path.dirname(filename)
             self.notebook.app.setMyWindowTitle(self.directory)
             self.settings['Output file name'] = os.path.basename(filename)
