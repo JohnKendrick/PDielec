@@ -204,7 +204,6 @@ class AnalysisTab(QWidget):
             radii = [ self.element_radii[el] for el in self.species ]
         else:
             radii = self.settings['Radii']
-            print('Radii',radii)
             for sp,rad in zip(self.species,self.settings['Radii']):
                self.element_radii[sp] = rad
         self.element_radii_tw.setColumnCount(len(self.species))
