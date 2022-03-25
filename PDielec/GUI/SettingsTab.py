@@ -75,6 +75,7 @@ class SettingsTab(QWidget):
         self.CrystalPermittivity = None
         self.vs_cm1 = []
         self.crystal_permittivity = []
+        self.recalculate_selected_modes = True
         # get the reader from the main tab
         self.reader = self.notebook.reader
         # Create second tab - SettingsTab
@@ -185,6 +186,7 @@ class SettingsTab(QWidget):
         self.mass_cb.setCurrentIndex(3)
         self.set_masses_tw()
         self.refreshRequired = True
+        self.recalculate_selected_modes = True
         self.refresh()
         debugger.print('Finished::  setElementMass',element,mass)
 
@@ -232,18 +234,24 @@ class SettingsTab(QWidget):
         # calculate the intensities from the trace of the oscillator strengths
         self.intensities = Calculator.infrared_intensities(self.oscillator_strengths)
         # Decide which modes to select
-        self.modes_selected = []
-        mode_list = []
-        for index,(f,intensity) in enumerate(zip(self.frequencies_cm1,self.intensities)):
-            if f > 10.0 and intensity > 1.0E-6:
-                self.modes_selected.append(True)
-                mode_list.append(index)
-            else:
-                self.modes_selected.append(False)
+        if self.recalculate_selected_modes and len(self.intensities) > 0 and len(self.frequencies_cm1) > 0:
+            debugger.print('createIntensityTable: recalculating selected modes')
+            self.modes_selected = []
+            self.mode_list = []
+            for index,(f,intensity) in enumerate(zip(self.frequencies_cm1,self.intensities)):
+                if f > 10.0 and intensity > 1.0E-6:
+                    self.modes_selected.append(True)
+                else:
+                    self.modes_selected.append(False)
+            self.mode_list = [i for i,mode in enumerate(self.modes_selected) if mode]
+            debugger.print('Selected modes are;',self.mode_list)
+            self.recalculate_selected_modes = False
+        # end if
+        #
         # Calculate the ionic contribution to the permittivity
         frequencies_au = wavenumber*np.array(self.frequencies_cm1)
         volume_au = self.reader.volume*angstrom*angstrom*angstrom
-        self.epsilon_ionic = Calculator.ionic_permittivity(mode_list, self.oscillator_strengths, frequencies_au, volume_au )
+        self.epsilon_ionic = Calculator.ionic_permittivity(self.mode_list, self.oscillator_strengths, frequencies_au, volume_au )
         # Make an np array of epsilon infinity
         epsilon_inf = np.array(self.settings['Optical permittivity'])
         #
@@ -257,8 +265,9 @@ class SettingsTab(QWidget):
             drude_plasma_au = 0
             drude_sigma_au = 0
             sigmas_au = np.array(self.sigmas_cm1)*wavenumber
+            debugger.print('CreateIntensityTable: Calculating dielectric',self.mode_list)
             self.CrystalPermittivity = DielectricFunction('dft',parameters=(
-                                         mode_list, frequencies_au, sigmas_au, self.oscillator_strengths,
+                                         self.mode_list, frequencies_au, sigmas_au, self.oscillator_strengths,
                                          volume_au, drude, drude_plasma_au, drude_sigma_au) )
         # Add the optical permittivity to the dielctric function
         self.CrystalPermittivity.setEpsilonInfinity(epsilon_inf)
@@ -386,6 +395,7 @@ class SettingsTab(QWidget):
         # Modify the element masses
         self.set_masses_tw()
         self.refreshRequired = True
+        self.recalculate_selected_modes = True
         self.refresh()
         QCoreApplication.processEvents()
         debugger.print('Finished:: on_mass_combobox_activated', self.mass_cb.currentText())
@@ -462,15 +472,19 @@ class SettingsTab(QWidget):
 
     def on_output_tw_itemChanged(self, item):
         self.output_tw.blockSignals(True)
-        debugger.print('Start:: on_output_tw_itemChanged)', item.row(), item.column() )
+        debugger.print('Start:: on_output_tw_itemChanged', item.row(), item.column() )
         col = item.column()
         row = item.row()
         if col == 0:
             # If this is the first column alter the check status but reset the sigma value
             if item.checkState() == Qt.Checked:
+                debugger.print('on_output_tw_itemChanged setting selected mode to True',row )
                 self.modes_selected[row] = True
+                self.mode_list = [i for i,mode in enumerate(self.modes_selected) if mode]
             else:
-                 self.modes_selected[row] = False
+                debugger.print('on_output_tw_itemChanged setting selected mode to False',row )
+                self.modes_selected[row] = False
+                self.mode_list = [i for i,mode in enumerate(self.modes_selected) if mode]
             new_value = float(item.text())
             if new_value != self.sigmas_cm1:
                 self.sigmas_cm1[row] = new_value
@@ -479,6 +493,7 @@ class SettingsTab(QWidget):
             self.redraw_output_tw()
         else:
             self.redraw_output_tw()
+        debugger.print('on_output_tw_itemChanged selected_modes',self.modes_selected )
         self.refreshRequired = True
         self.refresh()
         QCoreApplication.processEvents()
@@ -499,6 +514,7 @@ class SettingsTab(QWidget):
         self.masses_dictionary[elements[col]] = float(item.text())
         debugger.print('masses_dictionary', self.masses_dictionary)
         self.refreshRequired = True
+        self.recalculate_selected_modes = True
         self.refresh()
         debugger.print('Finished:: on_element_masses_tw_itemChanged)' )
 
@@ -509,6 +525,7 @@ class SettingsTab(QWidget):
         self.settings['Optical permittivity edited'] = True
         self.refresh_optical_permittivity_tw()
         self.refreshRequired = True
+        self.recalculate_selected_modes = True
         self.refresh()
         QCoreApplication.processEvents()
         debugger.print('Finished::on_optical_itemChanged)')
@@ -592,6 +609,7 @@ class SettingsTab(QWidget):
         debugger.print('Start:: set_optical_permittivity_tw')
         self.settings['Optical permittivity'] = self.reader.zerof_optical_dielectric
         self.refresh_optical_permittivity_tw()
+        self.recalculate_selected_modes = True
         self.refreshRequired = True
         QCoreApplication.processEvents()
         debugger.print('Finished:: set_optical_permittivity_tw')
@@ -602,6 +620,7 @@ class SettingsTab(QWidget):
         self.settings['Neutral Born charges'] = self.born_cb.isChecked()
         debugger.print('on born change ', self.settings['Neutral Born charges'])
         self.refreshRequired = True
+        self.recalculate_selected_modes = True
         self.refresh()
         QCoreApplication.processEvents()
         debugger.print('Finished:: on_born_change ', self.born_cb.isChecked())
@@ -612,6 +631,7 @@ class SettingsTab(QWidget):
         self.settings['Eckart flag'] = self.eckart_cb.isChecked()
         debugger.print('on eckart change ', self.settings['Eckart flag'])
         self.refreshRequired = True
+        self.recalculate_selected_modes = True
         self.refresh()
         QCoreApplication.processEvents()
         debugger.print('Finished:: on_eckart_change ', self.eckart_cb.isChecked())
