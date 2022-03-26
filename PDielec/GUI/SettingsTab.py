@@ -68,6 +68,7 @@ class SettingsTab(QWidget):
         self.masses_dictionary = {}
         self.modes_selected = []
         self.frequencies_cm1 = []
+        self.frequencies_have_been_edited = False
         self.intensities = []
         self.sigmas_cm1 = []
         self.oscillator_strengths = []
@@ -217,7 +218,8 @@ class SettingsTab(QWidget):
         QCoreApplication.processEvents()
         self.mass_weighted_normal_modes = self.reader.calculate_mass_weighted_normal_modes()
         # convert cm-1 to au
-        self.frequencies_cm1 = self.reader.frequencies
+        if not self.frequencies_have_been_edited:
+            self.frequencies_cm1 = self.reader.frequencies
         frequencies = np.array(self.frequencies_cm1) * wavenumber
         if len(self.sigmas_cm1) == 0:
             self.sigmas_cm1 = [ self.settings['Sigma value'] for i in self.frequencies_cm1 ]
@@ -347,16 +349,19 @@ class SettingsTab(QWidget):
             if self.modes_selected[i]:
                 item.setCheckState(Qt.Checked)
                 itemFlags.append( item.flags() & Qt.NoItemFlags | Qt.ItemIsUserCheckable | Qt.ItemIsEnabled | Qt.ItemIsSelectable | Qt.ItemIsEditable )
+                freqFlags = item.flags() & Qt.NoItemFlags | Qt.ItemIsEnabled | Qt.ItemIsSelectable | Qt.ItemIsEditable
                 otherFlags = item.flags() & Qt.NoItemFlags | Qt.ItemIsEnabled
             else:
                 #itemFlags.append( item.flags() | Qt.ItemIsUserCheckable | Qt.ItemIsEnabled & ~Qt.ItemIsSelectable & ~Qt.ItemIsEditable )
                 itemFlags.append( item.flags() & Qt.NoItemFlags | Qt.ItemIsUserCheckable | Qt.ItemIsEnabled )
+                freqFlags = item.flags() & Qt.NoItemFlags | Qt.ItemIsEnabled | Qt.ItemIsSelectable | Qt.ItemIsEditable
                 item.setCheckState(Qt.Unchecked)
+                freqFlags = item.flags() & Qt.NoItemFlags 
                 otherFlags = item.flags() & Qt.NoItemFlags
             items.append(item)
             # Frequency column cm-1
             items.append(QTableWidgetItem('{0:.4f}'.format(f) ) )
-            itemFlags.append( otherFlags )
+            itemFlags.append( freqFlags )
             # Intensity column Debye2/Angs2/amu
             items.append(QTableWidgetItem('{0:.4f}'.format(intensity) ) )
             itemFlags.append( otherFlags )
@@ -490,6 +495,13 @@ class SettingsTab(QWidget):
                 self.sigmas_cm1[row] = new_value
                 self.redraw_output_tw()
         elif col == 1:
+            # This is the frequency column
+            if item.text() == '':
+                self.frequencies_have_been_edited = False
+            else:
+                new_value = float(item.text())
+                self.frequencies_cm1[row] = new_value
+                self.frequencies_have_been_edited = True
             self.redraw_output_tw()
         else:
             self.redraw_output_tw()
