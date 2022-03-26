@@ -126,7 +126,7 @@ class CrystalOutputReader(GenericOutputReader):
             # print("Reading Normal Modes from output file",file=sys.stderr)
             # print("WARNING! WARNING! WARNING! WARNING! WARNING!",file=sys.stderr)
             # print("The numerical precision of the input is limited",file=sys.stderr)
-            # print("If possible proved a HESSFREQ.DAT from the calculation",file=sys.stderr)
+            # print("If possible provide a HESSFREQ.DAT from the calculation",file=sys.stderr)
             # print("WARNING! WARNING! WARNING! WARNING! WARNING!",file=sys.stderr)
             self._read_output_eigenvectors(line)
         return
@@ -221,7 +221,7 @@ class CrystalOutputReader(GenericOutputReader):
             # print("Reading Born Charge Tensor from output file",file=sys.stderr)
             # print("WARNING! WARNING! WARNING! WARNING! WARNING!",file=sys.stderr)
             # print("The numerical precision of the input is limited",file=sys.stderr)
-            # print("If possible proved a BORN.DAT from the calculation",file=sys.stderr)
+            # print("If possible provide a BORN.DAT from the calculation",file=sys.stderr)
             # print("WARNING! WARNING! WARNING! WARNING! WARNING!",file=sys.stderr)
             self._read_born_charges_from_output(line)
         return
