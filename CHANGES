@@ -1,5 +1,15 @@
+version 7.1.2
+  Fixed a bug in the display of bonds when the bond lay along the z-axis
+  Fixed bugs associated with selecting modes for inclusion in the permittivity
+  Fixed a bug which meant that the mode being displayed by the viewer tab as not correct
+  Added the ability to read files with a different extension to the default
+  Atom colours can now be saved in the script file
+  Element radii can be saved in the script file
+  The mode displayed by the viewer tab is now stored in the script file
+
 version 7.1.1
   Minor changes to include the splash image and altered the case of the vibanalysis command
+
 version 7.1.0
   Major changes to the testing system.  Reliance on make has been removed.
   A new command pdmake has been introduced.
