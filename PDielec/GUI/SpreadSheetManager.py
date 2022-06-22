@@ -17,6 +17,8 @@ class SpreadSheetManager():
                 'Crystal R_s',
                 'Crystal T_p',
                 'Crystal T_s',
+                'Crystal A_p',
+                'Crystal A_s',
                 'Real Crystal Permittivity',
                 'Imag Crystal Permittivity' ]
         self.worksheets = {}
