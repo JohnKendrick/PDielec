@@ -390,55 +390,6 @@ class SingleCrystalScenarioTab(ScenarioTab):
         debugger.print(self.settings['Legend'],'Finished:: calculate - number of frequencies',len(vs_cm1))
         return
 
-    def writeSpreadsheet(self):
-        debugger.print(self.settings['Legend'],'Start:: writeSpreadsheet')
-        if self.notebook.spreadsheet is None:
-            debugger.print(self.settings['Legend'],'Finished:: writeSpreadsheet')
-            return
-        sp = self.notebook.spreadsheet
-        sp.selectWorkSheet('Single Crystal')
-        sp.delete()
-        sp.writeNextRow(['Settings for the single crystal calculation of absorption and reflection'],col=1)
-        sp.writeNextRow([''],col=1)
-        sp.writeNextRow([ 'Single crystal mode',          self.settings['Mode'] ],col=1)
-        sp.writeNextRow([ 'Minimum frequency',            self.settings['Minimum frequency'] ],col=1)
-        sp.writeNextRow([ 'Maximum frequency',            self.settings['Maximum frequency'] ],col=1)
-        sp.writeNextRow([ 'Frequency increment',          self.settings['Frequency increment'] ],col=1)
-        sp.writeNextRow([ 'Surface definition (h)',       self.settings['Unique direction - h'] ],col=1)
-        sp.writeNextRow([ 'Surface definition (k)',       self.settings['Unique direction - k'] ],col=1)
-        sp.writeNextRow([ 'Surface definition (l)',       self.settings['Unique direction - l'] ],col=1)
-        sp.writeNextRow([ 'Azimuthal angle',              self.settings['Azimuthal angle'] ],col=1)
-        sp.writeNextRow([ 'Angle of incidence',           self.settings['Angle of incidence'] ],col=1)
-        sp.writeNextRow([ 'Superstrate dielectric',       self.settings['Superstrate dielectric'] ],col=1)
-        sp.writeNextRow([ 'Substrate dielectric',         self.settings['Substrate dielectric'] ],col=1)
-        sp.writeNextRow([ 'Film thickness(nm)',           self.settings['Film thickness'] ],col=1)
-        headings = ['R_p', 'R_s', 'T_p', 'T_s']
-        self.write_results(sp, 'Crystal R&T',     self.vs_cm1, [self.p_reflectance, self.s_reflectance, self.p_transmittance, self.s_transmittance], headings)
-        debugger.print(self.settings['Legend'],'Finished:: writeSpreadsheet')
-        return
-
-    def write_results(self, sp, name, vs, yss, headings):
-        """ 
-        sp        is the spreadsheet object
-        name      is the worksheet name used for writing
-        vs        an np.array of the frequencies
-        yss       a list of np.arrays of the reflections and transmittance ] 
-        headings  the heading names for the yss
-        """
-        debugger.print(self.settings['Legend'],'Start:: write_results')
-        sp.selectWorkSheet(name)
-        sp.delete()
-        headers = ['frequencies (cm-1)']
-        headers.extend(headings)
-        sp.writeNextRow(headers,row=0, col=1)
-        for iv,v in enumerate(vs):
-           output = [v]
-           for ys in yss:
-               output.append(ys[iv])
-           sp.writeNextRow(output, col=1,check=1)
-        debugger.print(self.settings['Legend'],'Finished:: write_results')
-        return
-
     def calculate_euler_angles(self):
         '''Calculate the Euler angles for the crystal to lab transformation'''
         debugger.print(self.settings['Legend'],'Start:: calculate_euler_angles')
