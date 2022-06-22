@@ -382,8 +382,8 @@ class SingleCrystalScenarioTab(ScenarioTab):
             self.s_reflectance.append(R[1]+R[3])
             self.p_transmittance.append(T[0])
             self.s_transmittance.append(T[1])
-            self.p_absorbtance.append(R[0]+R[2]+T[0])
-            self.s_absorbtance.append(R[1]+R[3]+T[1])
+            self.p_absorbtance.append(1.0 - R[0]+R[2]+T[0])
+            self.s_absorbtance.append(1.0 - R[1]+R[3]+T[1])
             self.epsilon.append(epsilon)
         self.calculationRequired = False
         QCoreApplication.processEvents()
