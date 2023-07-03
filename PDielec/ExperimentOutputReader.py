@@ -404,11 +404,11 @@ class ExperimentOutputReader(GenericOutputReader):
         # the is epsilon infinity
         od = []
         line = self._read_line()
-        od.append([np.complex(f) for f in line.split()[0:3]])
+        od.append([complex(f) for f in line.split()[0:3]])
         line = self._read_line()
-        od.append([np.complex(f) for f in line.split()[0:3]])
+        od.append([complex(f) for f in line.split()[0:3]])
         line = self._read_line()
-        od.append([np.complex(f) for f in line.split()[0:3]])
+        od.append([complex(f) for f in line.split()[0:3]])
         # If we have complex input return a complex list, otherwise return a real list
         odc = np.array(od,dtype=complex)
         odi = np.absolute(np.imag(odc))

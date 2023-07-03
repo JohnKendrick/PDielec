@@ -41,7 +41,7 @@ points_on_sphere = None
 
 def initialise_unit_tensor():
     '''Initialise a 3x3 tensor, the argument is a list of 3 real numbers for the diagonals, the returned tensor is an array'''
-    x = np.zeros((3, 3), dtype=np.float)
+    x = np.zeros((3, 3), dtype=float)
     x[0, 0] = 1.0
     x[1, 1] = 1.0
     x[2, 2] = 1.0
@@ -49,7 +49,7 @@ def initialise_unit_tensor():
 
 def initialise_complex_diagonal_tensor(reals):
     '''Initialise a 3x3 tensor, the argument is a list of 3 real numbers for the diagonals, the returned tensor is an array'''
-    x = np.zeros((3, 3), dtype=np.complex)
+    x = np.zeros((3, 3), dtype=complex)
     x[0, 0] = reals[0]
     x[1, 1] = reals[1]
     x[2, 2] = reals[2]
@@ -57,7 +57,7 @@ def initialise_complex_diagonal_tensor(reals):
 
 def initialise_diagonal_tensor(reals):
     '''Initialise a 3x3 tensor, the argument is a list of 3 real numbers for the diagonals, the returned tensor is an array'''
-    x = np.zeros((3, 3), dtype=np.float)
+    x = np.zeros((3, 3), dtype=float)
     x[0, 0] = reals[0]
     x[1, 1] = reals[1]
     x[2, 2] = reals[2]

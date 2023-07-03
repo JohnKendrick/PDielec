@@ -286,7 +286,7 @@ class DielectricFunction:
         for xyz,contribution in enumerate(self.parameters):
             for mode in contribution:
                 v_cm1, strength_cm1, sigma_cm1 = mode
-                eps[xyz,xyz] += strength_cm1 * strength_cm1 / np.complex((v_cm1*v_cm1 - f_cm1*f_cm1), -sigma_cm1*f_cm1)
+                eps[xyz,xyz] += strength_cm1 * strength_cm1 / complex((v_cm1*v_cm1 - f_cm1*f_cm1), -sigma_cm1*f_cm1)
         return eps + self.epsilon_infinity
 
     def _epsFromFpsq(self, f_cm1):
@@ -297,11 +297,11 @@ class DielectricFunction:
         eps = np.array(self.epsilon_infinity,dtype=complex)
         for xyz,contribution in enumerate(self.parameters):
             for omega_to, gamma_to, omega_lo, gamma_lo  in contribution:
-                contribution = (omega_lo**2 - f_cm1**2 - np.complex(0,gamma_lo)*f_cm1)/(omega_to**2 - f_cm1**2 - np.complex(0,gamma_to)*f_cm1)
+                contribution = (omega_lo**2 - f_cm1**2 - complex(0,gamma_lo)*f_cm1)/(omega_to**2 - f_cm1**2 - complex(0,gamma_to)*f_cm1)
                 # make sure the imaginary component is not negative!
                 real_contribution = np.real(contribution)
                 imag_contribution = max(-1.0E-12,np.imag(contribution))
-                eps[xyz,xyz] *= np.complex(real_contribution,imag_contribution)
+                eps[xyz,xyz] *= complex(real_contribution,imag_contribution)
         return eps 
 
 
@@ -311,13 +311,13 @@ class DielectricFunction:
         frequency(au), sigmas(au) are the plasma frequency and the width
         The output from this calculation is a complex dielectric tensor
         """
-        dielectric = np.zeros((3, 3), dtype=np.complex)
-        unit = identity(3,dtype=np.complex)
+        dielectric = np.zeros((3, 3), dtype=complex)
+        unit = identity(3,dtype=complex)
         # Avoid a divide by zero if f is small
         if f <= 1.0e-8:
             f = 1.0e-8
         # Assume that the drude contribution is isotropic
-        dielectric = dielectric - unit * frequency*frequency / np.complex(-f*f, -sigma*f)
+        dielectric = dielectric - unit * frequency*frequency / complex(-f*f, -sigma*f)
         return dielectric * (4.0*np.pi/volume)
 
 
@@ -333,7 +333,7 @@ class DielectricFunction:
             v = frequencies[mode]
             sigma = sigmas[mode]
             strength = strengths[mode].astype(complex)
-            dielectric = dielectric + strength / np.complex((v*v - f*f), -sigma*f)
+            dielectric = dielectric + strength / complex((v*v - f*f), -sigma*f)
         return dielectric * (4.0*np.pi/volume)
 
 
