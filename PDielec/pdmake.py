@@ -635,7 +635,10 @@ def runPyPi():
         return
     print('Creating PyPi distribution files')
     os.chdir(rootDirectory)
-    subprocess.run('rm -rf build dist PDielec.egg-info; python setup.py sdist bdist_wheel',shell=True)
+    # deprecated subprocess.run('rm -rf build dist PDielec.egg-info; python setup.py sdist bdist_wheel',shell=True)
+    # Following command needs an installed copy of setuptools
+    # pip install setuptools
+    subprocess.run('rm -rf build dist PDielec.egg-info; python -m build ',shell=True)
 
 def testForRootDirectory(path):
     test = os.path.join(path,'Examples')
