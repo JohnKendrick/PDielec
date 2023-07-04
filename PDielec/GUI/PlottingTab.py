@@ -373,13 +373,15 @@ class PlottingTab(QWidget):
         R_ss                        = []
         T_ps                        = []
         T_ss                        = []
+        A_ps                        = []
+        A_ss                        = []
         powder_legends              = []
         crystal_legends             = []
         # Deal with Scenarios 
         sp = self.notebook.spreadsheet
         sp.selectWorkSheet('Scenarios')
         sp.delete()
-        sp.writeNextRow(['A list of the scenarios used the calculation of the effective medium'],col=1)
+        sp.writeNextRow(['A list of the scenarios used:'],col=1)
         for index,scenario in enumerate(self.notebook.scenarios):
             if scenario.scenarioType == 'Powder':
                 direction = scenario.direction
@@ -415,6 +417,8 @@ class PlottingTab(QWidget):
                 R_ss.append( scenario.get_result(self.vs_cm1,self.plot_types[6] ) )
                 T_ps.append( scenario.get_result(self.vs_cm1,self.plot_types[7] ) )
                 T_ss.append( scenario.get_result(self.vs_cm1,self.plot_types[8] ) )
+                A_ps.append( scenario.get_result(self.vs_cm1,self.plot_types[9] ) )
+                A_ss.append( scenario.get_result(self.vs_cm1,self.plot_types[10] ) )
                 crystal_legends.append(scenario.settings['Legend'])
         # Single crystal Permittivity
         dielecv = self.notebook.settingsTab.get_crystal_permittivity(self.vs_cm1)
@@ -447,6 +451,8 @@ class PlottingTab(QWidget):
             self.write_crystal_results(sp, 'Crystal R_s', self.vs_cm1, crystal_legends, R_ss)
             self.write_crystal_results(sp, 'Crystal T_p', self.vs_cm1, crystal_legends, T_ps)
             self.write_crystal_results(sp, 'Crystal T_s', self.vs_cm1, crystal_legends, T_ss)
+            self.write_crystal_results(sp, 'Crystal A_p', self.vs_cm1, crystal_legends, A_ps)
+            self.write_crystal_results(sp, 'Crystal A_s', self.vs_cm1, crystal_legends, A_ss)
 
         if len(dielecv) > 0:
             self.write_eps_results(sp, self.vs_cm1, dielecv)

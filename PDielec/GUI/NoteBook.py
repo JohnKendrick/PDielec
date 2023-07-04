@@ -156,9 +156,6 @@ class NoteBook(QWidget):
                 if scenarioType == scenario.scenarioType:
                     last = scenario
             # end for
-            if last is None:
-                debugger.print('Finished:: addScenario unable to add scenario')
-                return
         # Create a new scenario
         if scenarioType == 'Powder':
             self.currentScenarioTab = PowderScenarioTab
