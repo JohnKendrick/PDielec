@@ -1,3 +1,6 @@
+version 7.2.1
+  Addressed problems after changes in numpy 
+  numpy.float and numpy.complex now replaced with float and complex
 version 7.1.2
   Fixed a bug in the display of bonds when the bond lay along the z-axis
   Fixed bugs associated with selecting modes for inclusion in the permittivity
