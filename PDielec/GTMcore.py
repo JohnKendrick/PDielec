@@ -454,8 +454,8 @@ class Layer:
         set at the beginning of the script.
         """
         Delta_loc = np.zeros((4,4), dtype=np.complex128)
-        transmode = np.zeros((2), dtype=np.int)
-        reflmode = np.zeros((2), dtype=np.int)
+        transmode = np.zeros((2), dtype=int)
+        reflmode = np.zeros((2), dtype=int)
 
         Delta_loc = self.Delta.copy()
         ## eigenvals // eigenvects as of eqn (11)
