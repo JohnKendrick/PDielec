@@ -1,3 +1,5 @@
+version 7.2.2
+  Addressed problems after changes in numpy.  Some np.int declarations were replaced with int
 version 7.2.1
   Addressed problems after changes in numpy 
   numpy.float and numpy.complex now replaced with float and complex

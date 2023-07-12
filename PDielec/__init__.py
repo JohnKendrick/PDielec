@@ -1,2 +1,2 @@
 # Created by setup.py, whilst creating a new PyPi release
-__version__ = "7.2.1"
+__version__ = "7.2.2"
