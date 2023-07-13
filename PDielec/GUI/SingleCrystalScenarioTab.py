@@ -5,6 +5,7 @@ import numpy as np
 import copy
 import PDielec.Calculator as Calculator
 from PyQt5.QtWidgets            import QPushButton, QWidget
+from PyQt5.QtWidgets            import QSpacerItem
 from PyQt5.QtWidgets            import QComboBox, QLabel, QLineEdit, QListWidget
 from PyQt5.QtWidgets            import QApplication
 from PyQt5.QtWidgets            import QVBoxLayout, QHBoxLayout, QFormLayout
@@ -179,6 +180,11 @@ class SingleCrystalScenarioTab(ScenarioTab):
         #
         hbox = self.add_scenario_buttons()
         form.addRow(hbox)
+        #
+        # Spacer item to soak up space
+        #
+        verticalSpacer = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
+        form.addItem(verticalSpacer)
         vbox.addLayout(form)
         # finalise the layout
         self.setLayout(vbox)
