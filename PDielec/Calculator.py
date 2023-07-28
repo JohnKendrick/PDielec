@@ -1382,13 +1382,13 @@ def calculate_energy_distribution(cell, frequencies, normal_modes, debug=False):
 
 
 def hodrick_prescott_filter(y,damping,lambda_value,niters):
-    #
-    # Apply a Hodrick Prescott filter to the spectrum in x, y
-    # y is the experimental absorption
-    # damping is used to damp the iterations
-    # lambda_value is the chosen smoothing factor
-    # Based on ideas in the thesis of Mayank Kaushik (University Adelaide)
-    #
+    """
+    Apply a Hodrick Prescott filter to the spectrum in x, y
+    y              is the experimental absorption
+    damping        is used to damp the iterations
+    lambda_value   is the chosen smoothing factor
+    Based on ideas in the thesis of Mayank Kaushik (University Adelaide)
+    """
     from scipy import sparse
     #
     # Create a sparse 3rd order difference operator
@@ -1414,17 +1414,17 @@ def hodrick_prescott_filter(y,damping,lambda_value,niters):
     return y-z
 
 def reflectance_atr(ns,n0,theta,atrSPolFraction):
-    #
-    # Calculate the atr s and p reflectance
-    # ns is the complex permittivity of the effective medium
-    # n0 is the permittivity of atr material
-    # theta is the angle of incidence in degrees
-    # atrSPolFraction is the fraction of S wave to be considered
-    #                 The amount of P wave is 1-atrSPolFraction
-    #
-    # rs is the s-wave Fresnel amplitude
-    # rp is the p-wave
-
+    """
+    Calculate the atr s and p reflectance
+    ns is the complex permittivity of the effective medium
+    n0 is the permittivity of atr material
+    theta is the angle of incidence in degrees
+    atrSPolFraction is the fraction of S wave to be considered
+                    The amount of P wave is 1-atrSPolFraction
+    
+    rs is the s-wave Fresnel amplitude
+    rp is the p-wave
+    """
     # Convert theta to an angle in radians
     theta = math.radians(theta)
     costheta = math.cos(theta)
@@ -1451,22 +1451,43 @@ def solve_single_crystal_equations(
         superstrateDepth              ,
         substrateDepth                ,
         crystalDepth                  ,
+        crystalIncoherence            ,
         mode                          ,
         theta                         ,
         phi                           ,
         psi                           ,
         angleOfIncidence              ,
         v ):
-    """ This is a parallel call to the single crystal equation solver,
-    system is a GTM system"""
-    # Create 3 layers, thickness is converted from microns to metres
-    superstrate      = GTM.Layer(thickness=superstrateDepth*1e-6,epsilon1=superstrateDielectricFunction)
-    substrate        = GTM.Layer(thickness=substrateDepth*1e-6,  epsilon1=substrateDielectricFunction)
-    crystal          = GTM.Layer(thickness=crystalDepth*1e-9,    epsilon=crystalPermittivityFunction)
+    """
+        This is a parallel call to the single crystal equation solver, system is a GTM system   
+        superstrateDielectricFunction is a dielectric function providing the superstrate dielectric
+        substrateDielectricFunction   is a dielectric function providing the substrate dielectric
+        crystalPermittivityFunction   is a dielectric function providing the crystal dielectric
+        superstrateDepth              the depth of the superstrate (m)
+        substrateDepth                the depth of the substrate (m)
+        crystalDepth                  the depth of the crystal film (m)
+        crystalIncoherence            a parameter between 0 and pi giving the amount of incoherence
+        mode                          'thick slab' indicates the substrate will be the crystal so semi-infinite
+                                      'coherent thin film' a standard GTM call with a single layer
+                                      'incoherent thin film' multiple GTM calls with random phase
+        theta                         the theta angle of the sla,
+        phi                           the angle of the slab
+        psi                           the psi angle of the slab
+        angleOfIncidence              the angle of incidence
+        v                             the frequency of the light in cm-1
+
+    """
+    # Create 3 layers, thickness is in metres
+    superstrate      = GTM.Layer(thickness=superstrateDepth,epsilon1=superstrateDielectricFunction)
+    substrate        = GTM.Layer(thickness=substrateDepth,  epsilon1=substrateDielectricFunction)
+    crystal          = GTM.Layer(thickness=crystalDepth,    epsilon=crystalPermittivityFunction)
     # Creat the system with the layers 
     if mode == 'Thick slab':
         system = GTM.System(substrate=crystal, superstrate=superstrate, layers=[])
     elif mode == 'Coherent thin film':
+        system = GTM.System(substrate=substrate, superstrate=superstrate, layers=[crystal])
+    elif mode == 'Incoherent thin film':
+        crystal.setIncoherence(crystalIncoherence)
         system = GTM.System(substrate=substrate, superstrate=superstrate, layers=[crystal])
     else:
         system = GTM.System(substrate=substrate, superstrate=superstrate, layers=[crystal])
