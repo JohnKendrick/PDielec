@@ -35,11 +35,14 @@ class SingleCrystalScenarioTab(ScenarioTab):
         self.settings['Angle of incidence'] = 0.0
         self.settings['Superstrate dielectric'] = 1.0
         self.settings['Substrate dielectric'] = 1.0
-        self.settings['Superstrate depth'] = 999.0
-        self.settings['Substrate depth'] = 999.0
+        self.settings['Superstrate depth'] = 99999.0
+        self.settings['Substrate depth'] = 99999.0
         self.settings['Film thickness'] = 100.0
+        self.settings['Thickness unit'] = 'nm'
         self.settings['Mode'] = 'Thick slab'
         self.settings['Frequency units'] = 'wavenumber'
+        self.settings['Incoherent samples'] = 20
+        self.settings['Percentage incoherence'] = 100.0
         self.p_reflectance = []
         self.s_reflectance = []
         self.p_transmittance = []
@@ -61,12 +64,12 @@ class SingleCrystalScenarioTab(ScenarioTab):
         # Chose mode of operation
         #
         self.mode_cb = QComboBox(self)
-        self.mode_cb.setToolTip('Set the mode of operation for this tab;\n Thick slab means that only reflections are significant (the film thickness has no effect and there are only two media; the incident and the crystal),\n Coherent thin film assumes there are three media; the incident, the crystal and the substrate')
-        self.mode_cb.addItems( ['Thick slab','Coherent thin film'] )
+        self.mode_cb.setToolTip('Set the mode of operation for this tab;\n Thick slab means that only reflections are significant (the film thickness has no effect and there are only two semi-infinite media; the incident and the crystal),\n Incoherent and coherent thin film assume there are three media; the incident, the crystal and the substrate. Incoherent film mode takes a lot longer than either of the other two.')
+        self.mode_cb.addItems( ['Thick slab','Coherent thin film','Incoherent thin film'] )
         self.settings['Mode'] = 'Thick slab'
         self.mode_cb.activated.connect(self.on_mode_cb_activated)
         label = QLabel('Single crystal mode', self)
-        label.setToolTip('Set the mode of operation for this tab;\n Thick slab means that only reflections are significant (the film thickness has no effect and there are only two media; the incident and the crystal),\n Coherent thin film assumes there are three media; the incident, the crystal and the substrate')
+        label.setToolTip('Set the mode of operation for this tab;\n Thick slab means that only reflections are significant (the film thickness has no effect and there are only two semi-infinite media; the incident and the crystal),\n Incoherent and coherent thin film assume there are three media; the incident, the crystal and the substrate.  Incoherent film mode takes a lot longer to run than the other two modes.')
         form.addRow(label, self.mode_cb)
         #
         # Define the slab surface in crystal coordinates
@@ -150,6 +153,16 @@ class SingleCrystalScenarioTab(ScenarioTab):
         superstrate_label.setToolTip('Define the permttivites of the incident medium and substrate')
         form.addRow(superstrate_label, hbox)
         #
+        # Set the units used for thickness
+        #
+        self.thickness_unit_cb = QComboBox(self)
+        self.thickness_unit_cb.setToolTip('Set the units to be used for thickness; either nm, um, mm or cm')
+        self.thickness_unit_cb.addItems( ['nm','um','mm','cm'] )
+        self.settings['Thickness unit'] = 'nm'
+        self.thickness_unit_cb.activated.connect(self.on_thickness_units_cb_activated)
+        label = QLabel('Set thickness units', self)
+        label.setToolTip('Set the units to be used for thickness: either nm, um, mm or cm')
+        form.addRow(label, self.thickness_unit_cb)
         #
         # Define the Film thickness
         #
@@ -161,9 +174,37 @@ class SingleCrystalScenarioTab(ScenarioTab):
         self.film_thickness_sb.valueChanged.connect(self.on_film_thickness_sb_changed)
         hbox = QHBoxLayout()
         hbox.addWidget(self.film_thickness_sb)
-        film_thickness_label = QLabel('Film thickness (nm)',self)
-        film_thickness_label.setToolTip('Define the depth of the thin film in nanometres.')
+        film_thickness_label = QLabel('Film thickness',self)
+        film_thickness_label.setToolTip('Define the depth of the thin crystal in the defines thickness units.')
         form.addRow(film_thickness_label, hbox)
+        #
+        # Define the number of amount of incoherence to be included
+        #
+        self.percentage_incoherence_sb = QSpinBox(self)
+        self.percentage_incoherence_sb.setToolTip('Define the percentage of incoherence to be modelled')
+        self.percentage_incoherence_sb.setRange(0,100)
+        self.percentage_incoherence_sb.setSingleStep(1)
+        self.percentage_incoherence_sb.setValue(self.settings['Percentage incoherence'])
+        self.percentage_incoherence_sb.valueChanged.connect(self.on_percentage_incoherence_sb_changed)
+        hbox = QHBoxLayout()
+        hbox.addWidget(self.percentage_incoherence_sb)
+        percentage_incoherence_label = QLabel('Percentage of incoherence',self)
+        percentage_incoherence_label.setToolTip('Define the percentage of incoherence to be modelled')
+        form.addRow(percentage_incoherence_label, hbox)
+        #
+        # Define the number of samples to be used in calculating the incoherent case
+        #
+        self.incoherent_samples_sb = QSpinBox(self)
+        self.incoherent_samples_sb.setToolTip('Define the number of samples to be used in the calculation of incoherent light.  A large number of samples will take a long time.')
+        self.incoherent_samples_sb.setRange(0,1000)
+        self.incoherent_samples_sb.setSingleStep(1)
+        self.incoherent_samples_sb.setValue(self.settings['Incoherent samples'])
+        self.incoherent_samples_sb.valueChanged.connect(self.on_incoherent_samples_sb_changed)
+        hbox = QHBoxLayout()
+        hbox.addWidget(self.incoherent_samples_sb)
+        incoherent_samples_label = QLabel('Film thickness',self)
+        incoherent_samples_label.setToolTip('Define the number of samples to be used in the calculation of incoherent light.  A large number of samples will take a long time.')
+        form.addRow(incoherent_samples_label, hbox)
         #
         # Add a legend option
         #
@@ -191,20 +232,32 @@ class SingleCrystalScenarioTab(ScenarioTab):
         QCoreApplication.processEvents()
         debugger.print('Finished:: initialiser')
 
+    def on_incoherent_samples_sb_changed(self,value):
+        debugger.print(self.settings['Legend'],'on_incoherent_samples_sb_changed', value)
+        self.refreshRequired = True
+        self.settings['Incoherent samples'] = value
+        return
+
+    def on_percentage_incoherence_sb_changed(self,value):
+        debugger.print(self.settings['Legend'],'on_percentage_incoherence_sb_changed', value)
+        self.refreshRequired = True
+        self.settings['Percentage incoherence'] = value
+        return
+
     def on_film_thickness_sb_changed(self,value):
-        debugger.print(self.settings['Legend'],'on_film_thickness_sb', value)
+        debugger.print(self.settings['Legend'],'on_film_thickness_sb_changed', value)
         self.refreshRequired = True
         self.settings['Film thickness'] = value
         return
 
     def on_superstrate_dielectric_sb_changed(self,value):
-        debugger.print(self.settings['Legend'],'on_superstrate_dielectric_sb', value)
+        debugger.print(self.settings['Legend'],'on_superstrate_dielectric_sb_changed', value)
         self.refreshRequired = True
         self.settings['Superstrate dielectric'] = value
         return
 
     def on_substrate_dielectric_sb_changed(self,value):
-        debugger.print(self.settings['Legend'],'on_substrate_dielectric_sb', value)
+        debugger.print(self.settings['Legend'],'on_substrate_dielectric_sb_changed', value)
         self.refreshRequired = True
         self.settings['Substrate dielectric'] = value
         return
@@ -269,6 +322,10 @@ class SingleCrystalScenarioTab(ScenarioTab):
         self.superstrate_dielectric_sb.setValue(self.settings['Superstrate dielectric'])
         self.substrate_dielectric_sb.setValue(self.settings['Substrate dielectric'])
         self.film_thickness_sb.setValue(self.settings['Film thickness'])
+        index = self.thickness_unit_cb.findText(self.settings['Thickness unit'], Qt.MatchFixedString)
+        self.thickness_unit_cb.setCurrentIndex(index)
+        self.on_percentage_incoherence_sb.setValue(self.settings['Percentage incoherence']):
+        self.on_incoherent_samples_sb.setValue(self.settings['Incoherent samples']):
         self.reader = self.notebook.mainTab.reader
         if self.reader is not None:
             self.cell = self.reader.unit_cells[-1]
@@ -283,6 +340,25 @@ class SingleCrystalScenarioTab(ScenarioTab):
         QCoreApplication.processEvents()
         self.refreshRequired = False
         debugger.print(self.settings['Legend'],'Finished:: refresh, force =', force)
+        return
+
+    def on_thickness_units_cb_activated(self, index):
+        debugger.print(self.settings['Legend'],'Start:: on_thickness_units_cb_activated')
+        if index == 0:
+            self.settings['Thickness unit'] = 'nm'
+        elif index == 1:
+            self.settings['Thickness unit'] = 'um'
+        elif index == 2:
+            self.settings['Thickness unit'] = 'mm'
+        elif index == 3:
+            self.settings['Thickness unit'] = 'cm'
+        else:
+            pass
+        self.refreshRequired = True
+        self.refresh()
+        self.refreshRequired = True
+        debugger.print(self.settings['Legend'],'Thickness unit changed to ', self.settings['Thickness unit'])
+        debugger.print(self.settings['Legend'],'Finished:: on_thickness_unit_cb_activated')
         return
 
     def on_mode_cb_activated(self, index):
@@ -300,12 +376,138 @@ class SingleCrystalScenarioTab(ScenarioTab):
         debugger.print(self.settings['Legend'],'Finished:: on_mode_cb_activated')
         return
 
+    def incoherent_calculator( self,
+                            superstrateDielectricFunction,
+                            substrateDielectricFunction,
+                            crystalPermittivityFunction,
+                            superstrateDepth,
+                            substrateDepth,
+                            crystalDepth,
+                            mode,
+                            theta,
+                            phi,
+                            psi,
+                            angleOfIncidence):
+        """ Calculates the incoherent component of light reflectance and transmission
+            by sampling the path length in the incident medium """
+        #
+        # Zero the arrays we will need
+        #
+        size = len(self.vs_cm1)
+        av_p_reflectance = np.zeros(size) 
+        av_s_reflectance = np.zeros(size) 
+        av_p_transmittance = np.zeros(size) 
+        av_s_transmittance = np.zeros(size) 
+        av_s_absorbtance = np.zeros(size) 
+        av_p_absorbtance = np.zeros(size) 
+        av_epsilon = np.zeros((size,3,3),dtype=np.complex128)
+        #
+        # Loop over the number of samples requred
+        #
+        for s in range(self.settings["Incoherent samples"]):
+            ( p_reflectance, 
+            s_reflectance, 
+            p_transmittance, 
+            s_transmittance, 
+            s_absorbtance, 
+            p_absorbtance, 
+            epsilon) = self.coherent_calculator(
+                                       superstrateDielectricFunction,
+                                       substrateDielectricFunction,
+                                       crystalPermittivityFunction,
+                                       superstrateDepth,
+                                       substrateDepth,
+                                       crystalDepth,
+                                       mode,
+                                       theta,
+                                       phi,
+                                       psi,
+                                       angleOfIncidence)
+            av_p_reflectance   += np.array(p_reflectance) / self.settings['Incoherent samples']
+            av_s_reflectance   += np.array(s_reflectance) / self.settings['Incoherent samples']
+            av_p_transmittance += np.array(p_transmittance) / self.settings['Incoherent samples']
+            av_s_transmittance += np.array(s_transmittance) / self.settings['Incoherent samples']
+            av_s_absorbtance   += np.array(p_absorbtance) / self.settings['Incoherent samples']
+            av_p_absorbtance   += np.array(s_absorbtance) / self.settings['Incoherent samples']
+            av_epsilon         += np.array(epsilon) / self.settings['Incoherent samples']
+        #
+        return (  av_p_reflectance.tolist(), av_s_reflectance.tolist(), av_p_transmittance.tolist(), av_s_transmittance.tolist(), av_p_absorbtance.tolist(), av_s_absorbtance.tolist(), av_epsilon.tolist() )
+
+
+    def coherent_calculator( self,
+                            superstrateDielectricFunction,
+                            substrateDielectricFunction,
+                            crystalPermittivityFunction,
+                            superstrateDepth,
+                            substrateDepth,
+                            crystalDepth,
+                            mode,
+                            theta,
+                            phi,
+                            psi,
+                            angleOfIncidence):
+        """ Calculates the coherent component of light reflectance and transmission """
+        debugger.print(self.settings['Legend'],'Entering the coherent_calculator function')
+        #
+        # Initialise the partial function to pass through to the pool
+        #
+        crystalIncoherence = self.settings["Percentage incoherence"] * np.pi
+        partial_function = partial(Calculator.solve_single_crystal_equations,
+                                       superstrateDielectricFunction,
+                                       substrateDielectricFunction,
+                                       crystalPermittivityFunction,
+                                       superstrateDepth,
+                                       substrateDepth,
+                                       crystalDepth,
+                                       crystalIncoherence,
+                                       mode,
+                                       theta,
+                                       phi,
+                                       psi,
+                                       angleOfIncidence)
+        results = []
+        # About to call
+        debugger.print(self.settings['Legend'],'About to calculate single crystal scenario using pool')
+        if self.notebook.pool is None:
+            self.notebook.startPool()
+        for result in self.notebook.pool.imap(partial_function, self.vs_cm1, chunksize=20):
+            self.notebook.progressbars_update()
+            results.append(result)
+        QCoreApplication.processEvents()
+        # Initialise result variables
+        vs_cm1= []
+        p_reflectance = []
+        s_reflectance = []
+        p_transmittance = []
+        s_transmittance = []
+        p_absorbtance = []
+        s_absorbtance = []
+        epsilon = []
+        debugger.print(self.settings['Legend'],'About to extract results for single crystal scenario')
+        for v,r,R,t,T,eps in results:
+            p_reflectance.append(R[0]+R[2])
+            s_reflectance.append(R[1]+R[3])
+            if self.settings['Mode'] = 'Thick slab':
+                p_absorbtance.append(1.0 - R[0]-R[2])
+                s_absorbtance.append(1.0 - R[1]-R[3])
+                p_transmittance.append(np.zeros_like(T[0]))
+                s_transmittance.append(np.zeros_like(T[1]))
+            else:
+                p_transmittance.append(T[0])
+                s_transmittance.append(T[1])
+                p_absorbtance.append(1.0 - R[0]-R[2]-T[0])
+                s_absorbtance.append(1.0 - R[1]-R[3]-T[1])
+            epsilon.append(eps)
+        debugger.print(self.settings['Legend'],'Finished the coherent_calculator function')
+        return ( p_reflectance, s_reflectance, p_transmittance, s_transmittance, p_absorbtance, s_absorbtance, epsilon )
+
     def calculate(self,vs_cm1):
         debugger.print(self.settings['Legend'],'Start:: calculate - number of frequencies',len(vs_cm1))
         if not self.calculationRequired:
             debugger(self.settings['Legend'],'Finished:: calculate aborted because calculationRequired false')
             return
         QCoreApplication.processEvents()
+        self.vs_cm1 = vs_cm1
         # Assemble the mainTab settings
         settings = self.notebook.mainTab.settings
         program = settings['Program']
@@ -338,60 +540,46 @@ class SingleCrystalScenarioTab(ScenarioTab):
         self.notebook.settingsTab.CrystalPermittivity.setUnits('hz')
         # Actually use the permittivity function in what follows
         crystalPermittivityFunction     = self.notebook.settingsTab.CrystalPermittivity.function()
-        # Create 3 layers, thickness is converted from microns to metres
-        superstrateDepth = self.settings['Superstrate depth']
-        substrateDepth   = self.settings['Substrate depth']
-        crystalDepth     = self.settings['Film thickness']
+        # Create 3 layers, thickness is converted to metres
+        if self.settings['Thickness unit'] == 'nm':
+            tom = 1.0E-9
+        elif self.settings['Thickness unit'] == 'um':
+            tom = 1.0E-6
+        elif self.settings['Thickness unit'] == 'mm':
+            tom = 1.0E-3
+        elif self.settings['Thickness unit'] == 'cm':
+            tom = 1.0E-2
+        superstrateDepth = tom * self.settings['Superstrate depth']
+        superstrateDepth = tom * self.settings['Superstrate depth']
+        substrateDepth   = tom * self.settings['Substrate depth']
+        crystalDepth     = tom * self.settings['Film thickness']
         # Determine the euler angles
         theta,phi,psi = self.calculate_euler_angles()
         # Set the angle of incidence in radians
         angle = self.settings['Angle of incidence']
         angleOfIncidence      = np.pi / 180.0 * angle
         mode = self.settings['Mode']
-        #
-        # Initialise the partial function to pass through to the pool
-        #
-        partial_function = partial(Calculator.solve_single_crystal_equations,
-                                       superstrateDielectricFunction,
-                                       substrateDielectricFunction,
-                                       crystalPermittivityFunction,
-                                       superstrateDepth,
-                                       substrateDepth,
-                                       crystalDepth,
-                                       mode,
-                                       theta,
-                                       phi,
-                                       psi,
-                                       angleOfIncidence)
-        results = []
-        # About to call
-        debugger.print(self.settings['Legend'],'About to calculate single crystal scenario using pool')
-        if self.notebook.pool is None:
-            self.notebook.startPool()
-        for result in self.notebook.pool.imap(partial_function, vs_cm1, chunksize=20):
-            self.notebook.progressbars_update()
-            results.append(result)
-        QCoreApplication.processEvents()
-        # Initialise plotting variables
-        self.vs_cm1= []
-        self.p_reflectance = []
-        self.s_reflectance = []
-        self.p_transmittance = []
-        self.s_transmittance = []
-        self.p_absorbtance = []
-        self.s_absorbtance = []
-        self.epsilon = []
-        debugger.print(self.settings['Legend'],'About to extract results for single crystal scenario')
-        for v,r,R,t,T,epsilon in results:
-            self.vs_cm1.append(v)
-            self.p_reflectance.append(R[0]+R[2])
-            self.s_reflectance.append(R[1]+R[3])
-            self.p_transmittance.append(T[0])
-            self.s_transmittance.append(T[1])
-            self.p_absorbtance.append(1.0 - R[0]-R[2]-T[0])
-            self.s_absorbtance.append(1.0 - R[1]-R[3]-T[1])
-            self.epsilon.append(epsilon)
-        self.calculationRequired = False
+        if mode == 'Thick slab' or mode == 'Coherent thin film':
+            calculator = self.coherent_calculator
+        else:
+            calculator = self.incoherent_calculator
+        ( self.p_reflectance, 
+        self.s_reflectance, 
+        self.p_transmittance, 
+        self.s_transmittance, 
+        self.s_absorbtance, 
+        self.p_absorbtance, 
+        self.epsilon) = calculator( superstrateDielectricFunction,
+                                    substrateDielectricFunction,
+                                    crystalPermittivityFunction,
+                                    superstrateDepth,
+                                    substrateDepth,
+                                    crystalDepth,
+                                    mode,
+                                    theta,
+                                    phi,
+                                    psi,
+                                    angleOfIncidence)
         QCoreApplication.processEvents()
         debugger.print(self.settings['Legend'],'Finished:: calculate - number of frequencies',len(vs_cm1))
         return
@@ -502,9 +690,21 @@ class SingleCrystalScenarioTab(ScenarioTab):
         debugger.print(self.settings['Legend'],'Start:: greyed_out')
         if self.settings['Mode'] == 'Thick slab':
             self.film_thickness_sb.setEnabled(False)
+            self.thickness_unit_cb.setEnabled(False)
             self.substrate_dielectric_sb.setEnabled(False)
-        else:
+            self.incoherent_samples_sb(False)
+            self.percentage_incoherence_sb(False)
+        elif self.settings['Mode'] == 'Coherent thin film':
             self.film_thickness_sb.setEnabled(True)
+            self.thickness_unit_cb.setEnabled(True)
             self.substrate_dielectric_sb.setEnabled(True)
+            self.incoherent_samples_sb(False)
+            self.percentage_incoherence_sb(False)
+        elif self.settings['Mode'] == 'Incoherent thin film':
+            self.film_thickness_sb.setEnabled(True)
+            self.thickness_unit_cb.setEnabled(True)
+            self.substrate_dielectric_sb.setEnabled(True)
+            self.incoherent_samples_sb(True)
+            self.percentage_incoherence_sb(True)
         debugger.print(self.settings['Legend'],'Finished:: greyed_out')
 
