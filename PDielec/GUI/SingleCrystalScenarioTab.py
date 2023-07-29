@@ -17,6 +17,7 @@ from PDielec.Constants          import wavenumber, PI, avogadro_si, angstrom, sp
 from PDielec.Utilities          import Debug
 from PDielec.GUI.ScenarioTab    import ScenarioTab
 from functools                  import partial
+from scipy                      import signal
 
 class SingleCrystalScenarioTab(ScenarioTab):
     def __init__(self, parent, debug=False ):
@@ -27,6 +28,7 @@ class SingleCrystalScenarioTab(ScenarioTab):
         self.refreshRequired = True
         self.calculationRequired = False
         self.scenarioType = 'Single crystal'
+        self.noCalculationsRequired = 1
         self.settings['Scenario type'] = 'Single crystal'
         self.settings['Unique direction - h'] = 0
         self.settings['Unique direction - k'] = 0
@@ -37,12 +39,12 @@ class SingleCrystalScenarioTab(ScenarioTab):
         self.settings['Substrate dielectric'] = 1.0
         self.settings['Superstrate depth'] = 99999.0
         self.settings['Substrate depth'] = 99999.0
-        self.settings['Film thickness'] = 100.0
+        self.settings['Film thickness'] = 1000
         self.settings['Thickness unit'] = 'nm'
         self.settings['Mode'] = 'Thick slab'
         self.settings['Frequency units'] = 'wavenumber'
         self.settings['Incoherent samples'] = 20
-        self.settings['Percentage incoherence'] = 100.0
+        self.settings['Percentage incoherence'] = 100
         self.p_reflectance = []
         self.s_reflectance = []
         self.p_transmittance = []
@@ -103,13 +105,13 @@ class SingleCrystalScenarioTab(ScenarioTab):
         # Define the rotation angle of the slab and the angle of incidence
         #
         self.azimuthal_angle_sb = QDoubleSpinBox(self)
-        self.azimuthal_angle_sb.setToolTip('Define the slab azimuthal angle')
+        self.azimuthal_angle_sb.setToolTip('Define the slab azimuthal angle (rotation of the crystal about the lab Z-axis).\nThe orientation of the crystal in the laboratory frame can be seen in the laboratory frame information below')
         self.azimuthal_angle_sb.setRange(-180,360)
         self.azimuthal_angle_sb.setSingleStep(10)
         self.azimuthal_angle_sb.setValue(self.settings['Azimuthal angle'])
         self.azimuthal_angle_sb.valueChanged.connect(self.on_azimuthal_angle_sb_changed)
         label = QLabel('Azimuthal angle',self)
-        label.setToolTip('Define the azimuthal angle (rotation of the crystal about the lab Z-axis)')
+        label.setToolTip('Define the slab azimuthal angle (rotation of the crystal about the lab Z-axis).\nThe orientation of the crystal in the laboratory frame can be seen in the laboratory frame information below')
         form.addRow(label, self.azimuthal_angle_sb)
         self.angle_of_incidence_sb = QDoubleSpinBox(self)
         self.angle_of_incidence_sb.setToolTip('Define the angle of incidence, (normal incidence is 0 degrees)')
@@ -196,13 +198,13 @@ class SingleCrystalScenarioTab(ScenarioTab):
         #
         self.incoherent_samples_sb = QSpinBox(self)
         self.incoherent_samples_sb.setToolTip('Define the number of samples to be used in the calculation of incoherent light.  A large number of samples will take a long time.')
-        self.incoherent_samples_sb.setRange(0,1000)
+        self.incoherent_samples_sb.setRange(0,10000)
         self.incoherent_samples_sb.setSingleStep(1)
         self.incoherent_samples_sb.setValue(self.settings['Incoherent samples'])
         self.incoherent_samples_sb.valueChanged.connect(self.on_incoherent_samples_sb_changed)
         hbox = QHBoxLayout()
         hbox.addWidget(self.incoherent_samples_sb)
-        incoherent_samples_label = QLabel('Film thickness',self)
+        incoherent_samples_label = QLabel('Number of incoherent samples',self)
         incoherent_samples_label.setToolTip('Define the number of samples to be used in the calculation of incoherent light.  A large number of samples will take a long time.')
         form.addRow(incoherent_samples_label, hbox)
         #
@@ -236,6 +238,7 @@ class SingleCrystalScenarioTab(ScenarioTab):
         debugger.print(self.settings['Legend'],'on_incoherent_samples_sb_changed', value)
         self.refreshRequired = True
         self.settings['Incoherent samples'] = value
+        self.noCalculationsRequired = value
         return
 
     def on_percentage_incoherence_sb_changed(self,value):
@@ -313,6 +316,10 @@ class SingleCrystalScenarioTab(ScenarioTab):
         # Now refresh values
         index = self.mode_cb.findText(self.settings['Mode'], Qt.MatchFixedString)
         self.mode_cb.setCurrentIndex(index)
+        if self.settings['Mode'] == 'Incoherent thin film':
+            self.noCalculationsRequired = self.settings['Incoherent samples']
+        else:
+            self.noCalculationsRequired = 1
         self.legend_le.setText(self.settings['Legend'])
         self.h_sb.setValue(self.settings['Unique direction - h'])
         self.k_sb.setValue(self.settings['Unique direction - k'])
@@ -324,8 +331,8 @@ class SingleCrystalScenarioTab(ScenarioTab):
         self.film_thickness_sb.setValue(self.settings['Film thickness'])
         index = self.thickness_unit_cb.findText(self.settings['Thickness unit'], Qt.MatchFixedString)
         self.thickness_unit_cb.setCurrentIndex(index)
-        self.on_percentage_incoherence_sb.setValue(self.settings['Percentage incoherence']):
-        self.on_incoherent_samples_sb.setValue(self.settings['Incoherent samples']):
+        self.percentage_incoherence_sb.setValue(self.settings['Percentage incoherence'])
+        self.incoherent_samples_sb.setValue(self.settings['Incoherent samples'])
         self.reader = self.notebook.mainTab.reader
         if self.reader is not None:
             self.cell = self.reader.unit_cells[-1]
@@ -365,10 +372,13 @@ class SingleCrystalScenarioTab(ScenarioTab):
         debugger.print(self.settings['Legend'],'Start:: on_mode_cb_activated')
         if index == 0:
             self.settings['Mode'] = 'Thick slab'
+            self.noCalculationsRequired = 1
         elif index == 1:
             self.settings['Mode'] = 'Coherent thin film'
+            self.noCalculationsRequired = 1
         else:
             self.settings['Mode'] = 'Incoherent thin film'
+            self.noCalculationsRequired = self.settings['Incoherent samples']
         self.refreshRequired = True
         self.refresh()
         self.refreshRequired = True
@@ -451,7 +461,7 @@ class SingleCrystalScenarioTab(ScenarioTab):
         #
         # Initialise the partial function to pass through to the pool
         #
-        crystalIncoherence = self.settings["Percentage incoherence"] * np.pi
+        crystalIncoherence = self.settings["Percentage incoherence"] * np.pi / 100.0 
         partial_function = partial(Calculator.solve_single_crystal_equations,
                                        superstrateDielectricFunction,
                                        substrateDielectricFunction,
@@ -487,7 +497,7 @@ class SingleCrystalScenarioTab(ScenarioTab):
         for v,r,R,t,T,eps in results:
             p_reflectance.append(R[0]+R[2])
             s_reflectance.append(R[1]+R[3])
-            if self.settings['Mode'] = 'Thick slab':
+            if self.settings['Mode'] == 'Thick slab':
                 p_absorbtance.append(1.0 - R[0]-R[2])
                 s_absorbtance.append(1.0 - R[1]-R[3])
                 p_transmittance.append(np.zeros_like(T[0]))
@@ -580,6 +590,35 @@ class SingleCrystalScenarioTab(ScenarioTab):
                                     phi,
                                     psi,
                                     angleOfIncidence)
+        #
+        # If this is an incoherent case then smooth the resulting spectra
+        # Warning smoothing is not applied to epsilon
+        #
+        if mode == 'Incoherent thin film':
+            p_reflectance   = signal.savgol_filter(np.array(self.p_reflectance), 191, 3 )
+            s_reflectance   = signal.savgol_filter(np.array(self.s_reflectance), 191, 3 )
+            p_transmittance = signal.savgol_filter(np.array(self.s_transmittance), 191, 3 )
+            s_transmittance = signal.savgol_filter(np.array(self.p_transmittance), 191, 3 )
+            s_absorbtance   = signal.savgol_filter(np.array(self.s_absorbtance), 191, 3 )
+            p_absorbtance   = signal.savgol_filter(np.array(self.p_absorbtance), 191, 3 )
+            p_reflectance[p_reflectance>1.0]     = 1.0
+            p_reflectance[p_reflectance<0.0]     = 0.0
+            s_reflectance[s_reflectance>1.0]     = 1.0
+            s_reflectance[s_reflectance<0.0]     = 0.0
+            p_transmittance[p_transmittance>1.0] = 1.0
+            p_transmittance[p_transmittance<0.0] = 0.0
+            s_transmittance[s_transmittance>1.0] = 1.0
+            s_transmittance[s_transmittance<0.0] = 0.0
+            p_absorbtance[p_absorbtance>1.0]     = 1.0
+            p_absorbtance[p_absorbtance<0.0]     = 0.0
+            s_absorbtance[s_absorbtance>1.0]     = 1.0
+            s_absorbtance[s_absorbtance<0.0]     = 0.0
+            self.p_reflectance   = p_reflectance.tolist()
+            self.s_reflectance   = s_reflectance.tolist()
+            self.p_transmittance = s_transmittance.tolist()
+            self.s_transmittance = p_transmittance.tolist()
+            self.s_absorbtance   = s_absorbtance.tolist()
+            self.p_absorbtance   = p_absorbtance.tolist()
         QCoreApplication.processEvents()
         debugger.print(self.settings['Legend'],'Finished:: calculate - number of frequencies',len(vs_cm1))
         return
@@ -635,9 +674,9 @@ class SingleCrystalScenarioTab(ScenarioTab):
         b = Calculator.euler_rotation(self.cell.lattice[1], theta, phi, psi)
         c = Calculator.euler_rotation(self.cell.lattice[2], theta, phi, psi)
         self.labframe_w.clear()
-        self.labframe_w.addItem('a-axis in lab frame: {: 3.5f}, {: 3.5f}, {: 3.5f}'.format(a[0],a[1],a[2]) )
-        self.labframe_w.addItem('b-axis in lab frame: {: 3.5f}, {: 3.5f}, {: 3.5f}'.format(b[0],b[1],b[2]) )
-        self.labframe_w.addItem('c-axis in lab frame: {: 3.5f}, {: 3.5f}, {: 3.5f}'.format(c[0],c[1],c[2]) )
+        self.labframe_w.addItem('crystal a-axis in lab frame: {: 3.5f}, {: 3.5f}, {: 3.5f}'.format(a[0],a[1],a[2]) )
+        self.labframe_w.addItem('crystal b-axis in lab frame: {: 3.5f}, {: 3.5f}, {: 3.5f}'.format(b[0],b[1],b[2]) )
+        self.labframe_w.addItem('crystal c-axis in lab frame: {: 3.5f}, {: 3.5f}, {: 3.5f}'.format(c[0],c[1],c[2]) )
         self.labframe_a = a
         self.labframe_b = b
         self.labframe_c = c
@@ -692,19 +731,19 @@ class SingleCrystalScenarioTab(ScenarioTab):
             self.film_thickness_sb.setEnabled(False)
             self.thickness_unit_cb.setEnabled(False)
             self.substrate_dielectric_sb.setEnabled(False)
-            self.incoherent_samples_sb(False)
-            self.percentage_incoherence_sb(False)
+            self.incoherent_samples_sb.setEnabled(False)
+            self.percentage_incoherence_sb.setEnabled(False)
         elif self.settings['Mode'] == 'Coherent thin film':
             self.film_thickness_sb.setEnabled(True)
             self.thickness_unit_cb.setEnabled(True)
             self.substrate_dielectric_sb.setEnabled(True)
-            self.incoherent_samples_sb(False)
-            self.percentage_incoherence_sb(False)
+            self.incoherent_samples_sb.setEnabled(False)
+            self.percentage_incoherence_sb.setEnabled(False)
         elif self.settings['Mode'] == 'Incoherent thin film':
             self.film_thickness_sb.setEnabled(True)
             self.thickness_unit_cb.setEnabled(True)
             self.substrate_dielectric_sb.setEnabled(True)
-            self.incoherent_samples_sb(True)
-            self.percentage_incoherence_sb(True)
+            self.incoherent_samples_sb.setEnabled(True)
+            self.percentage_incoherence_sb.setEnabled(True)
         debugger.print(self.settings['Legend'],'Finished:: greyed_out')
 
