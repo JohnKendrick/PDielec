@@ -738,6 +738,9 @@ class Layer:
         for ii in range(4):
             ## looks a lot like eqn (25). Why is K not Pi ?
             exponent = np.complex256(-1.0j*(2.0*np.pi*f*self.qs[ii]*self.thick)/c_const)
+            #JK Incorporation of incoherence see optics express, (2010) vol 18, page 24715
+            #JK "Transfer-matrix formalism for the calculation of optical response in multilayer systems:
+            #JK from coherent to incoherent interference" by Troparevsky et al
             exponent += 1.0j * self.beta * (-1.0 + 2*np.random.rand())
             self.Ki[ii,ii] = np.nan_to_num(np.exp(exponent))
             #  JK original line
