@@ -571,7 +571,7 @@ class PlottingTab(QWidget):
             xscale = 0.02998
         x = np.array(self.vs_cm1)
         self.subplot = self.figure.add_subplot(111)
-        n = len(self.notebook.scenarios)
+        n = self.get_number_of_calculations_required()
         if self.notebook.settingsTab.refreshRequired:
             n += 1
         self.notebook.progressbars_set_maximum(n*len(x))
@@ -595,6 +595,16 @@ class PlottingTab(QWidget):
             self.canvas.draw_idle()
         QApplication.restoreOverrideCursor()
         debugger.print('Finished:: plot')
+
+    def get_number_of_calculations_required(self):
+        """Return the total number of spectra that need to be calculated.  
+           Only spectra that need a refresh are included"""
+        debugger.print('Start:: get_number_of_calculations_required')
+        n = 0
+        for scenario in self.notebook.scenarios:
+            n += scenario.getNoCalculationsRequired()
+        debugger.print('get_number_of_calculations_required',n)
+        return n
 
     def greyed_out(self):
         """Handle items that should be greyed out if they are not needed"""
