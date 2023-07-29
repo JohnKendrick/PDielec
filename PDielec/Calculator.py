@@ -1561,5 +1561,3 @@ def set_affinity_on_worker():
     #JK Commented out for the time being
     #JK os.system('taskset -p 0xff %d > /dev/null' % os.getpid())
     return
-
-
