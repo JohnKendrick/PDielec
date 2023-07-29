@@ -25,6 +25,7 @@ class PowderScenarioTab(ScenarioTab):
         debugger.print('Start:: initialiser')
         self.scenarioType = 'Powder'
         self.settings['Scenario type'] = 'Powder'
+        self.noCalculationsRequired = 1
         matrix = 'ptfe'
         self.settings['Matrix'] = matrix
         self.settings['Matrix density'] = support_matrix_db[matrix][0]
