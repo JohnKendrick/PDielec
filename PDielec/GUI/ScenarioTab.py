@@ -66,7 +66,7 @@ class ScenarioTab(QWidget):
     def on_legend_le_changed(self,text):
         ''' Handle a change in the scenario legend'''
         debugger.print(self.settings['Legend'], 'on_legend_le_changed',text)
-        self.refreshRequired = True
+        # self.refreshRequired = True
         self.settings['Legend'] = text
         return
 
