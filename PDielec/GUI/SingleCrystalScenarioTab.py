@@ -45,6 +45,8 @@ class SingleCrystalScenarioTab(ScenarioTab):
         self.settings['Frequency units'] = 'wavenumber'
         self.settings['Incoherent samples'] = 20
         self.settings['Percentage incoherence'] = 100
+        self.settings['Filter kernel size'] = 91
+        self.settings['Filter polynomial size'] = 3
         self.p_reflectance = []
         self.s_reflectance = []
         self.p_transmittance = []
@@ -169,7 +171,7 @@ class SingleCrystalScenarioTab(ScenarioTab):
         # Define the Film thickness
         #
         self.film_thickness_sb = QDoubleSpinBox(self)
-        self.film_thickness_sb.setToolTip('Define the thin film thickness in nanometres')
+        self.film_thickness_sb.setToolTip('Define the thin film thickness in the defined thickness units')
         self.film_thickness_sb.setRange(0,100000)
         self.film_thickness_sb.setSingleStep(1)
         self.film_thickness_sb.setValue(self.settings['Film thickness'])
@@ -177,13 +179,13 @@ class SingleCrystalScenarioTab(ScenarioTab):
         hbox = QHBoxLayout()
         hbox.addWidget(self.film_thickness_sb)
         film_thickness_label = QLabel('Film thickness',self)
-        film_thickness_label.setToolTip('Define the depth of the thin crystal in the defines thickness units.')
+        film_thickness_label.setToolTip('Define the depth of the thin crystal in the defined thickness units.')
         form.addRow(film_thickness_label, hbox)
         #
         # Define the number of amount of incoherence to be included
         #
         self.percentage_incoherence_sb = QSpinBox(self)
-        self.percentage_incoherence_sb.setToolTip('Define the percentage of incoherence to be modelled')
+        self.percentage_incoherence_sb.setToolTip('Define the percentage of incoherence to be modelled\nA value of 100% gives fully incoherent light, a value less than that gives partial incoherence')
         self.percentage_incoherence_sb.setRange(0,100)
         self.percentage_incoherence_sb.setSingleStep(1)
         self.percentage_incoherence_sb.setValue(self.settings['Percentage incoherence'])
@@ -191,13 +193,13 @@ class SingleCrystalScenarioTab(ScenarioTab):
         hbox = QHBoxLayout()
         hbox.addWidget(self.percentage_incoherence_sb)
         percentage_incoherence_label = QLabel('Percentage of incoherence',self)
-        percentage_incoherence_label.setToolTip('Define the percentage of incoherence to be modelled')
+        percentage_incoherence_label.setToolTip('Define the percentage of incoherence to be modelled\nA value of 100% gives fully incoherent light, a value less than that gives partial incoherence')
         form.addRow(percentage_incoherence_label, hbox)
         #
         # Define the number of samples to be used in calculating the incoherent case
         #
         self.incoherent_samples_sb = QSpinBox(self)
-        self.incoherent_samples_sb.setToolTip('Define the number of samples to be used in the calculation of incoherent light.  A large number of samples will take a long time.')
+        self.incoherent_samples_sb.setToolTip('Define the number of samples to be used in the calculation of an incoherent spectrum.\nA large number of samples will take a long time but will give smoother results.')
         self.incoherent_samples_sb.setRange(0,10000)
         self.incoherent_samples_sb.setSingleStep(1)
         self.incoherent_samples_sb.setValue(self.settings['Incoherent samples'])
@@ -205,8 +207,36 @@ class SingleCrystalScenarioTab(ScenarioTab):
         hbox = QHBoxLayout()
         hbox.addWidget(self.incoherent_samples_sb)
         incoherent_samples_label = QLabel('Number of incoherent samples',self)
-        incoherent_samples_label.setToolTip('Define the number of samples to be used in the calculation of incoherent light.  A large number of samples will take a long time.')
+        incoherent_samples_label.setToolTip('Define the number of samples to be used in the calculation of an incoherent spectrum.\nA large number of samples will take a long time but will give smoother results.')
         form.addRow(incoherent_samples_label, hbox)
+        #
+        # Define the kernel size for the smoothing of incoherent spectra
+        #
+        self.incoherent_kernel_sb = QSpinBox(self)
+        self.incoherent_kernel_sb.setToolTip('Define the kernel size for the smoothing of incoherent spectra (must be an odd number)\nThe larger the number, the smoother the spectrum but beware of too much smoothing.')
+        self.incoherent_kernel_sb.setRange(1,1001)
+        self.incoherent_kernel_sb.setSingleStep(2)
+        self.incoherent_kernel_sb.setValue(self.settings['Filter kernel size'])
+        self.incoherent_kernel_sb.valueChanged.connect(self.on_incoherent_kernel_sb_changed)
+        hbox = QHBoxLayout()
+        hbox.addWidget(self.incoherent_kernel_sb)
+        incoherent_kernel_label = QLabel('Incoherent smoothing filter, kernel size',self)
+        incoherent_kernel_label.setToolTip('Define the kernel size for the smoothing of incoherent spectra (must be an odd number)\nThe larger the number, the smoother the spectrum but beware of too much smoothing. ')
+        form.addRow(incoherent_kernel_label, hbox)
+        #
+        # Define the polynomial degree for the smoothing function
+        #
+        self.incoherent_polynomial_sb = QSpinBox(self)
+        self.incoherent_polynomial_sb.setToolTip('Define the maximum degree of polynomial to be used in the smoothing filter')
+        self.incoherent_polynomial_sb.setRange(2,10)
+        self.incoherent_polynomial_sb.setSingleStep(1)
+        self.incoherent_polynomial_sb.setValue(self.settings['Filter polynomial size'])
+        self.incoherent_polynomial_sb.valueChanged.connect(self.on_incoherent_polynomial_sb_changed)
+        hbox = QHBoxLayout()
+        hbox.addWidget(self.incoherent_polynomial_sb)
+        incoherent_polynomial_label = QLabel('Incoherent smoothing filter, polynomial',self)
+        incoherent_polynomial_label.setToolTip('Define the maximum degree of polynomial to be used in the smoothing filter.')
+        form.addRow(incoherent_polynomial_label, hbox)
         #
         # Add a legend option
         #
@@ -233,6 +263,18 @@ class SingleCrystalScenarioTab(ScenarioTab):
         self.setLayout(vbox)
         QCoreApplication.processEvents()
         debugger.print('Finished:: initialiser')
+
+    def on_incoherent_kernel_sb_changed(self,value):
+        debugger.print(self.settings['Legend'],'on_incoherent_kernel_sb_changed', value)
+        self.refreshRequired = True
+        self.settings['Filter kernel size'] = value
+        return
+
+    def on_incoherent_polynomial_sb_changed(self,value):
+        debugger.print(self.settings['Legend'],'on_incoherent_polynomial_sb_changed', value)
+        self.refreshRequired = True
+        self.settings['Filter polynomial size'] = value
+        return
 
     def on_incoherent_samples_sb_changed(self,value):
         debugger.print(self.settings['Legend'],'on_incoherent_samples_sb_changed', value)
@@ -333,6 +375,8 @@ class SingleCrystalScenarioTab(ScenarioTab):
         self.thickness_unit_cb.setCurrentIndex(index)
         self.percentage_incoherence_sb.setValue(self.settings['Percentage incoherence'])
         self.incoherent_samples_sb.setValue(self.settings['Incoherent samples'])
+        self.incoherent_kernel_sb.setValue(self.settings['Filter kernel size'])
+        self.incoherent_polynomial_sb.setValue(self.settings['Filter polynomial size'])
         self.reader = self.notebook.mainTab.reader
         if self.reader is not None:
             self.cell = self.reader.unit_cells[-1]
@@ -531,6 +575,10 @@ class SingleCrystalScenarioTab(ScenarioTab):
         if filename == '':
             debugger.print(self.settings['Legend'],'Finished:: Calculate aborting - no file')
             return
+        # Make sure the filter kernel size is odd, if not make it so and update the GUI
+        if self.settings['Filter kernel size'] % 2 == 0:
+            self.settings['Filter kernel size'] += 1
+            self.incoherent_kernel_sb.setValue(self.settings['Filter kernel size'])
         # Assemble the settingsTab settings
         settings = self.notebook.settingsTab.settings
         sigmas_cm1 = self.notebook.settingsTab.sigmas_cm1
@@ -595,12 +643,14 @@ class SingleCrystalScenarioTab(ScenarioTab):
         # Warning smoothing is not applied to epsilon
         #
         if mode == 'Incoherent thin film':
-            p_reflectance   = signal.savgol_filter(np.array(self.p_reflectance), 191, 3 )
-            s_reflectance   = signal.savgol_filter(np.array(self.s_reflectance), 191, 3 )
-            p_transmittance = signal.savgol_filter(np.array(self.s_transmittance), 191, 3 )
-            s_transmittance = signal.savgol_filter(np.array(self.p_transmittance), 191, 3 )
-            s_absorbtance   = signal.savgol_filter(np.array(self.s_absorbtance), 191, 3 )
-            p_absorbtance   = signal.savgol_filter(np.array(self.p_absorbtance), 191, 3 )
+            k = self.settings['Filter kernel size']
+            p = self.settings['Filter polynomial size']
+            p_reflectance   = signal.savgol_filter(np.array(self.p_reflectance), k, p)
+            s_reflectance   = signal.savgol_filter(np.array(self.s_reflectance), k, p)
+            p_transmittance = signal.savgol_filter(np.array(self.s_transmittance), k, p)
+            s_transmittance = signal.savgol_filter(np.array(self.p_transmittance), k, p)
+            s_absorbtance   = signal.savgol_filter(np.array(self.s_absorbtance), k, p)
+            p_absorbtance   = signal.savgol_filter(np.array(self.p_absorbtance), k, p)
             p_reflectance[p_reflectance>1.0]     = 1.0
             p_reflectance[p_reflectance<0.0]     = 0.0
             s_reflectance[s_reflectance>1.0]     = 1.0
@@ -733,17 +783,23 @@ class SingleCrystalScenarioTab(ScenarioTab):
             self.substrate_dielectric_sb.setEnabled(False)
             self.incoherent_samples_sb.setEnabled(False)
             self.percentage_incoherence_sb.setEnabled(False)
+            self.incoherent_polynomial_sb.setEnabled(False)
+            self.incoherent_kernel_sb.setEnabled(False)
         elif self.settings['Mode'] == 'Coherent thin film':
             self.film_thickness_sb.setEnabled(True)
             self.thickness_unit_cb.setEnabled(True)
             self.substrate_dielectric_sb.setEnabled(True)
             self.incoherent_samples_sb.setEnabled(False)
             self.percentage_incoherence_sb.setEnabled(False)
+            self.incoherent_polynomial_sb.setEnabled(False)
+            self.incoherent_kernel_sb.setEnabled(False)
         elif self.settings['Mode'] == 'Incoherent thin film':
             self.film_thickness_sb.setEnabled(True)
             self.thickness_unit_cb.setEnabled(True)
             self.substrate_dielectric_sb.setEnabled(True)
             self.incoherent_samples_sb.setEnabled(True)
             self.percentage_incoherence_sb.setEnabled(True)
+            self.incoherent_polynomial_sb.setEnabled(True)
+            self.incoherent_kernel_sb.setEnabled(True)
         debugger.print(self.settings['Legend'],'Finished:: greyed_out')
 
