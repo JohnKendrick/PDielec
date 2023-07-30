@@ -671,8 +671,10 @@ The *SingleCrystal tab* enables the calculation of the optical behaviour of a si
 There are two coordinate systems to consider.  The first is the laboratory coordinate system (X,Y,Z).  
 It is assumed that the normal to the crystal surface is aligned with the Z-axis and that the incident radiation is in the X-Z plane.  P-polarised light is polarised parallel to this plane and S-polarised perpendicular (senkrecht) to this plane.  
 
-The other coordinate system of interest is that of the crystal.  The calculation of the permittivity tensor is performed in the crystal coordinate system (x,y,z).  The crystal place is defined by a set of Miller indices (hkl) and the normal to the crystal surface is rotated to align the laboratory Z-axis.  Finally in the laboratory frame the crystal may be rotated around the Z-axis by the azimuthal angle :math:`\phi`.
+The other coordinate system of interest is that of the crystal.  The calculation of the permittivity tensor is performed in the crystal coordinate system (x,y,z).  The crystal plane is defined by a set of Miller indices (hkl) and the normal to the crystal surface is rotated to align with the laboratory Z-axis.  Finally in the laboratory frame the crystal may be rotated around the Z-axis by the azimuthal angle :math:`\phi`.
+The precise definition of the azimuthal angle is somewhat arbitrary as it depends on the crystal unit-cell definition, but PDGui provides information of the details of the relationship between the crystal axes and the laboratory frame.
 The arrangement described is illustrated in the Figure below where :math:`E_s` and :math:`E_p` are the field directions of the S- and P polarised incident light respectively. 
+Information about the crystal coordinates relative to the laboratory frame is given in the GUI.
 
 
 .. _fig-lab-coords2:
@@ -685,7 +687,58 @@ The arrangement described is illustrated in the Figure below where :math:`E_s` a
 
 
 
-The calculation mode referred to as a "thick slab" assumes that there are only two media.  The media through which the incident light travels and the crystalline media by which it is reflected.  Transmission is not of interest in this case, as in the case of the a thick crystal it assumed that total absorption will take place and that there will be no internal reflection within the crystal.
-This mode is similar to a standard Fresnel calculation of reflectance but is appropriate for general permittivity tensors.
+The calculation mode referred to as a "thick slab" assumes that there are only two (sem-infinite) media.
+The media through which the incident light travels and the crystalline media by which it is reflected.
+Transmission is not of interest in this case, as in the case of the a thick crystal it assumed that total absorption will take place and that there will be no internal reflection within the crystal.
+This mode is similar to a standard Fresnel calculation of reflectance (R) but is appropriate for general permittivity tensors.
+As a result of the assumptions associated with a "thick slab" it is assumed that transmittance (T) through a semi-infinite dielectric with some absorption will be zero and therefore the absorptance (A) will be;
 
-The other modes of operation refer to a thin film and in these cases there are three media, an isotropic medium for the incident light, the crystal film (which now has a thickness) and the isotropic medium in which there is a detector.  In this case transmittance, reflectance and absorptance are all relevant.
+.. math::
+   :label: thick_absorptance
+
+   A = 1 - R
+
+
+The other modes of operation refer to a thin film and in these cases there are three media, an isotropic medium for the incident light (called the superstrate), the crystal film (which now has a thickness) and the isotropic medium in which there is a detector (called the substrate).  In this case transmittance, reflectance and absorptance are all relevant.   
+A schematic of the way pyGTM is used to calculate R, T and A is show in Figure :numref:`fig-definition-of-RTA`.
+The Figure shows the incoming light in the superstrate medium (usually vacuum or air).  At the interface between the superstrate and the absorbing dielectric medium there is a refractive index contrast and some light be reflected and some will be transmitted into the absorbing medium where it will lose some intensity before being either reflected back into the dielectric or being further transmitted into the final substrate (again usually air).
+The internally reflected component will meet the superstrate-dielectric boundary and again be split into a one component in the superstrate and one component still in the dielectric.
+Althought this is not shown in the diagram this process may continue with multiple reflections at each boundary.
+The absorptance in this case is given by;
+
+.. math::
+   :label: full_absorptance
+
+   A = 1 - R - T
+
+
+
+.. _fig-definition-of-RTA:
+
+.. figure:: ./_static/Figures/Definition_of_Transmittance.png
+   :scale: 90%
+
+   Layers used to calculate Transmittance, Reflectance and Absorptance
+
+
+In the case that the light is coherent (ie. of a single wavelength and in phase) then both the reflected and the transmitted light will have intereference as a result of the internally reflected components having a different phase from that of the directly reflected or transmitted waves.
+
+In order to model the case of incoherent light the pyGTM package has been modified to allow the inclusion of a random phase in the propogation matrix :math:`P_i` for the dielectric layer.
+This approach was suggested by Troparevsky et al. :cite:`Troparevsky2010`.
+Equation 7 in the paper by Passler et al :cite:`Passler2020` has been modified to include a random complex phase shift;
+
+.. math::
+   :label: phase-shift
+
+   i \beta rand()
+
+
+:math:`\beta` takes a value between 0 and :math:`\pi` and :math:`rand()` is a random, uniformly distributed number between -1 and +1.
+This modification introduces a loss of coherence and the final transmittance and reflectance have to averaged over a number of calculations.
+In their paper Troparevsky et al. :cite:`Troparevsky2010` suggest that a low value of :math:`\beta` can be used to represent partial incoherence due to surface roughness and imperfections, while value of :math:`\pi` can be used for true incoherent light.
+
+Since the 'thick slab' mode has no internal reflection in the dielectric, it will have no internal reflections and therefore no interference patterns in the calculated reflectance.  As the thickness of the dielectric increases, it is expected that results for reflectivity from an incoherent calculation should converge to the 'thick slab' model.
+
+Because of the random sampling in the incoherent case it has been found necessary to smooth the calculated spectra using a Savitzky-Golay filter.   The settings in PDGui typically start with a sample of 20 calculations and the filter smooths with a kernel size of 91 and a polynomial fit of 3.   However for a good spectrum a much larger number of samples is needed and the kernel size may need to be reduced for a spectra with a lot of absorption transitions.  It may be necessary too use a finer grid of points by decreasing the frequency increment in the plotting window.
+
+

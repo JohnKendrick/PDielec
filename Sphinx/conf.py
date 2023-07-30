@@ -69,7 +69,7 @@ extensions = [
     'sphinx.ext.mathjax',
     'sphinx.ext.githubpages',
     'sphinxcontrib.bibtex',
-    'cloud_sptheme.ext.table_styling',
+#    'cloud_sptheme.ext.table_styling',
 ]
 
 bibtex_bibfiles = ['pdielec.bib']

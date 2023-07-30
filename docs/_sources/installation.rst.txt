@@ -82,7 +82,7 @@ As part of the installation you will have to install a number of Python packages
    termcolor
    imageio
    imageio-ffmpeg
-   sklearn
+   scikit-learn
 
 GitHub - Windows
 ================
