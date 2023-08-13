@@ -1486,11 +1486,13 @@ def solve_single_crystal_equations(
         system = GTM.System(substrate=crystal, superstrate=superstrate, layers=[])
     elif mode == 'Coherent thin film':
         system = GTM.System(substrate=substrate, superstrate=superstrate, layers=[crystal])
+    elif mode == 'Partially incoherent thin film':
+        system = GTM.System(substrate=substrate, superstrate=superstrate, layers=[crystal])
     elif mode == 'Incoherent thin film':
-        crystal.setIncoherence(crystalIncoherence)
         system = GTM.System(substrate=substrate, superstrate=superstrate, layers=[crystal])
     else:
-        system = GTM.System(substrate=substrate, superstrate=superstrate, layers=[crystal])
+        print('Unkown mode in calculate_single_crystal')
+        exit()
     # Rotate the dielectric constants to the laboratory frame
     system.substrate.set_euler(theta, phi, psi)
     system.superstrate.set_euler(theta, phi, psi)
@@ -1502,7 +1504,10 @@ def solve_single_crystal_equations(
     freq = v * speed_light_si * 1e2
     system.initialize_sys(freq)
     zeta_sys = np.sin(angleOfIncidence)*np.sqrt(system.superstrate.epsilon[0,0])
-    Sys_Gamma = system.calculate_GammaStar(freq, zeta_sys)
+    if mode == 'Incoherent thin film':
+        Sys_Gamma = system.calculate_incoherent_GammaStar(freq, zeta_sys)
+    else:
+        Sys_Gamma = system.calculate_GammaStar(freq, zeta_sys)
     r, R, t, T = system.calculate_r_t(zeta_sys)
     if len(system.layers) > 0:
         epsilon = system.layers[0].epsilon
