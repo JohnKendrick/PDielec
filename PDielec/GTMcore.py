@@ -202,8 +202,6 @@ class Layer:
         Euler angle phi in rad
     psi : float
         Euler angle psi in rad
-    beta : float                   Added by JK
-         A parameter between 0 and pi giving the degree of incoherence
 
     Notes
     -----
@@ -214,10 +212,9 @@ class Layer:
     def __init__(self, thickness=1.0e-6, epsilon1=None, epsilon2=None, epsilon3=None,  epsilon=None,
                                          theta=0, phi=0, psi=0):
 
-        self.beta = 0.0                   # By default a coherent layer
+        ## epsilon is a 3x3 matrix of permittivity at a given frequency
         self.epsilon = np.identity(3, dtype=np.complex256)
         self.mu = 1.0 ### mu=1 for now
-        ## epsilon is a 3x3 matrix of permittivity at a given frequency
 
         ### initialization of all important quantities
         self.M = np.zeros((6, 6), dtype=np.complex256) ## constitutive relations
@@ -334,8 +331,6 @@ class Layer:
             epsilon_xstal[0,0] = self.epsilon1_f(f)
             epsilon_xstal[1,1] = self.epsilon2_f(f)
             epsilon_xstal[2,2] = self.epsilon3_f(f)
-            #jk print('jk epsilon1_f',self.epsilon1_f(f))
-            #jk print('jk epsilon_xstal1',epsilon_xstal)
         else:
             epsilon_xstal = self.epsilon_tensor_function(f)
         # self.epsilon = np.matmul(self.euler_inverse, np.matmul(epsilon_xstal,self.euler))
@@ -515,7 +510,7 @@ class Layer:
                 else:
                     reflmode[kr] = km
                     kr = kr +1
-        ## Calculate the Poyting vector for each Psi using (16-18)
+        ## Calculate the Poynting vector for each Psi using (16-18)
         for km in range(0,4):
             Ex = psiunsorted[0,km]
             Ey = psiunsorted[2,km]
@@ -538,27 +533,26 @@ class Layer:
         ## media to sort the modes       
         
         ## first calculate Cp for transmitted waves
-        # JK modification to stop divide by zero (added 1.0E-16 to denominator)
-        Cp_t1 = np.abs(self.Py[0,transmode[0]])**2/(np.abs(self.Py[0,transmode[0]])**2+np.abs(self.Py[1,transmode[0]])**2 + 1.0E-16)
-        Cp_t2 = np.abs(self.Py[0,transmode[1]])**2/(np.abs(self.Py[0,transmode[1]])**2+np.abs(self.Py[1,transmode[1]])**2 + 1.0E-16)
+        Cp_t1 = np.abs(self.Py[0,transmode[0]])**2/(np.abs(self.Py[0,transmode[0]])**2+np.abs(self.Py[1,transmode[0]])**2)
+        Cp_t2 = np.abs(self.Py[0,transmode[1]])**2/(np.abs(self.Py[0,transmode[1]])**2+np.abs(self.Py[1,transmode[1]])**2)
 
         if np.abs(Cp_t1-Cp_t2) > qsd_thr: ## birefringence
             self._useBerreman = True ## sets _useBerreman fo the calculation of gamma matrix below
             if Cp_t2>Cp_t1:
                 transmode = np.flip(transmode,0) ## flip the two values
             ## then calculate for reflected waves if necessary
-            Cp_r1 = np.abs(self.Py[0,reflmode[1]])**2/(np.abs(self.Py[0,reflmode[1]])**2+np.abs(self.Py[1,reflmode[1]])**2 + 1.0E-16)
-            Cp_r2 = np.abs(self.Py[0,reflmode[0]])**2/(np.abs(self.Py[0,reflmode[0]])**2+np.abs(self.Py[1,reflmode[0]])**2 + 1.0E-16)
+            Cp_r1 = np.abs(self.Py[0,reflmode[1]])**2/(np.abs(self.Py[0,reflmode[1]])**2+np.abs(self.Py[1,reflmode[1]])**2)
+            Cp_r2 = np.abs(self.Py[0,reflmode[0]])**2/(np.abs(self.Py[0,reflmode[0]])**2+np.abs(self.Py[1,reflmode[0]])**2)
             if Cp_r1>Cp_r2:
                 reflmode = np.flip(reflmode,0) ## flip the two values
 
         else:     ### No birefringence, use the Electric field s-pol/p-pol
-            Cp_te1 = np.abs(psiunsorted[0,transmode[1]])**2/(np.abs(psiunsorted[0,transmode[1]])**2+np.abs(psiunsorted[2,transmode[1]])**2 + 1.0E-16)
-            Cp_te2 = np.abs(psiunsorted[0,transmode[0]])**2/(np.abs(psiunsorted[0,transmode[0]])**2+np.abs(psiunsorted[2,transmode[0]])**2 + 1.0E-16)
+            Cp_te1 = np.abs(psiunsorted[0,transmode[1]])**2/(np.abs(psiunsorted[0,transmode[1]])**2+np.abs(psiunsorted[2,transmode[1]])**2)
+            Cp_te2 = np.abs(psiunsorted[0,transmode[0]])**2/(np.abs(psiunsorted[0,transmode[0]])**2+np.abs(psiunsorted[2,transmode[0]])**2)
             if Cp_te1>Cp_te2:
                 transmode = np.flip(transmode,0) ## flip the two values
-            Cp_re1 = np.abs(psiunsorted[0,reflmode[1]])**2/(np.abs(psiunsorted[0,reflmode[1]])**2+np.abs(psiunsorted[2,reflmode[1]])**2 + 1.0E-16)
-            Cp_re2 = np.abs(psiunsorted[0,reflmode[0]])**2/(np.abs(psiunsorted[0,reflmode[0]])**2+np.abs(psiunsorted[2,reflmode[0]])**2 + 1.0E-16)
+            Cp_re1 = np.abs(psiunsorted[0,reflmode[1]])**2/(np.abs(psiunsorted[0,reflmode[1]])**2+np.abs(psiunsorted[2,reflmode[1]])**2)
+            Cp_re2 = np.abs(psiunsorted[0,reflmode[0]])**2/(np.abs(psiunsorted[0,reflmode[0]])**2+np.abs(psiunsorted[2,reflmode[0]])**2)
             if Cp_re1>Cp_re2:
                 reflmode = np.flip(reflmode,0) ## flip the two values
 
@@ -697,22 +691,6 @@ class Layer:
             self.gamma = self.Berreman
         
         
-    def setIncoherence(self, beta):
-        """
-        Set the incoherence parameter beta for the layer
-        beta has a value between 0.0 (coherent) and pi (fully incoherent)
-
-        Parameters
-        ----------
-        beta : float
-
-        Returns
-        -------
-        None
-
-        """
-        self.beta = beta
-        
     def calculate_transfer_matrix(self, f, zeta):
         """
         Compute the transfer matrix of the whole layer :math:`T_i=A_iP_iA_i^{-1}`
@@ -738,10 +716,6 @@ class Layer:
         for ii in range(4):
             ## looks a lot like eqn (25). Why is K not Pi ?
             exponent = np.complex256(-1.0j*(2.0*np.pi*f*self.qs[ii]*self.thick)/c_const)
-            #JK Incorporation of incoherence see optics express, (2010) vol 18, page 24715
-            #JK "Transfer-matrix formalism for the calculation of optical response in multilayer systems:
-            #JK from coherent to incoherent interference" by Troparevsky et al
-            exponent += 1.0j * self.beta * (-1.0 + 2*np.random.rand())
             self.Ki[ii,ii] = np.nan_to_num(np.exp(exponent))
             #  JK original line
             # self.Ki[ii,ii] = np.exp(-1.0j*(2.0*np.pi*f*self.qs[ii]*self.thick)/c_const)
@@ -749,7 +723,6 @@ class Layer:
         Aim1 = exact_inv(self.Ai.copy())
         ## eqn (26)
         self.Ti = np.matmul(self.Ai,np.matmul(self.Ki,Aim1))
-
 
     def update(self, f, zeta):
         """Shortcut to recalculate all layer properties.
@@ -967,6 +940,53 @@ class System:
         for li in self.layers:
             li.calculate_epsilon(f)
 
+    def calculate_incoherent_GammaStar(self,f, zeta_sys):
+        """
+        Calculate the whole system's transfer matrix.
+        But instead of using amplitudes, use intensities
+        This routine is specific for a single layer system with sub and superstrate
+
+        Parameters
+        -----------
+        f : float
+            Frequency (Hz)
+        zeta_sys : complex
+            In-plane wavevector kx/k0
+
+        Returns
+        -------
+        GammaStar: 4x4 complex matrix
+                   System transfer matrix :math:`\Gamma^{*}`
+        """
+        if len(self.layers) > 1:
+            print('Error in calculate_incoherent_GammaStar')
+            print('The number of layers must be 1')
+
+        nan = np.nan_to_num
+
+        Ai_super, Ki_super, Ai_inv_super, T_super = self.superstrate.update(f, zeta_sys)
+        Ai_sub, Ki_sub, Ai_inv_sub, T_sub = self.substrate.update(f, zeta_sys)
+
+        Delta1234 = np.array([[1,0,0,0],
+                              [0,0,1,0],
+                              [0,1,0,0],
+                              [0,0,0,1]],dtype=np.complex256)
+
+
+        Gamma = np.zeros(4, dtype=np.complex256)
+        GammaStar = np.zeros(4, dtype=np.complex256)
+        Ai, Ki, Ai_inv, Ti = self.layers[0].update(f, zeta_sys)
+        Tloc1 = nan(np.absolute(nan(np.matmul(Ai_inv_super,Ai)))**2)
+        Tloc2 = nan(np.absolute(Ki)**2)
+        Tloc3 = nan(np.absolute(nan(np.matmul(Ai_inv,Ai_sub)))**2)
+        Gamma = nan(np.matmul(Tloc1,nan(np.matmul(Tloc2,Tloc3))))
+        Gamma = nan(np.sqrt(Gamma))
+        GammaStar = np.matmul(exact_inv(Delta1234),np.matmul(Gamma,Delta1234))
+
+        self.Gamma = Gamma.copy()
+        self.GammaStar = GammaStar.copy()
+        return self.GammaStar.copy()
+
 
     def calculate_GammaStar(self,f, zeta_sys):
         """
@@ -986,10 +1006,6 @@ class System:
         """
         Ai_super, Ki_super, Ai_inv_super, T_super = self.superstrate.update(f, zeta_sys)
         Ai_sub, Ki_sub, Ai_inv_sub, T_sub = self.substrate.update(f, zeta_sys)
-        # jk print('------')
-        # jk print('F     ',f,zeta_sys)
-        # jk print('Ai_sub',Ai_sub)
-        # jk print('Ai_sup',Ai_inv_sub)
 
         Delta1234 = np.array([[1,0,0,0],
                               [0,0,1,0],
@@ -1007,7 +1023,6 @@ class System:
 
         Gamma = np.matmul(Ai_inv_super,np.matmul(Tloc,Ai_sub))
         GammaStar = np.matmul(exact_inv(Delta1234),np.matmul(Gamma,Delta1234))
-        # jk print('GammaStar',GammaStar)
 
         self.Gamma = Gamma.copy()
         self.GammaStar = GammaStar.copy()
@@ -1086,7 +1101,7 @@ class System:
         t_out = np.array([tpp, tps, tsp, tss],dtype=np.complex256)
         #t_field = np.array([tpp, tps, tsp, tss])
 
-        #### Intensity transmission requires Poyting vector analysis
+        #### Intensity transmission requires Poynting vector analysis
         ## N.B: could be done mode-dependentely later
         ## start with the superstrate
         ## Incident fields are either p or s polarized
@@ -1097,11 +1112,11 @@ class System:
         ksup = ksup/c_const     ## omega simplifies in the H field formula
         Einc_pin = self.superstrate.gamma[0,:] ## p-pol incident electric field
         Einc_sin = self.superstrate.gamma[1,:] ## s-pol incident electric field
-        ## Poyting vector in superstrate (incident, p-in and s-in)
+        ## Poynting vector in superstrate (incident, p-in and s-in)
         Sinc_pin = 0.5*np.real(np.cross(Einc_pin,np.conj(np.cross(ksup[0,:],Einc_pin))))
         Sinc_sin = 0.5*np.real(np.cross(Einc_sin,np.conj(np.cross(ksup[1,:],Einc_sin))))
 
-        ### Substrate Poyting vector
+        ### Substrate Poynting vector
         ## Outgoing fields (eqn 17)
         Eout_pin = t_out[0]*self.substrate.gamma[0,:]+t_out[1]*self.substrate.gamma[1,:] #p-in, p or s out
         Eout_sin = t_out[2]*self.substrate.gamma[0,:]+t_out[3]*self.substrate.gamma[1,:] #s-in, p or s out
@@ -1112,7 +1127,7 @@ class System:
         ksub = ksub/c_const ## omega simplifies in the H field formula
 
         ###########################
-        ## outgoing Poyting vectors, 2 formulations
+        ## outgoing Poynting vectors, 2 formulations
         Sout_pin = 0.5*np.real(np.cross(Eout_pin,np.conj(np.cross(ksub[0,:],Eout_pin))))
         Sout_sin = 0.5*np.real(np.cross(Eout_sin,np.conj(np.cross(ksub[1,:],Eout_sin))))
         ### Intensity transmission coefficients are only the z-component of S !
