@@ -1,3 +1,11 @@
+version 7.3.0
+  Added incoherent light to the single crystal simulation
+  Added both partially incoherent thin film mode and incoherent thin film mode
+  Included smoothing for the partially incoherent case
+  Modified the handling of changing the legend in a scenario so a recalculation is not needed
+  Updated the documentation to reflect the new options for incoherent light
+  Added a range of units to handle crystal thickness
+  Changed the complex matrices in pyGTM to complex.256
 version 7.2.2
   Addressed problems after changes in numpy.  Some np.int declarations were replaced with int
 version 7.2.1
