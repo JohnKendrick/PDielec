@@ -185,12 +185,14 @@ class App(QMainWindow):
         # If a script is used there are no prompts for overwriting files etc.
         self.notebook.overwriting = True
         with open(scriptname,'r') as fd:
-            lines = fd.readlines()
-            line_no = 0
-            for line in lines:
-                line_no += 1
-                debugger.print('line: ',line_no,line)
-                exec(line)
+            #lines = fd.readlines()
+            script = fd.read()
+            exec(script)
+            #line_no = 0
+            #for line in lines:
+            #    line_no += 1
+            #    debugger.print('line: ',line_no,line)
+            #    exec(line)
         debugger.print('readScript finished reading script')
         self.notebook.scripting = False
         debugger.print('readScript notebook scripting set to False')
