@@ -10,6 +10,7 @@
    :description: PDielec package for the calculation of infrared and terahertz absorption from QM calculations
    :keywords: Quantum Mechanics, Effective Field Theory, Maxwell, Garnett, Mie, Infrared, Terahertz, Castep, Abinit, VASP, GULP. QE
 
+.. _Single-Crystal-Theory:
 
 ================================
 Theory for Single Crystal Optics
@@ -21,7 +22,7 @@ A brief summary of the theory underlying the transfer matrix method is given to 
 
 In PDGui the number of media to consider is only three, a superstrate (usually air) through which the incident light passes, a dielectric medium which has a frequency dependent complex permittivity and optionally a substrate (which is also usually air).  
 The media are indexed by 0,1 and 2 for the superstrate, dielectric and substrate respectively.
-A schematic illustring this is shown in :numref:`fig-definition-of-RTA`.
+A schematic illustrating this is shown in :numref:`fig-definition-of-RTA`.
 To aid understanding of the input and output and the limitations of the methods used, a brief summary of the transfer matrix method is given here, specific to its application in PDGui.
 There are 4 different modes of operation of the matrix transfer method in PDGui and these are described below under the headings 'coherent thin film', 'incoherent thin film', 'partially incoherent thin film' and 'thick slab'
 
@@ -37,7 +38,7 @@ Coherent thin film
 ------------------
 
 At an interface the tangential (in-plane) electric and magnetic fields (given by a vector :math:`\fieldbf{F_i}`) have to match in both media.  
-This requires that the 4 amplitudes (vector :math:`\fieldbf{A_i}`) of the radiation, forward and backward, s and p polarised, in medium :math:`i` are related through a 4x4 dynamical matrix :math:`\tensorbf{D_i}`.
+This requires that the 4 amplitudes (vector :math:`\fieldbf{A_i}`) of the electric and magnetic fields, forward and backward, s and p polarised, in medium :math:`i` are related through a 4x4 dynamical matrix :math:`\tensorbf{D_i}`.
 
 .. math::
    :label: eq-dynamical-matrix
@@ -49,9 +50,9 @@ Requiring that the in-plane fields match in both media at an interface gives;
 .. math::
    :label: eq-field-matching
     
-   \fieldbf{F}_{i-1}                    = \fieldbf{F}_i   \newline
-   \tensorbf{D}_{i-1} \fieldbf{A}_{i-1} = \tensorbf{D}_i \fieldbf{A}_i \newline
-   \fieldbf{A}_{i-1}                    = \tensorbf{D}_{i-1}^{-1} \tensorbf{D}_i \fieldbf{A}_i
+   \fieldbf{F}_{i-1}                    &= \fieldbf{F}_i                \\
+   \tensorbf{D}_{i-1} \fieldbf{A}_{i-1} &= \tensorbf{D}_i \fieldbf{A}_i \\
+   \fieldbf{A}_{i-1}                    &= \tensorbf{D}_{i-1}^{-1} \tensorbf{D}_i \fieldbf{A}_i
 
 Within a given medium the mode amplitudes will change according to the propagation through the medium described by an diagonal exponential matrix :math:`\tensorbf{P}_i`.  Thus the amplitudes on the left side of a layer are related to those on the right side by;
       
@@ -123,6 +124,26 @@ For all other modes, the absorptance is defined as below;
    :label: full_absorptance
 
    A = 1 - R - T
+
+Comparison of computational approaches
+--------------------------------------
+
+:numref:`fig-mode-comparison` shows a comparison of the approaches discussed above to MgO.
+The DFT calculations were performed by Castep.  The incident angle is 45\ :superscript:`o` and the film thickness is 1\ |micron|.
+The 'Thick slab' mode can be regarded as a limiting case as the simulated slab becomes thicker, the calculations tend to follow the 'thick slab' curve more closely.
+The 'Coherent thin film' curve shows large amplitude oscillations before and after the restrahlung region of absorption.  These are damped by including partial incoherence but are not completely removed.  
+The partial incoherence settings in this case were; 100 samples and up to 10% deviation in incident angle, thickness and crystal orientation, with no smoothing.
+The incoherent curve shows no oscillations and follows the thick mode curve near the restrahlung region.
+It is common to see numerical problems in regions where the extinction coefficient is high and the dielectric is thick.  The numnerical problesm manifest themselves with sudden spikes in reflectance and indicate that only thinner samples should be considered.
+
+
+
+.. _fig-mode-comparison:
+.. figure:: ./_static/Figures/single_crystal_mode_comparison.png
+   :scale: 90%
+
+   Comparison of methods
+
 
 
 Crystal & Laboratory Coordinate Frames

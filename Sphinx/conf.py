@@ -24,6 +24,7 @@ copyright = '2018, John Kendrick and Andrew Burnett'
 author = 'John Kendrick and Andrew Burnett'
 
 numfig = True
+numfig_secnum_depth = 1
 
 # The short X.Y version
 version = '4.0'
@@ -46,18 +47,20 @@ preamble = r'''
 \usepackage{parskip}
 \usepackage{amsmath}
 \newcommand{\water}{H_{2}O}
-\newcommand{\tensor}[1]{\bar{\bar{#1}}}
 \newcommand{\tensorbs}[1]{\bar{\bar{\bm{#1}}}}
 \newcommand{\tensorbf}[1]{\bar{\bar{\bm{#1}}}}
+\newcommand{\tensor}[1]{\bar{\bar{\bm{#1}}}}
 \newcommand{\fieldbf}[1]{\bar{\bm{#1}}}
+\newcommand{\field}[1]{\bar{\bm{#1}}}
 '''
 
 preamble_maths = r'''
 \newcommand{\water}{H_{2}O}
-\newcommand{\tensor}[1]{\bar{\bar{#1}}}
 \newcommand{\tensorbs}[1]{\bar{\bar{\bm{#1}}}}
 \newcommand{\tensorbf}[1]{\bar{\bar{\bm{#1}}}}
+\newcommand{\tensor}[1]{\bar{\bar{\bm{#1}}}}
 \newcommand{\fieldbf}[1]{\bar{\bm{#1}}}
+\newcommand{\field}[1]{\bar{\bm{#1}}}
 '''
 
 # Add any Sphinx extension module names here, as strings. They can be
@@ -69,7 +72,7 @@ extensions = [
     'sphinx.ext.mathjax',
     'sphinx.ext.githubpages',
     'sphinxcontrib.bibtex',
-#    'cloud_sptheme.ext.table_styling',
+    'cloud_sptheme.ext.table_styling',
 ]
 
 bibtex_bibfiles = ['pdielec.bib']
@@ -104,7 +107,7 @@ master_doc = "index"
 #
 # This is also used if you do content translation via gettext catalogs.
 # Usually you set "language" from the command line for these cases.
-language = None
+language = 'eng'
 
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.

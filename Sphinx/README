@@ -1,3 +1,9 @@
 Problems with \newcommand
 Seems to be to do with the async parameter used to load the MathJax.js script
 If it is remove all works properly
+
+Problems with table_styling extension.  Error in jinja2
+https://foss.heptapod.net/doc-utils/cloud_sptheme/-/issues/48
+
+
+

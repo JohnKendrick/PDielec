@@ -29,33 +29,72 @@ The results of the coherent calculations are shown in :numref:`fig-mgo-coherent`
 .. figure:: ./_static/Figures/MgO_Coherent_Size_Effects.svg
    :scale: 90%
 
-   Effects of Film Thickness of MgO in Coherent Light
+   Effects of Film Thickness of MgO in Coherent Light, a 45\ :superscript:`o` incident beam with p- polarisation
 
 The results for the 'thick slab' case are shown only for reflectance and absorbtance.  It can be clearly seen that the reflection in the restrahlen region between the TO and LO frequencies (388 and 693 |cm1|) is almost total with also very little absorbtance.  
-The 0.1 |micron| thickness shows peaks in reflectance and corresponding drops in transmittance at both the TO and LO frequencies, whilst showing only absorbtance at the TO frequency.
-The 1 |micron| thickness shows considerable broadening of these signals, with the TO reflectance splitting into a doublet. 
-At 10 |micron| below the TO frequency there are oscillations in the reflectance, transmittance and absorptance which are a result of interference between the internally reflected waves.  They occur because the light is coherent.  The oscillations continue until they meet the 'thick slab' limit and they then follow this limit until frequencies above the LO frequency.
-At 100 |micron| the oscillations below the TO frequency are very fast and the reach the 'thick slab' limiting case at lower frequencmes than for the 10 |micron| case.  Similarly at higher frequencies the follow the 'thick slab' limiting case to higher frequency.
+The 0.1\ |micron| thickness shows peaks in reflectance and corresponding drops in transmittance at both the TO and LO frequencies, whilst showing only absorbtance at the TO frequency.
+The 1\ |micron| thickness shows considerable broadening of these signals, with the TO reflectance splitting into a doublet. 
+At 10\ |micron| below the TO frequency there are oscillations in the reflectance, transmittance and absorptance which are a result of interference between the internally reflected waves.  They occur because the light is coherent.  The oscillations continue until they meet the 'thick slab' limit and they then follow this limit until frequencies above the LO frequency.
+At 100\ |micron| the oscillations below the TO frequency are very fast and the reach the 'thick slab' limiting case at lower frequencmes than for the 10\ |micron| case.  Similarly at higher frequencies the follow the 'thick slab' limiting case to higher frequency.
 
-Th introduction of partial incoherence is acheived in the program by averaging over a range of orientation parameters and is therefore quite crude, but it gives an indication of the type of effects that partial incoherence may have.
+The introduction of partial incoherence is acheived in the program by averaging over a range of orientation parameters and is therefore quite crude, but it gives an indication of the type of effects that partial incoherence may have.
 The term partial incoherence in this case is used to refer to incoherence introduced by sample defects such as planarity and varying thickness.
 
 :numref:`fig-mgo-partially-incoherent` shows the smoothing effect that averaging over the orientation and thickness parameters has.
+For these calculations the following parameters were used.
+
+.. table:: Partially Incoherent Parameters
+   :name: tab-partially-incoherent-parameters
+   :column-alignment:  left right  right
+   :header-alignment:  left center center
+   :column-dividers:   none single single single none
+
+   +-----------------+------------------------+-------------------+
+   | Thickness       | Percentage Incoherence | Number of samples |
+   +-----------------+------------------------+-------------------+
+   | 0.1\ |micron|   |         20             |       10          |
+   +-----------------+------------------------+-------------------+
+   | 1.0\ |micron|   |         20             |       10          |
+   +-----------------+------------------------+-------------------+
+   | 10.0\ |micron|  |         60             |       1000        |
+   +-----------------+------------------------+-------------------+
+   | 100.0\ |micron| |         30             |       1000        |
+   +-----------------+------------------------+-------------------+
+
+
 It is clear, especially from the absorbtance figure, that the thicker samples are a better fit to the 'thick slab' limiting case.  
 However there are issues when using this facility.  In particular the high frequency side of the reflectance spectra is showing shoulders which are artefacts of the quite large perturbations in the orientation and thickness parameters which have been imposed.
-Also, for the 10 |micron| sample it is clear that these perturbations are not sufficient by themselves to remove the oscillations that occur at low frequencies.  
+Also, for the 10\ |micron| sample it is clear that these perturbations are not sufficient by themselves to remove the oscillations that occur at low frequencies.  
 This is because at these frequencies the changes in thickness are not sufficent to move a peak by the period of the oscillations.
-
 
 .. _fig-mgo-partially-incoherent:
 .. figure:: ./_static/Figures/MgO_Partially_Incoherent_Size_Effects.svg
    :scale: 90%
 
-   Effects of Partial Incoherence and Film Thickness of MgO
+   Effects of Partial Incoherence and Film Thickness of MgO, a 45\ :superscript:`0` incident beam with p-polarisation
+
+The effect of thickness on the "Incoherent thin film Mode" is show in :numref:`fig-mgo-incoherent`.
+This method uses intensities rather than amplitudes for the transfer matrix and as a result, all the phase information is lost, resulting in no interferences after internal reflections.
+The calculations shown are for p- polarised incident radiation.
 
 
-Komandin et al :cite:`Komandin2009` have reported terahertz spectra of 0.5 |micron| thick MgO crystals which are dominated by interference at low frequencies.  
-In :numref:fig-mgo-experiment a digitised spectrum obtained from this publication is compared with calculations.
+The incoherent method deviates from the thick slab mode at very low frequencies, but as the film thickness increases the deviations become smaller.
+Similarly at frequencies above the LO frequency the deviations from the thick slab mode are less for the thicker films.
+The 1mm film shown in the figure is the thickest film that the program can model.  Above this thickness numerical problems lead to errors, which can be seen by discontinuities in the reflectance and in reflectance values greater than 1.
+
+
+.. _fig-mgo-incoherent:
+
+.. figure:: ./_static/Figures/MgO_Incoherent_Size_Effects.svg
+   :scale: 90%
+
+   The Incoherent Thin Film Mode - a 45\ :superscript:`o` incident beam with p- polarisation
+
+
+
+
+Komandin et al :cite:`Komandin2009` have reported terahertz spectra of 0.5\ |micron| thick MgO crystals which are dominated by interference at low frequencies.  
+In :numref:`fig-mgo-experiment` a digitised spectrum obtained from this publication is compared with calculations.
 It can be seen that despite the rather poor digitisation the agreement is very good, given that we are using only calculated information (refractive index, LO and TO frequencies etc.).
 Agreement with the number of interference bands and the amplitude of the bands is very good.
 
@@ -76,7 +115,7 @@ The shoulder on the experimental result is due to two phonon processes which are
 .. figure:: ./_static/Figures/MgO_Single_Crystal_Experiment_Reflectance.svg
    :scale: 90%
 
-   Comparison of calculated and experimental reflectatance infrared spectra
+   Comparison of calculated and experimental reflectance infrared spectra
 
 
 
