@@ -78,6 +78,7 @@ test_pdgui = [
 	'Experiment/Mayerhofer',
 	'SingleCrystal/Bi2Se3',
 	'SingleCrystal/Bi2Se3_film',
+	'SingleCrystal/MgO',
     ]
 
 test_vibanalysis = [
