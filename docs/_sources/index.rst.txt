@@ -19,15 +19,17 @@ For single crystals (thin films or slabs) a generalized transfer matrix is used.
 
 .. toctree::
    :maxdepth: 2
+   :numbered:
 
    introduction
    installation
    software
-   theory
+   theory_powder
+   theory_single_crystal
    analysis
    application_notes_1
+   application_notes_2
    zreferences
-   
 
 
 Search

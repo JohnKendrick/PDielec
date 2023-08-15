@@ -2,7 +2,7 @@
 
 <!DOCTYPE html>
 
-<html lang="en">
+<html lang="eng">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -12,9 +12,10 @@
     <title>Contents &#8212; PDielec: John Kendrick &amp; Andrew Burnett</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=92fd9be5" />
     <link rel="stylesheet" type="text/css" href="_static/cloud.css?v=f9ae72be" />
+    <link rel="stylesheet" type="text/css" href="_static/table_styling.css?v=a1a2a898" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noticia+Text:400,i,b,bi|Open+Sans:400,i,b,bi|Roboto+Mono:400,i,b,bi&amp;display=swap" type="text/css" />
     
-    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=586d4295"></script>
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=604b9f33"></script>
     <script src="_static/doctools.js?v=888ff710"></script>
     <script src="_static/sphinx_highlight.js?v=4825356b"></script>
     <script type="text/x-mathjax-config">MathJax.Hub.Config({"extensions": ["AMSmath.js"], "TeX": {"Macros": {"bm": ["{\\boldsymbol{#1}}", 1], "tensor": ["{\\bar{\\bar{#1}}}", 1], "tensorbs": ["{\\bar{\\bar{\\bm{#1}}}}", 1], "tensorbf": ["{\\bar{\\bar{\\bm{#1}}}}", 1], "fieldbf": ["{\\bar{\\bm{#1}}}", 1], "water": "\\H_{2}O"}}})</script>
@@ -38,7 +39,7 @@
 
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Introduction" href="introduction.html" /> 
+    <link rel="next" title="1. Introduction" href="introduction.html" /> 
         <meta name="viewport" content="width=device-width, initial-scale=1">
   </head><body>
     <div class="relbar-top">
@@ -50,7 +51,7 @@
           <a href="genindex.html" title="General Index"
              accesskey="I">index</a></li>
         <li class="right" >
-          <a href="introduction.html" title="Introduction"
+          <a href="introduction.html" title="1. Introduction"
              accesskey="N">next</a> &nbsp; &nbsp;</li>
     <li><a href="#">PDielec: John Kendrick &amp; Andrew Burnett</a> &#187;</li>
 
@@ -67,63 +68,75 @@
             
   <section id="contents">
 <h1>Contents<a class="headerlink" href="#contents" title="Permalink to this heading">¶</a></h1>
-<p>This is the documentation for the PDielec package.  The package takes output from DFT calculations and calculates a material’s infrared and terahertz response.
+<p>This is the documentation for the PDielec package.  The package takes output from DFT calculations and calculates a material's infrared and terahertz response.
 For single crystals (thin films or slabs) a generalized transfer matrix is used.  for powdered material in a support matrix an effective medium theory is used which can take into accounnt the effect of shape and particle size.</p>
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="introduction.html">Introduction</a></li>
-<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="installation.html#anaconda">Anaconda</a></li>
-<li class="toctree-l2"><a class="reference internal" href="installation.html#pypi">PyPi</a></li>
-<li class="toctree-l2"><a class="reference internal" href="installation.html#github-linux">GitHub - Linux</a></li>
-<li class="toctree-l2"><a class="reference internal" href="installation.html#github-windows">GitHub - Windows</a></li>
-<li class="toctree-l2"><a class="reference internal" href="installation.html#github-pdielec-directory-structure">GitHub - PDielec directory structure</a></li>
-<li class="toctree-l2"><a class="reference internal" href="installation.html#examples">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="introduction.html">1. Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">2. Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#anaconda">2.1. Anaconda</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#pypi">2.2. PyPi</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#github-linux">2.3. GitHub - Linux</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#github-windows">2.4. GitHub - Windows</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#github-pdielec-directory-structure">2.5. GitHub - PDielec directory structure</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#examples">2.6. Examples</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="software.html">Software components</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="software.html#pdgui">PDGui</a></li>
-<li class="toctree-l2"><a class="reference internal" href="software.html#preader">PReader</a></li>
-<li class="toctree-l2"><a class="reference internal" href="software.html#vibanalysis">Vibanalysis</a></li>
-<li class="toctree-l2"><a class="reference internal" href="software.html#pdmake">pdmake</a></li>
-<li class="toctree-l2"><a class="reference internal" href="software.html#mm-qm-interfaces">MM/QM Interfaces</a></li>
-<li class="toctree-l2"><a class="reference internal" href="software.html#experimental-file-format">Experimental File Format</a></li>
-<li class="toctree-l2"><a class="reference internal" href="software.html#the-format-of-the-excel-spreadsheet">The Format of the Excel Spreadsheet</a></li>
+<li class="toctree-l1"><a class="reference internal" href="software.html">3. Software components</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="software.html#pdgui">3.1. PDGui</a></li>
+<li class="toctree-l2"><a class="reference internal" href="software.html#preader">3.2. PReader</a></li>
+<li class="toctree-l2"><a class="reference internal" href="software.html#vibanalysis">3.3. Vibanalysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="software.html#pdmake">3.4. pdmake</a></li>
+<li class="toctree-l2"><a class="reference internal" href="software.html#mm-qm-interfaces">3.5. MM/QM Interfaces</a></li>
+<li class="toctree-l2"><a class="reference internal" href="software.html#experimental-file-format">3.6. Experimental File Format</a></li>
+<li class="toctree-l2"><a class="reference internal" href="software.html#the-format-of-the-excel-spreadsheet">3.7. The Format of the Excel Spreadsheet</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="theory.html">Theory</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="theory.html#molecular-approach-to-absorption-intensity">Molecular approach to absorption intensity</a></li>
-<li class="toctree-l2"><a class="reference internal" href="theory.html#solid-state-approach-to-absorption-intensity">Solid state approach to absorption intensity</a></li>
-<li class="toctree-l2"><a class="reference internal" href="theory.html#effect-of-particle-shape-on-infrared-absorption">Effect of particle shape on infrared absorption</a></li>
-<li class="toctree-l2"><a class="reference internal" href="theory.html#particle-size-effects">Particle size effects</a></li>
-<li class="toctree-l2"><a class="reference internal" href="theory.html#mie-theory-of-light-scattering">Mie Theory of Light scattering</a></li>
-<li class="toctree-l2"><a class="reference internal" href="theory.html#calculation-of-atr-extinction-spectra">Calculation of ATR Extinction Spectra</a></li>
-<li class="toctree-l2"><a class="reference internal" href="theory.html#scattering-effects-due-to-air-inclusions">Scattering Effects due to Air Inclusions</a></li>
-<li class="toctree-l2"><a class="reference internal" href="theory.html#removing-baseline-artifacts-from-experiment">Removing Baseline Artifacts from Experiment</a></li>
-<li class="toctree-l2"><a class="reference internal" href="theory.html#calculation-of-single-crystal-optics">Calculation of Single Crystal Optics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="theory_powder.html">4. Theory for Powder Light Scattering</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="theory_powder.html#molecular-approach-to-absorption-intensity">4.1. Molecular approach to absorption intensity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="theory_powder.html#solid-state-approach-to-absorption-intensity">4.2. Solid state approach to absorption intensity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="theory_powder.html#effect-of-particle-shape-on-infrared-absorption">4.3. Effect of particle shape on infrared absorption</a></li>
+<li class="toctree-l2"><a class="reference internal" href="theory_powder.html#particle-size-effects">4.4. Particle size effects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="theory_powder.html#mie-theory-of-light-scattering">4.5. Mie Theory of Light scattering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="theory_powder.html#calculation-of-atr-extinction-spectra">4.6. Calculation of ATR Extinction Spectra</a></li>
+<li class="toctree-l2"><a class="reference internal" href="theory_powder.html#scattering-effects-due-to-air-inclusions">4.7. Scattering Effects due to Air Inclusions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="theory_powder.html#removing-baseline-artifacts-from-experiment">4.8. Removing Baseline Artifacts from Experiment</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="analysis.html">Phonon Analysis</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="analysis.html#molecular-systems">Molecular Systems</a></li>
-<li class="toctree-l2"><a class="reference internal" href="analysis.html#periodic-systems">Periodic Systems</a></li>
-<li class="toctree-l2"><a class="reference internal" href="analysis.html#implementation">Implementation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="analysis.html#isoleucine">Isoleucine</a></li>
-<li class="toctree-l2"><a class="reference internal" href="analysis.html#batio3">BaTiO<sub>3</sub></a></li>
+<li class="toctree-l1"><a class="reference internal" href="theory_single_crystal.html">5. Theory for Single Crystal Optics</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="theory_single_crystal.html#coherent-thin-film">5.1. Coherent thin film</a></li>
+<li class="toctree-l2"><a class="reference internal" href="theory_single_crystal.html#incoherent-thin-film">5.2. Incoherent thin film</a></li>
+<li class="toctree-l2"><a class="reference internal" href="theory_single_crystal.html#partially-incoherent-thin-film">5.3. Partially incoherent thin film</a></li>
+<li class="toctree-l2"><a class="reference internal" href="theory_single_crystal.html#thick-slab">5.4. Thick Slab</a></li>
+<li class="toctree-l2"><a class="reference internal" href="theory_single_crystal.html#comparison-of-computational-approaches">5.5. Comparison of computational approaches</a></li>
+<li class="toctree-l2"><a class="reference internal" href="theory_single_crystal.html#crystal-laboratory-coordinate-frames">5.6. Crystal &amp; Laboratory Coordinate Frames</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="application_notes_1.html">Applications</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="application_notes_1.html#mgo-using-castep">MgO using CASTEP</a></li>
-<li class="toctree-l2"><a class="reference internal" href="application_notes_1.html#zno-using-vasp">ZnO using VASP</a></li>
-<li class="toctree-l2"><a class="reference internal" href="application_notes_1.html#calcite-using-gulp">Calcite using GULP</a></li>
-<li class="toctree-l2"><a class="reference internal" href="application_notes_1.html#fluoroapatite-using-vasp">Fluoroapatite using VASP</a></li>
-<li class="toctree-l2"><a class="reference internal" href="application_notes_1.html#l-aspartic-acid-using-castep">L-aspartic Acid using CASTEP</a></li>
-<li class="toctree-l2"><a class="reference internal" href="application_notes_1.html#mgo-example-using-mie-scattering">MgO Example using Mie Scattering</a></li>
-<li class="toctree-l2"><a class="reference internal" href="application_notes_1.html#zno-example-using-mie-scattering">ZnO Example using Mie Scattering</a></li>
-<li class="toctree-l2"><a class="reference internal" href="application_notes_1.html#fitting-the-atr-spectrum-of-na2-so4-2">Fitting the ATR Spectrum of Na<sub>2</sub>(SO<sub>4</sub>)<sub>2</sub></a></li>
-<li class="toctree-l2"><a class="reference internal" href="application_notes_1.html#single-crystal-study-of-forsterite">Single Crystal Study of Forsterite</a></li>
+<li class="toctree-l1"><a class="reference internal" href="analysis.html">6. Phonon Analysis</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="analysis.html#molecular-systems">6.1. Molecular Systems</a></li>
+<li class="toctree-l2"><a class="reference internal" href="analysis.html#periodic-systems">6.2. Periodic Systems</a></li>
+<li class="toctree-l2"><a class="reference internal" href="analysis.html#implementation">6.3. Implementation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="analysis.html#isoleucine">6.4. Isoleucine</a></li>
+<li class="toctree-l2"><a class="reference internal" href="analysis.html#batio3">6.5. BaTiO<sub>3</sub></a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="zreferences.html">References</a></li>
+<li class="toctree-l1"><a class="reference internal" href="application_notes_1.html">7. Applications of Powder Methodologies</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="application_notes_1.html#mgo-using-castep">7.1. MgO using CASTEP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="application_notes_1.html#zno-using-vasp">7.2. ZnO using VASP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="application_notes_1.html#calcite-using-gulp">7.3. Calcite using GULP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="application_notes_1.html#fluoroapatite-using-vasp">7.4. Fluoroapatite using VASP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="application_notes_1.html#l-aspartic-acid-using-castep">7.5. L-aspartic Acid using CASTEP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="application_notes_1.html#mgo-example-using-mie-scattering">7.6. MgO Example using Mie Scattering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="application_notes_1.html#zno-example-using-mie-scattering">7.7. ZnO Example using Mie Scattering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="application_notes_1.html#fitting-the-atr-spectrum-of-na2-so4-2">7.8. Fitting the ATR Spectrum of Na<sub>2</sub>(SO<sub>4</sub>)<sub>2</sub></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="application_notes_2.html">8. Single Crystal Applications</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="application_notes_2.html#single-crystal-study-of-thickness-effects-in-mgo">8.1. Single Crystal Study of Thickness Effects in MgO</a></li>
+<li class="toctree-l2"><a class="reference internal" href="application_notes_2.html#single-crystal-study-of-forsterite">8.2. Single Crystal Study of Forsterite</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="zreferences.html">9. References</a></li>
 </ul>
 </div>
 <section id="search">
@@ -153,7 +166,7 @@ For single crystals (thin films or slabs) a generalized transfer matrix is used.
   <div class="sphinxnext">
     <h4>Next page</h4>
     <p class="topless"><a href="introduction.html"
-                          title="Next page">&rarr; Introduction</a></p>
+                          title="Next page">&rarr; <span class="section-number">1. </span>Introduction</a></p>
   </div>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
@@ -202,7 +215,7 @@ For single crystals (thin films or slabs) a generalized transfer matrix is used.
           <a href="genindex.html" title="General Index"
              >index</a></li>
         <li class="right" >
-          <a href="introduction.html" title="Introduction"
+          <a href="introduction.html" title="1. Introduction"
              >next</a> &nbsp; &nbsp;</li>
     <li><a href="#">PDielec: John Kendrick &amp; Andrew Burnett</a> &#187;</li>
 
@@ -213,7 +226,7 @@ For single crystals (thin films or slabs) a generalized transfer matrix is used.
 
     <div class="footer" role="contentinfo">
     &#169; Copyright 2018, John Kendrick and Andrew Burnett.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.1.1.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.1.2.
     </div>
     <!-- cloud_sptheme 1.4 -->
   </body>

@@ -11,9 +11,9 @@
    :keywords: Quantum Mechanics, Effective Field Theory, Maxwell, Garnett, Mie, Infrared, Terahertz, Castep, Abinit, VASP, GULP. QE
 
 
-============
-Applications
-============
+====================================
+Applications of Powder Methodologies
+====================================
 
 Several examples are given to illustrate applications of the package.  The calculations used to provide the data for the permittivities are sufficiently accurate to illustrate aspects of the theory. The examples are chosen to show the package being used with the QM packages CASTEP and VASP and with the MM package GULP.
 The data used to generate the figures shown below are available in the Examples/ directory.
@@ -61,7 +61,6 @@ In the Figure the real permittivity at zero frequency corresponds to the static 
 The data for this calculation can be found by looking in the :ref:`Examples` section of the installation guide under the Castep/MgO example.
 
 .. _fig-mgo-permittivity:
-
 .. figure:: ./_static/Figures/MgO_Permittivity.svg
    :scale: 90%
 
@@ -69,7 +68,6 @@ The data for this calculation can be found by looking in the :ref:`Examples` sec
 
     
 .. _fig-mgo-real:
-
 .. figure:: ./_static/Figures/MgO_Real_Imaginary.*
    :scale: 90%
 
@@ -586,123 +584,4 @@ The data for this calculation can be found by looking in the :ref:`Examples` sec
 
    Na\ :subscript:`2`\ (SO\ :subscript:`4`\ )\ :subscript:`2` Fitted Spectra
 
-
-
-Single Crystal Study of Forsterite
-==================================
-
-In a publication on the interpretation of the experimental spectrum of forsterite :cite:`Pierre2013a` a Four Parameters Semi-Quantum (FPSQ) model for the single crystal infrared spectrum of this material was presented.   In this application note that we use the experimental file format of PDielec to read in the FPSQ model parameters from the paper and use it to calculate the reflectance spectrum for comparison with that published in the paper.
-The FPSQ model is defined by the following equation.
-
-
-.. math::
-   :label: eq-fpsqa
-
-    \epsilon (\omega )=\epsilon _{\infty}\prod_{j} \frac{\Omega^2_{LO_j}-\omega ^2-i\gamma _{LO_j}\omega }{\Omega^2_{TO_j}-\omega ^2-i\gamma _{TO_j}\omega}
-
-Forsterite is an orthosilicate belonging to an orthorhombic space group.  The permittivity matrix is diagonal when the x, y and z axes of the crystal are aligned with a, b and c axes of the unit cell.  The parameters for the FPSQ model are summarised in the tables below.
-
-.. table:: Optical Permittivity
-   :name: tab-optical
-   :column-alignment:  center right  right  right
-   :header-alignment:  center center center center 
-   :column-dividers:   none single single single none
-
-   +------------+------------+--------+--------+
-   |            |     X      | Y      |  Z     |
-   +------------+------------+--------+--------+
-   |    X       | 2.83       | 0.0    | 0.0    |
-   +------------+------------+--------+--------+
-   |    Y       | 0.0        | 2.69   | 0.0    |
-   +------------+------------+--------+--------+
-   |    Z       | 0.0        | 0.0    | 2.76   |
-   +------------+------------+--------+--------+
-
-
-
-.. table:: FPSQ Model Parameters for Forsterite
-   :name: tab-fpsqa
-   :widths:                   1      1      1      1      1      1      1      1      1      1      1      1
-   :column-dividers:   single single single single single single single single single single single single single single
-   :column-alignment:         center center center center center center center center center center center center
-   :header-alignment:         right  right  right  right  right  right  right  right  right  right  right  right 
-
-   +----------------------------------------+----------------------------------------+----------------------------------------+
-   | EPS(xx)                                | EPS(yy)                                | EPS(zz)                                |
-   +---------+---------+---------+----------+---------+---------+---------+----------+---------+---------+---------+----------+
-   | TO Freq | TO sigma| LO Freq | LO sigma | TO Freq | TO sigma| LO Freq | LO sigma | TO Freq | TO sigma| LO Freq | LO sigma |
-   +=========+=========+=========+==========+=========+=========+=========+==========+=========+=========+=========+==========+
-   | 202.6   |0.18     |202.9    | 0.28     | 144.9   |0.09     |145.5    | 0.21     | 278.3   |0.50     | 278.9   | 0.54     |
-   +---------+---------+---------+----------+---------+---------+---------+----------+---------+---------+---------+----------+
-   | 276.6   |0.59     |277.1    | 0.84     | 278.6   |0.68     |278.9    | 0.79     | 292.7   |0.90     | 305.6   | 0.36     |
-   +---------+---------+---------+----------+---------+---------+---------+----------+---------+---------+---------+----------+
-   | 296.1   |0.79     |300.6    | 1.18     | 290.8   |1.28     |311.3    | 0.68     | 306.3   |0.39     | 316.7   | 0.53     |
-   +---------+---------+---------+----------+---------+---------+---------+----------+---------+---------+---------+----------+
-   | 321.1   |0.60     |322.5    | 0.88     | 351.7   |2.77     |376.7    | 1.02     | 411.6   |2.03     | 414.6   | 1.97     |
-   +---------+---------+---------+----------+---------+---------+---------+----------+---------+---------+---------+----------+
-   | 383.2   |1.52     |390.5    | 1.52     | 397.3   |2.15     |412.4    | 2.30     | 418.5   |3.19     | 456.4   | 1.88     |
-   +---------+---------+---------+----------+---------+---------+---------+----------+---------+---------+---------+----------+
-   | 405.4   |1.58     |468.9    | 2.90     | 419.8   |2.17     |444.1    | 2.75     | 425.0   |4.22     | 424.5   | 3.83     |
-   +---------+---------+---------+----------+---------+---------+---------+----------+---------+---------+---------+----------+
-   | 476.6   |4.46     |478.0    | 3.69     | 458.1   |4.39     |489.2    | 2.59     | 478.9   |3.22     | 487.2   | 3.99     |
-   +---------+---------+---------+----------+---------+---------+---------+----------+---------+---------+---------+----------+
-   | 504.7   |3.81     |532.6    | 5.65     | 507.8   |2.77     |513.7    | 4.16     | 506.2   |2.71     | 580.8   | 8.79     |
-   +---------+---------+---------+----------+---------+---------+---------+----------+---------+---------+---------+----------+
-   | 532.3   |5.67     |552.3    | 9.41     | 529.5   |4.62     |575.0    | 8.33     | 874.4   |4.17     | 996.8   | 4.32     |
-   +---------+---------+---------+----------+---------+---------+---------+----------+---------+---------+---------+----------+
-   | 606.6   |4.77     |651.6    | 12.10    | 838.6   |6.56     |844.5    | 7.63     |         |         |         |          |
-   +---------+---------+---------+----------+---------+---------+---------+----------+---------+---------+---------+----------+
-   | 840.8   |6.75     |841.5    | 7.03     | 872.9   |5.02     |965.2    | 3.33     |         |         |         |          |
-   +---------+---------+---------+----------+---------+---------+---------+----------+---------+---------+---------+----------+
-   | 959.9   |2.41     |965.5    | 3.30     | 986.3   |4.80     |994.8    | 2.96     |         |         |         |          |
-   +---------+---------+---------+----------+---------+---------+---------+----------+---------+---------+---------+----------+
-   | 978.5   |3.83     |1081.1   | 5.76     |         |         |         |          |         |         |         |          |
-   +---------+---------+---------+----------+---------+---------+---------+----------+---------+---------+---------+----------+
-
-
-The publication presents experimental polarised reflectance infrared spectra of single crystals of forsterite.  The incident beam angle to the sample was :math:`10^{\circ}`.  The s-polarised geometry was used and measurements made with the electric field parallel to the a-axis, b-axis and c-axis.
-
-In PDGui the laboratory frame is defined by XYZ, with the incident and reflected light in the surface in the XZ plane, with the surface normal aligned with the Z-axis.
-The surface is therefore in the XY plane.
-The azimuthal angle can be used to rotate the crystal about the normal until the crystal axis of interest is parallel to the Y axis of the laboratory frame.
-With this geometry the s-polarised wave field will be oscillating parallel to the chosen axis.
-The arrangement described is shown in the Figure below where :math:`E_s` and :math:`E_p` are the field directions of the incident light. 
-
-.. _fig-lab-coords:
-
-.. figure:: ./_static/Figures/SingleCrystalGeometry.png
-   :scale: 90%
-
-   Definition of single crystal laboratory coordinates in PDGui
-
-
-
-As can be seen :math:`E_s` is parallel to the laboratory Y-axis, so it is necessary to line up the crystal unit cell so that the cell direction being investigated is parallel to the Y-axis.
-In the single crystal scenario tab PDGui shows the crystal axes in terms of the laboratory coordinates so it is relatively straightforward to make sure that the cell direction of interest is aligned along the Y-axis.  It is possible to set each axis in one of two ways, depending on the surface being used.  For example to make sure the a-axis is aligned with laboratory Y-axis, we can use either the [001] or the [010] surfaces and simply choose the appropriate azimuthal angle.
-
-The following geometries can be used by PDGui to ensure the relevant axis is aligned with the laboratory Y-axis;
-
-- For the a-axis; 
-    | the [001] surface with azimuthal angle =  90
-    | the [010] with azimuthal angle = 90
-- For the b-axis
-    | the [001] surface and azimuthal angle = 0
-    | the [100] surface and azimuthal = 90
-- for the c-axis
-    | the [100] surface azimuthal angle = 0
-    | the [010] surface azimuthal angle = 0
-
-
-The two figures below show the reflectance on s-polarised light along the a-axis and these figures show very good agreement with Figure 1 in the published experimental work :cite:`Pierre2013a`.
-The data for this calculation can be found by looking in the :ref:`Examples` section of the installation guide under the Experimental/forsterite example.
-
-
-.. _forsterite:
-
-.. figure:: ./_static/Figures/forsterite-100-1200.png
-   :scale: 90%
-.. figure:: ./_static/Figures/forsterite-350-600.png
-   :scale: 90%
-
-   Forsterite a-axis reflectance (upper figure 100 - 1200 |cm-1|, lower figure 350 - 600 |cm-1|)
 

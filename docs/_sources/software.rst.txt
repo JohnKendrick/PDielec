@@ -190,10 +190,10 @@ The supporting medium may have bubbles of air trapped in the matrix.  For the ca
 
 .. table:: Size of air inclusion (bubbles) in polyethylene
    :name: tab-air_bubbles
-   :widths: 1 1 1 3
-   :column-dividers:   none none  none  none
-   :header-alignment: right right right left
-   :column-alignment: right right right left
+   :widths:               1    1     1 
+   :column-dividers:   none none  none  
+   :header-alignment: right right right 
+   :column-alignment: right right right 
 
    +-------------------------------+--------------+----------------------+
    | PE Sphere Diameter (micron)   | Porosity (%) | Void radius (micron) |
@@ -230,8 +230,13 @@ The plot in the *Plotting Tab* has a legend and the description used in the lege
 Single Crystal Scenarios
 ........................
 
-Single crystals are defined by a surface and can be either thin coherent films or thick slabs.  A thick slab assumes that the thickness is such that no radiation can be transmitted and all radiation is therefore reflected or absorbed.  As such only the reflectance has any meaning for thick slabs.
-
+The mode of calculation is determined by the 'Single crystal mode' option.  Possible options are; 'Thick slab', 'Coherent thin film', 'Incoherent thin film' and 'Partially incoherent thin film'.
+Details of the theory underlying each method are given in the theory section: :ref:`Single-Crystal-Theory`.
+In summary a thick slab assumes that the thickness is such that no radiation can be transmitted and all radiation is therefore reflected or absorbed.  As such only the reflectance has any meaning for thick slabs.
+The 'Coherent thin film mode' provides a complete description of the light reflectance and transmittance, but can show oscialltions due to interference effects that are not see experimentally.
+The 'Incoherent thin film mode', treats the incoming light as incoherent and so removes all the oscillations due to internal reflection.
+Finally the 'Partially incoherent film' introduces random variations in the incident angle and the geometric parameters of the crystal surface and the thickness of the crystal.
+Single crystal films are defined by a surface determined by the (hkl) settings.
 
 
 .. _fig-scenarioTab-SingleCrystal:
@@ -251,6 +256,16 @@ p-polarised light lies in the XZ- plane and s-polarised light is parallel with t
 To help understand the relationship between the crystal and laboratory co-ordinates the program outputs the direction of the lattice vectors in terms of the laboratory X-, Y- and Z- coordinates.
 
 The single crystal scenario also allows the specification of permittivities for the incident and substrate (in the case of thick slab this is not needed).  Finally from thin films the thickness of the film in nanometres is specified.
+
+In the case of the 'Partially incoherent thin film' mode it is necessary to provide further information about the sampling of the geometrical parameters.
+The 'percentage of partial incoherence' provides a percentage perturbation of the geometric parameters.  All angles are sampled from a uniform distribution either side of the mean value by this percentage of 90\ :superscript:`o`.
+The film thickness is also varied either side of the mean value by this percentage of the mean value.
+
+The number of samples used in sampling is given by the value of 'Number of partially incoherent samples'.
+When smoothing is required the size of the 'Incoherent smoothing filter, kernel size' must be 3 or greater.  Only odd numbers are accepted.  This value can be as large as possible, but should not exceed the number of data points between true peaks.
+The polynomial degree of the smoothing function is given by the 'Incoherent smoothing filter, polynomial', values of 3 or 4 are recommended.
+Finally there is a legend that can be provided for the Plotting Tab.
+
 
 
 Plotting Tab
