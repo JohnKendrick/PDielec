@@ -1,0 +1,277 @@
+
+
+<!DOCTYPE html>
+
+<html lang="eng">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta content="PDielec package for the calculation of infrared and terahertz absorption from QM calculations" name="description" />
+<meta content="Quantum Mechanics, Effective Field Theory, Maxwell, Garnett, Mie, Infrared, Terahertz, Castep, Abinit, VASP, GULP. QE" name="keywords" />
+
+    <title>5. Theory for Single Crystal Optics &#8212; PDielec: John Kendrick &amp; Andrew Burnett</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=92fd9be5" />
+    <link rel="stylesheet" type="text/css" href="_static/cloud.css?v=f9ae72be" />
+    <link rel="stylesheet" type="text/css" href="_static/table_styling.css?v=a1a2a898" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noticia+Text:400,i,b,bi|Open+Sans:400,i,b,bi|Roboto+Mono:400,i,b,bi&amp;display=swap" type="text/css" />
+    
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=604b9f33"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=4825356b"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"extensions": ["AMSmath.js"], "TeX": {"Macros": {"bm": ["{\\boldsymbol{#1}}", 1], "tensor": ["{\\bar{\\bar{#1}}}", 1], "tensorbs": ["{\\bar{\\bar{\\bm{#1}}}}", 1], "tensorbf": ["{\\bar{\\bar{\\bm{#1}}}}", 1], "fieldbf": ["{\\bar{\\bm{#1}}}", 1], "water": "\\H_{2}O"}}})</script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+    
+    
+     
+        <script src="_static/jquery.cookie.js"></script>
+    
+
+    
+     
+        <script src="_static/cloud.base.js"></script>
+    
+
+    
+     
+        <script src="_static/cloud.js"></script>
+    
+
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="6. Phonon Analysis" href="analysis.html" />
+    <link rel="prev" title="4. Theory for Powder Light Scattering" href="theory_powder.html" /> 
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+  </head><body>
+    <div class="relbar-top">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="analysis.html" title="6. Phonon Analysis"
+             accesskey="N">next</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="theory_powder.html" title="4. Theory for Powder Light Scattering"
+             accesskey="P">previous</a> &nbsp; &nbsp;</li>
+    <li><a href="index.html">PDielec: John Kendrick &amp; Andrew Burnett</a> &#187;</li>
+
+        <li class="nav-item nav-item-this"><a href=""><span class="section-number">5. </span>Theory for Single Crystal Optics</a></li> 
+      </ul>
+    </div>
+    </div>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="theory-for-single-crystal-optics">
+<span id="single-crystal-theory"></span><h1><span class="section-number">5. </span>Theory for Single Crystal Optics<a class="headerlink" href="#theory-for-single-crystal-optics" title="Permalink to this heading">¶</a></h1>
+<p>The <em>SingleCrystal tab</em> enables the calculation of the optical behaviour of a single crystal (thick slab or film).  The method uses the pyGTM code available on GitHub <span id="id1">[<a class="reference internal" href="zreferences.html#id6" title="PyGtm. URL: http://pygtm.readthedocs.io/.">10</a>]</span>.  This code implements a generalised transfer matrix method described by Passler et al. <span id="id2">[<a class="reference internal" href="zreferences.html#id73" title="Nikolai Christian Passler, Mathieu Jeannin, and Alexander Paarmann. Layer-resolved absorption of light in arbitrarily anisotropic heterostructures. Physical Review B, 101(16):1–12, 2020. arXiv:2002.03832, doi:10.1103/PhysRevB.101.165425.">11</a>]</span> and which builds on previous publications <span id="id3">[<a class="reference internal" href="zreferences.html#id74" title="Nikolai Christian Passler and Alexander Paarmann. Generalized 4 × 4 matrix formalism for light propagation in anisotropic stratified media: Study of surface phonon polaritons in polar dielectric heterostructures. arXiv, 36(11):3246–3248, 2017. arXiv:1707.00462, doi:10.1364/josab.36.003246.">12</a>, <a class="reference internal" href="zreferences.html#id75" title="Nikolai Christian Passler and Alexander Paarmann. Generalized 4 × 4 matrix formalism for light propagation in anisotropic stratified media: study of surface phonon polaritons in polar dielectric heterostructures: erratum. Journal of the Optical Society of America B, 36(11):3246, nov 2019. URL: https://www.osapublishing.org/abstract.cfm?URI=josab-36-11-3246, arXiv:1707.00462, doi:10.1364/JOSAB.36.003246.">13</a>]</span>.
+The code has been modified to model incoherent systems as well as coherent ones.
+A brief summary of the theory underlying the transfer matrix method is given to aid in the understanding of the methods implemented and the range of their applications.</p>
+<p>In PDGui the number of media to consider is only three, a superstrate (usually air) through which the incident light passes, a dielectric medium which has a frequency dependent complex permittivity and optionally a substrate (which is also usually air).
+The media are indexed by 0,1 and 2 for the superstrate, dielectric and substrate respectively.
+A schematic illustrating this is shown in <a class="reference internal" href="#fig-definition-of-rta"><span class="std std-numref">Fig. 5.1</span></a>.
+To aid understanding of the input and output and the limitations of the methods used, a brief summary of the transfer matrix method is given here, specific to its application in PDGui.
+There are 4 different modes of operation of the matrix transfer method in PDGui and these are described below under the headings 'coherent thin film', 'incoherent thin film', 'partially incoherent thin film' and 'thick slab'</p>
+<figure class="align-default" id="id8">
+<span id="fig-definition-of-rta"></span><a class="reference internal image-reference" href="_images/Definition_of_Transmittance.png"><img alt="_images/Definition_of_Transmittance.png" src="_images/Definition_of_Transmittance.png" style="width: 1142.1000000000001px; height: 675.9px;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 5.1 </span><span class="caption-text">Layers used to calculate Transmittance, Reflectance and Absorptance</span><a class="headerlink" href="#id8" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
+<section id="coherent-thin-film">
+<h2><span class="section-number">5.1. </span>Coherent thin film<a class="headerlink" href="#coherent-thin-film" title="Permalink to this heading">¶</a></h2>
+<p>At an interface the tangential (in-plane) electric and magnetic fields (given by a vector <span class="math notranslate nohighlight">\(\fieldbf{F_i}\)</span>) have to match in both media.
+This requires that the 4 amplitudes (vector <span class="math notranslate nohighlight">\(\fieldbf{A_i}\)</span>) of the electric and magnetic fields, forward and backward, s and p polarised, in medium <span class="math notranslate nohighlight">\(i\)</span> are related through a 4x4 dynamical matrix <span class="math notranslate nohighlight">\(\tensorbf{D_i}\)</span>.</p>
+<div class="math notranslate nohighlight" id="equation-eq-dynamical-matrix">
+<span class="eqno">(5.1)<a class="headerlink" href="#equation-eq-dynamical-matrix" title="Permalink to this equation">¶</a></span>\[\fieldbf{F}_i  = \tensorbf{D}_i \fieldbf{A}_i\]</div>
+<p>Requiring that the in-plane fields match in both media at an interface gives;</p>
+<div class="math notranslate nohighlight" id="equation-eq-field-matching">
+<span class="eqno">(5.2)<a class="headerlink" href="#equation-eq-field-matching" title="Permalink to this equation">¶</a></span>\[\begin{split}\fieldbf{F}_{i-1}                    &amp;= \fieldbf{F}_i                \\
+\tensorbf{D}_{i-1} \fieldbf{A}_{i-1} &amp;= \tensorbf{D}_i \fieldbf{A}_i \\
+\fieldbf{A}_{i-1}                    &amp;= \tensorbf{D}_{i-1}^{-1} \tensorbf{D}_i \fieldbf{A}_i\end{split}\]</div>
+<p>Within a given medium the mode amplitudes will change according to the propagation through the medium described by an diagonal exponential matrix <span class="math notranslate nohighlight">\(\tensorbf{P}_i\)</span>.  Thus the amplitudes on the left side of a layer are related to those on the right side by;</p>
+<div class="math notranslate nohighlight" id="equation-eq-propagation">
+<span class="eqno">(5.3)<a class="headerlink" href="#equation-eq-propagation" title="Permalink to this equation">¶</a></span>\[\fieldbf{A}_{i,left}  = \tensorbf{P}_i \fieldbf{A}_{i,right}\]</div>
+<p>The total transfer matrix for the 3 media considered by PDGui (superstrate, dielectric and substrate; 0, 1 and 2 respectively) is therefore;</p>
+<div class="math notranslate nohighlight" id="equation-eq-transfer-matrix">
+<span class="eqno">(5.4)<a class="headerlink" href="#equation-eq-transfer-matrix" title="Permalink to this equation">¶</a></span>\[\tensorbf{M}  =
+              \tensorbf{D}_0^{-1}
+              (\tensorbf{D}_1
+              \tensorbf{P}_1
+              \tensorbf{D}_1^{-1})
+              \tensorbf{D}_2\]</div>
+<p>The elements of the total 4x4 transfer matrix <span class="math notranslate nohighlight">\(\tensorbf{M}\)</span> can be used to determine the total reflectance and transittance for each s and p mode.</p>
+</section>
+<section id="incoherent-thin-film">
+<h2><span class="section-number">5.2. </span>Incoherent thin film<a class="headerlink" href="#incoherent-thin-film" title="Permalink to this heading">¶</a></h2>
+<p>Because the above approach uses amplitudes there is always the possibility that a mismatch in phase for a reflected or transmitted wave will result in interference and therefore oscillations in intensity as the frequency is changed.
+Experimentally, for thick crystals, it is known that the presence of defects in the crystal and at the interfaces, and differences in thickness cause this coherence to be lost and instead incoherent light transmission is observed and the oscillations in intensity due to inteference are lost.
+The &quot;Incoherent thin film&quot; mode creates a transfer matrix like that in <a class="reference internal" href="#equation-eq-transfer-matrix">(5.4)</a>, but instead of amplitudes, uses intensities for the transfer matrix of the dielectric.</p>
+<p>Such an approach has been implemented in FSRStools <span id="id4">[<a class="reference internal" href="zreferences.html#id79" title="Daniel Dietze. Fsrstools - yeh_tm. 2015. URL: https://github.com/ddietze/FSRStools (visited on 2017-07-04).">46</a>]</span> a Python implementation of Yeh's transfer matrix method <span id="id5">[<a class="reference internal" href="zreferences.html#id81" title="Pochi Yeh. Optics of anisotropic layered media: A new 4 × 4 matrix algebra. Surface Science, 96(1-3):41–53, 1980. doi:10.1016/0039-6028(80)90293-9.">47</a>]</span>.
+The theory is described by Beck <span id="id6">[<a class="reference internal" href="zreferences.html#id80" title="William Beck. Modeling and Design of Mixed-coherence Optical Stacks. Army Research Laboratory, 2012.">48</a>]</span> and by Katsidis and Siapkas <span id="id7">[<a class="reference internal" href="zreferences.html#id82" title="C. C. Katsidis and D. I. Siapkas. Systems With Coherent , Partially Coherent , and Incoherent Interference. Applied Optics, 41(19):3978–3987, 2002.">49</a>]</span>.
+This approach has been incorporated in PDGui by modifying the total transfer matrix as follows;</p>
+<div class="math notranslate nohighlight" id="equation-eq-transfer-matrix-int">
+<span class="eqno">(5.5)<a class="headerlink" href="#equation-eq-transfer-matrix-int" title="Permalink to this equation">¶</a></span>\[\tensorbf{M}_{int} =  \mid \tensorbf{D}_0^{-1} \tensorbf{D}_1 \mid^2 \mid \tensorbf{P}_1 \mid ^2 \mid \tensorbf{D}_1^{-1} \tensorbf{D}_2 \mid ^2\]</div>
+<p>The use of intensities instead of amplitudes ensures that the phase information is lost.</p>
+</section>
+<section id="partially-incoherent-thin-film">
+<h2><span class="section-number">5.3. </span>Partially incoherent thin film<a class="headerlink" href="#partially-incoherent-thin-film" title="Permalink to this heading">¶</a></h2>
+<p>PDgui caters for partial incoherence, where some incoherence is introduced by lack of planarity, or uncertainties in the orientation angle of the crystal, by randomly averaging over spectra produced by varying the thickness, the orientation angles of the crystal and the incident light.
+The sampling is done over a uniform distribution.  A single percentage is given for all parameters.  For the thickness the percentage is a percentage of the initial thicknes.  For angles the percentage is a percentage of 90 <span class="math notranslate nohighlight">\(^\circ\)</span>.</p>
+<p>Because of the random sampling in the partially incoherent case it has sometimes been found necessary to smooth the calculated spectra using a Savitzky-Golay filter.
+The parameters of the filter are the kernel size (the number of points to averaged) and a polynomial degree for the fitting of those points.
+If a kernel size of less than 2 is given, then no filtering is performed.  The kernel size should be and odd number.
+The settings in PDGui typically start with a sample of 20 calculations and no filter.</p>
+</section>
+<section id="thick-slab">
+<h2><span class="section-number">5.4. </span>Thick Slab<a class="headerlink" href="#thick-slab" title="Permalink to this heading">¶</a></h2>
+<p>For those cases where the partially incoherent thin film and incoherent thin film modes are not appropiate and only reflectance is of interest, the calculation mode referred to as a &quot;thick slab&quot; assumes that there are only two (sem-infinite) media.
+The media through which the incident light travels and the crystalline media by which it is reflected.
+Transmission is not of interest in this case, as in the case of a thick crystal it assumed that total absorption will take place and that there will be no internal reflection within the crystal.
+This mode is similar to a standard Fresnel calculation of reflectance (R) but is appropriate for general permittivity tensors.
+As a result of the assumptions associated with a &quot;thick slab&quot; it is assumed that transmittance (T) through a semi-infinite dielectric with some absorption will be zero and therefore the absorptance (A) will be;</p>
+<div class="math notranslate nohighlight" id="equation-thick-absorptance">
+<span class="eqno">(5.6)<a class="headerlink" href="#equation-thick-absorptance" title="Permalink to this equation">¶</a></span>\[A = 1 - R\]</div>
+<p>For all other modes, the absorptance is defined as below;</p>
+<div class="math notranslate nohighlight" id="equation-full-absorptance">
+<span class="eqno">(5.7)<a class="headerlink" href="#equation-full-absorptance" title="Permalink to this equation">¶</a></span>\[A = 1 - R - T\]</div>
+</section>
+<section id="comparison-of-computational-approaches">
+<h2><span class="section-number">5.5. </span>Comparison of computational approaches<a class="headerlink" href="#comparison-of-computational-approaches" title="Permalink to this heading">¶</a></h2>
+<p><a class="reference internal" href="#fig-mode-comparison"><span class="std std-numref">Fig. 5.2</span></a> shows a comparison of the approaches discussed above to MgO.
+The DFT calculations were performed by Castep.  The incident angle is 45<sup>o</sup> and the film thickness is 1μ.
+The 'Thick slab' mode can be regarded as a limiting case as the simulated slab becomes thicker, the calculations tend to follow the 'thick slab' curve more closely.
+The 'Coherent thin film' curve shows large amplitude oscillations before and after the restrahlung region of absorption.  These are damped by including partial incoherence but are not completely removed.
+The partial incoherence settings in this case were; 100 samples and up to 10% deviation in incident angle, thickness and crystal orientation, with no smoothing.
+The incoherent curve shows no oscillations and follows the thick mode curve near the restrahlung region.
+It is common to see numerical problems in regions where the extinction coefficient is high and the dielectric is thick.  The numnerical problesm manifest themselves with sudden spikes in reflectance and indicate that only thinner samples should be considered.</p>
+<figure class="align-default" id="id9">
+<span id="fig-mode-comparison"></span><a class="reference internal image-reference" href="_images/single_crystal_mode_comparison.png"><img alt="_images/single_crystal_mode_comparison.png" src="_images/single_crystal_mode_comparison.png" style="width: 556.2px; height: 532.8000000000001px;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 5.2 </span><span class="caption-text">Comparison of methods</span><a class="headerlink" href="#id9" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
+</section>
+<section id="crystal-laboratory-coordinate-frames">
+<h2><span class="section-number">5.6. </span>Crystal &amp; Laboratory Coordinate Frames<a class="headerlink" href="#crystal-laboratory-coordinate-frames" title="Permalink to this heading">¶</a></h2>
+<p>There are two coordinate systems to consider.  The first is the laboratory coordinate system (X,Y,Z).
+It is assumed that the normal to the crystal surface is aligned with the Z-axis and that the incident radiation is in the X-Z plane.  P-polarised light is polarised parallel to this plane and S-polarised perpendicular (senkrecht) to this plane.
+The laboratory frame is illustrated in <a class="reference internal" href="#fig-lab-coords2"><span class="std std-numref">Fig. 5.3</span></a>.</p>
+<p>The other coordinate system of interest is that of the crystal.  The calculation of the permittivity tensor is performed in the crystal coordinate system (x,y,z).  The crystal plane is defined by a set of Miller indices (hkl) and the normal to the crystal surface is rotated to align with the laboratory Z-axis.  Finally in the laboratory frame the crystal may be rotated around the Z-axis by the azimuthal angle <span class="math notranslate nohighlight">\(\phi\)</span>.
+The precise definition of the azimuthal angle is somewhat arbitrary as it depends on the crystal unit-cell definition, but PDGui provides information of the details of the relationship between the crystal axes and the laboratory frame.
+The arrangement described is illustrated in the Figure below where <span class="math notranslate nohighlight">\(E_s\)</span> and <span class="math notranslate nohighlight">\(E_p\)</span> are the field directions of the S- and P polarised incident light respectively.
+Information about the crystal coordinates relative to the laboratory frame is given in the GUI.</p>
+<figure class="align-default" id="id10">
+<span id="fig-lab-coords2"></span><a class="reference internal image-reference" href="_images/SingleCrystalGeometry.png"><img alt="_images/SingleCrystalGeometry.png" src="_images/SingleCrystalGeometry.png" style="width: 1152.0px; height: 648.0px;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 5.3 </span><span class="caption-text">Definition of single crystal laboratory coordinates in PDGui</span><a class="headerlink" href="#id10" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="sphinx-toc sphinxlocaltoc">
+    <h3><a href="index.html">Page contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">5. Theory for Single Crystal Optics</a><ul>
+<li><a class="reference internal" href="#coherent-thin-film">5.1. Coherent thin film</a></li>
+<li><a class="reference internal" href="#incoherent-thin-film">5.2. Incoherent thin film</a></li>
+<li><a class="reference internal" href="#partially-incoherent-thin-film">5.3. Partially incoherent thin film</a></li>
+<li><a class="reference internal" href="#thick-slab">5.4. Thick Slab</a></li>
+<li><a class="reference internal" href="#comparison-of-computational-approaches">5.5. Comparison of computational approaches</a></li>
+<li><a class="reference internal" href="#crystal-laboratory-coordinate-frames">5.6. Crystal &amp; Laboratory Coordinate Frames</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div class="sphinxprev">
+    <h4>Previous page</h4>
+    <p class="topless"><a href="theory_powder.html"
+                          title="Previous page">&larr; <span class="section-number">4. </span>Theory for Powder Light Scattering</a></p>
+  </div>
+  <div class="sphinxnext">
+    <h4>Next page</h4>
+    <p class="topless"><a href="analysis.html"
+                          title="Next page">&rarr; <span class="section-number">6. </span>Phonon Analysis</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/theory_single_crystal.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+    
+    
+        <div class="sidebar-toggle-group no-js">
+            
+            <button class="sidebar-toggle" id="sidebar-hide" title="Hide the sidebar menu">
+                 «
+                <span class="show-for-small">hide menu</span>
+                
+            </button>
+            <button class="sidebar-toggle" id="sidebar-show" title="Show the sidebar menu">
+                
+                <span class="show-for-small">menu</span>
+                <span class="hide-for-small">sidebar</span>
+                 »
+            </button>
+        </div>
+    
+      <div class="clearer"></div>
+    </div>
+    <div class="relbar-bottom">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="analysis.html" title="6. Phonon Analysis"
+             >next</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="theory_powder.html" title="4. Theory for Powder Light Scattering"
+             >previous</a> &nbsp; &nbsp;</li>
+    <li><a href="index.html">PDielec: John Kendrick &amp; Andrew Burnett</a> &#187;</li>
+
+        <li class="nav-item nav-item-this"><a href=""><span class="section-number">5. </span>Theory for Single Crystal Optics</a></li> 
+      </ul>
+    </div>
+    </div>
+
+    <div class="footer" role="contentinfo">
+    &#169; Copyright 2018, John Kendrick and Andrew Burnett.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.1.2.
+    </div>
+    <!-- cloud_sptheme 1.4 -->
+  </body>
+</html>

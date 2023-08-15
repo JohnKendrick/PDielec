@@ -1,0 +1,42 @@
+.. include:: preamble.txt
+
+..
+    .. contents::
+       :local:
+..
+
+
+.. meta::
+   :description: Test of numref
+   :keywords: numref
+
+
+=========================
+Test of NUMREF and Tables
+=========================
+
+
+.. _fig-test:
+
+.. figure:: ./_static/Figures/infrared.png
+
+Here is numref working for a figure :numref:`fig-test`
+
+
+   This plot looks OK
+
+Here is numref working on a table
+
+.. table:: Simple test
+   :name: _tab-a
+
+   +------+---------------+
+   | Item | Character     |
+   +======+===============+
+   | 1    | Puss in Boots |
+   +------+---------------+
+   | 2    | Cinderella    |
+   +------+---------------+
+
+
+The results of the coherent calculations are shown in :numref:`tab-a`

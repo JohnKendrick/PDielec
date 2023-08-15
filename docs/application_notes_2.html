@@ -1,0 +1,551 @@
+
+
+<!DOCTYPE html>
+
+<html lang="eng">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta content="PDielec package for the calculation of infrared and terahertz absorption from QM calculations" name="description" />
+<meta content="Quantum Mechanics, Effective Field Theory, Maxwell, Garnett, Mie, Infrared, Terahertz, Castep, Abinit, VASP, GULP. QE" name="keywords" />
+
+    <title>8. Single Crystal Applications &#8212; PDielec: John Kendrick &amp; Andrew Burnett</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=92fd9be5" />
+    <link rel="stylesheet" type="text/css" href="_static/cloud.css?v=f9ae72be" />
+    <link rel="stylesheet" type="text/css" href="_static/table_styling.css?v=a1a2a898" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noticia+Text:400,i,b,bi|Open+Sans:400,i,b,bi|Roboto+Mono:400,i,b,bi&amp;display=swap" type="text/css" />
+    
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=604b9f33"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=4825356b"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"extensions": ["AMSmath.js"], "TeX": {"Macros": {"bm": ["{\\boldsymbol{#1}}", 1], "tensor": ["{\\bar{\\bar{#1}}}", 1], "tensorbs": ["{\\bar{\\bar{\\bm{#1}}}}", 1], "tensorbf": ["{\\bar{\\bar{\\bm{#1}}}}", 1], "fieldbf": ["{\\bar{\\bm{#1}}}", 1], "water": "\\H_{2}O"}}})</script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+    
+    
+     
+        <script src="_static/jquery.cookie.js"></script>
+    
+
+    
+     
+        <script src="_static/cloud.base.js"></script>
+    
+
+    
+     
+        <script src="_static/cloud.js"></script>
+    
+
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="9. References" href="zreferences.html" />
+    <link rel="prev" title="7. Applications of Powder Methodologies" href="application_notes_1.html" /> 
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+  </head><body>
+    <div class="relbar-top">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="zreferences.html" title="9. References"
+             accesskey="N">next</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="application_notes_1.html" title="7. Applications of Powder Methodologies"
+             accesskey="P">previous</a> &nbsp; &nbsp;</li>
+    <li><a href="index.html">PDielec: John Kendrick &amp; Andrew Burnett</a> &#187;</li>
+
+        <li class="nav-item nav-item-this"><a href=""><span class="section-number">8. </span>Single Crystal Applications</a></li> 
+      </ul>
+    </div>
+    </div>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="single-crystal-applications">
+<h1><span class="section-number">8. </span>Single Crystal Applications<a class="headerlink" href="#single-crystal-applications" title="Permalink to this heading">¶</a></h1>
+<p>The transmission, reflection and absorption of infrared light through single crystals can be simulated using PDielec and PDGui.  Partial incoherence can be modelled by averaging over a sample of thicknesses and orientations.</p>
+<section id="single-crystal-study-of-thickness-effects-in-mgo">
+<h2><span class="section-number">8.1. </span>Single Crystal Study of Thickness Effects in MgO<a class="headerlink" href="#single-crystal-study-of-thickness-effects-in-mgo" title="Permalink to this heading">¶</a></h2>
+<p>This example looks at an isotropic system.  The results of a CASTEP calculation of MgO have provided the frequency dependent permittivity and this is used to look at the effect of crystal thickness on the reflectance, transmittance and absorptance.i
+The examples shown here were calculated using the scripts mgo_coherent_size_effects.py and mgo_partially_incoherent_size_effects in the Examples/SingleCrystal/MgO directory of the GitHub distribution.
+A 45<sup>o</sup> incident beam on the (001) surface of MgO is used to calculate the transmittance, reflectance and absorbtance of thin films with thickness of 0.1, 1, 10 and 100 microns.
+The results of the coherent calculations are shown in <a class="reference internal" href="#fig-mgo-coherent"><span class="std std-numref">Fig. 8.1</span></a></p>
+<figure class="align-default" id="id4">
+<span id="fig-mgo-coherent"></span><a class="reference internal image-reference" href="_images/MgO_Coherent_Size_Effects.svg"><img alt="_images/MgO_Coherent_Size_Effects.svg" height="376" src="_images/MgO_Coherent_Size_Effects.svg" width="1188" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 8.1 </span><span class="caption-text">Effects of Film Thickness of MgO in Coherent Light, a 45<sup>o</sup> incident beam with p- polarisation</span><a class="headerlink" href="#id4" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
+<p>The results for the 'thick slab' case are shown only for reflectance and absorbtance.  It can be clearly seen that the reflection in the restrahlen region between the TO and LO frequencies (388 and 693 <span class="math notranslate nohighlight">\(cm^{-1}\)</span>) is almost total with also very little absorbtance.
+The 0.1μ thickness shows peaks in reflectance and corresponding drops in transmittance at both the TO and LO frequencies, whilst showing only absorbtance at the TO frequency.
+The 1μ thickness shows considerable broadening of these signals, with the TO reflectance splitting into a doublet.
+At 10μ below the TO frequency there are oscillations in the reflectance, transmittance and absorptance which are a result of interference between the internally reflected waves.  They occur because the light is coherent.  The oscillations continue until they meet the 'thick slab' limit and they then follow this limit until frequencies above the LO frequency.
+At 100μ the oscillations below the TO frequency are very fast and the reach the 'thick slab' limiting case at lower frequencmes than for the 10μ case.  Similarly at higher frequencies the follow the 'thick slab' limiting case to higher frequency.</p>
+<p>The introduction of partial incoherence is acheived in the program by averaging over a range of orientation parameters and is therefore quite crude, but it gives an indication of the type of effects that partial incoherence may have.
+The term partial incoherence in this case is used to refer to incoherence introduced by sample defects such as planarity and varying thickness.</p>
+<p><a class="reference internal" href="#fig-mgo-partially-incoherent"><span class="std std-numref">Fig. 8.2</span></a> shows the smoothing effect that averaging over the orientation and thickness parameters has.
+For these calculations the following parameters were used.</p>
+<table class="styled-table docutils align-default" id="tab-partially-incoherent-parameters">
+<caption><span class="caption-number">Table 8.1 </span><span class="caption-text">Partially Incoherent Parameters</span><a class="headerlink" href="#tab-partially-incoherent-parameters" title="Permalink to this table">¶</a></caption>
+<tbody>
+<tr class="row-odd"><td class="left-align no-left-divider single-right-divider"><p>Thickness</p></td>
+<td class="right-align single-left-divider single-right-divider"><p>Percentage Incoherence</p></td>
+<td class="right-align single-left-divider single-right-divider"><p>Number of samples</p></td>
+</tr>
+<tr class="row-even"><td class="left-align no-left-divider single-right-divider"><p>0.1μ</p></td>
+<td class="right-align single-left-divider single-right-divider"><p>20</p></td>
+<td class="right-align single-left-divider single-right-divider"><p>10</p></td>
+</tr>
+<tr class="row-odd"><td class="left-align no-left-divider single-right-divider"><p>1.0μ</p></td>
+<td class="right-align single-left-divider single-right-divider"><p>20</p></td>
+<td class="right-align single-left-divider single-right-divider"><p>10</p></td>
+</tr>
+<tr class="row-even"><td class="left-align no-left-divider single-right-divider"><p>10.0μ</p></td>
+<td class="right-align single-left-divider single-right-divider"><p>60</p></td>
+<td class="right-align single-left-divider single-right-divider"><p>1000</p></td>
+</tr>
+<tr class="row-odd"><td class="left-align no-left-divider single-right-divider"><p>100.0μ</p></td>
+<td class="right-align single-left-divider single-right-divider"><p>30</p></td>
+<td class="right-align single-left-divider single-right-divider"><p>1000</p></td>
+</tr>
+</tbody>
+</table>
+<p>It is clear, especially from the absorbtance figure, that the thicker samples are a better fit to the 'thick slab' limiting case.
+However there are issues when using this facility.  In particular the high frequency side of the reflectance spectra is showing shoulders which are artefacts of the quite large perturbations in the orientation and thickness parameters which have been imposed.
+Also, for the 10μ sample it is clear that these perturbations are not sufficient by themselves to remove the oscillations that occur at low frequencies.
+This is because at these frequencies the changes in thickness are not sufficent to move a peak by the period of the oscillations.</p>
+<figure class="align-default" id="id5">
+<span id="fig-mgo-partially-incoherent"></span><a class="reference internal image-reference" href="_images/MgO_Partially_Incoherent_Size_Effects.svg"><img alt="_images/MgO_Partially_Incoherent_Size_Effects.svg" height="391" src="_images/MgO_Partially_Incoherent_Size_Effects.svg" width="1204" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 8.2 </span><span class="caption-text">Effects of Partial Incoherence and Film Thickness of MgO, a 45<sup>0</sup> incident beam with p-polarisation</span><a class="headerlink" href="#id5" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
+<p>The effect of thickness on the &quot;Incoherent thin film Mode&quot; is show in <a class="reference internal" href="#fig-mgo-incoherent"><span class="std std-numref">Fig. 8.3</span></a>.
+This method uses intensities rather than amplitudes for the transfer matrix and as a result, all the phase information is lost, resulting in no interferences after internal reflections.
+The calculations shown are for p- polarised incident radiation.</p>
+<p>The incoherent method deviates from the thick slab mode at very low frequencies, but as the film thickness increases the deviations become smaller.
+Similarly at frequencies above the LO frequency the deviations from the thick slab mode are less for the thicker films.
+The 1mm film shown in the figure is the thickest film that the program can model.  Above this thickness numerical problems lead to errors, which can be seen by discontinuities in the reflectance and in reflectance values greater than 1.</p>
+<figure class="align-default" id="id6">
+<span id="fig-mgo-incoherent"></span><a class="reference internal image-reference" href="_images/MgO_Incoherent_Size_Effects.svg"><img alt="_images/MgO_Incoherent_Size_Effects.svg" height="382" src="_images/MgO_Incoherent_Size_Effects.svg" width="405" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 8.3 </span><span class="caption-text">The Incoherent Thin Film Mode - a 45<sup>o</sup> incident beam with p- polarisation</span><a class="headerlink" href="#id6" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
+<p>Komandin et al <span id="id1">[<a class="reference internal" href="zreferences.html#id78" title="G. A. Komandin, O. E. Porodinkov, I. E. Spector, and A. A. Volkov. Multiphonon absorption in a MgO single crystal in the terahertz range. Physics of the Solid State, 51(10):2045–2050, 2009. doi:10.1134/S1063783409100096.">70</a>]</span> have reported terahertz spectra of 0.5μ thick MgO crystals which are dominated by interference at low frequencies.
+In <a class="reference internal" href="#fig-mgo-experiment"><span class="std std-numref">Fig. 8.4</span></a> a digitised spectrum obtained from this publication is compared with calculations.
+It can be seen that despite the rather poor digitisation the agreement is very good, given that we are using only calculated information (refractive index, LO and TO frequencies etc.).
+Agreement with the number of interference bands and the amplitude of the bands is very good.</p>
+<figure class="align-default" id="id7">
+<span id="fig-mgo-experiment"></span><a class="reference internal image-reference" href="_images/MgO_Single_Crystal_0p5_Micron_Experiment.svg"><img alt="_images/MgO_Single_Crystal_0p5_Micron_Experiment.svg" height="382" src="_images/MgO_Single_Crystal_0p5_Micron_Experiment.svg" width="405" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 8.4 </span><span class="caption-text">Comparison of calculated and experimental transmittance terahertz spectra</span><a class="headerlink" href="#id7" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
+<p>Finally we compare a digitised spectrum of the reflectance measured over the range 0 - 800 <span class="math notranslate nohighlight">\(cm^{-1}\)</span> with the spectrum calculated using PDGui and Castep.
+In this the 'thick slab' approximation has been used as no oscillations are detected in the low frequency experimental results.
+The calculated and experimental results are in excellent agreement.
+The shoulder on the experimental result is due to two phonon processes which are not taken account of in the present theoretical work.</p>
+<figure class="align-default" id="id8">
+<span id="fig-mgo-experiment-reflectance"></span><a class="reference internal image-reference" href="_images/MgO_Single_Crystal_Experiment_Reflectance.svg"><img alt="_images/MgO_Single_Crystal_Experiment_Reflectance.svg" height="382" src="_images/MgO_Single_Crystal_Experiment_Reflectance.svg" width="408" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 8.5 </span><span class="caption-text">Comparison of calculated and experimental reflectance infrared spectra</span><a class="headerlink" href="#id8" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
+</section>
+<section id="single-crystal-study-of-forsterite">
+<h2><span class="section-number">8.2. </span>Single Crystal Study of Forsterite<a class="headerlink" href="#single-crystal-study-of-forsterite" title="Permalink to this heading">¶</a></h2>
+<p>In a publication on the interpretation of the experimental spectrum of forsterite <span id="id2">[<a class="reference internal" href="zreferences.html#id76" title="Marco De La Pierre, Marco De La Pierre, Cédric Carteret, Roberto Orlando, and Roberto Dovesi. Use of ab initio methods for the interpretation of the experimental IR reflectance spectra of crystalline compounds. Journal of computational chemistry, 34(2):1476–85, apr 2013. URL: http://www.ncbi.nlm.nih.gov/pubmed/23559424, doi:10.1002/jcc.23283.">71</a>]</span> a Four Parameters Semi-Quantum (FPSQ) model for the single crystal infrared spectrum of this material was presented.   In this application note that we use the experimental file format of PDielec to read in the FPSQ model parameters from the paper and use it to calculate the reflectance spectrum for comparison with that published in the paper.
+The FPSQ model is defined by the following equation.</p>
+<div class="math notranslate nohighlight" id="equation-eq-fpsqa">
+<span class="eqno">(8.1)<a class="headerlink" href="#equation-eq-fpsqa" title="Permalink to this equation">¶</a></span>\[ \epsilon (\omega )=\epsilon _{\infty}\prod_{j} \frac{\Omega^2_{LO_j}-\omega ^2-i\gamma _{LO_j}\omega }{\Omega^2_{TO_j}-\omega ^2-i\gamma _{TO_j}\omega}\]</div>
+<p>Forsterite is an orthosilicate belonging to an orthorhombic space group.  The permittivity matrix is diagonal when the x, y and z axes of the crystal are aligned with a, b and c axes of the unit cell.  The parameters for the FPSQ model are summarised in the tables below.</p>
+<table class="styled-table docutils align-default" id="tab-optical">
+<caption><span class="caption-number">Table 8.2 </span><span class="caption-text">Optical Permittivity</span><a class="headerlink" href="#tab-optical" title="Permalink to this table">¶</a></caption>
+<tbody>
+<tr class="row-odd"><td class="center-align no-left-divider single-right-divider"></td>
+<td class="right-align single-left-divider single-right-divider"><p>X</p></td>
+<td class="right-align single-left-divider single-right-divider"><p>Y</p></td>
+<td class="right-align single-left-divider no-right-divider"><p>Z</p></td>
+</tr>
+<tr class="row-even"><td class="center-align no-left-divider single-right-divider"><p>X</p></td>
+<td class="right-align single-left-divider single-right-divider"><p>2.83</p></td>
+<td class="right-align single-left-divider single-right-divider"><p>0.0</p></td>
+<td class="right-align single-left-divider no-right-divider"><p>0.0</p></td>
+</tr>
+<tr class="row-odd"><td class="center-align no-left-divider single-right-divider"><p>Y</p></td>
+<td class="right-align single-left-divider single-right-divider"><p>0.0</p></td>
+<td class="right-align single-left-divider single-right-divider"><p>2.69</p></td>
+<td class="right-align single-left-divider no-right-divider"><p>0.0</p></td>
+</tr>
+<tr class="row-even"><td class="center-align no-left-divider single-right-divider"><p>Z</p></td>
+<td class="right-align single-left-divider single-right-divider"><p>0.0</p></td>
+<td class="right-align single-left-divider single-right-divider"><p>0.0</p></td>
+<td class="right-align single-left-divider no-right-divider"><p>2.76</p></td>
+</tr>
+</tbody>
+</table>
+<table class="styled-table docutils align-default" id="tab-fpsqa">
+<caption><span class="caption-number">Table 8.3 </span><span class="caption-text">FPSQ Model Parameters for Forsterite</span><a class="headerlink" href="#tab-fpsqa" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col style="width: 8.3%" />
+<col style="width: 8.3%" />
+<col style="width: 8.3%" />
+<col style="width: 8.3%" />
+<col style="width: 8.3%" />
+<col style="width: 8.3%" />
+<col style="width: 8.3%" />
+<col style="width: 8.3%" />
+<col style="width: 8.3%" />
+<col style="width: 8.3%" />
+<col style="width: 8.3%" />
+<col style="width: 8.3%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head right-align single-left-divider single-right-divider" colspan="4"><p>EPS(xx)</p></th>
+<th class="head right-align single-left-divider single-right-divider" colspan="4"><p>EPS(yy)</p></th>
+<th class="head right-align single-left-divider single-right-divider" colspan="4"><p>EPS(zz)</p></th>
+</tr>
+<tr class="row-even"><th class="head right-align single-left-divider single-right-divider"><p>TO Freq</p></th>
+<th class="head right-align single-left-divider single-right-divider"><p>TO sigma</p></th>
+<th class="head right-align single-left-divider single-right-divider"><p>LO Freq</p></th>
+<th class="head right-align single-left-divider single-right-divider"><p>LO sigma</p></th>
+<th class="head right-align single-left-divider single-right-divider"><p>TO Freq</p></th>
+<th class="head right-align single-left-divider single-right-divider"><p>TO sigma</p></th>
+<th class="head right-align single-left-divider single-right-divider"><p>LO Freq</p></th>
+<th class="head right-align single-left-divider single-right-divider"><p>LO sigma</p></th>
+<th class="head right-align single-left-divider single-right-divider"><p>TO Freq</p></th>
+<th class="head right-align single-left-divider single-right-divider"><p>TO sigma</p></th>
+<th class="head right-align single-left-divider single-right-divider"><p>LO Freq</p></th>
+<th class="head right-align single-left-divider single-right-divider"><p>LO sigma</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-odd"><td class="center-align single-left-divider single-right-divider"><p>202.6</p></td>
+<td class="center-align single-left-divider single-right-divider"><p>0.18</p></td>
+<td class="center-align single-left-divider single-right-divider"><p>202.9</p></td>
+<td class="center-align single-left-divider single-right-divider"><p>0.28</p></td>
+<td class="center-align single-left-divider single-right-divider"><p>144.9</p></td>
+<td class="center-align single-left-divider single-right-divider"><p>0.09</p></td>
+<td class="center-align single-left-divider single-right-divider"><p>145.5</p></td>
+<td class="center-align single-left-divider single-right-divider"><p>0.21</p></td>
+<td class="center-align single-left-divider single-right-divider"><p>278.3</p></td>
+<td class="center-align single-left-divider single-right-divider"><p>0.50</p></td>
+<td class="center-align single-left-divider single-right-divider"><p>278.9</p></td>
+<td class="center-align single-left-divider single-right-divider"><p>0.54</p></td>
+</tr>
+<tr class="row-even"><td class="center-align single-left-divider single-right-divider"><p>276.6</p></td>
+<td class="center-align single-left-divider single-right-divider"><p>0.59</p></td>
+<td class="center-align single-left-divider single-right-divider"><p>277.1</p></td>
+<td class="center-align single-left-divider single-right-divider"><p>0.84</p></td>
+<td class="center-align single-left-divider single-right-divider"><p>278.6</p></td>
+<td class="center-align single-left-divider single-right-divider"><p>0.68</p></td>
+<td class="center-align single-left-divider single-right-divider"><p>278.9</p></td>
+<td class="center-align single-left-divider single-right-divider"><p>0.79</p></td>
+<td class="center-align single-left-divider single-right-divider"><p>292.7</p></td>
+<td class="center-align single-left-divider single-right-divider"><p>0.90</p></td>
+<td class="center-align single-left-divider single-right-divider"><p>305.6</p></td>
+<td class="center-align single-left-divider single-right-divider"><p>0.36</p></td>
+</tr>
+<tr class="row-odd"><td class="center-align single-left-divider single-right-divider"><p>296.1</p></td>
+<td class="center-align single-left-divider single-right-divider"><p>0.79</p></td>
+<td class="center-align single-left-divider single-right-divider"><p>300.6</p></td>
+<td class="center-align single-left-divider single-right-divider"><p>1.18</p></td>
+<td class="center-align single-left-divider single-right-divider"><p>290.8</p></td>
+<td class="center-align single-left-divider single-right-divider"><p>1.28</p></td>
+<td class="center-align single-left-divider single-right-divider"><p>311.3</p></td>
+<td class="center-align single-left-divider single-right-divider"><p>0.68</p></td>
+<td class="center-align single-left-divider single-right-divider"><p>306.3</p></td>
+<td class="center-align single-left-divider single-right-divider"><p>0.39</p></td>
+<td class="center-align single-left-divider single-right-divider"><p>316.7</p></td>
+<td class="center-align single-left-divider single-right-divider"><p>0.53</p></td>
+</tr>
+<tr class="row-even"><td class="center-align single-left-divider single-right-divider"><p>321.1</p></td>
+<td class="center-align single-left-divider single-right-divider"><p>0.60</p></td>
+<td class="center-align single-left-divider single-right-divider"><p>322.5</p></td>
+<td class="center-align single-left-divider single-right-divider"><p>0.88</p></td>
+<td class="center-align single-left-divider single-right-divider"><p>351.7</p></td>
+<td class="center-align single-left-divider single-right-divider"><p>2.77</p></td>
+<td class="center-align single-left-divider single-right-divider"><p>376.7</p></td>
+<td class="center-align single-left-divider single-right-divider"><p>1.02</p></td>
+<td class="center-align single-left-divider single-right-divider"><p>411.6</p></td>
+<td class="center-align single-left-divider single-right-divider"><p>2.03</p></td>
+<td class="center-align single-left-divider single-right-divider"><p>414.6</p></td>
+<td class="center-align single-left-divider single-right-divider"><p>1.97</p></td>
+</tr>
+<tr class="row-odd"><td class="center-align single-left-divider single-right-divider"><p>383.2</p></td>
+<td class="center-align single-left-divider single-right-divider"><p>1.52</p></td>
+<td class="center-align single-left-divider single-right-divider"><p>390.5</p></td>
+<td class="center-align single-left-divider single-right-divider"><p>1.52</p></td>
+<td class="center-align single-left-divider single-right-divider"><p>397.3</p></td>
+<td class="center-align single-left-divider single-right-divider"><p>2.15</p></td>
+<td class="center-align single-left-divider single-right-divider"><p>412.4</p></td>
+<td class="center-align single-left-divider single-right-divider"><p>2.30</p></td>
+<td class="center-align single-left-divider single-right-divider"><p>418.5</p></td>
+<td class="center-align single-left-divider single-right-divider"><p>3.19</p></td>
+<td class="center-align single-left-divider single-right-divider"><p>456.4</p></td>
+<td class="center-align single-left-divider single-right-divider"><p>1.88</p></td>
+</tr>
+<tr class="row-even"><td class="center-align single-left-divider single-right-divider"><p>405.4</p></td>
+<td class="center-align single-left-divider single-right-divider"><p>1.58</p></td>
+<td class="center-align single-left-divider single-right-divider"><p>468.9</p></td>
+<td class="center-align single-left-divider single-right-divider"><p>2.90</p></td>
+<td class="center-align single-left-divider single-right-divider"><p>419.8</p></td>
+<td class="center-align single-left-divider single-right-divider"><p>2.17</p></td>
+<td class="center-align single-left-divider single-right-divider"><p>444.1</p></td>
+<td class="center-align single-left-divider single-right-divider"><p>2.75</p></td>
+<td class="center-align single-left-divider single-right-divider"><p>425.0</p></td>
+<td class="center-align single-left-divider single-right-divider"><p>4.22</p></td>
+<td class="center-align single-left-divider single-right-divider"><p>424.5</p></td>
+<td class="center-align single-left-divider single-right-divider"><p>3.83</p></td>
+</tr>
+<tr class="row-odd"><td class="center-align single-left-divider single-right-divider"><p>476.6</p></td>
+<td class="center-align single-left-divider single-right-divider"><p>4.46</p></td>
+<td class="center-align single-left-divider single-right-divider"><p>478.0</p></td>
+<td class="center-align single-left-divider single-right-divider"><p>3.69</p></td>
+<td class="center-align single-left-divider single-right-divider"><p>458.1</p></td>
+<td class="center-align single-left-divider single-right-divider"><p>4.39</p></td>
+<td class="center-align single-left-divider single-right-divider"><p>489.2</p></td>
+<td class="center-align single-left-divider single-right-divider"><p>2.59</p></td>
+<td class="center-align single-left-divider single-right-divider"><p>478.9</p></td>
+<td class="center-align single-left-divider single-right-divider"><p>3.22</p></td>
+<td class="center-align single-left-divider single-right-divider"><p>487.2</p></td>
+<td class="center-align single-left-divider single-right-divider"><p>3.99</p></td>
+</tr>
+<tr class="row-even"><td class="center-align single-left-divider single-right-divider"><p>504.7</p></td>
+<td class="center-align single-left-divider single-right-divider"><p>3.81</p></td>
+<td class="center-align single-left-divider single-right-divider"><p>532.6</p></td>
+<td class="center-align single-left-divider single-right-divider"><p>5.65</p></td>
+<td class="center-align single-left-divider single-right-divider"><p>507.8</p></td>
+<td class="center-align single-left-divider single-right-divider"><p>2.77</p></td>
+<td class="center-align single-left-divider single-right-divider"><p>513.7</p></td>
+<td class="center-align single-left-divider single-right-divider"><p>4.16</p></td>
+<td class="center-align single-left-divider single-right-divider"><p>506.2</p></td>
+<td class="center-align single-left-divider single-right-divider"><p>2.71</p></td>
+<td class="center-align single-left-divider single-right-divider"><p>580.8</p></td>
+<td class="center-align single-left-divider single-right-divider"><p>8.79</p></td>
+</tr>
+<tr class="row-odd"><td class="center-align single-left-divider single-right-divider"><p>532.3</p></td>
+<td class="center-align single-left-divider single-right-divider"><p>5.67</p></td>
+<td class="center-align single-left-divider single-right-divider"><p>552.3</p></td>
+<td class="center-align single-left-divider single-right-divider"><p>9.41</p></td>
+<td class="center-align single-left-divider single-right-divider"><p>529.5</p></td>
+<td class="center-align single-left-divider single-right-divider"><p>4.62</p></td>
+<td class="center-align single-left-divider single-right-divider"><p>575.0</p></td>
+<td class="center-align single-left-divider single-right-divider"><p>8.33</p></td>
+<td class="center-align single-left-divider single-right-divider"><p>874.4</p></td>
+<td class="center-align single-left-divider single-right-divider"><p>4.17</p></td>
+<td class="center-align single-left-divider single-right-divider"><p>996.8</p></td>
+<td class="center-align single-left-divider single-right-divider"><p>4.32</p></td>
+</tr>
+<tr class="row-even"><td class="center-align single-left-divider single-right-divider"><p>606.6</p></td>
+<td class="center-align single-left-divider single-right-divider"><p>4.77</p></td>
+<td class="center-align single-left-divider single-right-divider"><p>651.6</p></td>
+<td class="center-align single-left-divider single-right-divider"><p>12.10</p></td>
+<td class="center-align single-left-divider single-right-divider"><p>838.6</p></td>
+<td class="center-align single-left-divider single-right-divider"><p>6.56</p></td>
+<td class="center-align single-left-divider single-right-divider"><p>844.5</p></td>
+<td class="center-align single-left-divider single-right-divider"><p>7.63</p></td>
+<td class="center-align single-left-divider single-right-divider"></td>
+<td class="center-align single-left-divider single-right-divider"></td>
+<td class="center-align single-left-divider single-right-divider"></td>
+<td class="center-align single-left-divider single-right-divider"></td>
+</tr>
+<tr class="row-odd"><td class="center-align single-left-divider single-right-divider"><p>840.8</p></td>
+<td class="center-align single-left-divider single-right-divider"><p>6.75</p></td>
+<td class="center-align single-left-divider single-right-divider"><p>841.5</p></td>
+<td class="center-align single-left-divider single-right-divider"><p>7.03</p></td>
+<td class="center-align single-left-divider single-right-divider"><p>872.9</p></td>
+<td class="center-align single-left-divider single-right-divider"><p>5.02</p></td>
+<td class="center-align single-left-divider single-right-divider"><p>965.2</p></td>
+<td class="center-align single-left-divider single-right-divider"><p>3.33</p></td>
+<td class="center-align single-left-divider single-right-divider"></td>
+<td class="center-align single-left-divider single-right-divider"></td>
+<td class="center-align single-left-divider single-right-divider"></td>
+<td class="center-align single-left-divider single-right-divider"></td>
+</tr>
+<tr class="row-even"><td class="center-align single-left-divider single-right-divider"><p>959.9</p></td>
+<td class="center-align single-left-divider single-right-divider"><p>2.41</p></td>
+<td class="center-align single-left-divider single-right-divider"><p>965.5</p></td>
+<td class="center-align single-left-divider single-right-divider"><p>3.30</p></td>
+<td class="center-align single-left-divider single-right-divider"><p>986.3</p></td>
+<td class="center-align single-left-divider single-right-divider"><p>4.80</p></td>
+<td class="center-align single-left-divider single-right-divider"><p>994.8</p></td>
+<td class="center-align single-left-divider single-right-divider"><p>2.96</p></td>
+<td class="center-align single-left-divider single-right-divider"></td>
+<td class="center-align single-left-divider single-right-divider"></td>
+<td class="center-align single-left-divider single-right-divider"></td>
+<td class="center-align single-left-divider single-right-divider"></td>
+</tr>
+<tr class="row-odd"><td class="center-align single-left-divider single-right-divider"><p>978.5</p></td>
+<td class="center-align single-left-divider single-right-divider"><p>3.83</p></td>
+<td class="center-align single-left-divider single-right-divider"><p>1081.1</p></td>
+<td class="center-align single-left-divider single-right-divider"><p>5.76</p></td>
+<td class="center-align single-left-divider single-right-divider"></td>
+<td class="center-align single-left-divider single-right-divider"></td>
+<td class="center-align single-left-divider single-right-divider"></td>
+<td class="center-align single-left-divider single-right-divider"></td>
+<td class="center-align single-left-divider single-right-divider"></td>
+<td class="center-align single-left-divider single-right-divider"></td>
+<td class="center-align single-left-divider single-right-divider"></td>
+<td class="center-align single-left-divider single-right-divider"></td>
+</tr>
+</tbody>
+</table>
+<p>The publication presents experimental polarised reflectance infrared spectra of single crystals of forsterite.  The incident beam angle to the sample was <span class="math notranslate nohighlight">\(10^{\circ}\)</span>.  The s-polarised geometry was used and measurements made with the electric field parallel to the a-axis, b-axis and c-axis.</p>
+<p>In PDGui the laboratory frame is defined by XYZ, with the incident and reflected light in the surface in the XZ plane, with the surface normal aligned with the Z-axis.
+The surface is therefore in the XY plane.
+The azimuthal angle can be used to rotate the crystal about the normal until the crystal axis of interest is parallel to the Y axis of the laboratory frame.
+With this geometry the s-polarised wave field will be oscillating parallel to the chosen axis.
+The arrangement described is shown in the Figure below where <span class="math notranslate nohighlight">\(E_s\)</span> and <span class="math notranslate nohighlight">\(E_p\)</span> are the field directions of the incident light.</p>
+<figure class="align-default" id="id9">
+<span id="fig-lab-coords"></span><a class="reference internal image-reference" href="_images/SingleCrystalGeometry.png"><img alt="_images/SingleCrystalGeometry.png" src="_images/SingleCrystalGeometry.png" style="width: 1152.0px; height: 648.0px;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 8.6 </span><span class="caption-text">Definition of single crystal laboratory coordinates in PDGui</span><a class="headerlink" href="#id9" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
+<p>As can be seen <span class="math notranslate nohighlight">\(E_s\)</span> is parallel to the laboratory Y-axis, so it is necessary to line up the crystal unit cell so that the cell direction being investigated is parallel to the Y-axis.
+In the single crystal scenario tab PDGui shows the crystal axes in terms of the laboratory coordinates so it is relatively straightforward to make sure that the cell direction of interest is aligned along the Y-axis.  It is possible to set each axis in one of two ways, depending on the surface being used.  For example to make sure the a-axis is aligned with laboratory Y-axis, we can use either the [001] or the [010] surfaces and simply choose the appropriate azimuthal angle.</p>
+<p>The following geometries can be used by PDGui to ensure the relevant axis is aligned with the laboratory Y-axis;</p>
+<ul>
+<li><dl>
+<dt>For the a-axis;</dt><dd><div class="line-block">
+<div class="line">the [001] surface with azimuthal angle =  90</div>
+<div class="line">the [010] with azimuthal angle = 90</div>
+</div>
+</dd>
+</dl>
+</li>
+<li><dl>
+<dt>For the b-axis</dt><dd><div class="line-block">
+<div class="line">the [001] surface and azimuthal angle = 0</div>
+<div class="line">the [100] surface and azimuthal = 90</div>
+</div>
+</dd>
+</dl>
+</li>
+<li><dl>
+<dt>for the c-axis</dt><dd><div class="line-block">
+<div class="line">the [100] surface azimuthal angle = 0</div>
+<div class="line">the [010] surface azimuthal angle = 0</div>
+</div>
+</dd>
+</dl>
+</li>
+</ul>
+<p>The two figures below show the reflectance on s-polarised light along the a-axis and these figures show very good agreement with Figure 1 in the published experimental work <span id="id3">[<a class="reference internal" href="zreferences.html#id76" title="Marco De La Pierre, Marco De La Pierre, Cédric Carteret, Roberto Orlando, and Roberto Dovesi. Use of ab initio methods for the interpretation of the experimental IR reflectance spectra of crystalline compounds. Journal of computational chemistry, 34(2):1476–85, apr 2013. URL: http://www.ncbi.nlm.nih.gov/pubmed/23559424, doi:10.1002/jcc.23283.">71</a>]</span>.
+The data for this calculation can be found by looking in the <a class="reference internal" href="installation.html#examples"><span class="std std-ref">Examples</span></a> section of the installation guide under the Experimental/forsterite example.</p>
+<figure class="align-default" id="forsterite">
+<a class="reference internal image-reference" href="_images/forsterite-100-1200.png"><img alt="_images/forsterite-100-1200.png" src="_images/forsterite-100-1200.png" style="width: 576.0px; height: 432.0px;" /></a>
+</figure>
+<figure class="align-default" id="id10">
+<a class="reference internal image-reference" href="_images/forsterite-350-600.png"><img alt="_images/forsterite-350-600.png" src="_images/forsterite-350-600.png" style="width: 576.0px; height: 432.0px;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 8.7 </span><span class="caption-text">Forsterite a-axis reflectance (upper figure 100 - 1200 cm<sup>-1</sup>, lower figure 350 - 600 cm<sup>-1</sup>)</span><a class="headerlink" href="#id10" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="sphinx-toc sphinxlocaltoc">
+    <h3><a href="index.html">Page contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">8. Single Crystal Applications</a><ul>
+<li><a class="reference internal" href="#single-crystal-study-of-thickness-effects-in-mgo">8.1. Single Crystal Study of Thickness Effects in MgO</a></li>
+<li><a class="reference internal" href="#single-crystal-study-of-forsterite">8.2. Single Crystal Study of Forsterite</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div class="sphinxprev">
+    <h4>Previous page</h4>
+    <p class="topless"><a href="application_notes_1.html"
+                          title="Previous page">&larr; <span class="section-number">7. </span>Applications of Powder Methodologies</a></p>
+  </div>
+  <div class="sphinxnext">
+    <h4>Next page</h4>
+    <p class="topless"><a href="zreferences.html"
+                          title="Next page">&rarr; <span class="section-number">9. </span>References</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/application_notes_2.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+    
+    
+        <div class="sidebar-toggle-group no-js">
+            
+            <button class="sidebar-toggle" id="sidebar-hide" title="Hide the sidebar menu">
+                 «
+                <span class="show-for-small">hide menu</span>
+                
+            </button>
+            <button class="sidebar-toggle" id="sidebar-show" title="Show the sidebar menu">
+                
+                <span class="show-for-small">menu</span>
+                <span class="hide-for-small">sidebar</span>
+                 »
+            </button>
+        </div>
+    
+      <div class="clearer"></div>
+    </div>
+    <div class="relbar-bottom">
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="zreferences.html" title="9. References"
+             >next</a> &nbsp; &nbsp;</li>
+        <li class="right" >
+          <a href="application_notes_1.html" title="7. Applications of Powder Methodologies"
+             >previous</a> &nbsp; &nbsp;</li>
+    <li><a href="index.html">PDielec: John Kendrick &amp; Andrew Burnett</a> &#187;</li>
+
+        <li class="nav-item nav-item-this"><a href=""><span class="section-number">8. </span>Single Crystal Applications</a></li> 
+      </ul>
+    </div>
+    </div>
+
+    <div class="footer" role="contentinfo">
+    &#169; Copyright 2018, John Kendrick and Andrew Burnett.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.1.2.
+    </div>
+    <!-- cloud_sptheme 1.4 -->
+  </body>
+</html>

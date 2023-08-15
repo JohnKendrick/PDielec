@@ -1,0 +1,40 @@
+.. include:: preamble.txt
+
+..
+    .. contents::
+       :local:
+..
+
+
+.. meta::
+   :description: Tables and Figures
+   :keywords: tables, figures
+
+
+==================
+Tables and Figures
+==================
+
+
+Here is a table :numref:`tab-pantomimes`. 
+
+.. table:: Pantomimes
+   :name: tab-pantomimes
+
+   +------+---------------+
+   | Item | Character     |
+   +======+===============+
+   | 1    | Puss in Boots |
+   +------+---------------+
+   | 2    | Cinderella    |
+   +------+---------------+
+
+
+The following is a simple figure, :numref:`fig-simple`
+
+.. _fig-simple:
+.. figure:: ./infrared.png
+   :scale: 90%
+
+   A simple picture
+
