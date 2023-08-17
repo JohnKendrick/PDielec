@@ -81,6 +81,14 @@ test_pdgui = [
 	'SingleCrystal/MgO',
     ]
 
+test_singlecrystal = [
+	'Experiment/fpsq',
+	'Experiment/Mayerhofer',
+	'SingleCrystal/Bi2Se3',
+	'SingleCrystal/Bi2Se3_film',
+	'SingleCrystal/MgO',
+    ]
+
 test_vibanalysis = [
 	'VibAnalysis/AsparticAcid',
 	'VibAnalysis/BaTiO3',
@@ -133,6 +141,8 @@ def usage():
     print('           run all the preader tests' , file=sys.stderr)
     print('  test-pdgui' , file=sys.stderr)
     print('           run all the pdgui tests' , file=sys.stderr)
+    print('  test-singlecrystal' , file=sys.stderr)
+    print('           run all the singlecrystal tests' , file=sys.stderr)
     print('  test-p2cif' , file=sys.stderr)
     print('           run all the p2cif tests' , file=sys.stderr)
     print('  test-vibanalysis' , file=sys.stderr)
@@ -499,6 +509,7 @@ def runTests(testlist, testType, regenerate):
     convertTestType['preader'] = 'PReader tests'
     convertTestType['p2cif'] = 'P2Cif tests'
     convertTestType['benchmarks'] = 'BenchMarks'
+    convertTestType['singlecrystal'] = 'Single Crystals'
     print('')
     print('--------------------------------------------------')
     print(convertTestType[testType],'starting' )
@@ -694,6 +705,8 @@ def main():
         token = tokens[itoken]
         if token == 'test' or token == 'tests':
             actions.append('test all')
+        elif token == 'test-singlecrystal':
+            actions.append('test singlecrystal')
         elif token == 'test-preader':
             actions.append('test preader')
         elif token == 'test-p2cif':
@@ -788,6 +801,8 @@ def main():
             runTests(test_p2cif      ,'p2cif'      ,regenerate)
         elif action == 'test pdgui':
             runTests(test_pdgui      ,'pdgui'      ,regenerate)
+        elif action == 'test singlecrystal':
+            runTests(test_singlecrystal      ,'singlecrystal'      ,regenerate)
         elif action == 'test vibanalysis':
             runTests(test_vibanalysis,'vibanalysis',regenerate)
         elif action == 'run benchmarks':
