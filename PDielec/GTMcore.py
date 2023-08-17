@@ -84,6 +84,7 @@ The optical system is assembled using the :py:class:`System` class.
 
 import numpy as np
 import numpy.linalg as lag
+import sys
 from scipy.optimize import minimize
 
 c_const = 299792458 # m/s
@@ -131,7 +132,7 @@ def exact_inv(M):
 
     .. seealso:: http://www.cg.info.hiroshima-cu.ac.jp/~miyazaki/knowledge/teche23.html
 
-    Modified to work with complex256 by JK
+    Modified to work with clongdouble by JK
 
     """
     assert M.shape == (4, 4)
@@ -149,9 +150,9 @@ def exact_inv(M):
     detA = detA - A[0, 3] * A[1, 0] * A[2, 1] * A[3, 2] - A[0, 3] * A[1, 1] * A[2, 2] * A[3, 0] - A[0, 3] * A[1, 2] * A[2, 0] * A[3, 1]
 
     if detA == 0:
-        return np.complex256(np.linalg.pinv(np.complex128(M)))
+        return np.clongdouble(np.linalg.pinv(np.cdouble(M)))
 
-    B = np.zeros(A.shape, dtype=np.complex256)
+    B = np.zeros(A.shape, dtype=np.clongdouble)
     B[0, 0] = A[1, 1] * A[2, 2] * A[3, 3] + A[1, 2] * A[2, 3] * A[3, 1] + A[1, 3] * A[2, 1] * A[3, 2] - A[1, 1] * A[2, 3] * A[3, 2] - A[1, 2] * A[2, 1] * A[3, 3] - A[1, 3] * A[2, 2] * A[3, 1]
     B[0, 1] = A[0, 1] * A[2, 3] * A[3, 2] + A[0, 2] * A[2, 1] * A[3, 3] + A[0, 3] * A[2, 2] * A[3, 1] - A[0, 1] * A[2, 2] * A[3, 3] - A[0, 2] * A[2, 3] * A[3, 1] - A[0, 3] * A[2, 1] * A[3, 2]
     B[0, 2] = A[0, 1] * A[1, 2] * A[3, 3] + A[0, 2] * A[1, 3] * A[3, 1] + A[0, 3] * A[1, 1] * A[3, 2] - A[0, 1] * A[1, 3] * A[3, 2] - A[0, 2] * A[1, 1] * A[3, 3] - A[0, 3] * A[1, 2] * A[3, 1]
@@ -213,24 +214,24 @@ class Layer:
                                          theta=0, phi=0, psi=0):
 
         ## epsilon is a 3x3 matrix of permittivity at a given frequency
-        self.epsilon = np.identity(3, dtype=np.complex256)
+        self.epsilon = np.identity(3, dtype=np.clongdouble)
         self.mu = 1.0 ### mu=1 for now
 
         ### initialization of all important quantities
-        self.M = np.zeros((6, 6), dtype=np.complex256) ## constitutive relations
-        self.a = np.zeros((6, 6), dtype=np.complex256) ##
-        self.S = np.zeros((4, 4), dtype=np.complex256) ##
-        self.Delta = np.zeros((4, 4), dtype=np.complex256) ##
-        self.qs = np.zeros(4, dtype=np.complex256) ## out of plane wavevector
-        self.Py = np.zeros((3,4), dtype=np.complex256) ## Poyting vector
-        self.gamma = np.zeros((4, 3), dtype=np.complex256) ##
-        self.Ai = np.zeros((4, 4), dtype=np.complex256) ##
-        self.Ki = np.zeros((4, 4), dtype=np.complex256) ##
-        self.Ti = np.zeros((4, 4), dtype=np.complex256) ## Layer transfer matrix
-        self.Berreman = np.zeros((4,3), dtype=np.complex256) ## Stores the Berreman modes, used for birefringent layers
+        self.M = np.zeros((6, 6), dtype=np.clongdouble) ## constitutive relations
+        self.a = np.zeros((6, 6), dtype=np.clongdouble) ##
+        self.S = np.zeros((4, 4), dtype=np.clongdouble) ##
+        self.Delta = np.zeros((4, 4), dtype=np.clongdouble) ##
+        self.qs = np.zeros(4, dtype=np.clongdouble) ## out of plane wavevector
+        self.Py = np.zeros((3,4), dtype=np.clongdouble) ## Poyting vector
+        self.gamma = np.zeros((4, 3), dtype=np.clongdouble) ##
+        self.Ai = np.zeros((4, 4), dtype=np.clongdouble) ##
+        self.Ki = np.zeros((4, 4), dtype=np.clongdouble) ##
+        self.Ti = np.zeros((4, 4), dtype=np.clongdouble) ## Layer transfer matrix
+        self.Berreman = np.zeros((4,3), dtype=np.clongdouble) ## Stores the Berreman modes, used for birefringent layers
         self.useBerreman = False ### Boolean to replace Xu's eigenvectors by Berreman's in case of Birefringence
         
-        self.euler = np.identity(3, dtype=np.complex256) ## rotation matrix
+        self.euler = np.identity(3, dtype=np.clongdouble) ## rotation matrix
         self.epsilon_tensor_function = None              ## Added by JK
 
         self.set_thickness(thickness) ## set the thickness, 1um by default
@@ -327,7 +328,7 @@ class Layer:
         Modification by JK to allow the use of a full dielectric tensor
         """
         if self.epsilon_tensor_function == None:
-            epsilon_xstal = np.zeros((3,3), dtype=np.complex256)
+            epsilon_xstal = np.zeros((3,3), dtype=np.clongdouble)
             epsilon_xstal[0,0] = self.epsilon1_f(f)
             epsilon_xstal[1,1] = self.epsilon2_f(f)
             epsilon_xstal[2,2] = self.epsilon3_f(f)
@@ -371,7 +372,7 @@ class Layer:
         self.euler[2, 1] = np.sin(theta) * np.cos(psi)
         self.euler[2, 2] = np.cos(theta)
         #JK Added the inverse calculation here so it is only done once
-        self.euler_inverse = np.complex256(lag.pinv(np.complex128(self.euler)))
+        self.euler_inverse = np.clongdouble(lag.pinv(np.cdouble(self.euler)))
 
 
     def calculate_matrices(self, zeta):
@@ -396,8 +397,8 @@ class Layer:
 
         """
         ## Constitutive matrix (see e.g. eqn (4))
-        self.M[0:3, 0:3] = np.complex256(self.epsilon.copy())
-        self.M[3:6, 3:6] = np.complex256(self.mu*np.identity(3))
+        self.M[0:3, 0:3] = np.clongdouble(self.epsilon.copy())
+        self.M[3:6, 3:6] = np.clongdouble(self.mu*np.identity(3))
 
         ## from eqn (10)
         b = self.M[2,2]*self.M[5,5] - self.M[2,5]*self.M[5,2]
@@ -466,9 +467,9 @@ class Layer:
         Birefringence is determined according to a threshold value `qsd_thr`
         set at the beginning of the script.
         """
-        Delta_loc = np.zeros((4,4), dtype=np.complex128)
-        transmode = np.zeros((2), dtype=np.int64)
-        reflmode = np.zeros((2), dtype=np.int64)
+        Delta_loc = np.zeros((4,4), dtype=np.cdouble)
+        transmode = np.zeros((2), dtype=int)
+        reflmode = np.zeros((2), dtype=int)
         
         Delta_loc = np.complex128(self.Delta.copy())
         ## eigenvals // eigenvects as of eqn (11)
@@ -486,14 +487,14 @@ class Layer:
                 psiunsorted[km][comp] = np.real(psiunsorted[km][comp]) + 0.0j
 
                 
-        Berreman_unsorted = np.zeros((4,3), dtype=np.complex256)
+        Berreman_unsorted = np.zeros((4,3), dtype=np.clongdouble)
         
         kt = 0 
         kr = 0;
         ## sort berremann qi's according to (12)
         ##JK small modification to fix problems when qs are nearly real
         ##JK if any(np.abs(np.imag(qsunsorted))):
-        if any(np.abs(np.imag(qsunsorted))>1.0E-8):
+        if any(np.abs(np.imag(qsunsorted))>1.0E-16):
             for km in range(0,4):
                 if np.imag(qsunsorted[km])>=0 :
                     transmode[kt] = km
@@ -533,26 +534,27 @@ class Layer:
         ## media to sort the modes       
         
         ## first calculate Cp for transmitted waves
-        Cp_t1 = np.abs(self.Py[0,transmode[0]])**2/(np.abs(self.Py[0,transmode[0]])**2+np.abs(self.Py[1,transmode[0]])**2)
-        Cp_t2 = np.abs(self.Py[0,transmode[1]])**2/(np.abs(self.Py[0,transmode[1]])**2+np.abs(self.Py[1,transmode[1]])**2)
+        shift = sys.float_info.min
+        Cp_t1 = np.abs(self.Py[0,transmode[0]])**2/(np.abs(self.Py[0,transmode[0]])**2+np.abs(self.Py[1,transmode[0]])**2+shift)
+        Cp_t2 = np.abs(self.Py[0,transmode[1]])**2/(np.abs(self.Py[0,transmode[1]])**2+np.abs(self.Py[1,transmode[1]])**2+shift)
 
         if np.abs(Cp_t1-Cp_t2) > qsd_thr: ## birefringence
             self._useBerreman = True ## sets _useBerreman fo the calculation of gamma matrix below
             if Cp_t2>Cp_t1:
                 transmode = np.flip(transmode,0) ## flip the two values
             ## then calculate for reflected waves if necessary
-            Cp_r1 = np.abs(self.Py[0,reflmode[1]])**2/(np.abs(self.Py[0,reflmode[1]])**2+np.abs(self.Py[1,reflmode[1]])**2)
-            Cp_r2 = np.abs(self.Py[0,reflmode[0]])**2/(np.abs(self.Py[0,reflmode[0]])**2+np.abs(self.Py[1,reflmode[0]])**2)
+            Cp_r1 = np.abs(self.Py[0,reflmode[1]])**2/(np.abs(self.Py[0,reflmode[1]])**2+np.abs(self.Py[1,reflmode[1]])**2+shift)
+            Cp_r2 = np.abs(self.Py[0,reflmode[0]])**2/(np.abs(self.Py[0,reflmode[0]])**2+np.abs(self.Py[1,reflmode[0]])**2+shift)
             if Cp_r1>Cp_r2:
                 reflmode = np.flip(reflmode,0) ## flip the two values
 
         else:     ### No birefringence, use the Electric field s-pol/p-pol
-            Cp_te1 = np.abs(psiunsorted[0,transmode[1]])**2/(np.abs(psiunsorted[0,transmode[1]])**2+np.abs(psiunsorted[2,transmode[1]])**2)
-            Cp_te2 = np.abs(psiunsorted[0,transmode[0]])**2/(np.abs(psiunsorted[0,transmode[0]])**2+np.abs(psiunsorted[2,transmode[0]])**2)
+            Cp_te1 = np.abs(psiunsorted[0,transmode[1]])**2/(np.abs(psiunsorted[0,transmode[1]])**2+np.abs(psiunsorted[2,transmode[1]])**2+shift)
+            Cp_te2 = np.abs(psiunsorted[0,transmode[0]])**2/(np.abs(psiunsorted[0,transmode[0]])**2+np.abs(psiunsorted[2,transmode[0]])**2+shift)
             if Cp_te1>Cp_te2:
                 transmode = np.flip(transmode,0) ## flip the two values
-            Cp_re1 = np.abs(psiunsorted[0,reflmode[1]])**2/(np.abs(psiunsorted[0,reflmode[1]])**2+np.abs(psiunsorted[2,reflmode[1]])**2)
-            Cp_re2 = np.abs(psiunsorted[0,reflmode[0]])**2/(np.abs(psiunsorted[0,reflmode[0]])**2+np.abs(psiunsorted[2,reflmode[0]])**2)
+            Cp_re1 = np.abs(psiunsorted[0,reflmode[1]])**2/(np.abs(psiunsorted[0,reflmode[1]])**2+np.abs(psiunsorted[2,reflmode[1]])**2+shift)
+            Cp_re2 = np.abs(psiunsorted[0,reflmode[0]])**2/(np.abs(psiunsorted[0,reflmode[0]])**2+np.abs(psiunsorted[2,reflmode[0]])**2+shift)
             if Cp_re1>Cp_re2:
                 reflmode = np.flip(reflmode,0) ## flip the two values
 
@@ -671,10 +673,10 @@ class Layer:
         
         ### gamma field vectors should be normalized to avoid any birefringence problems
         # use double square bracket notation to ensure correct array shape
-        gamma1 = np.array([[self.gamma[0,0], gamma12, gamma13]],dtype=np.complex256)
-        gamma2 = np.array([[gamma21, self.gamma[1,1], gamma23]],dtype=np.complex256)
-        gamma3 = np.array([[self.gamma[2,0], gamma32, gamma33]],dtype=np.complex256)
-        gamma4 = np.array([[gamma41, self.gamma[3,1], gamma43]],dtype=np.complex256)
+        gamma1 = np.array([[self.gamma[0,0], gamma12, gamma13]],dtype=np.clongdouble)
+        gamma2 = np.array([[gamma21, self.gamma[1,1], gamma23]],dtype=np.clongdouble)
+        gamma3 = np.array([[self.gamma[2,0], gamma32, gamma33]],dtype=np.clongdouble)
+        gamma4 = np.array([[gamma41, self.gamma[3,1], gamma43]],dtype=np.clongdouble)
         
         #### Regular case, no birefringence, we keep the Xu fields
         self.gamma[0,:] = gamma1/np.sqrt(np.sum(gamma1**2))      #lag.norm(gamma1)
@@ -715,7 +717,7 @@ class Layer:
 
         for ii in range(4):
             ## looks a lot like eqn (25). Why is K not Pi ?
-            exponent = np.complex256(-1.0j*(2.0*np.pi*f*self.qs[ii]*self.thick)/c_const)
+            exponent = np.clongdouble(-1.0j*(2.0*np.pi*f*self.qs[ii]*self.thick)/c_const)
             self.Ki[ii,ii] = np.nan_to_num(np.exp(exponent))
             #  JK original line
             # self.Ki[ii,ii] = np.exp(-1.0j*(2.0*np.pi*f*self.qs[ii]*self.thick)/c_const)
@@ -797,8 +799,8 @@ class System:
             self.layers=layers
 
         ## system transfer matrix
-        self.Gamma = np.zeros((4,4), dtype=np.complex256)
-        self.GammaStar = np.zeros((4,4), dtype=np.complex256)
+        self.Gamma = np.zeros((4,4), dtype=np.clongdouble)
+        self.GammaStar = np.zeros((4,4), dtype=np.clongdouble)
 
         if substrate is not None:
             self.substrate = substrate
@@ -970,11 +972,11 @@ class System:
         Delta1234 = np.array([[1,0,0,0],
                               [0,0,1,0],
                               [0,1,0,0],
-                              [0,0,0,1]],dtype=np.complex256)
+                              [0,0,0,1]],dtype=np.clongdouble)
 
 
-        Gamma = np.zeros(4, dtype=np.complex256)
-        GammaStar = np.zeros(4, dtype=np.complex256)
+        Gamma = np.zeros(4, dtype=np.clongdouble)
+        GammaStar = np.zeros(4, dtype=np.clongdouble)
         Ai, Ki, Ai_inv, Ti = self.layers[0].update(f, zeta_sys)
         Tloc1 = nan(np.absolute(nan(np.matmul(Ai_inv_super,Ai)))**2)
         Tloc2 = nan(np.absolute(Ki)**2)
@@ -1010,12 +1012,12 @@ class System:
         Delta1234 = np.array([[1,0,0,0],
                               [0,0,1,0],
                               [0,1,0,0],
-                              [0,0,0,1]],dtype=np.complex256)
+                              [0,0,0,1]],dtype=np.clongdouble)
 
 
-        Gamma = np.zeros(4, dtype=np.complex256)
-        GammaStar = np.zeros(4, dtype=np.complex256)
-        Tloc = np.identity(4, dtype=np.complex256)
+        Gamma = np.zeros(4, dtype=np.clongdouble)
+        GammaStar = np.zeros(4, dtype=np.clongdouble)
+        Tloc = np.identity(4, dtype=np.clongdouble)
 
         for ii in range(len(self.layers))[::-1]:
             Ai, Ki, Ai_inv, T_ii = self.layers[ii].update(f, zeta_sys)
@@ -1028,6 +1030,12 @@ class System:
         self.GammaStar = GammaStar.copy()
         return self.GammaStar.copy()
 
+    def scale_intensity(self, r):
+        """r is the complex reflectance field, attempt to make the intensity sensible"""
+        if np.abs(r) > 1:
+              r = r / np.abs(r) / np.abs(r)
+        return r
+    
 
     def calculate_r_t(self, zeta_sys):
         """ Calculate various field and intensity reflection and transmission coefficients, as well as the 4-valued vector of transmitted field.
@@ -1067,8 +1075,17 @@ class System:
 
         """
         nan = np.nan_to_num
+        shift = np.sqrt(sys.float_info.min)
+        # Can we renormalise to get rid of numerical problems?
+        largest = np.amax(self.GammaStar)
+        GammaStar = self.GammaStar.copy()
+        GammaStar = GammaStar / largest
+
         # common denominator for all coefficients
-        Denom = nan(self.GammaStar[0,0]*self.GammaStar[2,2])-nan(self.GammaStar[0,2]*self.GammaStar[2,0])
+        Denom = self.GammaStar[0,0]*self.GammaStar[2,2]-self.GammaStar[0,2]*self.GammaStar[2,0]
+
+        if Denom == 0:
+            Denom += shift
 
         # field reflection coefficients
         rpp = nan(self.GammaStar[1,0]*self.GammaStar[2,2])-nan(self.GammaStar[1,2]*self.GammaStar[2,0])
@@ -1083,6 +1100,12 @@ class System:
         rsp = nan(self.GammaStar[0,0]*self.GammaStar[1,2])-nan(self.GammaStar[1,0]*self.GammaStar[0,2])
         rsp = np.nan_to_num(rsp/Denom)
 
+        # Try and remove any outliers by making sure the intensity is always < 1
+        rpp = self.scale_intensity(rpp)
+        rss = self.scale_intensity(rss)
+        rps = self.scale_intensity(rps)
+        rsp = self.scale_intensity(rsp)
+
         # Intensity reflection coefficients are just square moduli
         Rpp = np.abs(rpp)**2
         Rss = np.abs(rss)**2
@@ -1093,19 +1116,25 @@ class System:
 
         # field transmission coefficients
         #t_field = np.zeros(4, dtype=np.complex128)
-        t_out = np.zeros(4, dtype=np.complex256)
+        t_out = np.zeros(4, dtype=np.clongdouble)
         tpp = np.nan_to_num(self.GammaStar[2,2]/Denom)
         tss = np.nan_to_num(self.GammaStar[0,0]/Denom)
         tps = np.nan_to_num(-self.GammaStar[2,0]/Denom)
         tsp = np.nan_to_num(-self.GammaStar[0,2]/Denom)
-        t_out = np.array([tpp, tps, tsp, tss],dtype=np.complex256)
+
+        # Try and remove any outliers by making sure the intensity is always < 1
+        tpp = self.scale_intensity(tpp)
+        tss = self.scale_intensity(tss)
+        tps = self.scale_intensity(tps)
+        tsp = self.scale_intensity(tsp)
+        t_out = np.array([tpp, tps, tsp, tss],dtype=np.clongdouble)
         #t_field = np.array([tpp, tps, tsp, tss])
 
         #### Intensity transmission requires Poynting vector analysis
         ## N.B: could be done mode-dependentely later
         ## start with the superstrate
         ## Incident fields are either p or s polarized
-        ksup = np.zeros((4,3), dtype=np.complex256) ## wavevector in superstrate
+        ksup = np.zeros((4,3), dtype=np.clongdouble) ## wavevector in superstrate
         ksup[:,0] = zeta_sys
         for ii, qi in enumerate(self.superstrate.qs):
             ksup[ii,2] = qi
@@ -1120,7 +1149,7 @@ class System:
         ## Outgoing fields (eqn 17)
         Eout_pin = t_out[0]*self.substrate.gamma[0,:]+t_out[1]*self.substrate.gamma[1,:] #p-in, p or s out
         Eout_sin = t_out[2]*self.substrate.gamma[0,:]+t_out[3]*self.substrate.gamma[1,:] #s-in, p or s out
-        ksub = np.zeros((4,3), dtype=np.complex256)
+        ksub = np.zeros((4,3), dtype=np.clongdouble)
         ksub[:,0] = zeta_sys
         for ii, qi in enumerate(self.substrate.qs):
             ksub[ii,2] = qi
