@@ -33,7 +33,7 @@ class FitterTab(QWidget):
         self.calculationInProgress = False
         self.settings = {}
         self.notebook = parent
-        self.settings['Excel file name'] = ''
+        self.settings['Experimental file name'] = ''
         self.settings['Plot title'] = 'Experimental and Calculated Spectral Comparison'
         self.settings['Fitting type'] = 'Minimise x-correlation'
         self.fitting_type_definitions = ['Minimise x-correlation', 'Minimise spectral difference']
@@ -53,23 +53,23 @@ class FitterTab(QWidget):
         self.xcorr0=0.0
         self.xcorr1=0.0
         self.lag=0.0
-        self.excel_file_has_been_read = False
+        self.experimental_file_has_been_read = False
         self.sigmas_cm1 = []
         self.modes_fitted = []
         self.modes_selected = []
-        self.excel_frequencies = []
-        self.excel_spectrum = []
+        self.experimental_frequencies = []
         self.experimental_spectrum = []
+        self.resampled_experimental_spectrum = []
         self.frequency_units = 'wavenumber'
         # Create a tab
         vbox = QVBoxLayout()
         form = QFormLayout()
         #
-        # Ask for the excel spread sheet
+        # Ask for the experimental spread sheet
         #
         self.spectrafile_le = QLineEdit(self)
-        self.spectrafile_le.setToolTip('Provide the name of an .xlsx containing the experimental spectrum.  The spreadsheet should have two columns, with no headings.  The first column contains the frequencies in cm-1.  The second contains the experimental spectrum.')
-        self.spectrafile_le.setText(self.settings['Excel file name'])
+        self.spectrafile_le.setToolTip('Provide the name of an .xlsx or a .csv file containing the experimental spectrum.\nThe spreadsheet should have two columns, with at most a one line heading.\nThe first column contains the frequencies in cm-1.  The second contains the experimental spectrum.')
+        self.spectrafile_le.setText(self.settings['Experimental file name'])
         self.spectrafile_le.returnPressed.connect(self.on_spectrafile_le_return)
         self.spectrafile_le.textChanged.connect(self.on_spectrafile_le_changed)
         #
@@ -84,7 +84,7 @@ class FitterTab(QWidget):
         # Select the type of plot we are going to use
         #
         self.scenario_cb = QComboBox(self)
-        self.scenario_cb.setToolTip('What type of data is stored in the experimental spreadsheet?')
+        self.scenario_cb.setToolTip('Which scenario will be used in the fit?')
         self.scenario_cb.addItems(self.scenario_legends)
         self.scenario_cb.activated.connect(self.on_scenario_cb_activated)
         self.scenario_cb.setCurrentIndex(self.settings['Scenario index'])
@@ -461,11 +461,11 @@ class FitterTab(QWidget):
     def calculateSpectralDifference(self,scaling_factor):
         debugger.print('calculateSpectralDifference',scaling_factor)
         # Calculate the spectral difference  between the experimental and the first scenario
-        if len(self.experimental_spectrum) == 0:
+        if len(self.resampled_experimental_spectrum) == 0:
             return 0.0
         debugger.print('Start:: optimiseFunction')
-        # col1 contains the experimental spectrum
-        col1 = np.array(self.experimental_spectrum)
+        # col1 contains the resampled_experimental spectrum
+        col1 = np.array(self.resampled_experimental_spectrum)
         maxcol1 = np.max(col1)
         col1 = col1 / maxcol1
         col1[ col1< self.settings['Spectral difference threshold'] ] = 0.0
@@ -488,12 +488,12 @@ class FitterTab(QWidget):
     def calculateCrossCorrelation(self,scaling_factor):
         debugger.print('Start:: calculateCrossCorrelation',scaling_factor)
         # Calculate the cross correlation coefficient between the experimental and the first scenario
-        if len(self.experimental_spectrum) == 0:
-            debugger.print('calculateCrossCorrelation experimental_spectrum is not defined')
+        if len(self.resampled_experimental_spectrum) == 0:
+            debugger.print('calculateCrossCorrelation resampled_experimental_spectrum is not defined')
             debugger.print('Finshed:: calculateCrossCorrelation',scaling_factor)
             return (0.0,0.0,0.0)
         # col1 contains the experimental spectrum
-        col1 = np.array(self.experimental_spectrum)
+        col1 = np.array(self.resampled_experimental_spectrum)
         col1 = ( col1 - np.mean(col1)) / ( np.std(col1) * np.sqrt(len(col1)) )
         # col2 contains the calculated spectrum
         col2 = np.array(self.calculated_spectrum)
@@ -563,59 +563,89 @@ class FitterTab(QWidget):
         self.settings['Scenario index'] = index
 
     def on_spectrafile_le_return(self):
-        # Handle a return in the excel file name line editor
+        # Handle a return in the experimental file name line editor
         debugger.print('Start:: on_spectrafile_le_return')
         file_name = self.spectrafile_le.text()
         if not os.path.isfile(file_name):
             qfd = QFileDialog(self)
             qfd.setDirectory(self.notebook.mainTab.directory)
-            file_name, _ = qfd.getOpenFileName(self,'Open Excel file','','Excel (*.xlsx);; All Files (*)')
+            file_name, _ = qfd.getOpenFileName(self,'Open the experimental file','','Excel (*.xlsx);; Csv (*.csv);; All Files (*)')
         if not os.path.isfile(file_name):
             debugger.print('Finished:: on_spectrafile_le_return')
             return
-        self.settings['Excel file name'] = file_name
-        self.spectrafile_le.setText(self.settings['Excel file name'])
-        debugger.print('new file name', self.settings['Excel file name'])
+        self.settings['Experimental file name'] = file_name
+        self.spectrafile_le.setText(self.settings['Experimental file name'])
+        debugger.print('new file name', self.settings['Experimental file name'])
         self.refreshRequired = True
-        self.excel_file_has_been_read = False
+        self.experimental_file_has_been_read = False
         # redo the plot if a return is pressed
         self.lastButtonPressed()
         debugger.print('Finished:: on_spectrafile_le_return')
         return
 
-    def read_excel_file(self):
-        # 
-        from openpyxl import load_workbook
-        debugger.print('Start:: read_excel_file',self.settings['Excel file name'])
-        file_name = self.settings['Excel file name']
+    def is_float(self, element):
+        """Test to see if element is a float"""
+        #If you expect None to be passed:
+        if element is None: 
+            return False
+        try:
+            float(element)
+            return True
+        except ValueError:
+            return False
+
+    def find_delimiter(self,filename):
+        import csv
+        sniffer = csv.Sniffer()
+        with open(filename) as fp:
+            delimiter = sniffer.sniff(fp.read(5000)).delimiter
+        return delimiter
+
+    def read_experimental_file(self):
+        """Read an experimental file""" 
+        debugger.print('Start:: read_experimental_file',self.settings['Experimental file name'])
+        file_name = self.settings['Experimental file name']
         if not os.path.isfile(file_name):
-            debugger.print('Finished:: read_excel_file does not exist',self.settings['Excel file name'])
+            debugger.print('Finished:: read_experimental_file does not exist',self.settings['Experimental file name'])
             return
-        if self.excel_file_has_been_read:
-            debugger.print('Finished:: read_excel_file has been read')
+        if self.experimental_file_has_been_read:
+            debugger.print('Finished:: read_experimental_file has been read')
             return
-        # 
-        # Open the work book
-        #
-        self.wb = load_workbook(filename=self.settings['Excel file name'], read_only=True)
-        self.ws = self.wb.worksheets[0]
-        self.excel_frequencies = []
-        self.excel_spectrum = []
-        for row in self.ws.rows:
-            if isinstance(row[0].value, (int, float, complex)):
-                self.excel_frequencies.append(row[0].value)
-                self.excel_spectrum.append(row[1].value)
-        self.excel_file_has_been_read = True
+        self.experimental_frequencies = []
+        self.experimental_spectrum = []
+        if file_name.endswith('.csv'):
+            # Read in a csv file, discard alphanumerics
+            import csv
+            delimiter = self.find_delimiter(file_name)
+            with open(file_name) as fd:
+                debugger.print('Reading csv file::')
+                csv_reader = csv.reader(fd, delimiter=delimiter)
+                for row in csv_reader:
+                   # attempt to convert string to float
+                   if self.is_float(row[0]) and self.is_float(row[1]):
+                       self.experimental_frequencies.append(float(row[0]))
+                       self.experimental_spectrum.append(float(row[1]))
+        else:
+            # Read in a xlsx file, discard alphanumerics
+            from openpyxl import load_workbook
+            debugger.print('Reading xlsx file::')
+            self.wb = load_workbook(filename=self.settings['Experimental file name'], read_only=True)
+            self.ws = self.wb.worksheets[0]
+            for row in self.ws.rows:
+                if isinstance(row[0].value, (int, float, complex)):
+                    self.experimental_frequencies.append(row[0].value)
+                    self.experimental_spectrum.append(row[1].value)
+        self.experimental_file_has_been_read = True
         self.refreshRequired = True
-        debugger.print('Finished:: read_excel_file')
+        debugger.print('Finished:: read_experimental_file')
         return
 
     def on_spectrafile_le_changed(self,text):
         debugger.print('on_spectrafile_le_changed', text)
         text = self.spectrafile_le.text()
         self.refreshRequired = True
-        self.settings['Excel file name'] = text
-        self.excel_file_has_been_read = False
+        self.settings['Experimental file name'] = text
+        self.experimental_file_has_been_read = False
 
     def on_sigmas_tw_itemChanged(self, item):
         debugger.print('Start:: on_sigmas_tw_itemChanged', item)
@@ -656,9 +686,9 @@ class FitterTab(QWidget):
 
     def replot(self):
         debugger.print('Start:: replot')
-        if len(self.excel_spectrum) > 0:
+        if len(self.resampled_experimental_spectrum) > 0:
             self.resample_experimental_spectrum()
-        self.plot(self.experimental_spectrum,self.calculated_frequencies,self.calculated_spectra,self.scenario_legends,self.plot_label)
+        self.plot(self.resampled_experimental_spectrum,self.calculated_frequencies,self.calculated_spectra,self.scenario_legends,self.plot_label)
         debugger.print('Finished:: replot')
         return
 
@@ -691,8 +721,8 @@ class FitterTab(QWidget):
         # 
         # use the settings values to initialise the widgets
         #
-        self.spectrafile_le.setText(self.settings['Excel file name'])
-        self.read_excel_file()
+        self.spectrafile_le.setText(self.settings['Experimental file name'])
+        self.read_experimental_file()
         self.plot_label = self.notebook.plottingTab.settings['Plot type']
         self.scenario_legends = [ scenario.settings['Legend'] for scenario in self.notebook.scenarios ]
         self.scenario_cb.clear()
@@ -721,7 +751,7 @@ class FitterTab(QWidget):
         self.redraw_sigmas_tw()
         # Resample the spectrum
         self.calculated_frequencies = [ vs_cm1 for scenario in self.notebook.scenarios ]
-        if len(self.excel_spectrum) > 0:
+        if len(self.experimental_spectrum) > 0:
             self.resample_experimental_spectrum()
         scaling_factor = self.settings['Frequency scaling factor']
         self.lag,self.xcorr0,self.xcorr1 = self.calculateCrossCorrelation(scaling_factor)
@@ -755,30 +785,30 @@ class FitterTab(QWidget):
         self.xaxis = np.array(self.calculated_frequencies[0])
         # If the experimental frequencies starts at a higher frequency 
         # than the calculated frequencies then add new frequencies to pad the range out
-        #indices = np.where (self.xaxis < self.excel_frequencies[0])
-        indices = self.xaxis < self.excel_frequencies[0]
+        #indices = np.where (self.xaxis < self.experimental_frequencies[0])
+        indices = self.xaxis < self.experimental_frequencies[0]
         padded_xaxis = self.xaxis[indices]
         padded_yaxis = np.array([ 0 for index in indices if index ])
         # Add the experimental frequencies
-        padded_xaxis = np.append(padded_xaxis,self.excel_frequencies)
-        padded_yaxis = np.append(padded_yaxis,self.excel_spectrum)
+        padded_xaxis = np.append(padded_xaxis,self.experimental_frequencies)
+        padded_yaxis = np.append(padded_yaxis,self.experimental_spectrum)
         # If the experimental frequencies ends at a lower frequency 
         # than the calculated frequencies then add new frequencies to pad the range out
-        indices = self.xaxis > self.excel_frequencies[-1]
+        indices = self.xaxis > self.experimental_frequencies[-1]
         padded_xaxis = np.append(padded_xaxis,self.xaxis[indices])
         padded_yaxis = np.append(padded_yaxis, np.array([ 0 for index in indices if index ]) )
         # 
         # Create a function using the padded frequencies to calculate the spectrum at the calculated frequencies
         f = interp1d(padded_xaxis, padded_yaxis, kind='cubic',fill_value='extrapolate')
         # Store the experimental spectrum at the calculated frequencies
-        experimental_spectrum = f(self.xaxis)
+        resampled_experimental_spectrum = f(self.xaxis)
         if self.settings['Baseline removal']:
             # Apply a Hodrick-Prescott filter to remove the background
-            self.experimental_spectrum = Calculator.hodrick_prescott_filter(
-                                          experimental_spectrum, 0.01,
+            self.resampled_experimental_spectrum = Calculator.hodrick_prescott_filter(
+                                          resampled_experimental_spectrum, 0.01,
                                           self.settings['HPFilter lambda'], 10)
         else:
-            self.experimental_spectrum = experimental_spectrum
+            self.resampled_experimental_spectrum = resampled_experimental_spectrum
         debugger.print('Finished:: Resample_experimental_spectrum')
         return
 
