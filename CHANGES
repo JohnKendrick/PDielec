@@ -5,7 +5,9 @@ version 7.3.0
   Modified the handling of changing the legend in a scenario so a recalculation is not needed
   Updated the documentation to reflect the new options for incoherent light
   Added a range of units to handle crystal thickness
-  Changed the complex matrices in pyGTM to complex.256
+  Changed the complex matrices in pyGTM to clongdouble
+  Modified pyGTM to try and improve its numerical stability
+  Modified the reading of scripts as updates to python seem to have changed the exec() command, now read the whole file at once.
 version 7.2.2
   Addressed problems after changes in numpy.  Some np.int declarations were replaced with int
 version 7.2.1
