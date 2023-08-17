@@ -708,6 +708,7 @@ class Layer:
         None
 
         """
+        exponent_threshold = 4000.0
         ## eqn(22)
         self.Ai[0,:] = self.gamma[:,0].copy()
         self.Ai[1,:] = self.gamma[:,1].copy()
@@ -718,6 +719,8 @@ class Layer:
         for ii in range(4):
             ## looks a lot like eqn (25). Why is K not Pi ?
             exponent = np.clongdouble(-1.0j*(2.0*np.pi*f*self.qs[ii]*self.thick)/c_const)
+            if np.abs(exponent) > exponent_threshold:
+                exponent = exponent/np.abs(exponent)*exponent_threshold
             self.Ki[ii,ii] = np.nan_to_num(np.exp(exponent))
             #  JK original line
             # self.Ki[ii,ii] = np.exp(-1.0j*(2.0*np.pi*f*self.qs[ii]*self.thick)/c_const)
