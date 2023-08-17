@@ -1076,28 +1076,31 @@ class System:
         """
         nan = np.nan_to_num
         shift = np.sqrt(sys.float_info.min)
+        #
         # Can we renormalise to get rid of numerical problems?
+        #
         largest = np.amax(self.GammaStar)
+        # Work with a copy of GammaStar
         GammaStar = self.GammaStar.copy()
         GammaStar = GammaStar / largest
 
         # common denominator for all coefficients
-        Denom = self.GammaStar[0,0]*self.GammaStar[2,2]-self.GammaStar[0,2]*self.GammaStar[2,0]
+        Denom = GammaStar[0,0]*GammaStar[2,2]-GammaStar[0,2]*GammaStar[2,0]
 
         if Denom == 0:
             Denom += shift
 
         # field reflection coefficients
-        rpp = nan(self.GammaStar[1,0]*self.GammaStar[2,2])-nan(self.GammaStar[1,2]*self.GammaStar[2,0])
+        rpp = nan(GammaStar[1,0]*GammaStar[2,2])-nan(GammaStar[1,2]*GammaStar[2,0])
         rpp = np.nan_to_num(rpp/Denom)
 
-        rss = nan(self.GammaStar[0,0]*self.GammaStar[3,2])-nan(self.GammaStar[3,0]*self.GammaStar[0,2])
+        rss = nan(GammaStar[0,0]*GammaStar[3,2])-nan(GammaStar[3,0]*GammaStar[0,2])
         rss = np.nan_to_num(rss/Denom)
 
-        rps = nan(self.GammaStar[3, 0]*self.GammaStar[2,2])-nan(self.GammaStar[3,2]*self.GammaStar[2,0])
+        rps = nan(GammaStar[3, 0]*GammaStar[2,2])-nan(GammaStar[3,2]*GammaStar[2,0])
         rps = np.nan_to_num(rps/Denom)
 
-        rsp = nan(self.GammaStar[0,0]*self.GammaStar[1,2])-nan(self.GammaStar[1,0]*self.GammaStar[0,2])
+        rsp = nan(GammaStar[0,0]*GammaStar[1,2])-nan(GammaStar[1,0]*GammaStar[0,2])
         rsp = np.nan_to_num(rsp/Denom)
 
         # Try and remove any outliers by making sure the intensity is always < 1
