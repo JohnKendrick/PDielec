@@ -1075,12 +1075,12 @@ class System:
 
         """
         nan = np.nan_to_num
-        shift = np.sqrt(sys.float_info.min)
+        shift = sys.float_info.min
         #
         # Can we renormalise to get rid of numerical problems?
         #
-        largest = np.amax(self.GammaStar)
         # Work with a copy of GammaStar
+        largest = np.sqrt(np.abs(np.amax(np.real(self.GammaStar))))
         GammaStar = self.GammaStar.copy()
         GammaStar = GammaStar / largest
 
@@ -1120,10 +1120,10 @@ class System:
         # field transmission coefficients
         #t_field = np.zeros(4, dtype=np.complex128)
         t_out = np.zeros(4, dtype=np.clongdouble)
-        tpp = np.nan_to_num(self.GammaStar[2,2]/Denom)
-        tss = np.nan_to_num(self.GammaStar[0,0]/Denom)
-        tps = np.nan_to_num(-self.GammaStar[2,0]/Denom)
-        tsp = np.nan_to_num(-self.GammaStar[0,2]/Denom)
+        tpp = np.nan_to_num(GammaStar[2,2]/Denom/largest)
+        tss = np.nan_to_num(GammaStar[0,0]/Denom/largest)
+        tps = np.nan_to_num(-GammaStar[2,0]/Denom/largest)
+        tsp = np.nan_to_num(-GammaStar[0,2]/Denom/largest)
 
         # Try and remove any outliers by making sure the intensity is always < 1
         tpp = self.scale_intensity(tpp)
