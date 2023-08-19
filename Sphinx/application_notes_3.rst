@@ -11,25 +11,65 @@
    :keywords: Quantum Mechanics, Effective Field Theory, Maxwell, Garnett, Mie, Infrared, Terahertz, Castep, Abinit, VASP, GULP. QE
 
 
-===========================
-Single Crystal Applications
-===========================
+Single Crystal Study of L-Alanine
+=================================
+In an experimental and computational study of the the vibrational modes of single crystals of l-alanine the experimental transmittance was reported for polarized radiation along each of the principal axes, a-, b- and c-. :cite:`Allen2023`
 
-The transmission, reflection and absorption of infrared light through single crystals can be simulated using PDielec and PDGui.  Partial incoherence can be modelled by averaging over a sample of thicknesses and orientations.
+The directory Examples/SingleCrystal/l-alanine contains files for the calculation of the transmittance and reflectance of single crystals of l-alanine based on similar calculations to those reported in the paper, using Crystal17, and using PDGui to calculate the transmittance and reflectance properties of the crystal.  
+Details of the calculation can be found in phonon.dl2.  The output can be found in phonon.out.  Other files produced by the Crystal17 calculation are BORN.DAT and HESSFREQ.DAT.  These are used by PDGui to calculate the theoretical spectrum.
 
-Single Crystal Study of Thickness Effects in MgO
-================================================
+The experimental results for the measurement of terahertz transmittance were kindly provided by the authors of the experimental paper; J. L. Allen, T. J. Sanders, J. Horvat, R. A. Lewis and K. C. Rule.
+These measurements can be found in the Excel spreadsheets a-axis-experimental.xlsx, b-axis-experimental and c-axis-experimental.xlsx.   Each of these spreadsheets has two columns, the first is a column of frequencies in cm-1 and the second is the transmittance.
 
-This example looks at an isotropic system.  The results of a CASTEP calculation of MgO have provided the frequency dependent permittivity and this is used to look at the effect of crystal thickness on the reflectance, transmittance and absorptance.i
-The examples shown here were calculated using the scripts mgo_coherent_size_effects.py and mgo_partially_incoherent_size_effects in the Examples/SingleCrystal/MgO directory of the GitHub distribution.
-A 45\ :superscript:`o` incident beam on the (001) surface of MgO is used to calculate the transmittance, reflectance and absorbtance of thin films with thickness of 0.1, 1, 10 and 100 microns.
-The results of the coherent calculations are shown in :numref:`fig-mgo-coherent`
+The scripts used to generate the crystal transmittance from the calculated phonon modes can be found in a-axis.py, b-axis.py and c-axis.py.  These scripts use the *Fitter Tab* to compare the calculated spectrum with the experimental one.  Changes have been made to the film thickness and to the widths of the peaks to improve the agreement between the two.
 
-.. _fig-mgo-coherent:
-.. figure:: ./_static/Figures/MgO_Coherent_Size_Effects.svg
+To run the scripts use a command such as;
+
+```
+pdgui -script a-axis.py
+```
+
+We would like to thank the authors of the paper below for providing the experimental data and for helpful discussions.
+
+In the following we will concentrate on the a-axis spectrum but the approach is similar for each axis considered.
+
+L-alaninine crystallises in an orthorhombic form, with 3 non-equivalent axes. 
+
+Initialising PDGui with the results of the calculation and the *scenario tab* in its single crystal mode; 
+
+```
+pdgui phonon.out -scenario crystal
+```
+
+The *Main Tab* shows the calculated unit cell and the frequencies as calculated by Crystal17.
+
+.. _fig-lalanine-maintab:
+.. figure:: ./_static/Figures/lalanine-maintab.png
    :scale: 90%
 
-   Effects of Film Thickness of MgO in Coherent Light, a 45\ :superscript:`o` incident beam with p- polarisation
+The *Settings Tab* shows those settings which affect the calculation of the permittivity.  By default the frequencies are modified by projecting out any translational degrees of freedom.  This is shown by the three zero frequencies in the table of frequencies.
+The contribution to the permittivity arising from electronic polarisation is shown in this Tab.
+In the case of Crystal17 calculations there are occasions when this is not calculated automatically.  If a coupled perturbed Hartree-Fock (CPHF) calculation is not possible because the exchange/correlation functional is not supported then the :math:`\epsilon_{\infty}` calculation is not performed.  In this example we have typed in the contribution from calculations using VASP.
+
+Other things to note in the settings tab is that the widths of the absorption peaks are set here.  All the widths can be set at once if necessary, or individual transitions can be given individual widths.  To start with a value of 5\ |cm-1| is typical.  
+
+.. _fig-lalanine-settingstab:
+.. figure:: ./_static/Figures/lalanine-settingstab.png
+   :scale: 90%
+
+The next tab is the *scenario tab* which is used to reflect the experimental parameters that are possible.  
+In this case we are looking at the single crystal scenario.
+The main parameter to consider is the thickness of the film and the method by which we will calculate the transmission and reflectivity.   
+To start with we will use *coherent thin film* mode and a thickness of 1mm.
+Since most experiments are run with the incident beam in air and the detector in air, the permittivity of the superstrate and substrate will be kept a 1.0.
+The geometry of the incident beam relative to the crystal is controlled by several orientation angles.  
+The incident beam angle will be set to 0\ :superscript:`o`.
+Once this is done information about the position of the crystal axes relative to the crystal frame can be seen in the text box of the *settings tab* 
+
+
+.. _fig-lalanine-scenariotab:
+.. figure:: ./_static/Figures/lalanine-scenariotab.png
+   :scale: 90%
 
 The results for the 'thick slab' case are shown only for reflectance and absorbtance.  It can be clearly seen that the reflection in the restrahlen region between the TO and LO frequencies (388 and 693 |cm1|) is almost total with also very little absorbtance.  
 The 0.1\ |micron| thickness shows peaks in reflectance and corresponding drops in transmittance at both the TO and LO frequencies, whilst showing only absorbtance at the TO frequency.
