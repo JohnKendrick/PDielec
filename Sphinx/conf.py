@@ -70,9 +70,9 @@ preamble_maths = r'''
 mathjax_path = 'https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML'
 extensions = [
     'sphinx.ext.mathjax',
-    'sphinx.ext.githubpages',
     'sphinxcontrib.bibtex',
     'cloud_sptheme.ext.table_styling',
+    'rst2pdf.pdfbuilder',
 ]
 
 bibtex_bibfiles = ['pdielec.bib']
@@ -80,7 +80,6 @@ mathjax_config = {
     "extensions": ["AMSmath.js"] ,
     "TeX": {
         "Macros": { 
-            "bm":       ["{\\boldsymbol{#1}}", 1],
             "tensor":   ["{\\bar{\\bar{#1}}}", 1],
             "tensorbs": ["{\\bar{\\bar{\\bm{#1}}}}", 1],
             "tensorbf": ["{\\bar{\\bar{\\bm{#1}}}}", 1],
@@ -107,7 +106,7 @@ master_doc = "index"
 #
 # This is also used if you do content translation via gettext catalogs.
 # Usually you set "language" from the command line for these cases.
-language = 'eng'
+language = 'en'
 
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
