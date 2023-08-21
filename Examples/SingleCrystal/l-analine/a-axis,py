@@ -9,7 +9,7 @@ tab = self.notebook.mainTab
 tab.settings['Program'] = 'crystal'
 tab.settings['Output file name'] = 'phonon.out'
 tab.settings['Excel file name'] = 'a-axis-calculated.xlsx'
-tab.settings['Script file name'] = 'a-axis.py'
+tab.settings['Script file name'] = 'a-axis,py'
 tab.settings['QM program'] = ''
 #
 #

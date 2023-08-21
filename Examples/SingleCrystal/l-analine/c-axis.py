@@ -18,7 +18,8 @@ tab.settings['Eckart flag'] =  True
 tab.settings['Neutral Born charges'] =  False
 tab.settings['Sigma value'] =  1.0
 tab.settings['Mass definition'] = 'average'
-tab.settings['Optical permittivity edited'] =  False
+tab.settings['Optical permittivity'] =  [[2.442, 0, 0], [0, 2.3052, 0], [0, 0, 2.5068]]
+tab.settings['Optical permittivity edited'] =  True
 tab.sigmas_cm1 = [1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 5.0, 5.0, 1.0, 1.0, 1.0, 1.0, 3.0, 1.0, 5.0, 1.0, 1.0, 1.0, 5.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0]
 #
 #
@@ -36,7 +37,7 @@ tab.settings['Superstrate depth'] =  999.0
 tab.settings['Substrate depth'] =  999.0
 tab.settings['Film thickness'] =  0.1
 tab.settings['Thickness unit'] = 'mm'
-tab.settings['Mode'] = 'Coherent thin film'
+tab.settings['Mode'] = 'Incoherent thin film'
 tab.settings['Frequency units'] = 'wavenumber'
 tab.settings['Partially incoherent samples'] =  20
 tab.settings['Percentage partial incoherence'] =  0
