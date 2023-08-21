@@ -80,7 +80,7 @@ The calculations shown are for p- polarised incident radiation.
 
 The incoherent method deviates from the thick slab mode at very low frequencies, but as the film thickness increases the deviations become smaller.
 Similarly at frequencies above the LO frequency the deviations from the thick slab mode are less for the thicker films.
-The 1mm film shown in the figure is the thickest film that the program can model.  Above this thickness numerical problems lead to errors, which can be seen by discontinuities in the reflectance and in reflectance values greater than 1.
+The user needs to be aware that for large thicknesses the calculation of the propagation matrix can lead to numerical overflows.  These manifest themselves as sudden changes in transmittance.  Reflectance calculations are badly affected by this and it is recommended to use the 'thick slab' mode for such cases.
 
 
 .. _fig-mgo-incoherent:
