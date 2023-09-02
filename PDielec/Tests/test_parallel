@@ -5,8 +5,8 @@ import os
 import sys
 import timeit
 import numpy as np
-import GTMcore as GTM
-from PDielec.DielectricFunction import DielectricFunction
+import PDielec.GTMcore as GTM
+import PDielec.DielectricFunction as DielectricFunction
 from PDielec.Constants import wavenumber, speed_light_si
 from functools import partial
 import time
@@ -280,9 +280,9 @@ def init_global():
     superstrateDielectric = 2.0
     substrateDielectric   = 2.0
     crystalDielectric     = 2.0 + 0.01j
-    superstrateDielectricFunction = DielectricFunction(epsType='constant',units='hz',parameters=superstrateDielectric).function()
-    substrateDielectricFunction   = DielectricFunction(epsType='constant',units='hz',parameters=substrateDielectric).function()
-    crystalPermittivityFunction     = DielectricFunction(epsType='constant_tensor',units='hz',parameters=crystalDielectric).function()
+    superstrateDielectricFunction = DielectricFunction.ConstantScalar(superstrateDielectric,units='hz').function()
+    substrateDielectricFunction   = DielectricFunction.ConstantScalar(substrateDielectric,units='hz').function()
+    crystalPermittivityFunction   = DielectricFunction.ConstantTensor(crystalDielectric,units='hz').function()
     superstrateDepth = 80
     substrateDepth   = 80
     crystalDepth     = 80
@@ -296,10 +296,10 @@ def setup_partial_func():
     superstrateDielectric = 2.0
     substrateDielectric   = 2.0
     crystalDielectric     = 2.0 + 0.01j
-    superstrateDielectricFunction = DielectricFunction(epsType='constant',units='hz',parameters=superstrateDielectric).function()
-    substrateDielectricFunction   = DielectricFunction(epsType='constant',units='hz',parameters=substrateDielectric).function()
+    superstrateDielectricFunction = DielectricFunction.ConstantScalar(superstrateDielectric,units='hz').function()
+    substrateDielectricFunction   = DielectricFunction.ConstantScalar(substrateDielectric,units='hz').function()
     # Actually use the permittivity function in what follows
-    crystalPermittivityFunction     = DielectricFunction(epsType='constant_tensor',units='hz',parameters=crystalDielectric).function()
+    crystalPermittivityFunction     = DielectricFunction.ConstantTensor(crystalDielectric,units='hz').function()
     # Create 3 layers, thickness is converted from microns to metres
     superstrateDepth = 80
     substrateDepth   = 80
@@ -328,10 +328,10 @@ def setup_local_args():
     superstrateDielectric = 2.0
     substrateDielectric   = 2.0
     crystalDielectric     = 2.0 + 0.01j
-    superstrateDielectricFunction = DielectricFunction(epsType='constant',units='hz',parameters=superstrateDielectric).function()
-    substrateDielectricFunction   = DielectricFunction(epsType='constant',units='hz',parameters=substrateDielectric).function()
+    superstrateDielectricFunction = DielectricFunction.ConstantScalar(superstrateDielectric,units='hz').function()
+    substrateDielectricFunction   = DielectricFunction.ConstantScalar(substrateDielectric,units='hz').function()
     # Actually use the permittivity function in what follows
-    crystalPermittivityFunction     = DielectricFunction(epsType='constant_tensor',units='hz',parameters=crystalDielectric).function()
+    crystalPermittivityFunction     = DielectricFunction.ConstantTensor(crystalDielectric,units='hz').function()
     # Create 3 layers, thickness is converted from microns to metres
     superstrateDepth = 80
     substrateDepth   = 80

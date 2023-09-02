@@ -23,6 +23,7 @@ epsinf
 interpolate 20000
 # Interpolation data points are taken from a maxwell garnett effective medium theory
 # Spheres with a 10% volume fraction
+# Widths of Lorentzians are 0.2 cm-1
 # Castep calculation on aspartic acid
 # See Examples/Castep/AsparticAcid for comparison
 0    2.162988094600412    0

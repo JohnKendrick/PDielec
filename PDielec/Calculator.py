@@ -1008,6 +1008,10 @@ def _brug_iter_error(epsbr, eps1, eps2, shape, L, f1, size):
     epsbr = np.array([[trace, 0, 0], [0, trace, 0], [0, 0, trace]])
     return epsbr, error
 
+def calculate_permittivity(refractive_index, debug=False):
+    """Calculate the permittivity from the refractive_index"""
+    return refractive_index*refractive_index
+
 def calculate_refractive_index(dielectric, debug=False):
     ''' Calculate the refractive index from the dielectric constant.
         Calculate the trace of the dielectric and calculate both square roots.

@@ -29,38 +29,23 @@ from scipy import interpolate
 
 class DielectricFunction:
     """Provide an interface to different dielectric functions"""
-    possible_epsTypes = ['constant','constant_tensor','file','interpolate_3','interpolate_6','dft','fpsq','drude-lorentz']
+    possible_epsTypes = ['dft','fpsq','drude-lorentz']
     possible_units = ['cm-1','microns','mu','nm','thz','hz']
-    def __init__(self, epsType=None, volume=None, filename=None, parameters=None, units='cm-1' ):
+    def __init__(self, units='cm-1' ):
         """
         Create a dielectricFunction
-        epsType      - specifies the type of function
-        filename   - used to read an experimental or calculated dielectric constant tensor
-        parameters - used to calculate a dielectric constant from DFT calculations
-        volume     - volume in angstrom
+        frequency_units        units of frequency (default is cm-1)
+        volume_angs            volume in angstrom
+        epsilon_infinity       epsilon infinity
         """
-        if  epsType not in self.possible_epsTypes:
-            print('Catastrophic error in DielectricFunction: type not recognised', epsType)
-            exit()
         if units not in self.possible_units:
             print('Catastrophic error in DielectricFunction: units not recognised', units)
             exit()
-        self.epsType              = epsType
-        self.filename             = filename
-        self.parameters           = parameters
         self.frequency_units      = units
-        self.epsilon_infinity     = None
-        self.volume_angs          = volume
+        self.epsilon_infinity     = np.zeros( (3,3) )
+        self.volume_angs          = None
         if self.volume_angs:
             self.volume_au = volume*angstrom*angstrom*angstrom
-        if epsType == 'file':
-            self._readFile()
-        elif epsType == 'interpolate_6':
-            self._generate6Interpolators()
-        elif epsType == 'interpolate_3':
-            self._generate3Interpolators()
-        elif epsType == 'interpolate':
-            self._generate3Interpolators()
 
     def setUnits(self,units):
         """Set the volume for dielectric calculations"""
@@ -78,97 +63,12 @@ class DielectricFunction:
 
     def setEpsilonInfinity(self,eps):
         """ Set epsilon infinity for dielectric calculations"""
-        self.epsilon_infinity     = eps
+        self.epsilon_infinity     = np.array(eps)
         return
 
     def function(self):
         """Return the function to report the dielectric"""
         return  self.calculate
-
-    def _readFile(self):
-        """
-        Read a dielectric function from a file
-        """
-        print('Reading file ',self.filename)
-        exit()
-        return
-
-    def _generate6Interpolators(self):
-        # If the interpolators do not exist we have to create them from the parameters
-        vs = []
-        rxxs = []
-        ryys = []
-        rzzs = []
-        ixxs = []
-        iyys = []
-        izzs = []
-        rxys = []
-        rxzs = []
-        ryzs = []
-        ixys = []
-        ixzs = []
-        iyzs = []
-        for v_cm1, epsrxx, epsixx, epsryy, epsiyy, epsrzz, epsizz, epsrxy, epsixy, epsrxz, epsixz, epsryz, epsiyz in self.parameters:
-            vs.append(v_cm1)
-            epsixx = min(0.0,epsixx)
-            epsiyy = min(0.0,epsiyy)
-            epsizz = min(0.0,epsizz)
-            epsixy = min(0.0,epsixy)
-            epsixz = min(0.0,epsixz)
-            epsiyz = min(0.0,epsiyz)
-            rxxs.append(epsrxx)
-            ryys.append(epsryy)
-            rzzs.append(epsrzz)
-            rxys.append(epsrzz)
-            rxzs.append(epsrzz)
-            ryzs.append(epsrzz)
-            ixxs.append(epsixx)
-            iyys.append(epsiyy)
-            izzs.append(epsizz)
-            ixys.append(epsizz)
-            ixzs.append(epsizz)
-            iyzs.append(epsizz)
-        self.interpolaterxx = interpolate.InterpolatedUnivariateSpline(vs,np.array(rxxs))
-        self.interpolateixx = interpolate.InterpolatedUnivariateSpline(vs,np.array(ixxs))
-        self.interpolateryy = interpolate.InterpolatedUnivariateSpline(vs,np.array(ryys))
-        self.interpolateiyy = interpolate.InterpolatedUnivariateSpline(vs,np.array(iyys))
-        self.interpolaterzz = interpolate.InterpolatedUnivariateSpline(vs,np.array(rzzs))
-        self.interpolateizz = interpolate.InterpolatedUnivariateSpline(vs,np.array(izzs))
-        self.interpolaterxy = interpolate.InterpolatedUnivariateSpline(vs,np.array(rxys))
-        self.interpolateixy = interpolate.InterpolatedUnivariateSpline(vs,np.array(ixys))
-        self.interpolaterxz = interpolate.InterpolatedUnivariateSpline(vs,np.array(rxzs))
-        self.interpolateixz = interpolate.InterpolatedUnivariateSpline(vs,np.array(ixzs))
-        self.interpolateryz = interpolate.InterpolatedUnivariateSpline(vs,np.array(ryzs))
-        self.interpolateiyz = interpolate.InterpolatedUnivariateSpline(vs,np.array(iyzs))
-        self.number_of_interpolators = 6
-
-    def _generate3Interpolators(self):
-        # If the interpolators do not exist we have to create them from the parameters
-        vs = []
-        rxxs = []
-        ryys = []
-        rzzs = []
-        ixxs = []
-        iyys = []
-        izzs = []
-        for v_cm1, epsrxx, epsixx, epsryy, epsiyy, epsrzz, epsizz in self.parameters:
-            vs.append(v_cm1)
-            epsixx = min(0.0,epsixx)
-            epsiyy = min(0.0,epsiyy)
-            epsizz = min(0.0,epsizz)
-            rxxs.append(epsrxx)
-            ryys.append(epsryy)
-            rzzs.append(epsrzz)
-            ixxs.append(epsixx)
-            iyys.append(epsiyy)
-            izzs.append(epsizz)
-        self.interpolaterxx = interpolate.InterpolatedUnivariateSpline(vs,np.array(rxxs))
-        self.interpolateixx = interpolate.InterpolatedUnivariateSpline(vs,np.array(ixxs))
-        self.interpolateryy = interpolate.InterpolatedUnivariateSpline(vs,np.array(ryys))
-        self.interpolateiyy = interpolate.InterpolatedUnivariateSpline(vs,np.array(iyys))
-        self.interpolaterzz = interpolate.InterpolatedUnivariateSpline(vs,np.array(rzzs))
-        self.interpolateizz = interpolate.InterpolatedUnivariateSpline(vs,np.array(izzs))
-        self.number_of_interpolators = 3
 
     def _convert(self, f):
         """
@@ -190,119 +90,6 @@ class DielectricFunction:
             print('Units in DielectricFunction not recognised:',units)
             exit()
         return result
-
-    def calculate(self, frequency):
-        """
-        Calculate the dielectric constant at this frequency
-        The frequency units are defined by the convert function
-        """
-        frequency_cm1 = self._convert(frequency)
-        if self.epsType == None:
-            print('Error in DielectricFunction type is not set')
-            exit()
-        elif self.epsType == 'constant':
-            return self.parameters
-        elif self.epsType == 'constant_tensor':
-            return self.parameters*np.eye(3)
-        elif self.epsType == 'filename':
-            return  self._epsFromFile(frequency_cm1)
-        elif self.epsType == 'interpolate_6':
-            return  self._epsFromInterpolate6(frequency_cm1)
-        elif self.epsType == 'interpolate_3':
-            return  self._epsFromInterpolate3(frequency_cm1)
-        elif self.epsType == 'interpolate':
-            return  self._epsFromInterpolate3(frequency_cm1)
-        elif self.epsType == 'dft':
-            return  self._epsFromDFT(frequency_cm1)
-        elif self.epsType == 'drude-lorentz':
-            return  self._epsFromDrudeLorentz(frequency_cm1)
-        elif self.epsType == 'fpsq':
-            return  self._epsFromFpsq(frequency_cm1)
-        else:
-            print('Error in DielectricFunction type is not recognised: ', self.epsType)
-            exit()
-        return
-
-    def _epsFromFile(self, v_cm1):
-        """
-        Calculate the dielectric constant from file data
-        """
-        print('_epsFromFile: ',v_cm1)
-        return
-
-    def _epsFromInterpolate3(self, v_cm1):
-        """
-        Calculate the dielectric constant from interpolation data
-        """
-        eps = np.zeros( (3,3), dtype=complex )
-        eps[0,0] = complex(self.interpolaterxx(v_cm1),self.interpolateixx(v_cm1))
-        eps[1,1] = complex(self.interpolateryy(v_cm1),self.interpolateiyy(v_cm1))
-        eps[2,2] = complex(self.interpolaterzz(v_cm1),self.interpolateizz(v_cm1))
-        return eps + self.epsilon_infinity
-
-    def _epsFromInterpolate6(self, v_cm1):
-        """
-        Calculate the dielectric constant from interpolation data
-        """
-        eps = np.zeros( (3,3), dtype=complex )
-        eps[0,0] = complex(self.interpolaterxx(v_cm1),self.interpolateixx(v_cm1))
-        eps[1,1] = complex(self.interpolateryy(v_cm1),self.interpolateiyy(v_cm1))
-        eps[2,2] = complex(self.interpolaterzz(v_cm1),self.interpolateizz(v_cm1))
-        eps[0,1] = complex(self.interpolaterxy(v_cm1),self.interpolateixy(v_cm1))
-        eps[0,2] = complex(self.interpolaterxz(v_cm1),self.interpolateixz(v_cm1))
-        eps[1,2] = complex(self.interpolateryz(v_cm1),self.interpolateiyz(v_cm1))
-        eps[1,0] = eps[0,1]
-        eps[2,0] = eps[0,2]
-        eps[2,1] = eps[1,2]
-        return eps + self.epsilon_infinity
-
-    def _epsFromDFT(self, v_cm1):
-        """
-        Calculate the dielectric constant from DFT parameters
-        Used internally by the code as it expects input parameters to be in atomic units
-        parameter is a list of the following
-                     mode_list,
-                     mode_frequencies,           (au)
-                     mode_sigmas,                (au)
-                     mode_oscillator_strengths,  (au)
-                     crystal_volume,             (au)
-                     epsilon_inf,
-                     drude,                      (true or false)
-                     drude_plasma,               (au)
-                     drude_sigma                 (au)
-        """
-        mode_list, mode_frequencies, mode_sigmas, mode_oscillator_strengths, crystal_volume, drude, drude_plasma, drude_sigma = self.parameters
-        v_au = v_cm1 * wavenumber
-        eps = self.dielectriContributionsFromModes(v_au, mode_list, mode_frequencies, mode_sigmas, mode_oscillator_strengths, crystal_volume)
-        if drude:
-            eps = eps + self.dielectricContributionFromDrude(vau, drude_plasma, drude_sigma, crystal_volume)
-        return eps + self.epsilon_infinity
-
-    def _epsFromDrudeLorentz(self, f_cm1):
-        """
-        Setup a Drude-Lorentz model for a diagonal permittivity 
-        """
-        eps = np.zeros( (3,3), dtype=complex )
-        for xyz,contribution in enumerate(self.parameters):
-            for mode in contribution:
-                v_cm1, strength_cm1, sigma_cm1 = mode
-                eps[xyz,xyz] += strength_cm1 * strength_cm1 / complex((v_cm1*v_cm1 - f_cm1*f_cm1), -sigma_cm1*f_cm1)
-        return eps + self.epsilon_infinity
-
-    def _epsFromFpsq(self, f_cm1):
-        """
-        Setup a fpsq model for the permittivity
-        """
-        #jk print('Setting up fpsq ',self.parameters)
-        eps = np.array(self.epsilon_infinity,dtype=complex)
-        for xyz,contribution in enumerate(self.parameters):
-            for omega_to, gamma_to, omega_lo, gamma_lo  in contribution:
-                contribution = (omega_lo**2 - f_cm1**2 - complex(0,gamma_lo)*f_cm1)/(omega_to**2 - f_cm1**2 - complex(0,gamma_to)*f_cm1)
-                # make sure the imaginary component is not negative!
-                real_contribution = np.real(contribution)
-                imag_contribution = max(-1.0E-12,np.imag(contribution))
-                eps[xyz,xyz] *= complex(real_contribution,imag_contribution)
-        return eps 
 
 
     def dielectriContributionsFromDrude(self, f, frequency, sigma, volume):
@@ -336,4 +123,230 @@ class DielectricFunction:
             dielectric = dielectric + strength / complex((v*v - f*f), -sigma*f)
         return dielectric * (4.0*np.pi/volume)
 
+
+class ConstantTensor(DielectricFunction):
+    def __init__(self, value, units='cm-1'):
+        """ A simple constant dielectric function that returns a complex constant
+            The value can be a 3x3 tensor or a scalar
+            This routine returns a diagonal tensor
+        """
+        self.value = value
+        DielectricFunction.__init__(self,units=units)
+
+    def calculate(self,v):
+        return self.value * np.eye(3) + self.epsilon_infinity
+
+class ConstantScalar(DielectricFunction):
+    def __init__(self, value, units='cm-1'):
+        """ A simple constant dielectric function that returns a complex constant
+            The value can be a 3x3 tensor or a scalar
+            This routine returns a scalar vale
+        """
+        self.value = value
+        DielectricFunction.__init__(self,units=units)
+
+    def calculate(self,v):
+        return self.value
+
+class Tabulate1(DielectricFunction):
+    def __init__(self, vs_cm1, permittivities,units='cm-1'):
+        """ A dielectric function that interpolates a 1d vector of values
+            The initialisation creates all the interpolators
+            The results is a 3x3 tensor
+        """
+        vs = np.array(vs_cm1)
+        eps = np.array(permittivities)
+        eps_r = np.real(eps)
+        eps_i = np.imag(eps)
+        self.interpolater = interpolate.InterpolatedUnivariateSpline(vs,eps_r)
+        self.interpolatei = interpolate.InterpolatedUnivariateSpline(vs,eps_i)
+        DielectricFunction.__init__(self,units=units)
+
+    def calculate(self,v):
+        """
+        Calculate the dielectric constant from interpolation data
+        """
+        v_cm1 = self._convert(v)
+        eps = np.zeros( (3,3), dtype=complex )
+        eps[0,0] = complex(self.interpolater(v_cm1),self.interpolatei(v_cm1))
+        eps[1,1] = eps[0,0]
+        eps[2,2] = eps[0,0]
+        return eps + self.epsilon_infinity
+
+class Tabulate3(DielectricFunction):
+    def __init__(self, vs_cm1, epsxx, epsyy, epszz,units='cm-1'):
+        """ A dielectric function that interpolates the diagonal components of the permittivity
+            The initialisation creates all the interpolators
+            The results is a 3x3 tensor
+        """
+        vs = np.array(vs_cm1)
+        eps = [np.array(epsxx), np.array(epsyy), np.array(epszz)]
+        epsr = np.zeros(3)
+        epsi = np.zeros(3)
+        self.interpolater = []
+        self.interpolatei = []
+        for i in enum(eps):
+            epsr[i] = np.real(eps)
+            epsi[i] = np.imag(eps)
+            self.interpolater.append(interpolate.InterpolatedUnivariateSpline(vs,epsr[i]))
+            self.interpolatei.append(interpolate.InterpolatedUnivariateSpline(vs,epsi[i]))
+        DielectricFunction.__init__(self,units=units)
+
+    def calculate(self,v):
+        """
+        Calculate the dielectric constant from interpolation data
+        """
+        v_cm1 = self._convert(v)
+        eps = np.zeros( (3,3), dtype=complex )
+        eps[0,0] = complex(self.interpolater[0](v_cm1),self.interpolatei[0](v_cm1))
+        eps[1,1] = complex(self.interpolater[1](v_cm1),self.interpolatei[1](v_cm1))
+        eps[2,2] = complex(self.interpolater[2](v_cm1),self.interpolatei[2](v_cm1))
+        return eps + self.epsilon_infinity
+
+class Tabulate6(DielectricFunction):
+    def __init__(self, vs_cm1, epsxx, epsyy, epszz, epsxy, epsxz, epsyz,units='cm-1'):
+        """ A dielectric function that interpolates all components of the permittivity
+            The initialisation creates all the interpolators
+            The results is a 3x3 tensor
+        """
+        vs = np.array(vs_cm1)
+        eps = [np.array(epsxx), np.array(epsyy), np.array(epszz), np.array(epsxy), np.array(epsxz), np.array(epsyz)]
+        epsr = np.zeros(3)
+        epsi = np.zeros(3)
+        self.interpolater = []
+        self.interpolatei = []
+        for i in enum(eps):
+            epsr[i] = np.real(eps)
+            epsi[i] = np.imag(eps)
+            self.interpolater.append(interpolate.InterpolatedUnivariateSpline(vs,epsr[i]))
+            self.interpolatei.append(interpolate.InterpolatedUnivariateSpline(vs,epsi[i]))
+        DielectricFunction.__init__(self,units=units)
+
+    def calculate(self,v):
+        """
+        Calculate the dielectric constant from interpolation data
+        """
+        v_cm1 = self._convert(v)
+        eps = np.zeros( (3,3), dtype=complex )
+        eps[0,0] = complex(self.interpolater[0](v_cm1),self.interpolatei[0](v_cm1))
+        eps[1,1] = complex(self.interpolater[1](v_cm1),self.interpolatei[1](v_cm1))
+        eps[2,2] = complex(self.interpolater[2](v_cm1),self.interpolatei[2](v_cm1))
+        eps[1,0] = complex(self.interpolater[3](v_cm1),self.interpolatei[3](v_cm1))
+        eps[2,0] = complex(self.interpolater[4](v_cm1),self.interpolatei[4](v_cm1))
+        eps[2,1] = complex(self.interpolater[5](v_cm1),self.interpolatei[5](v_cm1))
+        eps[0,1] = eps[1,0]
+        eps[0,2] = eps[2,0]
+        eps[1,2] = eps[2,1]
+        return eps + self.epsilon_infinity
+
+class DFT(DielectricFunction):
+    def __init__(self,mode_list, mode_frequencies, mode_sigmas, mode_oscillator_strengths, crystal_volume, epsilon_inf, drude, drude_plasma, drude_sigma,units='cm-1'):
+        """
+        Calculate the dielectric constant from DFT parameters
+        Used internally by the code as it expects input parameters to be in atomic units
+        parameter is a list of the following
+                     mode_list,
+                     mode_frequencies,           (au)
+                     mode_sigmas,                (au)
+                     mode_oscillator_strengths,  (au)
+                     crystal_volume,             (au)
+                     epsilon_inf,
+                     drude,                      (true or false)
+                     drude_plasma,               (au)
+                     drude_sigma                 (au)
+        """
+        self.mode_list = mode_list
+        self.mode_frequencies = mode_frequencies
+        self.mode_sigmas = mode_sigmas
+        self.mode_oscillator_strengths = mode_oscillator_strengths
+        self.crystal_volume = crystal_volume
+        self.epsilon_infinity = epsilon_inf
+        self.drude = drude
+        self.drude_plasma = drude_plasma
+        self.drude_sigma = drude_sigma
+        DielectricFunction.__init__(self,units=units)
+
+    def calculate(self,v):
+        """
+        Calculate the permittivity from DFT data
+        """
+        v_cm1 = self._convert(v)    # Shouldn't be needed
+        v_au = v_cm1 * wavenumber
+        eps = self.dielectriContributionsFromModes(v_au, self.mode_list, self.mode_frequencies, 
+                                                   self.mode_sigmas, self.mode_oscillator_strengths, 
+                                                   self.crystal_volume)
+        if drude:
+            eps = eps + self.dielectricContributionFromDrude(vau, self.drude_plasma, self.drude_sigma, self.crystal_volume)
+        return eps + self.epsilon_infinity
+
+class DrudeLorentz(DielectricFunction):
+    def __init__(self, vs_cm1, strengths_cm1, sigmas_cm1,units='cm-1'):
+        """Use a Drude Lorentz mode to calculate the permittivity
+           vs_cm1 are the frequencies of the absorptions
+           strengths_cm1 are the strengths
+           sigmas are their widths
+           If (3,n) arrays are passed through then each array is for xx, yy, zz
+           If an (n) array is passed through then the same information is used for xx, yy and zz
+        """
+        rhombic = False
+        if isinstance(vs_cm1[0], list):
+            rhombic = True
+        if rhombic:
+            self.vs_cm1        = vs_cm1
+            self.strengths_cm1 = strengths_cm1
+            self.sigmas_cm1    = sigmas_cm1
+        else:
+            self.vs_cm1        = [vs_cm1, vs_cm1, vs_cm1]
+            self.strengths_cm1 = [strengths_cm1, strengths_cm1, strengths_cm1]
+            self.sigmas_cm1    = [sigmas_cm1, sigmas_cm1, sigmas_cm1]
+        DielectricFunction.__init__(self,units=units)
+        return
+
+    def calculate(self, v):
+        """
+        Setup a Drude-Lorentz model for a diagonal permittivity 
+        """
+        f_cm1 = self._convert(v)
+        eps = np.zeros( (3,3), dtype=complex )
+        for xyz, (vs, strengths, sigmas) in enumerate(zip(self.vs_cm1,self.strengths_cm1, self.sigmas_cm1)):
+            for v, strength, sigma in zip(vs, strengths,sigmas):
+                eps[xyz,xyz] += strength * strength / complex((v*v - f_cm1*f_cm1), -sigma*f_cm1)
+        return eps + self.epsilon_infinity
+
+class FPSQ(DielectricFunction):
+    def __init__(self, omega_tos, gamma_tos, omega_los, gamma_los,units='cm-1'):
+        """Use a FPSQ mode to calculate the permittivity
+           If (3,n) arrays are passed through then each array is for xx, yy, zz
+           If an (n) array is passed through then the same information is used for xx, yy and zz
+        """
+        rhombic = False
+        if isinstance(omega_tos[0], list):
+            rhombic = True
+        if rhombic:
+            self.omega_tos = omega_tos
+            self.gamma_tos = gamma_tos
+            self.omega_los = omega_los
+            self.gamma_los = gamma_los
+        else:
+            self.omega_tos = [omega_tos, omega_tos, omega_tos]
+            self.gamma_tos = [gamma_tos, gamma_tos, gamma_tos]
+            self.omega_los = [omega_los, omega_los, omega_los]
+            self.gamma_los = [gamma_los, gamma_los, gamma_los]
+        DielectricFunction.__init__(self,units=units)
+        return
+
+    def calculate(self, v):
+        """
+        Setup a FPSQ for a diagonal permittivity 
+        """
+        f_cm1 = self._convert(v)
+        eps = np.array(self.epsilon_infinity,dtype=complex)
+        for xyz,(omega_tos,gamma_tos,omega_los,gamma_los) in enumerate(zip(self.omega_tos,self.gamma_tos,self.omega_los, self.gamma_los)):
+            for omega_to, gamma_to, omega_lo, gamma_lo  in zip(omega_tos,gamma_tos,omega_los,gamma_los):
+                contribution = (omega_lo**2 - f_cm1**2 - complex(0,gamma_lo)*f_cm1)/(omega_to**2 - f_cm1**2 - complex(0,gamma_to)*f_cm1)
+                # make sure the imaginary component is not negative!
+                real_contribution = np.real(contribution)
+                imag_contribution = max(-1.0E-12,np.imag(contribution))
+                eps[xyz,xyz] *= complex(real_contribution,imag_contribution)
+        return eps 
 

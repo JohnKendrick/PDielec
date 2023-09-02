@@ -20,7 +20,7 @@ import numpy as np
 from PDielec.UnitCell import UnitCell
 from PDielec.GenericOutputReader import GenericOutputReader
 from PDielec.Calculator          import initialise_diagonal_tensor
-from PDielec.DielectricFunction  import DielectricFunction
+import PDielec.DielectricFunction as DielectricFunction
 
 
 class ExperimentOutputReader(GenericOutputReader):
@@ -71,19 +71,22 @@ class ExperimentOutputReader(GenericOutputReader):
         """
         od = []
         line = self._read_line()
+        print('Line:',line)
         od.append([complex(f) for f in line.split()[0:3]])
         line = self._read_line()
         od.append([complex(f) for f in line.split()[0:3]])
         line = self._read_line()
         od.append([complex(f) for f in line.split()[0:3]])
+        print('od:',od)
         # If we have complex input return a complex list, otherwise return a real list
         odc = np.array(od,dtype=complex)
+        print('odc:',odc)
         odi = np.absolute(np.imag(odc))
+        print('odi:',odi)
         sumi = np.sum(odi)
         if sumi < 1.0e-12:
             odc = np.real(odc)
-        parameters = odc.tolist()
-        self.CrystalPermittivity = DielectricFunction('constant',parameters=parameters)
+        self.CrystalPermittivity = DielectricFunction.ConstantScalar(odc)
         if self.zerof_optical_dielectric:
             self.CrystalPermittivity.setEpsilonInfinity(self.zerof_optical_dielectric)
         if self.volume:
@@ -94,24 +97,25 @@ class ExperimentOutputReader(GenericOutputReader):
         """
         Read in a tabulated permittivity and use it for interpolation -
         """
-        full_eps = []
-        contributions = []
         line = self._read_line()
         line = line.lower()
         line = line.replace(',',' ')
         split_line = line.split()
+        omegas = []
+        eps    = []
         while split_line[0] != '&end' and split_line[0] != 'end':
             omega  = float(split_line[0])
-            epsrxx = float(split_line[1])
-            epsixx = float(split_line[2])
-            full_eps.append( (omega, epsrxx, epsixx, epsrxx, epsixx, epsrxx, epsixx) )
+            epsr   = float(split_line[1])
+            epsi   = float(split_line[2])
+            omegas.append(omega)
+            eps.append(complex(epsr,epsi))
             line = self._read_line()
             line = line.lower()
             line = line.replace(',',' ')
             split_line = line.split()
         # end for i
         # Create a dielectric function for use in calculations
-        self.CrystalPermittivity = DielectricFunction('interpolate_3', parameters=full_eps)
+        self.CrystalPermittivity = DielectricFunction.Tabulate1(omegas,eps)
         if self.zerof_optical_dielectric:
             self.CrystalPermittivity.setEpsilonInfinity(self.zerof_optical_dielectric)
         if self.volume:
@@ -123,11 +127,14 @@ class ExperimentOutputReader(GenericOutputReader):
         Read in a tabulated permittivity and use it for interpolation -
         """
         full_eps = []
-        contributions = []
         line = self._read_line()
         line = line.lower()
         line = line.replace(',',' ')
         split_line = line.split()
+        omegas = []
+        epsxx = []
+        epsyy = []
+        epszz = []
         while split_line[0] != '&end' and split_line[0] != 'end':
             omega  = float(split_line[0])
             epsrxx = float(split_line[1])
@@ -136,14 +143,17 @@ class ExperimentOutputReader(GenericOutputReader):
             epsiyy = float(split_line[4])
             epsrzz = float(split_line[5])
             epsizz = float(split_line[6])
-            full_eps.append( (omega, epsrxx, epsixx, epsryy, epsiyy, epsrzz, epsizz) )
+            omegas.append(omega)
+            epsxx.append(complex(epsrxx,epsixx))
+            epsyy.append(complex(epsryy,epsiyy))
+            epszz.append(complex(epsrzz,epsizz))
             line = self._read_line()
             line = line.lower()
             line = line.replace(',',' ')
             split_line = line.split()
         # end for i
         # Create a dielectric function for use in calculations
-        self.CrystalPermittivity = DielectricFunction('interpolate_3', parameters=full_eps)
+        self.CrystalPermittivity = DielectricFunction.Tabulate3(omegas,epsxx,epsyy,epszz)
         if self.zerof_optical_dielectric:
             self.CrystalPermittivity.setEpsilonInfinity(self.zerof_optical_dielectric)
         if self.volume:
@@ -155,11 +165,17 @@ class ExperimentOutputReader(GenericOutputReader):
         Read in a tabulated permittivity and use it for interpolation -
         """
         full_eps = []
-        contributions = []
         line = self._read_line()
         line = line.lower()
         line = line.replace(',',' ')
         split_line = line.split()
+        omegas = []
+        epsxx = []
+        epsyy = []
+        epszz = []
+        epsxy = []
+        epsxz = []
+        epsyz = []
         while split_line[0] != '&end' and split_line[0] != 'end':
             omega  = float(split_line[0])
             epsrxx = float(split_line[1])
@@ -174,14 +190,20 @@ class ExperimentOutputReader(GenericOutputReader):
             epsixz = float(split_line[10])
             epsryz = float(split_line[11])
             epsiyz = float(split_line[12])
-            full_eps.append( (omega, epsrxx, epsixx, epsryy, epsiyy, epsrzz, epsizz, epsrxy, epsixy, epsrxz, epsixz, epsryz, epsiyz) )
+            omegas.append(omega)
+            epsxx.append(complex(epsrxx,epsixx))
+            epsyy.append(complex(epsryy,epsiyy))
+            epszz.append(complex(epsrzz,epsizz))
+            epsxy.append(complex(epsrxy,epsixy))
+            epsxz.append(complex(epsrxz,epsixz))
+            epsyz.append(complex(epsryz,epsiyz))
             line = self._read_line()
             line = line.lower()
             line = line.replace(',',' ')
             split_line = line.split()
         # end for i
         # Create a dielectric function for use in calculations
-        self.CrystalPermittivity = DielectricFunction('interpolate_6', parameters=full_eps)
+        self.CrystalPermittivity = DielectricFunction.Tablulate6(omegas,epsxx,epsyy,epszz,epsxy,epsxz,epsyz)
         if self.zerof_optical_dielectric:
             self.CrystalPermittivity.setEpsilonInfinity(self.zerof_optical_dielectric)
         if self.volume:
@@ -201,23 +223,28 @@ class ExperimentOutputReader(GenericOutputReader):
         zz  1
         413.7 1050.0  22.2
         """
-        diag_eps = []
+        omegas_all = []
+        strengths_all = []
+        gammas_all = []
         for diag in range(0,3):
             line = self._read_line().split()
             element = line[0]
             n = int(line[1])
-            contributions = []
+            omegas = []
+            strengths = []
+            gammas = []
             for i in range(n):
                 line = self._read_line().split()
-                omega    = float(line[0])
-                strength = float(line[1])
-                gamma    = float(line[2])
-                contributions.append( (omega, strength, gamma) )
+                omegas.append(float(line[0]))
+                strengths.append(float(line[1]))
+                gammas.append(float(line[2]))
             # end for i
-            diag_eps.append(contributions)
+            omegas_all.append(omegas)
+            strengths_all.append(strengths)
+            gammas_all.append(gammas)
         # end for diag
         # Create a dielectric function for use in calculations
-        self.CrystalPermittivity = DielectricFunction('drude-lorentz', parameters=diag_eps)
+        self.CrystalPermittivity = DielectricFunction.DrudeLorentz(omegas_all,strengths_all,gammas_all)
         if self.zerof_optical_dielectric:
             self.CrystalPermittivity.setEpsilonInfinity(self.zerof_optical_dielectric)
         if self.volume:
@@ -247,24 +274,32 @@ class ExperimentOutputReader(GenericOutputReader):
          1063.7     6.1       1230.7    8.2
          1157.2     6.2       1154.9    6.1
          """
-        diag_eps = []
+        omega_tos_all = []
+        gamma_tos_all = []
+        omega_los_all = []
+        gamma_los_all = []
         for diag in range(0,3):
             line = self._read_line().split()
             element = line[0]
             n = int(line[1])
-            contributions = []
+            omega_tos = []
+            gamma_tos = []
+            omega_los = []
+            gamma_los = []
             for i in range(n):
                 line = self._read_line().split()
-                omega_to = float(line[0])
-                gamma_to = float(line[1])
-                omega_lo = float(line[2])
-                gamma_lo = float(line[3])
-                contributions.append( (omega_to, gamma_to, omega_lo, gamma_lo) )
+                omega_tos.append(float(line[0]))
+                gamma_tos.append(float(line[1]))
+                omega_los.append(float(line[2]))
+                gamma_los.append(float(line[3]))
+            omega_tos_all.append(omega_tos)
+            gamma_tos_all.append(gamma_tos)
+            omega_los_all.append(omega_los)
+            gamma_los_all.append(gamma_los)
             # end for i
-            diag_eps.append(contributions)
         # end for diag
         # Create a dielectric function for use in calculations
-        self.CrystalPermittivity = DielectricFunction('fpsq', parameters=diag_eps)
+        self.CrystalPermittivity = DielectricFunction.FPSQ(omega_tos_all,gamma_tos_all,omega_los_all,gamma_los_all)
         if self.zerof_optical_dielectric:
             self.CrystalPermittivity.setEpsilonInfinity(self.zerof_optical_dielectric)
         if self.volume:

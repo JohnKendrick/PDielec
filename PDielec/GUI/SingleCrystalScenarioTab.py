@@ -4,6 +4,7 @@ import os
 import numpy as np
 import copy
 import PDielec.Calculator as Calculator
+import PDielec.DielectricFunction as DielectricFunction
 from PyQt5.QtWidgets            import QPushButton, QWidget
 from PyQt5.QtWidgets            import QSpacerItem
 from PyQt5.QtWidgets            import QComboBox, QLabel, QLineEdit, QListWidget
@@ -12,7 +13,6 @@ from PyQt5.QtWidgets            import QVBoxLayout, QHBoxLayout, QFormLayout
 from PyQt5.QtWidgets            import QSpinBox,QDoubleSpinBox
 from PyQt5.QtWidgets            import QSizePolicy
 from PyQt5.QtCore               import QCoreApplication, Qt
-from PDielec.DielectricFunction import DielectricFunction
 from PDielec.Constants          import wavenumber, PI, avogadro_si, angstrom, speed_light_si
 from PDielec.Utilities          import Debug
 from PDielec.GUI.ScenarioTab    import ScenarioTab
@@ -634,8 +634,8 @@ class SingleCrystalScenarioTab(ScenarioTab):
         # The dielectric variables are functions of frequency
         superstrateDielectric = self.settings['Superstrate dielectric']
         substrateDielectric   = self.settings['Substrate dielectric']
-        superstrateDielectricFunction = DielectricFunction(epsType='constant',units='hz',parameters=superstrateDielectric).function()
-        substrateDielectricFunction   = DielectricFunction(epsType='constant',units='hz',parameters=substrateDielectric).function()
+        superstrateDielectricFunction = DielectricFunction.ConstantScalar(superstrateDielectric).function()
+        substrateDielectricFunction   = DielectricFunction.ConstantScalar(substrateDielectric).function()
         # The crystal dielectric has already been defined in the SettingsTab
         # Force a call to get the permittivity, if it needs recalculating it will be
         temp = self.notebook.settingsTab.get_crystal_permittivity(vs_cm1)
