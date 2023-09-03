@@ -336,6 +336,8 @@ def runP2CifTest(title, instructions, regenerate):
         sys.argv = ['p2cif']
     sys.argv.extend(instructions)
     outputfile = 'all.cif'
+    if os.path.exists('all.cif'):
+        os.remove('all.cif')
     if regenerate:
         outputfile = 'all.ref.cif'
     with open(outputfile,'w') as stdout:
@@ -417,6 +419,8 @@ def runPreaderTest(title, instructions, regenerate):
     else:
         sys.argv = ['preader']
     sys.argv.extend(instructions)
+    if os.path.exists('command.csv'):
+        os.remove('command.csv')
     outputfile = 'command.csv'
     if regenerate:
         outputfile = 'command.ref.csv'
@@ -457,6 +461,10 @@ def runPDGuiTest(title, instructions, regenerate, benchmarks=False):
         sys.argv.append(os.path.join(rootDirectory,'pdgui'))
     else:
         sys.argv = ['pdgui']
+    if os.path.exists('results.xlsx'):
+        os.remove('results.xlsx')
+    if os.path.exists('results.csv'):
+        os.remove('results.csv')
     sys.argv.extend(instructions)
     if debug:
         result = subprocess.run(sys.argv)
@@ -590,11 +598,6 @@ def runPdMakefile(directory,pdmakefile,regenerate,benchmarks=False):
         print('RunPdMakefile: directory =',directory)
         print('RunPdMakefile: pdmakefile =',pdmakefile)
         print('RunPdMakefile: cwd =',homedir)
-    #directory_,filename = os.path.split(pdmakefile)
-    #if debug:
-    #    print('RunPdMakefile: directory_ =',directory_)
-    #    print('RunPdMakefile: filename =',filename)
-    #mychdir(directory_)
     mychdir(directory)
     title,instructions = readPdMakefile(directory,pdmakefile)
     if debug:
@@ -628,6 +631,7 @@ def runClean():
     os.chdir(rootDirectory)
     subprocess.run('find . -name results.xlsx -exec rm -f {} \;',shell=True)
     subprocess.run('find . -name results.csv -exec rm -f {} \;',shell=True)
+    subprocess.run('find . -name command.csv -exec rm -f {} \;',shell=True)
     subprocess.run('find . -name all.cif -exec rm -f {} \;',shell=True)
     subprocess.run('find . -name \*.nma -exec rm -f {} \;',shell=True)
     print('Cleaning complete')

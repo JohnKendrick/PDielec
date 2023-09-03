@@ -1,6 +1,7 @@
 # -*- coding: utf8 -*-
 import numpy as np
 import PDielec.Calculator as Calculator
+import PDielec.DielectricFunction as  DielectricFunction
 from PyQt5.QtWidgets            import  QWidget, QApplication
 from PyQt5.QtWidgets            import  QComboBox, QLabel
 from PyQt5.QtWidgets            import  QCheckBox
@@ -12,7 +13,6 @@ from PyQt5.QtCore               import  Qt, QSize, QCoreApplication
 from PDielec.Constants          import  wavenumber, amu, PI, angstrom
 from PDielec.Constants          import  average_masses, isotope_masses
 from PDielec.Utilities          import  Debug
-from PDielec.DielectricFunction import  DielectricFunction
 from functools                  import  partial
 
 class FixedQTableWidget(QTableWidget):
@@ -268,9 +268,9 @@ class SettingsTab(QWidget):
             drude_sigma_au = 0
             sigmas_au = np.array(self.sigmas_cm1)*wavenumber
             debugger.print('CreateIntensityTable: Calculating dielectric',self.mode_list)
-            self.CrystalPermittivity = DielectricFunction('dft',parameters=(
+            self.CrystalPermittivity = DielectricFunction.DFT(
                                          self.mode_list, frequencies_au, sigmas_au, self.oscillator_strengths,
-                                         volume_au, drude, drude_plasma_au, drude_sigma_au) )
+                                         volume_au, drude, drude_plasma_au, drude_sigma_au )
         # Add the optical permittivity to the dielctric function
         self.CrystalPermittivity.setEpsilonInfinity(epsilon_inf)
         #

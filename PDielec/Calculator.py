@@ -1027,12 +1027,20 @@ def calculate_refractive_index_scalar(dielectric_scalar, debug=False):
     solution1 = np.sqrt(dielectric_scalar)
     r, phase = cmath.polar(solution1)
     solution2 = cmath.rect(-r, phase)
+    real1 = np.real(solution1)
+    real2 = np.real(solution2)
     imag1 = np.imag(solution1)
     imag2 = np.imag(solution2)
-    if imag1 > imag2:
-        solution = solution1
+    if abs(imag1)+abs(imag2) > 1.0e-18:
+        if imag1 > imag2:
+            solution = solution1
+        else:
+            solution = solution2
     else:
-        solution = solution2
+         if real1 > real2:
+            solution = solution1
+         else:
+            solution = solution2
     if np.abs(solution*solution-dielectric_scalar)/(1+np.abs(dielectric_scalar)) > 1.0E-8 or debug:
         print("There is an error in refractive index")
         print("Dielectric = ", dielectric_scalar)
@@ -1127,11 +1135,11 @@ def solve_effective_medium_equations(
     size = 2.0*np.pi*size_mu / lambda_mu
     data = ''
     # Calculate the effect of bubbles in the matrix by assuming they are embedded in an effective medium defined above
-    refractive_index = math.sqrt(np.trace(dielectric_medium)/3.0)
+    refractive_index = calculate_refractive_index(dielectric_medium, debug=False)
     if refractive_index.imag < 0.0:
         refractive_index = refractive_index.conjugate()
     if bubble_vf > 0:
-        effdielec,refractive_index = calculate_bubble_refractive_index(v, refractive_index, bubble_vf, bubble_radius)
+        effdielec,refractive_index = calculate_bubble_refractive_index(v, refractive_index.real, bubble_vf, bubble_radius)
         dielectric_medium = effdielec
     if method == "balan":
         effdielec = balan(dielectric_medium, crystal_permittivity, shape, L, vf, size)

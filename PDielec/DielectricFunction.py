@@ -240,7 +240,7 @@ class Tabulate6(DielectricFunction):
         return eps + self.epsilon_infinity
 
 class DFT(DielectricFunction):
-    def __init__(self,mode_list, mode_frequencies, mode_sigmas, mode_oscillator_strengths, crystal_volume, epsilon_inf, drude, drude_plasma, drude_sigma,units='cm-1'):
+    def __init__(self,mode_list, mode_frequencies, mode_sigmas, mode_oscillator_strengths, crystal_volume, drude, drude_plasma, drude_sigma,units='cm-1'):
         """
         Calculate the dielectric constant from DFT parameters
         Used internally by the code as it expects input parameters to be in atomic units
@@ -250,7 +250,6 @@ class DFT(DielectricFunction):
                      mode_sigmas,                (au)
                      mode_oscillator_strengths,  (au)
                      crystal_volume,             (au)
-                     epsilon_inf,
                      drude,                      (true or false)
                      drude_plasma,               (au)
                      drude_sigma                 (au)
@@ -260,7 +259,6 @@ class DFT(DielectricFunction):
         self.mode_sigmas = mode_sigmas
         self.mode_oscillator_strengths = mode_oscillator_strengths
         self.crystal_volume = crystal_volume
-        self.epsilon_infinity = epsilon_inf
         self.drude = drude
         self.drude_plasma = drude_plasma
         self.drude_sigma = drude_sigma
@@ -275,7 +273,7 @@ class DFT(DielectricFunction):
         eps = self.dielectriContributionsFromModes(v_au, self.mode_list, self.mode_frequencies, 
                                                    self.mode_sigmas, self.mode_oscillator_strengths, 
                                                    self.crystal_volume)
-        if drude:
+        if self.drude:
             eps = eps + self.dielectricContributionFromDrude(vau, self.drude_plasma, self.drude_sigma, self.crystal_volume)
         return eps + self.epsilon_infinity
 

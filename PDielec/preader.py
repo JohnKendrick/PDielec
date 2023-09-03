@@ -4,13 +4,13 @@ from __future__ import print_function
 import numpy as np
 import os, sys
 import psutil
-from PDielec.Constants import amu, wavenumber, angstrom, isotope_masses, average_masses
-from PDielec.DielectricFunction import DielectricFunction
-from multiprocessing.dummy import Pool
+import PDielec.DielectricFunction as DielectricFunction
 import dill as pickle
 import PDielec.Calculator as Calculator
 import PDielec.Utilities as Utilities
 import PDielec.__init__
+from PDielec.Constants import amu, wavenumber, angstrom, isotope_masses, average_masses
+from multiprocessing.dummy import Pool
 version = PDielec.__init__.__version__
 
 def set_affinity_on_worker():
@@ -117,7 +117,7 @@ def read_a_file( calling_parameters):
                     mode_list.remove(mode)
             # end loop over modes to be ignored
         # end of if ignore_modes
-        crystalPermittivity = DielectricFunction('dft', parameters=(mode_list, modified_frequencies*wavenumber, sigmas, oscillator_strengths, volume, False, 0.0, 0.0) )
+        crystalPermittivity = DielectricFunction.DFT(mode_list, modified_frequencies*wavenumber, sigmas, oscillator_strengths, volume, False, 0.0, 0.0) 
         crystalPermittivity.setEpsilonInfinity(epsinf)
         ionicv = crystalPermittivity.calculate(0.0) - epsinf
     # absorption units here are L/mole/cm-1

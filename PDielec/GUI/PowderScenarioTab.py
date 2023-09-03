@@ -26,6 +26,7 @@ class PowderScenarioTab(ScenarioTab):
         self.scenarioType = 'Powder'
         self.settings['Scenario type'] = 'Powder'
         self.noCalculationsRequired = 1
+        #self.support_matrix_db = MaterialsDatabase()
         matrix = 'ptfe'
         self.settings['Matrix'] = matrix
         self.settings['Matrix density'] = support_matrix_db[matrix][0]
@@ -63,7 +64,7 @@ class PowderScenarioTab(ScenarioTab):
         vbox = QVBoxLayout()
         form = QFormLayout()
         #
-        # Support matrix
+        # Support matrix, read information from the database
         #
         self.matrix_cb = QComboBox(self)
         self.matrix_cb.setToolTip('Define the permittivity and density of the support matrix')
@@ -93,16 +94,26 @@ class PowderScenarioTab(ScenarioTab):
         #
         # Support matrix permittivity
         #
-        self.permittivity_sb = QDoubleSpinBox(self)
-        self.permittivity_sb.setRange(0.001, 100.0)
-        self.permittivity_sb.setSingleStep(0.01)
-        self.permittivity_sb.setDecimals(3)
-        self.permittivity_sb.setToolTip('Define the support matrix permittivity')
-        self.permittivity_sb.setValue(self.settings['Matrix permittivity'])
-        self.permittivity_sb.valueChanged.connect(self.on_permittivity_sb_changed)
+        hbox = QHBoxLayout()
+        self.permittivity_r_sb = QDoubleSpinBox(self)
+        self.permittivity_r_sb.setRange(0.0, 100.0)
+        self.permittivity_r_sb.setSingleStep(0.01)
+        self.permittivity_r_sb.setDecimals(3)
+        self.permittivity_r_sb.setToolTip('Define the real component of the support matrix permittivity')
+        self.permittivity_r_sb.setValue(np.real(self.settings['Matrix permittivity']))
+        self.permittivity_r_sb.valueChanged.connect(self.on_permittivity_r_sb_changed)
+        hbox.addWidget(self.permittivity_r_sb)
+        self.permittivity_i_sb = QDoubleSpinBox(self)
+        self.permittivity_i_sb.setRange(0.0, 100.0)
+        self.permittivity_i_sb.setSingleStep(0.01)
+        self.permittivity_i_sb.setDecimals(3)
+        self.permittivity_i_sb.setToolTip('Define imaginary component of the the support matrix permittivity')
+        self.permittivity_i_sb.setValue(np.imag(self.settings['Matrix permittivity']))
+        self.permittivity_i_sb.valueChanged.connect(self.on_permittivity_i_sb_changed)
+        hbox.addWidget(self.permittivity_i_sb)
         label = QLabel('Support permittivity', self)
-        label.setToolTip('Define the support matrix permittivity')
-        form.addRow(label, self.permittivity_sb)
+        label.setToolTip('Define the complex support matrix permittivity')
+        form.addRow(label, hbox)
         #
         # Bubble volume fraction
         #
@@ -463,15 +474,18 @@ class PowderScenarioTab(ScenarioTab):
         matrix = self.matrix_cb.currentText()
         m_blocking = self.matrix_cb.signalsBlocked()
         d_blocking = self.density_sb.signalsBlocked()
-        p_blocking = self.permittivity_sb.signalsBlocked()
+        r_blocking = self.permittivity_r_sb.signalsBlocked()
+        i_blocking = self.permittivity_i_sb.signalsBlocked()
         self.matrix_cb.blockSignals(True)
         self.density_sb.blockSignals(True)
-        self.permittivity_sb.blockSignals(True)
+        self.permittivity_r_sb.blockSignals(True)
+        self.permittivity_i_sb.blockSignals(True)
         self.settings['Matrix'] = matrix
         self.settings['Matrix density'] = support_matrix_db[matrix][0]
         self.settings['Matrix permittivity'] = support_matrix_db[matrix][1]
         self.density_sb.setValue(self.settings['Matrix density'])
-        self.permittivity_sb.setValue(self.settings['Matrix permittivity'])
+        self.permittivity_r_sb.setValue(np.real(self.settings['Matrix permittivity']))
+        self.permittivity_i_sb.setValue(np.imag(self.settings['Matrix permittivity']))
         # volume fraction takes precedence
         if self.settings['Mass or volume fraction'] == 'volume':
             self.update_mf_sb()
@@ -481,7 +495,8 @@ class PowderScenarioTab(ScenarioTab):
             self.update_mf_sb()
         self.matrix_cb.blockSignals(m_blocking)
         self.density_sb.blockSignals(d_blocking)
-        self.permittivity_sb.blockSignals(p_blocking)
+        self.permittivity_r_sb.blockSignals(r_blocking)
+        self.permittivity_i_sb.blockSignals(i_blocking)
         return
 
     def on_density_sb_changed(self,value):
@@ -509,12 +524,22 @@ class PowderScenarioTab(ScenarioTab):
 
     def on_bubble_radius_sb_changed(self,value):
         self.settings['Bubble radius'] = value
-        debugger.print(self.settings['Legend'],'on permittivity line edit changed', value)
+        debugger.print(self.settings['Legend'],'on bubble raduys line edit changed', value)
         self.refreshRequired = True
         return
 
-    def on_permittivity_sb_changed(self,value):
-        self.settings['Matrix permittivity'] = value
+    def on_permittivity_i_sb_changed(self,value):
+        real = np.real(self.settings['Matrix permittivity'])
+        self.settings['Matrix permittivity'] = complex(real,value)
+        debugger.print(self.settings['Legend'],'on imaginary permittivity line edit changed', value)
+        print('after i_sb_changed',self.settings['Matrix permittivity'])
+        self.refreshRequired = True
+        return
+
+    def on_permittivity_r_sb_changed(self,value):
+        imaginary = np.imag(self.settings['Matrix permittivity'])
+        self.settings['Matrix permittivity'] = complex(value,imaginary)
+        print('after r_sb_changed',self.settings['Matrix permittivity'])
         debugger.print(self.settings['Legend'],'on permittivity line edit changed', value)
         self.refreshRequired = True
         return
@@ -744,7 +769,8 @@ class PowderScenarioTab(ScenarioTab):
         index = self.matrix_cb.findText(self.settings['Matrix'], Qt.MatchFixedString)
         self.matrix_cb.setCurrentIndex(index)
         self.density_sb.setValue(self.settings['Matrix density'])
-        self.permittivity_sb.setValue(self.settings['Matrix permittivity'])
+        self.permittivity_r_sb.setValue(np.real(self.settings['Matrix permittivity']))
+        self.permittivity_i_sb.setValue(np.imag(self.settings['Matrix permittivity']))
         self.bubble_vf_sb.setValue(100*self.settings['Bubble volume fraction'])
         self.bubble_radius_sb.setValue(self.settings['Bubble radius'])
         if self.settings['Mass or volume fraction'] == 'volume':
