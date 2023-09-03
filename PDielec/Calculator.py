@@ -1138,7 +1138,8 @@ def solve_effective_medium_equations(
     refractive_index = calculate_refractive_index(dielectric_medium, debug=False)
     if refractive_index.imag < 0.0:
         refractive_index = refractive_index.conjugate()
-    if bubble_vf > 0:
+    if bubble_vf > 0.0:
+        print('Warning: only the real part of the support matrix permittivity will be used for Mie Scattering',file=sys.stderr)
         effdielec,refractive_index = calculate_bubble_refractive_index(v, refractive_index.real, bubble_vf, bubble_radius)
         dielectric_medium = effdielec
     if method == "balan":
@@ -1168,9 +1169,13 @@ def solve_effective_medium_equations(
         effdielec = bruggeman_iter(dielectric_medium, crystal_permittivity, shape, L, vf, size, eff)
         previous_solution_shared = effdielec
     elif method == "anisotropic-mie":
-        effdielec = anisotropic_mie_scattering(dielectric_medium, crystal_permittivity, shape, L, vf, size, size_mu, size_distribution_sigma)
+        if np.abs(refractive_index.imag) > 1.0E-6:
+            print('Warning: only the real part of the support matrix permittivity will be used for Mie Scattering',file=sys.stderr)
+        effdielec = anisotropic_mie_scattering(dielectric_medium.real, crystal_permittivity, shape, L, vf, size, size_mu, size_distribution_sigma)
     elif method == "mie":
-        effdielec = mie_scattering(dielectric_medium, crystal_permittivity, shape, L, vf, size, size_mu, size_distribution_sigma)
+        if np.abs(refractive_index.imag) > 1.0E-6:
+            print('Warning: only the real part of the support matrix permittivity will be used for Mie Scattering',file=sys.stderr)
+        effdielec = mie_scattering(dielectric_medium.real, crystal_permittivity, shape, L, vf, size, size_mu, size_distribution_sigma)
     else:
         print('Unkown dielectric method: {}'.format(method))
         exit(1)
