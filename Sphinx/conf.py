@@ -72,7 +72,6 @@ extensions = [
     'sphinx.ext.mathjax',
     'sphinxcontrib.bibtex',
     'cloud_sptheme.ext.table_styling',
-    'rst2pdf.pdfbuilder',
 ]
 
 bibtex_bibfiles = ['pdielec.bib']
