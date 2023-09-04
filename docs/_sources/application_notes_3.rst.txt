@@ -13,29 +13,28 @@
 
 Single Crystal Study of L-Alanine
 =================================
-In an experimental and computational study of the the vibrational modes of single crystals of l-alanine the experimental transmittance was reported for polarized radiation along each of the principal axes, a-, b- and c-. :cite:`Allen2023`
+In an experimental and computational study of the vibrational modes of single crystals of L-alanine, the experimental transmittance was reported for polarized radiation along each of the principal axes, a-, b- and c-. :cite:`Allen2023`
 
-The directory Examples/SingleCrystal/l-alanine contains files for the calculation of the transmittance and reflectance of single crystals of l-alanine based on similar calculations to those reported in the paper, using Crystal17, and using PDGui to calculate the transmittance and reflectance properties of the crystal.  
-Details of the DFT calculation can be found in phonon.dl2.  The output can be found in phonon.out.  Other files produced by the Crystal17 calculation are BORN.DAT and HESSFREQ.DAT.  These are used by PDGui to calculate the theoretical spectrum.
+The directory Examples/SingleCrystal/L-alanine contains files for the calculation of the transmittance and reflectance of single crystals of L-alanine based on similar calculations to those reported in the paper, using Crystal17 to perform the DFT calculations, and using PDGui to calculate the transmittance and reflectance properties of the crystal.  
+Details of the DFT calculation using the B97-3c functional can be found in phonon.dl2.  The output can be found in phonon.out.  Other files produced by the Crystal17 calculation are BORN.DAT and HESSFREQ.DAT.  These are used by PDGui to calculate the theoretical spectrum.
 
-The experimental results for the measurement of terahertz transmittance were kindly provided by the authors of the experimental paper; J. L. Allen, T. J. Sanders, J. Horvat, R. A. Lewis and K. C. Rule.
-Their measurements can be found in the Excel spreadsheets a-axis-experimental.xlsx, b-axis-experimental and c-axis-experimental.xlsx.   Each of these spreadsheets has two columns, the first is a column of frequencies in cm-1 and the second is the transmittance.
+The experimental results for the measurement of terahertz transmittance were kindly provided by the authors of the experimental paper: J. L. Allen, T. J. Sanders, J. Horvat, R. A. Lewis and K. C. Rule :cite:`Allen2023`.
+We would like to thank the authors of the paper for providing the experimental data and for helpful discussions.
+Their measurements can be found in the Excel spreadsheets a-axis-experimental.xlsx, b-axis-experimental.xlsx and c-axis-experimental.xlsx.   Each of these spreadsheets has two columns, the first is a column of frequencies in |cm-1| and the second is the transmittance.
 
-Scripts used to generate the crystal transmittance for the electric field along the repspective crystal axes from the calculated phonon modes can be found in a-axis.py, b-axis.py and c-axis.py.  These scripts use the *Fitter Tab* to compare the calculated spectrum with the experimental one.  Changes have been made to the film thickness and to the widths of the peaks to improve the agreement between the two.
+Scripts used to generate the crystal transmittance for the electric field along the respective crystal axes from the calculated phonon modes can be found in a-axis.py, b-axis.py and c-axis.py.  These scripts use the *Fitter Tab* to compare the calculated spectrum with the experimental one.  Changes have been made to the film thickness and to the widths of the peaks to improve the agreement between the two.
 
-To run the scripts use a command such as;
+To run the scripts use a command such as,
 
 ```
 pdgui -script a-axis.py
 ```
 
-We would like to thank the authors of the paper below for providing the experimental data and for helpful discussions.
-
-In the following the steps used to get to the scripts are explained.
+In the following, the steps used to get to the scripts are explained.
 We will concentrate on the a-axis spectrum but the approach is similar for each axis considered.
 
-L-alaninine crystallises in an orthorhombic form, with 3 non-equivalent axes. 
-Initialising PDGui with the results of the DFT calculation and starting the GUI interface with the *scenario tab* in its single crystal mode; 
+L-alanine crystallises in an orthorhombic form, with 3 non-equivalent axes. 
+To initialise PDGui with the results of the DFT calculation and starting the GUI interface with the *Scenario tab* in its single crystal mode use the command below,
 
 ```
 pdgui phonon.out -scenario crystal
@@ -47,14 +46,14 @@ The *Main Tab* shows the calculated unit cell and the frequencies as calculated 
 .. figure:: ./_static/Figures/lalanine-maintab.png
    :scale: 90%
 
-The *Settings Tab* shows those settings which affect the calculation of the permittivity.  By default the frequencies are modified by projecting out any translational degrees of freedom.  
-This is shown by the three zero frequencies in the table of frequencies and is a result of selecting *Apply Eckart conditions?*.
+The *Settings Tab* (see below) shows those settings which affect the calculation of the permittivity.  By default the frequencies are modified by projecting out any translational degrees of freedom.  
+This is shown by the three zero frequencies in the table of frequencies and is a result of selecting *Apply Eckart conditions?*
 The atomic masses are selected by PDGui and maybe different to those used by the DFT calculation.
 A Lorentzian line width is applied to all phonon vibrations by default.
-In this case we have chosen a large value by default and applied smaller and more realistic values for those phonon modes important to transmission for the a-polarised radiation field.
+In this case we have chosen a large value by default and applied smaller and more realistic values for those phonon modes important to transmission for the a-polarised electric field.
 
 The contribution to the permittivity arising from electronic polarisation is shown in this Tab.
-In the case of Crystal17 calculations there are occasions when this is not calculated automatically.  If a coupled perturbed Hartree-Fock (CPHF) calculation is not possible because the exchange/correlation functional is not supported then the :math:`\epsilon_{\infty}` calculation is not performed and a zero matrix will be presented here.
+In the case of Crystal17 and the B9703c functional the CPHF calculations is not possible because the exchange/correlation functional is not supported and the :math:`\epsilon_{\infty}` calculation is not performed and a zero matrix will be presented here.
 In this example we have typed in the contribution from a Crystal17 calculation using PBE-D3.  
 The resulting spectrum is not very sensitive to these values.
 
@@ -62,15 +61,15 @@ The resulting spectrum is not very sensitive to these values.
 .. figure:: ./_static/Figures/lalanine-settingstab.png
    :scale: 90%
 
-The next tab is the *scenario tab* which is used to reflect the experimental parameters that are possible.  
+The next tab is the *Scenario tab* which is used to reflect the experimental parameters that are possible.  
 In this case we are looking at the single crystal scenario.
 The mode of operation in the example shown below is the *Coherent thin film* mode.
-The surface in this case is the (001) surface, so the c-axis will be pointing along the Z-axis of the laboratory coordinate frame.
-Since most experiments are run with the incident beam in air and the detector in air, the permittivity of the superstrate and substrate will be kept a 1.0.
+In this case is the surface that the THz beam is incident on is the (001) surface, so the c-axis will be pointing along the Z-axis of the laboratory coordinate frame.
+The permittivity of the superstrate and substrate is set to 1.0, consistent with the experimental conditions.
 The geometry of the incident beam relative to the crystal is controlled by the azimuthal angle.  A zero value for the incident angle means the beam is at 90\ :superscript:`o` to the surface.  A non-zero angle defines the laboratory coordinates as the beam lies in the XZ plane.
 For this example the incident beam angle will be set to 0\ :superscript:`o`.
-Once this is done information about the position of the crystal axes relative to the crystal frame can be seen in the text box of the *settings tab*.
-Changes to the Azimuthal angle will show up as alterations in the definitions of the crystal axes in terms of the laboratory coordinates.
+Once this is done information about the position of the crystal axes relative to the crystal frame can be seen in the text box of the *Settings tab*.
+Changes to the azimuthal angle will result in alterations to the definitions of the crystal axes in terms of the laboratory coordinates.
 We are interested in radiation polarised with the electric field active along the a-axis of the crystal, which, according to the *Lab frame information* lies along  the Y-axis of the laboratory coordinate.
 This corresponds to s-polarised light, so we will be looking at the s-component of the transmittance.
 
@@ -84,22 +83,25 @@ To start with we will use the *coherent thin film* mode and a thickness of 0.2mm
 
 
 The resulting spectrum is shown below.  
-It can be seen that there are regular oscillations in the transmittance, especially at low frequenciess.
-These are due to intereference of the directly transmitted light and light that has undergone internal reflection.
+It can be seen that there are regular oscillations in the transmittance, especially at low frequencies.
+These are due to interference of the directly transmitted light and light that has undergone internal reflection and generating a series of decaying etalons.
 
 .. _fig-lalanine-plottertab-coherent:
 .. figure:: ./_static/Figures/lalanine-plottingtab-coherent.png
    :scale: 90%
 
 
-To see if we can remove this we will change the mode in the *scenario tab* to *Incoherent thin film*.
+To see if we can remove this we will change the mode in the *Scenario tab* to *Incoherent thin film*.
 Re-plotting the spectrum and looking at the results in the *Fitter tab* is shown in the plot below.
 The calculated spectrum is compared directly with the experimental one.  
-Both the calculated and experimental spectra show little transmittance above about 140\ |cm1|.
-The strong, very sharp peaks at 225\ |cm1| and above are probably numerical problems that occur with thicker films.  These numerical problems are excerbated by the *Incoherent film* mode as it uses intensities in the calculation of the transfer matrix, which requires the square the electric field and the propagation matrices.
-The fact that these are numerical numerical problems can be varified
+Both the calculated and experimental spectra show little transmittance above about 140\ |cm-1|.
+The strong, very sharp peaks at 225\ |cm-1| and above are probably numerical problems that occur with thicker films whentransmission tends to zero.  These numerical problems are exacerbated by the *Incoherent film* mode as it uses intensities in the calculation of the transfer matrix, which requires the square the electric field and the propagation matrices.
+The fact that these are numerical problems can be verified by looking at the *Coherent thin film* mode and seeing if they are present there.
+Even if the experimental measurements are designed to minimise etalons, it is generally sensible to compare both incoherent and coherent calculations before comparing to experiment.
 
-A major advantage of using the *Fitter tab* is that the user can modify the Lorentzian widths and see the result immediately and compare them with the experimental spectrum.
+
+A major advantage of using the *Fitter tab* to understand the calculated spectrum is that the user can modify the Lorentzian widths and see the result immediately, while also and comparing them with the experimental spectrum.
+This also shows the cross-correlation between experiment and calculation, in this we get a value of 0.9379 (where 1 is a perfect match).
 
 
 .. _fig-lalanine-plottertab-coherent-aaxis:
@@ -107,7 +109,7 @@ A major advantage of using the *Fitter tab* is that the user can modify the Lore
    :scale: 90%
 
 
-Plots for the b-axis and c-axis electric fields are shown below.  The b-axis example is given by using the same (001) surface but using an azimuthal angle of 0\ :superscript:`0`.  The thickness used for the b-axis example is 0.1mm, smaller than the 0.2mm used for the a-axis example.
+Plots for the b-axis and c-axis electric fields are shown below.  The b-axis example is given by using the same (001) surface but using an azimuthal angle of 0\ :superscript:`o`.  The thickness used for the b-axis example is 0.1mm, smaller than the 0.2mm used for the a-axis example.
 The c-axis field transmittance example uses the (010) surface with an azimuthal angle of 0\ :superscript:`o` and a thickness of 0.1mm.
 
 .. _fig-lalanine-plottertab-coherent-baxis:
