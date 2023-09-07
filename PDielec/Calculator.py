@@ -1107,41 +1107,66 @@ def direction_from_shape(data, reader):
     return direction
 
 def solve_effective_medium_equations( 
-        method                   ,
-        vf                       ,
-        size_mu                  ,
-        size_distribution_sigma  ,
-        dielectric_medium        ,
-        shape                    ,
-        L                        ,
-        concentration            ,
-        atrPermittivity          ,
-        atrTheta                 ,
-        atrSPol                  ,
-        bubble_vf                ,
-        bubble_radius            ,
-        previous_solution_shared ,
-        params                  ,
+        method                     ,
+        vf                         ,
+        size_mu                    ,
+        size_distribution_sigma    ,
+        matrixPermittivityFunction ,
+        shape                      ,
+        L                          ,
+        concentration              ,
+        atrPermittivity            ,
+        atrTheta                   ,
+        atrSPol                    ,
+        bubble_vf                  ,
+        bubble_radius              ,
+        previous_solution_shared   ,
+        atuple                     ,
         ):
-    # call_parameters is an index into the frequency and dielectric arrays
-    # In the case of Bruggeman and coherent we can use the previous result to start the iteration/minimisation
-    # However to do this we need some shared memory, this allocated in previous_solution_shared
-    v,crystal_permittivity = params
-    vau = v * wavenumber
+    '''Solve the effective medium equations
+       method                      is the method to be used:
+                                   bruggeman, balan, maxwell, maxwell-garnet, averagedpermittivity, maxwell-sihvola,
+                                   coherent, bruggeman-minimise, mie, anisotropic-mie
+       vf                          is the volume fraction of dielectric
+       size_mu                     is the particule size
+       size_distribution_sigma     is the width of th size distribution
+       matrixPermittivityFunction  return the matrix permittivty at a frequency
+       shape                       The shape of the particles
+       L                           The shape matrix
+       concentration               The concentration of particeles
+       AtrPermittivity             The permittivity of the ATR substrate
+       AtrTheta                    The ATR angle of incidence
+       atrSPol                     The ATR polarisation
+       bubble_vf                   volume fraction of bubbles
+       bubble_radius               the radius of bubbles
+       previous_solution_shared    In the case of Bruggeman and coherent we use the previous solution to speed up iterations
+       atuple (                    A tuple containing......
+       v_cm1                       The frequency in cm-1
+       crystalPermittivity         A rank 3 tensor The permittivity of the crystal at a give frequency
+       )
+    '''
+    # unpack the tuple that is passed by a call to the partial function
+    (v_cm1,crystalPermittivity) = atuple
     # convert the size to a dimensionless number which is 2*pi*size/lambda
-    lambda_mu = 1.0E4 / (v + 1.0e-12)
+    lambda_mu = 1.0E4 / (v_cm1 + 1.0e-12)
     if size_mu < 1.0e-12:
         size_mu = 1.0e-12
     size = 2.0*np.pi*size_mu / lambda_mu
     data = ''
-    # Calculate the effect of bubbles in the matrix by assuming they are embedded in an effective medium defined above
+    # Calculate the permittivity of the matrix as an isotropic tensor at v_cm1
+    dielectric_medium = matrixPermittivityFunction(v_cm1) * np.eye(3)
+    # Calculate the crystal permittivity at this frequency
+    crystal_permittivity= crystalPermittivity
+    # Calculate the effect of bubbles in the matrix by embedding in dielectric medium
     refractive_index = calculate_refractive_index(dielectric_medium, debug=False)
     if refractive_index.imag < 0.0:
         refractive_index = refractive_index.conjugate()
     if bubble_vf > 0.0:
-        print('Warning: only the real part of the support matrix permittivity will be used for Mie Scattering',file=sys.stderr)
-        effdielec,refractive_index = calculate_bubble_refractive_index(v, refractive_index.real, bubble_vf, bubble_radius)
+        if np.abs(refractive_index.imag) > 1.0e-12:
+            print('Warning: only the real part of the support matrix permittivity will be used for Mie Scattering',file=sys.stderr)
+        effdielec,refractive_index = calculate_bubble_refractive_index(v_cm1, refractive_index.real, bubble_vf, bubble_radius)
         dielectric_medium = effdielec
+    # Choose which method to apply, the effective dielectric determined with bubbles will be used
     if method == "balan":
         effdielec = balan(dielectric_medium, crystal_permittivity, shape, L, vf, size)
     elif method == "ap" or method == "averagedpermittivity" or method == "averaged permittivity" or method == "average permittivity":
@@ -1188,12 +1213,12 @@ def solve_effective_medium_equations(
     # This is different but related to Genzel and Martin Equation 16, Phys. Stat. Sol. 51(1972) 91-
     # I've add a factor of log10(e) because we need to assume a decadic Beer's law
     # units are cm-1
-    absorption_coefficient = v * 4*PI * np.imag(refractive_index) * math.log10(math.e)
+    absorption_coefficient = v_cm1 * 4*PI * np.imag(refractive_index) * math.log10(math.e)
     # units are cm-1 L moles-1
     molar_absorption_coefficient = absorption_coefficient / concentration / vf
     # calculate the ATR reflectance
     spatr = reflectance_atr(refractive_index,atrPermittivity,atrTheta,atrSPol)
-    return v,method,size_mu,size_distribution_sigma,shape,data,trace,absorption_coefficient,molar_absorption_coefficient,spatr
+    return v_cm1,method,size_mu,size_distribution_sigma,shape,data,trace,absorption_coefficient,molar_absorption_coefficient,spatr
 
 def calculate_bubble_refractive_index(v_cm1, ri_medium, vf, radius_mu):
     """Calculate the scattering from bubbles embedded in a possibly, complex dielectric at v_cm1

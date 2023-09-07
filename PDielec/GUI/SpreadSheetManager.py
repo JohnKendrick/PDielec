@@ -1,4 +1,5 @@
 import xlsxwriter as xlsx
+import numpy as np
 class SpreadSheetManager():
     def __init__(self, filename):
         # Manage a spread sheet for PDielec / PDGui
@@ -62,10 +63,18 @@ class SpreadSheetManager():
         row += 1
 
     def write(self,row,col,item):
-        self.worksheets[self.name].write(row,col,item)
-        self.max_col[self.name] = max(self.max_col[self.name], col)
-        self.max_row[self.name] = max(self.max_row[self.name], row)
-        self.positions[self.name] = (row+1,col+1)
+        if isinstance(item,complex) or np.iscomplexobj(item):
+            self.worksheets[self.name].write(row,col,item.real)
+            col += 1
+            self.worksheets[self.name].write(row,col,item.imag)
+            self.max_col[self.name] = max(self.max_col[self.name], col)
+            self.max_row[self.name] = max(self.max_row[self.name], row)
+            self.positions[self.name] = (row+1,col+1)
+        else:
+            self.worksheets[self.name].write(row,col,item)
+            self.max_col[self.name] = max(self.max_col[self.name], col)
+            self.max_row[self.name] = max(self.max_row[self.name], row)
+            self.positions[self.name] = (row+1,col+1)
 
     def delete(self):
         for row in range(0,self.max_row[self.name]):

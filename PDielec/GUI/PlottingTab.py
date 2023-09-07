@@ -421,7 +421,7 @@ class PlottingTab(QWidget):
                 A_ss.append( scenario.get_result(self.vs_cm1,self.plot_types[10] ) )
                 crystal_legends.append(scenario.settings['Legend'])
         # Single crystal Permittivity
-        dielecv = self.notebook.settingsTab.get_crystal_permittivity(self.vs_cm1)
+        dielecv = self.notebook.settingsTab.getCrystalPermittivity(self.vs_cm1)
         # Powder results
         # Work out what molar units we are using
         if len(molarAbsorptionCoefficients) > 0:
@@ -553,8 +553,8 @@ class PlottingTab(QWidget):
         if filename == '':
             debugger.print('Finished:: plot aborting because filename is not set')
             return
-        if self.notebook.settingsTab.CrystalPermittivity is None:
-            debugger.print('Finished:: plot aborting because settingTab.CrystalPermittivity is not set')
+        if self.notebook.settingsTab.CrystalPermittivityObject is None:
+            debugger.print('Finished:: plot aborting because settingTab.CrystalPermittivityObject is not set')
             return
         QApplication.setOverrideCursor(Qt.WaitCursor)
         vmin = self.settings['Minimum frequency']
