@@ -1,4 +1,6 @@
-version 7.3.0
+version 8.0.0
+  Added frequency dependent support matrix capability to the powder simulation
+  Added complex permittivity to the support matrix
   Added incoherent light to the single crystal simulation
   Added both partially incoherent thin film mode and incoherent thin film mode
   Included smoothing for the partially incoherent case

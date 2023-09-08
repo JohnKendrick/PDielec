@@ -41,6 +41,8 @@ class DielectricFunction:
     self.volume: float
     self.volume_au: float  
                            Volume of crystal unit cells 
+    self.vs_cm1 : np.array of floats
+                           The frequencies of any tabulation
 
     Methods
     -------
@@ -67,6 +69,7 @@ class DielectricFunction:
         if units not in self.possible_units:
             print('Catastrophic error in DielectricFunction: units not recognised', units)
             exit()
+        self.vs_cm1               = 0
         self.frequency_units      = units
         self.epsilon_infinity     = np.zeros( (3,3) )
         self.volume_angs          = None
@@ -150,6 +153,29 @@ class DielectricFunction:
             print('Units in DielectricFunction not recognised:',units)
             exit()
         return result
+
+    def getLowestFrequency(self):
+        ''' 
+        Return the lowest tabulated frequency in cm-1
+
+        Result
+        ------
+        The lowest tabulated frequency in cm-1
+        '''
+        lowestFrequency = np.min(self.vs_cm1)
+        return lowestFrequency
+
+
+    def getHighestFrequency(self):
+        ''' 
+        Return the highest tabulated frequency in cm-1
+
+        Result
+        ------
+        The highest tabulated frequency in cm-1
+        '''
+        highestFrequency = np.max(self.vs_cm1)
+        return highestFrequency
 
 
     def dielectriContributionsFromDrude(self, f, frequency, sigma, volume):
@@ -291,12 +317,12 @@ class TabulateScalar(DielectricFunction):
                     Define the units of frequency (default is cm-1)
         '''
         DielectricFunction.__init__(self,units=units)
-        vs = np.array(vs_cm1)
+        self.vs_cm1 = np.array(vs_cm1)
         eps = np.array(permittivities)
         eps_r = np.real(eps)
         eps_i = np.imag(eps)
-        self.interpolater = interpolate.CubicSpline(vs,eps_r)
-        self.interpolatei = interpolate.CubicSpline(vs,eps_i)
+        self.interpolater = interpolate.CubicSpline(self.vs_cm1,eps_r)
+        self.interpolatei = interpolate.CubicSpline(self.vs_cm1,eps_i)
 
     def calculate(self,v):
         '''
@@ -333,12 +359,12 @@ class Tabulate1(DielectricFunction):
                     Define the units of frequency (default is cm-1)
         '''
         DielectricFunction.__init__(self,units=units)
-        vs = np.array(vs_cm1)
+        self.vs_cm1 = np.array(vs_cm1)
         eps = np.array(permittivities)
         eps_r = np.real(eps)
         eps_i = np.imag(eps)
-        self.interpolater = interpolate.CubicSpline(vs,eps_r)
-        self.interpolatei = interpolate.CubicSpline(vs,eps_i)
+        self.interpolater = interpolate.CubicSpline(self.vs_cm1,eps_r)
+        self.interpolatei = interpolate.CubicSpline(self.vs_cm1,eps_i)
 
     def calculate(self,v):
         '''
@@ -382,7 +408,7 @@ class Tabulate3(DielectricFunction):
                     Define the units of frequency (default is cm-1)
         '''
         DielectricFunction.__init__(self,units=units)
-        vs = np.array(vs_cm1)
+        self.vs_cm1 = np.array(vs_cm1)
         eps = [np.array(epsxx), np.array(epsyy), np.array(epszz)]
         epsr = np.zeros(3)
         epsi = np.zeros(3)
@@ -391,8 +417,8 @@ class Tabulate3(DielectricFunction):
         for i in enum(eps):
             epsr[i] = np.real(eps)
             epsi[i] = np.imag(eps)
-            self.interpolater.append(interpolate.CubicSpline(vs,epsr[i]))
-            self.interpolatei.append(interpolate.CubicSpline(vs,epsi[i]))
+            self.interpolater.append(interpolate.CubicSpline(self.vs_cm1,epsr[i]))
+            self.interpolatei.append(interpolate.CubicSpline(self.vs_cm1,epsi[i]))
 
     def calculate(self,v):
         '''
@@ -442,7 +468,7 @@ class Tabulate6(DielectricFunction):
                     Define the units of frequency (default is cm-1)
         '''
         DielectricFunction.__init__(self,units=units)
-        vs = np.array(vs_cm1)
+        self.vs_cm1 = np.array(vs_cm1)
         eps = [np.array(epsxx), np.array(epsyy), np.array(epszz), np.array(epsxy), np.array(epsxz), np.array(epsyz)]
         epsr = np.zeros(3)
         epsi = np.zeros(3)
@@ -451,8 +477,8 @@ class Tabulate6(DielectricFunction):
         for i in enum(eps):
             epsr[i] = np.real(eps)
             epsi[i] = np.imag(eps)
-            self.interpolater.append(interpolate.CubicSpline(vs,epsr[i]))
-            self.interpolatei.append(interpolate.CubicSpline(vs,epsi[i]))
+            self.interpolater.append(interpolate.CubicSpline(self.vs_cm1,epsr[i]))
+            self.interpolatei.append(interpolate.CubicSpline(self.vs_cm1,epsi[i]))
 
     def calculate(self,v):
         '''

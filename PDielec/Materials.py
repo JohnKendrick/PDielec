@@ -117,6 +117,15 @@ class Material():
         self.permittivityObject = permittivityObject
         self.permittivityObject.setEpsilonInfinity(epsinf)
 
+    def getInformation(self):
+        '''Return information about the material'''
+        result = self.type
+        if 'Constant' not in self.type:
+            low = self.permittivityObject.getLowestFrequency()
+            high = self.permittivityObject.getHighestFrequency()
+            result += ' freq range {:.0f}-{:.0f}'.format(low,high)
+        return result
+
     def setPermittivityObject(self,permittivityObject):
         '''Return the permittivity function'''
         self.permittivityObject = permittivityObject

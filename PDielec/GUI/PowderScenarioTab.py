@@ -1,5 +1,5 @@
 # -*- coding: utf8 -*-
-from PyQt5.QtWidgets         import QPushButton, QWidget
+from PyQt5.QtWidgets         import QPushButton, QWidget, QFileDialog
 from PyQt5.QtWidgets         import QComboBox, QLabel, QLineEdit, QDoubleSpinBox
 from PyQt5.QtWidgets         import QVBoxLayout, QHBoxLayout, QFormLayout
 from PyQt5.QtWidgets         import QSpinBox
@@ -90,9 +90,9 @@ class PowderScenarioTab(ScenarioTab):
         label.setToolTip("Provides information about the name of the materials' database")
         form.addRow(label, self.database_le)
         #
-        #
         # Support matrix, read information from the database
         #
+        hbox = QHBoxLayout()
         self.matrix_cb = QComboBox(self)
         self.matrix_cb.setToolTip('Define the permittivity and density of the support matrix')
         self.materialNames = self.DataBase.getSheetNames()
@@ -113,7 +113,14 @@ class PowderScenarioTab(ScenarioTab):
             self.matrixMaterial = self.DataBase.getMaterial(self.settings['Matrix'])
         label = QLabel('Support matrix',self)
         label.setToolTip('Define the permittivity and density of the support matrix')
-        form.addRow(label, self.matrix_cb)
+        self.matrix_info_le = QLineEdit(self)
+        self.matrix_info_le.setToolTip("Provides details about database entry")
+        text = self.matrixMaterial.getInformation()
+        self.matrix_info_le.setText(text)
+        self.matrix_info_le.setReadOnly(True)
+        hbox.addWidget(self.matrix_cb)
+        hbox.addWidget(self.matrix_info_le)
+        form.addRow(label, hbox)
         # Set the Matrix density and permittivity at 0cm-1
         self.settings['Matrix density'] = self.matrixMaterial.getDensity()
         self.matrixPermittivityFunction = self.matrixMaterial.getPermittivityFunction()
@@ -363,7 +370,6 @@ class PowderScenarioTab(ScenarioTab):
 
     def crystal_density(self):
         '''Find the crystal density from the current reader and return the density'''
-        debugger.print('Start:: crystal_density')
         if not self.reader:
             debugger.print('Finished:: crystal_density - no reader')
             return 1.0
@@ -377,7 +383,26 @@ class PowderScenarioTab(ScenarioTab):
 
     def openDB_button_clicked(self):
         '''Open a new materials' database'''
-        print('openDB_button_clicked')  
+        debugger.print('Start:: openDB_button_clicked')
+        selfilter = 'Spreadsheet (*.xlsx)'
+        filename,myfilter = QFileDialog.getOpenFileName(self,'Open spreadsheet','','Spreadsheet (*.xls);;Spreadsheet (*.xlsx);;All files(*)',selfilter)
+        # Process the filename
+        if filename != '':
+            self.settings['Materials database'] = filename
+        self.database_le.setText(self.settings['Materials database'])
+        self.DataBase = MaterialsDataBase(self.settings['Materials database'],debug=debugger.state())
+        self.materialNames = self.DataBase.getSheetNames()
+        self.materialNames.append('Define material manually')
+        if not self.settings['Matrix'] in self.materialNames:
+            self.settings['Matrix'] = self.materialNames[0]
+        index = self.matrix_cb.findText(self.settings['Matrix'], Qt.MatchFixedString)
+        self.matrixMaterial = self.DataBase.getMaterial(self.settings['Matrix'])
+        materialPermittivityFunction = self.matrixMaterial.getPermittivityFunction()
+        self.settings["Matrix permittivity"] = materialPermittivityFunction(0.0)
+        self.settings["Matrix density"] = self.matrixMaterial.getDensity()
+        self.refreshRequired = True
+        self.refresh()
+        return
 
     def on_h_sb_changed(self,value):
         '''Handle a change to the h parameter of the (hkl) surface'''
@@ -554,8 +579,10 @@ class PowderScenarioTab(ScenarioTab):
             self.matrixPermittivityFunction = self.matrixMaterial.getPermittivityFunction()
             # The permittivity may be frequency dependent, show the value at 0 cm-1
             self.settings['Matrix permittivity'] = self.matrixPermittivityFunction(0.0)
-            print('self.settings["Matrix permittivity"]',self.matrixPermittivityFunction(0.0))
             self.density_sb.setValue(self.settings['Matrix density'])
+        # Update the matrix material information
+        text = self.matrixMaterial.getInformation()
+        self.matrix_info_le.setText(text)
         # Update the values of the real and imaginary permittivity
         self.permittivity_r_sb.setValue(np.real(self.settings['Matrix permittivity']))
         self.permittivity_i_sb.setValue(np.imag(self.settings['Matrix permittivity']))
@@ -622,7 +649,6 @@ class PowderScenarioTab(ScenarioTab):
         newPermittivityObject = DielectricFunction.ConstantScalar(self.settings['Matrix permittivity'])
         self.matrixMaterial.setPermittivityObject(newPermittivityObject)
         debugger.print(self.settings['Legend'],'on imaginary permittivity line edit changed', value)
-        print('after i_sb_changed',self.settings['Matrix permittivity'])
         self.refreshRequired = True
         return
 
@@ -631,7 +657,6 @@ class PowderScenarioTab(ScenarioTab):
         self.settings['Matrix permittivity'] = complex(value,imaginary)
         newPermittivityObject = DielectricFunction.ConstantScalar(self.settings['Matrix permittivity'])
         self.matrixMaterial.setPermittivityObject(newPermittivityObject)
-        print('after r_sb_changed',self.settings['Matrix permittivity'])
         debugger.print(self.settings['Legend'],'on permittivity line edit changed', value)
         self.refreshRequired = True
         return
@@ -901,6 +926,9 @@ class PowderScenarioTab(ScenarioTab):
         self.matrix_cb.addItems(self.materialNames)
         index = self.matrix_cb.findText(self.settings['Matrix'], Qt.MatchFixedString)
         self.matrix_cb.setCurrentIndex(index)
+        # Update the matrix material information
+        text = self.matrixMaterial.getInformation()
+        self.matrix_info_le.setText(text)
         # Set the matrix density widget
         self.density_sb.setValue(self.settings['Matrix density'])
         # Set the matrix permittivity widget
