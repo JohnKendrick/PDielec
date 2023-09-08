@@ -215,13 +215,27 @@ or 2 threads if threading</p></td>
 <h4><span class="section-number">3.1.3.1. </span>Powder Scenarios<a class="headerlink" href="#powder-scenarios" title="Permalink to this heading">¶</a></h4>
 <p>For each powder scenario it is assumed that the size of the particle embedded in the matrix is small compared with the wavelength of light.</p>
 <figure class="align-default" id="id12">
-<span id="fig-scenariotab-powder"></span><a class="reference internal image-reference" href="_images/ScenarioTab-Powder.png"><img alt="_images/ScenarioTab-Powder.png" src="_images/ScenarioTab-Powder.png" style="width: 545.6px; height: 774.4000000000001px;" /></a>
+<span id="fig-scenariotab-powder"></span><a class="reference internal image-reference" href="_images/ScenarioTab-Powder.png"><img alt="_images/ScenarioTab-Powder.png" src="_images/ScenarioTab-Powder.png" style="width: 550.4px; height: 784.8000000000001px;" /></a>
 <figcaption>
 <p><span class="caption-number">Fig. 3.3 </span><span class="caption-text">The Scenario Tab for a Powder</span><a class="headerlink" href="#id12" title="Permalink to this image">¶</a></p>
 </figcaption>
 </figure>
-<p>The support matrix into which the active dielectric material is dispersed can be selected from the <em>Support matrix</em> drop down menu.  The selected supporting material will change the density and permittivity shown in the respective text boxes.  The user can edit these values independently if necessary.
-The supporting medium may have bubbles of air trapped in the matrix.  For the case that polyethylene spheres are used to make the sample, experimental information indicates a relationship between the size of the spheres and size of the air inclusions <span id="id1">[<a class="reference internal" href="zreferences.html#id70" title="Mayank Kaushik, Brian W Ng, Bernd M Fischer, and Derek Abbott. Terahertz scattering by granular composite materials : An effective medium theory Terahertz scattering by granular composite materials : An effective medium theory. Applied Physics Letters, 100(1):1–4, 2012. doi:10.1063/1.3674289.">16</a>]</span>.</p>
+<p>A database of material properties is opened at the start of the program.
+The default database (<em>PDielec/MaterialsDataBase.xlsx</em>) is opened although other databases can be loaded by pressing the <em>Open materials’ database</em>.
+The open database is show in the line below, followed by a line showing the support matrix material selected along with a brief description of the type of entry for the material.</p>
+<p>Materials can have either a constant or frequency dependent permittivity.
+In the case of frequency dependent entries the range of frequencies which the entry covers is displayed.
+A warning is appropriate here as all of the frequency dependent materials have been extrapolated so as to be valid to 0<span class="math notranslate nohighlight">\(cm^{-1}\)</span>.
+The extrapolated values are indicated in the database itself.</p>
+<p>The support matrix into which the active dielectric material is dispersed can be selected from the <em>Support matrix</em> drop down menu.
+The selected supporting material will change the density and permittivity shown in the respective text boxes.
+For frequency dependent entries the value of the permittivity at 0<span class="math notranslate nohighlight">\(cm^{-1}\)</span> is used.
+The user can edit these values independently if necessary.
+But if this is done the program assumes that the changes result in a frequency independent permittivity.
+The <em>Support permittivity</em> consists of two inputs for the real and imaginary components of the permittivity.
+For any Mie calculations the imaginary component is ignored.</p>
+<p>The supporting medium may have bubbles of air trapped in the matrix.
+For the case that polyethylene spheres are used to make the sample, experimental information indicates a relationship between the size of the spheres and size of the air inclusions <span id="id1">[<a class="reference internal" href="zreferences.html#id70" title="Mayank Kaushik, Brian W Ng, Bernd M Fischer, and Derek Abbott. Terahertz scattering by granular composite materials : An effective medium theory Terahertz scattering by granular composite materials : An effective medium theory. Applied Physics Letters, 100(1):1–4, 2012. doi:10.1063/1.3674289.">16</a>]</span>.</p>
 <table class="styled-table docutils align-default" id="tab-air-bubbles">
 <caption><span class="caption-number">Table 3.2 </span><span class="caption-text">Size of air inclusion (bubbles) in polyethylene</span><a class="headerlink" href="#tab-air-bubbles" title="Permalink to this table">¶</a></caption>
 <colgroup>
@@ -790,8 +804,24 @@ There are some significant limitations in providing the information in the manne
 <span class="eqno">(3.2)<a class="headerlink" href="#equation-eq-drude" title="Permalink to this equation">¶</a></span>\[ \epsilon (\omega )=\epsilon _{\infty}\sum{j} \frac{\Omega^2_{LO_j}-\omega ^2-i\gamma _{LO_j}\omega }{\Omega^2_{TO_j}-\omega ^2-i\gamma _{TO_j}\omega}\]</div>
 </section>
 </section>
-<section id="the-format-of-the-excel-spreadsheet">
-<h2><span class="section-number">3.7. </span>The Format of the Excel Spreadsheet<a class="headerlink" href="#the-format-of-the-excel-spreadsheet" title="Permalink to this heading">¶</a></h2>
+<section id="the-format-of-the-materials-database">
+<h2><span class="section-number">3.7. </span>The Format of the Materials’ Database<a class="headerlink" href="#the-format-of-the-materials-database" title="Permalink to this heading">¶</a></h2>
+<p>The materials’ database stores some basic information about the supporting materials often used in THz and Infrared spectroscopy.
+The file <em>PDielec/MaterialsDatabase.xlsx</em> can be opened and inspected to see the format of the entries.
+The first sheet gives some information about the structure of the spreadsheet.
+Each tab, except the first, represents a material and the tab name can be referred to in the <em>Support matrix</em> pulldown of the <em>PowderScenarioTab</em>.</p>
+<p>In Column H of a material sheet are in subsequent rows: an entry, a density, a temperature; low and high frequency values, the number of points in a frequency dependent entry and a reference.</p>
+<p>H1 is the entry type, which maybe one of: “Constant refractive index”, “Constant permittivity”, Tabulated refractive index’ or “Tabulated permittivity”</p>
+<p>H2 gives the material density in g/ml.</p>
+<p>Other entries in column H are presently ignored.</p>
+<p>For columns A to F the first row provides a label for the data in each column.  The label is not used by PDGui.</p>
+<p>Columns C and D give the real and imaginary components of either the refractive index or the permittivity, depending on the entry type.
+For Constant entries only a single row is used.</p>
+<p>For Tabulated entries column A must have the frequency in cm<sup>-1</sup> and in ascending order.
+Column B is not used by PDGui but because refractive indices are often tabulated with micron wavelengths, this column may be used to allow conversion to <span class="math notranslate nohighlight">\(cm^{-1}\)</span>.</p>
+</section>
+<section id="the-format-of-the-output-spreadsheet">
+<h2><span class="section-number">3.8. </span>The Format of the Output Spreadsheet<a class="headerlink" href="#the-format-of-the-output-spreadsheet" title="Permalink to this heading">¶</a></h2>
 <p>The Excel spread sheet, which can be written by the program, contains details of the system being anaylysed, a list of the scenario settings and tables of absorption, permittivity, reflection and transmission.
 The spreedsheet is divided into different sheets;</p>
 <ul>
@@ -954,7 +984,8 @@ The spreedsheet is divided into different sheets;</p>
 <li><a class="reference internal" href="#drude-lorentz-model-drude-lorentz">3.6.3. Drude-Lorentz model (drude-lorentz)</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#the-format-of-the-excel-spreadsheet">3.7. The Format of the Excel Spreadsheet</a></li>
+<li><a class="reference internal" href="#the-format-of-the-materials-database">3.7. The Format of the Materials’ Database</a></li>
+<li><a class="reference internal" href="#the-format-of-the-output-spreadsheet">3.8. The Format of the Output Spreadsheet</a></li>
 </ul>
 </li>
 </ul>

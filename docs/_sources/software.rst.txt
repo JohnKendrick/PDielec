@@ -184,8 +184,25 @@ For each powder scenario it is assumed that the size of the particle embedded in
 
    The Scenario Tab for a Powder
 
-The support matrix into which the active dielectric material is dispersed can be selected from the *Support matrix* drop down menu.  The selected supporting material will change the density and permittivity shown in the respective text boxes.  The user can edit these values independently if necessary.  
-The supporting medium may have bubbles of air trapped in the matrix.  For the case that polyethylene spheres are used to make the sample, experimental information indicates a relationship between the size of the spheres and size of the air inclusions :cite:`Kaushik2014`.
+A database of material properties is opened at the start of the program.
+The default database (*PDielec/MaterialsDataBase.xlsx*) is opened although other databases can be loaded by pressing the *Open materials' database*.
+The open database is show in the line below, followed by a line showing the support matrix material selected along with a brief description of the type of entry for the material.
+
+Materials can have either a constant or frequency dependent permittivity.  
+In the case of frequency dependent entries the range of frequencies which the entry covers is displayed.
+A warning is appropriate here as all of the frequency dependent materials have been extrapolated so as to be valid to 0\ |cm1|.  
+The extrapolated values are indicated in the database itself.
+
+The support matrix into which the active dielectric material is dispersed can be selected from the *Support matrix* drop down menu.  
+The selected supporting material will change the density and permittivity shown in the respective text boxes.
+For frequency dependent entries the value of the permittivity at 0\ |cm1| is used.
+The user can edit these values independently if necessary.  
+But if this is done the program assumes that the changes result in a frequency independent permittivity.
+The *Support permittivity* consists of two inputs for the real and imaginary components of the permittivity.  
+For any Mie calculations the imaginary component is ignored.
+
+The supporting medium may have bubbles of air trapped in the matrix. 
+For the case that polyethylene spheres are used to make the sample, experimental information indicates a relationship between the size of the spheres and size of the air inclusions :cite:`Kaushik2014`.
 
 
 .. table:: Size of air inclusion (bubbles) in polyethylene
@@ -767,8 +784,34 @@ The model only allows for a diagonal permittivity tensor and each component of t
     \epsilon (\omega )=\epsilon _{\infty}\sum{j} \frac{\Omega^2_{LO_j}-\omega ^2-i\gamma _{LO_j}\omega }{\Omega^2_{TO_j}-\omega ^2-i\gamma _{TO_j}\omega}
 
 
-The Format of the Excel Spreadsheet
-===================================
+
+The Format of the Materials' Database
+=====================================
+
+The materials' database stores some basic information about the supporting materials often used in THz and Infrared spectroscopy.
+The file *PDielec/MaterialsDatabase.xlsx* can be opened and inspected to see the format of the entries.
+The first sheet gives some information about the structure of the spreadsheet.
+Each tab, except the first, represents a material and the tab name can be referred to in the *Support matrix* pulldown of the *PowderScenarioTab*.
+
+In Column H of a material sheet are in subsequent rows: an entry, a density, a temperature; low and high frequency values, the number of points in a frequency dependent entry and a reference.
+
+H1 is the entry type, which maybe one of: "Constant refractive index", "Constant permittivity", Tabulated refractive index' or "Tabulated permittivity"
+
+H2 gives the material density in g/ml.
+
+Other entries in column H are presently ignored.
+
+For columns A to F the first row provides a label for the data in each column.  The label is not used by PDGui.
+
+Columns C and D give the real and imaginary components of either the refractive index or the permittivity, depending on the entry type.  
+For Constant entries only a single row is used.
+
+For Tabulated entries column A must have the frequency in |cm-1| and in ascending order.  
+Column B is not used by PDGui but because refractive indices are often tabulated with micron wavelengths, this column may be used to allow conversion to |cm1|.
+
+
+The Format of the Output Spreadsheet
+====================================
 
 The Excel spread sheet, which can be written by the program, contains details of the system being anaylysed, a list of the scenario settings and tables of absorption, permittivity, reflection and transmission.
 The spreedsheet is divided into different sheets;
