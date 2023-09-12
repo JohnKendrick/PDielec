@@ -58,14 +58,14 @@ class MaterialsDataBase():
             nk = complex(n, k)
             permittivity = Calculator.calculate_permittivity(nk)
             debugger.print('Constant refractive:: ',nk,permittivity,density)
-            material = Constant(sheet,permittivities=permittivity,density=density)
+            material = Constant(sheet,permittivity=permittivity,density=density)
         elif 'Constant' in entry and ('permitt' in entry or 'dielec' in entry):
             # Constant permittivity
             eps_r = float(worksheet['C2'].value)
             eps_i = float(worksheet['D2'].value)
             permittivity = complex(eps_r, eps_i)
             debugger.print('Constant permittivity:: ',permittivity,density)
-            material = Constant(sheet,permittivities=permittivity,density=density)
+            material = Constant(sheet,permittivity=permittivity,density=density)
         elif 'Tabulated' in entry and 'refractive' in entry:
             # Tabulated refractive index
             permittivities = []
@@ -154,15 +154,15 @@ class Material():
         return self.density
 
 class Constant(Material):
-    def __init__(self, name, permittivities=None, density=None, epsinf=0.0):
+    def __init__(self, name, permittivity=None, density=None, epsinf=0.0):
         '''Create an instance of a material with a constant scalar permittivity
            permittivity is the value of the permittivity and can be complex
            The required parameters are;
            name:             The name of the material
-           permittivities    The permittivity  
+           permittivity      The permittivity  
            density           in g/ml
         '''
-        super().__init__(name, density=density, epsinf=epsinf, permittivityObject=DielectricFunction.ConstantScalar(permittivities))
+        super().__init__(name, density=density, epsinf=epsinf, permittivityObject=DielectricFunction.ConstantScalar(permittivity))
         self.type = 'Constant permittivity'
 
 

@@ -1,11 +1,10 @@
 # -*- coding: utf8 -*-
-from PyQt5.QtWidgets         import QPushButton, QWidget, QFileDialog
+from PyQt5.QtWidgets         import QPushButton, QWidget
 from PyQt5.QtWidgets         import QComboBox, QLabel, QLineEdit, QDoubleSpinBox
 from PyQt5.QtWidgets         import QVBoxLayout, QHBoxLayout, QFormLayout
 from PyQt5.QtWidgets         import QSpinBox
 from PyQt5.QtCore            import Qt, QCoreApplication
 
-from PDielec                 import __file__  as PDielec_init_filename
 from PDielec.Constants       import avogadro_si
 from PDielec.Utilities       import Debug
 from PDielec.GUI.ScenarioTab import ScenarioTab
@@ -17,13 +16,13 @@ import PDielec.Calculator as Calculator
 import PDielec.DielectricFunction as DielectricFunction
 from PDielec.Materials       import MaterialsDataBase
 from PDielec.Materials       import Material
+import PDielec.Materials as Materials
 import numpy as np
 import os
 
 class PowderScenarioTab(ScenarioTab):
     def __init__(self, parent, debug=False):
         ScenarioTab.__init__(self,parent)
-        # super(QWidget, self).__init__(parent)
         global debugger
         debugger = Debug(debug,'PowderScenarioTab:')
         debugger.print('Start:: initialiser')
@@ -50,8 +49,6 @@ class PowderScenarioTab(ScenarioTab):
         self.settings['ATR S polarisation fraction'] = 0.5
         self.settings['Effective medium method'] = 'Maxwell-Garnett'
         self.settings['Particle shape'] = 'Sphere'
-        PDielec_Directory = os.path.dirname(PDielec_init_filename)
-        self.settings['Materials database'] = PDielec_Directory + '/MaterialsDataBase.xlsx'
         self.methods = ['Maxwell-Garnett', 'Bruggeman', 'Averaged Permittivity', 'Mie']
         self.shapes = ['Sphere', 'Needle', 'Plate', 'Ellipsoid']
         self.direction = np.array([0,0,0])
@@ -65,30 +62,17 @@ class PowderScenarioTab(ScenarioTab):
         self.absorptionCoefficient = []
         self.molarAbsorptionCoefficient = []
         self.sp_atr = []
-        # Open the database
-        self.DataBase = MaterialsDataBase(self.settings['Materials database'],debug=debug)
         # Create a scenario tab
         vbox = QVBoxLayout()
         form = QFormLayout()
         #
         # Option to open a database of permittivities for the support
-        #
-        self.openDB_button = QPushButton("Open materials' database")
-        self.openDB_button.clicked.connect(self.openDB_button_clicked)
-        self.openDB_button.setToolTip("Open a new materials' database (.xlsx file)")
-        label = QLabel("Open materials' database")
-        label.setToolTip("Open a new materials' database (.xlsx file)")
-        form.addRow(label, self.openDB_button)
+        # label and button are defined the parent class
+        form.addRow(self.openDB_label, self.openDB_button)
         #
         # Add a name for the database
-        #
-        self.database_le = QLineEdit(self)
-        self.database_le.setToolTip("Provides information about the name of the materials' database")
-        self.database_le.setText(self.settings['Materials database'])
-        self.database_le.setReadOnly(True)
-        label = QLabel("Current materials' database")
-        label.setToolTip("Provides information about the name of the materials' database")
-        form.addRow(label, self.database_le)
+        # label and button are defined the parent class
+        form.addRow(self.database_le_label, self.database_le)
         #
         # Support matrix, read information from the database
         #
@@ -107,8 +91,7 @@ class PowderScenarioTab(ScenarioTab):
             print('support matrix index was not 0',matrix)
         self.matrix_cb.activated.connect(self.on_matrix_cb_activated)
         if 'Define material manually' in self.settings['Matrix']:
-            permittivityObject = DielectricFunction.ConstantScalar(self.settings['Matrix permittivity'])
-            self.matrixMaterial = Material('manual',permittivityObject=permittivityObject,density=self.settings['Matrix density'])
+            self.matrixMaterial = Materials.Constant('manual',permittivity=self.settings['Matrix permittivity'],density=self.settings['Matrix density'])
         else:
             self.matrixMaterial = self.DataBase.getMaterial(self.settings['Matrix'])
         label = QLabel('Support matrix',self)
@@ -384,15 +367,7 @@ class PowderScenarioTab(ScenarioTab):
     def openDB_button_clicked(self):
         '''Open a new materials' database'''
         debugger.print('Start:: openDB_button_clicked')
-        selfilter = 'Spreadsheet (*.xlsx)'
-        filename,myfilter = QFileDialog.getOpenFileName(self,'Open spreadsheet','','Spreadsheet (*.xls);;Spreadsheet (*.xlsx);;All files(*)',selfilter)
-        # Process the filename
-        if filename != '':
-            self.settings['Materials database'] = filename
-        self.database_le.setText(self.settings['Materials database'])
-        self.DataBase = MaterialsDataBase(self.settings['Materials database'],debug=debugger.state())
-        self.materialNames = self.DataBase.getSheetNames()
-        self.materialNames.append('Define material manually')
+        self.openDataBase()
         if not self.settings['Matrix'] in self.materialNames:
             self.settings['Matrix'] = self.materialNames[0]
         index = self.matrix_cb.findText(self.settings['Matrix'], Qt.MatchFixedString)
@@ -569,8 +544,7 @@ class PowderScenarioTab(ScenarioTab):
         self.settings['Matrix'] = matrix
         if 'Define material manually' in matrix:
             # The manual option has been chosen, so create a new material with the right permittivity and density
-            permittivityObject = DielectricFunction.ConstantScalar(self.settings['Matrix permittivity'])
-            self.matrixMaterial = Material('manual',permittivityObject=permittivityObject,density=self.settings['Matrix density'])
+            self.matrixMaterial = Materials.Constant('manual',permittivity=self.settings['Matrix permittivity'],density=self.settings['Matrix density'])
             self.matrixPermittivityFunction = self.matrixMaterial.getPermittivityFunction()
         else:
             # Read the material information for permittivity and density from the data base
@@ -644,20 +618,26 @@ class PowderScenarioTab(ScenarioTab):
         return
 
     def on_permittivity_i_sb_changed(self,value):
+        self.refreshRequired = True
         real = np.real(self.settings['Matrix permittivity'])
         self.settings['Matrix permittivity'] = complex(real,value)
         newPermittivityObject = DielectricFunction.ConstantScalar(self.settings['Matrix permittivity'])
         self.matrixMaterial.setPermittivityObject(newPermittivityObject)
+        self.settings['Matrix'] = 'Define material manually'
         debugger.print(self.settings['Legend'],'on imaginary permittivity line edit changed', value)
+        self.refresh()
         self.refreshRequired = True
         return
 
     def on_permittivity_r_sb_changed(self,value):
+        self.refreshRequired = True
         imaginary = np.imag(self.settings['Matrix permittivity'])
         self.settings['Matrix permittivity'] = complex(value,imaginary)
         newPermittivityObject = DielectricFunction.ConstantScalar(self.settings['Matrix permittivity'])
         self.matrixMaterial.setPermittivityObject(newPermittivityObject)
+        self.settings['Matrix'] = 'Define material manually'
         debugger.print(self.settings['Legend'],'on permittivity line edit changed', value)
+        self.refresh()
         self.refreshRequired = True
         return
 
@@ -893,8 +873,7 @@ class PowderScenarioTab(ScenarioTab):
         self.materialNames.append('Define material manually')
         # Set the matrix support material
         if 'Define material manually' in self.settings['Matrix']:
-            permittivityObject = DielectricFunction.ConstantScalar(self.settings['Matrix permittivity'])
-            self.matrixMaterial = Material('manual',permittivityObject=permittivityObject,density=self.settings['Matrix density'])
+            self.matrixMaterial = Materials.Constant('manual',permittivity=self.settings['Matrix permittivity'],density=self.settings['Matrix density'])
             self.matrixPermittivityFunction = self.matrixMaterial.getPermittivityFunction()
         else:
            # Check to see if the permittivity or the density have been changed from the database values
@@ -914,8 +893,7 @@ class PowderScenarioTab(ScenarioTab):
                 # It looks like the permittivity or density has been set manually
                 # Creat a constant permittivity material and set the Matrix to manual
                 self.settings['Matrix'] = 'Define material manually'
-                permittivityObject = DielectricFunction.ConstantScalar(self.settings['Matrix permittivity'])
-                self.matrixMaterial = Material('manual',permittivityObject=permittivityObject,density=self.settings['Matrix density'])
+                self.matrixMaterial = Materials.Constant('manual',permittivity=self.settings['Matrix permittivity'],density=self.settings['Matrix density'])
                 self.matrixPermittivityFunction = self.matrixMaterial.getPermittivityFunction()
             else:
                 # Use the database material

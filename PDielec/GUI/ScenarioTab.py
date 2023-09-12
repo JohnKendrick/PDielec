@@ -1,7 +1,12 @@
 # -*- coding: utf8 -*-
-from PyQt5.QtWidgets   import  QWidget, QHBoxLayout, QPushButton
+from PyQt5.QtWidgets   import  QWidget, QHBoxLayout, QPushButton, QLabel, QLineEdit
+from PyQt5.QtWidgets   import  QFileDialog
 from PyQt5.QtCore      import  Qt
 from PDielec.Utilities import  Debug
+from PDielec           import __file__  as PDielec_init_filename
+from PDielec.Materials import MaterialsDataBase
+from PDielec.Materials import Material
+import os
 
 class ScenarioTab(QWidget):
     def __init__(self, parent, debug=False):
@@ -18,7 +23,45 @@ class ScenarioTab(QWidget):
         self.scenarioType = None
         self.settings['Scenario type'] = 'Unset'
         self.vs_cm1 = [0, 0]
+        # Deal with the Materials Database here as it is used in all Scenarios
+        PDielec_Directory = os.path.dirname(PDielec_init_filename)
+        self.settings['Materials database'] = os.path.join(PDielec_Directory, 'MaterialsDataBase.xlsx')
+        # Open the database
+        self.DataBase = MaterialsDataBase(self.settings['Materials database'],debug=debug)
+        # Set up the open database button
+        self.openDB_button = QPushButton("Open materials' database")
+        self.openDB_button.clicked.connect(self.openDB_button_clicked)
+        self.openDB_button.setToolTip("Open a new materials' database (.xlsx file)")
+        self.openDB_label = QLabel("Open materials' database")
+        self.openDB_label.setToolTip("Open a new materials' database (.xlsx file)")
+        # set up the database information line
+        self.database_le = QLineEdit(self)
+        self.database_le.setToolTip("Provides information about the name of the materials' database")
+        self.database_le.setText(self.settings['Materials database'])
+        self.database_le.setReadOnly(True)
+        self.database_le_label = QLabel("Current materials' database")
+        self.database_le_label.setToolTip("Provides information about the name of the materials' database")
         debugger.print('Finished:: initialiser')
+
+    def openDataBase(self):
+        '''Open the database and set the material names'''
+        selfilter = 'Spreadsheet (*.xlsx)'
+        filename,myfilter = QFileDialog.getOpenFileName(self,'Open spreadsheet','','Spreadsheet (*.xls);;Spreadsheet (*.xlsx);;All files(*)',selfilter)
+        # Process the filename
+        if filename == '':
+            return
+        oldDataBase = self.DataBase
+        self.DataBase = MaterialsDataBase(self.settings['Materials database'],debug=debugger.state())
+        sheets = self.DataBase.getSheetNames()
+        if sheets[0] != 'Information':
+            self.DataBase = oldDataBase
+            print('Error chosen file is not a materials database')
+            return
+        self.settings['Materials database'] = filename
+        self.database_le.setText(self.settings['Materials database'])
+        self.materialNames = sheets
+        self.materialNames.append('Define material manually')
+        return
 
     def getNoCalculationsRequired(self):
         """Get the number of spectra that need recalculating from this scenario"""
