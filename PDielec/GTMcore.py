@@ -372,7 +372,25 @@ class Layer:
         self.euler[2, 1] = np.sin(theta) * np.cos(psi)
         self.euler[2, 2] = np.cos(theta)
         #JK Added the inverse calculation here so it is only done once
-        self.euler_inverse = np.clongdouble(lag.pinv(np.cdouble(self.euler)))
+        #JK self.euler_inverse = np.clongdouble(lag.pinv(np.cdouble(self.euler)))
+        self.euler_inverse = self.invert(self.euler)
+
+    def invert(self,m):
+        """Calculate the inverse of m
+
+        Parameters
+        ----------
+        m : complex 3x3 array
+
+        Returns
+        -------
+        the inverse as a 3x3 complex np array
+        """
+        m1, m2, m3, m4, m5, m6, m7, m8, m9 = m.flatten()
+        determinant = m1*m5*m9 + m4*m8*m3 + m7*m2*m6 - m1*m6*m8 - m3*m5*m7 - m2*m4*m9  
+        return np.array([[m5*m9-m6*m8, m3*m8-m2*m9, m2*m6-m3*m5],
+                         [m6*m7-m4*m9, m1*m9-m3*m7, m3*m4-m1*m6],
+                         [m4*m8-m5*m7, m2*m7-m1*m8, m1*m5-m2*m4]])/determinant
 
 
     def calculate_matrices(self, zeta):
