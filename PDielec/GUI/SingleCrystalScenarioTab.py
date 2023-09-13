@@ -37,8 +37,8 @@ class SingleCrystalScenarioTab(ScenarioTab):
         self.settings['Unique direction - l'] = 1
         self.settings['Azimuthal angle'] = 0.0
         self.settings['Angle of incidence'] = 0.0
-        self.settings['Superstrate'] = None
-        self.settings['Substrate'] = None
+        self.settings['Superstrate'] = 'air'
+        self.settings['Substrate'] = 'air'
         self.settings['Superstrate permittivity'] = 1.0
         self.settings['Substrate permittivity'] = 1.0
         self.settings['Superstrate depth'] = 99999.0
@@ -235,12 +235,14 @@ class SingleCrystalScenarioTab(ScenarioTab):
     def filmThicknessWidget(self):
         '''Create a film thickness widget'''
         self.film_thickness_sb = QDoubleSpinBox(self)
+        self.film_thickness_sb.setSizePolicy(QSizePolicy.Expanding,QSizePolicy.Fixed)
         self.film_thickness_sb.setToolTip('Define the thin film thickness in the defined thickness units')
         self.film_thickness_sb.setRange(0,100000)
         self.film_thickness_sb.setSingleStep(1)
         self.film_thickness_sb.setValue(self.settings['Film thickness'])
         self.film_thickness_sb.valueChanged.connect(self.on_film_thickness_sb_changed)
         self.thickness_unit_cb = QComboBox(self)
+        self.thickness_unit_cb.setSizePolicy(QSizePolicy.Expanding,QSizePolicy.Fixed)
         self.thickness_unit_cb.setToolTip('Set the units to be used for thickness; either nm, um, mm or cm')
         self.thickness_unit_cb.addItems( ['nm','um','mm','cm'] )
         self.settings['Thickness unit'] = 'nm'
@@ -298,9 +300,12 @@ class SingleCrystalScenarioTab(ScenarioTab):
         '''Create the superstrate widget '''
         hbox = QHBoxLayout()
         self.superstrate_cb = QComboBox(self)
+        self.superstrate_cb.setSizePolicy(QSizePolicy.Expanding,QSizePolicy.Fixed)
         self.superstrate_cb.setToolTip('Define the incident medium')
         self.materialNames = self.DataBase.getSheetNames()
-        self.materialNames.append('Define material manually')
+        if 'manually' in self.settings['Superstrate']:
+            self.materialNames.append('Material defined manually')
+        self.superstrate_cb.clear()
         self.superstrate_cb.addItems(self.materialNames)
         if not self.settings['Superstrate'] in self.materialNames:
             if 'air' in self.materialNames:
@@ -308,12 +313,9 @@ class SingleCrystalScenarioTab(ScenarioTab):
             else:
                 self.settings['Superstrate'] = self.materialNames[0]
         index = self.superstrate_cb.findText(self.settings['Superstrate'], Qt.MatchFixedString)
-        if index >=0:
-            self.superstrate_cb.setCurrentIndex(index)
-        else:
-            print('Superstrate material index was not 0',self.settings['Superstrate'])
+        self.superstrate_cb.setCurrentIndex(index)
         self.superstrate_cb.activated.connect(self.on_superstrate_cb_activated)
-        if 'Define material manually' in self.settings['Superstrate']:
+        if 'Material defined manually' in self.settings['Superstrate']:
             self.superstrateMaterial = Materials.Constant('manual',permittivity=self.settings['Superstrate permittivity'])
         else:
             self.superstrateMaterial = self.DataBase.getMaterial(self.settings['Superstrate'])
@@ -353,9 +355,12 @@ class SingleCrystalScenarioTab(ScenarioTab):
         ''' Create a substrate widget'''
         hbox = QHBoxLayout()
         self.substrate_cb = QComboBox(self)
+        self.substrate_cb.setSizePolicy(QSizePolicy.Expanding,QSizePolicy.Fixed)
         self.substrate_cb.setToolTip('Define the substrate material')
         self.materialNames = self.DataBase.getSheetNames()
-        self.materialNames.append('Define material manually')
+        if 'manually' in self.settings['Substrate']:
+            self.materialNames.append('Material defined manually')
+        self.substrate_cb.clear()
         self.substrate_cb.addItems(self.materialNames)
         if not self.settings['Substrate'] in self.materialNames:
             if 'air' in self.materialNames:
@@ -363,12 +368,9 @@ class SingleCrystalScenarioTab(ScenarioTab):
             else:
                 self.settings['Substrate'] = self.materialNames[0]
         index = self.substrate_cb.findText(self.settings['Substrate'], Qt.MatchFixedString)
-        if index >=0:
-            self.substrate_cb.setCurrentIndex(index)
-        else:
-            print('Substrate material index was not 0',self.settings['Substrate'])
+        self.substrate_cb.setCurrentIndex(index)
         self.substrate_cb.activated.connect(self.on_substrate_cb_activated)
-        if 'Define material manually' in self.settings['Substrate']:
+        if 'Material defined manually' in self.settings['Substrate']:
             self.substrateMaterial = Materials.Constant('manual',permittivity=self.settings['Substrate permittivity'])
         else:
             self.substrateMaterial = self.DataBase.getMaterial(self.settings['Substrate'])
@@ -465,7 +467,9 @@ class SingleCrystalScenarioTab(ScenarioTab):
         self.settings['Superstrate permittivity'] = complex(value,old_imag)
         newPermittivityObject = DielectricFunction.ConstantScalar(self.settings['Superstrate permittivity'])
         self.superstrateMaterial.setPermittivityObject(newPermittivityObject)
-        self.settings['Superstrate'] = 'Define material manually'
+        self.settings['Superstrate'] = 'Material defined manually'
+        if 'Material defined manually' not in self.materialNames:
+            self.materialNames.append('Material defined manually')
         self.refresh()
         self.refreshRequired = True
         return
@@ -477,7 +481,9 @@ class SingleCrystalScenarioTab(ScenarioTab):
         self.settings['Superstrate permittivity'] = complex(old_real,value)
         newPermittivityObject = DielectricFunction.ConstantScalar(self.settings['Superstrate permittivity'])
         self.superstrateMaterial.setPermittivityObject(newPermittivityObject)
-        self.settings['Superstrate'] = 'Define material manually'
+        self.settings['Superstrate'] = 'Material defined manually'
+        if 'Material defined manually' not in self.materialNames:
+            self.materialNames.append('Material defined manually')
         self.refresh()
         self.refreshRequired = True
         return
@@ -489,7 +495,9 @@ class SingleCrystalScenarioTab(ScenarioTab):
         self.settings['Substrate permittivity'] = complex(value,old_imag)
         newPermittivityObject = DielectricFunction.ConstantScalar(self.settings['Substrate permittivity'])
         self.substrateMaterial.setPermittivityObject(newPermittivityObject)
-        self.settings['Substrate'] = 'Define material manually'
+        self.settings['Substrate'] = 'Material defined manually'
+        if 'Material defined manually' not in self.materialNames:
+            self.materialNames.append('Material defined manually')
         self.refresh()
         self.refreshRequired = True
         return
@@ -501,7 +509,9 @@ class SingleCrystalScenarioTab(ScenarioTab):
         self.settings['Substrate permittivity'] = complex(old_real,value)
         newPermittivityObject = DielectricFunction.ConstantScalar(self.settings['Substrate permittivity'])
         self.substrateMaterial.setPermittivityObject(newPermittivityObject)
-        self.settings['Substrate'] = 'Define material manually'
+        self.settings['Substrate'] = 'Material defined manually'
+        if 'Material defined manually' not in self.materialNames:
+            self.materialNames.append('Material defined manually')
         self.refresh()
         self.refreshRequired = True
         return
@@ -562,7 +572,18 @@ class SingleCrystalScenarioTab(ScenarioTab):
         self.DataBase = MaterialsDataBase(self.settings['Materials database'],debug=debugger.state())
         # Update the possible super/substrate material names from the database
         self.materialNames = self.DataBase.getSheetNames()
-        self.materialNames.append('Define material manually')
+        self.superstrate_cb.clear()
+        self.superstrate_cb.addItems(self.materialNames)
+        self.substrate_cb.clear()
+        self.substrate_cb.addItems(self.materialNames)
+        if 'manually' in self.settings['Superstrate'] or 'manually' in self.settings['Substrate']:
+            self.materialNames.append('Material defined manually')
+            if 'manually' in self.settings['Superstrate']:
+                self.superstrate_cb.clear()
+                self.superstrate_cb.addItems(self.materialNames)
+            if 'manually' in self.settings['Substrate']:
+                self.substrate_cb.clear()
+                self.substrate_cb.addItems(self.materialNames)
         # First check the mode and if it is Incoherent increase the number of spectra to be calculated
         index = self.mode_cb.findText(self.settings['Mode'], Qt.MatchFixedString)
         self.mode_cb.setCurrentIndex(index)
@@ -624,7 +645,7 @@ class SingleCrystalScenarioTab(ScenarioTab):
     def setSuperstrate(self):
         ''' Use the superstrate material to define a superstrate and permittivity'''
         debugger.print(self.settings['Legend'],'setSuperstrate')
-        if 'Define material manually' in self.settings['Superstrate']:
+        if 'Material defined manually' in self.settings['Superstrate']:
             # Handle the manual case
             debugger.print(self.settings['Legend'],'set to manual')
             self.superstrateMaterial = Materials.Constant('manual',permittivity=self.settings['Superstrate permittivity'])
@@ -647,7 +668,7 @@ class SingleCrystalScenarioTab(ScenarioTab):
                 debugger.print(self.settings['Legend'],'setting superstrate to manual permittivity has changed')
                 # It looks like the permittivity or density has been set manually
                 # Creat a constant permittivity material and set the Superstrate to manual
-                self.settings['Superstrate'] = 'Define material manually'
+                self.settings['Superstrate'] = 'Material defined manually'
                 self.superstrateMaterial = Materials.Constant('manual',permittivity=self.settings['Superstrate permittivity'])
                 self.superstratePermittivityFunction = self.superstrateMaterial.getPermittivityFunction()
             else:
@@ -659,7 +680,7 @@ class SingleCrystalScenarioTab(ScenarioTab):
     def setSubstrate(self):
         ''' Use the substrate material to define a substrate and permittivity'''
         debugger.print(self.settings['Legend'],'setSubstrate')
-        if 'Define material manually' in self.settings['Substrate']:
+        if 'Material defined manually' in self.settings['Substrate']:
             # Handle the manual case
             debugger.print(self.settings['Legend'],'set to manual')
             self.substrateMaterial = Materials.Constant('manual',permittivity=self.settings['Substrate permittivity'])
@@ -682,7 +703,7 @@ class SingleCrystalScenarioTab(ScenarioTab):
                 debugger.print(self.settings['Legend'],'setting superstrate to manual permittivity has changed')
                 # It looks like the permittivity or density has been set manually
                 # Creat a constant permittivity material and set the Substrate to manual
-                self.settings['Substrate'] = 'Define material manually'
+                self.settings['Substrate'] = 'Material defined manually'
                 self.substrateMaterial = Materials.Constant('manual',permittivity=self.settings['Substrate permittivity'])
                 self.substratePermittivityFunction = self.substrateMaterial.getPermittivityFunction()
             else:
@@ -708,7 +729,7 @@ class SingleCrystalScenarioTab(ScenarioTab):
         self.superstrate_permittivity_i_sb.blockSignals(True)
         # Store the new superstrate material
         self.settings['Superstrate'] = superstrate
-        if superstrate == 'Define material manually':
+        if superstrate == 'Material defined manually':
             # The manual option has been chosen, so create a new material with the right permittivity
             self.superstrateMaterial = Materials.Constant('manual',permittivity=self.settings['Superstrate permittivity'])
             self.superstratePermittivityFunction = self.superstrateMaterial.getPermittivityFunction()
@@ -728,6 +749,8 @@ class SingleCrystalScenarioTab(ScenarioTab):
         self.superstrate_cb.blockSignals(m_blocking)
         self.superstrate_permittivity_r_sb.blockSignals(r_blocking)
         self.superstrate_permittivity_i_sb.blockSignals(i_blocking)
+        self.refresh()
+        self.refreshRequired = True
         return
 
     def on_substrate_cb_activated(self, index):
@@ -747,11 +770,15 @@ class SingleCrystalScenarioTab(ScenarioTab):
         self.substrate_permittivity_i_sb.blockSignals(True)
         # Store the new substrate material
         self.settings['Substrate'] = substrate
-        if 'Define material manually' in substrate:
+        if 'Material defined manually' in substrate:
             # The manual option has been chosen, so create a new material with the right permittivity
             self.substrateMaterial = Materials.Constant('manual',permittivity=self.settings['Substrate permittivity'])
             self.substratePermittivityFunction = self.substrateMaterial.getPermittivityFunction()
         else:
+            if 'Material defined manually' in self.materialNames:
+                # We don't need the manual entry any more
+                self.substrate_cb.clear()
+                self.substrate_cb.addItems(self.materialNames[:-1])
             # Read the material information for permittivity and density from the data base
             self.substrateMaterial = self.DataBase.getMaterial(self.settings['Substrate'])
             self.substratePermittivityFunction = self.substrateMaterial.getPermittivityFunction()
@@ -767,6 +794,8 @@ class SingleCrystalScenarioTab(ScenarioTab):
         self.substrate_cb.blockSignals(m_blocking)
         self.substrate_permittivity_r_sb.blockSignals(r_blocking)
         self.substrate_permittivity_i_sb.blockSignals(i_blocking)
+        self.refresh()
+        self.refreshRequired = True
         return
 
     def on_thickness_units_cb_activated(self, index):

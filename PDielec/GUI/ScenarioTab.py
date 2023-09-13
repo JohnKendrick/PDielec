@@ -60,7 +60,6 @@ class ScenarioTab(QWidget):
         self.settings['Materials database'] = filename
         self.database_le.setText(self.settings['Materials database'])
         self.materialNames = sheets
-        self.materialNames.append('Define material manually')
         return
 
     def getNoCalculationsRequired(self):
