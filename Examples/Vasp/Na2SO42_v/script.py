@@ -51,7 +51,7 @@ self.notebook.addScenario(scenarioType="Powder")
 tab = self.notebook.scenarios[1]
 tab.settings['Legend'] = 'Manual (rho=2.2,eps=3+0.1j) - Maxwell Garnett (10%)'
 tab.settings['Scenario type'] = 'Powder'
-tab.settings['Matrix'] = 'Define material manually'
+tab.settings['Matrix'] = 'Material defined manually'
 tab.settings['Matrix density'] =  2.2
 tab.settings['Matrix permittivity'] =  (3+0.1j)
 tab.settings['Bubble radius'] =  30.0
