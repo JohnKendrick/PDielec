@@ -150,7 +150,11 @@ def exact_inv(M):
     detA = detA - A[0, 3] * A[1, 0] * A[2, 1] * A[3, 2] - A[0, 3] * A[1, 1] * A[2, 2] * A[3, 0] - A[0, 3] * A[1, 2] * A[2, 0] * A[3, 1]
 
     if detA == 0:
-        return np.clongdouble(np.linalg.pinv(np.cdouble(M)))
+        try:
+            result = np.clongdouble(np.linalg.pinv(np.cdouble(M)))
+        except:
+            result = np.clongdouble(np.linalg.pinv(np.complex(np.cdouble(M))))
+        return result
 
     B = np.zeros(A.shape, dtype=np.clongdouble)
     B[0, 0] = A[1, 1] * A[2, 2] * A[3, 3] + A[1, 2] * A[2, 3] * A[3, 1] + A[1, 3] * A[2, 1] * A[3, 2] - A[1, 1] * A[2, 3] * A[3, 2] - A[1, 2] * A[2, 1] * A[3, 3] - A[1, 3] * A[2, 2] * A[3, 1]
