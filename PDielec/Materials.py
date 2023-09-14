@@ -32,6 +32,13 @@ class MaterialsDataBase():
         debugger.print('Finished:: initialise')
         return
 
+    def valid(self):
+        '''Test to see if the spreadsheet is a valid materials database'''
+        result = False
+        if 'Information' in self.sheetNames[0]:
+            result = True
+        return result
+
     def getSheetNames(self):
         '''Return a list of the sheetnames in the database'''
         debugger.print('getSheetNames:: ',self.sheetNames)

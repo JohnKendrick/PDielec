@@ -53,9 +53,9 @@ class ScenarioTab(QWidget):
         oldDataBase = self.DataBase
         self.DataBase = MaterialsDataBase(self.settings['Materials database'],debug=debugger.state())
         sheets = self.DataBase.getSheetNames()
-        if sheets[0] != 'Information':
+        if not self.DataBase.valid():
             self.DataBase = oldDataBase
-            print('Error chosen file is not a materials database')
+            print('Error chosen file is not a materials database',sheets)
             return
         self.settings['Materials database'] = filename
         self.database_le.setText(self.settings['Materials database'])
