@@ -185,7 +185,7 @@ For each powder scenario it is assumed that the size of the particle embedded in
    The Scenario Tab for a Powder
 
 A database of material properties is opened at the start of the program.
-The default database (*PDielec/MaterialsDataBase.xlsx*) is opened although other databases can be loaded by pressing the *Open materials' database*.
+The default database (*PDielec/MaterialsDataBase.xlsx*) is opened although other databases can be loaded by pressing the *Open materials' database* button.
 The open database is show in the line below, followed by a line showing the support matrix material selected along with a brief description of the type of entry for the material.
 
 Materials can have either a constant or frequency dependent permittivity.  
@@ -247,6 +247,9 @@ The plot in the *Plotting Tab* has a legend and the description used in the lege
 Single Crystal Scenarios
 ........................
 
+As in the powder scenario, a single crystal scenario has an option to open a new database of materials.  
+By default the porgram opens the default database distributed with the program.
+
 The mode of calculation is determined by the 'Single crystal mode' option.  Possible options are; 'Thick slab', 'Coherent thin film', 'Incoherent thin film' and 'Partially incoherent thin film'.
 Details of the theory underlying each method are given in the theory section: :ref:`Single-Crystal-Theory`.
 In summary a thick slab assumes that the thickness is such that no radiation can be transmitted and all radiation is therefore reflected or absorbed.  As such only the reflectance has any meaning for thick slabs.
@@ -272,7 +275,11 @@ The incident radiation is assumed to be at an angle :math:`\theta` to the normal
 p-polarised light lies in the XZ- plane and s-polarised light is parallel with the Y-axis.  The azimuthal angle :math:`\phi` defines the rotation of the crystal around the Z-axis.
 To help understand the relationship between the crystal and laboratory co-ordinates the program outputs the direction of the lattice vectors in terms of the laboratory X-, Y- and Z- coordinates.
 
-The single crystal scenario also allows the specification of permittivities for the incident and substrate (in the case of thick slab this is not needed).  Finally from thin films the thickness of the film in nanometres is specified.
+The material for the superstrate and substrate can be selected from the pull down next to *Superstrate material* and *Substrate material*.  
+By default 'air' is selected for both.
+It is also possible to define a permittivity manual by changing the permittivities (real and imaginary) next to *Superstate permittivity* and *Substrate permittivity*.
+In the case of the thick slab mode the substrate permittivity is not needed and the material selection, along with the permittivity are greyed out. 
+Finally from thin films the thickness of the film in nanometres is specified.
 
 In the case of the 'Partially incoherent thin film' mode it is necessary to provide further information about the sampling of the geometrical parameters.
 The 'percentage of partial incoherence' provides a percentage perturbation of the geometric parameters.  All angles are sampled from a uniform distribution either side of the mean value by this percentage of 90\ :superscript:`o`.
