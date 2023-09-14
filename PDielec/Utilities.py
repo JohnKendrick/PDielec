@@ -45,14 +45,26 @@ def find_program_from_name( filename ):
     if ext == '.born':
         return 'phonopy'
     if ext == '.castep':
-        return 'castep'
+            if os.path.isfile(head+'phonopy.yaml'):
+                return 'phonopy'
+            else:
+                return 'castep'
     if ext ==  '.out':
         if os.path.isfile(head+root+'.files'):
-            return 'abinit'
+            if os.path.isfile(head+'phonopy.yaml'):
+                return 'phonopy'
+            else:
+                return 'abinit'
         elif os.path.isfile(head+root+'.dynG'):
-            return 'qe'
+            if os.path.isfile(head+'phonopy.yaml'):
+                return 'phonopy'
+            else:
+                return 'qe'
         else:
-            return 'crystal'
+            if os.path.isfile(head+'phonopy.yaml'):
+                return 'phonopy'
+            else:
+                return 'crystal'
     if ext ==  '.dynG':
         return 'qe'
     if ext ==  '.exp':
@@ -102,27 +114,28 @@ def get_reader( name, program, qmprogram):
         pname1 = os.path.join(head,'qpoints.yaml')
         pname2 = os.path.join(head,'phonopy.yaml')
         # Only works for VASP at the moment
-        vname1 = name
-        vname2 = os.path.join(head,'KPOINTS')
-        pnames = [ pname1, pname2 ]
-        vnames = [ vname1, vname2 ]
-        pnames.extend(vnames)
-        names = pnames
+
         # Which QM program was used by PHONOPY?
         if qmprogram == "castep":
             print("Error in qmreader",qmprogram)
             exit()
             qmreader = CastepOutputReader(names)
         elif qmprogram == "vasp":
+            vname1 = name
+            vname2 = os.path.join(head,'KPOINTS')
+            pnames = [ pname1, pname2 ]
+            vnames = [ vname1, vname2 ]
+            pnames.extend(vnames)
+            names = pnames
             qmreader = VaspOutputReader(vnames)
         elif qmprogram == "gulp":
             print("Error in qmreader",qmprogram)
             exit()
             qmreader = GulpOutputReader(names)
         elif qmprogram == "crystal":
-            print("Error in qmreader",qmprogram)
-            exit()
+            names = [ name ]
             qmreader = CrystalOutputReader(names)
+            print("I got here 4")
         elif qmprogram == "abinit":
             print("Error in qmreader",qmprogram)
             exit()
@@ -143,7 +156,7 @@ def pdgui_get_reader(program,names,qmprogram):
     reader = None
     program = program.lower()
     qmprogram = qmprogram.lower()
-    #print("get_reader",names,program)
+    print("get_reader",names,program,qmprogram)
     if program == "":
         #  This is the old behaviour.  It copes with VASP, CASTEP and Crystal
         #  If names[0] is a directory then we will use a vaspoutputreader
@@ -178,6 +191,7 @@ def pdgui_get_reader(program,names,qmprogram):
         #
         # First Check that the file(s) we requested are there
         #
+        print("get_reader",names,program,qmprogram)
         checkfiles = []
         if program == "castep":
             if names[0].find(".castep") >= 0:
@@ -186,6 +200,8 @@ def pdgui_get_reader(program,names,qmprogram):
                 seedname = names[0]
             checkfiles.append(seedname+".castep")
         elif program == "phonopy":
+            print("make it to the phonopy reader")
+            print("get_reader",names,program,qmprogram)
             # We only have a VASP / Phonopy interface
             # Creat a list of phonopy files
             pnames = []
@@ -221,6 +237,7 @@ def pdgui_get_reader(program,names,qmprogram):
         elif program == "qe":
             reader = QEOutputReader(names)
         elif program == "phonopy":
+            print(pnames)
             # Which QM program was used by PHONOPY?
             if qmprogram == "castep":
                 qmreader = CastepOutputReader(vnames)
@@ -230,6 +247,7 @@ def pdgui_get_reader(program,names,qmprogram):
                 qmreader = GulpOutputReader(vnames)
             elif qmprogram == "crystal":
                 qmreader = CrystalOutputReader(vnames)
+                print("I got here 2")
             elif qmprogram == "abinit":
                 qmreader = AbinitOutputReader(vnames)
             elif qmprogram == "qe":
