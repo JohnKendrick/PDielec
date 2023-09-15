@@ -30,7 +30,6 @@ class PowderScenarioTab(ScenarioTab):
         self.scenarioType = 'Powder'
         self.settings['Scenario type'] = 'Powder'
         self.noCalculationsRequired = 1
-        matrix = 'ptfe'
         self.settings['Matrix'] = None
         self.settings['Matrix density'] = None
         self.settings['Matrix permittivity'] = None
@@ -369,7 +368,7 @@ class PowderScenarioTab(ScenarioTab):
         '''Open a new materials' database'''
         debugger.print('Start:: openDB_button_clicked')
         self.openDataBase()
-        if not self.settings['Matrix'] in self.materialNames:
+        if self.settings['Matrix'] not in self.materialNames:
             self.settings['Matrix'] = self.materialNames[0]
         index = self.matrix_cb.findText(self.settings['Matrix'], Qt.MatchFixedString)
         self.matrixMaterial = self.DataBase.getMaterial(self.settings['Matrix'])

@@ -51,7 +51,7 @@ class ScenarioTab(QWidget):
         if filename == '':
             return
         oldDataBase = self.DataBase
-        self.DataBase = MaterialsDataBase(self.settings['Materials database'],debug=debugger.state())
+        self.DataBase = MaterialsDataBase(filename,debug=debugger.state())
         sheets = self.DataBase.getSheetNames()
         if not self.DataBase.valid():
             self.DataBase = oldDataBase

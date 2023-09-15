@@ -91,7 +91,7 @@ class MaterialsDataBase():
             permittivities = []
             vs_cm1 = []
             for a, c, d in zip(worksheet['A'][1:] ,worksheet['C'][1:] , worksheet['D'][1:]):
-                v = float(a,value)
+                v = float(a.value)
                 eps_r = float(c.value)
                 eps_i = float(d.value)
                 permittivity = complex(eps_r, eps_i)
