@@ -348,7 +348,7 @@ class SingleCrystalScenarioTab(ScenarioTab):
         hbox.addWidget(self.superstrate_permittivity_r_sb)
         hbox.addWidget(self.superstrate_permittivity_i_sb)
         label = QLabel('Superstrate permittivity',self)
-        label.setToolTip('Define the complex permittivity of the incident medium')
+        label.setToolTip('Define the complex permittivity of the superstrate')
         return label,hbox
 
     def substrateWidget(self):
@@ -402,7 +402,7 @@ class SingleCrystalScenarioTab(ScenarioTab):
         hbox = QHBoxLayout()
         hbox.addWidget(self.substrate_permittivity_r_sb)
         hbox.addWidget(self.substrate_permittivity_i_sb)
-        label = QLabel('Incident medium substrate permittivity',self)
+        label = QLabel('Substrate permittivity',self)
         label.setToolTip('Define the complex permittivity of the substrate')
         return label,hbox
 
