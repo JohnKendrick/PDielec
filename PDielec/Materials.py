@@ -78,9 +78,12 @@ class MaterialsDataBase():
             permittivities = []
             vs_cm1 = []
             for a, c, d in zip(worksheet['A'][1:] ,worksheet['C'][1:] , worksheet['D'][1:]):
-                v = float(a.value)
-                n = float(c.value)
-                k = float(d.value)
+                try:
+                   v = float(a.value)
+                   n = float(c.value)
+                   k = float(d.value)
+                except:
+                    print('Error in Tabulated: ',a.value,c.value,d.value)
                 nk = complex(n, k)
                 permittivity = Calculator.calculate_permittivity(nk)
                 permittivities.append(permittivity)
@@ -98,12 +101,38 @@ class MaterialsDataBase():
                 permittivities.append(permittivity)
                 vs_cm1.append(v)
             material = Tabulated(sheet,vs_cm1,permittivities=permittivities,density=density)
+        elif 'Lorentz' in entry and 'Drude' in entry:
+            # Lorentz-Drude mode for permittivity
+            epsilon_infinity = np.zeros( (3,3) )
+            directions = [[], [], []]
+            epsinfs = [[], [], []]
+            omegas = [[], [], []]
+            strengths = [[], [], []]
+            gammas = [[], [], []]
+            for a, b, c, d, e in zip(worksheet['A'][1:] ,worksheet['B'][1:] , worksheet['C'][1:], worksheet['D'][1:], worksheet['E'][1:]) :
+                print('Error in Lorentz-Drude: ',a.value,b.value,c.value,d.value,e.value)
+#                try:
+                if a.value is not None:
+                    direction = a.value
+                index = ['xx','yy','zz'].index(direction)
+                if b.value is not None:
+                    epsilon_infinity[[index],[index]] = float(b.value)
+                if c.value is not None:
+                    omegas[index].append(float(c.value))
+                if d.value is not None:
+                    strengths[index].append(float(d.value))
+                if e.value is not None:
+                    gammas[index].append(float(e.value))
+#                except:
+#                    print('Error in Lorentz-Drude: ',a.value,b.value,c.value,d.value,e.value)
+#                    return
+            material = DrudeLorentz(sheet,epsilon_infinity,omegas,strengths,gammas,density=density)
         # Close the work book
         workbook.close()
         return material
         
 class Material():
-    def __init__(self, name, density=None, permittivityObject=None, epsinf=0.0, volume=0):
+    def __init__(self, name, density=None, permittivityObject=None, volume=0):
         '''A Material has the following properties
            density:            The density of the material
            permitivityObject:  An instance of a DielectricFunction
@@ -113,7 +142,6 @@ class Material():
            The material object is created from;
            name:               The name of the material
            density:            The material density
-           epsInf:             Epsilon infinity if needed
            volume:             The volume of the unit cell if needed
 
         '''
@@ -122,12 +150,11 @@ class Material():
         self.volume = volume
         self.type = 'Base Class'
         self.permittivityObject = permittivityObject
-        self.permittivityObject.setEpsilonInfinity(epsinf)
 
     def getInformation(self):
         '''Return information about the material'''
         result = self.type
-        if 'Constant' not in self.type:
+        if 'Tabulate' in self.type:
             low = self.permittivityObject.getLowestFrequency()
             high = self.permittivityObject.getHighestFrequency()
             result += ' freq range {:.0f}-{:.0f}'.format(low,high)
@@ -161,7 +188,7 @@ class Material():
         return self.density
 
 class Constant(Material):
-    def __init__(self, name, permittivity=None, density=None, epsinf=0.0):
+    def __init__(self, name, permittivity=None, density=None):
         '''Create an instance of a material with a constant scalar permittivity
            permittivity is the value of the permittivity and can be complex
            The required parameters are;
@@ -169,12 +196,33 @@ class Constant(Material):
            permittivity      The permittivity  
            density           in g/ml
         '''
-        super().__init__(name, density=density, epsinf=epsinf, permittivityObject=DielectricFunction.ConstantScalar(permittivity))
+        super().__init__(name, density=density, permittivityObject=DielectricFunction.ConstantScalar(permittivity))
         self.type = 'Constant permittivity'
 
 
+class DrudeLorentz(Material):
+    def __init__(self, name,epsinf,omegas,strengths,gammas,density=None):
+        '''Create an instance of a material with a Lorentz Drude model permittivity
+           permittivity is the value of the permittivy and can be complex
+           The returned permittivityObject can generate either a scalar or a tensor.
+           For defining a support matrix material a scalar is used
+           The required parameters are;
+           name:             The name of the material
+           epsinf            Epsilon infinity either a 3x3 list or a 3x3 array
+           omegas            The TO frequencies as a list 
+           strengths         The absorption strengths as a list 
+           gammas            The absorption widths as a list
+           density           in g/ml
+        '''
+        epsilon_infinity = np.array(epsinf)
+        permittivityObject = DielectricFunction.DrudeLorentz( omegas, strengths, gammas,units='cm-1')
+        permittivityObject.setEpsilonInfinity(epsilon_infinity)
+        super().__init__(name, density=density, permittivityObject=permittivityObject)
+        self.type = 'Drude-Lorentz'
+
+
 class Tabulated(Material):
-    def __init__(self, name, vs_cm1=None, permittivities=None, density=None, epsinf=0.0):
+    def __init__(self, name, vs_cm1=None, permittivities=None, density=None):
         '''Create an instance of a material with a constant permittivity
            permittivity is the value of the permittivy and can be complex
            The returned permittivityObject can generate either a scalar or a tensor.
@@ -196,6 +244,6 @@ class Tabulated(Material):
                 print('Error in Tabulated, shape of parameters is wrong')
         else:
             permittivityObject = DielectricFunction.TabulateScalar(vs,eps)
-        super().__init__(name, density=density, epsinf=epsinf, permittivityObject=permittivityObject)
+        super().__init__(name, density=density, permittivityObject=permittivityObject)
         self.type = 'Tabulated permittivity'
 
