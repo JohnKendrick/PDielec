@@ -43,6 +43,7 @@ class DielectricFunction:
                            Volume of crystal unit cells 
     self.vs_cm1 : np.array of floats
                            The frequencies of any tabulation
+    self.isScalar          True for a scalar function
 
     Methods
     -------
@@ -59,6 +60,7 @@ class DielectricFunction:
     '''
     possible_epsTypes = ['dft','fpsq','drude-lorentz']
     possible_units = ['cm-1','microns','mu','nm','thz','hz']
+
     def __init__(self, units='cm-1' ):
         '''
         Parameters
@@ -69,12 +71,21 @@ class DielectricFunction:
         if units not in self.possible_units:
             print('Catastrophic error in DielectricFunction: units not recognised', units)
             exit()
+        self.isScalar             = None
         self.vs_cm1               = 0
         self.frequency_units      = units
         self.epsilon_infinity     = np.zeros( (3,3) )
         self.volume_angs          = None
         if self.volume_angs:
             self.volume_au = volume*angstrom*angstrom*angstrom
+
+    def isTensor(self):
+        '''Returns true if the dielectric function returns a tensor'''
+        return not self.isScalar
+
+    def isScalar(self):
+        '''Returns true if the dielectric function returns a scalar value'''
+        return self.isScalar
 
     def setUnits(self,units):
         '''Set the volume for dielectric calculations
@@ -249,8 +260,9 @@ class ConstantTensor(DielectricFunction):
             units : string 
                     Define the units of frequency (default is cm-1)
         '''
-        self.value = value
         DielectricFunction.__init__(self,units=units)
+        self.value = value
+        self.isScalar = False
 
     def calculate(self,v):
         ''' 
@@ -281,8 +293,9 @@ class ConstantScalar(DielectricFunction):
             units : string 
                     Define the units of frequency (default is cm-1)
         '''
-        self.value = value
         DielectricFunction.__init__(self,units=units)
+        self.value = value
+        self.isScalar = True
 
     def calculate(self,v):
         '''
@@ -317,6 +330,7 @@ class TabulateScalar(DielectricFunction):
                     Define the units of frequency (default is cm-1)
         '''
         DielectricFunction.__init__(self,units=units)
+        self.isScalar = True
         self.vs_cm1 = np.array(vs_cm1)
         eps = np.array(permittivities)
         eps_r = np.real(eps)
@@ -359,6 +373,7 @@ class Tabulate1(DielectricFunction):
                     Define the units of frequency (default is cm-1)
         '''
         DielectricFunction.__init__(self,units=units)
+        self.isScalar = False
         self.vs_cm1 = np.array(vs_cm1)
         eps = np.array(permittivities)
         eps_r = np.real(eps)
@@ -408,6 +423,7 @@ class Tabulate3(DielectricFunction):
                     Define the units of frequency (default is cm-1)
         '''
         DielectricFunction.__init__(self,units=units)
+        self.isScalar = False
         self.vs_cm1 = np.array(vs_cm1)
         eps = [np.array(epsxx), np.array(epsyy), np.array(epszz)]
         epsr = np.zeros(3)
@@ -468,6 +484,7 @@ class Tabulate6(DielectricFunction):
                     Define the units of frequency (default is cm-1)
         '''
         DielectricFunction.__init__(self,units=units)
+        self.isScalar = False
         self.vs_cm1 = np.array(vs_cm1)
         eps = [np.array(epsxx), np.array(epsyy), np.array(epszz), np.array(epsxy), np.array(epsxz), np.array(epsyz)]
         epsr = np.zeros(3)
@@ -536,6 +553,7 @@ class DFT(DielectricFunction):
             All parameters are given in atomic units
         '''
         DielectricFunction.__init__(self)
+        self.isScalar = False
         self.mode_list = mode_list
         self.mode_frequencies = mode_frequencies
         self.mode_sigmas = mode_sigmas
@@ -587,6 +605,7 @@ class DrudeLorentz(DielectricFunction):
                     sigmas of orthonormal contributions ([[xxs][yys][zzs]])
         '''
         DielectricFunction.__init__(self,units=units)
+        self.isScalar = False
         rhombic = False
         if isinstance(vs_cm1[0], list):
             rhombic = True
@@ -641,6 +660,7 @@ class FPSQ(DielectricFunction):
                     Define the units of frequency (default is cm-1)
         '''
         DielectricFunction.__init__(self,units=units)
+        self.isScalar = False
         rhombic = False
         if isinstance(omega_tos[0], list):
             rhombic = True
