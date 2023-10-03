@@ -151,9 +151,11 @@ def exact_inv(M):
 
     if detA == 0:
         try:
+            print('Warning 4x4 inversion problem 1')
             result = np.clongdouble(np.linalg.pinv(np.cdouble(M)))
         except:
-            result = np.clongdouble(np.linalg.pinv(np.complex(np.cdouble(M))))
+            print('Warning 4x4 inversion problem 2')
+            result = np.clongdouble(np.linalg.pinv(np.complex(M)))
         return result
 
     B = np.zeros(A.shape, dtype=np.clongdouble)
@@ -715,6 +717,47 @@ class Layer:
             self.gamma = self.Berreman
         
         
+    def calculate_transfer_matrix_mp(self, f, zeta):
+        """
+        Compute the transfer matrix of the whole layer :math:`T_i=A_iP_iA_i^{-1}`
+        Uses arbitrary precision maths
+
+        Parameters
+        ----------
+        f : float
+            frequency (in Hz)
+        zeta : complex
+               reduced in-plane wavevector kx/k0
+        Returns
+        -------
+        None
+
+        """
+        ## eqn(22)
+        #from mpmath import *
+        #mp.dps = 20
+        #self.Ai[0,:] = self.gamma[:,0].copy()
+        #self.Ai[1,:] = self.gamma[:,1].copy()
+        
+        Ai[0,:] = self.gamma[:,0].copy()
+        Ai[1,:] = self.gamma[:,1].copy()
+
+        self.Ai[2,:] = (self.qs*self.gamma[:,0]-zeta*self.gamma[:,2])/self.mu
+        self.Ai[3,:] = self.qs*self.gamma[:,1]/self.mu
+
+        for ii in range(4):
+            ## looks a lot like eqn (25). Why is K not Pi ?
+            exponent = np.clongdouble(-1.0j*(2.0*np.pi*f*self.qs[ii]*self.thick)/c_const)
+            if np.abs(exponent) > exponent_threshold:
+                exponent = exponent/np.abs(exponent)*exponent_threshold
+            self.Ki[ii,ii] = np.nan_to_num(np.exp(exponent))
+            #  JK original line
+            # self.Ki[ii,ii] = np.exp(-1.0j*(2.0*np.pi*f*self.qs[ii]*self.thick)/c_const)
+
+        Aim1 = exact_inv(self.Ai.copy())
+        ## eqn (26)
+        self.Ti = np.matmul(self.Ai,np.matmul(self.Ki,Aim1))
+
     def calculate_transfer_matrix(self, f, zeta):
         """
         Compute the transfer matrix of the whole layer :math:`T_i=A_iP_iA_i^{-1}`
@@ -985,14 +1028,11 @@ class System:
         GammaStar: 4x4 complex matrix
                    System transfer matrix :math:`\Gamma^{*}`
         """
-        if len(self.layers) > 1:
-            print('Error in calculate_incoherent_GammaStar')
-            print('The number of layers must be 1')
 
         nan = np.nan_to_num
 
-        Ai_super, Ki_super, Ai_inv_super, T_super = self.superstrate.update(f, zeta_sys)
-        Ai_sub, Ki_sub, Ai_inv_sub, T_sub = self.substrate.update(f, zeta_sys)
+        Di_super, Pi_super, Di_inv_super, T_super = self.superstrate.update(f, zeta_sys)
+        Di_sub, Pi_sub, Di_inv_sub, T_sub = self.substrate.update(f, zeta_sys)
 
         Delta1234 = np.array([[1,0,0,0],
                               [0,0,1,0],
@@ -1002,14 +1042,24 @@ class System:
 
         Gamma = np.zeros(4, dtype=np.clongdouble)
         GammaStar = np.zeros(4, dtype=np.clongdouble)
-        Ai, Ki, Ai_inv, Ti = self.layers[0].update(f, zeta_sys)
-        Tloc1 = nan(np.absolute(nan(np.matmul(Ai_inv_super,Ai)))**2)
-        Tloc2 = nan(np.absolute(Ki)**2)
-        Tloc3 = nan(np.absolute(nan(np.matmul(Ai_inv,Ai_sub)))**2)
-        Gamma = nan(np.matmul(Tloc1,nan(np.matmul(Tloc2,Tloc3))))
-        Gamma = nan(np.sqrt(Gamma))
+        Dip1 = Di_sub
+        Tloc = np.identity(4, dtype=np.clongdouble)
+        for layer in reversed(self.layers):
+            Di, Pi, Di_inv, Ti = layer.update(f, zeta_sys)
+            Tloc = np.matmul( np.absolute( (np.matmul(Di_inv,Dip1)))**2,Tloc)
+            Tloc = np.matmul( np.absolute(Pi)**2,Tloc)
+            Dip1 = Di
+        Tloc = np.matmul( np.absolute(np.matmul(Di_inv_super,Dip1))**2,Tloc)
+# Version for 3 layers only
+#        Di, Pi, Di_inv, Ti = self.layers[0].update(f, zeta_sys)
+#        Tloc1 = nan(np.absolute(nan(np.matmul(Di_inv_super,Di)))**2)
+#        Tloc2 = nan(np.absolute(Pi)**2)
+#        Tloc3 = nan(np.absolute(nan(np.matmul(Di_inv,Di_sub)))**2)
+#        Gamma = nan(np.matmul(Tloc1,nan(np.matmul(Tloc2,Tloc3))))
+#        Gamma = nan(np.sqrt(Gamma))
+# End
+        Gamma = nan(np.sqrt(Tloc))
         GammaStar = np.matmul(exact_inv(Delta1234),np.matmul(Gamma,Delta1234))
-
         self.Gamma = Gamma.copy()
         self.GammaStar = GammaStar.copy()
         return self.GammaStar.copy()

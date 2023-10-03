@@ -71,18 +71,14 @@ class ExperimentOutputReader(GenericOutputReader):
         """
         od = []
         line = self._read_line()
-        print('Line:',line)
         od.append([complex(f) for f in line.split()[0:3]])
         line = self._read_line()
         od.append([complex(f) for f in line.split()[0:3]])
         line = self._read_line()
         od.append([complex(f) for f in line.split()[0:3]])
-        print('od:',od)
         # If we have complex input return a complex list, otherwise return a real list
         odc = np.array(od,dtype=complex)
-        print('odc:',odc)
         odi = np.absolute(np.imag(odc))
-        print('odi:',odi)
         sumi = np.sum(odi)
         if sumi < 1.0e-12:
             odc = np.real(odc)

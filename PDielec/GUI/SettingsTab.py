@@ -554,7 +554,7 @@ class SettingsTab(QWidget):
         debugger.print('Start:: refresh', force )
         if not self.reader and self.notebook.reader:
             self.refreshRequired = True
-        if not self.refreshRequired:
+        if not self.refreshRequired and not force:
             debugger.print('Finished:: refresh not required',force)
             return
         #

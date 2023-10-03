@@ -1489,10 +1489,9 @@ def reflectance_atr(ns,n0,theta,atrSPolFraction):
 def solve_single_crystal_equations( 
         superstrateDielectricFunction ,
         substrateDielectricFunction   ,
-        crystalPermittivityFunction   ,
         superstrateDepth              ,
         substrateDepth                ,
-        crystalDepth                  ,
+        layers                        ,
         crystalIncoherence            ,
         mode                          ,
         theta                         ,
@@ -1504,10 +1503,9 @@ def solve_single_crystal_equations(
         This is a parallel call to the single crystal equation solver, system is a GTM system   
         superstrateDielectricFunction is a dielectric function providing the superstrate dielectric
         substrateDielectricFunction   is a dielectric function providing the substrate dielectric
-        crystalPermittivityFunction   is a dielectric function providing the crystal dielectric
         superstrateDepth              the depth of the superstrate (m)
         substrateDepth                the depth of the substrate (m)
-        crystalDepth                  the depth of the crystal film (m)
+        layers                        a list of material layers (their permittivity functions)
         crystalIncoherence            a parameter between 0 and pi giving the amount of incoherence
         mode                          'thick slab' indicates the substrate will be the crystal so semi-infinite
                                       'coherent thin film' a standard GTM call with a single layer
@@ -1519,23 +1517,23 @@ def solve_single_crystal_equations(
         v                             the frequency of the light in cm-1
 
     """
-    # Create 3 layers, thickness is in metres
+    # Create layers, thickness is in metres
     superstrate      = GTM.Layer(thickness=superstrateDepth,epsilon1=superstrateDielectricFunction)
     substrate        = GTM.Layer(thickness=substrateDepth,  epsilon1=substrateDielectricFunction)
-    crystal          = GTM.Layer(thickness=crystalDepth,    epsilon=crystalPermittivityFunction)
+    gtmLayers = []
+    for layer in layers:
+        depth = layer.getThicknessInMetres()
+        permittivityFunction = layer.getPermittivityFunction()
+        gtmLayers.append(GTM.Layer(thickness=depth, epsilon=permittivityFunction))
     # Creat the system with the layers 
     if mode == 'Thick slab':
-        system = GTM.System(substrate=crystal, superstrate=superstrate, layers=[])
-    elif mode == 'Coherent thin film':
-        system = GTM.System(substrate=substrate, superstrate=superstrate, layers=[crystal])
-    elif mode == 'Partially incoherent thin film':
-        system = GTM.System(substrate=substrate, superstrate=superstrate, layers=[crystal])
-    elif mode == 'Incoherent thin film':
-        system = GTM.System(substrate=substrate, superstrate=superstrate, layers=[crystal])
+        # For a thick slab the last layer is used as the thick layer
+        system = GTM.System(substrate=gtmLayers[-1], superstrate=superstrate, layers=gtmLayers[:-2])
     else:
-        print('Unkown mode in calculate_single_crystal')
-        exit()
+        # For all other modes the substrate and superstrate sandwich all the other layers.
+        system = GTM.System(substrate=substrate, superstrate=superstrate, layers=gtmLayers)
     # Rotate the dielectric constants to the laboratory frame
+    # This is a global rotation of all the layers.
     system.substrate.set_euler(theta, phi, psi)
     system.superstrate.set_euler(theta, phi, psi)
     for layer in system.layers:
@@ -1565,6 +1563,30 @@ def cleanup_symbol(s):
     for i in string.digits:
         s = s.replace(i,'')
     return s
+
+def determineEulerAngles(R):
+     """Determine the euler angles of a rotation matrix"""
+     R11=R[0,0]
+     R12=R[0,1]
+     R13=R[0,2]
+     R21=R[1,0]
+     R31=R[2,0]
+     R33=R[2,2]
+     phi = 0.0
+     if R31 > 0.9999999999:
+         theta = -np.pi/2.0
+         psi   = -phi + np.arctan2(-R12,-R13)
+     elif R31 < -0.9999999999:
+         theta = np.pi/2.0
+         psi   = phi + np.arctan2(R12,R13)
+     else:
+         theta = theta1 = -np.arcsin(R31)
+         theta2 = np.pi - theta1
+         psi = psi1 = np.arctan2(R32/np.cos(theta1), R33/np.cos(theta1))
+         psi2 = np.arctan2(R32/np.cos(theta2), R33/np.cos(theta2))
+         phi = phi1 = np.arctan2(R21/np.cos(theta1), R11/np.cos(theta1))
+         phi2 = np.arctan2(R21/np.cos(theta2), R11/np.cos(theta2))
+     return theta, phi, psi
 
 def euler_rotation(vector, theta, phi, psi):
      """Apply a passive Euler rotation to the vector"""

@@ -51,7 +51,6 @@ class NoteBook(QWidget):
         # If scripting is used then overwriting is allowed
         self.overwriting = False
         self.debug = debug
-        #jk self.old_tab_index = None
         self.layout = QVBoxLayout()
         # The number of tabs before we have scenarios
         self.tabOffSet = 2
@@ -169,7 +168,7 @@ class NoteBook(QWidget):
         if last is not None:
             debugger.print('Copying settings from old to new scenario')
             self.scenarios[-1].settings = copy.deepcopy(last.settings)
-        self.scenarios[-1].refresh()
+        self.scenarios[-1].requestRefresh()
         n = len(self.scenarios)
         self.tabs.insertTab(self.tabOffSet+n-1,self.scenarios[-1],'Scenario '+str(n))
         self.tabs.setCurrentIndex(self.tabOffSet+n-1)
@@ -305,7 +304,7 @@ class NoteBook(QWidget):
         for i,scenario in enumerate(self.scenarios):
             scenario.setScenarioIndex(i)
             self.tabs.setTabText(self.tabOffSet+i,'Scenario '+str(i+1))
-        self.scenarios[index].refresh()
+        self.scenarios[index].requestRefresh()
         self.tabs.setCurrentIndex(self.tabOffSet+index)
         debugger.print('Finished:: switch for scenario', index+1)
         return
@@ -350,10 +349,6 @@ class NoteBook(QWidget):
         self.analysisTab.requestRefresh()
         self.viewerTab.requestRefresh()
         self.fitterTab.requestRefresh()
-        #self.tabs.setCurrentIndex(ntabs-5)
-        #self.tabs.setCurrentIndex(ntabs-4)
-        #self.tabs.setCurrentIndex(ntabs-2)
-        #self.tabs.setCurrentIndex(ntabs-1)
         # In a script we do not change the tab index, but we need the analysis tab and the plotter tab to be refreshed
         # So do it here, leave the GUI after a script showing the plotter tab
         self.tabs.setCurrentIndex(ntabs-3)
@@ -409,7 +404,6 @@ class NoteBook(QWidget):
         debugger.print('Finished:: openSpreadSheet', filename)
         return
 
-
     def on_tabs_currentChanged(self, tabindex):
         debugger.print('Start:: on_tabs_currentChanged', tabindex)
         # 
@@ -442,7 +436,6 @@ class NoteBook(QWidget):
             debugger.print('Calling settingsTab refresh')
             self.settingsTab.refresh()
         debugger.print('Exiting on_tabs_currentChanged()')
-        #jk self.old_tab_index = tabindex
         debugger.print('Finished:: on_tabs_currentChanged', tabindex)
         return
 

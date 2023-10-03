@@ -41,6 +41,7 @@ tab.settings['Substrate dielectric'] =  1.0
 tab.settings['Superstrate depth'] =  999.0
 tab.settings['Substrate depth'] =  999.0
 tab.settings['Film thickness'] =  100.0
+tab.settings['Thickness unit'] =  'nm'
 tab.settings['Mode'] = 'Coherent thin film'
 tab.settings['Frequency units'] = 'wavenumber'
 for az  in [ 10, 20, 30, 40, 50, 60, 70, 80, 90]:
@@ -48,6 +49,8 @@ for az  in [ 10, 20, 30, 40, 50, 60, 70, 80, 90]:
     tab = self.notebook.scenarios[-1]
     tab.settings['Legend'] = '(001) theta {}'.format(az)
     tab.settings['Azimuthal angle'] =  az
+    tab.settings['Film thickness'] =  100.0
+    tab.settings['Thickness unit'] =  'nm'
 #
 tab = self.notebook.plottingTab
 tab.settings['Minimum frequency'] =  0

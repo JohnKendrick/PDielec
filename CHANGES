@@ -10,6 +10,11 @@ version 8.0.0
   Changed the complex matrices in pyGTM to clongdouble
   Modified pyGTM to try and improve its numerical stability
   Modified the reading of scripts as updates to python seem to have changed the exec() command, now read the whole file at once.
+  Add the concept of layers in the single crystal scenarios.
+      This allows multiple layers to be treated between the superstrate and substrate
+  Added a materials library which can be used to store material properties
+  The materials library can be used for powder and single crystal calculations
+  There are compatibility issues with previous version, so there may be some scripts which are not compatible.
 version 7.2.2
   Addressed problems after changes in numpy.  Some np.int declarations were replaced with int
 version 7.2.1

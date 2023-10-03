@@ -372,6 +372,11 @@ class PowderScenarioTab(ScenarioTab):
             self.settings['Matrix'] = self.materialNames[0]
         index = self.matrix_cb.findText(self.settings['Matrix'], Qt.MatchFixedString)
         self.matrixMaterial = self.DataBase.getMaterial(self.settings['Matrix'])
+        # Check to see that the matrix return a scalar permittivity
+        if self.matrixMaterial.isTensor():
+            print('Error: matrix must have a scalar permittivity using ptfe')
+            self.settings['Matrix'] = 'ptfe'
+            self.matrixMaterial = self.DataBase.getMaterial(self.settings['Matrix'])
         materialPermittivityFunction = self.matrixMaterial.getPermittivityFunction()
         self.settings["Matrix permittivity"] = materialPermittivityFunction(0.0)
         self.settings["Matrix density"] = self.matrixMaterial.getDensity()
@@ -540,12 +545,11 @@ class PowderScenarioTab(ScenarioTab):
         self.density_sb.blockSignals(True)
         self.permittivity_r_sb.blockSignals(True)
         self.permittivity_i_sb.blockSignals(True)
-        # Store the new matrix material name
-        self.settings['Matrix'] = matrix
         if 'Material defined manually' in matrix:
             # The manual option has been chosen, so create a new material with the right permittivity and density
             self.matrixMaterial = Materials.Constant('manual',permittivity=self.settings['Matrix permittivity'],density=self.settings['Matrix density'])
-            self.matrixPermittivityFunction = self.matrixMaterial.getPermittivityFunction()
+            # Store the new matrix material name
+            self.settings['Matrix'] = matrix
         else:
             if 'Material defined manually' in self.materialNames:
                 # We don't need the manual entry any more
@@ -553,12 +557,19 @@ class PowderScenarioTab(ScenarioTab):
                 self.materialNames = self.materialNames[:-1]
                 self.matrix_cb.addItems(self.materialNames)
             # Read the material information for permittivity and density from the data base
-            self.matrixMaterial = self.DataBase.getMaterial(self.settings['Matrix'])
-            self.settings['Matrix density'] = self.matrixMaterial.getDensity()
-            self.matrixPermittivityFunction = self.matrixMaterial.getPermittivityFunction()
-            # The permittivity may be frequency dependent, show the value at 0 cm-1
-            self.settings['Matrix permittivity'] = self.matrixPermittivityFunction(0.0)
-            self.density_sb.setValue(self.settings['Matrix density'])
+            matrixMaterial = self.DataBase.getMaterial(matrix)
+            if matrixMaterial.isScalar():
+                # Only change the matrix material if it is a scalar material
+                self.matrixMaterial = matrixMaterial
+                # Store the new matrix material name
+                self.settings['Matrix'] = matrix
+            else:
+                print('Error: matrix material must have a scalar permittivity')
+        # The permittivity may be frequency dependent, show the value at 0 cm-1
+        self.matrixPermittivityFunction = self.matrixMaterial.getPermittivityFunction()
+        self.settings['Matrix permittivity'] = self.matrixPermittivityFunction(0.0)
+        self.settings['Matrix density'] = self.matrixMaterial.getDensity()
+        self.density_sb.setValue(self.settings['Matrix density'])
         # Update the matrix material information
         text = self.matrixMaterial.getInformation()
         self.matrix_info_le.setText(text)
@@ -580,6 +591,8 @@ class PowderScenarioTab(ScenarioTab):
         self.density_sb.blockSignals(d_blocking)
         self.permittivity_r_sb.blockSignals(r_blocking)
         self.permittivity_i_sb.blockSignals(i_blocking)
+        self.refresh()
+        self.refreshRequired = True
         return
 
     def on_density_sb_changed(self,value):

@@ -29,14 +29,16 @@ self.notebook.addScenario(scenarioType='Single crystal')
 tab = self.notebook.scenarios[1]
 tab.settings['Legend'] = 'Film 10um'
 tab.settings['Mode'] = 'Coherent thin film'
-tab.settings['Film thickness'] =  10000.0
+tab.settings['Film thickness'] =  10.0
+tab.settings['Thickness unit'] =  'um'
 #
 #
 self.notebook.addScenario(scenarioType='Single crystal')
 tab = self.notebook.scenarios[2]
 tab.settings['Legend'] = 'Film 20um'
 tab.settings['Mode'] = 'Coherent thin film'
-tab.settings['Film thickness'] =  20000.0
+tab.settings['Film thickness'] =  20.0
+tab.settings['Thickness unit'] =  'um'
 #
 #
 tab = self.notebook.plottingTab

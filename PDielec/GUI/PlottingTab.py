@@ -407,11 +407,11 @@ class PlottingTab(QWidget):
                 sp.writeNextRow(['Scenario '+str(index)],col=1,check=1)
                 settings = scenario.settings
                 for key in sorted(settings,key=str.lower):
+                    print('jk',key,settings[key])
                     sp.writeNextRow([key, settings[key]],col=1,check=1)
-                sp.writeNextRow(['Crystal axes in the laboratory frame'], col=1,check=1)
-                sp.writeNextRow(scenario.labframe_a.tolist(), col=2, check=1)
-                sp.writeNextRow(scenario.labframe_b.tolist(), col=2, check=1)
-                sp.writeNextRow(scenario.labframe_c.tolist(), col=2, check=1)
+                sp.writeNextRow(scenario.dielectricLayer.labframe[0].tolist(), col=2, check=1)
+                sp.writeNextRow(scenario.dielectricLayer.labframe[1].tolist(), col=2, check=1)
+                sp.writeNextRow(scenario.dielectricLayer.labframe[2].tolist(), col=2, check=1)
                 # Store the reflectance and transmittance
                 R_ps.append( scenario.get_result(self.vs_cm1,self.plot_types[5] ) )
                 R_ss.append( scenario.get_result(self.vs_cm1,self.plot_types[6] ) )
@@ -513,7 +513,6 @@ class PlottingTab(QWidget):
            sp.writeNextRow(output, col=1,check=1)
         debugger.print('Finished:: write_crystal_results')
         return
-
 
     def write_powder_results(self, sp, name, vs, legends, yss):
         debugger.print('Start:: write powder results')

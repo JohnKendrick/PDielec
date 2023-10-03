@@ -109,6 +109,15 @@ class UnitCell:
         edges.append( (corners_xyz[7] , corners_xyz[4]) )
         return corners_xyz,edges
 
+    def calculate_density(self):
+        '''Calculate the density of the crystal'''
+        self.volume = self.calculate_volume()
+        mass = sum(self.atomic_masses)
+        if mass == 0:
+            self.density = 1.0
+        else:
+            self.density = self.volume/mass
+        return self.density
 
     def print_info(self):
         print_reals('Unit Cell a,b,c ',[self.a, self.b, self.c], format='{:12.6f}')

@@ -57,9 +57,18 @@ class SpreadSheetManager():
             print('We have a problem, col is 0')
         self.write(row,0,check)
         for item in items:
-            #print('writing ', row, col, item)
-            self.write(row, col, item)
-            col += 1
+            if isinstance(item,list):
+                for i in item:
+                    if isinstance(i, list):
+                        for j in i:
+                            self.write(row,col,j)
+                            col += 1
+                    else:
+                        self.write(row,col,i)
+                        col += 1
+            else:
+                self.write(row, col, item)
+                col += 1
         row += 1
 
     def write(self,row,col,item):
