@@ -1,0 +1,94 @@
+#------------------------------------------------------------------------------
+#$Date: 2023-03-26 11:09:57 +0300 (Sun, 26 Mar 2023) $
+#$Revision: 282068 $
+#$URL: file:///home/coder/svn-repositories/cod/cif/9/01/01/9010158.cif $
+#------------------------------------------------------------------------------
+#
+# This file is available in the Crystallography Open Database (COD),
+# http://www.crystallography.net/. The original data for this entry
+# were provided the American Mineralogist Crystal Structure Database,
+# http://rruff.geo.arizona.edu/AMS/amcsd.php
+#
+# The file may be used within the scientific community so long as
+# proper attribution is given to the journal article from which the
+# data were obtained.
+#
+data_9010158
+loop_
+_publ_author_name
+'Capitani, G. C.'
+'Di Pierro, S.'
+'Tempesta, G.'
+_publ_section_title
+;
+ The 6H-SiC structure model: Further refinement from SCXRD data from a
+ terrestrial moissanite
+;
+_journal_name_full               'American Mineralogist'
+_journal_page_first              403
+_journal_page_last               407
+_journal_paper_doi               10.2138/am.2007.2346
+_journal_volume                  92
+_journal_year                    2007
+_chemical_compound_source        '150 km NW from Izmir, Turkey'
+_chemical_formula_sum            'C Si'
+_chemical_name_mineral           Moissanite
+_space_group_IT_number           186
+_symmetry_space_group_name_Hall  'P 6c -2c'
+_symmetry_space_group_name_H-M   'P 63 m c'
+_cell_angle_alpha                90
+_cell_angle_beta                 90
+_cell_angle_gamma                120
+_cell_length_a                   3.0810
+_cell_length_b                   3.0810
+_cell_length_c                   15.1248
+_cell_volume                     124.338
+_database_code_amcsd             0004279
+_exptl_crystal_density_diffrn    3.213
+_cod_original_formula_sum        'Si C'
+_cod_database_code               9010158
+loop_
+_space_group_symop_operation_xyz
+x,y,z
+-x,-x+y,1/2+z
+x-y,x,1/2+z
+-y,-x,z
+-y,x-y,z
+x-y,-y,1/2+z
+-x,-y,1/2+z
+x,x-y,z
+-x+y,-x,z
+y,x,1/2+z
+y,-x+y,1/2+z
+-x+y,y,z
+loop_
+_atom_site_aniso_label
+_atom_site_aniso_U_11
+_atom_site_aniso_U_22
+_atom_site_aniso_U_33
+_atom_site_aniso_U_12
+_atom_site_aniso_U_13
+_atom_site_aniso_U_23
+Si1 0.00500 0.00500 0.00500 0.00200 0.00000 0.00000
+Si2 0.00500 0.00500 0.00500 0.00200 0.00000 0.00000
+Si3 0.00500 0.00500 0.00600 0.00200 0.00000 0.00000
+C1 0.00600 0.00600 0.00400 0.00300 0.00000 0.00000
+C2 0.00500 0.00500 0.00500 0.00200 0.00000 0.00000
+C3 0.00500 0.00500 0.00500 0.00300 0.00000 0.00000
+loop_
+_atom_site_label
+_atom_site_fract_x
+_atom_site_fract_y
+_atom_site_fract_z
+_atom_site_U_iso_or_equiv
+Si1 0.00000 0.00000 0.00000 0.00500
+Si2 0.33333 0.66667 0.16640 0.00500
+Si3 0.66667 0.33333 0.33290 0.00500
+C1 0.33333 0.66667 0.04120 0.00500
+C2 0.66667 0.33333 0.20800 0.00500
+C3 0.00000 0.00000 0.37460 0.00500
+loop_
+_cod_related_entry_id
+_cod_related_entry_database
+_cod_related_entry_code
+1 AMCSD 0004279
