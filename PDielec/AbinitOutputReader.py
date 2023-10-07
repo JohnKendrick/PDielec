@@ -17,7 +17,7 @@
 """Read the contents of a directory containing Abinit input and output files
    Inherit the following from the GenericOutputReader
    __init__
-   print_info
+   print
    _read_output_file
 """
 
@@ -33,7 +33,7 @@ class AbinitOutputReader(GenericOutputReader):
     """Read the contents of a directory containing Abinit input and output files
        Inherit the following from the GenericOutputReader
        __init__
-       print_info
+       print
        _read_output_file
 """
 

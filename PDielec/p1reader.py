@@ -95,7 +95,7 @@ def main():
     #
     # Test to make sure we have a functioning reader
     #
-    reader.print_info()
+    reader.print()
     return
 
 if __name__ == "__main__":

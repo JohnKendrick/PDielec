@@ -279,7 +279,7 @@ class MainTab(QWidget):
         # tell the notebook that we have read the info and we have a reader
         self.notebook.reader = self.reader
         if self.debug:
-            self.reader.print_info()
+            self.reader.print()
         cell = self.reader.unit_cells[-1]
         a = cell.lattice[0]
         b = cell.lattice[1]
