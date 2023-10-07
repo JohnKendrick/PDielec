@@ -407,7 +407,6 @@ class PlottingTab(QWidget):
                 sp.writeNextRow(['Scenario '+str(index)],col=1,check=1)
                 settings = scenario.settings
                 for key in sorted(settings,key=str.lower):
-                    print('jk',key,settings[key])
                     sp.writeNextRow([key, settings[key]],col=1,check=1)
                 sp.writeNextRow(scenario.dielectricLayer.labframe[0].tolist(), col=2, check=1)
                 sp.writeNextRow(scenario.dielectricLayer.labframe[1].tolist(), col=2, check=1)
