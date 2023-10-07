@@ -166,7 +166,7 @@ class GenericOutputReader:
             print("new masses", self.masses)
         return
 
-    def print_info(self):
+    def print(self):
         """Print information about the system"""
         # Generic printing of information
         print("")
