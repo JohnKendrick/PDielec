@@ -169,6 +169,7 @@ class NoteBook(QWidget):
             debugger.print('Copying settings from old to new scenario')
             self.scenarios[-1].settings = copy.deepcopy(last.settings)
         self.scenarios[-1].requestRefresh()
+        self.scenarios[-1].refresh()
         n = len(self.scenarios)
         self.tabs.insertTab(self.tabOffSet+n-1,self.scenarios[-1],'Scenario '+str(n))
         self.tabs.setCurrentIndex(self.tabOffSet+n-1)
@@ -305,6 +306,8 @@ class NoteBook(QWidget):
             scenario.setScenarioIndex(i)
             self.tabs.setTabText(self.tabOffSet+i,'Scenario '+str(i+1))
         self.scenarios[index].requestRefresh()
+        if not self.scripting:
+            self.scenarios[index].refresh()
         self.tabs.setCurrentIndex(self.tabOffSet+index)
         debugger.print('Finished:: switch for scenario', index+1)
         return
