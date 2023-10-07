@@ -119,27 +119,28 @@ class UnitCell:
             self.density = self.volume/mass
         return self.density
 
-    def print_info(self):
+    def print(self):
         print_reals('Unit Cell a,b,c ',[self.a, self.b, self.c], format='{:12.6f}')
         print_reals('Unit Cell alpha,beta,gamma',[self.alpha, self.beta, self.gamma], format='{:12.6f}')
         print_reals('lattice', self.lattice[0], format='{:12.6f}')
         print_reals('', self.lattice[1], format='{:12.6f}')
         print_reals('', self.lattice[2], format='{:12.6f}')
         print_strings('Element names',self.element_names)
-        print_reals('Fractional coords',self.fractional_coordinates[0], format='{:12.6f}')
-        for frac in self.fractional_coordinates[1:]:
-            print_reals('',frac, format='{:12.6f}')
-        print_reals('Cartesian coords',self.xyz_coordinates[0], format='{:12.6f}')
-        for xyz in self.xyz_coordinates[1:]:
-            print_reals('',xyz, format='{:12.6f}')
-        if self.molecules:
-            for molid,atoms in enumerate(self.molecules):
-                mass, cm_xyz, cm_frac = self.calculateCentreOfMass(atom_list=atoms,units='all')
-                molstring = 'Molecule '+str(molid)+':'
-                print_ints('Atoms in '+molstring,atoms)
-                print_reals('Mass of '+molstring,[ mass ], format='{:12.6f}')
-                print_reals('Centre of Mass  (xyz) of '+molstring, cm_xyz, format='{:12.6f}')
-                print_reals('Centre of Mass (frac) of '+molstring, cm_frac,format='{:12.6f}')
+        if len(self.element_names) > 0:
+            print_reals('Fractional coords',self.fractional_coordinates[0], format='{:12.6f}')
+            for frac in self.fractional_coordinates[1:]:
+                print_reals('',frac, format='{:12.6f}')
+            print_reals('Cartesian coords',self.xyz_coordinates[0], format='{:12.6f}')
+            for xyz in self.xyz_coordinates[1:]:
+                print_reals('',xyz, format='{:12.6f}')
+            if self.molecules:
+                for molid,atoms in enumerate(self.molecules):
+                    mass, cm_xyz, cm_frac = self.calculateCentreOfMass(atom_list=atoms,units='all')
+                    molstring = 'Molecule '+str(molid)+':'
+                    print_ints('Atoms in '+molstring,atoms)
+                    print_reals('Mass of '+molstring,[ mass ], format='{:12.6f}')
+                    print_reals('Centre of Mass  (xyz) of '+molstring, cm_xyz, format='{:12.6f}')
+                    print_reals('Centre of Mass (frac) of '+molstring, cm_frac,format='{:12.6f}')
 
     def calculateCentreOfMass(self,atom_list=None, units='xyz'):
         # Calculate the centre of mass - if the atom list is given just use that
