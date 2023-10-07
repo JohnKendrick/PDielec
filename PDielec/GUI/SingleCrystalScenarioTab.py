@@ -42,7 +42,7 @@ class SingleCrystalScenarioTab(ScenarioTab):
         self.settings['Substrate permittivity'] = 1.0
         self.settings['Superstrate depth'] = 99999.0
         self.settings['Substrate depth'] = 99999.0
-        self.settings['Superstrate & substrate thickness unit'] = 'um'
+        self.settings['Superstrate & substrate thickness unit'] = 'mm'
         self.settings['Mode'] = 'Thick slab'
         self.settings['Frequency units'] = 'wavenumber'
         self.settings['Partially incoherent samples'] = 20
@@ -218,7 +218,7 @@ class SingleCrystalScenarioTab(ScenarioTab):
             film_thickness_sb.setSizePolicy(QSizePolicy.Expanding,QSizePolicy.Fixed)
             film_thickness_sb.setToolTip('Define the thin film thickness in the defined thickness units')
             film_thickness_sb.setRange(0,100000)
-            film_thickness_sb.setSingleStep(1)
+            film_thickness_sb.setSingleStep(0.01)
             film_thickness_sb.setValue(materialThickness)
             film_thickness_sb.valueChanged.connect(lambda x: self.on_film_thickness_sb_changed(x,layer))
             thickness_unit_cb = QComboBox(self)
@@ -378,6 +378,7 @@ class SingleCrystalScenarioTab(ScenarioTab):
         # Append the dielectric material to the list of layers
         self.layers.append(Layer(dielectricMaterial,hkl=hkl,azimuthal=azimuthal,thickness=thickness,thicknessUnit=thicknessUnit,dielectricFlag=True))
         self.dielectricLayer = self.layers[-1]
+        self.generateLayerSettings()
         return
      
     def settings2Layers(self):
@@ -405,6 +406,7 @@ class SingleCrystalScenarioTab(ScenarioTab):
                           self.settings['Layer dielectric flags']):
             # If the dielectric flag is set then initialise the dielectric and create a new layer
             # Otherwise use the materials database
+            
             if dielectricFlag:
                 self.addDielectricLayer(name,hkl,azimuthal,thickness,thicknessUnit)
             else:
@@ -425,6 +427,8 @@ class SingleCrystalScenarioTab(ScenarioTab):
 
     def editLayersButtonClicked(self):
         '''Handle a click on the add layers widget'''
+        # Do a refresh now as things in the GUI might have changed
+        self.refresh()
         # Do a recalculation as the layer instance for the crystal is defined then
         self.calculate(self.vs_cm1)
         # Create the window and show it
@@ -750,27 +754,30 @@ class SingleCrystalScenarioTab(ScenarioTab):
             return
         # Check to see if there is a new reader, if there is set up the cell
         self.reader = self.notebook.reader
-        # Initialise the cell
-        self.cell = self.reader.unit_cells[-1]
-        # Generate the layers from the settings
-        self.settings2Layers()
-        # Force recalculation
-        self.calculationRequired = True
-        # Change any greyed out items
-        self.greyed_out()
+        if self.reader is None:
+            return
         #
         # Block signals during refresh
         #
         for w in self.findChildren(QWidget):
             w.blockSignals(True)
-        #
-        # Now refresh values that need updating
-        #
+        # Initialise the cell
+        self.cell = self.reader.unit_cells[-1]
         # Update materials database widget
         self.database_le.setText(self.settings['Materials database'])
         self.DataBase = MaterialsDataBase(self.settings['Materials database'],debug=debugger.state())
         # Update the possible super/substrate material names from the database
         self.materialNames = self.DataBase.getSheetNames()
+        # Generate the layers from the settings
+        self.settings2Layers()
+        self.generateLayerSettings()
+        # Force recalculation
+        self.calculationRequired = True
+        # Change any greyed out items
+        self.greyed_out()
+        #
+        # Now refresh values that need updating
+        #
         self.superstrate_cb.clear()
         self.superstrate_cb.addItems(self.materialNames)
         self.substrate_cb.clear()
