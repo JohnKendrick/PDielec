@@ -311,29 +311,6 @@ class NoteBook(QWidget):
         debugger.print('Finished:: switch for scenario', index+1)
         return
 
-    def oldrefresh(self,force=False):
-        debugger.print('Start:: refresh',force)
-        if not force and self.scripting:
-            debugger.print('Finished:: refresh Notebook aborting refresh because of scripting')
-            return
-        ntabs = 2 + len(self.scenarios) + 4
-        self.mainTab.refresh(force=force)
-        self.settingsTab.refresh(force=force)
-        for tab in self.scenarios:
-            tab.refresh(force=force)
-        # self.tabs.setCurrentIndex(ntabs-5)
-        self.plottingTab.refresh(force=force)
-        # self.tabs.setCurrentIndex(ntabs-4)
-        self.analysisTab.refresh(force=force)
-        # self.tabs.setCurrentIndex(ntabs-3)
-        self.viewerTab.refresh(force=force)
-        # self.tabs.setCurrentIndex(ntabs-2)
-        self.fitterTab.refresh(force=force)
-        # self.tabs.setCurrentIndex(ntabs-1)
-        # Sets the open tab to be the plotterTab
-        self.tabs.setCurrentIndex(ntabs-4)
-        debugger.print('Finished:: refresh',force)
-
     def refresh(self,force=False):
         debugger.print('Started:: newrefresh',force)
         if not force and self.scripting:
