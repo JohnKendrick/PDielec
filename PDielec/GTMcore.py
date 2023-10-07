@@ -620,7 +620,7 @@ class Layer:
         
         ### convenience definition of the repetitive factor
         mu_eps33_zeta2 = (self.mu*self.epsilon[2,2]-zeta**2)
-        
+
         if np.abs(self.qs[0]-self.qs[1])<qsd_thr:
             gamma12 = 0.0 + 0.0j
             
@@ -711,7 +711,8 @@ class Layer:
         #### In case of birefringence, use Berreman fields
         for ki in range(4): 
             ### normalize them first
-            self.Berreman[ki] = self.Berreman[ki]/lag.norm(self.Berreman[ki])
+            #self.Berreman[ki] = self.Berreman[ki]/lag.norm(self.Berreman[ki])
+            self.Berreman[ki] = self.Berreman[ki]/np.sqrt(np.sum(self.Berreman[ki]**2))
         if self.useBerreman:
             print('replaced gamma by Berreman')
             self.gamma = self.Berreman
@@ -780,7 +781,7 @@ class Layer:
 
         self.Ai[2,:] = (self.qs*self.gamma[:,0]-zeta*self.gamma[:,2])/self.mu
         self.Ai[3,:] = self.qs*self.gamma[:,1]/self.mu
-
+   
         for ii in range(4):
             ## looks a lot like eqn (25). Why is K not Pi ?
             exponent = np.clongdouble(-1.0j*(2.0*np.pi*f*self.qs[ii]*self.thick)/c_const)
@@ -789,7 +790,6 @@ class Layer:
             self.Ki[ii,ii] = np.nan_to_num(np.exp(exponent))
             #  JK original line
             # self.Ki[ii,ii] = np.exp(-1.0j*(2.0*np.pi*f*self.qs[ii]*self.thick)/c_const)
-
         Aim1 = exact_inv(self.Ai.copy())
         ## eqn (26)
         self.Ti = np.matmul(self.Ai,np.matmul(self.Ki,Aim1))
@@ -1046,10 +1046,10 @@ class System:
         Tloc = np.identity(4, dtype=np.clongdouble)
         for layer in reversed(self.layers):
             Di, Pi, Di_inv, Ti = layer.update(f, zeta_sys)
-            Tloc = np.matmul( np.absolute( (np.matmul(Di_inv,Dip1)))**2,Tloc)
-            Tloc = np.matmul( np.absolute(Pi)**2,Tloc)
+            Tloc = nan(np.matmul( nan(np.absolute( (nan(np.matmul(Di_inv,Dip1))))**2),Tloc))
+            Tloc = nan(np.matmul( nan(np.absolute(Pi)**2),Tloc))
             Dip1 = Di
-        Tloc = np.matmul( np.absolute(np.matmul(Di_inv_super,Dip1))**2,Tloc)
+        Tloc = nan(np.matmul( nan(np.absolute(nan(np.matmul(Di_inv_super,Dip1)))**2),Tloc))
 # Version for 3 layers only
 #        Di, Pi, Di_inv, Ti = self.layers[0].update(f, zeta_sys)
 #        Tloc1 = nan(np.absolute(nan(np.matmul(Di_inv_super,Di)))**2)
@@ -1111,7 +1111,6 @@ class System:
               r = r / np.abs(r) / np.abs(r)
         return r
     
-
     def calculate_r_t(self, zeta_sys):
         """ Calculate various field and intensity reflection and transmission coefficients, as well as the 4-valued vector of transmitted field.
 
@@ -1240,6 +1239,8 @@ class System:
         ### Intensity transmission coefficients are only the z-component of S !
         T_pp = (Sout_pin[2]/Sinc_pin[2]) ## z-component only
         T_ss = (Sout_sin[2]/Sinc_sin[2]) ## z-component only
+        T_pp = self.scale_intensity(T_pp)
+        T_ss = self.scale_intensity(T_ss)
 
         T_out = np.array([T_pp, T_ss])
 
