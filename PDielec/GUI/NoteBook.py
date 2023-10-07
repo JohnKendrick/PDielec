@@ -169,7 +169,6 @@ class NoteBook(QWidget):
             debugger.print('Copying settings from old to new scenario')
             self.scenarios[-1].settings = copy.deepcopy(last.settings)
         self.scenarios[-1].requestRefresh()
-        self.scenarios[-1].refresh()
         n = len(self.scenarios)
         self.tabs.insertTab(self.tabOffSet+n-1,self.scenarios[-1],'Scenario '+str(n))
         self.tabs.setCurrentIndex(self.tabOffSet+n-1)
@@ -342,12 +341,13 @@ class NoteBook(QWidget):
             return
         ntabs = 2 + len(self.scenarios) + 4
         # Do a refresh on the mainTab and the settingsTab
+        # Add all the scenarios
         # This should caused anything that needs reading in to be read and processed
         self.mainTab.refresh(force=force)
         self.settingsTab.refresh(force=force)
-        # Request refreshes on everything else
         for tab in self.scenarios:
-            tab.requestRefresh()
+            tab.refresh(force=force)
+        # Request refreshes on everything else
         self.plottingTab.requestRefresh()
         self.analysisTab.requestRefresh()
         self.viewerTab.requestRefresh()
