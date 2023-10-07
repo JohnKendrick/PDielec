@@ -24,6 +24,10 @@ class Layer():
            dielectricFlag this is true if the layer material is the dielectric being studied'''
         self.material = material
         self.hkl = hkl
+        if material.isTensor() and hkl is None:
+            hkl = [0,0,1]
+        else:
+            hkl = [0,0,0]
         self.azimuthal = azimuthal
         self.thickness = thickness
         self.thicknessUnit = thicknessUnit
@@ -37,6 +41,7 @@ class Layer():
     def print(self):
         print('---------------- ')
         print('Material       : ', self.material)
+        self.material.print()
         print('HKL            :      ', self.hkl)
         print('Azimuthal      :', self.azimuthal)
         print('Thickness      :', self.thickness)
@@ -113,12 +118,10 @@ class Layer():
 
     def calculate_euler_matrix(self):
         '''Calculate the Euler angles for the crystal to lab transformation'''
-        # debugger.print(self.settings['Legend'],'Start:: calculate_euler_matrix')
         # Get plane specification
         hkl = self.hkl
         sum2 = hkl[0]*hkl[0] + hkl[1]*hkl[1] + hkl[2]*hkl[2]
         if sum2 < 1:
-            # debugger.print(self.settings['Legend'],'Finished:: calculate_euler_matrix')
             return 
         x = 0
         y = 1
@@ -148,12 +151,11 @@ class Layer():
         # Calculate and keep euler inverse
         self.euler_inverse = self.invert(self.euler)
         # Calculate lab frame
-        self.labframe = np.matmul(self.euler,self.material.cell.lattice).T
+        self.labframe = np.matmul(self.euler,self.material.cell.lattice.T).T
         normal_to_plane_lab = np.matmul(self.euler,plane[z])
         if normal_to_plane_lab[2] < 0.9999 and normal_to_plane_lab[2] > -0.9999:
             print('Error in Euler rotations - surface normal is not along Z-axis', normal_to_plane_lab)
             exit()
-        # debugger.print(self.settings['Legend'],'Finished:: calculate_euler_matrix')
         return 
 
     def azimuthalRotationMatrix(self,angle):
@@ -225,7 +227,9 @@ class EditLayerWindow(QDialog):
 
     def clearLayout(self,layout):
         '''Clear the existing layout of all widgets and layouts'''
+        debugger.print('clearLayout ',layout)
         if layout is not None:
+            debugger.print('clearLayout count ',layout.count())
             while layout.count():
                 item = layout.takeAt(0)
                 widget = item.widget()
@@ -236,7 +240,9 @@ class EditLayerWindow(QDialog):
 
     def redraw(self,clearLayout=False):
         '''Redraw the edit layers window'''
+        debugger.print('redraw start',clearLayout)
         if clearLayout:
+            debugger.print('redraw forcing clearLayout')
             self.clearLayout(self.layout())
             QCoreApplication.processEvents()
         form = QFormLayout()
@@ -255,10 +261,12 @@ class EditLayerWindow(QDialog):
         for i in range(0,10):
             QCoreApplication.processEvents()
         self.resize(self.minimumSizeHint())
+        debugger.print('redraw finish')
         return
 
     def drawAddLayerWidget(self):
         '''Add widget with the option to add more layers'''
+        debugger.print('drawAddLayerWidget start')
         hbox = QHBoxLayout()
         material_cb = QComboBox(self)
         material_cb.setToolTip('Choose the material to be added as a new layer.')
@@ -277,21 +285,26 @@ class EditLayerWindow(QDialog):
         hbox.addWidget(add_button)
         hbox.addWidget(material_cb)
         hbox.addWidget(close_button)
+        debugger.print('drawAddLayerWidget finish')
         return hbox
 
     def on_material_cb_activated(self,index):
+        debugger.print('on_material_cb_activated index',index)
         self.newMaterialName = self.materialNames[index]
         return
     
     def hideWindow(self,x):
         '''Hide the window'''
+        debugger.print('hideWindow')
         self.hide()
 
     def addAnotherLayer(self,x):
         '''Add another layer to the window'''
-        print('Ready to add another layer')
-        hkl = [0,0,0]
+        debugger.print('addAnotherLayer')
         newMaterial = self.DataBase.getMaterial(self.newMaterialName)
+        hkl = [0,0,0]
+        if newMaterial.isTensor():
+            hkl = [0,0,1]
         new_layer = Layer(newMaterial,hkl=hkl,azimuthal=0.0,thickness=1.0,thicknessUnit='um')
         self.layers.append(new_layer)
         self.redraw(clearLayout = True)
@@ -299,6 +312,7 @@ class EditLayerWindow(QDialog):
 
     def drawLayerWidget(self,sequenceNumber,layer):
         '''Draw a layer widget'''
+        debugger.print('drawLayerWidget',layer)
         form = QFormLayout()
         layout = self.drawLayerWidgetLine1(sequenceNumber,layer)
         form.addRow(layout)
@@ -310,7 +324,9 @@ class EditLayerWindow(QDialog):
         return form
 
     def drawLayerWidgetLine1(self,sequenceNumber,layer):
+        '''Add the first line of the layer description'''
         hbox = QHBoxLayout()
+        debugger.print('drawLayerWidgetLine1',sequenceNumber)
         # Add sequence number
         sequenceLabel = QLabel('No. '+str(sequenceNumber),self)
         # Define material name
@@ -324,7 +340,7 @@ class EditLayerWindow(QDialog):
         film_thickness_sb.setSizePolicy(QSizePolicy.Expanding,QSizePolicy.Fixed)
         film_thickness_sb.setToolTip('Define the thin film thickness in the defined thickness units')
         film_thickness_sb.setRange(0,100000)
-        film_thickness_sb.setSingleStep(1)
+        film_thickness_sb.setSingleStep(0.01)
         film_thickness_sb.setValue(materialThickness)
         film_thickness_sb.valueChanged.connect(lambda x: self.on_film_thickness_sb_changed(x,layer))
         thickness_unit_cb = QComboBox(self)
@@ -357,6 +373,8 @@ class EditLayerWindow(QDialog):
         return hbox
 
     def drawLayerWidgetLine2(self,sequenceNumber,layer):
+        '''Add the second line of the layer description'''
+        debugger.print('drawLayerWidgetLine2',sequenceNumber)
         hbox = QHBoxLayout()
         # define hkl
         h_sb = QSpinBox(self)
@@ -398,7 +416,8 @@ class EditLayerWindow(QDialog):
         return hbox
 
     def drawLayerWidgetLine3(self,sequenceNumber,layer):
-        '''Add the lab frame box'''
+        '''Add the third line of the layer description'''
+        debugger.print('drawLayerWidgetLine3',sequenceNumber)
         hbox = QHBoxLayout()
         label = QLabel('Lab frame information', self)
         label.setToolTip('The normal to the surface defines the Z-axis in the  lab frame\nThe incident and reflected light lie in the XZ plane\nThe p-polarization is direction lies in the XZ plane, s-polarisation is parallel to Y')
@@ -418,10 +437,12 @@ class EditLayerWindow(QDialog):
 
     def getLayers(self):
         '''Return the list of layers'''
+        debugger.print('getLayers')
         return self.layers
 
     def deleteLayer(self,i,sequenceNumber,layer):
         '''Handle a delete layer button press'''
+        debugger.print('deleteLayer',i,sequenceNumber)
         # Only delete a layer if it doesn't have the dielectricFlag set
         if not layer.isDielectric():
             del self.layers[sequenceNumber]
@@ -429,7 +450,7 @@ class EditLayerWindow(QDialog):
 
     def moveLayerUp(self,x,old):
         '''Move a layer up (sequence number gets smaller by 1)'''
-        print('MoveLayerup:',x,old)
+        debugger.print('moveLayerUp',old)
         if old < 1:
             return
         new = old - 1
@@ -441,7 +462,7 @@ class EditLayerWindow(QDialog):
 
     def moveLayerDown(self,x,old):
         '''Move a layer down (sequence number gets larger by 1)'''
-        print('MoveLayerup:',x,old)
+        debugger.print('moveLayerDown',old)
         last = len(self.layers) - 1
         if old >= last:
             return
