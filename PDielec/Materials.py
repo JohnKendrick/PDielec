@@ -91,6 +91,7 @@ class MaterialsDataBase():
         worksheet = workbook[sheet]
         unitCell = None
         avector = bvector = cvector = None
+        a = b = c = alpha = beta = gamma = None
         for i in range(20):
             cell1 = 'G'+str(i+1)
             cell2 = 'H'+str(i+1)
@@ -100,19 +101,30 @@ class MaterialsDataBase():
                 if 'entry' in token:
                     entry = worksheet[cell2].value.lower()
                 elif 'density' in token:
-                    density = worksheet[cell2].value
-                elif 'a:' in token:
-                    avector = [ cell.value for cell in [ worksheet['I'+str(i+1)], worksheet['J'+str(i+1)], worksheet['K'+str(i+1)] ] ]
-                elif 'b:' in token:
-                    bvector = [ cell.value for cell in [ worksheet['I'+str(i+1)], worksheet['J'+str(i+1)], worksheet['K'+str(i+1)] ] ]
-                elif 'c:' in token:
-                    cvector = [ cell.value for cell in [ worksheet['I'+str(i+1)], worksheet['J'+str(i+1)], worksheet['K'+str(i+1)] ] ]
+                    density = float(worksheet[cell2].value)
+                elif 'a_vector' in token:
+                    avector = [ float(cell.value) for cell in [ worksheet['I'+str(i+1)], worksheet['J'+str(i+1)], worksheet['K'+str(i+1)] ] ]
+                elif 'b_vector' in token:
+                    bvector = [ float(cell.value) for cell in [ worksheet['I'+str(i+1)], worksheet['J'+str(i+1)], worksheet['K'+str(i+1)] ] ]
+                elif 'c_vector' in token:
+                    cvector = [ float(cell.value) for cell in [ worksheet['I'+str(i+1)], worksheet['J'+str(i+1)], worksheet['K'+str(i+1)] ] ]
+                elif 'a:' == token:
+                    a = float(worksheet[cell2].value)
+                elif 'b:' == token:
+                    b = float(worksheet[cell2].value)
+                elif 'c:' == token:
+                    c = float(worksheet[cell2].value)
+                elif 'alpha' in token:
+                    alpha = float(worksheet[cell2].value)
+                elif 'beta' in token:
+                    beta = float(worksheet[cell2].value)
+                elif 'gamma' in token:
+                    gamma = float(worksheet[cell2].value)
+        #
         if avector is not None and bvector is not None and cvector is not None:
             unitCell = UnitCell(a=avector,b=bvector,c=cvector)
-        if density is None :
-            print('Error in getMaterial density was not defined',file=sys.stderr)
-            debugger.print('type(density): ',type(density))
-            return material
+        elif a is not None and b is not None and c is not None and alpha is not None and beta is not None and gamma is not None:
+            unitCell = UnitCell(a=a,b=b,c=c,alpha=alpha,beta=beta,gamma=gamma)
         if 'constant' in entry and 'refractive' in entry:
             # Constant refractive index
             n = float(worksheet['C2'].value)
@@ -120,7 +132,7 @@ class MaterialsDataBase():
             nk = complex(n, k)
             permittivity = Calculator.calculate_permittivity(nk)
             debugger.print('Constant refractive:: ',nk,permittivity,density)
-            material = Constant(sheet,permittivity=permittivity,density=density,cell=unitCell)
+            material = Constant(sheet,permittivity=permittivity,density=density)
         elif 'constant' in entry and ('permitt' in entry or 'dielec' in entry):
             # Constant permittivity
             eps_r = float(worksheet['C2'].value)
@@ -180,7 +192,7 @@ class MaterialsDataBase():
                 except:
                     print('Error in Lorentz-Drude: ',a.value,b.value,c.value,d.value,e.value)
                     return
-            material = DrudeLorentz(sheet,epsilon_infinity,omegas,strengths,gammas,density=density)
+            material = DrudeLorentz(sheet,epsilon_infinity,omegas,strengths,gammas,density=density,cell=unitCell)
         # Close the work book
         workbook.close()
         return material
@@ -313,7 +325,7 @@ class DrudeLorentz(Material):
            cell               the unit cell
         '''
         epsilon_infinity = np.array(epsinf)
-        permittivityObject = DielectricFunction.DrudeLorentz( omegas, strengths, gammas, units='cm-1', cell=cell)
+        permittivityObject = DielectricFunction.DrudeLorentz( omegas, strengths, gammas, units='hz')
         permittivityObject.setEpsilonInfinity(epsilon_infinity)
         super().__init__(name, density=density, permittivityObject=permittivityObject,cell=cell)
         self.type = 'Drude-Lorentz'
