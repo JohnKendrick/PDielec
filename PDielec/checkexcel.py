@@ -109,7 +109,7 @@ def main():
                     error = (sheet, row_index, col_index, value1, value2, percentage_error)
                 else:
                     if value1 != value2:
-                        if cell1.data_type == 'n' and cell2.data_type == 'n':
+                        if value1 is not None and value2 is not None and cell1.data_type == 'n' and cell2.data_type == 'n':
                             #
                             # Flag an error which is numeric
                             #
