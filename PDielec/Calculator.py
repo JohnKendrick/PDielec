@@ -1528,7 +1528,7 @@ def solve_single_crystal_equations(
     # Creat the system with the layers 
     if mode == 'Thick slab':
         # For a thick slab the last layer is used as the thick layer
-        system = GTM.System(substrate=gtmLayers[-1], superstrate=superstrate, layers=gtmLayers[:-2])
+        system = GTM.System(substrate=gtmLayers[-1], superstrate=superstrate, layers=gtmLayers[:-1])
     else:
         # For all other modes the substrate and superstrate sandwich all the other layers.
         system = GTM.System(substrate=substrate, superstrate=superstrate, layers=gtmLayers)
