@@ -69,7 +69,7 @@ class MaterialsDataBase():
         '''Return a material object based on the data in sheet (an excel sheet)'''
         debugger.print('getMaterial:: ',sheet)
         # Define a set of back-up materials that the program can use even if the sheet name is not in the spreadsheet
-        if not sheet in self.sheetNames:
+        if self.sheetNames is None or sheet not in self.sheetNames:
             if sheet == 'air':
                 material = Constant('air',permittivity=1.0,density=0.001225)
             elif sheet == 'vacuum':
