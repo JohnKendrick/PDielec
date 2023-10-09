@@ -494,7 +494,7 @@ class Layer:
         transmode = np.zeros((2), dtype=int)
         reflmode = np.zeros((2), dtype=int)
         
-        Delta_loc = np.complex128(self.Delta.copy())
+        Delta_loc = np.cdouble(self.Delta.copy())
         ## eigenvals // eigenvects as of eqn (11)
         qsunsorted, psiunsorted = lag.eig(Delta_loc)
         ##### remove extremely small real/imaginary parts that are due to numerical inaccuracy
