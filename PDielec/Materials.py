@@ -19,7 +19,7 @@ class MaterialsDataBase():
         debugger = Debug(debug,'MaterialsDataBase')
         debugger.print('Start:: initialise')
         if os.path.isfile(filename):
-            self.filename = filename
+            self.filename = os.path.relpath(filename)
             workbook = xl.load_workbook(self.filename,data_only=True)
             self.sheetNames = workbook.sheetnames
             debugger.print('Sheet names:: ',self.sheetNames)
