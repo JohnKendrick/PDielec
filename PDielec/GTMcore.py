@@ -83,9 +83,8 @@ The optical system is assembled using the :py:class:`System` class.
 ######## general utilities
 
 import numpy as np
-import numpy.linalg as lag
+import scipy.linalg as lag
 import sys
-from scipy.optimize import minimize
 
 c_const = 299792458 # m/s
 eps0 = 8.854e-12 ## vacuum permittivity
@@ -152,10 +151,10 @@ def exact_inv(M):
     if detA == 0:
         try:
             print('Warning 4x4 inversion problem 1')
-            result = np.clongdouble(np.linalg.pinv(np.cdouble(M)))
+            result = np.clongdouble(lag.pinv(np.cdouble(M)))
         except:
             print('Warning 4x4 inversion problem 2')
-            result = np.clongdouble(np.linalg.pinv(np.complex(M)))
+            result = np.clongdouble(lag.pinv(np.complex64(M)))
         return result
 
     B = np.zeros(A.shape, dtype=np.clongdouble)
