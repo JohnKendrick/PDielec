@@ -415,6 +415,11 @@ class NoteBook(QWidget):
             # settings tab
             debugger.print('Calling settingsTab refresh')
             self.settingsTab.refresh()
+        else :
+            #  Refresh scenario tabs
+            scenarioTabIndex = tabindex-2
+            if scenarioTabIndex >= 0 and scenarioTabIndex < len(self.scenarios):
+                self.scenarios[scenarioTabIndex].refresh()
         debugger.print('Exiting on_tabs_currentChanged()')
         debugger.print('Finished:: on_tabs_currentChanged', tabindex)
         return
