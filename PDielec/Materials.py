@@ -43,7 +43,9 @@ class MaterialsDataBase():
     def getSheetNames(self):
         '''Return a list of the sheetnames in the database'''
         # First take a copy of the sheetnames ignoring the first (Information)
-        fullList = self.sheetNames[1:].copy()
+        fullList = []
+        if self.sheetNames is not None:
+            fullList = self.sheetNames[1:].copy()
         # Append any in-built materials
         # This list is taken from the original powder code before version 8.0
         if 'air' not in fullList:
@@ -169,7 +171,7 @@ class MaterialsDataBase():
                 vs_cm1.append(v)
             material = Tabulated(sheet,vs_cm1,permittivities=permittivities,density=density)
         elif 'lorentz' in entry and 'drude' in entry:
-            # Lorentz-Drude mode for permittivity
+            # Lorentz-Drude model for permittivity
             epsilon_infinity = np.zeros( (3,3) )
             directions = [[], [], []]
             epsinfs = [[], [], []]
@@ -193,6 +195,33 @@ class MaterialsDataBase():
                     print('Error in Lorentz-Drude: ',a.value,b.value,c.value,d.value,e.value)
                     return
             material = DrudeLorentz(sheet,epsilon_infinity,omegas,strengths,gammas,density=density,cell=unitCell)
+        elif 'fpsq' in entry:
+            # FPSQ model for permittivity
+            epsilon_infinity = np.zeros( (3,3) )
+            directions = [[], [], []]
+            omega_tos = [[], [], []]
+            omega_los = [[], [], []]
+            gamma_tos = [[], [], []]
+            gamma_los = [[], [], []]
+            for a, b, c, d, e, f in zip(worksheet['A'][1:] ,worksheet['B'][1:] , worksheet['C'][1:], worksheet['D'][1:], worksheet['E'][1:], worksheet['F'][1:]) :
+                try:
+                    if a.value is not None:
+                        direction = a.value
+                    index = ['xx','yy','zz'].index(direction)
+                    if b.value is not None:
+                        epsilon_infinity[[index],[index]] = float(b.value)
+                    if c.value is not None:
+                        omega_tos[index].append(float(c.value))
+                    if d.value is not None:
+                        omega_los[index].append(float(c.value))
+                    if e.value is not None:
+                        gamma_tos[index].append(float(e.value))
+                    if f.value is not None:
+                        gamma_los[index].append(float(f.value))
+                except:
+                    print('Error in FPSQ: ',a.value,b.value,c.value,d.value,e.value,f.value)
+                    return
+            material = FPSQ(sheet,epsilon_infinity,omegas,strengths,gammas,density=density,cell=unitCell)
         # Close the work book
         workbook.close()
         return material
@@ -313,8 +342,6 @@ class DrudeLorentz(Material):
     def __init__(self, name,epsinf,omegas,strengths,gammas,density=None,cell=None):
         '''Create an instance of a material with a Lorentz Drude model permittivity
            permittivity is the value of the permittivy and can be complex
-           The returned permittivityObject can generate either a scalar or a tensor.
-           For defining a support matrix material a scalar is used
            The required parameters are;
            name:             The name of the material
            epsinf            Epsilon infinity either a 3x3 list or a 3x3 array
@@ -329,6 +356,26 @@ class DrudeLorentz(Material):
         permittivityObject.setEpsilonInfinity(epsilon_infinity)
         super().__init__(name, density=density, permittivityObject=permittivityObject,cell=cell)
         self.type = 'Drude-Lorentz'
+
+class FPSQ(Material):
+    def __init__(self, name,epsinf,omega_tos,omega_los,gamma_tos,gamma_los,density=None,cell=None):
+        '''Create an instance of a material with an FPSQ model permittivity
+           permittivity is the value of the permittivy and can be complex
+           The required parameters are;
+           name:             The name of the material
+           eps0              Epsilon infinity either a 3x3 list or a 3x3 array
+           omega_tos         The TO frequencies as a list 
+           omega_los         The LO frequencies as a list 
+           gamma_tos         The TO absorption widths as a list
+           gamma_los         The LO absorption widths as a list
+           density           in g/ml
+           cell               the unit cell
+        '''
+        epsilon_infinity = np.array(epsinf)
+        permittivityObject = DielectricFunction.DrudeLorentz( omega_tos, omega_los, gamma_tos, gamma_los, units='hz')
+        permittivityObject.setEpsilonInfinity(epsilon_infinity)
+        super().__init__(name, density=density, permittivityObject=permittivityObject,cell=cell)
+        self.type = 'FPSQ'
 
 
 class Tabulated(Material):
