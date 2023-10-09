@@ -221,7 +221,7 @@ class MaterialsDataBase():
                 except:
                     print('Error in FPSQ: ',a.value,b.value,c.value,d.value,e.value,f.value)
                     return
-            material = FPSQ(sheet,epsilon_infinity,omegas,strengths,gammas,density=density,cell=unitCell)
+            material = FPSQ(sheet,epsilon_infinity,omega_tos,omega_los,gamma_tos,gamma_los,density=density,cell=unitCell)
         # Close the work book
         workbook.close()
         return material
@@ -372,7 +372,7 @@ class FPSQ(Material):
            cell               the unit cell
         '''
         epsilon_infinity = np.array(epsinf)
-        permittivityObject = DielectricFunction.DrudeLorentz( omega_tos, omega_los, gamma_tos, gamma_los, units='hz')
+        permittivityObject = DielectricFunction.FPSQ( omega_tos, omega_los, gamma_tos, gamma_los, units='hz')
         permittivityObject.setEpsilonInfinity(epsilon_infinity)
         super().__init__(name, density=density, permittivityObject=permittivityObject,cell=cell)
         self.type = 'FPSQ'
