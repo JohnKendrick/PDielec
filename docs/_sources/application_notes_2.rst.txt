@@ -344,3 +344,69 @@ The c-axis field transmittance example uses the (010) surface with an azimuthal 
 .. figure:: ./_static/Figures/lalanine-fittertab-incoherent-caxis.png
    :scale: 90%
 
+AlN on Silicon and Silicon Carbide
+==================================
+
+This is an example of a multilayer system where two layers are not isotropic.
+In an experimental and theoretical study of the infrared reflactance of aluminium nitride on silicon and silicon carbide, MacMillan, Devaty and Choyke :cite:`MacMillan1993` used four paramater semi-quantum  (FPSQ) model to describe their experimental results on aluminium nitride on various substrates.
+In the Examples/Experimental/AlN directory the file AlN.exp provides an experimental file which describes their FPSQ model in a format the PDGui can use.
+In addition parameters for the permittivities of silicon and 6H-SiC are given in the TestDataBase.xlsx file in the same directory.  
+The 6H-SiC permittivities are provided by a Drude-Lorentz model and the silicon permittivities is calculated from an experimental refractive index.
+References for the origins of the models and experimental data are given in the spreadsheet.
+
+The first experimental/calculated system considered :cite:`MacMillan1993` was the reflectance of a 0.92μ AlN on a Si substrate.  
+This was modelled using PDGui after reading in the experimental file, AlN.exp, the *Single Crystal Scenario Tab* was used to define the system as described in the paper.
+The *Thick slab* mode was specified, the superstrate material was chosen as air, an AlN dielectric film of 0.92μ was specified on top of a 1.0μm film of silicon.
+An angle of incidence of 7.2 \textsuperscript{o} was used.
+The (001) surface of AlN was defined, so the perpendicular to the surface aligns with the laboratory Z-axis.
+Because the program is operating in *Thick slab* mode, the bottom layer is treated as a semi-infinite layer, so the size of the silicon layer specified in the GUI is irrelevant.
+The scenario is shown below:
+
+.. _fig-aln-on-si-etalons-scenario:
+.. figure:: ./_static/Figures/AlN-on-Si-Etalons-Scenario.png
+   :scale: 90%
+
+Two comparisons are made with the calculated results of the published paper after digitising figures 1 and 2 of the paper.  
+In the first the range of the plot extends for 0 to 6000 |cm-1| and clearly shows the etalons associated with the interference.
+In the second the plot examines the region between 400 and 1200 |cm-1|.  
+The agreement is excellent.
+
+.. _fig-aln-on-si-etalons:
+.. figure:: ./_static/Figures/AlN-on-Si-Etalons.svg
+   :scale: 90%
+
+.. _fig-aln-on-si-close-up:
+.. figure:: ./_static/Figures/AlN-on-Si-Close-Up.svg
+   :scale: 90%
+
+Figure 3 of the paper shows the reflectance of of a 0.98μm film of AlN on the (0001) surface of 6H_SiC. 
+To model this with PDGui two layers have been created using the *Layer Editor* as shown below.
+As with the previous example the *Thick slab* mode has been specified, so the SiC layer is semi-infinite.
+The layer editor shows two (001) layers with the c-axis of the crystals pointing along the Z-laboratory axis.
+The top layer, next to the superstrate (air) is the *Dielectric film* (AlN in this case) and the semi-infinite layer beneath is has been specified by adding a new layer from the materials database, TestDataBase.xlsx.
+
+.. _fig-aln-on-sic-layereditor:
+.. figure:: ./_static/Figures/AlN_on_SiC_LayerEditor.png
+   :scale: 90%
+
+A comparison is given below between the calculated spectrum reported in the paper that produced by PDGui.
+
+.. _fig-aln-on-sic:
+.. figure:: ./_static/Figures/AlN-on-6H-SiC.svg
+   :scale: 90%
+
+A final comparison is made between Figure 4 of the paper and the results of PDGui.   
+In this case a 0.24μm film of SiC is supported on a 0.56μm film of AlN, which is deposited on a substrate of Silicon.
+For this example the *Coherent thin film* mode is used.
+The layer editor for this system is shown below.
+
+.. _fig-sic-on-aln-layereditor:
+.. figure:: ./_static/Figures/SiC_on_AlN-LayerEditor.png
+   :scale: 90%
+
+A comparison is given below between the calculated spectrum reported in the paper that produced by PDGui.
+
+.. _fig-sic-on-aln:
+.. figure:: ./_static/Figures/6H-SiC-on-AlN.svg
+   :scale: 90%
+

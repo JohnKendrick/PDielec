@@ -144,7 +144,7 @@ It is common to see numerical problems in regions where the extinction coefficie
 
    Comparison of methods
 
-
+.. _crystal-and-laboratory-coordinates:
 
 Crystal & Laboratory Coordinate Frames
 --------------------------------------

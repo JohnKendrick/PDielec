@@ -18,7 +18,7 @@
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=586d4295"></script>
     <script src="_static/doctools.js?v=888ff710"></script>
     <script src="_static/sphinx_highlight.js?v=4825356b"></script>
-    <script type="text/x-mathjax-config">MathJax.Hub.Config({"extensions": ["AMSmath.js"], "TeX": {"Macros": {"tensor": ["{\\bar{\\bar{#1}}}", 1], "tensorbs": ["{\\bar{\\bar{\\bm{#1}}}}", 1], "tensorbf": ["{\\bar{\\bar{\\bm{#1}}}}", 1], "fieldbf": ["{\\bar{\\bm{#1}}}", 1], "water": "\\H_{2}O"}}})</script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"extensions": ["AMSmath.js"], "TeX": {"Macros": {"tensor": ["{\\bar{\\bar{#1}}}", 1], "tensorbs": ["{\\bar{\\bar{\\boldsymbol{#1}}}}", 1], "tensorbf": ["{\\bar{\\bar{\\boldsymbol{#1}}}}", 1], "fieldbf": ["{\\bar{\\boldsymbol{#1}}}", 1], "water": "\\H_{2}O"}}})</script>
     <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
     
@@ -82,63 +82,75 @@ For single crystals (thin films or slabs) a generalized transfer matrix is used.
 <li class="toctree-l2"><a class="reference internal" href="installation.html#examples">2.6. Examples</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="software.html">3. Software components</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="software.html#pdgui">3.1. PDGui</a></li>
-<li class="toctree-l2"><a class="reference internal" href="software.html#preader">3.2. PReader</a></li>
-<li class="toctree-l2"><a class="reference internal" href="software.html#vibanalysis">3.3. Vibanalysis</a></li>
-<li class="toctree-l2"><a class="reference internal" href="software.html#pdmake">3.4. pdmake</a></li>
-<li class="toctree-l2"><a class="reference internal" href="software.html#mm-qm-interfaces">3.5. MM/QM Interfaces</a></li>
-<li class="toctree-l2"><a class="reference internal" href="software.html#experimental-file-format">3.6. Experimental File Format</a></li>
-<li class="toctree-l2"><a class="reference internal" href="software.html#the-format-of-the-materials-database">3.7. The Format of the Materials’ Database</a></li>
-<li class="toctree-l2"><a class="reference internal" href="software.html#the-format-of-the-output-spreadsheet">3.8. The Format of the Output Spreadsheet</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pdgui.html">3. PDGui</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pdgui.html#main-tab">3.1. Main Tab</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pdgui.html#settings-tab">3.2. Settings Tab</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pdgui.html#scenario-tabs">3.3. Scenario Tabs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pdgui.html#plotting-tab">3.4. Plotting Tab</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pdgui.html#analysis-tab">3.5. Analysis Tab</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pdgui.html#d-viewer-tab">3.6. 3D Viewer Tab</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pdgui.html#fitter-tab">3.7. Fitter Tab</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pdgui.html#parallelisation-and-threads">3.8. Parallelisation and threads</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pdgui.html#performance">3.9. Performance</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="theory_powder.html">4. Theory for Powder Light Scattering</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="theory_powder.html#molecular-approach-to-absorption-intensity">4.1. Molecular approach to absorption intensity</a></li>
-<li class="toctree-l2"><a class="reference internal" href="theory_powder.html#solid-state-approach-to-absorption-intensity">4.2. Solid state approach to absorption intensity</a></li>
-<li class="toctree-l2"><a class="reference internal" href="theory_powder.html#effect-of-particle-shape-on-infrared-absorption">4.3. Effect of particle shape on infrared absorption</a></li>
-<li class="toctree-l2"><a class="reference internal" href="theory_powder.html#particle-size-effects">4.4. Particle size effects</a></li>
-<li class="toctree-l2"><a class="reference internal" href="theory_powder.html#mie-theory-of-light-scattering">4.5. Mie Theory of Light scattering</a></li>
-<li class="toctree-l2"><a class="reference internal" href="theory_powder.html#calculation-of-atr-extinction-spectra">4.6. Calculation of ATR Extinction Spectra</a></li>
-<li class="toctree-l2"><a class="reference internal" href="theory_powder.html#scattering-effects-due-to-air-inclusions">4.7. Scattering Effects due to Air Inclusions</a></li>
-<li class="toctree-l2"><a class="reference internal" href="theory_powder.html#removing-baseline-artifacts-from-experiment">4.8. Removing Baseline Artifacts from Experiment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="software.html">4. Other Software Components</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="software.html#preader">4.1. PReader</a></li>
+<li class="toctree-l2"><a class="reference internal" href="software.html#vibanalysis">4.2. Vibanalysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="software.html#pdmake">4.3. pdmake</a></li>
+<li class="toctree-l2"><a class="reference internal" href="software.html#mm-qm-interfaces">4.4. MM/QM Interfaces</a></li>
+<li class="toctree-l2"><a class="reference internal" href="software.html#experimental-file-format">4.5. Experimental File Format</a></li>
+<li class="toctree-l2"><a class="reference internal" href="software.html#the-format-of-the-materials-database">4.6. The Format of the Materials’ Database</a></li>
+<li class="toctree-l2"><a class="reference internal" href="software.html#the-format-of-the-output-spreadsheet">4.7. The Format of the Output Spreadsheet</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="theory_single_crystal.html">5. Theory for Single Crystal Optics</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="theory_single_crystal.html#coherent-thin-film">5.1. Coherent thin film</a></li>
-<li class="toctree-l2"><a class="reference internal" href="theory_single_crystal.html#incoherent-thin-film">5.2. Incoherent thin film</a></li>
-<li class="toctree-l2"><a class="reference internal" href="theory_single_crystal.html#partially-incoherent-thin-film">5.3. Partially incoherent thin film</a></li>
-<li class="toctree-l2"><a class="reference internal" href="theory_single_crystal.html#thick-slab">5.4. Thick Slab</a></li>
-<li class="toctree-l2"><a class="reference internal" href="theory_single_crystal.html#comparison-of-computational-approaches">5.5. Comparison of computational approaches</a></li>
-<li class="toctree-l2"><a class="reference internal" href="theory_single_crystal.html#crystal-laboratory-coordinate-frames">5.6. Crystal &amp; Laboratory Coordinate Frames</a></li>
+<li class="toctree-l1"><a class="reference internal" href="theory_powder.html">5. Theory for Powder Light Scattering</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="theory_powder.html#molecular-approach-to-absorption-intensity">5.1. Molecular approach to absorption intensity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="theory_powder.html#solid-state-approach-to-absorption-intensity">5.2. Solid state approach to absorption intensity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="theory_powder.html#effect-of-particle-shape-on-infrared-absorption">5.3. Effect of particle shape on infrared absorption</a></li>
+<li class="toctree-l2"><a class="reference internal" href="theory_powder.html#particle-size-effects">5.4. Particle size effects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="theory_powder.html#mie-theory-of-light-scattering">5.5. Mie Theory of Light scattering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="theory_powder.html#calculation-of-atr-extinction-spectra">5.6. Calculation of ATR Extinction Spectra</a></li>
+<li class="toctree-l2"><a class="reference internal" href="theory_powder.html#scattering-effects-due-to-air-inclusions">5.7. Scattering Effects due to Air Inclusions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="theory_powder.html#removing-baseline-artifacts-from-experiment">5.8. Removing Baseline Artifacts from Experiment</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="analysis.html">6. Phonon Analysis</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="analysis.html#molecular-systems">6.1. Molecular Systems</a></li>
-<li class="toctree-l2"><a class="reference internal" href="analysis.html#periodic-systems">6.2. Periodic Systems</a></li>
-<li class="toctree-l2"><a class="reference internal" href="analysis.html#implementation">6.3. Implementation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="analysis.html#isoleucine">6.4. Isoleucine</a></li>
-<li class="toctree-l2"><a class="reference internal" href="analysis.html#batio3">6.5. BaTiO<sub>3</sub></a></li>
+<li class="toctree-l1"><a class="reference internal" href="theory_single_crystal.html">6. Theory for Single Crystal Optics</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="theory_single_crystal.html#coherent-thin-film">6.1. Coherent thin film</a></li>
+<li class="toctree-l2"><a class="reference internal" href="theory_single_crystal.html#incoherent-thin-film">6.2. Incoherent thin film</a></li>
+<li class="toctree-l2"><a class="reference internal" href="theory_single_crystal.html#partially-incoherent-thin-film">6.3. Partially incoherent thin film</a></li>
+<li class="toctree-l2"><a class="reference internal" href="theory_single_crystal.html#thick-slab">6.4. Thick Slab</a></li>
+<li class="toctree-l2"><a class="reference internal" href="theory_single_crystal.html#comparison-of-computational-approaches">6.5. Comparison of computational approaches</a></li>
+<li class="toctree-l2"><a class="reference internal" href="theory_single_crystal.html#crystal-laboratory-coordinate-frames">6.6. Crystal &amp; Laboratory Coordinate Frames</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="application_notes_1.html">7. Applications of Powder Methodologies</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="application_notes_1.html#mgo-using-castep">7.1. MgO using CASTEP</a></li>
-<li class="toctree-l2"><a class="reference internal" href="application_notes_1.html#zno-using-vasp">7.2. ZnO using VASP</a></li>
-<li class="toctree-l2"><a class="reference internal" href="application_notes_1.html#calcite-using-gulp">7.3. Calcite using GULP</a></li>
-<li class="toctree-l2"><a class="reference internal" href="application_notes_1.html#fluoroapatite-using-vasp">7.4. Fluoroapatite using VASP</a></li>
-<li class="toctree-l2"><a class="reference internal" href="application_notes_1.html#l-aspartic-acid-using-castep">7.5. L-aspartic Acid using CASTEP</a></li>
-<li class="toctree-l2"><a class="reference internal" href="application_notes_1.html#mgo-example-using-mie-scattering">7.6. MgO Example using Mie Scattering</a></li>
-<li class="toctree-l2"><a class="reference internal" href="application_notes_1.html#zno-example-using-mie-scattering">7.7. ZnO Example using Mie Scattering</a></li>
-<li class="toctree-l2"><a class="reference internal" href="application_notes_1.html#fitting-the-atr-spectrum-of-na2-so4-2">7.8. Fitting the ATR Spectrum of Na<sub>2</sub>(SO<sub>4</sub>)<sub>2</sub></a></li>
+<li class="toctree-l1"><a class="reference internal" href="analysis.html">7. Phonon Analysis</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="analysis.html#molecular-systems">7.1. Molecular Systems</a></li>
+<li class="toctree-l2"><a class="reference internal" href="analysis.html#periodic-systems">7.2. Periodic Systems</a></li>
+<li class="toctree-l2"><a class="reference internal" href="analysis.html#implementation">7.3. Implementation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="analysis.html#isoleucine">7.4. Isoleucine</a></li>
+<li class="toctree-l2"><a class="reference internal" href="analysis.html#batio3">7.5. BaTiO<sub>3</sub></a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="application_notes_2.html">8. Single Crystal Applications</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="application_notes_2.html#single-crystal-study-of-thickness-effects-in-mgo">8.1. Single Crystal Study of Thickness Effects in MgO</a></li>
-<li class="toctree-l2"><a class="reference internal" href="application_notes_2.html#single-crystal-study-of-forsterite">8.2. Single Crystal Study of Forsterite</a></li>
-<li class="toctree-l2"><a class="reference internal" href="application_notes_2.html#single-crystal-study-of-l-alanine">8.3. Single Crystal Study of L-Alanine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="application_notes_1.html">8. Applications of Powder Methodologies</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="application_notes_1.html#mgo-using-castep">8.1. MgO using CASTEP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="application_notes_1.html#zno-using-vasp">8.2. ZnO using VASP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="application_notes_1.html#calcite-using-gulp">8.3. Calcite using GULP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="application_notes_1.html#fluoroapatite-using-vasp">8.4. Fluoroapatite using VASP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="application_notes_1.html#l-aspartic-acid-using-castep">8.5. L-aspartic Acid using CASTEP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="application_notes_1.html#mgo-example-using-mie-scattering">8.6. MgO Example using Mie Scattering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="application_notes_1.html#zno-example-using-mie-scattering">8.7. ZnO Example using Mie Scattering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="application_notes_1.html#fitting-the-atr-spectrum-of-na2-so4-2">8.8. Fitting the ATR Spectrum of Na<sub>2</sub>(SO<sub>4</sub>)<sub>2</sub></a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="zreferences.html">9. References</a></li>
+<li class="toctree-l1"><a class="reference internal" href="application_notes_2.html">9. Single Crystal Applications</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="application_notes_2.html#single-crystal-study-of-thickness-effects-in-mgo">9.1. Single Crystal Study of Thickness Effects in MgO</a></li>
+<li class="toctree-l2"><a class="reference internal" href="application_notes_2.html#single-crystal-study-of-forsterite">9.2. Single Crystal Study of Forsterite</a></li>
+<li class="toctree-l2"><a class="reference internal" href="application_notes_2.html#single-crystal-study-of-l-alanine">9.3. Single Crystal Study of L-Alanine</a></li>
+<li class="toctree-l2"><a class="reference internal" href="application_notes_2.html#aln-on-silicon-and-silicon-carbide">9.4. AlN on Silicon and Silicon Carbide</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="zreferences.html">10. References</a></li>
 </ul>
 </div>
 <section id="search">

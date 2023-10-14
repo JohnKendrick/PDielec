@@ -9,7 +9,7 @@
 <meta content="PDielec package for the calculation of infrared and terahertz absorption from QM calculations" name="description" />
 <meta content="Quantum Mechanics, Effective Field Theory, Maxwell, Garnett, Mie, Infrared, Terahertz, Castep, Abinit, VASP, GULP. QE" name="keywords" />
 
-    <title>8. Single Crystal Applications &#8212; PDielec: John Kendrick &amp; Andrew Burnett</title>
+    <title>9. Single Crystal Applications &#8212; PDielec: John Kendrick &amp; Andrew Burnett</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
     <link rel="stylesheet" type="text/css" href="_static/cloud.css?v=f9ae72be" />
     <link rel="stylesheet" type="text/css" href="_static/table_styling.css?v=a1a2a898" />
@@ -18,7 +18,7 @@
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=586d4295"></script>
     <script src="_static/doctools.js?v=888ff710"></script>
     <script src="_static/sphinx_highlight.js?v=4825356b"></script>
-    <script type="text/x-mathjax-config">MathJax.Hub.Config({"extensions": ["AMSmath.js"], "TeX": {"Macros": {"tensor": ["{\\bar{\\bar{#1}}}", 1], "tensorbs": ["{\\bar{\\bar{\\bm{#1}}}}", 1], "tensorbf": ["{\\bar{\\bar{\\bm{#1}}}}", 1], "fieldbf": ["{\\bar{\\bm{#1}}}", 1], "water": "\\H_{2}O"}}})</script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"extensions": ["AMSmath.js"], "TeX": {"Macros": {"tensor": ["{\\bar{\\bar{#1}}}", 1], "tensorbs": ["{\\bar{\\bar{\\boldsymbol{#1}}}}", 1], "tensorbf": ["{\\bar{\\bar{\\boldsymbol{#1}}}}", 1], "fieldbf": ["{\\bar{\\boldsymbol{#1}}}", 1], "water": "\\H_{2}O"}}})</script>
     <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
     
@@ -39,8 +39,8 @@
 
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="9. References" href="zreferences.html" />
-    <link rel="prev" title="7. Applications of Powder Methodologies" href="application_notes_1.html" /> 
+    <link rel="next" title="10. References" href="zreferences.html" />
+    <link rel="prev" title="8. Applications of Powder Methodologies" href="application_notes_1.html" /> 
         <meta name="viewport" content="width=device-width, initial-scale=1">
   </head><body>
     <div class="relbar-top">
@@ -52,14 +52,14 @@
           <a href="genindex.html" title="General Index"
              accesskey="I">index</a></li>
         <li class="right" >
-          <a href="zreferences.html" title="9. References"
+          <a href="zreferences.html" title="10. References"
              accesskey="N">next</a> &nbsp; &nbsp;</li>
         <li class="right" >
-          <a href="application_notes_1.html" title="7. Applications of Powder Methodologies"
+          <a href="application_notes_1.html" title="8. Applications of Powder Methodologies"
              accesskey="P">previous</a> &nbsp; &nbsp;</li>
     <li><a href="index.html">PDielec: John Kendrick &amp; Andrew Burnett</a> &#187;</li>
 
-        <li class="nav-item nav-item-this"><a href=""><span class="section-number">8. </span>Single Crystal Applications</a></li> 
+        <li class="nav-item nav-item-this"><a href=""><span class="section-number">9. </span>Single Crystal Applications</a></li> 
       </ul>
     </div>
     </div>
@@ -71,18 +71,18 @@
           <div class="body" role="main">
             
   <section id="single-crystal-applications">
-<h1><span class="section-number">8. </span>Single Crystal Applications<a class="headerlink" href="#single-crystal-applications" title="Permalink to this heading">¶</a></h1>
+<h1><span class="section-number">9. </span>Single Crystal Applications<a class="headerlink" href="#single-crystal-applications" title="Permalink to this heading">¶</a></h1>
 <p>The transmission, reflection and absorption of infrared light through single crystals can be simulated using PDielec and PDGui.  Partial incoherence can be modelled by averaging over a sample of thicknesses and orientations.</p>
 <section id="single-crystal-study-of-thickness-effects-in-mgo">
-<h2><span class="section-number">8.1. </span>Single Crystal Study of Thickness Effects in MgO<a class="headerlink" href="#single-crystal-study-of-thickness-effects-in-mgo" title="Permalink to this heading">¶</a></h2>
+<h2><span class="section-number">9.1. </span>Single Crystal Study of Thickness Effects in MgO<a class="headerlink" href="#single-crystal-study-of-thickness-effects-in-mgo" title="Permalink to this heading">¶</a></h2>
 <p>This example looks at an isotropic system.  The results of a CASTEP calculation of MgO have provided the frequency dependent permittivity and this is used to look at the effect of crystal thickness on the reflectance, transmittance and absorptance.i
 The examples shown here were calculated using the scripts mgo_coherent_size_effects.py and mgo_partially_incoherent_size_effects in the Examples/SingleCrystal/MgO directory of the GitHub distribution.
 A 45<sup>o</sup> incident beam on the (001) surface of MgO is used to calculate the transmittance, reflectance and absorbtance of thin films with thickness of 0.1, 1, 10 and 100 microns.
-The results of the coherent calculations are shown in <a class="reference internal" href="#fig-mgo-coherent"><span class="std std-numref">Fig. 8.1</span></a></p>
-<figure class="align-default" id="id7">
+The results of the coherent calculations are shown in <a class="reference internal" href="#fig-mgo-coherent"><span class="std std-numref">Fig. 9.1</span></a></p>
+<figure class="align-default" id="id9">
 <span id="fig-mgo-coherent"></span><a class="reference internal image-reference" href="_images/MgO_Coherent_Size_Effects.svg"><img alt="_images/MgO_Coherent_Size_Effects.svg" height="376" src="_images/MgO_Coherent_Size_Effects.svg" width="1188" /></a>
 <figcaption>
-<p><span class="caption-number">Fig. 8.1 </span><span class="caption-text">Effects of Film Thickness of MgO in Coherent Light, a 45<sup>o</sup> incident beam with p- polarisation</span><a class="headerlink" href="#id7" title="Permalink to this image">¶</a></p>
+<p><span class="caption-number">Fig. 9.1 </span><span class="caption-text">Effects of Film Thickness of MgO in Coherent Light, a 45<sup>o</sup> incident beam with p- polarisation</span><a class="headerlink" href="#id9" title="Permalink to this image">¶</a></p>
 </figcaption>
 </figure>
 <p>The results for the ‘thick slab’ case are shown only for reflectance and absorbtance.  It can be clearly seen that the reflection in the restrahlen region between the TO and LO frequencies (388 and 693 <span class="math notranslate nohighlight">\(cm^{-1}\)</span>) is almost total with also very little absorbtance.
@@ -92,10 +92,10 @@ At 10μ below the TO frequency there are oscillations in the reflectance, transm
 At 100μ the oscillations below the TO frequency are very fast and the reach the ‘thick slab’ limiting case at lower frequencmes than for the 10μ case.  Similarly at higher frequencies the follow the ‘thick slab’ limiting case to higher frequency.</p>
 <p>The introduction of partial incoherence is acheived in the program by averaging over a range of orientation parameters and is therefore quite crude, but it gives an indication of the type of effects that partial incoherence may have.
 The term partial incoherence in this case is used to refer to incoherence introduced by sample defects such as planarity and varying thickness.</p>
-<p><a class="reference internal" href="#fig-mgo-partially-incoherent"><span class="std std-numref">Fig. 8.2</span></a> shows the smoothing effect that averaging over the orientation and thickness parameters has.
+<p><a class="reference internal" href="#fig-mgo-partially-incoherent"><span class="std std-numref">Fig. 9.2</span></a> shows the smoothing effect that averaging over the orientation and thickness parameters has.
 For these calculations the following parameters were used.</p>
 <table class="styled-table docutils align-default" id="tab-partially-incoherent-parameters">
-<caption><span class="caption-number">Table 8.1 </span><span class="caption-text">Partially Incoherent Parameters</span><a class="headerlink" href="#tab-partially-incoherent-parameters" title="Permalink to this table">¶</a></caption>
+<caption><span class="caption-number">Table 9.1 </span><span class="caption-text">Partially Incoherent Parameters</span><a class="headerlink" href="#tab-partially-incoherent-parameters" title="Permalink to this table">¶</a></caption>
 <tbody>
 <tr class="row-odd"><td class="left-align no-left-divider single-right-divider"><p>Thickness</p></td>
 <td class="right-align single-left-divider single-right-divider"><p>Percentage Incoherence</p></td>
@@ -123,54 +123,54 @@ For these calculations the following parameters were used.</p>
 However there are issues when using this facility.  In particular the high frequency side of the reflectance spectra is showing shoulders which are artefacts of the quite large perturbations in the orientation and thickness parameters which have been imposed.
 Also, for the 10μ sample it is clear that these perturbations are not sufficient by themselves to remove the oscillations that occur at low frequencies.
 This is because at these frequencies the changes in thickness are not sufficent to move a peak by the period of the oscillations.</p>
-<figure class="align-default" id="id8">
+<figure class="align-default" id="id10">
 <span id="fig-mgo-partially-incoherent"></span><a class="reference internal image-reference" href="_images/MgO_Partially_Incoherent_Size_Effects.svg"><img alt="_images/MgO_Partially_Incoherent_Size_Effects.svg" height="391" src="_images/MgO_Partially_Incoherent_Size_Effects.svg" width="1204" /></a>
 <figcaption>
-<p><span class="caption-number">Fig. 8.2 </span><span class="caption-text">Effects of Partial Incoherence and Film Thickness of MgO, a 45<sup>0</sup> incident beam with p-polarisation</span><a class="headerlink" href="#id8" title="Permalink to this image">¶</a></p>
+<p><span class="caption-number">Fig. 9.2 </span><span class="caption-text">Effects of Partial Incoherence and Film Thickness of MgO, a 45<sup>0</sup> incident beam with p-polarisation</span><a class="headerlink" href="#id10" title="Permalink to this image">¶</a></p>
 </figcaption>
 </figure>
-<p>The effect of thickness on the “Incoherent thin film Mode” is show in <a class="reference internal" href="#fig-mgo-incoherent"><span class="std std-numref">Fig. 8.3</span></a>.
+<p>The effect of thickness on the “Incoherent thin film Mode” is show in <a class="reference internal" href="#fig-mgo-incoherent"><span class="std std-numref">Fig. 9.3</span></a>.
 This method uses intensities rather than amplitudes for the transfer matrix and as a result, all the phase information is lost, resulting in no interferences after internal reflections.
 The calculations shown are for p- polarised incident radiation.</p>
 <p>The incoherent method deviates from the thick slab mode at very low frequencies, but as the film thickness increases the deviations become smaller.
 Similarly at frequencies above the LO frequency the deviations from the thick slab mode are less for the thicker films.
 The user needs to be aware that for large thicknesses the calculation of the propagation matrix can lead to numerical overflows.  These manifest themselves as sudden changes in transmittance.  Reflectance calculations are badly affected by this and it is recommended to use the ‘thick slab’ mode for such cases.</p>
-<figure class="align-default" id="id9">
+<figure class="align-default" id="id11">
 <span id="fig-mgo-incoherent"></span><a class="reference internal image-reference" href="_images/MgO_Incoherent_Size_Effects.svg"><img alt="_images/MgO_Incoherent_Size_Effects.svg" height="382" src="_images/MgO_Incoherent_Size_Effects.svg" width="405" /></a>
 <figcaption>
-<p><span class="caption-number">Fig. 8.3 </span><span class="caption-text">The Incoherent Thin Film Mode - a 45<sup>o</sup> incident beam with p- polarisation</span><a class="headerlink" href="#id9" title="Permalink to this image">¶</a></p>
+<p><span class="caption-number">Fig. 9.3 </span><span class="caption-text">The Incoherent Thin Film Mode - a 45<sup>o</sup> incident beam with p- polarisation</span><a class="headerlink" href="#id11" title="Permalink to this image">¶</a></p>
 </figcaption>
 </figure>
 <p>Komandin et al <span id="id1">[<a class="reference internal" href="zreferences.html#id78" title="G. A. Komandin, O. E. Porodinkov, I. E. Spector, and A. A. Volkov. Multiphonon absorption in a MgO single crystal in the terahertz range. Physics of the Solid State, 51(10):2045–2050, 2009. doi:10.1134/S1063783409100096.">70</a>]</span> have reported terahertz spectra of 0.5μ thick MgO crystals which are dominated by interference at low frequencies.
-In <a class="reference internal" href="#fig-mgo-experiment"><span class="std std-numref">Fig. 8.4</span></a> a digitised spectrum obtained from this publication is compared with calculations.
+In <a class="reference internal" href="#fig-mgo-experiment"><span class="std std-numref">Fig. 9.4</span></a> a digitised spectrum obtained from this publication is compared with calculations.
 It can be seen that despite the rather poor digitisation the agreement is very good, given that we are using only calculated information (refractive index, LO and TO frequencies etc.).
 Agreement with the number of interference bands and the amplitude of the bands is very good.</p>
-<figure class="align-default" id="id10">
+<figure class="align-default" id="id12">
 <span id="fig-mgo-experiment"></span><a class="reference internal image-reference" href="_images/MgO_Single_Crystal_0p5_Micron_Experiment.svg"><img alt="_images/MgO_Single_Crystal_0p5_Micron_Experiment.svg" height="382" src="_images/MgO_Single_Crystal_0p5_Micron_Experiment.svg" width="405" /></a>
 <figcaption>
-<p><span class="caption-number">Fig. 8.4 </span><span class="caption-text">Comparison of calculated and experimental transmittance terahertz spectra</span><a class="headerlink" href="#id10" title="Permalink to this image">¶</a></p>
+<p><span class="caption-number">Fig. 9.4 </span><span class="caption-text">Comparison of calculated and experimental transmittance terahertz spectra</span><a class="headerlink" href="#id12" title="Permalink to this image">¶</a></p>
 </figcaption>
 </figure>
 <p>Finally we compare a digitised spectrum of the reflectance measured over the range 0 - 800 <span class="math notranslate nohighlight">\(cm^{-1}\)</span> with the spectrum calculated using PDGui and Castep.
 In this the ‘thick slab’ approximation has been used as no oscillations are detected in the low frequency experimental results.
 The calculated and experimental results are in excellent agreement.
 The shoulder on the experimental result is due to two phonon processes which are not taken account of in the present theoretical work.</p>
-<figure class="align-default" id="id11">
+<figure class="align-default" id="id13">
 <span id="fig-mgo-experiment-reflectance"></span><a class="reference internal image-reference" href="_images/MgO_Single_Crystal_Experiment_Reflectance.svg"><img alt="_images/MgO_Single_Crystal_Experiment_Reflectance.svg" height="382" src="_images/MgO_Single_Crystal_Experiment_Reflectance.svg" width="408" /></a>
 <figcaption>
-<p><span class="caption-number">Fig. 8.5 </span><span class="caption-text">Comparison of calculated and experimental reflectance infrared spectra</span><a class="headerlink" href="#id11" title="Permalink to this image">¶</a></p>
+<p><span class="caption-number">Fig. 9.5 </span><span class="caption-text">Comparison of calculated and experimental reflectance infrared spectra</span><a class="headerlink" href="#id13" title="Permalink to this image">¶</a></p>
 </figcaption>
 </figure>
 </section>
 <section id="single-crystal-study-of-forsterite">
-<h2><span class="section-number">8.2. </span>Single Crystal Study of Forsterite<a class="headerlink" href="#single-crystal-study-of-forsterite" title="Permalink to this heading">¶</a></h2>
+<h2><span class="section-number">9.2. </span>Single Crystal Study of Forsterite<a class="headerlink" href="#single-crystal-study-of-forsterite" title="Permalink to this heading">¶</a></h2>
 <p>In a publication on the interpretation of the experimental spectrum of forsterite <span id="id2">[<a class="reference internal" href="zreferences.html#id76" title="Marco De La Pierre, Marco De La Pierre, Cédric Carteret, Roberto Orlando, and Roberto Dovesi. Use of ab initio methods for the interpretation of the experimental IR reflectance spectra of crystalline compounds. Journal of computational chemistry, 34(2):1476–85, apr 2013. URL: http://www.ncbi.nlm.nih.gov/pubmed/23559424, doi:10.1002/jcc.23283.">71</a>]</span> a Four Parameters Semi-Quantum (FPSQ) model for the single crystal infrared spectrum of this material was presented.   In this application note that we use the experimental file format of PDielec to read in the FPSQ model parameters from the paper and use it to calculate the reflectance spectrum for comparison with that published in the paper.
 The FPSQ model is defined by the following equation.</p>
 <div class="math notranslate nohighlight" id="equation-eq-fpsqa">
-<span class="eqno">(8.1)<a class="headerlink" href="#equation-eq-fpsqa" title="Permalink to this equation">¶</a></span>\[ \epsilon (\omega )=\epsilon _{\infty}\prod_{j} \frac{\Omega^2_{LO_j}-\omega ^2-i\gamma _{LO_j}\omega }{\Omega^2_{TO_j}-\omega ^2-i\gamma _{TO_j}\omega}\]</div>
+<span class="eqno">(9.1)<a class="headerlink" href="#equation-eq-fpsqa" title="Permalink to this equation">¶</a></span>\[ \epsilon (\omega )=\epsilon _{\infty}\prod_{j} \frac{\Omega^2_{LO_j}-\omega ^2-i\gamma _{LO_j}\omega }{\Omega^2_{TO_j}-\omega ^2-i\gamma _{TO_j}\omega}\]</div>
 <p>Forsterite is an orthosilicate belonging to an orthorhombic space group.  The permittivity matrix is diagonal when the x, y and z axes of the crystal are aligned with a, b and c axes of the unit cell.  The parameters for the FPSQ model are summarised in the tables below.</p>
 <table class="styled-table docutils align-default" id="tab-optical">
-<caption><span class="caption-number">Table 8.2 </span><span class="caption-text">Optical Permittivity</span><a class="headerlink" href="#tab-optical" title="Permalink to this table">¶</a></caption>
+<caption><span class="caption-number">Table 9.2 </span><span class="caption-text">Optical Permittivity</span><a class="headerlink" href="#tab-optical" title="Permalink to this table">¶</a></caption>
 <tbody>
 <tr class="row-odd"><td class="center-align no-left-divider single-right-divider"></td>
 <td class="right-align single-left-divider single-right-divider"><p>X</p></td>
@@ -195,7 +195,7 @@ The FPSQ model is defined by the following equation.</p>
 </tbody>
 </table>
 <table class="styled-table docutils align-default" id="tab-fpsqa">
-<caption><span class="caption-number">Table 8.3 </span><span class="caption-text">FPSQ Model Parameters for Forsterite</span><a class="headerlink" href="#tab-fpsqa" title="Permalink to this table">¶</a></caption>
+<caption><span class="caption-number">Table 9.3 </span><span class="caption-text">FPSQ Model Parameters for Forsterite</span><a class="headerlink" href="#tab-fpsqa" title="Permalink to this table">¶</a></caption>
 <colgroup>
 <col style="width: 8.3%" />
 <col style="width: 8.3%" />
@@ -407,10 +407,10 @@ The surface is therefore in the XY plane.
 The azimuthal angle can be used to rotate the crystal about the normal until the crystal axis of interest is parallel to the Y axis of the laboratory frame.
 With this geometry the s-polarised wave field will be oscillating parallel to the chosen axis.
 The arrangement described is shown in the Figure below where <span class="math notranslate nohighlight">\(E_s\)</span> and <span class="math notranslate nohighlight">\(E_p\)</span> are the field directions of the incident light.</p>
-<figure class="align-default" id="id12">
+<figure class="align-default" id="id14">
 <span id="fig-lab-coords"></span><a class="reference internal image-reference" href="_images/SingleCrystalGeometry.png"><img alt="_images/SingleCrystalGeometry.png" src="_images/SingleCrystalGeometry.png" style="width: 1152.0px; height: 648.0px;" /></a>
 <figcaption>
-<p><span class="caption-number">Fig. 8.6 </span><span class="caption-text">Definition of single crystal laboratory coordinates in PDGui</span><a class="headerlink" href="#id12" title="Permalink to this image">¶</a></p>
+<p><span class="caption-number">Fig. 9.6 </span><span class="caption-text">Definition of single crystal laboratory coordinates in PDGui</span><a class="headerlink" href="#id14" title="Permalink to this image">¶</a></p>
 </figcaption>
 </figure>
 <p>As can be seen <span class="math notranslate nohighlight">\(E_s\)</span> is parallel to the laboratory Y-axis, so it is necessary to line up the crystal unit cell so that the cell direction being investigated is parallel to the Y-axis.
@@ -447,15 +447,15 @@ The data for this calculation can be found by looking in the <a class="reference
 <figure class="align-default" id="forsterite">
 <a class="reference internal image-reference" href="_images/forsterite-100-1200.png"><img alt="_images/forsterite-100-1200.png" src="_images/forsterite-100-1200.png" style="width: 576.0px; height: 432.0px;" /></a>
 </figure>
-<figure class="align-default" id="id13">
+<figure class="align-default" id="id15">
 <a class="reference internal image-reference" href="_images/forsterite-350-600.png"><img alt="_images/forsterite-350-600.png" src="_images/forsterite-350-600.png" style="width: 576.0px; height: 432.0px;" /></a>
 <figcaption>
-<p><span class="caption-number">Fig. 8.7 </span><span class="caption-text">Forsterite a-axis reflectance (upper figure 100 - 1200 cm<sup>-1</sup>, lower figure 350 - 600 cm<sup>-1</sup>)</span><a class="headerlink" href="#id13" title="Permalink to this image">¶</a></p>
+<p><span class="caption-number">Fig. 9.7 </span><span class="caption-text">Forsterite a-axis reflectance (upper figure 100 - 1200 cm<sup>-1</sup>, lower figure 350 - 600 cm<sup>-1</sup>)</span><a class="headerlink" href="#id15" title="Permalink to this image">¶</a></p>
 </figcaption>
 </figure>
 </section>
 <section id="single-crystal-study-of-l-alanine">
-<h2><span class="section-number">8.3. </span>Single Crystal Study of L-Alanine<a class="headerlink" href="#single-crystal-study-of-l-alanine" title="Permalink to this heading">¶</a></h2>
+<h2><span class="section-number">9.3. </span>Single Crystal Study of L-Alanine<a class="headerlink" href="#single-crystal-study-of-l-alanine" title="Permalink to this heading">¶</a></h2>
 <p>In an experimental and computational study of the vibrational modes of single crystals of L-alanine, the experimental transmittance was reported for polarized radiation along each of the principal axes, a-, b- and c-. <span id="id4">[<a class="reference internal" href="zreferences.html#id83" title="J. L. Allen, T. J. Sanders, J. Horvat, R. A. Lewis, and K. C. Rule. Determination of Vibrational Modes of L-Alanine Single Crystals by a Combination of Terahertz Spectroscopy Measurements and Density Functional Calculations. Physical Review Letters, 130(22):226901, 2023. URL: https://doi.org/10.1103/PhysRevLett.130.226901, doi:10.1103/PhysRevLett.130.226901.">72</a>]</span></p>
 <p>The directory Examples/SingleCrystal/L-alanine contains files for the calculation of the transmittance and reflectance of single crystals of L-alanine based on similar calculations to those reported in the paper, using Crystal17 to perform the DFT calculations, and using PDGui to calculate the transmittance and reflectance properties of the crystal.
 Details of the DFT calculation using the B97-3c functional can be found in phonon.dl2.  The output can be found in phonon.out.  Other files produced by the Crystal17 calculation are BORN.DAT and HESSFREQ.DAT.  These are used by PDGui to calculate the theoretical spectrum.</p>
@@ -533,6 +533,58 @@ The c-axis field transmittance example uses the (010) surface with an azimuthal 
 <a class="reference internal image-reference" href="_images/lalanine-fittertab-incoherent-caxis.png"><img alt="_images/lalanine-fittertab-incoherent-caxis.png" src="_images/lalanine-fittertab-incoherent-caxis.png" style="width: 603.9px; height: 874.8000000000001px;" /></a>
 </figure>
 </section>
+<section id="aln-on-silicon-and-silicon-carbide">
+<h2><span class="section-number">9.4. </span>AlN on Silicon and Silicon Carbide<a class="headerlink" href="#aln-on-silicon-and-silicon-carbide" title="Permalink to this heading">¶</a></h2>
+<p>This is an example of a multilayer system where two layers are not isotropic.
+In an experimental and theoretical study of the infrared reflactance of aluminium nitride on silicon and silicon carbide, MacMillan, Devaty and Choyke <span id="id7">[<a class="reference internal" href="zreferences.html#id84" title="M. F. MacMillan, R. P. Devaty, and W. J. Choyke. Infrared reflectance of thin aluminum nitride films on various substrates. Applied Physics Letters, 62(7):750–752, 1993. doi:10.1063/1.108595.">73</a>]</span> used four paramater semi-quantum  (FPSQ) model to describe their experimental results on aluminium nitride on various substrates.
+In the Examples/Experimental/AlN directory the file AlN.exp provides an experimental file which describes their FPSQ model in a format the PDGui can use.
+In addition parameters for the permittivities of silicon and 6H-SiC are given in the TestDataBase.xlsx file in the same directory.
+The 6H-SiC permittivities are provided by a Drude-Lorentz model and the silicon permittivities is calculated from an experimental refractive index.
+References for the origins of the models and experimental data are given in the spreadsheet.</p>
+<p>The first experimental/calculated system considered <span id="id8">[<a class="reference internal" href="zreferences.html#id84" title="M. F. MacMillan, R. P. Devaty, and W. J. Choyke. Infrared reflectance of thin aluminum nitride films on various substrates. Applied Physics Letters, 62(7):750–752, 1993. doi:10.1063/1.108595.">73</a>]</span> was the reflectance of a 0.92μ AlN on a Si substrate.
+This was modelled using PDGui after reading in the experimental file, AlN.exp, the <em>Single Crystal Scenario Tab</em> was used to define the system as described in the paper.
+The <em>Thick slab</em> mode was specified, the superstrate material was chosen as air, an AlN dielectric film of 0.92μ was specified on top of a 1.0μm film of silicon.
+An angle of incidence of 7.2 textsuperscript{o} was used.
+The (001) surface of AlN was defined, so the perpendicular to the surface aligns with the laboratory Z-axis.
+Because the program is operating in <em>Thick slab</em> mode, the bottom layer is treated as a semi-infinite layer, so the size of the silicon layer specified in the GUI is irrelevant.
+The scenario is shown below:</p>
+<figure class="align-default" id="fig-aln-on-si-etalons-scenario">
+<a class="reference internal image-reference" href="_images/AlN-on-Si-Etalons-Scenario.png"><img alt="_images/AlN-on-Si-Etalons-Scenario.png" src="_images/AlN-on-Si-Etalons-Scenario.png" style="width: 619.2px; height: 882.9px;" /></a>
+</figure>
+<p>Two comparisons are made with the calculated results of the published paper after digitising figures 1 and 2 of the paper.
+In the first the range of the plot extends for 0 to 6000 cm<sup>-1</sup> and clearly shows the etalons associated with the interference.
+In the second the plot examines the region between 400 and 1200 cm<sup>-1</sup>.
+The agreement is excellent.</p>
+<figure class="align-default" id="fig-aln-on-si-etalons">
+<a class="reference internal image-reference" href="_images/AlN-on-Si-Etalons.svg"><img alt="_images/AlN-on-Si-Etalons.svg" height="382" src="_images/AlN-on-Si-Etalons.svg" width="405" /></a>
+</figure>
+<figure class="align-default" id="fig-aln-on-si-close-up">
+<a class="reference internal image-reference" href="_images/AlN-on-Si-Close-Up.svg"><img alt="_images/AlN-on-Si-Close-Up.svg" height="382" src="_images/AlN-on-Si-Close-Up.svg" width="405" /></a>
+</figure>
+<p>Figure 3 of the paper shows the reflectance of of a 0.98μm film of AlN on the (0001) surface of 6H_SiC.
+To model this with PDGui two layers have been created using the <em>Layer Editor</em> as shown below.
+As with the previous example the <em>Thick slab</em> mode has been specified, so the SiC layer is semi-infinite.
+The layer editor shows two (001) layers with the c-axis of the crystals pointing along the Z-laboratory axis.
+The top layer, next to the superstrate (air) is the <em>Dielectric film</em> (AlN in this case) and the semi-infinite layer beneath is has been specified by adding a new layer from the materials database, TestDataBase.xlsx.</p>
+<figure class="align-default" id="fig-aln-on-sic-layereditor">
+<a class="reference internal image-reference" href="_images/AlN_on_SiC_LayerEditor.png"><img alt="_images/AlN_on_SiC_LayerEditor.png" src="_images/AlN_on_SiC_LayerEditor.png" style="width: 571.5px; height: 339.3px;" /></a>
+</figure>
+<p>A comparison is given below between the calculated spectrum reported in the paper that produced by PDGui.</p>
+<figure class="align-default" id="fig-aln-on-sic">
+<a class="reference internal image-reference" href="_images/AlN-on-6H-SiC.svg"><img alt="_images/AlN-on-6H-SiC.svg" height="382" src="_images/AlN-on-6H-SiC.svg" width="405" /></a>
+</figure>
+<p>A final comparison is made between Figure 4 of the paper and the results of PDGui.
+In this case a 0.24μm film of SiC is supported on a 0.56μm film of AlN, which is deposited on a substrate of Silicon.
+For this example the <em>Coherent thin film</em> mode is used.
+The layer editor for this system is shown below.</p>
+<figure class="align-default" id="fig-sic-on-aln-layereditor">
+<a class="reference internal image-reference" href="_images/SiC_on_AlN-LayerEditor.png"><img alt="_images/SiC_on_AlN-LayerEditor.png" src="_images/SiC_on_AlN-LayerEditor.png" style="width: 571.5px; height: 339.3px;" /></a>
+</figure>
+<p>A comparison is given below between the calculated spectrum reported in the paper that produced by PDGui.</p>
+<figure class="align-default" id="fig-sic-on-aln">
+<a class="reference internal image-reference" href="_images/6H-SiC-on-AlN.svg"><img alt="_images/6H-SiC-on-AlN.svg" height="382" src="_images/6H-SiC-on-AlN.svg" width="405" /></a>
+</figure>
+</section>
 </section>
 
 
@@ -544,10 +596,11 @@ The c-axis field transmittance example uses the (010) surface with an azimuthal 
         <div class="sphinxsidebarwrapper"><div class="sphinx-toc sphinxlocaltoc">
     <h3><a href="index.html">Page contents</a></h3>
     <ul>
-<li><a class="reference internal" href="#">8. Single Crystal Applications</a><ul>
-<li><a class="reference internal" href="#single-crystal-study-of-thickness-effects-in-mgo">8.1. Single Crystal Study of Thickness Effects in MgO</a></li>
-<li><a class="reference internal" href="#single-crystal-study-of-forsterite">8.2. Single Crystal Study of Forsterite</a></li>
-<li><a class="reference internal" href="#single-crystal-study-of-l-alanine">8.3. Single Crystal Study of L-Alanine</a></li>
+<li><a class="reference internal" href="#">9. Single Crystal Applications</a><ul>
+<li><a class="reference internal" href="#single-crystal-study-of-thickness-effects-in-mgo">9.1. Single Crystal Study of Thickness Effects in MgO</a></li>
+<li><a class="reference internal" href="#single-crystal-study-of-forsterite">9.2. Single Crystal Study of Forsterite</a></li>
+<li><a class="reference internal" href="#single-crystal-study-of-l-alanine">9.3. Single Crystal Study of L-Alanine</a></li>
+<li><a class="reference internal" href="#aln-on-silicon-and-silicon-carbide">9.4. AlN on Silicon and Silicon Carbide</a></li>
 </ul>
 </li>
 </ul>
@@ -556,12 +609,12 @@ The c-axis field transmittance example uses the (010) surface with an azimuthal 
   <div class="sphinxprev">
     <h4>Previous page</h4>
     <p class="topless"><a href="application_notes_1.html"
-                          title="Previous page">&larr; <span class="section-number">7. </span>Applications of Powder Methodologies</a></p>
+                          title="Previous page">&larr; <span class="section-number">8. </span>Applications of Powder Methodologies</a></p>
   </div>
   <div class="sphinxnext">
     <h4>Next page</h4>
     <p class="topless"><a href="zreferences.html"
-                          title="Next page">&rarr; <span class="section-number">9. </span>References</a></p>
+                          title="Next page">&rarr; <span class="section-number">10. </span>References</a></p>
   </div>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
@@ -610,14 +663,14 @@ The c-axis field transmittance example uses the (010) surface with an azimuthal 
           <a href="genindex.html" title="General Index"
              >index</a></li>
         <li class="right" >
-          <a href="zreferences.html" title="9. References"
+          <a href="zreferences.html" title="10. References"
              >next</a> &nbsp; &nbsp;</li>
         <li class="right" >
-          <a href="application_notes_1.html" title="7. Applications of Powder Methodologies"
+          <a href="application_notes_1.html" title="8. Applications of Powder Methodologies"
              >previous</a> &nbsp; &nbsp;</li>
     <li><a href="index.html">PDielec: John Kendrick &amp; Andrew Burnett</a> &#187;</li>
 
-        <li class="nav-item nav-item-this"><a href=""><span class="section-number">8. </span>Single Crystal Applications</a></li> 
+        <li class="nav-item nav-item-this"><a href=""><span class="section-number">9. </span>Single Crystal Applications</a></li> 
       </ul>
     </div>
     </div>
