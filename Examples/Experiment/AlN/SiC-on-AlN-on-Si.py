@@ -8,8 +8,8 @@ self.notebook.switchScenario(0,scenarioType="Single crystal")
 tab = self.notebook.mainTab
 tab.settings['Program'] = 'experiment'
 tab.settings['Output file name'] = 'AlN.exp'
-tab.settings['Excel file name'] = ''
-tab.settings['Script file name'] = 'script.py'
+tab.settings['Excel file name'] = 'AlN-SiC.xlsx'
+tab.settings['Script file name'] = 'AlN-SiC.py'
 tab.settings['QM program'] = ''
 #
 #
@@ -35,7 +35,7 @@ tab.settings['Substrate permittivity'] =  (1+0j)
 tab.settings['Superstrate depth'] =  99999.0
 tab.settings['Substrate depth'] =  99999.0
 tab.settings['Superstrate & substrate thickness unit'] = 'mm'
-tab.settings['Mode'] = 'Coherent thin film'
+tab.settings['Mode'] = 'Thick slab'
 tab.settings['Frequency units'] = 'wavenumber'
 tab.settings['Partially incoherent samples'] =  20
 tab.settings['Percentage partial incoherence'] =  0
@@ -121,7 +121,7 @@ tab.settings['Scenario index'] =  0
 #
 tab = self.notebook.plottingTab
 tab.settings['Minimum frequency'] =  400.0
-tab.settings['Maximum frequency'] =  1200.01
+tab.settings['Maximum frequency'] =  1200.0
 tab.settings['Frequency increment'] =  4.0
 tab.settings['Molar definition'] = 'Unit cells'
 tab.settings['Number of atoms'] =  1

@@ -8,8 +8,8 @@ self.notebook.switchScenario(0,scenarioType="Single crystal")
 tab = self.notebook.mainTab
 tab.settings['Program'] = 'experiment'
 tab.settings['Output file name'] = 'AlN.exp'
-tab.settings['Excel file name'] = ''
-tab.settings['Script file name'] = 'script.py'
+tab.settings['Excel file name'] = 'AlN_on_Si.xlsx'
+tab.settings['Script file name'] = 'AlN_on_Si.py'
 tab.settings['QM program'] = ''
 #
 #
@@ -23,7 +23,7 @@ tab.sigmas_cm1 = [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]
 #
 #
 tab = self.notebook.scenarios[0]
-tab.settings['Legend'] = '0.98 um AlN on 1cm 6H-SiC'
+tab.settings['Legend'] = '0.92 um AlN on Si'
 tab.settings['Scenario type'] = 'Single crystal'
 tab.settings['Materials database'] = 'TestDataBase.xlsx'
 tab.settings['Global azimuthal angle'] =  0.0
@@ -35,46 +35,18 @@ tab.settings['Substrate permittivity'] =  (1+0j)
 tab.settings['Superstrate depth'] =  99999.0
 tab.settings['Substrate depth'] =  99999.0
 tab.settings['Superstrate & substrate thickness unit'] = 'mm'
-tab.settings['Mode'] = 'Coherent thin film'
+tab.settings['Mode'] = 'Thick slab'
 tab.settings['Frequency units'] = 'wavenumber'
 tab.settings['Partially incoherent samples'] =  20
 tab.settings['Percentage partial incoherence'] =  0
 tab.settings['Filter kernel size'] =  1
 tab.settings['Filter polynomial size'] =  3
-tab.settings['Layer material names'] =  ['Dielectric film', '6H-SiC']
-tab.settings['Layer hkls'] =  [[0, 0, 1], [0, 0, 1]]
+tab.settings['Layer material names'] =  ['Dielectric film', 'Silicon']
+tab.settings['Layer hkls'] =  [[0, 0, 1], [0, 0, 0]]
 tab.settings['Layer azimuthals'] =  [0.0, 0.0]
 tab.settings['Layer thicknesses'] =  [0.92, 1.0]
-tab.settings['Layer thickness units'] =  ['um', 'cm']
-tab.settings['Layer dielectric flags'] =  [True, False]
-#
-#
-self.notebook.addScenario(scenarioType="Single crystal")
-tab = self.notebook.scenarios[1]
-tab.settings['Legend'] = '0.24 um 6H-SiC on 0.56um AlN'
-tab.settings['Scenario type'] = 'Single crystal'
-tab.settings['Materials database'] = 'TestDataBase.xlsx'
-tab.settings['Global azimuthal angle'] =  0.0
-tab.settings['Angle of incidence'] =  7.2
-tab.settings['Superstrate'] = 'air'
-tab.settings['Substrate'] = 'Silicon'
-tab.settings['Superstrate permittivity'] =  (1+0j)
-tab.settings['Substrate permittivity'] =  (11.696399999999999+0j)
-tab.settings['Superstrate depth'] =  99999.0
-tab.settings['Substrate depth'] =  99999.0
-tab.settings['Superstrate & substrate thickness unit'] = 'mm'
-tab.settings['Mode'] = 'Coherent thin film'
-tab.settings['Frequency units'] = 'wavenumber'
-tab.settings['Partially incoherent samples'] =  20
-tab.settings['Percentage partial incoherence'] =  0
-tab.settings['Filter kernel size'] =  1
-tab.settings['Filter polynomial size'] =  3
-tab.settings['Layer material names'] =  ['6H-SiC', 'Dielectric film']
-tab.settings['Layer hkls'] =  [[0, 0, 1], [0, 0, 1]]
-tab.settings['Layer azimuthals'] =  [0.0, 0.0]
-tab.settings['Layer thicknesses'] =  [0.24, 0.56]
 tab.settings['Layer thickness units'] =  ['um', 'um']
-tab.settings['Layer dielectric flags'] =  [False, True]
+tab.settings['Layer dielectric flags'] =  [True, False]
 #
 #
 tab = self.notebook.analysisTab
@@ -120,8 +92,8 @@ tab.settings['Scenario index'] =  0
 #
 #
 tab = self.notebook.plottingTab
-tab.settings['Minimum frequency'] =  400.0
-tab.settings['Maximum frequency'] =  1200.01
+tab.settings['Minimum frequency'] =  0.0
+tab.settings['Maximum frequency'] =  6000.0
 tab.settings['Frequency increment'] =  4.0
 tab.settings['Molar definition'] = 'Unit cells'
 tab.settings['Number of atoms'] =  1
