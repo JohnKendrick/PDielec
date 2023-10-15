@@ -42,25 +42,24 @@ release = '4.0'
 preamble = r'''
 \usepackage{svg}
 \usepackage{hyperref}
-\usepackage{bm}
 \usepackage{float}
 \usepackage{parskip}
 \usepackage{amsmath}
 \newcommand{\water}{H_{2}O}
-\newcommand{\tensorbs}[1]{\bar{\bar{\bm{#1}}}}
-\newcommand{\tensorbf}[1]{\bar{\bar{\bm{#1}}}}
-\newcommand{\tensor}[1]{\bar{\bar{\bm{#1}}}}
-\newcommand{\fieldbf}[1]{\bar{\bm{#1}}}
-\newcommand{\field}[1]{\bar{\bm{#1}}}
+\newcommand{\tensorbs}[1]{\bar{\bar{\boldsymbol{#1}}}}
+\newcommand{\tensorbf}[1]{\bar{\bar{\boldsymbol{#1}}}}
+\newcommand{\tensor}[1]{\bar{\bar{\boldsymbol{#1}}}}
+\newcommand{\fieldbf}[1]{\bar{\boldsymbol{#1}}}
+\newcommand{\field}[1]{\bar{\boldsymbol{#1}}}
 '''
 
 preamble_maths = r'''
 \newcommand{\water}{H_{2}O}
-\newcommand{\tensorbs}[1]{\bar{\bar{\bm{#1}}}}
-\newcommand{\tensorbf}[1]{\bar{\bar{\bm{#1}}}}
-\newcommand{\tensor}[1]{\bar{\bar{\bm{#1}}}}
-\newcommand{\fieldbf}[1]{\bar{\bm{#1}}}
-\newcommand{\field}[1]{\bar{\bm{#1}}}
+\newcommand{\tensorbs}[1]{\bar{\bar{\boldsymbol{#1}}}}
+\newcommand{\tensorbf}[1]{\bar{\bar{\boldsymbol{#1}}}}
+\newcommand{\tensor}[1]{\bar{\bar{\boldsymbol{#1}}}}
+\newcommand{\fieldbf}[1]{\bar{\boldsymbol{#1}}}
+\newcommand{\field}[1]{\bar{\boldsymbol{#1}}}
 '''
 
 # Add any Sphinx extension module names here, as strings. They can be
@@ -80,9 +79,9 @@ mathjax_config = {
     "TeX": {
         "Macros": { 
             "tensor":   ["{\\bar{\\bar{#1}}}", 1],
-            "tensorbs": ["{\\bar{\\bar{\\bm{#1}}}}", 1],
-            "tensorbf": ["{\\bar{\\bar{\\bm{#1}}}}", 1],
-            "fieldbf":  ["{\\bar{\\bm{#1}}}", 1],
+            "tensorbs": ["{\\bar{\\bar{\\boldsymbol{#1}}}}", 1],
+            "tensorbf": ["{\\bar{\\bar{\\boldsymbol{#1}}}}", 1],
+            "fieldbf":  ["{\\bar{\\boldsymbol{#1}}}", 1],
             "water":    "\\H_{2}O",
         },
     },
