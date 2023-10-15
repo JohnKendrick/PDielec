@@ -204,6 +204,8 @@ class SingleCrystalScenarioTab(ScenarioTab):
         hbox.addWidget(QLabel('K'))
         hbox.addWidget(QLabel('L'))
         hbox.addWidget(QLabel('Azimuthal'))
+        if debugger.state():
+            hbox.addWidget(QLabel('Print'))
         form.addRow(hbox)
         for sequenceNumber,layer in enumerate(self.layers):
             # Define material name
@@ -236,8 +238,6 @@ class SingleCrystalScenarioTab(ScenarioTab):
         index = thickness_unit_cb.findText(thicknessUnit, Qt.MatchFixedString)
         thickness_unit_cb.setCurrentIndex(index)
         thickness_unit_cb.activated.connect(lambda x: self.on_thickness_units_cb_activated(x, layer))
-        thicknessLabel = QLabel('Thickness?????:')
-        thicknessLabel.setToolTip('Define the depth of the thin crystal in the defined thickness units.')
         # define hkl
         h_sb = QSpinBox(self)
         h_sb.setToolTip('Define the h dimension of the unique direction')
@@ -260,8 +260,6 @@ class SingleCrystalScenarioTab(ScenarioTab):
         l_sb.setValue(layer.getHKL()[2])
         l_sb.valueChanged.connect(lambda x: self.on_hkl_sb_changed(x,2,layer))
         l_sb.setSizePolicy(QSizePolicy.Expanding,QSizePolicy.Fixed)
-        hklLabel = QLabel('hkl:')
-        hklLabel.setToolTip('Define the crystal surface (hkl). Defines the unique direction in crystallographic units.')
         # define azimuthal angle
         azimuthal = layer.getAzimuthal()
         azimuthal_angle_sb = QDoubleSpinBox(self)
@@ -271,7 +269,6 @@ class SingleCrystalScenarioTab(ScenarioTab):
         azimuthal_angle_sb.setValue(azimuthal)
         azimuthal_angle_sb.valueChanged.connect(lambda x: self.on_azimuthal_angle_sb_changed(x,layer))
         azimuthal_angle_sb.setSizePolicy(QSizePolicy.Expanding,QSizePolicy.Fixed)
-        azimuthalLabel = QLabel('Azimuthal:')
         # Create the line of widgets
         hbox.addWidget(film_thickness_sb)
         hbox.addWidget(thickness_unit_cb)
@@ -279,12 +276,28 @@ class SingleCrystalScenarioTab(ScenarioTab):
         hbox.addWidget(k_sb)
         hbox.addWidget(l_sb)
         hbox.addWidget(azimuthal_angle_sb)
+        if debugger.state():
+            printButton = QPushButton('Print')
+            printButton.setToolTip('Print the permittivity')
+            printButton.clicked.connect(lambda x: self.on_print_button_clicked(x,layer))
+            hbox.addWidget(printButton)
         if layer.isScalar():
             h_sb.setEnabled(False)
             k_sb.setEnabled(False)
             l_sb.setEnabled(False)
             azimuthal_angle_sb.setEnabled(False)
         return materialLabel,hbox
+
+    def on_print_button_clicked(self,x,layer):
+        '''Print the permittivity for the layer'''
+        material = layer.getMaterial()
+        permittivityObject = material.getPermittivityObject()
+        name = material.getName()
+        name = name.replace(' ','_')
+        name += '_permittivity.csv'
+        print('Printing permittivity information to',name)
+        permittivityObject.print(0.0,2000.0,1.0,file=name)
+        return
 
     def on_film_thickness_sb_changed(self,value,layer):
         '''Handle film thickness spin box change'''
@@ -441,14 +454,15 @@ class SingleCrystalScenarioTab(ScenarioTab):
         self.editLayerWindow.close()
         # Handle the changes made to the layers
         self.layers = self.editLayerWindow.getLayers()
-        self.generateLayerSettings()
-        # Update the hkl widget, the units and the thickness widgets.  With details
-        # of the dielectric layer
-        self.dielectricLayer = self.layers[self.getDielectricLayerIndex()]
-        hkl = self.dielectricLayer.getHKL()
-        self.refreshRequired = True
-        self.refresh()
-        self.refreshRequired = True
+        if len(self.layers) > 0:
+            self.generateLayerSettings()
+            # Update the hkl widget, the units and the thickness widgets.  With details
+            # of the dielectric layer
+            self.dielectricLayer = self.layers[self.getDielectricLayerIndex()]
+            hkl = self.dielectricLayer.getHKL()
+            self.refreshRequired = True
+            self.refresh()
+            self.refreshRequired = True
         return
 
     def globalAzimuthalWidget(self):

@@ -88,7 +88,7 @@ class DielectricFunction:
         return self.isScalarFunction
 
     def setUnits(self,units):
-        '''Set the volume for dielectric calculations
+        '''Set the units of frequency to be used in calls
 
         Parameters
         ----------
@@ -100,6 +100,12 @@ class DielectricFunction:
             exit()
         self.frequency_units      = units
         return
+
+    def getUnits(self):
+        '''get units of frequency to be used in calls
+
+        '''
+        return self.frequency_units
 
     def setVolume(self,volume):
         '''Set the volume for dielectric calculations
@@ -243,6 +249,30 @@ class DielectricFunction:
             dielectric = dielectric + strength / complex((v*v - f*f), -sigma*f)
         return dielectric * (4.0*np.pi/volume)
 
+    def print(self, v1_cm1, v2_cm1, v_inc=1,diagonal_only=True,file=None):
+        '''Print the permittivity over a range of frequencies'''
+        fd = sys.stdout
+        closeFlag = False
+        if file is not None:
+            closeFlag = True
+            fd = open(file,'w')
+        c = ','
+        if diagonal_only:
+            print('f,eps00.real,epss11.real,eps22.real,eps00.imag,eps11.imag,eps22,imag',file=fd)
+        else:
+            print('f,eps00,epss11,eps22,eps01,eps02,,eps12',file=fd)
+        units = self.getUnits()
+        self.setUnits('cm-1')
+        for v in np.arange(v1_cm1, v2_cm1, v_inc):
+            epsilon = self.calculate(v)
+            if diagonal_only:
+                print(v,c,epsilon[0,0].real,c,epsilon[1,1].real,c,epsilon[2,2].real,c,epsilon[0,0].imag,c,epsilon[1,1].imag,c,epsilon[2,2].imag,file=fd)
+            else:
+                print(v,c,epsilon[0,0],c,epsilon[1,1],c,epsilon[2,2],c,epsilon[0,1],c,epsilon[0,2],c,epsilon[1,2],file=fd)
+        self.setUnits(units)
+        if closeFlag:
+            fd.close()
+        return
 
 class ConstantTensor(DielectricFunction):
     '''

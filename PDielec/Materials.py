@@ -200,8 +200,8 @@ class MaterialsDataBase():
             epsilon_infinity = np.zeros( (3,3) )
             directions = [[], [], []]
             omega_tos = [[], [], []]
-            omega_los = [[], [], []]
             gamma_tos = [[], [], []]
+            omega_los = [[], [], []]
             gamma_los = [[], [], []]
             for a, b, c, d, e, f in zip(worksheet['A'][1:] ,worksheet['B'][1:] , worksheet['C'][1:], worksheet['D'][1:], worksheet['E'][1:], worksheet['F'][1:]) :
                 try:
@@ -213,15 +213,15 @@ class MaterialsDataBase():
                     if c.value is not None:
                         omega_tos[index].append(float(c.value))
                     if d.value is not None:
-                        omega_los[index].append(float(c.value))
+                        gamma_tos[index].append(float(d.value))
                     if e.value is not None:
-                        gamma_tos[index].append(float(e.value))
+                        omega_los[index].append(float(e.value))
                     if f.value is not None:
                         gamma_los[index].append(float(f.value))
                 except:
                     print('Error in FPSQ: ',a.value,b.value,c.value,d.value,e.value,f.value)
                     return
-            material = FPSQ(sheet,epsilon_infinity,omega_tos,omega_los,gamma_tos,gamma_los,density=density,cell=unitCell)
+            material = FPSQ(sheet,epsilon_infinity,omega_tos,gamma_tos,omega_los,gamma_los,density=density,cell=unitCell)
         # Close the work book
         workbook.close()
         return material
@@ -285,6 +285,10 @@ class Material():
         '''Return the permittivity function'''
         self.permittivityObject = permittivityObject
         return
+
+    def getPermittivityObject(self):
+        '''Return the permittivity function'''
+        return self.permittivityObject
 
     def getPermittivityFunction(self):
         '''Return the permittivity function'''
@@ -358,22 +362,23 @@ class DrudeLorentz(Material):
         self.type = 'Drude-Lorentz'
 
 class FPSQ(Material):
-    def __init__(self, name,epsinf,omega_tos,omega_los,gamma_tos,gamma_los,density=None,cell=None):
+    def __init__(self, name,epsinf,omega_tos,gamma_tos,omega_los,gamma_los,density=None,cell=None):
         '''Create an instance of a material with an FPSQ model permittivity
            permittivity is the value of the permittivy and can be complex
            The required parameters are;
            name:             The name of the material
            eps0              Epsilon infinity either a 3x3 list or a 3x3 array
            omega_tos         The TO frequencies as a list 
-           omega_los         The LO frequencies as a list 
            gamma_tos         The TO absorption widths as a list
+           omega_los         The LO frequencies as a list 
            gamma_los         The LO absorption widths as a list
            density           in g/ml
            cell               the unit cell
         '''
         epsilon_infinity = np.array(epsinf)
-        permittivityObject = DielectricFunction.FPSQ( omega_tos, omega_los, gamma_tos, gamma_los, units='hz')
+        permittivityObject = DielectricFunction.FPSQ( omega_tos, gamma_tos, omega_los, gamma_los, units='hz')
         permittivityObject.setEpsilonInfinity(epsilon_infinity)
+        permittivityAt = permittivityObject.function()
         super().__init__(name, density=density, permittivityObject=permittivityObject,cell=cell)
         self.type = 'FPSQ'
 
