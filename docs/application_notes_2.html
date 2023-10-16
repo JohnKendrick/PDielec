@@ -79,10 +79,10 @@
 The examples shown here were calculated using the scripts mgo_coherent_size_effects.py and mgo_partially_incoherent_size_effects in the Examples/SingleCrystal/MgO directory of the GitHub distribution.
 A 45<sup>o</sup> incident beam on the (001) surface of MgO is used to calculate the transmittance, reflectance and absorbtance of thin films with thickness of 0.1, 1, 10 and 100 microns.
 The results of the coherent calculations are shown in <a class="reference internal" href="#fig-mgo-coherent"><span class="std std-numref">Fig. 9.1</span></a></p>
-<figure class="align-default" id="id9">
+<figure class="align-default" id="id11">
 <span id="fig-mgo-coherent"></span><a class="reference internal image-reference" href="_images/MgO_Coherent_Size_Effects.svg"><img alt="_images/MgO_Coherent_Size_Effects.svg" height="376" src="_images/MgO_Coherent_Size_Effects.svg" width="1188" /></a>
 <figcaption>
-<p><span class="caption-number">Fig. 9.1 </span><span class="caption-text">Effects of Film Thickness of MgO in Coherent Light, a 45<sup>o</sup> incident beam with p- polarisation</span><a class="headerlink" href="#id9" title="Permalink to this image">¶</a></p>
+<p><span class="caption-number">Fig. 9.3 </span><span class="caption-text">Effects of Film Thickness of MgO in Coherent Light, a 45<sup>o</sup> incident beam with p- polarisation</span><a class="headerlink" href="#id11" title="Permalink to this image">¶</a></p>
 </figcaption>
 </figure>
 <p>The results for the ‘thick slab’ case are shown only for reflectance and absorbtance.  It can be clearly seen that the reflection in the restrahlen region between the TO and LO frequencies (388 and 693 <span class="math notranslate nohighlight">\(cm^{-1}\)</span>) is almost total with also very little absorbtance.
@@ -123,10 +123,10 @@ For these calculations the following parameters were used.</p>
 However there are issues when using this facility.  In particular the high frequency side of the reflectance spectra is showing shoulders which are artefacts of the quite large perturbations in the orientation and thickness parameters which have been imposed.
 Also, for the 10μ sample it is clear that these perturbations are not sufficient by themselves to remove the oscillations that occur at low frequencies.
 This is because at these frequencies the changes in thickness are not sufficent to move a peak by the period of the oscillations.</p>
-<figure class="align-default" id="id10">
+<figure class="align-default" id="id12">
 <span id="fig-mgo-partially-incoherent"></span><a class="reference internal image-reference" href="_images/MgO_Partially_Incoherent_Size_Effects.svg"><img alt="_images/MgO_Partially_Incoherent_Size_Effects.svg" height="391" src="_images/MgO_Partially_Incoherent_Size_Effects.svg" width="1204" /></a>
 <figcaption>
-<p><span class="caption-number">Fig. 9.2 </span><span class="caption-text">Effects of Partial Incoherence and Film Thickness of MgO, a 45<sup>0</sup> incident beam with p-polarisation</span><a class="headerlink" href="#id10" title="Permalink to this image">¶</a></p>
+<p><span class="caption-number">Fig. 9.4 </span><span class="caption-text">Effects of Partial Incoherence and Film Thickness of MgO, a 45<sup>0</sup> incident beam with p-polarisation</span><a class="headerlink" href="#id12" title="Permalink to this image">¶</a></p>
 </figcaption>
 </figure>
 <p>The effect of thickness on the “Incoherent thin film Mode” is show in <a class="reference internal" href="#fig-mgo-incoherent"><span class="std std-numref">Fig. 9.3</span></a>.
@@ -135,30 +135,30 @@ The calculations shown are for p- polarised incident radiation.</p>
 <p>The incoherent method deviates from the thick slab mode at very low frequencies, but as the film thickness increases the deviations become smaller.
 Similarly at frequencies above the LO frequency the deviations from the thick slab mode are less for the thicker films.
 The user needs to be aware that for large thicknesses the calculation of the propagation matrix can lead to numerical overflows.  These manifest themselves as sudden changes in transmittance.  Reflectance calculations are badly affected by this and it is recommended to use the ‘thick slab’ mode for such cases.</p>
-<figure class="align-default" id="id11">
+<figure class="align-default" id="id13">
 <span id="fig-mgo-incoherent"></span><a class="reference internal image-reference" href="_images/MgO_Incoherent_Size_Effects.svg"><img alt="_images/MgO_Incoherent_Size_Effects.svg" height="382" src="_images/MgO_Incoherent_Size_Effects.svg" width="405" /></a>
 <figcaption>
-<p><span class="caption-number">Fig. 9.3 </span><span class="caption-text">The Incoherent Thin Film Mode - a 45<sup>o</sup> incident beam with p- polarisation</span><a class="headerlink" href="#id11" title="Permalink to this image">¶</a></p>
+<p><span class="caption-number">Fig. 9.5 </span><span class="caption-text">The Incoherent Thin Film Mode - a 45<sup>o</sup> incident beam with p- polarisation</span><a class="headerlink" href="#id13" title="Permalink to this image">¶</a></p>
 </figcaption>
 </figure>
 <p>Komandin et al <span id="id1">[<a class="reference internal" href="zreferences.html#id78" title="G. A. Komandin, O. E. Porodinkov, I. E. Spector, and A. A. Volkov. Multiphonon absorption in a MgO single crystal in the terahertz range. Physics of the Solid State, 51(10):2045–2050, 2009. doi:10.1134/S1063783409100096.">70</a>]</span> have reported terahertz spectra of 0.5μ thick MgO crystals which are dominated by interference at low frequencies.
 In <a class="reference internal" href="#fig-mgo-experiment"><span class="std std-numref">Fig. 9.4</span></a> a digitised spectrum obtained from this publication is compared with calculations.
 It can be seen that despite the rather poor digitisation the agreement is very good, given that we are using only calculated information (refractive index, LO and TO frequencies etc.).
 Agreement with the number of interference bands and the amplitude of the bands is very good.</p>
-<figure class="align-default" id="id12">
+<figure class="align-default" id="id14">
 <span id="fig-mgo-experiment"></span><a class="reference internal image-reference" href="_images/MgO_Single_Crystal_0p5_Micron_Experiment.svg"><img alt="_images/MgO_Single_Crystal_0p5_Micron_Experiment.svg" height="382" src="_images/MgO_Single_Crystal_0p5_Micron_Experiment.svg" width="405" /></a>
 <figcaption>
-<p><span class="caption-number">Fig. 9.4 </span><span class="caption-text">Comparison of calculated and experimental transmittance terahertz spectra</span><a class="headerlink" href="#id12" title="Permalink to this image">¶</a></p>
+<p><span class="caption-number">Fig. 9.6 </span><span class="caption-text">Comparison of calculated and experimental transmittance terahertz spectra</span><a class="headerlink" href="#id14" title="Permalink to this image">¶</a></p>
 </figcaption>
 </figure>
 <p>Finally we compare a digitised spectrum of the reflectance measured over the range 0 - 800 <span class="math notranslate nohighlight">\(cm^{-1}\)</span> with the spectrum calculated using PDGui and Castep.
 In this the ‘thick slab’ approximation has been used as no oscillations are detected in the low frequency experimental results.
 The calculated and experimental results are in excellent agreement.
 The shoulder on the experimental result is due to two phonon processes which are not taken account of in the present theoretical work.</p>
-<figure class="align-default" id="id13">
+<figure class="align-default" id="id15">
 <span id="fig-mgo-experiment-reflectance"></span><a class="reference internal image-reference" href="_images/MgO_Single_Crystal_Experiment_Reflectance.svg"><img alt="_images/MgO_Single_Crystal_Experiment_Reflectance.svg" height="382" src="_images/MgO_Single_Crystal_Experiment_Reflectance.svg" width="408" /></a>
 <figcaption>
-<p><span class="caption-number">Fig. 9.5 </span><span class="caption-text">Comparison of calculated and experimental reflectance infrared spectra</span><a class="headerlink" href="#id13" title="Permalink to this image">¶</a></p>
+<p><span class="caption-number">Fig. 9.7 </span><span class="caption-text">Comparison of calculated and experimental reflectance infrared spectra</span><a class="headerlink" href="#id15" title="Permalink to this image">¶</a></p>
 </figcaption>
 </figure>
 </section>
@@ -407,10 +407,10 @@ The surface is therefore in the XY plane.
 The azimuthal angle can be used to rotate the crystal about the normal until the crystal axis of interest is parallel to the Y axis of the laboratory frame.
 With this geometry the s-polarised wave field will be oscillating parallel to the chosen axis.
 The arrangement described is shown in the Figure below where <span class="math notranslate nohighlight">\(E_s\)</span> and <span class="math notranslate nohighlight">\(E_p\)</span> are the field directions of the incident light.</p>
-<figure class="align-default" id="id14">
+<figure class="align-default" id="id16">
 <span id="fig-lab-coords"></span><a class="reference internal image-reference" href="_images/SingleCrystalGeometry.png"><img alt="_images/SingleCrystalGeometry.png" src="_images/SingleCrystalGeometry.png" style="width: 1152.0px; height: 648.0px;" /></a>
 <figcaption>
-<p><span class="caption-number">Fig. 9.6 </span><span class="caption-text">Definition of single crystal laboratory coordinates in PDGui</span><a class="headerlink" href="#id14" title="Permalink to this image">¶</a></p>
+<p><span class="caption-text">Definition of single crystal laboratory coordinates in PDGui</span><a class="headerlink" href="#id16" title="Permalink to this image">¶</a></p>
 </figcaption>
 </figure>
 <p>As can be seen <span class="math notranslate nohighlight">\(E_s\)</span> is parallel to the laboratory Y-axis, so it is necessary to line up the crystal unit cell so that the cell direction being investigated is parallel to the Y-axis.
@@ -447,10 +447,10 @@ The data for this calculation can be found by looking in the <a class="reference
 <figure class="align-default" id="forsterite">
 <a class="reference internal image-reference" href="_images/forsterite-100-1200.png"><img alt="_images/forsterite-100-1200.png" src="_images/forsterite-100-1200.png" style="width: 576.0px; height: 432.0px;" /></a>
 </figure>
-<figure class="align-default" id="id15">
+<figure class="align-default" id="id17">
 <a class="reference internal image-reference" href="_images/forsterite-350-600.png"><img alt="_images/forsterite-350-600.png" src="_images/forsterite-350-600.png" style="width: 576.0px; height: 432.0px;" /></a>
 <figcaption>
-<p><span class="caption-number">Fig. 9.7 </span><span class="caption-text">Forsterite a-axis reflectance (upper figure 100 - 1200 cm<sup>-1</sup>, lower figure 350 - 600 cm<sup>-1</sup>)</span><a class="headerlink" href="#id15" title="Permalink to this image">¶</a></p>
+<p><span class="caption-text">Forsterite a-axis reflectance (upper figure 100 - 1200 cm<sup>-1</sup>, lower figure 350 - 600 cm<sup>-1</sup>)</span><a class="headerlink" href="#id17" title="Permalink to this image">¶</a></p>
 </figcaption>
 </figure>
 </section>
@@ -544,7 +544,7 @@ References for the origins of the models and experimental data are given in the 
 <p>The first experimental/calculated system considered <span id="id8">[<a class="reference internal" href="zreferences.html#id84" title="M. F. MacMillan, R. P. Devaty, and W. J. Choyke. Infrared reflectance of thin aluminum nitride films on various substrates. Applied Physics Letters, 62(7):750–752, 1993. doi:10.1063/1.108595.">73</a>]</span> was the reflectance of a 0.92μ AlN on a Si substrate.
 This was modelled using PDGui after reading in the experimental file, AlN.exp, the <em>Single Crystal Scenario Tab</em> was used to define the system as described in the paper.
 The <em>Thick slab</em> mode was specified, the superstrate material was chosen as air, an AlN dielectric film of 0.92μ was specified on top of a 1.0μm film of silicon.
-An angle of incidence of 7.2 textsuperscript{o} was used.
+An angle of incidence of 7.2 <sup>o</sup> was used.
 The (001) surface of AlN was defined, so the perpendicular to the surface aligns with the laboratory Z-axis.
 Because the program is operating in <em>Thick slab</em> mode, the bottom layer is treated as a semi-infinite layer, so the size of the silicon layer specified in the GUI is irrelevant.
 The scenario is shown below:</p>
@@ -585,6 +585,63 @@ The layer editor for this system is shown below.</p>
 <a class="reference internal image-reference" href="_images/6H-SiC-on-AlN.svg"><img alt="_images/6H-SiC-on-AlN.svg" height="382" src="_images/6H-SiC-on-AlN.svg" width="405" /></a>
 </figure>
 </section>
+<section id="sapphire-orientation-dependence-of-polarized-infrared-light">
+<h2><span class="section-number">9.5. </span>Sapphire Orientation Dependence of Polarized Infrared Light<a class="headerlink" href="#sapphire-orientation-dependence-of-polarized-infrared-light" title="Permalink to this heading">¶</a></h2>
+<p>Sapphire and ruby are <span class="math notranslate nohighlight">\(\alpha\)</span> Al:subscript:<cite>2</cite> O:subsbscript`3`, which belongs to an hexagonal crystal system.
+Due to the complexity of vibrations in the infrared red region and to the anisotropy of the permittivity, the polarized IR reflectance is sensitive to the crystal plane  and to its orientation.
+Lee et. al.. <span id="id9">[<a class="reference internal" href="zreferences.html#id85" title="S. C. Lee, S. S. Ng, H. Abu Hassan, Z. Hassan, and T. Dumelow. Crystal orientation dependence of polarized infrared reflectance response of hexagonal sapphire crystal. Optical Materials, 37(C):773–779, 2014. doi:10.1016/j.optmat.2014.09.006.">74</a>]</span> measured the infrared reflectance response of sapphire and fitted a FPSQ model to the experimental observations.
+As confirmation of the correct behaviour of PDGui for the generation of crystal surfaces and for the calculation of reflectance, the FPSQ model proposed by Lee et. al. has been incorporated into the materials database of PDGui and the calculations reported in their paper have been reproduced.
+To acheive this a simple experiment file for air has been used as the dielectric medium and the FPSQ model has been incorporated into PDGui’s material database.
+Files with the information necessary to reproduce the results presented here are available on the PDielec GitHub in the Examples/Experiment/Sapphire directory.</p>
+<p>The paper of Lee et. al. <span id="id10">[<a class="reference internal" href="zreferences.html#id85" title="S. C. Lee, S. S. Ng, H. Abu Hassan, Z. Hassan, and T. Dumelow. Crystal orientation dependence of polarized infrared reflectance response of hexagonal sapphire crystal. Optical Materials, 37(C):773–779, 2014. doi:10.1016/j.optmat.2014.09.006.">74</a>]</span> gives very clear descriptions of the c-plane, a-planes and r-planes of sapphire.
+This note will describe in detail how the planes have been established in PDGui.
+The c-plane is easy to set up for hexagonal crystals the Miller-Bravais index is (0001) where the inverse of the three integers (hkil) represent a plane which interects the 4 axes of hexagonal crystal coordinate system.
+By definition the third integer, i, is equal to -(h+k) and is therefore redundant but useful in elucidating the families of faces which are equivalent.
+For the c-plane the only other related surface to (0001) would be (000-1) and the Miller indices for these surface would be (001) and (00-1).</p>
+<p>The figure shows the settings in the <em>Single Crystal Scenario Tab</em>.  The <em>TestDataBase.xlsx</em> file is being used as the materials database and the program is operating in <em>Thick slab mode</em>, so the last layer in the <em>Layer Editor</em> will be treated as a semi-infinite material.
+The <em>Angle of incidence</em> is set to 16 <sup>o</sup> as specified in the paper.
+The dielectric film in this case is simply air, which has a constant unit permittivity, its thickness is arbitrary and it is only present here to allow the program to operate as it needs and dielectric material.
+The second layer is a 1.0μm film of sapphire taken from the database with (hkl) set to (001).
+The layer was added using the <em>Layer Editor</em>.</p>
+<figure class="align-default" id="fig-sapphire-scenario">
+<a class="reference internal image-reference" href="_images/Sapphire-scenario-tab.png"><img alt="_images/Sapphire-scenario-tab.png" src="_images/Sapphire-scenario-tab.png" style="width: 619.2px; height: 882.9px;" /></a>
+</figure>
+<p>The a-plane family of surfaces are described by (11-20) and its permutations: (1-210), (-2110) (-1-120), (-12-10) and (2-1-10).
+This is equivalent the Miller notation (110), (1-20), (-210), (-1-10), (-120) and (2-10).
+The paper use the (11-20) plane but in this work the equivalent (-2110) is used with an azimuthal angle set for the layer of 90 <sup>o</sup>.
+The <em>Layer Editor</em> for this is shown below, where it can be seen that the c-axis of the crystal lies along the X-laboratory axis and the a-axis of the crystal lies parallel with the Z-laboratory axis, as described in Figure 1 of the paper.
+Once the correct orientation has been chosen the azimuthal angle of the complete system can be changed by altering the <em>Global azimuthal angle</em>.</p>
+<figure class="align-default" id="fig-sapphire-a-layer-editor">
+<a class="reference internal image-reference" href="_images/Sapphire-a-layer-editor.png"><img alt="_images/Sapphire-a-layer-editor.png" src="_images/Sapphire-a-layer-editor.png" style="width: 571.5px; height: 242.1px;" /></a>
+</figure>
+<p>The r-plane family of surfaces are described by (1-102), (10-12), (01-12), (-110-2), (-101-2) and (0-11-2).
+The equivalent Miller index descriptions are (1-12), (102), (012), (-11-2), (-10-2) and (0-1-2).
+In this case the (1-12) surface was used with a layer azimuthal angle of 90 <sup>o</sup>.
+The <em>Layer editor</em> for this surface is shown below which shows the c-axis of the crystal lying in the XZ plane of the laboratory coordinate system as described in the paper.
+Again the <em>Global azimuthal angle</em> can be used to rotate the whole system relative the laboratory Z-axis.</p>
+<figure class="align-default" id="fig-sapphire-r-layer-editor">
+<a class="reference internal image-reference" href="_images/Sapphire-r-layer-editor.png"><img alt="_images/Sapphire-r-layer-editor.png" src="_images/Sapphire-r-layer-editor.png" style="width: 571.5px; height: 242.1px;" /></a>
+</figure>
+<p>The results are shown below and can be compared with Figures, 4, 5 and 6 of the paper.</p>
+<figure class="align-default" id="id18">
+<span id="fig-sapphire-c-reflectance"></span><a class="reference internal image-reference" href="_images/Sapphire-c-plane-reflectance.svg"><img alt="_images/Sapphire-c-plane-reflectance.svg" height="706" src="_images/Sapphire-c-plane-reflectance.svg" width="633" /></a>
+<figcaption>
+<p><span class="caption-text">c-plane reflectance</span><a class="headerlink" href="#id18" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
+<figure class="align-default" id="id19">
+<span id="fig-sapphire-a-reflectance"></span><a class="reference internal image-reference" href="_images/Sapphire-a-plane-reflectance.svg"><img alt="_images/Sapphire-a-plane-reflectance.svg" height="866" src="_images/Sapphire-a-plane-reflectance.svg" width="775" /></a>
+<figcaption>
+<p><span class="caption-text">a-plane reflectance</span><a class="headerlink" href="#id19" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
+<figure class="align-default" id="id20">
+<span id="fig-sapphire-r-reflectance"></span><a class="reference internal image-reference" href="_images/Sapphire-r-plane-reflectance.svg"><img alt="_images/Sapphire-r-plane-reflectance.svg" height="866" src="_images/Sapphire-r-plane-reflectance.svg" width="777" /></a>
+<figcaption>
+<p><span class="caption-text">r-plane reflectance</span><a class="headerlink" href="#id20" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
+</section>
 </section>
 
 
@@ -601,6 +658,7 @@ The layer editor for this system is shown below.</p>
 <li><a class="reference internal" href="#single-crystal-study-of-forsterite">9.2. Single Crystal Study of Forsterite</a></li>
 <li><a class="reference internal" href="#single-crystal-study-of-l-alanine">9.3. Single Crystal Study of L-Alanine</a></li>
 <li><a class="reference internal" href="#aln-on-silicon-and-silicon-carbide">9.4. AlN on Silicon and Silicon Carbide</a></li>
+<li><a class="reference internal" href="#sapphire-orientation-dependence-of-polarized-infrared-light">9.5. Sapphire Orientation Dependence of Polarized Infrared Light</a></li>
 </ul>
 </li>
 </ul>
