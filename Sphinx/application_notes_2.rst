@@ -357,7 +357,7 @@ References for the origins of the models and experimental data are given in the 
 The first experimental/calculated system considered :cite:`MacMillan1993` was the reflectance of a 0.92μ AlN on a Si substrate.  
 This was modelled using PDGui after reading in the experimental file, AlN.exp, the *Single Crystal Scenario Tab* was used to define the system as described in the paper.
 The *Thick slab* mode was specified, the superstrate material was chosen as air, an AlN dielectric film of 0.92μ was specified on top of a 1.0μm film of silicon.
-An angle of incidence of 7.2 \textsuperscript{o} was used.
+An angle of incidence of 7.2 :superscript:`o` was used.
 The (001) surface of AlN was defined, so the perpendicular to the surface aligns with the laboratory Z-axis.
 Because the program is operating in *Thick slab* mode, the bottom layer is treated as a semi-infinite layer, so the size of the silicon layer specified in the GUI is irrelevant.
 The scenario is shown below:
@@ -410,3 +410,70 @@ A comparison is given below between the calculated spectrum reported in the pape
 .. figure:: ./_static/Figures/6H-SiC-on-AlN.svg
    :scale: 90%
 
+Sapphire Orientation Dependence of Polarized Infrared Light
+===========================================================
+
+Sapphire and ruby are :math:`\alpha` Al :subscript:`2` O :subscript:`3`, which belongs to an hexagonal crystal system.
+Due to the complexity of vibrations in the infrared red region and to the anisotropy of the permittivity, the polarized IR reflectance is sensitive to the crystal plane  and to its orientation.
+Lee et. al.. :cite:`Lee2014` measured the infrared reflectance response of sapphire and fitted a FPSQ model to the experimental observations.
+As confirmation of the correct behaviour of PDGui for the generation of crystal surfaces and for the calculation of reflectance, the FPSQ model proposed by Lee et. al. has been incorporated into the materials database of PDGui and the calculations reported in their paper have been reproduced.
+To acheive this a simple experiment file for air has been used as the dielectric medium and the FPSQ model has been incorporated into PDGui's material database.
+Files with the information necessary to reproduce the results presented here are available on the PDielec GitHub in the Examples/Experiment/Sapphire directory.
+
+The paper of Lee et. al. :cite:`Lee2014` gives very clear descriptions of the c-plane, a-planes and r-planes of sapphire.
+This note will describe in detail how the planes have been established in PDGui.
+The c-plane is easy to set up.
+For hexagonal crystals the Miller-Bravais index is (0001) where the inverse of the three integers (hkil) represent a plane which interects the 4 axes of hexagonal crystal coordinate system.
+By definition the third integer, i, is equal to -(h+k) and is therefore redundant but useful in elucidating the families of faces which are equivalent.
+For the c-plane the only other related surface to (0001) would be (000-1) and the Miller indices for these surface would be (001) and (00-1).
+
+The figure shows the settings in the *Single Crystal Scenario Tab*.  The *TestDataBase.xlsx* file is being used as the materials database and the program is operating in *Thick slab mode*, so the last layer in the *Layer Editor* will be treated as a semi-infinite material.
+The *Angle of incidence* is set to 16 :superscript:`o` as specified in the paper.
+The dielectric film in this case is simply air, which has a constant unit permittivity, its thickness is arbitrary and it is only present here to allow the program to operate as it needs and dielectric material.
+The second layer is a 1.0μm film of sapphire taken from the database with (hkl) set to (001).
+The layer was added using the *Layer Editor*.
+
+.. _fig-sapphire-scenario:
+.. figure:: ./_static/Figures/Sapphire-scenario-tab.png
+   :scale: 90%
+
+The a-plane family of surfaces are described by (11-20) and its permutations: (1-210), (-2110) (-1-120), (-12-10) and (2-1-10).
+This is equivalent to the Miller notation (110), (1-20), (-210), (-1-10), (-120) and (2-10).
+The paper use the (11-20) plane but in this work the equivalent (-2110) is used with an azimuthal angle set for the layer of 90 :superscript:`o`.  
+The *Layer Editor* for this is shown below, where it can be seen that the c-axis of the crystal lies along the X-laboratory axis and the a-axis of the crystal lies parallel with the Z-laboratory axis, as described in Figure 1 of the paper.
+Once the correct orientation has been chosen the azimuthal angle of the complete system can be changed by altering the *Global azimuthal angle*.
+
+.. _fig-sapphire-a-layer-editor:
+.. figure:: ./_static/Figures/Sapphire-a-layer-editor.png
+   :scale: 90%
+
+The r-plane family of surfaces are described by (1-102), (10-12), (01-12), (-110-2), (-101-2) and (0-11-2).
+The equivalent Miller index descriptions are (1-12), (102), (012), (-11-2), (-10-2) and (0-1-2).
+In this case the (1-12) surface was used with a layer azimuthal angle of 90 :superscript:`o`.
+The *Layer editor* for this surface is shown below which shows the c-axis of the crystal lying in the XZ plane of the laboratory coordinate system as described in the paper.
+Again the *Global azimuthal angle* can be used to rotate the whole system relative the laboratory Z-axis.
+
+
+.. _fig-sapphire-r-layer-editor:
+.. figure:: ./_static/Figures/Sapphire-r-layer-editor.png
+   :scale: 90%
+
+The results are shown below and can be compared with Figures, 4, 5 and 6 of the paper.
+
+.. _fig-sapphire-c-reflectance:
+.. figure:: ./_static/Figures/Sapphire-c-plane-reflectance.svg
+   :scale: 90%
+
+   c-plane reflectance
+
+.. _fig-sapphire-a-reflectance:
+.. figure:: ./_static/Figures/Sapphire-a-plane-reflectance.svg
+   :scale: 90%
+
+   a-plane reflectance
+
+.. _fig-sapphire-r-reflectance:
+.. figure:: ./_static/Figures/Sapphire-r-plane-reflectance.svg
+   :scale: 90%
+
+   r-plane reflectance
