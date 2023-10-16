@@ -25,6 +25,7 @@ tab.sigmas_cm1 = [5.0, 5.0, 5.0, 5.0, 5.0, 5.0, 5.0, 5.0, 5.0, 5.0, 5.0, 5.0, 5.
 tab = self.notebook.scenarios[0]
 tab.settings['Legend'] = 'Fused Silica - Maxwell Garnett (10%)'
 tab.settings['Scenario type'] = 'Powder'
+tab.settings['Materials database'] = '../../../PDielec/MaterialsDataBase.xlsx'
 tab.settings['Matrix'] = 'Fused Silica'
 tab.settings['Matrix density'] =  2.201
 tab.settings['Matrix permittivity'] =  (3.498916942719922+0j)
@@ -44,13 +45,13 @@ tab.settings['ATR theta'] =  45.0
 tab.settings['ATR S polarisation fraction'] =  0.5
 tab.settings['Effective medium method'] = 'Maxwell-Garnett'
 tab.settings['Particle shape'] = 'Sphere'
-tab.settings['Materials database'] = '/home/john/Software/PDielec/PDielec/MaterialsDataBase.xlsx'
 #
 #
 self.notebook.addScenario(scenarioType="Powder")
 tab = self.notebook.scenarios[1]
 tab.settings['Legend'] = 'Manual (rho=2.2,eps=3+0.1j) - Maxwell Garnett (10%)'
 tab.settings['Scenario type'] = 'Powder'
+tab.settings['Materials database'] = '../../../PDielec/MaterialsDataBase.xlsx'
 tab.settings['Matrix'] = 'Material defined manually'
 tab.settings['Matrix density'] =  2.2
 tab.settings['Matrix permittivity'] =  (3+0.1j)
@@ -70,13 +71,13 @@ tab.settings['ATR theta'] =  45.0
 tab.settings['ATR S polarisation fraction'] =  0.5
 tab.settings['Effective medium method'] = 'Maxwell-Garnett'
 tab.settings['Particle shape'] = 'Sphere'
-tab.settings['Materials database'] = '/home/john/Software/PDielec/PDielec/MaterialsDataBase.xlsx'
 #
 #
 self.notebook.addScenario(scenarioType="Powder")
 tab = self.notebook.scenarios[2]
 tab.settings['Legend'] = 'Water (25C) - Maxwell Garnett (10%)'
 tab.settings['Scenario type'] = 'Powder'
+tab.settings['Materials database'] = '../../../PDielec/MaterialsDataBase.xlsx'
 tab.settings['Matrix'] = 'Water(25C)'
 tab.settings['Matrix density'] =  1.0
 tab.settings['Matrix permittivity'] =  (5.15619999999997+2.6243579999999938j)
@@ -96,13 +97,13 @@ tab.settings['ATR theta'] =  45.0
 tab.settings['ATR S polarisation fraction'] =  0.5
 tab.settings['Effective medium method'] = 'Maxwell-Garnett'
 tab.settings['Particle shape'] = 'Sphere'
-tab.settings['Materials database'] = '/home/john/Software/PDielec/PDielec/MaterialsDataBase.xlsx'
 #
 #
 self.notebook.addScenario(scenarioType="Powder")
 tab = self.notebook.scenarios[3]
 tab.settings['Legend'] = 'Water (19C) - Maxwell Garnett (10%)'
 tab.settings['Scenario type'] = 'Powder'
+tab.settings['Materials database'] = '../../../PDielec/MaterialsDataBase.xlsx'
 tab.settings['Matrix'] = 'Water(19C)'
 tab.settings['Matrix density'] =  1.0
 tab.settings['Matrix permittivity'] =  (12.550267025473484+16.940581205830732j)
@@ -122,13 +123,13 @@ tab.settings['ATR theta'] =  45.0
 tab.settings['ATR S polarisation fraction'] =  0.5
 tab.settings['Effective medium method'] = 'Maxwell-Garnett'
 tab.settings['Particle shape'] = 'Sphere'
-tab.settings['Materials database'] = '/home/john/Software/PDielec/PDielec/MaterialsDataBase.xlsx'
 #
 #
 self.notebook.addScenario(scenarioType="Powder")
 tab = self.notebook.scenarios[4]
 tab.settings['Legend'] = 'PVC - Maxwell Garnett (10%)'
 tab.settings['Scenario type'] = 'Powder'
+tab.settings['Materials database'] = '../../../PDielec/MaterialsDataBase.xlsx'
 tab.settings['Matrix'] = 'PVC'
 tab.settings['Matrix density'] =  1.38
 tab.settings['Matrix permittivity'] =  (2.459384803400675+0.01756442892715219j)
@@ -148,13 +149,13 @@ tab.settings['ATR theta'] =  45.0
 tab.settings['ATR S polarisation fraction'] =  0.5
 tab.settings['Effective medium method'] = 'Maxwell-Garnett'
 tab.settings['Particle shape'] = 'Sphere'
-tab.settings['Materials database'] = '/home/john/Software/PDielec/PDielec/MaterialsDataBase.xlsx'
 #
 #
 self.notebook.addScenario(scenarioType="Powder")
 tab = self.notebook.scenarios[5]
 tab.settings['Legend'] = 'Test - Maxwell Garnett (10%)'
 tab.settings['Scenario type'] = 'Powder'
+tab.settings['Materials database'] = 'TestMaterialsDataBase.xlsx'
 tab.settings['Matrix'] = 'Test'
 tab.settings['Matrix density'] =  2.0
 tab.settings['Matrix permittivity'] =  (10+0.1j)
@@ -174,7 +175,6 @@ tab.settings['ATR theta'] =  45.0
 tab.settings['ATR S polarisation fraction'] =  0.5
 tab.settings['Effective medium method'] = 'Maxwell-Garnett'
 tab.settings['Particle shape'] = 'Sphere'
-tab.settings['Materials database'] = '/home/john/Software/PDielec/Examples/Vasp/Na2SO42_v/TestMaterialsDataBase.xlsx'
 #
 #
 tab = self.notebook.analysisTab
