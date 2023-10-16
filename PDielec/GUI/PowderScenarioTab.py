@@ -881,8 +881,9 @@ class PowderScenarioTab(ScenarioTab):
             w.blockSignals(True)
         # use the settings values to initialise the widgets
         # Update the database name
-        self.database_le.setText(self.settings['Materials database'])
         self.DataBase = MaterialsDataBase(self.settings['Materials database'],debug=debugger.state())
+        self.settings['Materials database'] = self.DataBase.getFileName()
+        self.database_le.setText(self.settings['Materials database'])
         # Update the possible matrix material names from the database
         self.materialNames = self.DataBase.getSheetNames()
         if 'manually' in self.settings['Matrix']:

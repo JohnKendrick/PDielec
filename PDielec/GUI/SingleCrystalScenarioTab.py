@@ -781,9 +781,9 @@ class SingleCrystalScenarioTab(ScenarioTab):
             w.blockSignals(True)
         # Initialise the cell
         self.cell = self.reader.unit_cells[-1]
-        # Update materials database widget
-        self.database_le.setText(self.settings['Materials database'])
         self.DataBase = MaterialsDataBase(self.settings['Materials database'],debug=debugger.state())
+        self.settings['Materials database'] = self.DataBase.getFileName()
+        self.database_le.setText(self.settings['Materials database'])
         # Update the possible super/substrate material names from the database
         self.materialNames = self.DataBase.getSheetNames()
         # Generate the layers from the settings

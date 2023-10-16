@@ -25,7 +25,9 @@ class ScenarioTab(QWidget):
         self.vs_cm1 = [0, 0]
         # Deal with the Materials Database here as it is used in all Scenarios
         PDielec_Directory = os.path.dirname(PDielec_init_filename)
-        self.settings['Materials database'] = os.path.join(PDielec_Directory, 'MaterialsDataBase.xlsx')
+        filename  = os.path.join(PDielec_Directory, 'MaterialsDataBase.xlsx')
+        filename  = os.path.relpath(filename)
+        self.settings['Materials database'] = filename
         # Open the database
         self.DataBase = MaterialsDataBase(self.settings['Materials database'],debug=debug)
         # Set up the open database button
@@ -57,7 +59,7 @@ class ScenarioTab(QWidget):
             self.DataBase = oldDataBase
             print('Error chosen file is not a materials database',sheets)
             return
-        self.settings['Materials database'] = filename
+        self.settings['Materials database'] = self.DataBase.getFileName()
         self.database_le.setText(self.settings['Materials database'])
         self.materialNames = sheets
         return

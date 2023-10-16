@@ -3,6 +3,7 @@ import PDielec.DielectricFunction as DielectricFunction
 import PDielec.Calculator as Calculator
 from PDielec.Utilities          import Debug
 from PDielec.UnitCell           import UnitCell
+from PDielec                    import __file__  as PDielec_init_filename
 import openpyxl as xl
 import os
 import sys
@@ -26,12 +27,28 @@ class MaterialsDataBase():
             # Close the work book while it is not in use
             workbook.close()
         else:
-             self.filename = None
-             self.sheetNames = None
-             print('  Error: MaterialsDataBase filename not valid',filename)
+            # Try opening the default database
+            PDielec_Directory = os.path.dirname(PDielec_init_filename)
+            filename  = os.path.join(PDielec_Directory, 'MaterialsDataBase.xlsx')
+            filename  = os.path.relpath(filename)
+            if os.path.isfile(filename):
+                self.filename = filename
+                workbook = xl.load_workbook(self.filename,data_only=True)
+                self.sheetNames = workbook.sheetnames
+                debugger.print('Sheet names from default database ',self.sheetNames)
+                # Close the work book while it is not in use
+                workbook.close()
+            else:
+                self.filename = None
+                self.sheetNames = None
+                print('  Error: MaterialsDataBase filename not valid',filename)
     
         debugger.print('Finished:: initialise')
         return
+
+    def getFileName(self):
+        '''Return the filename'''
+        return self.filename
 
     def valid(self):
         '''Test to see if the spreadsheet is a valid materials database'''
