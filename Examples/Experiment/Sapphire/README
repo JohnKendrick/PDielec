@@ -1,0 +1,13 @@
+This directory holds the files that were used to write the 
+Sapphire application note for single crystal reflectivity
+
+air.exp                         Experiment file for air
+a-planes.py                     Script for the reflectance of all a-planes
+r-planes.py                     Script for the reflectance of all r-planes
+c-planes.py                     Script for the reflectance of all c-planes
+reflectance-a-planes.py         Script for calculating a-plane reflectance as a function of azimuthal angle
+reflectance-c-plane.py          Script for calculating c-plane reflectance as a function of azimuthal angle
+reflectance-r-planes.py         Script for calculating r-plane reflectance as a function of azimuthal angle
+TestDataBase.xlsx               Database with the FPSQ model for sapphire
+command.pdmake                  pdmake file for the testing suite
+script.py                       pdmake script for the testing suite
