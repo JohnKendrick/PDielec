@@ -80,7 +80,7 @@ class MaterialsDataBase():
         if 'nujol' not in fullList:
             fullList.append('nujol')
         debugger.print('getSheetNames:: ',fullList)
-        return fullList
+        return sorted(fullList, key=lambda s: s.casefold())
 
     def getMaterial(self,sheet):
         '''Return a material object based on the data in sheet (an excel sheet)'''
