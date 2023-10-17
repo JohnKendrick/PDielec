@@ -325,21 +325,82 @@ The file *PDielec/MaterialsDatabase.xlsx* can be opened and inspected to see the
 The first sheet gives some information about the structure of the spreadsheet.
 Each tab, except the first, represents a material and the tab name can be referred to in the *Support matrix* pulldown of the *PowderScenarioTab*.
 
-In Column H of a material sheet are in subsequent rows: an entry, a density, a temperature; low and high frequency values, the number of points in a frequency dependent entry and a reference.
+In Columns G&H of a material sheet are in arbitrary order: an entry, a density, a temperature; low and high frequency values, the number of points in a frequency dependent entry and a reference.
+Column G holds the directive and column H holds its value
+For the case that the unit cell of the material is required (for anisotropic materials for instance), the unit cell can be provided either in terms of a, b, c, :math:`\alpha`, :math:`\beta` and :math:`\gamma` or as cell vectors.
 
-H1 is the entry type, which maybe one of: "Constant refractive index", "Constant permittivity", Tabulated refractive index' or "Tabulated permittivity"
+The entry type maybe one of: "Constant refractive index", "Constant permittivity", Tabulated refractive index' or "Tabulated permittivity", "Drude-Lorentz" or "FPSQ".
 
-H2 gives the material density in g/ml.
-
-Other entries in column H are presently ignored.
+The density gives the material density in g/ml.
 
 For columns A to F the first row provides a label for the data in each column.  The label is not used by PDGui.
-
-Columns C and D give the real and imaginary components of either the refractive index or the permittivity, depending on the entry type.  
-For Constant entries only a single row is used.
+The contents of these columns depends upon the entry type.
 
 For Tabulated entries column A must have the frequency in |cm-1| and in ascending order.  
 Column B is not used by PDGui but because refractive indices are often tabulated with micron wavelengths, this column may be used to allow conversion to |cm1|.
+
+   Summary of columns used for different Entry modes
+
+   +----------------------------+---------+-------+-----------+-----------+-----------+-----------+
+   | Entry                      | A:      |  B:   |   C:      |  D:       |  E:       |  F:       |
+   +============================+=========+=======+===========+===========+===========+===========+
+   | Constant permittivity      |         |       | eps(real) | eps(imag) |           |           |
+   +----------------------------+---------+-------+-----------+-----------+-----------+-----------+
+   | Constant refractive index  |         |       | ri(real)  | ri(imag)  |           |           |
+   +----------------------------+---------+-------+-----------+-----------+-----------+-----------+
+   | Tabulated permittivity     | v(cm-1) |       | eps(real) | eps(imag) |           |           |
+   +----------------------------+---------+-------+-----------+-----------+-----------+-----------+
+   | Tabulated refractive index | v(cm-1) |       |  ri(real) |  ri(imag) |           |           |
+   +----------------------------+---------+-------+-----------+-----------+-----------+-----------+
+   | FPSQ                       | xx/yy/zz| epsinf|  Omega(TO)| Gamma(TO) | Omega(LO) | Gamma(LO) |
+   +----------------------------+---------+-------+-----------+-----------+-----------+-----------+
+   | Drude-Lorentz              | xx/yy/zz| epsinf|  Omega    | Strength  | Gamma     |           |
+   +----------------------------+---------+-------+-----------+-----------+-----------+-----------+
+  
+ 
+   Summary of columns G and H
+
+   +-----------------------+----------------------------------------+
+   | Directive (G)         | Contents (H)                           |
+   +=======================+========================================+
+   | Entry:                | One of;                                |
+   |                       | - 'tablulated refractive index'        |
+   |                       | - 'tablulated permittivity'            |
+   |                       | - 'constant refractive index'          |
+   |                       | - 'constant refractive index'          |
+   |                       | - 'Drude-Lorentz'                      |
+   |                       | - 'FPSQ'                               |
+   +-----------------------+----------------------------------------+
+   | Density:              | Density in g/ml                        |
+   +-----------------------+----------------------------------------+
+   | Temperature:          | Temperature of measurement             |
+   +-----------------------+----------------------------------------+
+   | Low:                  | The lowest valid frequency             |
+   +-----------------------+----------------------------------------+
+   | High:                 | The highest valid frequency            |
+   +-----------------------+----------------------------------------+
+   | NPoints:              | The number of points in a tabulation   |
+   +-----------------------+----------------------------------------+
+   | Reference:            | The reference for the data             |
+   +-----------------------+----------------------------------------+
+   | a_vector              | 3 numbers specifying the a-direction   |
+   +-----------------------+----------------------------------------+
+   | b_vector              | 3 numbers specifying the b-direction   |
+   +-----------------------+----------------------------------------+
+   | c_vector              | 3 numbers specifying the c-direction   |
+   +-----------------------+----------------------------------------+
+   | a:                    | The length of a-direction              |
+   +-----------------------+----------------------------------------+
+   | b:                    | The length of b-direction              |
+   +-----------------------+----------------------------------------+
+   | c:                    | The length of c-direction              |
+   +-----------------------+----------------------------------------+
+   | alpha:                | Cell angle alpha                       |
+   +-----------------------+----------------------------------------+
+   | beta:                 | Cell angle beta                        |
+   +-----------------------+----------------------------------------+
+   | gamma:                | Cell angle gamma                       |
+   +-----------------------+----------------------------------------+
 
 
 The Format of the Output Spreadsheet
