@@ -232,7 +232,7 @@ The *unitcell* directive specifies the number of atoms in the unit-cell and thei
 
 The *epsinf* directive gives the values of the :math:`\epsilon_{\infty}` tensor
 
-Finally a model for the specification of the frequency dependent permittivity is given.  In this case the four parameter semi-quantum model (fpsq) is employed.  Each diagonal component of the tensor is specified by the number of contributions and then each contribution provides the TO frequency and its :math:`\gamma` followed by the same for the LO frequency (all frequencies are in cm-1. Full details of each permittivity model available are shown below.
+Finally a model for the specification of the frequency dependent permittivity is given.  In this case the four parameter semi-quantum model (fpsq) is employed.  Each diagonal component of the tensor is specified by the number of contributions and then each contribution provides the TO frequency and its :math:`\gamma` followed by the same for the LO frequency (all frequencies are in |cm-1|. Full details of each permittivity model available are shown below.
 
 
 Constant model (constant)
@@ -284,8 +284,8 @@ The fpsq model defines a frequency dependent permittivity using the Four Paramet
    
 The model only allows for a diagonal permittivity tensor and each component of the tensor specified requires the number of terms in the expansion to the specified.  Each component of the permittivity tensor is generated using the following formula;
 
+.. _fpsq:
 .. math::
-   :label: eq-fpsqb
 
     \epsilon (\omega )=\epsilon _{\infty}\prod_{j} \frac{\Omega^2_{LO_j}-\omega ^2-i\gamma _{LO_j}\omega }{\Omega^2_{TO_j}-\omega ^2-i\gamma _{TO_j}\omega}
 
@@ -310,10 +310,12 @@ The drude-lorentz model defines a frequency dependent permittivity.  An example 
    
 The model only allows for a diagonal permittivity tensor and each component of the tensor specified requires the number of terms in the expansion to the specified.  Each component of the permittivity tensor is generated using the following formula;
 
+.. _drude:
 .. math::
-   :label: eq-drude
 
-    \epsilon (\omega )=\epsilon _{\infty}\sum{j} \frac{\Omega^2_{LO_j}-\omega ^2-i\gamma _{LO_j}\omega }{\Omega^2_{TO_j}-\omega ^2-i\gamma _{TO_j}\omega}
+    \epsilon (\omega )=\epsilon _{\infty} +  \sum_{j} \frac{ S_j^2 }{ \Omega^2_j-\omega^2 -i \sigma_j \omega }
+
+Where :math:`S_j` is the strength of the phonon mode, :math:`\Omega_j` its frequency and :math:`\sigma_j` the width of the mode.
 
 
 
@@ -335,25 +337,25 @@ For columns A to F the first row provides a label for the data in each column.  
 The contents of these columns depends upon the entry type.
 
 For tabulated entries column A must have the frequency in |cm-1| and in ascending order.  
-Column B is not used by PDGui but because refractive indices are often tabulated with micron wavelengths, this column may be used to allow conversion to |cm1|.
+Column B is not used by PDGui but because refractive indices are often tabulated with micron wavelengths, this column may be used to allow conversion to |cm-1|.
 
    Summary of columns used for different Entry modes
 
-   +----------------------------+---------+-------+-----------+-----------+-----------+-----------+
-   | Entry                      | A:      |  B:   |   C:      |  D:       |  E:       |  F:       |
-   +============================+=========+=======+===========+===========+===========+===========+
-   | Constant permittivity      |         |       | eps(real) | eps(imag) |           |           |
-   +----------------------------+---------+-------+-----------+-----------+-----------+-----------+
-   | Constant refractive index  |         |       | ri(real)  | ri(imag)  |           |           |
-   +----------------------------+---------+-------+-----------+-----------+-----------+-----------+
-   | Tabulated permittivity     | v(cm-1) |       | eps(real) | eps(imag) |           |           |
-   +----------------------------+---------+-------+-----------+-----------+-----------+-----------+
-   | Tabulated refractive index | v(cm-1) |       |  ri(real) |  ri(imag) |           |           |
-   +----------------------------+---------+-------+-----------+-----------+-----------+-----------+
-   | FPSQ                       | xx/yy/zz| epsinf|  Omega(TO)| Gamma(TO) | Omega(LO) | Gamma(LO) |
-   +----------------------------+---------+-------+-----------+-----------+-----------+-----------+
-   | Drude-Lorentz              | xx/yy/zz| epsinf|  Omega    | Strength  | Gamma     |           |
-   +----------------------------+---------+-------+-----------+-----------+-----------+-----------+
+   +----------------------------+-------------+-----------------------------+-----------------------+-----------------------+-----------------------+-----------------------+
+   | Entry                      | A:          |  B:                         |   C:                  |  D:                   |  E:                   |  F:                   |
+   +============================+=============+=============================+===========+===========+=======================+===========+===========+=======================+
+   | Constant permittivity      |             |                             | :math:`{\epsilon}_r`  | :math:`{\epsilon}_i`  |                       |                       |
+   +----------------------------+-------------+-----------------------------+-----------------------+-----------------------+-----------------------+-----------------------+
+   | Constant refractive index  |             |                             | :math:`\nu`           | :math:`\kappa`        |                       |                       |
+   +----------------------------+-------------+-----------------------------+-----------------------+-----------------------+-----------------------+-----------------------+
+   | Tabulated permittivity     | v( |cm-1| ) |                             | :math:`{\epsilon}_r`  | :math:`{\epsilon}_r`  |                       |                       |
+   +----------------------------+-------------+-----------------------------+-----------------------+-----------------------+-----------------------+-----------------------+
+   | Tabulated refractive index | v( |cm-1| ) |                             |  :math:`\nu`          |  :math:`\kappa`       |                       |                       |
+   +----------------------------+-------------+-----------------------------+-----------------------+-----------------------+-----------------------+-----------------------+
+   | FPSQ                       | xx/yy/zz    | :math:`{\epsilon}_{\infty}` | :math:`{\Omega}_{TO}` | :math:`{\gamma}_{TO}` | :math:`{\Omega}_{LO}` | :math:`{\gamma}_{LO}` |
+   +----------------------------+-------------+-----------------------------+-----------------------+-----------------------+-----------------------+-----------------------+
+   | Drude-Lorentz              | xx/yy/zz    | :math:`{\epsilon}_{\infty}` | :math:`{\Omega}_j`    | :math:`{S_j}`         | :math:`{\sigma_j}`    |                       |
+   +----------------------------+-------------+-----------------------------+-----------------------+-----------------------+-----------------------+-----------------------+
   
  
    Summary of columns G and H

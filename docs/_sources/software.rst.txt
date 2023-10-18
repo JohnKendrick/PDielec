@@ -232,7 +232,7 @@ The *unitcell* directive specifies the number of atoms in the unit-cell and thei
 
 The *epsinf* directive gives the values of the :math:`\epsilon_{\infty}` tensor
 
-Finally a model for the specification of the frequency dependent permittivity is given.  In this case the four parameter semi-quantum model (fpsq) is employed.  Each diagonal component of the tensor is specified by the number of contributions and then each contribution provides the TO frequency and its :math:`\gamma` followed by the same for the LO frequency (all frequencies are in cm-1. Full details of each permittivity model available are shown below.
+Finally a model for the specification of the frequency dependent permittivity is given.  In this case the four parameter semi-quantum model (fpsq) is employed.  Each diagonal component of the tensor is specified by the number of contributions and then each contribution provides the TO frequency and its :math:`\gamma` followed by the same for the LO frequency (all frequencies are in |cm-1|. Full details of each permittivity model available are shown below.
 
 
 Constant model (constant)
@@ -284,8 +284,8 @@ The fpsq model defines a frequency dependent permittivity using the Four Paramet
    
 The model only allows for a diagonal permittivity tensor and each component of the tensor specified requires the number of terms in the expansion to the specified.  Each component of the permittivity tensor is generated using the following formula;
 
+.. _fpsq:
 .. math::
-   :label: eq-fpsqb
 
     \epsilon (\omega )=\epsilon _{\infty}\prod_{j} \frac{\Omega^2_{LO_j}-\omega ^2-i\gamma _{LO_j}\omega }{\Omega^2_{TO_j}-\omega ^2-i\gamma _{TO_j}\omega}
 
@@ -310,10 +310,12 @@ The drude-lorentz model defines a frequency dependent permittivity.  An example 
    
 The model only allows for a diagonal permittivity tensor and each component of the tensor specified requires the number of terms in the expansion to the specified.  Each component of the permittivity tensor is generated using the following formula;
 
+.. _drude:
 .. math::
-   :label: eq-drude
 
-    \epsilon (\omega )=\epsilon _{\infty}\sum{j} \frac{\Omega^2_{LO_j}-\omega ^2-i\gamma _{LO_j}\omega }{\Omega^2_{TO_j}-\omega ^2-i\gamma _{TO_j}\omega}
+    \epsilon (\omega )=\epsilon _{\infty} +  \sum_{j} \frac{ S_j^2 }{ \Omega^2_j-\omega^2 -i \sigma_j \omega }
+
+Where :math:`S_j` is the strength of the phonon mode, :math:`\Omega_j` its frequency and :math:`\sigma_j` the width of the mode.
 
 
 
@@ -325,21 +327,80 @@ The file *PDielec/MaterialsDatabase.xlsx* can be opened and inspected to see the
 The first sheet gives some information about the structure of the spreadsheet.
 Each tab, except the first, represents a material and the tab name can be referred to in the *Support matrix* pulldown of the *PowderScenarioTab*.
 
-In Column H of a material sheet are in subsequent rows: an entry, a density, a temperature; low and high frequency values, the number of points in a frequency dependent entry and a reference.
+In Columns G&H of a material sheet are in arbitrary order: an entry, a density, a temperature; low and high frequency values, the number of points in a frequency dependent entry and a reference.
+Column G holds the directive and column H holds its value
+For the case that the unit cell of the material is required (for anisotropic materials for instance), the unit cell can be provided either in terms of a, b, c, :math:`\alpha`, :math:`\beta` and :math:`\gamma` or as cell vectors.
 
-H1 is the entry type, which maybe one of: "Constant refractive index", "Constant permittivity", Tabulated refractive index' or "Tabulated permittivity"
+The entry type maybe one of: "Constant refractive index", "Constant permittivity", "Tabulated refractive index" or "Tabulated permittivity", "Drude-Lorentz" or "FPSQ".
 
-H2 gives the material density in g/ml.
+For columns A to F the first row provides a label for the data in each column.  The label is not used by PDGui but can be used to describe the contents of the column.
+The contents of these columns depends upon the entry type.
 
-Other entries in column H are presently ignored.
+For tabulated entries column A must have the frequency in |cm-1| and in ascending order.  
+Column B is not used by PDGui but because refractive indices are often tabulated with micron wavelengths, this column may be used to allow conversion to |cm-1|.
 
-For columns A to F the first row provides a label for the data in each column.  The label is not used by PDGui.
+   Summary of columns used for different Entry modes
 
-Columns C and D give the real and imaginary components of either the refractive index or the permittivity, depending on the entry type.  
-For Constant entries only a single row is used.
+   +----------------------------+-------------+-----------------------------+-----------------------+-----------------------+-----------------------+-----------------------+
+   | Entry                      | A:          |  B:                         |   C:                  |  D:                   |  E:                   |  F:                   |
+   +============================+=============+=============================+===========+===========+=======================+===========+===========+=======================+
+   | Constant permittivity      |             |                             | :math:`{\epsilon}_r`  | :math:`{\epsilon}_i`  |                       |                       |
+   +----------------------------+-------------+-----------------------------+-----------------------+-----------------------+-----------------------+-----------------------+
+   | Constant refractive index  |             |                             | :math:`\nu`           | :math:`\kappa`        |                       |                       |
+   +----------------------------+-------------+-----------------------------+-----------------------+-----------------------+-----------------------+-----------------------+
+   | Tabulated permittivity     | v( |cm-1| ) |                             | :math:`{\epsilon}_r`  | :math:`{\epsilon}_r`  |                       |                       |
+   +----------------------------+-------------+-----------------------------+-----------------------+-----------------------+-----------------------+-----------------------+
+   | Tabulated refractive index | v( |cm-1| ) |                             |  :math:`\nu`          |  :math:`\kappa`       |                       |                       |
+   +----------------------------+-------------+-----------------------------+-----------------------+-----------------------+-----------------------+-----------------------+
+   | FPSQ                       | xx/yy/zz    | :math:`{\epsilon}_{\infty}` | :math:`{\Omega}_{TO}` | :math:`{\gamma}_{TO}` | :math:`{\Omega}_{LO}` | :math:`{\gamma}_{LO}` |
+   +----------------------------+-------------+-----------------------------+-----------------------+-----------------------+-----------------------+-----------------------+
+   | Drude-Lorentz              | xx/yy/zz    | :math:`{\epsilon}_{\infty}` | :math:`{\Omega}_j`    | :math:`{S_j}`         | :math:`{\sigma_j}`    |                       |
+   +----------------------------+-------------+-----------------------------+-----------------------+-----------------------+-----------------------+-----------------------+
+  
+ 
+   Summary of columns G and H
 
-For Tabulated entries column A must have the frequency in |cm-1| and in ascending order.  
-Column B is not used by PDGui but because refractive indices are often tabulated with micron wavelengths, this column may be used to allow conversion to |cm1|.
+   +-----------------------+----------------------------------------+
+   | Directive (G)         | Contents (H)                           |
+   +=======================+========================================+
+   | | Entry:              | One of;                                |
+   | |                     |  - 'tablulated refractive index'       |
+   | |                     |  - 'tablulated permittivity'           |
+   | |                     |  - 'constant refractive index'         |
+   | |                     |  - 'constant refractive index'         |
+   | |                     |  - 'Drude-Lorentz'                     |
+   | |                     |  - 'FPSQ'                              |
+   +-----------------------+----------------------------------------+
+   | Density:              | Density in g/ml                        |
+   +-----------------------+----------------------------------------+
+   | Temperature:          | Temperature of measurement             |
+   +-----------------------+----------------------------------------+
+   | Low:                  | The lowest valid frequency             |
+   +-----------------------+----------------------------------------+
+   | High:                 | The highest valid frequency            |
+   +-----------------------+----------------------------------------+
+   | NPoints:              | The number of points in a tabulation   |
+   +-----------------------+----------------------------------------+
+   | Reference:            | The reference for the data             |
+   +-----------------------+----------------------------------------+
+   | a_vector              | 3 numbers specifying the a-direction   |
+   +-----------------------+----------------------------------------+
+   | b_vector              | 3 numbers specifying the b-direction   |
+   +-----------------------+----------------------------------------+
+   | c_vector              | 3 numbers specifying the c-direction   |
+   +-----------------------+----------------------------------------+
+   | a:                    | The length of a-direction              |
+   +-----------------------+----------------------------------------+
+   | b:                    | The length of b-direction              |
+   +-----------------------+----------------------------------------+
+   | c:                    | The length of c-direction              |
+   +-----------------------+----------------------------------------+
+   | alpha:                | Cell angle alpha                       |
+   +-----------------------+----------------------------------------+
+   | beta:                 | Cell angle beta                        |
+   +-----------------------+----------------------------------------+
+   | gamma:                | Cell angle gamma                       |
+   +-----------------------+----------------------------------------+
 
 
 The Format of the Output Spreadsheet

@@ -60,8 +60,8 @@ There are several command line options which may be useful in running the packag
    | -script filename      | Specify a python script to run         |
    +-----------------------+----------------------------------------+
    | -scenario type        | Changes the initialial scenario type,  |
-   |                       | type can be 'powder' or 'crystal',     |
-   |                       | the default is 'powder'                |
+   |                       | type can be *powder* or *crystal*,     |
+   |                       | the default is *powder*                |
    +-----------------------+----------------------------------------+
    | -spreadsheet file     | An alternative way of defining the     |
    |                       | spreadsheet                            |
@@ -118,10 +118,11 @@ The *Main Tab* is used to pick the MM/QM package and the output file which will 
    The Main Tab
 
 The QM/MM program can be chosen from the dropdown list.
-The current list of packages supported are: Abinit, Castep, Crystal, Experiment, Gulp, Phonopy - Vasp, Quantum Espresso and Vasp.
+The current list of packages supported are: Abinit, Castep, Crystal, Experiment, Gulp, Phonopy - Vasp, Quantum Espresso, Vasp and PDGui.
 The output file name can be provided in the text box below it, or it can be specified using the `File manager` button.  In addition to input files from QM/MM programs the program can read Python script files written by PDGui.  These should have a '.py' extension.
 The *Experimental* file format allows the user to provide their own specification of a dielectric medium, where a code other than that catered for by the program has been used.
 The file format is described in full in the section: :ref:`experimental-file-format`
+The *PDGui* option allows the user to select a scripting file from the interface.
 
 If an Excel spreadsheet file name given, it must have the extensions .xlsx.  The spreadsheet is written when the `Save results` button is pressed.
 
@@ -184,7 +185,7 @@ For each powder scenario it is assumed that the size of the particle embedded in
 
 A database of material properties is opened at the start of the program.
 The default database (*PDielec/MaterialsDataBase.xlsx*) is opened although other databases can be loaded by pressing the *Open materials' database* button.
-The open database is show in the line below, followed by a line showing the support matrix material selected along with a brief description of the type of entry for the material.
+The open database is shown in the line below, followed by a line showing the support matrix material selected along with a brief description of the type of entry for the material.
 
 Materials can have either a constant or frequency dependent permittivity.  
 In the case of frequency dependent entries the range of frequencies which the entry covers is displayed.
@@ -246,14 +247,14 @@ Single Crystal Scenarios
 ------------------------
 
 As in the powder scenario, a single crystal scenario has an option to open a new database of materials.  
-By default the porgram opens the default database distributed with the program.
+By default the program opens the default database distributed with the program.
 
-The mode of calculation is determined by the 'Single crystal mode' option.  Possible options are; 'Thick slab', 'Coherent thin film', 'Incoherent thin film' and 'Partially incoherent thin film'.
+The mode of calculation is determined by the *Single crystal mode* option.  Possible options are; *Thick slab*, *Coherent thin film*, *Incoherent thin film* and *Partially incoherent thin film*.
 Details of the theory underlying each method are given in the theory section: :ref:`Single-Crystal-Theory`.
 In summary a thick slab assumes that the thickness is such that no radiation can be transmitted and all radiation is therefore reflected or absorbed.  As such only the reflectance has any meaning for thick slabs.
-The 'Coherent thin film mode' provides a complete description of the light reflectance and transmittance, but can show oscialltions due to interference effects that are not see experimentally.
-The 'Incoherent thin film mode', treats the incoming light as incoherent and so removes all the oscillations due to internal reflection.
-Finally the 'Partially incoherent film' introduces random variations in the incident angle and the geometric parameters of the crystal surface and the thickness of the crystal.
+The *Coherent thin film mode* provides a complete description of the light reflectance and transmittance, but can show oscialltions due to interference effects that are not see experimentally.
+The *Incoherent thin film mode*, treats the incoming light as incoherent and so removes all the oscillations due to internal reflection.
+Finally the *Partially incoherent film* introduces random variations in the incident angle and the geometric parameters of the crystal surface and the thickness of the crystal.
 Single crystal films are defined by a surface determined by the (hkl) settings.
 
 
@@ -269,22 +270,22 @@ The global azimuthal angle controls the rotation of all the layers around the la
 
 The layers of the system are defined by a superstrate, a collection of film layers (which includes the dielectric material being studied by DFT) and finally a substrate.   
 The superstrate and substrate are semi-infinite materials which must have an isotropic permittivity, which can be complex.
-In the case of the 'Thick slab' mode, the substrate is not used, instead the last layer in the list of layers is used as the semi-infinite material.  This material need not be isotropic.
+In the case of the *Thick slab* mode, the substrate is not used, instead the last layer in the list of layers is used as the semi-infinite material.  This material need not be isotropic.
 
 The layers are shown in the GUI in order with the superstrate at the top.  There are pull down menus to choose a material for the superstrate and substrate, or the real and imaginary components of their isotropic permittivity can be specified mannually.
 
-Underneath the superstrate specification is show a list of film layers, by default only the dielectric material being studied by DFT is shown.  
+Underneath the superstrate specification is shown a list of film layers, by default only the dielectric material being studied by DFT is shown.  
 Each line in the list shows the thickness of the film, its surface in terms of (hkl) and its azimuthal angle.
 This is sufficient information to define the orientation of the crystal in labaoratory coordinates.
 Further information on this is given the the section describing the :ref:`the-layer-editor`.
 
-In the case of the 'Partially incoherent thin film' mode it is necessary to provide further information about the sampling of the geometrical parameters.
-The 'percentage of partial incoherence' provides a percentage perturbation of the geometric parameters.  All angles are sampled from a uniform distribution either side of the mean value by this percentage of 90\ :superscript:`o`.
+In the case of the *Partially incoherent thin film* mode it is necessary to provide further information about the sampling of the geometrical parameters.
+The *Percentage of partial incoherence* provides a percentage perturbation of the geometric parameters.  All angles are sampled from a uniform distribution either side of the mean value by this percentage of 90\ :superscript:`o`.
 The film thickness is also varied either side of the mean value by this percentage of the mean value.
 
-The number of samples used in sampling is given by the value of 'Number of partially incoherent samples'.
-When smoothing is required the size of the 'Incoherent smoothing filter, kernel size' must be 3 or greater.  Only odd numbers are accepted.  This value can be as large as possible, but should not exceed the number of data points between true peaks.
-The polynomial degree of the smoothing function is given by the 'Incoherent smoothing filter, polynomial', values of 3 or 4 are recommended.
+The number of samples used in sampling is given by the value of *Number of partially incoherent samples*.
+When smoothing is required the size of the *Incoherent smoothing filter, kernel size* must be 3 or greater.  Only odd numbers are accepted.  This value can be as large as possible, but should not exceed the number of data points between true peaks.
+The polynomial degree of the smoothing function is given by the *Incoherent smoothing filter, polynomial*, values of 3 or 4 are recommended.
 Finally there is a legend that can be provided for the Plotting Tab.
 
 .. _the-layer-editor:
@@ -329,7 +330,7 @@ The plots available depends on the availability of powder and single crystal sce
 
 The minimum and maximum frequencies can be specified along with the frequency increment.  An effective medium theory calculation will be performed for each scenario at every frequency between the minimum and maxmimum frequencies at the interval specified.
 
-By default the calculation uses moles of unit cells to calculation the molar absorption coefficient.  This can be altered using the the 'Molar definition' pull down menu.  Options include *Unit cells*, *Atoms* and *Molecules*.  In the case of *Molecules* it is necessary to supply the number of atoms in a formula unit of the compound in the *Number of atoms per molecule* text box.
+By default the calculation uses moles of unit cells to calculation the molar absorption coefficient.  This can be altered using the the *Molar definition* pull down menu.  Options include *Unit cells*, *Atoms* and *Molecules*.  In the case of *Molecules* it is necessary to supply the number of atoms in a formula unit of the compound in the *Number of atoms per molecule* text box.
 
 The title of the plot can be supplied by entering it into the *Plot title* text box and the frequency units used for the plot can also be changed from *wavenumber* to *THz*.
 
@@ -388,7 +389,7 @@ Fitter Tab
 
 The *Fitter Tab* imports an experimental spectrum.  The spectrum is stored in an Excel spreadsheet.  The spreadsheet should contain a single sheet with two columns.  The first column should be the frequency in |cm-1| and the second should be the measured signal.  The signal can be molar absorption, absorption, real permittivity, imaginary permittivity, ATR absorbance or any of the single crystal propertie.  Once imported the experimental spectrum can be compared with the calculated spectrum.  The tab shows the frequencies contributing to the spectrum and allows the Lorentzian widths of the transitions to be altered.  The frequency range used for the display is the same as that used in the *plotting tab*.
 Indeed the calculated signal used for fitting is the same as that being shown in the *plotting tab*.
-At the top of the tab are some settings in a tabbed notebook.  The most important is the name of the Excel file containing the experimental spectrum.  In addition there are options to change the 'Plot type', include frequency scaling in any fitting, set the frequency scaling factor, set the number of iterations to be used when fitting, choose whether the plot should use indepent y-axes for the calculated and experimental spectra, set the method used to do the fitting and finally specifiy the spectral difference threshold.
+At the top of the tab are some settings in a tabbed notebook.  The most important is the name of the Excel file containing the experimental spectrum.  In addition there are options to change the *Plot type*, include frequency scaling in any fitting, set the frequency scaling factor, set the number of iterations to be used when fitting, choose whether the plot should use indepent y-axes for the calculated and experimental spectra, set the method used to do the fitting and finally specifiy the spectral difference threshold.
 The spectrum is shown at the bottom of the tab and is recalculated when the *Replot* or *Replot with frequency shift* buttons are pressed.  The data type stored in the experimental spreadsheet is defined by the *Plot and data type* setting.  One of the settings options is the ability to remove a baseline from the experimental spectrum.
 If baseline removal is selected a Hodrick-Prescott filter is used. The value of the filter parameter is determined by the value in the *HP filter lambda* tab.  The actual value of lambda used in the filter is the value given in the tab raised by the power of 10.
 
