@@ -329,14 +329,12 @@ In Columns G&H of a material sheet are in arbitrary order: an entry, a density, 
 Column G holds the directive and column H holds its value
 For the case that the unit cell of the material is required (for anisotropic materials for instance), the unit cell can be provided either in terms of a, b, c, :math:`\alpha`, :math:`\beta` and :math:`\gamma` or as cell vectors.
 
-The entry type maybe one of: "Constant refractive index", "Constant permittivity", Tabulated refractive index' or "Tabulated permittivity", "Drude-Lorentz" or "FPSQ".
+The entry type maybe one of: "Constant refractive index", "Constant permittivity", "Tabulated refractive index" or "Tabulated permittivity", "Drude-Lorentz" or "FPSQ".
 
-The density gives the material density in g/ml.
-
-For columns A to F the first row provides a label for the data in each column.  The label is not used by PDGui.
+For columns A to F the first row provides a label for the data in each column.  The label is not used by PDGui but can be used to describe the contents of the column.
 The contents of these columns depends upon the entry type.
 
-For Tabulated entries column A must have the frequency in |cm-1| and in ascending order.  
+For tabulated entries column A must have the frequency in |cm-1| and in ascending order.  
 Column B is not used by PDGui but because refractive indices are often tabulated with micron wavelengths, this column may be used to allow conversion to |cm1|.
 
    Summary of columns used for different Entry modes
@@ -363,13 +361,13 @@ Column B is not used by PDGui but because refractive indices are often tabulated
    +-----------------------+----------------------------------------+
    | Directive (G)         | Contents (H)                           |
    +=======================+========================================+
-   | Entry:                | One of;                                |
-   |                       | - 'tablulated refractive index'        |
-   |                       | - 'tablulated permittivity'            |
-   |                       | - 'constant refractive index'          |
-   |                       | - 'constant refractive index'          |
-   |                       | - 'Drude-Lorentz'                      |
-   |                       | - 'FPSQ'                               |
+   | | Entry:              | One of;                                |
+   | |                     |  - 'tablulated refractive index'       |
+   | |                     |  - 'tablulated permittivity'           |
+   | |                     |  - 'constant refractive index'         |
+   | |                     |  - 'constant refractive index'         |
+   | |                     |  - 'Drude-Lorentz'                     |
+   | |                     |  - 'FPSQ'                              |
    +-----------------------+----------------------------------------+
    | Density:              | Density in g/ml                        |
    +-----------------------+----------------------------------------+
