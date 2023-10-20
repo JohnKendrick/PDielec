@@ -1049,14 +1049,6 @@ class System:
             Tloc = nan(np.matmul( nan(np.absolute(Pi)**2),Tloc))
             Dip1 = Di
         Tloc = nan(np.matmul( nan(np.absolute(nan(np.matmul(Di_inv_super,Dip1)))**2),Tloc))
-# Version for 3 layers only
-#        Di, Pi, Di_inv, Ti = self.layers[0].update(f, zeta_sys)
-#        Tloc1 = nan(np.absolute(nan(np.matmul(Di_inv_super,Di)))**2)
-#        Tloc2 = nan(np.absolute(Pi)**2)
-#        Tloc3 = nan(np.absolute(nan(np.matmul(Di_inv,Di_sub)))**2)
-#        Gamma = nan(np.matmul(Tloc1,nan(np.matmul(Tloc2,Tloc3))))
-#        Gamma = nan(np.sqrt(Gamma))
-# End
         Gamma = nan(np.sqrt(Tloc))
         GammaStar = np.matmul(exact_inv(Delta1234),np.matmul(Gamma,Delta1234))
         self.Gamma = Gamma.copy()
