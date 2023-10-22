@@ -1185,10 +1185,10 @@ class System:
         # field transmission coefficients
         #t_field = np.zeros(4, dtype=np.complex128)
         t_out = np.zeros(4, dtype=np.clongdouble)
-        tpp = np.nan_to_num(GammaStar[2,2]/Denom/largest)
-        tss = np.nan_to_num(GammaStar[0,0]/Denom/largest)
-        tps = np.nan_to_num(-GammaStar[2,0]/Denom/largest)
-        tsp = np.nan_to_num(-GammaStar[0,2]/Denom/largest)
+        tpp = np.nan_to_num(GammaStar[2,2]/(Denom*largest))
+        tss = np.nan_to_num(GammaStar[0,0]/(Denom*largest))
+        tps = np.nan_to_num(-GammaStar[2,0]/(Denom*largest))
+        tsp = np.nan_to_num(-GammaStar[0,2]/(Denom*largest))
 
         # Try and remove any outliers by making sure the intensity is always < 1
         tpp = self.scale_intensity(tpp)
