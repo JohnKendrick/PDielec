@@ -72,3 +72,8 @@ jquery-3.5.1.js
 *.nma
 *.qti~
 ~$*
+
+# Andrew Burnett
+Data/
+*test*
+
