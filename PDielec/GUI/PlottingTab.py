@@ -562,7 +562,7 @@ class PlottingTab(QWidget):
         self.subplot = None
         self.figure.clf()
         if self.frequency_units == 'wavenumber':
-            xlabel = r'Frequency $\mathdefault{(cm^{-1})}}$'
+            xlabel = r'Frequency $\mathdefault{(cm^{-1})}$'
             xscale = 1.0
         else:
             xlabel = r'THz'
