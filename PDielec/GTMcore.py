@@ -1043,13 +1043,18 @@ class System:
         GammaStar = np.zeros(4, dtype=np.clongdouble)
         Dip1 = Di_sub
         Tloc = np.identity(4, dtype=np.clongdouble)
+        rescale2 = 1.0
         for layer in reversed(self.layers):
             Di, Pi, Di_inv, Ti = layer.update(f, zeta_sys)
+            rescale = np.max(np.abs(Pi))
+            rescale2 = rescale*rescale2
+            Pi = Pi/rescale
             Tloc = nan(np.matmul( nan(np.absolute( (nan(np.matmul(Di_inv,Dip1))))**2),Tloc))
             Tloc = nan(np.matmul( nan(np.absolute(Pi)**2),Tloc))
             Dip1 = Di
         Tloc = nan(np.matmul( nan(np.absolute(nan(np.matmul(Di_inv_super,Dip1)))**2),Tloc))
         Gamma = nan(np.sqrt(Tloc))
+        Gamma = Gamma * rescale2
         GammaStar = np.matmul(exact_inv(Delta1234),np.matmul(Gamma,Delta1234))
         self.Gamma = Gamma.copy()
         self.GammaStar = GammaStar.copy()
@@ -1145,7 +1150,7 @@ class System:
         # Can we renormalise to get rid of numerical problems?
         #
         # Work with a copy of GammaStar
-        largest = np.sqrt(np.abs(np.amax(np.real(self.GammaStar))))
+        largest = np.max(np.abs(self.GammaStar))
         GammaStar = self.GammaStar.copy()
         GammaStar = GammaStar / largest
 
@@ -1185,10 +1190,10 @@ class System:
         # field transmission coefficients
         #t_field = np.zeros(4, dtype=np.complex128)
         t_out = np.zeros(4, dtype=np.clongdouble)
-        tpp = np.nan_to_num(GammaStar[2,2]/(Denom*largest))
-        tss = np.nan_to_num(GammaStar[0,0]/(Denom*largest))
-        tps = np.nan_to_num(-GammaStar[2,0]/(Denom*largest))
-        tsp = np.nan_to_num(-GammaStar[0,2]/(Denom*largest))
+        tpp = np.nan_to_num( (GammaStar[2,2]/Denom)/largest)
+        tss = np.nan_to_num( (GammaStar[0,0]/Denom)/largest)
+        tps = np.nan_to_num(-(GammaStar[2,0]/Denom)/largest)
+        tsp = np.nan_to_num(-(GammaStar[0,2]/Denom)/largest)
 
         # Try and remove any outliers by making sure the intensity is always < 1
         tpp = self.scale_intensity(tpp)
