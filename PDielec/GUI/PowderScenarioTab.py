@@ -51,6 +51,8 @@ class PowderScenarioTab(ScenarioTab):
         self.settings['Particle shape'] = 'Sphere'
         self.methods = ['Maxwell-Garnett', 'Bruggeman', 'Averaged Permittivity', 'Mie']
         self.shapes = ['Sphere', 'Needle', 'Plate', 'Ellipsoid']
+        self.materialNames = []
+        self.materialDefinedManually = False
         self.direction = np.array([0,0,0])
         self.depolarisation = np.array([0,0,0])
         self.scenarioIndex = None
@@ -91,8 +93,10 @@ class PowderScenarioTab(ScenarioTab):
             print('support matrix index was not 0',matrix)
         self.matrix_cb.activated.connect(self.on_matrix_cb_activated)
         if 'Material defined manually' in self.settings['Matrix']:
+            self.materialDefinedManually = True
             self.matrixMaterial = Materials.Constant('manual',permittivity=self.settings['Matrix permittivity'],density=self.settings['Matrix density'])
         else:
+            self.materialDefinedManually = False
             self.matrixMaterial = self.DataBase.getMaterial(self.settings['Matrix'])
         label = QLabel('Support matrix',self)
         label.setToolTip('Define the permittivity and density of the support matrix')
@@ -547,10 +551,12 @@ class PowderScenarioTab(ScenarioTab):
         self.permittivity_i_sb.blockSignals(True)
         if 'Material defined manually' in matrix:
             # The manual option has been chosen, so create a new material with the right permittivity and density
+            self.materialDefinedManually = True
             self.matrixMaterial = Materials.Constant('manual',permittivity=self.settings['Matrix permittivity'],density=self.settings['Matrix density'])
             # Store the new matrix material name
             self.settings['Matrix'] = matrix
         else:
+            self.materialDefinedManually = False
             if 'Material defined manually' in self.materialNames:
                 # We don't need the manual entry any more
                 self.matrix_cb.clear()
@@ -602,6 +608,7 @@ class PowderScenarioTab(ScenarioTab):
         self.matrixMaterial.setDensity(value)
         # Force the matrix to be defined manually
         self.settings['Matrix'] = 'Material defined manually'
+        self.materialDefinedManually = True
         # volume fraction taked precedence
         if self.settings['Mass or volume fraction'] == 'volume':
             self.update_mf_sb()
@@ -639,6 +646,7 @@ class PowderScenarioTab(ScenarioTab):
         newPermittivityObject = DielectricFunction.ConstantScalar(self.settings['Matrix permittivity'])
         self.matrixMaterial.setPermittivityObject(newPermittivityObject)
         self.settings['Matrix'] = 'Material defined manually'
+        self.materialDefinedManually = True
         debugger.print(self.settings['Legend'],'on imaginary permittivity line edit changed', value)
         self.refresh()
         self.refreshRequired = True
@@ -651,6 +659,7 @@ class PowderScenarioTab(ScenarioTab):
         newPermittivityObject = DielectricFunction.ConstantScalar(self.settings['Matrix permittivity'])
         self.matrixMaterial.setPermittivityObject(newPermittivityObject)
         self.settings['Matrix'] = 'Material defined manually'
+        self.materialDefinedManually = True
         debugger.print(self.settings['Legend'],'on permittivity line edit changed', value)
         self.refresh()
         self.refreshRequired = True
@@ -886,36 +895,22 @@ class PowderScenarioTab(ScenarioTab):
         self.database_le.setText(self.settings['Materials database'])
         # Update the possible matrix material names from the database
         self.materialNames = self.DataBase.getSheetNames()
-        if 'manually' in self.settings['Matrix']:
+        if 'Material defined manually' == self.settings['Matrix']:
+            self.materialDefinedManually = True
+        if self.materialDefinedManually:
             self.materialNames.append('Material defined manually')
-        # Set the matrix support material
-        if 'Material defined manually' in self.settings['Matrix']:
             self.matrixMaterial = Materials.Constant('manual',permittivity=self.settings['Matrix permittivity'],density=self.settings['Matrix density'])
             self.matrixPermittivityFunction = self.matrixMaterial.getPermittivityFunction()
         else:
-           # Check to see if the permittivity or the density have been changed from the database values
-           # if they have then force a 'Manual' setting.  This should allow backward compatibility with
             if self.settings['Matrix'] in self.materialNames:
                 self.matrixMaterial = self.DataBase.getMaterial(self.settings['Matrix'])
                 self.matrixPermittivityFunction = self.matrixMaterial.getPermittivityFunction()
+                self.settings['Matrix permittivity'] = self.matrixPermittivityFunction(0.0)
+                self.settings['Matrix density'] = self.matrixMaterial.getDensity()
             else:
                 print('Error: matrix ',self.settings['Matrix'],' not available in database')
                 print('       available materials are:', self.materialNames)
                 exit()
-            material = self.DataBase.getMaterial(self.settings['Matrix'])
-            materialPermittivityFunction = self.matrixMaterial.getPermittivityFunction()
-            materialPermittivity = materialPermittivityFunction(0.0)
-            materialDensity = self.matrixMaterial.getDensity()
-            if (np.abs(materialPermittivity - self.settings['Matrix permittivity'])) or (np.abs(materialDensity-self.settings['Matrix density']) > 1.0E-8):
-                # It looks like the permittivity or density has been set manually
-                # Creat a constant permittivity material and set the Matrix to manual
-                self.settings['Matrix'] = 'Material defined manually'
-                self.matrixMaterial = Materials.Constant('manual',permittivity=self.settings['Matrix permittivity'],density=self.settings['Matrix density'])
-                self.matrixPermittivityFunction = self.matrixMaterial.getPermittivityFunction()
-            else:
-                # Use the database material
-                self.matrixMaterial = material
-                self.matrixPermittivityFunction = self.matrixMaterial.getPermittivityFunction()
         # Reset the matrix combo box with new names
         self.matrix_cb.clear()
         self.matrix_cb.addItems(self.materialNames)
