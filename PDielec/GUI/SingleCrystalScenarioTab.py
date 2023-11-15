@@ -55,6 +55,7 @@ class SingleCrystalScenarioTab(ScenarioTab):
         self.settings['Layer thicknesses'] = []
         self.settings['Layer thickness units'] = []
         self.settings['Layer dielectric flags'] = []
+        self.materialNames = []
         self.p_reflectance = []
         self.s_reflectance = []
         self.p_transmittance = []
