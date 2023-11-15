@@ -278,22 +278,13 @@ Ending: Vibrational Mode Automatic Relevance Determination
 Mode   0:    -0.00 cm-1 (IR:   0.0)
  Mode too disperse!
  Largest Contribution: 
-  +0.2264 (  5.3%) OUT O67 C68 O69 C70
+  +0.2660 (  6.0%) OUT O67 C68 O69 C70
  Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
- Total Composition:   13.2% BOND,  26.9% ANGLE,  19.4% OUT,  40.5% TOR
- R**2 = 0.5077
- Explained Variance =  48.7 %
+ Total Composition:   16.3% BOND,  31.7% ANGLE,  21.8% OUT,  30.2% TOR
+ R**2 = 0.5935
+ Explained Variance =  57.7 %
 
 Mode   1:    -0.00 cm-1 (IR:   0.0)
- Mode too disperse!
- Largest Contribution: 
-  +0.4423 (  4.7%) TORSION C68 C70 C73 C76
- Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
- Total Composition:   28.1% BOND,  34.7% ANGLE,   5.3% OUT,  32.0% TOR
- R**2 = 0.8233
- Explained Variance =  80.7 %
-
-Mode   2:    -0.00 cm-1 (IR:   0.0)
  Mode too disperse!
  Largest Contribution: 
   +0.3642 (  4.8%) BOND C46 C48
@@ -301,6 +292,15 @@ Mode   2:    -0.00 cm-1 (IR:   0.0)
  Total Composition:   34.9% BOND,  31.0% ANGLE,   3.7% OUT,  30.4% TOR
  R**2 = 0.6984
  Explained Variance =  68.2 %
+
+Mode   2:    -0.00 cm-1 (IR:   0.0)
+ Mode too disperse!
+ Largest Contribution: 
+  +0.4439 (  4.9%) TORSION C68 C70 C73 C76
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
+ Total Composition:   27.3% BOND,  28.5% ANGLE,   0.6% OUT,  43.5% TOR
+ R**2 = 0.6765
+ Explained Variance =  65.2 %
 
 Mode   3:    33.82 cm-1 (IR:  44.5)
  Mode too disperse!

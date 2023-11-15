@@ -679,16 +679,16 @@ Mode   4:    -0.00 cm-1 (IR:   0.0)
 Mode   5:     0.00 cm-1 (IR:   0.0)
  Mode too disperse!
  Largest Contribution: 
-  +0.1350 (  1.2%) TORSION O137 C138 C140 C152
+  +0.1121 (  1.0%) TORSION C47 C51 N56 C64
  Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
- Total Composition:   23.6% BOND,  17.5% ANGLE,   4.6% OUT,  54.3% TOR
+ Total Composition:   23.9% BOND,  18.3% ANGLE,   4.7% OUT,  53.1% TOR
 
 Mode   6:     0.00 cm-1 (IR:   0.0)
  Mode too disperse!
  Largest Contribution: 
-  +0.1142 (  1.0%) TORSION C47 C51 N56 C64
+  +0.1328 (  1.1%) TORSION O137 C138 C140 C152
  Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT,   0.0% TOR
- Total Composition:   24.0% BOND,  18.6% ANGLE,   4.6% OUT,  52.8% TOR
+ Total Composition:   24.0% BOND,  17.9% ANGLE,   4.5% OUT,  53.6% TOR
 
 Mode   7:    10.54 cm-1 (IR: 334.5)
  Mode too disperse!
