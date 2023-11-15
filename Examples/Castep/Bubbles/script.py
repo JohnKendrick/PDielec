@@ -22,7 +22,7 @@ tab.sigmas_cm1 = [10, 10, 10, 10, 10, 10]
 #
 #
 tab = self.notebook.scenarios[0]
-tab.settings['Matrix'] = 'ptfe'
+tab.settings['Matrix'] = 'Material defined manually'
 tab.settings['Matrix density'] =  2.2
 tab.settings['Matrix permittivity'] =  3.0
 tab.settings['Bubble radius'] =  30.0
@@ -46,7 +46,7 @@ tab.settings['Legend'] = 'Maxwell-Garnett vf=0.1 Sphere'
 #
 self.notebook.addScenario()
 tab = self.notebook.scenarios[1]
-tab.settings['Matrix'] = 'ptfe'
+tab.settings['Matrix'] = 'Material defined manually'
 tab.settings['Matrix density'] =  2.2
 tab.settings['Matrix permittivity'] =  3.0
 tab.settings['Bubble radius'] =  30.0

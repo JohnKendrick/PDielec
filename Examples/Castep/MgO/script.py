@@ -16,7 +16,7 @@ tab.settings['Mass definition'] = 'average'
 # 0th Scenario tabs
 #
 tab = self.notebook.scenarios[0]
-tab.settings['Matrix'] = 'ptfe'
+tab.settings['Matrix'] = 'Material defined manually'
 tab.settings['Matrix permittivity'] = 3.0
 tab.settings['Mass or volume fraction'] = 'volume'
 tab.settings['Volume fraction'] = 0.1
