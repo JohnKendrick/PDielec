@@ -135,8 +135,9 @@ def main():
                             if isinstance(value2,str):
                                 value2 = value2.replace('\\','')
                                 value2 = value2.replace('/','')
-                            nerrors += 1
-                            error = (sheet, row_index, col_index, value1, value2, 0.0)
+                            if value1 != value2:
+                                nerrors += 1
+                                error = (sheet, row_index, col_index, value1, value2, 0.0)
                         # if cell1.data_type
                     # if value1 != value2
                 # if cell1 is none
