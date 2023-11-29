@@ -717,47 +717,6 @@ class Layer:
             self.gamma = self.Berreman
         
         
-    def calculate_transfer_matrix_mp(self, f, zeta):
-        """
-        Compute the transfer matrix of the whole layer :math:`T_i=A_iP_iA_i^{-1}`
-        Uses arbitrary precision maths
-
-        Parameters
-        ----------
-        f : float
-            frequency (in Hz)
-        zeta : complex
-               reduced in-plane wavevector kx/k0
-        Returns
-        -------
-        None
-
-        """
-        ## eqn(22)
-        #from mpmath import *
-        #mp.dps = 20
-        #self.Ai[0,:] = self.gamma[:,0].copy()
-        #self.Ai[1,:] = self.gamma[:,1].copy()
-        
-        Ai[0,:] = self.gamma[:,0].copy()
-        Ai[1,:] = self.gamma[:,1].copy()
-
-        self.Ai[2,:] = (self.qs*self.gamma[:,0]-zeta*self.gamma[:,2])/self.mu
-        self.Ai[3,:] = self.qs*self.gamma[:,1]/self.mu
-
-        for ii in range(4):
-            ## looks a lot like eqn (25). Why is K not Pi ?
-            exponent = np.clongdouble(-1.0j*(2.0*np.pi*f*self.qs[ii]*self.thick)/c_const)
-            if np.abs(exponent) > exponent_threshold:
-                exponent = exponent/np.abs(exponent)*exponent_threshold
-            self.Ki[ii,ii] = np.nan_to_num(np.exp(exponent))
-            #  JK original line
-            # self.Ki[ii,ii] = np.exp(-1.0j*(2.0*np.pi*f*self.qs[ii]*self.thick)/c_const)
-
-        Aim1 = exact_inv(self.Ai.copy())
-        ## eqn (26)
-        self.Ti = np.matmul(self.Ai,np.matmul(self.Ki,Aim1))
-
     def calculate_transfer_matrix(self, f, zeta):
         """
         Compute the transfer matrix of the whole layer :math:`T_i=A_iP_iA_i^{-1}`
@@ -773,7 +732,8 @@ class Layer:
         None
 
         """
-        exponent_threshold = 600.0
+        # The maximum exponent threshold on windows is about 700 (much more on Linux)
+        exponent_threshold = 700.0
         ## eqn(22)
         self.Ai[0,:] = self.gamma[:,0].copy()
         self.Ai[1,:] = self.gamma[:,1].copy()
