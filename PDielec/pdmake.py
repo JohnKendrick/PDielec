@@ -321,7 +321,6 @@ def compareFiles(file1,file2):
             word2 = word2.replace(')','')
             word2 = word2.replace('%','')
             word2 = word1.replace('/','')
-            word2 = word1.replace('\\','')
             try:
                 float1 = float(word1)
                 float2 = float(word2)

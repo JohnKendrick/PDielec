@@ -127,10 +127,16 @@ def main():
                         else:
                             #
                             # This is a non-numeric error
+                            # Remove any back or forward slashes to avoid problems with filenames in linux/windows
                             #
+                            if isinstance(value1,str):
+                                value1 = value1.replace('\\','')
+                                value1 = value1.replace('/','')
+                            if isinstance(value2,str):
+                                value2 = value2.replace('\\','')
+                                value2 = value2.replace('/','')
                             nerrors += 1
-                            percentage_error = 0.0
-                            error = (sheet, row_index, col_index, value1, value2, percentage_error)
+                            error = (sheet, row_index, col_index, value1, value2, 0.0)
                         # if cell1.data_type
                     # if value1 != value2
                 # if cell1 is none
