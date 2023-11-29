@@ -773,7 +773,7 @@ class Layer:
         None
 
         """
-        exponent_threshold = 400.0
+        exponent_threshold = 800.0
         ## eqn(22)
         self.Ai[0,:] = self.gamma[:,0].copy()
         self.Ai[1,:] = self.gamma[:,1].copy()
