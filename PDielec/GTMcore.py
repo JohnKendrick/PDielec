@@ -222,6 +222,7 @@ class Layer:
         self.epsilon = np.identity(3, dtype=np.clongdouble)
         self.mu = 1.0 ### mu=1 for now
 
+        self.exponent_errors = 0
         ### initialization of all important quantities
         self.M = np.zeros((6, 6), dtype=np.clongdouble) ## constitutive relations
         self.a = np.zeros((6, 6), dtype=np.clongdouble) ##
@@ -746,6 +747,7 @@ class Layer:
             exponent = np.clongdouble(-1.0j*(2.0*np.pi*f*self.qs[ii]*self.thick)/c_const)
             if np.abs(exponent) > exponent_threshold:
                 exponent = exponent/np.abs(exponent)*exponent_threshold
+                self.exponent_errors += 1
             self.Ki[ii,ii] = np.nan_to_num(np.exp(exponent))
             #  JK original line
             # self.Ki[ii,ii] = np.exp(-1.0j*(2.0*np.pi*f*self.qs[ii]*self.thick)/c_const)
@@ -1201,4 +1203,11 @@ class System:
         T_out = np.array([T_pp, T_ss])
 
         return r_out, R_out, t_out, T_out
+
+        def overflowErrors(self):
+            '''Return the total number of overflow errors encountered'''
+            count = 0
+            for layer in self.layers()
+                count = count + layer.exponent_errors
+            return count
 
