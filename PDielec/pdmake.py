@@ -11,9 +11,13 @@ from PDielec.p2cif       import main as main_p2cif
 from PDielec.vibanalysis import main as main_vibanalysis
 import numpy as np
 import contextlib
+import functools
 from shutil import copyfile
 import subprocess
 import time
+
+# Force a flush on print, needed for Windows
+print = functools.partial(print, flush=True)
 
 settings = {}
 settings['padding'] = 50
