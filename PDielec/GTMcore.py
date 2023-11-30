@@ -715,7 +715,6 @@ class Layer:
             #self.Berreman[ki] = self.Berreman[ki]/lag.norm(self.Berreman[ki])
             self.Berreman[ki] = self.Berreman[ki]/np.sqrt(np.sum(self.Berreman[ki]**2))
         if self.useBerreman:
-            print('replaced gamma by Berreman')
             self.gamma = self.Berreman
         
         
