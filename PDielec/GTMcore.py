@@ -735,7 +735,7 @@ class Layer:
 
         """
         # The maximum exponent threshold on windows is about 700 (11000 on Linux)
-        exponent_threshold = 11000.0
+        exponent_threshold = 700.0
         ## eqn(22)
         self.Ai[0,:] = self.gamma[:,0].copy()
         self.Ai[1,:] = self.gamma[:,1].copy()
