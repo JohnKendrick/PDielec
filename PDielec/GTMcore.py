@@ -564,7 +564,7 @@ class Layer:
         Cp_t2 = np.abs(self.Py[0,transmode[1]])**2/(np.abs(self.Py[0,transmode[1]])**2+np.abs(self.Py[1,transmode[1]])**2+shift)
 
         if np.abs(Cp_t1-Cp_t2) > qsd_thr: ## birefringence
-            self._useBerreman = True ## sets _useBerreman fo the calculation of gamma matrix below
+            self.useBerreman = True ## sets _useBerreman fo the calculation of gamma matrix below
             if Cp_t2>Cp_t1:
                 transmode = np.flip(transmode,0) ## flip the two values
             ## then calculate for reflected waves if necessary
@@ -1110,7 +1110,6 @@ class System:
         """
         nan = np.nan_to_num
         shift = sys.float_info.min
-        shift = 1.0E-30
         #
         # Can we renormalise to get rid of numerical problems?
         #
