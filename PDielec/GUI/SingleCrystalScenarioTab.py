@@ -191,7 +191,8 @@ class SingleCrystalScenarioTab(ScenarioTab):
         '''Redraw the layer information widget'''
         form = self.drawLayerInformationWidget()
         # There is a problem with the following call leading to an 'invalid index' message from takeAt()
-        self.form.removeRow(self.layerInformationFormCount)
+        # removeRow() is the prefered function as it deletes the inserted layout, but takeRown removes the warning
+        self.form.takeRow(self.layerInformationFormCount)
         self.form.insertRow(self.layerInformationFormCount,form)
         return
 
