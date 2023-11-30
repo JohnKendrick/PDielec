@@ -1553,8 +1553,8 @@ def solve_single_crystal_equations(
         epsilon = system.layers[0].epsilon
     else:
         epsilon = system.substrate.epsilon
-    errors = system.overflowErrors()
-    return v,r,R,t,T,epsilon,errors
+    errors,largest_exponent = system.overflowErrors()
+    return v,r,R,t,T,epsilon,errors,largest_exponent
 
 
 def cleanup_symbol(s):

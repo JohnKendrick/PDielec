@@ -1181,9 +1181,9 @@ class SingleCrystalScenarioTab(ScenarioTab):
         s_absorbtance = []
         epsilon = []
         debugger.print(self.settings['Legend'],'About to extract results for single crystal scenario')
-        for v,r,R,t,T,eps,errors in results:
+        for v,r,R,t,T,eps,errors,largest_exponent in results:
             if errors > 0:
-                print('Warning exponential overflow occured at frequency',v,errors)
+                print('Warning exponential overflow occured at frequency',v,errors,largest_exponent)
             p_reflectance.append(R[0]+R[2])
             s_reflectance.append(R[1]+R[3])
             if self.settings['Mode'] == 'Thick slab':

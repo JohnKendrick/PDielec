@@ -223,6 +223,7 @@ class Layer:
         self.mu = 1.0 ### mu=1 for now
 
         self.exponent_errors = 0
+        self.largest_exponent = 0.0
         ### initialization of all important quantities
         self.M = np.zeros((6, 6), dtype=np.clongdouble) ## constitutive relations
         self.a = np.zeros((6, 6), dtype=np.clongdouble) ##
@@ -733,8 +734,8 @@ class Layer:
         None
 
         """
-        # The maximum exponent threshold on windows is about 700 (much more on Linux)
-        exponent_threshold = 700.0
+        # The maximum exponent threshold on windows is about 700 (11000 on Linux)
+        exponent_threshold = 11000.0
         ## eqn(22)
         self.Ai[0,:] = self.gamma[:,0].copy()
         self.Ai[1,:] = self.gamma[:,1].copy()
@@ -746,6 +747,7 @@ class Layer:
             ## looks a lot like eqn (25). Why is K not Pi ?
             exponent = np.clongdouble(-1.0j*(2.0*np.pi*f*self.qs[ii]*self.thick)/c_const)
             if np.abs(exponent) > exponent_threshold:
+                self.largest_exponent = max(self.largest_exponent,np.abs(exponent))
                 exponent = exponent/np.abs(exponent)*exponent_threshold
                 self.exponent_errors += 1
             self.Ki[ii,ii] = np.nan_to_num(np.exp(exponent))
@@ -1204,10 +1206,12 @@ class System:
 
         return r_out, R_out, t_out, T_out
 
-        def overflowErrors(self):
-            '''Return the total number of overflow errors encountered'''
-            count = 0
-            for layer in self.layers()
-                count = count + layer.exponent_errors
-            return count
+    def overflowErrors(self):
+        '''Return the total number of overflow errors encountered'''
+        count = 0
+        largest_exponent = 0.0
+        for layer in self.layers:
+            count = count + layer.exponent_errors
+            largest_exponent = max(layer.largest_exponent,largest_exponent)
+        return count,largest_exponent
 
