@@ -1110,6 +1110,7 @@ class System:
         """
         nan = np.nan_to_num
         shift = sys.float_info.min
+        shift = 1.0E-30
         #
         # Can we renormalise to get rid of numerical problems?
         #
