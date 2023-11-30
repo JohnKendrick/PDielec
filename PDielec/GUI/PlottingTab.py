@@ -570,8 +570,6 @@ class PlottingTab(QWidget):
         x = np.array(self.vs_cm1)
         self.subplot = self.figure.add_subplot(111)
         n = self.get_number_of_calculations_required()
-        if self.notebook.settingsTab.refreshRequired:
-            n += 1
         self.notebook.progressbars_set_maximum(n*len(x))
         self.legends = []
         plots = 0
