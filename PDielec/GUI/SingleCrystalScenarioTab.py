@@ -55,6 +55,10 @@ class SingleCrystalScenarioTab(ScenarioTab):
         self.settings['Layer thicknesses'] = []
         self.settings['Layer thickness units'] = []
         self.settings['Layer dielectric flags'] = []
+        # The maximum allowed thickness of a layer in metres
+        # used to subdivide thicker films into many thinner films
+        # if zero no subdivision is performed
+        self.settings['Maximum allowed thickness'] = 0
         self.materialNames = []
         self.p_reflectance = []
         self.s_reflectance = []
@@ -1146,6 +1150,7 @@ class SingleCrystalScenarioTab(ScenarioTab):
         # Initialise the partial function to pass through to the pool
         #
         crystalIncoherence = self.settings["Percentage partial incoherence"] * np.pi / 100.0 
+        maximumAllowedThickness = self.settings["Maximum allowed thickness"]
         partial_function = partial(Calculator.solve_single_crystal_equations,
                                        superstrateDielectricFunction,
                                        substrateDielectricFunction,
@@ -1157,7 +1162,8 @@ class SingleCrystalScenarioTab(ScenarioTab):
                                        theta,
                                        phi,
                                        psi,
-                                       angleOfIncidence)
+                                       angleOfIncidence,
+                                       maximumAllowedThickness)
         results = []
         # About to call
         debugger.print(self.settings['Legend'],'About to calculate single crystal scenario using pool')

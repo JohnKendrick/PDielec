@@ -1498,7 +1498,9 @@ def solve_single_crystal_equations(
         phi                           ,
         psi                           ,
         angleOfIncidence              ,
-        v ):
+        maximumAllowedThickness       ,
+        v                             ,
+        ):
     """
         This is a parallel call to the single crystal equation solver, system is a GTM system   
         superstrateDielectricFunction is a dielectric function providing the superstrate dielectric
@@ -1515,23 +1517,36 @@ def solve_single_crystal_equations(
         psi                           the psi angle of the slab
         angleOfIncidence              the angle of incidence
         v                             the frequency of the light in cm-1
+        maximumAllowedThickness       a thickness in m, used to subdivide thicker films
+                                      if zero then the full fat film is used
 
     """
     # Create layers, thickness is in metres
     superstrate      = GTM.Layer(thickness=superstrateDepth,epsilon1=superstrateDielectricFunction)
     substrate        = GTM.Layer(thickness=substrateDepth,  epsilon1=substrateDielectricFunction)
-    gtmLayers = []
-    for layer in layers:
-        depth = layer.getThicknessInMetres()
-        permittivityFunction = layer.getPermittivityFunction()
-        gtmLayers.append(GTM.Layer(thickness=depth, epsilon=permittivityFunction))
-    # Creat the system with the layers 
+    selectedLayers = layers
     if mode == 'Thick slab':
         # For a thick slab the last layer is used as the thick layer
-        system = GTM.System(substrate=gtmLayers[-1], superstrate=superstrate, layers=gtmLayers[:-1])
-    else:
-        # For all other modes the substrate and superstrate sandwich all the other layers.
-        system = GTM.System(substrate=substrate, superstrate=superstrate, layers=gtmLayers)
+        # so redefined the substrate and remove the last layer from the list of layers
+        selectedLayers = layers[:-1]
+        substrateDepth = layers[-1].getThicknessInMetres()
+        substrateDielectricFunction = layers[-1].getPermittivityFunction()
+        substrate = GTM.Layer(thickness=substrateDepth,  epsilon=substrateDielectricFunction)
+    gtmLayers = []
+    lastIndex = len(layers)-1
+    for index,layer in enumerate(selectedLayers):
+        permittivityFunction = layer.getPermittivityFunction()
+        depth = layer.getThicknessInMetres()
+        if maximumAllowedThickness != 0 and index != 0 and index != lastIndex and depth > maximumAllowedThickness:
+            no_of_layers = int(depth / maximumAllowedThickness) + 1
+            newdepth = depth / no_of_layers
+            print('Adding new layers ',index,no_of_layers,depth,newdepth)
+            for i in range(no_of_layers):
+                gtmLayers.append(GTM.Layer(thickness=newdepth, epsilon=permittivityFunction))
+        else:
+            gtmLayers.append(GTM.Layer(thickness=depth, epsilon=permittivityFunction))
+    # Creat the system with the layers 
+    system = GTM.System(substrate=substrate, superstrate=superstrate, layers=gtmLayers)
     # Rotate the dielectric constants to the laboratory frame
     # This is a global rotation of all the layers.
     system.substrate.set_euler(theta, phi, psi)
