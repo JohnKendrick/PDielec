@@ -544,7 +544,6 @@ def spherical_averaged_mie_scattering(dielectric_medium, crystal_permittivity, s
                 return effdielec
         else:
             # Calculate the scattering factors at 0 degrees
-            #jk print("refractive_index, size, refractive_index_medium", refractive_index, size, refractive_index_medium)
             s1,s2 = Mie.MieS1S2(refractive_index, size*refractive_index_medium, 1)
         # See van de Hulst page 129, 130
         # Refractive index of material is
@@ -555,7 +554,6 @@ def spherical_averaged_mie_scattering(dielectric_medium, crystal_permittivity, s
     trace = trace / len(points_on_sphere)
     eff = trace * trace
     effdielec = np.array([[eff, 0, 0], [0, eff, 0], [0, 0, eff]])
-    #jk print(radius_nm, lambda_vacuum_mu*1000.0, qext,qsca,qabs,g,qpr,qback,qratio,np.real(s1),np.imag(s1),np.real(trace),np.imag(trace),np.real(eff),np.imag(eff))
     #print ("radius_nm, eff", radius_nm, eff)
     return effdielec
 
@@ -621,9 +619,6 @@ def mie_scattering(dielectric_medium, crystal_permittivity, shape, L, vf, size, 
         #print("Upper lower",lower,upper)
         #print("Size_MU",size_mu)
     refractive_index = calculate_refractive_index_scalar(einclusion) / refractive_index_medium
-    #jk print('refractive_index', refractive_index)
-    #jk print('refractive_index_medium', refractive_index_medium)
-    #jk print('einclusion', einclusion)
     if size_distribution_sigma:
         # Calculate the integral of the forward scattering factors over the distribution
         s1_factors = []
@@ -647,7 +642,6 @@ def mie_scattering(dielectric_medium, crystal_permittivity, shape, L, vf, size, 
             return effdielec
     else:
         # Calculate the scattering factors at 0 degrees
-        #jk print("refractive_index, size, refractive_index_medium", refractive_index, size, refractive_index_medium)
         s1,s2 = Mie.MieS1S2(refractive_index, size*refractive_index_medium, 1)
     # See van de Hulst page 129, 130
     # Refractive index of material is
@@ -655,8 +649,6 @@ def mie_scattering(dielectric_medium, crystal_permittivity, shape, L, vf, size, 
     refractive_index = refractive_index_medium * ( 1.0 + i * s1 * 2 * PI * N_nm / ( k_nm * k_nm * k_nm ) )
     eff = refractive_index * refractive_index
     effdielec = np.array([[eff, 0, 0], [0, eff, 0], [0, 0, eff]])
-    #jk print(radius_nm, lambda_vacuum_mu*1000.0, qext,qsca,qabs,g,qpr,qback,qratio,np.real(s1),np.imag(s1),np.real(refractive_index),np.imag(refractive_index),np.real(eff),np.imag(eff))
-    #print ("radius_nm, eff", radius_nm, eff)
     return effdielec
 
 def anisotropic_mie_scattering(dielectric_medium, crystal_permittivity, shape, L, vf, size, size_mu, size_distribution_sigma):
@@ -713,9 +705,6 @@ def anisotropic_mie_scattering(dielectric_medium, crystal_permittivity, shape, L
     # Now take the average of each direction
     for index in [0,1,2]:
         refractive_index = calculate_refractive_index_scalar(rotated_dielec[index,index]) / refractive_index_medium
-        #jk print('refractive_index', refractive_index)
-        #jk print('refractive_index_medium', refractive_index_medium)
-        #jk print('rotated_dielec', rotated_dielec[index,index])
         if size_distribution_sigma:
             # Calculate the integral of the forward scattering factors over the distribution
             s1_factors = []
@@ -739,7 +728,6 @@ def anisotropic_mie_scattering(dielectric_medium, crystal_permittivity, shape, L
                 return effdielec
         else:
             # Calculate the scattering factors at 0 degrees
-            #jk print("refractive_index, size, refractive_index_medium", refractive_index, size, refractive_index_medium)
             s1,s2 = Mie.MieS1S2(refractive_index, size*refractive_index_medium, 1)
         # See van de Hulst page 129, 130
         # Refractive index of material is
@@ -750,8 +738,6 @@ def anisotropic_mie_scattering(dielectric_medium, crystal_permittivity, shape, L
     trace = trace / 3.0
     eff = trace * trace
     effdielec = np.array([[eff, 0, 0], [0, eff, 0], [0, 0, eff]])
-    #jk print(radius_nm, lambda_vacuum_mu*1000.0, qext,qsca,qabs,g,qpr,qback,qratio,np.real(s1),np.imag(s1),np.real(trace),np.imag(trace),np.real(eff),np.imag(eff))
-    #print ("radius_nm, eff", radius_nm, eff)
     return effdielec
 
 def maxwell(dielectric_medium, crystal_permittivity, shape, L, vf, size):
@@ -1498,7 +1484,7 @@ def solve_single_crystal_equations(
         phi                           ,
         psi                           ,
         angleOfIncidence              ,
-        maximumAllowedThickness       ,
+        sliceThickness                ,
         v                             ,
         ):
     """
@@ -1517,7 +1503,7 @@ def solve_single_crystal_equations(
         psi                           the psi angle of the slab
         angleOfIncidence              the angle of incidence
         v                             the frequency of the light in cm-1
-        maximumAllowedThickness       a thickness in m, used to subdivide thicker films
+        sliceThickness                a thickness in m, used to subdivide thicker films
                                       if zero then the full fat film is used
 
     """
@@ -1525,6 +1511,7 @@ def solve_single_crystal_equations(
     superstrate      = GTM.Layer(thickness=superstrateDepth,epsilon1=superstrateDielectricFunction)
     substrate        = GTM.Layer(thickness=substrateDepth,  epsilon1=substrateDielectricFunction)
     selectedLayers = layers
+    
     if mode == 'Thick slab':
         # For a thick slab the last layer is used as the thick layer
         # so redefined the substrate and remove the last layer from the list of layers
@@ -1537,10 +1524,9 @@ def solve_single_crystal_equations(
     for index,layer in enumerate(selectedLayers):
         permittivityFunction = layer.getPermittivityFunction()
         depth = layer.getThicknessInMetres()
-        if maximumAllowedThickness != 0 and index != 0 and index != lastIndex and depth > maximumAllowedThickness:
-            no_of_layers = int(depth / maximumAllowedThickness) + 1
+        if sliceThickness != 0 and index != lastIndex and depth > sliceThickness:
+            no_of_layers = int(depth / sliceThickness) + 1
             newdepth = depth / no_of_layers
-            print('Adding new layers ',index,no_of_layers,depth,newdepth)
             for i in range(no_of_layers):
                 gtmLayers.append(GTM.Layer(thickness=newdepth, epsilon=permittivityFunction))
         else:

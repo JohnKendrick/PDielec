@@ -58,7 +58,8 @@ class SingleCrystalScenarioTab(ScenarioTab):
         # The maximum allowed thickness of a layer in metres
         # used to subdivide thicker films into many thinner films
         # if zero no subdivision is performed
-        self.settings['Maximum allowed thickness'] = 0
+        self.settings['Slice thickness'] = 0
+        self.settings['Slice thickness unit'] = 'um'
         self.materialNames = []
         self.p_reflectance = []
         self.s_reflectance = []
@@ -153,6 +154,11 @@ class SingleCrystalScenarioTab(ScenarioTab):
         # Define the substrate real and imaginary components
         #
         label,layout = self.substratePermittivityWidget()
+        self.form.addRow(label, layout)
+        #
+        # Widgets for setting the slice thickness
+        #
+        label,layout = self.sliceThicknessWidget()
         self.form.addRow(label, layout)
         #
         # Partial incoherence widget
@@ -626,6 +632,42 @@ class SingleCrystalScenarioTab(ScenarioTab):
         hbox.addWidget(self.substrate_info_le)
         return label,hbox
 
+    def sliceThicknessWidget(self):
+        self.slice_thickness_sb = QSpinBox(self)
+        self.slice_thickness_sb.setToolTip('Define a slice thickness to subdivide thick films\nA value of zero means no slicing is performed')
+        self.slice_thickness_sb.setRange(0,10000)
+        self.slice_thickness_sb.setSingleStep(1)
+        self.slice_thickness_sb.setValue(self.settings['Slice thickness'])
+        self.slice_thickness_sb.valueChanged.connect(self.on_slice_thickness_sb_changed)
+        self.slice_thickness_sb.setSizePolicy(QSizePolicy.Expanding,QSizePolicy.Fixed)
+        self.slice_thickness_unit_cb = QComboBox(self)
+        self.slice_thickness_unit_cb.setToolTip('Set the units to be used for thickness; either nm, um, mm or cm')
+        self.slice_thickness_unit_cb.addItems( ['nm','um','mm','cm'] )
+        self.slice_thickness_unit_cb.setSizePolicy(QSizePolicy.Expanding,QSizePolicy.Fixed)
+        thicknessUnit = self.settings['Slice thickness unit']
+        index = self.slice_thickness_unit_cb.findText(thicknessUnit, Qt.MatchFixedString)
+        self.slice_thickness_unit_cb.setCurrentIndex(index)
+        self.slice_thickness_unit_cb.activated.connect(self.on_slice_thickness_unit_cb_activated)
+        hbox = QHBoxLayout()
+        hbox.addWidget(self.slice_thickness_sb)
+        hbox.addWidget(self.slice_thickness_unit_cb)
+        label = QLabel('Slice thickness')
+        label.setToolTip('Thick films can be sliced into thinner films to overcome numerical problems\nSlicing is not performed if the slice thickness is 0')
+        return label,hbox
+
+    def on_slice_thickness_sb_changed(self,value):
+        # We will need to recalculate everything for the new slice
+        self.refreshRequired = True
+        self.settings['Slice thickness'] = value
+        return
+
+    def on_slice_thickness_unit_cb_activated(self,index):
+        # We will need to recalculate everything for the new slice
+        self.refreshRequired = True
+        units = ['nm', 'um', 'mm', 'cm']
+        self.settings['Slice thickness unit'] = units[index]
+        return
+
     def substratePermittivityWidget(self):
         ''' Create a substrate permittivity widget'''
         self.substrate_permittivity_r_sb = QDoubleSpinBox(self)
@@ -823,6 +865,11 @@ class SingleCrystalScenarioTab(ScenarioTab):
         else:
             self.settings['Percentage partial incoherence'] = 0
             self.noCalculationsRequired = 1
+        # Update the slice information
+        self.slice_thickness_sb.setValue(self.settings['Slice thickness'])
+        thicknessUnit = self.settings['Slice thickness unit']
+        index = self.slice_thickness_unit_cb.findText(thicknessUnit, Qt.MatchFixedString)
+        self.slice_thickness_unit_cb.setCurrentIndex(index)
         # Update the Legend widget
         self.legend_le.setText(self.settings['Legend'])
         # Update angle widgets
@@ -1060,7 +1107,8 @@ class SingleCrystalScenarioTab(ScenarioTab):
                             theta,
                             phi,
                             psi,
-                            angleOfIncidence):
+                            angleOfIncidence,
+                            sliceThickness):
         """ Calculates the incoherent component of light reflectance and transmission
             by sampling the path length in the incident medium """
         debugger.print(self.settings['Legend'],'Start:: partially_incoherent_calculator')
@@ -1113,7 +1161,8 @@ class SingleCrystalScenarioTab(ScenarioTab):
                                        theta,
                                        phi,
                                        psi,
-                                       angleOfIncidence)
+                                       angleOfIncidence,
+                                       sliceThickness)
             av_p_reflectance   += np.array(p_reflectance) / self.settings['Partially incoherent samples']
             av_s_reflectance   += np.array(s_reflectance) / self.settings['Partially incoherent samples']
             av_p_transmittance += np.array(p_transmittance) / self.settings['Partially incoherent samples']
@@ -1143,14 +1192,14 @@ class SingleCrystalScenarioTab(ScenarioTab):
                             theta,
                             phi,
                             psi,
-                            angleOfIncidence):
+                            angleOfIncidence,
+                            sliceThickness):
         """ Calculates the coherent component of light reflectance and transmission """
         debugger.print(self.settings['Legend'],'Entering the coherent_calculator function')
         #
         # Initialise the partial function to pass through to the pool
         #
         crystalIncoherence = self.settings["Percentage partial incoherence"] * np.pi / 100.0 
-        maximumAllowedThickness = self.settings["Maximum allowed thickness"]
         partial_function = partial(Calculator.solve_single_crystal_equations,
                                        superstrateDielectricFunction,
                                        substrateDielectricFunction,
@@ -1163,13 +1212,13 @@ class SingleCrystalScenarioTab(ScenarioTab):
                                        phi,
                                        psi,
                                        angleOfIncidence,
-                                       maximumAllowedThickness)
+                                       sliceThickness)
         results = []
         # About to call
         debugger.print(self.settings['Legend'],'About to calculate single crystal scenario using pool')
         #begin serial version 
         #for v in self.vs_cm1:
-        #   results.append(Calculator.solve_single_crystal_equations( superstrateDielectricFunction, substrateDielectricFunction, crystalPermittivityFunction, superstrateDepth, substrateDepth, crystalDepth, crystalIncoherence, mode, theta, phi, psi, angleOfIncidence,v))
+        #   results.append(Calculator.solve_single_crystal_equations( superstrateDielectricFunction, substrateDielectricFunction, crystalPermittivityFunction, superstrateDepth, substrateDepth, crystalDepth, crystalIncoherence, mode, theta, phi, psi, angleOfIncidence,sliceThickness,v))
            #print('results',results[0:4])
         #end serial version
         if self.notebook.pool is None:
@@ -1254,6 +1303,8 @@ class SingleCrystalScenarioTab(ScenarioTab):
         superstrateDepth = tom * self.settings['Superstrate depth']
         superstrateDepth = tom * self.settings['Superstrate depth']
         substrateDepth   = tom * self.settings['Substrate depth']
+        tom = thicknessUnits[self.settings['Slice thickness unit']]
+        sliceThickness   = tom * self.settings['Slice thickness']
         # The euler angles are set to zero, apart from the global azimuthal angle
         # the rotation of each layer is now handled by the layer class.
         theta = 0.0
@@ -1288,7 +1339,8 @@ class SingleCrystalScenarioTab(ScenarioTab):
                                     theta,
                                     phi,
                                     psi,
-                                    angleOfIncidence)
+                                    angleOfIncidence,
+                                    sliceThickness)
         debugger.print(self.settings['Legend'],'Finished:: calculate - number of frequencies',len(vs_cm1))
         return
 
