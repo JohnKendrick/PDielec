@@ -1511,7 +1511,6 @@ def solve_single_crystal_equations(
     superstrate      = GTM.Layer(thickness=superstrateDepth,epsilon1=superstrateDielectricFunction)
     substrate        = GTM.Layer(thickness=substrateDepth,  epsilon1=substrateDielectricFunction)
     selectedLayers = layers
-    
     if mode == 'Thick slab':
         # For a thick slab the last layer is used as the thick layer
         # so redefined the substrate and remove the last layer from the list of layers
@@ -1520,11 +1519,10 @@ def solve_single_crystal_equations(
         substrateDielectricFunction = layers[-1].getPermittivityFunction()
         substrate = GTM.Layer(thickness=substrateDepth,  epsilon=substrateDielectricFunction)
     gtmLayers = []
-    lastIndex = len(layers)-1
-    for index,layer in enumerate(selectedLayers):
+    for layer in enumerate(selectedLayers):
         permittivityFunction = layer.getPermittivityFunction()
         depth = layer.getThicknessInMetres()
-        if sliceThickness != 0 and index != lastIndex and depth > sliceThickness:
+        if sliceThickness != 0 and depth > sliceThickness:
             no_of_layers = int(depth / sliceThickness) + 1
             newdepth = depth / no_of_layers
             for i in range(no_of_layers):
