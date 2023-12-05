@@ -1519,7 +1519,7 @@ def solve_single_crystal_equations(
         substrateDielectricFunction = layers[-1].getPermittivityFunction()
         substrate = GTM.Layer(thickness=substrateDepth,  epsilon=substrateDielectricFunction)
     gtmLayers = []
-    for layer in enumerate(selectedLayers):
+    for layer in selectedLayers:
         permittivityFunction = layer.getPermittivityFunction()
         depth = layer.getThicknessInMetres()
         if sliceThickness != 0 and depth > sliceThickness:
