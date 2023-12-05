@@ -17,7 +17,7 @@ def main():
         print('         an error is flagged if 2*abs(f1-f2)/(f1+f2+2) > threshold', file=sys.stderr)
         print('         The default value for threshold is 1.0E-3 ', file=sys.stderr)
         print('         -f forces a full comparison of the sheets ', file=sys.stderr)
-        print('            by default Settings is not included    ', file=sys.stderr)
+        print('            by default Settings and Scenarios are not included    ', file=sys.stderr)
         exit()
 
     threshold = 1.0E-3
@@ -64,9 +64,10 @@ def main():
     #
     # Loop over sheets
     #
-    sheets = ['Main','Scenarios','Powder Molar Absorption (cells)','Powder Absorption','Powder Real Permittivity','Powder Imaginary Permittivity', 'Powder ATR Reflectance', 'Analysis','Crystal R_p','Crystal R_s','Crystal T_p','Crystal T_s','Real Crystal Permittivity','Imag Crystal Permittivity']
+    sheets = ['Main','Powder Molar Absorption (cells)','Powder Absorption','Powder Real Permittivity','Powder Imaginary Permittivity', 'Powder ATR Reflectance', 'Analysis','Crystal R_p','Crystal R_s','Crystal T_p','Crystal T_s','Real Crystal Permittivity','Imag Crystal Permittivity']
     if full:
         sheets.append('Settings')
+        sheets.append('Scenarios')
     for sheet in sheets:
         if not sheet in  wb1 :
             continue
