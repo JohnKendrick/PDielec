@@ -9,7 +9,7 @@ tab = self.notebook.mainTab
 tab.settings['Program'] = 'crystal'
 tab.settings['Output file name'] = 'phonon.out'
 tab.settings['Excel file name'] = 'results.xlsx'
-tab.settings['Script file name'] = 'script.py'
+tab.settings['Script file name'] = 'slice.py'
 tab.settings['QM program'] = ''
 #
 #
@@ -19,6 +19,7 @@ tab.settings['Neutral Born charges'] =  False
 tab.settings['Sigma value'] =  1.5
 tab.settings['Mass definition'] = 'average'
 tab.settings['Optical permittivity edited'] =  False
+tab.sigmas_cm1 = [1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5]
 #
 #
 tab = self.notebook.scenarios[0]
@@ -46,6 +47,8 @@ tab.settings['Layer azimuthals'] =  [0.0]
 tab.settings['Layer thicknesses'] =  [10.0]
 tab.settings['Layer thickness units'] =  ['um']
 tab.settings['Layer dielectric flags'] =  [True]
+tab.settings['Slice thickness'] =  1
+tab.settings['Slice thickness unit'] = 'um'
 tab.settings['Superstrate dielectric'] =  1.0
 tab.settings['Substrate dielectric'] =  1.0
 #
@@ -76,6 +79,8 @@ tab.settings['Layer azimuthals'] =  [0.0]
 tab.settings['Layer thicknesses'] =  [45.0]
 tab.settings['Layer thickness units'] =  ['um']
 tab.settings['Layer dielectric flags'] =  [True]
+tab.settings['Slice thickness'] =  1
+tab.settings['Slice thickness unit'] = 'um'
 tab.settings['Superstrate dielectric'] =  1.0
 tab.settings['Substrate dielectric'] =  1.0
 #
@@ -106,6 +111,8 @@ tab.settings['Layer azimuthals'] =  [0.0]
 tab.settings['Layer thicknesses'] =  [45.0]
 tab.settings['Layer thickness units'] =  ['um']
 tab.settings['Layer dielectric flags'] =  [True]
+tab.settings['Slice thickness'] =  1
+tab.settings['Slice thickness unit'] = 'um'
 tab.settings['Superstrate dielectric'] =  1.0
 tab.settings['Substrate dielectric'] =  1.0
 #
@@ -136,6 +143,8 @@ tab.settings['Layer azimuthals'] =  [90.0]
 tab.settings['Layer thicknesses'] =  [45.0]
 tab.settings['Layer thickness units'] =  ['um']
 tab.settings['Layer dielectric flags'] =  [True]
+tab.settings['Slice thickness'] =  1
+tab.settings['Slice thickness unit'] = 'um'
 tab.settings['Superstrate dielectric'] =  1.0
 tab.settings['Substrate dielectric'] =  1.0
 #
@@ -166,6 +175,8 @@ tab.settings['Layer azimuthals'] =  [0.0]
 tab.settings['Layer thicknesses'] =  [45.0]
 tab.settings['Layer thickness units'] =  ['um']
 tab.settings['Layer dielectric flags'] =  [True]
+tab.settings['Slice thickness'] =  1
+tab.settings['Slice thickness unit'] = 'um'
 tab.settings['Superstrate dielectric'] =  1.0
 tab.settings['Substrate dielectric'] =  1.0
 #
@@ -196,6 +207,8 @@ tab.settings['Layer azimuthals'] =  [0.0]
 tab.settings['Layer thicknesses'] =  [45.0]
 tab.settings['Layer thickness units'] =  ['um']
 tab.settings['Layer dielectric flags'] =  [True]
+tab.settings['Slice thickness'] =  1
+tab.settings['Slice thickness unit'] = 'um'
 tab.settings['Superstrate dielectric'] =  1.0
 tab.settings['Substrate dielectric'] =  1.0
 #
