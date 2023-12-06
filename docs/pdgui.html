@@ -74,7 +74,7 @@
 <h1><span class="section-number">3. </span>PDGui<a class="headerlink" href="#pdgui" title="Permalink to this heading">¶</a></h1>
 <p>PDGui provides a graphical front end to the capabilities of PDielec.
 PDGui can be run from the command line without any parameters or followed by the file to be read in.  PDGui makes a best guess at the DFT/MM program used to create the output.
-It can also be used a command line tool without having to use the GUI, this needs a script file to be available.</p>
+It can also be used as a command line tool without having to use the GUI, this needs a script file to be available.</p>
 <p>For example;</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pdgui</span>
 </pre></div>
@@ -87,7 +87,7 @@ It can also be used a command line tool without having to use the GUI, this need
 <span class="n">pdgui</span> <span class="n">run3</span><span class="o">.</span><span class="n">gout</span>                                             <span class="c1"># An Gulp calculation</span>
 </pre></div>
 </div>
-<p>If running a script which contains program and output file information, then:</p>
+<p>If running a script that contains program and output file information, then:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pdgui</span> <span class="o">-</span><span class="n">script</span> <span class="n">script</span><span class="o">.</span><span class="n">py</span>
 </pre></div>
 </div>
@@ -100,7 +100,7 @@ To use as a command line tool an example would be;</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pdgui</span> <span class="n">OUTCAR</span> <span class="o">-</span><span class="n">spreadsheet</span> <span class="n">results</span><span class="o">.</span><span class="n">xlsx</span> <span class="o">-</span><span class="n">script</span> <span class="n">script</span><span class="o">.</span><span class="n">py</span> <span class="o">-</span><span class="n">nosplash</span> <span class="o">-</span><span class="n">exit</span>
 </pre></div>
 </div>
-<p>There are several command line options which may be useful in running the package.</p>
+<p>Several command line options may be useful in running the package.</p>
 <table class="styled-table docutils align-default" id="command-line-options">
 <caption><span class="caption-number">Table 3.1 </span><span class="caption-text">PDGui command line options</span><a class="headerlink" href="#command-line-options" title="Permalink to this table">¶</a></caption>
 <colgroup>
@@ -156,9 +156,9 @@ or 2 threads if threading</p></td>
 </table>
 <p>After running the program the user sees a notebook interface with seven tabs.</p>
 <ul class="simple">
-<li><p><em>Main Tab</em> allows the user to specify the program and filename which are to be anaylsed.  It is also possible to specify here the spreadsheet name to which results are saved to.</p></li>
+<li><p><em>Main Tab</em> allows the user to specify the program and filename that are to be analysed.  It is also possible to specify here the spreadsheet name to which results are saved to.</p></li>
 <li><p><em>Settings Tab</em> is used for changing the settings within the package</p></li>
-<li><p><em>Scenario Tab</em> can be a powder scenario or a single crystal scenario.  In the case of a powder scenario the tab specifies the material properties used to define the effective medium from which the  absorption characteristic are calculated.  In the case of a single crystal the orientation of the the crystal can be defined and the angle of incidence of the radiation.</p></li>
+<li><p><em>Scenario Tab</em> can be a powder scenario or a single-crystal scenario.  In the case of a powder scenario, the tab specifies the material properties used to define the effective medium from which the  absorption characteristics are calculated.  In the case of a single crystal, the orientation of the crystal and the angle of incidence of the radiation can be defined.</p></li>
 <li><p><em>Plotting Tab</em> shows the results of all the scenario tabs in one place.</p></li>
 <li><p><em>Analysis Tab</em> shows the decomposition of the normal modes into molecular components.</p></li>
 <li><p><em>Visualisation Tab</em> displays the normal modes as either arrows showing the atomic displacement or as an animation.</p></li>
@@ -174,13 +174,13 @@ or 2 threads if threading</p></td>
 </figcaption>
 </figure>
 <p>The QM/MM program can be chosen from the dropdown list.
-The current list of packages supported are: Abinit, Castep, Crystal, Experiment, Gulp, Phonopy - Vasp, Quantum Espresso, Vasp and PDGui.
-The output file name can be provided in the text box below it, or it can be specified using the <cite>File manager</cite> button.  In addition to input files from QM/MM programs the program can read Python script files written by PDGui.  These should have a ‘.py’ extension.
-The <em>Experimental</em> file format allows the user to provide their own specification of a dielectric medium, where a code other than that catered for by the program has been used.
+The current list of packages supported are Abinit, Castep, Crystal, Experiment, Gulp, Phonopy - Vasp, Quantum Espresso, Vasp, and PDGui.
+The output file name can be provided in the text box below it, or it can be specified using the <cite>File manager</cite> button.  In addition to input files from QM/MM programs, the program can read Python script files written by PDGui.  These should have a ‘.py’ extension.
+The <em>Experimental</em> file format allows the user to provide their specification of a dielectric medium, where a code other than that catered for by the program has been used.
 The file format is described in full in the section: <a class="reference internal" href="software.html#experimental-file-format"><span class="std std-ref">Experimental File Format</span></a>
 The <em>PDGui</em> option allows the user to select a scripting file from the interface.</p>
-<p>If an Excel spreadsheet file name given, it must have the extensions .xlsx.  The spreadsheet is written when the <cite>Save results</cite> button is pressed.</p>
-<p>If the current program settings need to be stored they can be stored as a Python script file by pressing the <cite>Save settings</cite> button.  Any settings saved in the way can be re-instated by reading in the script using the <cite>File manager</cite> and selecting the <cite>PDGui (*.py)</cite> option in the file types selection.</p>
+<p>If an Excel spreadsheet file name is given, it must have the extensions .xlsx.  The spreadsheet is written when the <cite>Save results</cite> button is pressed.</p>
+<p>If the current program settings need to be stored they can be stored as a Python script file by pressing the <cite>Save settings</cite> button.  Any settings saved in this way can be re-instated by reading the script using the <cite>File manager</cite> and selecting the <cite>PDGui (*.py)</cite> option in the file types selection.</p>
 <p>Once the file has been specified and read, the unit cell is shown and the frequencies found in the calculation file are reported in the output text boxes.</p>
 </section>
 <section id="settings-tab">
@@ -192,8 +192,8 @@ The <em>PDGui</em> option allows the user to select a scripting file from the in
 <p><span class="caption-number">Fig. 3.2 </span><span class="caption-text">The Settings Tab</span><a class="headerlink" href="#id5" title="Permalink to this image">¶</a></p>
 </figcaption>
 </figure>
-<p>The Eckart conditions control whether 3 modes at zero frequency due to translational invariance are projected out of the dynamical matrix.  By default the Eckart conditions are applied and the 3 modes are projected out.</p>
-<p>There is an option to set the sum of the Born charge matrices to zero.  By default this is not applied.</p>
+<p>The Eckart conditions control whether 3 modes at zero frequency due to translational invariance are projected out of the dynamical matrix.  By default, the Eckart conditions are applied and the 3 modes are projected out.</p>
+<p>There is an option to set the sum of the Born charge matrices to zero.  By default, this is not applied.</p>
 <dl class="simple">
 <dt>The atomic masses can be specified in a variety of ways.  They can be chosen from;</dt><dd><ul class="simple">
 <li><p>The average natural abundance</p></li>
@@ -204,15 +204,15 @@ The <em>PDGui</em> option allows the user to select a scripting file from the in
 </dl>
 <p>If necessary the mass of each element can be edited separately by clicking on the mass concerned and entering a new number.</p>
 <p>The width (<span class="math notranslate nohighlight">\(\sigma\)</span>) of all the absorptions can be set using the <em>Lorentzian width(sigma)</em>  spin box.</p>
-<p>Finally the optical permittivity at zero frequency is given in the <em>Optical permittivity</em> table.  In some cases it is necessary to enter the optical permittivity by hand.  This can be done by clicking each element in the table which needs changing and typing the new matrix element.</p>
+<p>Finally, the optical permittivity at zero frequency is given in the <em>Optical permittivity</em> table.  In some cases, it is necessary to enter the optical permittivity by hand.  This can be done by clicking each element in the table that needs changing and typing the new matrix element.</p>
 <p>When a new output file is read the atomic masses and the optical permittivity matrix are reset.</p>
-<p>The output table at the bottom of the tab shows the calculated frequencies and their intensities.  Transitions which do not contribute to the Infrared absorption are greyed out.  These transitions will not be used in later calculations.  From this table it is possible to remove or add transitions to the later calculations and it is also possible to change the width of individual transitions.</p>
+<p>The output table at the bottom of the tab shows the calculated frequencies and their intensities.  Transitions that do not contribute to the Infrared absorption are greyed out.  These transitions will not be used in later calculations.  From this table it is possible to remove or add transitions to the later calculations and it is also possible to change the width of individual transitions.</p>
 </section>
 <section id="scenario-tabs">
 <h2><span class="section-number">3.3. </span>Scenario Tabs<a class="headerlink" href="#scenario-tabs" title="Permalink to this heading">¶</a></h2>
-<p>There are two sorts of scenario tab, one for powder calculations and one for single crystal calculations.  By default it is assumed that powder calculations are being performed.  There is a button ( <cite>Switch to crystal scenario</cite> or <cite>Switch to powder scenario</cite>) at the bottom of the tabs which allows the user to switch between the two.</p>
+<p>There are two sorts of scenario tab, one for powder calculations and one for single-crystal calculations.  By default, it is assumed that powder calculations are being performed.  There is a button ( <cite>Switch to crystal scenario</cite> or <cite>Switch to powder scenario</cite>) at the bottom of the tabs which allows the user to switch between the two.</p>
 <p>Scenarios can be added or removed using the push buttons at the bottom of each <em>Scenario Tab</em>.  When a new scenario is created the settings are copied from the current scenario.</p>
-<p>There can be more than one <em>Scenario Tab</em>.  Each one specifies a particular material, method or particle shape which will be used for the calculation of the effective medium or single crystal.  The results of the calculations will be shown in the <em>Plotting Tab</em>.</p>
+<p>There can be more than one <em>Scenario Tab</em>.  Each one specifies a particular material, method, or particle shape which will be used for the calculation of the effective medium or single crystal.  The results of the calculations will be shown in the <em>Plotting Tab</em>.</p>
 <section id="powder-scenarios">
 <h3><span class="section-number">3.3.1. </span>Powder Scenarios<a class="headerlink" href="#powder-scenarios" title="Permalink to this heading">¶</a></h3>
 <p>For each powder scenario it is assumed that the size of the particle embedded in the matrix is small compared with the wavelength of light.</p>
@@ -225,19 +225,19 @@ The <em>PDGui</em> option allows the user to select a scripting file from the in
 <p>A database of material properties is opened at the start of the program.
 The default database (<em>PDielec/MaterialsDataBase.xlsx</em>) is opened although other databases can be loaded by pressing the <em>Open materials’ database</em> button.
 The open database is shown in the line below, followed by a line showing the support matrix material selected along with a brief description of the type of entry for the material.</p>
-<p>Materials can have either a constant or frequency dependent permittivity.
-In the case of frequency dependent entries the range of frequencies which the entry covers is displayed.
-A warning is appropriate here as all of the frequency dependent materials have been extrapolated so as to be valid to 0<span class="math notranslate nohighlight">\(cm^{-1}\)</span>.
+<p>Materials can have either a constant or frequency-dependent permittivity.
+In the case of frequency-dependent entries the range of frequencies which the entry covers is displayed.
+A warning is appropriate here as all of the frequency-dependent materials have been extrapolated to be valid at 0<span class="math notranslate nohighlight">\(cm^{-1}\)</span> and above.
 The extrapolated values are indicated in the database itself.</p>
-<p>The support matrix into which the active dielectric material is dispersed can be selected from the <em>Support matrix</em> drop down menu.
+<p>The support matrix into which the active dielectric material is dispersed can be selected from the <em>Support matrix</em> drop-down menu.
 The selected supporting material will change the density and permittivity shown in the respective text boxes.
-For frequency dependent entries the value of the permittivity at 0<span class="math notranslate nohighlight">\(cm^{-1}\)</span> is used.
+For frequency-dependent entries the value of the permittivity at 0<span class="math notranslate nohighlight">\(cm^{-1}\)</span> is used.
 The user can edit these values independently if necessary.
-But if this is done the program assumes that the changes result in a frequency independent permittivity.
+But if this is done the program assumes that the changes result in a frequency-independent permittivity.
 The <em>Support permittivity</em> consists of two inputs for the real and imaginary components of the permittivity.
-For any Mie calculations the imaginary component is ignored.</p>
+For any Mie calculation the imaginary component is ignored.</p>
 <p>The supporting medium may have bubbles of air trapped in the matrix.
-For the case that polyethylene spheres are used to make the sample, experimental information indicates a relationship between the size of the spheres and size of the air inclusions <span id="id1">[<a class="reference internal" href="zreferences.html#id70" title="Mayank Kaushik, Brian W Ng, Bernd M Fischer, and Derek Abbott. Terahertz scattering by granular composite materials : An effective medium theory Terahertz scattering by granular composite materials : An effective medium theory. Applied Physics Letters, 100(1):1–4, 2012. doi:10.1063/1.3674289.">16</a>]</span>.</p>
+For the case that polyethylene spheres are used to make the sample, experimental information indicates a relationship between the size of the spheres and the size of the air inclusions <span id="id1">[<a class="reference internal" href="zreferences.html#id70" title="Mayank Kaushik, Brian W Ng, Bernd M Fischer, and Derek Abbott. Terahertz scattering by granular composite materials : An effective medium theory Terahertz scattering by granular composite materials : An effective medium theory. Applied Physics Letters, 100(1):1–4, 2012. doi:10.1063/1.3674289.">16</a>]</span>.</p>
 <table class="styled-table docutils align-default" id="tab-air-bubbles">
 <caption><span class="caption-number">Table 3.2 </span><span class="caption-text">Size of air inclusion (bubbles) in polyethylene</span><a class="headerlink" href="#tab-air-bubbles" title="Permalink to this table">¶</a></caption>
 <colgroup>
@@ -267,33 +267,33 @@ For the case that polyethylene spheres are used to make the sample, experimental
 </tbody>
 </table>
 <p>The size of the air inclusions (bubbles) can be specified in the <em>Scenario Tab</em> along with the volume fraction.  If a non-zero value for the volume fraction of air voids is given, the scattering due to the air inclusions is calculated before the effective medium calculation is performed.
-The forward and backward scattering amplitudes for a single scatterer are calculated using the Mie method and then used to calculated the scattering using the Waterman-Truell approximation.</p>
+The forward and backward scattering amplitudes for a single scatterer are calculated using the Mie method and then used to calculate the scattering using the Waterman-Truell approximation.</p>
 <p>The amount of dielectric material can be entered either as a mass fraction (in percent) or as a volume fraction (in percent).
 If the matrix support density is changed the calculated mass fraction will be updated.
 It is assumed that the volume fraction has precedence.
 If an air void volume fraction is supplied then this is taken account of in the calculation of the volume and mass fractions.</p>
-<p>The calculation of the effective medium can be performed using a variety of methods which can be chosen from the <em>Method</em> drop down menu.
-If the <em>Mie</em> method is chosen the user can enter the particles radius (μ).
+<p>The calculation of the effective medium can be performed using a variety of methods which can be chosen from the <em>Method</em> drop-down menu.
+If the <em>Mie</em> method is chosen the user can enter the particles’ radius (μ).
 <em>Particle sigma</em> specifies the width of a log-normal distribution.
 If the width is 0.0 no sampling of the distribution is performed.</p>
-<p>For effective medium theories, the particle shape can be specfied using the <em>Shape</em> pull down menu.
+<p>For effective medium theories, the particle shape can be specified using the <em>Shape</em> pull-down menu.
 Possible shapes are <em>Sphere</em>, <em>Needle</em>, <em>Plate</em> and <em>Ellipsoid</em>.
-For the cases of <em>Needle</em> and <em>Ellipsoid</em> the unique direction is specifed by a direction [abc] in lattice units.
-In the case of <em>Plate</em> the unique direction is specifies as the normal to a plane (hkl) in reciprical lattice units.
+For the cases of <em>Needle</em> and <em>Ellipsoid</em> the unique direction is specified by a direction [abc] in lattice units.
+In the case of <em>Plate</em> the unique direction is specified as the normal to a plane (hkl) in recipricol lattice units.
 If an <em>Ellipsoid</em> shape is used the eccentricity factor can be specified in the <em>Ellipsoid a/b eccentricity</em> text box.</p>
 <p>The plot in the <em>Plotting Tab</em> has a legend and the description used in the legend for each scenario can be set by filling out the text box associated with the <em>Scenario legend</em>.</p>
 </section>
 <section id="single-crystal-scenarios">
-<h3><span class="section-number">3.3.2. </span>Single Crystal Scenarios<a class="headerlink" href="#single-crystal-scenarios" title="Permalink to this heading">¶</a></h3>
-<p>As in the powder scenario, a single crystal scenario has an option to open a new database of materials.
-By default the program opens the default database distributed with the program.</p>
-<p>The mode of calculation is determined by the <em>Single crystal mode</em> option.  Possible options are; <em>Thick slab</em>, <em>Coherent thin film</em>, <em>Incoherent thin film</em> and <em>Partially incoherent thin film</em>.
+<h3><span class="section-number">3.3.2. </span>Single-Crystal Scenarios<a class="headerlink" href="#single-crystal-scenarios" title="Permalink to this heading">¶</a></h3>
+<p>As in the powder scenario, a single-crystal scenario has an option to open a new database of materials.
+By default, the program opens the default database distributed with the program.</p>
+<p>The mode of calculation is determined by the <em>Single crystal mode</em> option.  Possible options are; <em>Thick slab</em>, <em>Coherent thin film</em>, <em>Incoherent thin film</em>, and <em>Partially incoherent thin film</em>.
 Details of the theory underlying each method are given in the theory section: <a class="reference internal" href="theory_single_crystal.html#single-crystal-theory"><span class="std std-ref">Theory for Single Crystal Optics</span></a>.
-In summary a thick slab assumes that the thickness is such that no radiation can be transmitted and all radiation is therefore reflected or absorbed.  As such only the reflectance has any meaning for thick slabs.
-The <em>Coherent thin film mode</em> provides a complete description of the light reflectance and transmittance, but can show oscialltions due to interference effects that are not see experimentally.
-The <em>Incoherent thin film mode</em>, treats the incoming light as incoherent and so removes all the oscillations due to internal reflection.
+In summary, a thick slab assumes that the thickness is such that no radiation can be transmitted and all radiation is therefore reflected or absorbed.  As such only the reflectance has any meaning for thick slabs.
+The <em>Coherent thin film mode</em> provides a complete description of the light reflectance and transmittance but can show oscillations due to interference effects that are not seen experimentally.
+The <em>Incoherent thin film mode</em> treats the incoming light as incoherent and so removes all the oscillations due to internal reflection.
 Finally the <em>Partially incoherent film</em> introduces random variations in the incident angle and the geometric parameters of the crystal surface and the thickness of the crystal.
-Single crystal films are defined by a surface determined by the (hkl) settings.</p>
+Single-crystal films are defined by a surface determined by the (hkl) settings.</p>
 <figure class="align-default" id="id7">
 <span id="fig-scenariotab-singlecrystal"></span><a class="reference internal image-reference" href="_images/ScenarioTab-SingleCrystal.png"><img alt="_images/ScenarioTab-SingleCrystal.png" src="_images/ScenarioTab-SingleCrystal.png" style="width: 550.4px; height: 784.8000000000001px;" /></a>
 <figcaption>
@@ -303,31 +303,32 @@ Single crystal films are defined by a surface determined by the (hkl) settings.<
 <p>The mode of calculation is selected at the top of the tab, followed by the global azimuthal angle and the angle of incidence.
 The global azimuthal angle controls the rotation of all the layers around the laboratory Z-axis, although each layer also has its own azimuthal angle as will be described later.</p>
 <p>The layers of the system are defined by a superstrate, a collection of film layers (which includes the dielectric material being studied by DFT) and finally a substrate.
-The superstrate and substrate are semi-infinite materials which must have an isotropic permittivity, which can be complex.
-In the case of the <em>Thick slab</em> mode, the substrate is not used, instead the last layer in the list of layers is used as the semi-infinite material.  This material need not be isotropic.</p>
-<p>The layers are shown in the GUI in order with the superstrate at the top.  There are pull down menus to choose a material for the superstrate and substrate, or the real and imaginary components of their isotropic permittivity can be specified mannually.</p>
+The superstrate and substrate are semi-infinite materials that must have an isotropic permittivity, which can be complex.
+In the case of the <em>Thick slab</em> mode, the substrate is not used, instead, the last layer in the list of layers is used as the semi-infinite material.  This material need not be isotropic.</p>
+<p>The layers are shown in the GUI in order with the superstrate at the top.  There are pull-down menus to choose a material for the superstrate and substrate, or the real and imaginary components of their isotropic permittivity can be specified manually.</p>
 <p>Underneath the superstrate specification is shown a list of film layers, by default only the dielectric material being studied by DFT is shown.
 Each line in the list shows the thickness of the film, its surface in terms of (hkl) and its azimuthal angle.
-This is sufficient information to define the orientation of the crystal in labaoratory coordinates.
-Further information on this is given the the section describing the <a class="reference internal" href="#the-layer-editor"><span class="std std-ref">The Layer Editor</span></a>.</p>
+This is sufficient information to define the orientation of the crystal in laboratory coordinates.
+Further information on this is given the the section describing <a class="reference internal" href="#the-layer-editor"><span class="std std-ref">The Layer Editor</span></a>.</p>
+<p>The slice thickness is used to help in those cases that experience numerical problems when solving the single-crystal optical equations.  Problems of overflow arise, especially for thick films.  By default, the slice thickness is set to zero and now slicing is employed.  If a non-zero value is given, any film that is thicker than this value is subdivided (sliced) into adjacent thinner layers.  Although the results should be the same if slicing is used or not, the computational time goes up linearly with the number of slices.</p>
 <p>In the case of the <em>Partially incoherent thin film</em> mode it is necessary to provide further information about the sampling of the geometrical parameters.
-The <em>Percentage of partial incoherence</em> provides a percentage perturbation of the geometric parameters.  All angles are sampled from a uniform distribution either side of the mean value by this percentage of 90<sup>o</sup>.
-The film thickness is also varied either side of the mean value by this percentage of the mean value.</p>
+The <em>Percentage of partial incoherence</em> provides a percentage perturbation of the geometric parameters.  All angles are sampled from a uniform distribution on either side of the mean value by this percentage of 90<sup>o</sup>.
+The film thickness is also varied on either side of the mean value by this percentage of the mean value.</p>
 <p>The number of samples used in sampling is given by the value of <em>Number of partially incoherent samples</em>.
 When smoothing is required the size of the <em>Incoherent smoothing filter, kernel size</em> must be 3 or greater.  Only odd numbers are accepted.  This value can be as large as possible, but should not exceed the number of data points between true peaks.
 The polynomial degree of the smoothing function is given by the <em>Incoherent smoothing filter, polynomial</em>, values of 3 or 4 are recommended.
-Finally there is a legend that can be provided for the Plotting Tab.</p>
+Finally, there is a legend that can be provided for the Plotting Tab.</p>
 <section id="the-layer-editor">
 <span id="id2"></span><h4><span class="section-number">3.3.2.1. </span>The Layer Editor<a class="headerlink" href="#the-layer-editor" title="Permalink to this heading">¶</a></h4>
 <p>To see more details of the crystalline layers in the system press the <em>Edit layers between superstrate and substrate</em> button.
-This bring up a new window, which allows the addition and removal of layers as well as the facility of rearranging their order.
-To add a new layer, first select the material of the layer using the pull down menu at the bottom of the layer editor window and then press the <em>Add layer of…</em> button.  The new material will be shown as the bottom layer in the list of layers.
+This brings up a new window, which allows the addition and removal of layers as well as the facility of rearranging their order.
+To add a new layer, first select the material of the layer using the pull-down menu at the bottom of the layer editor window and then press the <em>Add layer of…</em> button.  The new material will be shown as the bottom layer in the list of layers.
 Each layer has its own buttons to move the layer up or down or to delete the material from the list.  The <em>Dielectric film</em> cannot be deleted as it is the material being studied by DFT.</p>
 <p>A useful feature of the <em>layer editor</em> is that it shows the connection between the crystal and laboratory coordinate systems.
-The laboratory axes are defined with Z- being the normal to the surface (hkl), and the incident and reflected beams lie in the XZ- plane, which means the laboratory Y- axis is perpendicular to the XZ- plane.
+The laboratory axes are defined with Z- being normal to the surface (hkl), and the incident and reflected beams lie in the XZ- plane, which means the laboratory Y- axis is perpendicular to the XZ- plane.
 The incident radiation is assumed to be at an angle <span class="math notranslate nohighlight">\(\theta\)</span> to the normal.
 p-polarised light lies in the XZ- plane and s-polarised light is parallel with the Y-axis.  The azimuthal angle <span class="math notranslate nohighlight">\(\phi\)</span> defines the rotation of the crystal around the Z-axis.
-To help understand the relationship between the crystal and laboratory co-ordinates the program outputs the direction of the lattice vectors in terms of the laboratory X-, Y- and Z- coordinates.
+To help understand the relationship between the crystal and laboratory coordinates the program outputs the direction of the lattice vectors in terms of the laboratory X-, Y- and Z- coordinates.
 A more complete description of the relationship between the coordinate systems is given in <a class="reference internal" href="theory_single_crystal.html#crystal-and-laboratory-coordinates"><span class="std std-ref">Crystal &amp; Laboratory Coordinate Frames</span></a></p>
 <figure class="align-default" id="id8">
 <span id="fig-layer-editor-window"></span><a class="reference internal image-reference" href="_images/layer-editor-window.png"><img alt="_images/layer-editor-window.png" src="_images/layer-editor-window.png" style="width: 508.0px; height: 301.6px;" /></a>
@@ -341,23 +342,23 @@ A more complete description of the relationship between the coordinate systems i
 <section id="plotting-tab">
 <h2><span class="section-number">3.4. </span>Plotting Tab<a class="headerlink" href="#plotting-tab" title="Permalink to this heading">¶</a></h2>
 <p>The <em>Plotting Tab</em> controls and plots the absorption and permittivity as a function of frequency calculated for each scenario present in the pdgui notebook.
-The plots available depends on the availability of powder and single crystal scenarios.</p>
+The plots available depend on the availability of powder and single-crystal scenarios.</p>
 <figure class="align-default" id="id9">
 <span id="fig-plottingtab-powder"></span><a class="reference internal image-reference" href="_images/PlottingTab-Powder.png"><img alt="_images/PlottingTab-Powder.png" src="_images/PlottingTab-Powder.png" style="width: 545.6px; height: 774.4000000000001px;" /></a>
 <figcaption>
 <p><span class="caption-number">Fig. 3.6 </span><span class="caption-text">The Plotting Tab Showing Powder Absorption</span><a class="headerlink" href="#id9" title="Permalink to this image">¶</a></p>
 </figcaption>
 </figure>
-<p>The minimum and maximum frequencies can be specified along with the frequency increment.  An effective medium theory calculation will be performed for each scenario at every frequency between the minimum and maxmimum frequencies at the interval specified.</p>
-<p>By default the calculation uses moles of unit cells to calculation the molar absorption coefficient.  This can be altered using the the <em>Molar definition</em> pull down menu.  Options include <em>Unit cells</em>, <em>Atoms</em> and <em>Molecules</em>.  In the case of <em>Molecules</em> it is necessary to supply the number of atoms in a formula unit of the compound in the <em>Number of atoms per molecule</em> text box.</p>
+<p>The minimum and maximum frequencies can be specified along with the frequency increment.  An effective medium theory calculation will be performed for each scenario at every frequency between the minimum and maximum frequencies at the interval specified.</p>
+<p>By default, the calculation uses moles of unit cells for the molar absorption coefficient.  This can be altered using the the <em>Molar definition</em> pull-down menu.  Options include <em>Unit cells</em>, <em>Atoms</em> and <em>Molecules</em>.  In the case of <em>Molecules</em>, it is necessary to supply the number of atoms in a formula unit of the compound in the <em>Number of atoms per molecule</em> text box.</p>
 <p>The title of the plot can be supplied by entering it into the <em>Plot title</em> text box and the frequency units used for the plot can also be changed from <em>wavenumber</em> to <em>THz</em>.</p>
-<p>For powder scenarios the molar absorption, the absorption and the real or imaginary permittivity can be plotted.  Once a plot has been requested the calculation progress is shown in the progress bar.  Some settings can be changed without the whole plot being recalculated.</p>
-<p>For single crystal plots the crystal reflectance and transmittance for s and p polarised radiation can be plotted along with the absorptance which is defined in terms of the reflectance (R) and the transmittance (T) as <span class="math notranslate nohighlight">\(1-R-T\)</span>.
-For thick slabs only the transmittance is of any revelance.  For thin films the absorptance is useful as it removes some of the oscilations that occur in the transmittance or reflectance due to the film thickness.</p>
+<p>For powder scenarios, the molar absorption, the absorption, and the real or imaginary permittivity can be plotted.  Once a plot has been requested the calculation progress is shown in the progress bar.  Some settings can be changed without the whole plot being recalculated.</p>
+<p>For single-crystal plots, the crystal reflectance and transmittance for s and p polarised radiation can be plotted along with absorptance which is defined in terms of the reflectance (R) and the transmittance (T) as <span class="math notranslate nohighlight">\(1-R-T\)</span>.
+For thick slabs, only the transmittance is of any revelance.  For thin films, absorptance is useful as it removes some of the oscilations that occur in the transmittance or reflectance due to the film thickness.</p>
 <figure class="align-default" id="id10">
 <span id="fig-plottingtab-singlecrystal"></span><a class="reference internal image-reference" href="_images/PlottingTab-SingleCrystal.png"><img alt="_images/PlottingTab-SingleCrystal.png" src="_images/PlottingTab-SingleCrystal.png" style="width: 545.6px; height: 774.4000000000001px;" /></a>
 <figcaption>
-<p><span class="caption-number">Fig. 3.7 </span><span class="caption-text">The Plotting Tab showing Single Crystal results</span><a class="headerlink" href="#id10" title="Permalink to this image">¶</a></p>
+<p><span class="caption-number">Fig. 3.7 </span><span class="caption-text">The Plotting Tab showing Single-Crystal results</span><a class="headerlink" href="#id10" title="Permalink to this image">¶</a></p>
 </figcaption>
 </figure>
 <p>For the case of a thick slab, the permittivity of the incident can be specified, but the substrate permittivity is not used.  For the case of a thin film both permittivities are used.</p>
@@ -365,19 +366,19 @@ For thick slabs only the transmittance is of any revelance.  For thin films the 
 </section>
 <section id="analysis-tab">
 <h2><span class="section-number">3.5. </span>Analysis Tab<a class="headerlink" href="#analysis-tab" title="Permalink to this heading">¶</a></h2>
-<p>The <em>Analysis Tab</em> shows a breakdown of the phonon modes into molecular components or into internal and external modes.  The molecular structure of the unit cell is determined by the covalent radii of the atoms.  These can be speficied individually if needed.  The <em>Analysis Tab</em> shows the number of molecules that have been found in the analysis.</p>
+<p>The <em>Analysis Tab</em> shows a breakdown of the phonon modes into molecular components or into internal and external modes.  The molecular structure of the unit cell is determined by the covalent radii of the atoms.  These can be specified individually if needed.  The <em>Analysis Tab</em> shows the number of molecules that have been found in the analysis.</p>
 <figure class="align-default" id="id11">
 <span id="fig-analysistab"></span><a class="reference internal image-reference" href="_images/AnalysisTab.png"><img alt="_images/AnalysisTab.png" src="_images/AnalysisTab.png" style="width: 545.6px; height: 774.4000000000001px;" /></a>
 <figcaption>
 <p><span class="caption-number">Fig. 3.8 </span><span class="caption-text">The Analysis Tab</span><a class="headerlink" href="#id11" title="Permalink to this image">¶</a></p>
 </figcaption>
 </figure>
-<p>The bar graph shows a break down of each normal mode in the chosen frequency range into either internal and external contributions or into molecular components.  The atom sizes and the molecular composition of the unit cell is displayed in the <em>3D Viewer Tab</em></p>
+<p>The bar graph shows a break-down of each normal mode in the chosen frequency range into either internal and external contributions or into molecular components.  The atom sizes and the molecular composition of the unit cell are displayed in the <em>3D Viewer Tab</em></p>
 </section>
 <section id="d-viewer-tab">
 <h2><span class="section-number">3.6. </span>3D Viewer Tab<a class="headerlink" href="#d-viewer-tab" title="Permalink to this heading">¶</a></h2>
 <p>The <em>3D Viewer Tab</em> shows the unit cell of the system using the molecular information and atomic sizes from the <em>Analysis Tab</em>.</p>
-<p>The atomic displacement of each phonon can either be shown as arrows or as an animation.  The views and animations can be recorded in  .png and .mp4 files respectively.  If a .gif file is specified the animation is recorded but with reduced numbers of colours.  A series of cif files can also be generated which follows the motion of the mode being studied.</p>
+<p>The atomic displacement of each phonon can either be shown as arrows or as an animation.  The views and animations can be recorded in  .png and .mp4 files respectively.  If a .gif file is specified the animation is recorded but with reduced numbers of colours.  A series of CIF files can also be generated which follows the motion of the mode being studied.</p>
 <figure class="align-default" id="id12">
 <span id="fig-viewertab"></span><a class="reference internal image-reference" href="_images/ViewerTab.png"><img alt="_images/ViewerTab.png" src="_images/ViewerTab.png" style="width: 545.6px; height: 774.4000000000001px;" /></a>
 <figcaption>
@@ -388,9 +389,10 @@ For thick slabs only the transmittance is of any revelance.  For thin films the 
 </section>
 <section id="fitter-tab">
 <h2><span class="section-number">3.7. </span>Fitter Tab<a class="headerlink" href="#fitter-tab" title="Permalink to this heading">¶</a></h2>
-<p>The <em>Fitter Tab</em> imports an experimental spectrum.  The spectrum is stored in an Excel spreadsheet.  The spreadsheet should contain a single sheet with two columns.  The first column should be the frequency in cm<sup>-1</sup> and the second should be the measured signal.  The signal can be molar absorption, absorption, real permittivity, imaginary permittivity, ATR absorbance or any of the single crystal propertie.  Once imported the experimental spectrum can be compared with the calculated spectrum.  The tab shows the frequencies contributing to the spectrum and allows the Lorentzian widths of the transitions to be altered.  The frequency range used for the display is the same as that used in the <em>plotting tab</em>.
+<p>The <em>Fitter Tab</em> imports an experimental spectrum.  The spectrum is stored in an Excel spreadsheet.  The spreadsheet should contain a single sheet with two columns.  The first column should be the frequency in cm<sup>-1</sup> and the second should be the measured signal.  The signal can be molar absorption, absorption, real permittivity, imaginary permittivity, ATR absorbance or any of the single-crystal properties.
+Once imported the experimental spectrum can be compared with the calculated spectrum.  The tab shows the frequencies contributing to the spectrum and allows the Lorentzian widths of the transitions to be altered.  The frequency range used for the display is the same as that used in the <em>plotting tab</em>.
 Indeed the calculated signal used for fitting is the same as that being shown in the <em>plotting tab</em>.
-At the top of the tab are some settings in a tabbed notebook.  The most important is the name of the Excel file containing the experimental spectrum.  In addition there are options to change the <em>Plot type</em>, include frequency scaling in any fitting, set the frequency scaling factor, set the number of iterations to be used when fitting, choose whether the plot should use indepent y-axes for the calculated and experimental spectra, set the method used to do the fitting and finally specifiy the spectral difference threshold.
+At the top of the tab are some settings in a tabbed notebook.  The most important is the name of the Excel file containing the experimental spectrum.  In addition, there are options to change the <em>Plot type</em>, include frequency scaling in any fitting, set the frequency scaling factor, set the number of iterations to be used when fitting, choose whether the plot should use independent y-axes for the calculated and experimental spectra, set the method used to do the fitting and finally specify the spectral difference threshold.
 The spectrum is shown at the bottom of the tab and is recalculated when the <em>Replot</em> or <em>Replot with frequency shift</em> buttons are pressed.  The data type stored in the experimental spreadsheet is defined by the <em>Plot and data type</em> setting.  One of the settings options is the ability to remove a baseline from the experimental spectrum.
 If baseline removal is selected a Hodrick-Prescott filter is used. The value of the filter parameter is determined by the value in the <em>HP filter lambda</em> tab.  The actual value of lambda used in the filter is the value given in the tab raised by the power of 10.</p>
 <figure class="align-default" id="id13">
@@ -400,7 +402,8 @@ If baseline removal is selected a Hodrick-Prescott filter is used. The value of 
 </figcaption>
 </figure>
 <p>After a replot the cross-correlation coefficient, current frequency scaling factor, the frequency shift needed to maximise that cross-correlation coefficient, and the root mean squared error between the calculated and experimental spectra are shown.  It is possible to apply a frequency scaling to the calculated spectrum. The <em>Replot with frequency shift</em> shows the calculated spectrum with the frequencies shifted by the shift calculated to maximise the cross-correlation coefficient.  Care must be taken in comparing the calculated and experimental spectra as different y-axes are used for each.</p>
-<p>It is also possible to automatically adjust the Lorentzian width factors with the <em>Perform fitting</em> button.  However experience with this option shows that it maybe better to adjust the peak heights manually by altering the sigma values.  At the moment only 20 iterations are performed for each press of the button.  If requested the frequency scaling factor can be adjusted too.</p>
+<p>It is also possible to automatically adjust the Lorentzian width factors with the <em>Perform fitting</em> button.
+However, experience with this option shows that it may be better to adjust the peak heights manually by altering the sigma values.  At the moment only 20 iterations are performed for each press of the button.  If requested the frequency scaling factor can be adjusted too.</p>
 <p>Two algorithms for performing the fitting are supported.  Either the cross-correlation coefficient can be maximised or the root mean squared error between the spectra can be minimised.  In the latter case the error is only calculated for signal strengths above the spectral difference threshold (which defaults to 0.05).</p>
 <p>A summary of the optional settings available in the <em>Fitter Tab</em> is shown below;</p>
 <table class="styled-table docutils align-default" id="fitter-tab-options">
@@ -466,26 +469,26 @@ in the experimental data</p></td>
 <h3><span class="section-number">3.7.1. </span>Scripting<a class="headerlink" href="#scripting" title="Permalink to this heading">¶</a></h3>
 <p>Nearly all aspects of the program can be accessed through scripting.
 The script is provided by the <em>-script</em> command line option or by choosing the PDGui (*.py) file type from the file manager on the <em>Main tab</em>.
-A very useful feature is the ability to save a script which reflects the current state of the program.  This is available from the <em>Main tab</em>.</p>
+A very useful feature is the ability to save a script that reflects the current state of the program.  This is available from the <em>Main tab</em>.</p>
 <p>There are several things to be aware of when using this option to read in settings from one calculation into another.
-The file will contain parameters which have been calculated whilst reading the input file.
-For example the optical permittivities are calculated and stored in this file.
-If the file is then used on another DFT calculation then the optical permittivity for the settings file will be used and not the one which should have been calculated.  This is also true if masses have been defined in once calculation, they may not be appropriate for a different molecule. To use the script for other calculations but with the same scenarios the optical permittivities should be removed and any mass specifications removed.</p>
+The file will contain parameters that have been calculated whilst reading the input file.
+For example, the optical permittivities are calculated and stored in this file.
+If the file is then used on another DFT calculation then the optical permittivity for the settings file will be used and not the one which should have been calculated.  This is also true if masses have been defined in one calculation but they may not be appropriate for a different molecule. To use the script for other calculations but with the same scenarios the optical permittivities should be removed and any mass specifications removed.</p>
 </section>
 </section>
 <section id="parallelisation-and-threads">
 <h2><span class="section-number">3.8. </span>Parallelisation and threads<a class="headerlink" href="#parallelisation-and-threads" title="Permalink to this heading">¶</a></h2>
-<p>To improve the performance of the program python parallelisation has been used to parallelise over the frequencies, shapes and methods. By default this parallelisation spawns additional Python executables, depending on the number of cores available.</p>
+<p>To improve the performance of the program python parallelisation has been used to parallelise over the frequencies, shapes and methods. By default, this parallelisation spawns additional Python executables, depending on the number of cores available.</p>
 <p>In addition to this form of parallelisation the NUMPY library can use multi-threaded BLAS. NUMPY can be compiled with several different BLAS libraries, including; MKL (from Intel), OPENBLAS and ATLAS, or indeed no optimised BLAS library is necessary. To explore the BLAS version compiled with your version of NUMPY please use the test_numpy_1, test_numpy_2 and test_numpy_3 scripts included in the Python/ subdirectory. If you are using MKL or OPENBLAS, the number of threads being used needs to be set with the MKL_NUM_THREADS or OPENBLAS _NUM_THREADS environment variable (sometimes OMP_NUM_THREADS is also used). Use the test routines to determine the optimum for your system. Experience indicates that no performance benefit is obtained with more than two threads.</p>
-<p>In the case of Phonopy the dynamical matrix is read from a yaml file. This has been found to be very slow unless the C parser is used. If the C parser is not available a warning is issued and the program reverts back to the Python parser.</p>
-<p>Finally the use of non-standard BLAS libraries seems to cause problems with the affinity settings for the multiprocessing. It has been noticed that the parallel processes can all end up executing on the same processor. In order to prevent this, before executing the pdielec and preader scripts it may be necessary to include;</p>
+<p>In the case of Phonopy, the dynamical matrix is read from a yaml file. This is very slow unless the C parser is used. If the C parser is not available a warning is issued and the program reverts to the Python parser.</p>
+<p>Finally, the use of non-standard BLAS libraries seems to cause problems with the affinity settings for the multiprocessing. It has been noticed that the parallel processes can all end up executing on the same processor. To prevent this, before executing the pdielec and preader scripts it may be necessary to include;</p>
 <blockquote>
 <div><p>export OPENBLAS_MAIN_FREE=1</p>
 </div></blockquote>
-<p>For some reason this also works if the MKL library is being used.</p>
+<p>For some reason, this also works if the MKL library is being used.</p>
 <p>There have been issues in running PDielec on Catalina, MacOS.
 This appears to be due to the multiprocessing features of Python not working as expected on this operating system.
-A work around is to use;</p>
+A work-around is to use;</p>
 <blockquote>
 <div><p>pdgui -threads -cpu 1</p>
 </div></blockquote>
@@ -494,7 +497,7 @@ Sometimes it is more convenient to set these using the environment.  Two environ
 <blockquote>
 <div><p>export PDIELEC_NUM_PROCESSORS=4</p>
 </div></blockquote>
-<p>will run <cite>pdgui</cite> on 4 processors.  By default the number of processors is determined by interrogating the computer.  This is acheived by setting the value of PDIELEC_NUM_PROCESSORS to 0.</p>
+<p>will run <cite>pdgui</cite> on 4 processors.  By default, the number of processors is determined by interrogating the computer.  This is acheived, by setting the value of PDIELEC_NUM_PROCESSORS to 0.</p>
 <blockquote>
 <div><p>export PDIELEC_THREADING=TRUE</p>
 </div></blockquote>
@@ -502,15 +505,15 @@ Sometimes it is more convenient to set these using the environment.  Two environ
 </section>
 <section id="performance">
 <span id="id3"></span><h2><span class="section-number">3.9. </span>Performance<a class="headerlink" href="#performance" title="Permalink to this heading">¶</a></h2>
-<p>PDielec has been written to make use of multiprocessor computers. On an 8 processor (16 thread) machine using multiprocessing the speed-up soon slows down after three processors, as there is a lot of the code which is not parallelised .  Threading does not appear to be an efficient way of running <cite>PDielec</cite> and it is only recommended if the default multiprocessing options is failing for some reason.
+<p>PDielec has been written to make use of multiprocessor computers. On an 8-processor (16 thread) machine using multiprocessing, the speed-up soon slows down after three processors, as there is a lot of the code which is not parallelised .  Threading does not appear to be an efficient way of running <cite>PDielec</cite> and it is only recommended if the default multiprocessing options is failing for some reason.
 The speedup is calculated by running the benchmark suite (pdmake benchmarks), which consists of 30 different examples of using the code and is therefore representative of the type of calculations performed.</p>
 <figure class="align-default" id="id14">
 <span id="fig-speedup"></span><a class="reference internal image-reference" href="_images/SpeedUp.png"><img alt="_images/SpeedUp.png" src="_images/SpeedUp.png" style="width: 414.0px; height: 329.40000000000003px;" /></a>
 <figcaption>
-<p><span class="caption-number">Fig. 3.11 </span><span class="caption-text">Speed-up on a eight processor workstation</span><a class="headerlink" href="#id14" title="Permalink to this image">¶</a></p>
+<p><span class="caption-number">Fig. 3.11 </span><span class="caption-text">Speed-up on a 8-processor workstation</span><a class="headerlink" href="#id14" title="Permalink to this image">¶</a></p>
 </figcaption>
 </figure>
-<p>Using the same suite of benchmarks on an 8 processor Intel core i9-9900K running at 3.6GHz took 92.6s.</p>
+<p>Using the same suite of benchmarks on an 8-processor Intel core i9-9900K running at 3.6GHz took 92.6s.</p>
 <p>On a Windows laptop with an Intel Skylake i7-650, which has 2 processors running at 2.5GHz, the benchmark ran in 432s seconds.  On the same machine but running the Linux operating system the benchmark suite took 358s, making the impact of Windows on performance a factor of 1.2 times slower.</p>
 </section>
 </section>
@@ -529,7 +532,7 @@ The speedup is calculated by running the benchmark suite (pdmake benchmarks), wh
 <li><a class="reference internal" href="#settings-tab">3.2. Settings Tab</a></li>
 <li><a class="reference internal" href="#scenario-tabs">3.3. Scenario Tabs</a><ul>
 <li><a class="reference internal" href="#powder-scenarios">3.3.1. Powder Scenarios</a></li>
-<li><a class="reference internal" href="#single-crystal-scenarios">3.3.2. Single Crystal Scenarios</a><ul>
+<li><a class="reference internal" href="#single-crystal-scenarios">3.3.2. Single-Crystal Scenarios</a><ul>
 <li><a class="reference internal" href="#the-layer-editor">3.3.2.1. The Layer Editor</a></li>
 </ul>
 </li>

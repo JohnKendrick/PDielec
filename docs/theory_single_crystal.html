@@ -72,11 +72,11 @@
             
   <section id="theory-for-single-crystal-optics">
 <span id="single-crystal-theory"></span><h1><span class="section-number">6. </span>Theory for Single Crystal Optics<a class="headerlink" href="#theory-for-single-crystal-optics" title="Permalink to this heading">¶</a></h1>
-<p>The <em>SingleCrystal tab</em> enables the calculation of the optical behaviour of a single crystal (thick slab or film).  The method uses the pyGTM code available on GitHub <span id="id1">[<a class="reference internal" href="zreferences.html#id6" title="PyGtm. URL: http://pygtm.readthedocs.io/.">10</a>]</span>.  This code implements a generalised transfer matrix method described by Passler et al. <span id="id2">[<a class="reference internal" href="zreferences.html#id73" title="Nikolai Christian Passler, Mathieu Jeannin, and Alexander Paarmann. Layer-resolved absorption of light in arbitrarily anisotropic heterostructures. Physical Review B, 101(16):1–12, 2020. arXiv:2002.03832, doi:10.1103/PhysRevB.101.165425.">11</a>]</span> and which builds on previous publications <span id="id3">[<a class="reference internal" href="zreferences.html#id74" title="Nikolai Christian Passler and Alexander Paarmann. Generalized 4 × 4 matrix formalism for light propagation in anisotropic stratified media: Study of surface phonon polaritons in polar dielectric heterostructures. arXiv, 36(11):3246–3248, 2017. arXiv:1707.00462, doi:10.1364/josab.36.003246.">12</a>, <a class="reference internal" href="zreferences.html#id75" title="Nikolai Christian Passler and Alexander Paarmann. Generalized 4 × 4 matrix formalism for light propagation in anisotropic stratified media: study of surface phonon polaritons in polar dielectric heterostructures: erratum. Journal of the Optical Society of America B, 36(11):3246, nov 2019. URL: https://www.osapublishing.org/abstract.cfm?URI=josab-36-11-3246, arXiv:1707.00462, doi:10.1364/JOSAB.36.003246.">13</a>]</span>.
+<p>The <em>SingleCrystal tab</em> enables the calculation of the optical behaviour of a single crystal (thick slab or film).  The method uses the pyGTM code available on GitHub <span id="id1">[<a class="reference internal" href="zreferences.html#id6" title="PyGtm. URL: http://pygtm.readthedocs.io/.">10</a>]</span>.  This code implements a generalised transfer matrix method described by Passler et al. <span id="id2">[<a class="reference internal" href="zreferences.html#id73" title="Nikolai Christian Passler, Mathieu Jeannin, and Alexander Paarmann. Layer-resolved absorption of light in arbitrarily anisotropic heterostructures. Physical Review B, 101(16):1–12, 2020. arXiv:2002.03832, doi:10.1103/PhysRevB.101.165425.">11</a>]</span> and that builds on previous publications <span id="id3">[<a class="reference internal" href="zreferences.html#id74" title="Nikolai Christian Passler and Alexander Paarmann. Generalized 4 × 4 matrix formalism for light propagation in anisotropic stratified media: Study of surface phonon polaritons in polar dielectric heterostructures. arXiv, 36(11):3246–3248, 2017. arXiv:1707.00462, doi:10.1364/josab.36.003246.">12</a>, <a class="reference internal" href="zreferences.html#id75" title="Nikolai Christian Passler and Alexander Paarmann. Generalized 4 × 4 matrix formalism for light propagation in anisotropic stratified media: study of surface phonon polaritons in polar dielectric heterostructures: erratum. Journal of the Optical Society of America B, 36(11):3246, nov 2019. URL: https://www.osapublishing.org/abstract.cfm?URI=josab-36-11-3246, arXiv:1707.00462, doi:10.1364/JOSAB.36.003246.">13</a>]</span>.
 The code has been modified to model incoherent systems as well as coherent ones.
-A brief summary of the theory underlying the transfer matrix method is given to aid in the understanding of the methods implemented and the range of their applications.</p>
-<p>In PDGui the number of media to consider is only three, a superstrate (usually air) through which the incident light passes, a dielectric medium which has a frequency dependent complex permittivity and optionally a substrate (which is also usually air).
-The media are indexed by 0,1 and 2 for the superstrate, dielectric and substrate respectively.
+A summary of the theory underlying the transfer matrix method is given to aid in the understanding of the methods implemented and the range of their applications.</p>
+<p>In general PDGui can handle multilayered frequency-dependent films, sandwiched between a superstrate and a substrate.
+For the sake of simplicity, the following will describe a system with a single dielectric and the media will be indexed 0, 1 and 2 for the superstrate, dielectric and substrate respectively.
 A schematic illustrating this is shown in <a class="reference internal" href="#fig-definition-of-rta"><span class="std std-numref">Fig. 6.1</span></a>.
 To aid understanding of the input and output and the limitations of the methods used, a brief summary of the transfer matrix method is given here, specific to its application in PDGui.
 There are 4 different modes of operation of the matrix transfer method in PDGui and these are described below under the headings ‘coherent thin film’, ‘incoherent thin film’, ‘partially incoherent thin film’ and ‘thick slab’</p>
@@ -88,7 +88,7 @@ There are 4 different modes of operation of the matrix transfer method in PDGui 
 </figure>
 <section id="coherent-thin-film">
 <h2><span class="section-number">6.1. </span>Coherent thin film<a class="headerlink" href="#coherent-thin-film" title="Permalink to this heading">¶</a></h2>
-<p>At an interface the tangential (in-plane) electric and magnetic fields (given by a vector <span class="math notranslate nohighlight">\(\fieldbf{F_i}\)</span>) have to match in both media.
+<p>At an interface, the tangential (in-plane) electric and magnetic fields (given by a vector <span class="math notranslate nohighlight">\(\fieldbf{F_i}\)</span>) have to match in both media.
 This requires that the 4 amplitudes (vector <span class="math notranslate nohighlight">\(\fieldbf{A_i}\)</span>) of the electric and magnetic fields, forward and backward, s and p polarised, in medium <span class="math notranslate nohighlight">\(i\)</span> are related through a 4x4 dynamical matrix <span class="math notranslate nohighlight">\(\tensorbf{D_i}\)</span>.</p>
 <div class="math notranslate nohighlight" id="equation-eq-dynamical-matrix">
 <span class="eqno">(6.1)<a class="headerlink" href="#equation-eq-dynamical-matrix" title="Permalink to this equation">¶</a></span>\[\fieldbf{F}_i  = \tensorbf{D}_i \fieldbf{A}_i\]</div>
@@ -100,7 +100,7 @@ This requires that the 4 amplitudes (vector <span class="math notranslate nohigh
 <p>Within a given medium the mode amplitudes will change according to the propagation through the medium described by an diagonal exponential matrix <span class="math notranslate nohighlight">\(\tensorbf{P}_i\)</span>.  Thus the amplitudes on the left side of a layer are related to those on the right side by;</p>
 <div class="math notranslate nohighlight" id="equation-eq-propagation">
 <span class="eqno">(6.3)<a class="headerlink" href="#equation-eq-propagation" title="Permalink to this equation">¶</a></span>\[\fieldbf{A}_{i,left}  = \tensorbf{P}_i \fieldbf{A}_{i,right}\]</div>
-<p>The total transfer matrix for the 3 media considered by PDGui (superstrate, dielectric and substrate; 0, 1 and 2 respectively) is therefore;</p>
+<p>The total transfer matrix for the 3 media considered (superstrate, dielectric and substrate; 0, 1 and 2 respectively) is therefore;</p>
 <div class="math notranslate nohighlight" id="equation-eq-transfer-matrix">
 <span class="eqno">(6.4)<a class="headerlink" href="#equation-eq-transfer-matrix" title="Permalink to this equation">¶</a></span>\[\tensorbf{M}  =
               \tensorbf{D}_0^{-1}
@@ -120,7 +120,8 @@ The theory is described by Beck <span id="id6">[<a class="reference internal" hr
 This approach has been incorporated in PDGui by modifying the total transfer matrix as follows;</p>
 <div class="math notranslate nohighlight" id="equation-eq-transfer-matrix-int">
 <span class="eqno">(6.5)<a class="headerlink" href="#equation-eq-transfer-matrix-int" title="Permalink to this equation">¶</a></span>\[\tensorbf{M}_{int} =  \mid \tensorbf{D}_0^{-1} \tensorbf{D}_1 \mid^2 \mid \tensorbf{P}_1 \mid ^2 \mid \tensorbf{D}_1^{-1} \tensorbf{D}_2 \mid ^2\]</div>
-<p>The use of intensities instead of amplitudes ensures that the phase information is lost.</p>
+<p>The use of intensities instead of amplitudes ensures that the phase information is lost.
+The actual implementation is appropriate for a multi-layer system where all dielectric layers are treated as being incoherent films, whatever their thickness.</p>
 </section>
 <section id="partially-incoherent-thin-film">
 <h2><span class="section-number">6.3. </span>Partially incoherent thin film<a class="headerlink" href="#partially-incoherent-thin-film" title="Permalink to this heading">¶</a></h2>
@@ -133,9 +134,12 @@ The settings in PDGui typically start with a sample of 20 calculations and no fi
 </section>
 <section id="thick-slab">
 <h2><span class="section-number">6.4. </span>Thick Slab<a class="headerlink" href="#thick-slab" title="Permalink to this heading">¶</a></h2>
-<p>For those cases where the partially incoherent thin film and incoherent thin film modes are not appropiate and only reflectance is of interest, the calculation mode referred to as a “thick slab” assumes that there are only two (sem-infinite) media.
-The media through which the incident light travels and the crystalline media by which it is reflected.
-Transmission is not of interest in this case, as in the case of a thick crystal it assumed that total absorption will take place and that there will be no internal reflection within the crystal.
+<p>For those cases where the partially incoherent thin film and incoherent thin film modes are not appropiate and only reflectance is of interest, the calculation mode referred to as a “thick slab” can be used.
+This mode assumes that there are only two (sem-infinite) media:
+the media through which the incident light travels and the crystalline media by which it is reflected.
+When using the “thick slab” mode, there is no substrate.
+Instead the bottom dielectric layer is taken to be semi-infinite.</p>
+<p>Transmission is not of interest in this case, as in the case of a thick crystal it assumed that total absorption will take place and that there will be no internal reflection within the crystal.
 This mode is similar to a standard Fresnel calculation of reflectance (R) but is appropriate for general permittivity tensors.
 As a result of the assumptions associated with a “thick slab” it is assumed that transmittance (T) through a semi-infinite dielectric with some absorption will be zero and therefore the absorptance (A) will be;</p>
 <div class="math notranslate nohighlight" id="equation-thick-absorptance">
@@ -151,14 +155,16 @@ The DFT calculations were performed by Castep.  The incident angle is 45<sup>o</
 The ‘Thick slab’ mode can be regarded as a limiting case as the simulated slab becomes thicker, the calculations tend to follow the ‘thick slab’ curve more closely.
 The ‘Coherent thin film’ curve shows large amplitude oscillations before and after the restrahlung region of absorption.  These are damped by including partial incoherence but are not completely removed.
 The partial incoherence settings in this case were; 100 samples and up to 10% deviation in incident angle, thickness and crystal orientation, with no smoothing.
-The incoherent curve shows no oscillations and follows the thick mode curve near the restrahlung region.
-It is common to see numerical problems in regions where the extinction coefficient is high and the dielectric is thick.  The numnerical problesm manifest themselves with sudden spikes in reflectance and indicate that only thinner samples should be considered.</p>
+The incoherent curve shows no oscillations and follows the thick mode curve near the restrahlung region.</p>
 <figure class="align-default" id="id9">
 <span id="fig-mode-comparison"></span><a class="reference internal image-reference" href="_images/single_crystal_mode_comparison.png"><img alt="_images/single_crystal_mode_comparison.png" src="_images/single_crystal_mode_comparison.png" style="width: 556.2px; height: 532.8000000000001px;" /></a>
 <figcaption>
 <p><span class="caption-number">Fig. 6.2 </span><span class="caption-text">Comparison of methods</span><a class="headerlink" href="#id9" title="Permalink to this image">¶</a></p>
 </figcaption>
 </figure>
+<p>It is common to see numerical problems in regions where the extinction coefficient is high and the dielectric is thick.  The numerical probles manifest themselves with sudden spikes in reflectance and indicate that thinner samples should be considered.
+To address these numerical problems an option has been included in PDGui which allows thick films to be subdivided (sliced) into many thin films.
+If the user experiences numerical issues, changes in film thickness and the slicing technique may help to alleviate the problem.</p>
 </section>
 <section id="crystal-laboratory-coordinate-frames">
 <span id="crystal-and-laboratory-coordinates"></span><h2><span class="section-number">6.6. </span>Crystal &amp; Laboratory Coordinate Frames<a class="headerlink" href="#crystal-laboratory-coordinate-frames" title="Permalink to this heading">¶</a></h2>

@@ -72,12 +72,12 @@
 <h1><span class="section-number">2. </span>Installation<a class="headerlink" href="#installation" title="Permalink to this heading">¶</a></h1>
 <section id="anaconda">
 <h2><span class="section-number">2.1. </span>Anaconda<a class="headerlink" href="#anaconda" title="Permalink to this heading">¶</a></h2>
-<p>Unless you are interested in the full Anaconda package, a miniconda installation should be sufficient for installing the rest of the modules needed for the PDielec installation.
-Miniconda is the recommended environment for installing PDielec.  On Windows it is necessary to run the commands in an Anaconda command terminal, which will be added to the user’s menu when miniconda is installed.</p>
-<p>PDielec is available on the conda-forge channel and installation using Anaconda can be performed on Linux, Windows and Mac systems.
+<p>Unless you are interested in the full Anaconda package, a Miniconda installation should be sufficient for installing the rest of the modules needed for the PDielec installation.
+Miniconda is the recommended environment for installing PDielec.  On Windows, it is necessary to run the commands in an Anaconda command terminal, which will be added to the user’s menu when Miniconda is installed.</p>
+<p>PDielec is available on the conda-forge channel and installation using Anaconda can be performed on Linux, Windows, and Mac systems.
 However, there are no example files installed, only the executables.
 Example files for each of the DFT packages supported can be downloaded from the Git repository.</p>
-<p>The conda-forge package has a Python 3 environment included in the package.  After installation of miniconda or anaconda, a new evironment should be created in which to install the package:</p>
+<p>The conda-forge package has a Python 3 environment included in the package.  After installation of Miniconda or anaconda, a new environment should be created in which to install the package:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">conda</span> <span class="n">create</span>  <span class="o">--</span><span class="n">name</span> <span class="n">pdielec</span>
 <span class="n">conda</span> <span class="n">activate</span> <span class="n">pdielec</span>
 <span class="n">conda</span> <span class="n">config</span> <span class="o">--</span><span class="n">add</span> <span class="n">channels</span> <span class="n">conda</span><span class="o">-</span><span class="n">forge</span>
@@ -94,7 +94,7 @@ Example files for each of the DFT packages supported can be downloaded from the 
 </section>
 <section id="pypi">
 <h2><span class="section-number">2.2. </span>PyPi<a class="headerlink" href="#pypi" title="Permalink to this heading">¶</a></h2>
-<p>If you really dont want to use Anaconda, PDielec is available on pypi.org and can be installed using pip.:</p>
+<p>If you do not want to use Anaconda or Miniconda, PDielec is available on pypi.org and can be installed using pip.:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="o">--</span><span class="n">user</span> <span class="n">pdielec</span>
 <span class="n">pdgui</span>
 </pre></div>
@@ -103,7 +103,7 @@ Example files for each of the DFT packages supported can be downloaded from the 
 <section id="github-linux">
 <h2><span class="section-number">2.3. </span>GitHub - Linux<a class="headerlink" href="#github-linux" title="Permalink to this heading">¶</a></h2>
 <p>The package is available on GitHub and can be downloaded from <a class="reference external" href="https://github.com/JohnKendrick/PDielec">https://github.com/JohnKendrick/PDielec</a>.
-cd to a directory where PDielec will be installed and use git to clone a copy of the program.  I use a ‘Software/’ directory in my home directory to store programs, so for me the commands to obtain PDielec would look like this.:</p>
+cd to a directory where PDielec will be installed and use git to clone a copy of the program.  I use a ‘Software/’ directory in my home directory to store programs, so the commands to obtain PDielec would look like this.:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="o">~/</span><span class="n">Software</span>
 <span class="n">git</span> <span class="n">clone</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">JohnKendrick</span><span class="o">/</span><span class="n">PDielec</span><span class="o">.</span><span class="n">git</span>
 </pre></div>
@@ -117,7 +117,7 @@ cd to a directory where PDielec will be installed and use git to clone a copy of
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>export PATH=~/bin;$PATH
 </pre></div>
 </div>
-<p>As part of the installation you will have to install a number of Python packages into your enviroment.  The full list of packages is as follows;:</p>
+<p>As part of the installation, you will have to install several Python packages into your environment.  The full list of packages is as follows;</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pyqt5</span>
 <span class="n">psutil</span>
 <span class="n">numpy</span>
@@ -141,32 +141,32 @@ cd to a directory where PDielec will be installed and use git to clone a copy of
 <section id="installation-from-repository">
 <h3><span class="section-number">2.4.1. </span>Installation from repository<a class="headerlink" href="#installation-from-repository" title="Permalink to this heading">¶</a></h3>
 <p>This Windows installation method is only needed if installation through Anaconda is not possible.
-A Windows 10 installation from the git repository which works for users without administrator rights involves a few steps but gives an installation which can run all the test cases.  In the following instructions replace ‘yourusername’ with your user name.</p>
+A Windows 10 installation from the git repository which works for users without administrator rights involves a few steps but gives an installation that run all the test cases.  In the following instructions replace ‘yourusername’ with your user name.</p>
 <section id="install-git">
 <h4><span class="section-number">2.4.1.1. </span>Install git<a class="headerlink" href="#install-git" title="Permalink to this heading">¶</a></h4>
-<p>First of all install a Windows version of git from www.git-scm.com. A 64 bit version of Windows 10 will be assumed for the following instructions.</p>
+<p>First of all, install a Windows version of git from www.git-scm.com. A 64-bit version of Windows 10 will be assumed for the following instructions.</p>
 <ul class="simple">
-<li><p>From the download page download and run the 64 bit Git for Windows setup.</p></li>
+<li><p>From the download page download and run the 64-bit Git for Windows setup.</p></li>
 <li><p>During the installation install the Quick Launch and Desktop icons as these make using the program easier.</p></li>
-<li><p>If you are not familar with the vi or vim editor, it is probably best to use the Nano editor, although if you wish you can install Notepad++ and use that as the default editor.</p></li>
-<li><p>In the section concerning the PATH environment I would recommend the last option “Use git and optional Unix tools from the Windows Command prompt”.  This option will mean that some Windows commands eg. find and sort will be replaced by the Unix commands, so be careful.</p></li>
+<li><p>If you are not familiar with the vi or vim editor, it is probably best to use the Nano editor, although if you wish you can install Notepad++ and use that as the default editor.</p></li>
+<li><p>In the section concerning the PATH environment, I would recommend the last option “Use git and optional Unix tools from the Windows Command prompt”.  This option will mean that some Windows commands eg. find and sort will be replaced by the Unix commands, so be careful.</p></li>
 <li><p>Leave the https certificate choice as the default, namely the OpenSSL library.</p></li>
 <li><p>Line endings are best left to the default setting of Windows-style for checkout and Unix-style for check-in.</p></li>
 <li><p>The Console I use is the MinTTY console it has a larger scrolling buffer than the Windows console.</p></li>
 <li><p>Under the “Configuring extra options” I leave everything as the default.</p></li>
 </ul>
-<p>I have seen a few hickups in the installation of Git.  Occasionally I have to do the installation twice and occasionally I am left with the Setup Installing window indicating that I should wait, when in fact the installation has completed.  When this happens I kill the setup process with the task manager</p>
+<p>I have seen a few hiccups in the installation of Git.  Occasionally I have to do the installation twice and occasionally I am left with the Setup Installing window indicating that I should wait, when in fact the installation has been completed.  When this happens I kill the setup process with the task manager</p>
 </section>
 <section id="install-python">
 <h4><span class="section-number">2.4.1.2. </span>Install Python<a class="headerlink" href="#install-python" title="Permalink to this heading">¶</a></h4>
 <ul class="simple">
 <li><p>From <a class="reference external" href="https://www.python.org/downloads/windows/">https://www.python.org/downloads/windows/</a> download and run the Windows x86-64 executable installer for the latest Python 3.x version</p></li>
-<li><p>Uncheck install launcher for all users</p></li>
+<li><p>Uncheck the “Install launcher” for all users</p></li>
 <li><p>Check “Add Python 3.x to PATH”</p></li>
-<li><p>Click on “Install now” button</p></li>
-<li><p>Check installation ran OK by running the Idle python environment</p></li>
+<li><p>Click on the “Install now” button</p></li>
+<li><p>Check installation ran OK by running the Idle Python environment</p></li>
 </ul>
-<p>Open a git bash console and type;:</p>
+<p>Open a git bash console and type;</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">pyqt5</span>
 <span class="n">pip</span> <span class="n">install</span> <span class="n">psutil</span>
 <span class="n">pip</span> <span class="n">install</span> <span class="n">numpy</span>
@@ -224,12 +224,12 @@ A Windows 10 installation from the git repository which works for users without 
 <section id="github-pdielec-directory-structure">
 <h2><span class="section-number">2.5. </span>GitHub - PDielec directory structure<a class="headerlink" href="#github-pdielec-directory-structure" title="Permalink to this heading">¶</a></h2>
 <ul class="simple">
-<li><p>PDielec/ is the home directory and contains the <cite>pdgui</cite> and <cite>preader</cite> commands</p></li>
-<li><p>PDielec/PDielec holds the source for the modules used by the pdielec and preader commands</p></li>
-<li><p>PDielec/PDielec/GUI holds the python code for PDGui</p></li>
-<li><p>PDielec/Examples a set of examples are available for Abinit, Crystal14, CASTEP, GULP, Phonopy, Mie and VASP.  Each example directory holds the input files to the QM/MM program and the relevant output files which are post processed by PDielec.  For each program there is also a preader directory which holds test output for the preader command.</p></li>
-<li><p>PDielec/Sphinx holds the documentation as restructured text documents (.rst).  Sphinx can be used to build the documentation in either html or pdf format.</p></li>
-<li><p>PDielec/docs holds the final html documentation.</p></li>
+<li><p>PDielec/ - The home directory and contains the <cite>pdgui</cite> and <cite>preader</cite> commands</p></li>
+<li><p>PDielec/PDielec  - Holds the source for the modules used by the pdielec and preader commands</p></li>
+<li><p>PDielec/PDielec/GUI  - Holds the Python code for PDGui</p></li>
+<li><p>PDielec/Examples - A set of examples is available for Abinit, Crystal14, CASTEP, GULP, Phonopy, Mie, and VASP.  Each example directory holds the input files to the QM/MM program and the relevant output files which are post-processed by PDielec.  For each program there is also a preader directory which holds test output for the preader command.</p></li>
+<li><p>PDielec/Sphinx - Holds the documentation as restructured text documents (.rst).  Sphinx can be used to build the documentation in either HTML or PDF format.</p></li>
+<li><p>PDielec/docs - Holds the final HTML documentation.</p></li>
 </ul>
 </section>
 <section id="examples">
@@ -238,13 +238,16 @@ A Windows 10 installation from the git repository which works for users without 
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pdmake</span> <span class="n">view</span>
 </pre></div>
 </div>
-<p>The output can be compared with the reference data to see if the program is working correctly.  The checkexcel command can be used to do this automatically.</p>
-<p>The main Examples/ directory also has a  Makefile file which can be used to verify the correct working of the package.  Simply by typing <cite>make tests</cite> in the Examples directory each example will be run automatically and the output compared with the reference files.  To remove the intermediate files after running the tests automatically, type <cite>make clean</cite>.</p>
+<p>The output can be compared with the reference data to see if the program is working correctly.  The checkexcel command can be used to do this automatically. A complete set of tests for the system can be run using:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pdmake</span> <span class="n">tests</span>
+</pre></div>
+</div>
+<p>This will run each example automatically and compare the output compared with the reference files.  To remove the intermediate files after running the tests, type <cite>pdmake clean</cite>.</p>
 <p>A benchmark can be run for comparison of the performance of PDielec on different platforms by typing;</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pdmake</span> <span class="n">benchmarks</span>
 </pre></div>
 </div>
-<p>This runs a range of calculations on different systems and provides a real world view of the performance.  An indication of the likely performance of the program is given in the <a class="reference internal" href="pdgui.html#performance"><span class="std std-ref">Performance</span></a> section of the documentation.</p>
+<p>This runs a range of calculations on different systems and provides a real-world view of the performance.  An indication of the likely performance of the program is given in the <a class="reference internal" href="pdgui.html#performance"><span class="std std-ref">Performance</span></a> section of the documentation.</p>
 <p>A summary of the different examples and their purpose is shown below;</p>
 <table class="styled-table docutils align-default" id="id2">
 <caption><span class="caption-number">Table 2.1 </span><span class="caption-text">Summary of the Examples available in the Examples/ directory</span><a class="headerlink" href="#id2" title="Permalink to this table">¶</a></caption>
@@ -270,17 +273,17 @@ A Windows 10 installation from the git repository which works for users without 
 <tr class="row-odd"><td class="left-align nowrap single-left-divider single-right-divider"><p>ATR/Na2SO42</p></td>
 <td class="center-align nowrap single-left-divider single-right-divider"><p>Vasp</p></td>
 <td class="left-align nowrap single-left-divider single-right-divider"><p>Na2(SO4)2</p></td>
-<td class="left-align single-left-divider single-right-divider"><p>Maxwel-Garnett calculation of the ATR spectrum, change the S polarisation   component from 0 to 100%</p></td>
+<td class="left-align single-left-divider single-right-divider"><p>Maxwell-Garnett calculation of the ATR spectrum, change the S polarisation   component from 0 to 100%</p></td>
 </tr>
 <tr class="row-even"><td class="left-align nowrap single-left-divider single-right-divider"><p>ATR/Na2SO42_fit</p></td>
 <td class="center-align nowrap single-left-divider single-right-divider"><p>Vasp</p></td>
 <td class="left-align nowrap single-left-divider single-right-divider"><p>Na2(SO4)2</p></td>
-<td class="left-align single-left-divider single-right-divider"><p>Maxwel-Garnett calculation of the ATR spectrum, example of fitting the spectrum to experiment</p></td>
+<td class="left-align single-left-divider single-right-divider"><p>Maxwell-Garnett calculation of the ATR spectrum, example of fitting the spectrum to experiment</p></td>
 </tr>
 <tr class="row-odd"><td class="left-align nowrap single-left-divider single-right-divider"><p>AbInit/AlAs</p></td>
 <td class="center-align nowrap single-left-divider single-right-divider"><p>AbInit</p></td>
 <td class="left-align nowrap single-left-divider single-right-divider"><p>AlAs</p></td>
-<td class="left-align single-left-divider single-right-divider"><p>Average permittivity and Maxwell Garnett calculation of sphere, plate and   ellipsoid</p></td>
+<td class="left-align single-left-divider single-right-divider"><p>Average permittivity and Maxwell-Garnett calculation of sphere, plate and   ellipsoid</p></td>
 </tr>
 <tr class="row-even"><td class="left-align nowrap single-left-divider single-right-divider"><p>AbInit/BaTiO3</p></td>
 <td class="center-align nowrap single-left-divider single-right-divider"><p>AbInit</p></td>
@@ -290,17 +293,17 @@ A Windows 10 installation from the git repository which works for users without 
 <tr class="row-odd"><td class="left-align nowrap single-left-divider single-right-divider"><p>AbInit/BaTiO3-phonana</p></td>
 <td class="center-align nowrap single-left-divider single-right-divider"><p>AbInit</p></td>
 <td class="left-align nowrap single-left-divider single-right-divider"><p>BaTiO3</p></td>
-<td class="left-align single-left-divider single-right-divider"><p>Average permittivity and Maxwell-Garnett calculations of sphere, plate   and ellipsoid, using program defined masses</p></td>
+<td class="left-align single-left-divider single-right-divider"><p>Average permittivity and Maxwell-Garnett calculations of sphere, plate   and ellipsoid, using program-defined masses</p></td>
 </tr>
 <tr class="row-even"><td class="left-align nowrap single-left-divider single-right-divider"><p>AbInit/Na2SO42</p></td>
 <td class="center-align nowrap single-left-divider single-right-divider"><p>AbInit</p></td>
 <td class="left-align nowrap single-left-divider single-right-divider"><p>Na2(SO4)2</p></td>
-<td class="left-align single-left-divider single-right-divider"><p>Average permittivity and Maxwell-Garnett calculations of Na2(SO4)2,   sphere, plate and ellipsoid, using program defined masses</p></td>
+<td class="left-align single-left-divider single-right-divider"><p>Average permittivity and Maxwell-Garnett calculations of Na2(SO4)2,   sphere, plate and ellipsoid, using program-defined masses</p></td>
 </tr>
 <tr class="row-odd"><td class="left-align nowrap single-left-divider single-right-divider"><p>Castep/AsparticAcid</p></td>
 <td class="center-align nowrap single-left-divider single-right-divider"><p>Castep</p></td>
 <td class="left-align nowrap single-left-divider single-right-divider"><p>Aspartic Acid</p></td>
-<td class="left-align single-left-divider single-right-divider"><p>Average permittivity and Maxwell-Garnett calculations of sphere, plate   and ellipsoid, using program defined masses</p></td>
+<td class="left-align single-left-divider single-right-divider"><p>Average permittivity and Maxwell-Garnett calculations of sphere, plate   and ellipsoid, using program-defined masses</p></td>
 </tr>
 <tr class="row-even"><td class="left-align nowrap single-left-divider single-right-divider"><p>Castep/Bubbles</p></td>
 <td class="center-align nowrap single-left-divider single-right-divider"><p>Castep</p></td>
@@ -310,7 +313,7 @@ A Windows 10 installation from the git repository which works for users without 
 <tr class="row-odd"><td class="left-align nowrap single-left-divider single-right-divider"><p>Castep/Castep17</p></td>
 <td class="center-align nowrap single-left-divider single-right-divider"><p>Castep</p></td>
 <td class="left-align nowrap single-left-divider single-right-divider"><p>beta-Lactose</p></td>
-<td class="left-align single-left-divider single-right-divider"><p>Castep 17,Maxwell-Garnett sphere and plates with 3 surfaces</p></td>
+<td class="left-align single-left-divider single-right-divider"><p>Castep 17, Maxwell-Garnett sphere and plates with 3 surfaces</p></td>
 </tr>
 <tr class="row-even"><td class="left-align nowrap single-left-divider single-right-divider"><p>Castep/Isoleucine</p></td>
 <td class="center-align nowrap single-left-divider single-right-divider"><p>Castep</p></td>

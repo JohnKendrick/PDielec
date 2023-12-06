@@ -9,6 +9,7 @@ version 8.0.0
   Added a range of units to handle crystal thickness
   Changed the complex matrices in pyGTM to clongdouble
   Modified pyGTM to try and improve its numerical stability
+  Added the concept of a slicing to the single crystal scenario, again attempting to improve numerical stability
   Modified the reading of scripts as updates to python seem to have changed the exec() command, now read the whole file at once.
   Add the concept of layers in the single crystal scenarios.
       This allows multiple layers to be treated between the superstrate and substrate

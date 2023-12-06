@@ -73,13 +73,13 @@
   <section id="phonon-analysis">
 <h1><span class="section-number">7. </span>Phonon Analysis<a class="headerlink" href="#phonon-analysis" title="Permalink to this heading">¶</a></h1>
 <p>PDGui performs an analysis of a phonon mode in terms of the percentage
-of molecular centre-of-mass and rigid body rotational motion in each mode.  Using the results of the analysis it is possible to differentiate between inter- and intra-molecular phonon modes (see for instance Jepsen et al <span id="id1">[<a class="reference internal" href="zreferences.html#id64" title="Peter Uhd Jepsen and Stewart J. Clark. Precise ab-initio prediction of terahertz vibrational modes in crystalline systems. Chemical Physics Letters, 442(4-6):275–280, Jul 2007. doi:10.1016/j.cplett.2007.05.112.">50</a>]</span>).  In addition, for those systems with more than one formula unit in the unit cell it is possible to break down the contribution of each molecule to a particular phonon mode.</p>
+of molecular centre-of-mass and rigid body rotational motion in each mode.  Using the results of the analysis it is possible to differentiate between inter- and intra-molecular phonon modes (see for instance Jepsen et al <span id="id1">[<a class="reference internal" href="zreferences.html#id64" title="Peter Uhd Jepsen and Stewart J. Clark. Precise ab-initio prediction of terahertz vibrational modes in crystalline systems. Chemical Physics Letters, 442(4-6):275–280, Jul 2007. doi:10.1016/j.cplett.2007.05.112.">50</a>]</span>).  In addition, for those systems with more than one formula unit in the unit-cell it is possible to break down the contribution of each molecule to a particular phonon mode.</p>
 <section id="molecular-systems">
 <h2><span class="section-number">7.1. </span>Molecular Systems<a class="headerlink" href="#molecular-systems" title="Permalink to this heading">¶</a></h2>
 <p>It is common in molecular calculations of
 vibrational properties to construct a force constant matrix which enforces the
 requirements of zero energy change for centre-of-mass motion and rigid-body rotation. This can be achieved by using projection operators to transform
-the second derivative matrix to a set of coordinates which no longer include centre-of-mass motion or rigid-body rotation.</p>
+the second derivative matrix to a set of coordinates that no longer include centre-of-mass motion or rigid-body rotation.</p>
 <p>Defining a projection operator as;</p>
 <div class="math notranslate nohighlight" id="equation-eq-projectionop">
 <span class="eqno">(7.1)<a class="headerlink" href="#equation-eq-projectionop" title="Permalink to this equation">¶</a></span>\[\tensorbf{P} = \tensorbf{1} - \fieldbf{V} \fieldbf{V}^{T}\]</div>
@@ -92,7 +92,7 @@ z axis with the same displacement. So considering the projection of the centre-o
 <div class="math notranslate nohighlight" id="equation-eq-cmx2">
 <span class="eqno">(7.3)<a class="headerlink" href="#equation-eq-cmx2" title="Permalink to this equation">¶</a></span>\[\begin{split}\fieldbf{V}^{x} = \begin{pmatrix} \fieldbf{V}^{x}_{1} \\ \fieldbf{V}^{x}_{2}\\ \vdots \end{pmatrix}\end{split}\]</div>
 <p>There are two other projection operators describing translation along the y- and z-axis.</p>
-<p>In a similar fashion it is possible to describe an infinitesimal molecular rotation using a vector V and therefore constructing a projection operator to remove rigid-body rotation.  If the coordinates of atom <span class="math notranslate nohighlight">\(a\)</span> relative to the centre-of-mass of the molecule are <span class="math notranslate nohighlight">\(x, y \text{ and } z\)</span>, the component of the projection vector, <span class="math notranslate nohighlight">\(\tensorbf{V}\)</span> representing rotation about the x-axis in the yz-plane is;</p>
+<p>In a similar fashion, it is possible to describe an infinitesimal molecular rotation using a vector V and therefore constructing a projection operator to remove rigid-body rotation.  If the coordinates of atom <span class="math notranslate nohighlight">\(a\)</span> relative to the centre-of-mass of the molecule are <span class="math notranslate nohighlight">\(x, y \text{ and } z\)</span>, the component of the projection vector, <span class="math notranslate nohighlight">\(\tensorbf{V}\)</span> representing rotation about the x-axis in the yz-plane is;</p>
 <div class="math notranslate nohighlight" id="equation-eq-rotyz">
 <span class="eqno">(7.4)<a class="headerlink" href="#equation-eq-rotyz" title="Permalink to this equation">¶</a></span>\[\begin{split} \fieldbf{V}^{yz}_{a} = \left(\begin{matrix} 0 \\ -z \\ +y \end{matrix}\right)\end{split}\]</div>
 <p>In a similar fashion rotations about the y- and z-axis are respectively;</p>
@@ -104,7 +104,7 @@ z axis with the same displacement. So considering the projection of the centre-o
 <p>In a similar fashion to Equation <a class="reference internal" href="#equation-eq-cmx2">(7.3)</a> the complete projection operators for the 3 rotational modes can be assembled (using rotation about the x-axis as an example)</p>
 <div class="math notranslate nohighlight" id="equation-eq-rotyz2">
 <span class="eqno">(7.7)<a class="headerlink" href="#equation-eq-rotyz2" title="Permalink to this equation">¶</a></span>\[\begin{split} \fieldbf{V}^{yz} = \begin{pmatrix} \fieldbf{V}^{yz}_{1} \\ \fieldbf{V}^{yz}_{2}\\ \vdots \end{pmatrix}\end{split}\]</div>
-<p>In practice the projection operators will be defined using mass-weighted cartesian coordinates as this simplifies the expressions used later.  As an example the transformation to mass-weighted coordinates for atom <span class="math notranslate nohighlight">\(a\)</span> translating along the x-axis is;</p>
+<p>In practice, the projection operators will be defined using mass-weighted cartesian coordinates as this simplifies the expressions used later.  As an example the transformation to mass-weighted coordinates for atom <span class="math notranslate nohighlight">\(a\)</span> translating along the x-axis is;</p>
 <div class="math notranslate nohighlight" id="equation-eq-mass-weight">
 <span class="eqno">(7.8)<a class="headerlink" href="#equation-eq-mass-weight" title="Permalink to this equation">¶</a></span>\[\sqrt{m_a} \fieldbf{V}^{x}_{a}\]</div>
 </section>
@@ -113,7 +113,7 @@ z axis with the same displacement. So considering the projection of the centre-o
 <p>The invariants of the energy in a periodic system are the three
 translational modes corresponding to motion of all the atoms in the same
 direction.  The rotation of an infinite lattice is not invariant.  However,  it is proposed to construct projection operators for each
-molecule in the unit cell, which will project out the motion of
+molecule in the unit-cell, which will project out the motion of
 each molecular translational and rotational degree of freedom.
 Such projection operators will be used to separate the external from the internal modes and there will therefore
 be a projection operator for each external mode in the system.</p>
@@ -130,16 +130,16 @@ mode and mass-weighted Cartesian displacements. Thus <span class="math notransla
 mass-weighted second derivative matrix.  The atom subscript is used to indicate that
 only those atomic coordinates involving atom <span class="math notranslate nohighlight">\(a\)</span> are being considered.
 Derivation of this expression has made use of the following
-relationship between the mass weighted normal mode;</p>
+relationship between the mass-weighted normal mode;</p>
 <div class="math notranslate nohighlight" id="equation-eq-kinetic-energy">
 <span class="eqno">(7.10)<a class="headerlink" href="#equation-eq-kinetic-energy" title="Permalink to this equation">¶</a></span>\[\sqrt{ m_a } \fieldbf{\Delta x}_{a,p} = \fieldbf{L}_{a,p} Q_p\]</div>
 <p>As proposed by Hug and Haesler <span id="id3">[<a class="reference internal" href="zreferences.html#id65" title="Werner Hug and Jacques Haesler. Is the Vibrational Optical Activity of (R)‐[2H1, 2H2, 2H3]‐neopentane measurable? Quantum Chemistry, 104:695–715, 2005. doi:10.1002/qua.20600.">51</a>]</span>, since the kinetic energy can be expressed as
 atomic contributions, consideration of the Virial theorem indicates that
-this is true also for the potential energy. Using mass weighted
+this is true also for the potential energy. Using mass-weighted
 Cartesian coordinates for convenience, an analysis of the phonon modes
 may therefore be constructed in the following way. A given phonon
 mode, <span class="math notranslate nohighlight">\(p\)</span>,  will have its total kinetic energy partitioned between the
-molecules in the unit cell according to;</p>
+molecules in the unit-cell according to;</p>
 <div class="math notranslate nohighlight" id="equation-eq-kinetic-energy-total">
 <span class="eqno">(7.11)<a class="headerlink" href="#equation-eq-kinetic-energy-total" title="Permalink to this equation">¶</a></span>\[ E^{total}_p = \sum\limits_{mol} {E^{mol}_p }\]</div>
 <div class="math notranslate nohighlight" id="equation-eq-kinetic-energy-molecular">
@@ -147,7 +147,7 @@ molecules in the unit cell according to;</p>
 <p>To calculate the contribution a particular mode has to the centre-of-mass kinetic energy we use the projection operators given in Equation <a class="reference internal" href="#equation-eq-cmx2">(7.3)</a> (now in mass-weighted Cartesian coordinates) where only the atoms in that molecule are used to construct the operator;</p>
 <div class="math notranslate nohighlight" id="equation-eq-finaloperator">
 <span class="eqno">(7.13)<a class="headerlink" href="#equation-eq-finaloperator" title="Permalink to this equation">¶</a></span>\[\tensorbf{P}^x_{mol} = \tensorbf{1} - \fieldbf{V}^x_{mol} (\fieldbf{V}^x_{mol})^T\]</div>
-<p>This approach is used to define  6 projection operators for each molecule. The centre-of-mass energy contained in the <span class="math notranslate nohighlight">\(p_{th}\)</span> mode can be written;</p>
+<p>This approach is used to define  6 projection operators for each molecule. The centre-of-mass energy contained in the <span class="math notranslate nohighlight">\(p_{th}\)</span> mode can be written as;</p>
 <div class="math notranslate nohighlight" id="equation-eq-energy-cm">
 <span class="eqno">(7.14)<a class="headerlink" href="#equation-eq-energy-cm" title="Permalink to this equation">¶</a></span>\[E^{cm}_p = \dot{Q^2_p} \sum\limits_{i=x,y,z}{\sum\limits_{mol} { (\tensorbf{P}_{mol}^i\fieldbf{L}_{p})^T (\tensorbf{P}_{mol}^i \fieldbf{L}_{p} ) }}\]</div>
 <p>and the rigid-body rotational energy associated with the mode is;</p>
@@ -160,12 +160,12 @@ molecules in the unit cell according to;</p>
 </section>
 <section id="implementation">
 <h2><span class="section-number">7.3. </span>Implementation<a class="headerlink" href="#implementation" title="Permalink to this heading">¶</a></h2>
-<p>In order to calculate the relative internal and external contributions to each phonon mode it is first necessary to identify the molecules in the crystal.  In many cases the unit cell is packed with atoms in such a way that the cell is filled, rather than in a way reflecting the bondedness of the molecules.  The program first replicates the atoms in all cells neighbouring the central unit cell.  Within this supercell the bonds are determined by calculating the distances between all atoms in the supercell.  In practice an order N method is used whereby instead of searching all the supercell only the space around each atom is searched for potentially bonded partners.  The criterion of the presence of a bond between atoms <span class="math notranslate nohighlight">\(i\)</span> and <span class="math notranslate nohighlight">\(j\)</span> is given by the requirement that the distance between the atoms <span class="math notranslate nohighlight">\(r{ij}\)</span> is less than the bonding requirement;</p>
+<p>In order to calculate the relative internal and external contributions to each phonon mode it is first necessary to identify the molecules in the crystal.  In many cases, the unit-cell is packed with atoms in such a way that the cell is filled, rather than in a way reflecting the bondedness of the molecules.  The program first replicates the atoms in all cells neighbouring the central unit-cell.  Within this supercell the bonds are determined by calculating the distances between all atoms in the supercell.  In practice, an order N method is used whereby instead of searching all the supercell only the space around each atom is searched for potentially bonded partners.  The criterion of the presence of a bond between atoms <span class="math notranslate nohighlight">\(i\)</span> and <span class="math notranslate nohighlight">\(j\)</span> is given by the requirement that the distance between the atoms <span class="math notranslate nohighlight">\(r{ij}\)</span> is less than the bonding requirement;</p>
 <div class="math notranslate nohighlight" id="equation-eq-bond">
 <span class="eqno">(7.17)<a class="headerlink" href="#equation-eq-bond" title="Permalink to this equation">¶</a></span>\[r_{ij} &lt; scale (radius_i+radius_j)+toler\]</div>
-<p>Here <span class="math notranslate nohighlight">\(radius_i\)</span> is the covalent radius of atom <span class="math notranslate nohighlight">\(i\)</span>, <span class="math notranslate nohighlight">\(scale\)</span> and <span class="math notranslate nohighlight">\(toler\)</span> are factors which can be altered when running the program.</p>
+<p>Here <span class="math notranslate nohighlight">\(radius_i\)</span> is the covalent radius of atom <span class="math notranslate nohighlight">\(i\)</span>, <span class="math notranslate nohighlight">\(scale\)</span> and <span class="math notranslate nohighlight">\(toler\)</span> are factors that can be altered when running the program.</p>
 <p>Once the bonding in the supercell has been determined the program starts with the first atom in the central cell and determines all atoms which are connected to the molecule that it is in.  If there are any remaining atoms in the central cell which are not bonded yet then further molecules are added until all atoms in the central cell have been allocated to a molecule.</p>
-<p>Finally a new cell with the same dimensions as the original is constructed.  Where necessary each molecule is shifted into the cell so that the molecule’s centre-of-mass lies within the it.</p>
+<p>Finally a new cell with the same dimensions as the original is constructed.  Where necessary each molecule is shifted into the cell so that the molecule’s centre-of-mass lies within it.</p>
 <p>The projection operators, Equation <a class="reference internal" href="#equation-eq-finaloperator">(7.13)</a>, can now be constructed and the relative energies calculated using Equations <a class="reference internal" href="#equation-eq-energy-cm">(7.14)</a>, <a class="reference internal" href="#equation-eq-energy-rot">(7.15)</a> and <a class="reference internal" href="#equation-eq-energy-vib">(7.16)</a>.</p>
 <section id="examples">
 <h3><span class="section-number">7.3.1. </span>Examples<a class="headerlink" href="#examples" title="Permalink to this heading">¶</a></h3>
@@ -174,9 +174,9 @@ molecules in the unit cell according to;</p>
 <section id="isoleucine">
 <h2><span class="section-number">7.4. </span>Isoleucine<a class="headerlink" href="#isoleucine" title="Permalink to this heading">¶</a></h2>
 <p>The example of a calculation on isoleucine using Castep is available in the Examples/Castep/Isoleucine directory of the distribution.  The analysis was performed using PDGui.
-The program first finds the four molecules of isoleucine in the unit cell of the crystal structure.  The ordering of the atoms at this point is different to the ordering in the original cell and in the QM calculation.  The visualiser shows the atoms in the new positions.  These will not be the same as in the original calculation.  The molecules and their centres of mass are summarised in <a class="reference internal" href="#tab-isoleucine-mols"><span class="std std-numref">Table 7.1</span></a>.</p>
+The program first finds the four molecules of isoleucine in the unit-cell of the crystal structure.  The ordering of the atoms at this point is different to the ordering in the original cell and in the QM calculation.  The visualiser shows the atoms in the new positions.  These will not be the same as in the original calculation.  The molecules and their centres of mass are summarised in <a class="reference internal" href="#tab-isoleucine-mols"><span class="std std-numref">Table 7.1</span></a>.</p>
 <table class="styled-table docutils align-center" id="tab-isoleucine-mols">
-<caption><span class="caption-number">Table 7.1 </span><span class="caption-text">Molecular constituents of the isoleucine unit cell (centre-of-mass is in fractional coordinates)</span><a class="headerlink" href="#tab-isoleucine-mols" title="Permalink to this table">¶</a></caption>
+<caption><span class="caption-number">Table 7.1 </span><span class="caption-text">Molecular constituents of the isoleucine unit-cell (centre-of-mass is in fractional coordinates)</span><a class="headerlink" href="#tab-isoleucine-mols" title="Permalink to this table">¶</a></caption>
 <colgroup>
 <col style="width: 20.0%" />
 <col style="width: 20.0%" />
@@ -219,7 +219,8 @@ The program first finds the four molecules of isoleucine in the unit cell of the
 </tr>
 </tbody>
 </table>
-<p><a class="reference internal" href="#tab-isoleucine-results"><span class="std std-numref">Table 7.2</span></a> shows that results of the analysis of the phonon modes with frequencies below 100 cm<sup>-1</sup>.  The first 3 modes should have zero frequency as they are the translationally invariant modes of the lattice.  The negative number shown here actually indicates that the mode has an imaginary frequency.  As can be seen under the column %mol-cme they are almost completely associated with molecular centre-of-mass motion.  This is true also of the lowest non-zero frequency at 32.81 cm<sup>-1</sup> and to some extent of the next mode at 39.73 cm<sup>-1</sup>.  Although for this latter mode there is considerable contribution from rigid-body rotational motion (see the %mol-rot column).  As the frequency of the phonon mode increases the contribution from rigid-body motion generally decreases and contribution from vibrational mode (see the %vib column) increases.  The total contribution from molecular motion is summarised in the last four columns.</p>
+<p><a class="reference internal" href="#tab-isoleucine-results"><span class="std std-numref">Table 7.2</span></a> shows the results of the analysis of the phonon modes with frequencies below 100 cm<sup>-1</sup>.  The first 3 modes should have zero frequency as they are the translationally invariant modes of the lattice.  The negative number shown here actually indicates that the mode has an imaginary frequency.  As can be seen under the column %mol-cme they are almost completely associated with molecular centre-of-mass motion.  This is true also of the lowest non-zero frequency at 32.81 cm<sup>-1</sup> and to some extent of the next mode at 39.73 cm<sup>-1</sup>.
+However, for this latter mode there is a considerable contribution from rigid-body rotational motion (see the %mol-rot column).  As the frequency of the phonon mode increases the contribution from rigid-body motion generally decreases and the contribution from vibrational modes (see the %vib column) increases.  The total contribution from molecular motion is summarised in the last four columns.</p>
 <table class="styled-table docutils align-center" id="tab-isoleucine-results">
 <caption><span class="caption-number">Table 7.2 </span><span class="caption-text">Isoleucine: percentage contributions of the centre-of-mass and the rotational molecular modes to each phonon mode</span><a class="headerlink" href="#tab-isoleucine-results" title="Permalink to this table">¶</a></caption>
 <colgroup>
@@ -432,8 +433,8 @@ The program first finds the four molecules of isoleucine in the unit cell of the
 <p>The example for
 BaTiO<sub>3</sub>
 can be found in Example/AbInit/BaTiO3 in the main directory of the PDielec distribution. The results of the Abinit calculation can be analysed using PDGui.
-For this example the default covalent radius of the Barium atoms has been changed to 0.3 Å, so this atom will be treated as though it is not bonded to anything else in the cell.  This results in 2 ‘molecules’ being found in the cell; a TiO<sub>3</sub> moiety and the Ba<sup>2+</sup> ion.</p>
-<p>The results of the analysis are shown in <a class="reference internal" href="#tab-batio3-results"><span class="std std-numref">Table 7.3</span></a> below.  In this example the lowest 3 modes have been projected so there is no problem with translational invariance.  They are purely centre-of-mass modes.  The energy in these three modes seems to be mainly in molecule 1, which is the Ba<sup>2+</sup> ion.  The modes at 197.73 cm<sup>-1</sup> also have a large centre-of-mass component, this time mainly coming from molecule 0, which is the TiO<sub>3</sub> moeity. Above 200 cm<sup>-1</sup> there is much smaller centre-of-mass contribution to the energy and all the modes are dominated by the TiO<sub>3</sub> group.</p>
+For this example, the default covalent radius of the Barium atoms has been changed to 0.3 Å, so this atom will be treated as though it is not bonded to anything else in the cell.  This results in 2 ‘molecules’ being found in the cell; a TiO<sub>3</sub> moiety and the Ba<sup>2+</sup> ion.</p>
+<p>The results of the analysis are shown in <a class="reference internal" href="#tab-batio3-results"><span class="std std-numref">Table 7.3</span></a> below.  In this example, the lowest 3 modes have been projected so there is no problem with translational invariance.  They are purely centre-of-mass modes.  The energy in these three modes seems to be mainly in molecule 1, which is the Ba<sup>2+</sup> ion.  The modes at 197.73 cm<sup>-1</sup> also have a large centre-of-mass component, this time mainly coming from molecule 0, which is the TiO<sub>3</sub> moiety. Above 200 cm<sup>-1</sup> there is a much smaller centre-of-mass contribution to the energy and all the modes are dominated by the TiO<sub>3</sub> group.</p>
 <table class="styled-table docutils align-center" id="tab-batio3-results">
 <caption><span class="caption-number">Table 7.3 </span><span class="caption-text">BaTiO<sub>3</sub>: percentage contributions of the centre-of-mass and the rotational molecular modes to each phonon mode</span><a class="headerlink" href="#tab-batio3-results" title="Permalink to this table">¶</a></caption>
 <colgroup>
