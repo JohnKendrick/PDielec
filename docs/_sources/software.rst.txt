@@ -18,8 +18,9 @@ Other Software Components
 PReader
 =======
 
-preader is a 'helper' program which uses the underlying modules of PDielec to read output files and summarise the results of various MM/QM packages.  The program can be used to perform some straightforward calculations.  For instance projection of any remaining centre of mass motion of the crystal can be performed to make sure that there are three zero frequencies.  Also the masses used in the calculation of the dynamical matrix can be altered.
-Unlike PDGui it is not necessary to have performed a full calculation of the dynamical matrix.  In the majority of cases preader will read geometry optimisation runs.
+preader is a 'helper' program that uses the underlying modules of PDielec to read output files and summarise the results of various MM/QM packages.  The program can be used to perform some straightforward calculations.  
+For instance, projection of any remaining centre-of-mass motion of the crystal can be performed to make sure that there are three zero frequencies.  Also, the masses used in the calculation of the dynamical matrix can be altered.
+Unlike PDGui it is not necessary to have performed a full calculation of the dynamical matrix.  In the majority of cases, preader will read geometry optimisation runs.
 
 Command options
 ---------------
@@ -51,7 +52,7 @@ This reads all the VASP OUTCAR files in the current and any of its subdirectorie
 
          preader -program castep -eckart `find . -name \*.castep` > results.csv
 
-This reads all the castep output files in the current and any of its subdirectories and summarises the results to results.csv.  For each file the centre of mass motion of the crystal is projected.  The results file contains both the unprojected and the projected results.
+This reads all the CASTEP output files in the current and any of its subdirectories and summarises the results to results.csv.  For each file, the centre-of-mass motion of the crystal is projected.  The results file contains both the unprojected and the projected results.
 
 There are examples of preader being used in the Examples/'Package'/preader subdirectories of the distribution of PDielec.
 
@@ -123,20 +124,20 @@ Examples of the use of the command are;::
 MM/QM Interfaces
 ================
 
-The packages have interfaces to five solid state QM codes, VASP :cite:`Hafner2008c`, CASTEP :cite:`Clark2005d`, CRYSTAL14 :cite:`Dovesi2014`, Abinit :cite:`Gonze2016`, Quantum Espresso :cite:`Giannozzi2009` and Phonopy :cite:`Togo2015`.  In addition an interface is available for GULP :cite:`Gale2003` which is a force field based solid state code. Finally an interface has been written to an 'experiment' file format which allows the preparation of a user defined file specifying the permittivities and absorption frequencies. The origin of the dataset(s) used for processing is determined by a command line switch, -program. An outline of the interfaces to these codes is given here. 
+The packages have interfaces to five solid-state QM codes, VASP :cite:`Hafner2008c`, CASTEP :cite:`Clark2005d`, CRYSTAL14 :cite:`Dovesi2014`, Abinit :cite:`Gonze2016`, Quantum Espresso :cite:`Giannozzi2009` and Phonopy :cite:`Togo2015`.  In addition, an interface is available for GULP :cite:`Gale2003` which is a force field based solid-state code. Finally, an interface has been written to an 'experiment' file format which allows the preparation of a user-defined file specifying the permittivities and absorption frequencies. The origin of the dataset(s) used for processing is determined by a command line switch, -program. An outline of the interfaces to these codes is given here. 
 The package used for the calculation is described by the -program option. In addition, a file name is given which contains the output to be processed by PDielec.
 
 VASP 
 -----
-The name provided on the command line is an OUTCAR file. The OUTCAR is read by PDielec to determine the unit cell, atomic masses, frequencies, normal modes, Born charge tensors and optical permittivity. The VASP run can be a DFPT or numerical calculation of the response.
+The name provided on the command line is an OUTCAR file. The OUTCAR is read by PDielec to determine the unit-cell, atomic masses, frequencies, normal modes, Born charge tensors and optical permittivity. The VASP run can be a DFPT or numerical calculation of the response.
 
 CASTEP 
 -------
-The name provided on the command line is the seedname for the calculation. The corresponding seedname.castep file in the current directory is read and processed to determine the unit cell, atomic masses, optical permittivity and born charge tensors. The normal modes and their frequencies are determined from the seedname.phonon file. The CASTEP run needs to be a DFPT (phonon+efield) task.
+The name provided on the command line is the seedname for the calculation. The corresponding seedname.castep file in the current directory is read and processed to determine the unit-cell, atomic masses, optical permittivity and born charge tensors. The normal modes and their frequencies are determined from the seedname.phonon file. The CASTEP run needs to be a DFPT (phonon+efield) task.
 
 CRYSTAL 
 -------
-The name on the command line is a file ending in .out, containing the output of a CRYSTAL14 run. The contents of this file alone are sufficient to provide the unit cell, atomic masses, frequencies, normal modes and Born charge tensors. However, the number of significant figures for the normal modes is not sufficient for an accurate calculation and it is therefore recommended that the HESSFREQ.DAT and BORN.DAT files are also made available. If they are present in the directory where PDielec is run from, it uses these files to calculate the Born charge tensors, frequencies and normal modes. The CRYSTAL calculation needs to be a frequency calculation (FREQCALC) with the infrared intensity (INTENS) selected. The default algorithm does not calculate the optical permittivity, so this needs to be provided on the command line. However, if the CPHF or CPKS algorithm is used for the frequency calculation, the optical permittivity is calculated and PDielec will automatically read it from the output file. By default CRYSTAL projects out the pure translational modes of the system before calculating the frequencies, this can also done by the PDielec package. Small differences in the calculated frequencies between the CRYSTAL program and PDielec have been observed. These have been found to be due to a slightly different method for symmetrising the 2\ :superscript:`nd` derivative matrix, because of this an optional directive "-hessian crystal" can be used to indicate that PDielec should use the same symmetrisation as CRYSTAL14.
+The name on the command line is a file ending in .out, containing the output of a CRYSTAL14 run. The contents of this file alone are sufficient to provide the unit-cell, atomic masses, frequencies, normal modes and Born charge tensors. However, the number of significant figures for the normal modes is not sufficient for an accurate calculation and it is therefore recommended that the HESSFREQ.DAT and BORN.DAT files are also made available. If they are present in the directory where PDielec is run from, it uses these files to calculate the Born charge tensors, frequencies and normal modes. The CRYSTAL calculation needs to be a frequency calculation (FREQCALC) with the infrared intensity (INTENS) selected. The default algorithm does not calculate the optical permittivity, so this needs to be provided on the command line. However, if the CPHF or CPKS algorithm is used for the frequency calculation, the optical permittivity is calculated and PDielec will automatically read it from the output file. By default CRYSTAL projects out the pure translational modes of the system before calculating the frequencies, this can also done by the PDielec package. Small differences in the calculated frequencies between the CRYSTAL program and PDielec have been observed. These have been found to be due to a slightly different method for symmetrising the 2\ :superscript:`nd` derivative matrix, because of this an optional directive "-hessian crystal" can be used to indicate that PDielec should use the same symmetrisation as CRYSTAL14.
 
 ABINIT
 ------
@@ -148,7 +149,7 @@ The output file is the dynamical matrix file, specified by "filedyn" in a run of
 
 PHONOPY 
 -------
-Phonopy calculates the dynamical matrix through numerical differentiation. It has interfaces to several programs, although PDielec has only used the VASP interface. In principle other interfaces could be used. The second parameter for the --program directive is the PHONOPY interface that was used to calculate the forces. Typically these would be generated by performing;
+Phonopy calculates the dynamical matrix through numerical differentiation. It has interfaces to several programs, although PDielec has only used the VASP interface. In principle, other interfaces could be used. The second parameter for the --program directive is the PHONOPY interface that was used to calculate the forces. Typically these would be generated by performing;
 
         phonopy --d --dim="1 1 1"
 
@@ -156,23 +157,23 @@ to calculate the displacements in a set of POSCAR-* files. After running VASP a 
 
         phonopy --f DISP-\*/vasprun.xml
 
-where the DISP-\* directories are where the VASP calculation was performed. Finally a dynamical is written out using;
+where the DISP-\* directories are where the VASP calculation was performed. Finally, a dynamical is written out using;
 
         phonopy --dim="1 1 1" --qpoints="0 0 0" --writedm
 
-To calculate the infrared spectrum PDielec needs the Born charges for the atoms in the unit cell and these can be calculated using VASP and the optimised geometry of the unit cell. The OUTCAR file from this calculation can be copied to the current directory and renamed OUTCAR.born
+To calculate the infrared spectrum PDielec needs the Born charges for the atoms in the unit-cell and these can be calculated using VASP and the optimised geometry of the unit-cell. The OUTCAR file from this calculation can be copied to the current directory and renamed OUTCAR.born
 
 GULP 
 -----
 
-The name on the command line is a file ending in .gout, containing the output of a GULP run. The contents of this file alone are sufficient to provide the unit cell, atomic masses, frequencies, normal modes, Born charge tensors and optical permittivity. Because GULP only writes out the Born charge matrices for the asymmetric unit, it is necessary to run a frequency calculation using P1 symmetry and a complete unit cell. The key words; nosymm, phonon, intensity, eigen and cart are recommended for the GULP calculation. In the case that no shells are used in the calculation the optical permittivity is not available in the output and it is necessary to provide it.
+The name on the command line is a file ending in .gout, containing the output of a GULP run. The contents of this file alone are sufficient to provide the unit-cell, atomic masses, frequencies, normal modes, Born charge tensors and optical permittivity. Because GULP only writes out the Born charge matrices for the asymmetric unit, it is necessary to run a frequency calculation using P1 symmetry and a complete unit-cell. The keywords; nosymm, phonon, intensity, eigen and cart are recommended for the GULP calculation. In the case that no shells are used in the calculation the optical permittivity is not available in the output and it is necessary to provide it.
 
 .. _experimental-file-format:
 
 Experimental File Format
 ========================
-There is a way of reading in experimental or calculated permittivities and calculating the infrared optical behaviour of the material.  The uses the *experimental* file format which by default is assumed to be associated with files with *.exp* extention. 
-There are some significant limitations in providing the information in the manner.  Specifically as there is no Dynamical Matrix the normal modes are not known, so they will not be visible in the *Viewer tab*.   There may be little information about specific modes for the *Settings tab*.
+There is a way of reading in experimental or calculated permittivities and calculating the infrared optical behaviour of the material.  The uses the *experimental* file format which by default is assumed to be associated with files with *.exp* extension. 
+There are some significant limitations in providing the information in this manner.  Specifically, as there is no Dynamical Matrix the normal modes are not known, so they will not be visible in the *Viewer tab*.   There may be little information about specific modes for the *Settings tab*.
 
 The general format of an experimental file is best shown by an example;::
 
@@ -232,13 +233,13 @@ The *unitcell* directive specifies the number of atoms in the unit-cell and thei
 
 The *epsinf* directive gives the values of the :math:`\epsilon_{\infty}` tensor
 
-Finally a model for the specification of the frequency dependent permittivity is given.  In this case the four parameter semi-quantum model (fpsq) is employed.  Each diagonal component of the tensor is specified by the number of contributions and then each contribution provides the TO frequency and its :math:`\gamma` followed by the same for the LO frequency (all frequencies are in |cm-1|. Full details of each permittivity model available are shown below.
+Finally, a model for the specification of the frequency-dependent permittivity is given.  In this case the four parameter semi-quantum model (FPSQ) is employed.  Each diagonal component of the tensor is specified by the number of contributions and then each contribution provides the TO frequency and its :math:`\gamma` followed by the same for the LO frequency (all frequencies are in |cm-1|. Full details of each permittivity model available are shown below.
 
 
 Constant model (constant)
 -------------------------
 
-The constant model defines a frequency independent permittivity.  The data for such a model is shown below.::
+The constant model defines a frequency-independent permittivity.  The data for such a model is shown below.::
 
     constant
     2.0+0.1j 0.0      0.0
@@ -253,7 +254,7 @@ This would specify an isotropic permittivity with some absorption.
 FPSQ model (fpsq)
 -----------------
 
-The fpsq model defines a frequency dependent permittivity using the Four Parameter Semi-Quantum model.  An example of the data for such a model is shown below.::
+The FPSQ model defines a frequency-dependent permittivity using the Four Parameter Semi-Quantum model.  An example of the data for such a model is shown below.::
 
     fpsq
     xx 6
@@ -293,7 +294,7 @@ The model only allows for a diagonal permittivity tensor and each component of t
 Drude-Lorentz model (drude-lorentz)
 -----------------------------------
 
-The drude-lorentz model defines a frequency dependent permittivity.  An example of the data for such a model describing MgO is shown below.::
+The drude-lorentz model defines a frequency-dependent permittivity.  An example of the data for such a model describing MgO is shown below.::
 
     drude-lorentz
     xx 2
@@ -327,16 +328,16 @@ The file *PDielec/MaterialsDatabase.xlsx* can be opened and inspected to see the
 The first sheet gives some information about the structure of the spreadsheet.
 Each tab, except the first, represents a material and the tab name can be referred to in the *Support matrix* pulldown of the *PowderScenarioTab*.
 
-In Columns G&H of a material sheet are in arbitrary order: an entry, a density, a temperature; low and high frequency values, the number of points in a frequency dependent entry and a reference.
+In Columns G&H of a material sheet are, in arbitrary order: an entry, a density, a temperature; low and high frequency values, the number of points in a frequency-dependent entry and a reference.
 Column G holds the directive and column H holds its value
-For the case that the unit cell of the material is required (for anisotropic materials for instance), the unit cell can be provided either in terms of a, b, c, :math:`\alpha`, :math:`\beta` and :math:`\gamma` or as cell vectors.
+For the case that the unit-cell of the material is required (for anisotropic materials for instance), the unit-cell can be provided either in terms of a, b, c, :math:`\alpha`, :math:`\beta` and :math:`\gamma` or as cell vectors.
 
-The entry type maybe one of: "Constant refractive index", "Constant permittivity", "Tabulated refractive index" or "Tabulated permittivity", "Drude-Lorentz" or "FPSQ".
+The entry type may be one of: "Constant refractive index", "Constant permittivity", "Tabulated refractive index" or "Tabulated permittivity", "Drude-Lorentz" or "FPSQ".
 
 For columns A to F the first row provides a label for the data in each column.  The label is not used by PDGui but can be used to describe the contents of the column.
-The contents of these columns depends upon the entry type.
+The contents of these columns depend upon the entry type.
 
-For tabulated entries column A must have the frequency in |cm-1| and in ascending order.  
+For tabulated entries, column A must have the frequency in |cm-1| and in ascending order.  
 Column B is not used by PDGui but because refractive indices are often tabulated with micron wavelengths, this column may be used to allow conversion to |cm-1|.
 
    Summary of columns used for different Entry modes
@@ -406,14 +407,14 @@ Column B is not used by PDGui but because refractive indices are often tabulated
 The Format of the Output Spreadsheet
 ====================================
 
-The Excel spread sheet, which can be written by the program, contains details of the system being anaylysed, a list of the scenario settings and tables of absorption, permittivity, reflection and transmission.
-The spreedsheet is divided into different sheets;
+The Excel spreadsheet, which can be written by the program, contains details of the system being anaylysed, a list of the scenario settings and tables of absorption, permittivity, reflection and transmission.
+The spreadsheet is divided into different sheets;
 
 -   **Main**
         | This stores the information concerning the file that is being analysed and the program associated with the output.  A list of the frequencies read in from the output file is given too.
 
 -   **Settings**
-        | The information here comes from the settings tab.  Masses, permittivities and the frequencies which will be used in subsequent calculations.  These frequencies can include corrections to the dynamical matrix to project out translational modes, corrections to the Born charges to ensure they sum to zero and changes to the masses of the atoms.  Along with the frequencies the intensities, integrated absorption and absorption maximum are given.
+        | The information here comes from the settings tab.  Masses, permittivities and the frequencies that will be used in subsequent calculations.  These frequencies can include corrections to the dynamical matrix to project out translational modes, corrections to the Born charges to ensure they sum to zero and changes to the masses of the atoms.  Along with the frequencies the intensities, integrated absorption and absorption maximum are given.
   
 -   **Analysis**
         | The analysis of the vibrational modes into molecular, internal and external contributions is summarised here.
@@ -422,7 +423,7 @@ The spreedsheet is divided into different sheets;
         | A complete list of the settings for every scenario used in the calculation is given.
 
 -   **Powder Molar Absorption (cells)**
-        | The molar absorption in moles of cell is given as a function of frequency for each powder scenario.  The units are |Lmol-1cm-1|.
+        | The molar absorption in moles of unit-cell is given as a function of frequency for each powder scenario.  The units are |Lmol-1cm-1|.
 
 -   **Powder Absorption**
         | The absorption for each powder scenario is tabulated as a function frequency.  The units are |cm-1|

@@ -114,10 +114,10 @@ To use as a command line tool an example would be;</p>
 </thead>
 <tbody>
 <tr class="row-even"><td class="left-align single-left-divider single-right-divider"><p>-script filename</p></td>
-<td class="left-align single-left-divider single-right-divider"><p>Specify a python script to run</p></td>
+<td class="left-align single-left-divider single-right-divider"><p>Specify a Python script to run</p></td>
 </tr>
 <tr class="row-odd"><td class="left-align single-left-divider single-right-divider"><p>-scenario type</p></td>
-<td class="left-align single-left-divider single-right-divider"><p>Changes the initialial scenario type,
+<td class="left-align single-left-divider single-right-divider"><p>Changes the initial scenario type,
 type can be <em>powder</em> or <em>crystal</em>,
 the default is <em>powder</em></p></td>
 </tr>
@@ -156,7 +156,7 @@ or 2 threads if threading</p></td>
 </table>
 <p>After running the program the user sees a notebook interface with seven tabs.</p>
 <ul class="simple">
-<li><p><em>Main Tab</em> allows the user to specify the program and filename that are to be analysed.  It is also possible to specify here the spreadsheet name to which results are saved to.</p></li>
+<li><p><em>Main Tab</em> allows the user to specify the program and filename that are to be analysed.  It is also possible to specify here the spreadsheet name to which results are saved.</p></li>
 <li><p><em>Settings Tab</em> is used for changing the settings within the package</p></li>
 <li><p><em>Scenario Tab</em> can be a powder scenario or a single-crystal scenario.  In the case of a powder scenario, the tab specifies the material properties used to define the effective medium from which the  absorption characteristics are calculated.  In the case of a single crystal, the orientation of the crystal and the angle of incidence of the radiation can be defined.</p></li>
 <li><p><em>Plotting Tab</em> shows the results of all the scenario tabs in one place.</p></li>
@@ -166,7 +166,7 @@ or 2 threads if threading</p></td>
 </ul>
 <section id="main-tab">
 <h2><span class="section-number">3.1. </span>Main Tab<a class="headerlink" href="#main-tab" title="Permalink to this heading">¶</a></h2>
-<p>The <em>Main Tab</em> is used to pick the MM/QM package and the output file which will be analysed.</p>
+<p>The <em>Main Tab</em> is used to pick the MM/QM package and the output file that will be analysed.</p>
 <figure class="align-default" id="id4">
 <span id="fig-maintab"></span><a class="reference internal image-reference" href="_images/MainTab.png"><img alt="_images/MainTab.png" src="_images/MainTab.png" style="width: 545.6px; height: 774.4000000000001px;" /></a>
 <figcaption>
@@ -291,8 +291,8 @@ By default, the program opens the default database distributed with the program.
 Details of the theory underlying each method are given in the theory section: <a class="reference internal" href="theory_single_crystal.html#single-crystal-theory"><span class="std std-ref">Theory for Single Crystal Optics</span></a>.
 In summary, a thick slab assumes that the thickness is such that no radiation can be transmitted and all radiation is therefore reflected or absorbed.  As such only the reflectance has any meaning for thick slabs.
 The <em>Coherent thin film mode</em> provides a complete description of the light reflectance and transmittance but can show oscillations due to interference effects that are not seen experimentally.
-The <em>Incoherent thin film mode</em> treats the incoming light as incoherent and so removes all the oscillations due to internal reflection.
-Finally the <em>Partially incoherent film</em> introduces random variations in the incident angle and the geometric parameters of the crystal surface and the thickness of the crystal.
+The <em>Incoherent thin film mode</em> treats the incoming light as incoherent and removes all the oscillations due to internal reflection.
+Finally, the <em>Partially incoherent film</em> introduces random variations in the incident angle and the geometric parameters of the crystal surface and the thickness of the crystal.
 Single-crystal films are defined by a surface determined by the (hkl) settings.</p>
 <figure class="align-default" id="id7">
 <span id="fig-scenariotab-singlecrystal"></span><a class="reference internal image-reference" href="_images/ScenarioTab-SingleCrystal.png"><img alt="_images/ScenarioTab-SingleCrystal.png" src="_images/ScenarioTab-SingleCrystal.png" style="width: 550.4px; height: 784.8000000000001px;" /></a>
@@ -311,7 +311,7 @@ Each line in the list shows the thickness of the film, its surface in terms of (
 This is sufficient information to define the orientation of the crystal in laboratory coordinates.
 Further information on this is given the the section describing <a class="reference internal" href="#the-layer-editor"><span class="std std-ref">The Layer Editor</span></a>.</p>
 <p>The slice thickness is used to help in those cases that experience numerical problems when solving the single-crystal optical equations.  Problems of overflow arise, especially for thick films.  By default, the slice thickness is set to zero and now slicing is employed.  If a non-zero value is given, any film that is thicker than this value is subdivided (sliced) into adjacent thinner layers.  Although the results should be the same if slicing is used or not, the computational time goes up linearly with the number of slices.</p>
-<p>In the case of the <em>Partially incoherent thin film</em> mode it is necessary to provide further information about the sampling of the geometrical parameters.
+<p>In the case of the <em>Partially incoherent thin film</em> mode, it is necessary to provide further information about the sampling of the geometrical parameters.
 The <em>Percentage of partial incoherence</em> provides a percentage perturbation of the geometric parameters.  All angles are sampled from a uniform distribution on either side of the mean value by this percentage of 90<sup>o</sup>.
 The film thickness is also varied on either side of the mean value by this percentage of the mean value.</p>
 <p>The number of samples used in sampling is given by the value of <em>Number of partially incoherent samples</em>.
@@ -354,7 +354,7 @@ The plots available depend on the availability of powder and single-crystal scen
 <p>The title of the plot can be supplied by entering it into the <em>Plot title</em> text box and the frequency units used for the plot can also be changed from <em>wavenumber</em> to <em>THz</em>.</p>
 <p>For powder scenarios, the molar absorption, the absorption, and the real or imaginary permittivity can be plotted.  Once a plot has been requested the calculation progress is shown in the progress bar.  Some settings can be changed without the whole plot being recalculated.</p>
 <p>For single-crystal plots, the crystal reflectance and transmittance for s and p polarised radiation can be plotted along with absorptance which is defined in terms of the reflectance (R) and the transmittance (T) as <span class="math notranslate nohighlight">\(1-R-T\)</span>.
-For thick slabs, only the transmittance is of any revelance.  For thin films, absorptance is useful as it removes some of the oscilations that occur in the transmittance or reflectance due to the film thickness.</p>
+For thick slabs, only the transmittance is of any relevance.  For thin films, absorptance is useful as it removes some of the oscillations that occur in the transmittance or reflectance due to the film thickness.</p>
 <figure class="align-default" id="id10">
 <span id="fig-plottingtab-singlecrystal"></span><a class="reference internal image-reference" href="_images/PlottingTab-SingleCrystal.png"><img alt="_images/PlottingTab-SingleCrystal.png" src="_images/PlottingTab-SingleCrystal.png" style="width: 545.6px; height: 774.4000000000001px;" /></a>
 <figcaption>
@@ -366,14 +366,14 @@ For thick slabs, only the transmittance is of any revelance.  For thin films, ab
 </section>
 <section id="analysis-tab">
 <h2><span class="section-number">3.5. </span>Analysis Tab<a class="headerlink" href="#analysis-tab" title="Permalink to this heading">¶</a></h2>
-<p>The <em>Analysis Tab</em> shows a breakdown of the phonon modes into molecular components or into internal and external modes.  The molecular structure of the unit cell is determined by the covalent radii of the atoms.  These can be specified individually if needed.  The <em>Analysis Tab</em> shows the number of molecules that have been found in the analysis.</p>
+<p>The <em>Analysis Tab</em> shows a breakdown of the phonon modes into molecular components or internal and external modes.  The molecular structure of the unit cell is determined by the covalent radii of the atoms.  These can be specified individually if needed.  The <em>Analysis Tab</em> shows the number of molecules that have been found in the analysis.</p>
 <figure class="align-default" id="id11">
 <span id="fig-analysistab"></span><a class="reference internal image-reference" href="_images/AnalysisTab.png"><img alt="_images/AnalysisTab.png" src="_images/AnalysisTab.png" style="width: 545.6px; height: 774.4000000000001px;" /></a>
 <figcaption>
 <p><span class="caption-number">Fig. 3.8 </span><span class="caption-text">The Analysis Tab</span><a class="headerlink" href="#id11" title="Permalink to this image">¶</a></p>
 </figcaption>
 </figure>
-<p>The bar graph shows a break-down of each normal mode in the chosen frequency range into either internal and external contributions or into molecular components.  The atom sizes and the molecular composition of the unit cell are displayed in the <em>3D Viewer Tab</em></p>
+<p>The bar graph shows a breakdown of each normal mode in the chosen frequency range into either internal and external contributions or into molecular components.  The atom sizes and the molecular composition of the unit cell are displayed in the <em>3D Viewer Tab</em></p>
 </section>
 <section id="d-viewer-tab">
 <h2><span class="section-number">3.6. </span>3D Viewer Tab<a class="headerlink" href="#d-viewer-tab" title="Permalink to this heading">¶</a></h2>
@@ -481,14 +481,14 @@ If the file is then used on another DFT calculation then the optical permittivit
 <p>To improve the performance of the program python parallelisation has been used to parallelise over the frequencies, shapes and methods. By default, this parallelisation spawns additional Python executables, depending on the number of cores available.</p>
 <p>In addition to this form of parallelisation the NUMPY library can use multi-threaded BLAS. NUMPY can be compiled with several different BLAS libraries, including; MKL (from Intel), OPENBLAS and ATLAS, or indeed no optimised BLAS library is necessary. To explore the BLAS version compiled with your version of NUMPY please use the test_numpy_1, test_numpy_2 and test_numpy_3 scripts included in the Python/ subdirectory. If you are using MKL or OPENBLAS, the number of threads being used needs to be set with the MKL_NUM_THREADS or OPENBLAS _NUM_THREADS environment variable (sometimes OMP_NUM_THREADS is also used). Use the test routines to determine the optimum for your system. Experience indicates that no performance benefit is obtained with more than two threads.</p>
 <p>In the case of Phonopy, the dynamical matrix is read from a yaml file. This is very slow unless the C parser is used. If the C parser is not available a warning is issued and the program reverts to the Python parser.</p>
-<p>Finally, the use of non-standard BLAS libraries seems to cause problems with the affinity settings for the multiprocessing. It has been noticed that the parallel processes can all end up executing on the same processor. To prevent this, before executing the pdielec and preader scripts it may be necessary to include;</p>
+<p>Finally, the use of non-standard BLAS libraries seems to cause problems with the affinity settings for multiprocessing. It has been noticed that the parallel processes can all end up executing on the same processor. To prevent this, before executing the pdielec and preader scripts it may be necessary to include;</p>
 <blockquote>
 <div><p>export OPENBLAS_MAIN_FREE=1</p>
 </div></blockquote>
 <p>For some reason, this also works if the MKL library is being used.</p>
 <p>There have been issues in running PDielec on Catalina, MacOS.
 This appears to be due to the multiprocessing features of Python not working as expected on this operating system.
-A work-around is to use;</p>
+A workaround is to use;</p>
 <blockquote>
 <div><p>pdgui -threads -cpu 1</p>
 </div></blockquote>
@@ -497,7 +497,7 @@ Sometimes it is more convenient to set these using the environment.  Two environ
 <blockquote>
 <div><p>export PDIELEC_NUM_PROCESSORS=4</p>
 </div></blockquote>
-<p>will run <cite>pdgui</cite> on 4 processors.  By default, the number of processors is determined by interrogating the computer.  This is acheived, by setting the value of PDIELEC_NUM_PROCESSORS to 0.</p>
+<p>will run <cite>pdgui</cite> on 4 processors.  By default, the number of processors is determined by interrogating the computer.  This is achieved, by setting the value of PDIELEC_NUM_PROCESSORS to 0.</p>
 <blockquote>
 <div><p>export PDIELEC_THREADING=TRUE</p>
 </div></blockquote>

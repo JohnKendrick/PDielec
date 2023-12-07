@@ -77,7 +77,7 @@ Miniconda is the recommended environment for installing PDielec.  On Windows, it
 <p>PDielec is available on the conda-forge channel and installation using Anaconda can be performed on Linux, Windows, and Mac systems.
 However, there are no example files installed, only the executables.
 Example files for each of the DFT packages supported can be downloaded from the Git repository.</p>
-<p>The conda-forge package has a Python 3 environment included in the package.  After installation of Miniconda or anaconda, a new environment should be created in which to install the package:</p>
+<p>The conda-forge package has a Python 3 environment included in the package.  After installation of Miniconda or Anaconda, a new environment should be created in which to install the package:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">conda</span> <span class="n">create</span>  <span class="o">--</span><span class="n">name</span> <span class="n">pdielec</span>
 <span class="n">conda</span> <span class="n">activate</span> <span class="n">pdielec</span>
 <span class="n">conda</span> <span class="n">config</span> <span class="o">--</span><span class="n">add</span> <span class="n">channels</span> <span class="n">conda</span><span class="o">-</span><span class="n">forge</span>
@@ -141,7 +141,7 @@ cd to a directory where PDielec will be installed and use git to clone a copy of
 <section id="installation-from-repository">
 <h3><span class="section-number">2.4.1. </span>Installation from repository<a class="headerlink" href="#installation-from-repository" title="Permalink to this heading">¶</a></h3>
 <p>This Windows installation method is only needed if installation through Anaconda is not possible.
-A Windows 10 installation from the git repository which works for users without administrator rights involves a few steps but gives an installation that run all the test cases.  In the following instructions replace ‘yourusername’ with your user name.</p>
+A Windows 10 installation from the git repository which works for users without administrator rights involves a few steps but gives an installation that runs all the test cases.  In the following instructions replace ‘yourusername’ with your user name.</p>
 <section id="install-git">
 <h4><span class="section-number">2.4.1.1. </span>Install git<a class="headerlink" href="#install-git" title="Permalink to this heading">¶</a></h4>
 <p>First of all, install a Windows version of git from www.git-scm.com. A 64-bit version of Windows 10 will be assumed for the following instructions.</p>
@@ -224,7 +224,7 @@ A Windows 10 installation from the git repository which works for users without 
 <section id="github-pdielec-directory-structure">
 <h2><span class="section-number">2.5. </span>GitHub - PDielec directory structure<a class="headerlink" href="#github-pdielec-directory-structure" title="Permalink to this heading">¶</a></h2>
 <ul class="simple">
-<li><p>PDielec/ - The home directory and contains the <cite>pdgui</cite> and <cite>preader</cite> commands</p></li>
+<li><p>PDielec/ - The home directory that contains the <cite>pdgui</cite> and <cite>preader</cite> commands</p></li>
 <li><p>PDielec/PDielec  - Holds the source for the modules used by the pdielec and preader commands</p></li>
 <li><p>PDielec/PDielec/GUI  - Holds the Python code for PDGui</p></li>
 <li><p>PDielec/Examples - A set of examples is available for Abinit, Crystal14, CASTEP, GULP, Phonopy, Mie, and VASP.  Each example directory holds the input files to the QM/MM program and the relevant output files which are post-processed by PDielec.  For each program there is also a preader directory which holds test output for the preader command.</p></li>
@@ -273,12 +273,12 @@ A Windows 10 installation from the git repository which works for users without 
 <tr class="row-odd"><td class="left-align nowrap single-left-divider single-right-divider"><p>ATR/Na2SO42</p></td>
 <td class="center-align nowrap single-left-divider single-right-divider"><p>Vasp</p></td>
 <td class="left-align nowrap single-left-divider single-right-divider"><p>Na2(SO4)2</p></td>
-<td class="left-align single-left-divider single-right-divider"><p>Maxwell-Garnett calculation of the ATR spectrum, change the S polarisation   component from 0 to 100%</p></td>
+<td class="left-align single-left-divider single-right-divider"><p>Maxwell-Garnett calculation of the ATR spectrum, changes the S polarisation   component from 0 to 100%</p></td>
 </tr>
 <tr class="row-even"><td class="left-align nowrap single-left-divider single-right-divider"><p>ATR/Na2SO42_fit</p></td>
 <td class="center-align nowrap single-left-divider single-right-divider"><p>Vasp</p></td>
 <td class="left-align nowrap single-left-divider single-right-divider"><p>Na2(SO4)2</p></td>
-<td class="left-align single-left-divider single-right-divider"><p>Maxwell-Garnett calculation of the ATR spectrum, example of fitting the spectrum to experiment</p></td>
+<td class="left-align single-left-divider single-right-divider"><p>Maxwell-Garnett calculation of the ATR spectrum, an example of fitting the spectrum to experiment</p></td>
 </tr>
 <tr class="row-odd"><td class="left-align nowrap single-left-divider single-right-divider"><p>AbInit/AlAs</p></td>
 <td class="center-align nowrap single-left-divider single-right-divider"><p>AbInit</p></td>

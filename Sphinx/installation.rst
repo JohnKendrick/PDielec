@@ -22,7 +22,7 @@ PDielec is available on the conda-forge channel and installation using Anaconda 
 However, there are no example files installed, only the executables.  
 Example files for each of the DFT packages supported can be downloaded from the Git repository.
 
-The conda-forge package has a Python 3 environment included in the package.  After installation of Miniconda or anaconda, a new environment should be created in which to install the package::
+The conda-forge package has a Python 3 environment included in the package.  After installation of Miniconda or Anaconda, a new environment should be created in which to install the package::
 
    conda create  --name pdielec
    conda activate pdielec
@@ -94,7 +94,7 @@ Installation from repository
 ----------------------------
 
 This Windows installation method is only needed if installation through Anaconda is not possible.
-A Windows 10 installation from the git repository which works for users without administrator rights involves a few steps but gives an installation that run all the test cases.  In the following instructions replace 'yourusername' with your user name.
+A Windows 10 installation from the git repository which works for users without administrator rights involves a few steps but gives an installation that runs all the test cases.  In the following instructions replace 'yourusername' with your user name.
 
 Install git
 ...........
@@ -178,7 +178,7 @@ Open a git bash console and type;::
 GitHub - PDielec directory structure
 ====================================
 
-* PDielec/ - The home directory and contains the `pdgui` and `preader` commands
+* PDielec/ - The home directory that contains the `pdgui` and `preader` commands
 * PDielec/PDielec  - Holds the source for the modules used by the pdielec and preader commands
 * PDielec/PDielec/GUI  - Holds the Python code for PDGui
 * PDielec/Examples - A set of examples is available for Abinit, Crystal14, CASTEP, GULP, Phonopy, Mie, and VASP.  Each example directory holds the input files to the QM/MM program and the relevant output files which are post-processed by PDielec.  For each program there is also a preader directory which holds test output for the preader command.
@@ -220,9 +220,9 @@ A summary of the different examples and their purpose is shown below;
    +===========================+==================+===============+=================================================================================================================================================+
    | ATR/AlAs                  | AbInit           | AlAs          | Maxwell Garnett calculation of the ATR spectrum of an ellipsoid along   [001].  The incident angle varies from   0 to 80 degrees.               |
    +---------------------------+------------------+---------------+-------------------------------------------------------------------------------------------------------------------------------------------------+
-   | ATR/Na2SO42               | Vasp             | Na2(SO4)2     | Maxwell-Garnett calculation of the ATR spectrum, change the S polarisation   component from 0 to 100%                                           |
+   | ATR/Na2SO42               | Vasp             | Na2(SO4)2     | Maxwell-Garnett calculation of the ATR spectrum, changes the S polarisation   component from 0 to 100%                                          |
    +---------------------------+------------------+---------------+-------------------------------------------------------------------------------------------------------------------------------------------------+
-   | ATR/Na2SO42_fit           | Vasp             | Na2(SO4)2     | Maxwell-Garnett calculation of the ATR spectrum, example of fitting the spectrum to experiment                                                  |
+   | ATR/Na2SO42_fit           | Vasp             | Na2(SO4)2     | Maxwell-Garnett calculation of the ATR spectrum, an example of fitting the spectrum to experiment                                               |
    +---------------------------+------------------+---------------+-------------------------------------------------------------------------------------------------------------------------------------------------+
    | AbInit/AlAs               | AbInit           | AlAs          | Average permittivity and Maxwell-Garnett calculation of sphere, plate and   ellipsoid                                                           |
    +---------------------------+------------------+---------------+-------------------------------------------------------------------------------------------------------------------------------------------------+
