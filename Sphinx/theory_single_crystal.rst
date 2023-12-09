@@ -21,7 +21,8 @@ The code has been modified to model incoherent systems as well as coherent ones.
 A summary of the theory underlying the transfer matrix method is given to aid in the understanding of the methods implemented and the range of their applications.
 
 In general PDGui can handle multilayered frequency-dependent films, sandwiched between a superstrate and a substrate.  
-For the sake of simplicity, the following will describe a system with a single dielectric and the media will be indexed 0, 1 and 2 for the superstrate, dielectric and substrate respectively.
+For the sake of simplicity, the following will describe a system with a single dielectric. 
+The media will be indexed 0, 1 and 2 for the superstrate, dielectric and substrate respectively.
 A schematic illustrating this is shown in :numref:`fig-definition-of-RTA`.
 To aid understanding of the input and output and the limitations of the methods used, a brief summary of the transfer matrix method is given here, specific to its application in PDGui.
 There are 4 different modes of operation of the matrix transfer method in PDGui and these are described below under the headings 'coherent thin film', 'incoherent thin film', 'partially incoherent thin film' and 'thick slab'
@@ -37,8 +38,8 @@ There are 4 different modes of operation of the matrix transfer method in PDGui 
 Coherent thin film
 ------------------
 
-At an interface, the tangential (in-plane) electric and magnetic fields (given by a vector :math:`\fieldbf{F_i}`) have to match in both media.  
-This requires that the 4 amplitudes (vector :math:`\fieldbf{A_i}`) of the electric and magnetic fields, forward and backward, s and p polarised, in medium :math:`i` are related through a 4x4 dynamical matrix :math:`\tensorbf{D_i}`.
+At an interface, the tangential (in-plane) electric and magnetic fields (given by a vector :math:`\fieldbf{F_i}`) match in both media.  
+This requires that the 4 amplitudes (vector :math:`\fieldbf{A_i}`) of the electric and magnetic fields, forward and backward, S- and P- polarised, in medium :math:`i` are related through a 4x4 dynamical matrix :math:`\tensorbf{D_i}`.
 
 .. math::
    :label: eq-dynamical-matrix
@@ -73,7 +74,7 @@ The total transfer matrix for the 3 media considered (superstrate, dielectric an
                  \tensorbf{D}_1^{-1})
                  \tensorbf{D}_2
 
-The elements of the total 4x4 transfer matrix :math:`\tensorbf{M}` can be used to determine the total reflectance and transittance for each s and p mode.
+The elements of the total 4x4 transfer matrix :math:`\tensorbf{M}` can be used to determine the total reflectance and transittance for each S- and P- mode.
 
 Incoherent thin film
 --------------------
@@ -97,7 +98,7 @@ The actual implementation is appropriate for a multi-layer system where all diel
 Partially incoherent thin film
 ------------------------------
 
-PDgui caters for partial incoherence, where some incoherence is introduced by lack of planarity, or uncertainties in the orientation angle of the crystal, by randomly averaging over spectra produced by varying the thickness, the orientation angles of the crystal and the incident light.
+PDgui caters for partial incoherence, where some incoherence is introduced through lack of planarity, or uncertainties in the orientation angle of the crystal, by randomly averaging over spectra produced by varying the thickness, the orientation angles of the crystal and the incident light.
 The sampling is done over a uniform distribution.  A single percentage is given for all parameters.  For the thickness the percentage is a percentage of the initial thicknes.  For angles the percentage is a percentage of 90 :math:`^\circ`.
 
 Because of the random sampling in the partially incoherent case it has sometimes been found necessary to smooth the calculated spectra using a Savitzky-Golay filter. 
@@ -110,21 +111,19 @@ Thick Slab
 ----------
 For those cases where the partially incoherent thin film and incoherent thin film modes are not appropiate and only reflectance is of interest, the calculation mode referred to as a "thick slab" can be used.
 This mode assumes that there are only two (sem-infinite) media:
-the media through which the incident light travels and the crystalline media by which it is reflected.
-When using the "thick slab" mode, there is no substrate.  
-Instead the bottom dielectric layer is taken to be semi-infinite.
-
+the media through which the incident light travels and the crystalline, dielectric media by which it is reflected.
+When using the "thick slab" mode, the bottom dielectric layer becomes the substrate and is taken to be semi-infinite.
 
 Transmission is not of interest in this case, as in the case of a thick crystal it assumed that total absorption will take place and that there will be no internal reflection within the crystal.
 This mode is similar to a standard Fresnel calculation of reflectance (R) but is appropriate for general permittivity tensors.
-As a result of the assumptions associated with a "thick slab" it is assumed that transmittance (T) through a semi-infinite dielectric with some absorption will be zero and therefore the absorptance (A) will be;
+As a result of the assumptions associated with a "thick slab", it is assumed that transmittance (T) through a semi-infinite dielectric with some absorption will be zero and therefore the absorptance (A) will be;
 
 .. math::
    :label: thick_absorptance
 
    A = 1 - R
 
-For all other modes, the absorptance is defined as below;
+For all other single crystal modes, the absorptance is defined as below;
 
 .. math::
    :label: full_absorptance
@@ -136,7 +135,8 @@ Comparison of computational approaches
 
 :numref:`fig-mode-comparison` shows a comparison of the approaches discussed above to MgO.
 The DFT calculations were performed by Castep.  The incident angle is 45\ :superscript:`o` and the film thickness is 1\ |micron|.
-The 'Thick slab' mode can be regarded as a limiting case as the simulated slab becomes thicker, the calculations tend to follow the 'thick slab' curve more closely.
+The 'Thick slab' mode can be regarded as a limiting case as the simulated slab becomes thicker.
+The calculations tend to follow the 'thick slab' curve more closely.
 The 'Coherent thin film' curve shows large amplitude oscillations before and after the restrahlung region of absorption.  These are damped by including partial incoherence but are not completely removed.  
 The partial incoherence settings in this case were; 100 samples and up to 10% deviation in incident angle, thickness and crystal orientation, with no smoothing.
 The incoherent curve shows no oscillations and follows the thick mode curve near the restrahlung region.
@@ -163,7 +163,7 @@ The laboratory frame is illustrated in :numref:`fig-lab-coords2`.
 
 The other coordinate system of interest is that of the crystal.  The calculation of the permittivity tensor is performed in the crystal coordinate system (x,y,z).  The crystal plane is defined by a set of Miller indices (hkl) and the normal to the crystal surface is rotated to align with the laboratory Z-axis.  Finally in the laboratory frame the crystal may be rotated around the Z-axis by the azimuthal angle :math:`\phi`.
 The precise definition of the azimuthal angle is somewhat arbitrary as it depends on the crystal unit-cell definition, but PDGui provides information of the details of the relationship between the crystal axes and the laboratory frame.
-The arrangement described is illustrated in the Figure below where :math:`E_s` and :math:`E_p` are the field directions of the S- and P polarised incident light respectively. 
+The arrangement described is illustrated in the Figure below where :math:`E_s` and :math:`E_p` are the field directions of the S- and P- polarised incident light respectively. 
 Information about the crystal coordinates relative to the laboratory frame is given in the GUI.
 
 
