@@ -3,9 +3,10 @@ import os.path
 import os
 import numpy as np
 import copy
-import PDielec.Calculator as Calculator
+import PDielec.Calculator         as Calculator
 import PDielec.DielectricFunction as DielectricFunction
-import PDielec.Materials as Materials
+import PDielec.Materials          as Materials
+import PDielec.GTMcore            as GTM
 from PyQt5.QtWidgets             import QPushButton, QWidget, QFrame
 from PyQt5.QtWidgets             import QSpacerItem
 from PyQt5.QtWidgets             import QComboBox, QLabel, QLineEdit, QListWidget
@@ -22,6 +23,92 @@ from PDielec.GUI.EditLayerWindow import EditLayerWindow
 from PDielec.GUI.EditLayerWindow import Layer
 from functools                   import partial
 from scipy                       import signal
+
+def solve_single_crystal_equations( 
+        superstrateDielectricFunction ,
+        substrateDielectricFunction   ,
+        superstrateDepth              ,
+        substrateDepth                ,
+        layers                        ,
+        crystalIncoherence            ,
+        mode                          ,
+        theta                         ,
+        phi                           ,
+        psi                           ,
+        angleOfIncidence              ,
+        sliceThickness                ,
+        exponent_threshold            ,
+        v                             ,
+        ):
+    """
+        This is a parallel call to the single crystal equation solver, system is a GTM system   
+        superstrateDielectricFunction is a dielectric function providing the superstrate dielectric
+        substrateDielectricFunction   is a dielectric function providing the substrate dielectric
+        superstrateDepth              the depth of the superstrate (m)
+        substrateDepth                the depth of the substrate (m)
+        layers                        a list of material layers (their permittivity functions)
+        crystalIncoherence            a parameter between 0 and pi giving the amount of incoherence
+        mode                          'thick slab' indicates the substrate will be the crystal so semi-infinite
+                                      'coherent thin film' a standard GTM call with a single layer
+                                      'incoherent thin film' multiple GTM calls with random phase
+        theta                         the theta angle of the sla,
+        phi                           the angle of the slab
+        psi                           the psi angle of the slab
+        angleOfIncidence              the angle of incidence
+        sliceThickness                a thickness in m, used to subdivide thicker films
+                                      if zero then the full fat film is used
+        exponent_threshold            largest exponent allowed in calculation of the propagation matrix
+        v                             the frequency of the light in cm-1
+
+    """
+    # Create layers, thickness is in metres
+    superstrate      = GTM.Layer(thickness=superstrateDepth,epsilon1=superstrateDielectricFunction,exponent_threshold=exponent_threshold)
+    substrate        = GTM.Layer(thickness=substrateDepth,  epsilon1=substrateDielectricFunction,exponent_threshold=exponent_threshold)
+    selectedLayers = layers
+    if mode == 'Thick slab':
+        # For a thick slab the last layer is used as the thick layer
+        # so redefined the substrate and remove the last layer from the list of layers
+        selectedLayers = layers[:-1]
+        substrateDepth = layers[-1].getThicknessInMetres()
+        substrateDielectricFunction = layers[-1].getPermittivityFunction()
+        substrate = GTM.Layer(thickness=substrateDepth,  epsilon=substrateDielectricFunction, exponent_threshold=exponent_threshold)
+    gtmLayers = []
+    for layer in selectedLayers:
+        permittivityFunction = layer.getPermittivityFunction()
+        depth = layer.getThicknessInMetres()
+        if sliceThickness != 0 and depth > sliceThickness:
+            no_of_layers = int(depth / sliceThickness) + 1
+            newdepth = depth / no_of_layers
+            for i in range(no_of_layers):
+                gtmLayers.append(GTM.Layer(thickness=newdepth, epsilon=permittivityFunction, exponent_threshold=exponent_threshold))
+        else:
+            gtmLayers.append(GTM.Layer(thickness=depth, epsilon=permittivityFunction, exponent_threshold=exponent_threshold))
+    # Creat the system with the layers 
+    system = GTM.System(substrate=substrate, superstrate=superstrate, layers=gtmLayers)
+    # Rotate the dielectric constants to the laboratory frame
+    # This is a global rotation of all the layers.
+    system.substrate.set_euler(theta, phi, psi)
+    system.superstrate.set_euler(theta, phi, psi)
+    for layer in system.layers:
+        layer.set_euler(theta, phi, psi)
+    # 
+    # convert cm-1 to frequency
+    #
+    freq = v * speed_light_si * 1e2
+    system.initialize_sys(freq)
+    zeta_sys = np.sin(angleOfIncidence)*np.sqrt(system.superstrate.epsilon[0,0])
+    if mode == 'Incoherent thin film':
+        Sys_Gamma = system.calculate_incoherent_GammaStar(freq, zeta_sys)
+    else:
+        Sys_Gamma = system.calculate_GammaStar(freq, zeta_sys)
+    r, R, t, T = system.calculate_r_t(zeta_sys)
+    if len(system.layers) > 0:
+        epsilon = system.layers[0].epsilon
+    else:
+        epsilon = system.substrate.epsilon
+    errors,largest_exponent = system.overflowErrors()
+    return v,r,R,t,T,epsilon,errors,largest_exponent
+
 
 class SingleCrystalScenarioTab(ScenarioTab):
     def __init__(self, parent, debug=False ):
@@ -78,6 +165,8 @@ class SingleCrystalScenarioTab(ScenarioTab):
         # Get the last unit cell in the reader
         if self.reader is not None:
             self.cell = self.reader.unit_cells[-1]
+        # Set the exponent threshold to be used by GTM
+        self.exponent_threshold = 11000    
         # Create last tab - SingleCrystalTab
         vbox = QVBoxLayout()
         self.form = QFormLayout()
@@ -409,11 +498,12 @@ class SingleCrystalScenarioTab(ScenarioTab):
         self.dielectricLayer = self.layers[-1]
         self.generateLayerSettings()
         return
-     
+
     def settings2Layers(self):
         '''Read the layer settings and generate a list of layers'''
         debugger.print(self.settings['Legend'],'settings2Layers')
         self.layers = []
+        # Get the list of material names from the database
         self.materialNames = self.DataBase.getSheetNames()
         # If there is no layer information in settings then just add the dielectric
         if len(self.settings['Layer material names']) == 0:
@@ -823,6 +913,15 @@ class SingleCrystalScenarioTab(ScenarioTab):
         if self.reader is None:
             return
         #
+        # Determine the exponent_threshold to be used by GTM
+        #
+        if 'Linux' in self.notebook.mainTab.settings['Compatibility mode']:
+            self.exponent_threshold = 11000
+        elif 'Windows' in self.notebook.mainTab.settings['Compatibility mode']:
+            self.exponent_threshold = 700
+        else:
+            self.exponent_threshold = 11000
+        #
         # Block signals during refresh
         #
         for w in self.findChildren(QWidget):
@@ -1108,7 +1207,7 @@ class SingleCrystalScenarioTab(ScenarioTab):
                             phi,
                             psi,
                             angleOfIncidence,
-                            sliceThickness):
+                            sliceThickness, exponent_threshold):
         """ Calculates the incoherent component of light reflectance and transmission
             by sampling the path length in the incident medium """
         debugger.print(self.settings['Legend'],'Start:: partially_incoherent_calculator')
@@ -1162,7 +1261,7 @@ class SingleCrystalScenarioTab(ScenarioTab):
                                        phi,
                                        psi,
                                        angleOfIncidence,
-                                       sliceThickness)
+                                       sliceThickness, exponent_threshold)
             av_p_reflectance   += np.array(p_reflectance) / self.settings['Partially incoherent samples']
             av_s_reflectance   += np.array(s_reflectance) / self.settings['Partially incoherent samples']
             av_p_transmittance += np.array(p_transmittance) / self.settings['Partially incoherent samples']
@@ -1170,6 +1269,7 @@ class SingleCrystalScenarioTab(ScenarioTab):
             av_s_absorbtance   += np.array(p_absorbtance) / self.settings['Partially incoherent samples']
             av_p_absorbtance   += np.array(s_absorbtance) / self.settings['Partially incoherent samples']
             av_epsilon         += np.array(epsilon) / self.settings['Partially incoherent samples']
+        crystalLayer.setThickness(keepCrystalDepth)
         # Only apply the smoothing filter if the kernel is larger than 2
         k = self.settings['Filter kernel size']
         if k > 2:
@@ -1193,14 +1293,14 @@ class SingleCrystalScenarioTab(ScenarioTab):
                             phi,
                             psi,
                             angleOfIncidence,
-                            sliceThickness):
+                            sliceThickness, exponent_threshold):
         """ Calculates the coherent component of light reflectance and transmission """
         debugger.print(self.settings['Legend'],'Entering the coherent_calculator function')
         #
         # Initialise the partial function to pass through to the pool
         #
         crystalIncoherence = self.settings["Percentage partial incoherence"] * np.pi / 100.0 
-        partial_function = partial(Calculator.solve_single_crystal_equations,
+        partial_function = partial(solve_single_crystal_equations,
                                        superstrateDielectricFunction,
                                        substrateDielectricFunction,
                                        superstrateDepth,
@@ -1212,13 +1312,13 @@ class SingleCrystalScenarioTab(ScenarioTab):
                                        phi,
                                        psi,
                                        angleOfIncidence,
-                                       sliceThickness)
+                                       sliceThickness, exponent_threshold)
         results = []
         # About to call
         debugger.print(self.settings['Legend'],'About to calculate single crystal scenario using pool')
         #begin serial version 
         #for v in self.vs_cm1:
-        #   results.append(Calculator.solve_single_crystal_equations( superstrateDielectricFunction, substrateDielectricFunction, crystalPermittivityFunction, superstrateDepth, substrateDepth, crystalDepth, crystalIncoherence, mode, theta, phi, psi, angleOfIncidence,sliceThickness,v))
+        #   results.append(Calculator.solve_single_crystal_equations( superstrateDielectricFunction, substrateDielectricFunction, crystalPermittivityFunction, superstrateDepth, substrateDepth, crystalDepth, crystalIncoherence, mode, theta, phi, psi, angleOfIncidence,sliceThickness, exponent_threshold,v))
            #print('results',results[0:4])
         #end serial version
         if self.notebook.pool is None:
@@ -1323,6 +1423,7 @@ class SingleCrystalScenarioTab(ScenarioTab):
             calculator = self.coherent_calculator
         else:
             calculator = self.partially_incoherent_calculator
+        exponent_threshold = self.exponent_threshold
         # Call the relevant calculator
         ( self.p_reflectance, 
         self.s_reflectance, 
@@ -1340,7 +1441,7 @@ class SingleCrystalScenarioTab(ScenarioTab):
                                     phi,
                                     psi,
                                     angleOfIncidence,
-                                    sliceThickness)
+                                    sliceThickness, exponent_threshold)
         debugger.print(self.settings['Legend'],'Finished:: calculate - number of frequencies',len(vs_cm1))
         return
 

@@ -88,8 +88,6 @@ import sys
 
 c_const = 299792458 # m/s
 eps0 = 8.854e-12 ## vacuum permittivity
-qsd_thr = 1e-10 ### threshold for wavevector comparison
-zero_thr = 1e-10 ### threshold for eigenvalue comparison to zero
 
 def vacuum_eps(f):
     """
@@ -215,15 +213,23 @@ class Layer:
     Properties can be checked/changed dynamically using the corresponding get/set methods.
     """
 
+    # Define class variable
+    qsd_thr = 1e-10 ### threshold for wavevector comparison
+    zero_thr = 1e-10 ### threshold for eigenvalue comparison to zero
+    jk_shift = sys.float_info.min
+
     def __init__(self, thickness=1.0e-6, epsilon1=None, epsilon2=None, epsilon3=None,  epsilon=None,
-                                         theta=0, phi=0, psi=0):
+                                         theta=0, phi=0, psi=0, exponent_threshold=700):
 
         ## epsilon is a 3x3 matrix of permittivity at a given frequency
         self.epsilon = np.identity(3, dtype=np.clongdouble)
         self.mu = 1.0 ### mu=1 for now
 
+        ## Added to handle overflow 
         self.exponent_errors = 0
         self.largest_exponent = 0.0
+        self.exponent_threshold = exponent_threshold
+
         ### initialization of all important quantities
         self.M = np.zeros((6, 6), dtype=np.clongdouble) ## constitutive relations
         self.a = np.zeros((6, 6), dtype=np.clongdouble) ##
@@ -501,14 +507,14 @@ class Layer:
         qsunsorted, psiunsorted = lag.eig(Delta_loc)
         ##### remove extremely small real/imaginary parts that are due to numerical inaccuracy
         for km in range(4):
-            if (np.abs(np.imag(qsunsorted[km])) > 0) and (np.abs(np.imag(qsunsorted[km])) < zero_thr):
+            if (np.abs(np.imag(qsunsorted[km])) > 0) and (np.abs(np.imag(qsunsorted[km])) < Layer.zero_thr):
                 qsunsorted[km] = np.real(qsunsorted[km]) + 0.0j
-            if (np.abs(np.real(qsunsorted[km])) > 0) and (np.abs(np.real(qsunsorted[km])) < zero_thr):
+            if (np.abs(np.real(qsunsorted[km])) > 0) and (np.abs(np.real(qsunsorted[km])) < Layer.zero_thr):
                 qsunsorted[km] = 0.0 + 1.0j*np.imag(qsunsorted[km])
         for comp in range(4):
-            if (np.abs(np.real(psiunsorted[km][comp]))>0) and (np.abs(np.real(psiunsorted[km][comp])) < zero_thr):
+            if (np.abs(np.real(psiunsorted[km][comp]))>0) and (np.abs(np.real(psiunsorted[km][comp])) < Layer.zero_thr):
                 psiunsorted[km][comp] = 0.0 + 1.0j*np.imag(psiunsorted[km][comp])
-            if (np.abs(np.imag(psiunsorted[km][comp]))>0) and (np.abs(np.imag(psiunsorted[km][comp])) < zero_thr):
+            if (np.abs(np.imag(psiunsorted[km][comp]))>0) and (np.abs(np.imag(psiunsorted[km][comp])) < Layer.zero_thr):
                 psiunsorted[km][comp] = np.real(psiunsorted[km][comp]) + 0.0j
 
                 
@@ -559,27 +565,26 @@ class Layer:
         ## media to sort the modes       
         
         ## first calculate Cp for transmitted waves
-        shift = sys.float_info.min
-        Cp_t1 = np.abs(self.Py[0,transmode[0]])**2/(np.abs(self.Py[0,transmode[0]])**2+np.abs(self.Py[1,transmode[0]])**2+shift)
-        Cp_t2 = np.abs(self.Py[0,transmode[1]])**2/(np.abs(self.Py[0,transmode[1]])**2+np.abs(self.Py[1,transmode[1]])**2+shift)
+        Cp_t1 = np.abs(self.Py[0,transmode[0]])**2/(np.abs(self.Py[0,transmode[0]])**2+np.abs(self.Py[1,transmode[0]])**2+Layer.jk_shift)
+        Cp_t2 = np.abs(self.Py[0,transmode[1]])**2/(np.abs(self.Py[0,transmode[1]])**2+np.abs(self.Py[1,transmode[1]])**2+Layer.jk_shift)
 
-        if np.abs(Cp_t1-Cp_t2) > qsd_thr: ## birefringence
+        if np.abs(Cp_t1-Cp_t2) > Layer.qsd_thr: ## birefringence
             self.useBerreman = True ## sets _useBerreman fo the calculation of gamma matrix below
             if Cp_t2>Cp_t1:
                 transmode = np.flip(transmode,0) ## flip the two values
             ## then calculate for reflected waves if necessary
-            Cp_r1 = np.abs(self.Py[0,reflmode[1]])**2/(np.abs(self.Py[0,reflmode[1]])**2+np.abs(self.Py[1,reflmode[1]])**2+shift)
-            Cp_r2 = np.abs(self.Py[0,reflmode[0]])**2/(np.abs(self.Py[0,reflmode[0]])**2+np.abs(self.Py[1,reflmode[0]])**2+shift)
+            Cp_r1 = np.abs(self.Py[0,reflmode[1]])**2/(np.abs(self.Py[0,reflmode[1]])**2+np.abs(self.Py[1,reflmode[1]])**2+Layer.jk_shift)
+            Cp_r2 = np.abs(self.Py[0,reflmode[0]])**2/(np.abs(self.Py[0,reflmode[0]])**2+np.abs(self.Py[1,reflmode[0]])**2+Layer.jk_shift)
             if Cp_r1>Cp_r2:
                 reflmode = np.flip(reflmode,0) ## flip the two values
 
         else:     ### No birefringence, use the Electric field s-pol/p-pol
-            Cp_te1 = np.abs(psiunsorted[0,transmode[1]])**2/(np.abs(psiunsorted[0,transmode[1]])**2+np.abs(psiunsorted[2,transmode[1]])**2+shift)
-            Cp_te2 = np.abs(psiunsorted[0,transmode[0]])**2/(np.abs(psiunsorted[0,transmode[0]])**2+np.abs(psiunsorted[2,transmode[0]])**2+shift)
+            Cp_te1 = np.abs(psiunsorted[0,transmode[1]])**2/(np.abs(psiunsorted[0,transmode[1]])**2+np.abs(psiunsorted[2,transmode[1]])**2+Layer.jk_shift)
+            Cp_te2 = np.abs(psiunsorted[0,transmode[0]])**2/(np.abs(psiunsorted[0,transmode[0]])**2+np.abs(psiunsorted[2,transmode[0]])**2+Layer.jk_shift)
             if Cp_te1>Cp_te2:
                 transmode = np.flip(transmode,0) ## flip the two values
-            Cp_re1 = np.abs(psiunsorted[0,reflmode[1]])**2/(np.abs(psiunsorted[0,reflmode[1]])**2+np.abs(psiunsorted[2,reflmode[1]])**2+shift)
-            Cp_re2 = np.abs(psiunsorted[0,reflmode[0]])**2/(np.abs(psiunsorted[0,reflmode[0]])**2+np.abs(psiunsorted[2,reflmode[0]])**2+shift)
+            Cp_re1 = np.abs(psiunsorted[0,reflmode[1]])**2/(np.abs(psiunsorted[0,reflmode[1]])**2+np.abs(psiunsorted[2,reflmode[1]])**2+Layer.jk_shift)
+            Cp_re2 = np.abs(psiunsorted[0,reflmode[0]])**2/(np.abs(psiunsorted[0,reflmode[0]])**2+np.abs(psiunsorted[2,reflmode[0]])**2+Layer.jk_shift)
             if Cp_re1>Cp_re2:
                 reflmode = np.flip(reflmode,0) ## flip the two values
 
@@ -622,7 +627,7 @@ class Layer:
         ### convenience definition of the repetitive factor
         mu_eps33_zeta2 = (self.mu*self.epsilon[2,2]-zeta**2)
 
-        if np.abs(self.qs[0]-self.qs[1])<qsd_thr:
+        if np.abs(self.qs[0]-self.qs[1])<Layer.qsd_thr:
             gamma12 = 0.0 + 0.0j
             
             gamma13 = -(self.mu*self.epsilon[2,0]+zeta*self.qs[0])/mu_eps33_zeta2
@@ -661,7 +666,7 @@ class Layer:
             if np.isnan(gamma23):
                 gamma23 = -self.mu*self.epsilon[2,1]/mu_eps33_zeta2
 
-        if np.abs(self.qs[2]-self.qs[3])<qsd_thr:
+        if np.abs(self.qs[2]-self.qs[3])<Layer.qsd_thr:
             gamma32 = 0.0 + 0.0j
             gamma33 = (self.mu*self.epsilon[2,0]+zeta*self.qs[2])/mu_eps33_zeta2
             gamma41 = 0.0 + 0.0j
@@ -716,8 +721,50 @@ class Layer:
             self.Berreman[ki] = self.Berreman[ki]/np.sqrt(np.sum(self.Berreman[ki]**2))
         if self.useBerreman:
             self.gamma = self.Berreman
+
+    def calculate_propagation_matrix_passler(self,f):
+        """Routine to calculate the matrix Ki (or Pi) depending on the paper
+           This routine is taken from Passler's code
+        """
+        Ki = np.zeros( (4,4), dtype=np.clongdouble)
+        for ii in range(4):
+            exponent = np.clongdouble(-1.0j*(2.0*np.pi*f*self.qs[ii]*self.thick)/c_const)
+            if np.abs(exponent) > self.exponent_threshold:
+                self.largest_exponent = max(self.largest_exponent,np.abs(exponent))
+                exponent = exponent/np.abs(exponent)*self.exponent_threshold
+                self.exponent_errors += 1
+            Ki[ii,ii] = np.exp(exponent)
+        return  Ki
         
+    def calculate_propagation_matrix_arteaga(self,f):
+        """Routine to calculate the matrix Ki (or Pi) depending on the paper
+           This routine is taken from Arteaga et al
+           Thin Solid Films 2014, 571, 701-705
+           The propagation matrix is suitable for incoherent films
+           In passler the ordering is;    Arteaga;
+           0 p/o ->                       p ->
+           1 s/e ->                       p <-
+           2 p/o <-                       s ->
+           3 s/e <-                       s <-
+        """
+        Ki = np.zeros( (4,4), dtype=np.clongdouble)
+        qs = np.zeros( 4, dtype=np.clongdouble)
+        qs[0] = (self.qs[0] - np.real(self.qs[1]))
+        qs[1] = (self.qs[1] - np.real(self.qs[1]))
+        qs[2] = (self.qs[2] - np.real(self.qs[2]))
+        qs[3] = (np.real(self.qs[2]) - self.qs[3])
+        qs[3] = (self.qs[2] - np.real(self.qs[3]))
+        # self.qs = qs
         
+        for ii in range(4):
+            exponent = np.clongdouble(-1.0j*(2.0*np.pi*f*qs[ii]*self.thick)/c_const)
+            if np.abs(exponent) > self.exponent_threshold:
+                self.largest_exponent = max(self.largest_exponent,np.abs(exponent))
+                exponent = exponent/np.abs(exponent)*self.exponent_threshold
+                self.exponent_errors += 1
+            Ki[ii,ii] = np.exp(exponent)
+        return  Ki
+
     def calculate_transfer_matrix(self, f, zeta):
         """
         Compute the transfer matrix of the whole layer :math:`T_i=A_iP_iA_i^{-1}`
@@ -733,8 +780,6 @@ class Layer:
         None
 
         """
-        # The maximum exponent threshold on windows is about 700 (11000 on Linux)
-        exponent_threshold = 700.0
         ## eqn(22)
         self.Ai[0,:] = self.gamma[:,0].copy()
         self.Ai[1,:] = self.gamma[:,1].copy()
@@ -742,18 +787,11 @@ class Layer:
         self.Ai[2,:] = (self.qs*self.gamma[:,0]-zeta*self.gamma[:,2])/self.mu
         self.Ai[3,:] = self.qs*self.gamma[:,1]/self.mu
    
-        for ii in range(4):
-            ## looks a lot like eqn (25). Why is K not Pi ?
-            exponent = np.clongdouble(-1.0j*(2.0*np.pi*f*self.qs[ii]*self.thick)/c_const)
-            if np.abs(exponent) > exponent_threshold:
-                self.largest_exponent = max(self.largest_exponent,np.abs(exponent))
-                exponent = exponent/np.abs(exponent)*exponent_threshold
-                self.exponent_errors += 1
-            self.Ki[ii,ii] = np.nan_to_num(np.exp(exponent))
-            #  JK original line
-            # self.Ki[ii,ii] = np.exp(-1.0j*(2.0*np.pi*f*self.qs[ii]*self.thick)/c_const)
         Aim1 = exact_inv(self.Ai.copy())
-        ## eqn (26)
+
+        self.Ki = self.calculate_propagation_matrix_passler(f)
+        #self.Ki = self.calculate_propagation_matrix_arteaga(f)
+
         self.Ti = np.matmul(self.Ai,np.matmul(self.Ki,Aim1))
 
     def update(self, f, zeta):
@@ -991,8 +1029,6 @@ class System:
                    System transfer matrix :math:`\Gamma^{*}`
         """
 
-        nan = np.nan_to_num
-
         Di_super, Pi_super, Di_inv_super, T_super = self.superstrate.update(f, zeta_sys)
         Di_sub, Pi_sub, Di_inv_sub, T_sub = self.substrate.update(f, zeta_sys)
 
@@ -1001,9 +1037,6 @@ class System:
                               [0,1,0,0],
                               [0,0,0,1]],dtype=np.clongdouble)
 
-
-        Gamma = np.zeros(4, dtype=np.clongdouble)
-        GammaStar = np.zeros(4, dtype=np.clongdouble)
         Dip1 = Di_sub
         Tloc = np.identity(4, dtype=np.clongdouble)
         rescale2 = 1.0
@@ -1012,11 +1045,11 @@ class System:
             rescale = np.max(np.abs(Pi))
             rescale2 = rescale*rescale2
             Pi = Pi/rescale
-            Tloc = nan(np.matmul( nan(np.absolute( (nan(np.matmul(Di_inv,Dip1))))**2),Tloc))
-            Tloc = nan(np.matmul( nan(np.absolute(Pi)**2),Tloc))
+            Tloc = np.matmul( np.absolute( (np.matmul(Di_inv,Dip1)))**2,Tloc)
+            Tloc = np.matmul( np.absolute(Pi)**2,Tloc)
             Dip1 = Di
-        Tloc = nan(np.matmul( nan(np.absolute(nan(np.matmul(Di_inv_super,Dip1)))**2),Tloc))
-        Gamma = nan(np.sqrt(Tloc))
+        Tloc = np.matmul( np.absolute(np.matmul(Di_inv_super,Dip1))**2,Tloc)
+        Gamma = np.sqrt(Tloc)
         Gamma = Gamma * rescale2
         GammaStar = np.matmul(exact_inv(Delta1234),np.matmul(Gamma,Delta1234))
         self.Gamma = Gamma.copy()
@@ -1124,23 +1157,23 @@ class System:
             Denom += shift
 
         # field reflection coefficients
-        rpp = nan(GammaStar[1,0]*GammaStar[2,2])-nan(GammaStar[1,2]*GammaStar[2,0])
-        rpp = np.nan_to_num(rpp/Denom)
+        rpp = GammaStar[1,0]*GammaStar[2,2]-GammaStar[1,2]*GammaStar[2,0]
+        rpp = rpp/Denom
 
-        rss = nan(GammaStar[0,0]*GammaStar[3,2])-nan(GammaStar[3,0]*GammaStar[0,2])
-        rss = np.nan_to_num(rss/Denom)
+        rss = GammaStar[0,0]*GammaStar[3,2]-GammaStar[3,0]*GammaStar[0,2]
+        rss = rss/Denom
 
-        rps = nan(GammaStar[3, 0]*GammaStar[2,2])-nan(GammaStar[3,2]*GammaStar[2,0])
-        rps = np.nan_to_num(rps/Denom)
+        rps = GammaStar[3,0]*GammaStar[2,2]-GammaStar[3,2]*GammaStar[2,0]
+        rps = rps/Denom
 
-        rsp = nan(GammaStar[0,0]*GammaStar[1,2])-nan(GammaStar[1,0]*GammaStar[0,2])
-        rsp = np.nan_to_num(rsp/Denom)
+        rsp = GammaStar[0,0]*GammaStar[1,2]-GammaStar[1,0]*GammaStar[0,2]
+        rsp = rsp/Denom
 
         # Try and remove any outliers by making sure the intensity is always < 1
-        rpp = self.scale_intensity(rpp)
-        rss = self.scale_intensity(rss)
-        rps = self.scale_intensity(rps)
-        rsp = self.scale_intensity(rsp)
+        #rpp = self.scale_intensity(rpp)
+        #rss = self.scale_intensity(rss)
+        #rps = self.scale_intensity(rps)
+        #rsp = self.scale_intensity(rsp)
 
         # Intensity reflection coefficients are just square moduli
         Rpp = np.abs(rpp)**2
@@ -1153,16 +1186,16 @@ class System:
         # field transmission coefficients
         #t_field = np.zeros(4, dtype=np.complex128)
         t_out = np.zeros(4, dtype=np.clongdouble)
-        tpp = np.nan_to_num( (GammaStar[2,2]/Denom)/largest)
-        tss = np.nan_to_num( (GammaStar[0,0]/Denom)/largest)
-        tps = np.nan_to_num(-(GammaStar[2,0]/Denom)/largest)
-        tsp = np.nan_to_num(-(GammaStar[0,2]/Denom)/largest)
+        tpp = (GammaStar[2,2]/Denom)/largest
+        tss = (GammaStar[0,0]/Denom)/largest
+        tps =-(GammaStar[2,0]/Denom)/largest
+        tsp =-(GammaStar[0,2]/Denom)/largest
 
         # Try and remove any outliers by making sure the intensity is always < 1
-        tpp = self.scale_intensity(tpp)
-        tss = self.scale_intensity(tss)
-        tps = self.scale_intensity(tps)
-        tsp = self.scale_intensity(tsp)
+        #tpp = self.scale_intensity(tpp)
+        #tss = self.scale_intensity(tss)
+        #tps = self.scale_intensity(tps)
+        #tsp = self.scale_intensity(tsp)
         t_out = np.array([tpp, tps, tsp, tss],dtype=np.clongdouble)
         #t_field = np.array([tpp, tps, tsp, tss])
 
@@ -1198,8 +1231,8 @@ class System:
         ### Intensity transmission coefficients are only the z-component of S !
         T_pp = (Sout_pin[2]/Sinc_pin[2]) ## z-component only
         T_ss = (Sout_sin[2]/Sinc_sin[2]) ## z-component only
-        T_pp = self.scale_intensity(T_pp)
-        T_ss = self.scale_intensity(T_ss)
+        #T_pp = self.scale_intensity(T_pp)
+        #T_ss = self.scale_intensity(T_ss)
 
         T_out = np.array([T_pp, T_ss])
 

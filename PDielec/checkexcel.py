@@ -64,8 +64,9 @@ def main():
     #
     # Loop over sheets
     #
-    sheets = ['Main','Powder Molar Absorption (cells)','Powder Absorption','Powder Real Permittivity','Powder Imaginary Permittivity', 'Powder ATR Reflectance', 'Analysis','Crystal R_p','Crystal R_s','Crystal T_p','Crystal T_s','Real Crystal Permittivity','Imag Crystal Permittivity']
+    sheets = ['Powder Molar Absorption (cells)','Powder Absorption','Powder Real Permittivity','Powder Imaginary Permittivity', 'Powder ATR Reflectance', 'Analysis','Crystal R_p','Crystal R_s','Crystal T_p','Crystal T_s','Real Crystal Permittivity','Imag Crystal Permittivity']
     if full:
+        sheets.append('Main')
         sheets.append('Settings')
         sheets.append('Scenarios')
     for sheet in sheets:

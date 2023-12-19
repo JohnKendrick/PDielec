@@ -11,6 +11,7 @@ tab.settings['Output file name'] = 'AlN.exp'
 tab.settings['Excel file name'] = ''
 tab.settings['Script file name'] = 'script.py'
 tab.settings['QM program'] = ''
+tab.settings['Compatibility mode'] = 'Windows'
 #
 #
 tab = self.notebook.settingsTab

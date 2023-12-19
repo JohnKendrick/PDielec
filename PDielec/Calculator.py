@@ -34,10 +34,9 @@ from   scipy.stats import lognorm
 # The Mie routine is taken from PyMieScatt by B. Sumlin and can be found on github
 #
 from   PDielec import Mie
+
 Mie.crossover = 0.01
-
 points_on_sphere = None
-
 
 def initialise_unit_tensor():
     '''Initialise a 3x3 tensor, the argument is a list of 3 real numbers for the diagonals, the returned tensor is an array'''
@@ -1471,90 +1470,6 @@ def reflectance_atr(ns,n0,theta,atrSPolFraction):
     # Now return the extinction
     RSP = -math.log10(RSP)
     return RSP
-
-def solve_single_crystal_equations( 
-        superstrateDielectricFunction ,
-        substrateDielectricFunction   ,
-        superstrateDepth              ,
-        substrateDepth                ,
-        layers                        ,
-        crystalIncoherence            ,
-        mode                          ,
-        theta                         ,
-        phi                           ,
-        psi                           ,
-        angleOfIncidence              ,
-        sliceThickness                ,
-        v                             ,
-        ):
-    """
-        This is a parallel call to the single crystal equation solver, system is a GTM system   
-        superstrateDielectricFunction is a dielectric function providing the superstrate dielectric
-        substrateDielectricFunction   is a dielectric function providing the substrate dielectric
-        superstrateDepth              the depth of the superstrate (m)
-        substrateDepth                the depth of the substrate (m)
-        layers                        a list of material layers (their permittivity functions)
-        crystalIncoherence            a parameter between 0 and pi giving the amount of incoherence
-        mode                          'thick slab' indicates the substrate will be the crystal so semi-infinite
-                                      'coherent thin film' a standard GTM call with a single layer
-                                      'incoherent thin film' multiple GTM calls with random phase
-        theta                         the theta angle of the sla,
-        phi                           the angle of the slab
-        psi                           the psi angle of the slab
-        angleOfIncidence              the angle of incidence
-        v                             the frequency of the light in cm-1
-        sliceThickness                a thickness in m, used to subdivide thicker films
-                                      if zero then the full fat film is used
-
-    """
-    # Create layers, thickness is in metres
-    superstrate      = GTM.Layer(thickness=superstrateDepth,epsilon1=superstrateDielectricFunction)
-    substrate        = GTM.Layer(thickness=substrateDepth,  epsilon1=substrateDielectricFunction)
-    selectedLayers = layers
-    if mode == 'Thick slab':
-        # For a thick slab the last layer is used as the thick layer
-        # so redefined the substrate and remove the last layer from the list of layers
-        selectedLayers = layers[:-1]
-        substrateDepth = layers[-1].getThicknessInMetres()
-        substrateDielectricFunction = layers[-1].getPermittivityFunction()
-        substrate = GTM.Layer(thickness=substrateDepth,  epsilon=substrateDielectricFunction)
-    gtmLayers = []
-    for layer in selectedLayers:
-        permittivityFunction = layer.getPermittivityFunction()
-        depth = layer.getThicknessInMetres()
-        if sliceThickness != 0 and depth > sliceThickness:
-            no_of_layers = int(depth / sliceThickness) + 1
-            newdepth = depth / no_of_layers
-            for i in range(no_of_layers):
-                gtmLayers.append(GTM.Layer(thickness=newdepth, epsilon=permittivityFunction))
-        else:
-            gtmLayers.append(GTM.Layer(thickness=depth, epsilon=permittivityFunction))
-    # Creat the system with the layers 
-    system = GTM.System(substrate=substrate, superstrate=superstrate, layers=gtmLayers)
-    # Rotate the dielectric constants to the laboratory frame
-    # This is a global rotation of all the layers.
-    system.substrate.set_euler(theta, phi, psi)
-    system.superstrate.set_euler(theta, phi, psi)
-    for layer in system.layers:
-        layer.set_euler(theta, phi, psi)
-    # 
-    # convert cm-1 to frequency
-    #
-    freq = v * speed_light_si * 1e2
-    system.initialize_sys(freq)
-    zeta_sys = np.sin(angleOfIncidence)*np.sqrt(system.superstrate.epsilon[0,0])
-    if mode == 'Incoherent thin film':
-        Sys_Gamma = system.calculate_incoherent_GammaStar(freq, zeta_sys)
-    else:
-        Sys_Gamma = system.calculate_GammaStar(freq, zeta_sys)
-    r, R, t, T = system.calculate_r_t(zeta_sys)
-    if len(system.layers) > 0:
-        epsilon = system.layers[0].epsilon
-    else:
-        epsilon = system.substrate.epsilon
-    errors,largest_exponent = system.overflowErrors()
-    return v,r,R,t,T,epsilon,errors,largest_exponent
-
 
 def cleanup_symbol(s):
     """Return a true element from the symbol"""
