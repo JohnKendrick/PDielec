@@ -90,7 +90,7 @@ tab.settings['Excel file name'] = ''
 #
 tab = self.notebook.plottingTab
 tab.settings['Minimum frequency'] =  50.0
-tab.settings['Maximum frequency'] =  240.0
+tab.settings['Maximum frequency'] =  210.0
 tab.settings['Frequency increment'] =  0.1
 tab.settings['Molar definition'] = 'Unit cells'
 tab.settings['Number of atoms'] =  1

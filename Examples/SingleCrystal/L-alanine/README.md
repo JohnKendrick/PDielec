@@ -6,6 +6,7 @@ The experimental results for the measurement of terahertz transmittance were kin
 These measurements can be found in the Excel spreadsheets a-axis-experimental.xlsx, b-axis-experimental and c-axis-experimental.xlsx.   Each of these spreadsheets has two columns, the first is a column of frequencies in cm-1 and the second is the transmittance.
 
 The scripts used to generate the crystal transmittance from the calculated phonon modes can be found in a-axis.py, b-axis.py and c-axis.py.  These scripts use the Fitter Tab to compare the calculated spectrum with the experimental one.  Changes have been made to the film thickness and to the widths of the peaks to improve the agreement between the two.
+The a-axis example is particularly sensitive to numerical problems and may not run succesfully on Windows machines.  Where possible, the Linux operating system should be used to run these examples.  If this is not feasible then the thickness of the l-alanine film should be reduced.
 
 To run the scripts use a command such as;
 
