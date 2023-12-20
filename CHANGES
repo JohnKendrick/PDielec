@@ -1,4 +1,7 @@
 version 8.0.0
+  Introduced various changes to handle the difference between Windows and Linux.  The mainTab settings now has a compatibility mode option which can be 'Linux' or 'Windows'
+  Modified the AlN test case to use Windows compatibility mode
+  Added a slicing option in the single crystal case to address issues with exponential overflow
   Added frequency dependent support matrix capability to the powder simulation
   Added complex permittivity to the support matrix
   Added incoherent light to the single crystal simulation
