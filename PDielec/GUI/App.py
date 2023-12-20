@@ -204,7 +204,7 @@ class App(QMainWindow):
             debugger.print('readScript overwriting spread sheet name:',spreadsheet_name)
             self.notebook.mainTab.settings['Excel file name'] = spreadsheet_name
         debugger.print('readScript notebook refresh')
-        self.notebook.refresh()
+        self.notebook.refresh(force=True)
         QCoreApplication.processEvents()
         debugger.print('Finished:: readScript')
 

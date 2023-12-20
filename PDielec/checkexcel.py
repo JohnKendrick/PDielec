@@ -17,7 +17,7 @@ def main():
         print('         an error is flagged if 2*abs(f1-f2)/(f1+f2+2) > threshold', file=sys.stderr)
         print('         The default value for threshold is 1.0E-3 ', file=sys.stderr)
         print('         -f forces a full comparison of the sheets ', file=sys.stderr)
-        print('            by default Settings is not included    ', file=sys.stderr)
+        print('            by default Settings and Scenarios are not included    ', file=sys.stderr)
         exit()
 
     threshold = 1.0E-3
@@ -64,9 +64,11 @@ def main():
     #
     # Loop over sheets
     #
-    sheets = ['Main','Scenarios','Powder Molar Absorption (cells)','Powder Absorption','Powder Real Permittivity','Powder Imaginary Permittivity', 'Powder ATR Reflectance', 'Analysis','Crystal R_p','Crystal R_s','Crystal T_p','Crystal T_s','Real Crystal Permittivity','Imag Crystal Permittivity']
+    sheets = ['Powder Molar Absorption (cells)','Powder Absorption','Powder Real Permittivity','Powder Imaginary Permittivity', 'Powder ATR Reflectance', 'Analysis','Crystal R_p','Crystal R_s','Crystal T_p','Crystal T_s','Real Crystal Permittivity','Imag Crystal Permittivity']
     if full:
+        sheets.append('Main')
         sheets.append('Settings')
+        sheets.append('Scenarios')
     for sheet in sheets:
         if not sheet in  wb1 :
             continue
@@ -109,7 +111,7 @@ def main():
                     error = (sheet, row_index, col_index, value1, value2, percentage_error)
                 else:
                     if value1 != value2:
-                        if cell1.data_type == 'n' and cell2.data_type == 'n':
+                        if value1 is not None and value2 is not None and cell1.data_type == 'n' and cell2.data_type == 'n':
                             #
                             # Flag an error which is numeric
                             #
@@ -127,10 +129,17 @@ def main():
                         else:
                             #
                             # This is a non-numeric error
+                            # Remove any back or forward slashes to avoid problems with filenames in linux/windows
                             #
-                            nerrors += 1
-                            percentage_error = 0.0
-                            error = (sheet, row_index, col_index, value1, value2, percentage_error)
+                            if isinstance(value1,str):
+                                value1 = value1.replace('\\','')
+                                value1 = value1.replace('/','')
+                            if isinstance(value2,str):
+                                value2 = value2.replace('\\','')
+                                value2 = value2.replace('/','')
+                            if value1 != value2:
+                                nerrors += 1
+                                error = (sheet, row_index, col_index, value1, value2, 0.0)
                         # if cell1.data_type
                     # if value1 != value2
                 # if cell1 is none

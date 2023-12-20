@@ -25,7 +25,7 @@ tab.sigmas_cm1 = [10.0, 10.0, 10.0, 10.0, 10.0, 10.0]
 tab = self.notebook.scenarios[0]
 tab.settings['Legend'] = 'Eps=1'
 tab.settings['Scenario type'] = 'Powder'
-tab.settings['Matrix'] = 'ptfe'
+tab.settings['Matrix'] = 'Material defined manually'
 tab.settings['Matrix density'] =  2.2
 tab.settings['Matrix permittivity'] =  1.0
 tab.settings['Bubble radius'] =  30.0
@@ -50,7 +50,7 @@ self.notebook.addScenario(scenarioType="Powder")
 tab = self.notebook.scenarios[1]
 tab.settings['Legend'] = 'Eps=2'
 tab.settings['Scenario type'] = 'Powder'
-tab.settings['Matrix'] = 'ptfe'
+tab.settings['Matrix'] = 'Material defined manually'
 tab.settings['Matrix density'] =  2.2
 tab.settings['Matrix permittivity'] =  2.0
 tab.settings['Bubble radius'] =  30.0
@@ -75,7 +75,7 @@ self.notebook.addScenario(scenarioType="Powder")
 tab = self.notebook.scenarios[2]
 tab.settings['Legend'] = 'Eps=3'
 tab.settings['Scenario type'] = 'Powder'
-tab.settings['Matrix'] = 'ptfe'
+tab.settings['Matrix'] = 'Material defined manually'
 tab.settings['Matrix density'] =  2.2
 tab.settings['Matrix permittivity'] =  3.0
 tab.settings['Bubble radius'] =  30.0
@@ -100,7 +100,7 @@ self.notebook.addScenario(scenarioType="Powder")
 tab = self.notebook.scenarios[3]
 tab.settings['Legend'] = 'Eps=5'
 tab.settings['Scenario type'] = 'Powder'
-tab.settings['Matrix'] = 'ptfe'
+tab.settings['Matrix'] = 'Material defined manually'
 tab.settings['Matrix density'] =  2.2
 tab.settings['Matrix permittivity'] =  5.0
 tab.settings['Bubble radius'] =  30.0
@@ -125,7 +125,7 @@ self.notebook.addScenario(scenarioType="Powder")
 tab = self.notebook.scenarios[4]
 tab.settings['Legend'] = 'Eps=10'
 tab.settings['Scenario type'] = 'Powder'
-tab.settings['Matrix'] = 'ptfe'
+tab.settings['Matrix'] = 'Material defined manually'
 tab.settings['Matrix density'] =  2.2
 tab.settings['Matrix permittivity'] =  10.0
 tab.settings['Bubble radius'] =  30.0
@@ -150,7 +150,7 @@ self.notebook.addScenario(scenarioType="Powder")
 tab = self.notebook.scenarios[5]
 tab.settings['Legend'] = 'Eps=50'
 tab.settings['Scenario type'] = 'Powder'
-tab.settings['Matrix'] = 'ptfe'
+tab.settings['Matrix'] = 'Material defined manually'
 tab.settings['Matrix density'] =  2.2
 tab.settings['Matrix permittivity'] =  50.0
 tab.settings['Bubble radius'] =  30.0

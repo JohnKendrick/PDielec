@@ -11,9 +11,13 @@ from PDielec.p2cif       import main as main_p2cif
 from PDielec.vibanalysis import main as main_vibanalysis
 import numpy as np
 import contextlib
+import functools
 from shutil import copyfile
 import subprocess
 import time
+
+# Force a flush on print, needed for Windows
+print = functools.partial(print, flush=True)
 
 settings = {}
 settings['padding'] = 50
@@ -38,47 +42,55 @@ test_p2cif = [
     ]
 
 test_pdgui = [
-	'Castep/AsparticAcid',
-	'Castep/Isoleucine',
-	'Castep/MgO',
-	'Castep/Bubbles',
-	'Castep/Na2SO42',
-	'Castep/Castep17',
-	'Vasp/F-Apatite',
-	'Vasp/ZnO',
-	'Vasp/Na2SO42',
-	'Gulp/calcite',
-	'Gulp/Na2SO42',
-	'Crystal/Na2SO42',
-	'Crystal/Leucine',
-	'Crystal/Quartz',
-	'Crystal/ZnO/Default',
-	'Crystal/ZnO/CPHF',
-	'Crystal/ZnO/NoEckart',
-	'AbInit/AlAs',
-	'AbInit/BaTiO3',
-	'AbInit/Na2SO42',
-	'QE/ZnO',
-	'QE/Na2SO42',
-	'QE/Cocaine',
-	'Phonopy/ZnO',
-	'Phonopy/Na2SO42',
-	'SizeEffects/BaTiO3',
-	'SizeEffects/MgO',
-	'SizeEffects/ZnO',
-	'Mie/MgO',
-	'Mie/MgO_lognormal',
 	'ATR/AlAs',
 	'ATR/Na2SO42',
 	'ATR/Na2SO42_fit',
+	'AbInit/AlAs',
+	'AbInit/BaTiO3',
+	'AbInit/BaTiO3-phonana',
+	'AbInit/Na2SO42',
+	'Castep/AsparticAcid',
+	'Castep/Bubbles',
+	'Castep/Castep17',
+	'Castep/Isoleucine',
+	'Castep/MgO',
+	'Castep/Na2SO42',
+	'Crystal/Leucine',
+	'Crystal/Na2SO42',
+	'Crystal/Na2SO42_C17',
+	'Crystal/Quartz',
+	'Crystal/ZnO/CPHF',
+	'Crystal/ZnO/Default',
+	'Crystal/ZnO/NoEckart',
+	'Experiment/AlN',
+	'Experiment/Forsterite',
 	'Experiment/constant',
-	'Experiment/fpsq',
 	'Experiment/drude-lorentz',
+	'Experiment/fpsq',
 	'Experiment/interpolation',
 	'Experiment/Mayerhofer',
+	'Experiment/Sapphire',
+	'Gulp/Na2SO42',
+	'Gulp/calcite',
+	'Mie/MgO',
+	'Mie/MgO_lognormal',
+	'Phonopy/ZnO',
+	'Phonopy/Na2SO42',
+	'QE/Cocaine',
+	'QE/Na2SO42',
+	'QE/Na2SO42-v7',
+	'QE/ZnO',
 	'SingleCrystal/Bi2Se3',
 	'SingleCrystal/Bi2Se3_film',
+	'SingleCrystal/L-alanine',
 	'SingleCrystal/MgO',
+	'SizeEffects/BaTiO3',
+	'SizeEffects/MgO',
+	'SizeEffects/ZnO',
+	'Vasp/F-Apatite',
+	'Vasp/Na2SO42',
+	'Vasp/Na2SO42_v',
+	'Vasp/ZnO',
     ]
 
 test_singlecrystal = [
@@ -86,6 +98,7 @@ test_singlecrystal = [
 	'Experiment/Mayerhofer',
 	'SingleCrystal/Bi2Se3',
 	'SingleCrystal/Bi2Se3_film',
+	'SingleCrystal/L-alanine',
 	'SingleCrystal/MgO',
     ]
 
@@ -302,9 +315,12 @@ def compareFiles(file1,file2):
             word1 = word1.replace('(','')
             word1 = word1.replace(')','')
             word1 = word1.replace('%','')
+            word1 = word1.replace('/','')
+            word1 = word1.replace('\\','')
             word2 = word2.replace('(','')
             word2 = word2.replace(')','')
             word2 = word2.replace('%','')
+            word2 = word1.replace('/','')
             try:
                 float1 = float(word1)
                 float2 = float(word2)
@@ -336,6 +352,8 @@ def runP2CifTest(title, instructions, regenerate):
         sys.argv = ['p2cif']
     sys.argv.extend(instructions)
     outputfile = 'all.cif'
+    if os.path.exists('all.cif'):
+        os.remove('all.cif')
     if regenerate:
         outputfile = 'all.ref.cif'
     with open(outputfile,'w') as stdout:
@@ -417,6 +435,8 @@ def runPreaderTest(title, instructions, regenerate):
     else:
         sys.argv = ['preader']
     sys.argv.extend(instructions)
+    if os.path.exists('command.csv'):
+        os.remove('command.csv')
     outputfile = 'command.csv'
     if regenerate:
         outputfile = 'command.ref.csv'
@@ -457,6 +477,10 @@ def runPDGuiTest(title, instructions, regenerate, benchmarks=False):
         sys.argv.append(os.path.join(rootDirectory,'pdgui'))
     else:
         sys.argv = ['pdgui']
+    if os.path.exists('results.xlsx'):
+        os.remove('results.xlsx')
+    if os.path.exists('results.csv'):
+        os.remove('results.csv')
     sys.argv.extend(instructions)
     if debug:
         result = subprocess.run(sys.argv)
@@ -590,11 +614,6 @@ def runPdMakefile(directory,pdmakefile,regenerate,benchmarks=False):
         print('RunPdMakefile: directory =',directory)
         print('RunPdMakefile: pdmakefile =',pdmakefile)
         print('RunPdMakefile: cwd =',homedir)
-    #directory_,filename = os.path.split(pdmakefile)
-    #if debug:
-    #    print('RunPdMakefile: directory_ =',directory_)
-    #    print('RunPdMakefile: filename =',filename)
-    #mychdir(directory_)
     mychdir(directory)
     title,instructions = readPdMakefile(directory,pdmakefile)
     if debug:
@@ -628,6 +647,7 @@ def runClean():
     os.chdir(rootDirectory)
     subprocess.run('find . -name results.xlsx -exec rm -f {} \;',shell=True)
     subprocess.run('find . -name results.csv -exec rm -f {} \;',shell=True)
+    subprocess.run('find . -name command.csv -exec rm -f {} \;',shell=True)
     subprocess.run('find . -name all.cif -exec rm -f {} \;',shell=True)
     subprocess.run('find . -name \*.nma -exec rm -f {} \;',shell=True)
     print('Cleaning complete')

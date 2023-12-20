@@ -8,6 +8,7 @@ from PyQt5.QtCore                   import  Qt, QCoreApplication, QSize
 from PDielec.Utilities              import  find_program_from_name, pdgui_get_reader, Debug
 from PDielec.GUI.SpreadSheetManager import  SpreadSheetManager
 import numpy as np
+import platform
 
 class MainTab(QWidget):
 
@@ -27,6 +28,12 @@ class MainTab(QWidget):
         self.settings['Excel file name'] = excelfile
         self.settings['Script file name'] = ''
         self.settings['QM program'] = ''
+        if 'Window' in platform.platform():
+            self.settings['Compatibility mode'] = 'Window'
+        elif 'Linux' in platform.platform():
+            self.settings['Compatibility mode'] = 'Linux'
+        else:
+            self.settings['Compatibility mode'] = 'Linux'
         self.notebook = parent
         self.reader = None
         self.frequencies_cm1 = None
@@ -279,7 +286,7 @@ class MainTab(QWidget):
         # tell the notebook that we have read the info and we have a reader
         self.notebook.reader = self.reader
         if self.debug:
-            self.reader.print_info()
+            self.reader.print()
         cell = self.reader.unit_cells[-1]
         a = cell.lattice[0]
         b = cell.lattice[1]

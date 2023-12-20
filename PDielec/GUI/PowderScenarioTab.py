@@ -3,9 +3,9 @@ from PyQt5.QtWidgets         import QPushButton, QWidget
 from PyQt5.QtWidgets         import QComboBox, QLabel, QLineEdit, QDoubleSpinBox
 from PyQt5.QtWidgets         import QVBoxLayout, QHBoxLayout, QFormLayout
 from PyQt5.QtWidgets         import QSpinBox
+from PyQt5.QtWidgets         import QSizePolicy
 from PyQt5.QtCore            import Qt, QCoreApplication
 
-from PDielec.Constants       import support_matrix_db
 from PDielec.Constants       import avogadro_si
 from PDielec.Utilities       import Debug
 from PDielec.GUI.ScenarioTab import ScenarioTab
@@ -14,22 +14,25 @@ from PDielec.Constants       import wavenumber
 from functools               import partial
 import ctypes
 import PDielec.Calculator as Calculator
+import PDielec.DielectricFunction as DielectricFunction
+from PDielec.Materials       import MaterialsDataBase
+from PDielec.Materials       import Material
+import PDielec.Materials as Materials
 import numpy as np
+import os
 
 class PowderScenarioTab(ScenarioTab):
     def __init__(self, parent, debug=False):
         ScenarioTab.__init__(self,parent)
-        # super(QWidget, self).__init__(parent)
         global debugger
         debugger = Debug(debug,'PowderScenarioTab:')
         debugger.print('Start:: initialiser')
         self.scenarioType = 'Powder'
         self.settings['Scenario type'] = 'Powder'
         self.noCalculationsRequired = 1
-        matrix = 'ptfe'
-        self.settings['Matrix'] = matrix
-        self.settings['Matrix density'] = support_matrix_db[matrix][0]
-        self.settings['Matrix permittivity'] = support_matrix_db[matrix][1]
+        self.settings['Matrix'] = None
+        self.settings['Matrix density'] = None
+        self.settings['Matrix permittivity'] = None
         self.settings['Bubble radius'] = 30.0
         self.settings['Bubble volume fraction'] = 0.0
         self.settings['Mass fraction'] = 0.1
@@ -48,6 +51,8 @@ class PowderScenarioTab(ScenarioTab):
         self.settings['Particle shape'] = 'Sphere'
         self.methods = ['Maxwell-Garnett', 'Bruggeman', 'Averaged Permittivity', 'Mie']
         self.shapes = ['Sphere', 'Needle', 'Plate', 'Ellipsoid']
+        self.materialNames = []
+        self.materialDefinedManually = False
         self.direction = np.array([0,0,0])
         self.depolarisation = np.array([0,0,0])
         self.scenarioIndex = None
@@ -63,20 +68,50 @@ class PowderScenarioTab(ScenarioTab):
         vbox = QVBoxLayout()
         form = QFormLayout()
         #
-        # Support matrix
+        # Option to open a database of permittivities for the support
+        # label and button are defined the parent class
+        form.addRow(self.openDB_label, self.openDB_button)
         #
+        # Add a name for the database
+        # label and button are defined the parent class
+        form.addRow(self.database_le_label, self.database_le)
+        #
+        # Support matrix, read information from the database
+        #
+        hbox = QHBoxLayout()
         self.matrix_cb = QComboBox(self)
+        self.matrix_cb.setSizePolicy(QSizePolicy.Expanding,QSizePolicy.Fixed)
         self.matrix_cb.setToolTip('Define the permittivity and density of the support matrix')
-        self.matrix_cb.addItems(support_matrix_db)
+        self.materialNames = self.DataBase.getSheetNames()
+        self.matrix_cb.addItems(self.materialNames)
+        if not self.settings['Matrix'] in self.materialNames:
+            self.settings['Matrix'] = self.materialNames[0]
         index = self.matrix_cb.findText(self.settings['Matrix'], Qt.MatchFixedString)
         if index >=0:
             self.matrix_cb.setCurrentIndex(index)
         else:
             print('support matrix index was not 0',matrix)
         self.matrix_cb.activated.connect(self.on_matrix_cb_activated)
+        if 'Material defined manually' in self.settings['Matrix']:
+            self.materialDefinedManually = True
+            self.matrixMaterial = Materials.Constant('manual',permittivity=self.settings['Matrix permittivity'],density=self.settings['Matrix density'])
+        else:
+            self.materialDefinedManually = False
+            self.matrixMaterial = self.DataBase.getMaterial(self.settings['Matrix'])
         label = QLabel('Support matrix',self)
         label.setToolTip('Define the permittivity and density of the support matrix')
-        form.addRow(label, self.matrix_cb)
+        self.matrix_info_le = QLineEdit(self)
+        self.matrix_info_le.setToolTip("Provides details about database entry")
+        text = self.matrixMaterial.getInformation()
+        self.matrix_info_le.setText(text)
+        self.matrix_info_le.setReadOnly(True)
+        hbox.addWidget(self.matrix_cb)
+        hbox.addWidget(self.matrix_info_le)
+        form.addRow(label, hbox)
+        # Set the Matrix density and permittivity at 0cm-1
+        self.settings['Matrix density'] = self.matrixMaterial.getDensity()
+        self.matrixPermittivityFunction = self.matrixMaterial.getPermittivityFunction()
+        self.settings['Matrix permittivity'] = self.matrixPermittivityFunction(0.0)
         #
         # Support matrix permittivity
         #
@@ -93,16 +128,26 @@ class PowderScenarioTab(ScenarioTab):
         #
         # Support matrix permittivity
         #
-        self.permittivity_sb = QDoubleSpinBox(self)
-        self.permittivity_sb.setRange(0.001, 100.0)
-        self.permittivity_sb.setSingleStep(0.01)
-        self.permittivity_sb.setDecimals(3)
-        self.permittivity_sb.setToolTip('Define the support matrix permittivity')
-        self.permittivity_sb.setValue(self.settings['Matrix permittivity'])
-        self.permittivity_sb.valueChanged.connect(self.on_permittivity_sb_changed)
+        hbox = QHBoxLayout()
+        self.permittivity_r_sb = QDoubleSpinBox(self)
+        self.permittivity_r_sb.setRange(0.0, 1000.0)
+        self.permittivity_r_sb.setSingleStep(0.01)
+        self.permittivity_r_sb.setDecimals(3)
+        self.permittivity_r_sb.setToolTip('Define the real component of the support matrix permittivity')
+        self.permittivity_r_sb.setValue(np.real(self.settings['Matrix permittivity']))
+        self.permittivity_r_sb.valueChanged.connect(self.on_permittivity_r_sb_changed)
+        hbox.addWidget(self.permittivity_r_sb)
+        self.permittivity_i_sb = QDoubleSpinBox(self)
+        self.permittivity_i_sb.setRange(0.0, 1000.0)
+        self.permittivity_i_sb.setSingleStep(0.01)
+        self.permittivity_i_sb.setDecimals(3)
+        self.permittivity_i_sb.setToolTip('Define imaginary component of the the support matrix permittivity')
+        self.permittivity_i_sb.setValue(np.imag(self.settings['Matrix permittivity']))
+        self.permittivity_i_sb.valueChanged.connect(self.on_permittivity_i_sb_changed)
+        hbox.addWidget(self.permittivity_i_sb)
         label = QLabel('Support permittivity', self)
-        label.setToolTip('Define the support matrix permittivity')
-        form.addRow(label, self.permittivity_sb)
+        label.setToolTip('Define the complex support matrix permittivity')
+        form.addRow(label, hbox)
         #
         # Bubble volume fraction
         #
@@ -311,7 +356,7 @@ class PowderScenarioTab(ScenarioTab):
         return
 
     def crystal_density(self):
-        debugger.print('Start:: crystal_density')
+        '''Find the crystal density from the current reader and return the density'''
         if not self.reader:
             debugger.print('Finished:: crystal_density - no reader')
             return 1.0
@@ -323,26 +368,49 @@ class PowderScenarioTab(ScenarioTab):
         debugger.print('Finished:: crystal_density',density)
         return density
 
+    def openDB_button_clicked(self):
+        '''Open a new materials' database'''
+        debugger.print('Start:: openDB_button_clicked')
+        self.openDataBase()
+        if self.settings['Matrix'] not in self.materialNames:
+            self.settings['Matrix'] = self.materialNames[0]
+        index = self.matrix_cb.findText(self.settings['Matrix'], Qt.MatchFixedString)
+        self.matrixMaterial = self.DataBase.getMaterial(self.settings['Matrix'])
+        # Check to see that the matrix return a scalar permittivity
+        if self.matrixMaterial.isTensor():
+            print('Error: matrix must have a scalar permittivity using ptfe')
+            self.settings['Matrix'] = 'ptfe'
+            self.matrixMaterial = self.DataBase.getMaterial(self.settings['Matrix'])
+        materialPermittivityFunction = self.matrixMaterial.getPermittivityFunction()
+        self.settings["Matrix permittivity"] = materialPermittivityFunction(0.0)
+        self.settings["Matrix density"] = self.matrixMaterial.getDensity()
+        self.refreshRequired = True
+        self.refresh()
+        return
 
     def on_h_sb_changed(self,value):
+        '''Handle a change to the h parameter of the (hkl) surface'''
         debugger.print(self.settings['Legend'],'on_h_sb_changed', value)
         self.refreshRequired = True
         self.settings['Unique direction - h'] = value
         return
 
     def on_k_sb_changed(self,value):
+        '''Handle a change to the k parameter of the (hkl) surface'''
         debugger.print(self.settings['Legend'],'on_k_sb_changed', value)
         self.refreshRequired = True
         self.settings['Unique direction - k'] = value
         return
 
     def on_l_sb_changed(self,value):
+        '''Handle a change to the l parameter of the (hkl) surface'''
         debugger.print(self.settings['Legend'],'on_l_sb_changed', value)
         self.refreshRequired = True
         self.settings['Unique direction - l'] = value
         return
 
     def on_shape_cb_activated(self,index):
+        '''Handle changes to the shape of the powder particles'''
         debugger.print(self.settings['Legend'],'on shape cb activated', index)
         self.refreshRequired = True
         self.settings['Particle shape'] = self.shapes[index]
@@ -354,6 +422,7 @@ class PowderScenarioTab(ScenarioTab):
         return
 
     def on_methods_cb_activated(self,index):
+        '''Handle changes in the calculation method for the effective medium theory'''
         debugger.print(self.settings['Legend'],'on methods cb activated', index)
         self.refreshRequired = True
         self.settings['Effective medium method'] = self.methods[index]
@@ -372,6 +441,7 @@ class PowderScenarioTab(ScenarioTab):
         return
 
     def on_mf_sb_changed(self,value):
+        '''Handle a mass fraction change and update the volume fraction'''
         debugger.print(self.settings['Legend'],'on mass fraction line edit changed', value)
         self.refreshRequired = True
         self.settings['Mass or volume fraction'] = 'mass'
@@ -380,6 +450,7 @@ class PowderScenarioTab(ScenarioTab):
         return
 
     def update_vf_sb(self):
+        '''Update the volume fraction according to the mass fraction'''
         mf1 = self.settings['Mass fraction']
         mf2 = 1.0 - mf1
         rho1 = self.crystal_density()
@@ -404,30 +475,35 @@ class PowderScenarioTab(ScenarioTab):
         return
 
     def on_aoverb_sb_changed(self,value):
+        '''Handle a change to the a/b ratio for an ellipsoid'''
         debugger.print(self.settings['Legend'],'on_aoverb_le_changed',value)
         self.refreshRequired = True
         self.settings['Ellipsoid a/b'] = value
         return
 
     def on_legend_le_changed(self,text):
+        '''Handle a legend change'''
         debugger.print(self.settings['Legend'],'on legend change', text)
         self.refreshRequired = True
         self.settings['Legend'] = text
         return
 
     def on_sigma_sb_changed(self,value):
+        '''Handle a particle size distribution change'''
         debugger.print(self.settings['Legend'],'on sigma line edit changed', value)
         self.refreshRequired = True
         self.settings['Particle size distribution sigma(mu)'] = value
         return
 
     def on_size_sb_changed(self,value):
+        '''Handle a particle size change'''
         debugger.print(self.settings['Legend'],'on size line edit changed', value)
         self.refreshRequired = True
         self.settings['Particle size(mu)'] = value
         return
 
     def on_vf_sb_changed(self,value):
+        '''Handle a volume fraction change, alter the mass fraction accordingly'''
         debugger.print(self.settings['Legend'],'Start:: on_vf_sb_changed', value)
         self.refreshRequired = True
         self.settings['Mass or volume fraction'] = 'volume'
@@ -437,12 +513,12 @@ class PowderScenarioTab(ScenarioTab):
         return
 
     def update_mf_sb(self):
+        '''Update the mass fraction and according to the volume fraction'''
         debugger.print(self.settings['Legend'],'Start:: update_mf_sb')
         vf1 = self.settings['Volume fraction']
         vf2 = 1.0 - vf1 - self.settings['Bubble volume fraction']
         rho1 = self.crystal_density()
         rho2 = self.settings['Matrix density']
-        # mf1 = 1.0 / ( 1.0 + (vf2/vf1) * (rho2/rho1) )
         mf1 = rho1*vf1 / ( rho1*vf1 + rho2*vf2 )
         self.settings['Mass fraction'] = mf1
         blocking_state = self.mf_sb.signalsBlocked()
@@ -457,35 +533,82 @@ class PowderScenarioTab(ScenarioTab):
         return
 
     def on_matrix_cb_activated(self,index):
+        '''Handle a change to the support matrix supplied by the materials' database'''
         debugger.print(self.settings['Legend'],'on matrix combobox activated', index)
         debugger.print(self.settings['Legend'],'on matrix combobox activated', self.matrix_cb.currentText())
+        # We will need to recalculate everything for a new support matrix
         self.refreshRequired = True
+        # matrix is the name of the sheet in the database
         matrix = self.matrix_cb.currentText()
+        # Make some of the widgets quiet as we update them
         m_blocking = self.matrix_cb.signalsBlocked()
         d_blocking = self.density_sb.signalsBlocked()
-        p_blocking = self.permittivity_sb.signalsBlocked()
+        r_blocking = self.permittivity_r_sb.signalsBlocked()
+        i_blocking = self.permittivity_i_sb.signalsBlocked()
         self.matrix_cb.blockSignals(True)
         self.density_sb.blockSignals(True)
-        self.permittivity_sb.blockSignals(True)
-        self.settings['Matrix'] = matrix
-        self.settings['Matrix density'] = support_matrix_db[matrix][0]
-        self.settings['Matrix permittivity'] = support_matrix_db[matrix][1]
+        self.permittivity_r_sb.blockSignals(True)
+        self.permittivity_i_sb.blockSignals(True)
+        if 'Material defined manually' in matrix:
+            # The manual option has been chosen, so create a new material with the right permittivity and density
+            self.materialDefinedManually = True
+            self.matrixMaterial = Materials.Constant('manual',permittivity=self.settings['Matrix permittivity'],density=self.settings['Matrix density'])
+            # Store the new matrix material name
+            self.settings['Matrix'] = matrix
+        else:
+            self.materialDefinedManually = False
+            if 'Material defined manually' in self.materialNames:
+                # We don't need the manual entry any more
+                self.matrix_cb.clear()
+                self.materialNames = self.materialNames[:-1]
+                self.matrix_cb.addItems(self.materialNames)
+            # Read the material information for permittivity and density from the data base
+            matrixMaterial = self.DataBase.getMaterial(matrix)
+            if matrixMaterial.isScalar():
+                # Only change the matrix material if it is a scalar material
+                self.matrixMaterial = matrixMaterial
+                # Store the new matrix material name
+                self.settings['Matrix'] = matrix
+            else:
+                print('Error: matrix material must have a scalar permittivity')
+        # The permittivity may be frequency dependent, show the value at 0 cm-1
+        self.matrixPermittivityFunction = self.matrixMaterial.getPermittivityFunction()
+        self.settings['Matrix permittivity'] = self.matrixPermittivityFunction(0.0)
+        self.settings['Matrix density'] = self.matrixMaterial.getDensity()
         self.density_sb.setValue(self.settings['Matrix density'])
-        self.permittivity_sb.setValue(self.settings['Matrix permittivity'])
+        # Update the matrix material information
+        text = self.matrixMaterial.getInformation()
+        self.matrix_info_le.setText(text)
+        # Update the values of the real and imaginary permittivity
+        self.permittivity_r_sb.setValue(np.real(self.settings['Matrix permittivity']))
+        self.permittivity_i_sb.setValue(np.imag(self.settings['Matrix permittivity']))
+        # This is a new material so reset the volume / mass fractions
         # volume fraction takes precedence
         if self.settings['Mass or volume fraction'] == 'volume':
+            self.settings['Volume fraction'] = 0.1
             self.update_mf_sb()
             self.update_vf_sb()
         else:
+            self.settings['Mass fraction'] = 0.1
             self.update_vf_sb()
             self.update_mf_sb()
+        # Restore the signal settings on the widgets
         self.matrix_cb.blockSignals(m_blocking)
         self.density_sb.blockSignals(d_blocking)
-        self.permittivity_sb.blockSignals(p_blocking)
+        self.permittivity_r_sb.blockSignals(r_blocking)
+        self.permittivity_i_sb.blockSignals(i_blocking)
+        self.refresh()
+        self.refreshRequired = True
         return
 
     def on_density_sb_changed(self,value):
+        '''Handle a change to the matrix density'''
         self.settings['Matrix density'] = value
+        # update the matrix density
+        self.matrixMaterial.setDensity(value)
+        # Force the matrix to be defined manually
+        self.settings['Matrix'] = 'Material defined manually'
+        self.materialDefinedManually = True
         # volume fraction taked precedence
         if self.settings['Mass or volume fraction'] == 'volume':
             self.update_mf_sb()
@@ -495,9 +618,12 @@ class PowderScenarioTab(ScenarioTab):
             self.update_mf_sb()
         debugger.print(self.settings['Legend'],'on density line edit changed', value)
         self.refreshRequired = True
+        self.refresh()
+        self.refreshRequired = True
         return
 
     def on_bubble_vf_sb_changed(self,value):
+        '''Handle a change to the bubble volume fraction'''
         self.settings['Bubble volume fraction'] = value/100.0
         if self.settings['Mass or volume fraction'] == 'volume':
             self.update_mf_sb()
@@ -509,13 +635,33 @@ class PowderScenarioTab(ScenarioTab):
 
     def on_bubble_radius_sb_changed(self,value):
         self.settings['Bubble radius'] = value
-        debugger.print(self.settings['Legend'],'on permittivity line edit changed', value)
+        debugger.print(self.settings['Legend'],'on bubble raduys line edit changed', value)
         self.refreshRequired = True
         return
 
-    def on_permittivity_sb_changed(self,value):
-        self.settings['Matrix permittivity'] = value
+    def on_permittivity_i_sb_changed(self,value):
+        self.refreshRequired = True
+        real = np.real(self.settings['Matrix permittivity'])
+        self.settings['Matrix permittivity'] = complex(real,value)
+        newPermittivityObject = DielectricFunction.ConstantScalar(self.settings['Matrix permittivity'])
+        self.matrixMaterial.setPermittivityObject(newPermittivityObject)
+        self.settings['Matrix'] = 'Material defined manually'
+        self.materialDefinedManually = True
+        debugger.print(self.settings['Legend'],'on imaginary permittivity line edit changed', value)
+        self.refresh()
+        self.refreshRequired = True
+        return
+
+    def on_permittivity_r_sb_changed(self,value):
+        self.refreshRequired = True
+        imaginary = np.imag(self.settings['Matrix permittivity'])
+        self.settings['Matrix permittivity'] = complex(value,imaginary)
+        newPermittivityObject = DielectricFunction.ConstantScalar(self.settings['Matrix permittivity'])
+        self.matrixMaterial.setPermittivityObject(newPermittivityObject)
+        self.settings['Matrix'] = 'Material defined manually'
+        self.materialDefinedManually = True
         debugger.print(self.settings['Legend'],'on permittivity line edit changed', value)
+        self.refresh()
         self.refreshRequired = True
         return
 
@@ -636,8 +782,8 @@ class PowderScenarioTab(ScenarioTab):
             self.depolarisation = Calculator.initialise_sphere_depolarisation_matrix()
             self.direction = np.array( [] )
         self.direction = self.direction / np.linalg.norm(self.direction)
-        # Get the permittivity from the settings tab
-        crystal_permittivity = self.notebook.settingsTab.get_crystal_permittivity(vs_cm1)
+        # Get the crystal permittivity function from the settings tab
+        crystalPermittivity = self.notebook.settingsTab.getCrystalPermittivity(vs_cm1)
         # Allocate space for the shared memory, we need twice as much as we have a complex data type
         shared_array_base = Array(ctypes.c_double, 18)
         previous_solution_shared = np.ctypeslib.as_array(shared_array_base.get_obj())
@@ -651,7 +797,6 @@ class PowderScenarioTab(ScenarioTab):
         concentration = self.notebook.plottingTab.settings['cell concentration']
         # Set the material parameters
         method = self.settings['Effective medium method'].lower()
-        matrix_permittivity = np.identity(3) * self.settings['Matrix permittivity']
         volume_fraction = self.settings['Volume fraction']
         particle_size_mu = self.settings['Particle size(mu)']
         particle_sigma_mu = self.settings['Particle size distribution sigma(mu)']
@@ -663,13 +808,13 @@ class PowderScenarioTab(ScenarioTab):
         bubble_radius = self.settings['Bubble radius']
         # Use the pool of processors already available
         # define a partial function to use with the pool
-        partial_function = partial(Calculator.solve_effective_medium_equations, method,volume_fraction,particle_size_mu,particle_sigma_mu,matrix_permittivity,shape,self.depolarisation,concentration,atr_refractive_index,atr_theta,atr_spolfraction,bubble_vf,bubble_radius,previous_solution_shared)
+        partial_function = partial(Calculator.solve_effective_medium_equations, method,volume_fraction,particle_size_mu,particle_sigma_mu,self.matrixPermittivityFunction,shape,self.depolarisation,concentration,atr_refractive_index,atr_theta,atr_spolfraction,bubble_vf,bubble_radius,previous_solution_shared)
         if self.notebook.pool is None:
             self.notebook.startPool()
         debugger.print('About to use the pool to calculate effective medium equations')
         results = []
         indices = range(len(vs_cm1))
-        for result in self.notebook.pool.map(partial_function, zip(vs_cm1,crystal_permittivity), chunksize=20):
+        for result in self.notebook.pool.map(partial_function, zip(vs_cm1,crystalPermittivity), chunksize=20):
             results.append(result)
             self.notebook.progressbars_update()
         QCoreApplication.processEvents()
@@ -727,6 +872,9 @@ class PowderScenarioTab(ScenarioTab):
 
 
     def refresh(self,force=False):
+        '''Refresh the GUI interface with up to date values
+           if force is True then a refresh is forced whatever the state of the scenario
+        '''
         debugger.print(self.settings['Legend'],'Start:: refresh, force =', force)
         if not self.refreshRequired and not force:
             debugger.print(self.settings['Legend'],'Finished:: refresh aborted', self.refreshRequired,force)
@@ -741,10 +889,41 @@ class PowderScenarioTab(ScenarioTab):
         for w in self.findChildren(QWidget):
             w.blockSignals(True)
         # use the settings values to initialise the widgets
+        # Update the database name
+        self.DataBase = MaterialsDataBase(self.settings['Materials database'],debug=debugger.state())
+        self.settings['Materials database'] = self.DataBase.getFileName()
+        self.database_le.setText(self.settings['Materials database'])
+        # Update the possible matrix material names from the database
+        self.materialNames = self.DataBase.getSheetNames()
+        if 'Material defined manually' == self.settings['Matrix']:
+            self.materialDefinedManually = True
+        if self.materialDefinedManually:
+            self.materialNames.append('Material defined manually')
+            self.matrixMaterial = Materials.Constant('manual',permittivity=self.settings['Matrix permittivity'],density=self.settings['Matrix density'])
+            self.matrixPermittivityFunction = self.matrixMaterial.getPermittivityFunction()
+        else:
+            if self.settings['Matrix'] in self.materialNames:
+                self.matrixMaterial = self.DataBase.getMaterial(self.settings['Matrix'])
+                self.matrixPermittivityFunction = self.matrixMaterial.getPermittivityFunction()
+                self.settings['Matrix permittivity'] = self.matrixPermittivityFunction(0.0)
+                self.settings['Matrix density'] = self.matrixMaterial.getDensity()
+            else:
+                print('Error: matrix ',self.settings['Matrix'],' not available in database')
+                print('       available materials are:', self.materialNames)
+                exit()
+        # Reset the matrix combo box with new names
+        self.matrix_cb.clear()
+        self.matrix_cb.addItems(self.materialNames)
         index = self.matrix_cb.findText(self.settings['Matrix'], Qt.MatchFixedString)
         self.matrix_cb.setCurrentIndex(index)
+        # Update the matrix material information
+        text = self.matrixMaterial.getInformation()
+        self.matrix_info_le.setText(text)
+        # Set the matrix density widget
         self.density_sb.setValue(self.settings['Matrix density'])
-        self.permittivity_sb.setValue(self.settings['Matrix permittivity'])
+        # Set the matrix permittivity widget
+        self.permittivity_r_sb.setValue(np.real(self.settings['Matrix permittivity']))
+        self.permittivity_i_sb.setValue(np.imag(self.settings['Matrix permittivity']))
         self.bubble_vf_sb.setValue(100*self.settings['Bubble volume fraction'])
         self.bubble_radius_sb.setValue(self.settings['Bubble radius'])
         if self.settings['Mass or volume fraction'] == 'volume':

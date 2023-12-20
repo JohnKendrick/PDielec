@@ -2,23 +2,23 @@
 
 <!DOCTYPE html>
 
-<html lang="eng">
+<html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
-<meta content="Test of numref" name="description" />
-<meta content="numref" name="keywords" />
+<meta content="PDielec package for the calculation of infrared and terahertz absorption from QM calculations" name="description" />
+<meta content="Quantum Mechanics, Effective Field Theory, Maxwell, Garnett, Mie, Infrared, Terahertz, Castep, Abinit, VASP, GULP. QE" name="keywords" />
 
-    <title>8. Test of NUMREF and Tables &#8212; PDielec: John Kendrick &amp; Andrew Burnett</title>
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=92fd9be5" />
+    <title>9. Single Crystal Study of L-Alanine &#8212; PDielec: John Kendrick &amp; Andrew Burnett</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
     <link rel="stylesheet" type="text/css" href="_static/cloud.css?v=f9ae72be" />
     <link rel="stylesheet" type="text/css" href="_static/table_styling.css?v=a1a2a898" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noticia+Text:400,i,b,bi|Open+Sans:400,i,b,bi|Roboto+Mono:400,i,b,bi&amp;display=swap" type="text/css" />
     
-    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=604b9f33"></script>
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=586d4295"></script>
     <script src="_static/doctools.js?v=888ff710"></script>
     <script src="_static/sphinx_highlight.js?v=4825356b"></script>
-    <script type="text/x-mathjax-config">MathJax.Hub.Config({"extensions": ["AMSmath.js"], "TeX": {"Macros": {"bm": ["{\\boldsymbol{#1}}", 1], "tensor": ["{\\bar{\\bar{#1}}}", 1], "tensorbs": ["{\\bar{\\bar{\\bm{#1}}}}", 1], "tensorbf": ["{\\bar{\\bar{\\bm{#1}}}}", 1], "fieldbf": ["{\\bar{\\bm{#1}}}", 1], "water": "\\H_{2}O"}}})</script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"extensions": ["AMSmath.js"], "TeX": {"Macros": {"tensor": ["{\\bar{\\bar{#1}}}", 1], "tensorbs": ["{\\bar{\\bar{\\bm{#1}}}}", 1], "tensorbf": ["{\\bar{\\bar{\\bm{#1}}}}", 1], "fieldbf": ["{\\bar{\\bm{#1}}}", 1], "water": "\\H_{2}O"}}})</script>
     <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
     
@@ -39,8 +39,8 @@
 
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="9. References" href="zreferences.html" />
-    <link rel="prev" title="7. Single Crystal Applications" href="application_notes_2.html" /> 
+    <link rel="next" title="10. References" href="zreferences.html" />
+    <link rel="prev" title="8. Single Crystal Applications" href="application_notes_2.html" /> 
         <meta name="viewport" content="width=device-width, initial-scale=1">
   </head><body>
     <div class="relbar-top">
@@ -52,14 +52,14 @@
           <a href="genindex.html" title="General Index"
              accesskey="I">index</a></li>
         <li class="right" >
-          <a href="zreferences.html" title="9. References"
+          <a href="zreferences.html" title="10. References"
              accesskey="N">next</a> &nbsp; &nbsp;</li>
         <li class="right" >
-          <a href="application_notes_2.html" title="7. Single Crystal Applications"
+          <a href="application_notes_2.html" title="8. Single Crystal Applications"
              accesskey="P">previous</a> &nbsp; &nbsp;</li>
     <li><a href="index.html">PDielec: John Kendrick &amp; Andrew Burnett</a> &#187;</li>
 
-        <li class="nav-item nav-item-this"><a href=""><span class="section-number">8. </span>Test of NUMREF and Tables</a></li> 
+        <li class="nav-item nav-item-this"><a href=""><span class="section-number">9. </span>Single Crystal Study of L-Alanine</a></li> 
       </ul>
     </div>
     </div>
@@ -70,33 +70,84 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <section id="test-of-numref-and-tables">
-<h1><span class="section-number">8. </span>Test of NUMREF and Tables<a class="headerlink" href="#test-of-numref-and-tables" title="Permalink to this heading">¶</a></h1>
-<figure class="align-default" id="fig-test">
-<img alt="_images/infrared.png" src="_images/infrared.png" />
+  <section id="single-crystal-study-of-l-alanine">
+<h1><span class="section-number">9. </span>Single Crystal Study of L-Alanine<a class="headerlink" href="#single-crystal-study-of-l-alanine" title="Permalink to this heading">¶</a></h1>
+<p>In an experimental and computational study of the vibrational modes of single crystals of L-alanine, the experimental transmittance was reported for polarized radiation along each of the principal axes, a-, b- and c-. <span id="id1">[<a class="reference internal" href="zreferences.html#id83" title="J. L. Allen, T. J. Sanders, J. Horvat, R. A. Lewis, and K. C. Rule. Determination of Vibrational Modes of l -Alanine Single Crystals by a Combination of Terahertz Spectroscopy Measurements and Density Functional Calculations. Physical Review Letters, 130(22):226901, 2023. URL: https://doi.org/10.1103/PhysRevLett.130.226901, doi:10.1103/PhysRevLett.130.226901.">72</a>]</span></p>
+<p>The directory Examples/SingleCrystal/L-alanine contains files for the calculation of the transmittance and reflectance of single crystals of L-alanine based on similar calculations to those reported in the paper, using Crystal17 to perform the DFT calculations, and using PDGui to calculate the transmittance and reflectance properties of the crystal.
+Details of the DFT calculation using the B97-3c functional can be found in phonon.dl2.  The output can be found in phonon.out.  Other files produced by the Crystal17 calculation are BORN.DAT and HESSFREQ.DAT.  These are used by PDGui to calculate the theoretical spectrum.</p>
+<p>The experimental results for the measurement of terahertz transmittance were kindly provided by the authors of the experimental paper: J. L. Allen, T. J. Sanders, J. Horvat, R. A. Lewis and K. C. Rule <span id="id2">[<a class="reference internal" href="zreferences.html#id83" title="J. L. Allen, T. J. Sanders, J. Horvat, R. A. Lewis, and K. C. Rule. Determination of Vibrational Modes of l -Alanine Single Crystals by a Combination of Terahertz Spectroscopy Measurements and Density Functional Calculations. Physical Review Letters, 130(22):226901, 2023. URL: https://doi.org/10.1103/PhysRevLett.130.226901, doi:10.1103/PhysRevLett.130.226901.">72</a>]</span>.
+We would like to thank the authors of the paper for providing the experimental data and for helpful discussions.
+Their measurements can be found in the Excel spreadsheets a-axis-experimental.xlsx, b-axis-experimental.xlsx and c-axis-experimental.xlsx.   Each of these spreadsheets has two columns, the first is a column of frequencies in cm<sup>-1</sup> and the second is the transmittance.</p>
+<p>Scripts used to generate the crystal transmittance for the electric field along the respective crystal axes from the calculated phonon modes can be found in a-axis.py, b-axis.py and c-axis.py.  These scripts use the <em>Fitter Tab</em> to compare the calculated spectrum with the experimental one.  Changes have been made to the film thickness and to the widths of the peaks to improve the agreement between the two.</p>
+<p>To run the scripts use a command such as,</p>
+<p><code class="docutils literal notranslate"><span class="pre">`</span>
+<span class="pre">pdgui</span> <span class="pre">-script</span> <span class="pre">a-axis.py</span>
+<span class="pre">`</span></code></p>
+<p>In the following, the steps used to get to the scripts are explained.
+We will concentrate on the a-axis spectrum but the approach is similar for each axis considered.</p>
+<p>L-alanine crystallises in an orthorhombic form, with 3 non-equivalent axes.
+To initialise PDGui with the results of the DFT calculation and starting the GUI interface with the <em>Scenario tab</em> in its single crystal mode use the command below,</p>
+<p><code class="docutils literal notranslate"><span class="pre">`</span>
+<span class="pre">pdgui</span> <span class="pre">phonon.out</span> <span class="pre">-scenario</span> <span class="pre">crystal</span>
+<span class="pre">`</span></code></p>
+<p>The <em>Main Tab</em> shows the calculated unit cell and the frequencies as calculated by Crystal17.</p>
+<figure class="align-default" id="fig-lalanine-maintab">
+<a class="reference internal image-reference" href="_images/lalanine-maintab.png"><img alt="_images/lalanine-maintab.png" src="_images/lalanine-maintab.png" style="width: 615.6px; height: 879.3000000000001px;" /></a>
 </figure>
-<p>Here is numref working for a figure <code class="xref std std-numref docutils literal notranslate"><span class="pre">fig-test</span></code></p>
-<blockquote>
-<div><p>This plot looks OK</p>
-</div></blockquote>
-<p>Here is numref working on a table</p>
-<table class="styled-table docutils align-default" id="tab-a">
-<caption><span class="caption-number">Table 8.1 </span><span class="caption-text">Simple test</span><a class="headerlink" href="#tab-a" title="Permalink to this table">¶</a></caption>
-<thead>
-<tr class="row-odd"><th class="head left-align"><p>Item</p></th>
-<th class="head left-align"><p>Character</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td class="left-align"><p>1</p></td>
-<td class="left-align"><p>Puss in Boots</p></td>
-</tr>
-<tr class="row-odd"><td class="left-align"><p>2</p></td>
-<td class="left-align"><p>Cinderella</p></td>
-</tr>
-</tbody>
-</table>
-<p>The results of the coherent calculations are shown in <code class="xref std std-numref docutils literal notranslate"><span class="pre">tab-a</span></code></p>
+<p>The <em>Settings Tab</em> (see below) shows those settings which affect the calculation of the permittivity.  By default the frequencies are modified by projecting out any translational degrees of freedom.
+This is shown by the three zero frequencies in the table of frequencies and is a result of selecting <em>Apply Eckart conditions?</em>
+The atomic masses are selected by PDGui and maybe different to those used by the DFT calculation.
+A Lorentzian line width is applied to all phonon vibrations by default.
+In this case we have chosen a large value by default and applied smaller and more realistic values for those phonon modes important to transmission for the a-polarised electric field.</p>
+<p>The contribution to the permittivity arising from electronic polarisation is shown in this Tab.
+In the case of Crystal17 and the B9703c functional the CPHF calculations is not possible because the exchange/correlation functional is not supported and the <span class="math notranslate nohighlight">\(\epsilon_{\infty}\)</span> calculation is not performed and a zero matrix will be presented here.
+In this example we have typed in the contribution from a Crystal17 calculation using PBE-D3.
+The resulting spectrum is not very sensitive to these values.</p>
+<figure class="align-default" id="fig-lalanine-settingstab">
+<a class="reference internal image-reference" href="_images/lalanine-settingstab.png"><img alt="_images/lalanine-settingstab.png" src="_images/lalanine-settingstab.png" style="width: 612.0px; height: 883.8000000000001px;" /></a>
+</figure>
+<p>The next tab is the <em>Scenario tab</em> which is used to reflect the experimental parameters that are possible.
+In this case we are looking at the single crystal scenario.
+The mode of operation in the example shown below is the <em>Coherent thin film</em> mode.
+In this case is the surface that the THz beam is incident on is the (001) surface, so the c-axis will be pointing along the Z-axis of the laboratory coordinate frame.
+The permittivity of the superstrate and substrate is set to 1.0, consistent with the experimental conditions.
+The geometry of the incident beam relative to the crystal is controlled by the azimuthal angle.  A zero value for the incident angle means the beam is at 90<sup>o</sup> to the surface.  A non-zero angle defines the laboratory coordinates as the beam lies in the XZ plane.
+For this example the incident beam angle will be set to 0<sup>o</sup>.
+Once this is done information about the position of the crystal axes relative to the crystal frame can be seen in the text box of the <em>Settings tab</em>.
+Changes to the azimuthal angle will result in alterations to the definitions of the crystal axes in terms of the laboratory coordinates.
+We are interested in radiation polarised with the electric field active along the a-axis of the crystal, which, according to the <em>Lab frame information</em> lies along  the Y-axis of the laboratory coordinate.
+This corresponds to s-polarised light, so we will be looking at the s-component of the transmittance.</p>
+<p>An important parameter to consider is the thickness of the film and the method by which we will calculate the transmission and reflectivity.
+To start with we will use the <em>coherent thin film</em> mode and a thickness of 0.2mm.</p>
+<figure class="align-default" id="fig-lalanine-scenariotab">
+<a class="reference internal image-reference" href="_images/lalanine-scenariotab.png"><img alt="_images/lalanine-scenariotab.png" src="_images/lalanine-scenariotab.png" style="width: 612.9px; height: 883.8000000000001px;" /></a>
+</figure>
+<p>The resulting spectrum is shown below.
+It can be seen that there are regular oscillations in the transmittance, especially at low frequencies.
+These are due to interference of the directly transmitted light and light that has undergone internal reflection and generating a series of decaying etalons.</p>
+<figure class="align-default" id="fig-lalanine-plottertab-coherent">
+<a class="reference internal image-reference" href="_images/lalanine-plottingtab-coherent.png"><img alt="_images/lalanine-plottingtab-coherent.png" src="_images/lalanine-plottingtab-coherent.png" style="width: 614.7px; height: 877.5px;" /></a>
+</figure>
+<p>To see if we can remove this we will change the mode in the <em>Scenario tab</em> to <em>Incoherent thin film</em>.
+Re-plotting the spectrum and looking at the results in the <em>Fitter tab</em> is shown in the plot below.
+The calculated spectrum is compared directly with the experimental one.
+Both the calculated and experimental spectra show little transmittance above about 140cm<sup>-1</sup>.
+The strong, very sharp peaks at 225cm<sup>-1</sup> and above are probably numerical problems that occur with thicker films whentransmission tends to zero.  These numerical problems are exacerbated by the <em>Incoherent film</em> mode as it uses intensities in the calculation of the transfer matrix, which requires the square the electric field and the propagation matrices.
+The fact that these are numerical problems can be verified by looking at the <em>Coherent thin film</em> mode and seeing if they are present there.
+Even if the experimental measurements are designed to minimise etalons, it is generally sensible to compare both incoherent and coherent calculations before comparing to experiment.</p>
+<p>A major advantage of using the <em>Fitter tab</em> to understand the calculated spectrum is that the user can modify the Lorentzian widths and see the result immediately, while also and comparing them with the experimental spectrum.
+This also shows the cross-correlation between experiment and calculation, in this we get a value of 0.9379 (where 1 is a perfect match).</p>
+<figure class="align-default" id="fig-lalanine-plottertab-coherent-aaxis">
+<a class="reference internal image-reference" href="_images/lalanine-fittertab-incoherent-aaxis.png"><img alt="_images/lalanine-fittertab-incoherent-aaxis.png" src="_images/lalanine-fittertab-incoherent-aaxis.png" style="width: 623.7px; height: 878.4px;" /></a>
+</figure>
+<p>Plots for the b-axis and c-axis electric fields are shown below.  The b-axis example is given by using the same (001) surface but using an azimuthal angle of 0<sup>o</sup>.  The thickness used for the b-axis example is 0.1mm, smaller than the 0.2mm used for the a-axis example.
+The c-axis field transmittance example uses the (010) surface with an azimuthal angle of 0<sup>o</sup> and a thickness of 0.1mm.</p>
+<figure class="align-default" id="fig-lalanine-plottertab-coherent-baxis">
+<a class="reference internal image-reference" href="_images/lalanine-fittertab-incoherent-baxis.png"><img alt="_images/lalanine-fittertab-incoherent-baxis.png" src="_images/lalanine-fittertab-incoherent-baxis.png" style="width: 610.2px; height: 873.9px;" /></a>
+</figure>
+<figure class="align-default" id="fig-lalanine-plottertab-coherent-caxis">
+<a class="reference internal image-reference" href="_images/lalanine-fittertab-incoherent-caxis.png"><img alt="_images/lalanine-fittertab-incoherent-caxis.png" src="_images/lalanine-fittertab-incoherent-caxis.png" style="width: 603.9px; height: 874.8000000000001px;" /></a>
+</figure>
 </section>
 
 
@@ -109,12 +160,12 @@
   <div class="sphinxprev">
     <h4>Previous page</h4>
     <p class="topless"><a href="application_notes_2.html"
-                          title="Previous page">&larr; <span class="section-number">7. </span>Single Crystal Applications</a></p>
+                          title="Previous page">&larr; <span class="section-number">8. </span>Single Crystal Applications</a></p>
   </div>
   <div class="sphinxnext">
     <h4>Next page</h4>
     <p class="topless"><a href="zreferences.html"
-                          title="Next page">&rarr; <span class="section-number">9. </span>References</a></p>
+                          title="Next page">&rarr; <span class="section-number">10. </span>References</a></p>
   </div>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
@@ -163,14 +214,14 @@
           <a href="genindex.html" title="General Index"
              >index</a></li>
         <li class="right" >
-          <a href="zreferences.html" title="9. References"
+          <a href="zreferences.html" title="10. References"
              >next</a> &nbsp; &nbsp;</li>
         <li class="right" >
-          <a href="application_notes_2.html" title="7. Single Crystal Applications"
+          <a href="application_notes_2.html" title="8. Single Crystal Applications"
              >previous</a> &nbsp; &nbsp;</li>
     <li><a href="index.html">PDielec: John Kendrick &amp; Andrew Burnett</a> &#187;</li>
 
-        <li class="nav-item nav-item-this"><a href=""><span class="section-number">8. </span>Test of NUMREF and Tables</a></li> 
+        <li class="nav-item nav-item-this"><a href=""><span class="section-number">9. </span>Single Crystal Study of L-Alanine</a></li> 
       </ul>
     </div>
     </div>

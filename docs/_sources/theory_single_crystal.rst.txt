@@ -16,12 +16,12 @@
 Theory for Single Crystal Optics
 ================================
 
-The *SingleCrystal tab* enables the calculation of the optical behaviour of a single crystal (thick slab or film).  The method uses the pyGTM code available on GitHub :cite:`pygtm`.  This code implements a generalised transfer matrix method described by Passler et al. :cite:`Passler2020` and which builds on previous publications :cite:`Passler2017,Passler2017a`.
+The *SingleCrystal tab* enables the calculation of the optical behaviour of a single crystal (thick slab or film).  The method uses the pyGTM code available on GitHub :cite:`pygtm`.  This code implements a generalised transfer matrix method described by Passler et al. :cite:`Passler2020` and that builds on previous publications :cite:`Passler2017,Passler2017a`.
 The code has been modified to model incoherent systems as well as coherent ones.
-A brief summary of the theory underlying the transfer matrix method is given to aid in the understanding of the methods implemented and the range of their applications.
+A summary of the theory underlying the transfer matrix method is given to aid in the understanding of the methods implemented and the range of their applications.
 
-In PDGui the number of media to consider is only three, a superstrate (usually air) through which the incident light passes, a dielectric medium which has a frequency dependent complex permittivity and optionally a substrate (which is also usually air).  
-The media are indexed by 0,1 and 2 for the superstrate, dielectric and substrate respectively.
+In general PDGui can handle multilayered frequency-dependent films, sandwiched between a superstrate and a substrate.  
+For the sake of simplicity, the following will describe a system with a single dielectric and the media will be indexed 0, 1 and 2 for the superstrate, dielectric and substrate respectively.
 A schematic illustrating this is shown in :numref:`fig-definition-of-RTA`.
 To aid understanding of the input and output and the limitations of the methods used, a brief summary of the transfer matrix method is given here, specific to its application in PDGui.
 There are 4 different modes of operation of the matrix transfer method in PDGui and these are described below under the headings 'coherent thin film', 'incoherent thin film', 'partially incoherent thin film' and 'thick slab'
@@ -37,7 +37,7 @@ There are 4 different modes of operation of the matrix transfer method in PDGui 
 Coherent thin film
 ------------------
 
-At an interface the tangential (in-plane) electric and magnetic fields (given by a vector :math:`\fieldbf{F_i}`) have to match in both media.  
+At an interface, the tangential (in-plane) electric and magnetic fields (given by a vector :math:`\fieldbf{F_i}`) have to match in both media.  
 This requires that the 4 amplitudes (vector :math:`\fieldbf{A_i}`) of the electric and magnetic fields, forward and backward, s and p polarised, in medium :math:`i` are related through a 4x4 dynamical matrix :math:`\tensorbf{D_i}`.
 
 .. math::
@@ -61,7 +61,7 @@ Within a given medium the mode amplitudes will change according to the propagati
 
    \fieldbf{A}_{i,left}  = \tensorbf{P}_i \fieldbf{A}_{i,right}
 
-The total transfer matrix for the 3 media considered by PDGui (superstrate, dielectric and substrate; 0, 1 and 2 respectively) is therefore;
+The total transfer matrix for the 3 media considered (superstrate, dielectric and substrate; 0, 1 and 2 respectively) is therefore;
 
 .. math::
    :label: eq-transfer-matrix
@@ -91,6 +91,7 @@ This approach has been incorporated in PDGui by modifying the total transfer mat
    \tensorbf{M}_{int} =  \mid \tensorbf{D}_0^{-1} \tensorbf{D}_1 \mid^2 \mid \tensorbf{P}_1 \mid ^2 \mid \tensorbf{D}_1^{-1} \tensorbf{D}_2 \mid ^2
 
 The use of intensities instead of amplitudes ensures that the phase information is lost.
+The actual implementation is appropriate for a multi-layer system where all dielectric layers are treated as being incoherent films, whatever their thickness.
 
 
 Partially incoherent thin film
@@ -107,8 +108,13 @@ The settings in PDGui typically start with a sample of 20 calculations and no fi
 
 Thick Slab
 ----------
-For those cases where the partially incoherent thin film and incoherent thin film modes are not appropiate and only reflectance is of interest, the calculation mode referred to as a "thick slab" assumes that there are only two (sem-infinite) media.
-The media through which the incident light travels and the crystalline media by which it is reflected.
+For those cases where the partially incoherent thin film and incoherent thin film modes are not appropiate and only reflectance is of interest, the calculation mode referred to as a "thick slab" can be used.
+This mode assumes that there are only two (sem-infinite) media:
+the media through which the incident light travels and the crystalline media by which it is reflected.
+When using the "thick slab" mode, there is no substrate.  
+Instead the bottom dielectric layer is taken to be semi-infinite.
+
+
 Transmission is not of interest in this case, as in the case of a thick crystal it assumed that total absorption will take place and that there will be no internal reflection within the crystal.
 This mode is similar to a standard Fresnel calculation of reflectance (R) but is appropriate for general permittivity tensors.
 As a result of the assumptions associated with a "thick slab" it is assumed that transmittance (T) through a semi-infinite dielectric with some absorption will be zero and therefore the absorptance (A) will be;
@@ -134,9 +140,6 @@ The 'Thick slab' mode can be regarded as a limiting case as the simulated slab b
 The 'Coherent thin film' curve shows large amplitude oscillations before and after the restrahlung region of absorption.  These are damped by including partial incoherence but are not completely removed.  
 The partial incoherence settings in this case were; 100 samples and up to 10% deviation in incident angle, thickness and crystal orientation, with no smoothing.
 The incoherent curve shows no oscillations and follows the thick mode curve near the restrahlung region.
-It is common to see numerical problems in regions where the extinction coefficient is high and the dielectric is thick.  The numnerical problesm manifest themselves with sudden spikes in reflectance and indicate that only thinner samples should be considered.
-
-
 
 .. _fig-mode-comparison:
 .. figure:: ./_static/Figures/single_crystal_mode_comparison.png
@@ -145,6 +148,12 @@ It is common to see numerical problems in regions where the extinction coefficie
    Comparison of methods
 
 
+It is common to see numerical problems in regions where the extinction coefficient is high and the dielectric is thick.  The numerical probles manifest themselves with sudden spikes in reflectance and indicate that thinner samples should be considered.
+To address these numerical problems an option has been included in PDGui which allows thick films to be subdivided (sliced) into many thin films.
+If the user experiences numerical issues, changes in film thickness and the slicing technique may help to alleviate the problem.
+
+
+.. _crystal-and-laboratory-coordinates:
 
 Crystal & Laboratory Coordinate Frames
 --------------------------------------

@@ -34,10 +34,9 @@ from   scipy.stats import lognorm
 # The Mie routine is taken from PyMieScatt by B. Sumlin and can be found on github
 #
 from   PDielec import Mie
+
 Mie.crossover = 0.01
-
 points_on_sphere = None
-
 
 def initialise_unit_tensor():
     '''Initialise a 3x3 tensor, the argument is a list of 3 real numbers for the diagonals, the returned tensor is an array'''
@@ -544,7 +543,6 @@ def spherical_averaged_mie_scattering(dielectric_medium, crystal_permittivity, s
                 return effdielec
         else:
             # Calculate the scattering factors at 0 degrees
-            #jk print("refractive_index, size, refractive_index_medium", refractive_index, size, refractive_index_medium)
             s1,s2 = Mie.MieS1S2(refractive_index, size*refractive_index_medium, 1)
         # See van de Hulst page 129, 130
         # Refractive index of material is
@@ -555,7 +553,6 @@ def spherical_averaged_mie_scattering(dielectric_medium, crystal_permittivity, s
     trace = trace / len(points_on_sphere)
     eff = trace * trace
     effdielec = np.array([[eff, 0, 0], [0, eff, 0], [0, 0, eff]])
-    #jk print(radius_nm, lambda_vacuum_mu*1000.0, qext,qsca,qabs,g,qpr,qback,qratio,np.real(s1),np.imag(s1),np.real(trace),np.imag(trace),np.real(eff),np.imag(eff))
     #print ("radius_nm, eff", radius_nm, eff)
     return effdielec
 
@@ -621,9 +618,6 @@ def mie_scattering(dielectric_medium, crystal_permittivity, shape, L, vf, size, 
         #print("Upper lower",lower,upper)
         #print("Size_MU",size_mu)
     refractive_index = calculate_refractive_index_scalar(einclusion) / refractive_index_medium
-    #jk print('refractive_index', refractive_index)
-    #jk print('refractive_index_medium', refractive_index_medium)
-    #jk print('einclusion', einclusion)
     if size_distribution_sigma:
         # Calculate the integral of the forward scattering factors over the distribution
         s1_factors = []
@@ -647,7 +641,6 @@ def mie_scattering(dielectric_medium, crystal_permittivity, shape, L, vf, size, 
             return effdielec
     else:
         # Calculate the scattering factors at 0 degrees
-        #jk print("refractive_index, size, refractive_index_medium", refractive_index, size, refractive_index_medium)
         s1,s2 = Mie.MieS1S2(refractive_index, size*refractive_index_medium, 1)
     # See van de Hulst page 129, 130
     # Refractive index of material is
@@ -655,8 +648,6 @@ def mie_scattering(dielectric_medium, crystal_permittivity, shape, L, vf, size, 
     refractive_index = refractive_index_medium * ( 1.0 + i * s1 * 2 * PI * N_nm / ( k_nm * k_nm * k_nm ) )
     eff = refractive_index * refractive_index
     effdielec = np.array([[eff, 0, 0], [0, eff, 0], [0, 0, eff]])
-    #jk print(radius_nm, lambda_vacuum_mu*1000.0, qext,qsca,qabs,g,qpr,qback,qratio,np.real(s1),np.imag(s1),np.real(refractive_index),np.imag(refractive_index),np.real(eff),np.imag(eff))
-    #print ("radius_nm, eff", radius_nm, eff)
     return effdielec
 
 def anisotropic_mie_scattering(dielectric_medium, crystal_permittivity, shape, L, vf, size, size_mu, size_distribution_sigma):
@@ -713,9 +704,6 @@ def anisotropic_mie_scattering(dielectric_medium, crystal_permittivity, shape, L
     # Now take the average of each direction
     for index in [0,1,2]:
         refractive_index = calculate_refractive_index_scalar(rotated_dielec[index,index]) / refractive_index_medium
-        #jk print('refractive_index', refractive_index)
-        #jk print('refractive_index_medium', refractive_index_medium)
-        #jk print('rotated_dielec', rotated_dielec[index,index])
         if size_distribution_sigma:
             # Calculate the integral of the forward scattering factors over the distribution
             s1_factors = []
@@ -739,7 +727,6 @@ def anisotropic_mie_scattering(dielectric_medium, crystal_permittivity, shape, L
                 return effdielec
         else:
             # Calculate the scattering factors at 0 degrees
-            #jk print("refractive_index, size, refractive_index_medium", refractive_index, size, refractive_index_medium)
             s1,s2 = Mie.MieS1S2(refractive_index, size*refractive_index_medium, 1)
         # See van de Hulst page 129, 130
         # Refractive index of material is
@@ -750,8 +737,6 @@ def anisotropic_mie_scattering(dielectric_medium, crystal_permittivity, shape, L
     trace = trace / 3.0
     eff = trace * trace
     effdielec = np.array([[eff, 0, 0], [0, eff, 0], [0, 0, eff]])
-    #jk print(radius_nm, lambda_vacuum_mu*1000.0, qext,qsca,qabs,g,qpr,qback,qratio,np.real(s1),np.imag(s1),np.real(trace),np.imag(trace),np.real(eff),np.imag(eff))
-    #print ("radius_nm, eff", radius_nm, eff)
     return effdielec
 
 def maxwell(dielectric_medium, crystal_permittivity, shape, L, vf, size):
@@ -1008,6 +993,10 @@ def _brug_iter_error(epsbr, eps1, eps2, shape, L, f1, size):
     epsbr = np.array([[trace, 0, 0], [0, trace, 0], [0, 0, trace]])
     return epsbr, error
 
+def calculate_permittivity(refractive_index, debug=False):
+    """Calculate the permittivity from the refractive_index"""
+    return refractive_index*refractive_index
+
 def calculate_refractive_index(dielectric, debug=False):
     ''' Calculate the refractive index from the dielectric constant.
         Calculate the trace of the dielectric and calculate both square roots.
@@ -1023,12 +1012,20 @@ def calculate_refractive_index_scalar(dielectric_scalar, debug=False):
     solution1 = np.sqrt(dielectric_scalar)
     r, phase = cmath.polar(solution1)
     solution2 = cmath.rect(-r, phase)
+    real1 = np.real(solution1)
+    real2 = np.real(solution2)
     imag1 = np.imag(solution1)
     imag2 = np.imag(solution2)
-    if imag1 > imag2:
-        solution = solution1
+    if abs(imag1)+abs(imag2) > 1.0e-18:
+        if imag1 > imag2:
+            solution = solution1
+        else:
+            solution = solution2
     else:
-        solution = solution2
+         if real1 > real2:
+            solution = solution1
+         else:
+            solution = solution2
     if np.abs(solution*solution-dielectric_scalar)/(1+np.abs(dielectric_scalar)) > 1.0E-8 or debug:
         print("There is an error in refractive index")
         print("Dielectric = ", dielectric_scalar)
@@ -1095,40 +1092,66 @@ def direction_from_shape(data, reader):
     return direction
 
 def solve_effective_medium_equations( 
-        method                   ,
-        vf                       ,
-        size_mu                  ,
-        size_distribution_sigma  ,
-        dielectric_medium        ,
-        shape                    ,
-        L                        ,
-        concentration            ,
-        atrPermittivity          ,
-        atrTheta                 ,
-        atrSPol                  ,
-        bubble_vf                ,
-        bubble_radius            ,
-        previous_solution_shared ,
-        params                  ,
+        method                     ,
+        vf                         ,
+        size_mu                    ,
+        size_distribution_sigma    ,
+        matrixPermittivityFunction ,
+        shape                      ,
+        L                          ,
+        concentration              ,
+        atrPermittivity            ,
+        atrTheta                   ,
+        atrSPol                    ,
+        bubble_vf                  ,
+        bubble_radius              ,
+        previous_solution_shared   ,
+        atuple                     ,
         ):
-    # call_parameters is an index into the frequency and dielectric arrays
-    # In the case of Bruggeman and coherent we can use the previous result to start the iteration/minimisation
-    # However to do this we need some shared memory, this allocated in previous_solution_shared
-    v,crystal_permittivity = params
-    vau = v * wavenumber
+    '''Solve the effective medium equations
+       method                      is the method to be used:
+                                   bruggeman, balan, maxwell, maxwell-garnet, averagedpermittivity, maxwell-sihvola,
+                                   coherent, bruggeman-minimise, mie, anisotropic-mie
+       vf                          is the volume fraction of dielectric
+       size_mu                     is the particule size
+       size_distribution_sigma     is the width of th size distribution
+       matrixPermittivityFunction  return the matrix permittivty at a frequency
+       shape                       The shape of the particles
+       L                           The shape matrix
+       concentration               The concentration of particeles
+       AtrPermittivity             The permittivity of the ATR substrate
+       AtrTheta                    The ATR angle of incidence
+       atrSPol                     The ATR polarisation
+       bubble_vf                   volume fraction of bubbles
+       bubble_radius               the radius of bubbles
+       previous_solution_shared    In the case of Bruggeman and coherent we use the previous solution to speed up iterations
+       atuple (                    A tuple containing......
+       v_cm1                       The frequency in cm-1
+       crystalPermittivity         A rank 3 tensor The permittivity of the crystal at a give frequency
+       )
+    '''
+    # unpack the tuple that is passed by a call to the partial function
+    (v_cm1,crystalPermittivity) = atuple
     # convert the size to a dimensionless number which is 2*pi*size/lambda
-    lambda_mu = 1.0E4 / (v + 1.0e-12)
+    lambda_mu = 1.0E4 / (v_cm1 + 1.0e-12)
     if size_mu < 1.0e-12:
         size_mu = 1.0e-12
     size = 2.0*np.pi*size_mu / lambda_mu
     data = ''
-    # Calculate the effect of bubbles in the matrix by assuming they are embedded in an effective medium defined above
-    refractive_index = math.sqrt(np.trace(dielectric_medium)/3.0)
+    # Calculate the permittivity of the matrix as an isotropic tensor at v_cm1
+    dielectric_medium = matrixPermittivityFunction(v_cm1) * np.eye(3)
+    # Calculate the crystal permittivity at this frequency
+    crystal_permittivity= crystalPermittivity
+    # Calculate the effect of bubbles in the matrix by embedding in dielectric medium
+    refractive_index = calculate_refractive_index(dielectric_medium, debug=False)
     if refractive_index.imag < 0.0:
         refractive_index = refractive_index.conjugate()
-    if bubble_vf > 0:
-        effdielec,refractive_index = calculate_bubble_refractive_index(v, refractive_index, bubble_vf, bubble_radius)
+    if bubble_vf > 0.0:
+        if np.abs(refractive_index.imag) > 1.0e-12:
+            print('Warning: only the real part of the support matrix permittivity will be used for Mie Scattering',file=sys.stderr)
+        effdielec,refractive_index = calculate_bubble_refractive_index(v_cm1, refractive_index.real, bubble_vf, bubble_radius)
         dielectric_medium = effdielec
+    # Choose which method to apply, the effective dielectric determined with bubbles will be used
     if method == "balan":
         effdielec = balan(dielectric_medium, crystal_permittivity, shape, L, vf, size)
     elif method == "ap" or method == "averagedpermittivity" or method == "averaged permittivity" or method == "average permittivity":
@@ -1156,9 +1179,13 @@ def solve_effective_medium_equations(
         effdielec = bruggeman_iter(dielectric_medium, crystal_permittivity, shape, L, vf, size, eff)
         previous_solution_shared = effdielec
     elif method == "anisotropic-mie":
-        effdielec = anisotropic_mie_scattering(dielectric_medium, crystal_permittivity, shape, L, vf, size, size_mu, size_distribution_sigma)
+        if np.abs(refractive_index.imag) > 1.0E-6:
+            print('Warning: only the real part of the support matrix permittivity will be used for Mie Scattering',file=sys.stderr)
+        effdielec = anisotropic_mie_scattering(dielectric_medium.real, crystal_permittivity, shape, L, vf, size, size_mu, size_distribution_sigma)
     elif method == "mie":
-        effdielec = mie_scattering(dielectric_medium, crystal_permittivity, shape, L, vf, size, size_mu, size_distribution_sigma)
+        if np.abs(refractive_index.imag) > 1.0E-6:
+            print('Warning: only the real part of the support matrix permittivity will be used for Mie Scattering',file=sys.stderr)
+        effdielec = mie_scattering(dielectric_medium.real, crystal_permittivity, shape, L, vf, size, size_mu, size_distribution_sigma)
     else:
         print('Unkown dielectric method: {}'.format(method))
         exit(1)
@@ -1171,12 +1198,12 @@ def solve_effective_medium_equations(
     # This is different but related to Genzel and Martin Equation 16, Phys. Stat. Sol. 51(1972) 91-
     # I've add a factor of log10(e) because we need to assume a decadic Beer's law
     # units are cm-1
-    absorption_coefficient = v * 4*PI * np.imag(refractive_index) * math.log10(math.e)
+    absorption_coefficient = v_cm1 * 4*PI * np.imag(refractive_index) * math.log10(math.e)
     # units are cm-1 L moles-1
     molar_absorption_coefficient = absorption_coefficient / concentration / vf
     # calculate the ATR reflectance
     spatr = reflectance_atr(refractive_index,atrPermittivity,atrTheta,atrSPol)
-    return v,method,size_mu,size_distribution_sigma,shape,data,trace,absorption_coefficient,molar_absorption_coefficient,spatr
+    return v_cm1,method,size_mu,size_distribution_sigma,shape,data,trace,absorption_coefficient,molar_absorption_coefficient,spatr
 
 def calculate_bubble_refractive_index(v_cm1, ri_medium, vf, radius_mu):
     """Calculate the scattering from bubbles embedded in a possibly, complex dielectric at v_cm1
@@ -1444,78 +1471,6 @@ def reflectance_atr(ns,n0,theta,atrSPolFraction):
     RSP = -math.log10(RSP)
     return RSP
 
-def solve_single_crystal_equations( 
-        superstrateDielectricFunction ,
-        substrateDielectricFunction   ,
-        crystalPermittivityFunction   ,
-        superstrateDepth              ,
-        substrateDepth                ,
-        crystalDepth                  ,
-        crystalIncoherence            ,
-        mode                          ,
-        theta                         ,
-        phi                           ,
-        psi                           ,
-        angleOfIncidence              ,
-        v ):
-    """
-        This is a parallel call to the single crystal equation solver, system is a GTM system   
-        superstrateDielectricFunction is a dielectric function providing the superstrate dielectric
-        substrateDielectricFunction   is a dielectric function providing the substrate dielectric
-        crystalPermittivityFunction   is a dielectric function providing the crystal dielectric
-        superstrateDepth              the depth of the superstrate (m)
-        substrateDepth                the depth of the substrate (m)
-        crystalDepth                  the depth of the crystal film (m)
-        crystalIncoherence            a parameter between 0 and pi giving the amount of incoherence
-        mode                          'thick slab' indicates the substrate will be the crystal so semi-infinite
-                                      'coherent thin film' a standard GTM call with a single layer
-                                      'incoherent thin film' multiple GTM calls with random phase
-        theta                         the theta angle of the sla,
-        phi                           the angle of the slab
-        psi                           the psi angle of the slab
-        angleOfIncidence              the angle of incidence
-        v                             the frequency of the light in cm-1
-
-    """
-    # Create 3 layers, thickness is in metres
-    superstrate      = GTM.Layer(thickness=superstrateDepth,epsilon1=superstrateDielectricFunction)
-    substrate        = GTM.Layer(thickness=substrateDepth,  epsilon1=substrateDielectricFunction)
-    crystal          = GTM.Layer(thickness=crystalDepth,    epsilon=crystalPermittivityFunction)
-    # Creat the system with the layers 
-    if mode == 'Thick slab':
-        system = GTM.System(substrate=crystal, superstrate=superstrate, layers=[])
-    elif mode == 'Coherent thin film':
-        system = GTM.System(substrate=substrate, superstrate=superstrate, layers=[crystal])
-    elif mode == 'Partially incoherent thin film':
-        system = GTM.System(substrate=substrate, superstrate=superstrate, layers=[crystal])
-    elif mode == 'Incoherent thin film':
-        system = GTM.System(substrate=substrate, superstrate=superstrate, layers=[crystal])
-    else:
-        print('Unkown mode in calculate_single_crystal')
-        exit()
-    # Rotate the dielectric constants to the laboratory frame
-    system.substrate.set_euler(theta, phi, psi)
-    system.superstrate.set_euler(theta, phi, psi)
-    for layer in system.layers:
-        layer.set_euler(theta, phi, psi)
-    # 
-    # convert cm-1 to frequency
-    #
-    freq = v * speed_light_si * 1e2
-    system.initialize_sys(freq)
-    zeta_sys = np.sin(angleOfIncidence)*np.sqrt(system.superstrate.epsilon[0,0])
-    if mode == 'Incoherent thin film':
-        Sys_Gamma = system.calculate_incoherent_GammaStar(freq, zeta_sys)
-    else:
-        Sys_Gamma = system.calculate_GammaStar(freq, zeta_sys)
-    r, R, t, T = system.calculate_r_t(zeta_sys)
-    if len(system.layers) > 0:
-        epsilon = system.layers[0].epsilon
-    else:
-        epsilon = system.substrate.epsilon
-    return v,r,R,t,T,epsilon
-
-
 def cleanup_symbol(s):
     """Return a true element from the symbol"""
     s = s.capitalize()
@@ -1523,6 +1478,30 @@ def cleanup_symbol(s):
     for i in string.digits:
         s = s.replace(i,'')
     return s
+
+def determineEulerAngles(R):
+     """Determine the euler angles of a rotation matrix"""
+     R11=R[0,0]
+     R12=R[0,1]
+     R13=R[0,2]
+     R21=R[1,0]
+     R31=R[2,0]
+     R33=R[2,2]
+     phi = 0.0
+     if R31 > 0.9999999999:
+         theta = -np.pi/2.0
+         psi   = -phi + np.arctan2(-R12,-R13)
+     elif R31 < -0.9999999999:
+         theta = np.pi/2.0
+         psi   = phi + np.arctan2(R12,R13)
+     else:
+         theta = theta1 = -np.arcsin(R31)
+         theta2 = np.pi - theta1
+         psi = psi1 = np.arctan2(R32/np.cos(theta1), R33/np.cos(theta1))
+         psi2 = np.arctan2(R32/np.cos(theta2), R33/np.cos(theta2))
+         phi = phi1 = np.arctan2(R21/np.cos(theta1), R11/np.cos(theta1))
+         phi2 = np.arctan2(R21/np.cos(theta2), R11/np.cos(theta2))
+     return theta, phi, psi
 
 def euler_rotation(vector, theta, phi, psi):
      """Apply a passive Euler rotation to the vector"""

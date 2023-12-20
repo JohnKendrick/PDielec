@@ -1,4 +1,5 @@
 import xlsxwriter as xlsx
+import numpy as np
 class SpreadSheetManager():
     def __init__(self, filename):
         # Manage a spread sheet for PDielec / PDGui
@@ -56,16 +57,33 @@ class SpreadSheetManager():
             print('We have a problem, col is 0')
         self.write(row,0,check)
         for item in items:
-            #print('writing ', row, col, item)
-            self.write(row, col, item)
-            col += 1
+            if isinstance(item,list):
+                for i in item:
+                    if isinstance(i, list):
+                        for j in i:
+                            self.write(row,col,j)
+                            col += 1
+                    else:
+                        self.write(row,col,i)
+                        col += 1
+            else:
+                self.write(row, col, item)
+                col += 1
         row += 1
 
     def write(self,row,col,item):
-        self.worksheets[self.name].write(row,col,item)
-        self.max_col[self.name] = max(self.max_col[self.name], col)
-        self.max_row[self.name] = max(self.max_row[self.name], row)
-        self.positions[self.name] = (row+1,col+1)
+        if isinstance(item,complex) or np.iscomplexobj(item):
+            self.worksheets[self.name].write(row,col,item.real)
+            col += 1
+            self.worksheets[self.name].write(row,col,item.imag)
+            self.max_col[self.name] = max(self.max_col[self.name], col)
+            self.max_row[self.name] = max(self.max_row[self.name], row)
+            self.positions[self.name] = (row+1,col+1)
+        else:
+            self.worksheets[self.name].write(row,col,item)
+            self.max_col[self.name] = max(self.max_col[self.name], col)
+            self.max_row[self.name] = max(self.max_row[self.name], row)
+            self.positions[self.name] = (row+1,col+1)
 
     def delete(self):
         for row in range(0,self.max_row[self.name]):

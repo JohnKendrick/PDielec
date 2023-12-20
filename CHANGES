@@ -1,4 +1,9 @@
-version 7.3.0
+version 8.0.0
+  Introduced various changes to handle the difference between Windows and Linux.  The mainTab settings now has a compatibility mode option which can be 'Linux' or 'Windows'
+  Modified the AlN test case to use Windows compatibility mode
+  Added a slicing option in the single crystal case to address issues with exponential overflow
+  Added frequency dependent support matrix capability to the powder simulation
+  Added complex permittivity to the support matrix
   Added incoherent light to the single crystal simulation
   Added both partially incoherent thin film mode and incoherent thin film mode
   Included smoothing for the partially incoherent case
@@ -7,7 +12,13 @@ version 7.3.0
   Added a range of units to handle crystal thickness
   Changed the complex matrices in pyGTM to clongdouble
   Modified pyGTM to try and improve its numerical stability
+  Added the concept of a slicing to the single crystal scenario, again attempting to improve numerical stability
   Modified the reading of scripts as updates to python seem to have changed the exec() command, now read the whole file at once.
+  Add the concept of layers in the single crystal scenarios.
+      This allows multiple layers to be treated between the superstrate and substrate
+  Added a materials library which can be used to store material properties
+  The materials library can be used for powder and single crystal calculations
+  There are compatibility issues with previous version, so there may be some scripts which are not compatible.
 version 7.2.2
   Addressed problems after changes in numpy.  Some np.int declarations were replaced with int
 version 7.2.1

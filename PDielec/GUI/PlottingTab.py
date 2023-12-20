@@ -408,10 +408,9 @@ class PlottingTab(QWidget):
                 settings = scenario.settings
                 for key in sorted(settings,key=str.lower):
                     sp.writeNextRow([key, settings[key]],col=1,check=1)
-                sp.writeNextRow(['Crystal axes in the laboratory frame'], col=1,check=1)
-                sp.writeNextRow(scenario.labframe_a.tolist(), col=2, check=1)
-                sp.writeNextRow(scenario.labframe_b.tolist(), col=2, check=1)
-                sp.writeNextRow(scenario.labframe_c.tolist(), col=2, check=1)
+                sp.writeNextRow(scenario.dielectricLayer.labframe[0].tolist(), col=2, check=1)
+                sp.writeNextRow(scenario.dielectricLayer.labframe[1].tolist(), col=2, check=1)
+                sp.writeNextRow(scenario.dielectricLayer.labframe[2].tolist(), col=2, check=1)
                 # Store the reflectance and transmittance
                 R_ps.append( scenario.get_result(self.vs_cm1,self.plot_types[5] ) )
                 R_ss.append( scenario.get_result(self.vs_cm1,self.plot_types[6] ) )
@@ -421,7 +420,7 @@ class PlottingTab(QWidget):
                 A_ss.append( scenario.get_result(self.vs_cm1,self.plot_types[10] ) )
                 crystal_legends.append(scenario.settings['Legend'])
         # Single crystal Permittivity
-        dielecv = self.notebook.settingsTab.get_crystal_permittivity(self.vs_cm1)
+        dielecv = self.notebook.settingsTab.getCrystalPermittivity(self.vs_cm1)
         # Powder results
         # Work out what molar units we are using
         if len(molarAbsorptionCoefficients) > 0:
@@ -514,7 +513,6 @@ class PlottingTab(QWidget):
         debugger.print('Finished:: write_crystal_results')
         return
 
-
     def write_powder_results(self, sp, name, vs, legends, yss):
         debugger.print('Start:: write powder results')
         debugger.print('write_powder_results name',name)
@@ -553,8 +551,8 @@ class PlottingTab(QWidget):
         if filename == '':
             debugger.print('Finished:: plot aborting because filename is not set')
             return
-        if self.notebook.settingsTab.CrystalPermittivity is None:
-            debugger.print('Finished:: plot aborting because settingTab.CrystalPermittivity is not set')
+        if self.notebook.settingsTab.CrystalPermittivityObject is None:
+            debugger.print('Finished:: plot aborting because settingTab.CrystalPermittivityObject is not set')
             return
         QApplication.setOverrideCursor(Qt.WaitCursor)
         vmin = self.settings['Minimum frequency']
@@ -564,7 +562,7 @@ class PlottingTab(QWidget):
         self.subplot = None
         self.figure.clf()
         if self.frequency_units == 'wavenumber':
-            xlabel = r'Frequency $\mathdefault{(cm^{-1})}}$'
+            xlabel = r'Frequency $\mathdefault{(cm^{-1})}$'
             xscale = 1.0
         else:
             xlabel = r'THz'
@@ -572,8 +570,6 @@ class PlottingTab(QWidget):
         x = np.array(self.vs_cm1)
         self.subplot = self.figure.add_subplot(111)
         n = self.get_number_of_calculations_required()
-        if self.notebook.settingsTab.refreshRequired:
-            n += 1
         self.notebook.progressbars_set_maximum(n*len(x))
         self.legends = []
         plots = 0

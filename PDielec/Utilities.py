@@ -255,3 +255,6 @@ class Debug():
                 print(self.text,*args)
         return
 
+    def state(self,):
+        return self.debug
+

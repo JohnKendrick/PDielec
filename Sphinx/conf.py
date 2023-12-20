@@ -42,25 +42,24 @@ release = '4.0'
 preamble = r'''
 \usepackage{svg}
 \usepackage{hyperref}
-\usepackage{bm}
 \usepackage{float}
 \usepackage{parskip}
 \usepackage{amsmath}
 \newcommand{\water}{H_{2}O}
-\newcommand{\tensorbs}[1]{\bar{\bar{\bm{#1}}}}
-\newcommand{\tensorbf}[1]{\bar{\bar{\bm{#1}}}}
-\newcommand{\tensor}[1]{\bar{\bar{\bm{#1}}}}
-\newcommand{\fieldbf}[1]{\bar{\bm{#1}}}
-\newcommand{\field}[1]{\bar{\bm{#1}}}
+\newcommand{\tensorbs}[1]{\bar{\bar{\boldsymbol{#1}}}}
+\newcommand{\tensorbf}[1]{\bar{\bar{\boldsymbol{#1}}}}
+\newcommand{\tensor}[1]{\bar{\bar{\boldsymbol{#1}}}}
+\newcommand{\fieldbf}[1]{\bar{\boldsymbol{#1}}}
+\newcommand{\field}[1]{\bar{\boldsymbol{#1}}}
 '''
 
 preamble_maths = r'''
 \newcommand{\water}{H_{2}O}
-\newcommand{\tensorbs}[1]{\bar{\bar{\bm{#1}}}}
-\newcommand{\tensorbf}[1]{\bar{\bar{\bm{#1}}}}
-\newcommand{\tensor}[1]{\bar{\bar{\bm{#1}}}}
-\newcommand{\fieldbf}[1]{\bar{\bm{#1}}}
-\newcommand{\field}[1]{\bar{\bm{#1}}}
+\newcommand{\tensorbs}[1]{\bar{\bar{\boldsymbol{#1}}}}
+\newcommand{\tensorbf}[1]{\bar{\bar{\boldsymbol{#1}}}}
+\newcommand{\tensor}[1]{\bar{\bar{\boldsymbol{#1}}}}
+\newcommand{\fieldbf}[1]{\bar{\boldsymbol{#1}}}
+\newcommand{\field}[1]{\bar{\boldsymbol{#1}}}
 '''
 
 # Add any Sphinx extension module names here, as strings. They can be
@@ -70,7 +69,6 @@ preamble_maths = r'''
 mathjax_path = 'https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML'
 extensions = [
     'sphinx.ext.mathjax',
-    'sphinx.ext.githubpages',
     'sphinxcontrib.bibtex',
     'cloud_sptheme.ext.table_styling',
 ]
@@ -80,11 +78,10 @@ mathjax_config = {
     "extensions": ["AMSmath.js"] ,
     "TeX": {
         "Macros": { 
-            "bm":       ["{\\boldsymbol{#1}}", 1],
             "tensor":   ["{\\bar{\\bar{#1}}}", 1],
-            "tensorbs": ["{\\bar{\\bar{\\bm{#1}}}}", 1],
-            "tensorbf": ["{\\bar{\\bar{\\bm{#1}}}}", 1],
-            "fieldbf":  ["{\\bar{\\bm{#1}}}", 1],
+            "tensorbs": ["{\\bar{\\bar{\\boldsymbol{#1}}}}", 1],
+            "tensorbf": ["{\\bar{\\bar{\\boldsymbol{#1}}}}", 1],
+            "fieldbf":  ["{\\bar{\\boldsymbol{#1}}}", 1],
             "water":    "\\H_{2}O",
         },
     },
@@ -107,7 +104,7 @@ master_doc = "index"
 #
 # This is also used if you do content translation via gettext catalogs.
 # Usually you set "language" from the command line for these cases.
-language = 'eng'
+language = 'en'
 
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.

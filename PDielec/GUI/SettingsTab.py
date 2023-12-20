@@ -1,6 +1,7 @@
 # -*- coding: utf8 -*-
 import numpy as np
 import PDielec.Calculator as Calculator
+import PDielec.DielectricFunction as  DielectricFunction
 from PyQt5.QtWidgets            import  QWidget, QApplication
 from PyQt5.QtWidgets            import  QComboBox, QLabel
 from PyQt5.QtWidgets            import  QCheckBox
@@ -12,7 +13,6 @@ from PyQt5.QtCore               import  Qt, QSize, QCoreApplication
 from PDielec.Constants          import  wavenumber, amu, PI, angstrom
 from PDielec.Constants          import  average_masses, isotope_masses
 from PDielec.Utilities          import  Debug
-from PDielec.DielectricFunction import  DielectricFunction
 from functools                  import  partial
 
 class FixedQTableWidget(QTableWidget):
@@ -73,7 +73,7 @@ class SettingsTab(QWidget):
         self.sigmas_cm1 = []
         self.oscillator_strengths = []
         self.mass_weighted_normal_modes = None
-        self.CrystalPermittivity = None
+        self.CrystalPermittivityObject = None
         self.vs_cm1 = []
         self.crystal_permittivity = []
         self.recalculate_selected_modes = True
@@ -260,7 +260,7 @@ class SettingsTab(QWidget):
         # If the reader already has a Dielectric Constant then use this
         #
         if self.reader.CrystalPermittivity:
-            self.CrystalPermittivity = self.reader.CrystalPermittivity
+            self.CrystalPermittivityObject = self.reader.CrystalPermittivity
         else:
             # Otherwise create one from the data that has been read in
             drude = False
@@ -268,11 +268,11 @@ class SettingsTab(QWidget):
             drude_sigma_au = 0
             sigmas_au = np.array(self.sigmas_cm1)*wavenumber
             debugger.print('CreateIntensityTable: Calculating dielectric',self.mode_list)
-            self.CrystalPermittivity = DielectricFunction('dft',parameters=(
+            self.CrystalPermittivityObject = DielectricFunction.DFT(
                                          self.mode_list, frequencies_au, sigmas_au, self.oscillator_strengths,
-                                         volume_au, drude, drude_plasma_au, drude_sigma_au) )
+                                         volume_au, drude, drude_plasma_au, drude_sigma_au )
         # Add the optical permittivity to the dielctric function
-        self.CrystalPermittivity.setEpsilonInfinity(epsilon_inf)
+        self.CrystalPermittivityObject.setEpsilonInfinity(epsilon_inf)
         #
         # Prepare to finish
         #
@@ -554,7 +554,7 @@ class SettingsTab(QWidget):
         debugger.print('Start:: refresh', force )
         if not self.reader and self.notebook.reader:
             self.refreshRequired = True
-        if not self.refreshRequired:
+        if not self.refreshRequired and not force:
             debugger.print('Finished:: refresh not required',force)
             return
         #
@@ -656,8 +656,8 @@ class SettingsTab(QWidget):
             debugger.print('Finished:: calculate aborted vs_cm1 has not been set')
             return
         self.vs_cm1 = vs_cm1.copy()
-        self.CrystalPermittivity.setUnits('cm-1')
-        dielectricFunction = self.CrystalPermittivity.function()
+        self.CrystalPermittivityObject.setUnits('cm-1')
+        dielectricFunction = self.CrystalPermittivityObject.function()
         # 
         self.crystal_permittivity = []
         debugger.print('About to calculate settings crystal dielectric using pool')
@@ -672,7 +672,7 @@ class SettingsTab(QWidget):
         debugger.print('Finished:: calculate ')
         return
 
-    def get_crystal_permittivity(self,vs_cm1):
+    def getCrystalPermittivity(self,vs_cm1):
         """Return the crystal permittivity"""
         debugger.print('Start:: get_crystal_permittivity', self.refreshRequired)
         if self.calculationRequired or self.refreshRequired or  ( len(self.vs_cm1) != len(vs_cm1) ) or ( self.vs_cm1[0] != vs_cm1[0] ) or ( self.vs_cm1[1] != vs_cm1[1] ) :
@@ -681,4 +681,15 @@ class SettingsTab(QWidget):
             self.calculate(vs_cm1)
         debugger.print('Finished:: get_crystal_permittivity', self.refreshRequired)
         return self.crystal_permittivity
+
+
+    def getCrystalPermittivityObject(self):
+        """Return the crystal permittivity object (an instance of DielectricFunction"""
+        debugger.print('Start:: getCrystalPermittivityObject', self.refreshRequired)
+        if self.calculationRequired or self.refreshRequired:
+            debugger.print('getCrystalPermittivityObject refreshing and recalculating' )
+            self.refresh()
+            self.calculate(self.vs_cm1)
+        debugger.print('Finished:: getCrystalPermittivityObject', self.refreshRequired)
+        return self.CrystalPermittivityObject
 

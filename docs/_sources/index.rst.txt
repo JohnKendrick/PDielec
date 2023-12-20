@@ -23,6 +23,7 @@ For single crystals (thin films or slabs) a generalized transfer matrix is used.
 
    introduction
    installation
+   pdgui
    software
    theory_powder
    theory_single_crystal

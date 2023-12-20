@@ -15,14 +15,14 @@ Installation
 Anaconda
 ========
 
-Unless you are interested in the full Anaconda package, a miniconda installation should be sufficient for installing the rest of the modules needed for the PDielec installation.
-Miniconda is the recommended environment for installing PDielec.  On Windows it is necessary to run the commands in an Anaconda command terminal, which will be added to the user's menu when miniconda is installed.
+Unless you are interested in the full Anaconda package, a Miniconda installation should be sufficient for installing the rest of the modules needed for the PDielec installation.
+Miniconda is the recommended environment for installing PDielec.  On Windows, it is necessary to run the commands in an Anaconda command terminal, which will be added to the user's menu when Miniconda is installed.
 
-PDielec is available on the conda-forge channel and installation using Anaconda can be performed on Linux, Windows and Mac systems.
+PDielec is available on the conda-forge channel and installation using Anaconda can be performed on Linux, Windows, and Mac systems.
 However, there are no example files installed, only the executables.  
 Example files for each of the DFT packages supported can be downloaded from the Git repository.
 
-The conda-forge package has a Python 3 environment included in the package.  After installation of miniconda or anaconda, a new evironment should be created in which to install the package::
+The conda-forge package has a Python 3 environment included in the package.  After installation of Miniconda or Anaconda, a new environment should be created in which to install the package::
 
    conda create  --name pdielec
    conda activate pdielec
@@ -42,7 +42,7 @@ This only works if the conda-forge channel has been added to the channel list fo
 PyPi
 ====
 
-If you really dont want to use Anaconda, PDielec is available on pypi.org and can be installed using pip.::
+If you do not want to use Anaconda or Miniconda, PDielec is available on pypi.org and can be installed using pip.::
 
    pip install --user pdielec
    pdgui
@@ -52,7 +52,7 @@ GitHub - Linux
 ==============
 
 The package is available on GitHub and can be downloaded from https://github.com/JohnKendrick/PDielec.
-cd to a directory where PDielec will be installed and use git to clone a copy of the program.  I use a 'Software/' directory in my home directory to store programs, so for me the commands to obtain PDielec would look like this.::
+cd to a directory where PDielec will be installed and use git to clone a copy of the program.  I use a 'Software/' directory in my home directory to store programs, so the commands to obtain PDielec would look like this.::
 
   cd ~/Software
   git clone https://github.com/JohnKendrick/PDielec.git
@@ -67,7 +67,7 @@ This copies the commands and modules to the \~/bin directory which should be inc
  export PATH=~/bin;$PATH
 
 
-As part of the installation you will have to install a number of Python packages into your enviroment.  The full list of packages is as follows;::
+As part of the installation, you will have to install several Python packages into your environment.  The full list of packages is as follows; ::
 
    pyqt5
    psutil
@@ -94,34 +94,34 @@ Installation from repository
 ----------------------------
 
 This Windows installation method is only needed if installation through Anaconda is not possible.
-A Windows 10 installation from the git repository which works for users without administrator rights involves a few steps but gives an installation which can run all the test cases.  In the following instructions replace 'yourusername' with your user name.
+A Windows 10 installation from the git repository which works for users without administrator rights involves a few steps but gives an installation that runs all the test cases.  In the following instructions replace 'yourusername' with your user name.
 
 Install git
 ...........
 
-First of all install a Windows version of git from www.git-scm.com. A 64 bit version of Windows 10 will be assumed for the following instructions.
+First of all, install a Windows version of git from www.git-scm.com. A 64-bit version of Windows 10 will be assumed for the following instructions.
 
-* From the download page download and run the 64 bit Git for Windows setup.
+* From the download page download and run the 64-bit Git for Windows setup.
 * During the installation install the Quick Launch and Desktop icons as these make using the program easier.
-* If you are not familar with the vi or vim editor, it is probably best to use the Nano editor, although if you wish you can install Notepad++ and use that as the default editor.
-* In the section concerning the PATH environment I would recommend the last option "Use git and optional Unix tools from the Windows Command prompt".  This option will mean that some Windows commands eg. find and sort will be replaced by the Unix commands, so be careful.
+* If you are not familiar with the vi or vim editor, it is probably best to use the Nano editor, although if you wish you can install Notepad++ and use that as the default editor.
+* In the section concerning the PATH environment, I would recommend the last option "Use git and optional Unix tools from the Windows Command prompt".  This option will mean that some Windows commands eg. find and sort will be replaced by the Unix commands, so be careful.
 * Leave the https certificate choice as the default, namely the OpenSSL library.
 * Line endings are best left to the default setting of Windows-style for checkout and Unix-style for check-in.
 * The Console I use is the MinTTY console it has a larger scrolling buffer than the Windows console.
 * Under the "Configuring extra options" I leave everything as the default.
 
-I have seen a few hickups in the installation of Git.  Occasionally I have to do the installation twice and occasionally I am left with the Setup Installing window indicating that I should wait, when in fact the installation has completed.  When this happens I kill the setup process with the task manager
+I have seen a few hiccups in the installation of Git.  Occasionally I have to do the installation twice and occasionally I am left with the Setup Installing window indicating that I should wait, when in fact the installation has been completed.  When this happens I kill the setup process with the task manager
 
 Install Python
 ..............
 
 * From https://www.python.org/downloads/windows/ download and run the Windows x86-64 executable installer for the latest Python 3.x version
-* Uncheck install launcher for all users
+* Uncheck the "Install launcher" for all users
 * Check "Add Python 3.x to PATH"
-* Click on "Install now" button
-* Check installation ran OK by running the Idle python environment
+* Click on the "Install now" button
+* Check installation ran OK by running the Idle Python environment
 
-Open a git bash console and type;::
+Open a git bash console and type; ::
 
 
    pip install pyqt5
@@ -178,31 +178,33 @@ Open a git bash console and type;::
 GitHub - PDielec directory structure
 ====================================
 
-* PDielec/ is the home directory and contains the `pdgui` and `preader` commands
-* PDielec/PDielec holds the source for the modules used by the pdielec and preader commands
-* PDielec/PDielec/GUI holds the python code for PDGui
-* PDielec/Examples a set of examples are available for Abinit, Crystal14, CASTEP, GULP, Phonopy, Mie and VASP.  Each example directory holds the input files to the QM/MM program and the relevant output files which are post processed by PDielec.  For each program there is also a preader directory which holds test output for the preader command.
-* PDielec/Sphinx holds the documentation as restructured text documents (.rst).  Sphinx can be used to build the documentation in either html or pdf format.
-* PDielec/docs holds the final html documentation.
+* PDielec/ - The home directory that contains the `pdgui` and `preader` commands
+* PDielec/PDielec  - Holds the source for the modules used by the pdielec and preader commands
+* PDielec/PDielec/GUI  - Holds the Python code for PDGui
+* PDielec/Examples - A set of examples is available for Abinit, Crystal14, CASTEP, GULP, Phonopy, Mie, and VASP.  Each example directory holds the input files to the QM/MM program and the relevant output files which are post-processed by PDielec.  For each program there is also a preader directory which holds test output for the preader command.
+* PDielec/Sphinx - Holds the documentation as restructured text documents (.rst).  Sphinx can be used to build the documentation in either HTML or PDF format.
+* PDielec/docs - Holds the final HTML documentation.
 
 .. _Examples:
 
 Examples
 ========
 
-Each example directory has the relevant input data sets used to run the QM/MM program and the output files from that run, which are post-processed by PDielec.  There is a file `script.py` which which has been used to create the reference output file `results.ref.xlsx`.  The example can be run interactively::
+Each example directory has the relevant input data sets used to run the QM/MM program and the output files from that run, which are post-processed by PDielec.  There is a file `script.py` which which has been used to create the reference output file `results.ref.xlsx`.  The example can be run interactively: ::
 
  pdmake view
 
-The output can be compared with the reference data to see if the program is working correctly.  The checkexcel command can be used to do this automatically.
+The output can be compared with the reference data to see if the program is working correctly.  The checkexcel command can be used to do this automatically. A complete set of tests for the system can be run using: ::
 
-The main Examples/ directory also has a  Makefile file which can be used to verify the correct working of the package.  Simply by typing `make tests` in the Examples directory each example will be run automatically and the output compared with the reference files.  To remove the intermediate files after running the tests automatically, type `make clean`.
+ pdmake tests
+
+This will run each example automatically and compare the output compared with the reference files.  To remove the intermediate files after running the tests, type `pdmake clean`.
 
 A benchmark can be run for comparison of the performance of PDielec on different platforms by typing; ::
 
-    pdmake benchmarks
+ pdmake benchmarks
 
-This runs a range of calculations on different systems and provides a real world view of the performance.  An indication of the likely performance of the program is given in the :ref:`performance` section of the documentation.
+This runs a range of calculations on different systems and provides a real-world view of the performance.  An indication of the likely performance of the program is given in the :ref:`performance` section of the documentation.
 
 A summary of the different examples and their purpose is shown below;
 
@@ -218,23 +220,23 @@ A summary of the different examples and their purpose is shown below;
    +===========================+==================+===============+=================================================================================================================================================+
    | ATR/AlAs                  | AbInit           | AlAs          | Maxwell Garnett calculation of the ATR spectrum of an ellipsoid along   [001].  The incident angle varies from   0 to 80 degrees.               |
    +---------------------------+------------------+---------------+-------------------------------------------------------------------------------------------------------------------------------------------------+
-   | ATR/Na2SO42               | Vasp             | Na2(SO4)2     | Maxwel-Garnett calculation of the ATR spectrum, change the S polarisation   component from 0 to 100%                                            |
+   | ATR/Na2SO42               | Vasp             | Na2(SO4)2     | Maxwell-Garnett calculation of the ATR spectrum, changes the S polarisation   component from 0 to 100%                                          |
    +---------------------------+------------------+---------------+-------------------------------------------------------------------------------------------------------------------------------------------------+
-   | ATR/Na2SO42_fit           | Vasp             | Na2(SO4)2     | Maxwel-Garnett calculation of the ATR spectrum, example of fitting the spectrum to experiment                                                   |
+   | ATR/Na2SO42_fit           | Vasp             | Na2(SO4)2     | Maxwell-Garnett calculation of the ATR spectrum, an example of fitting the spectrum to experiment                                               |
    +---------------------------+------------------+---------------+-------------------------------------------------------------------------------------------------------------------------------------------------+
-   | AbInit/AlAs               | AbInit           | AlAs          | Average permittivity and Maxwell Garnett calculation of sphere, plate and   ellipsoid                                                           |
+   | AbInit/AlAs               | AbInit           | AlAs          | Average permittivity and Maxwell-Garnett calculation of sphere, plate and   ellipsoid                                                           |
    +---------------------------+------------------+---------------+-------------------------------------------------------------------------------------------------------------------------------------------------+
    | AbInit/BaTiO3             | AbInit           | BaTiO3        | Average permittivity and Maxwell-Garnett calculations of sphere, plate   and ellipsoid, using average isotope masses                            |
    +---------------------------+------------------+---------------+-------------------------------------------------------------------------------------------------------------------------------------------------+
-   | AbInit/BaTiO3-phonana     | AbInit           | BaTiO3        | Average permittivity and Maxwell-Garnett calculations of sphere, plate   and ellipsoid, using program defined masses                            |
+   | AbInit/BaTiO3-phonana     | AbInit           | BaTiO3        | Average permittivity and Maxwell-Garnett calculations of sphere, plate   and ellipsoid, using program-defined masses                            |
    +---------------------------+------------------+---------------+-------------------------------------------------------------------------------------------------------------------------------------------------+
-   | AbInit/Na2SO42            | AbInit           | Na2(SO4)2     | Average permittivity and Maxwell-Garnett calculations of Na2(SO4)2,   sphere, plate and ellipsoid, using program defined masses                 |
+   | AbInit/Na2SO42            | AbInit           | Na2(SO4)2     | Average permittivity and Maxwell-Garnett calculations of Na2(SO4)2,   sphere, plate and ellipsoid, using program-defined masses                 |
    +---------------------------+------------------+---------------+-------------------------------------------------------------------------------------------------------------------------------------------------+
-   | Castep/AsparticAcid       | Castep           | Aspartic Acid | Average permittivity and Maxwell-Garnett calculations of sphere, plate   and ellipsoid, using program defined masses                            |
+   | Castep/AsparticAcid       | Castep           | Aspartic Acid | Average permittivity and Maxwell-Garnett calculations of sphere, plate   and ellipsoid, using program-defined masses                            |
    +---------------------------+------------------+---------------+-------------------------------------------------------------------------------------------------------------------------------------------------+
    | Castep/Bubbles            | Castep           | MgO           | Maxwell-Garnett calculation showing the effect of air bubbles at 24%   volume fraction and 30 micron radius                                     |
    +---------------------------+------------------+---------------+-------------------------------------------------------------------------------------------------------------------------------------------------+
-   | Castep/Castep17           | Castep           | beta-Lactose  | Castep 17,Maxwell-Garnett sphere and plates with 3 surfaces                                                                                     |
+   | Castep/Castep17           | Castep           | beta-Lactose  | Castep 17, Maxwell-Garnett sphere and plates with 3 surfaces                                                                                    |
    +---------------------------+------------------+---------------+-------------------------------------------------------------------------------------------------------------------------------------------------+
    | Castep/Isoleucine         | Castep           | Isoleucine    | Maxwell-Garnett sphere                                                                                                                          |
    +---------------------------+------------------+---------------+-------------------------------------------------------------------------------------------------------------------------------------------------+
@@ -266,7 +268,11 @@ A summary of the different examples and their purpose is shown below;
    +---------------------------+------------------+---------------+-------------------------------------------------------------------------------------------------------------------------------------------------+
    | Experiment/fpsq           | Experiment       | Quartz        | An FPSQ model for Quartz, showing polarisation on along different axes   and different incident angles.                                         |
    +---------------------------+------------------+---------------+-------------------------------------------------------------------------------------------------------------------------------------------------+
-   | Experiment/interpolation  | Experiment       | Quartz        | Under development                                                                                                                               |
+   | Experiment/interpolation  | Experiment       | Quartz        | An example of an interpolation model                                                                                                            |
+   +---------------------------+------------------+---------------+-------------------------------------------------------------------------------------------------------------------------------------------------+
+   | Experiment/AlN            | Experiment       | AlN           | Aluminium Nitride multi-layer system including SiC and Si                                                                                       |
+   +---------------------------+------------------+---------------+-------------------------------------------------------------------------------------------------------------------------------------------------+
+   | Experiment/Sapphire       | Experiment       | Sapphire      | Sapphire example and test of the materials database                                                                                             |
    +---------------------------+------------------+---------------+-------------------------------------------------------------------------------------------------------------------------------------------------+
    | Gulp/Na2SO42              | Gulp             | Na2(SO4)2     | Maxwell-Garnett and Bruggeman on needle, ellipsoid and plate                                                                                    |
    +---------------------------+------------------+---------------+-------------------------------------------------------------------------------------------------------------------------------------------------+
@@ -289,6 +295,8 @@ A summary of the different examples and their purpose is shown below;
    | SingleCrystal/Bi2Se3      | Vasp             | Bi2Se3        | Single crystal example of thick slab, angle of incidence varies from 0 to   90                                                                  |
    +---------------------------+------------------+---------------+-------------------------------------------------------------------------------------------------------------------------------------------------+
    | SingleCrystal/Bi2Se3_film | Vasp             | Bi2Se3        | Single crystal example of thin film, angle of incidence varies from 0 to   90                                                                   |
+   +---------------------------+------------------+---------------+-------------------------------------------------------------------------------------------------------------------------------------------------+
+   | SingleCrystal/L-Alanine   | Crystal          | L-Alanine     | Explores single crystal calculations on L-Alanine and compares the results with experiment                                                      |
    +---------------------------+------------------+---------------+-------------------------------------------------------------------------------------------------------------------------------------------------+
    | SizeEffects/BaTiO3        | Abinit           | BaTiO3        | Exploration of size effects in Bruggeman effective medium theory                                                                                |
    +---------------------------+------------------+---------------+-------------------------------------------------------------------------------------------------------------------------------------------------+
