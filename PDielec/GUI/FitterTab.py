@@ -341,7 +341,7 @@ class FitterTab(QWidget):
         import matplotlib.pyplot as plt
         cmap = plt.get_cmap("tab10")
         if self.frequency_units == 'wavenumber':
-            xlabel = r'Frequency $\mathdefault{(cm^{-1})}}$'
+            xlabel = r'Frequency $\mathdefault{(cm^{-1})}$'
             scale = 1.0
         else:
             xlabel = r'THz'
