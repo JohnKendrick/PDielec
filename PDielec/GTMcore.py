@@ -108,8 +108,44 @@ def vacuum_eps(f):
     except:
         return 1.0 + 0.0j
     
+def exact_inv_2x2(M):
+    """Calculate the inverse of M
+
+    Parameters
+    ----------
+    m : complex 2x2 array
+
+    Returns
+    -------
+    the inverse as a 2x2 complex np array
+    """
+    assert M.shape == (2, 2)
+    m11, m21, m12, m22 = M.flatten()
+    determinant = m11*m22 - m21*m12
+    return np.array([[ m22, -m21],
+                     [-m12,  m11]])/determinant
+
     
-def exact_inv(M):
+def exact_inv_3x3(M):
+    """Calculate the inverse of M
+
+    Parameters
+    ----------
+    m : complex 3x3 array
+
+    Returns
+    -------
+    the inverse as a 3x3 complex np array
+    """
+    assert M.shape == (3, 3)
+    m1, m2, m3, m4, m5, m6, m7, m8, m9 = M.flatten()
+    determinant = m1*m5*m9 + m4*m8*m3 + m7*m2*m6 - m1*m6*m8 - m3*m5*m7 - m2*m4*m9  
+    return np.array([[m5*m9-m6*m8, m3*m8-m2*m9, m2*m6-m3*m5],
+                     [m6*m7-m4*m9, m1*m9-m3*m7, m3*m4-m1*m6],
+                     [m4*m8-m5*m7, m2*m7-m1*m8, m1*m5-m2*m4]])/determinant
+
+    
+def exact_inv_4x4(M):
     """Compute the 'exact' inverse of a 4x4 matrix using the analytical result.
 
     Parameters
@@ -229,6 +265,7 @@ class Layer:
         self.exponent_errors = 0
         self.largest_exponent = 0.0
         self.exponent_threshold = exponent_threshold
+        self.coherent = True
 
         ### initialization of all important quantities
         self.M = np.zeros((6, 6), dtype=np.clongdouble) ## constitutive relations
@@ -251,10 +288,17 @@ class Layer:
         self.set_epsilon(epsilon1, epsilon2, epsilon3, epsilon) # set epsilon, vacuum by default (JK change)
         self.set_euler(theta, phi, psi) ## set orientation of crystal axis w/ respect to the lab frame
 
+    def isCoherent(self):
+        """
+        Returns 
+        -------
+               True if the layer is coherent, False if not
+        """
+        return self.coherent
+
 
     def set_thickness(self, thickness):
-        """
-        Sets the layer thickness
+        """Sets the layer thickness
 
         Parameters
         ----------
@@ -386,25 +430,7 @@ class Layer:
         self.euler[2, 2] = np.cos(theta)
         #JK Added the inverse calculation here so it is only done once
         #JK self.euler_inverse = np.clongdouble(lag.pinv(np.cdouble(self.euler)))
-        self.euler_inverse = self.invert(self.euler)
-
-    def invert(self,m):
-        """Calculate the inverse of m
-
-        Parameters
-        ----------
-        m : complex 3x3 array
-
-        Returns
-        -------
-        the inverse as a 3x3 complex np array
-        """
-        m1, m2, m3, m4, m5, m6, m7, m8, m9 = m.flatten()
-        determinant = m1*m5*m9 + m4*m8*m3 + m7*m2*m6 - m1*m6*m8 - m3*m5*m7 - m2*m4*m9  
-        return np.array([[m5*m9-m6*m8, m3*m8-m2*m9, m2*m6-m3*m5],
-                         [m6*m7-m4*m9, m1*m9-m3*m7, m3*m4-m1*m6],
-                         [m4*m8-m5*m7, m2*m7-m1*m8, m1*m5-m2*m4]])/determinant
-
+        self.euler_inverse = exact_inv_3x3(self.euler)
 
     def calculate_matrices(self, zeta):
         """
@@ -722,49 +748,6 @@ class Layer:
         if self.useBerreman:
             self.gamma = self.Berreman
 
-    def calculate_propagation_matrix_passler(self,f):
-        """Routine to calculate the matrix Ki (or Pi) depending on the paper
-           This routine is taken from Passler's code
-        """
-        Ki = np.zeros( (4,4), dtype=np.clongdouble)
-        for ii in range(4):
-            exponent = np.clongdouble(-1.0j*(2.0*np.pi*f*self.qs[ii]*self.thick)/c_const)
-            if np.abs(exponent) > self.exponent_threshold:
-                self.largest_exponent = max(self.largest_exponent,np.abs(exponent))
-                exponent = exponent/np.abs(exponent)*self.exponent_threshold
-                self.exponent_errors += 1
-            Ki[ii,ii] = np.exp(exponent)
-        return  Ki
-        
-    def calculate_propagation_matrix_arteaga(self,f):
-        """Routine to calculate the matrix Ki (or Pi) depending on the paper
-           This routine is taken from Arteaga et al
-           Thin Solid Films 2014, 571, 701-705
-           The propagation matrix is suitable for incoherent films
-           In passler the ordering is;    Arteaga;
-           0 p/o ->                       p ->
-           1 s/e ->                       p <-
-           2 p/o <-                       s ->
-           3 s/e <-                       s <-
-        """
-        Ki = np.zeros( (4,4), dtype=np.clongdouble)
-        qs = np.zeros( 4, dtype=np.clongdouble)
-        qs[0] = (self.qs[0] - np.real(self.qs[1]))
-        qs[1] = (self.qs[1] - np.real(self.qs[1]))
-        qs[2] = (self.qs[2] - np.real(self.qs[2]))
-        qs[3] = (np.real(self.qs[2]) - self.qs[3])
-        qs[3] = (self.qs[2] - np.real(self.qs[3]))
-        # self.qs = qs
-        
-        for ii in range(4):
-            exponent = np.clongdouble(-1.0j*(2.0*np.pi*f*qs[ii]*self.thick)/c_const)
-            if np.abs(exponent) > self.exponent_threshold:
-                self.largest_exponent = max(self.largest_exponent,np.abs(exponent))
-                exponent = exponent/np.abs(exponent)*self.exponent_threshold
-                self.exponent_errors += 1
-            Ki[ii,ii] = np.exp(exponent)
-        return  Ki
-
     def calculate_transfer_matrix(self, f, zeta):
         """
         Compute the transfer matrix of the whole layer :math:`T_i=A_iP_iA_i^{-1}`
@@ -787,10 +770,9 @@ class Layer:
         self.Ai[2,:] = (self.qs*self.gamma[:,0]-zeta*self.gamma[:,2])/self.mu
         self.Ai[3,:] = self.qs*self.gamma[:,1]/self.mu
    
-        Aim1 = exact_inv(self.Ai.copy())
+        Aim1 = exact_inv_4x4(self.Ai.copy())
 
-        self.Ki = self.calculate_propagation_matrix_passler(f)
-        #self.Ki = self.calculate_propagation_matrix_arteaga(f)
+        self.Ki = self.calculate_propagation_matrix(f)
 
         self.Ti = np.matmul(self.Ai,np.matmul(self.Ki,Aim1))
 
@@ -820,10 +802,77 @@ class Layer:
         self.calculate_q()
         self.calculate_gamma(zeta)
         self.calculate_transfer_matrix(f, zeta)
-        Ai_inv = exact_inv(self.Ai.copy())
+        Ai_inv = exact_inv_4x4(self.Ai.copy())
 
         return[self.Ai.copy(), self.Ki.copy(), Ai_inv.copy(), self.Ti.copy()]
 
+    def calculate_propagation_matrix(self,f):
+        """Routine to calculate the matrix Ki (or Pi) depending on the paper
+           This routine is taken from Passler's code
+        """
+        Ki = np.zeros( (4,4), dtype=np.clongdouble)
+        for ii in range(4):
+            exponent = np.clongdouble(-1.0j*(2.0*np.pi*f*self.qs[ii]*self.thick)/c_const)
+            if np.abs(exponent) > self.exponent_threshold:
+                self.largest_exponent = max(self.largest_exponent,np.abs(exponent))
+                exponent = exponent/np.abs(exponent)*self.exponent_threshold
+                self.exponent_errors += 1
+            Ki[ii,ii] = np.exp(exponent)
+        return  Ki
+        
+
+###############################
+### The CoherentLayer Class ###
+###############################
+class CoherentLayer(Layer):
+    """Define a coherent layer inherits from Layer class"""
+    def __init__(self, thickness=1.0e-6, epsilon1=None, epsilon2=None, epsilon3=None,  epsilon=None, 
+                       theta=0, phi=0, psi=0, exponent_threshold=700):
+        """Initialise an instance of a coherent layer"""
+        Layer.__init__(self, thickness, epsilon1, epsilon2, epsilon3,  epsilon, theta, phi, psi, exponent_threshold)
+        self.coherent = True
+        return
+
+
+#################################
+### The IncoherentLayer Class ###
+#################################
+class IncoherentLayer(Layer):
+    """Define an incoherent layer inherits from Layer class"""
+
+    def __init__(self, thickness=1.0e-6, epsilon1=None, epsilon2=None, epsilon3=None,  epsilon=None, 
+                       theta=0, phi=0, psi=0, exponent_threshold=700):
+        """Initialise an instance of an incoherent layer"""
+        Layer.__init__(self, thickness, epsilon1, epsilon2, epsilon3,  epsilon, theta, phi, psi, exponent_threshold)
+        self.coherent = False
+        return
+
+    def calculate_propagation_matrix_arteaga(self,f):
+        """Routine to calculate the matrix Ki (or Pi) depending on the paper
+           This routine is taken from Arteaga et al
+           Thin Solid Films 2014, 571, 701-705
+           The propagation matrix is suitable for incoherent films
+           In passler the ordering is;    Arteaga;
+           0 p/o ->                       p ->
+           1 s/e ->                       p <-
+           2 p/o <-                       s ->
+           3 s/e <-                       s <-
+        """
+        Ki = np.zeros( (4,4), dtype=np.clongdouble)
+        qs = np.zeros( 4, dtype=np.clongdouble)
+        qs[0] = (self.qs[0] - np.real(self.qs[1]))
+        qs[1] = (self.qs[1] - np.real(self.qs[1]))
+        qs[2] = (self.qs[2] - np.real(self.qs[2]))
+        qs[3] = (np.real(self.qs[2]) - self.qs[3])
+        
+        for ii in range(4):
+            exponent = np.clongdouble(-1.0j*(2.0*np.pi*f*qs[ii]*self.thick)/c_const)
+            if np.abs(exponent) > self.exponent_threshold:
+                self.largest_exponent = max(self.largest_exponent,np.abs(exponent))
+                exponent = exponent/np.abs(exponent)*self.exponent_threshold
+                self.exponent_errors += 1
+            Ki[ii,ii] = np.exp(exponent)
+        return  Ki
 
 
 #%%
@@ -1051,7 +1100,7 @@ class System:
         Tloc = np.matmul( np.absolute(np.matmul(Di_inv_super,Dip1))**2,Tloc)
         Gamma = np.sqrt(Tloc)
         Gamma = Gamma * rescale2
-        GammaStar = np.matmul(exact_inv(Delta1234),np.matmul(Gamma,Delta1234))
+        GammaStar = np.matmul(exact_inv_4x4(Delta1234),np.matmul(Gamma,Delta1234))
         self.Gamma = Gamma.copy()
         self.GammaStar = GammaStar.copy()
         return self.GammaStar.copy()
@@ -1060,6 +1109,7 @@ class System:
     def calculate_GammaStar(self,f, zeta_sys):
         """
         Calculate the whole system's transfer matrix.
+        If one layer is incoherent then intensities rather than amplitudes are used
 
         Parameters
         -----------
@@ -1073,25 +1123,45 @@ class System:
         GammaStar: 4x4 complex matrix
                    System transfer matrix :math:`\Gamma^{*}`
         """
-        Ai_super, Ki_super, Ai_inv_super, T_super = self.superstrate.update(f, zeta_sys)
-        Ai_sub, Ki_sub, Ai_inv_sub, T_sub = self.substrate.update(f, zeta_sys)
+        A_super, K_super, A_inv_super, T_super = self.superstrate.update(f, zeta_sys)
+        A_sub, K_sub, A_inv_sub, T_sub = self.substrate.update(f, zeta_sys)
 
         Delta1234 = np.array([[1,0,0,0],
                               [0,0,1,0],
                               [0,1,0,0],
                               [0,0,0,1]],dtype=np.clongdouble)
-
-
-        Gamma = np.zeros(4, dtype=np.clongdouble)
-        GammaStar = np.zeros(4, dtype=np.clongdouble)
-        Tloc = np.identity(4, dtype=np.clongdouble)
-
-        for ii in range(len(self.layers))[::-1]:
-            Ai, Ki, Ai_inv, T_ii = self.layers[ii].update(f, zeta_sys)
-            Tloc = np.matmul(T_ii,Tloc)
-
-        Gamma = np.matmul(Ai_inv_super,np.matmul(Tloc,Ai_sub))
-        GammaStar = np.matmul(exact_inv(Delta1234),np.matmul(Gamma,Delta1234))
+        incoherent = False
+        Tlist = []
+        # Initialise T with the substrate Transfer Matrix
+        T = A_sub
+        for layer in reversed(self.layers):
+            Di, Pi, Di_inv, Ti = layer.update(f, zeta_sys)
+            if not layer.isCoherent():
+                # Deal with an incoherent layer
+                # Finish any exisiting T matrix with Di_inv and add as a new matrix in Tlist
+                # Then add Pi to Ttot
+                # Then start a new T matrix with Di
+                T = np.matmul(Di_inv,T)
+                Tlist.append(T)
+                Tlist.append(Pi)
+                T = np.copy(Di)
+                incoherent = True
+            else:
+                # coherent, so just multiply the T matrices
+                T = np.matmul(Ti,T)
+        # Complete with the superstrate inverse dynamic matrix
+        T = np.matmul(A_inv_super,T)
+        Tlist.append(T)
+        if incoherent:
+            # If there was incoherence then process the whole list 
+            # by calculating amplitudes everywhere
+            T =  np.identity(4, dtype=np.complex128)
+            for t in Tlist:
+                T = np.matmul(T,np.absolute(t)**2)
+            T = np.sqrt(T)
+        # If there was no incoherence then T is the total transfer matrix
+        Gamma = T
+        GammaStar = np.matmul(exact_inv_4x4(Delta1234),np.matmul(Gamma,Delta1234))
 
         self.Gamma = Gamma.copy()
         self.GammaStar = GammaStar.copy()
