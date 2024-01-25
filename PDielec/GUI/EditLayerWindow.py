@@ -3,24 +3,25 @@ import numpy as np
 from PyQt5.QtWidgets            import QPushButton, QWidget, QFrame, QDialog
 from PyQt5.QtWidgets            import QComboBox, QLabel, QLineEdit, QListWidget
 from PyQt5.QtWidgets            import QVBoxLayout, QHBoxLayout, QFormLayout
-from PyQt5.QtWidgets            import QSpinBox,QDoubleSpinBox
-from PyQt5.QtWidgets            import QSizePolicy
+from PyQt5.QtWidgets            import QSpinBox,QDoubleSpinBox, QCheckBox
+from PyQt5.QtWidgets            import QSizePolicy, QDialogButtonBox
 from PyQt5.QtCore               import QCoreApplication, Qt
 from PDielec.Utilities          import Debug
 import PDielec.Calculator as Calculator
 
 class Layer():
-    def __init__(self,material,hkl=None,azimuthal=0.0,thickness=0.0,thicknessUnit='nm',dielectricFlag=False):
+    def __init__(self,material,hkl=None,azimuthal=0.0,thickness=0.0,thicknessUnit='nm',coherentFlag=True,dielectricFlag=False):
         '''A Layer class to handle layers
-           material    is an instance of Material object, the material object has the following;
-                       - name
-                       - density
-                       - permittivity
-                       - unit cell
-           hkl         is a list of 3 integers defining the plane of interest
-           azimuthal   is the azimuthal angle of rotation of the crystal about z
-           thickness   is the thickness of the layer in the specfied thickness units
+           material       is an instance of Material object, the material object has the following;
+                          - name
+                          - density
+                          - permittivity
+                          - unit cell
+           hkl            is a list of 3 integers defining the plane of interest
+           azimuthal      is the azimuthal angle of rotation of the crystal about z
+           thickness      is the thickness of the layer in the specfied thickness units
            thicknessUnits can be either nm, um, mm or cm 
+           coherentFlag   true if it is a coherent layer
            dielectricFlag this is true if the layer material is the dielectric being studied'''
         self.material = material
         self.hkl = hkl
@@ -28,6 +29,7 @@ class Layer():
             hkl = [0,0,1]
         else:
             hkl = [0,0,0]
+        self.coherentFlag = coherentFlag
         self.azimuthal = azimuthal
         self.thickness = thickness
         self.thicknessUnit = thicknessUnit
@@ -39,6 +41,7 @@ class Layer():
         self.calculate_euler_matrix()
 
     def print(self):
+        '''Print the main attributes of the layer'''
         print('---------------- ')
         print('Material       : ', self.material)
         self.material.print()
@@ -47,11 +50,26 @@ class Layer():
         print('Thickness      :', self.thickness)
         print('Thickness unit :', self.thicknessUnit)
         print('Dielectric flag:', self.dielectricFlag)
+        print('Coherent       :', self.coherentFlag)
 
     def setAzimuthal(self, angle):
-        '''Set the azimuthal angle'''
+        '''Set the azimuthal angle of the layer and calculate the Euler matrix'''
         self.azimuthal = angle
         self.calculate_euler_matrix()
+        return 
+
+    def isCoherent(self):
+        '''Returns True if this is a coherent layer, False otherwise'''
+        return self.coherentFlag
+
+    def setCoherent(self):
+        '''Set coherent to True'''
+        self.coherentFlag = True
+        return
+
+    def setIncoherent(self):
+        '''Set coherent to False'''
+        self.coherentFlag = False
         return 
 
     def getAzimuthal(self):
@@ -210,202 +228,127 @@ class Layer():
                          [m6*m7-m4*m9, m1*m9-m3*m7, m3*m4-m1*m6],
                          [m4*m8-m5*m7, m2*m7-m1*m8, m1*m5-m2*m4]])/determinant
 
-class EditLayerWindow(QDialog):
-    def __init__(self, layers,database,parent=None,debug=False ):
-        super(EditLayerWindow,self).__init__(parent)
+class ShowLayerWindow(QDialog):
+    def __init__(self, layer, parent=None, debug=False ):
+        super(ShowLayerWindow,self).__init__(parent)
         global debugger
-        debugger = Debug(debug,'EditLayerWindow')
+        debugger = Debug(debug,'ShowLayerWindow')
         debugger.print('Start:: initialiser')
-        self.DataBase = database
-        self.layers = layers
-        self.newMaterialName = None
-        self.materialNames = None
-        mainLayout = QVBoxLayout()
-        self.setLayout(mainLayout)
-        self.redraw(clearLayout = False)
+        # Set up the buttons of the button box
+        QBtn = QDialogButtonBox.Ok | QDialogButtonBox.Cancel
+        self.buttonBox = QDialogButtonBox(QBtn)
+        self.buttonBox.accepted.connect(self.accept)
+        self.buttonBox.rejected.connect(self.reject)
+        # Initialize the layer
+        self.layer = layer
+        # The dialog will have a vertical layout
+        self.layout = QVBoxLayout(self)
+        # Create the layer widget to display
+        layerWidget = self.drawLayerWidget()
+        # Add the widget showing the layer information
+        self.layout.addWidget(layerWidget)
+        # Add the button box
+        self.layout.addWidget(self.buttonBox)
         debugger.print('Finished:: initialiser')
 
-    def clearLayout(self,layout):
-        '''Clear the existing layout of all widgets and layouts'''
-        debugger.print('clearLayout ',layout)
-        if layout is not None:
-            debugger.print('clearLayout count ',layout.count())
-            while layout.count():
-                item = layout.takeAt(0)
-                widget = item.widget()
-                if widget is not None:
-                    widget.deleteLater()
-                else:
-                    self.clearLayout(item.layout())
+    def getLayer(self):
+        '''Return the edited layer'''
+        return self.layer
 
-    def redraw(self,clearLayout=False):
-        '''Redraw the edit layers window'''
-        debugger.print('redraw start',clearLayout)
-        if clearLayout:
-            debugger.print('redraw forcing clearLayout')
-            self.clearLayout(self.layout())
-            QCoreApplication.processEvents()
+    def drawLayerWidget(self):
+        '''Creat a layer widget showing all the information about the layer'''
+        debugger.print('drawLayerWidget')
+        widget = QWidget()
         form = QFormLayout()
-        # Add each layer to the window
-        for i,layer in enumerate(self.layers):
-            layout = self.drawLayerWidget(i,layer)
+        layout = self.drawLayerWidgetLine1()
+        form.addRow(layout)
+        if self.layer.getMaterial().isTensor():
+            layout = self.drawLayerWidgetLine2()
             form.addRow(layout)
-            line = QFrame()
-            line.setFrameShape(QFrame.HLine)
-            form.addRow(line)
-        layout = self.drawAddLayerWidget()
+            layout = self.drawLayerWidgetLine3()
         form.addRow(layout)
-        # Add the form to the existing layout
-        self.layout().addLayout(form)
-        self.update()
-        for i in range(0,10):
-            QCoreApplication.processEvents()
-        self.resize(self.minimumSizeHint())
-        debugger.print('redraw finish')
-        return
+        widget.setLayout(form)
+        return widget
 
-    def drawAddLayerWidget(self):
-        '''Add widget with the option to add more layers'''
-        debugger.print('drawAddLayerWidget start')
-        hbox = QHBoxLayout()
-        material_cb = QComboBox(self)
-        material_cb.setToolTip('Choose the material to be added as a new layer.')
-        self.materialNames = self.DataBase.getSheetNames()
-        if self.newMaterialName not in self.materialNames:
-            self.newMaterialName = self.materialNames[0]
-        material_cb.clear()
-        material_cb.addItems(self.materialNames)
-        index = material_cb.findText(self.newMaterialName, Qt.MatchFixedString)
-        material_cb.setCurrentIndex(index)
-        material_cb.activated.connect(self.on_material_cb_activated)
-        add_button = QPushButton('Add layer of.....')
-        add_button.clicked.connect(self.addAnotherLayer)
-        close_button = QPushButton('Close window')
-        close_button.clicked.connect(self.hideWindow)
-        hbox.addWidget(add_button)
-        hbox.addWidget(material_cb)
-        hbox.addWidget(close_button)
-        debugger.print('drawAddLayerWidget finish')
-        return hbox
-
-    def on_material_cb_activated(self,index):
-        debugger.print('on_material_cb_activated index',index)
-        self.newMaterialName = self.materialNames[index]
-        return
-    
-    def hideWindow(self,x):
-        '''Hide the window'''
-        debugger.print('hideWindow')
-        self.hide()
-
-    def addAnotherLayer(self,x):
-        '''Add another layer to the window'''
-        debugger.print('addAnotherLayer')
-        newMaterial = self.DataBase.getMaterial(self.newMaterialName)
-        hkl = [0,0,0]
-        if newMaterial.isTensor():
-            hkl = [0,0,1]
-        new_layer = Layer(newMaterial,hkl=hkl,azimuthal=0.0,thickness=1.0,thicknessUnit='um')
-        self.layers.append(new_layer)
-        self.redraw(clearLayout = True)
-        return
-
-    def drawLayerWidget(self,sequenceNumber,layer):
-        '''Draw a layer widget'''
-        debugger.print('drawLayerWidget',layer)
-        form = QFormLayout()
-        layout = self.drawLayerWidgetLine1(sequenceNumber,layer)
-        form.addRow(layout)
-        if layer.getMaterial().isTensor():
-            layout = self.drawLayerWidgetLine2(sequenceNumber,layer)
-            form.addRow(layout)
-            layout = self.drawLayerWidgetLine3(sequenceNumber,layer)
-        form.addRow(layout)
-        return form
-
-    def drawLayerWidgetLine1(self,sequenceNumber,layer):
+    def drawLayerWidgetLine1(self):
         '''Add the first line of the layer description'''
         hbox = QHBoxLayout()
-        debugger.print('drawLayerWidgetLine1',sequenceNumber)
-        # Add sequence number
-        sequenceLabel = QLabel('No. '+str(sequenceNumber),self)
+        debugger.print('drawLayerWidgetLine1')
         # Define material name
-        material = layer.getMaterial()
+        material = self.layer.getMaterial()
         materialName = material.getName()
         materialLabel = QLabel(materialName,self)
-        materialThickness = layer.getThickness()
-        # Handle thickness units
-        thicknessUnit = layer.getThicknessUnit()
+        materialThickness = self.layer.getThickness()
+        # Handle thickness
         film_thickness_sb = QDoubleSpinBox(self)
         film_thickness_sb.setSizePolicy(QSizePolicy.Expanding,QSizePolicy.Fixed)
         film_thickness_sb.setToolTip('Define the thin film thickness in the defined thickness units')
         film_thickness_sb.setRange(0,100000)
         film_thickness_sb.setSingleStep(0.01)
         film_thickness_sb.setValue(materialThickness)
-        film_thickness_sb.valueChanged.connect(lambda x: self.on_film_thickness_sb_changed(x,layer))
-        thickness_unit_cb = QComboBox(self)
-        thickness_unit_cb.setSizePolicy(QSizePolicy.Expanding,QSizePolicy.Fixed)
-        thickness_unit_cb.setToolTip('Set the units to be used for thickness; either nm, um, mm or cm')
-        thickness_unit_cb.addItems( ['nm','um','mm','cm'] )
-        index = thickness_unit_cb.findText(thicknessUnit, Qt.MatchFixedString)
-        thickness_unit_cb.setCurrentIndex(index)
-        thickness_unit_cb.activated.connect(lambda x: self.on_thickness_units_cb_activated(x, layer))
-        thicknessLabel = QLabel('Film thickness',self)
+        film_thickness_sb.valueChanged.connect(self.on_film_thickness_sb_changed)
+        # Handle thickness units
+        thicknessUnit = self.layer.getThicknessUnit()
+        thickness_units_cb = QComboBox(self)
+        thickness_units_cb.setSizePolicy(QSizePolicy.Expanding,QSizePolicy.Fixed)
+        thickness_units_cb.setToolTip('Set the units to be used for thickness; either nm, um, mm or cm')
+        thickness_units_cb.addItems( ['nm','um','mm','cm'] )
+        index = thickness_units_cb.findText(thicknessUnit, Qt.MatchFixedString)
+        thickness_units_cb.setCurrentIndex(index)
+        thickness_units_cb.activated.connect(self.on_thickness_units_cb_activated)
+        thicknessLabel = QLabel('Thickness',self)
         thicknessLabel.setToolTip('Define the depth of the thin crystal in the defined thickness units.')
-        # Add move up and down buttons
-        move_up_button = QPushButton('Up')
-        move_up_button.clicked.connect(lambda x: self.moveLayerUp(x, sequenceNumber))
-        move_down_button = QPushButton('Down')
-        move_down_button.clicked.connect(lambda x: self.moveLayerDown(x, sequenceNumber))
-        # Add delete button
-        delete_button = QPushButton('Del')
-        delete_button.setToolTip('Delete this layer')
-        delete_button.clicked.connect(lambda x: self.deleteLayer(x, sequenceNumber,layer))
         # Create the line of widgets
-        hbox.addWidget(sequenceLabel)
         hbox.addWidget(materialLabel)
         hbox.addWidget(thicknessLabel)
         hbox.addWidget(film_thickness_sb)
-        hbox.addWidget(thickness_unit_cb)
-        hbox.addWidget(move_up_button)
-        hbox.addWidget(move_down_button)
-        hbox.addWidget(delete_button)
+        hbox.addWidget(thickness_units_cb)
         return hbox
 
-    def drawLayerWidgetLine2(self,sequenceNumber,layer):
+    def drawLayerWidgetLine2(self):
         '''Add the second line of the layer description'''
-        debugger.print('drawLayerWidgetLine2',sequenceNumber)
+        debugger.print('drawLayerWidgetLine2')
         hbox = QHBoxLayout()
         # define hkl
         h_sb = QSpinBox(self)
         h_sb.setToolTip('Define the h dimension of the unique direction')
         h_sb.setRange(-20,20)
         h_sb.setSingleStep(1)
-        h_sb.setValue(layer.getHKL()[0])
-        h_sb.valueChanged.connect(lambda x: self.on_hkl_sb_changed(x,0,layer))
+        h_sb.setValue(self.layer.getHKL()[0])
+        h_sb.valueChanged.connect(lambda x: self.on_hkl_sb_changed(x,0))
         k_sb = QSpinBox(self)
         k_sb.setToolTip('Define the k dimension of the unique direction')
         k_sb.setRange(-20,20)
         k_sb.setSingleStep(1)
-        k_sb.setValue(layer.getHKL()[1])
-        k_sb.valueChanged.connect(lambda x: self.on_hkl_sb_changed(x,1,layer))
+        k_sb.setValue(self.layer.getHKL()[1])
+        k_sb.valueChanged.connect(lambda x: self.on_hkl_sb_changed(x,1))
         l_sb = QSpinBox(self)
         l_sb.setToolTip('Define the l dimension of the unique direction')
         l_sb.setRange(-20,20)
         l_sb.setSingleStep(1)
-        l_sb.setValue(layer.getHKL()[2])
-        l_sb.valueChanged.connect(lambda x: self.on_hkl_sb_changed(x,2,layer))
+        l_sb.setValue(self.layer.getHKL()[2])
+        l_sb.valueChanged.connect(lambda x: self.on_hkl_sb_changed(x,2))
         hklLabel = QLabel('hkl:')
         hklLabel.setToolTip('Define the crystal surface (hkl). Defines the unique direction in crystallographic units.')
         # define azimuthal angle
-        azimuthal = layer.getAzimuthal()
+        azimuthal = self.layer.getAzimuthal()
         azimuthal_angle_sb = QDoubleSpinBox(self)
         azimuthal_angle_sb.setToolTip('Define the slab azimuthal angle (rotation of the crystal about the lab Z-axis).\nThe orientation of the crystal in the laboratory frame can be seen in the laboratory frame information below')
         azimuthal_angle_sb.setRange(-180,360)
         azimuthal_angle_sb.setSingleStep(10)
         azimuthal_angle_sb.setValue(azimuthal)
-        azimuthal_angle_sb.valueChanged.connect(lambda x: self.on_azimuthal_angle_sb_changed(x,layer))
+        azimuthal_angle_sb.valueChanged.connect(self.on_azimuthal_angle_sb_changed)
         azimuthalLabel = QLabel('Azimuthal:')
+        # Create a checkbox for incoherence
+        incoherence_cb = QCheckBox(self)
+        incoherence_cb.setToolTip('Treat layer as incoherent using phase cancellation')
+        incoherence_cb.setText('Incoherent?')
+        incoherence_cb.setLayoutDirection(Qt.RightToLeft)
+        if self.layer.isCoherent():
+            incoherence_cb.setCheckState(Qt.Unchecked)
+        else:
+            incoherence_cb.setCheckState(Qt.Checked)
+        incoherence_cb.stateChanged.connect(self.on_incoherence_cb_changed)
         # Create the line of widgets
         hbox.addWidget(hklLabel)
         hbox.addWidget(h_sb)
@@ -413,91 +356,71 @@ class EditLayerWindow(QDialog):
         hbox.addWidget(l_sb)
         hbox.addWidget(azimuthalLabel)
         hbox.addWidget(azimuthal_angle_sb)
+        hbox.addWidget(incoherence_cb)
         return hbox
 
-    def drawLayerWidgetLine3(self,sequenceNumber,layer):
+    def drawLayerWidgetLine3(self):
         '''Add the third line of the layer description'''
-        debugger.print('drawLayerWidgetLine3',sequenceNumber)
+        debugger.print('drawLayerWidgetLine3')
         hbox = QHBoxLayout()
-        label = QLabel('Lab frame information', self)
+        label = QLabel('Lab frame\ninformation', self)
         label.setToolTip('The normal to the surface defines the Z-axis in the  lab frame\nThe incident and reflected light lie in the XZ plane\nThe p-polarization is direction lies in the XZ plane, s-polarisation is parallel to Y')
-        layer.labframe_w = QListWidget(self)
-        fm = layer.labframe_w.fontMetrics()
+        self.labframe_w = QListWidget(self)
+        fm = self.labframe_w.fontMetrics()
         h = fm.ascent() + fm.descent()
-        layer.labframe_w.setMaximumHeight(6*h)
-        layer.labframe_w.setToolTip('The normal to the surface defines the Z-axis in the  lab frame\nThe incident and reflected light lie in the XZ plane\nThe p-polarization is direction lies in the XZ plane, s-polarisation is parallel to Y')
-        a,b,c = layer.getLabFrame()
-        layer.labframe_w.clear()
-        layer.labframe_w.addItem('crystal a-axis in lab frame: {: 3.5f}, {: 3.5f}, {: 3.5f}'.format(a[0],a[1],a[2]) )
-        layer.labframe_w.addItem('crystal b-axis in lab frame: {: 3.5f}, {: 3.5f}, {: 3.5f}'.format(b[0],b[1],b[2]) )
-        layer.labframe_w.addItem('crystal c-axis in lab frame: {: 3.5f}, {: 3.5f}, {: 3.5f}'.format(c[0],c[1],c[2]) )
+        self.labframe_w.setMaximumHeight(6*h)
+        self.labframe_w.setToolTip('The normal to the surface defines the Z-axis in the  lab frame\nThe incident and reflected light lie in the XZ plane\nThe p-polarization is direction lies in the XZ plane, s-polarisation is parallel to Y')
+        self.changeLabFrameInfo()
         hbox.addWidget(label)
-        hbox.addWidget(layer.labframe_w)
+        hbox.addWidget(self.labframe_w)
         return hbox
 
-    def getLayers(self):
-        '''Return the list of layers'''
-        debugger.print('getLayers')
-        return self.layers
-
-    def deleteLayer(self,i,sequenceNumber,layer):
-        '''Handle a delete layer button press'''
-        debugger.print('deleteLayer',i,sequenceNumber)
-        # Only delete a layer if it doesn't have the dielectricFlag set
-        if not layer.isDielectric():
-            del self.layers[sequenceNumber]
-        self.redraw(clearLayout = True)
-
-    def moveLayerUp(self,x,old):
-        '''Move a layer up (sequence number gets smaller by 1)'''
-        debugger.print('moveLayerUp',old)
-        if old < 1:
-            return
-        new = old - 1
-        item = self.layers[old]
-        self.layers.pop(old)
-        self.layers.insert(new, item)
-        self.redraw(clearLayout = True)
+    def changeLabFrameInfo(self):
+        '''Report the lab frame information in the labframe widget'''
+        a,b,c = self.layer.getLabFrame()
+        self.labframe_w.clear()
+        self.labframe_w.addItem('crystal a-axis in lab frame: {: 3.5f}, {: 3.5f}, {: 3.5f}'.format(a[0],a[1],a[2]) )
+        self.labframe_w.addItem('crystal b-axis in lab frame: {: 3.5f}, {: 3.5f}, {: 3.5f}'.format(b[0],b[1],b[2]) )
+        self.labframe_w.addItem('crystal c-axis in lab frame: {: 3.5f}, {: 3.5f}, {: 3.5f}'.format(c[0],c[1],c[2]) )
         return
 
-    def moveLayerDown(self,x,old):
-        '''Move a layer down (sequence number gets larger by 1)'''
-        debugger.print('moveLayerDown',old)
-        last = len(self.layers) - 1
-        if old >= last:
-            return
-        new = old + 1
-        item = self.layers[old]
-        self.layers.pop(old)
-        self.layers.insert(new, item)
-        self.redraw(clearLayout = True)
+    def on_incoherence_cb_changed(self,value):
+        '''The incoherence checkbox has changed'''
+        debugger.print('on_incoherence_cb_changed', value)
+        state = self.layer.isCoherent()
+        if state:
+            self.layer.setIncoherent()
+        else:
+            self.layer.setCoherent()
         return
 
-    def on_film_thickness_sb_changed(self,value,layer):
+    def on_film_thickness_sb_changed(self,value):
         '''Handle film thickness spin box change'''
-        debugger.print('on_film_thickness_sb_changed', value, layer.getName())
-        layer.setThickness(value)
+        debugger.print('on_film_thickness_sb_changed', value)
+        self.layer.setThickness(value)
         return
 
-    def on_azimuthal_angle_sb_changed(self,value,layer):
+    def on_azimuthal_angle_sb_changed(self,value):
         '''Handle azimuthal spin box change'''
-        debugger.print('on_azimuthal_angl_sb_changed', value, layer.getName())
-        layer.setAzimuthal(value)
-        layer.changeLabFrameInfo()
+        debugger.print('on_azimuthal_angl_sb_changed', value)
+        self.layer.setAzimuthal(value)
+        self.layer.changeLabFrameInfo()
+        self.changeLabFrameInfo()
         return
 
-    def on_hkl_sb_changed(self,value,hkorl,layer):
+    def on_hkl_sb_changed(self,value,hkorl):
         '''Handle h, k or l change'''
         debugger.print('on_h_sb_changed', value)
-        hkl = layer.getHKL()
+        hkl = self.layer.getHKL()
         hkl[hkorl] = value
-        layer.setHKL(hkl)
-        layer.changeLabFrameInfo()
+        self.layer.setHKL(hkl)
+        self.layer.changeLabFrameInfo()
+        self.changeLabFrameInfo()
         return
 
-    def on_thickness_units_cb_activated(self, index, layer):
-        debugger.print('Start:: on_thickness_units_cb_activated',index,layer.getName())
+    def on_thickness_units_cb_activated(self, index):
+        debugger.print('Start:: on_thickness_units_cb_activated',index)
         units = ['nm','um','mm','cm']
         unit = units[index]
-        layer.setThicknessUnit(unit)
+        self.layer.setThicknessUnit(unit)
         return

@@ -7,19 +7,21 @@ import PDielec.Calculator         as Calculator
 import PDielec.DielectricFunction as DielectricFunction
 import PDielec.Materials          as Materials
 import PDielec.GTMcore            as GTM
-from PyQt5.QtWidgets             import QPushButton, QWidget, QFrame
-from PyQt5.QtWidgets             import QSpacerItem
-from PyQt5.QtWidgets             import QComboBox, QLabel, QLineEdit, QListWidget
-from PyQt5.QtWidgets             import QApplication
+from PyQt5.QtWidgets             import QToolBar, QHeaderView, QAction
+from PyQt5.QtWidgets             import QPushButton, QWidget, QFrame, QToolButton
+from PyQt5.QtWidgets             import QSpacerItem, QCheckBox
+from PyQt5.QtWidgets             import QComboBox, QLabel, QLineEdit
 from PyQt5.QtWidgets             import QVBoxLayout, QHBoxLayout, QFormLayout
 from PyQt5.QtWidgets             import QSpinBox,QDoubleSpinBox
-from PyQt5.QtWidgets             import QSizePolicy
-from PyQt5.QtCore                import QCoreApplication, Qt
+from PyQt5.QtWidgets             import QSizePolicy, QApplication, QStyle
+from PyQt5.QtWidgets             import QTableWidget, QTableWidgetItem
+from PyQt5.QtCore                import QCoreApplication, Qt, QSize
+from PyQt5.QtGui                 import QIcon
 from PDielec.Constants           import wavenumber, PI, avogadro_si, angstrom, speed_light_si
 from PDielec.Utilities           import Debug
 from PDielec.GUI.ScenarioTab     import ScenarioTab
 from PDielec.Materials           import MaterialsDataBase
-from PDielec.GUI.EditLayerWindow import EditLayerWindow
+from PDielec.GUI.EditLayerWindow import ShowLayerWindow
 from PDielec.GUI.EditLayerWindow import Layer
 from functools                   import partial
 from scipy                       import signal
@@ -62,8 +64,8 @@ def solve_single_crystal_equations(
 
     """
     # Create layers, thickness is in metres
-    superstrate      = GTM.Layer(thickness=superstrateDepth,epsilon1=superstrateDielectricFunction,exponent_threshold=exponent_threshold)
-    substrate        = GTM.Layer(thickness=substrateDepth,  epsilon1=substrateDielectricFunction,exponent_threshold=exponent_threshold)
+    superstrate      = GTM.CoherentLayer(thickness=superstrateDepth,epsilon1=superstrateDielectricFunction,exponent_threshold=exponent_threshold)
+    substrate        = GTM.CoherentLayer(thickness=substrateDepth,  epsilon1=substrateDielectricFunction,exponent_threshold=exponent_threshold)
     selectedLayers = layers
     if mode == 'Thick slab':
         # For a thick slab the last layer is used as the thick layer
@@ -71,18 +73,25 @@ def solve_single_crystal_equations(
         selectedLayers = layers[:-1]
         substrateDepth = layers[-1].getThicknessInMetres()
         substrateDielectricFunction = layers[-1].getPermittivityFunction()
-        substrate = GTM.Layer(thickness=substrateDepth,  epsilon=substrateDielectricFunction, exponent_threshold=exponent_threshold)
+        substrate = GTM.CoherentLayer(thickness=substrateDepth,  epsilon=substrateDielectricFunction, exponent_threshold=exponent_threshold)
     gtmLayers = []
     for layer in selectedLayers:
         permittivityFunction = layer.getPermittivityFunction()
         depth = layer.getThicknessInMetres()
+        coherent = layer.isCoherent()
         if sliceThickness != 0 and depth > sliceThickness:
             no_of_layers = int(depth / sliceThickness) + 1
             newdepth = depth / no_of_layers
             for i in range(no_of_layers):
-                gtmLayers.append(GTM.Layer(thickness=newdepth, epsilon=permittivityFunction, exponent_threshold=exponent_threshold))
+                if coherent:
+                    gtmLayers.append(GTM.CoherentLayer(thickness=newdepth, epsilon=permittivityFunction, exponent_threshold=exponent_threshold))
+                else:
+                    gtmLayers.append(GTM.IncoherentLayer(thickness=newdepth, epsilon=permittivityFunction, exponent_threshold=exponent_threshold))
         else:
-            gtmLayers.append(GTM.Layer(thickness=depth, epsilon=permittivityFunction, exponent_threshold=exponent_threshold))
+            if coherent:
+                gtmLayers.append(GTM.CoherentLayer(thickness=depth, epsilon=permittivityFunction, exponent_threshold=exponent_threshold))
+            else:
+                gtmLayers.append(GTM.IncoherentLayer(thickness=depth, epsilon=permittivityFunction, exponent_threshold=exponent_threshold))
     # Creat the system with the layers 
     system = GTM.System(substrate=substrate, superstrate=superstrate, layers=gtmLayers)
     # Rotate the dielectric constants to the laboratory frame
@@ -142,6 +151,7 @@ class SingleCrystalScenarioTab(ScenarioTab):
         self.settings['Layer thicknesses'] = []
         self.settings['Layer thickness units'] = []
         self.settings['Layer dielectric flags'] = []
+        self.settings['Layer coherent flags'] = []
         # The maximum allowed thickness of a layer in metres
         # used to subdivide thicker films into many thinner films
         # if zero no subdivision is performed
@@ -156,7 +166,6 @@ class SingleCrystalScenarioTab(ScenarioTab):
         self.s_absorbtance = []
         self.epsilon = []
         self.layers = []
-        self.editLayerWindow = None
         self.dielectricLayer = None
         # store the notebook
         self.notebook = parent
@@ -219,8 +228,7 @@ class SingleCrystalScenarioTab(ScenarioTab):
         hbox.addWidget(line)
         hbox.setAlignment(Qt.AlignVCenter)
         self.form.addRow(label,hbox)
-        layerInformationForm = self.drawLayerInformationWidget()
-        self.form.addRow(layerInformationForm)
+        self.form.addRow(self.drawLayerTable())
         self.layerInformationFormCount = self.form.rowCount()-1
         label = QLabel('    ')
         line  = QFrame()
@@ -229,11 +237,6 @@ class SingleCrystalScenarioTab(ScenarioTab):
         hbox.addWidget(line)
         hbox.setAlignment(Qt.AlignVCenter)
         self.form.addRow(label,hbox)
-        #
-        # Option to edit layers
-        #
-        label,layout = self.editLayersWindow()
-        self.form.addRow(label, layout)
         #
         # Define the substrate material widget
         #
@@ -286,108 +289,274 @@ class SingleCrystalScenarioTab(ScenarioTab):
         QCoreApplication.processEvents()
         debugger.print('Finished:: initialiser')
 
-    def redrawLayerInformationWidget(self):
-        '''Redraw the layer information widget'''
-        form = self.drawLayerInformationWidget()
-        # There is a problem with the following call leading to an 'invalid index' message from takeAt()
-        # removeRow() is the prefered function as it deletes the inserted layout, but takeRown removes the warning
-        self.form.removeRow(self.layerInformationFormCount)
-        self.form.insertRow(self.layerInformationFormCount,form)
+    def redrawLayerTable(self):
+        '''Redraw the layer table widget'''
+        #self.layerTable_tw.clearContents()
+        self.layerTable_tw.setRowCount(1)
+        rowCount = 0
+        for sequenceNumber,layer in enumerate(self.layers):
+            rowCount += 1
+            firstLayer = False
+            lastLayer = False
+            if layer == self.layers[0]:
+                firstLayer = True
+            elif layer == self.layers[-1]:
+                lastLayer = True
+            self.layerTable_tw.setRowCount(rowCount)
+            # Creat a layer button
+            material = layer.getMaterial()
+            materialName = material.getName()
+            layer_button = QPushButton(materialName)
+            layer_button.setToolTip('Show all the material properties in a new window')
+            layer_button.setStyleSheet('Text-align:left')
+            layer_button.clicked.connect(lambda x: self.on_layer_button_clicked(x,layer,sequenceNumber))
+            self.layerTable_tw.setCellWidget(sequenceNumber,0,layer_button)
+            # Handle thickness 
+            materialThickness = layer.getThickness()
+            thicknessUnit = layer.getThicknessUnit()
+            film_thickness_sb = QDoubleSpinBox(self)
+            film_thickness_sb.setSizePolicy(QSizePolicy.Expanding,QSizePolicy.Fixed)
+            film_thickness_sb.setToolTip('Define the thin film thickness in the defined thickness units')
+            film_thickness_sb.setRange(0,100000)
+            film_thickness_sb.setSingleStep(0.01)
+            film_thickness_sb.setValue(materialThickness)
+            film_thickness_sb.valueChanged.connect(lambda x: self.on_film_thickness_sb_changed(x,layer))
+            self.layerTable_tw.setCellWidget(sequenceNumber,1,film_thickness_sb)
+            # thickness unit
+            thickness_unit_cb = QComboBox(self)
+            thickness_unit_cb.setSizePolicy(QSizePolicy.Expanding,QSizePolicy.Fixed)
+            thickness_unit_cb.setToolTip('Set the units to be used for thickness; either nm, um, mm or cm')
+            thickness_unit_cb.addItems( ['nm','um','mm','cm'] )
+            index = thickness_unit_cb.findText(thicknessUnit, Qt.MatchFixedString)
+            thickness_unit_cb.setCurrentIndex(index)
+            thickness_unit_cb.activated.connect(lambda x: self.on_thickness_units_cb_activated(x, layer))
+            self.layerTable_tw.setCellWidget(sequenceNumber,2,thickness_unit_cb)
+            # define hkl
+            h_sb = QSpinBox(self)
+            h_sb.setToolTip('Define the h dimension of the unique direction')
+            h_sb.setRange(-20,20)
+            h_sb.setSingleStep(1)
+            h_sb.setValue(layer.getHKL()[0])
+            h_sb.valueChanged.connect(lambda x: self.on_hkl_sb_changed(x,0,layer))
+            h_sb.setSizePolicy(QSizePolicy.Expanding,QSizePolicy.Fixed)
+            k_sb = QSpinBox(self)
+            k_sb.setToolTip('Define the k dimension of the unique direction')
+            k_sb.setRange(-20,20)
+            k_sb.setSingleStep(1)
+            k_sb.setValue(layer.getHKL()[1])
+            k_sb.valueChanged.connect(lambda x: self.on_hkl_sb_changed(x,1,layer))
+            k_sb.setSizePolicy(QSizePolicy.Expanding,QSizePolicy.Fixed)
+            l_sb = QSpinBox(self)
+            l_sb.setToolTip('Define the l dimension of the unique direction')
+            l_sb.setRange(-20,20)
+            l_sb.setSingleStep(1)
+            l_sb.setValue(layer.getHKL()[2])
+            l_sb.valueChanged.connect(lambda x: self.on_hkl_sb_changed(x,2,layer))
+            l_sb.setSizePolicy(QSizePolicy.Expanding,QSizePolicy.Fixed)
+            self.layerTable_tw.setCellWidget(sequenceNumber,3,h_sb)
+            self.layerTable_tw.setCellWidget(sequenceNumber,4,k_sb)
+            self.layerTable_tw.setCellWidget(sequenceNumber,5,l_sb)
+            # define azimuthal angle
+            azimuthal = layer.getAzimuthal()
+            azimuthal_angle_sb = QDoubleSpinBox(self)
+            azimuthal_angle_sb.setToolTip('Define the slab azimuthal angle (rotation of the crystal about the lab Z-axis).\nThe orientation of the crystal in the laboratory frame can be seen in the laboratory frame information below')
+            azimuthal_angle_sb.setRange(-180,360)
+            azimuthal_angle_sb.setSingleStep(10)
+            azimuthal_angle_sb.setValue(azimuthal)
+            azimuthal_angle_sb.valueChanged.connect(lambda x: self.on_azimuthal_angle_sb_changed(x,layer))
+            azimuthal_angle_sb.setSizePolicy(QSizePolicy.Expanding,QSizePolicy.Fixed)
+            self.layerTable_tw.setCellWidget(sequenceNumber,6,azimuthal_angle_sb)
+            # Create a checkbox for incoherence
+            option_cb = QCheckBox(self)
+            option_cb.setToolTip('Change optional settings for the layer')
+            option_cb.setText('Options')
+            option_cb.setLayoutDirection(Qt.RightToLeft)
+            if layer.isCoherent():
+                option_cb.setCheckState(Qt.Unchecked)
+            else:
+                option_cb.setCheckState(Qt.Checked)
+            option_cb.stateChanged.connect(lambda x: self.on_option_cb_changed(x,layer))
+            option_cb.setSizePolicy(QSizePolicy.Expanding,QSizePolicy.Fixed)
+            self.layerTable_tw.setCellWidget(sequenceNumber,7,option_cb)
+            # Create a toolbar for up down delete
+            toolbar = self.createToolBar(layer,sequenceNumber,len(self.layers))
+            self.layerTable_tw.setCellWidget(sequenceNumber,8,toolbar)
+            # Add a Print option if debug is on
+            if debugger.state():
+                printButton = QPushButton('Print')
+                printButton.setToolTip('Print the permittivity')
+                printButton.clicked.connect(lambda x: self.on_print_button_clicked(x,layer))
+                self.layerTable_tw.setCellWidget(sequenceNumber,9,printButton)
+            if layer.isScalar():
+                h_sb.setEnabled(False)
+                k_sb.setEnabled(False)
+                l_sb.setEnabled(False)
+                azimuthal_angle_sb.setEnabled(False)
+        # Add a 'create new layer' button
+        rowCount += 1
+        newLayer_cb = self.newLayerWidget()
+        newLayer_cb.setStyleSheet('Text-align:left')
+        self.layerTable_tw.setRowCount(rowCount)
+        self.layerTable_tw.setCellWidget(rowCount-1,0,newLayer_cb)
         return
 
-    def drawLayerInformationWidget(self):
-        form = QFormLayout()
-        hbox = QHBoxLayout()
-        hbox.addWidget(QLabel('Material'))
-        hbox.addWidget(QLabel('Thickness'))
-        hbox.addWidget(QLabel('Units'))
-        hbox.addWidget(QLabel('H'))
-        hbox.addWidget(QLabel('K'))
-        hbox.addWidget(QLabel('L'))
-        hbox.addWidget(QLabel('Azimuthal'))
+    def drawLayerTable(self):
+        '''Draw a table with all the layers in it '''
+        self.layerTable_tw = QTableWidget()
+        self.layerTable_tw.setToolTip('Define the layers in the system')
+        self.layerTable_tw.itemChanged.connect(self.on_layerTable_itemChanged)
+        self.layerTable_tw.setStyleSheet("QTableWidget::item {padding-left: 0px; border; 0px}")
+        headers = ['Material', 'Thickness', 'Units', 'H', 'K', 'L', 'Azimuthal', 'Options', 'Move']
         if debugger.state():
-            hbox.addWidget(QLabel('Print'))
-        form.addRow(hbox)
-        for sequenceNumber,layer in enumerate(self.layers):
-            # Define material name
-            materialLabel,hbox = self.drawLayerInformationWidgetLine(sequenceNumber,layer)
-            form.addRow(materialLabel,hbox)
-        return form
+            headers.append('Print')
+        self.layerTable_tw.setRowCount(1)
+        self.layerTable_tw.setColumnCount(len(headers))
+        self.layerTable_tw.setHorizontalHeaderLabels(headers)
+        header = self.layerTable_tw.horizontalHeader()
+        # Material 
+        header.setSectionResizeMode(0,QHeaderView.Stretch)
+        # Thickness and units 
+        header.setSectionResizeMode(1,QHeaderView.ResizeToContents)
+        header.setSectionResizeMode(2,QHeaderView.ResizeToContents)
+        # HKL
+        header.setSectionResizeMode(3,QHeaderView.ResizeToContents)
+        header.setSectionResizeMode(4,QHeaderView.ResizeToContents)
+        header.setSectionResizeMode(5,QHeaderView.ResizeToContents)
+        # Azimuthal
+        header.setSectionResizeMode(6,QHeaderView.ResizeToContents)
+        # Options
+        header.setSectionResizeMode(7,QHeaderView.ResizeToContents)
+        # Move
+        header.setSectionResizeMode(8,QHeaderView.ResizeToContents)
+        if 'Print' in headers:
+            # Print
+            header.setSectionResizeMode(9,QHeaderView.ResizeToContents)
+        self.redrawLayerTable()
+        return self.layerTable_tw
 
-    def drawLayerInformationWidgetLine(self,sequenceNumber,layer):
-        '''Draw a line of the layer information widget
-           the only purpose of this routine is to protect the lambda functions from being in a loop
-        '''
-        hbox = QHBoxLayout()
-        material = layer.getMaterial()
-        materialName = material.getName()
-        materialLabel = QLabel(materialName)
-        materialThickness = layer.getThickness()
-        # Handle thickness units
-        thicknessUnit = layer.getThicknessUnit()
-        film_thickness_sb = QDoubleSpinBox(self)
-        film_thickness_sb.setSizePolicy(QSizePolicy.Expanding,QSizePolicy.Fixed)
-        film_thickness_sb.setToolTip('Define the thin film thickness in the defined thickness units')
-        film_thickness_sb.setRange(0,100000)
-        film_thickness_sb.setSingleStep(0.01)
-        film_thickness_sb.setValue(materialThickness)
-        film_thickness_sb.valueChanged.connect(lambda x: self.on_film_thickness_sb_changed(x,layer))
-        thickness_unit_cb = QComboBox(self)
-        thickness_unit_cb.setSizePolicy(QSizePolicy.Expanding,QSizePolicy.Fixed)
-        thickness_unit_cb.setToolTip('Set the units to be used for thickness; either nm, um, mm or cm')
-        thickness_unit_cb.addItems( ['nm','um','mm','cm'] )
-        index = thickness_unit_cb.findText(thicknessUnit, Qt.MatchFixedString)
-        thickness_unit_cb.setCurrentIndex(index)
-        thickness_unit_cb.activated.connect(lambda x: self.on_thickness_units_cb_activated(x, layer))
-        # define hkl
-        h_sb = QSpinBox(self)
-        h_sb.setToolTip('Define the h dimension of the unique direction')
-        h_sb.setRange(-20,20)
-        h_sb.setSingleStep(1)
-        h_sb.setValue(layer.getHKL()[0])
-        h_sb.valueChanged.connect(lambda x: self.on_hkl_sb_changed(x,0,layer))
-        h_sb.setSizePolicy(QSizePolicy.Expanding,QSizePolicy.Fixed)
-        k_sb = QSpinBox(self)
-        k_sb.setToolTip('Define the k dimension of the unique direction')
-        k_sb.setRange(-20,20)
-        k_sb.setSingleStep(1)
-        k_sb.setValue(layer.getHKL()[1])
-        k_sb.valueChanged.connect(lambda x: self.on_hkl_sb_changed(x,1,layer))
-        k_sb.setSizePolicy(QSizePolicy.Expanding,QSizePolicy.Fixed)
-        l_sb = QSpinBox(self)
-        l_sb.setToolTip('Define the l dimension of the unique direction')
-        l_sb.setRange(-20,20)
-        l_sb.setSingleStep(1)
-        l_sb.setValue(layer.getHKL()[2])
-        l_sb.valueChanged.connect(lambda x: self.on_hkl_sb_changed(x,2,layer))
-        l_sb.setSizePolicy(QSizePolicy.Expanding,QSizePolicy.Fixed)
-        # define azimuthal angle
-        azimuthal = layer.getAzimuthal()
-        azimuthal_angle_sb = QDoubleSpinBox(self)
-        azimuthal_angle_sb.setToolTip('Define the slab azimuthal angle (rotation of the crystal about the lab Z-axis).\nThe orientation of the crystal in the laboratory frame can be seen in the laboratory frame information below')
-        azimuthal_angle_sb.setRange(-180,360)
-        azimuthal_angle_sb.setSingleStep(10)
-        azimuthal_angle_sb.setValue(azimuthal)
-        azimuthal_angle_sb.valueChanged.connect(lambda x: self.on_azimuthal_angle_sb_changed(x,layer))
-        azimuthal_angle_sb.setSizePolicy(QSizePolicy.Expanding,QSizePolicy.Fixed)
-        # Create the line of widgets
-        hbox.addWidget(film_thickness_sb)
-        hbox.addWidget(thickness_unit_cb)
-        hbox.addWidget(h_sb)
-        hbox.addWidget(k_sb)
-        hbox.addWidget(l_sb)
-        hbox.addWidget(azimuthal_angle_sb)
-        if debugger.state():
-            printButton = QPushButton('Print')
-            printButton.setToolTip('Print the permittivity')
-            printButton.clicked.connect(lambda x: self.on_print_button_clicked(x,layer))
-            hbox.addWidget(printButton)
-        if layer.isScalar():
-            h_sb.setEnabled(False)
-            k_sb.setEnabled(False)
-            l_sb.setEnabled(False)
-            azimuthal_angle_sb.setEnabled(False)
-        return materialLabel,hbox
+    def deleteLayer(self,x,layer,layerIndex):
+        '''Handle a delete layer button press'''
+        # Only delete a layer if it doesn't have the dielectricFlag set
+        if not layer.isDielectric():
+            del self.layers[layerIndex]
+        self.generateLayerSettings()
+        self.refresh(force=True)
+        self.requestRefresh=True
+        return
+
+    def moveLayerUp(self,x,layer,layerIndex):
+        '''Move a layer up (sequence number gets smaller by 1)'''
+        if layerIndex < 1:
+            return
+        new = layerIndex - 1
+        item = self.layers[layerIndex]
+        self.layers.pop(layerIndex)
+        self.layers.insert(new, item)
+        self.generateLayerSettings()
+        self.refresh(force=True)
+        self.requestRefresh=True
+        return
+
+    def moveLayerDown(self,x,layer,layerIndex):
+        '''Move a layer down (sequence number gets larger by 1)'''
+        last = len(self.layers) - 1
+        if layerIndex >= last:
+            return
+        new = layerIndex + 1
+        item = self.layers[layerIndex]
+        self.layers.pop(layerIndex)
+        self.layers.insert(new, item)
+        self.generateLayerSettings()
+        self.refresh(force=True)
+        self.requestRefresh=True
+        return
+
+    def createToolBar(self,layer,layerIndex,nLayers):
+        '''Create the tool bar used for the material layer
+           layer is the layer concerned
+           layerIndex is its index in the list
+           nLayers is the number of layers in the list'''
+        frame = QFrame()
+        frame_layout = QHBoxLayout()
+        frame.setLayout(frame_layout)
+        moveUpButton = QToolButton()
+        moveUp = QAction()
+        moveUp.setIcon(QApplication.style().standardIcon(QStyle.SP_ArrowUp))
+        moveUp.triggered.connect(lambda x: self.moveLayerUp(x,layer,layerIndex))
+        #moveUpButton.setArrowType(Qt.UpArrow)
+        moveUpButton.setToolButtonStyle(Qt.ToolButtonIconOnly)
+        moveUpButton.setFixedSize(20,20)
+        moveUpButton.setIconSize(QSize(20,20))
+        moveUpButton.setStyleSheet('border: none;')
+        moveUpButton.setDefaultAction(moveUp)
+        moveUpButton.setToolTip('Move this layer up the list of layers')
+        moveDownButton = QToolButton()
+        moveDown = QAction()
+        moveDown.setIcon(QApplication.style().standardIcon(QStyle.SP_ArrowDown))
+        moveDown.triggered.connect(lambda x: self.moveLayerDown(x,layer,layerIndex))
+        #moveDownButton.setArrowType(Qt.DownArrow)
+        moveDownButton.setToolButtonStyle(Qt.ToolButtonIconOnly)
+        moveDownButton.setFixedSize(20,20)
+        moveDownButton.setIconSize(QSize(20,20))
+        moveDownButton.setStyleSheet('border: none;')
+        moveDownButton.setDefaultAction(moveDown)
+        moveDownButton.setToolTip('Move this layer down the list of layers')
+        deleteButton = QToolButton()
+        deleteAction = QAction()
+        deleteAction.setIcon(QApplication.style().standardIcon(QStyle.SP_DialogCloseButton))
+        deleteAction.triggered.connect(lambda x: self.deleteLayer(x,layer,layerIndex))
+        deleteButton.setToolButtonStyle(Qt.ToolButtonIconOnly)
+        deleteButton.setFixedSize(20,20)
+        deleteButton.setIconSize(QSize(20,20))
+        deleteButton.setStyleSheet('border: none;')
+        deleteButton.setDefaultAction(deleteAction)
+        deleteButton.setToolTip('Delete this layer')
+        if layerIndex == 0:
+            moveUpButton.setEnabled(False)
+        if layerIndex == nLayers-1:
+            moveDownButton.setEnabled(False)
+        if nLayers == 1:
+            moveUpButton.setEnabled(False)
+            moveDownButton.setEnabled(False)
+            deleteButton.setEnabled(False)
+        if layer.isDielectric():
+            deleteButton.setEnabled(False)
+        frame_layout.addWidget(moveUpButton)
+        frame_layout.addWidget(moveDownButton)
+        frame_layout.addWidget(deleteButton)
+        return frame
+        
+    def newLayerWidget(self):
+        newLayer_cb = QComboBox()
+        newLayer_cb.setToolTip('Create a new layer')
+        materialNames = ['New layer...']
+        materialNames += self.materialNames
+        newLayer_cb.addItems(materialNames)
+        newLayer_cb.setCurrentIndex(0)
+        newLayer_cb.activated.connect(self.on_newLayer_cb_activated)
+        return newLayer_cb
+
+    def on_layerTable_itemChanged(self,item):
+        '''Handle a change to the layer table'''
+        print('on_layerTable_itemChanged: ',item)
+        return
+
+    def on_newLayer_cb_activated(self,index):
+        '''Handle a new layer button click'''
+        print('on_newLayerButton_clicked: ',index)
+        if index == 0:
+            return
+        newMaterialName = self.materialNames[index-1]
+        newMaterial = self.DataBase.getMaterial(newMaterialName)
+        hkl = [0,0,0]
+        if newMaterial.isTensor():
+            hkl = [0,0,1]
+        new_layer = Layer(newMaterial,hkl=hkl,azimuthal=0.0,thickness=1.0,thicknessUnit='um')
+        self.layers.append(new_layer)
+        self.generateLayerSettings()
+        self.refresh(force=True)
+        self.refreshRequired = True
+        return
 
     def on_print_button_clicked(self,x,layer):
         '''Print the permittivity for the layer'''
@@ -398,6 +567,18 @@ class SingleCrystalScenarioTab(ScenarioTab):
         name += '_permittivity.csv'
         print('Printing permittivity information to',name)
         permittivityObject.print(0.0,2000.0,1.0,file=name)
+        return
+
+    def on_option_cb_changed(self,value,layer):
+        '''The incoherence checkbox has changed'''
+        debugger.print('on_incoherence_cb_changed', value,layer.getName())
+        state = layer.isCoherent()
+        if state:
+            layer.setIncoherent()
+        else:
+            layer.setCoherent()
+        self.generateLayerSettings()
+        self.refreshRequired = True
         return
 
     def on_film_thickness_sb_changed(self,value,layer):
@@ -437,14 +618,6 @@ class SingleCrystalScenarioTab(ScenarioTab):
         self.refreshRequired = True
         return
 
-    def editLayersWindow(self):
-        '''Create the add layers widget'''
-        self.editLayers_button = QPushButton('Edit layers between superstrate and substrate')
-        self.editLayers_button.setToolTip('Edit layers between the superstrate and the substrate')
-        self.editLayers_button.clicked.connect(self.editLayersButtonClicked)
-        label = QLabel('Edit layers')
-        return label,self.editLayers_button
-
     def generateLayerSettings(self):
         '''Generate a list of settings for each layer'''
         debugger.print(self.settings['Legend'],'generateLayerSettings')
@@ -454,6 +627,7 @@ class SingleCrystalScenarioTab(ScenarioTab):
         self.settings['Layer thicknesses']     = []
         self.settings['Layer thickness units'] = []
         self.settings['Layer dielectric flags'] = []
+        self.settings['Layer coherent flags'] = []
         for layer in self.layers:
             self.settings['Layer material names'].append(layer.getMaterial().getName())
             self.settings['Layer hkls'].append(layer.getHKL())
@@ -461,9 +635,11 @@ class SingleCrystalScenarioTab(ScenarioTab):
             self.settings['Layer thicknesses'].append(layer.getThickness())
             self.settings['Layer thickness units'].append(layer.getThicknessUnit())
             self.settings['Layer dielectric flags'].append(layer.isDielectric())
+            self.settings['Layer coherent flags'].append(layer.isCoherent())
+        self.dielectricLayer = self.layers[self.getDielectricLayerIndex()]
         return
 
-    def addDielectricLayer(self,name,hkl,azimuthal,thickness,thicknessUnit,forTheFirstTime=False):
+    def addDielectricLayer(self,name,hkl,azimuthal,thickness,thicknessUnit,coherentFlag,forTheFirstTime=False):
         '''Add a dielectric layer to the list of layers'''
         debugger.print(self.settings['Legend'],'addDielectricLayer',name,hkl,azimuthal,thicknessUnit,forTheFirstTime)
         # Update the notebook permittivity if it needs to be updated
@@ -494,8 +670,7 @@ class SingleCrystalScenarioTab(ScenarioTab):
                 del(self.settings['Unique direction - k'])
                 del(self.settings['Unique direction - l'])
         # Append the dielectric material to the list of layers
-        self.layers.append(Layer(dielectricMaterial,hkl=hkl,azimuthal=azimuthal,thickness=thickness,thicknessUnit=thicknessUnit,dielectricFlag=True))
-        self.dielectricLayer = self.layers[-1]
+        self.layers.append(Layer(dielectricMaterial,hkl=hkl,azimuthal=azimuthal,thickness=thickness,thicknessUnit=thicknessUnit,coherentFlag=coherentFlag,dielectricFlag=True))
         self.generateLayerSettings()
         return
 
@@ -513,27 +688,28 @@ class SingleCrystalScenarioTab(ScenarioTab):
             azimuthal = 0.0
             thickness = 10.0
             thicknessUnit = 'um'
-            self.addDielectricLayer(name,hkl,azimuthal,thickness,thicknessUnit,forTheFirstTime=True)
+            coherentFlag = True
+            self.addDielectricLayer(name,hkl,azimuthal,thickness,thicknessUnit,coherentFlag,forTheFirstTime=True)
             return
         # Process the settings information and append each layer to the list
-        for name, hkl, azimuthal, thickness, thicknessUnit, dielectricFlag in zip(
+        for name, hkl, azimuthal, thickness, thicknessUnit, dielectricFlag, coherentFlag in zip(
                           self.settings['Layer material names'],
                           self.settings['Layer hkls'],
                           self.settings['Layer azimuthals'],
                           self.settings['Layer thicknesses'],
                           self.settings['Layer thickness units'],
-                          self.settings['Layer dielectric flags']):
+                          self.settings['Layer dielectric flags'],
+                          self.settings['Layer coherent flags']):
             # If the dielectric flag is set then initialise the dielectric and create a new layer
             # Otherwise use the materials database
-            
             if dielectricFlag:
-                self.addDielectricLayer(name,hkl,azimuthal,thickness,thicknessUnit)
+                self.addDielectricLayer(name,hkl,azimuthal,thickness,thicknessUnit,coherentFlag)
             else:
                 if name not in self.materialNames:
                     print('Error material ', name, ' not available ', self.materialNames)
                     name = 'air'
                 material = self.DataBase.getMaterial(name)
-                self.layers.append(Layer(material,hkl=hkl,azimuthal=azimuthal,thickness=thickness,thicknessUnit=thicknessUnit,dielectricFlag=dielectricFlag))
+                self.layers.append(Layer(material,hkl=hkl,azimuthal=azimuthal,thickness=thickness,thicknessUnit=thicknessUnit,coherentFlag=coherentFlag,dielectricFlag=dielectricFlag))
         return
 
     def getDielectricLayerIndex(self):
@@ -544,26 +720,20 @@ class SingleCrystalScenarioTab(ScenarioTab):
                 return index
         return None
 
-    def editLayersButtonClicked(self):
-        '''Handle a click on the add layers widget'''
+    def on_layer_button_clicked(self,x,layer,layerIndex):
+        '''Handle a click on the show layer widget'''
         # Do a refresh now as things in the GUI might have changed
         self.refresh()
         # Do a recalculation as the layer instance for the crystal is defined then
         self.calculate(self.vs_cm1)
-        # Create the window and show it
-        self.editLayerWindow = EditLayerWindow(self.layers,self.DataBase,debug=debugger.state())
-        self.editLayerWindow.exec()
-        self.editLayerWindow.close()
-        # Handle the changes made to the layers
-        self.layers = self.editLayerWindow.getLayers()
-        if len(self.layers) > 0:
+        # Create the dialog box with all the information on the layer, work on a copy of the layer
+        showLayerWindow = ShowLayerWindow(copy.copy(layer),debug=debugger.state())
+        if showLayerWindow.exec():
+            # The 'Ok' button was pressed
+            # get the new Layer and replace the old one
+            self.layers[layerIndex] = showLayerWindow.getLayer()
             self.generateLayerSettings()
-            # Update the hkl widget, the units and the thickness widgets.  With details
-            # of the dielectric layer
-            self.dielectricLayer = self.layers[self.getDielectricLayerIndex()]
-            hkl = self.dielectricLayer.getHKL()
-            self.refreshRequired = True
-            self.refresh()
+            self.refresh(force=True)
             self.refreshRequired = True
         return
 
@@ -806,8 +976,8 @@ class SingleCrystalScenarioTab(ScenarioTab):
             self.superstrateMaterial = self.DataBase.getMaterial(self.settings['Superstrate'])
         self.settings['Substrate permittivity'] = self.substrateMaterial.getPermittivityFunction()(0.0)
         self.settings['Superstrate permittivity'] = self.superstrateMaterial.getPermittivityFunction()(0.0)
+        self.refresh(force=True)
         self.refreshRequired = True
-        self.refresh()
         return
 
     def on_partially_incoherent_kernel_sb_changed(self,value):
@@ -845,7 +1015,7 @@ class SingleCrystalScenarioTab(ScenarioTab):
         self.settings['Superstrate'] = 'Material defined manually'
         if 'Material defined manually' not in self.materialNames:
             self.materialNames.append('Material defined manually')
-        self.refresh()
+        self.refresh(force=True)
         self.refreshRequired = True
         return
 
@@ -859,7 +1029,7 @@ class SingleCrystalScenarioTab(ScenarioTab):
         self.settings['Superstrate'] = 'Material defined manually'
         if 'Material defined manually' not in self.materialNames:
             self.materialNames.append('Material defined manually')
-        self.refresh()
+        self.refresh(force=True)
         self.refreshRequired = True
         return
 
@@ -873,7 +1043,7 @@ class SingleCrystalScenarioTab(ScenarioTab):
         self.settings['Substrate'] = 'Material defined manually'
         if 'Material defined manually' not in self.materialNames:
             self.materialNames.append('Material defined manually')
-        self.refresh()
+        self.refresh(force=True)
         self.refreshRequired = True
         return
 
@@ -887,7 +1057,7 @@ class SingleCrystalScenarioTab(ScenarioTab):
         self.settings['Substrate'] = 'Material defined manually'
         if 'Material defined manually' not in self.materialNames:
             self.materialNames.append('Material defined manually')
-        self.refresh()
+        self.refresh(force=True)
         self.refreshRequired = True
         return
 
@@ -995,7 +1165,7 @@ class SingleCrystalScenarioTab(ScenarioTab):
         self.partially_incoherent_kernel_sb.setValue(self.settings['Filter kernel size'])
         self.partially_incoherent_polynomial_sb.setValue(self.settings['Filter polynomial size'])
         # Redraw the layer information widget
-        self.redrawLayerInformationWidget()
+        self.redrawLayerTable()
         self.form.update()
         #
         # Unblock signals after refresh
@@ -1121,7 +1291,7 @@ class SingleCrystalScenarioTab(ScenarioTab):
         self.superstrate_cb.blockSignals(m_blocking)
         self.superstrate_permittivity_r_sb.blockSignals(r_blocking)
         self.superstrate_permittivity_i_sb.blockSignals(i_blocking)
-        self.refresh()
+        self.refresh(force=True)
         self.refreshRequired = True
         return
 
@@ -1168,7 +1338,7 @@ class SingleCrystalScenarioTab(ScenarioTab):
         self.substrate_cb.blockSignals(m_blocking)
         self.substrate_permittivity_r_sb.blockSignals(r_blocking)
         self.substrate_permittivity_i_sb.blockSignals(i_blocking)
-        self.refresh()
+        self.refresh(force=True)
         self.refreshRequired = True
         return
 
@@ -1189,8 +1359,7 @@ class SingleCrystalScenarioTab(ScenarioTab):
             if self.settings['Percentage partial incoherence'] == 0:
                 self.settings['Percentage partial incoherence'] = 20
         self.generateLayerSettings()
-        self.refreshRequired = True
-        self.refresh()
+        self.refresh(force=True)
         self.refreshRequired = True
         debugger.print(self.settings['Legend'],'Mode changed to ', self.settings['Mode'])
         debugger.print(self.settings['Legend'],'Finished:: on_mode_cb_activated')
@@ -1347,11 +1516,11 @@ class SingleCrystalScenarioTab(ScenarioTab):
                 s_absorbtance.append(1.0 - R[1]-R[3])
                 p_transmittance.append(np.zeros_like(T[0]))
                 s_transmittance.append(np.zeros_like(T[1]))
-            elif self.settings['Mode'] == 'Incoherent thin film':
-                p_transmittance.append(T[0])
-                s_transmittance.append(T[1])
-                p_absorbtance.append(1.0 - p_reflectance[-1] - p_transmittance[-1])
-                s_absorbtance.append(1.0 - s_reflectance[-1] - s_transmittance[-1])
+#            elif self.settings['Mode'] == 'Incoherent thin film':
+#                p_transmittance.append(T[0])
+#                s_transmittance.append(T[1])
+#                p_absorbtance.append(1.0 - p_reflectance[-1] - p_transmittance[-1])
+#                s_absorbtance.append(1.0 - s_reflectance[-1] - s_transmittance[-1])
             else:
                 p_transmittance.append(T[0])
                 s_transmittance.append(T[1])
