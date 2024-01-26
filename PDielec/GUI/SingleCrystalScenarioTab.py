@@ -303,101 +303,108 @@ class SingleCrystalScenarioTab(ScenarioTab):
             elif layer == self.layers[-1]:
                 lastLayer = True
             self.layerTable_tw.setRowCount(rowCount)
-            # Creat a layer button
-            material = layer.getMaterial()
-            materialName = material.getName()
-            layer_button = QPushButton(materialName)
-            layer_button.setToolTip('Show all the material properties in a new window')
-            layer_button.setStyleSheet('Text-align:left')
-            layer_button.clicked.connect(lambda x: self.on_layer_button_clicked(x,layer,sequenceNumber))
-            self.layerTable_tw.setCellWidget(sequenceNumber,0,layer_button)
-            # Handle thickness 
-            materialThickness = layer.getThickness()
-            thicknessUnit = layer.getThicknessUnit()
-            film_thickness_sb = QDoubleSpinBox(self)
-            film_thickness_sb.setSizePolicy(QSizePolicy.Expanding,QSizePolicy.Fixed)
-            film_thickness_sb.setToolTip('Define the thin film thickness in the defined thickness units')
-            film_thickness_sb.setRange(0,100000)
-            film_thickness_sb.setSingleStep(0.01)
-            film_thickness_sb.setValue(materialThickness)
-            film_thickness_sb.valueChanged.connect(lambda x: self.on_film_thickness_sb_changed(x,layer))
-            self.layerTable_tw.setCellWidget(sequenceNumber,1,film_thickness_sb)
-            # thickness unit
-            thickness_unit_cb = QComboBox(self)
-            thickness_unit_cb.setSizePolicy(QSizePolicy.Expanding,QSizePolicy.Fixed)
-            thickness_unit_cb.setToolTip('Set the units to be used for thickness; either nm, um, mm or cm')
-            thickness_unit_cb.addItems( ['nm','um','mm','cm'] )
-            index = thickness_unit_cb.findText(thicknessUnit, Qt.MatchFixedString)
-            thickness_unit_cb.setCurrentIndex(index)
-            thickness_unit_cb.activated.connect(lambda x: self.on_thickness_units_cb_activated(x, layer))
-            self.layerTable_tw.setCellWidget(sequenceNumber,2,thickness_unit_cb)
-            # define hkl
-            h_sb = QSpinBox(self)
-            h_sb.setToolTip('Define the h dimension of the unique direction')
-            h_sb.setRange(-20,20)
-            h_sb.setSingleStep(1)
-            h_sb.setValue(layer.getHKL()[0])
-            h_sb.valueChanged.connect(lambda x: self.on_hkl_sb_changed(x,0,layer))
-            h_sb.setSizePolicy(QSizePolicy.Expanding,QSizePolicy.Fixed)
-            k_sb = QSpinBox(self)
-            k_sb.setToolTip('Define the k dimension of the unique direction')
-            k_sb.setRange(-20,20)
-            k_sb.setSingleStep(1)
-            k_sb.setValue(layer.getHKL()[1])
-            k_sb.valueChanged.connect(lambda x: self.on_hkl_sb_changed(x,1,layer))
-            k_sb.setSizePolicy(QSizePolicy.Expanding,QSizePolicy.Fixed)
-            l_sb = QSpinBox(self)
-            l_sb.setToolTip('Define the l dimension of the unique direction')
-            l_sb.setRange(-20,20)
-            l_sb.setSingleStep(1)
-            l_sb.setValue(layer.getHKL()[2])
-            l_sb.valueChanged.connect(lambda x: self.on_hkl_sb_changed(x,2,layer))
-            l_sb.setSizePolicy(QSizePolicy.Expanding,QSizePolicy.Fixed)
-            self.layerTable_tw.setCellWidget(sequenceNumber,3,h_sb)
-            self.layerTable_tw.setCellWidget(sequenceNumber,4,k_sb)
-            self.layerTable_tw.setCellWidget(sequenceNumber,5,l_sb)
-            # define azimuthal angle
-            azimuthal = layer.getAzimuthal()
-            azimuthal_angle_sb = QDoubleSpinBox(self)
-            azimuthal_angle_sb.setToolTip('Define the slab azimuthal angle (rotation of the crystal about the lab Z-axis).\nThe orientation of the crystal in the laboratory frame can be seen in the laboratory frame information below')
-            azimuthal_angle_sb.setRange(-180,360)
-            azimuthal_angle_sb.setSingleStep(10)
-            azimuthal_angle_sb.setValue(azimuthal)
-            azimuthal_angle_sb.valueChanged.connect(lambda x: self.on_azimuthal_angle_sb_changed(x,layer))
-            azimuthal_angle_sb.setSizePolicy(QSizePolicy.Expanding,QSizePolicy.Fixed)
-            self.layerTable_tw.setCellWidget(sequenceNumber,6,azimuthal_angle_sb)
-            # Create a checkbox for incoherence
-            option_cb = QCheckBox(self)
-            option_cb.setToolTip('Change optional settings for the layer')
-            option_cb.setText('Options')
-            option_cb.setLayoutDirection(Qt.RightToLeft)
-            if layer.isCoherent():
-                option_cb.setCheckState(Qt.Unchecked)
-            else:
-                option_cb.setCheckState(Qt.Checked)
-            option_cb.stateChanged.connect(lambda x: self.on_option_cb_changed(x,layer))
-            option_cb.setSizePolicy(QSizePolicy.Expanding,QSizePolicy.Fixed)
-            self.layerTable_tw.setCellWidget(sequenceNumber,7,option_cb)
-            # Create a toolbar for up down delete
-            toolbar = self.createToolBar(layer,sequenceNumber,len(self.layers))
-            self.layerTable_tw.setCellWidget(sequenceNumber,8,toolbar)
-            # Add a Print option if debug is on
-            if debugger.state():
-                printButton = QPushButton('Print')
-                printButton.setToolTip('Print the permittivity')
-                printButton.clicked.connect(lambda x: self.on_print_button_clicked(x,layer))
-                self.layerTable_tw.setCellWidget(sequenceNumber,9,printButton)
-            if layer.isScalar():
-                h_sb.setEnabled(False)
-                k_sb.setEnabled(False)
-                l_sb.setEnabled(False)
-                azimuthal_angle_sb.setEnabled(False)
+            self.redrawLayerTableRow(sequenceNumber,layer,rowCount,firstLayer,lastLayer)
         # Add a 'create new layer' button
         rowCount += 1
         newLayer_cb = self.newLayerWidget()
         newLayer_cb.setStyleSheet('Text-align:left')
         self.layerTable_tw.setRowCount(rowCount)
         self.layerTable_tw.setCellWidget(rowCount-1,0,newLayer_cb)
+
+    def redrawLayerTableRow(self,sequenceNumber,layer,rowCount,firstLayer,lastLayer):
+        '''Draw a row of the layer table
+           Need a seperate routine for this as there are problems with the
+           lambda code only keeping the last in a list
+        '''
+        # Create a layer button
+        material = layer.getMaterial()
+        materialName = material.getName()
+        layer_button = QPushButton(materialName)
+        layer_button.setToolTip('Show all the material properties in a new window')
+        layer_button.setStyleSheet('Text-align:left')
+        layer_button.clicked.connect(lambda x: self.on_layer_button_clicked(x,layer,sequenceNumber))
+        self.layerTable_tw.setCellWidget(sequenceNumber,0,layer_button)
+        # Handle thickness 
+        materialThickness = layer.getThickness()
+        thicknessUnit = layer.getThicknessUnit()
+        film_thickness_sb = QDoubleSpinBox(self)
+        film_thickness_sb.setSizePolicy(QSizePolicy.Expanding,QSizePolicy.Fixed)
+        film_thickness_sb.setToolTip('Define the thin film thickness in the defined thickness units')
+        film_thickness_sb.setRange(0,100000)
+        film_thickness_sb.setSingleStep(0.01)
+        film_thickness_sb.setValue(materialThickness)
+        film_thickness_sb.valueChanged.connect(lambda x: self.on_film_thickness_sb_changed(x,layer))
+        self.layerTable_tw.setCellWidget(sequenceNumber,1,film_thickness_sb)
+        # thickness unit
+        thickness_unit_cb = QComboBox(self)
+        thickness_unit_cb.setSizePolicy(QSizePolicy.Expanding,QSizePolicy.Fixed)
+        thickness_unit_cb.setToolTip('Set the units to be used for thickness; either nm, um, mm or cm')
+        thickness_unit_cb.addItems( ['nm','um','mm','cm'] )
+        index = thickness_unit_cb.findText(thicknessUnit, Qt.MatchFixedString)
+        thickness_unit_cb.setCurrentIndex(index)
+        thickness_unit_cb.activated.connect(lambda x: self.on_thickness_units_cb_activated(x, layer))
+        self.layerTable_tw.setCellWidget(sequenceNumber,2,thickness_unit_cb)
+        # define hkl
+        h_sb = QSpinBox(self)
+        h_sb.setToolTip('Define the h dimension of the unique direction')
+        h_sb.setRange(-20,20)
+        h_sb.setSingleStep(1)
+        h_sb.setValue(layer.getHKL()[0])
+        h_sb.valueChanged.connect(lambda x: self.on_hkl_sb_changed(x,0,layer))
+        h_sb.setSizePolicy(QSizePolicy.Expanding,QSizePolicy.Fixed)
+        k_sb = QSpinBox(self)
+        k_sb.setToolTip('Define the k dimension of the unique direction')
+        k_sb.setRange(-20,20)
+        k_sb.setSingleStep(1)
+        k_sb.setValue(layer.getHKL()[1])
+        k_sb.valueChanged.connect(lambda x: self.on_hkl_sb_changed(x,1,layer))
+        k_sb.setSizePolicy(QSizePolicy.Expanding,QSizePolicy.Fixed)
+        l_sb = QSpinBox(self)
+        l_sb.setToolTip('Define the l dimension of the unique direction')
+        l_sb.setRange(-20,20)
+        l_sb.setSingleStep(1)
+        l_sb.setValue(layer.getHKL()[2])
+        l_sb.valueChanged.connect(lambda x: self.on_hkl_sb_changed(x,2,layer))
+        l_sb.setSizePolicy(QSizePolicy.Expanding,QSizePolicy.Fixed)
+        self.layerTable_tw.setCellWidget(sequenceNumber,3,h_sb)
+        self.layerTable_tw.setCellWidget(sequenceNumber,4,k_sb)
+        self.layerTable_tw.setCellWidget(sequenceNumber,5,l_sb)
+        # define azimuthal angle
+        azimuthal = layer.getAzimuthal()
+        azimuthal_angle_sb = QDoubleSpinBox(self)
+        azimuthal_angle_sb.setToolTip('Define the slab azimuthal angle (rotation of the crystal about the lab Z-axis).\nThe orientation of the crystal in the laboratory frame can be seen in the laboratory frame information below')
+        azimuthal_angle_sb.setRange(-180,360)
+        azimuthal_angle_sb.setSingleStep(10)
+        azimuthal_angle_sb.setValue(azimuthal)
+        azimuthal_angle_sb.valueChanged.connect(lambda x: self.on_azimuthal_angle_sb_changed(x,layer))
+        azimuthal_angle_sb.setSizePolicy(QSizePolicy.Expanding,QSizePolicy.Fixed)
+        self.layerTable_tw.setCellWidget(sequenceNumber,6,azimuthal_angle_sb)
+        # Create a checkbox for incoherence
+        option_cb = QCheckBox(self)
+        option_cb.setToolTip('Change optional settings for the layer')
+        option_cb.setText('Options')
+        option_cb.setLayoutDirection(Qt.RightToLeft)
+        if layer.isCoherent():
+            option_cb.setCheckState(Qt.Unchecked)
+        else:
+            option_cb.setCheckState(Qt.Checked)
+        option_cb.stateChanged.connect(lambda x: self.on_option_cb_changed(x,layer))
+        option_cb.setSizePolicy(QSizePolicy.Expanding,QSizePolicy.Fixed)
+        self.layerTable_tw.setCellWidget(sequenceNumber,7,option_cb)
+        # Create a toolbar for up down delete
+        toolbar = self.createToolBar(layer,sequenceNumber,len(self.layers))
+        self.layerTable_tw.setCellWidget(sequenceNumber,8,toolbar)
+        # Add a Print option if debug is on
+        if debugger.state():
+            printButton = QPushButton('Print')
+            printButton.setToolTip('Print the permittivity')
+            printButton.clicked.connect(lambda x: self.on_print_button_clicked(x,layer))
+            self.layerTable_tw.setCellWidget(sequenceNumber,9,printButton)
+        if layer.isScalar():
+            h_sb.setEnabled(False)
+            k_sb.setEnabled(False)
+            l_sb.setEnabled(False)
+            azimuthal_angle_sb.setEnabled(False)
         return
 
     def drawLayerTable(self):
@@ -441,11 +448,12 @@ class SingleCrystalScenarioTab(ScenarioTab):
             del self.layers[layerIndex]
         self.generateLayerSettings()
         self.refresh(force=True)
-        self.requestRefresh=True
+        self.refreshRequired=True
         return
 
     def moveLayerUp(self,x,layer,layerIndex):
         '''Move a layer up (sequence number gets smaller by 1)'''
+        print('JK30 move layer up',x,layer,layerIndex)
         if layerIndex < 1:
             return
         new = layerIndex - 1
@@ -454,7 +462,7 @@ class SingleCrystalScenarioTab(ScenarioTab):
         self.layers.insert(new, item)
         self.generateLayerSettings()
         self.refresh(force=True)
-        self.requestRefresh=True
+        self.refreshRequired=True
         return
 
     def moveLayerDown(self,x,layer,layerIndex):
@@ -468,8 +476,42 @@ class SingleCrystalScenarioTab(ScenarioTab):
         self.layers.insert(new, item)
         self.generateLayerSettings()
         self.refresh(force=True)
-        self.requestRefresh=True
+        self.refreshRequired=True
         return
+
+    def createToolBarMoveUpButton(self,layer,layerIndex,nLayers):
+        '''Create the move up button as part of the layer toolbar'''
+        print('JK20','Move up',layer,layerIndex,nLayers)
+        moveUpButton = QPushButton()
+        moveUpButton.setIcon(QApplication.style().standardIcon(QStyle.SP_ArrowUp))
+        moveUpButton.clicked.connect(lambda x: self.moveLayerUp(x,layer,layerIndex))
+        moveUpButton.setFixedSize(20,20)
+        moveUpButton.setIconSize(QSize(20,20))
+        moveUpButton.setStyleSheet('border: none;')
+        moveUpButton.setToolTip('Move this layer up the list of layers')
+        return moveUpButton
+
+    def createToolBarMoveDownButton(self,layer,layerIndex,nLayers):
+        '''Create the move down button as part of the layer toolbar'''
+        moveDownButton = QPushButton()
+        moveDownButton.setIcon(QApplication.style().standardIcon(QStyle.SP_ArrowDown))
+        moveDownButton.clicked.connect(lambda x: self.moveLayerDown(x,layer,layerIndex))
+        moveDownButton.setFixedSize(20,20)
+        moveDownButton.setIconSize(QSize(20,20))
+        moveDownButton.setStyleSheet('border: none;')
+        moveDownButton.setToolTip('Move this layer down the list of layers')
+        return moveDownButton
+
+    def createToolBarDeleteButton(self,layer,layerIndex,nLayers):
+        '''Create the delete button as part of the layer toolbar'''
+        deleteButton = QPushButton()
+        deleteButton.setIcon(QApplication.style().standardIcon(QStyle.SP_DialogCloseButton))
+        deleteButton.clicked.connect(lambda x: self.deleteLayer(x,layer,layerIndex))
+        deleteButton.setFixedSize(20,20)
+        deleteButton.setIconSize(QSize(20,20))
+        deleteButton.setStyleSheet('border: none;')
+        deleteButton.setToolTip('Delete this layer')
+        return deleteButton
 
     def createToolBar(self,layer,layerIndex,nLayers):
         '''Create the tool bar used for the material layer
@@ -479,38 +521,11 @@ class SingleCrystalScenarioTab(ScenarioTab):
         frame = QFrame()
         frame_layout = QHBoxLayout()
         frame.setLayout(frame_layout)
-        moveUpButton = QToolButton()
-        moveUp = QAction()
-        moveUp.setIcon(QApplication.style().standardIcon(QStyle.SP_ArrowUp))
-        moveUp.triggered.connect(lambda x: self.moveLayerUp(x,layer,layerIndex))
-        #moveUpButton.setArrowType(Qt.UpArrow)
-        moveUpButton.setToolButtonStyle(Qt.ToolButtonIconOnly)
-        moveUpButton.setFixedSize(20,20)
-        moveUpButton.setIconSize(QSize(20,20))
-        moveUpButton.setStyleSheet('border: none;')
-        moveUpButton.setDefaultAction(moveUp)
-        moveUpButton.setToolTip('Move this layer up the list of layers')
-        moveDownButton = QToolButton()
-        moveDown = QAction()
-        moveDown.setIcon(QApplication.style().standardIcon(QStyle.SP_ArrowDown))
-        moveDown.triggered.connect(lambda x: self.moveLayerDown(x,layer,layerIndex))
-        #moveDownButton.setArrowType(Qt.DownArrow)
-        moveDownButton.setToolButtonStyle(Qt.ToolButtonIconOnly)
-        moveDownButton.setFixedSize(20,20)
-        moveDownButton.setIconSize(QSize(20,20))
-        moveDownButton.setStyleSheet('border: none;')
-        moveDownButton.setDefaultAction(moveDown)
-        moveDownButton.setToolTip('Move this layer down the list of layers')
-        deleteButton = QToolButton()
-        deleteAction = QAction()
-        deleteAction.setIcon(QApplication.style().standardIcon(QStyle.SP_DialogCloseButton))
-        deleteAction.triggered.connect(lambda x: self.deleteLayer(x,layer,layerIndex))
-        deleteButton.setToolButtonStyle(Qt.ToolButtonIconOnly)
-        deleteButton.setFixedSize(20,20)
-        deleteButton.setIconSize(QSize(20,20))
-        deleteButton.setStyleSheet('border: none;')
-        deleteButton.setDefaultAction(deleteAction)
-        deleteButton.setToolTip('Delete this layer')
+        # Create the buttons in different routines because of the lambda function usage
+        moveUpButton   =  self.createToolBarMoveUpButton(layer,layerIndex,nLayers)
+        moveDownButton =  self.createToolBarMoveDownButton(layer,layerIndex,nLayers)
+        deleteButton   =  self.createToolBarDeleteButton(layer,layerIndex,nLayers)
+        # disable any buttons that are irrelevant to the layer
         if layerIndex == 0:
             moveUpButton.setEnabled(False)
         if layerIndex == nLayers-1:
@@ -521,6 +536,7 @@ class SingleCrystalScenarioTab(ScenarioTab):
             deleteButton.setEnabled(False)
         if layer.isDielectric():
             deleteButton.setEnabled(False)
+        # Add the buttons to the frame and return the frame
         frame_layout.addWidget(moveUpButton)
         frame_layout.addWidget(moveDownButton)
         frame_layout.addWidget(deleteButton)
@@ -543,7 +559,6 @@ class SingleCrystalScenarioTab(ScenarioTab):
 
     def on_newLayer_cb_activated(self,index):
         '''Handle a new layer button click'''
-        print('on_newLayerButton_clicked: ',index)
         if index == 0:
             return
         newMaterialName = self.materialNames[index-1]
@@ -636,7 +651,6 @@ class SingleCrystalScenarioTab(ScenarioTab):
             self.settings['Layer thickness units'].append(layer.getThicknessUnit())
             self.settings['Layer dielectric flags'].append(layer.isDielectric())
             self.settings['Layer coherent flags'].append(layer.isCoherent())
-        self.dielectricLayer = self.layers[self.getDielectricLayerIndex()]
         return
 
     def addDielectricLayer(self,name,hkl,azimuthal,thickness,thicknessUnit,coherentFlag,forTheFirstTime=False):
@@ -722,11 +736,8 @@ class SingleCrystalScenarioTab(ScenarioTab):
 
     def on_layer_button_clicked(self,x,layer,layerIndex):
         '''Handle a click on the show layer widget'''
-        # Do a refresh now as things in the GUI might have changed
-        self.refresh()
-        # Do a recalculation as the layer instance for the crystal is defined then
-        self.calculate(self.vs_cm1)
         # Create the dialog box with all the information on the layer, work on a copy of the layer
+        print('on_layer_button_clicked',layer,layerIndex)
         showLayerWindow = ShowLayerWindow(copy.copy(layer),debug=debugger.state())
         if showLayerWindow.exec():
             # The 'Ok' button was pressed
@@ -1166,7 +1177,6 @@ class SingleCrystalScenarioTab(ScenarioTab):
         self.partially_incoherent_polynomial_sb.setValue(self.settings['Filter polynomial size'])
         # Redraw the layer information widget
         self.redrawLayerTable()
-        self.form.update()
         #
         # Unblock signals after refresh
         #
