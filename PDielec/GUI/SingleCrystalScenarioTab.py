@@ -453,7 +453,6 @@ class SingleCrystalScenarioTab(ScenarioTab):
 
     def moveLayerUp(self,x,layer,layerIndex):
         '''Move a layer up (sequence number gets smaller by 1)'''
-        print('JK30 move layer up',x,layer,layerIndex)
         if layerIndex < 1:
             return
         new = layerIndex - 1
@@ -481,7 +480,6 @@ class SingleCrystalScenarioTab(ScenarioTab):
 
     def createToolBarMoveUpButton(self,layer,layerIndex,nLayers):
         '''Create the move up button as part of the layer toolbar'''
-        print('JK20','Move up',layer,layerIndex,nLayers)
         moveUpButton = QPushButton()
         moveUpButton.setIcon(QApplication.style().standardIcon(QStyle.SP_ArrowUp))
         moveUpButton.clicked.connect(lambda x: self.moveLayerUp(x,layer,layerIndex))
