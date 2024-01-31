@@ -16,6 +16,58 @@ from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT as NavigationToolbar
 from PDielec.Utilities import Debug
 
+possible_frequency_units = ['wavenumber','THz','GHz','nm','um','mm','cm','m']
+
+def isThisAFrequency(unit):
+    '''Return true if this is a frequency unit, false if a wavelength'''
+    index = possible_frequency_units.index(unit)
+    if index <=2:
+        result = True
+    else:
+        result = False
+    return result
+
+def convert_frequency_units( value, unit_in, unit_out ):
+    '''Convert between frequency and wavelength units
+       Input can be a scalar or a numpy array
+       unit_in  are the units of the input array
+       unit_out  are the units of the output array
+       unit can be one of 'cm-1', 'wavenumber', 'GHz', 'THz', 'nm', 'um','mm','cm','m'
+    '''
+    # the conversion dictionary has a tuple for each unit
+    # the first entry is the multiplicative factor, the second is the operator
+    # To convert wavelength they have to be scaled and then inverted
+    wavenumber = { 'cm-1'       : (1,'*'),
+                   'wavenumber' : (1,'*'),
+                   'THz'        : (33.356,'*'),
+                   'GHz'        : (33.356E+3,'*'),
+                   'nm'         : (1E-7,'/'),
+                   'um'         : (1E-4,'/'),
+                   'mm'         : (1E-1,'/'),
+                   'cm'         : (1.0 ,'/'),
+                   'm'          : (1E2 ,'/'),
+                 }
+    # Convert the input unit to cm-1
+    if isinstance(value,np.ndarray):
+        for i,x in enumerate(value):
+            if x <= 0:
+                # Problem with negative or zero conversions between wavelength and frequency
+                print('Warning a zero or negative frequency/wavelength is not permitted',i,x,unit_in,unit_out)
+                x[i] = 1.0E-8
+    else:
+        if value <= 0 :
+            value = 1.0E-8
+    scale,operator = wavenumber[unit_in]
+    value = scale * value     
+    if operator == '/':
+        value = 1.0 / value  
+    # convert the internal value from cm-1 to the output unit
+    scale,operator = wavenumber[unit_out]
+    if operator == '/':
+        value = 1.0 / value  
+    value = value / scale
+    return value
+    
 class PlottingTab(QWidget):
     def __init__(self, parent, debug=False ):
         super(QWidget, self).__init__(parent)
@@ -26,17 +78,17 @@ class PlottingTab(QWidget):
         self.refreshRequired = True
         self.subplot = None
         self.setWindowTitle('Plotting')
-        self.settings['Minimum frequency'] = 0
+        self.settings['Minimum frequency'] = 1.0
         self.settings['Maximum frequency'] = 200
         self.settings['Frequency increment'] = 0.2
         self.molar_definitions = ['Unit cells','Atoms','Molecules']
         self.settings['Molar definition'] = 'Unit cells'
         self.settings['Number of atoms'] = 1
         self.settings['Plot type'] = 'Powder Molar Absorption'
+        self.settings['Frequency unit'] = 'wavenumber'
         # self.settings['Plot title'] = 'Plot Title'
         self.legends = []
         self.vs_cm1 = []
-        self.frequency_units = None
         self.molar_cb_current_index = 0
         # store the notebook
         self.notebook = parent
@@ -45,41 +97,79 @@ class PlottingTab(QWidget):
         # Create last tab - PlottingTab
         vbox = QVBoxLayout()
         form = QFormLayout()
+        # Preamble for frequencies / wavelengths display
+        vmin = self.settings['Minimum frequency']
+        vmax = self.settings['Maximum frequency']
+        vinc = self.settings['Frequency increment']
+        # n is the number of samples
+        n = len(np.arange(float(vmin), float(vmax)+0.5*float(vinc), float(vinc)))
+        # convert units
+        vmin = convert_frequency_units(vmin,'wavenumber',self.settings['Frequency unit'])
+        vmax = convert_frequency_units(vmax,'wavenumber',self.settings['Frequency unit'])
+        # vinc is calculated using the number of samples
+        vinc = (vmax-vmin) / (n-1)
+        vinc = convert_frequency_units(vinc,'wavenumber',self.settings['Frequency unit'])
+        if not isThisAFrequency(self.settings['Frequency unit']):
+            vmin, vmax = vmax, vmin
         #
         # The minimum frequency
         #
         self.vmin_sb = QDoubleSpinBox(self)
-        self.vmin_sb.setRange(0,9000)
-        self.vmin_sb.setValue(self.settings['Minimum frequency'])
-        self.vmin_sb.setToolTip('Set the minimum frequency to be considered)')
+        self.vmin_sb.setRange(0.00000001,900000000000)
+        self.vmin_sb.setValue(vmin)
+        if isThisAFrequency(self.settings['Frequency unit']):
+            self.vmin_sb.setToolTip('Set the minimum frequency to be considered)')
+        else:
+            self.vmin_sb.setToolTip('Set the minimum wavelength to be considered)')
         self.vmin_sb.valueChanged.connect(self.on_vmin_changed)
         #
         # The maximum frequency
         #
         self.vmax_sb = QDoubleSpinBox(self)
-        self.vmax_sb.setRange(0,9000)
-        self.vmax_sb.setValue(self.settings['Maximum frequency'])
-        self.vmax_sb.setToolTip('Set the maximum frequency to be considered)')
+        self.vmax_sb.setRange(0.00000001,900000000000)
+        self.vmax_sb.setValue(vmax)
+        if isThisAFrequency(self.settings['Frequency unit']):
+            self.vmax_sb.setToolTip('Set the maximum frequency to be considered)')
+        else:
+            self.vmax_sb.setToolTip('Set the maximum wavelength to be considered)')
         self.vmax_sb.valueChanged.connect(self.on_vmax_changed)
         #
         # Choose a suitable increment
         #
         self.vinc_sb = QDoubleSpinBox(self)
-        self.vinc_sb.setRange(0.0001,5.0)
+        self.vinc_sb.setRange(0.0000001,5000000000.0)
         self.vinc_sb.setSingleStep(0.1)
         self.vinc_sb.setDecimals(4)
-        self.vinc_sb.setToolTip('Choose an increment for the frequency when plotting')
-        self.vinc_sb.setValue(self.settings['Frequency increment'])
+        if isThisAFrequency(self.settings['Frequency unit']):
+            self.vinc_sb.setToolTip('Choose an increment for the frequency when plotting')
+        else:
+            self.vinc_sb.setToolTip('Choose an increment for the wavelength when plotting')
+        self.vinc_sb.setValue(vinc)
         self.vinc_sb.valueChanged.connect(self.on_vinc_changed)
         #
-        label = QLabel('Frequency min, max and increment', self)
-        label.setToolTip('Choose minimum, maximum and increment for the frequency when plotting')
+        # Set the frequency units
+        #
+        self.funits_cb = QComboBox(self)
+        self.funits_cb.addItems( possible_frequency_units )
+        self.funits_cb.activated.connect(self.on_funits_cb_activated)
+        if isThisAFrequency(self.settings['Frequency unit']):
+            self.funits_cb.setToolTip('Set the frequency unit')
+        else:
+            self.funits_cb.setToolTip('Set the wavelength unit')
+        #
+        if isThisAFrequency(self.settings['Frequency unit']):
+            self.frequency_form_label = QLabel('Frequency min, max and increment', self)
+            self.frequency_form_label.setToolTip('Choose minimum, maximum and increment for frequency')
+        else:
+            self.frequency_form_label = QLabel('Wavelength min, max and increment', self)
+            self.frequency_form_label.setToolTip('Choose minimum, maximum and increment for wavelength')
         #
         hbox = QHBoxLayout()
         hbox.addWidget(self.vmin_sb)
         hbox.addWidget(self.vmax_sb)
         hbox.addWidget(self.vinc_sb)
-        form.addRow(label, hbox)
+        hbox.addWidget(self.funits_cb)
+        form.addRow(self.frequency_form_label, hbox)
         #
         # Define molar quantity
         #
@@ -108,27 +198,6 @@ class PlottingTab(QWidget):
         label = QLabel('Number of atoms per molecule', self)
         label.setToolTip('Set the number of atoms in a molecule. \nOnly need this if moles of molecules is needed')
         form.addRow(label, self.natoms_sb)
-        #jk #
-        #jk # Set the plot title
-        #jk #
-        #jk self.title_le = QLineEdit(self)
-        #jk self.title_le.setToolTip('Set the plot title')
-        #jk self.title_le.setText(self.settings['Plot title'])
-        #jk self.title_le.textChanged.connect(self.on_title_changed)
-        #jk label = QLabel('Plot title', self)
-        #jk label.setToolTip('Set the plot title')
-        #jk form.addRow(label, self.title_le)
-        #
-        # Set the x-axis frequency units
-        #
-        self.funits_cb = QComboBox(self)
-        self.funits_cb.setToolTip('Set the frequency units for the x-axis')
-        self.funits_cb.addItems( ['wavenumber','THz'] )
-        self.frequency_units = 'wavenumber'
-        self.funits_cb.activated.connect(self.on_funits_cb_activated)
-        label = QLabel('Frequency units for the x-axis', self)
-        label.setToolTip('Set the frequency units for the x-axis')
-        form.addRow(label, self.funits_cb)
         #
         # Final button
         #
@@ -215,9 +284,21 @@ class PlottingTab(QWidget):
 
     def on_vinc_changed(self,value):
         debugger.print('Start:: on_vinc_changed', value)
+        if value <=0 :
+            return
         self.vinc_sb.blockSignals(True)
-        value = self.vinc_sb.value()
-        self.settings['Frequency increment'] = value
+        # Use existing units to calculate the number of samples
+        vmin = self.vmin_sb.value()
+        vmax = self.vmax_sb.value()
+        ngui = int((vmax - vmin) / value)
+        # Work out the increment needed for cm-1
+        vmin = self.settings['Minimum frequency']
+        vmax = self.settings['Maximum frequency']
+        if ngui <= 1:
+            return
+        vinc = (vmax - vmin) / (ngui - 1)
+        ncm1 = len(np.arange(float(vmin), float(vmax)+0.5*float(vinc), float(vinc)))
+        self.settings['Frequency increment'] = vinc
         self.notebook.fitterTab.requestRefresh()
         self.refreshRequired = True
         self.requestScenarioRefresh()
@@ -230,7 +311,10 @@ class PlottingTab(QWidget):
         self.vmin_sb.blockSignals(True)
         vmin = self.vmin_sb.value()
         vmax = self.vmax_sb.value()
-        self.settings['Minimum frequency'] = vmin
+        if isThisAFrequency(self.settings['Frequency unit']):
+            self.settings['Minimum frequency'] = convert_frequency_units(vmin,self.settings['Frequency unit'],'wavenumber')
+        else:
+            self.settings['Maximum frequency'] = convert_frequency_units(vmin,self.settings['Frequency unit'],'wavenumber')
         debugger.print('on_vmin_changed setting vmin to', self.settings['Minimum frequency'])
         self.notebook.fitterTab.requestRefresh()
         self.refreshRequired = True
@@ -243,7 +327,10 @@ class PlottingTab(QWidget):
         self.vmax_sb.blockSignals(True)
         vmin = self.vmin_sb.value()
         vmax = self.vmax_sb.value()
-        self.settings['Maximum frequency'] = vmax
+        if isThisAFrequency(self.settings['Frequency unit']):
+            self.settings['Maximum frequency'] = convert_frequency_units(vmax,self.settings['Frequency unit'],'wavenumber')
+        else:
+            self.settings['Minimum frequency'] = convert_frequency_units(vmax,self.settings['Frequency unit'],'wavenumber')
         debugger.print('on_vmax_changed setting vmax to ', self.settings['Maximum frequency'])
         self.notebook.fitterTab.requestRefresh()
         self.refreshRequired = True
@@ -267,9 +354,44 @@ class PlottingTab(QWidget):
             self.settings['Maximum frequency'] = self.settings['Minimum frequency']+1
         if self.settings['Frequency increment'] > self.settings['Maximum frequency'] - self.settings['Minimum frequency']:
             self.settings['Frequency increment'] = (self.settings['Maximum frequency'] - self.settings['Minimum frequency'])/2
-        self.vmin_sb.setValue(self.settings['Minimum frequency'])
-        self.vmax_sb.setValue(self.settings['Maximum frequency'])
-        self.vinc_sb.setValue(self.settings['Frequency increment'])
+        # The GUI uses frequency and wavelength, convert the values in settings from cm-1
+        # Work out the increment needed for cm-1
+        vmin = self.settings['Minimum frequency']
+        vmax = self.settings['Maximum frequency']
+        vinc = self.settings['Frequency increment']
+        # Protect the code from overexuberant choice of parameters
+        if (vmax - vmin)/vinc > 9000:
+            vinc = (vmax - vmin) / 9000
+            print('Warning - the number data points in a plot has been limited to 9000')
+            print('          this happens if a 0 wavelength or frequency is entered in the GUI')
+            self.settings['Frequency increment'] = vinc
+        ncm1 = len(np.arange(float(vmin), float(vmax)+0.5*float(vinc), float(vinc)))
+        vmin = convert_frequency_units(self.settings['Minimum frequency'],'wavenumber',self.settings['Frequency unit'])
+        vmax = convert_frequency_units(self.settings['Maximum frequency'],'wavenumber',self.settings['Frequency unit'])
+        # Reorder the GUI values
+        if vmin > vmax:
+            vmin, vmax = vmax, vmin
+        # Set the GUI values
+        vinc = (vmax - vmin) / (ncm1 - 1)
+        self.vmin_sb.setValue(vmin)
+        self.vmax_sb.setValue(vmax)
+        self.vinc_sb.setValue(vinc)
+        # Update the tool tips as the frequency unit could be a wavelength
+        if isThisAFrequency(self.settings['Frequency unit']):
+            self.vmin_sb.setToolTip('Set the minimum frequency to be considered)')
+            self.vmax_sb.setToolTip('Set the maximum frequency to be considered)')
+            self.vinc_sb.setToolTip('Choose an increment for the frequency when plotting')
+            self.funits_cb.setToolTip('Set the frequency unit')
+            self.frequency_form_label.setToolTip('Choose minimum, maximum and increment for frequency')
+            self.frequency_form_label.setText('Frequency min, max and increment')
+            self.frequency_form_label.setToolTip('Choose minimum, maximum and increment for frequency')
+        else:
+            self.vmin_sb.setToolTip('Set the minimum wavelength to be considered)')
+            self.vmax_sb.setToolTip('Set the maximum wavelength to be considered)')
+            self.vinc_sb.setToolTip('Choose an increment for the wavelength when plotting')
+            self.funits_cb.setToolTip('Set the wavelength unit')
+            self.frequency_form_label.setText('Wavelength min, max and increment')
+            self.frequency_form_label.setToolTip('Choose minimum, maximum and increment for wavelength')
         index = self.plot_type_cb.findText(self.settings['Plot type'], Qt.MatchFixedString)
         self.plot_type_cb.setCurrentIndex(index)
         try:
@@ -319,14 +441,14 @@ class PlottingTab(QWidget):
 
     def on_funits_cb_activated(self, index):
         debugger.print('Start:: on_funits_cb_activated', index)
-        if index == 0:
-            self.frequency_units = 'wavenumber'
-        else:
-            self.frequency_units = 'THz'
+        self.settings['Frequency unit'] = possible_frequency_units[index]
         self.refreshRequired = True
         self.notebook.fitterTab.requestRefresh()
+        self.refreshRequired = True
+        # self.requestScenarioRefresh()
+        self.vmin_sb.blockSignals(False)
         self.refresh()
-        debugger.print('Frequency units changed to ', self.frequency_units)
+        debugger.print('Frequency unit changed to ', self.settings['Frequency unit'])
         debugger.print('Finished:: on_funits_cb_activated', index)
 
     def on_molar_cb_activated(self, index):
@@ -561,13 +683,20 @@ class PlottingTab(QWidget):
         self.vs_cm1 = np.arange(float(vmin), float(vmax)+0.5*float(vinc), float(vinc))
         self.subplot = None
         self.figure.clf()
-        if self.frequency_units == 'wavenumber':
-            xlabel = r'Frequency $\mathdefault{(cm^{-1})}$'
-            xscale = 1.0
-        else:
-            xlabel = r'THz'
-            xscale = 0.02998
         x = np.array(self.vs_cm1)
+        removeFirstElement = False
+        reverseElements = False
+        if x[0] <= 0:
+            # We can't have a 0 frequency converted to a wavelength
+            removeFirstElement = True
+            x = x[1:]
+        if isThisAFrequency(self.settings['Frequency unit']):
+            x = x[::-1]
+            reverseElements = True
+        xlabel = self.settings['Frequency unit']
+        if self.settings['Frequency unit'] == 'wavenumber':
+            xlabel = r'Frequency $\mathdefault{(cm^{-1})}$'
+        x = convert_frequency_units( x, 'wavenumber', self.settings['Frequency unit'] )
         self.subplot = self.figure.add_subplot(111)
         n = self.get_number_of_calculations_required()
         self.notebook.progressbars_set_maximum(n*len(x))
@@ -579,10 +708,14 @@ class PlottingTab(QWidget):
             y = scenario.get_result(self.vs_cm1,self.settings['Plot type'])
             if y is not None and len(y) > 0:
                 y = np.array(y)
+                if removeFirstElement:
+                    y = y[1:]
+                if reverseElements:
+                     y = y[::-1]
                 if self.settings['Plot type'] == 'Powder Molar Absorption':
                     y = y * self.settings['cell concentration']/self.settings['concentration']
                 plots += 1
-                line, = self.subplot.plot(xscale*x,y,lw=2, label=legend )
+                line, = self.subplot.plot(x,y,lw=2, label=legend )
         if plots > 0:
             self.subplot.set_xlabel(xlabel)
             self.subplot.set_ylabel(self.plot_ylabels[self.settings['Plot type']])
