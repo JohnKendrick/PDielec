@@ -26,13 +26,14 @@ from PDielec.GUI.EditLayerWindow import Layer
 from functools                   import partial
 from scipy                       import signal
 
+incoherentOptions = ['Coherent','Incoherent (intensity)','Incoherent (phase cancelling)','Thick slab'] 
+
 def solve_single_crystal_equations( 
         superstrateDielectricFunction ,
         substrateDielectricFunction   ,
         superstrateDepth              ,
         substrateDepth                ,
         layers                        ,
-        crystalIncoherence            ,
         mode                          ,
         theta                         ,
         phi                           ,
@@ -49,10 +50,7 @@ def solve_single_crystal_equations(
         superstrateDepth              the depth of the superstrate (m)
         substrateDepth                the depth of the substrate (m)
         layers                        a list of material layers (their permittivity functions)
-        crystalIncoherence            a parameter between 0 and pi giving the amount of incoherence
-        mode                          'thick slab' indicates the substrate will be the crystal so semi-infinite
-                                      'coherent thin film' a standard GTM call with a single layer
-                                      'incoherent thin film' multiple GTM calls with random phase
+        mode                          'Transfer matrix' or 'Scattering matrix'
         theta                         the theta angle of the sla,
         phi                           the angle of the slab
         psi                           the psi angle of the slab
@@ -67,31 +65,36 @@ def solve_single_crystal_equations(
     superstrate      = GTM.CoherentLayer(thickness=superstrateDepth,epsilon1=superstrateDielectricFunction,exponent_threshold=exponent_threshold)
     substrate        = GTM.CoherentLayer(thickness=substrateDepth,  epsilon1=substrateDielectricFunction,exponent_threshold=exponent_threshold)
     selectedLayers = layers
-    if mode == 'Thick slab':
-        # For a thick slab the last layer is used as the thick layer
-        # so redefined the substrate and remove the last layer from the list of layers
-        selectedLayers = layers[:-1]
-        substrateDepth = layers[-1].getThicknessInMetres()
-        substrateDielectricFunction = layers[-1].getPermittivityFunction()
-        substrate = GTM.CoherentLayer(thickness=substrateDepth,  epsilon=substrateDielectricFunction, exponent_threshold=exponent_threshold)
     gtmLayers = []
     for layer in selectedLayers:
         permittivityFunction = layer.getPermittivityFunction()
         depth = layer.getThicknessInMetres()
-        coherent = layer.isCoherent()
+        incoherentOption = layer.getIncoherentOption()
         if sliceThickness != 0 and depth > sliceThickness:
             no_of_layers = int(depth / sliceThickness) + 1
             newdepth = depth / no_of_layers
             for i in range(no_of_layers):
-                if coherent:
+                if incoherentOption == incoherentOptions[0]:
                     gtmLayers.append(GTM.CoherentLayer(thickness=newdepth, epsilon=permittivityFunction, exponent_threshold=exponent_threshold))
+                elif incoherentOption == incoherentOptions[1]:
+                    gtmLayers.append(GTM.IncoherentIntensityLayer(thickness=newdepth, epsilon=permittivityFunction, exponent_threshold=exponent_threshold))
+                elif incoherentOption == incoherentOptions[2]:
+                    gtmLayers.append(GTM.IncoherentPhaseLayer(thickness=newdepth, epsilon=permittivityFunction, exponent_threshold=exponent_threshold))
+                elif incoherentOption == incoherentOptions[3]:
+                    gtmLayers.append(GTM.IncoherentThickLayer(thickness=newdepth, epsilon=permittivityFunction, exponent_threshold=exponent_threshold))
                 else:
-                    gtmLayers.append(GTM.IncoherentLayer(thickness=newdepth, epsilon=permittivityFunction, exponent_threshold=exponent_threshold))
+                    print('Error: unkown incoherent option',incoherentOption)
         else:
-            if coherent:
+            if incoherentOption == incoherentOptions[0]:
                 gtmLayers.append(GTM.CoherentLayer(thickness=depth, epsilon=permittivityFunction, exponent_threshold=exponent_threshold))
+            elif incoherentOption == incoherentOptions[1]:
+                gtmLayers.append(GTM.IncoherentIntensityLayer(thickness=depth, epsilon=permittivityFunction, exponent_threshold=exponent_threshold))
+            elif incoherentOption == incoherentOptions[2]:
+                gtmLayers.append(GTM.IncoherentPhaseLayer(thickness=depth, epsilon=permittivityFunction, exponent_threshold=exponent_threshold))
+            elif incoherentOption == incoherentOptions[3]:
+                gtmLayers.append(GTM.IncoherentThickLayer(thickness=depth, epsilon=permittivityFunction, exponent_threshold=exponent_threshold))
             else:
-                gtmLayers.append(GTM.IncoherentLayer(thickness=depth, epsilon=permittivityFunction, exponent_threshold=exponent_threshold))
+                print('Error: unkown incoherent option',incoherentOption)
     # Creat the system with the layers 
     system = GTM.System(substrate=substrate, superstrate=superstrate, layers=gtmLayers)
     # Rotate the dielectric constants to the laboratory frame
@@ -106,10 +109,7 @@ def solve_single_crystal_equations(
     freq = v * speed_light_si * 1e2
     system.initialize_sys(freq)
     zeta_sys = np.sin(angleOfIncidence)*np.sqrt(system.superstrate.epsilon[0,0])
-    if mode == 'Incoherent thin film':
-        Sys_Gamma = system.calculate_incoherent_GammaStar(freq, zeta_sys)
-    else:
-        Sys_Gamma = system.calculate_GammaStar(freq, zeta_sys)
+    Sys_Gamma = system.calculate_GammaStar(freq, zeta_sys)
     r, R, t, T = system.calculate_r_t(zeta_sys)
     if len(system.layers) > 0:
         epsilon = system.layers[0].epsilon
@@ -139,10 +139,10 @@ class SingleCrystalScenarioTab(ScenarioTab):
         self.settings['Superstrate depth'] = 99999.0
         self.settings['Substrate depth'] = 99999.0
         self.settings['Superstrate & substrate thickness unit'] = 'mm'
-        self.settings['Mode'] = 'Thick slab'
+        self.settings['Mode'] = 'Transfer matrix'
         self.settings['Frequency units'] = 'wavenumber'
         self.settings['Partially incoherent samples'] = 20
-        self.settings['Percentage partial incoherence'] = 100
+        self.settings['Percentage partial incoherence'] = 0
         self.settings['Filter kernel size'] = 1
         self.settings['Filter polynomial size'] = 3
         self.settings['Layer material names'] = []
@@ -151,7 +151,7 @@ class SingleCrystalScenarioTab(ScenarioTab):
         self.settings['Layer thicknesses'] = []
         self.settings['Layer thickness units'] = []
         self.settings['Layer dielectric flags'] = []
-        self.settings['Layer coherent flags'] = []
+        self.settings['Layer incoherent options'] = []
         # The maximum allowed thickness of a layer in metres
         # used to subdivide thicker films into many thinner films
         # if zero no subdivision is performed
@@ -191,12 +191,13 @@ class SingleCrystalScenarioTab(ScenarioTab):
         # Chose mode of operation
         #
         self.mode_cb = QComboBox(self)
-        self.mode_cb.setToolTip('Set the mode of operation for this tab;\n Thick slab means that only reflections are significant (the film thickness has no effect and there are only two semi-infinite media; the incident and the crystal),\n Partially incoherent, incoherent and coherent thin films assume there are three media; the incident, the crystal and the substrate. Partially incoherent film mode takes a lot longer than any of the other modes.')
-        self.mode_cb.addItems( ['Thick slab','Coherent thin film','Incoherent thin film','Partially incoherent thin film'] )
-        self.settings['Mode'] = 'Thick slab'
+        self.mode_cb.setToolTip('Set the method for calculating light transmission and reflectanceb;\n Transfer matrix.  This method is fast but can be numerically unstable.\n Scattering matrix. This method is slow but is numerically stable')
+        self.mode_cb.addItems( ['Transfer matrix','Scattering matrix'] )
+        index = self.mode_cb.findText(self.settings['Mode'], Qt.MatchFixedString)
+        self.mode_cb.setCurrentIndex(index)
         self.mode_cb.activated.connect(self.on_mode_cb_activated)
-        label = QLabel('Single crystal mode', self)
-        label.setToolTip('Set the mode of operation for this tab;\n Thick slab means that only reflections are significant (the film thickness has no effect and there are only two semi-infinite media; the incident and the crystal),\n Partially incoherent, incoherent and coherent thin films assume there are three media; the incident, the crystal and the substrate.  Partially incoherent film mode takes a lot longer to run than any of the other modes.')
+        label = QLabel('Single crystal methodology', self)
+        label.setToolTip('Set the method for calculating light transmission and reflectanceb;\n Transfer matrix.  This method is fast but can be numerically unstable.\n Scattering matrix. This method is slow but is numerically stable')
         self.form.addRow(label, self.mode_cb)
         #
         # Define the global azimuthal angle widget
@@ -291,7 +292,6 @@ class SingleCrystalScenarioTab(ScenarioTab):
 
     def redrawLayerTable(self):
         '''Redraw the layer table widget'''
-        #self.layerTable_tw.clearContents()
         self.layerTable_tw.setRowCount(1)
         rowCount = 0
         for sequenceNumber,layer in enumerate(self.layers):
@@ -379,16 +379,13 @@ class SingleCrystalScenarioTab(ScenarioTab):
         azimuthal_angle_sb.valueChanged.connect(lambda x: self.on_azimuthal_angle_sb_changed(x,layer))
         azimuthal_angle_sb.setSizePolicy(QSizePolicy.Expanding,QSizePolicy.Fixed)
         self.layerTable_tw.setCellWidget(sequenceNumber,6,azimuthal_angle_sb)
-        # Create a checkbox for incoherence
-        option_cb = QCheckBox(self)
+        # Create a checkbox for coherence/incoherence
+        option_cb = QComboBox(self)
         option_cb.setToolTip('Change optional settings for the layer')
-        option_cb.setText('Options')
-        option_cb.setLayoutDirection(Qt.RightToLeft)
-        if layer.isCoherent():
-            option_cb.setCheckState(Qt.Unchecked)
-        else:
-            option_cb.setCheckState(Qt.Checked)
-        option_cb.stateChanged.connect(lambda x: self.on_option_cb_changed(x,layer))
+        option_cb.addItems( incoherentOptions )
+        index = option_cb.findText(layer.getIncoherentOption(), Qt.MatchFixedString)
+        option_cb.setCurrentIndex(index)
+        option_cb.activated.connect(lambda x: self.on_option_cb_activated(x,layer))
         option_cb.setSizePolicy(QSizePolicy.Expanding,QSizePolicy.Fixed)
         self.layerTable_tw.setCellWidget(sequenceNumber,7,option_cb)
         # Create a toolbar for up down delete
@@ -413,6 +410,8 @@ class SingleCrystalScenarioTab(ScenarioTab):
         self.layerTable_tw.setToolTip('Define the layers in the system')
         self.layerTable_tw.itemChanged.connect(self.on_layerTable_itemChanged)
         self.layerTable_tw.setStyleSheet("QTableWidget::item {padding-left: 0px; border; 0px}")
+        self.layerTable_tw.verticalHeader().setVisible(False)
+        self.layerTable_tw.setShowGrid(False)
         headers = ['Material', 'Thickness', 'Units', 'H', 'K', 'L', 'Azimuthal', 'Options', 'Move']
         if debugger.state():
             headers.append('Print')
@@ -582,14 +581,11 @@ class SingleCrystalScenarioTab(ScenarioTab):
         permittivityObject.print(0.0,2000.0,1.0,file=name)
         return
 
-    def on_option_cb_changed(self,value,layer):
-        '''The incoherence checkbox has changed'''
-        debugger.print('on_incoherence_cb_changed', value,layer.getName())
-        state = layer.isCoherent()
-        if state:
-            layer.setIncoherent()
-        else:
-            layer.setCoherent()
+    def on_option_cb_activated(self,index,layer):
+        '''The incoherence option combo box has been activated'''
+        debugger.print('on_incoherence_cb_activated', index,layer.getName())
+        option = incoherentOptions[index]
+        layer.setIncoherentOption(option)
         self.generateLayerSettings()
         self.refreshRequired = True
         return
@@ -640,7 +636,7 @@ class SingleCrystalScenarioTab(ScenarioTab):
         self.settings['Layer thicknesses']     = []
         self.settings['Layer thickness units'] = []
         self.settings['Layer dielectric flags'] = []
-        self.settings['Layer coherent flags'] = []
+        self.settings['Layer incoherent options'] = []
         for layer in self.layers:
             self.settings['Layer material names'].append(layer.getMaterial().getName())
             self.settings['Layer hkls'].append(layer.getHKL())
@@ -648,10 +644,10 @@ class SingleCrystalScenarioTab(ScenarioTab):
             self.settings['Layer thicknesses'].append(layer.getThickness())
             self.settings['Layer thickness units'].append(layer.getThicknessUnit())
             self.settings['Layer dielectric flags'].append(layer.isDielectric())
-            self.settings['Layer coherent flags'].append(layer.isCoherent())
+            self.settings['Layer incoherent options'].append(layer.getIncoherentOption())
         return
 
-    def addDielectricLayer(self,name,hkl,azimuthal,thickness,thicknessUnit,coherentFlag,forTheFirstTime=False):
+    def addDielectricLayer(self,name,hkl,azimuthal,thickness,thicknessUnit,incoherentOption,forTheFirstTime=False):
         '''Add a dielectric layer to the list of layers'''
         debugger.print(self.settings['Legend'],'addDielectricLayer',name,hkl,azimuthal,thicknessUnit,forTheFirstTime)
         # Update the notebook permittivity if it needs to be updated
@@ -682,7 +678,7 @@ class SingleCrystalScenarioTab(ScenarioTab):
                 del(self.settings['Unique direction - k'])
                 del(self.settings['Unique direction - l'])
         # Append the dielectric material to the list of layers
-        self.layers.append(Layer(dielectricMaterial,hkl=hkl,azimuthal=azimuthal,thickness=thickness,thicknessUnit=thicknessUnit,coherentFlag=coherentFlag,dielectricFlag=True))
+        self.layers.append(Layer(dielectricMaterial,hkl=hkl,azimuthal=azimuthal,thickness=thickness,thicknessUnit=thicknessUnit,incoherentOption=incoherentOption,dielectricFlag=True))
         self.generateLayerSettings()
         return
 
@@ -700,28 +696,28 @@ class SingleCrystalScenarioTab(ScenarioTab):
             azimuthal = 0.0
             thickness = 10.0
             thicknessUnit = 'um'
-            coherentFlag = True
-            self.addDielectricLayer(name,hkl,azimuthal,thickness,thicknessUnit,coherentFlag,forTheFirstTime=True)
+            incoherentOption = 'Coherent'
+            self.addDielectricLayer(name,hkl,azimuthal,thickness,thicknessUnit,incoherentOption,forTheFirstTime=True)
             return
         # Process the settings information and append each layer to the list
-        for name, hkl, azimuthal, thickness, thicknessUnit, dielectricFlag, coherentFlag in zip(
+        for name, hkl, azimuthal, thickness, thicknessUnit, dielectricFlag, incoherentOption in zip(
                           self.settings['Layer material names'],
                           self.settings['Layer hkls'],
                           self.settings['Layer azimuthals'],
                           self.settings['Layer thicknesses'],
                           self.settings['Layer thickness units'],
                           self.settings['Layer dielectric flags'],
-                          self.settings['Layer coherent flags']):
+                          self.settings['Layer incoherent options']):
             # If the dielectric flag is set then initialise the dielectric and create a new layer
             # Otherwise use the materials database
             if dielectricFlag:
-                self.addDielectricLayer(name,hkl,azimuthal,thickness,thicknessUnit,coherentFlag)
+                self.addDielectricLayer(name,hkl,azimuthal,thickness,thicknessUnit,incoherentOption)
             else:
                 if name not in self.materialNames:
                     print('Error material ', name, ' not available ', self.materialNames)
                     name = 'air'
                 material = self.DataBase.getMaterial(name)
-                self.layers.append(Layer(material,hkl=hkl,azimuthal=azimuthal,thickness=thickness,thicknessUnit=thicknessUnit,coherentFlag=coherentFlag,dielectricFlag=dielectricFlag))
+                self.layers.append(Layer(material,hkl=hkl,azimuthal=azimuthal,thickness=thickness,thicknessUnit=thicknessUnit,incoherentOption=incoherentOption,dielectricFlag=dielectricFlag))
         return
 
     def getDielectricLayerIndex(self):
@@ -735,7 +731,6 @@ class SingleCrystalScenarioTab(ScenarioTab):
     def on_layer_button_clicked(self,x,layer,layerIndex):
         '''Handle a click on the show layer widget'''
         # Create the dialog box with all the information on the layer, work on a copy of the layer
-        print('on_layer_button_clicked',layer,layerIndex)
         showLayerWindow = ShowLayerWindow(copy.copy(layer),debug=debugger.state())
         if showLayerWindow.exec():
             # The 'Ok' button was pressed
@@ -774,7 +769,7 @@ class SingleCrystalScenarioTab(ScenarioTab):
         '''Create a partial incoherence widget'''
         hbox = QHBoxLayout()
         self.percentage_partial_incoherence_sb = QSpinBox(self)
-        self.percentage_partial_incoherence_sb.setToolTip('Define the maximum percentage changes in the slab geometric parameters (thickness, alpha, beta and gamma euler angles) and the angle of incidence\nFor thickness it is a percentage of the required thickness.  For angles it is a percentage of 90 degrees')
+        self.percentage_partial_incoherence_sb.setToolTip('Define the maximum percentage changes in the slab geometric parameters (thickness, alpha, beta and gamma euler angles) and the angle of incidence\nFor thickness it is a percentage of the required thickness.  For angles it is a percentage of 90 degrees\nIf the value of the percentage incoherence is zero, no incoherence is calculated')
         self.percentage_partial_incoherence_sb.setRange(0,100)
         self.percentage_partial_incoherence_sb.setSingleStep(1)
         self.percentage_partial_incoherence_sb.setValue(self.settings['Percentage partial incoherence'])
@@ -788,7 +783,7 @@ class SingleCrystalScenarioTab(ScenarioTab):
         hbox.addWidget(self.percentage_partial_incoherence_sb)
         hbox.addWidget(self.partially_incoherent_samples_sb)
         label = QLabel('Partial incoherence (percentage & samples)')
-        label.setToolTip('Define the percentage partial incoherence and the number of samples to be used in the calculation of an incoherent spectrum.\nThe percentage reflects changes in the slab geometric parameters (thickness, alpha, beta and gamma euler angles) and the angle of incidence.\nFor thickness it is a percentage of the required thickness.  For angles it is a percentage of 90 degrees.\nA large number of samples will take a long time but will give smoother results.')
+        label.setToolTip('Define the percentage partial incoherence and the number of samples to be used in the calculation of an incoherent spectrum.\nThe percentage reflects changes in the slab geometric parameters (thickness, alpha, beta and gamma euler angles) and the angle of incidence.\nFor thickness it is a percentage of the required thickness.  For angles it is a percentage of 90 degrees.\nA large number of samples will take a long time but will give smoother results.\nIf the value of the percentage incoherence is zero, no incoherence is calculated')
         return label,hbox
 
     def smoothingWidget(self):
@@ -1138,10 +1133,9 @@ class SingleCrystalScenarioTab(ScenarioTab):
         # Check the mode and if it is Incoherent increase the number of spectra to be calculated
         index = self.mode_cb.findText(self.settings['Mode'], Qt.MatchFixedString)
         self.mode_cb.setCurrentIndex(index)
-        if self.settings['Mode'] == 'Partially incoherent thin film':
+        if self.settings['Percentage partial incoherence'] > 0:
             self.noCalculationsRequired = self.settings['Partially incoherent samples']
         else:
-            self.settings['Percentage partial incoherence'] = 0
             self.noCalculationsRequired = 1
         # Update the slice information
         self.slice_thickness_sb.setValue(self.settings['Slice thickness'])
@@ -1173,13 +1167,13 @@ class SingleCrystalScenarioTab(ScenarioTab):
         # For partial incoherent case, set the smoothing parameters
         self.partially_incoherent_kernel_sb.setValue(self.settings['Filter kernel size'])
         self.partially_incoherent_polynomial_sb.setValue(self.settings['Filter polynomial size'])
-        # Redraw the layer information widget
-        self.redrawLayerTable()
         #
         # Unblock signals after refresh
         #
         for w in self.findChildren(QWidget):
             w.blockSignals(False)
+        # Redraw the layer information widget
+        self.redrawLayerTable()
         for i in range(20):
             QCoreApplication.processEvents()
         self.refreshRequired = False
@@ -1353,19 +1347,13 @@ class SingleCrystalScenarioTab(ScenarioTab):
     def on_mode_cb_activated(self, index):
         debugger.print(self.settings['Legend'],'Start:: on_mode_cb_activated')
         if index == 0:
-            self.settings['Mode'] = 'Thick slab'
-            self.noCalculationsRequired = 1
+            self.settings['Mode'] = 'Transfer matrix'
         elif index == 1:
-            self.settings['Mode'] = 'Coherent thin film'
-            self.noCalculationsRequired = 1
-        elif index == 2:
-            self.settings['Mode'] = 'Incoherent thin film'
-            self.noCalculationsRequired = 1
-        elif index == 3:
-            self.settings['Mode'] = 'Partially incoherent thin film'
+            self.settings['Mode'] = 'Scattering matrix'
+        if self.settings['Percentage partial incoherence'] > 0:
             self.noCalculationsRequired = self.settings['Partially incoherent samples']
-            if self.settings['Percentage partial incoherence'] == 0:
-                self.settings['Percentage partial incoherence'] = 20
+        else:
+            self.noCalculationsRequired = 1 
         self.generateLayerSettings()
         self.refresh(force=True)
         self.refreshRequired = True
@@ -1414,13 +1402,14 @@ class SingleCrystalScenarioTab(ScenarioTab):
         p  = phi
         q  = psi
         a  = angleOfIncidence
+        fractionalIncoherence = self.settings['Percentage partial incoherence']/100.0
         for s in range(self.settings["Partially incoherent samples"]):
-            crystalDepth = d + d*( -1 + 2*np.random.rand())*self.settings['Percentage partial incoherence']/100.0
+            crystalDepth = d + d*( -1 + 2*np.random.rand())*fractionalIncoherence
             crystalLayer.setThickness(crystalDepth)
-            theta = t + np.pi/2.0*( -1 +2*np.random.rand())* self.settings['Percentage partial incoherence'] /100.0
-            phi   = p + np.pi/2.0*( -1 +2*np.random.rand())* self.settings['Percentage partial incoherence'] /100.0
-            psi = q + np.pi/2.0*( -1 +2*np.random.rand())* self.settings['Percentage partial incoherence'] /100.0
-            angleOfIncidence = a + np.pi/2.0*( -1 +2*np.random.rand())* self.settings['Percentage partial incoherence'] /100.0
+            theta = t + np.pi/2.0*( -1 +2*np.random.rand())*fractionalIncoherence
+            phi   = p + np.pi/2.0*( -1 +2*np.random.rand())*fractionalIncoherence
+            psi = q + np.pi/2.0*( -1 +2*np.random.rand())*fractionalIncoherence
+            angleOfIncidence = a + np.pi/2.0*( -1 +2*np.random.rand())*fractionalIncoherence
             ( p_reflectance, 
             s_reflectance, 
             p_transmittance, 
@@ -1476,14 +1465,12 @@ class SingleCrystalScenarioTab(ScenarioTab):
         #
         # Initialise the partial function to pass through to the pool
         #
-        crystalIncoherence = self.settings["Percentage partial incoherence"] * np.pi / 100.0 
         partial_function = partial(solve_single_crystal_equations,
                                        superstrateDielectricFunction,
                                        substrateDielectricFunction,
                                        superstrateDepth,
                                        substrateDepth,
                                        layers,
-                                       crystalIncoherence,
                                        mode,
                                        theta,
                                        phi,
@@ -1495,7 +1482,7 @@ class SingleCrystalScenarioTab(ScenarioTab):
         debugger.print(self.settings['Legend'],'About to calculate single crystal scenario using pool')
         #begin serial version 
         #for v in self.vs_cm1:
-        #   results.append(Calculator.solve_single_crystal_equations( superstrateDielectricFunction, substrateDielectricFunction, crystalPermittivityFunction, superstrateDepth, substrateDepth, crystalDepth, crystalIncoherence, mode, theta, phi, psi, angleOfIncidence,sliceThickness, exponent_threshold,v))
+        #   results.append(Calculator.solve_single_crystal_equations( superstrateDielectricFunction, substrateDielectricFunction, crystalPermittivityFunction, superstrateDepth, substrateDepth, crystalDepth, mode, theta, phi, psi, angleOfIncidence,sliceThickness, exponent_threshold,v))
            #print('results',results[0:4])
         #end serial version
         if self.notebook.pool is None:
@@ -1519,21 +1506,10 @@ class SingleCrystalScenarioTab(ScenarioTab):
                 print('Warning exponential overflow occured at frequency',v,errors,largest_exponent)
             p_reflectance.append(R[0]+R[2])
             s_reflectance.append(R[1]+R[3])
-            if self.settings['Mode'] == 'Thick slab':
-                p_absorbtance.append(1.0 - R[0]-R[2])
-                s_absorbtance.append(1.0 - R[1]-R[3])
-                p_transmittance.append(np.zeros_like(T[0]))
-                s_transmittance.append(np.zeros_like(T[1]))
-#            elif self.settings['Mode'] == 'Incoherent thin film':
-#                p_transmittance.append(T[0])
-#                s_transmittance.append(T[1])
-#                p_absorbtance.append(1.0 - p_reflectance[-1] - p_transmittance[-1])
-#                s_absorbtance.append(1.0 - s_reflectance[-1] - s_transmittance[-1])
-            else:
-                p_transmittance.append(T[0])
-                s_transmittance.append(T[1])
-                p_absorbtance.append(1.0 - R[0]-R[2]-T[0])
-                s_absorbtance.append(1.0 - R[1]-R[3]-T[1])
+            p_transmittance.append(T[0])
+            s_transmittance.append(T[1])
+            p_absorbtance.append(1.0 - R[0]-R[2]-T[0])
+            s_absorbtance.append(1.0 - R[1]-R[3]-T[1])
             epsilon.append(eps)
         debugger.print(self.settings['Legend'],'Finished the coherent_calculator function')
         return ( p_reflectance, s_reflectance, p_transmittance, s_transmittance, p_absorbtance, s_absorbtance, epsilon )
@@ -1596,10 +1572,10 @@ class SingleCrystalScenarioTab(ScenarioTab):
                 layer.calculate_euler_matrix()
         # Choose the calculator function depending on the mode of operation
         mode = self.settings['Mode']
-        if mode == 'Thick slab' or mode == 'Coherent thin film' or mode == 'Incoherent thin film':
-            calculator = self.coherent_calculator
-        else:
+        if self.settings['Percentage partial incoherence'] > 0:
             calculator = self.partially_incoherent_calculator
+        else:
+            calculator = self.coherent_calculator
         exponent_threshold = self.exponent_threshold
         # Call the relevant calculator
         ( self.p_reflectance, 
@@ -1658,43 +1634,7 @@ class SingleCrystalScenarioTab(ScenarioTab):
 
     def greyed_out(self):
         """Have a look through the settings and see if we need to grey anything out"""
-        # If the single crystal mode is Thick Slab, there is no need for substrate permittivity
-        debugger.print(self.settings['Legend'],'Start:: greyed_out')
-        if self.settings['Mode'] == 'Thick slab':
-            self.substrate_cb.setEnabled(False)
-            self.substrate_info_le.setEnabled(False)
-            self.substrate_permittivity_r_sb.setEnabled(False)
-            self.substrate_permittivity_i_sb.setEnabled(False)
-            self.partially_incoherent_samples_sb.setEnabled(False)
-            self.percentage_partial_incoherence_sb.setEnabled(False)
-            self.partially_incoherent_polynomial_sb.setEnabled(False)
-            self.partially_incoherent_kernel_sb.setEnabled(False)
-        elif self.settings['Mode'] == 'Coherent thin film':
-            self.substrate_cb.setEnabled(True)
-            self.substrate_info_le.setEnabled(True)
-            self.substrate_permittivity_r_sb.setEnabled(True)
-            self.substrate_permittivity_i_sb.setEnabled(True)
-            self.partially_incoherent_samples_sb.setEnabled(False)
-            self.percentage_partial_incoherence_sb.setEnabled(False)
-            self.partially_incoherent_polynomial_sb.setEnabled(False)
-            self.partially_incoherent_kernel_sb.setEnabled(False)
-        elif self.settings['Mode'] == 'Partially incoherent thin film':
-            self.substrate_cb.setEnabled(True)
-            self.substrate_info_le.setEnabled(True)
-            self.substrate_permittivity_r_sb.setEnabled(True)
-            self.substrate_permittivity_i_sb.setEnabled(True)
-            self.partially_incoherent_samples_sb.setEnabled(True)
-            self.percentage_partial_incoherence_sb.setEnabled(True)
-            self.partially_incoherent_polynomial_sb.setEnabled(True)
-            self.partially_incoherent_kernel_sb.setEnabled(True)
-        elif self.settings['Mode'] == 'Incoherent thin film':
-            self.substrate_cb.setEnabled(True)
-            self.substrate_info_le.setEnabled(True)
-            self.substrate_permittivity_r_sb.setEnabled(True)
-            self.substrate_permittivity_i_sb.setEnabled(True)
-            self.partially_incoherent_samples_sb.setEnabled(False)
-            self.percentage_partial_incoherence_sb.setEnabled(False)
-            self.partially_incoherent_polynomial_sb.setEnabled(False)
-            self.partially_incoherent_kernel_sb.setEnabled(False)
+        # At the moment it appears there is nothing to do.
         debugger.print(self.settings['Legend'],'Finished:: greyed_out')
+        return
 
