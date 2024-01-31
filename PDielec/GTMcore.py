@@ -595,7 +595,7 @@ class Layer:
         Cp_t2 = np.abs(self.Py[0,transmode[1]])**2/(np.abs(self.Py[0,transmode[1]])**2+np.abs(self.Py[1,transmode[1]])**2+Layer.jk_shift)
 
         if np.abs(Cp_t1-Cp_t2) > Layer.qsd_thr: ## birefringence
-            self.useBerreman = True ## sets _useBerreman fo the calculation of gamma matrix below
+            #JK self.useBerreman = True ## sets _useBerreman fo the calculation of gamma matrix below
             if Cp_t2>Cp_t1:
                 transmode = np.flip(transmode,0) ## flip the two values
             ## then calculate for reflected waves if necessary
@@ -831,23 +831,42 @@ class CoherentLayer(Layer):
         """Initialise an instance of a coherent layer"""
         Layer.__init__(self, thickness, epsilon1, epsilon2, epsilon3,  epsilon, theta, phi, psi, exponent_threshold)
         self.coherent = True
+        self.inCoherentIntensity = False
+        self.inCoherentPhase = False
+        self.inCoherentThick = False
         return
 
 
-#################################
-### The IncoherentLayer Class ###
-#################################
-class IncoherentLayer(Layer):
-    """Define an incoherent layer inherits from Layer class"""
+###################################
+### The IncoherentLayer Classes ###
+###################################
+class IncoherentIntensityLayer(Layer):
+    """Define an incoherent layer using intensity transfer matrices inherits from Layer class"""
 
     def __init__(self, thickness=1.0e-6, epsilon1=None, epsilon2=None, epsilon3=None,  epsilon=None, 
                        theta=0, phi=0, psi=0, exponent_threshold=700):
         """Initialise an instance of an incoherent layer"""
         Layer.__init__(self, thickness, epsilon1, epsilon2, epsilon3,  epsilon, theta, phi, psi, exponent_threshold)
         self.coherent = False
+        self.inCoherentIntensity = True
+        self.inCoherentPhase = False
+        self.inCoherentThick = False
         return
 
-    def calculate_propagation_matrix_arteaga(self,f):
+class IncoherentPhaseLayer(Layer):
+    """Define an incoherent layer using Arteaga's modification of the phase in the propagation matrix"""
+
+    def __init__(self, thickness=1.0e-6, epsilon1=None, epsilon2=None, epsilon3=None,  epsilon=None, 
+                       theta=0, phi=0, psi=0, exponent_threshold=700):
+        """Initialise an instance of an incoherent layer"""
+        Layer.__init__(self, thickness, epsilon1, epsilon2, epsilon3,  epsilon, theta, phi, psi, exponent_threshold)
+        self.coherent = False
+        self.inCoherentIntensity = False
+        self.inCoherentPhase = True
+        self.inCoherentThick = False
+        return
+
+    def calculate_propagation_matrix(self,f):
         """Routine to calculate the matrix Ki (or Pi) depending on the paper
            This routine is taken from Arteaga et al
            Thin Solid Films 2014, 571, 701-705
@@ -860,10 +879,14 @@ class IncoherentLayer(Layer):
         """
         Ki = np.zeros( (4,4), dtype=np.clongdouble)
         qs = np.zeros( 4, dtype=np.clongdouble)
-        qs[0] = (self.qs[0] - np.real(self.qs[1]))
-        qs[1] = (self.qs[1] - np.real(self.qs[1]))
-        qs[2] = (self.qs[2] - np.real(self.qs[2]))
-        qs[3] = (np.real(self.qs[2]) - self.qs[3])
+        # p-wave ->
+        qs[0] = self.qs[0] - np.real(self.qs[1])    # Subtract the real part of s ->
+        # s-wave ->
+        qs[1] = self.qs[1] - np.real(self.qs[1])    # Subtract the real part of s ->
+        # p-wave <-
+        qs[2] = self.qs[2] - np.real(self.qs[3])    # Subtract the real part of s <-
+        # s-wave <-
+        qs[3] = self.qs[3] - np.real(self.qs[3])    # Subtract the real part of s <-
         
         for ii in range(4):
             exponent = np.clongdouble(-1.0j*(2.0*np.pi*f*qs[ii]*self.thick)/c_const)
@@ -872,6 +895,28 @@ class IncoherentLayer(Layer):
                 exponent = exponent/np.abs(exponent)*self.exponent_threshold
                 self.exponent_errors += 1
             Ki[ii,ii] = np.exp(exponent)
+        return  Ki
+
+
+class IncoherentThickLayer(Layer):
+    """Define an incoherent layer using the thick slab approximation"""
+
+    def __init__(self, thickness=1.0e-6, epsilon1=None, epsilon2=None, epsilon3=None,  epsilon=None, 
+                       theta=0, phi=0, psi=0, exponent_threshold=700):
+        """Initialise an instance of an incoherent layer"""
+        Layer.__init__(self, thickness, epsilon1, epsilon2, epsilon3,  epsilon, theta, phi, psi, exponent_threshold)
+        self.coherent = False
+        self.inCoherentIntensity = False
+        self.inCoherentPhase = False
+        self.inCoherentThick = True
+        return
+
+    def calculate_propagation_matrix(self,f):
+        """Routine to calculate the matrix Ki using the thick slab approximation
+        """
+        Ki = super().calculate_propagation_matrix(f)
+        Ki[2,2] = 0.0
+        Ki[3,3] = 0.0
         return  Ki
 
 
@@ -1059,53 +1104,6 @@ class System:
         for li in self.layers:
             li.calculate_epsilon(f)
 
-    def calculate_incoherent_GammaStar(self,f, zeta_sys):
-        """
-        Calculate the whole system's transfer matrix.
-        But instead of using amplitudes, use intensities
-        This routine is specific for a single layer system with sub and superstrate
-
-        Parameters
-        -----------
-        f : float
-            Frequency (Hz)
-        zeta_sys : complex
-            In-plane wavevector kx/k0
-
-        Returns
-        -------
-        GammaStar: 4x4 complex matrix
-                   System transfer matrix :math:`\Gamma^{*}`
-        """
-
-        Di_super, Pi_super, Di_inv_super, T_super = self.superstrate.update(f, zeta_sys)
-        Di_sub, Pi_sub, Di_inv_sub, T_sub = self.substrate.update(f, zeta_sys)
-
-        Delta1234 = np.array([[1,0,0,0],
-                              [0,0,1,0],
-                              [0,1,0,0],
-                              [0,0,0,1]],dtype=np.clongdouble)
-
-        Dip1 = Di_sub
-        Tloc = np.identity(4, dtype=np.clongdouble)
-        rescale2 = 1.0
-        for layer in reversed(self.layers):
-            Di, Pi, Di_inv, Ti = layer.update(f, zeta_sys)
-            rescale = np.max(np.abs(Pi))
-            rescale2 = rescale*rescale2
-            Pi = Pi/rescale
-            Tloc = np.matmul( np.absolute( (np.matmul(Di_inv,Dip1)))**2,Tloc)
-            Tloc = np.matmul( np.absolute(Pi)**2,Tloc)
-            Dip1 = Di
-        Tloc = np.matmul( np.absolute(np.matmul(Di_inv_super,Dip1))**2,Tloc)
-        Gamma = np.sqrt(Tloc)
-        Gamma = Gamma * rescale2
-        GammaStar = np.matmul(exact_inv_4x4(Delta1234),np.matmul(Gamma,Delta1234))
-        self.Gamma = Gamma.copy()
-        self.GammaStar = GammaStar.copy()
-        return self.GammaStar.copy()
-
-
     def calculate_GammaStar(self,f, zeta_sys):
         """
         Calculate the whole system's transfer matrix.
@@ -1136,7 +1134,7 @@ class System:
         T = A_sub
         for layer in reversed(self.layers):
             Di, Pi, Di_inv, Ti = layer.update(f, zeta_sys)
-            if not layer.isCoherent():
+            if layer.inCoherentIntensity:
                 # Deal with an incoherent layer
                 # Finish any exisiting T matrix with Di_inv and add as a new matrix in Tlist
                 # Then add Pi to Ttot
