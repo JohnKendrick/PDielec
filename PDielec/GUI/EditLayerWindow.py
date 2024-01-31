@@ -10,26 +10,26 @@ from PDielec.Utilities          import Debug
 import PDielec.Calculator as Calculator
 
 class Layer():
-    def __init__(self,material,hkl=None,azimuthal=0.0,thickness=0.0,thicknessUnit='nm',coherentFlag=True,dielectricFlag=False):
+    def __init__(self,material,hkl=None,azimuthal=0.0,thickness=0.0,thicknessUnit='nm',incoherentOption='Coherent',dielectricFlag=False):
         '''A Layer class to handle layers
-           material       is an instance of Material object, the material object has the following;
-                          - name
-                          - density
-                          - permittivity
-                          - unit cell
-           hkl            is a list of 3 integers defining the plane of interest
-           azimuthal      is the azimuthal angle of rotation of the crystal about z
-           thickness      is the thickness of the layer in the specfied thickness units
-           thicknessUnits can be either nm, um, mm or cm 
-           coherentFlag   true if it is a coherent layer
-           dielectricFlag this is true if the layer material is the dielectric being studied'''
+           material          is an instance of Material object, the material object has the following;
+                             - name
+                             - density
+                             - permittivity
+                             - unit cell
+           hkl               is a list of 3 integers defining the plane of interest
+           azimuthal         is the azimuthal angle of rotation of the crystal about z
+           thickness         is the thickness of the layer in the specfied thickness units
+           thicknessUnits    can be either nm, um, mm or cm 
+           incoherentOption  can be 'Coherent', 'Incoherent intensity', 'Incoherent phase cancelling' or 'Thick slab'
+           dielectricFlag    this is true if the layer material is the dielectric being studied'''
         self.material = material
         self.hkl = hkl
         if material.isTensor() and hkl is None:
             hkl = [0,0,1]
         else:
             hkl = [0,0,0]
-        self.coherentFlag = coherentFlag
+        self.incoherentOption = incoherentOption
         self.azimuthal = azimuthal
         self.thickness = thickness
         self.thicknessUnit = thicknessUnit
@@ -42,15 +42,14 @@ class Layer():
 
     def print(self):
         '''Print the main attributes of the layer'''
-        print('---------------- ')
-        print('Material       : ', self.material)
-        self.material.print()
-        print('HKL            :      ', self.hkl)
-        print('Azimuthal      :', self.azimuthal)
-        print('Thickness      :', self.thickness)
-        print('Thickness unit :', self.thicknessUnit)
-        print('Dielectric flag:', self.dielectricFlag)
-        print('Coherent       :', self.coherentFlag)
+        print('------------------ ')
+        print('Material         : ', self.material)
+        print('HKL              :      ', self.hkl)
+        print('Azimuthal        :', self.azimuthal)
+        print('Thickness        :', self.thickness)
+        print('Thickness unit   :', self.thicknessUnit)
+        print('Dielectric flag  :', self.dielectricFlag)
+        print('Incoherent option:', self.incoherentOption)
 
     def setAzimuthal(self, angle):
         '''Set the azimuthal angle of the layer and calculate the Euler matrix'''
@@ -60,16 +59,17 @@ class Layer():
 
     def isCoherent(self):
         '''Returns True if this is a coherent layer, False otherwise'''
-        return self.coherentFlag
+        result = False
+        if incoherentOption == 'Coherent':
+            result = True
+        return result
 
-    def setCoherent(self):
-        '''Set coherent to True'''
-        self.coherentFlag = True
-        return
+    def getIncoherentOption(self):
+        return self.incoherentOption
 
-    def setIncoherent(self):
+    def setIncoherentOption(self,option):
         '''Set coherent to False'''
-        self.coherentFlag = False
+        self.incoherentOption = option
         return 
 
     def getAzimuthal(self):
