@@ -24,6 +24,7 @@ from __future__ import print_function
 import numpy as np
 import sys
 from PDielec.Constants import wavenumber, angstrom, speed_light_si
+import PDielec.Calculator as Calculator
 from scipy import interpolate
 
 
@@ -58,7 +59,7 @@ class DielectricFunction:
                             Calculates a permittivity from a Drude-Lorentz model
     _convert()              Converts frequency units
     '''
-    possible_epsTypes = ['dft','fpsq','drude-lorentz']
+    possible_epsTypes = ['dft','fpsq','drude-lorentz','sellmeier']
     possible_units = ['cm-1','microns','mu','nm','thz','hz']
 
     def __init__(self, units='cm-1' ):
@@ -88,7 +89,7 @@ class DielectricFunction:
         return self.isScalarFunction
 
     def setUnits(self,units):
-        '''Set the units of frequency to be used in calls
+        '''Set the units of frequency to be used in calls to calculate()
 
         Parameters
         ----------
@@ -727,4 +728,50 @@ class FPSQ(DielectricFunction):
                 imag_contribution = max(-1.0E-12,np.imag(contribution))
                 eps[xyz,xyz] *= complex(real_contribution,imag_contribution)
         return eps 
+
+class Sellmeier(DielectricFunction):
+    '''
+    A complex constant tensor Sellmeier dielectric function
+
+    Inherits from DielectricFunction
+    Provides a calculate() function to return the permittivity
+    '''
+    def __init__(self, Bs, Cs, units='cm-1'):
+        ''' 
+            Parameters
+            ----------
+            Bs : list of floats
+                    B parameter for Sellmeier equation (microns^2)
+            Cs : list of floats
+                    C parameter for Sellmeier equation (microns^2)
+            units : string 
+                    Define the units of frequency (default is cm-1)
+        '''
+        DielectricFunction.__init__(self,units=units)
+        self.isScalarFunction = True
+        self.Bs = Bs
+        self.Cs = Cs
+        return
+
+    def calculate(self, v):
+        '''
+            Parameters
+            ----------
+            v : float
+                The frequency in units specified by setUnit()
+
+           Returns
+           -------
+           The diagonal permittivity 3x3 tensor at frequency v
+
+           The Sellmeier parameters are in microns^2
+        '''
+        f_cm1 = self._convert(v)
+        # Convert to wavelength in microns
+        wavelength_mu = f_cm1 * 1.0E+6 *1.0E-2            # convert cm-1 to microns
+        wavelength2 = wavelength_mu*wavelength_mu
+        n2 = 1.0
+        for B,C in zip(self.Bs,self.Cs):
+            n2 += B*wavelength2/(wavelength2-C) 
+        return n2 
 
