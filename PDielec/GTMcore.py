@@ -228,12 +228,6 @@ class Layer:
     -----------
     thickness : float
               thickness of the layer in m
-    epsilon1 : complex function
-             function epsilon(frequency) for the first axis. If none, defaults to vacuum.
-    epsilon2 : complex function
-             function epsilon(frequency) for the second axis. If none, defaults to epsilon1.
-    epsilon3 : complex function
-             function epsilon(frequency) for the third axis. If none, defaults to epsilon1.
     epsilon  : complex function   ADDED by JK
              function epsilon(frequency) the full dielectric constant tensor, if not none all other epsilons are ignored
     theta : float
@@ -254,8 +248,7 @@ class Layer:
     zero_thr = 1e-10 ### threshold for eigenvalue comparison to zero
     jk_shift = sys.float_info.min
 
-    def __init__(self, thickness=1.0e-6, epsilon1=None, epsilon2=None, epsilon3=None,  epsilon=None,
-                                         theta=0, phi=0, psi=0, exponent_threshold=700):
+    def __init__(self, thickness=1.0e-6, epsilon=None, theta=0, phi=0, psi=0, exponent_threshold=700):
 
         ## epsilon is a 3x3 matrix of permittivity at a given frequency
         self.epsilon = np.identity(3, dtype=np.clongdouble)
@@ -285,7 +278,7 @@ class Layer:
         self.epsilon_tensor_function = None              ## Added by JK
 
         self.set_thickness(thickness) ## set the thickness, 1um by default
-        self.set_epsilon(epsilon1, epsilon2, epsilon3, epsilon) # set epsilon, vacuum by default (JK change)
+        self.set_epsilon(epsilon) # set epsilon, vacuum by default (JK change)
         self.set_euler(theta, phi, psi) ## set orientation of crystal axis w/ respect to the lab frame
 
     def isCoherent(self):
@@ -311,65 +304,28 @@ class Layer:
         """
         self.thick = thickness
 
-    def set_epsilon(self, epsilon1=vacuum_eps, epsilon2=None, epsilon3=None, epsilon=None):
+    def set_epsilon(self, epsilon_function):
         """
-        Sets the dielectric functions for the three main axis.
+        Sets the dielectric function.
 
         Parameters
         -----------
-        epsilon1 : complex function
-                 function epsilon(frequency) for the first axis. If none, defaults to :py:func:`vacuum_eps`
-        epsilon2 : complex function
-                 function epsilon(frequency) for the second axis. If none, defaults to epsilon1.
-        epsilon3 : complex function
-                 function epsilon(frequency) for the third axis. If none, defaults to epsilon1.
         epsilon  : complex function
-                 JK modification to allow the full dielectric matrix to be supplied.  If specified
-                 all other definitions are overridden
-        func epsilon1: function returning the first (xx) component of the complex permittivity tensor in the crystal frame.
 
         Returns
         -------
                None
 
-        Notes
-        ------
-        Each *epsilon_i* function returns the dielectric constant along axis i as
-        a function of the frequency f in Hz.
-
-        If no function is given for epsilon1, it defaults to :py:func:`vacuum_eps` (1.0 everywhere).
-        epsilon2 and epsilon3 default to epsilon1: if None, a homogeneous material is assumed
-        JK Modification to allow a fully complex tensor given by epsilon
-        JK if epsilon is not specified it behaves as before
-        JK if epsilon is given the epsilon_tensor function is defined by epsilon
         """
-        if epsilon == None:
-            if epsilon1==None:
-                self.epsilon1_f = vacuum_eps
-            else:
-                self.epsilon1_f = epsilon1
+        self.epsilon_tensor_function = epsilon_function
 
-            if epsilon2 == None:
-                self.epsilon2_f = self.epsilon1_f
-            else:
-                self.epsilon2_f = epsilon2
-            if epsilon3 == None:
-                self.epsilon3_f = self.epsilon1_f
-            else:
-                self.epsilon3_f = epsilon3
-        else:
-            self.epsilon1_f = None
-            self.epsilon2_f = None
-            self.epsilon3_f = None
-            self.epsilon_tensor_function = epsilon
-
-    def calculate_epsilon(self, f):
+    def calculate_epsilon(self, f_in):
         """
         Sets the value of epsilon in the (rotated) lab frame.
 
         Parameters
         ----------
-        f : float
+        f_in : float
             frequency (in Hz)
         Returns
         -------
@@ -384,15 +340,12 @@ class Layer:
         Use only explicitely if you *don't* use the :py:func:`Layer.update` function!
         Modification by JK to allow the use of a full dielectric tensor
         """
-        if self.epsilon_tensor_function == None:
-            epsilon_xstal = np.zeros((3,3), dtype=np.clongdouble)
-            epsilon_xstal[0,0] = self.epsilon1_f(f)
-            epsilon_xstal[1,1] = self.epsilon2_f(f)
-            epsilon_xstal[2,2] = self.epsilon3_f(f)
-        else:
-            epsilon_xstal = self.epsilon_tensor_function(f)
-        # self.epsilon = np.matmul(self.euler_inverse, np.matmul(epsilon_xstal,self.euler))
+        f = f_in / (c_const * 100.0)
+        epsilon_xstal = self.epsilon_tensor_function(f)
+        if not isinstance(epsilon_xstal,np.ndarray):
+            epsilon_xstal = np.eye(3)*epsilon_xstal
         #JK Changed the order of the transformation to a transformation of basis vectors
+        # self.epsilon = np.matmul(self.euler_inverse, np.matmul(epsilon_xstal,self.euler))
         # rather than a transformation of the coordinates active->passive
         self.epsilon = np.matmul(self.euler, np.matmul(epsilon_xstal,self.euler_inverse))
         return self.epsilon
@@ -630,6 +583,7 @@ class Layer:
         self.Berreman[1] = Berreman_unsorted[transmode[1],:]
         self.Berreman[2] = Berreman_unsorted[reflmode[0],:]
         self.Berreman[3] = Berreman_unsorted[reflmode[1],:]
+        return
         
     def calculate_gamma(self, zeta):
         """
@@ -775,6 +729,7 @@ class Layer:
         self.Ki = self.calculate_propagation_matrix(f)
 
         self.Ti = np.matmul(self.Ai,np.matmul(self.Ki,Aim1))
+        return
 
     def update(self, f, zeta):
         """Shortcut to recalculate all layer properties.
@@ -826,10 +781,9 @@ class Layer:
 ###############################
 class CoherentLayer(Layer):
     """Define a coherent layer inherits from Layer class"""
-    def __init__(self, thickness=1.0e-6, epsilon1=None, epsilon2=None, epsilon3=None,  epsilon=None, 
-                       theta=0, phi=0, psi=0, exponent_threshold=700):
+    def __init__(self, thickness=1.0e-6, epsilon=None, theta=0, phi=0, psi=0, exponent_threshold=700):
         """Initialise an instance of a coherent layer"""
-        Layer.__init__(self, thickness, epsilon1, epsilon2, epsilon3,  epsilon, theta, phi, psi, exponent_threshold)
+        Layer.__init__(self, thickness, epsilon, theta, phi, psi, exponent_threshold)
         self.coherent = True
         self.inCoherentIntensity = False
         self.inCoherentPhase = False
@@ -843,10 +797,9 @@ class CoherentLayer(Layer):
 class IncoherentIntensityLayer(Layer):
     """Define an incoherent layer using intensity transfer matrices inherits from Layer class"""
 
-    def __init__(self, thickness=1.0e-6, epsilon1=None, epsilon2=None, epsilon3=None,  epsilon=None, 
-                       theta=0, phi=0, psi=0, exponent_threshold=700):
+    def __init__(self, thickness=1.0e-6, epsilon=None, theta=0, phi=0, psi=0, exponent_threshold=700):
         """Initialise an instance of an incoherent layer"""
-        Layer.__init__(self, thickness, epsilon1, epsilon2, epsilon3,  epsilon, theta, phi, psi, exponent_threshold)
+        Layer.__init__(self, thickness, epsilon, theta, phi, psi, exponent_threshold)
         self.coherent = False
         self.inCoherentIntensity = True
         self.inCoherentPhase = False
@@ -856,10 +809,9 @@ class IncoherentIntensityLayer(Layer):
 class IncoherentPhaseLayer(Layer):
     """Define an incoherent layer using Arteaga's modification of the phase in the propagation matrix"""
 
-    def __init__(self, thickness=1.0e-6, epsilon1=None, epsilon2=None, epsilon3=None,  epsilon=None, 
-                       theta=0, phi=0, psi=0, exponent_threshold=700):
+    def __init__(self, thickness=1.0e-6, epsilon=None, theta=0, phi=0, psi=0, exponent_threshold=700):
         """Initialise an instance of an incoherent layer"""
-        Layer.__init__(self, thickness, epsilon1, epsilon2, epsilon3,  epsilon, theta, phi, psi, exponent_threshold)
+        Layer.__init__(self, thickness, epsilon, theta, phi, psi, exponent_threshold)
         self.coherent = False
         self.inCoherentIntensity = False
         self.inCoherentPhase = True
@@ -901,10 +853,9 @@ class IncoherentPhaseLayer(Layer):
 class IncoherentThickLayer(Layer):
     """Define an incoherent layer using the thick slab approximation"""
 
-    def __init__(self, thickness=1.0e-6, epsilon1=None, epsilon2=None, epsilon3=None,  epsilon=None, 
-                       theta=0, phi=0, psi=0, exponent_threshold=700):
+    def __init__(self, thickness=1.0e-6, epsilon=None, theta=0, phi=0, psi=0, exponent_threshold=700):
         """Initialise an instance of an incoherent layer"""
-        Layer.__init__(self, thickness, epsilon1, epsilon2, epsilon3,  epsilon, theta, phi, psi, exponent_threshold)
+        Layer.__init__(self, thickness, epsilon, theta, phi, psi, exponent_threshold)
         self.coherent = False
         self.inCoherentIntensity = False
         self.inCoherentPhase = False
@@ -1165,12 +1116,6 @@ class System:
         self.GammaStar = GammaStar.copy()
         return self.GammaStar.copy()
 
-    def scale_intensity(self, r):
-        """r is the complex reflectance field, attempt to make the intensity sensible"""
-        if np.abs(r) > 1:
-              r = r / np.abs(r) / np.abs(r)
-        return r
-    
     def calculate_r_t(self, zeta_sys):
         """ Calculate various field and intensity reflection and transmission coefficients, as well as the 4-valued vector of transmitted field.
 
@@ -1238,10 +1183,6 @@ class System:
         rsp = rsp/Denom
 
         # Try and remove any outliers by making sure the intensity is always < 1
-        #rpp = self.scale_intensity(rpp)
-        #rss = self.scale_intensity(rss)
-        #rps = self.scale_intensity(rps)
-        #rsp = self.scale_intensity(rsp)
 
         # Intensity reflection coefficients are just square moduli
         Rpp = np.abs(rpp)**2
@@ -1260,10 +1201,6 @@ class System:
         tsp =-(GammaStar[0,2]/Denom)/largest
 
         # Try and remove any outliers by making sure the intensity is always < 1
-        #tpp = self.scale_intensity(tpp)
-        #tss = self.scale_intensity(tss)
-        #tps = self.scale_intensity(tps)
-        #tsp = self.scale_intensity(tsp)
         t_out = np.array([tpp, tps, tsp, tss],dtype=np.clongdouble)
         #t_field = np.array([tpp, tps, tsp, tss])
 
@@ -1299,8 +1236,6 @@ class System:
         ### Intensity transmission coefficients are only the z-component of S !
         T_pp = (Sout_pin[2]/Sinc_pin[2]) ## z-component only
         T_ss = (Sout_sin[2]/Sinc_sin[2]) ## z-component only
-        #T_pp = self.scale_intensity(T_pp)
-        #T_ss = self.scale_intensity(T_ss)
 
         T_out = np.array([T_pp, T_ss])
 
@@ -1314,4 +1249,90 @@ class System:
             count = count + layer.exponent_errors
             largest_exponent = max(layer.largest_exponent,largest_exponent)
         return count,largest_exponent
+
+class TransferMatrixSystem(System):
+    """Define a system of layers which is described by a Transfer Matrix method"""
+    def __init__(self, substrate=None, superstrate=None, layers=[]):
+        System.__init__(self, substrate=None, superstrate=None, layers=[])
+        return
+
+class ScatteringMatrixSystem(System):
+    """Define a system of layers which is described by a Scattering Matrix method"""
+    def __init__(self, substrate=None, superstrate=None, layers=[]):
+        System.__init__(self, substrate=None, superstrate=None, layers=[])
+        return
+
+    def calculate_scattering_matrices(self,f, zeta_sys):
+        '''Calculate the scattering matrices in every layer'''
+        self.substrate.calculate_scattering_matrix()
+        self.superstrate.calculate_scattering_matrix()
+        layers = self.layers
+        layers.append(self.substrate)
+        for index,layer in enumerate(layers):
+            if index < len(self.layers)-1:
+                layer.calculate_scattering_matrix(layer[index+1])
+        return
+
+    def calculate_GammaStar(self,f, zeta_sys):
+        """
+        Calculate the whole system's scattering matrix.
+
+        Parameters
+        -----------
+        f : float
+            Frequency (Hz)
+        zeta_sys : complex
+            In-plane wavevector kx/k0
+
+        Returns
+        -------
+        GammaStar: 4x4 complex matrix
+                   System scattering matrix :math:`\Gamma^{*}`
+        """
+        # Ask for calculation of scattering matrices in all layers
+        self.calculate_scattering_matrices()
+
+        A_super, K_super, A_inv_super, T_super = self.superstrate.update(f, zeta_sys)
+        A_sub, K_sub, A_inv_sub, T_sub = self.substrate.update(f, zeta_sys)
+
+        Delta1234 = np.array([[1,0,0,0],
+                              [0,0,1,0],
+                              [0,1,0,0],
+                              [0,0,0,1]],dtype=np.clongdouble)
+        incoherent = False
+        Tlist = []
+        # Initialise T with the substrate Transfer Matrix
+        T = A_sub
+        for layer in reversed(self.layers):
+            Di, Pi, Di_inv, Ti = layer.update(f, zeta_sys)
+            if layer.inCoherentIntensity:
+                # Deal with an incoherent layer
+                # Finish any exisiting T matrix with Di_inv and add as a new matrix in Tlist
+                # Then add Pi to Ttot
+                # Then start a new T matrix with Di
+                T = np.matmul(Di_inv,T)
+                Tlist.append(T)
+                Tlist.append(Pi)
+                T = np.copy(Di)
+                incoherent = True
+            else:
+                # coherent, so just multiply the T matrices
+                T = np.matmul(Ti,T)
+        # Complete with the superstrate inverse dynamic matrix
+        T = np.matmul(A_inv_super,T)
+        Tlist.append(T)
+        if incoherent:
+            # If there was incoherence then process the whole list 
+            # by calculating amplitudes everywhere
+            T =  np.identity(4, dtype=np.complex128)
+            for t in Tlist:
+                T = np.matmul(T,np.absolute(t)**2)
+            T = np.sqrt(T)
+        # If there was no incoherence then T is the total transfer matrix
+        Gamma = T
+        GammaStar = np.matmul(exact_inv_4x4(Delta1234),np.matmul(Gamma,Delta1234))
+
+        self.Gamma = Gamma.copy()
+        self.GammaStar = GammaStar.copy()
+        return self.GammaStar.copy()
 
