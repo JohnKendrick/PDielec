@@ -16,7 +16,7 @@ from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT as NavigationToolbar
 from PDielec.Utilities import Debug
 
-possible_frequency_units = ['wavenumber','THz','GHz','nm','um','mm','cm','m']
+possible_frequency_units = ['wavenumber','THz','GHz','ang','nm','um','mm','cm','m']
 
 def isThisAFrequency(unit):
     '''Return true if this is a frequency unit, false if a wavelength'''
@@ -41,6 +41,7 @@ def convert_frequency_units( value, unit_in, unit_out ):
                    'wavenumber' : (1,'*'),
                    'THz'        : (33.356,'*'),
                    'GHz'        : (33.356E+3,'*'),
+                   'ang'        : (1E-8,'/'),
                    'nm'         : (1E-7,'/'),
                    'um'         : (1E-4,'/'),
                    'mm'         : (1E-1,'/'),
@@ -152,17 +153,17 @@ class PlottingTab(QWidget):
         self.funits_cb = QComboBox(self)
         self.funits_cb.addItems( possible_frequency_units )
         self.funits_cb.activated.connect(self.on_funits_cb_activated)
+        index = possible_frequency_units.index((self.settings["Frequency unit"]))
+        self.funits_cb.setCurrentIndex(index)
         if isThisAFrequency(self.settings['Frequency unit']):
             self.funits_cb.setToolTip('Set the frequency unit')
-        else:
-            self.funits_cb.setToolTip('Set the wavelength unit')
-        #
-        if isThisAFrequency(self.settings['Frequency unit']):
             self.frequency_form_label = QLabel('Frequency min, max and increment', self)
             self.frequency_form_label.setToolTip('Choose minimum, maximum and increment for frequency')
         else:
+            self.funits_cb.setToolTip('Set the wavelength unit')
             self.frequency_form_label = QLabel('Wavelength min, max and increment', self)
             self.frequency_form_label.setToolTip('Choose minimum, maximum and increment for wavelength')
+        #
         #
         hbox = QHBoxLayout()
         hbox.addWidget(self.vmin_sb)
@@ -392,6 +393,8 @@ class PlottingTab(QWidget):
             self.funits_cb.setToolTip('Set the wavelength unit')
             self.frequency_form_label.setText('Wavelength min, max and increment')
             self.frequency_form_label.setToolTip('Choose minimum, maximum and increment for wavelength')
+        index = possible_frequency_units.index((self.settings["Frequency unit"]))
+        self.funits_cb.setCurrentIndex(index)
         index = self.plot_type_cb.findText(self.settings['Plot type'], Qt.MatchFixedString)
         self.plot_type_cb.setCurrentIndex(index)
         try:
@@ -530,9 +533,10 @@ class PlottingTab(QWidget):
                 settings = scenario.settings
                 for key in sorted(settings,key=str.lower):
                     sp.writeNextRow([key, settings[key]],col=1,check=1)
-                sp.writeNextRow(scenario.dielectricLayer.labframe[0].tolist(), col=2, check=1)
-                sp.writeNextRow(scenario.dielectricLayer.labframe[1].tolist(), col=2, check=1)
-                sp.writeNextRow(scenario.dielectricLayer.labframe[2].tolist(), col=2, check=1)
+                dielectricLayerIndex = scenario.getDielectricLayerIndex()
+                sp.writeNextRow(scenario.layers[dielectricLayerIndex].labframe[0].tolist(), col=2, check=1)
+                sp.writeNextRow(scenario.layers[dielectricLayerIndex].labframe[1].tolist(), col=2, check=1)
+                sp.writeNextRow(scenario.layers[dielectricLayerIndex].labframe[2].tolist(), col=2, check=1)
                 # Store the reflectance and transmittance
                 R_ps.append( scenario.get_result(self.vs_cm1,self.plot_types[5] ) )
                 R_ss.append( scenario.get_result(self.vs_cm1,self.plot_types[6] ) )
