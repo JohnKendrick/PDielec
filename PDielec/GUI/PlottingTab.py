@@ -108,7 +108,7 @@ class PlottingTab(QWidget):
         vmin = convert_frequency_units(vmin,'wavenumber',self.settings['Frequency unit'])
         vmax = convert_frequency_units(vmax,'wavenumber',self.settings['Frequency unit'])
         # vinc is calculated using the number of samples
-        vinc = (vmax-vmin) / (n-1)
+        vinc = (vmax-vmin) / n
         vinc = convert_frequency_units(vinc,'wavenumber',self.settings['Frequency unit'])
         if not isThisAFrequency(self.settings['Frequency unit']):
             vmin, vmax = vmax, vmin
@@ -291,11 +291,11 @@ class PlottingTab(QWidget):
         # Use existing units to calculate the number of samples
         vmin = self.vmin_sb.value()
         vmax = self.vmax_sb.value()
-        ngui = int((vmax - vmin) / value)
+        ngui = int((vmax - vmin) / value) + 1
         # Work out the increment needed for cm-1
         vmin = self.settings['Minimum frequency']
         vmax = self.settings['Maximum frequency']
-        if ngui <= 1:
+        if ngui <= 2:
             return
         vinc = (vmax - vmin) / (ngui - 1)
         ncm1 = len(np.arange(float(vmin), float(vmax)+0.5*float(vinc), float(vinc)))
@@ -373,7 +373,7 @@ class PlottingTab(QWidget):
         if vmin > vmax:
             vmin, vmax = vmax, vmin
         # Set the GUI values
-        vinc = (vmax - vmin) / (ncm1 - 1)
+        vinc = (vmax - vmin) / (ncm1-1)
         self.vmin_sb.setValue(vmin)
         self.vmax_sb.setValue(vmax)
         self.vinc_sb.setValue(vinc)
