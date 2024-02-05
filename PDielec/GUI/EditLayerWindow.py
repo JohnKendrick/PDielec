@@ -60,7 +60,7 @@ class Layer():
     def isCoherent(self):
         '''Returns True if this is a coherent layer, False otherwise'''
         result = False
-        if incoherentOption == 'Coherent':
+        if self.incoherentOption == 'Coherent':
             result = True
         return result
 
@@ -87,8 +87,8 @@ class Layer():
 
     def getThicknessInMetres(self):
         '''Get the thickness'''
-        thicknessUnits = {'nm':1.0E-9, 'um':1.0E-6, 'mm':1.0E-3, 'cm':1.0E-2}
-        tom = thicknessUnits[self.thicknessUnit]
+        thickness_conversion_factors = {'ang':1.0E-10, 'nm':1.0E-9, 'um':1.0E-6, 'mm':1.0E-3, 'cm':1.0E-2}
+        tom = thickness_conversion_factors[self.thicknessUnit]
         return tom*self.thickness
 
     def setThicknessUnit(self, thicknessUnit):
