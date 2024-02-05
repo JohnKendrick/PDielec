@@ -82,7 +82,7 @@ class MaterialsDataBase():
         debugger.print('getSheetNames:: ',fullList)
         return sorted(fullList, key=lambda s: s.casefold())
 
-    def getMaterial(self,sheet):
+    def getMaterial(self,sheet,units='cm-1'):
         '''Return a material object based on the data in sheet (an excel sheet)'''
         debugger.print('getMaterial:: ',sheet)
         # Define a set of back-up materials that the program can use even if the sheet name is not in the spreadsheet
@@ -144,107 +144,189 @@ class MaterialsDataBase():
             unitCell = UnitCell(a=avector,b=bvector,c=cvector)
         elif a is not None and b is not None and c is not None and alpha is not None and beta is not None and gamma is not None:
             unitCell = UnitCell(a=a,b=b,c=c,alpha=alpha,beta=beta,gamma=gamma)
+        # Process the entry type
         if 'constant' in entry and 'refractive' in entry:
-            # Constant refractive index
-            n = float(worksheet['C2'].value)
-            k = float(worksheet['D2'].value)
-            nk = complex(n, k)
-            permittivity = Calculator.calculate_permittivity(nk)
-            debugger.print('Constant refractive:: ',nk,permittivity,density)
-            material = Constant(sheet,permittivity=permittivity,density=density)
+            material = self.readConstantRefractiveIndex(sheet,worksheet,density)
+            material.setUnits(units)
         elif 'constant' in entry and ('permitt' in entry or 'dielec' in entry):
-            # Constant permittivity
-            eps_r = float(worksheet['C2'].value)
-            eps_i = float(worksheet['D2'].value)
-            permittivity = complex(eps_r, eps_i)
-            debugger.print('Constant permittivity:: ',permittivity,density)
-            material = Constant(sheet,permittivity=permittivity,density=density)
+            material = self.readConstantPermittivity(sheet,worksheet,density)
+            material.setUnits(units)
         elif 'tabulated' in entry and 'refractive' in entry:
-            # Tabulated refractive index
-            permittivities = []
-            vs_cm1 = []
-            for a, c, d in zip(worksheet['A'][1:] ,worksheet['C'][1:] , worksheet['D'][1:]):
-                try:
-                   v = float(a.value)
-                   n = float(c.value)
-                   k = float(d.value)
-                except:
-                    print('Error in Tabulated: ',a.value,c.value,d.value)
-                nk = complex(n, k)
-                permittivity = Calculator.calculate_permittivity(nk)
-                permittivities.append(permittivity)
-                vs_cm1.append(v)
-            material = Tabulated(sheet,vs_cm1,permittivities=permittivities,density=density)
+            material = self.readTabulatedRefractiveIndex(sheet,worksheet,density)
+            material.setUnits(units)
         elif 'tabulated' in entry and ('permitt' in entry or 'dielec' in entry):
-            # Tabulated permittivity
-            permittivities = []
-            vs_cm1 = []
-            for a, c, d in zip(worksheet['A'][1:] ,worksheet['C'][1:] , worksheet['D'][1:]):
-                v = float(a.value)
-                eps_r = float(c.value)
-                eps_i = float(d.value)
-                permittivity = complex(eps_r, eps_i)
-                permittivities.append(permittivity)
-                vs_cm1.append(v)
-            material = Tabulated(sheet,vs_cm1,permittivities=permittivities,density=density)
+            material = self.readTabulatedPermittivity(sheet,worksheet,density)
+            material.setUnits(units)
         elif 'lorentz' in entry and 'drude' in entry:
-            # Lorentz-Drude model for permittivity
-            epsilon_infinity = np.zeros( (3,3) )
-            directions = [[], [], []]
-            epsinfs = [[], [], []]
-            omegas = [[], [], []]
-            strengths = [[], [], []]
-            gammas = [[], [], []]
-            for a, b, c, d, e in zip(worksheet['A'][1:] ,worksheet['B'][1:] , worksheet['C'][1:], worksheet['D'][1:], worksheet['E'][1:]) :
-                try:
-                    if a.value is not None:
-                        direction = a.value
-                    index = ['xx','yy','zz'].index(direction)
-                    if b.value is not None:
-                        epsilon_infinity[[index],[index]] = float(b.value)
-                    if c.value is not None:
-                        omegas[index].append(float(c.value))
-                    if d.value is not None:
-                        strengths[index].append(float(d.value))
-                    if e.value is not None:
-                        gammas[index].append(float(e.value))
-                except:
-                    print('Error in Lorentz-Drude: ',a.value,b.value,c.value,d.value,e.value)
-                    return
-            material = DrudeLorentz(sheet,epsilon_infinity,omegas,strengths,gammas,density=density,cell=unitCell)
+            material = self.readLorentzDrude(sheet,worksheet,density,unitCell)
+            material.setUnits(units)
         elif 'fpsq' in entry:
-            # FPSQ model for permittivity
-            epsilon_infinity = np.zeros( (3,3) )
-            directions = [[], [], []]
-            omega_tos = [[], [], []]
-            gamma_tos = [[], [], []]
-            omega_los = [[], [], []]
-            gamma_los = [[], [], []]
-            for a, b, c, d, e, f in zip(worksheet['A'][1:] ,worksheet['B'][1:] , worksheet['C'][1:], worksheet['D'][1:], worksheet['E'][1:], worksheet['F'][1:]) :
-                try:
-                    if a.value is not None:
-                        direction = a.value
-                    index = ['xx','yy','zz'].index(direction)
-                    if b.value is not None:
-                        epsilon_infinity[[index],[index]] = float(b.value)
-                    if c.value is not None:
-                        omega_tos[index].append(float(c.value))
-                    if d.value is not None:
-                        gamma_tos[index].append(float(d.value))
-                    if e.value is not None:
-                        omega_los[index].append(float(e.value))
-                    if f.value is not None:
-                        gamma_los[index].append(float(f.value))
-                except:
-                    print('Error in FPSQ: ',a.value,b.value,c.value,d.value,e.value,f.value)
-                    return
-            material = FPSQ(sheet,epsilon_infinity,omega_tos,gamma_tos,omega_los,gamma_los,density=density,cell=unitCell)
+            material = self.readFPSQ(sheet,worksheet,density,unitCell)
+            material.setUnits(units)
+        elif 'sellmeier' in entry:
+            material = self.readSellmeier(sheet,worksheet,density,unitCell)
+            material.setUnits(units)
         # Close the work book
         workbook.close()
         return material
+
+    def readConstantRefractiveIndex(self,sheet,worksheet,density):
+        '''Read constant refractive index from the spreadsheet
+           sheet is the worksheet name
+           worksheet is the worksheet
+           density is the density of the material'''
+        # Constant refractive index
+        n = float(worksheet['C2'].value)
+        k = float(worksheet['D2'].value)
+        nk = complex(n, k)
+        permittivity = Calculator.calculate_permittivity(nk)
+        debugger.print('Constant refractive:: ',nk,permittivity,density)
+        material = Constant(sheet,permittivity=permittivity,density=density)
+        return material
+
+    def readConstantPermittivity(self,sheet,worksheet,density):
+        '''Read constant permittivity data from the spreadsheet
+           sheet is the worksheet name
+           worksheet is the worksheet
+           density is the density of the material'''
+        # Constant permittivity
+        eps_r = float(worksheet['C2'].value)
+        eps_i = float(worksheet['D2'].value)
+        permittivity = complex(eps_r, eps_i)
+        debugger.print('Constant permittivity:: ',permittivity,density)
+        material = Constant(sheet,permittivity=permittivity,density=density)
+        return material
+
+    def readTabulatedRefractiveIndex(self,sheet,worksheet,density):
+        '''Read tabulated refractive index data from the spreadsheet
+           sheet is the worksheet name
+           worksheet is the worksheet
+           density is the density of the material'''
+        # Tabulated refractive index
+        permittivities = []
+        vs_cm1 = []
+        for a, c, d in zip(worksheet['A'][1:] ,worksheet['C'][1:] , worksheet['D'][1:]):
+            try:
+               v = float(a.value)
+               n = float(c.value)
+               k = float(d.value)
+            except:
+                print('Error in Tabulated: ',a.value,c.value,d.value)
+            nk = complex(n, k)
+            permittivity = Calculator.calculate_permittivity(nk)
+            permittivities.append(permittivity)
+            vs_cm1.append(v)
+        material = Tabulated(sheet,vs_cm1,permittivities=permittivities,density=density)
+        return material
+
+    def readTabulatedPermittivity(self,sheet,worksheet,density):
+        '''Read tabulated permittivity data from the spreadsheet
+           sheet is the worksheet name
+           worksheet is the worksheet
+           density is the density of the material'''
+        # Tabulated permittivity
+        permittivities = []
+        vs_cm1 = []
+        for a, c, d in zip(worksheet['A'][1:] ,worksheet['C'][1:] , worksheet['D'][1:]):
+            v = float(a.value)
+            eps_r = float(c.value)
+            eps_i = float(d.value)
+            permittivity = complex(eps_r, eps_i)
+            permittivities.append(permittivity)
+            vs_cm1.append(v)
+        material = Tabulated(sheet,vs_cm1,permittivities=permittivities,density=density)
+        return material
+
+    def readLorentzDrude(self,sheet,worksheet,density,unitCell):
+        '''Read Drude-Lorentz data from the spreadsheet
+           sheet is the worksheet name
+           worksheet is the worksheet
+           density is the density of the material 
+           unitCell unit cell'''
+        # Lorentz-Drude model for permittivity
+        epsilon_infinity = np.zeros( (3,3) )
+        directions = [[], [], []]
+        epsinfs = [[], [], []]
+        omegas = [[], [], []]
+        strengths = [[], [], []]
+        gammas = [[], [], []]
+        for a, b, c, d, e in zip(worksheet['A'][1:] ,worksheet['B'][1:] , worksheet['C'][1:], worksheet['D'][1:], worksheet['E'][1:]) :
+            try:
+                if a.value is not None:
+                    direction = a.value
+                index = ['xx','yy','zz'].index(direction)
+                if b.value is not None:
+                    epsilon_infinity[[index],[index]] = float(b.value)
+                if c.value is not None:
+                    omegas[index].append(float(c.value))
+                if d.value is not None:
+                    strengths[index].append(float(d.value))
+                if e.value is not None:
+                    gammas[index].append(float(e.value))
+            except:
+                print('Error in Lorentz-Drude: ',a.value,b.value,c.value,d.value,e.value)
+                return
+        material = DrudeLorentz(sheet,epsilon_infinity,omegas,strengths,gammas,density=density,cell=unitCell)
+        return material
+
+    def readFPSQ(self,sheet,worksheet,density,unitCell):
+        '''Read FPSQ data from the spreadsheet
+           sheet is the worksheet name
+           worksheet is the worksheet
+           density is the density of the material 
+           unitCell unit cell'''
+        # FPSQ model for permittivity
+        epsilon_infinity = np.zeros( (3,3) )
+        directions = [[], [], []]
+        omega_tos = [[], [], []]
+        gamma_tos = [[], [], []]
+        omega_los = [[], [], []]
+        gamma_los = [[], [], []]
+        for a, b, c, d, e, f in zip(worksheet['A'][1:] ,worksheet['B'][1:] , worksheet['C'][1:], worksheet['D'][1:], worksheet['E'][1:], worksheet['F'][1:]) :
+            try:
+                if a.value is not None:
+                    direction = a.value
+                index = ['xx','yy','zz'].index(direction)
+                if b.value is not None:
+                    epsilon_infinity[[index],[index]] = float(b.value)
+                if c.value is not None:
+                    omega_tos[index].append(float(c.value))
+                if d.value is not None:
+                    gamma_tos[index].append(float(d.value))
+                if e.value is not None:
+                    omega_los[index].append(float(e.value))
+                if f.value is not None:
+                    gamma_los[index].append(float(f.value))
+            except:
+                print('Error in FPSQ: ',a.value,b.value,c.value,d.value,e.value,f.value)
+                return
+        material = FPSQ(sheet,epsilon_infinity,omega_tos,gamma_tos,omega_los,gamma_los,density=density,cell=unitCell)
+        return material
+
+    def readSellmeier(self,sheet,worksheet,density,unitCell):
+        '''Read Sellmeier data from the spreadsheet
+           sheet is the worksheet name
+           worksheet is the worksheet
+           density is the density of the material 
+           unitCell unit cell'''
+        # Sellmeier model for refractive index
+        directions = []
+        Bs = []
+        Cs = []
+        for b, c in zip(worksheet['A'][1:] , worksheet['B'][1:] ) :
+            try:
+                if b.value is not None:
+                    Bs.append(float(b.value))
+                if c.value is not None:
+                    Cs.append(float(c.value))
+            except:
+                print('Error in Sellmeier: ',b.value,c.value)
+                return
+        material = Sellmeier(sheet,Bs,Cs,density=density,cell=unitCell)
+        return material
         
 class Material():
-    def __init__(self, name, density=None, permittivityObject=None, cell=None):
+    def __init__(self, name, density=None, permittivityObject=None, cell=None, units='cm-1'):
         '''A Material has the following properties
            density:            The density of the material
            permitivityObject:  An instance of a DielectricFunction
@@ -255,15 +337,26 @@ class Material():
            name:               The name of the material
            density:            The material density
            cell:               The unit cell
+           units:              The units for frequency, used to change the permittivityObject
 
         '''
         self.density            = density
         self.cell               = cell
         self.name               = name
         self.type               = 'Base Class'
+        self.units              = units
         self.permittivityObject = permittivityObject
         if self.density is None and self.cell is not None:
             self.density = self.cell.calculate_density()
+
+    def setUnits(self,units):
+        '''Set the frequency units for the permittivity object'''
+        self.permittivityObject.setUnits(units)
+        return 
+
+    def getUnits(self):
+        '''Get the frequency units for the permittivity object'''
+        return self.permittivityObject.getUnits()
 
     def getName(self):
         return self.name
@@ -286,8 +379,9 @@ class Material():
         print('Material is scalar?:',self.isScalar())
         print('Material is tensor?:',self.isTensor())
         print('Material permittivity:',self.getInformation())
-        print('Material unit cell')
-        self.cell.print()
+        if self.cell is not None:
+            print('Material unit cell')
+            self.cell.print()
         return
 
     def isScalar(self):
@@ -332,7 +426,7 @@ class Material():
         return self.cell
 
 class Constant(Material):
-    def __init__(self, name, permittivity=None, density=None, cell=None):
+    def __init__(self, name, permittivity=None, density=None, cell=None, units='cm-1'):
         '''Create an instance of a material with a constant scalar permittivity
            permittivity is the value of the permittivity and can be complex
            The required parameters are;
@@ -346,7 +440,7 @@ class Constant(Material):
 
 
 class External(Material):
-    def __init__(self, name, permittivityObject=None, density=None, cell=None):
+    def __init__(self, name, permittivityObject=None, density=None, cell=None, units='cm-1'):
         '''Create an instance of a material which has the permittivity object specified externally
            permittivity is the value of the permittivity and can be complex
            The required parameters are;
@@ -360,7 +454,7 @@ class External(Material):
 
 
 class DrudeLorentz(Material):
-    def __init__(self, name,epsinf,omegas,strengths,gammas,density=None,cell=None):
+    def __init__(self, name,epsinf,omegas,strengths,gammas,density=None,cell=None, units='cm-1'):
         '''Create an instance of a material with a Lorentz Drude model permittivity
            permittivity is the value of the permittivy and can be complex
            The required parameters are;
@@ -379,7 +473,7 @@ class DrudeLorentz(Material):
         self.type = 'Drude-Lorentz'
 
 class FPSQ(Material):
-    def __init__(self, name,epsinf,omega_tos,gamma_tos,omega_los,gamma_los,density=None,cell=None):
+    def __init__(self, name,epsinf,omega_tos,gamma_tos,omega_los,gamma_los,density=None,cell=None, units='cm-1'):
         '''Create an instance of a material with an FPSQ model permittivity
            permittivity is the value of the permittivy and can be complex
            The required parameters are;
@@ -390,18 +484,32 @@ class FPSQ(Material):
            omega_los         The LO frequencies as a list 
            gamma_los         The LO absorption widths as a list
            density           in g/ml
-           cell               the unit cell
+           cell              the unit cell
         '''
         epsilon_infinity = np.array(epsinf)
         permittivityObject = DielectricFunction.FPSQ( omega_tos, gamma_tos, omega_los, gamma_los, units='hz')
         permittivityObject.setEpsilonInfinity(epsilon_infinity)
-        permittivityAt = permittivityObject.function()
         super().__init__(name, density=density, permittivityObject=permittivityObject,cell=cell)
         self.type = 'FPSQ'
 
+class Sellmeier(Material):
+    def __init__(self, name,Bs,Cs,density=None,cell=None, units='cm-1'):
+        '''Create an instance of a material with an Sellmeier model permittivity
+           permittivity is the value of the permittivy and should be real for Sellmeier
+           The required parameters are;
+           name:             The name of the material
+           Bs                The B parameters of the Sellmeier equation
+           Cs                The C parameters of the Sellmeier equation
+           density           in g/ml
+           cell               the unit cell
+        '''
+        permittivityObject = DielectricFunction.Sellmeier( Bs, Cs)
+        super().__init__(name, density=density, permittivityObject=permittivityObject,cell=cell)
+        self.type = 'Sellmeier'
+
 
 class Tabulated(Material):
-    def __init__(self, name, vs_cm1=None, permittivities=None, density=None, cell=None):
+    def __init__(self, name, vs_cm1=None, permittivities=None, density=None, cell=None, units='cm-1'):
         '''Create an instance of a material with a constant permittivity
            permittivity is the value of the permittivy and can be complex
            The returned permittivityObject can generate either a scalar or a tensor.
