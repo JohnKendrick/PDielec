@@ -548,7 +548,7 @@ class Layer:
         Cp_t2 = np.abs(self.Py[0,transmode[1]])**2/(np.abs(self.Py[0,transmode[1]])**2+np.abs(self.Py[1,transmode[1]])**2+Layer.jk_shift)
 
         if np.abs(Cp_t1-Cp_t2) > Layer.qsd_thr: ## birefringence
-            #JK self.useBerreman = True ## sets _useBerreman fo the calculation of gamma matrix below
+            self.useBerreman = True ## sets _useBerreman fo the calculation of gamma matrix below
             if Cp_t2>Cp_t1:
                 transmode = np.flip(transmode,0) ## flip the two values
             ## then calculate for reflected waves if necessary
@@ -1074,7 +1074,6 @@ class System:
         """
         A_super, K_super, A_inv_super, T_super = self.superstrate.update(f, zeta_sys)
         A_sub, K_sub, A_inv_sub, T_sub = self.substrate.update(f, zeta_sys)
-
         Delta1234 = np.array([[1,0,0,0],
                               [0,0,1,0],
                               [0,1,0,0],
@@ -1111,7 +1110,6 @@ class System:
         # If there was no incoherence then T is the total transfer matrix
         Gamma = T
         GammaStar = np.matmul(exact_inv_4x4(Delta1234),np.matmul(Gamma,Delta1234))
-
         self.Gamma = Gamma.copy()
         self.GammaStar = GammaStar.copy()
         return self.GammaStar.copy()
