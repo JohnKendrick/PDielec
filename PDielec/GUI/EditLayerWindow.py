@@ -21,7 +21,8 @@ class Layer():
            azimuthal         is the azimuthal angle of rotation of the crystal about z
            thickness         is the thickness of the layer in the specfied thickness units
            thicknessUnits    can be either nm, um, mm or cm 
-           incoherentOption  can be 'Coherent', 'Incoherent intensity', 'Incoherent phase cancelling' or 'Thick slab'
+           incoherentOption  can be 'Coherent', 'Incoherent (intensity)', 'Incoherent (phase cancelling)' or
+                                    'Incoherent non-reflective'
            dielectricFlag    this is true if the layer material is the dielectric being studied'''
         self.material = material
         self.hkl = hkl
@@ -339,16 +340,6 @@ class ShowLayerWindow(QDialog):
         azimuthal_angle_sb.setValue(azimuthal)
         azimuthal_angle_sb.valueChanged.connect(self.on_azimuthal_angle_sb_changed)
         azimuthalLabel = QLabel('Azimuthal:')
-        # Create a checkbox for incoherence
-        incoherence_cb = QCheckBox(self)
-        incoherence_cb.setToolTip('Treat layer as incoherent using phase cancellation')
-        incoherence_cb.setText('Incoherent?')
-        incoherence_cb.setLayoutDirection(Qt.RightToLeft)
-        if self.layer.isCoherent():
-            incoherence_cb.setCheckState(Qt.Unchecked)
-        else:
-            incoherence_cb.setCheckState(Qt.Checked)
-        incoherence_cb.stateChanged.connect(self.on_incoherence_cb_changed)
         # Create the line of widgets
         hbox.addWidget(hklLabel)
         hbox.addWidget(h_sb)
@@ -356,7 +347,6 @@ class ShowLayerWindow(QDialog):
         hbox.addWidget(l_sb)
         hbox.addWidget(azimuthalLabel)
         hbox.addWidget(azimuthal_angle_sb)
-        hbox.addWidget(incoherence_cb)
         return hbox
 
     def drawLayerWidgetLine3(self):
@@ -382,16 +372,6 @@ class ShowLayerWindow(QDialog):
         self.labframe_w.addItem('crystal a-axis in lab frame: {: 3.5f}, {: 3.5f}, {: 3.5f}'.format(a[0],a[1],a[2]) )
         self.labframe_w.addItem('crystal b-axis in lab frame: {: 3.5f}, {: 3.5f}, {: 3.5f}'.format(b[0],b[1],b[2]) )
         self.labframe_w.addItem('crystal c-axis in lab frame: {: 3.5f}, {: 3.5f}, {: 3.5f}'.format(c[0],c[1],c[2]) )
-        return
-
-    def on_incoherence_cb_changed(self,value):
-        '''The incoherence checkbox has changed'''
-        debugger.print('on_incoherence_cb_changed', value)
-        state = self.layer.isCoherent()
-        if state:
-            self.layer.setIncoherent()
-        else:
-            self.layer.setCoherent()
         return
 
     def on_film_thickness_sb_changed(self,value):
