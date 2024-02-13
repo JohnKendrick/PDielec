@@ -26,9 +26,13 @@ from PDielec.GUI.EditLayerWindow import Layer
 from functools                   import partial
 from scipy                       import signal
 
-incoherentOptions = ['Coherent','Incoherent (intensity)','Incoherent (phase cancelling)','Thick slab'] 
 thickness_conversion_factors = {'ang':1.0E-10, 'nm':1.0E-9, 'um':1.0E-6, 'mm':1.0E-3, 'cm':1.0E-2}
 thickness_units = list(thickness_conversion_factors.keys())
+incoherentOptions = ['Coherent','Incoherent (intensity)','Incoherent (phase cancelling)','Incoherent (non-reflective)'] 
+gtmMethods ={'Coherent':GTM.CoherentLayer,
+             'Incoherent (intensity)':GTM.IncoherentIntensityLayer,
+             'Incoherent (phase cancelling)':GTM.IncoherentPhaseLayer,
+             'Incoherent (non-reflective)':GTM.IncoherentThickLayer} 
 
 def trace3x3(m):
     if isinstance(m,np.ndarray):
@@ -37,10 +41,6 @@ def trace3x3(m):
         return m
 
 def solve_single_crystal_equations( 
-        superstrateDielectricFunction ,
-        substrateDielectricFunction   ,
-        superstrateDepth              ,
-        substrateDepth                ,
         layers                        ,
         mode                          ,
         theta                         ,
@@ -53,10 +53,6 @@ def solve_single_crystal_equations(
         ):
     """
         This is a parallel call to the single crystal equation solver, system is a GTM system   
-        superstrateDielectricFunction is a dielectric function providing the superstrate dielectric
-        substrateDielectricFunction   is a dielectric function providing the substrate dielectric
-        superstrateDepth              the depth of the superstrate (m)
-        substrateDepth                the depth of the substrate (m)
         layers                        a list of material layers (their permittivity functions)
         mode                          'Transfer matrix' or 'Scattering matrix'
         theta                         the theta angle of the sla,
@@ -69,40 +65,32 @@ def solve_single_crystal_equations(
         v                             the frequency of the light in cm-1
 
     """
-    # Create layers, thickness is in metres
+    # Create superstrate from the first layer
+    superstrate = layers[0]
+    superstrateDepth = superstrate.getThicknessInMetres()
+    superstrateDielectricFunction = superstrate.getPermittivityFunction()
     superstrate      = GTM.CoherentLayer(thickness=superstrateDepth,epsilon=superstrateDielectricFunction,exponent_threshold=exponent_threshold)
+    # Create substrate from the last layer
+    substrate = layers[-1]
+    substrateDepth = substrate.getThicknessInMetres()
+    substrateDielectricFunction = substrate.getPermittivityFunction()
     substrate        = GTM.CoherentLayer(thickness=substrateDepth,  epsilon=substrateDielectricFunction,exponent_threshold=exponent_threshold)
-    selectedLayers = layers
+    selectedLayers = layers[1:-1]
     gtmLayers = []
+    # Create layers from all the layers between first and last
     for layer in selectedLayers:
         permittivityFunction = layer.getPermittivityFunction()
         depth = layer.getThicknessInMetres()
         incoherentOption = layer.getIncoherentOption()
         if sliceThickness != 0 and depth > sliceThickness:
+            # Slice if the slicing is chosen and if the layer thickness is larger than the threshold
             no_of_layers = int(depth / sliceThickness) + 1
-            newdepth = depth / no_of_layers
+            sliced_depth = depth / no_of_layers
             for i in range(no_of_layers):
-                if incoherentOption == incoherentOptions[0]:
-                    gtmLayers.append(GTM.CoherentLayer(thickness=newdepth, epsilon=permittivityFunction, exponent_threshold=exponent_threshold))
-                elif incoherentOption == incoherentOptions[1]:
-                    gtmLayers.append(GTM.IncoherentIntensityLayer(thickness=newdepth, epsilon=permittivityFunction, exponent_threshold=exponent_threshold))
-                elif incoherentOption == incoherentOptions[2]:
-                    gtmLayers.append(GTM.IncoherentPhaseLayer(thickness=newdepth, epsilon=permittivityFunction, exponent_threshold=exponent_threshold))
-                elif incoherentOption == incoherentOptions[3]:
-                    gtmLayers.append(GTM.IncoherentThickLayer(thickness=newdepth, epsilon=permittivityFunction, exponent_threshold=exponent_threshold))
-                else:
-                    print('Error: unkown incoherent option',incoherentOption)
+                gtmLayers.append(gtmMethods[incoherentOption](thickness=sliced_depth, epsilon=permittivityFunction, exponent_threshold=exponent_threshold))
         else:
-            if incoherentOption == incoherentOptions[0]:
-                gtmLayers.append(GTM.CoherentLayer(thickness=depth, epsilon=permittivityFunction, exponent_threshold=exponent_threshold))
-            elif incoherentOption == incoherentOptions[1]:
-                gtmLayers.append(GTM.IncoherentIntensityLayer(thickness=depth, epsilon=permittivityFunction, exponent_threshold=exponent_threshold))
-            elif incoherentOption == incoherentOptions[2]:
-                gtmLayers.append(GTM.IncoherentPhaseLayer(thickness=depth, epsilon=permittivityFunction, exponent_threshold=exponent_threshold))
-            elif incoherentOption == incoherentOptions[3]:
-                gtmLayers.append(GTM.IncoherentThickLayer(thickness=depth, epsilon=permittivityFunction, exponent_threshold=exponent_threshold))
-            else:
-                print('Error: unkown incoherent option',incoherentOption)
+            # No slicing is necessary
+            gtmLayers.append(gtmMethods[incoherentOption](thickness=depth, epsilon=permittivityFunction, exponent_threshold=exponent_threshold))
     # Creat the system with the layers 
     system = GTM.System(substrate=substrate, superstrate=superstrate, layers=gtmLayers)
     # Rotate the dielectric constants to the laboratory frame
@@ -139,26 +127,20 @@ class SingleCrystalScenarioTab(ScenarioTab):
         self.settings['Scenario type'] = 'Single crystal'
         self.settings['Global azimuthal angle'] = 0.0
         self.settings['Angle of incidence'] = 0.0
-        self.settings['Superstrate'] = 'air'
-        self.settings['Substrate'] = 'air'
-        self.settings['Superstrate permittivity'] = 1.0
-        self.settings['Substrate permittivity'] = 1.0
-        self.settings['Superstrate depth'] = 99999.0
-        self.settings['Substrate depth'] = 99999.0
-        self.settings['Superstrate & substrate thickness unit'] = 'mm'
         self.settings['Mode'] = 'Transfer matrix'
         self.settings['Frequency units'] = 'wavenumber'
         self.settings['Partially incoherent samples'] = 20
         self.settings['Percentage partial incoherence'] = 0
         self.settings['Filter kernel size'] = 1
         self.settings['Filter polynomial size'] = 3
-        self.settings['Layer material names'] = []
-        self.settings['Layer hkls'] = []
-        self.settings['Layer azimuthals'] = []
-        self.settings['Layer thicknesses'] = []
-        self.settings['Layer thickness units'] = []
-        self.settings['Layer dielectric flags'] = []
-        self.settings['Layer incoherent options'] = []
+        # Define a default superstrate/dielectric/substrate system
+        self.settings['Layer material names']     = ['air',     'Dielectric layer','air'     ]
+        self.settings['Layer hkls']               = [ [0,0,0],  [0,0,1],           [0,0,0]   ]
+        self.settings['Layer azimuthals']         = [ 0,         0,                 0        ]
+        self.settings['Layer thicknesses']        = [ 1,         1,                 1        ]
+        self.settings['Layer thickness units']    = ['um',      'um',              'um'      ]
+        self.settings['Layer incoherent options'] = ['Coherent','Coherent',        'Coherent']
+        self.settings['Layer dielectric flags']   = [ False,     True,              False    ]
         # The maximum allowed thickness of a layer in metres
         # used to subdivide thicker films into many thinner films
         # if zero no subdivision is performed
@@ -178,6 +160,7 @@ class SingleCrystalScenarioTab(ScenarioTab):
         # get the reader from the main tab
         self.reader = self.notebook.mainTab.reader
         # Get the last unit cell in the reader
+        self.cell = None
         if self.reader is not None:
             self.cell = self.reader.unit_cells[-1]
         # Set the exponent threshold to be used by GTM
@@ -186,6 +169,9 @@ class SingleCrystalScenarioTab(ScenarioTab):
         self.DataBase = MaterialsDataBase(self.settings['Materials database'],debug=debugger.state())
         self.settings['Materials database'] = self.DataBase.getFileName()
         self.materialNames = self.setMaterialNames()
+        # Create the layers - superstrate / dielectric / substrate from the defaults layer settings
+        if self.reader is not None:
+            self.settings2Layers()
         # Create last tab - SingleCrystalTab
         vbox = QVBoxLayout()
         self.form = QFormLayout()
@@ -220,16 +206,6 @@ class SingleCrystalScenarioTab(ScenarioTab):
         label, layout = self.angleOfIncidenceWidget()
         self.form.addRow(label,layout)
         #
-        # Define the superstrate material widget
-        #
-        label,layout = self.superstrateWidget()
-        self.form.addRow(label, layout)
-        #
-        # Define the superstrate real and imaginary components
-        #
-        label,layout = self.superstratePermittivityWidget()
-        self.form.addRow(label, layout)
-        #
         # Layer information widget
         #
         label = QLabel('Layer information')
@@ -240,7 +216,6 @@ class SingleCrystalScenarioTab(ScenarioTab):
         hbox.setAlignment(Qt.AlignVCenter)
         self.form.addRow(label,hbox)
         self.form.addRow(self.drawLayerTable())
-        self.layerInformationFormCount = self.form.rowCount()-1
         label = QLabel('    ')
         line  = QFrame()
         line.setFrameShape(QFrame.HLine)
@@ -248,16 +223,6 @@ class SingleCrystalScenarioTab(ScenarioTab):
         hbox.addWidget(line)
         hbox.setAlignment(Qt.AlignVCenter)
         self.form.addRow(label,hbox)
-        #
-        # Define the substrate material widget
-        #
-        label,layout = self.substrateWidget()
-        self.form.addRow(label, layout)
-        #
-        # Define the substrate real and imaginary components
-        #
-        label,layout = self.substratePermittivityWidget()
-        self.form.addRow(label, layout)
         #
         # Widgets for setting the slice thickness
         #
@@ -413,6 +378,9 @@ class SingleCrystalScenarioTab(ScenarioTab):
             k_sb.setEnabled(False)
             l_sb.setEnabled(False)
             azimuthal_angle_sb.setEnabled(False)
+        if firstLayer or lastLayer:
+            film_thickness_sb.setEnabled(False)
+            thickness_unit_cb.setEnabled(False)
         return
 
     def drawLayerTable(self):
@@ -448,11 +416,17 @@ class SingleCrystalScenarioTab(ScenarioTab):
         if 'Print' in headers:
             # Print
             header.setSectionResizeMode(9,QHeaderView.ResizeToContents)
-        self.redrawLayerTable()
+        if self.reader is not None:
+            self.redrawLayerTable()
         return self.layerTable_tw
 
     def deleteLayer(self,x,layer,layerIndex):
         '''Handle a delete layer button press'''
+        new = layerIndex + 1
+        if layerIndex == 0 and layer[new].isTensor():
+            #  Only allow scalar materials as the superstrate
+            print('New superstrate material must be a scalar dielectric')
+            return
         # Delete the layer
         del self.layers[layerIndex]
         self.generateLayerSettings()
@@ -463,6 +437,10 @@ class SingleCrystalScenarioTab(ScenarioTab):
     def moveLayerUp(self,x,layer,layerIndex):
         '''Move a layer up (sequence number gets smaller by 1)'''
         if layerIndex < 1:
+            return
+        if layerIndex == 1 and layer.isTensor():
+            #  Only allow scalar materials as the superstrate
+            print('New superstrate material must be a scalar dielectric')
             return
         new = layerIndex - 1
         item = self.layers[layerIndex]
@@ -479,6 +457,10 @@ class SingleCrystalScenarioTab(ScenarioTab):
         if layerIndex >= last:
             return
         new = layerIndex + 1
+        if layerIndex == 0 and self.layers[new].isTensor():
+            #  Only allow scalar materials as the superstrate
+            print('New superstrate material must be a scalar dielectric')
+            return
         item = self.layers[layerIndex]
         self.layers.pop(layerIndex)
         self.layers.insert(new, item)
@@ -525,6 +507,8 @@ class SingleCrystalScenarioTab(ScenarioTab):
            layer is the layer concerned
            layerIndex is its index in the list
            nLayers is the number of layers in the list'''
+        if nLayers <= 1:
+            return
         frame = QFrame()
         frame_layout = QHBoxLayout()
         frame.setLayout(frame_layout)
@@ -532,15 +516,18 @@ class SingleCrystalScenarioTab(ScenarioTab):
         moveUpButton   =  self.createToolBarMoveUpButton(layer,layerIndex,nLayers)
         moveDownButton =  self.createToolBarMoveDownButton(layer,layerIndex,nLayers)
         deleteButton   =  self.createToolBarDeleteButton(layer,layerIndex,nLayers)
+        nextIndex = layerIndex+1
+        previousIndex = layerIndex-1
         # disable any buttons that are irrelevant to the layer
         if layerIndex == 0:
             moveUpButton.setEnabled(False)
         if layerIndex == nLayers-1:
             moveDownButton.setEnabled(False)
-        if nLayers == 1:
-            moveUpButton.setEnabled(False)
+        if layerIndex == 0 and self.layers[nextIndex].isTensor():
             moveDownButton.setEnabled(False)
             deleteButton.setEnabled(False)
+        if layerIndex == 1 and layer.isTensor():
+            moveUpButton.setEnabled(False)
         # Add the buttons to the frame and return the frame
         frame_layout.addWidget(moveUpButton)
         frame_layout.addWidget(moveDownButton)
@@ -657,73 +644,37 @@ class SingleCrystalScenarioTab(ScenarioTab):
             self.settings['Layer incoherent options'].append(layer.getIncoherentOption())
         return
 
-    def addDielectricLayer(self,name,hkl,azimuthal,thickness,thicknessUnit,incoherentOption,forTheFirstTime=False):
-        '''Add a dielectric layer to the list of layers'''
-        debugger.print(self.settings['Legend'],'addDielectricLayer',name,hkl,azimuthal,thicknessUnit,forTheFirstTime)
-        # Update the notebook permittivity if it needs to be updated
-        temp = self.notebook.settingsTab.getCrystalPermittivity(self.vs_cm1)
-        # Create the dielectric material
-        # Make sure the system knows that frequency will be supplied using Hz
-        dielectricMaterial =  self.getMaterialFromDataBase('Dielectric layer')
-        if forTheFirstTime:
-            # There are no dielectric layers so we have to add one
-            # If older versions (before version 8.0.0) are used then
-            # Different settings are used to define the layer.  If these settings are encountered then
-            # use them once and then delete them
-            debugger.print(self.settings['Legend'],'processing for the first time')
-            if 'Film thickness' in self.settings:
-                thickness = self.settings['Film thickness']
-                del(self.settings['Film thickness'])
-            if 'Thickness unit' in self.settings:
-                thicknessUnit = self.settings['Thickness unit']
-                del(self.settings['Thickness unit'])
-            if 'Azimuthal angle' in self.settings:
-                azimuthal = self.settings['Azimuthal angle']
-                del(self.settings['Azimuthal angle'])
-            if 'Unique direction - h' in self.settings:
-                hkl = [ self.settings['Unique direction - h'], self.settings['Unique direction - k'], self.settings['Unique direction - l']]
-                del(self.settings['Unique direction - h'])
-                del(self.settings['Unique direction - k'])
-                del(self.settings['Unique direction - l'])
-        # Append the dielectric material to the list of layers
-        self.layers.append(Layer(dielectricMaterial,hkl=hkl,azimuthal=azimuthal,thickness=thickness,thicknessUnit=thicknessUnit,incoherentOption=incoherentOption,dielectricFlag=True))
-        self.generateLayerSettings()
-        return
-
     def setMaterialNames(self):
         # Get the list of material names from the database
         materialNames = self.DataBase.getSheetNames()
         materialNames.append('Dielectric layer')
-        if 'manually' in self.settings['Superstrate'] or 'manually' in self.settings['Substrate']:
-            if 'Material defined manually' not in self.materialNames:
-                self.materialNames.append('Material defined manually')
         return materialNames
+
+    def printLayerSettings(self,message):
+        print(message)
+        print(self.settings['Layer material names'])
+        print(self.settings['Layer hkls'])
+        print(self.settings['Layer azimuthals'])
+        print(self.settings['Layer thicknesses'])
+        print(self.settings['Layer thickness units'])
+        print(self.settings['Layer dielectric flags'])
+        print(self.settings['Layer incoherent options'])
+        print()
 
     def settings2Layers(self):
         '''Read the layer settings and generate a list of layers'''
         debugger.print(self.settings['Legend'],'settings2Layers')
         self.layers = []
         self.materialNames = self.setMaterialNames()
-        # If there is no layer information in settings then just add the dielectric
-        if len(self.settings['Layer material names']) == 0:
-            # Defaults come from version 7.3 of the code
-            name = 'Dielectric layer'
-            hkl = [0, 0, 1]
-            azimuthal = 0.0
-            thickness = 10.0
-            thicknessUnit = 'um'
-            incoherentOption = 'Coherent'
-            self.addDielectricLayer(name,hkl,azimuthal,thickness,thicknessUnit,incoherentOption,forTheFirstTime=True)
-            return
         # Process the settings information and append each layer to the list
-        for name, hkl, azimuthal, thickness, thicknessUnit, dielectricFlag, incoherentOption in zip(
+        for index, (name, hkl, azimuthal, thickness, thicknessUnit, dielectricFlag, incoherentOption) in enumerate(zip(
                           self.settings['Layer material names'],
                           self.settings['Layer hkls'],
                           self.settings['Layer azimuthals'],
                           self.settings['Layer thicknesses'],
                           self.settings['Layer thickness units'],
                           self.settings['Layer dielectric flags'],
-                          self.settings['Layer incoherent options']):
+                          self.settings['Layer incoherent options'])):
             if name not in self.materialNames:
                 print('Error material ', name, ' not available ', self.materialNames)
                 name = 'air'
@@ -838,83 +789,6 @@ class SingleCrystalScenarioTab(ScenarioTab):
         label.setToolTip('Define the kernel size for the smoothing of incoherent spectra (must be an odd number)\nIf the kernel size is less than 3, no smoothing is done.\nThe larger the number, the smoother the spectrum but beware of too much smoothing.\nAlso defines the polynomial size for the fitting of the points in the kernel')
         return label,hbox
 
-    def superstrateWidget(self):
-        '''Create the superstrate widget '''
-        hbox = QHBoxLayout()
-        self.superstrate_cb = QComboBox(self)
-        self.superstrate_cb.setSizePolicy(QSizePolicy.Expanding,QSizePolicy.Fixed)
-        self.superstrate_cb.setToolTip('Define the incident medium')
-        self.superstrate_cb.clear()
-        self.superstrate_cb.addItems(self.materialNames)
-        if not self.settings['Superstrate'] in self.materialNames:
-            if 'air' in self.materialNames:
-                self.settings['Superstrate'] = 'air'
-            else:
-                self.settings['Superstrate'] = self.materialNames[0]
-        index = self.superstrate_cb.findText(self.settings['Superstrate'], Qt.MatchFixedString)
-        self.superstrate_cb.setCurrentIndex(index)
-        self.superstrate_cb.activated.connect(self.on_superstrate_cb_activated)
-        self.superstrateMaterial = self.getMaterialFromDataBase(self.settings['Superstrate'],permittivity=self.settings['Superstrate permittivity'])
-        label = QLabel('Superstrate material')
-        label.setToolTip('Define the incident medium permittivity')
-        self.superstrate_info_le = QLineEdit(self)
-        self.superstrate_info_le.setToolTip("Provides details about database entry")
-        text = self.superstrateMaterial.getInformation()
-        self.superstrate_info_le.setText(text)
-        self.superstrate_info_le.setReadOnly(True)
-        hbox.addWidget(self.superstrate_cb)
-        hbox.addWidget(self.superstrate_info_le)
-        return label,hbox
-
-    def superstratePermittivityWidget(self):
-        ''' Create a superstrate permittivity widget'''
-        self.superstrate_permittivity_r_sb = QDoubleSpinBox(self)
-        self.superstrate_permittivity_r_sb.setToolTip('Define the incident medium permittivity (real component)')
-        self.superstrate_permittivity_r_sb.setRange(0,1000)
-        self.superstrate_permittivity_r_sb.setSingleStep(0.1)
-        self.superstrate_permittivity_r_sb.setValue(self.settings['Superstrate permittivity'].real)
-        self.superstrate_permittivity_r_sb.valueChanged.connect(self.on_superstrate_permittivity_r_sb_changed)
-        self.superstrate_permittivity_i_sb = QDoubleSpinBox(self)
-        self.superstrate_permittivity_i_sb.setToolTip('Define the incident medium permittivity (imaginary component)')
-        self.superstrate_permittivity_i_sb.setRange(0,1000)
-        self.superstrate_permittivity_i_sb.setSingleStep(0.1)
-        self.superstrate_permittivity_i_sb.setValue(self.settings['Superstrate permittivity'].imag)
-        self.superstrate_permittivity_i_sb.valueChanged.connect(self.on_superstrate_permittivity_i_sb_changed)
-        hbox = QHBoxLayout()
-        hbox.addWidget(self.superstrate_permittivity_r_sb)
-        hbox.addWidget(self.superstrate_permittivity_i_sb)
-        label = QLabel('Superstrate permittivity')
-        label.setToolTip('Define the complex permittivity of the superstrate')
-        return label,hbox
-
-    def substrateWidget(self):
-        ''' Create a substrate widget'''
-        hbox = QHBoxLayout()
-        self.substrate_cb = QComboBox(self)
-        self.substrate_cb.setSizePolicy(QSizePolicy.Expanding,QSizePolicy.Fixed)
-        self.substrate_cb.setToolTip('Define the substrate material')
-        self.substrate_cb.clear()
-        self.substrate_cb.addItems(self.materialNames)
-        if not self.settings['Substrate'] in self.materialNames:
-            if 'air' in self.materialNames:
-                self.settings['Substrate'] = 'air'
-            else:
-                self.settings['Substrate'] = self.materialNames[0]
-        index = self.substrate_cb.findText(self.settings['Substrate'], Qt.MatchFixedString)
-        self.substrate_cb.setCurrentIndex(index)
-        self.substrate_cb.activated.connect(self.on_substrate_cb_activated)
-        self.substrateMaterial = self.getMaterialFromDataBase(self.settings['Substrate'],permittivity=self.settings['Substrate permittivity'])
-        label = QLabel('Substrate material')
-        label.setToolTip('Define the substrate permittivity')
-        self.substrate_info_le = QLineEdit(self)
-        self.substrate_info_le.setToolTip("Provides details about database entry")
-        text = self.substrateMaterial.getInformation()
-        self.substrate_info_le.setText(text)
-        self.substrate_info_le.setReadOnly(True)
-        hbox.addWidget(self.substrate_cb)
-        hbox.addWidget(self.substrate_info_le)
-        return label,hbox
-
     def sliceThicknessWidget(self):
         self.slice_thickness_sb = QSpinBox(self)
         self.slice_thickness_sb.setToolTip('Define a slice thickness to subdivide thick films\nA value of zero means no slicing is performed')
@@ -950,52 +824,10 @@ class SingleCrystalScenarioTab(ScenarioTab):
         self.settings['Slice thickness unit'] = thickness_units[index]
         return
 
-    def substratePermittivityWidget(self):
-        ''' Create a substrate permittivity widget'''
-        self.substrate_permittivity_r_sb = QDoubleSpinBox(self)
-        self.substrate_permittivity_r_sb.setToolTip('Define the substrate permittivity (real component)')
-        self.substrate_permittivity_r_sb.setRange(0,1000)
-        self.substrate_permittivity_r_sb.setSingleStep(0.1)
-        self.substrate_permittivity_r_sb.setValue(self.settings['Substrate permittivity'].real)
-        self.substrate_permittivity_r_sb.valueChanged.connect(self.on_substrate_permittivity_r_sb_changed)
-        self.substrate_permittivity_i_sb = QDoubleSpinBox(self)
-        self.substrate_permittivity_i_sb.setToolTip('Define the substrate permittivity (imaginary component)')
-        self.substrate_permittivity_i_sb.setRange(0,1000)
-        self.substrate_permittivity_i_sb.setSingleStep(0.1)
-        self.substrate_permittivity_i_sb.setValue(self.settings['Substrate permittivity'])
-        self.substrate_permittivity_i_sb.valueChanged.connect(self.on_substrate_permittivity_i_sb_changed)
-        hbox = QHBoxLayout()
-        hbox.addWidget(self.substrate_permittivity_r_sb)
-        hbox.addWidget(self.substrate_permittivity_i_sb)
-        label = QLabel('Substrate permittivity')
-        label.setToolTip('Define the complex permittivity of the substrate')
-        return label,hbox
-
     def openDB_button_clicked(self):
         '''Open a new materials' database'''
         debugger.print('Start:: openDB_button_clicked')
         self.openDataBase()
-        if not self.settings['Substrate'] in self.materialNames:
-            if 'air' in self.materialNames:
-               self.settings['Substrate'] = 'air'
-            else:
-               self.settings['Substrate'] = self.materialNames[0]
-        if not self.settings['Superstrate'] in self.materialNames:
-            if 'air' in self.materialNames:
-               self.settings['Superstrate'] = 'air'
-            else:
-               self.settings['Superstrate'] = self.materialNames[0]
-        else:
-            self.substrateMaterial   = self.getMaterialFromDataBase(self.settings['Substrate'],  permittivity=self.settings['Substrate permittivity'])
-            self.superstrateMaterial = self.getMaterialFromDataBase(self.settings['Superstrate'],permittivity=self.settings['Superstrate permittivity'])
-        # Check to see that the materials return a scalar permittivity
-        if self.superstrateMaterial.isTensor():
-            print('Error: superstrate must have a scalar permittivity, using air')
-            self.settings['Superstrate'] = 'air'
-            self.superstrateMaterial = self.getMaterialFromDataBase(self.settings['Superstrate'])
-        # Set the values of the permittivity at 1.0 cm-1
-        self.settings['Substrate permittivity'] = trace3x3(self.substrateMaterial.getPermittivityFunction()(0.0))
-        self.settings['Superstrate permittivity'] = self.superstrateMaterial.getPermittivityFunction()(0.0)
         self.refresh(force=True)
         self.refreshRequired = True
         return
@@ -1023,63 +855,6 @@ class SingleCrystalScenarioTab(ScenarioTab):
         debugger.print(self.settings['Legend'],'on_percentage_partial_incoherence_sb_changed', value)
         self.refreshRequired = True
         self.settings['Percentage partial incoherence'] = value
-        return
-
-    def on_superstrate_permittivity_r_sb_changed(self,value):
-        '''on_superstrate_permittivity_r_sb_changed'''
-        debugger.print(self.settings['Legend'],'on_superstrate_permittivity_r_sb_changed', value)
-        self.refreshRequired = True
-        old_imag = self.settings['Superstrate permittivity'].imag
-        self.settings['Superstrate permittivity'] = complex(value,old_imag)
-        newPermittivityObject = DielectricFunction.ConstantScalar(self.settings['Superstrate permittivity'])
-        self.superstrateMaterial.setPermittivityObject(newPermittivityObject)
-        self.settings['Superstrate'] = 'Material defined manually'
-        if 'Material defined manually' not in self.materialNames:
-            self.materialNames.append('Material defined manually')
-        self.refresh(force=True)
-        self.refreshRequired = True
-        return
-
-    def on_superstrate_permittivity_i_sb_changed(self,value):
-        debugger.print(self.settings['Legend'],'on_superstrate_permittivity_i_sb_changed', value)
-        self.refreshRequired = True
-        old_real = self.settings['Superstrate permittivity'].real
-        self.settings['Superstrate permittivity'] = complex(old_real,value)
-        newPermittivityObject = DielectricFunction.ConstantScalar(self.settings['Superstrate permittivity'])
-        self.superstrateMaterial.setPermittivityObject(newPermittivityObject)
-        self.settings['Superstrate'] = 'Material defined manually'
-        if 'Material defined manually' not in self.materialNames:
-            self.materialNames.append('Material defined manually')
-        self.refresh(force=True)
-        self.refreshRequired = True
-        return
-
-    def on_substrate_permittivity_r_sb_changed(self,value):
-        debugger.print(self.settings['Legend'],'on_substrate_permittivity_r_sb_changed', value)
-        self.refreshRequired = True
-        old_imag = self.settings['Substrate permittivity'].imag
-        self.settings['Substrate permittivity'] = complex(value,old_imag)
-        newPermittivityObject = DielectricFunction.ConstantScalar(self.settings['Substrate permittivity'])
-        self.substrateMaterial.setPermittivityObject(newPermittivityObject)
-        self.settings['Substrate'] = 'Material defined manually'
-        if 'Material defined manually' not in self.materialNames:
-            self.materialNames.append('Material defined manually')
-        self.refresh(force=True)
-        self.refreshRequired = True
-        return
-
-    def on_substrate_permittivity_i_sb_changed(self,value):
-        debugger.print(self.settings['Legend'],'on_substrate_permittivity_i_sb_changed', value)
-        self.refreshRequired = True
-        old_real = self.settings['Substrate permittivity'].real
-        self.settings['Substrate permittivity'] = complex(old_real,value)
-        newPermittivityObject = DielectricFunction.ConstantScalar(self.settings['Substrate permittivity'])
-        self.substrateMaterial.setPermittivityObject(newPermittivityObject)
-        self.settings['Substrate'] = 'Material defined manually'
-        if 'Material defined manually' not in self.materialNames:
-            self.materialNames.append('Material defined manually')
-        self.refresh(force=True)
-        self.refreshRequired = True
         return
 
     def on_global_azimuthal_angle_sb_changed(self,value):
@@ -1122,7 +897,7 @@ class SingleCrystalScenarioTab(ScenarioTab):
         self.DataBase = MaterialsDataBase(self.settings['Materials database'],debug=debugger.state())
         self.settings['Materials database'] = self.DataBase.getFileName()
         self.database_le.setText(self.settings['Materials database'])
-        # Update the possible super/substrate material names from the database
+        # Update the possible  material names from the database
         self.materialNames = self.setMaterialNames()
         # Generate the layers from the settings
         self.settings2Layers()
@@ -1134,21 +909,7 @@ class SingleCrystalScenarioTab(ScenarioTab):
         #
         # Now refresh values that need updating
         #
-        self.superstrate_cb.clear()
-        self.superstrate_cb.addItems(self.materialNames)
-        self.substrate_cb.clear()
-        self.substrate_cb.addItems(self.materialNames)
-        # If the permittivity has been edited manually in the GUI then update the combo box
-        if 'manually' in self.settings['Superstrate'] or 'manually' in self.settings['Substrate']:
-            if 'Material defined manually' not in self.materialNames:
-                self.materialNames.append('Material defined manually')
-            if 'manually' in self.settings['Superstrate']:
-                self.superstrate_cb.clear()
-                self.superstrate_cb.addItems(self.materialNames)
-            if 'manually' in self.settings['Substrate']:
-                self.substrate_cb.clear()
-                self.substrate_cb.addItems(self.materialNames)
-        # Check the mode and if it is Incoherent increase the number of spectra to be calculated
+        # Check the mode 
         index = self.mode_cb.findText(self.settings['Mode'], Qt.MatchFixedString)
         self.mode_cb.setCurrentIndex(index)
         # Check partial incoherence settings
@@ -1166,20 +927,6 @@ class SingleCrystalScenarioTab(ScenarioTab):
         # Update angle widgets
         self.global_azimuthal_angle_sb.setValue(self.settings['Global azimuthal angle'])
         self.angle_of_incidence_sb.setValue(self.settings['Angle of incidence'])
-        # Set the superstrate material
-        self.setSuperstrate()
-        # Set the substrate material
-        self.setSubstrate()
-        # Update super and substrate permittivities widgets
-        index = self.superstrate_cb.findText(self.settings['Superstrate'], Qt.MatchFixedString)
-        self.superstrate_cb.setCurrentIndex(index)
-        index = self.substrate_cb.findText(self.settings['Substrate'], Qt.MatchFixedString)
-        self.substrate_cb.setCurrentIndex(index)
-        debugger.print('Updating permittivity widgets')
-        self.superstrate_permittivity_r_sb.setValue(self.settings['Superstrate permittivity'].real)
-        self.superstrate_permittivity_i_sb.setValue(self.settings['Superstrate permittivity'].imag)
-        self.substrate_permittivity_r_sb.setValue(self.settings['Substrate permittivity'].real)
-        self.substrate_permittivity_i_sb.setValue(self.settings['Substrate permittivity'].imag)
         # For partial incoherent case, set percentage variation of angles and thickness and the number of samples
         self.percentage_partial_incoherence_sb.setValue(self.settings['Percentage partial incoherence'])
         self.partially_incoherent_samples_sb.setValue(self.settings['Partially incoherent samples'])
@@ -1197,113 +944,6 @@ class SingleCrystalScenarioTab(ScenarioTab):
             QCoreApplication.processEvents()
         self.refreshRequired = False
         debugger.print(self.settings['Legend'],'Finished:: refresh, force =', force)
-        return
-
-    def setSuperstrate(self):
-        ''' Use the superstrate material to define a superstrate and permittivity'''
-        debugger.print(self.settings['Legend'],'setSuperstrate')
-        # check to see if the superstrate is available in the database
-        if self.settings['Superstrate'] in self.materialNames:
-            debugger.print(self.settings['Legend'],'set superstrate to',self.settings['Superstrate'])
-            self.superstrateMaterial = self.getMaterialFromDataBase(self.settings['Superstrate'],permittivity=self.settings['Superstrate permittivity'])
-            self.settings['Superstrate permittivity'] = self.superstrateMaterial.getPermittivityFunction()(0.0)
-            text = self.superstrateMaterial.getInformation()
-            self.superstrate_info_le.setText(text)
-        else:
-            print('Error: superstrate ',self.settings['Superstrate'],' not available in database')
-            print('       available materials are:', self.materialNames)
-            exit()
-        return
-
-    def setSubstrate(self):
-        ''' Use the substrate material to define a substrate and permittivity'''
-        debugger.print(self.settings['Legend'],'setSubstrate')
-        # check to see if the substrate is available in the database
-        if self.settings['Substrate'] in self.materialNames:
-            debugger.print(self.settings['Legend'],'set substrate to',self.settings['Substrate'])
-            self.substrateMaterial = self.getMaterialFromDataBase(self.settings['Substrate'],permittivity=self.settings['Substrate permittivity'])
-            self.settings['Substrate permittivity'] = trace3x3(self.substrateMaterial.getPermittivityFunction()(0.0))
-            text = self.substrateMaterial.getInformation()
-            self.substrate_info_le.setText(text)
-        else:
-            print('Error: substrate ',self.settings['Substrate'],' not available in database')
-            print('       available materials are:', self.materialNames)
-            exit()
-        return
-
-    def on_superstrate_cb_activated(self, index):
-        '''Handle a change to the superstrate  material'''
-        debugger.print(self.settings['Legend'],'on superstrate combobox activated', index)
-        debugger.print(self.settings['Legend'],'on superstrate combobox activated', self.superstrate_cb.currentText())
-        # We will need to recalculate everything for the new superstrate
-        self.refreshRequired = True
-        # superstrate is the name of the sheet in the database
-        superstrate = self.superstrate_cb.currentText()
-        # Make some of the widgets quiet as we update them
-        m_blocking = self.superstrate_cb.signalsBlocked()
-        r_blocking = self.superstrate_permittivity_r_sb.signalsBlocked()
-        i_blocking = self.superstrate_permittivity_i_sb.signalsBlocked()
-        self.superstrate_cb.blockSignals(True)
-        self.superstrate_permittivity_r_sb.blockSignals(True)
-        self.superstrate_permittivity_i_sb.blockSignals(True)
-        # Store the new superstrate material
-        # Read the material information for permittivity and density from the data base
-        superstrateMaterial = self.getMaterialFromDataBase(superstrate,permittivity=self.settings['Superstrate permittivity'])
-        if superstrateMaterial.isScalar():
-            # Only switch if it is a scalar material
-            self.superstrateMaterial = superstrateMaterial
-            self.settings['Superstrate'] = superstrate
-        else:
-            print('Error superstrate must have a scalar permittivity')
-        # The permittivity may be frequency dependent, show the value at 1 cm-1
-        self.settings['Superstrate permittivity'] = self.superstrateMaterial.getPermittivityFunction()(0.0)
-        # Update the superstrate material information
-        text = self.superstrateMaterial.getInformation()
-        self.superstrate_info_le.setText(text)
-        # Update the values of the real and imaginary permittivity
-        self.superstrate_permittivity_r_sb.setValue(self.settings['Superstrate permittivity'].real)
-        self.superstrate_permittivity_i_sb.setValue(self.settings['Superstrate permittivity'].imag)
-        # Restore the signal settings on the widgets
-        self.superstrate_cb.blockSignals(m_blocking)
-        self.superstrate_permittivity_r_sb.blockSignals(r_blocking)
-        self.superstrate_permittivity_i_sb.blockSignals(i_blocking)
-        self.refresh(force=True)
-        self.refreshRequired = True
-        return
-
-    def on_substrate_cb_activated(self, index):
-        '''Handle a change to the substrate  material'''
-        debugger.print(self.settings['Legend'],'on substrate combobox activated', index)
-        debugger.print(self.settings['Legend'],'on substrate combobox activated', self.substrate_cb.currentText())
-        # We will need to recalculate everything for the new substrate
-        self.refreshRequired = True
-        # substrate is the name of the sheet in the database
-        substrate = self.substrate_cb.currentText()
-        # Make some of the widgets quiet as we update them
-        m_blocking = self.substrate_cb.signalsBlocked()
-        r_blocking = self.substrate_permittivity_r_sb.signalsBlocked()
-        i_blocking = self.substrate_permittivity_i_sb.signalsBlocked()
-        self.substrate_cb.blockSignals(True)
-        self.substrate_permittivity_r_sb.blockSignals(True)
-        self.substrate_permittivity_i_sb.blockSignals(True)
-        # Store the new substrate material
-        # Read the material information for permittivity and density from the data base
-        substrateMaterial = self.getMaterialFromDataBase(substrate,permittivity=self.settings['Substrate permittivity'])
-        # The permittivity may be frequency dependent, show the value at 1 cm-1
-        self.settings['Substrate permittivity'] = trace3x3(self.substrateMaterial.getPermittivityFunction()(0.0))
-        self.settings['Substrate'] = substrate
-        # Update the substrate material information
-        text = self.substrateMaterial.getInformation()
-        self.substrate_info_le.setText(text)
-        # Update the values of the real and imaginary permittivity
-        self.substrate_permittivity_r_sb.setValue(np.real(self.settings['Substrate permittivity']))
-        self.substrate_permittivity_i_sb.setValue(np.imag(self.settings['Substrate permittivity']))
-        # Restore the signal settings on the widgets
-        self.substrate_cb.blockSignals(m_blocking)
-        self.substrate_permittivity_r_sb.blockSignals(r_blocking)
-        self.substrate_permittivity_i_sb.blockSignals(i_blocking)
-        self.refresh(force=True)
-        self.refreshRequired = True
         return
 
     def on_mode_cb_activated(self, index):
@@ -1324,10 +964,6 @@ class SingleCrystalScenarioTab(ScenarioTab):
         return
 
     def partially_incoherent_calculator( self,
-                            superstrateDielectricFunction,
-                            substrateDielectricFunction,
-                            superstrateDepth,
-                            substrateDepth,
                             layers,
                             mode,
                             theta,
@@ -1379,10 +1015,6 @@ class SingleCrystalScenarioTab(ScenarioTab):
             s_absorbtance, 
             p_absorbtance, 
             epsilon) = self.coherent_calculator(
-                                       superstrateDielectricFunction,
-                                       substrateDielectricFunction,
-                                       superstrateDepth,
-                                       substrateDepth,
                                        layers,
                                        mode,
                                        theta,
@@ -1411,10 +1043,6 @@ class SingleCrystalScenarioTab(ScenarioTab):
         return (  av_p_reflectance.tolist(), av_s_reflectance.tolist(), av_p_transmittance.tolist(), av_s_transmittance.tolist(), av_p_absorbtance.tolist(), av_s_absorbtance.tolist(), av_epsilon.tolist() )
 
     def coherent_calculator( self,
-                            superstrateDielectricFunction,
-                            substrateDielectricFunction,
-                            superstrateDepth,
-                            substrateDepth,
                             layers,
                             mode,
                             theta,
@@ -1428,10 +1056,6 @@ class SingleCrystalScenarioTab(ScenarioTab):
         # Initialise the partial function to pass through to the pool
         #
         #print('coherent_calculator')
-        #print('superstrateDielectricFunction', superstrateDielectricFunction)
-        #print('substrateDielectricFunction', substrateDielectricFunction)
-        #print('superstrateDepth', superstrateDepth)
-        #print('substrateDepth', substrateDepth)
         #print('layers', layers)
         #print('mode', mode)
         #print('theta', theta)
@@ -1441,10 +1065,6 @@ class SingleCrystalScenarioTab(ScenarioTab):
         #print('sliceThickness, exponent_threshold', sliceThickness, exponent_threshold)
         #
         partial_function = partial(solve_single_crystal_equations,
-                                       superstrateDielectricFunction,
-                                       substrateDielectricFunction,
-                                       superstrateDepth,
-                                       substrateDepth,
                                        layers,
                                        mode,
                                        theta,
@@ -1455,11 +1075,6 @@ class SingleCrystalScenarioTab(ScenarioTab):
         results = []
         # About to call
         debugger.print(self.settings['Legend'],'About to calculate single crystal scenario using pool')
-        #begin serial version 
-        #for v in self.vs_cm1:
-        #   results.append(Calculator.solve_single_crystal_equations( superstrateDielectricFunction, substrateDielectricFunction, crystalPermittivityFunction, superstrateDepth, substrateDepth, crystalDepth, mode, theta, phi, psi, angleOfIncidence,sliceThickness, exponent_threshold,v))
-           #print('results',results[0:4])
-        #end serial version
         if self.notebook.pool is None:
             self.notebook.startPool()
         for result in self.notebook.pool.imap(partial_function, self.vs_cm1, chunksize=20):
@@ -1520,14 +1135,7 @@ class SingleCrystalScenarioTab(ScenarioTab):
         modes_selected = self.notebook.settingsTab.modes_selected
         frequencies_cm1 = self.notebook.settingsTab.frequencies_cm1
         frequencies = np.array(frequencies_cm1) * wavenumber
-        # The dielectric variables are functions of frequency
-        superstrateDielectricFunction = self.superstrateMaterial.getPermittivityFunction()
-        substrateDielectricFunction = self.substrateMaterial.getPermittivityFunction()
-        # make sure the units are correct for thickness
-        tom = thickness_conversion_factors[self.settings['Superstrate & substrate thickness unit']]
-        superstrateDepth = tom * self.settings['Superstrate depth']
-        superstrateDepth = tom * self.settings['Superstrate depth']
-        substrateDepth   = tom * self.settings['Substrate depth']
+        # Set the sliceThickness in metres
         tom = thickness_conversion_factors[self.settings['Slice thickness unit']]
         sliceThickness   = tom * self.settings['Slice thickness']
         # The euler angles are set to zero, apart from the global azimuthal angle
@@ -1556,11 +1164,7 @@ class SingleCrystalScenarioTab(ScenarioTab):
         self.s_transmittance, 
         self.s_absorbtance, 
         self.p_absorbtance, 
-        self.epsilon) = calculator( superstrateDielectricFunction,
-                                    substrateDielectricFunction,
-                                    superstrateDepth,
-                                    substrateDepth,
-                                    self.layers,
+        self.epsilon) = calculator( self.layers,
                                     mode,
                                     theta,
                                     phi,
