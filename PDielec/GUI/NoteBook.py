@@ -455,8 +455,7 @@ class NoteBook(QWidget):
 
     def progressbars_add( self, bar ):
         self.progressbars.append(bar)
-        bar.setMaximum(self.progressbar_maximum)
-        bar.setValue(self.progressbar_status)
+        self.progressbars_set_maximum(self.progressbar_maximum)
         return
 
 
