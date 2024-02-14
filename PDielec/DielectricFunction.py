@@ -34,9 +34,6 @@ class DielectricFunction:
 
     Attributes
     ----------
-    frequency_units : str       
-                           can be cm-1, microns, mu,nm, thz or hz (default is cm-1)
-                           supplied frequencies are converyed to cm-1
     epsilon_infinity: 3x3 tensor (numpy array)
                            Optical permittivity
     self.volume: float
@@ -48,7 +45,6 @@ class DielectricFunction:
 
     Methods
     -------
-    setUnits(units)         Changes the frequency units
     setVolume(volume)       Change the unit cell volume 
     setEpsilonInfinity(eps) Change epsilon infinity
     function()              Return the calculate function for this object
@@ -57,24 +53,16 @@ class DielectricFunction:
                             Calculates a permittivity from a Drude Model
     dielectriContributionsFromModes(self, f, modes, frequencies, sigmas, strengths, volume):
                             Calculates a permittivity from a Drude-Lorentz model
-    _convert()              Converts frequency units
     '''
     possible_epsTypes = ['dft','fpsq','drude-lorentz','sellmeier']
-    possible_units = ['cm-1','microns','mu','nm','thz','hz']
 
-    def __init__(self, units='cm-1' ):
+    def __init__(self ):
         '''
         Parameters
         ----------
-        units : str
-             The units of frequency: cm-1,microns,mu,nm,thz or hz (default is cm-1)
         '''
-        if units not in self.possible_units:
-            print('Catastrophic error in DielectricFunction: units not recognised', units)
-            exit()
         self.isScalarFunction             = None
         self.vs_cm1               = 0
-        self.frequency_units      = units
         self.epsilon_infinity     = np.zeros( (3,3) )
         self.volume_angs          = None
         if self.volume_angs:
@@ -87,26 +75,6 @@ class DielectricFunction:
     def isScalar(self):
         '''Returns true if the dielectric function returns a scalar value'''
         return self.isScalarFunction
-
-    def setUnits(self,units):
-        '''Set the units of frequency to be used in calls to calculate()
-
-        Parameters
-        ----------
-        units : str
-             The units of frequency: cm-1,microns,mu,nm,thz or hz (default is cm-1)
-        '''
-        if units not in self.possible_units:
-            print('Catastrophic error in DielectricFunction: units not recognised', units)
-            exit()
-        self.frequency_units      = units
-        return
-
-    def getUnits(self):
-        '''get units of frequency to be used in calls
-
-        '''
-        return self.frequency_units
 
     def setVolume(self,volume):
         '''Set the volume for dielectric calculations
@@ -139,38 +107,6 @@ class DielectricFunction:
         Return the function to used to calculate the permittivity
         '''
         return  self.calculate
-
-    def _convert(self, f):
-        ''' 
-        Internal routine to convert a frequency in to cm-1
-
-        Internally it is assumed that everything is in cm-1.  So
-        when a frequency is provided it may have to be converted.
-
-        Parameters
-        ----------
-        f : float
-            The frequency
-
-        Result
-        ------
-        The frequency in cm-1
-        '''
-        units = self.frequency_units
-        if units == 'cm-1':
-            result = f                            # return cm-1
-        elif units == 'microns' or units == 'mu':
-            result = 1.0 / (f * 1.0E-6 *1.0E2 )           # convert microns to cm-1
-        elif units == 'nm':
-            result = 1.0 / (f * 1.0E-9 *1.0E2 )           # convert nm to cm-1
-        elif units == 'thz':
-            result = f*1.0e12 / (speed_light_si *1.0e2)   # convert thz to cm-1
-        elif units == 'hz':
-            result = f / (speed_light_si *1.0e2)          # convert hz to cm-1
-        else:
-            print('Units in DielectricFunction not recognised:',units)
-            exit()
-        return result
 
     def getLowestFrequency(self):
         ''' 
@@ -262,15 +198,12 @@ class DielectricFunction:
             print('f,eps00.real,epss11.real,eps22.real,eps00.imag,eps11.imag,eps22,imag',file=fd)
         else:
             print('f,eps00,epss11,eps22,eps01,eps02,,eps12',file=fd)
-        units = self.getUnits()
-        self.setUnits('cm-1')
         for v in np.arange(v1_cm1, v2_cm1, v_inc):
             epsilon = self.calculate(v)
             if diagonal_only:
                 print(v,c,epsilon[0,0].real,c,epsilon[1,1].real,c,epsilon[2,2].real,c,epsilon[0,0].imag,c,epsilon[1,1].imag,c,epsilon[2,2].imag,file=fd)
             else:
                 print(v,c,epsilon[0,0],c,epsilon[1,1],c,epsilon[2,2],c,epsilon[0,1],c,epsilon[0,2],c,epsilon[1,2],file=fd)
-        self.setUnits(units)
         if closeFlag:
             fd.close()
         return
@@ -282,16 +215,14 @@ class ConstantTensor(DielectricFunction):
     Inherits from DielectricFunction
     Provides a calculate() function to return the permittivity
     '''
-    def __init__(self, value, units='cm-1'):
+    def __init__(self, value):
         ''' 
             Parameters
             ----------
             value : 3x3 numpy array 
                     Initialise the permittivity with this tensor
-            units : string 
-                    Define the units of frequency (default is cm-1)
         '''
-        DielectricFunction.__init__(self,units=units)
+        DielectricFunction.__init__(self)
         self.value = value
         self.isScalarFunction = False
 
@@ -315,16 +246,14 @@ class ConstantScalar(DielectricFunction):
     Inherits from DielectricFunction
     Provides a calculate() function to return the permittivity
     '''
-    def __init__(self, value, units='cm-1'):
+    def __init__(self, value):
         ''' 
             Parameters
             ----------
             value : 3x3 numpy array 
                     Initialise the permittivity with this tensor
-            units : string 
-                    Define the units of frequency (default is cm-1)
         '''
-        DielectricFunction.__init__(self,units=units)
+        DielectricFunction.__init__(self)
         self.value = value
         self.isScalarFunction = True
 
@@ -333,7 +262,6 @@ class ConstantScalar(DielectricFunction):
             Parameters
             ----------
             v : float
-                The frequency in internal units
 
            Returns
            -------
@@ -349,7 +277,7 @@ class TabulateScalar(DielectricFunction):
     Represents an isotropic material dielectric function
     Provides a calculate() function to return the permittivity
     '''
-    def __init__(self, vs_cm1, permittivities,units='cm-1'):
+    def __init__(self, vs_cm1, permittivities):
         ''' 
             Parameters
             ----------
@@ -357,10 +285,8 @@ class TabulateScalar(DielectricFunction):
                      frequencies in cm-1 of the following permittivities
             permittivities : list of complex
                      The permittivities at each of the frequencies
-            units : string 
-                    Define the units of frequency (default is cm-1)
         '''
-        DielectricFunction.__init__(self,units=units)
+        DielectricFunction.__init__(self)
         self.isScalarFunction = True
         self.vs_cm1 = np.array(vs_cm1)
         eps = np.array(permittivities)
@@ -380,8 +306,7 @@ class TabulateScalar(DielectricFunction):
            -------
            The permittivity at frequency v as a scalar
         '''
-        v_cm1 = self._convert(v)
-        eps = complex(self.interpolater(v_cm1),self.interpolatei(v_cm1))
+        eps = complex(self.interpolater(v),self.interpolatei(v))
         return eps
 
 class Tabulate1(DielectricFunction):
@@ -392,7 +317,7 @@ class Tabulate1(DielectricFunction):
     Represents an isotropic dielectric function
     Provides a calculate() function to return the permittivity
     '''
-    def __init__(self, vs_cm1, permittivities,units='cm-1'):
+    def __init__(self, vs_cm1, permittivities):
         ''' 
             Parameters
             ----------
@@ -400,10 +325,8 @@ class Tabulate1(DielectricFunction):
                      frequencies in cm-1 of the following permittivities
             permittivities : list of complex
                      The permittivities at each of the frequencies
-            units : string 
-                    Define the units of frequency (default is cm-1)
         '''
-        DielectricFunction.__init__(self,units=units)
+        DielectricFunction.__init__(self)
         self.isScalarFunction = False
         self.vs_cm1 = np.array(vs_cm1)
         eps = np.array(permittivities)
@@ -423,9 +346,8 @@ class Tabulate1(DielectricFunction):
            -------
            The isotropic permittivity at frequency v as a 3x3 tensor
         '''
-        v_cm1 = self._convert(v)
         eps = np.zeros( (3,3), dtype=complex )
-        eps[0,0] = complex(self.interpolater(v_cm1),self.interpolatei(v_cm1))
+        eps[0,0] = complex(self.interpolater(v),self.interpolatei(v))
         eps[1,1] = eps[0,0]
         eps[2,2] = eps[0,0]
         return eps + self.epsilon_infinity
@@ -438,7 +360,7 @@ class Tabulate3(DielectricFunction):
     Represents an orthrhombic dielectric function
     Provides a calculate() function to return the permittivity
     '''
-    def __init__(self, vs_cm1, epsxx, epsyy, epszz,units='cm-1'):
+    def __init__(self, vs_cm1, epsxx, epsyy, epszz):
         ''' 
             Parameters
             ----------
@@ -450,10 +372,8 @@ class Tabulate3(DielectricFunction):
                      The eps(yy) permittivities at each of the frequencies
             epszz : list of complex
                      The eps(zz) permittivities at each of the frequencies
-            units : string 
-                    Define the units of frequency (default is cm-1)
         '''
-        DielectricFunction.__init__(self,units=units)
+        DielectricFunction.__init__(self)
         self.isScalarFunction = False
         self.vs_cm1 = np.array(vs_cm1)
         eps = [np.array(epsxx), np.array(epsyy), np.array(epszz)]
@@ -478,11 +398,10 @@ class Tabulate3(DielectricFunction):
            -------
            The permittivity at frequency v as a diagonal 3x3 tensor
         '''
-        v_cm1 = self._convert(v)
         eps = np.zeros( (3,3), dtype=complex )
-        eps[0,0] = complex(self.interpolater[0](v_cm1),self.interpolatei[0](v_cm1))
-        eps[1,1] = complex(self.interpolater[1](v_cm1),self.interpolatei[1](v_cm1))
-        eps[2,2] = complex(self.interpolater[2](v_cm1),self.interpolatei[2](v_cm1))
+        eps[0,0] = complex(self.interpolater[0](v),self.interpolatei[0](v))
+        eps[1,1] = complex(self.interpolater[1](v),self.interpolatei[1](v))
+        eps[2,2] = complex(self.interpolater[2](v),self.interpolatei[2](v))
         return eps + self.epsilon_infinity
 
 class Tabulate6(DielectricFunction):
@@ -493,7 +412,7 @@ class Tabulate6(DielectricFunction):
     Represents an non-isotropic dielectric function
     Provides a calculate() function to return the permittivity
     '''
-    def __init__(self, vs_cm1, epsxx, epsyy, epszz, epsxy, epsxz, epsyz,units='cm-1'):
+    def __init__(self, vs_cm1, epsxx, epsyy, epszz, epsxy, epsxz, epsyz):
         ''' 
             Parameters
             ----------
@@ -511,10 +430,8 @@ class Tabulate6(DielectricFunction):
                      The eps(xz) permittivities at each of the frequencies
             epsyz : list of complex
                      The eps(yz) permittivities at each of the frequencies
-            units : string 
-                    Define the units of frequency (default is cm-1)
         '''
-        DielectricFunction.__init__(self,units=units)
+        DielectricFunction.__init__(self)
         self.isScalarFunction = False
         self.vs_cm1 = np.array(vs_cm1)
         eps = [np.array(epsxx), np.array(epsyy), np.array(epszz), np.array(epsxy), np.array(epsxz), np.array(epsyz)]
@@ -533,20 +450,19 @@ class Tabulate6(DielectricFunction):
             Parameters
             ----------
             v : float
-                The frequency in the units set by setUnit()
+                The frequency in cm-1
 
            Returns
            -------
            The full symmetric permittivity tensor at frequency v as a 3x3 tensor
         '''
-        v_cm1 = self._convert(v)
         eps = np.zeros( (3,3), dtype=complex )
-        eps[0,0] = complex(self.interpolater[0](v_cm1),self.interpolatei[0](v_cm1))
-        eps[1,1] = complex(self.interpolater[1](v_cm1),self.interpolatei[1](v_cm1))
-        eps[2,2] = complex(self.interpolater[2](v_cm1),self.interpolatei[2](v_cm1))
-        eps[1,0] = complex(self.interpolater[3](v_cm1),self.interpolatei[3](v_cm1))
-        eps[2,0] = complex(self.interpolater[4](v_cm1),self.interpolatei[4](v_cm1))
-        eps[2,1] = complex(self.interpolater[5](v_cm1),self.interpolatei[5](v_cm1))
+        eps[0,0] = complex(self.interpolater[0](v),self.interpolatei[0](v))
+        eps[1,1] = complex(self.interpolater[1](v),self.interpolatei[1](v))
+        eps[2,2] = complex(self.interpolater[2](v),self.interpolatei[2](v))
+        eps[1,0] = complex(self.interpolater[3](v),self.interpolatei[3](v))
+        eps[2,0] = complex(self.interpolater[4](v),self.interpolatei[4](v))
+        eps[2,1] = complex(self.interpolater[5](v),self.interpolatei[5](v))
         eps[0,1] = eps[1,0]
         eps[0,2] = eps[2,0]
         eps[1,2] = eps[2,1]
@@ -603,11 +519,10 @@ class DFT(DielectricFunction):
 
            Returns
            -------
-           The permittivity at frequency v_cm1 as a 3x3 tensor
+           The permittivity at frequency v as a 3x3 tensor
         '''
         # For this class we force the use of atomic units and ignore internal units
-        v_cm1 = self._convert(v)
-        v_au = v_cm1 * wavenumber
+        v_au = v * wavenumber
         eps = self.dielectriContributionsFromModes(v_au, self.mode_list, self.mode_frequencies, 
                                                    self.mode_sigmas, self.mode_oscillator_strengths, 
                                                    self.crystal_volume)
@@ -622,7 +537,7 @@ class DrudeLorentz(DielectricFunction):
     Inherits from DielectricFunction
     Provides a calculate() function to return the permittivity
     '''
-    def __init__(self, vs_cm1, strengths_cm1, sigmas_cm1,units='cm-1'):
+    def __init__(self, vs_cm1, strengths_cm1, sigmas_cm1):
         ''' 
             Parameters
             ----------
@@ -635,7 +550,7 @@ class DrudeLorentz(DielectricFunction):
                     sigmas of isotropic contribution ([])
                     sigmas of orthonormal contributions ([[xxs][yys][zzs]])
         '''
-        DielectricFunction.__init__(self,units=units)
+        DielectricFunction.__init__(self)
         self.isScalarFunction = False
         rhombic = False
         if isinstance(vs_cm1[0], list):
@@ -655,13 +570,13 @@ class DrudeLorentz(DielectricFunction):
             Parameters
             ----------
             v : float
-                The frequency in the units set by setUnits()
+                The frequency in cm-1
 
            Returns
            -------
            The permittivity at frequency v as a diagonal 3x3 tensor
         '''
-        f_cm1 = self._convert(v)
+        f_cm1 = v
         eps = np.zeros( (3,3), dtype=complex )
         for xyz, (vs, strengths, sigmas) in enumerate(zip(self.vs_cm1,self.strengths_cm1, self.sigmas_cm1)):
             for v, strength, sigma in zip(vs, strengths,sigmas):
@@ -675,7 +590,7 @@ class FPSQ(DielectricFunction):
     Inherits from DielectricFunction
     Provides a calculate() function to return the permittivity
     '''
-    def __init__(self, omega_tos, gamma_tos, omega_los, gamma_los,units='cm-1'):
+    def __init__(self, omega_tos, gamma_tos, omega_los, gamma_los):
         ''' 
             Parameters
             ----------
@@ -687,10 +602,8 @@ class FPSQ(DielectricFunction):
                     Omega (lo) in the FPSQ equation
             gamma_los : list of floats
                     Gamma (lo) in the FPSQ equation
-            units : string 
-                    Define the units of frequency (default is cm-1)
         '''
-        DielectricFunction.__init__(self,units=units)
+        DielectricFunction.__init__(self)
         self.isScalarFunction = False
         rhombic = False
         if isinstance(omega_tos[0], list):
@@ -712,13 +625,13 @@ class FPSQ(DielectricFunction):
             Parameters
             ----------
             v : float
-                The frequency in units specified by setUnit()
+                The frequency in cm-1
 
            Returns
            -------
            The diagonal permittivity 3x3 tensor at frequency v
         '''
-        f_cm1 = self._convert(v)
+        f_cm1 = v
         eps = np.array(self.epsilon_infinity,dtype=complex)
         for xyz,(omega_tos,gamma_tos,omega_los,gamma_los) in enumerate(zip(self.omega_tos,self.gamma_tos,self.omega_los, self.gamma_los)):
             for omega_to, gamma_to, omega_lo, gamma_lo  in zip(omega_tos,gamma_tos,omega_los,gamma_los):
@@ -736,7 +649,7 @@ class Sellmeier(DielectricFunction):
     Inherits from DielectricFunction
     Provides a calculate() function to return the permittivity
     '''
-    def __init__(self, Bs, Cs, units='cm-1'):
+    def __init__(self, Bs, Cs):
         ''' 
             Parameters
             ----------
@@ -744,10 +657,8 @@ class Sellmeier(DielectricFunction):
                     B parameter for Sellmeier equation (microns^2)
             Cs : list of floats
                     C parameter for Sellmeier equation (microns^2)
-            units : string 
-                    Define the units of frequency (default is cm-1)
         '''
-        DielectricFunction.__init__(self,units=units)
+        DielectricFunction.__init__(self)
         self.isScalarFunction = True
         self.Bs = Bs
         self.Cs = Cs
@@ -758,7 +669,7 @@ class Sellmeier(DielectricFunction):
             Parameters
             ----------
             v : float
-                The frequency in units specified by setUnit()
+                The frequency in cm-1
 
            Returns
            -------
@@ -766,7 +677,7 @@ class Sellmeier(DielectricFunction):
 
            The Sellmeier parameters are in microns^2
         '''
-        f_cm1 = self._convert(v)
+        f_cm1 = v
         # Convert to wavelength in microns
         wavelength_mu = f_cm1 * 1.0E+6 *1.0E-2            # convert cm-1 to microns
         wavelength2 = wavelength_mu*wavelength_mu
