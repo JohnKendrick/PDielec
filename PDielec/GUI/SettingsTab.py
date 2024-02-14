@@ -651,7 +651,6 @@ class SettingsTab(QWidget):
             debugger.print('Finished:: calculate aborted vs_cm1 has not been set')
             return
         self.vs_cm1 = vs_cm1.copy()
-        self.CrystalPermittivityObject.setUnits('cm-1')
         dielectricFunction = self.CrystalPermittivityObject.function()
         # 
         self.crystal_permittivity = []
