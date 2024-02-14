@@ -895,6 +895,7 @@ class PowderScenarioTab(ScenarioTab):
         self.database_le.setText(self.settings['Materials database'])
         # Update the possible matrix material names from the database
         self.materialNames = self.DataBase.getSheetNames()
+        self.materialDefinedManually = False
         if 'Material defined manually' == self.settings['Matrix']:
             self.materialDefinedManually = True
         if self.materialDefinedManually:
