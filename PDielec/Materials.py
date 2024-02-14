@@ -82,7 +82,7 @@ class MaterialsDataBase():
         debugger.print('getSheetNames:: ',fullList)
         return sorted(fullList, key=lambda s: s.casefold())
 
-    def getMaterial(self,sheet,units='cm-1'):
+    def getMaterial(self,sheet):
         '''Return a material object based on the data in sheet (an excel sheet)'''
         debugger.print('getMaterial:: ',sheet)
         # Define a set of back-up materials that the program can use even if the sheet name is not in the spreadsheet
@@ -147,25 +147,18 @@ class MaterialsDataBase():
         # Process the entry type
         if 'constant' in entry and 'refractive' in entry:
             material = self.readConstantRefractiveIndex(sheet,worksheet,density)
-            material.setUnits(units)
         elif 'constant' in entry and ('permitt' in entry or 'dielec' in entry):
             material = self.readConstantPermittivity(sheet,worksheet,density)
-            material.setUnits(units)
         elif 'tabulated' in entry and 'refractive' in entry:
             material = self.readTabulatedRefractiveIndex(sheet,worksheet,density)
-            material.setUnits(units)
         elif 'tabulated' in entry and ('permitt' in entry or 'dielec' in entry):
             material = self.readTabulatedPermittivity(sheet,worksheet,density)
-            material.setUnits(units)
         elif 'lorentz' in entry and 'drude' in entry:
             material = self.readLorentzDrude(sheet,worksheet,density,unitCell)
-            material.setUnits(units)
         elif 'fpsq' in entry:
             material = self.readFPSQ(sheet,worksheet,density,unitCell)
-            material.setUnits(units)
         elif 'sellmeier' in entry:
             material = self.readSellmeier(sheet,worksheet,density,unitCell)
-            material.setUnits(units)
         # Close the work book
         workbook.close()
         return material
@@ -326,7 +319,7 @@ class MaterialsDataBase():
         return material
         
 class Material():
-    def __init__(self, name, density=None, permittivityObject=None, cell=None, units='cm-1'):
+    def __init__(self, name, density=None, permittivityObject=None, cell=None):
         '''A Material has the following properties
            density:            The density of the material
            permitivityObject:  An instance of a DielectricFunction
@@ -337,26 +330,15 @@ class Material():
            name:               The name of the material
            density:            The material density
            cell:               The unit cell
-           units:              The units for frequency, used to change the permittivityObject
 
         '''
         self.density            = density
         self.cell               = cell
         self.name               = name
         self.type               = 'Base Class'
-        self.units              = units
         self.permittivityObject = permittivityObject
         if self.density is None and self.cell is not None:
             self.density = self.cell.calculate_density()
-
-    def setUnits(self,units):
-        '''Set the frequency units for the permittivity object'''
-        self.permittivityObject.setUnits(units)
-        return 
-
-    def getUnits(self):
-        '''Get the frequency units for the permittivity object'''
-        return self.permittivityObject.getUnits()
 
     def getName(self):
         return self.name
@@ -426,7 +408,7 @@ class Material():
         return self.cell
 
 class Constant(Material):
-    def __init__(self, name, permittivity=None, density=None, cell=None, units='cm-1'):
+    def __init__(self, name, permittivity=None, density=None, cell=None):
         '''Create an instance of a material with a constant scalar permittivity
            permittivity is the value of the permittivity and can be complex
            The required parameters are;
@@ -440,7 +422,7 @@ class Constant(Material):
 
 
 class External(Material):
-    def __init__(self, name, permittivityObject=None, density=None, cell=None, units='cm-1'):
+    def __init__(self, name, permittivityObject=None, density=None, cell=None):
         '''Create an instance of a material which has the permittivity object specified externally
            permittivity is the value of the permittivity and can be complex
            The required parameters are;
@@ -454,7 +436,7 @@ class External(Material):
 
 
 class DrudeLorentz(Material):
-    def __init__(self, name,epsinf,omegas,strengths,gammas,density=None,cell=None, units='cm-1'):
+    def __init__(self, name,epsinf,omegas,strengths,gammas,density=None,cell=None):
         '''Create an instance of a material with a Lorentz Drude model permittivity
            permittivity is the value of the permittivy and can be complex
            The required parameters are;
@@ -467,13 +449,13 @@ class DrudeLorentz(Material):
            cell               the unit cell
         '''
         epsilon_infinity = np.array(epsinf)
-        permittivityObject = DielectricFunction.DrudeLorentz( omegas, strengths, gammas, units='hz')
+        permittivityObject = DielectricFunction.DrudeLorentz( omegas, strengths, gammas)
         permittivityObject.setEpsilonInfinity(epsilon_infinity)
         super().__init__(name, density=density, permittivityObject=permittivityObject,cell=cell)
         self.type = 'Drude-Lorentz'
 
 class FPSQ(Material):
-    def __init__(self, name,epsinf,omega_tos,gamma_tos,omega_los,gamma_los,density=None,cell=None, units='cm-1'):
+    def __init__(self, name,epsinf,omega_tos,gamma_tos,omega_los,gamma_los,density=None,cell=None):
         '''Create an instance of a material with an FPSQ model permittivity
            permittivity is the value of the permittivy and can be complex
            The required parameters are;
@@ -487,13 +469,13 @@ class FPSQ(Material):
            cell              the unit cell
         '''
         epsilon_infinity = np.array(epsinf)
-        permittivityObject = DielectricFunction.FPSQ( omega_tos, gamma_tos, omega_los, gamma_los, units='hz')
+        permittivityObject = DielectricFunction.FPSQ( omega_tos, gamma_tos, omega_los, gamma_los)
         permittivityObject.setEpsilonInfinity(epsilon_infinity)
         super().__init__(name, density=density, permittivityObject=permittivityObject,cell=cell)
         self.type = 'FPSQ'
 
 class Sellmeier(Material):
-    def __init__(self, name,Bs,Cs,density=None,cell=None, units='cm-1'):
+    def __init__(self, name,Bs,Cs,density=None,cell=None):
         '''Create an instance of a material with an Sellmeier model permittivity
            permittivity is the value of the permittivy and should be real for Sellmeier
            The required parameters are;
@@ -509,7 +491,7 @@ class Sellmeier(Material):
 
 
 class Tabulated(Material):
-    def __init__(self, name, vs_cm1=None, permittivities=None, density=None, cell=None, units='cm-1'):
+    def __init__(self, name, vs_cm1=None, permittivities=None, density=None, cell=None):
         '''Create an instance of a material with a constant permittivity
            permittivity is the value of the permittivy and can be complex
            The returned permittivityObject can generate either a scalar or a tensor.
