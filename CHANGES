@@ -1,10 +1,21 @@
-version 9.0.0
+version 8.1.0
   Modifications to the plotter tab to allow the use of wavelength and frequency units
   Redesign of the single crystal scenario tab.  The new design means that scripts are not backwards compatible.
-  - Thick slab is now an option for an individual layer
+  - The mode setting has altered meaning that backward compatibility is broken.
+    mode can now be 'Transfer matrix' or 'Scattering matrix'
+    The previous options are handled by the layer
+  - Thick slab is now an option for an individual layer and has been termed 'Incoherent (non-reflective)'
   - Other incoherent options have been added for a layer, using either intensities or phase matching
   - the pygtm module has been modified so that subclasses are used for coherent and incoherent layers
-  - 
+  - removed the need to have specific super- and sub-strate entries in the singleCrystalTab
+    superstrate is the top of the material list and substrate is at the bottom.
+  - the old 'Thick slab' option is still available if the dielectric layer is the last in the list of materials
+  Updated the progress bar algorithms
+  Fixed a bug in the specification of the matrix for the powder case
+  
+
+  Fixed a bug in the powder scenario tab, the super- and sub-matrix dielectric functions,
+        were not being set properly for frequency dependent permittivities
 version 8.0.0
   Introduced various changes to handle the difference between Windows and Linux.  The mainTab settings now has a compatibility mode option which can be 'Linux' or 'Windows'
   Modified the AlN test case to use Windows compatibility mode
