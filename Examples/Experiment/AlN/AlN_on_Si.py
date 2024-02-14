@@ -8,10 +8,10 @@ self.notebook.switchScenario(0,scenarioType="Single crystal")
 tab = self.notebook.mainTab
 tab.settings['Program'] = 'experiment'
 tab.settings['Output file name'] = 'AlN.exp'
-tab.settings['Excel file name'] = 'AlN_on_Si.xlsx'
+tab.settings['Excel file name'] = ''
 tab.settings['Script file name'] = 'AlN_on_Si.py'
 tab.settings['QM program'] = ''
-tab.settings['Compatibility mode'] = 'Windows'
+tab.settings['Compatibility mode'] = 'Linux'
 #
 #
 tab = self.notebook.settingsTab
@@ -24,30 +24,26 @@ tab.sigmas_cm1 = [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]
 #
 #
 tab = self.notebook.scenarios[0]
-tab.settings['Legend'] = '0.92 um AlN on Si'
+tab.settings['Legend'] = 'Scenario 1'
 tab.settings['Scenario type'] = 'Single crystal'
-tab.settings['Materials database'] = 'TestDataBase.xlsx'
+tab.settings['Materials database'] = 'DataBase.xlsx'
 tab.settings['Global azimuthal angle'] =  0.0
 tab.settings['Angle of incidence'] =  7.2
-tab.settings['Superstrate'] = 'air'
-tab.settings['Substrate'] = 'air'
-tab.settings['Superstrate permittivity'] =  (1+0j)
-tab.settings['Substrate permittivity'] =  (1+0j)
-tab.settings['Superstrate depth'] =  99999.0
-tab.settings['Substrate depth'] =  99999.0
-tab.settings['Superstrate & substrate thickness unit'] = 'mm'
-tab.settings['Mode'] = 'Thick slab'
+tab.settings['Mode'] = 'Transfer matrix'
 tab.settings['Frequency units'] = 'wavenumber'
 tab.settings['Partially incoherent samples'] =  20
 tab.settings['Percentage partial incoherence'] =  0
 tab.settings['Filter kernel size'] =  1
 tab.settings['Filter polynomial size'] =  3
-tab.settings['Layer material names'] =  ['Dielectric film', 'Silicon']
-tab.settings['Layer hkls'] =  [[0, 0, 1], [0, 0, 0]]
-tab.settings['Layer azimuthals'] =  [0.0, 0.0]
-tab.settings['Layer thicknesses'] =  [0.92, 1.0]
-tab.settings['Layer thickness units'] =  ['um', 'um']
-tab.settings['Layer dielectric flags'] =  [True, False]
+tab.settings['Layer material names'] =  ['air', 'Dielectric layer', 'Silicon']
+tab.settings['Layer hkls'] =  [[0, 0, 0], [0, 0, 1], [0, 0, 0]]
+tab.settings['Layer azimuthals'] =  [0, 0, 0.0]
+tab.settings['Layer thicknesses'] =  [1, 0.92, 1.0]
+tab.settings['Layer thickness units'] =  ['um', 'um', 'um']
+tab.settings['Layer incoherent options'] =  ['Coherent', 'Coherent', 'Coherent']
+tab.settings['Layer dielectric flags'] =  [False, True, False]
+tab.settings['Slice thickness'] =  0
+tab.settings['Slice thickness unit'] = 'um'
 #
 #
 tab = self.notebook.analysisTab
@@ -93,11 +89,12 @@ tab.settings['Scenario index'] =  0
 #
 #
 tab = self.notebook.plottingTab
-tab.settings['Minimum frequency'] =  0.0
-tab.settings['Maximum frequency'] =  6000.0
-tab.settings['Frequency increment'] =  4.0
+tab.settings['Minimum frequency'] =  0.0016666666666666668
+tab.settings['Maximum frequency'] =  1200.0
+tab.settings['Frequency increment'] =  0.9999983333333333
 tab.settings['Molar definition'] = 'Unit cells'
 tab.settings['Number of atoms'] =  1
 tab.settings['Plot type'] = 'Crystal Reflectance (P polarisation)'
+tab.settings['Frequency unit'] = 'wavenumber'
 tab.settings['concentration'] =  40.14954959801668
 tab.settings['cell concentration'] =  40.14954959801668
