@@ -378,8 +378,8 @@ class PlottingTab(QWidget):
         vmax = self.settings['Maximum frequency']
         vinc = self.settings['Frequency increment']
         # Protect the code from over-exuberant choice of parameters
-        if (vmax - vmin)/vinc > 9000:
-            vinc = (vmax - vmin) / 9000
+        if (vmax - vmin)/vinc > 90000:
+            vinc = (vmax - vmin) / 90000
             print('Warning - the number data points in a plot has been limited to 9000')
             print('          this happens if a 0 wavelength or frequency is entered in the GUI')
             self.settings['Frequency increment'] = vinc
