@@ -188,7 +188,8 @@ class SingleCrystalScenarioTab(ScenarioTab):
         #
         self.mode_cb = QComboBox(self)
         self.mode_cb.setToolTip('Set the method for calculating light transmission and reflectanceb;\n Transfer matrix.  This method is fast but can be numerically unstable.\n Scattering matrix. This method is slow but is numerically stable')
-        self.mode_cb.addItems( ['Transfer matrix','Scattering matrix'] )
+        #self.mode_cb.addItems( ['Transfer matrix','Scattering matrix'] )
+        self.mode_cb.addItems( ['Transfer matrix'] )
         index = self.mode_cb.findText(self.settings['Mode'], Qt.MatchFixedString)
         self.mode_cb.setCurrentIndex(index)
         self.mode_cb.activated.connect(self.on_mode_cb_activated)
