@@ -928,7 +928,6 @@ class SingleCrystalScenarioTab(ScenarioTab):
             self.noCalculationsRequired = pow(number_of_samples,self.number_of_average_incoherent_layers)
         else:
             self.noCalculationsRequired = 1
-        print('jk30 ',self.noCalculationsRequired)
         # Update the slice information
         self.slice_thickness_sb.setValue(self.settings['Slice thickness'])
         thicknessUnit = self.settings['Slice thickness unit']
@@ -971,7 +970,6 @@ class SingleCrystalScenarioTab(ScenarioTab):
             self.noCalculationsRequired = pow(number_of_samples,self.number_of_average_incoherent_layers)
         else:
             self.noCalculationsRequired = 1
-        print('jk31 ',self.noCalculationsRequired)
         self.generateLayerSettings()
         self.refresh(force=True)
         self.refreshRequired = True
