@@ -292,7 +292,7 @@ class SingleCrystalScenarioTab(ScenarioTab):
         material = layer.getMaterial()
         materialName = material.getName()
         layer_button = QPushButton(materialName)
-        layer_button.setToolTip('Show all the material properties in a new window')
+        layer_button.setToolTip('Show the material properties in a new window')
         layer_button.setStyleSheet('Text-align:left')
         layer_button.clicked.connect(lambda x: self.on_layer_button_clicked(x,layer,sequenceNumber))
         self.layerTable_tw.setCellWidget(sequenceNumber,0,layer_button)
@@ -383,7 +383,7 @@ class SingleCrystalScenarioTab(ScenarioTab):
     def drawLayerTable(self):
         '''Draw a table with all the layers in it '''
         self.layerTable_tw = QTableWidget()
-        self.layerTable_tw.setToolTip('Define the layers in the system')
+        self.layerTable_tw.setToolTip('Define the layers in the system\nThe layer at the top of the list is the superstrate\nThe layer at the bottom is the substrate\nThe calculated, DFT, permittivity is called the \'Dielectric layer\'')
         self.layerTable_tw.itemChanged.connect(self.on_layerTable_itemChanged)
         self.layerTable_tw.setStyleSheet("QTableWidget::item {padding-left: 0px; border; 0px}")
         self.layerTable_tw.verticalHeader().setVisible(False)
@@ -710,7 +710,13 @@ class SingleCrystalScenarioTab(ScenarioTab):
     def on_layer_button_clicked(self,x,layer,layerIndex):
         '''Handle a click on the show layer widget'''
         # Create the dialog box with all the information on the layer, work on a copy of the layer
-        showLayerWindow = ShowLayerWindow(copy.copy(layer),debug=debugger.state())
+        if layerIndex == 0:
+            message = 'Superstrate layer'
+        elif layerIndex == len(self.layers)-1:
+            message = 'Substrate layer'
+        else:
+            message = 'Device layer ' + str(layerIndex)
+        showLayerWindow = ShowLayerWindow(copy.copy(layer),message=message,debug=debugger.state())
         if showLayerWindow.exec():
             # The 'Ok' button was pressed
             # get the new Layer and replace the old one
@@ -922,6 +928,7 @@ class SingleCrystalScenarioTab(ScenarioTab):
             self.noCalculationsRequired = pow(number_of_samples,self.number_of_average_incoherent_layers)
         else:
             self.noCalculationsRequired = 1
+        print('jk30 ',self.noCalculationsRequired)
         # Update the slice information
         self.slice_thickness_sb.setValue(self.settings['Slice thickness'])
         thicknessUnit = self.settings['Slice thickness unit']
@@ -959,8 +966,12 @@ class SingleCrystalScenarioTab(ScenarioTab):
             self.settings['Mode'] = 'Scattering matrix'
         if self.settings['Percentage partial incoherence'] > 0:
             self.noCalculationsRequired = self.settings['Partially incoherent samples']
+        elif self.number_of_average_incoherent_layers > 0:
+            number_of_samples = self.settings['Number of average incoherence samples']
+            self.noCalculationsRequired = pow(number_of_samples,self.number_of_average_incoherent_layers)
         else:
-            self.noCalculationsRequired = 1 
+            self.noCalculationsRequired = 1
+        print('jk31 ',self.noCalculationsRequired)
         self.generateLayerSettings()
         self.refresh(force=True)
         self.refreshRequired = True
@@ -1267,7 +1278,7 @@ class SingleCrystalScenarioTab(ScenarioTab):
             self.calculate(vs_cm1)
         else:
             debugger.print(self.settings['Legend'],'get_results no need for recalculation')
-            self.notebook.progressbars_update(increment=len(vs_cm1))
+            #self.notebook.progressbars_update(increment=len(vs_cm1))
         debugger.print(self.settings['Legend'],'Finished:: get_results',len(vs_cm1),self.refreshRequired)
         return
 
