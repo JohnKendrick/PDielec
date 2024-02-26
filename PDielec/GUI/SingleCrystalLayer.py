@@ -9,9 +9,9 @@ from PyQt5.QtCore               import QCoreApplication, Qt
 from PDielec.Utilities          import Debug
 import PDielec.Calculator as Calculator
 
-class Layer():
+class SingleCrystalLayer():
     def __init__(self,material,hkl=None,azimuthal=0.0,thickness=0.0,thicknessUnit='nm',incoherentOption='Coherent',dielectricFlag=False):
-        '''A Layer class to handle layers
+        '''A single crystal layer class to handle layers
            material          is an instance of Material object, the material object has the following;
                              - name
                              - density
@@ -21,8 +21,8 @@ class Layer():
            azimuthal         is the azimuthal angle of rotation of the crystal about z
            thickness         is the thickness of the layer in the specfied thickness units
            thicknessUnits    can be either nm, um, mm or cm 
-           incoherentOption  can be 'Coherent', 'Incoherent (intensity)', 'Incoherent (phase cancelling)' or
-                                    'Incoherent non-reflective'
+           incoherentOption  can be 'Coherent', 'Incoherent (intensity)', 'Incoherent (phase cancelling)'
+                                    'Incoherent (phase averaging)' or 'Incoherent non-reflective'
            dielectricFlag    this is true if the layer material is the dielectric being studied'''
         self.material = material
         self.hkl = hkl
@@ -39,6 +39,7 @@ class Layer():
         self.euler_inverse = np.zeros((3,3),dtype=np.longdouble)
         self.labframe_w = None
         self.labframe = None
+        self.phaseShift = 0.0
         self.calculate_euler_matrix()
 
     def print(self):
@@ -51,6 +52,16 @@ class Layer():
         print('Thickness unit   :', self.thicknessUnit)
         print('Dielectric flag  :', self.dielectricFlag)
         print('Incoherent option:', self.incoherentOption)
+        print('Phase shift      :', self.phaseShift)
+
+    def getPhaseShift(self):
+        '''Get the phase shift for the layer'''
+        return self.phaseShift
+
+    def setPhaseShift(self, phaseShift):
+        '''Set the phase shift for the layer'''
+        self.phaseShift = phaseShift
+        return
 
     def setAzimuthal(self, angle):
         '''Set the azimuthal angle of the layer and calculate the Euler matrix'''

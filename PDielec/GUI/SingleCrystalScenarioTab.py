@@ -3,35 +3,36 @@ import os.path
 import os
 import numpy as np
 import copy
-import PDielec.Calculator         as Calculator
-import PDielec.DielectricFunction as DielectricFunction
-import PDielec.Materials          as Materials
-import PDielec.GTMcore            as GTM
-from PyQt5.QtWidgets             import QToolBar, QHeaderView, QAction
-from PyQt5.QtWidgets             import QPushButton, QWidget, QFrame, QToolButton
-from PyQt5.QtWidgets             import QSpacerItem, QCheckBox
-from PyQt5.QtWidgets             import QComboBox, QLabel, QLineEdit
-from PyQt5.QtWidgets             import QVBoxLayout, QHBoxLayout, QFormLayout
-from PyQt5.QtWidgets             import QSpinBox,QDoubleSpinBox
-from PyQt5.QtWidgets             import QSizePolicy, QApplication, QStyle
-from PyQt5.QtWidgets             import QTableWidget, QTableWidgetItem
-from PyQt5.QtCore                import QCoreApplication, Qt, QSize
-from PyQt5.QtGui                 import QIcon
-from PDielec.Constants           import wavenumber, PI, avogadro_si, angstrom, speed_light_si
-from PDielec.Utilities           import Debug
-from PDielec.GUI.ScenarioTab     import ScenarioTab
-from PDielec.Materials           import MaterialsDataBase
-from PDielec.GUI.EditLayerWindow import ShowLayerWindow
-from PDielec.GUI.EditLayerWindow import Layer
-from functools                   import partial
-from scipy                       import signal
+import PDielec.Calculator            as Calculator
+import PDielec.DielectricFunction    as DielectricFunction
+import PDielec.Materials             as Materials
+import PDielec.GTMcore               as GTM
+from PyQt5.QtWidgets                import QToolBar, QHeaderView, QAction
+from PyQt5.QtWidgets                import QPushButton, QWidget, QFrame, QToolButton
+from PyQt5.QtWidgets                import QSpacerItem, QCheckBox
+from PyQt5.QtWidgets                import QComboBox, QLabel, QLineEdit
+from PyQt5.QtWidgets                import QVBoxLayout, QHBoxLayout, QFormLayout
+from PyQt5.QtWidgets                import QSpinBox,QDoubleSpinBox
+from PyQt5.QtWidgets                import QSizePolicy, QApplication, QStyle
+from PyQt5.QtWidgets                import QTableWidget, QTableWidgetItem
+from PyQt5.QtCore                   import QCoreApplication, Qt, QSize
+from PyQt5.QtGui                    import QIcon
+from PDielec.Constants              import wavenumber, PI, avogadro_si, angstrom, speed_light_si
+from PDielec.Utilities              import Debug
+from PDielec.GUI.ScenarioTab        import ScenarioTab
+from PDielec.Materials              import MaterialsDataBase
+from PDielec.GUI.SingleCrystalLayer import SingleCrystalLayer,ShowLayerWindow
+from functools                      import partial
+from itertools                      import product
+from scipy                          import signal
 
 thickness_conversion_factors = {'ang':1.0E-10, 'nm':1.0E-9, 'um':1.0E-6, 'mm':1.0E-3, 'cm':1.0E-2}
 thickness_units = list(thickness_conversion_factors.keys())
-incoherentOptions = ['Coherent','Incoherent (intensity)','Incoherent (phase cancelling)','Incoherent (non-reflective)'] 
+incoherentOptions = ['Coherent','Incoherent (intensity)','Incoherent (phase cancelling)','Incoherent (phase averaging)','Incoherent (non-reflective)'] 
 gtmMethods ={'Coherent':GTM.CoherentLayer,
              'Incoherent (intensity)':GTM.IncoherentIntensityLayer,
              'Incoherent (phase cancelling)':GTM.IncoherentPhaseLayer,
+             'Incoherent (phase averaging)':GTM.IncoherentAveragePhaseLayer,
              'Incoherent (non-reflective)':GTM.IncoherentThickLayer} 
 
 def trace3x3(m):
@@ -66,31 +67,23 @@ def solve_single_crystal_equations(
 
     """
     # Create superstrate from the first layer
-    superstrate = layers[0]
-    superstrateDepth = superstrate.getThicknessInMetres()
-    superstrateDielectricFunction = superstrate.getPermittivityFunction()
-    superstrate      = GTM.CoherentLayer(thickness=superstrateDepth,epsilon=superstrateDielectricFunction,exponent_threshold=exponent_threshold)
+    superstrate      = GTM.CoherentLayer(layers[0],exponent_threshold=exponent_threshold)
     # Create substrate from the last layer
-    substrate = layers[-1]
-    substrateDepth = substrate.getThicknessInMetres()
-    substrateDielectricFunction = substrate.getPermittivityFunction()
-    substrate        = GTM.CoherentLayer(thickness=substrateDepth,  epsilon=substrateDielectricFunction,exponent_threshold=exponent_threshold)
+    substrate        = GTM.CoherentLayer(layers[-1],exponent_threshold=exponent_threshold)
     selectedLayers = layers[1:-1]
     gtmLayers = []
     # Create layers from all the layers between first and last
     for layer in selectedLayers:
-        permittivityFunction = layer.getPermittivityFunction()
-        depth = layer.getThicknessInMetres()
         incoherentOption = layer.getIncoherentOption()
         if sliceThickness != 0 and depth > sliceThickness:
             # Slice if the slicing is chosen and if the layer thickness is larger than the threshold
             no_of_layers = int(depth / sliceThickness) + 1
             sliced_depth = depth / no_of_layers
             for i in range(no_of_layers):
-                gtmLayers.append(gtmMethods[incoherentOption](thickness=sliced_depth, epsilon=permittivityFunction, exponent_threshold=exponent_threshold))
+                gtmLayers.append(gtmMethods[incoherentOption](layer, exponent_threshold=exponent_threshold))
         else:
             # No slicing is necessary
-            gtmLayers.append(gtmMethods[incoherentOption](thickness=depth, epsilon=permittivityFunction, exponent_threshold=exponent_threshold))
+            gtmLayers.append(gtmMethods[incoherentOption](layer, exponent_threshold=exponent_threshold))
     # Creat the system with the layers 
     system = GTM.System(substrate=substrate, superstrate=superstrate, layers=gtmLayers)
     # Rotate the dielectric constants to the laboratory frame
@@ -146,6 +139,9 @@ class SingleCrystalScenarioTab(ScenarioTab):
         # if zero no subdivision is performed
         self.settings['Slice thickness'] = 0
         self.settings['Slice thickness unit'] = 'um'
+        self.settings['Percentage average incoherence'] = 100
+        self.settings['Number of average incoherence samples'] = 10
+        self.number_of_average_incoherent_layers = 0
         self.materialNames = []
         self.p_reflectance = []
         self.s_reflectance = []
@@ -562,7 +558,7 @@ class SingleCrystalScenarioTab(ScenarioTab):
         hkl = [0,0,0]
         if newMaterial.isTensor():
             hkl = [0,0,1]
-        new_layer = Layer(newMaterial,hkl=hkl,azimuthal=0.0,thickness=1.0,thicknessUnit='um')
+        new_layer = SingleCrystalLayer(newMaterial,hkl=hkl,azimuthal=0.0,thickness=1.0,thicknessUnit='um')
         self.layers.append(new_layer)
         self.generateLayerSettings()
         self.refresh(force=True)
@@ -680,7 +676,7 @@ class SingleCrystalScenarioTab(ScenarioTab):
                 print('Error material ', name, ' not available ', self.materialNames)
                 name = 'air'
             material = self.getMaterialFromDataBase(name)
-            self.layers.append(Layer(material,hkl=hkl,azimuthal=azimuthal,
+            self.layers.append(SingleCrystalLayer(material,hkl=hkl,azimuthal=azimuthal,
                                      thickness=thickness,thicknessUnit=thicknessUnit,
                                      incoherentOption=incoherentOption,dielectricFlag=dielectricFlag))
         return
@@ -913,9 +909,17 @@ class SingleCrystalScenarioTab(ScenarioTab):
         # Check the mode 
         index = self.mode_cb.findText(self.settings['Mode'], Qt.MatchFixedString)
         self.mode_cb.setCurrentIndex(index)
+        # How many layers are using phase averaging
+        self.number_of_average_incoherent_layers = 0
+        for layer in self.layers:
+            if layer.getIncoherentOption() == 'Incoherent (phase averaging)':
+                self.number_of_average_incoherent_layers += 1
         # Check partial incoherence settings
         if self.settings['Percentage partial incoherence'] > 0:
             self.noCalculationsRequired = self.settings['Partially incoherent samples']
+        elif self.number_of_average_incoherent_layers > 0:
+            number_of_samples = self.settings['Number of average incoherence samples']
+            self.noCalculationsRequired = pow(number_of_samples,self.number_of_average_incoherent_layers)
         else:
             self.noCalculationsRequired = 1
         # Update the slice information
@@ -963,6 +967,71 @@ class SingleCrystalScenarioTab(ScenarioTab):
         debugger.print(self.settings['Legend'],'Mode changed to ', self.settings['Mode'])
         debugger.print(self.settings['Legend'],'Finished:: on_mode_cb_activated')
         return
+
+    def average_incoherent_calculator( self,
+                            layers,
+                            mode,
+                            theta,
+                            phi,
+                            psi,
+                            angleOfIncidence,
+                            sliceThickness, exponent_threshold):
+        """ Calculates the incoherent component of light reflectance and transmission
+            by averaging over the phase shift   """
+        debugger.print(self.settings['Legend'],'Start:: partially_incoherent_calculator')
+        #
+        # Zero the arrays we will need
+        #
+        size = len(self.vs_cm1)
+        av_p_reflectance = np.zeros(size) 
+        av_s_reflectance = np.zeros(size) 
+        av_p_transmittance = np.zeros(size) 
+        av_s_transmittance = np.zeros(size) 
+        av_s_absorbtance = np.zeros(size) 
+        av_p_absorbtance = np.zeros(size) 
+        av_epsilon = np.zeros((size,3,3),dtype=np.cdouble)
+        # Work out which of the layers is the crystal dielectric
+        crystalLayer = None
+        averageList = []
+        for layer in layers:
+            if layer.isDielectric():
+                crystalLayer = layer
+            if layer.getIncoherentOption() == 'Incoherent (phase averaging)':
+                averageList.append(layer)
+        #
+        # Calculate the list of phase shift combinations from the number of samples
+        #
+        frac = self.settings['Percentage average incoherence'] / 100.0
+        number_of_samples = self.settings['Number of average incoherence samples']
+        beta = [frac *2 * np.pi * s / number_of_samples for s in range(number_of_samples)]
+        betas = product(beta, repeat=len(averageList))
+        # loop over the combination of phases that are possible
+        for beta in betas:
+            # set the phase shift for each layer
+            for index,layer in enumerate(averageList):
+                layer.setPhaseShift(beta[index])
+            ( p_reflectance, 
+            s_reflectance, 
+            p_transmittance, 
+            s_transmittance, 
+            s_absorbtance, 
+            p_absorbtance, 
+            epsilon) = self.coherent_calculator(
+                                       layers,
+                                       mode,
+                                       theta,
+                                       phi,
+                                       psi,
+                                       angleOfIncidence,
+                                       sliceThickness, exponent_threshold)
+            av_p_reflectance   += np.array(p_reflectance)   / number_of_samples
+            av_s_reflectance   += np.array(s_reflectance)   / number_of_samples
+            av_p_transmittance += np.array(p_transmittance) / number_of_samples
+            av_s_transmittance += np.array(s_transmittance) / number_of_samples
+            av_s_absorbtance   += np.array(p_absorbtance)   / number_of_samples
+            av_p_absorbtance   += np.array(s_absorbtance)   / number_of_samples
+            av_epsilon         += np.array(epsilon)         / number_of_samples
+        return (  av_p_reflectance.tolist(), av_s_reflectance.tolist(), av_p_transmittance.tolist(), av_s_transmittance.tolist(), av_p_absorbtance.tolist(), av_s_absorbtance.tolist(), av_epsilon.tolist() )
 
     def partially_incoherent_calculator( self,
                             layers,
@@ -1056,15 +1125,6 @@ class SingleCrystalScenarioTab(ScenarioTab):
         #
         # Initialise the partial function to pass through to the pool
         #
-        #print('coherent_calculator')
-        #print('layers', layers)
-        #print('mode', mode)
-        #print('theta', theta)
-        #print('phi', phi)
-        #print('psi', psi)
-        #print('angleOfIncidence', angleOfIncidence)
-        #print('sliceThickness, exponent_threshold', sliceThickness, exponent_threshold)
-        #
         partial_function = partial(solve_single_crystal_equations,
                                        layers,
                                        mode,
@@ -1155,6 +1215,8 @@ class SingleCrystalScenarioTab(ScenarioTab):
         mode = self.settings['Mode']
         if self.settings['Percentage partial incoherence'] > 0:
             calculator = self.partially_incoherent_calculator
+        elif self.number_of_average_incoherent_layers > 0:
+            calculator = self.average_incoherent_calculator
         else:
             calculator = self.coherent_calculator
         exponent_threshold = self.exponent_threshold

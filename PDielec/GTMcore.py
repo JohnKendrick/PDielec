@@ -781,12 +781,15 @@ class Layer:
 ###############################
 class CoherentLayer(Layer):
     """Define a coherent layer inherits from Layer class"""
-    def __init__(self, thickness=1.0e-6, epsilon=None, theta=0, phi=0, psi=0, exponent_threshold=700):
+    def __init__(self, layer, theta=0, phi=0, psi=0, exponent_threshold=700):
         """Initialise an instance of a coherent layer"""
+        thickness = layer.getThicknessInMetres()
+        epsilon = layer.getPermittivityFunction()
         Layer.__init__(self, thickness, epsilon, theta, phi, psi, exponent_threshold)
         self.coherent = True
         self.inCoherentIntensity = False
         self.inCoherentPhase = False
+        self.inCoherentAveragePhase = False
         self.inCoherentThick = False
         return
 
@@ -797,24 +800,64 @@ class CoherentLayer(Layer):
 class IncoherentIntensityLayer(Layer):
     """Define an incoherent layer using intensity transfer matrices inherits from Layer class"""
 
-    def __init__(self, thickness=1.0e-6, epsilon=None, theta=0, phi=0, psi=0, exponent_threshold=700):
+    def __init__(self, layer, theta=0, phi=0, psi=0, exponent_threshold=700):
         """Initialise an instance of an incoherent layer"""
+        thickness = layer.getThicknessInMetres()
+        epsilon = layer.getPermittivityFunction()
         Layer.__init__(self, thickness, epsilon, theta, phi, psi, exponent_threshold)
         self.coherent = False
         self.inCoherentIntensity = True
         self.inCoherentPhase = False
+        self.inCoherentAveragePhase = False
         self.inCoherentThick = False
         return
+
+class IncoherentAveragePhaseLayer(Layer):
+    """Define an incoherent layer using an average phase in the propagation matrix"""
+
+    def __init__(self, layer, percentage_incoherence=100, number_of_samples=4, theta=0, phi=0, psi=0, exponent_threshold=700):
+        """Initialise an instance of an incoherent layer"""
+        thickness = layer.getThicknessInMetres()
+        epsilon = layer.getPermittivityFunction()
+        Layer.__init__(self, thickness, epsilon, theta, phi, psi, exponent_threshold)
+        self.coherent = False
+        self.inCoherentIntensity = False
+        self.inCoherentPhase = False
+        self.inCoherentAveragePhase = True
+        self.inCoherentThick = False
+        self.phaseShift = layer.getPhaseShift()
+        return
+
+    def calculate_propagation_matrix(self,f):
+        """Routine to calculate the matrix Ki (or Pi) depending on the paper
+           A phase shift is included in the calculation
+           The phase shift can vary between 0 and pi
+        """
+        Ki = np.zeros( (4,4), dtype=np.clongdouble)
+        for ii in range(4):
+            if ii < 2:
+                exponent = np.clongdouble(-1.0j*(2.0*np.pi*f*self.qs[ii]*self.thick/c_const))
+            else:
+                exponent = np.clongdouble(-1.0j*(2.0*np.pi*f*self.qs[ii]*self.thick/c_const + self.phaseShift))
+            if np.abs(exponent) > self.exponent_threshold:
+                self.largest_exponent = max(self.largest_exponent,np.abs(exponent))
+                exponent = exponent/np.abs(exponent)*self.exponent_threshold
+                self.exponent_errors += 1
+            Ki[ii,ii] = np.exp(exponent)
+        return  Ki
 
 class IncoherentPhaseLayer(Layer):
     """Define an incoherent layer using Arteaga's modification of the phase in the propagation matrix"""
 
-    def __init__(self, thickness=1.0e-6, epsilon=None, theta=0, phi=0, psi=0, exponent_threshold=700):
+    def __init__(self, layer, theta=0, phi=0, psi=0, exponent_threshold=700):
         """Initialise an instance of an incoherent layer"""
+        thickness = layer.getThicknessInMetres()
+        epsilon = layer.getPermittivityFunction()
         Layer.__init__(self, thickness, epsilon, theta, phi, psi, exponent_threshold)
         self.coherent = False
         self.inCoherentIntensity = False
         self.inCoherentPhase = True
+        self.inCoherentAveragePhase = False
         self.inCoherentThick = False
         return
 
@@ -853,12 +896,15 @@ class IncoherentPhaseLayer(Layer):
 class IncoherentThickLayer(Layer):
     """Define an incoherent layer using the thick slab approximation"""
 
-    def __init__(self, thickness=1.0e-6, epsilon=None, theta=0, phi=0, psi=0, exponent_threshold=700):
+    def __init__(self, layer, theta=0, phi=0, psi=0, exponent_threshold=700):
         """Initialise an instance of an incoherent layer"""
+        thickness = layer.getThicknessInMetres()
+        epsilon = layer.getPermittivityFunction()
         Layer.__init__(self, thickness, epsilon, theta, phi, psi, exponent_threshold)
         self.coherent = False
         self.inCoherentIntensity = False
         self.inCoherentPhase = False
+        self.inCoherentAveragePhase = False
         self.inCoherentThick = True
         return
 
