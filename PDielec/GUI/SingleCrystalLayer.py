@@ -241,7 +241,7 @@ class SingleCrystalLayer():
                          [m4*m8-m5*m7, m2*m7-m1*m8, m1*m5-m2*m4]])/determinant
 
 class ShowLayerWindow(QDialog):
-    def __init__(self, layer, parent=None, debug=False ):
+    def __init__(self, layer, message = '', parent=None, debug=False ):
         super(ShowLayerWindow,self).__init__(parent)
         global debugger
         debugger = Debug(debug,'ShowLayerWindow')
@@ -253,6 +253,7 @@ class ShowLayerWindow(QDialog):
         self.buttonBox.rejected.connect(self.reject)
         # Initialize the layer
         self.layer = layer
+        self.message = message
         # The dialog will have a vertical layout
         self.layout = QVBoxLayout(self)
         # Create the layer widget to display
@@ -272,13 +273,19 @@ class ShowLayerWindow(QDialog):
         debugger.print('drawLayerWidget')
         widget = QWidget()
         form = QFormLayout()
-        layout = self.drawLayerWidgetLine1()
-        form.addRow(layout)
+        label = QLabel('Layer type:')
+        form.addRow(label,QLabel(self.message))
+        label = QLabel('Material:')
+        material = self.layer.getMaterial()
+        materialName = material.getName()
+        form.addRow(label,QLabel(materialName))
+        label,layout = self.drawLayerWidgetLine1()
+        form.addRow(label,layout)
         if self.layer.getMaterial().isTensor():
-            layout = self.drawLayerWidgetLine2()
-            form.addRow(layout)
-            layout = self.drawLayerWidgetLine3()
-        form.addRow(layout)
+            label,layout = self.drawLayerWidgetLine2()
+            form.addRow(label,layout)
+            label,layout = self.drawLayerWidgetLine3()
+            form.addRow(label,layout)
         widget.setLayout(form)
         return widget
 
@@ -289,7 +296,7 @@ class ShowLayerWindow(QDialog):
         # Define material name
         material = self.layer.getMaterial()
         materialName = material.getName()
-        materialLabel = QLabel(materialName,self)
+        materialLabel = QLabel(materialName)
         materialThickness = self.layer.getThickness()
         # Handle thickness
         film_thickness_sb = QDoubleSpinBox(self)
@@ -308,14 +315,12 @@ class ShowLayerWindow(QDialog):
         index = thickness_units_cb.findText(thicknessUnit, Qt.MatchFixedString)
         thickness_units_cb.setCurrentIndex(index)
         thickness_units_cb.activated.connect(self.on_thickness_units_cb_activated)
-        thicknessLabel = QLabel('Thickness',self)
+        thicknessLabel = QLabel('Thickness:')
         thicknessLabel.setToolTip('Define the depth of the thin crystal in the defined thickness units.')
         # Create the line of widgets
-        hbox.addWidget(materialLabel)
-        hbox.addWidget(thicknessLabel)
         hbox.addWidget(film_thickness_sb)
         hbox.addWidget(thickness_units_cb)
-        return hbox
+        return thicknessLabel,hbox
 
     def drawLayerWidgetLine2(self):
         '''Add the second line of the layer description'''
@@ -352,13 +357,12 @@ class ShowLayerWindow(QDialog):
         azimuthal_angle_sb.valueChanged.connect(self.on_azimuthal_angle_sb_changed)
         azimuthalLabel = QLabel('Azimuthal:')
         # Create the line of widgets
-        hbox.addWidget(hklLabel)
         hbox.addWidget(h_sb)
         hbox.addWidget(k_sb)
         hbox.addWidget(l_sb)
         hbox.addWidget(azimuthalLabel)
         hbox.addWidget(azimuthal_angle_sb)
-        return hbox
+        return hklLabel,hbox
 
     def drawLayerWidgetLine3(self):
         '''Add the third line of the layer description'''
@@ -372,9 +376,8 @@ class ShowLayerWindow(QDialog):
         self.labframe_w.setMaximumHeight(6*h)
         self.labframe_w.setToolTip('The normal to the surface defines the Z-axis in the  lab frame\nThe incident and reflected light lie in the XZ plane\nThe p-polarization is direction lies in the XZ plane, s-polarisation is parallel to Y')
         self.changeLabFrameInfo()
-        hbox.addWidget(label)
         hbox.addWidget(self.labframe_w)
-        return hbox
+        return label,hbox
 
     def changeLabFrameInfo(self):
         '''Report the lab frame information in the labframe widget'''
