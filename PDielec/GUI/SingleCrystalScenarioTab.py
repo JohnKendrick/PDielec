@@ -224,17 +224,17 @@ class SingleCrystalScenarioTab(ScenarioTab):
         # Widgets for setting the slice thickness
         #
         label,layout = self.sliceThicknessWidget()
-        self.form.addRow(label, layout)
+        #jk self.form.addRow(label, layout)
         #
         # Partial incoherence widget
         #
         label,layout = self.partialIncoherenceWidget()
-        self.form.addRow(label, layout)
+        #jk self.form.addRow(label, layout)
         #
         # Smoothing widget
         #
         label,layout = self.smoothingWidget()
-        self.form.addRow(label, layout)
+        #jk self.form.addRow(label, layout)
         #
         # Add a legend option
         #
@@ -753,13 +753,13 @@ class SingleCrystalScenarioTab(ScenarioTab):
     def partialIncoherenceWidget(self):
         '''Create a partial incoherence widget'''
         hbox = QHBoxLayout()
-        self.percentage_partial_incoherence_sb = QSpinBox(self)
+        self.percentage_partial_incoherence_sb = QSpinBox()
         self.percentage_partial_incoherence_sb.setToolTip('Define the maximum percentage changes in the slab geometric parameters (thickness, alpha, beta and gamma euler angles) and the angle of incidence\nFor thickness it is a percentage of the required thickness.  For angles it is a percentage of 90 degrees\nIf the value of the percentage incoherence is zero, no incoherence is calculated')
         self.percentage_partial_incoherence_sb.setRange(0,100)
         self.percentage_partial_incoherence_sb.setSingleStep(1)
         self.percentage_partial_incoherence_sb.setValue(self.settings['Percentage partial incoherence'])
         self.percentage_partial_incoherence_sb.valueChanged.connect(self.on_percentage_partial_incoherence_sb_changed)
-        self.partially_incoherent_samples_sb = QSpinBox(self)
+        self.partially_incoherent_samples_sb = QSpinBox()
         self.partially_incoherent_samples_sb.setToolTip('Define the number of samples to be used in the calculation of an incoherent spectrum.\nA large number of samples will take a long time but will give smoother results.')
         self.partially_incoherent_samples_sb.setRange(0,10000)
         self.partially_incoherent_samples_sb.setSingleStep(1)
@@ -774,13 +774,13 @@ class SingleCrystalScenarioTab(ScenarioTab):
     def smoothingWidget(self):
         '''Create a smoothing widget'''
         hbox = QHBoxLayout()
-        self.partially_incoherent_kernel_sb = QSpinBox(self)
+        self.partially_incoherent_kernel_sb = QSpinBox()
         self.partially_incoherent_kernel_sb.setRange(1,1001)
         self.partially_incoherent_kernel_sb.setSingleStep(2)
         self.partially_incoherent_kernel_sb.setValue(self.settings['Filter kernel size'])
         self.partially_incoherent_kernel_sb.valueChanged.connect(self.on_partially_incoherent_kernel_sb_changed)
         self.partially_incoherent_kernel_sb.setToolTip('Define the kernel size for the smoothing of incoherent spectra (must be an odd number)\nIf the kernel size is less than 3, no smoothing is done.\nThe larger the number, the smoother the spectrum but beware of too much smoothing.')
-        self.partially_incoherent_polynomial_sb = QSpinBox(self)
+        self.partially_incoherent_polynomial_sb = QSpinBox()
         self.partially_incoherent_polynomial_sb.setToolTip('Define the maximum degree of polynomial to be used in the smoothing filter')
         self.partially_incoherent_polynomial_sb.setRange(2,10)
         self.partially_incoherent_polynomial_sb.setSingleStep(1)
@@ -793,14 +793,14 @@ class SingleCrystalScenarioTab(ScenarioTab):
         return label,hbox
 
     def sliceThicknessWidget(self):
-        self.slice_thickness_sb = QSpinBox(self)
+        self.slice_thickness_sb = QSpinBox()
         self.slice_thickness_sb.setToolTip('Define a slice thickness to subdivide thick films\nA value of zero means no slicing is performed')
         self.slice_thickness_sb.setRange(0,10000)
         self.slice_thickness_sb.setSingleStep(1)
         self.slice_thickness_sb.setValue(self.settings['Slice thickness'])
         self.slice_thickness_sb.valueChanged.connect(self.on_slice_thickness_sb_changed)
         self.slice_thickness_sb.setSizePolicy(QSizePolicy.Expanding,QSizePolicy.Fixed)
-        self.slice_thickness_unit_cb = QComboBox(self)
+        self.slice_thickness_unit_cb = QComboBox()
         self.slice_thickness_unit_cb.setToolTip('Set the units to be used for thickness; either nm, um, mm or cm')
         self.slice_thickness_unit_cb.addItems( thickness_units )
         self.slice_thickness_unit_cb.setSizePolicy(QSizePolicy.Expanding,QSizePolicy.Fixed)
