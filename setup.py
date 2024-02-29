@@ -26,7 +26,7 @@ setuptools.setup(
     packages=['PDielec','PDielec/GUI'],
     #package_dir = { '' : 'PDielec' },
     include_package_data=True,
-    package_data={'':['*.png']},
+    package_data={'':['*.png','*.xlsx']},
     license='MIT',
     keywords=['Infrared',' Infrared Spectroscopy','THz Spectroscopy','Terahertz Spectroscopy','Bruggeman','Maxwell-Garnett','Effective Medium'],
     install_requires=[
