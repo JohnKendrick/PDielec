@@ -19,7 +19,7 @@ class MaterialsDataBase():
         global debugger
         debugger = Debug(debug,'MaterialsDataBase')
         debugger.print('Start:: initialise')
-        if os.path.isfile(filename):
+        if len(filename)> 5 and (filename.endswith('xlsx') or filename.endswith('XLSX')) and os.path.isfile(filename):
             self.filename = os.path.relpath(filename)
             workbook = xl.load_workbook(self.filename,data_only=True)
             self.sheetNames = workbook.sheetnames
