@@ -199,16 +199,18 @@ class MaterialsDataBase():
         permittivities = []
         vs_cm1 = []
         for a, c, d in zip(worksheet['A'][1:] ,worksheet['C'][1:] , worksheet['D'][1:]):
+            if a.value is None or c.value is None or d.value is None:
+                break
             try:
                v = float(a.value)
                n = float(c.value)
                k = float(d.value)
+               nk = complex(n, k)
+               permittivity = Calculator.calculate_permittivity(nk)
+               permittivities.append(permittivity)
+               vs_cm1.append(v)
             except:
                 print('Error in Tabulated: ',a.value,c.value,d.value)
-            nk = complex(n, k)
-            permittivity = Calculator.calculate_permittivity(nk)
-            permittivities.append(permittivity)
-            vs_cm1.append(v)
         material = Tabulated(sheet,vs_cm1,permittivities=permittivities,density=density)
         return material
 
@@ -221,6 +223,8 @@ class MaterialsDataBase():
         permittivities = []
         vs_cm1 = []
         for a, c, d in zip(worksheet['A'][1:] ,worksheet['C'][1:] , worksheet['D'][1:]):
+            if a.value is None or c.value is None or d.value is None:
+                break
             v = float(a.value)
             eps_r = float(c.value)
             eps_i = float(d.value)
