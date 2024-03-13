@@ -721,22 +721,25 @@ class Layer:
         None
 
         """
-        ## eqn(22)
-        self.Ai[0,:] = self.gamma[:,0].copy()
-        self.Ai[1,:] = self.gamma[:,1].copy()
-
-        self.Ai[2,:] = (self.qs*self.gamma[:,0]-zeta*self.gamma[:,2])/self.mu
-        self.Ai[3,:] = self.qs*self.gamma[:,1]/self.mu
-   
+        self.calculate_ai(zeta)
         Aim1 = exact_inv_4x4(self.Ai.copy())
-
-        self.Ki = self.calculate_propagation_matrix(f)
-
+        self.calculate_propagation_matrix(f)
         self.Ti = np.matmul(self.Ai,np.matmul(self.Ki,Aim1))
         return
 
-    def update(self, f, zeta):
+    def calculate_ai(self,zeta):
+        '''Calculate A_i'''
+        ## eqn(22)
+        self.Ai[0,:] = self.gamma[:,0].copy()
+        self.Ai[1,:] = self.gamma[:,1].copy()
+        self.Ai[2,:] = (self.qs*self.gamma[:,0]-zeta*self.gamma[:,2])/self.mu
+        self.Ai[3,:] = self.qs*self.gamma[:,1]/self.mu
+        return 
+   
+
+    def update_tm(self, f, zeta):
         """Shortcut to recalculate all layer properties.
+           Appropriate for a transfer matrix method
 
         Parameters
         ----------
@@ -762,8 +765,43 @@ class Layer:
         self.calculate_gamma(zeta)
         self.calculate_transfer_matrix(f, zeta)
         Ai_inv = exact_inv_4x4(self.Ai.copy())
-
         return[self.Ai.copy(), self.Ki.copy(), Ai_inv.copy(), self.Ti.copy()]
+
+    def update_sm(self, f, zeta):
+        """Shortcut to recalculate all layer properties.
+           Appropriate for a scattering matrix method
+
+        Parameters
+        ----------
+        f : float
+            frequency (in Hz)
+        zeta : complex
+               reduced in-plane wavevector kx/k0
+        Returns
+        -------
+        Ai : 4x4-array
+             Boundary matrix :math:`A_i` of the layer
+        Ki : 4x4-array
+             Propagation matrix :math:`K_i` of the layer
+        Ai_inv : 4x4-array
+            Inverse of the :math:`A_i` matrix
+        Ti : 4x4-array
+             Transfer matrix of the whole layer
+        """
+
+        self.calculate_epsilon(f)
+        self.calculate_matrices(zeta)
+        self.calculate_q()
+        self.calculate_gamma(zeta)
+        self.calculate_ai(zeta)
+        self.calculate_propagation_exponents(f)
+        return
+
+    def calculate_propagation_exponents(self,f):
+        '''Routine to calculate the propagation exponents'''
+        for ii in range(4):
+            self.propagation_exponents[ii] = np.clongdouble(-1.0j*(2.0*np.pi*f*self.qs[ii]*self.thick)/c_const)
+        return
 
     def calculate_propagation_matrix(self,f):
         """Routine to calculate the matrix Ki (or Pi) depending on the paper
@@ -778,15 +816,16 @@ class Layer:
              Boundary matrix :math:`K_i` of the layer
         """
         Ki = np.zeros( (4,4), dtype=np.clongdouble)
+        self.calculate_propagation_exponents(f)
         for ii in range(4):
-            exponent = np.clongdouble(-1.0j*(2.0*np.pi*f*self.qs[ii]*self.thick)/c_const)
-            self.propagation_exponents[ii] = exponent
+            exponent = self.propagation_exponents[ii]
             if np.abs(exponent) > self.exponent_threshold:
                 self.largest_exponent = max(self.largest_exponent,np.abs(exponent))
                 exponent = exponent/np.abs(exponent)*self.exponent_threshold
                 self.exponent_errors += 1
             Ki[ii,ii] = np.exp(exponent)
-        return  Ki
+        self.Ki = Ki
+        return  self.Ki
         
 
 ###############################
@@ -807,7 +846,7 @@ class CoherentLayer(Layer):
         self.SMatrix = None            # A holder for the scattering matrix for the layer
         return
 
-    def calculateScatteringMatrix(self,b):
+    def calculate_scattering_matrix(self,b):
         """Calculate the scattering matrix of this layer with layer b
            This is based on equations 18-21 in the PyLama paper
            However, the definition of a scattering matrix is different to theirs"""
@@ -872,13 +911,18 @@ class SemiInfiniteLayer(CoherentLayer):
         self.SMatrix = None            # A holder for the scattering matrix
         return
 
+    def calculate_propagation_exponents(self,f):
+        '''Routine to calculate the propagation exponents'''
+        self.propagation_exponents = np.zeros( (4), dtype=np.clongdouble)
+        return
+
     def calculate_propagation_matrix(self,f):
         """Routine to calculate the matrix Ki (or Pi) depending on the paper
            This routine makes the material transparent.  It is therefore suitable for 
            a semi-infinite layer
         """
+        self.calculate_propagation_exponents(f)
         Ki = np.eye( 4, dtype=np.clongdouble)
-        self.propagation_exponents = np.zeros( (4), dtype=np.clongdouble)
         return  Ki
         
 class IncoherentIntensityLayer(CoherentLayer):
@@ -912,24 +956,18 @@ class IncoherentAveragePhaseLayer(CoherentLayer):
         self.phaseShift = layer.getPhaseShift()
         return
 
-    def calculate_propagation_matrix(self,f):
+    def calculate_propagation_exponents(self,f):
         """Routine to calculate the matrix Ki (or Pi depending on the paper)
            A phase shift is included in the calculation
            The phase shift can vary between 0 and pi
         """
-        Ki = np.zeros( (4,4), dtype=np.clongdouble)
         for ii in range(4):
             if ii < 2:
                 exponent = np.clongdouble(-1.0j*(2.0*np.pi*f*self.qs[ii]*self.thick/c_const))
             else:
                 exponent = np.clongdouble(-1.0j*(2.0*np.pi*f*self.qs[ii]*self.thick/c_const + self.phaseShift))
             self.propagation_exponents[ii] = exponent
-            if np.abs(exponent) > self.exponent_threshold:
-                self.largest_exponent = max(self.largest_exponent,np.abs(exponent))
-                exponent = exponent/np.abs(exponent)*self.exponent_threshold
-                self.exponent_errors += 1
-            Ki[ii,ii] = np.exp(exponent)
-        return  Ki
+        return
 
 class IncoherentPhaseLayer(CoherentLayer):
     """Define an incoherent layer using Arteaga's modification of the phase in the propagation matrix"""
@@ -946,7 +984,7 @@ class IncoherentPhaseLayer(CoherentLayer):
         self.inCoherentThick = False
         return
 
-    def calculate_propagation_matrix(self,f):
+    def calculate_propagation_exponents(self,f):
         """Routine to calculate the matrix Ki (or Pi) depending on the paper
            This routine is taken from Arteaga et al
            Thin Solid Films 2014, 571, 701-705
@@ -957,7 +995,6 @@ class IncoherentPhaseLayer(CoherentLayer):
            2 p/o <-                       s ->
            3 s/e <-                       s <-
         """
-        Ki = np.zeros( (4,4), dtype=np.clongdouble)
         qs = np.zeros( 4, dtype=np.clongdouble)
         # p-wave ->
         qs[0] = self.qs[0] - np.real(self.qs[1])    # Subtract the real part of s ->
@@ -967,17 +1004,10 @@ class IncoherentPhaseLayer(CoherentLayer):
         qs[2] = self.qs[2] - np.real(self.qs[3])    # Subtract the real part of s <-
         # s-wave <-
         qs[3] = self.qs[3] - np.real(self.qs[3])    # Subtract the real part of s <-
-        
         for ii in range(4):
             exponent = np.clongdouble(-1.0j*(2.0*np.pi*f*qs[ii]*self.thick)/c_const)
             self.propagation_exponents[ii] = exponent
-            if np.abs(exponent) > self.exponent_threshold:
-                self.largest_exponent = max(self.largest_exponent,np.abs(exponent))
-                exponent = exponent/np.abs(exponent)*self.exponent_threshold
-                self.exponent_errors += 1
-            Ki[ii,ii] = np.exp(exponent)
-        return  Ki
-
+        return
 
 class IncoherentThickLayer(CoherentLayer):
     """Define an incoherent layer using the thick slab approximation"""
@@ -1000,18 +1030,16 @@ class IncoherentThickLayer(CoherentLayer):
         Ki = super().calculate_propagation_matrix(f)
         Ki[2,2] = 0.0
         Ki[3,3] = 0.0
-        #jk self.propagation_exponents[2] = 700.0
-        #jk self.propagation_exponents[3] = 700.0
         return  Ki
 
-    def calculateScatteringMatrix(self,b):
+    def calculate_scattering_matrix(self,b):
         """Calculate the scattering matrix of this layer with layer b
            This is based on equations 18-21 in the PyLama paper
            However, the definition of a scattering matrix is different to theirs"""
         # First calculate the scattering matrix as usual
         # NB. the propagation matrix has zero's in the s/p backward scattering
         #     but the scattering matrix calculation uses the raw propagation exponents
-        super().calculateScatteringMatrix(b)
+        super().calculate_scattering_matrix(b)
         # Now manually set the backwards reflections for both s and p to zero
         self.SMatrix.S11 = np.zeros( (2,2) )
         self.SMatrix.calculateS()
@@ -1216,8 +1244,8 @@ class System:
         GammaStar: 4x4 complex matrix
                    System transfer matrix :math:`\Gamma^{*}`
         """
-        A_super, K_super, A_inv_super, T_super = self.superstrate.update(f, zeta_sys)
-        A_sub, K_sub, A_inv_sub, T_sub = self.substrate.update(f, zeta_sys)
+        A_super, K_super, A_inv_super, T_super = self.superstrate.update_tm(f, zeta_sys)
+        A_sub, K_sub, A_inv_sub, T_sub = self.substrate.update_tm(f, zeta_sys)
         Delta1234 = np.array([[1,0,0,0],
                               [0,0,1,0],
                               [0,1,0,0],
@@ -1227,7 +1255,7 @@ class System:
         # Initialise T with the substrate Transfer Matrix
         T = A_sub
         for layer in reversed(self.layers):
-            Di, Pi, Di_inv, Ti = layer.update(f, zeta_sys)
+            Di, Pi, Di_inv, Ti = layer.update_tm(f, zeta_sys)
             if layer.inCoherentIntensity:
                 # Deal with an incoherent layer
                 # Finish any exisiting T matrix with Di_inv and add as a new matrix in Tlist
@@ -1405,15 +1433,15 @@ class ScatteringMatrixSystem(System):
         '''Calculate the scattering matrices in every layer'''
         # First the superstrate with the first layer in the device
         if len(self.layers) < 1:
-            self.superstrate.calculateScatteringMatrix(self.substrate)
+            self.superstrate.calculate_scattering_matrix(self.substrate)
         else:
-            self.superstrate.calculateScatteringMatrix(self.layers[0])
+            self.superstrate.calculate_scattering_matrix(self.layers[0])
         # Next every layer in the devices with the next layer, but not the last layer in the device
         for index,layer in enumerate(self.layers[:-2]):
-            layer.calculateScatteringMatrix(self.layers[index+1])
+            layer.calculate_scattering_matrix(self.layers[index+1])
         # Now calculate the scattering matrix between the last layer in the device and the substrate
         if len(self.layers) > 0:
-            self.layers[-1].calculateScatteringMatrix(self.substrate)
+            self.layers[-1].calculate_scattering_matrix(self.substrate)
         # Note that the substrate does not have a scattering matrix
         return
 
@@ -1433,7 +1461,12 @@ class ScatteringMatrixSystem(System):
         Stotal     System scattering matrix :math:`S`
         """
         # Use the super class to calculate GammaStar
-        super().calculate_GammaStar(f,zeta_sys)
+        #super().calculate_GammaStar(f,zeta_sys)
+
+        self.superstrate.update_sm(f, zeta_sys)
+        self.substrate.update_sm(f, zeta_sys)
+        for layer in self.layers:
+            layer.update_sm(f, zeta_sys)
         # Ask for calculation of scattering matrices in all layers
         self.calculate_scattering_matrices()
         # Loop through all the layers to calculate the total scattering matrix
