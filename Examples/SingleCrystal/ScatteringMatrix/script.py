@@ -9,7 +9,7 @@ tab = self.notebook.mainTab
 tab.settings['Program'] = 'crystal'
 tab.settings['Output file name'] = 'phonon.out'
 tab.settings['Excel file name'] = ''
-tab.settings['Script file name'] = 'scattering_matrix.py'
+tab.settings['Script file name'] = 'test.py'
 tab.settings['QM program'] = ''
 tab.settings['Compatibility mode'] = 'Linux'
 #
@@ -102,7 +102,7 @@ tab.settings['Number of average incoherence samples'] =  10
 #
 self.notebook.addScenario(scenarioType="Single crystal")
 tab = self.notebook.scenarios[3]
-tab.settings['Legend'] = 'a-axis field for S Polarisation (intensity incoherent)'
+tab.settings['Legend'] = 'a-axis field for S Polarisation (Incoherent phase average)'
 tab.settings['Scenario type'] = 'Single crystal'
 tab.settings['Materials database'] = '../../../PDielec/MaterialsDataBase.xlsx'
 tab.settings['Global azimuthal angle'] =  0.0
@@ -128,7 +128,7 @@ tab.settings['Number of average incoherence samples'] =  10
 #
 self.notebook.addScenario(scenarioType="Single crystal")
 tab = self.notebook.scenarios[4]
-tab.settings['Legend'] = 'b-axis field for S Polarisation (intensity incoherent)'
+tab.settings['Legend'] = 'b-axis field for S Polarisation (Incoherent phase average)'
 tab.settings['Scenario type'] = 'Single crystal'
 tab.settings['Materials database'] = '../../../PDielec/MaterialsDataBase.xlsx'
 tab.settings['Global azimuthal angle'] =  0.0
@@ -154,7 +154,7 @@ tab.settings['Number of average incoherence samples'] =  10
 #
 self.notebook.addScenario(scenarioType="Single crystal")
 tab = self.notebook.scenarios[5]
-tab.settings['Legend'] = 'c-axis field for S Polarisation (intensity incoherent)'
+tab.settings['Legend'] = 'c-axis field for S Polarisation (Incoherent phase average)'
 tab.settings['Scenario type'] = 'Single crystal'
 tab.settings['Materials database'] = '../../../PDielec/MaterialsDataBase.xlsx'
 tab.settings['Global azimuthal angle'] =  0.0
