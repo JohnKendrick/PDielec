@@ -84,6 +84,7 @@ test_pdgui = [
 	'SingleCrystal/Bi2Se3_film',
 	'SingleCrystal/L-alanine',
 	'SingleCrystal/MgO',
+	'SingleCrystal/ScatteringMatrix',
 	'SizeEffects/BaTiO3',
 	'SizeEffects/MgO',
 	'SizeEffects/ZnO',
@@ -100,6 +101,7 @@ test_singlecrystal = [
 	'SingleCrystal/Bi2Se3_film',
 	'SingleCrystal/L-alanine',
 	'SingleCrystal/MgO',
+	'SingleCrystal/ScatteringMatrix',
     ]
 
 test_vibanalysis = [
