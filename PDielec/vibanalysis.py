@@ -1126,7 +1126,7 @@ def VMBLD(of,s):
                 of.write(" some (possibly unwanted) redundancy in the results\n")
         for i in range(len(s.vibrations)):
                 o=[]
-                regressor=sklm.BayesianRidge(compute_score=True,n_iter=5000)
+                regressor=sklm.BayesianRidge(compute_score=True,max_iter=5000)
                 regressor.fit(s.S,s.ADM[:,i])
                 r2=np.corrcoef(s.ADM[:,i],regressor.predict(s.S))[0,1]**2
                 exvar=skmt.explained_variance_score(s.ADM[:,i],regressor.predict(s.S))
@@ -1146,7 +1146,7 @@ def VMARD(of,s):
                 of.write(" some (possibly unwanted) redundancy in the results\n")
         for i in range(len(s.vibrations)):
                 o=[]
-                regressor=sklm.ARDRegression(compute_score=True,n_iter=5000)
+                regressor=sklm.ARDRegression(compute_score=True,max_iter=5000)
                 regressor.fit(s.S,s.ADM[:,i])
                 r2=np.corrcoef(s.ADM[:,i],regressor.predict(s.S))[0,1]**2
                 exvar=skmt.explained_variance_score(s.ADM[:,i],regressor.predict(s.S))
