@@ -10,10 +10,10 @@ version 8.1.0
   - removed the need to have specific super- and sub-strate entries in the singleCrystalTab
     superstrate is the top of the material list and substrate is at the bottom.
   - the old 'Thick slab' option is still available if the dielectric layer is the last in the list of materials
+  Added a scattering matrix method for the single crystal calculations
   Updated the progress bar algorithms
-  Fixed a bug in the specification of the matrix for the powder case
-  
-
+  Fixed a bug in the specification of the support matrix for the powder case
+  Fixed a bug in the reporting of absorptance, s- and p- were reported the wrong way round
   Fixed a bug in the powder scenario tab, the super- and sub-matrix dielectric functions,
         were not being set properly for frequency dependent permittivities
 version 8.0.0
