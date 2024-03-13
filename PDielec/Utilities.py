@@ -27,6 +27,26 @@ from PDielec.AbinitOutputReader import AbinitOutputReader
 from PDielec.QEOutputReader import QEOutputReader
 from PDielec.ExperimentOutputReader import ExperimentOutputReader
 
+def printsp(name,matrix):
+    ''' Utility routine for printing 4x4 matrices or 4 vectors '''
+    print('')
+    print(name)
+    if len(matrix.shape) == 1:
+        columns = matrix.shape[0]
+        string = ''
+        for i in range(columns):
+            string = string + f'{matrix[i]:+.5f}' + '   '
+        print(string)
+    else:
+        rows = matrix.shape[0]
+        columns = matrix.shape[1]
+        for j in range(rows):
+            string = ''
+            for i in range(columns):
+                string = string + f'{matrix[j,i]:+.5f}' + '   '
+            print(string)
+    return
+
 def find_program_from_name( filename ):
     # Determine the program to use from the file name being used
     head,tail = os.path.split(filename)
