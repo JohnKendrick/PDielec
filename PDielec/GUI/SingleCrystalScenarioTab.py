@@ -29,6 +29,7 @@ from scipy                          import signal
 thickness_conversion_factors = {'ang':1.0E-10, 'nm':1.0E-9, 'um':1.0E-6, 'mm':1.0E-3, 'cm':1.0E-2}
 thickness_units = list(thickness_conversion_factors.keys())
 incoherentOptions = ['Coherent','Incoherent (intensity)','Incoherent (phase cancelling)','Incoherent (phase averaging)','Incoherent (non-reflective)'] 
+incoherentOptions = ['Coherent','Incoherent (intensity)','Incoherent (phase averaging)','Incoherent (non-reflective)'] 
 gtmMethods ={'Coherent':GTM.CoherentLayer,
              'Incoherent (intensity)':GTM.IncoherentIntensityLayer,
              'Incoherent (phase cancelling)':GTM.IncoherentPhaseLayer,
@@ -56,7 +57,7 @@ def solve_single_crystal_equations(
         This is a parallel call to the single crystal equation solver, system is a GTM system   
         layers                        a list of material layers (their permittivity functions)
         mode                          'Transfer matrix' or 'Scattering matrix'
-        theta                         the theta angle of the sla,
+        theta                         the theta angle of the slab
         phi                           the angle of the slab
         psi                           the psi angle of the slab
         angleOfIncidence              the angle of incidence
@@ -67,9 +68,9 @@ def solve_single_crystal_equations(
 
     """
     # Create superstrate from the first layer
-    superstrate      = GTM.CoherentLayer(layers[0],exponent_threshold=exponent_threshold)
+    superstrate      = GTM.SemiInfiniteLayer(layers[0],exponent_threshold=exponent_threshold)
     # Create substrate from the last layer
-    substrate        = GTM.CoherentLayer(layers[-1],exponent_threshold=exponent_threshold)
+    substrate        = GTM.SemiInfiniteLayer(layers[-1],exponent_threshold=exponent_threshold)
     selectedLayers = layers[1:-1]
     gtmLayers = []
     # Create layers from all the layers between first and last
@@ -85,7 +86,10 @@ def solve_single_crystal_equations(
             # No slicing is necessary
             gtmLayers.append(gtmMethods[incoherentOption](layer, exponent_threshold=exponent_threshold))
     # Creat the system with the layers 
-    system = GTM.System(substrate=substrate, superstrate=superstrate, layers=gtmLayers)
+    if mode == 'Scattering matrix':
+        system = GTM.ScatteringMatrixSystem(substrate=substrate, superstrate=superstrate, layers=gtmLayers)
+    else:
+        system = GTM.TransferMatrixSystem(substrate=substrate, superstrate=superstrate, layers=gtmLayers)
     # Rotate the dielectric constants to the laboratory frame
     # This is a global rotation of all the layers.
     system.substrate.set_euler(theta, phi, psi)
@@ -184,8 +188,7 @@ class SingleCrystalScenarioTab(ScenarioTab):
         #
         self.mode_cb = QComboBox(self)
         self.mode_cb.setToolTip('Set the method for calculating light transmission and reflectanceb;\n Transfer matrix.  This method is fast but can be numerically unstable.\n Scattering matrix. This method is slow but is numerically stable')
-        #self.mode_cb.addItems( ['Transfer matrix','Scattering matrix'] )
-        self.mode_cb.addItems( ['Transfer matrix'] )
+        self.mode_cb.addItems( ['Transfer matrix','Scattering matrix'] )
         index = self.mode_cb.findText(self.settings['Mode'], Qt.MatchFixedString)
         self.mode_cb.setCurrentIndex(index)
         self.mode_cb.activated.connect(self.on_mode_cb_activated)
@@ -356,10 +359,18 @@ class SingleCrystalScenarioTab(ScenarioTab):
         option_cb = QComboBox(self)
         option_cb.setToolTip('Change optional settings for the layer')
         option_cb.addItems( incoherentOptions )
+        # We can't use incoherent intensity method with the scattering matrix method
+        if self.settings['Mode'] == 'Scattering matrix':
+            if layer.getIncoherentOption() == 'Incoherent (intensity)':
+                layer.setIncoherentOption('Coherent')
         index = option_cb.findText(layer.getIncoherentOption(), Qt.MatchFixedString)
         option_cb.setCurrentIndex(index)
         option_cb.activated.connect(lambda x: self.on_option_cb_activated(x,layer))
         option_cb.setSizePolicy(QSizePolicy.Expanding,QSizePolicy.Fixed)
+        # Disable the intensity incoherence option if it is using scattering
+        if self.settings['Mode'] == 'Scattering matrix':
+            index = option_cb.findText('Incoherent (intensity)', Qt.MatchFixedString)
+            option_cb.model().item(index).setEnabled(False)
         self.layerTable_tw.setCellWidget(sequenceNumber,7,option_cb)
         # Create a toolbar for up down delete
         toolbar = self.createToolBar(layer,sequenceNumber,len(self.layers))
@@ -581,6 +592,7 @@ class SingleCrystalScenarioTab(ScenarioTab):
         debugger.print('on_incoherence_cb_activated', index,layer.getName())
         option = incoherentOptions[index]
         layer.setIncoherentOption(option)
+        self.set_noCalculationsRequired()
         self.generateLayerSettings()
         self.refreshRequired = True
         return
@@ -915,19 +927,8 @@ class SingleCrystalScenarioTab(ScenarioTab):
         # Check the mode 
         index = self.mode_cb.findText(self.settings['Mode'], Qt.MatchFixedString)
         self.mode_cb.setCurrentIndex(index)
-        # How many layers are using phase averaging
-        self.number_of_average_incoherent_layers = 0
-        for layer in self.layers:
-            if layer.getIncoherentOption() == 'Incoherent (phase averaging)':
-                self.number_of_average_incoherent_layers += 1
-        # Check partial incoherence settings
-        if self.settings['Percentage partial incoherence'] > 0:
-            self.noCalculationsRequired = self.settings['Partially incoherent samples']
-        elif self.number_of_average_incoherent_layers > 0:
-            number_of_samples = self.settings['Number of average incoherence samples']
-            self.noCalculationsRequired = pow(number_of_samples,self.number_of_average_incoherent_layers)
-        else:
-            self.noCalculationsRequired = 1
+        # Work out how many calculations are going to be performed
+        self.set_noCalculationsRequired()
         # Update the slice information
         self.slice_thickness_sb.setValue(self.settings['Slice thickness'])
         thicknessUnit = self.settings['Slice thickness unit']
@@ -957,19 +958,38 @@ class SingleCrystalScenarioTab(ScenarioTab):
         debugger.print(self.settings['Legend'],'Finished:: refresh, force =', force)
         return
 
+    def set_noCalculationsRequired(self):
+        '''Determine the number of calculations required
+           The routine first of all works out the number of layers needing phase averaging
+           Then it looks at the number of partial incoherent calculations being performed'''
+        # First see how many layers are using phase averaging
+        self.number_of_average_incoherent_layers = 0
+        for layer in self.layers:
+            if layer.getIncoherentOption() == 'Incoherent (phase averaging)':
+                self.number_of_average_incoherent_layers += 1
+        # First see how many layers are using phase averaging
+        if self.number_of_average_incoherent_layers > 0:
+            number_of_samples = self.settings['Number of average incoherence samples']
+            self.noCalculationsRequired = pow(number_of_samples,self.number_of_average_incoherent_layers)
+        else:
+            self.noCalculationsRequired = 1
+        # Now see if partial incoherence is being used
+        if self.settings['Percentage partial incoherence'] > 0:
+            self.noCalculationsRequired *= self.settings['Partially incoherent samples']
+        return
+
     def on_mode_cb_activated(self, index):
         debugger.print(self.settings['Legend'],'Start:: on_mode_cb_activated')
         if index == 0:
             self.settings['Mode'] = 'Transfer matrix'
         elif index == 1:
             self.settings['Mode'] = 'Scattering matrix'
-        if self.settings['Percentage partial incoherence'] > 0:
-            self.noCalculationsRequired = self.settings['Partially incoherent samples']
-        elif self.number_of_average_incoherent_layers > 0:
-            number_of_samples = self.settings['Number of average incoherence samples']
-            self.noCalculationsRequired = pow(number_of_samples,self.number_of_average_incoherent_layers)
-        else:
-            self.noCalculationsRequired = 1
+            # If any layers are using intensity incoherence move them to coherent
+            for layer in self.layers:
+                incoherentOption = layer.getIncoherentOption()
+                if incoherentOption == 'Incoherent (intensity)':
+                    layer.setIncoherentOption('Coherent')
+        self.set_noCalculationsRequired()
         self.generateLayerSettings()
         self.refresh(force=True)
         self.refreshRequired = True
@@ -1162,7 +1182,7 @@ class SingleCrystalScenarioTab(ScenarioTab):
         epsilon = []
         debugger.print(self.settings['Legend'],'About to extract results for single crystal scenario')
         for v,r,R,t,T,eps,errors,largest_exponent in results:
-            if errors > 0:
+            if self.settings['Mode'] == 'Transfer matrix' and errors > 0:
                 print('Warning exponential overflow occured at frequency',v,errors,largest_exponent)
             p_reflectance.append(R[0]+R[2])
             s_reflectance.append(R[1]+R[3])
@@ -1220,22 +1240,25 @@ class SingleCrystalScenarioTab(ScenarioTab):
         for layer in self.layers:
             if layer.isTensor():
                 layer.calculate_euler_matrix()
-        # Choose the calculator function depending on the mode of operation
+        # Define the mode of calculation transfer or scattering matrix
         mode = self.settings['Mode']
+        # See if the partially incoherent method will be used or the average incoherent
+        # A different calculator is selected depending on the settings
         if self.settings['Percentage partial incoherence'] > 0:
             calculator = self.partially_incoherent_calculator
         elif self.number_of_average_incoherent_layers > 0:
             calculator = self.average_incoherent_calculator
         else:
             calculator = self.coherent_calculator
+        # Pass the exponent threshold
         exponent_threshold = self.exponent_threshold
         # Call the relevant calculator
         ( self.p_reflectance, 
         self.s_reflectance, 
         self.p_transmittance, 
         self.s_transmittance, 
-        self.s_absorbtance, 
         self.p_absorbtance, 
+        self.s_absorbtance, 
         self.epsilon) = calculator( self.layers,
                                     mode,
                                     theta,
