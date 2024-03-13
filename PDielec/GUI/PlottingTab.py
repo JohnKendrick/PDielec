@@ -742,6 +742,8 @@ class PlottingTab(QWidget):
             self.subplot.set_ylabel(self.plot_ylabels[self.settings['Plot type']])
             self.subplot.legend(loc='best')
             self.subplot.set_title(self.settings['Plot type'])
+            self.subplot.set_autoscaley_on(False)
+            self.subplot.set_ylim([0,1])
             self.canvas.draw_idle()
         QApplication.restoreOverrideCursor()
         debugger.print('Finished:: plot')
