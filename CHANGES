@@ -16,6 +16,9 @@ version 8.1.0
   Fixed a bug in the reporting of absorptance, s- and p- were reported the wrong way round
   Fixed a bug in the powder scenario tab, the super- and sub-matrix dielectric functions,
         were not being set properly for frequency dependent permittivities
+  The option to use slicing has been removed
+  The option to do partial incoherence has been removed from the GUI but left in the code
+
 version 8.0.0
   Introduced various changes to handle the difference between Windows and Linux.  The mainTab settings now has a compatibility mode option which can be 'Linux' or 'Windows'
   Modified the AlN test case to use Windows compatibility mode
