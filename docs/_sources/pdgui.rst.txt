@@ -249,12 +249,9 @@ Single-Crystal Scenarios
 As in the powder scenario, a single-crystal scenario has an option to open a new database of materials.  
 By default, the program opens the default database distributed with the program.
 
-The mode of calculation is determined by the *Single crystal mode* option.  Possible options are; *Thick slab*, *Coherent thin film*, *Incoherent thin film*, and *Partially incoherent thin film*.
+The mode of calculation is determined by the *Single crystal methodology* option.  Possible options are; *Transfer matrix* and *Scattering matrix*.
 Details of the theory underlying each method are given in the theory section: :ref:`Single-Crystal-Theory`.
-In summary, a thick slab assumes that the thickness is such that no radiation can be transmitted and all radiation is therefore reflected or absorbed.  As such only the reflectance has any meaning for thick slabs.
-The *Coherent thin film mode* provides a complete description of the light reflectance and transmittance but can show oscillations due to interference effects that are not seen experimentally.
-The *Incoherent thin film mode* treats the incoming light as incoherent and removes all the oscillations due to internal reflection.
-Finally, the *Partially incoherent film* introduces random variations in the incident angle and the geometric parameters of the crystal surface and the thickness of the crystal.
+The transfer matrix is faster and all the available methods for treating incoherence are available.  The scattering matrix method is slower and the option to treat incoherence by using intensities is not available, but it is much more stable when treating thick films.
 Single-crystal films are defined by a surface determined by the (hkl) settings.
 
 
@@ -265,29 +262,19 @@ Single-crystal films are defined by a surface determined by the (hkl) settings.
 
    The Scenario Tab for a Single Crystal
 
-The mode of calculation is selected at the top of the tab, followed by the global azimuthal angle and the angle of incidence.
+The method of calculation is selected at the top of the tab, followed by the global azimuthal angle and the angle of incidence.
 The global azimuthal angle controls the rotation of all the layers around the laboratory Z-axis, although each layer also has its own azimuthal angle as will be described later.
 
-The layers of the system are defined by a superstrate, a collection of film layers (which includes the dielectric material being studied by DFT) and finally a substrate.   
-The superstrate and substrate are semi-infinite materials that must have an isotropic permittivity, which can be complex.
-In the case of the *Thick slab* mode, the substrate is not used, instead, the last layer in the list of layers is used as the semi-infinite material.  This material need not be isotropic.
+The layer information is provided as a spread-sheet of materials, with the specification of the thickness of the layer, the (hkl) parameters of the surface, the azimuthal angle of the layer and an option to treat the layer coherently or incoherently.
+The material at the top of the list is the superstrate, which should be isotropic and non-absorbing.  It is treated as a semi-infinite material.
+The material at the bottom of the list is the substrate, which is also semi-infinite.  Although, if only reflectance information is needed, this can be an anisotropic, absorbing material.
+The layer in-between is initially set to the DFT dielectric material.  
+New layers can be added by pressing the *New layer...* button and choosing from what is available in the database.
+The position of the layers can be adjusted by pressing the up and down buttons and a layer can be removed by pressing the *delete* button.
+There are options to treat the layer, coherently or incoherently available from the *Options* pull down.
 
-The layers are shown in the GUI in order with the superstrate at the top.  There are pull-down menus to choose a material for the superstrate and substrate, or the real and imaginary components of their isotropic permittivity can be specified manually.
+Pressing the button which shows the name of the material, brings up the layer editor window for that material, which is described in more detail below.
 
-Underneath the superstrate specification is shown a list of film layers, by default only the dielectric material being studied by DFT is shown.  
-Each line in the list shows the thickness of the film, its surface in terms of (hkl) and its azimuthal angle.
-This is sufficient information to define the orientation of the crystal in laboratory coordinates.
-Further information on this is given the the section describing :ref:`the-layer-editor`.
-
-The slice thickness is used to help in those cases that experience numerical problems when solving the single-crystal optical equations.  Problems of overflow arise, especially for thick films.  By default, the slice thickness is set to zero and now slicing is employed.  If a non-zero value is given, any film that is thicker than this value is subdivided (sliced) into adjacent thinner layers.  Although the results should be the same if slicing is used or not, the computational time goes up linearly with the number of slices.
-
-In the case of the *Partially incoherent thin film* mode, it is necessary to provide further information about the sampling of the geometrical parameters.
-The *Percentage of partial incoherence* provides a percentage perturbation of the geometric parameters.  All angles are sampled from a uniform distribution on either side of the mean value by this percentage of 90\ :superscript:`o`.
-The film thickness is also varied on either side of the mean value by this percentage of the mean value.
-
-The number of samples used in sampling is given by the value of *Number of partially incoherent samples*.
-When smoothing is required the size of the *Incoherent smoothing filter, kernel size* must be 3 or greater.  Only odd numbers are accepted.  This value can be as large as possible, but should not exceed the number of data points between true peaks.
-The polynomial degree of the smoothing function is given by the *Incoherent smoothing filter, polynomial*, values of 3 or 4 are recommended.
 Finally, there is a legend that can be provided for the Plotting Tab.
 
 .. _the-layer-editor:
@@ -295,11 +282,8 @@ Finally, there is a legend that can be provided for the Plotting Tab.
 The Layer Editor
 ................
 
-To see more details of the crystalline layers in the system press the *Edit layers between superstrate and substrate* button.
-This brings up a new window, which allows the addition and removal of layers as well as the facility of rearranging their order.
-To add a new layer, first select the material of the layer using the pull-down menu at the bottom of the layer editor window and then press the *Add layer of...* button.  The new material will be shown as the bottom layer in the list of layers. 
-Each layer has its own buttons to move the layer up or down or to delete the material from the list.  The *Dielectric film* cannot be deleted as it is the material being studied by DFT.
-
+To see more details of a crystalline layers in the system press the *Material* button of the material of interest.
+This brings up a new window, which shows more information about the layer.
 A useful feature of the *layer editor* is that it shows the connection between the crystal and laboratory coordinate systems.
 The laboratory axes are defined with Z- being normal to the surface (hkl), and the incident and reflected beams lie in the XZ- plane, which means the laboratory Y- axis is perpendicular to the XZ- plane. 
 The incident radiation is assumed to be at an angle :math:`\theta` to the normal. 

@@ -11,9 +11,9 @@
    :keywords: Quantum Mechanics, Effective Field Theory, Maxwell, Garnett, Mie, Infrared, Terahertz, Castep, Abinit, VASP, GULP. QE
 
 
-==================================
-Theory for Powder Light Scattering
-==================================
+========================================
+Theory for Light Scattering from Powders
+========================================
 
 The theory underlying the Python package PDielec is described.  PDielec calculates the infrared absorption characteristics of a crystalline material supported in a non-absorbing medium.  PDielec post processes solid-state quantum mechanical and molecular mechanical calculations of the phonons and dielectric response of the crystalline material. The molecular and solid-state quantum mechanical (QM) calculations of response properties, such as the frequencies and intensities of infrared (IR) and terahertz (THz) radiation absorption, have become generally available in many molecular and solid-state computer programs.
 A common approach is to assume the harmonic approximation and calculate the mass-weighted force constant matrix (for molecules) or the dynamical matrix at the gamma point (for periodic solids). Diagonalisation of the matrix gives the frequencies for absorption and the normal modes (molecules) or phonon displacements (periodic solids). The calculation of the absorption intensity for each mode requires the calculation of the change in dipole moment caused by the displacement of the atoms for that mode. For solids where there is a large separation of charge, there can be a large coupling between a phonon mode and the internal field within a particle resulting from its morphology. 
@@ -143,7 +143,7 @@ Comparison with the definition of the absorption coefficient from Beer-Lambert's
 
 Since the refractive index is dimensionless, the absorption coefficient, :math:`\alpha^\text{sol}` is specified in |cm-1|. The superscripts 'sol,' for solid, and 'mol,' for molecular, are used here to distinguish between the two methods of calculating the absorption (:math:`\alpha`) and molar absorption coefficients (:math:`a`).  In the calculation of the imaginary component of the refractive index it is necessary to choose the solution which gives a positive value. This is consistent with the Kramers-Kronig relationship between the real and imaginary components :cite:`Wooten1972`.
 
-In order to calculate the relationship between absorption and molar absorption coefficients it is necessary to know the concentration. For solid-state calculations, the required unit is; moles of unit cells per liter. One of the drawbacks of this molar absorption coefficient unit is that the number of molecules in a unit cell can change depending on whether a supercell, primitive or non-primitive unit cell is being used. A more natural unit would be to use a mole of formula units, or a mole of molecules. To aid comparison between such calculations PDielec can calculate concentration in both moles of atoms and moles of molecules. However for the rest of this paper Equation :eq:`eq-concentration` will be used, where :math:`V` is the volume of the unit cell, and therefore the concentration :math:`C` is moles of unit cell/liter.
+To calculate the relationship between absorption and molar absorption coefficients it is necessary to know the concentration. For solid-state calculations, the required unit is; moles of unit cells per liter. One of the drawbacks of this molar absorption coefficient unit is that the number of molecules in a unit cell can change depending on whether a supercell, primitive or non-primitive unit cell is being used. A more natural unit would be to use a mole of formula units, or a mole of molecules. To aid comparison between such calculations PDielec can calculate concentration in both moles of atoms and moles of molecules. However for the rest of this paper Equation :eq:`eq-concentration` will be used, where :math:`V` is the volume of the unit cell, and therefore the concentration :math:`C` is moles of unit cell/liter.
 
 .. math::
    :label: eq-concentration
@@ -206,14 +206,14 @@ Effect of particle shape on infrared absorption
 It has long been recognised that, especially for ionic materials, the local field within a crystal and its coupling with the transverse optical phonons has an important effect on the position and intensity of the absorption. Fröhlich :cite:`Frohlich1948` was one of the first to point out that the frequency of absorption of a small ionic sphere embedded in a low dielectric medium is shifted to lie between the transverse and longitudinal optical frequencies of the material making up the sphere.
 
 In the development of the theory used in PDielec an important assumption is that the particle size of the crystallites in the sample is small compared with the wavelength of light.  Using this approach Genzel and Martin :cite:`Genzel1972a` were able to explain the observed infrared absorption of small spheres of MgO crystallites and the effect of the permittivity of the supporting medium on the spectrum.  Studies of the infrared absorption by small particles of α-Fe\ :subscript:`2`\ O\ :subscript:`3` using an effective medium theory and an absorption/scattering theory :cite:`Serna1987,Iglesias1990` showed that it was necessary to adjust not only the damping factors in Equation :eq:`eq-permittivity` but also the permittivity of the matrix and the volume fraction of the dielectric medium to fit the experimental data. The volume fraction was used to account for aggregation effects as the volume fraction increased.
-It was also shown that effective medium theories were only applicable for particles smaller than the wavelength of light. For larger particles the scattering from the particles becomes increasingly important.
+It was also shown that effective medium theories were only applicable to particles smaller than the wavelength of light. For larger particles, the scattering from the particles becomes increasingly important.
 
 More recently Balan and others in a series of papers :cite:`Balan2010b,Balan2008b,Fourdrin2009` used density functional calculations together with an effective medium theory to calculate the infrared absorption of several minerals incorporating information about the crystallite shape.  In an experimental and theoretical study of irradiated kaolinite  :cite:`Fourdrin2009` it was shown that exposure to radiation resulted in shifts in the infrared spectrum which could be accounted for by increasing the polarisability of the particles through
 an increase in the optical permittivity tensor.
 
 The underlying theory adopted by PDielec is based on similar premises to the work described above, namely that the dielectric response of small spherical, ellipsoidal, slab-like or needle-like crystallites randomly distributed in a non-absorbing medium such as PTFE, KBr or Nujol, is the same as that of an effective medium material whose frequency-dependent dielectric response can be calculated from the frequency-dependent permittivity tensor of the crystal (as calculated by solid-state QM or MM calculations), the shape of the crystallites and the permittivity of the non-absorbing medium (taken to be a constant over the frequency range of interest).
 
-The development of the theory reported here closely follows the work of Sihvola :cite:`Sihvola`.  It will be assumed that the inclusion particles, which may be non-isotropic, ellipsoidal (including spherical, needle-like and plate-like), are randomly orientated in an embedding, non-absorbing medium such as PTFE, KBr or Nujol. It should be emphasized that whilst PDielec can take account of particle shape, particle and matrix permittivity there are many additional aspects of infrared absorption that need to be considered when comparing calculated and experimental results. Most notable of these are; the coupling between phonons and mobile electrons or holes (so-called phonon-polariton coupling) :cite:`Ruggiero2015`, the scattering which starts to dominate as the particles get larger :cite:`Fourdrin2009` and the agglomeration of particles as the volume fraction increases.
+The development of the theory reported here closely follows the work of Sihvola :cite:`Sihvola`.  It will be assumed that the inclusion particles, which may be non-isotropic, ellipsoidal (including spherical, needle-like and plate-like), are randomly orientated in an embedding, non-absorbing medium such as PTFE, KBr or Nujol. It should be emphasized that, whilst PDielec can take account of particle shape, particle and matrix permittivity many additional aspects of infrared absorption that need to be considered when comparing calculated and experimental results. Most notable of these are; the coupling between phonons and mobile electrons or holes (so-called phonon-polariton coupling) :cite:`Ruggiero2015`, the scattering which starts to dominate as the particles get larger :cite:`Fourdrin2009` and the agglomeration of particles as the volume fraction increases.
 
 The polarisability of an isolated particle
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -407,7 +407,7 @@ In the Maxwell-Garnett mixing formalism there is a distinction between the inclu
    \left\langle \fieldbf{P}_1 \right\rangle + \left\langle \fieldbf{P}_2 \right\rangle = 0
 
 
-where the components are now labeled 1 and 2 rather than external and internal. The polarisation for species 1 and 2 with a number density of species represented by :math:`n_1`  and :math:`n_2` can be obtained from the polarisability of the species (Equation :eq:`eq-EqualPolarisation`);
+where the components are now labelled 1 and 2 rather than external and internal. The polarisation for species 1 and 2 with a number density of species represented by :math:`n_1`  and :math:`n_2` can be obtained from the polarisability of the species (Equation :eq:`eq-EqualPolarisation`);
 
 .. math::
    :label: eq-polarisation1
@@ -517,9 +517,9 @@ This leads to a modified equation for the polarisability of spherical particles;
    \left( 1 - G\left( x\right) \right)\tensorbf{L} \left( \tensorbs{\varepsilon}_i - \varepsilon_{e}\mathbf{1} \right) \right)^{- 1}
 
 
-Using the modified, sized dependent polarisability all the Bruggeman and Maxwell mixing schemes can be implemented in a way that incorporates size effects.  Generally the onset of changes in the calculated absorption is an indication that size effects are important and should be treated properly.
+Using the modified, sized dependent polarisability all the Bruggeman and Maxwell mixing schemes can be implemented in a way that incorporates size effects.  Generally, the onset of changes in the calculated absorption is an indication that size effects are important and should be treated properly.
 
-Mie Theory of Light scattering
+Mie Theory of Light Scattering
 ------------------------------
 
 For spherical particles that are comparable in size to the wavelength of light, the theory developed by Mie and described fully by van de Hulst :cite:`VanDeHulst1981` can be used. Unfortunately, this theory is only applicable to spherical, isotropic, particles where the separation between the particles is large compared with the wavelength of light.
@@ -578,7 +578,7 @@ Here :math:`N` is the number density of particles and :math:`k` is the wave-vect
    \end{aligned}
 
 
-This approach to taking anisotropy into account when the embedded particles are anisotropic but randomly oriented is approximate, but has been shown to have a reasonably wide range of application :cite:`Stout2007`.
+This approach to taking anisotropy into account when the embedded particles are anisotropic but randomly oriented is approximate but has been shown to have a reasonably wide range of application :cite:`Stout2007`.
 
 .. _ATR_theory:
 
@@ -646,9 +646,9 @@ The scattering factors are determined using Mie theory, where it is assumed that
 
 The effective permittivity of the matrix with voids is then used in the calculation of the effective medium theory for the dielectric material.  The calculation proceeds as it did in the case with no scattering, only now a complex permittivity is used to describe the supporting matrix.
 
-Removing Baseline Artifacts from Experiment
+Removing Baseline Artefacts from Experiment
 -------------------------------------------
-In the process of reproducing experimental spectra using calculated information, it is often necessary to remove any baseline artifacts from the experimental data.  A relatively straightforward approach is adopted by *PDielec* using a Hodrick-Prescott filter.  The approach is also called asymmetric least squares smoothing.
+In the process of reproducing experimental spectra using calculated information, it is often necessary to remove any baseline artefacts from the experimental data.  A relatively straightforward approach is adopted by *PDielec* using a Hodrick-Prescott filter.  The approach is also called asymmetric least squares smoothing.
 
 If there is a data sequence :math:`y`, sampled at regular intervals we want to determine the baseline sequence :math:`y` such that x and y are as close as possible to each other with the requirement that x is as smooth as required.
 

@@ -15,7 +15,7 @@
 Single Crystal Applications
 ===========================
 
-The transmission, reflection and absorption of infrared light through single crystals can be simulated using PDielec and PDGui.  Partial incoherence can be modelled by averaging over a sample of thicknesses and orientations.
+The transmission, reflection and absorption of infrared light through single crystals can be simulated using PDielec and PDGui.  Partial incoherence can be modelled by averaging over a sample of thicknesses and orientations.  Incoherence of all dielectric layers is modelled by considering the the transmission matrix for the intensity of light rather than the amplitude.
 
 Single Crystal Study of Thickness Effects in MgO
 ================================================
@@ -31,7 +31,8 @@ The results of the coherent calculations are shown in :numref:`fig-mgo-coherent`
 
    Effects of Film Thickness of MgO in Coherent Light, a 45\ :superscript:`o` incident beam with p- polarisation
 
-The results for the 'thick slab' case are shown only for reflectance and absorbtance.  It can be clearly seen that the reflection in the restrahlen region between the TO and LO frequencies (388 and 693 |cm1|) is almost total with also very little absorbtance.  
+The results for the 'thick slab' case are shown only for reflectance and absorbtance.  It can be seen that the reflection in the restrahlen region between the TO and LO frequencies (388 and 693 |cm1|) is almost total with also very little absorbtance.  
+The 'thick slab' method refers to a situation where the dielectric material is used as the substrate.  As such there is no internal reflection and no transmittance.
 The 0.1\ |micron| thickness shows peaks in reflectance and corresponding drops in transmittance at both the TO and LO frequencies, whilst showing only absorbtance at the TO frequency.
 The 1\ |micron| thickness shows considerable broadening of these signals, with the TO reflectance splitting into a doublet. 
 At 10\ |micron|, below the TO frequency there are oscillations in the reflectance, transmittance and absorptance which are a result of interference between the internally reflected waves.  They occur because the light is coherent.  The oscillations continue until they meet the 'thick slab' limit and they then follow this limit until frequencies above the LO frequency.
@@ -96,8 +97,8 @@ The user needs to be aware that for large thicknesses the calculation of the pro
 
 Komandin et al :cite:`Komandin2009` have reported terahertz spectra of 0.5\ |micron| thick MgO crystals which are dominated by interference at low frequencies.  
 In :numref:`fig-mgo-experiment` a digitised spectrum obtained from this publication is compared with calculations.
-It can be seen that despite the rather poor digitisation the agreement is very good, given that we are using only calculated information (refractive index, LO and TO frequencies, etc.).
-Agreement with the number of interference bands and the amplitude of the bands is very good.
+Considering only calculated information (refractive index, LO and TO frequencies, etc.) is being used, it can be seen that, despite the rather poor digitisation, the agreement is very good.
+Agreement with the number of interference bands and the amplitude of the bands is also good.
 
 .. _fig-mgo-experiment:
 .. figure:: ./_static/Figures/MgO_Single_Crystal_0p5_Micron_Experiment.svg
@@ -279,7 +280,7 @@ In this case, we have chosen a large value by default and applied smaller and mo
 The contribution to the permittivity arising from electronic polarisation is shown in this Tab.
 In the case of Crystal17 and the B9703c functional the CPHF calculations is not possible because the exchange/correlation functional is not supported and the :math:`\epsilon_{\infty}` calculation is not performed and a zero matrix will be presented here.
 In this example, we have typed in the contribution from a Crystal17 calculation using PBE-D3.  
-The resulting spectrum is not very sensitive to these values.
+The resulting spectrum is not very sensitive to these settings.
 
 .. _fig-lalanine-settingstab:
 .. figure:: ./_static/Figures/lalanine-settingstab.png

@@ -237,7 +237,7 @@ But if this is done the program assumes that the changes result in a frequency-i
 The <em>Support permittivity</em> consists of two inputs for the real and imaginary components of the permittivity.
 For any Mie calculation the imaginary component is ignored.</p>
 <p>The supporting medium may have bubbles of air trapped in the matrix.
-For the case that polyethylene spheres are used to make the sample, experimental information indicates a relationship between the size of the spheres and the size of the air inclusions <span id="id1">[<a class="reference internal" href="zreferences.html#id70" title="Mayank Kaushik, Brian W Ng, Bernd M Fischer, and Derek Abbott. Terahertz scattering by granular composite materials : An effective medium theory Terahertz scattering by granular composite materials : An effective medium theory. Applied Physics Letters, 100(1):1–4, 2012. doi:10.1063/1.3674289.">16</a>]</span>.</p>
+For the case that polyethylene spheres are used to make the sample, experimental information indicates a relationship between the size of the spheres and the size of the air inclusions <span id="id1">[<a class="reference internal" href="zreferences.html#id70" title="Mayank Kaushik, Brian W Ng, Bernd M Fischer, and Derek Abbott. Terahertz scattering by granular composite materials : An effective medium theory Terahertz scattering by granular composite materials : An effective medium theory. Applied Physics Letters, 100(1):1–4, 2012. doi:10.1063/1.3674289.">17</a>]</span>.</p>
 <table class="styled-table docutils align-default" id="tab-air-bubbles">
 <caption><span class="caption-number">Table 3.2 </span><span class="caption-text">Size of air inclusion (bubbles) in polyethylene</span><a class="headerlink" href="#tab-air-bubbles" title="Permalink to this table">¶</a></caption>
 <colgroup>
@@ -287,51 +287,39 @@ If an <em>Ellipsoid</em> shape is used the eccentricity factor can be specified 
 <h3><span class="section-number">3.3.2. </span>Single-Crystal Scenarios<a class="headerlink" href="#single-crystal-scenarios" title="Permalink to this heading">¶</a></h3>
 <p>As in the powder scenario, a single-crystal scenario has an option to open a new database of materials.
 By default, the program opens the default database distributed with the program.</p>
-<p>The mode of calculation is determined by the <em>Single crystal mode</em> option.  Possible options are; <em>Thick slab</em>, <em>Coherent thin film</em>, <em>Incoherent thin film</em>, and <em>Partially incoherent thin film</em>.
+<p>The mode of calculation is determined by the <em>Single crystal methodology</em> option.  Possible options are; <em>Transfer matrix</em> and <em>Scattering matrix</em>.
 Details of the theory underlying each method are given in the theory section: <a class="reference internal" href="theory_single_crystal.html#single-crystal-theory"><span class="std std-ref">Theory for Single Crystal Optics</span></a>.
-In summary, a thick slab assumes that the thickness is such that no radiation can be transmitted and all radiation is therefore reflected or absorbed.  As such only the reflectance has any meaning for thick slabs.
-The <em>Coherent thin film mode</em> provides a complete description of the light reflectance and transmittance but can show oscillations due to interference effects that are not seen experimentally.
-The <em>Incoherent thin film mode</em> treats the incoming light as incoherent and removes all the oscillations due to internal reflection.
-Finally, the <em>Partially incoherent film</em> introduces random variations in the incident angle and the geometric parameters of the crystal surface and the thickness of the crystal.
+The transfer matrix is faster and all the available methods for treating incoherence are available.  The scattering matrix method is slower and the option to treat incoherence by using intensities is not available, but it is much more stable when treating thick films.
 Single-crystal films are defined by a surface determined by the (hkl) settings.</p>
 <figure class="align-default" id="id7">
-<span id="fig-scenariotab-singlecrystal"></span><a class="reference internal image-reference" href="_images/ScenarioTab-SingleCrystal.png"><img alt="_images/ScenarioTab-SingleCrystal.png" src="_images/ScenarioTab-SingleCrystal.png" style="width: 550.4px; height: 784.8000000000001px;" /></a>
+<span id="fig-scenariotab-singlecrystal"></span><a class="reference internal image-reference" href="_images/ScenarioTab-SingleCrystal.png"><img alt="_images/ScenarioTab-SingleCrystal.png" src="_images/ScenarioTab-SingleCrystal.png" style="width: 726.4000000000001px; height: 784.8000000000001px;" /></a>
 <figcaption>
 <p><span class="caption-number">Fig. 3.4 </span><span class="caption-text">The Scenario Tab for a Single Crystal</span><a class="headerlink" href="#id7" title="Permalink to this image">¶</a></p>
 </figcaption>
 </figure>
-<p>The mode of calculation is selected at the top of the tab, followed by the global azimuthal angle and the angle of incidence.
+<p>The method of calculation is selected at the top of the tab, followed by the global azimuthal angle and the angle of incidence.
 The global azimuthal angle controls the rotation of all the layers around the laboratory Z-axis, although each layer also has its own azimuthal angle as will be described later.</p>
-<p>The layers of the system are defined by a superstrate, a collection of film layers (which includes the dielectric material being studied by DFT) and finally a substrate.
-The superstrate and substrate are semi-infinite materials that must have an isotropic permittivity, which can be complex.
-In the case of the <em>Thick slab</em> mode, the substrate is not used, instead, the last layer in the list of layers is used as the semi-infinite material.  This material need not be isotropic.</p>
-<p>The layers are shown in the GUI in order with the superstrate at the top.  There are pull-down menus to choose a material for the superstrate and substrate, or the real and imaginary components of their isotropic permittivity can be specified manually.</p>
-<p>Underneath the superstrate specification is shown a list of film layers, by default only the dielectric material being studied by DFT is shown.
-Each line in the list shows the thickness of the film, its surface in terms of (hkl) and its azimuthal angle.
-This is sufficient information to define the orientation of the crystal in laboratory coordinates.
-Further information on this is given the the section describing <a class="reference internal" href="#the-layer-editor"><span class="std std-ref">The Layer Editor</span></a>.</p>
-<p>The slice thickness is used to help in those cases that experience numerical problems when solving the single-crystal optical equations.  Problems of overflow arise, especially for thick films.  By default, the slice thickness is set to zero and now slicing is employed.  If a non-zero value is given, any film that is thicker than this value is subdivided (sliced) into adjacent thinner layers.  Although the results should be the same if slicing is used or not, the computational time goes up linearly with the number of slices.</p>
-<p>In the case of the <em>Partially incoherent thin film</em> mode, it is necessary to provide further information about the sampling of the geometrical parameters.
-The <em>Percentage of partial incoherence</em> provides a percentage perturbation of the geometric parameters.  All angles are sampled from a uniform distribution on either side of the mean value by this percentage of 90<sup>o</sup>.
-The film thickness is also varied on either side of the mean value by this percentage of the mean value.</p>
-<p>The number of samples used in sampling is given by the value of <em>Number of partially incoherent samples</em>.
-When smoothing is required the size of the <em>Incoherent smoothing filter, kernel size</em> must be 3 or greater.  Only odd numbers are accepted.  This value can be as large as possible, but should not exceed the number of data points between true peaks.
-The polynomial degree of the smoothing function is given by the <em>Incoherent smoothing filter, polynomial</em>, values of 3 or 4 are recommended.
-Finally, there is a legend that can be provided for the Plotting Tab.</p>
+<p>The layer information is provided as a spread-sheet of materials, with the specification of the thickness of the layer, the (hkl) parameters of the surface, the azimuthal angle of the layer and an option to treat the layer coherently or incoherently.
+The material at the top of the list is the superstrate, which should be isotropic and non-absorbing.  It is treated as a semi-infinite material.
+The material at the bottom of the list is the substrate, which is also semi-infinite.  Although, if only reflectance information is needed, this can be an anisotropic, absorbing material.
+The layer in-between is initially set to the DFT dielectric material.
+New layers can be added by pressing the <em>New layer…</em> button and choosing from what is available in the database.
+The position of the layers can be adjusted by pressing the up and down buttons and a layer can be removed by pressing the <em>delete</em> button.
+There are options to treat the layer, coherently or incoherently available from the <em>Options</em> pull down.</p>
+<p>Pressing the button which shows the name of the material, brings up the layer editor window for that material, which is described in more detail below.</p>
+<p>Finally, there is a legend that can be provided for the Plotting Tab.</p>
 <section id="the-layer-editor">
 <span id="id2"></span><h4><span class="section-number">3.3.2.1. </span>The Layer Editor<a class="headerlink" href="#the-layer-editor" title="Permalink to this heading">¶</a></h4>
-<p>To see more details of the crystalline layers in the system press the <em>Edit layers between superstrate and substrate</em> button.
-This brings up a new window, which allows the addition and removal of layers as well as the facility of rearranging their order.
-To add a new layer, first select the material of the layer using the pull-down menu at the bottom of the layer editor window and then press the <em>Add layer of…</em> button.  The new material will be shown as the bottom layer in the list of layers.
-Each layer has its own buttons to move the layer up or down or to delete the material from the list.  The <em>Dielectric film</em> cannot be deleted as it is the material being studied by DFT.</p>
-<p>A useful feature of the <em>layer editor</em> is that it shows the connection between the crystal and laboratory coordinate systems.
+<p>To see more details of a crystalline layers in the system press the <em>Material</em> button of the material of interest.
+This brings up a new window, which shows more information about the layer.
+A useful feature of the <em>layer editor</em> is that it shows the connection between the crystal and laboratory coordinate systems.
 The laboratory axes are defined with Z- being normal to the surface (hkl), and the incident and reflected beams lie in the XZ- plane, which means the laboratory Y- axis is perpendicular to the XZ- plane.
 The incident radiation is assumed to be at an angle <span class="math notranslate nohighlight">\(\theta\)</span> to the normal.
 p-polarised light lies in the XZ- plane and s-polarised light is parallel with the Y-axis.  The azimuthal angle <span class="math notranslate nohighlight">\(\phi\)</span> defines the rotation of the crystal around the Z-axis.
 To help understand the relationship between the crystal and laboratory coordinates the program outputs the direction of the lattice vectors in terms of the laboratory X-, Y- and Z- coordinates.
 A more complete description of the relationship between the coordinate systems is given in <a class="reference internal" href="theory_single_crystal.html#crystal-and-laboratory-coordinates"><span class="std std-ref">Crystal &amp; Laboratory Coordinate Frames</span></a></p>
 <figure class="align-default" id="id8">
-<span id="fig-layer-editor-window"></span><a class="reference internal image-reference" href="_images/layer-editor-window.png"><img alt="_images/layer-editor-window.png" src="_images/layer-editor-window.png" style="width: 508.0px; height: 301.6px;" /></a>
+<span id="fig-layer-editor-window"></span><a class="reference internal image-reference" href="_images/layer-editor-window.png"><img alt="_images/layer-editor-window.png" src="_images/layer-editor-window.png" style="width: 448.0px; height: 325.6px;" /></a>
 <figcaption>
 <p><span class="caption-number">Fig. 3.5 </span><span class="caption-text">The layer editor</span><a class="headerlink" href="#id8" title="Permalink to this image">¶</a></p>
 </figcaption>
