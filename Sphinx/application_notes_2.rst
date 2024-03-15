@@ -43,8 +43,8 @@ The effect of thickness on the "Incoherent (intensity)" method is shown in :numr
 This method uses intensities rather than amplitudes for the transfer matrix and as a result, all the phase information is lost, resulting in no interferences after internal reflections.
 The calculations shown are for p- polarised incident radiation.
 
-The incoherent method deviates from the thick slab results at very low frequencies, but as the film thickness increases the deviations become smaller.
-Similarly at frequencies above the LO frequency, the deviations from the thick slab results are less for the thicker films.
+The incoherent method deviates from the 'thick slab' results at very low frequencies, but as the film thickness increases the deviations become smaller.
+Similarly at frequencies above the LO frequency, the deviations from the 'thick slab' results are less for the thicker films.
 The user needs to be aware that for large thicknesses the calculation of the propagation matrix can lead to numerical overflows.  
 These manifest themselves as sudden changes in reflectance or transmittance.
 In such cases it is recommended to use the 'Incoherent (non-reflective)' method or use the scattering matrix method with Incoherent (phase averaging).
