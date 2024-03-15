@@ -15,7 +15,7 @@
 Single Crystal Applications
 ===========================
 
-The transmission, reflection and absorption of infrared light through single crystals can be simulated using PDielec and PDGui.  Partial incoherence can be modelled by averaging over a sample of thicknesses and orientations.  Incoherence of all dielectric layers is modelled by considering the the transmission matrix for the intensity of light rather than the amplitude.
+The transmission, reflection and absorption of infrared light through single crystals can be simulated using PDielec and PDGui.  Incoherence of all dielectric layers is modelled by considering the the transmission matrix for the intensity of light rather than the amplitude or by averaging the propagation phase of the internally reflected light.
 
 Single Crystal Study of Thickness Effects in MgO
 ================================================
@@ -281,8 +281,8 @@ To see if we can remove this we will change the option for this layer in the *Sc
 Re-plotting the spectrum and looking at the results in the *Fitter tab* is shown in the plot below.
 The calculated spectrum is compared directly with the experimental one.  
 Both the calculated and experimental spectra show little transmittance above about 140\ |cm-1|.
-The strong, very sharp peaks at 225\ |cm-1| and above are probably numerical problems that occur with thicker films when transmission tends to zero.  These numerical problems are exacerbated by the *Incoherent film* mode as it uses intensities in the calculation of the transfer matrix, which requires the square of the electric field and the propagation matrices.
-The fact that these are numerical problems can be verified by looking at the *Coherent* mode and seeing if they are present there.
+The strong, very sharp peaks at 225\ |cm-1| and above are probably numerical problems that occur with thicker films when transmission tends to zero.  These numerical problems are exacerbated by the *Incoherent (intensity)* method as it uses intensities in the calculation of the transfer matrix, which requires the square of the electric field and the propagation matrices.
+The fact that these are numerical problems can be verified by looking at the *Coherent* method and seeing if they are present there.
 Even if the experimental measurements are designed to minimise etalons, it is generally sensible to compare both incoherent and coherent calculations before comparing with experiment.
 
 

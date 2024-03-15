@@ -30,7 +30,7 @@ The media will be indexed 0, 1 and 2 for the superstrate, dielectric and substra
 A schematic illustrating this is shown in :numref:`fig-definition-of-RTA`.
 To aid understanding of the input and output and the limitations of the methods used, a brief summary of the transfer matrix method is given first, specific to its application in PDGui.
 This will be followed by a description of the scattering matrix approach as implemented in the package.
-The treatment of light transmission and reflection in incoherent media will also be outlined
+The treatment of light transmission and reflection in incoherent media will also be outlined.
 
 .. _fig-definition-of-RTA:
 
@@ -78,7 +78,7 @@ The total transfer matrix for the 3 media considered (superstrate, dielectric an
                  \tensorbf{D}_1^{-1})
                  \tensorbf{D}_2
 
-The elements of the total 4x4 transfer matrix :math:`\tensorbf{T}` can be used to determine the total reflectance and transittance for each s- and p- mode.
+The elements of the total 4x4 transfer matrix :math:`\tensorbf{T}` can be used to determine the total reflectance and transmittance for each s- and p- mode.
 
 For the multi-layer case it is straightforward to generalise this expression by writing the transfer matrix, :math:`\tensorbf{T}_i`, for the :math:`i'th` layer as:
 
@@ -128,8 +128,8 @@ The scattering matrix for this is written;
    :label: eq-scattering-matrix
 
    \begin{bmatrix}
-     \fieldbf{F}_{i+1}^+  \\
-     \fieldbf{F}_{i}^-
+     \fieldbf{F}_{i}^- \\
+     \fieldbf{F}_{i+1}^+ 
    \end{bmatrix}
       = \tensorbf{S}_i
    \begin{bmatrix}
@@ -137,7 +137,8 @@ The scattering matrix for this is written;
    \fieldbf{F}_{i+1}^-
    \end{bmatrix}
 
-The fields on the right-hand side represent light entering the layer and the fields on the left-hand side represent light leaving the layer.  The fields in these expressions are two components vectors representing the p- and s- fields. The superscripts '+' and '-' indicate forward and backward moving light respectively.
+The fields on the right-hand side represent light entering the layer and the fields on the left-hand side represent light leaving the layer.  The fields in these expressions are two component vectors representing the p- and s- fields. The superscripts '+' and '-' indicate forward and backward moving light respectively.
+It should be noted that this definition is slightly different to the definition used by PyLlama.
 
 The scattering matrix is more complicated to handle than the transfer matrix.  Scattering matrices between different layers can be combined using the Redheffer product :cite:`Rumpf2011a`
 
@@ -147,9 +148,9 @@ The scattering matrix is more complicated to handle than the transfer matrix.  S
    \tensorbf{S}  = 
                  \tensorbf{S}_0 \otimes ... \tensorbf{S}_i \otimes \tensorbf{S}_{i+1} \otimes ... \tensorbf{S}_N
 
-The transfer matrix method in PDGui is provided by modified version of the pyGTM :cite:`pygtm`.
+The transfer matrix method in PDGui is provided by a modified version of the pyGTM :cite:`pygtm`.
 A full description of the method is provided by Passler et al. :cite:`Passler2020`.
-The scattering matrix method was implemented within the pyGTM framework using the algorithms suggested in PyLama :cite:`PyLlama2022`
+The scattering matrix method was implemented within the pyGTM framework using the algorithms suggested in PyLama :cite:`PyLlama2022`, with some modifications.
 
 
 Incoherence
@@ -158,9 +159,8 @@ Because the above approaches use amplitudes there is always the possibility that
 Experimentally, for thick crystals, it is known that the presence of defects in the crystal and at the interfaces, and differences in thickness cause this coherence to be lost and instead incoherent light transmission is observed and the etalons are lost.
 PDielec implements several schemes treating incoherence.
 
-The "Incoherent (intensity)" mode creates a transfer matrix like that in :eq:`eq-transfer-matrix`, but instead of amplitudes, uses intensities for the transfer matrix of the dielectric. 
-This method has not been implemented for the scattering matrix formalism
-Such an approach has been implemented in FSRStools :cite:`FSRStools` a Python implementation of Yeh's transfer matrix method :cite:`Yeh1980`.
+The "Incoherent (intensity)" method creates a transfer matrix like that in :eq:`eq-transfer-matrix`, but instead of amplitudes, uses intensities for the transfer matrix of the dielectric. 
+This method has not been implemented for the scattering matrix formalism although such an approach has been implemented in FSRStools :cite:`FSRStools` a Python implementation of Yeh's transfer matrix method :cite:`Yeh1980`.
 The theory is described by Beck :cite:`Beck2012` and by Katsidis and Siapkas :cite:`Katsidis2002`.
 This approach has been incorporated in PDGui by modifying the total transfer matrix as follows;
 
@@ -172,12 +172,12 @@ This approach has been incorporated in PDGui by modifying the total transfer mat
 The use of intensities instead of amplitudes ensures that the phase information is lost.
 The actual implementation is appropriate for a multi-layer system where all dielectric layers are treated as being incoherent films, whatever their thickness.
 
-The "Incoherent (phase averaging)" method, which is implemented for both transform and scattering matrix formalism, instead averages over the phase of the propagating matrix (:math:`\tensorbf{P}_i`) for the backward travelling waves in the incoherent material.
+The "Incoherent (phase averaging)" method, which is implemented for both transform and scattering matrix formalisms, instead averages over the phase of the propagating matrix (:math:`\tensorbf{P}_i`) for the backward travelling waves in the incoherent material.
 
 .. math::
    :label: eq-incoherent-averaging
 
-    \tensor{P}_i^{f} = \begin{bmatrix}
+    \tensor{P}_i = \begin{bmatrix}
         e^{-ik_0 d_i q_i^1} & 0 & 0 & 0 \\
         0 & e^{-ik_0 d_i q_i^2} & 0 & 0 \\
         0 & 0 & e^{-ik_0 d_i q_i^3} & 0 \\
@@ -206,7 +206,7 @@ Comparison of computational approaches
 :numref:`fig-mode-comparison` shows a comparison of the approaches discussed above applied to MgO.
 The DFT calculations were performed by Castep.  The incident angle is 45\ :superscript:`o` and the film thickness is 10\ |micron|.
 The calculations were performed using the transform matrix method.
-The 'Coherent' curve shows large amplitude oscillations before and after the restrahlung region of absorption.
+The 'Coherent' curve shows large amplitude oscillations before and after the Reststrahlen region of absorption.
 The 'Incoherent (phase averaging)' and 'Incoherent (intensity)' are similar at high frequencies, but at low frequencies the intensity calculation shows higher reflectance.
 
 .. _fig-mode-comparison:
@@ -216,7 +216,7 @@ The 'Incoherent (phase averaging)' and 'Incoherent (intensity)' are similar at h
    Comparison of Incoherent Methods
 
 
-It is common to see numerical problems in regions where the extinction coefficient is high and the dielectric is thick.  The numerical probles manifest themselves with either with sudden spikes in reflectance or with a 'Warning exponential overflow occured' message.
+With the transfer matrix method, it is common to see numerical problems in regions where the extinction coefficient is high and the dielectric is thick.  The numerical problems manifest themselves with either with sudden spikes in reflectance or with a 'Warning exponential overflow occured' message.
 
 These problems manifest themselves acutely in calculations on l-alanine.  The DFT calculations were performed by Crystal.  :numref:`fig-tm-sm-comparison` shows the predicted p-polarised reflection for a 1mm film of the (001) surface with an azimuthal angle of 90\ :superscript:`o`.
 
@@ -227,7 +227,7 @@ These problems manifest themselves acutely in calculations on l-alanine.  The DF
 
    Comparison of Transfer and Scattering Matrix and Methods
 
-The transfer and scattering matrix methods agree well with other upto about 114 |cm-1|.  Above 180 |cm-1| the transfer matrix method is completely unstable.
+The transfer and scattering matrix methods agree well with each other upto about 114 |cm-1|.  Above 180 |cm-1| the transfer matrix method is completely unstable, while the scattering matrix method works well.
 
 
 

@@ -16,7 +16,7 @@
 Theory for Single Crystal Optics
 ================================
 
-The *SingleCrystal tab* enables the calculation of the optical behaviour of a single crystal (thick slab or film).
+The *SingleCrystal tab* enables the calculation of the optical behaviour of a layer of crystalline films.
 The methods used are based on the pyGTM code available on GitHub :cite:`pygtm`.
 This code implements a general transfer matrix method described by Passler et al. :cite:`Passler2020` and that builds on previous publications :cite:`Passler2017,Passler2017a`.
 The code has been modified substantially to model incoherent and coherent systems.
