@@ -105,7 +105,7 @@ The role of the total transfer matrix is to convert the field amplitudes on the 
 The Scattering Matrix
 ---------------------
 Unfortunately, transfer matrix theory is known to exhibit serious numerical instabilities when the layers become thick.
-This is mainly due to the fact that the forward waves (which move from left to right) are defined as the layers in the transform matrix are being added from right to left.  
+This is mainly due to the fact that the forward waves (which move from left to right) are defined as the layers in the transfer matrix are being added from right to left.  
 The forward moving wave is growing in amplitude as the layers are being added and this leads to all kinds of instabilities.
 The scattering matrix method overcomes this problem by providing a matrix for each layer which couples the incoming waves (two from the left and two from the right) to the outgoing waves.  
 In this way it is possible to describe waves which are always decreasing in amplitude.
@@ -174,7 +174,7 @@ This approach has been incorporated in PDGui by modifying the total transfer mat
 The use of intensities instead of amplitudes ensures that the phase information is lost.
 The actual implementation is appropriate for a multi-layer system where all dielectric layers are treated as being incoherent films, whatever their thickness.
 
-The "Incoherent (phase averaging)" method, which is implemented for both transform and scattering matrix formalisms, instead averages over the phase of the propagating matrix (:math:`\tensorbf{P}_i`) for the backward travelling waves in the incoherent material.
+The "Incoherent (phase averaging)" method, which is implemented for both transfer and scattering matrix formalisms, instead averages over the phase of the propagating matrix (:math:`\tensorbf{P}_i`) for the backward travelling waves in the incoherent material.
 
 .. math::
    :label: eq-incoherent-averaging
@@ -207,7 +207,7 @@ Comparison of computational approaches
 
 :numref:`fig-mode-comparison` shows a comparison of the approaches discussed above applied to MgO.
 The DFT calculations were performed by Castep.  The incident angle is 45\ :superscript:`o` and the film thickness is 10\ |micron|.
-The calculations were performed using the transform matrix method.
+The calculations were performed using the transfer matrix method.
 The 'Coherent' curve shows large amplitude oscillations before and after the Reststrahlen region of absorption.
 The 'Incoherent (phase averaging)' and 'Incoherent (intensity)' are similar at high frequencies, but at low frequencies the intensity calculation shows higher reflectance.
 
