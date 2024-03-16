@@ -104,7 +104,9 @@ The role of the total transfer matrix is to convert the field amplitudes on the 
 
 The Scattering Matrix
 ---------------------
-Unfortunately, transfer matrix theory is known to exhibit serious numerical instabilities when the layers become thick.  This is mainly due to the fact that both forward and backward waves are being described as moving from right to left.  The backward moving wave is growing in amplitude and this leads to all kinds of instabilities.
+Unfortunately, transfer matrix theory is known to exhibit serious numerical instabilities when the layers become thick.
+This is mainly due to the fact that the forward waves (which move from left to right) are defined as the layers in the transform matrix are being added from right to left.  
+The forward moving wave is growing in amplitude as the layers are being added and this leads to all kinds of instabilities.
 The scattering matrix method overcomes this problem by providing a matrix for each layer which couples the incoming waves (two from the left and two from the right) to the outgoing waves.  
 In this way it is possible to describe waves which are always decreasing in amplitude.
 To demonstrate the difference between the approaches the transfer matrix connects fields in one layer to those in the next layer:
