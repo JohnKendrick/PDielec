@@ -125,6 +125,7 @@ class SingleCrystalScenarioTab(ScenarioTab):
         self.settings['Global azimuthal angle'] = 0.0
         self.settings['Angle of incidence'] = 0.0
         self.settings['Mode'] = 'Transfer matrix'
+        self.settings['Mode'] = 'Scattering matrix'
         self.settings['Frequency units'] = 'wavenumber'
         self.settings['Partially incoherent samples'] = 20
         self.settings['Percentage partial incoherence'] = 0
