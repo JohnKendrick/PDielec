@@ -10,7 +10,7 @@ from PDielec.Utilities          import Debug
 import PDielec.Calculator as Calculator
 
 class SingleCrystalLayer():
-    def __init__(self,material,hkl=None,azimuthal=0.0,thickness=0.0,thicknessUnit='nm',incoherentOption='Coherent',dielectricFlag=False):
+    def __init__(self,material,hkl=[0,0,1],azimuthal=0.0,thickness=0.0,thicknessUnit='nm',incoherentOption='Coherent',dielectricFlag=False):
         '''A single crystal layer class to handle layers
            material          is an instance of Material object, the material object has the following;
                              - name
@@ -25,11 +25,9 @@ class SingleCrystalLayer():
                                     'Incoherent (phase averaging)' or 'Incoherent non-reflective'
            dielectricFlag    this is true if the layer material is the dielectric being studied'''
         self.material = material
-        self.hkl = hkl
-        if material.isTensor() and hkl is None:
-            hkl = [0,0,1]
-        else:
+        if material.isScalar():
             hkl = [0,0,0]
+        self.hkl = hkl
         self.incoherentOption = incoherentOption
         self.azimuthal = azimuthal
         self.thickness = thickness
