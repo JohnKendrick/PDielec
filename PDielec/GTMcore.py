@@ -86,7 +86,6 @@ import numpy as np
 import scipy.linalg as lag
 import sys
 import copy
-import PDielec.Utilities as Utilities
 
 c_const = 299792458 # m/s
 eps0 = 8.854e-12 ## vacuum permittivity
