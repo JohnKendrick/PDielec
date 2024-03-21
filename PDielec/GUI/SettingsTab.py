@@ -94,11 +94,6 @@ class SettingsTab(QWidget):
         else:
             self.eckart_cb.setCheckState(Qt.Unchecked)
         self.eckart_cb.stateChanged.connect(self.on_eckart_changed)
-        if self.settings['Eckart flag']:
-            self.eckart_cb.setCheckState(Qt.Checked)
-        else:
-            self.eckart_cb.setCheckState(Qt.Unchecked)
-        self.eckart_cb.stateChanged.connect(self.on_eckart_changed)
         form.addRow(QLabel('Apply Eckart conditions?', self), self.eckart_cb)
         #
         # Add the Born neutral condition
@@ -656,7 +651,6 @@ class SettingsTab(QWidget):
             debugger.print('Finished:: calculate aborted vs_cm1 has not been set')
             return
         self.vs_cm1 = vs_cm1.copy()
-        self.CrystalPermittivityObject.setUnits('cm-1')
         dielectricFunction = self.CrystalPermittivityObject.function()
         # 
         self.crystal_permittivity = []

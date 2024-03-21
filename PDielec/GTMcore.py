@@ -85,6 +85,7 @@ The optical system is assembled using the :py:class:`System` class.
 import numpy as np
 import scipy.linalg as lag
 import sys
+import copy
 
 c_const = 299792458 # m/s
 eps0 = 8.854e-12 ## vacuum permittivity
@@ -108,8 +109,44 @@ def vacuum_eps(f):
     except:
         return 1.0 + 0.0j
     
+def exact_inv_2x2(M):
+    """Calculate the inverse of M
+
+    Parameters
+    ----------
+    m : complex 2x2 array
+
+    Returns
+    -------
+    the inverse as a 2x2 complex np array
+    """
+    assert M.shape == (2, 2)
+    m11, m21, m12, m22 = M.flatten()
+    determinant = m11*m22 - m21*m12
+    return np.array([[ m22, -m21],
+                     [-m12,  m11]])/determinant
+
     
-def exact_inv(M):
+def exact_inv_3x3(M):
+    """Calculate the inverse of M
+
+    Parameters
+    ----------
+    m : complex 3x3 array
+
+    Returns
+    -------
+    the inverse as a 3x3 complex np array
+    """
+    assert M.shape == (3, 3)
+    m1, m2, m3, m4, m5, m6, m7, m8, m9 = M.flatten()
+    determinant = m1*m5*m9 + m4*m8*m3 + m7*m2*m6 - m1*m6*m8 - m3*m5*m7 - m2*m4*m9  
+    return np.array([[m5*m9-m6*m8, m3*m8-m2*m9, m2*m6-m3*m5],
+                     [m6*m7-m4*m9, m1*m9-m3*m7, m3*m4-m1*m6],
+                     [m4*m8-m5*m7, m2*m7-m1*m8, m1*m5-m2*m4]])/determinant
+
+    
+def exact_inv_4x4(M):
     """Compute the 'exact' inverse of a 4x4 matrix using the analytical result.
 
     Parameters
@@ -145,6 +182,7 @@ def exact_inv(M):
     detA = detA - A[0, 1] * A[1, 0] * A[2, 2] * A[3, 3] - A[0, 1] * A[1, 2] * A[2, 3] * A[3, 0] - A[0, 1] * A[1, 3] * A[2, 0] * A[3, 2]
     detA = detA - A[0, 2] * A[1, 0] * A[2, 3] * A[3, 1] - A[0, 2] * A[1, 1] * A[2, 0] * A[3, 3] - A[0, 2] * A[1, 3] * A[2, 1] * A[3, 0]
     detA = detA - A[0, 3] * A[1, 0] * A[2, 1] * A[3, 2] - A[0, 3] * A[1, 1] * A[2, 2] * A[3, 0] - A[0, 3] * A[1, 2] * A[2, 0] * A[3, 1]
+
 
     if detA == 0:
         try:
@@ -192,14 +230,8 @@ class Layer:
     -----------
     thickness : float
               thickness of the layer in m
-    epsilon1 : complex function
-             function epsilon(frequency) for the first axis. If none, defaults to vacuum.
-    epsilon2 : complex function
-             function epsilon(frequency) for the second axis. If none, defaults to epsilon1.
-    epsilon3 : complex function
-             function epsilon(frequency) for the third axis. If none, defaults to epsilon1.
-    epsilon  : complex function   ADDED by JK
-             function epsilon(frequency) the full dielectric constant tensor, if not none all other epsilons are ignored
+    epsilon  : complex function   
+          function epsilon(frequency) the full dielectric constant tensor,
     theta : float
           Euler angle theta (colatitude) in rad
     phi : float
@@ -213,13 +245,12 @@ class Layer:
     Properties can be checked/changed dynamically using the corresponding get/set methods.
     """
 
-    # Define class variable
-    qsd_thr = 1e-10 ### threshold for wavevector comparison
-    zero_thr = 1e-10 ### threshold for eigenvalue comparison to zero
-    jk_shift = sys.float_info.min
+    # Define class variables
+    qsd_thr = 1e-10                  # threshold for wavevector comparison
+    zero_thr = 1e-10                 # threshold for eigenvalue comparison to zero
+    jk_shift = sys.float_info.min    # The smallest number to be used to shift a division by zero
 
-    def __init__(self, thickness=1.0e-6, epsilon1=None, epsilon2=None, epsilon3=None,  epsilon=None,
-                                         theta=0, phi=0, psi=0, exponent_threshold=700):
+    def __init__(self, thickness=1.0e-6, epsilon=None, theta=0, phi=0, psi=0, exponent_threshold=700):
 
         ## epsilon is a 3x3 matrix of permittivity at a given frequency
         self.epsilon = np.identity(3, dtype=np.clongdouble)
@@ -229,32 +260,40 @@ class Layer:
         self.exponent_errors = 0
         self.largest_exponent = 0.0
         self.exponent_threshold = exponent_threshold
+        self.coherent = True
 
         ### initialization of all important quantities
-        self.M = np.zeros((6, 6), dtype=np.clongdouble) ## constitutive relations
-        self.a = np.zeros((6, 6), dtype=np.clongdouble) ##
-        self.S = np.zeros((4, 4), dtype=np.clongdouble) ##
-        self.Delta = np.zeros((4, 4), dtype=np.clongdouble) ##
-        self.qs = np.zeros(4, dtype=np.clongdouble) ## out of plane wavevector
-        self.Py = np.zeros((3,4), dtype=np.clongdouble) ## Poyting vector
-        self.gamma = np.zeros((4, 3), dtype=np.clongdouble) ##
-        self.Ai = np.zeros((4, 4), dtype=np.clongdouble) ##
-        self.Ki = np.zeros((4, 4), dtype=np.clongdouble) ##
-        self.Ti = np.zeros((4, 4), dtype=np.clongdouble) ## Layer transfer matrix
-        self.Berreman = np.zeros((4,3), dtype=np.clongdouble) ## Stores the Berreman modes, used for birefringent layers
-        self.useBerreman = False ### Boolean to replace Xu's eigenvectors by Berreman's in case of Birefringence
+        self.M = np.zeros((6, 6), dtype=np.clongdouble)                  # constitutive relations
+        self.a = np.zeros((6, 6), dtype=np.clongdouble) 
+        self.Delta = np.zeros((4, 4), dtype=np.clongdouble) 
+        self.qs = np.zeros(4, dtype=np.clongdouble)                      # out of plane wavevector
+        self.Py = np.zeros((3,4), dtype=np.clongdouble)                  # Poynting vector
+        self.gamma = np.zeros((4, 3), dtype=np.clongdouble)
+        self.Ai = np.zeros((4, 4), dtype=np.clongdouble) 
+        self.Ki = np.zeros((4, 4), dtype=np.clongdouble) 
+        self.Ti = np.zeros((4, 4), dtype=np.clongdouble)                 # Layer transfer matrix
+        self.Berreman = np.zeros((4,3), dtype=np.clongdouble)            # Stores the Berreman modes
+        self.useBerreman = False          # Boolean to replace Xu's eigenvectors by Berreman's in case of Birefringence
+        self.euler = np.identity(3, dtype=np.clongdouble)                # rotation matrix
+        self.epsilon_tensor_function = None                              # Added by JK to store epsilon
+        self.propagation_exponents = np.zeros((4), dtype=np.clongdouble) # Stores the raw propagation exponents
         
-        self.euler = np.identity(3, dtype=np.clongdouble) ## rotation matrix
-        self.epsilon_tensor_function = None              ## Added by JK
+        # Store initialiser variables
+        self.set_thickness(thickness)          # set the thickness, 1um by default
+        self.set_epsilon(epsilon)              # set epsilon, vacuum by default (JK change)
+        self.set_euler(theta, phi, psi)        # set orientation of crystal axis w/ respect to the lab frame
 
-        self.set_thickness(thickness) ## set the thickness, 1um by default
-        self.set_epsilon(epsilon1, epsilon2, epsilon3, epsilon) # set epsilon, vacuum by default (JK change)
-        self.set_euler(theta, phi, psi) ## set orientation of crystal axis w/ respect to the lab frame
+    def isCoherent(self):
+        """
+        Returns 
+        -------
+               True if the layer is coherent, False if not
+        """
+        return self.coherent
 
 
     def set_thickness(self, thickness):
-        """
-        Sets the layer thickness
+        """Sets the layer thickness
 
         Parameters
         ----------
@@ -267,65 +306,28 @@ class Layer:
         """
         self.thick = thickness
 
-    def set_epsilon(self, epsilon1=vacuum_eps, epsilon2=None, epsilon3=None, epsilon=None):
+    def set_epsilon(self, epsilon_function):
         """
-        Sets the dielectric functions for the three main axis.
+        Sets the dielectric function.
 
         Parameters
         -----------
-        epsilon1 : complex function
-                 function epsilon(frequency) for the first axis. If none, defaults to :py:func:`vacuum_eps`
-        epsilon2 : complex function
-                 function epsilon(frequency) for the second axis. If none, defaults to epsilon1.
-        epsilon3 : complex function
-                 function epsilon(frequency) for the third axis. If none, defaults to epsilon1.
         epsilon  : complex function
-                 JK modification to allow the full dielectric matrix to be supplied.  If specified
-                 all other definitions are overridden
-        func epsilon1: function returning the first (xx) component of the complex permittivity tensor in the crystal frame.
 
         Returns
         -------
                None
 
-        Notes
-        ------
-        Each *epsilon_i* function returns the dielectric constant along axis i as
-        a function of the frequency f in Hz.
-
-        If no function is given for epsilon1, it defaults to :py:func:`vacuum_eps` (1.0 everywhere).
-        epsilon2 and epsilon3 default to epsilon1: if None, a homogeneous material is assumed
-        JK Modification to allow a fully complex tensor given by epsilon
-        JK if epsilon is not specified it behaves as before
-        JK if epsilon is given the epsilon_tensor function is defined by epsilon
         """
-        if epsilon == None:
-            if epsilon1==None:
-                self.epsilon1_f = vacuum_eps
-            else:
-                self.epsilon1_f = epsilon1
+        self.epsilon_tensor_function = epsilon_function
 
-            if epsilon2 == None:
-                self.epsilon2_f = self.epsilon1_f
-            else:
-                self.epsilon2_f = epsilon2
-            if epsilon3 == None:
-                self.epsilon3_f = self.epsilon1_f
-            else:
-                self.epsilon3_f = epsilon3
-        else:
-            self.epsilon1_f = None
-            self.epsilon2_f = None
-            self.epsilon3_f = None
-            self.epsilon_tensor_function = epsilon
-
-    def calculate_epsilon(self, f):
+    def calculate_epsilon(self, f_in):
         """
         Sets the value of epsilon in the (rotated) lab frame.
 
         Parameters
         ----------
-        f : float
+        f_in : float
             frequency (in Hz)
         Returns
         -------
@@ -340,15 +342,12 @@ class Layer:
         Use only explicitely if you *don't* use the :py:func:`Layer.update` function!
         Modification by JK to allow the use of a full dielectric tensor
         """
-        if self.epsilon_tensor_function == None:
-            epsilon_xstal = np.zeros((3,3), dtype=np.clongdouble)
-            epsilon_xstal[0,0] = self.epsilon1_f(f)
-            epsilon_xstal[1,1] = self.epsilon2_f(f)
-            epsilon_xstal[2,2] = self.epsilon3_f(f)
-        else:
-            epsilon_xstal = self.epsilon_tensor_function(f)
-        # self.epsilon = np.matmul(self.euler_inverse, np.matmul(epsilon_xstal,self.euler))
+        f = f_in / (c_const * 100.0)
+        epsilon_xstal = self.epsilon_tensor_function(f)
+        if not isinstance(epsilon_xstal,np.ndarray):
+            epsilon_xstal = np.eye(3,dtype=np.clongdouble)*epsilon_xstal
         #JK Changed the order of the transformation to a transformation of basis vectors
+        # self.epsilon = np.matmul(self.euler_inverse, np.matmul(epsilon_xstal,self.euler))
         # rather than a transformation of the coordinates active->passive
         self.epsilon = np.matmul(self.euler, np.matmul(epsilon_xstal,self.euler_inverse))
         return self.epsilon
@@ -386,25 +385,7 @@ class Layer:
         self.euler[2, 2] = np.cos(theta)
         #JK Added the inverse calculation here so it is only done once
         #JK self.euler_inverse = np.clongdouble(lag.pinv(np.cdouble(self.euler)))
-        self.euler_inverse = self.invert(self.euler)
-
-    def invert(self,m):
-        """Calculate the inverse of m
-
-        Parameters
-        ----------
-        m : complex 3x3 array
-
-        Returns
-        -------
-        the inverse as a 3x3 complex np array
-        """
-        m1, m2, m3, m4, m5, m6, m7, m8, m9 = m.flatten()
-        determinant = m1*m5*m9 + m4*m8*m3 + m7*m2*m6 - m1*m6*m8 - m3*m5*m7 - m2*m4*m9  
-        return np.array([[m5*m9-m6*m8, m3*m8-m2*m9, m2*m6-m3*m5],
-                         [m6*m7-m4*m9, m1*m9-m3*m7, m3*m4-m1*m6],
-                         [m4*m8-m5*m7, m2*m7-m1*m8, m1*m5-m2*m4]])/determinant
-
+        self.euler_inverse = exact_inv_3x3(self.euler)
 
     def calculate_matrices(self, zeta):
         """
@@ -446,41 +427,42 @@ class Layer:
 
         ## S Matrix (Don't know where it comes from since Delta is just S re-ordered)
         ## Note that after this only Delta is used
-        self.S[0,0] = self.M[0,0] + self.M[0,2]*self.a[2,0] + self.M[0,5]*self.a[5,0];
-        self.S[0,1] = self.M[0,1] + self.M[0,2]*self.a[2,1] + self.M[0,5]*self.a[5,1];
-        self.S[0,2] = self.M[0,3] + self.M[0,2]*self.a[2,3] + self.M[0,5]*self.a[5,3];
-        self.S[0,3] = self.M[0,4] + self.M[0,2]*self.a[2,4] + self.M[0,5]*self.a[5,4];
-        self.S[1,0] = self.M[1,0] + self.M[1,2]*self.a[2,0] + (self.M[1,5]-zeta)*self.a[5,0];
-        self.S[1,1] = self.M[1,1] + self.M[1,2]*self.a[2,1] + (self.M[1,5]-zeta)*self.a[5,1];
-        self.S[1,2] = self.M[1,3] + self.M[1,2]*self.a[2,3] + (self.M[1,5]-zeta)*self.a[5,3];
-        self.S[1,3] = self.M[1,4] + self.M[1,2]*self.a[2,4] + (self.M[1,5]-zeta)*self.a[5,4];
-        self.S[2,0] = self.M[3,0] + self.M[3,2]*self.a[2,0] + self.M[3,5]*self.a[5,0];
-        self.S[2,1] = self.M[3,1] + self.M[3,2]*self.a[2,1] + self.M[3,5]*self.a[5,1];
-        self.S[2,2] = self.M[3,3] + self.M[3,2]*self.a[2,3] + self.M[3,5]*self.a[5,3];
-        self.S[2,3] = self.M[3,4] + self.M[3,2]*self.a[2,4] + self.M[3,5]*self.a[5,4];
-        self.S[3,0] = self.M[4,0] + (self.M[4,2]+zeta)*self.a[2,0] + self.M[4,5]*self.a[5,0];
-        self.S[3,1] = self.M[4,1] + (self.M[4,2]+zeta)*self.a[2,1] + self.M[4,5]*self.a[5,1];
-        self.S[3,2] = self.M[4,3] + (self.M[4,2]+zeta)*self.a[2,3] + self.M[4,5]*self.a[5,3];
-        self.S[3,3] = self.M[4,4] + (self.M[4,2]+zeta)*self.a[2,4] + self.M[4,5]*self.a[5,4];
+        S = np.zeros((4, 4), dtype=np.clongdouble) ##
+        S[0,0] = self.M[0,0] + self.M[0,2]*self.a[2,0] + self.M[0,5]*self.a[5,0];
+        S[0,1] = self.M[0,1] + self.M[0,2]*self.a[2,1] + self.M[0,5]*self.a[5,1];
+        S[0,2] = self.M[0,3] + self.M[0,2]*self.a[2,3] + self.M[0,5]*self.a[5,3];
+        S[0,3] = self.M[0,4] + self.M[0,2]*self.a[2,4] + self.M[0,5]*self.a[5,4];
+        S[1,0] = self.M[1,0] + self.M[1,2]*self.a[2,0] + (self.M[1,5]-zeta)*self.a[5,0];
+        S[1,1] = self.M[1,1] + self.M[1,2]*self.a[2,1] + (self.M[1,5]-zeta)*self.a[5,1];
+        S[1,2] = self.M[1,3] + self.M[1,2]*self.a[2,3] + (self.M[1,5]-zeta)*self.a[5,3];
+        S[1,3] = self.M[1,4] + self.M[1,2]*self.a[2,4] + (self.M[1,5]-zeta)*self.a[5,4];
+        S[2,0] = self.M[3,0] + self.M[3,2]*self.a[2,0] + self.M[3,5]*self.a[5,0];
+        S[2,1] = self.M[3,1] + self.M[3,2]*self.a[2,1] + self.M[3,5]*self.a[5,1];
+        S[2,2] = self.M[3,3] + self.M[3,2]*self.a[2,3] + self.M[3,5]*self.a[5,3];
+        S[2,3] = self.M[3,4] + self.M[3,2]*self.a[2,4] + self.M[3,5]*self.a[5,4];
+        S[3,0] = self.M[4,0] + (self.M[4,2]+zeta)*self.a[2,0] + self.M[4,5]*self.a[5,0];
+        S[3,1] = self.M[4,1] + (self.M[4,2]+zeta)*self.a[2,1] + self.M[4,5]*self.a[5,1];
+        S[3,2] = self.M[4,3] + (self.M[4,2]+zeta)*self.a[2,3] + self.M[4,5]*self.a[5,3];
+        S[3,3] = self.M[4,4] + (self.M[4,2]+zeta)*self.a[2,4] + self.M[4,5]*self.a[5,4];
 
 
         ## Delta Matrix from eqn (8)
-        self.Delta[0,0] = self.S[3,0]
-        self.Delta[0,1] = self.S[3,3]
-        self.Delta[0,2] = self.S[3,1]
-        self.Delta[0,3] = - self.S[3,2]
-        self.Delta[1,0] = self.S[0,0]
-        self.Delta[1,1] = self.S[0,3]
-        self.Delta[1,2] = self.S[0,1]
-        self.Delta[1,3] = - self.S[0,2]
-        self.Delta[2,0] = -self.S[2,0]
-        self.Delta[2,1] = -self.S[2,3]
-        self.Delta[2,2] = -self.S[2,1]
-        self.Delta[2,3] = self.S[2,2]
-        self.Delta[3,0] = self.S[1,0]
-        self.Delta[3,1] = self.S[1,3]
-        self.Delta[3,2] = self.S[1,1]
-        self.Delta[3,3] = -self.S[1,2]
+        self.Delta[0,0] = S[3,0]
+        self.Delta[0,1] = S[3,3]
+        self.Delta[0,2] = S[3,1]
+        self.Delta[0,3] = - S[3,2]
+        self.Delta[1,0] = S[0,0]
+        self.Delta[1,1] = S[0,3]
+        self.Delta[1,2] = S[0,1]
+        self.Delta[1,3] = - S[0,2]
+        self.Delta[2,0] = -S[2,0]
+        self.Delta[2,1] = -S[2,3]
+        self.Delta[2,2] = -S[2,1]
+        self.Delta[2,3] = S[2,2]
+        self.Delta[3,0] = S[1,0]
+        self.Delta[3,1] = S[1,3]
+        self.Delta[3,2] = S[1,1]
+        self.Delta[3,3] = -S[1,2]
 
     def calculate_q(self):
         """
@@ -604,6 +586,7 @@ class Layer:
         self.Berreman[1] = Berreman_unsorted[transmode[1],:]
         self.Berreman[2] = Berreman_unsorted[reflmode[0],:]
         self.Berreman[3] = Berreman_unsorted[reflmode[1],:]
+        return
         
     def calculate_gamma(self, zeta):
         """
@@ -721,49 +704,7 @@ class Layer:
             self.Berreman[ki] = self.Berreman[ki]/np.sqrt(np.sum(self.Berreman[ki]**2))
         if self.useBerreman:
             self.gamma = self.Berreman
-
-    def calculate_propagation_matrix_passler(self,f):
-        """Routine to calculate the matrix Ki (or Pi) depending on the paper
-           This routine is taken from Passler's code
-        """
-        Ki = np.zeros( (4,4), dtype=np.clongdouble)
-        for ii in range(4):
-            exponent = np.clongdouble(-1.0j*(2.0*np.pi*f*self.qs[ii]*self.thick)/c_const)
-            if np.abs(exponent) > self.exponent_threshold:
-                self.largest_exponent = max(self.largest_exponent,np.abs(exponent))
-                exponent = exponent/np.abs(exponent)*self.exponent_threshold
-                self.exponent_errors += 1
-            Ki[ii,ii] = np.exp(exponent)
-        return  Ki
-        
-    def calculate_propagation_matrix_arteaga(self,f):
-        """Routine to calculate the matrix Ki (or Pi) depending on the paper
-           This routine is taken from Arteaga et al
-           Thin Solid Films 2014, 571, 701-705
-           The propagation matrix is suitable for incoherent films
-           In passler the ordering is;    Arteaga;
-           0 p/o ->                       p ->
-           1 s/e ->                       p <-
-           2 p/o <-                       s ->
-           3 s/e <-                       s <-
-        """
-        Ki = np.zeros( (4,4), dtype=np.clongdouble)
-        qs = np.zeros( 4, dtype=np.clongdouble)
-        qs[0] = (self.qs[0] - np.real(self.qs[1]))
-        qs[1] = (self.qs[1] - np.real(self.qs[1]))
-        qs[2] = (self.qs[2] - np.real(self.qs[2]))
-        qs[3] = (np.real(self.qs[2]) - self.qs[3])
-        qs[3] = (self.qs[2] - np.real(self.qs[3]))
-        # self.qs = qs
-        
-        for ii in range(4):
-            exponent = np.clongdouble(-1.0j*(2.0*np.pi*f*qs[ii]*self.thick)/c_const)
-            if np.abs(exponent) > self.exponent_threshold:
-                self.largest_exponent = max(self.largest_exponent,np.abs(exponent))
-                exponent = exponent/np.abs(exponent)*self.exponent_threshold
-                self.exponent_errors += 1
-            Ki[ii,ii] = np.exp(exponent)
-        return  Ki
+        return
 
     def calculate_transfer_matrix(self, f, zeta):
         """
@@ -780,22 +721,25 @@ class Layer:
         None
 
         """
+        self.calculate_ai(zeta)
+        Aim1 = exact_inv_4x4(self.Ai.copy())
+        self.calculate_propagation_matrix(f)
+        self.Ti = np.matmul(self.Ai,np.matmul(self.Ki,Aim1))
+        return
+
+    def calculate_ai(self,zeta):
+        '''Calculate A_i'''
         ## eqn(22)
         self.Ai[0,:] = self.gamma[:,0].copy()
         self.Ai[1,:] = self.gamma[:,1].copy()
-
         self.Ai[2,:] = (self.qs*self.gamma[:,0]-zeta*self.gamma[:,2])/self.mu
         self.Ai[3,:] = self.qs*self.gamma[:,1]/self.mu
+        return 
    
-        Aim1 = exact_inv(self.Ai.copy())
 
-        self.Ki = self.calculate_propagation_matrix_passler(f)
-        #self.Ki = self.calculate_propagation_matrix_arteaga(f)
-
-        self.Ti = np.matmul(self.Ai,np.matmul(self.Ki,Aim1))
-
-    def update(self, f, zeta):
+    def update_tm(self, f, zeta):
         """Shortcut to recalculate all layer properties.
+           Appropriate for a transfer matrix method
 
         Parameters
         ----------
@@ -820,13 +764,288 @@ class Layer:
         self.calculate_q()
         self.calculate_gamma(zeta)
         self.calculate_transfer_matrix(f, zeta)
-        Ai_inv = exact_inv(self.Ai.copy())
-
+        Ai_inv = exact_inv_4x4(self.Ai.copy())
         return[self.Ai.copy(), self.Ki.copy(), Ai_inv.copy(), self.Ti.copy()]
 
+    def update_sm(self, f, zeta):
+        """Shortcut to recalculate all layer properties.
+           Appropriate for a scattering matrix method
+           This avoids the calculation of the exponential it just calculates the exponents
 
+        Parameters
+        ----------
+        f : float
+            frequency (in Hz)
+        zeta : complex
+               reduced in-plane wavevector kx/k0
+        Returns
+        -------
+        Ai : 4x4-array
+             Boundary matrix :math:`A_i` of the layer
+        Ki : 4x4-array
+             Propagation matrix :math:`K_i` of the layer
+        Ai_inv : 4x4-array
+            Inverse of the :math:`A_i` matrix
+        Ti : 4x4-array
+             Transfer matrix of the whole layer
+        """
 
-#%%
+        self.calculate_epsilon(f)
+        self.calculate_matrices(zeta)
+        self.calculate_q()
+        self.calculate_gamma(zeta)
+        self.calculate_ai(zeta)
+        self.calculate_propagation_exponents(f)
+        return
+
+    def calculate_propagation_exponents(self,f):
+        '''Routine to calculate the propagation exponents'''
+        for ii in range(4):
+            self.propagation_exponents[ii] = np.clongdouble(-1.0j*(2.0*np.pi*f*self.qs[ii]*self.thick)/c_const)
+        return
+
+    def calculate_propagation_matrix(self,f):
+        """Routine to calculate the matrix Ki (or Pi) depending on the paper
+
+        Parameters
+        ----------
+        f : float
+
+        Returns
+        -------
+        Ki : 4x4-array
+             Boundary matrix :math:`K_i` of the layer
+        """
+        Ki = np.zeros( (4,4), dtype=np.clongdouble)
+        self.calculate_propagation_exponents(f)
+        for ii in range(4):
+            exponent = self.propagation_exponents[ii]
+            if np.abs(exponent) > self.exponent_threshold:
+                self.largest_exponent = max(self.largest_exponent,np.abs(exponent))
+                exponent = exponent/np.abs(exponent)*self.exponent_threshold
+                self.exponent_errors += 1
+            Ki[ii,ii] = np.exp(exponent)
+        self.Ki = Ki
+        return  self.Ki
+        
+
+###############################
+### The Layer Sub Classes   ###
+###############################
+class CoherentLayer(Layer):
+    """Define a coherent layer inherits from Layer class"""
+    def __init__(self, layer, theta=0, phi=0, psi=0, exponent_threshold=700):
+        """Initialise an instance of a coherent layer"""
+        thickness = layer.getThicknessInMetres()
+        epsilon = layer.getPermittivityFunction()
+        Layer.__init__(self, thickness, epsilon, theta, phi, psi, exponent_threshold)
+        self.coherent = True
+        self.inCoherentIntensity = False
+        self.inCoherentPhase = False
+        self.inCoherentAveragePhase = False
+        self.inCoherentThick = False
+        self.SMatrix = None            # A holder for the scattering matrix for the layer
+        return
+
+    def calculate_scattering_matrix(self,b):
+        """Calculate the scattering matrix of this layer with layer b
+           This is based on equations 18-21 in the PyLama paper
+           However, the definition of a scattering matrix is different to theirs"""
+        # This is layer 'a'
+        a = self
+        # The forward an back propagators are defined here
+        # Note that the exponent is calculated from the raw exponent, no
+        # test is being made to avoid overflow
+        forward_exponents =      a.propagation_exponents
+        reverse_exponents = -1.0*a.propagation_exponents
+        K_f = np.eye(4,dtype=np.clongdouble)
+        K_f[0,0] = np.exp(reverse_exponents[0])
+        K_f[1,1] = np.exp(reverse_exponents[1])
+        # Define the backward propagators
+        K_b = np.eye(4,dtype=np.clongdouble)
+        K_b[2,2] = np.exp(forward_exponents[2])
+        K_b[3,3] = np.exp(forward_exponents[3])
+        # Change rows and columns so rows are the eigenvectors
+        aa = a.Ai.T
+        ab = b.Ai.T
+        #if self.inCoherentIntensity:
+        #    K_f = np.sign(K_f)*(np.absolute(K_f)**2)
+        #    K_b = np.sign(K_b)*(np.absolute(K_b)**2)
+        #    aa = np.sign(aa)*(np.absolute(aa)**2)
+        #    ab = np.sign(ab)*(np.absolute(ab)**2)
+        # build the in and out A matrices row by row
+        # transform back so the columns are the eigenvectors
+        A_out = np.array([ aa[0], aa[1], -ab[2], -ab[3] ]).T
+        A_in  = np.array([ ab[0], ab[1], -aa[2], -aa[3] ]).T
+        # Calculate the scattering matrix
+        # Avoid doing 2 inversions on K_b by using the forward exponents
+        # Taken from the paper: S = exact_inv_4x4(K_b).dot(exact_inv_4x4(A_in)).dot(A_out).dot(K_f)
+        S = K_b.dot(exact_inv_4x4(A_in)).dot(A_out).dot(K_f)
+        #if self.inCoherentIntensity:
+        #    S = np.sqrt(S)
+        # So far S-matrix is defined here as follows
+        #  [ E_{i+1}^f ]   = S_{i,i+1} [ E_{i}^f   ]
+        #  [ E_{i}^b   ]               [ E_{i+1}^b ]
+        # But the following definition is much more usual
+        #  [ E_{i}^b   ]   = S_{i,i+1} [ E_{i}^f   ]
+        #  [ E_{i+1}^f ]               [ E_{i+1}^b ]
+        brows = S[0:2,:].copy()
+        arows = S[2:4,:].copy()
+        S[0:2,:] = arows
+        S[2:4,:] = brows
+        # Finally store the S-matrix and return
+        self.SMatrix = SMatrix(S)
+        return
+
+class SemiInfiniteLayer(CoherentLayer):
+    """Define a coherent layer inherits from CoherentLayer class"""
+    def __init__(self, layer, theta=0, phi=0, psi=0, exponent_threshold=700):
+        """Initialise an instance of a coherent layer"""
+        thickness = layer.getThicknessInMetres()
+        epsilon = layer.getPermittivityFunction()
+        Layer.__init__(self, thickness, epsilon, theta, phi, psi, exponent_threshold)
+        self.coherent = True
+        self.inCoherentIntensity = False
+        self.inCoherentPhase = False
+        self.inCoherentAveragePhase = False
+        self.inCoherentThick = False
+        self.SMatrix = None            # A holder for the scattering matrix
+        return
+
+    def calculate_propagation_exponents(self,f):
+        '''Routine to calculate the propagation exponents'''
+        self.propagation_exponents = np.zeros( (4), dtype=np.clongdouble)
+        return
+
+    def calculate_propagation_matrix(self,f):
+        """Routine to calculate the matrix Ki (or Pi) depending on the paper
+           This routine makes the material transparent.  It is therefore suitable for 
+           a semi-infinite layer
+        """
+        self.calculate_propagation_exponents(f)
+        Ki = np.eye( 4, dtype=np.clongdouble)
+        return  Ki
+        
+class IncoherentIntensityLayer(CoherentLayer):
+    """Define an incoherent layer using intensity transfer matrices inherits from Layer class"""
+
+    def __init__(self, layer, theta=0, phi=0, psi=0, exponent_threshold=700):
+        """Initialise an instance of an incoherent layer"""
+        thickness = layer.getThicknessInMetres()
+        epsilon = layer.getPermittivityFunction()
+        Layer.__init__(self, thickness, epsilon, theta, phi, psi, exponent_threshold)
+        self.coherent = False
+        self.inCoherentIntensity = True
+        self.inCoherentPhase = False
+        self.inCoherentAveragePhase = False
+        self.inCoherentThick = False
+        return
+
+class IncoherentAveragePhaseLayer(CoherentLayer):
+    """Define an incoherent layer using an average phase in the propagation matrix"""
+
+    def __init__(self, layer, percentage_incoherence=100, number_of_samples=4, theta=0, phi=0, psi=0, exponent_threshold=700):
+        """Initialise an instance of an incoherent layer"""
+        thickness = layer.getThicknessInMetres()
+        epsilon = layer.getPermittivityFunction()
+        Layer.__init__(self, thickness, epsilon, theta, phi, psi, exponent_threshold)
+        self.coherent = False
+        self.inCoherentIntensity = False
+        self.inCoherentPhase = False
+        self.inCoherentAveragePhase = True
+        self.inCoherentThick = False
+        self.phaseShift = layer.getPhaseShift()
+        return
+
+    def calculate_propagation_exponents(self,f):
+        """Routine to calculate the matrix Ki (or Pi depending on the paper)
+           A phase shift is included in the calculation
+           The phase shift can vary between 0 and pi
+        """
+        for ii in range(4):
+            if ii < 2:
+                exponent = np.clongdouble(-1.0j*(2.0*np.pi*f*self.qs[ii]*self.thick/c_const))
+            else:
+                exponent = np.clongdouble(-1.0j*(2.0*np.pi*f*self.qs[ii]*self.thick/c_const + self.phaseShift))
+            self.propagation_exponents[ii] = exponent
+        return
+
+class IncoherentPhaseLayer(CoherentLayer):
+    """Define an incoherent layer using Arteaga's modification of the phase in the propagation matrix"""
+
+    def __init__(self, layer, theta=0, phi=0, psi=0, exponent_threshold=700):
+        """Initialise an instance of an incoherent layer"""
+        thickness = layer.getThicknessInMetres()
+        epsilon = layer.getPermittivityFunction()
+        Layer.__init__(self, thickness, epsilon, theta, phi, psi, exponent_threshold)
+        self.coherent = False
+        self.inCoherentIntensity = False
+        self.inCoherentPhase = True
+        self.inCoherentAveragePhase = False
+        self.inCoherentThick = False
+        return
+
+    def calculate_propagation_exponents(self,f):
+        """Routine to calculate the matrix Ki (or Pi) depending on the paper
+           This routine is taken from Arteaga et al
+           Thin Solid Films 2014, 571, 701-705
+           The propagation matrix is suitable for incoherent films
+           In passler the ordering is;    Arteaga;
+           0 p/o ->                       p ->
+           1 s/e ->                       p <-
+           2 p/o <-                       s ->
+           3 s/e <-                       s <-
+        """
+        qs = np.zeros( 4, dtype=np.clongdouble)
+        # p-wave ->
+        qs[0] = self.qs[0] - np.real(self.qs[1])    # Subtract the real part of s ->
+        # s-wave ->
+        qs[1] = self.qs[1] - np.real(self.qs[1])    # Subtract the real part of s ->
+        # p-wave <-
+        qs[2] = self.qs[2] - np.real(self.qs[3])    # Subtract the real part of s <-
+        # s-wave <-
+        qs[3] = self.qs[3] - np.real(self.qs[3])    # Subtract the real part of s <-
+        for ii in range(4):
+            exponent = np.clongdouble(-1.0j*(2.0*np.pi*f*qs[ii]*self.thick)/c_const)
+            self.propagation_exponents[ii] = exponent
+        return
+
+class IncoherentThickLayer(CoherentLayer):
+    """Define an incoherent layer using the thick slab approximation"""
+
+    def __init__(self, layer, theta=0, phi=0, psi=0, exponent_threshold=700):
+        """Initialise an instance of an incoherent layer"""
+        thickness = layer.getThicknessInMetres()
+        epsilon = layer.getPermittivityFunction()
+        Layer.__init__(self, thickness, epsilon, theta, phi, psi, exponent_threshold)
+        self.coherent = False
+        self.inCoherentIntensity = False
+        self.inCoherentPhase = False
+        self.inCoherentAveragePhase = False
+        self.inCoherentThick = True
+        return
+
+    def calculate_propagation_matrix(self,f):
+        """Routine to calculate the matrix Ki using the thick slab approximation
+        """
+        Ki = super().calculate_propagation_matrix(f)
+        Ki[2,2] = 0.0
+        Ki[3,3] = 0.0
+        return  Ki
+
+    def calculate_scattering_matrix(self,b):
+        """Calculate the scattering matrix of this layer with layer b
+           This is based on equations 18-21 in the PyLama paper
+           However, the definition of a scattering matrix is different to theirs"""
+        # First calculate the scattering matrix as usual
+        # NB. the propagation matrix has zero's in the s/p backward scattering
+        #     but the scattering matrix calculation uses the raw propagation exponents
+        super().calculate_scattering_matrix(b)
+        # Now manually set the backwards reflections for both s and p to zero
+        self.SMatrix.S11 = np.zeros( (2,2) )
+        self.SMatrix.calculateS()
+        return
+
 ###########################
 #### The System Class  ####
 ###########################
@@ -859,9 +1078,8 @@ class System:
     using :py:func:`calculate_Efield`
 
     """
-    def __init__(self, substrate=None, superstrate=None, layers=[]):#,
-                 #theta=0.0, phi=0.0, psi=0.0):
-
+    def __init__(self, substrate=None, superstrate=None, layers=[]):
+        '''Initialise the system for a transfer matrix calculation'''
         self.layers=[]
         if len(layers)>0:
             self.layers=layers
@@ -1010,56 +1228,10 @@ class System:
         for li in self.layers:
             li.calculate_epsilon(f)
 
-    def calculate_incoherent_GammaStar(self,f, zeta_sys):
-        """
-        Calculate the whole system's transfer matrix.
-        But instead of using amplitudes, use intensities
-        This routine is specific for a single layer system with sub and superstrate
-
-        Parameters
-        -----------
-        f : float
-            Frequency (Hz)
-        zeta_sys : complex
-            In-plane wavevector kx/k0
-
-        Returns
-        -------
-        GammaStar: 4x4 complex matrix
-                   System transfer matrix :math:`\Gamma^{*}`
-        """
-
-        Di_super, Pi_super, Di_inv_super, T_super = self.superstrate.update(f, zeta_sys)
-        Di_sub, Pi_sub, Di_inv_sub, T_sub = self.substrate.update(f, zeta_sys)
-
-        Delta1234 = np.array([[1,0,0,0],
-                              [0,0,1,0],
-                              [0,1,0,0],
-                              [0,0,0,1]],dtype=np.clongdouble)
-
-        Dip1 = Di_sub
-        Tloc = np.identity(4, dtype=np.clongdouble)
-        rescale2 = 1.0
-        for layer in reversed(self.layers):
-            Di, Pi, Di_inv, Ti = layer.update(f, zeta_sys)
-            rescale = np.max(np.abs(Pi))
-            rescale2 = rescale*rescale2
-            Pi = Pi/rescale
-            Tloc = np.matmul( np.absolute( (np.matmul(Di_inv,Dip1)))**2,Tloc)
-            Tloc = np.matmul( np.absolute(Pi)**2,Tloc)
-            Dip1 = Di
-        Tloc = np.matmul( np.absolute(np.matmul(Di_inv_super,Dip1))**2,Tloc)
-        Gamma = np.sqrt(Tloc)
-        Gamma = Gamma * rescale2
-        GammaStar = np.matmul(exact_inv(Delta1234),np.matmul(Gamma,Delta1234))
-        self.Gamma = Gamma.copy()
-        self.GammaStar = GammaStar.copy()
-        return self.GammaStar.copy()
-
-
     def calculate_GammaStar(self,f, zeta_sys):
         """
         Calculate the whole system's transfer matrix.
+        If one layer is incoherent then intensities rather than amplitudes are used
 
         Parameters
         -----------
@@ -1073,36 +1245,48 @@ class System:
         GammaStar: 4x4 complex matrix
                    System transfer matrix :math:`\Gamma^{*}`
         """
-        Ai_super, Ki_super, Ai_inv_super, T_super = self.superstrate.update(f, zeta_sys)
-        Ai_sub, Ki_sub, Ai_inv_sub, T_sub = self.substrate.update(f, zeta_sys)
-
+        A_super, K_super, A_inv_super, T_super = self.superstrate.update_tm(f, zeta_sys)
+        A_sub, K_sub, A_inv_sub, T_sub = self.substrate.update_tm(f, zeta_sys)
         Delta1234 = np.array([[1,0,0,0],
                               [0,0,1,0],
                               [0,1,0,0],
                               [0,0,0,1]],dtype=np.clongdouble)
-
-
-        Gamma = np.zeros(4, dtype=np.clongdouble)
-        GammaStar = np.zeros(4, dtype=np.clongdouble)
-        Tloc = np.identity(4, dtype=np.clongdouble)
-
-        for ii in range(len(self.layers))[::-1]:
-            Ai, Ki, Ai_inv, T_ii = self.layers[ii].update(f, zeta_sys)
-            Tloc = np.matmul(T_ii,Tloc)
-
-        Gamma = np.matmul(Ai_inv_super,np.matmul(Tloc,Ai_sub))
-        GammaStar = np.matmul(exact_inv(Delta1234),np.matmul(Gamma,Delta1234))
-
+        incoherent = False
+        Tlist = []
+        # Initialise T with the substrate Transfer Matrix
+        T = A_sub
+        for layer in reversed(self.layers):
+            Di, Pi, Di_inv, Ti = layer.update_tm(f, zeta_sys)
+            if layer.inCoherentIntensity:
+                # Deal with an incoherent layer
+                # Finish any exisiting T matrix with Di_inv and add as a new matrix in Tlist
+                # Then add Pi to Ttot
+                # Then start a new T matrix with Di
+                T = np.matmul(Di_inv,T)
+                Tlist.append(T)
+                Tlist.append(Pi)
+                T = np.copy(Di)
+                incoherent = True
+            else:
+                # coherent, so just multiply the T matrices
+                T = np.matmul(Ti,T)
+        # Complete with the superstrate inverse dynamic matrix
+        T = np.matmul(A_inv_super,T)
+        Tlist.append(T)
+        if incoherent:
+            # If there was incoherence then process the whole list 
+            # by calculating amplitudes everywhere
+            T =  np.identity(4, dtype=np.complex128)
+            for t in Tlist:
+                T = np.matmul(T,np.absolute(t)**2)
+            T = np.sqrt(T)
+        # If there was no incoherence then T is the total transfer matrix
+        Gamma = T
+        GammaStar = np.matmul(exact_inv_4x4(Delta1234),np.matmul(Gamma,Delta1234))
         self.Gamma = Gamma.copy()
         self.GammaStar = GammaStar.copy()
         return self.GammaStar.copy()
 
-    def scale_intensity(self, r):
-        """r is the complex reflectance field, attempt to make the intensity sensible"""
-        if np.abs(r) > 1:
-              r = r / np.abs(r) / np.abs(r)
-        return r
-    
     def calculate_r_t(self, zeta_sys):
         """ Calculate various field and intensity reflection and transmission coefficients, as well as the 4-valued vector of transmitted field.
 
@@ -1140,7 +1324,6 @@ class System:
         Note also the different ordering of the coefficients, for consistency w/ Passler's matlab code
 
         """
-        nan = np.nan_to_num
         shift = sys.float_info.min
         #
         # Can we renormalise to get rid of numerical problems?
@@ -1170,10 +1353,6 @@ class System:
         rsp = rsp/Denom
 
         # Try and remove any outliers by making sure the intensity is always < 1
-        #rpp = self.scale_intensity(rpp)
-        #rss = self.scale_intensity(rss)
-        #rps = self.scale_intensity(rps)
-        #rsp = self.scale_intensity(rsp)
 
         # Intensity reflection coefficients are just square moduli
         Rpp = np.abs(rpp)**2
@@ -1184,20 +1363,14 @@ class System:
         R_out = np.array([Rpp,Rss,Rsp,Rps]) ## order matching Passler Matlab code
 
         # field transmission coefficients
-        #t_field = np.zeros(4, dtype=np.complex128)
         t_out = np.zeros(4, dtype=np.clongdouble)
         tpp = (GammaStar[2,2]/Denom)/largest
         tss = (GammaStar[0,0]/Denom)/largest
         tps =-(GammaStar[2,0]/Denom)/largest
         tsp =-(GammaStar[0,2]/Denom)/largest
 
-        # Try and remove any outliers by making sure the intensity is always < 1
-        #tpp = self.scale_intensity(tpp)
-        #tss = self.scale_intensity(tss)
-        #tps = self.scale_intensity(tps)
-        #tsp = self.scale_intensity(tsp)
+        #CHECK the ORDERING! JK
         t_out = np.array([tpp, tps, tsp, tss],dtype=np.clongdouble)
-        #t_field = np.array([tpp, tps, tsp, tss])
 
         #### Intensity transmission requires Poynting vector analysis
         ## N.B: could be done mode-dependentely later
@@ -1231,8 +1404,6 @@ class System:
         ### Intensity transmission coefficients are only the z-component of S !
         T_pp = (Sout_pin[2]/Sinc_pin[2]) ## z-component only
         T_ss = (Sout_sin[2]/Sinc_sin[2]) ## z-component only
-        #T_pp = self.scale_intensity(T_pp)
-        #T_ss = self.scale_intensity(T_ss)
 
         T_out = np.array([T_pp, T_ss])
 
@@ -1247,3 +1418,193 @@ class System:
             largest_exponent = max(layer.largest_exponent,largest_exponent)
         return count,largest_exponent
 
+class TransferMatrixSystem(System):
+    """Define a system of layers which is described by a Transfer Matrix method"""
+    def __init__(self, substrate=None, superstrate=None, layers=[]):
+        System.__init__(self, substrate, superstrate, layers)
+        return
+
+class ScatteringMatrixSystem(System):
+    """Define a system of layers which is described by a Scattering Matrix method"""
+    def __init__(self, substrate=None, superstrate=None, layers=[]):
+        System.__init__(self, substrate, superstrate, layers)
+        return
+
+    def calculate_scattering_matrices(self):
+        '''Calculate the scattering matrices in every layer'''
+        # First the superstrate with the first layer in the device
+        if len(self.layers) < 1:
+            self.superstrate.calculate_scattering_matrix(self.substrate)
+        else:
+            self.superstrate.calculate_scattering_matrix(self.layers[0])
+            #Utilities.printsp('SM super-0 ',self.superstrate.SMatrix.S)
+        # Next every layer in the devices with the next layer, but not the last layer in the device
+        for index,layer in enumerate(self.layers[:-1]):
+            layer.calculate_scattering_matrix(self.layers[index+1])
+            #Utilities.printsp('SM {}-{}'.format(index,index+1),layer.SMatrix.S)
+        # Now calculate the scattering matrix between the last layer in the device and the substrate
+        if len(self.layers) > 0:
+            self.layers[-1].calculate_scattering_matrix(self.substrate)
+            #Utilities.printsp('SM last-substrate',self.layers[-1].SMatrix.S)
+        # Note that the substrate does not have a scattering matrix
+        return
+
+    def calculate_GammaStar(self,f, zeta_sys):
+        """
+        Calculate the whole system's scattering matrix.
+
+        Parameters
+        -----------
+        f : float
+            Frequency (Hz)
+        zeta_sys : complex
+            In-plane wavevector kx/k0
+
+        Returns
+        -------
+        Stotal     System scattering matrix :math:`S`
+        """
+        # Use the super class to calculate GammaStar
+        #super().calculate_GammaStar(f,zeta_sys)
+
+        self.superstrate.update_sm(f, zeta_sys)
+        self.substrate.update_sm(f, zeta_sys)
+        for layer in self.layers:
+            layer.update_sm(f, zeta_sys)
+        # Ask for calculation of scattering matrices in all layers
+        self.calculate_scattering_matrices()
+        # Loop through all the layers to calculate the total scattering matrix
+        self.Stotal = copy.copy(self.superstrate.SMatrix)
+        for layer in self.layers:
+            self.Stotal = self.Stotal.redheffer(layer.SMatrix)
+        #self.Stotal = self.Stotal.redheffer(self.substrate.SMatrix)
+        return self.Stotal
+
+    def calculate_r_t(self, zeta_sys):
+        """ Scattering version
+            Calculate various field and intensity reflection and transmission coefficients, as well as the 4-valued vector of transmitted field.
+
+        Parameters
+        -----------
+        zeta_sys : complex
+            Incident in-plane wavevector
+        Returns
+        -------
+        r_out : len(4)-array
+                Complex *field* reflection coefficients r_out=([rpp,rps,rss,rsp])
+        R_out : len(4)-array
+                Real *intensity* reflection coefficients R_out=([Rpp,Rss,Rsp,Tps])
+        t_out : len(4)-array
+                Complex *field* transmition coefficients t=([tpp, tps, tsp, tss])
+        T_out : len(4)-array
+                Real *intensity* transmition coefficients T_out=([Tp,Ts]) (mode-inselective)
+
+        """
+        # Extract the scattering matrix
+        S = self.Stotal.S
+
+        # field reflection coefficients
+        rpp = S[0,0]
+        rss = S[1,1]
+        rps = S[0,1]
+        rsp = S[1,0]
+
+        # Intensity reflection coefficients are just square moduli
+        Rpp = np.abs(rpp)**2
+        Rss = np.abs(rss)**2
+        Rps = np.abs(rps)**2
+        Rsp = np.abs(rsp)**2
+        r_out = np.array([rpp,rps,rss,rsp]) ## order matching Passler Matlab code
+        R_out = np.array([Rpp,Rss,Rsp,Rps]) ## order matching Passler Matlab code
+
+        # field transmission coefficients
+        tpp = S[2,0]
+        tss = S[3,1]
+        tps = S[2,1]
+        tsp = S[3,0]
+        t_out = np.array([tpp, tps, tsp, tss],dtype=np.clongdouble)
+
+        # Intensity transmission using Poynting vector analysis
+        # start with the superstrate
+        # Incident fields are either p or s polarized
+        ksup = np.zeros((4,3), dtype=np.clongdouble) ## wavevector in superstrate
+        ksup[:,0] = zeta_sys
+        for ii, qi in enumerate(self.superstrate.qs):
+            ksup[ii,2] = qi
+        ksup = ksup/c_const                     # omega simplifies in the H field formula
+        # Incident electric field
+        Einc_pin = self.superstrate.gamma[0,:]  # p-pol incident electric field
+        Einc_sin = self.superstrate.gamma[1,:]  # s-pol incident electric field
+
+        # Poynting vector in superstrate (incident, p-in and s-in)
+        Sinc_pin = 0.5*np.real(np.cross(Einc_pin,np.conj(np.cross(ksup[0,:],Einc_pin))))
+        Sinc_sin = 0.5*np.real(np.cross(Einc_sin,np.conj(np.cross(ksup[1,:],Einc_sin))))
+
+        # Substrate Poynting vector
+        Eout_pin = t_out[0]*self.substrate.gamma[0,:]+t_out[1]*self.substrate.gamma[1,:] #p-in, p or s out
+        Eout_sin = t_out[2]*self.substrate.gamma[0,:]+t_out[3]*self.substrate.gamma[1,:] #s-in, p or s out
+        ksub = np.zeros((4,3), dtype=np.clongdouble)
+        ksub[:,0] = zeta_sys
+        for ii, qi in enumerate(self.substrate.qs):
+            ksub[ii,2] = qi
+        ksub = ksub/c_const # omega simplifies in the H field formula
+
+        # outgoing Poynting vectors, 2 formulations
+        Sout_pin = 0.5*np.real(np.cross(Eout_pin,np.conj(np.cross(ksub[0,:],Eout_pin))))
+        Sout_sin = 0.5*np.real(np.cross(Eout_sin,np.conj(np.cross(ksub[1,:],Eout_sin))))
+
+        # Intensity transmission coefficients are only the z-component of S !
+        T_pp = (Sout_pin[2]/Sinc_pin[2]) ## z-component only
+        T_ss = (Sout_sin[2]/Sinc_sin[2]) ## z-component only
+
+        T_out = np.array([T_pp, T_ss])
+
+        return r_out, R_out, t_out, T_out
+
+class SMatrix():
+    def __init__(self, S=None,dtype=np.clongdouble):
+        '''Class to store a scattering matrix and to allow multiplication of matrices'''
+        if S is None:
+            self.unitMatrix()
+        else:
+            self.S11 = S[0:2,0:2]
+            self.S22 = S[2:4,2:4]
+            self.S21 = S[2:4,0:2]
+            self.S12 = S[0:2,2:4]
+            self.calculateS()
+        return
+
+    def unitMatrix(self):
+        self.S11 = np.zeros( (2,2) )
+        self.S22 = np.zeros( (2,2) )
+        self.S21 = np.eye( (2) )
+        self.S12 = np.eye( (2) )
+        self.calculateS()
+        return
+
+    def redheffer(self,b):
+        '''Routine to calculate the product of S-matrices'''
+        a = self
+        # If b is none then the S-matrix was not initialised (could be the substrate)
+        if b is None:
+            b = SMatrix()
+        C = np.eye(2,dtype=np.clongdouble) - ( b.S11.dot(a.S22) ) 
+        D = np.eye(2,dtype=np.clongdouble) - ( a.S22.dot(b.S11) ) 
+        C = exact_inv_2x2(C)
+        D = exact_inv_2x2(D)
+        Sab = SMatrix()
+        Sab.S11 = a.S11+a.S12.dot(C).dot(b.S11).dot(a.S21)
+        Sab.S12 = a.S12.dot(C).dot(b.S12)
+        Sab.S21 = b.S21.dot(D).dot(a.S21)
+        Sab.S22 = b.S22+b.S21.dot(D).dot(a.S22).dot(b.S12)
+        Sab.calculateS()
+        return Sab
+
+    def calculateS(self):
+        self.S = np.zeros( (4,4),dtype=np.clongdouble )
+        self.S[0:2,0:2] = self.S11
+        self.S[2:4,2:4] = self.S22
+        self.S[0:2,2:4] = self.S12
+        self.S[2:4,0:2] = self.S21
+        return self.S
+      

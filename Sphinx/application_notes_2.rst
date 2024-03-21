@@ -15,13 +15,13 @@
 Single Crystal Applications
 ===========================
 
-The transmission, reflection and absorption of infrared light through single crystals can be simulated using PDielec and PDGui.  Partial incoherence can be modelled by averaging over a sample of thicknesses and orientations.  Incoherence of all dielectric layers is modelled by considering the the transmission matrix for the intensity of light rather than the amplitude.
+The transmission, reflection and absorption of infrared light through single crystals can be simulated using PDielec and PDGui.  Incoherence of all dielectric layers is modelled by considering the the transmission matrix for the intensity of light rather than the amplitude or by averaging the propagation phase of the internally reflected light.
 
 Single Crystal Study of Thickness Effects in MgO
 ================================================
 
 This example looks at an isotropic system.  The results of a CASTEP calculation of MgO have provided the frequency-dependent permittivity and this is used to look at the effect of crystal thickness on the reflectance, transmittance and absorptance.
-The examples shown here were calculated using the scripts mgo_coherent_size_effects.py and mgo_partially_incoherent_size_effects in the Examples/SingleCrystal/MgO directory of the GitHub distribution.
+The examples shown here were calculated using the scripts mgo_coherent_size_effects.py in the Examples/SingleCrystal/MgO directory of the GitHub distribution.
 A 45\ :superscript:`o` incident beam on the (001) surface of MgO is used to calculate the transmittance, reflectance and absorbtance of thin films with thickness of 0.1, 1, 10 and 100 microns.
 The results of the coherent calculations are shown in :numref:`fig-mgo-coherent`
 
@@ -32,67 +32,29 @@ The results of the coherent calculations are shown in :numref:`fig-mgo-coherent`
    Effects of Film Thickness of MgO in Coherent Light, a 45\ :superscript:`o` incident beam with p- polarisation
 
 The results for the 'thick slab' case are shown only for reflectance and absorbtance.  It can be seen that the reflection in the restrahlen region between the TO and LO frequencies (388 and 693 |cm1|) is almost total with also very little absorbtance.  
+The 'thick slab' designation refers to a situation where the dielectric material is used as the substrate.  As such there is no internal reflection and no transmittance.
 The 0.1\ |micron| thickness shows peaks in reflectance and corresponding drops in transmittance at both the TO and LO frequencies, whilst showing only absorbtance at the TO frequency.
 The 1\ |micron| thickness shows considerable broadening of these signals, with the TO reflectance splitting into a doublet. 
 At 10\ |micron|, below the TO frequency there are oscillations in the reflectance, transmittance and absorptance which are a result of interference between the internally reflected waves.  They occur because the light is coherent.  The oscillations continue until they meet the 'thick slab' limit and they then follow this limit until frequencies above the LO frequency.
 At 100\ |micron|, the oscillations below the TO frequency are very fast and they reach the 'thick slab' limiting case at lower frequencies than for the 10\ |micron| case.  
 Similarly at higher frequencies they follow the 'thick slab' limiting case.
 
-The introduction of partial incoherence is achieved in the program by averaging over a range of orientation parameters and is therefore quite crude, but it gives an indication of the type of effects that partial incoherence may have.
-The term partial incoherence in this case is used to refer to incoherence introduced by sample defects such as planarity and varying thickness.
-
-:numref:`fig-mgo-partially-incoherent` shows the smoothing effect that averaging over the orientation and thickness parameters has.
-For these calculations the following parameters were used.
-
-.. table:: Partially Incoherent Parameters
-   :name: tab-partially-incoherent-parameters
-   :column-alignment:  left right  right
-   :header-alignment:  left center center
-   :column-dividers:   none single single single none
-
-   +-----------------+------------------------+-------------------+
-   | Thickness       | Percentage Incoherence | Number of samples |
-   +-----------------+------------------------+-------------------+
-   | 0.1\ |micron|   |         20             |       10          |
-   +-----------------+------------------------+-------------------+
-   | 1.0\ |micron|   |         20             |       10          |
-   +-----------------+------------------------+-------------------+
-   | 10.0\ |micron|  |         60             |       1000        |
-   +-----------------+------------------------+-------------------+
-   | 100.0\ |micron| |         30             |       1000        |
-   +-----------------+------------------------+-------------------+
-
-
-It is clear, especially from the absorbtance figure, that the thicker samples are a better fit to the 'thick slab' limiting case.  
-However, there are issues when using this facility.  In particular, the high frequency side of the reflectance spectra is showing shoulders which are artifacts of the quite large perturbations in the orientation and thickness parameters that have been imposed.
-Also, for the 10\ |micron| sample, it is clear that these perturbations are not sufficient by themselves to remove the oscillations that occur at low frequencies.  
-This is because at these frequencies the changes in thickness are not sufficient to move a peak by the period of the oscillations.
-
-.. _fig-mgo-partially-incoherent:
-.. figure:: ./_static/Figures/MgO_Partially_Incoherent_Size_Effects.svg
-   :scale: 90%
-
-   Effects of Partial Incoherence and Film Thickness of MgO, a 45\ :superscript:`0` incident beam with p-polarisation
-
-The effect of thickness on the "Incoherent thin film Mode" is shown in :numref:`fig-mgo-incoherent`.
+The effect of thickness on the "Incoherent (intensity)" method is shown in :numref:`fig-mgo-incoherent`.
 This method uses intensities rather than amplitudes for the transfer matrix and as a result, all the phase information is lost, resulting in no interferences after internal reflections.
 The calculations shown are for p- polarised incident radiation.
 
-
-The incoherent method deviates from the thick slab mode at very low frequencies, but as the film thickness increases the deviations become smaller.
-Similarly at frequencies above the LO frequency, the deviations from the thick slab mode are less for the thicker films.
-The user needs to be aware that for large thicknesses the calculation of the propagation matrix can lead to numerical overflows.  These manifest themselves as sudden changes in transmittance.  Reflectance calculations are badly affected by this and it is recommended to use the 'thick slab' mode for such cases.
-
+The incoherent method deviates from the 'thick slab' results at very low frequencies, but as the film thickness increases the deviations become smaller.
+Similarly at frequencies above the LO frequency, the deviations from the 'thick slab' results are less for the thicker films.
+The user needs to be aware that for large thicknesses the calculation of the propagation matrix can lead to numerical overflows.  
+These manifest themselves as sudden changes in reflectance or transmittance.
+In such cases it is recommended to use the 'Incoherent (non-reflective)' method or use the scattering matrix method with Incoherent (phase averaging).
 
 .. _fig-mgo-incoherent:
 
 .. figure:: ./_static/Figures/MgO_Incoherent_Size_Effects.svg
    :scale: 90%
 
-   The Incoherent Thin Film Mode - a 45\ :superscript:`o` incident beam with p- polarisation
-
-
-
+   Incoherent (intensity) mode - a 45\ :superscript:`o` incident beam with p- polarisation
 
 Komandin et al :cite:`Komandin2009` have reported terahertz spectra of 0.5\ |micron| thick MgO crystals which are dominated by interference at low frequencies.  
 In :numref:`fig-mgo-experiment` a digitised spectrum obtained from this publication is compared with calculations.
@@ -287,7 +249,7 @@ The resulting spectrum is not very sensitive to these settings.
 
 The next tab is the *Scenario tab* which is used to reflect the experimental parameters that are possible.  
 In this case, we are looking at the single crystal scenario.
-The mode of operation in the example shown below is the *Coherent thin film* mode.
+The mode of operation in the example shown below is the *Coherent* mode.
 In this case, the surface that the THz beam is incident on is the (001) surface, so the c-axis will be pointing along the Z-axis of the laboratory coordinate frame.
 The permittivity of the superstrate and substrate is set to 1.0, consistent with the experimental conditions.
 The geometry of the incident beam relative to the crystal is controlled by the azimuthal angle.  A zero value for the incident angle means the beam is at 90\ :superscript:`o` to the surface.  A non-zero angle defines the laboratory coordinates as the beam lies in the XZ plane.
@@ -298,7 +260,7 @@ We are interested in radiation polarised with the electric field active along th
 This corresponds to s-polarised light, so we will be looking at the s-component of the transmittance.
 
 An important parameter to consider is the thickness of the film and the method by which we will calculate the transmission and reflectivity.   
-To start with we will use the *coherent thin film* mode and a thickness of 0.2mm.  Experimentally :cite:`Allen2023`, the crystal thickness was measured to be 0.5±0.1mm, but with this thickness the calculation showed little transmission in the chosen frequency range. 
+To start with we will use the *Coherent* mode and a thickness of 0.2mm.  Experimentally :cite:`Allen2023`, the crystal thickness was measured to be 0.5±0.1mm, but with this thickness the calculation showed little transmission in the chosen frequency range. 
 
 
 .. _fig-lalanine-scenariotab:
@@ -315,12 +277,12 @@ These are due to interference of the directly transmitted light and light that h
    :scale: 90%
 
 
-To see if we can remove this we will change the mode in the *Scenario tab* to *Incoherent thin film*.
+To see if we can remove this we will change the option for this layer in the *Scenario tab* to *Incoherent (intensity)*.
 Re-plotting the spectrum and looking at the results in the *Fitter tab* is shown in the plot below.
 The calculated spectrum is compared directly with the experimental one.  
 Both the calculated and experimental spectra show little transmittance above about 140\ |cm-1|.
-The strong, very sharp peaks at 225\ |cm-1| and above are probably numerical problems that occur with thicker films when transmission tends to zero.  These numerical problems are exacerbated by the *Incoherent film* mode as it uses intensities in the calculation of the transfer matrix, which requires the square of the electric field and the propagation matrices.
-The fact that these are numerical problems can be verified by looking at the *Coherent thin film* mode and seeing if they are present there.
+The strong, very sharp peaks at 225\ |cm-1| and above are probably numerical problems that occur with thicker films when transmission tends to zero.  These numerical problems are exacerbated by the *Incoherent (intensity)* method as it uses intensities in the calculation of the transfer matrix, which requires the square of the electric field and the propagation matrices.
+The fact that these are numerical problems can be verified by looking at the *Coherent* method and seeing if they are present there.
 Even if the experimental measurements are designed to minimise etalons, it is generally sensible to compare both incoherent and coherent calculations before comparing with experiment.
 
 
@@ -348,8 +310,8 @@ The c-axis field transmittance example uses the (010) surface with an azimuthal 
 AlN on Silicon and Silicon Carbide
 ==================================
 
-This is an example of a multilayer system where two layers are not isotropic.
-In an experimental and theoretical study of the infrared reflectance of aluminium nitride on silicon and silicon carbide, MacMillan, Devaty and Choyke :cite:`MacMillan1993` used four parameter semi-quantum  (FPSQ) model to describe their experimental results on aluminium nitride on various substrates.
+This is an example of a multilayer system where two layers are anisotropic.
+In an experimental and theoretical study of the infrared reflectance of aluminium nitride on silicon and silicon carbide, MacMillan, Devaty and Choyke :cite:`MacMillan1993` used a four parameter semi-quantum  (FPSQ) model to describe their experimental results on aluminium nitride on various substrates.
 In the Examples/Experimental/AlN directory the file AlN.exp provides an experimental file that describes their FPSQ model in a format the PDGui can use.
 In addition, parameters for the permittivities of silicon and 6H-SiC are given in the TestDataBase.xlsx file in the same directory.  
 The 6H-SiC permittivities are provided by a Drude-Lorentz model and the silicon permittivities is calculated from an experimental refractive index.
@@ -357,9 +319,9 @@ References for the origins of the models and experimental data are given in the 
 
 The first experimental/calculated system considered :cite:`MacMillan1993` was the reflectance of a 0.92μ AlN on a Si substrate.  
 This was modelled using PDGui after reading in the experimental file, AlN.exp, the *Single Crystal Scenario Tab* was used to define the system as described in the paper.
-The *Thick slab* mode was specified, the superstrate material was chosen as air, an AlN dielectric film of 0.92μ was specified on top of a 1.0μm film of silicon, and an angle of incidence of 7.2 :superscript:`o` was used.
+The superstrate material was chosen as air, an AlN dielectric film of 0.92μ was specified on top of a 1.0μm film of silicon, and an angle of incidence of 7.2 :superscript:`o` was used.
 The (001) surface of AlN was defined, so the perpendicular to the surface aligns with the laboratory Z-axis.
-Because the program is operating in *Thick slab* mode, the bottom layer is treated as a semi-infinite layer, so the size of the silicon layer specified in the GUI is irrelevant.
+The bottom layer is treated as a semi-infinite layer, so the size of the silicon layer specified in the GUI is irrelevant.
 The scenario is shown below:
 
 .. _fig-aln-on-si-etalons-scenario:
@@ -379,11 +341,10 @@ The agreement is excellent.
 .. figure:: ./_static/Figures/AlN-on-Si-Close-Up.svg
    :scale: 90%
 
-Figure 3 of the paper shows the reflectance of of a 0.98μm film of AlN on the (0001) surface of 6H_SiC. 
-To model this with PDGui two layers have been created using the *Layer Editor* as shown below.
-As with the previous example, the *Thick slab* mode has been specified, so the SiC layer is semi-infinite.
-The layer editor shows two (001) layers with the c-axis of the crystals pointing along the Z-laboratory axis.
-The top layer, next to the superstrate (air) is the *Dielectric film* (AlN in this case) and the semi-infinite layer beneath is has been specified by adding a new layer from the materials database, TestDataBase.xlsx.
+Figure 3 of the paper shows the reflectance of a 0.98μm film of AlN on the (0001) surface of 6H_SiC. 
+To model this with PDGui two layers have been created, one for the dielectric layer, which has been created from an experimental file, and one for SiC, which has been taken from MaterialsDatabase.xlsx.
+The layer editor has been used to show that both layers are (001) surfaces with the c-axis of the crystals pointing along the Z-laboratory axis.
+The top layer (the superstrate) is air below which is the *Dielectric layer* (AlN in this case).
 
 .. _fig-aln-on-sic-layereditor:
 .. figure:: ./_static/Figures/AlN_on_SiC_LayerEditor.png
@@ -397,8 +358,8 @@ A comparison is given below between the calculated spectrum reported in the pape
 
 A final comparison is made between Figure 4 of the paper and the results of PDGui.   
 In this case, a 0.24μm film of SiC is supported on a 0.56μm film of AlN, which is deposited on a substrate of Silicon.
-For this example, the *Coherent thin film* mode is used.
-The layer editor for this system is shown below.
+For this example, the *Coherent* mode is used.
+The ScenarioTab for this system is shown below.
 
 .. _fig-sic-on-aln-layereditor:
 .. figure:: ./_static/Figures/SiC_on_AlN-LayerEditor.png
@@ -416,8 +377,8 @@ Sapphire Orientation Dependence of Polarized Infrared Light
 Sapphire and ruby are :math:`\alpha` Al :subscript:`2` O :subscript:`3`, which belongs to an hexagonal crystal system.
 Due to the complexity of vibrations in the infrared red region and to the anisotropy of the permittivity, the polarized IR reflectance is sensitive to the crystal plane  and to its orientation.
 Lee et. al.. :cite:`Lee2014` measured the infrared reflectance response of sapphire and fitted an FPSQ model to the experimental observations.
-As confirmation of the correct behaviour of PDGui for the generation of crystal surfaces and for the calculation of reflectance, the FPSQ model proposed by Lee et. al. has been incorporated into the materials database of PDGui and the calculations reported in their paper have been reproduced.
-To achieve this, a simple experiment file for air has been used as the dielectric medium and the FPSQ model has been incorporated into PDGui's material database.
+As confirmation of the correct behaviour of PDGui for the generation of crystal surfaces and for the calculation of reflectance, the FPSQ model proposed by Lee et. al. has been incorporated into the materials' database of PDGui and the calculations reported in their paper have been reproduced.
+To achieve this, a simple experiment file for air has been used as the dielectric medium.
 Files with the information necessary to reproduce the results presented here are available on the PDielec GitHub in the Examples/Experiment/Sapphire directory.
 
 The paper of Lee et. al. :cite:`Lee2014` gives very clear descriptions of the c-plane, a-planes and r-planes of sapphire.
@@ -427,8 +388,8 @@ For hexagonal crystals the Miller-Bravais index is (hkil) which represents a pla
 By definition the third integer, i, is equal to -(h+k) and is therefore redundant but useful in elucidating the families of faces which are equivalent.
 For the c-plane the only other related surface to (0001) would be (000-1) and the Miller indices for these surfaces would be (001) and (00-1).
 
-The figure shows the settings in the *Single Crystal Scenario Tab*.  The *TestDataBase.xlsx* file is being used as the materials database and the program is operating in *Thick slab mode*, so the last layer in the *Layer Editor* will be treated as a semi-infinite material.
-The *Angle of incidence* is set to 16 :superscript:`o` as specified in the paper.
+The figure shows the settings in the *Single Crystal Scenario Tab*.  The *DataBase.xlsx* file is being used as the materials database and the last layer in the list of layers (Silicon) will be treated as a semi-infinite material.
+The *Angle of incidence* is set to 7.2 :superscript:`o` as specified in the paper.
 The dielectric film in this case is simply air, which has a constant unit permittivity, its thickness is arbitrary and it is only present here to allow the program to operate as it needs and dielectric material.
 The second layer is a 1.0μm film of sapphire taken from the database with (hkl) set to (001).
 The layer was added using the *Layer Editor*.

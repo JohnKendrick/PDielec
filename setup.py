@@ -1,7 +1,7 @@
 import setuptools
 
 # Update this for every PyPi release
-version = "8.0.0"
+version = "8.1.0"
 
 with open("README.md", "r") as fh:
     long_description = fh.read()
@@ -26,7 +26,7 @@ setuptools.setup(
     packages=['PDielec','PDielec/GUI'],
     #package_dir = { '' : 'PDielec' },
     include_package_data=True,
-    package_data={'':['*.png']},
+    package_data={'':['*.png','*.xlsx']},
     license='MIT',
     keywords=['Infrared',' Infrared Spectroscopy','THz Spectroscopy','Terahertz Spectroscopy','Bruggeman','Maxwell-Garnett','Effective Medium'],
     install_requires=[

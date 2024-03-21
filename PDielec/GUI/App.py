@@ -112,7 +112,7 @@ class App(QMainWindow):
         self.title = 'PDGui - Using PDielec library {} '.format(self.version)
         self.left = 10
         self.top = 30
-        self.width = 500
+        self.width = 900
         self.height = 800
         self.setWindowTitle(self.title)
         self.setGeometry(self.left, self.top, self.width, self.height)

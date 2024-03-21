@@ -31,7 +31,7 @@ The conda-forge package has a Python 3 environment included in the package.  Aft
    pdgui
 
 
-If at a later stage you want to update PDielec to the latest version from conda-forge, you should be able to update the environment in the following way::
+If at a later stage, you want to update PDielec to the latest version from conda-forge, you should be able to update the environment in the following way::
 
    conda activate pdielec
    conda update pdielec
@@ -57,7 +57,7 @@ cd to a directory where PDielec will be installed and use git to clone a copy of
   cd ~/Software
   git clone https://github.com/JohnKendrick/PDielec.git
 
-This will create a directory \~/Software/PDielec.  To make the program generally available to the user;::
+This will create a directory \~/Software/PDielec.  To make the program generally available to the user: ::
 
   cd ~/Software/PDielec
   pdmake install

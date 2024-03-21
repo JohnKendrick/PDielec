@@ -36,12 +36,8 @@ tab.settings['Superstrate depth'] =  999.0
 tab.settings['Substrate depth'] =  999.0
 tab.settings['Film thickness'] =  1.6
 tab.settings['Thickness unit'] = 'mm'
-tab.settings['Mode'] = 'Coherent thin film'
+tab.settings['Mode'] = 'Scattering matrix'
 tab.settings['Frequency units'] = 'wavenumber'
-tab.settings['Partially incoherent samples'] =  20
-tab.settings['Percentage partial incoherence'] =  0
-tab.settings['Filter kernel size'] =  1
-tab.settings['Filter polynomial size'] =  3
 #
 #
 self.notebook.addScenario(scenarioType="Single crystal")
@@ -59,12 +55,8 @@ tab.settings['Superstrate depth'] =  999.0
 tab.settings['Substrate depth'] =  999.0
 tab.settings['Film thickness'] =  1.6
 tab.settings['Thickness unit'] = 'mm'
-tab.settings['Mode'] = 'Coherent thin film'
+tab.settings['Mode'] = 'Scattering matrix'
 tab.settings['Frequency units'] = 'wavenumber'
-tab.settings['Partially incoherent samples'] =  20
-tab.settings['Percentage partial incoherence'] =  0
-tab.settings['Filter kernel size'] =  1
-tab.settings['Filter polynomial size'] =  3
 #
 #
 self.notebook.addScenario(scenarioType="Single crystal")
@@ -82,12 +74,8 @@ tab.settings['Superstrate depth'] =  999.0
 tab.settings['Substrate depth'] =  999.0
 tab.settings['Film thickness'] =  1.6
 tab.settings['Thickness unit'] = 'mm'
-tab.settings['Mode'] = 'Coherent thin film'
+tab.settings['Mode'] = 'Scattering matrix'
 tab.settings['Frequency units'] = 'wavenumber'
-tab.settings['Partially incoherent samples'] =  20
-tab.settings['Percentage partial incoherence'] =  0
-tab.settings['Filter kernel size'] =  1
-tab.settings['Filter polynomial size'] =  3
 #
 #
 tab = self.notebook.analysisTab

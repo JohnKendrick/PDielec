@@ -23,5 +23,8 @@ mgo_fit_experiment.py
 mgo_fit_experiment_reflectivity.py
    Script for generating a plot for comparison with experimental reflectivity 
 
-mgo_mode_comparisons.py
-   Script for comparing the different modes of operation
+mgo_fit_experiment_transmittance.py
+   Script for generating a plot for comparison with experimental transmittance 
+
+mgo_comparison_of_incoherent_methods.py
+   Script for comparing the different incoherent methods of operation

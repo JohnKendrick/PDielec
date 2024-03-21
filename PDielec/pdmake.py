@@ -84,6 +84,7 @@ test_pdgui = [
 	'SingleCrystal/Bi2Se3_film',
 	'SingleCrystal/L-alanine',
 	'SingleCrystal/MgO',
+	'SingleCrystal/ScatteringMatrix',
 	'SizeEffects/BaTiO3',
 	'SizeEffects/MgO',
 	'SizeEffects/ZnO',
@@ -100,6 +101,7 @@ test_singlecrystal = [
 	'SingleCrystal/Bi2Se3_film',
 	'SingleCrystal/L-alanine',
 	'SingleCrystal/MgO',
+	'SingleCrystal/ScatteringMatrix',
     ]
 
 test_vibanalysis = [
@@ -345,6 +347,7 @@ def runP2CifTest(title, instructions, regenerate):
     '''Run a test on p2cif'''
     global rootDirectory
     global useLocal
+    print(title,end='',flush=True)
     if useLocal:
         sys.argv = ['python']
         sys.argv.append(os.path.join(rootDirectory,'p2cif'))
@@ -367,12 +370,12 @@ def runP2CifTest(title, instructions, regenerate):
     if not regenerate:
         nerrors = compareFiles('all.cif', 'all.ref.cif')
         if nerrors > 0:
-            print(title+' {} ERRORS:'.format(nerrors))
+            print(' {} ERRORS:'.format(nerrors))
         else:
-            print(title+' OK:')
+            print(' OK:')
         # end if
     else:
-        print(title+' Regenerated:')
+        print(' Regenerated:')
     # end if
     return
 
@@ -383,6 +386,7 @@ def runVibAnalysis(title, instructions, regenerate):
     regenerate is set to true if the reference file is overwritten'''
     global rootDirectory
     global useLocal
+    print(title,end='',flush=True)
     if useLocal:
         sys.argv = ['python']
         sys.argv.append(os.path.join(rootDirectory,'vibanalysis'))
@@ -408,13 +412,13 @@ def runVibAnalysis(title, instructions, regenerate):
     if not regenerate:
         nerrors = compareNmaFiles(nmafile, reffile)
         if nerrors > 0:
-            print(title+' {} ERRORS:'.format(nerrors))
+            print(' {} ERRORS:'.format(nerrors))
         else:
-            print(title+' OK:')
+            print(' OK:')
         # end if
     else:
         copyfile(nmafile,reffile)
-        print(title+' Regenerated:')
+        print(' Regenerated:')
     # end if
     return
 
@@ -429,6 +433,7 @@ def runPreaderTest(title, instructions, regenerate):
     global debug
     if debug:
         print('runPreaderTest:',title,instructions)
+    print(title,end='',flush=True)
     if useLocal:
         sys.argv = ['python']
         sys.argv.append(os.path.join(rootDirectory,'preader'))
@@ -453,12 +458,12 @@ def runPreaderTest(title, instructions, regenerate):
             result = main_checkcsv()
         nerrors,keep_line_number,keep_word1,keep_word2,max_percentage_error = result
         if nerrors > 0:
-            print(title+' ERRORS:'+"LARGEST ON LINE {} - max %error={}".format(nerrors, keep_line_number, max_percentage_error))
+            print(' ERRORS:'+"LARGEST ON LINE {} - max %error={}".format(nerrors, keep_line_number, max_percentage_error))
         else:
-            print(title+' OK:'+" - max %error={}" .format(max_percentage_error))
+            print(' OK:'+" - max %error={}" .format(max_percentage_error))
         # end if
     else:
-        print(title+' Regenerated:')
+        print(' Regenerated:')
     # end if
     return
 
@@ -472,6 +477,7 @@ def runPDGuiTest(title, instructions, regenerate, benchmarks=False):
     global debug
     global rootDirectory
     global useLocal
+    print(title,end='',flush=True)
     if useLocal:
         sys.argv = ['python']
         sys.argv.append(os.path.join(rootDirectory,'pdgui'))
@@ -494,19 +500,19 @@ def runPDGuiTest(title, instructions, regenerate, benchmarks=False):
                 result = main_checkexcel()
             nerrors,row,col,sheet,file1,value1,file2,value2,max_percentage_error = result
             if nerrors > 0:
-                print(title+'{} ERRORS:'.format(nerrors)+"{}@{},{} - max %error={}".format(sheet,row,col, max_percentage_error))
+                print('{} ERRORS:'.format(nerrors)+"{}@{},{} - max %error={}".format(sheet,row,col, max_percentage_error))
             else:
-                print(title+' OK:'+" - max %error={}" .format(max_percentage_error))
+                print(' OK:'+" - max %error={}" .format(max_percentage_error))
             # end if
         elif benchmarks:
             end_time = time.time()
             elapsed_time = end_time - start_time
             start_time = end_time
-            print(title+' OK:'+" - elapsed time {:.3f}s" .format(elapsed_time))
+            print(' OK:'+" - elapsed time {:.3f}s" .format(elapsed_time))
         elif not benchmarks:
             # If we asked for a benchmarking then don't do a regenerate
             copyfile('results.xlsx','results.ref.xlsx')
-            print(title+' Regenerated:')
+            print(' Regenerated:')
         # end if not regenerate
     #end if not viewing
     return

@@ -6,11 +6,12 @@ self.notebook.switchScenario(0,scenarioType="Single crystal")
 #
 #
 tab = self.notebook.mainTab
-tab.settings['Program'] = 'castep'
-tab.settings['Output file name'] = 'phonon.castep'
-tab.settings['Excel file name'] = 'mgo_fit_experiment.xlsx'
-tab.settings['Script file name'] = 'mgo_fit_experiment.py'
+tab.settings['Program'] = 'experiment'
+tab.settings['Output file name'] = 'AlN.exp'
+tab.settings['Excel file name'] = ''
+tab.settings['Script file name'] = 'AlN_on_SiC.py'
 tab.settings['QM program'] = ''
+tab.settings['Compatibility mode'] = 'Linux'
 #
 #
 tab = self.notebook.settingsTab
@@ -19,33 +20,36 @@ tab.settings['Neutral Born charges'] =  False
 tab.settings['Sigma value'] =  5
 tab.settings['Mass definition'] = 'average'
 tab.settings['Optical permittivity edited'] =  False
-tab.sigmas_cm1 = [5.0, 5, 5, 5.0078125, 5.0, 5.0]
+tab.sigmas_cm1 = [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]
 #
 #
 tab = self.notebook.scenarios[0]
 tab.settings['Legend'] = 'Scenario 1'
 tab.settings['Scenario type'] = 'Single crystal'
-tab.settings['Unique direction - h'] =  0
-tab.settings['Unique direction - k'] =  0
-tab.settings['Unique direction - l'] =  1
-tab.settings['Azimuthal angle'] =  0.0
-tab.settings['Angle of incidence'] =  0.0
-tab.settings['Superstrate dielectric'] =  1.0
-tab.settings['Substrate dielectric'] =  1.0
-tab.settings['Superstrate depth'] =  99999.0
-tab.settings['Substrate depth'] =  99999.0
-tab.settings['Film thickness'] =  0.5
-tab.settings['Thickness unit'] = 'mm'
-tab.settings['Mode'] = 'Coherent thin film'
+tab.settings['Materials database'] = 'DataBase.xlsx'
+tab.settings['Global azimuthal angle'] =  0.0
+tab.settings['Angle of incidence'] =  7.2
+tab.settings['Mode'] = 'Transfer matrix'
 tab.settings['Frequency units'] = 'wavenumber'
 tab.settings['Partially incoherent samples'] =  20
 tab.settings['Percentage partial incoherence'] =  0
 tab.settings['Filter kernel size'] =  1
 tab.settings['Filter polynomial size'] =  3
+tab.settings['Layer material names'] =  ['air', 'Dielectric layer', '6H-SiC']
+tab.settings['Layer hkls'] =  [[0, 0, 0], [0, 0, 1], [0, 0, 1]]
+tab.settings['Layer azimuthals'] =  [0, 0, 0.0]
+tab.settings['Layer thicknesses'] =  [1, 0.92, 1.0]
+tab.settings['Layer thickness units'] =  ['um', 'um', 'um']
+tab.settings['Layer incoherent options'] =  ['Coherent', 'Coherent', 'Coherent']
+tab.settings['Layer dielectric flags'] =  [False, True, False]
+tab.settings['Slice thickness'] =  0
+tab.settings['Slice thickness unit'] = 'um'
+tab.settings['Percentage average incoherence'] =  100
+tab.settings['Number of average incoherence samples'] =  10
 #
 #
 tab = self.notebook.analysisTab
-tab.settings['Radii'] =  [0.66, 1.41]
+tab.settings['Radii'] =  [1.21, 0.71]
 tab.settings['Minimum frequency'] =  -1
 tab.settings['Maximum frequency'] =  400
 tab.settings['title'] = 'Analysis'
@@ -71,7 +75,7 @@ tab.settings['Element colours'] =  None
 #
 #
 tab = self.notebook.fitterTab
-tab.settings['Excel file name'] = 'mgo_experimental_transmittance.xlsx'
+tab.settings['Experimental file name'] = ''
 tab.settings['Plot title'] = 'Experimental and Calculated Spectral Comparison'
 tab.settings['Fitting type'] = 'Minimise x-correlation'
 tab.settings['Number of iterations'] =  20
@@ -79,7 +83,7 @@ tab.settings['Frequency scaling factor'] =  1.0
 tab.settings['Optimise frequency scaling'] =  False
 tab.settings['Spectrum scaling'] =  False
 tab.settings['Spectrum scaling factor'] =  1.0
-tab.settings['Independent y-axes'] =  False
+tab.settings['Independent y-axes'] =  True
 tab.settings['Spectral difference threshold'] =  0.05
 tab.settings['HPFilter lambda'] =  7.0
 tab.settings['Baseline removal'] =  False
@@ -87,11 +91,12 @@ tab.settings['Scenario index'] =  0
 #
 #
 tab = self.notebook.plottingTab
-tab.settings['Minimum frequency'] =  10.0
-tab.settings['Maximum frequency'] =  50.0
-tab.settings['Frequency increment'] =  0.05
+tab.settings['Minimum frequency'] =  0.0016666666666666668
+tab.settings['Maximum frequency'] =  1200.0
+tab.settings['Frequency increment'] =  0.9999983333333333
 tab.settings['Molar definition'] = 'Unit cells'
 tab.settings['Number of atoms'] =  1
-tab.settings['Plot type'] = 'Crystal Transmittance (S polarisation)'
-tab.settings['concentration'] =  86.71312720248292
-tab.settings['cell concentration'] =  86.71312720248292
+tab.settings['Plot type'] = 'Crystal Reflectance (P polarisation)'
+tab.settings['Frequency unit'] = 'wavenumber'
+tab.settings['concentration'] =  40.14954959801668
+tab.settings['cell concentration'] =  40.14954959801668

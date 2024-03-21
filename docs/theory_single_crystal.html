@@ -40,7 +40,7 @@
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="7. Phonon Analysis" href="analysis.html" />
-    <link rel="prev" title="5. Theory for Powder Light Scattering" href="theory_powder.html" /> 
+    <link rel="prev" title="5. Theory for Light Scattering from Powders" href="theory_powder.html" /> 
         <meta name="viewport" content="width=device-width, initial-scale=1">
   </head><body>
     <div class="relbar-top">
@@ -55,7 +55,7 @@
           <a href="analysis.html" title="7. Phonon Analysis"
              accesskey="N">next</a> &nbsp; &nbsp;</li>
         <li class="right" >
-          <a href="theory_powder.html" title="5. Theory for Powder Light Scattering"
+          <a href="theory_powder.html" title="5. Theory for Light Scattering from Powders"
              accesskey="P">previous</a> &nbsp; &nbsp;</li>
     <li><a href="index.html">PDielec: John Kendrick &amp; Andrew Burnett</a> &#187;</li>
 
@@ -72,24 +72,29 @@
             
   <section id="theory-for-single-crystal-optics">
 <span id="single-crystal-theory"></span><h1><span class="section-number">6. </span>Theory for Single Crystal Optics<a class="headerlink" href="#theory-for-single-crystal-optics" title="Permalink to this heading">¶</a></h1>
-<p>The <em>SingleCrystal tab</em> enables the calculation of the optical behaviour of a single crystal (thick slab or film).  The method uses the pyGTM code available on GitHub <span id="id1">[<a class="reference internal" href="zreferences.html#id6" title="PyGtm. URL: http://pygtm.readthedocs.io/.">10</a>]</span>.  This code implements a generalised transfer matrix method described by Passler et al. <span id="id2">[<a class="reference internal" href="zreferences.html#id73" title="Nikolai Christian Passler, Mathieu Jeannin, and Alexander Paarmann. Layer-resolved absorption of light in arbitrarily anisotropic heterostructures. Physical Review B, 101(16):1–12, 2020. arXiv:2002.03832, doi:10.1103/PhysRevB.101.165425.">11</a>]</span> and that builds on previous publications <span id="id3">[<a class="reference internal" href="zreferences.html#id74" title="Nikolai Christian Passler and Alexander Paarmann. Generalized 4 × 4 matrix formalism for light propagation in anisotropic stratified media: Study of surface phonon polaritons in polar dielectric heterostructures. arXiv, 36(11):3246–3248, 2017. arXiv:1707.00462, doi:10.1364/josab.36.003246.">12</a>, <a class="reference internal" href="zreferences.html#id75" title="Nikolai Christian Passler and Alexander Paarmann. Generalized 4 × 4 matrix formalism for light propagation in anisotropic stratified media: study of surface phonon polaritons in polar dielectric heterostructures: erratum. Journal of the Optical Society of America B, 36(11):3246, nov 2019. URL: https://www.osapublishing.org/abstract.cfm?URI=josab-36-11-3246, arXiv:1707.00462, doi:10.1364/JOSAB.36.003246.">13</a>]</span>.
-The code has been modified to model incoherent systems as well as coherent ones.
-A summary of the theory underlying the transfer matrix method is given to aid in the understanding of the methods implemented and the range of their applications.</p>
+<p>The <em>SingleCrystal tab</em> enables the calculation of the optical behaviour of a single crystal (thick slab or film).
+The methods used are based on the pyGTM code available on GitHub <span id="id1">[<a class="reference internal" href="zreferences.html#id6" title="PyGtm. URL: http://pygtm.readthedocs.io/.">10</a>]</span>.
+This code implements a general transfer matrix method described by Passler et al. <span id="id2">[<a class="reference internal" href="zreferences.html#id73" title="Nikolai Christian Passler, Mathieu Jeannin, and Alexander Paarmann. Layer-resolved absorption of light in arbitrarily anisotropic heterostructures. Physical Review B, 101(16):1–12, 2020. arXiv:2002.03832, doi:10.1103/PhysRevB.101.165425.">11</a>]</span> and that builds on previous publications <span id="id3">[<a class="reference internal" href="zreferences.html#id74" title="Nikolai Christian Passler and Alexander Paarmann. Generalized 4 × 4 matrix formalism for light propagation in anisotropic stratified media: Study of surface phonon polaritons in polar dielectric heterostructures. arXiv, 36(11):3246–3248, 2017. arXiv:1707.00462, doi:10.1364/josab.36.003246.">12</a>, <a class="reference internal" href="zreferences.html#id75" title="Nikolai Christian Passler and Alexander Paarmann. Generalized 4 × 4 matrix formalism for light propagation in anisotropic stratified media: study of surface phonon polaritons in polar dielectric heterostructures: erratum. Journal of the Optical Society of America B, 36(11):3246, nov 2019. URL: https://www.osapublishing.org/abstract.cfm?URI=josab-36-11-3246, arXiv:1707.00462, doi:10.1364/JOSAB.36.003246.">13</a>]</span>.
+The code has been modified substantially to model incoherent and coherent systems.
+Also a scattering matrix has been implemented as described in the PyLlama software documentation <span id="id4">[<a class="reference internal" href="zreferences.html#id86" title="Mélanie M. Bay, Silvia Vignolini, and Kevin Vynck. Pyllama: a stable and versatile python toolkit for the electromagnetic modelling of multilayered anisotropic media. Computer Physics Communications, 273:108256, 2022. URL: https://doi.org/10.1016/j.cpc.2021.108256, doi:10.1016/j.cpc.2021.108256.">14</a>]</span></p>
+<p>A summary of the theory underlying the transfer and scattering matrix methods is given to aid in the understanding of the methods implemented and the range of their applications.</p>
 <p>In general PDGui can handle multilayered frequency-dependent films, sandwiched between a superstrate and a substrate.
-For the sake of simplicity, the following will describe a system with a single dielectric and the media will be indexed 0, 1 and 2 for the superstrate, dielectric and substrate respectively.
+For the sake of simplicity, the following will describe a system with a single dielectric (which is defined from the calculated permittivity from a DFT calculation or an experimental file.
+The media will be indexed 0, 1 and 2 for the superstrate, dielectric and substrate respectively.
 A schematic illustrating this is shown in <a class="reference internal" href="#fig-definition-of-rta"><span class="std std-numref">Fig. 6.1</span></a>.
-To aid understanding of the input and output and the limitations of the methods used, a brief summary of the transfer matrix method is given here, specific to its application in PDGui.
-There are 4 different modes of operation of the matrix transfer method in PDGui and these are described below under the headings ‘coherent thin film’, ‘incoherent thin film’, ‘partially incoherent thin film’ and ‘thick slab’</p>
-<figure class="align-default" id="id8">
-<span id="fig-definition-of-rta"></span><a class="reference internal image-reference" href="_images/Definition_of_Transmittance.png"><img alt="_images/Definition_of_Transmittance.png" src="_images/Definition_of_Transmittance.png" style="width: 1142.1000000000001px; height: 675.9px;" /></a>
+To aid understanding of the input and output and the limitations of the methods used, a brief summary of the transfer matrix method is given first, specific to its application in PDGui.
+This will be followed by a description of the scattering matrix approach as implemented in the package.
+The treatment of light transmission and reflection in incoherent media will also be outlined.</p>
+<figure class="align-default" id="id15">
+<span id="fig-definition-of-rta"></span><a class="reference internal image-reference" href="_images/Definition_of_Transmittance.png"><img alt="_images/Definition_of_Transmittance.png" src="_images/Definition_of_Transmittance.png" style="width: 1152.0px; height: 648.0px;" /></a>
 <figcaption>
-<p><span class="caption-number">Fig. 6.1 </span><span class="caption-text">Layers used to calculate Transmittance, Reflectance and Absorptance</span><a class="headerlink" href="#id8" title="Permalink to this image">¶</a></p>
+<p><span class="caption-number">Fig. 6.1 </span><span class="caption-text">Layers used to calculate Transmittance, Reflectance and Absorptance</span><a class="headerlink" href="#id15" title="Permalink to this image">¶</a></p>
 </figcaption>
 </figure>
-<section id="coherent-thin-film">
-<h2><span class="section-number">6.1. </span>Coherent thin film<a class="headerlink" href="#coherent-thin-film" title="Permalink to this heading">¶</a></h2>
-<p>At an interface, the tangential (in-plane) electric and magnetic fields (given by a vector <span class="math notranslate nohighlight">\(\fieldbf{F_i}\)</span>) have to match in both media.
-This requires that the 4 amplitudes (vector <span class="math notranslate nohighlight">\(\fieldbf{A_i}\)</span>) of the electric and magnetic fields, forward and backward, s and p polarised, in medium <span class="math notranslate nohighlight">\(i\)</span> are related through a 4x4 dynamical matrix <span class="math notranslate nohighlight">\(\tensorbf{D_i}\)</span>.</p>
+<section id="the-transfer-matrix">
+<h2><span class="section-number">6.1. </span>The Transfer Matrix<a class="headerlink" href="#the-transfer-matrix" title="Permalink to this heading">¶</a></h2>
+<p>At an interface, the tangential (in-plane) electric and magnetic fields (given by a vector <span class="math notranslate nohighlight">\(\fieldbf{F_i}\)</span>) match in both media.
+This requires that the 4 amplitudes (vector <span class="math notranslate nohighlight">\(\fieldbf{A_i}\)</span>) of the electric and magnetic fields, forward and backward, s- and p- polarised, in medium <span class="math notranslate nohighlight">\(i\)</span> are related through a 4x4 dynamical matrix <span class="math notranslate nohighlight">\(\tensorbf{D_i}\)</span>.</p>
 <div class="math notranslate nohighlight" id="equation-eq-dynamical-matrix">
 <span class="eqno">(6.1)<a class="headerlink" href="#equation-eq-dynamical-matrix" title="Permalink to this equation">¶</a></span>\[\fieldbf{F}_i  = \tensorbf{D}_i \fieldbf{A}_i\]</div>
 <p>Requiring that the in-plane fields match in both media at an interface gives;</p>
@@ -97,88 +102,137 @@ This requires that the 4 amplitudes (vector <span class="math notranslate nohigh
 <span class="eqno">(6.2)<a class="headerlink" href="#equation-eq-field-matching" title="Permalink to this equation">¶</a></span>\[\begin{split}\fieldbf{F}_{i-1}                    &amp;= \fieldbf{F}_i                \\
 \tensorbf{D}_{i-1} \fieldbf{A}_{i-1} &amp;= \tensorbf{D}_i \fieldbf{A}_i \\
 \fieldbf{A}_{i-1}                    &amp;= \tensorbf{D}_{i-1}^{-1} \tensorbf{D}_i \fieldbf{A}_i\end{split}\]</div>
-<p>Within a given medium the mode amplitudes will change according to the propagation through the medium described by an diagonal exponential matrix <span class="math notranslate nohighlight">\(\tensorbf{P}_i\)</span>.  Thus the amplitudes on the left side of a layer are related to those on the right side by;</p>
+<p>Within a given, homogeneous, layer the mode amplitudes will change according to the propagation through the medium described by an diagonal exponential matrix <span class="math notranslate nohighlight">\(\tensorbf{P}_i\)</span>.  Thus the amplitudes on the left side of a layer are related to those on the right side by;</p>
 <div class="math notranslate nohighlight" id="equation-eq-propagation">
 <span class="eqno">(6.3)<a class="headerlink" href="#equation-eq-propagation" title="Permalink to this equation">¶</a></span>\[\fieldbf{A}_{i,left}  = \tensorbf{P}_i \fieldbf{A}_{i,right}\]</div>
 <p>The total transfer matrix for the 3 media considered (superstrate, dielectric and substrate; 0, 1 and 2 respectively) is therefore;</p>
 <div class="math notranslate nohighlight" id="equation-eq-transfer-matrix">
-<span class="eqno">(6.4)<a class="headerlink" href="#equation-eq-transfer-matrix" title="Permalink to this equation">¶</a></span>\[\tensorbf{M}  =
+<span class="eqno">(6.4)<a class="headerlink" href="#equation-eq-transfer-matrix" title="Permalink to this equation">¶</a></span>\[\tensorbf{T}  =
               \tensorbf{D}_0^{-1}
               (\tensorbf{D}_1
               \tensorbf{P}_1
               \tensorbf{D}_1^{-1})
               \tensorbf{D}_2\]</div>
-<p>The elements of the total 4x4 transfer matrix <span class="math notranslate nohighlight">\(\tensorbf{M}\)</span> can be used to determine the total reflectance and transittance for each s and p mode.</p>
+<p>The elements of the total 4x4 transfer matrix <span class="math notranslate nohighlight">\(\tensorbf{T}\)</span> can be used to determine the total reflectance and transmittance for each s- and p- mode.</p>
+<p>For the multi-layer case it is straightforward to generalise this expression by writing the transfer matrix, <span class="math notranslate nohighlight">\(\tensorbf{T}_i\)</span>, for the <span class="math notranslate nohighlight">\(i'th\)</span> layer as:</p>
+<div class="math notranslate nohighlight" id="equation-eq-transfer-matrix2">
+<span class="eqno">(6.5)<a class="headerlink" href="#equation-eq-transfer-matrix2" title="Permalink to this equation">¶</a></span>\[\tensorbf{T}_i  =
+              \tensorbf{D}_i
+              \tensorbf{P}_i
+              \tensorbf{D}_i^{-1}\]</div>
+<p>The total transfer matrix for the whole system consisting of a superstrate, <span class="math notranslate nohighlight">\(N\)</span> layers and a substrate can then be written:</p>
+<div class="math notranslate nohighlight" id="equation-eq-transfer-matrix3">
+<span class="eqno">(6.6)<a class="headerlink" href="#equation-eq-transfer-matrix3" title="Permalink to this equation">¶</a></span>\[\tensorbf{T}  =
+              \tensorbf{D}_0^{-1}
+              \left( \prod_{i=1}^N \tensorbf{T}_i \right)
+              \tensorbf{D}_{N+1}\]</div>
+<p>The role of the total transfer matrix is to convert the field amplitudes on the left-hand side (the incident amplitudes) to those on the right-hand side (the transmitted amplitudes).</p>
 </section>
-<section id="incoherent-thin-film">
-<h2><span class="section-number">6.2. </span>Incoherent thin film<a class="headerlink" href="#incoherent-thin-film" title="Permalink to this heading">¶</a></h2>
-<p>Because the above approach uses amplitudes there is always the possibility that a mismatch in phase for a reflected or transmitted wave will result in interference and therefore oscillations in intensity as the frequency is changed.
-Experimentally, for thick crystals, it is known that the presence of defects in the crystal and at the interfaces, and differences in thickness cause this coherence to be lost and instead incoherent light transmission is observed and the oscillations in intensity due to inteference are lost.
-The “Incoherent thin film” mode creates a transfer matrix like that in <a class="reference internal" href="#equation-eq-transfer-matrix">(6.4)</a>, but instead of amplitudes, uses intensities for the transfer matrix of the dielectric.</p>
-<p>Such an approach has been implemented in FSRStools <span id="id4">[<a class="reference internal" href="zreferences.html#id79" title="Daniel Dietze. Fsrstools - yeh_tm. 2015. URL: https://github.com/ddietze/FSRStools (visited on 2017-07-04).">46</a>]</span> a Python implementation of Yeh’s transfer matrix method <span id="id5">[<a class="reference internal" href="zreferences.html#id81" title="Pochi Yeh. Optics of anisotropic layered media: A new 4 × 4 matrix algebra. Surface Science, 96(1-3):41–53, 1980. doi:10.1016/0039-6028(80)90293-9.">47</a>]</span>.
-The theory is described by Beck <span id="id6">[<a class="reference internal" href="zreferences.html#id80" title="William Beck. Modeling and Design of Mixed-coherence Optical Stacks. Army Research Laboratory, 2012.">48</a>]</span> and by Katsidis and Siapkas <span id="id7">[<a class="reference internal" href="zreferences.html#id82" title="C. C. Katsidis and D. I. Siapkas. Systems With Coherent , Partially Coherent , and Incoherent Interference. Applied Optics, 41(19):3978–3987, 2002.">49</a>]</span>.
+<section id="the-scattering-matrix">
+<h2><span class="section-number">6.2. </span>The Scattering Matrix<a class="headerlink" href="#the-scattering-matrix" title="Permalink to this heading">¶</a></h2>
+<p>Unfortunately, transfer matrix theory is known to exhibit serious numerical instabilities when the layers become thick.  This is mainly due to the fact that both forward and backward waves are being described as moving from right to left.  The backward moving wave is growing in amplitude and this leads to all kinds of instabilities.
+The scattering matrix method overcomes this problem by providing a matrix for each layer which couples the incoming waves (two from the left and two from the right) to the outgoing waves.
+In this way it is possible to describe waves which are always decreasing in amplitude.
+To demonstrate the difference between the approaches the transfer matrix connects fields in one layer to those in the next layer:</p>
+<div class="math notranslate nohighlight" id="equation-eq-transfer-matrix4">
+<span class="eqno">(6.7)<a class="headerlink" href="#equation-eq-transfer-matrix4" title="Permalink to this equation">¶</a></span>\[\begin{split}\begin{bmatrix}
+  \fieldbf{F}_{i+1}^+  \\
+  \fieldbf{F}_{i+1}^-
+\end{bmatrix}
+   = \tensorbf{T}_i
+\begin{bmatrix}
+\fieldbf{F}_{i}^+  \\
+\fieldbf{F}_{i}^-
+\end{bmatrix}\end{split}\]</div>
+<p>The scattering matrix for this is written;</p>
+<div class="math notranslate nohighlight" id="equation-eq-scattering-matrix">
+<span class="eqno">(6.8)<a class="headerlink" href="#equation-eq-scattering-matrix" title="Permalink to this equation">¶</a></span>\[\begin{split}\begin{bmatrix}
+  \fieldbf{F}_{i}^- \\
+  \fieldbf{F}_{i+1}^+
+\end{bmatrix}
+   = \tensorbf{S}_i
+\begin{bmatrix}
+\fieldbf{F}_{i}^+  \\
+\fieldbf{F}_{i+1}^-
+\end{bmatrix}\end{split}\]</div>
+<p>The fields on the right-hand side represent light entering the layer and the fields on the left-hand side represent light leaving the layer.  The fields in these expressions are two component vectors representing the p- and s- fields. The superscripts ‘+’ and ‘-’ indicate forward and backward moving light respectively.
+It should be noted that this definition is slightly different to the definition used by PyLlama.</p>
+<p>The scattering matrix is more complicated to handle than the transfer matrix.  Scattering matrices between different layers can be combined using the Redheffer product <span id="id5">[<a class="reference internal" href="zreferences.html#id87" title="R. C. Rumpf. IMPROVED FORMULATION OF SCATTERING MATRICES FOR SEMI-ANALYTICAL METHODS THAT IS CONSISTENT WITH CONVENTION. Progress In Electromagnetics Research B, 35(August):241–261, 2011.">47</a>]</span></p>
+<div class="math notranslate nohighlight" id="equation-eq-redheffer">
+<span class="eqno">(6.9)<a class="headerlink" href="#equation-eq-redheffer" title="Permalink to this equation">¶</a></span>\[\tensorbf{S}  =
+              \tensorbf{S}_0 \otimes ... \tensorbf{S}_i \otimes \tensorbf{S}_{i+1} \otimes ... \tensorbf{S}_N\]</div>
+<p>The transfer matrix method in PDGui is provided by a modified version of the pyGTM <span id="id6">[<a class="reference internal" href="zreferences.html#id6" title="PyGtm. URL: http://pygtm.readthedocs.io/.">10</a>]</span>.
+A full description of the method is provided by Passler et al. <span id="id7">[<a class="reference internal" href="zreferences.html#id73" title="Nikolai Christian Passler, Mathieu Jeannin, and Alexander Paarmann. Layer-resolved absorption of light in arbitrarily anisotropic heterostructures. Physical Review B, 101(16):1–12, 2020. arXiv:2002.03832, doi:10.1103/PhysRevB.101.165425.">11</a>]</span>.
+The scattering matrix method was implemented within the pyGTM framework using the algorithms suggested in PyLama <span id="id8">[<a class="reference internal" href="zreferences.html#id86" title="Mélanie M. Bay, Silvia Vignolini, and Kevin Vynck. Pyllama: a stable and versatile python toolkit for the electromagnetic modelling of multilayered anisotropic media. Computer Physics Communications, 273:108256, 2022. URL: https://doi.org/10.1016/j.cpc.2021.108256, doi:10.1016/j.cpc.2021.108256.">14</a>]</span>, with some modifications.</p>
+</section>
+<section id="incoherence">
+<h2><span class="section-number">6.3. </span>Incoherence<a class="headerlink" href="#incoherence" title="Permalink to this heading">¶</a></h2>
+<p>Because the above approaches use amplitudes there is always the possibility that a mismatch in phase for a reflected or transmitted wave will result in interference and therefore oscillations (etalons) in intensity as the frequency is changed.
+Experimentally, for thick crystals, it is known that the presence of defects in the crystal and at the interfaces, and differences in thickness cause this coherence to be lost and instead incoherent light transmission is observed and the etalons are lost.
+PDielec implements several schemes treating incoherence.</p>
+<p>The “Incoherent (intensity)” method creates a transfer matrix like that in <a class="reference internal" href="#equation-eq-transfer-matrix">(6.4)</a>, but instead of amplitudes, uses intensities for the transfer matrix of the dielectric.
+This method has not been implemented for the scattering matrix formalism although such an approach has been implemented in FSRStools <span id="id9">[<a class="reference internal" href="zreferences.html#id79" title="Daniel Dietze. Fsrstools - yeh_tm. 2015. URL: https://github.com/ddietze/FSRStools (visited on 2017-07-04).">48</a>]</span> a Python implementation of Yeh’s transfer matrix method <span id="id10">[<a class="reference internal" href="zreferences.html#id81" title="Pochi Yeh. Optics of anisotropic layered media: A new 4 × 4 matrix algebra. Surface Science, 96(1-3):41–53, 1980. doi:10.1016/0039-6028(80)90293-9.">49</a>]</span>.
+The theory is described by Beck <span id="id11">[<a class="reference internal" href="zreferences.html#id80" title="William Beck. Modeling and Design of Mixed-coherence Optical Stacks. Army Research Laboratory, 2012.">50</a>]</span> and by Katsidis and Siapkas <span id="id12">[<a class="reference internal" href="zreferences.html#id82" title="C. C. Katsidis and D. I. Siapkas. Systems With Coherent , Partially Coherent , and Incoherent Interference. Applied Optics, 41(19):3978–3987, 2002.">51</a>]</span>.
 This approach has been incorporated in PDGui by modifying the total transfer matrix as follows;</p>
 <div class="math notranslate nohighlight" id="equation-eq-transfer-matrix-int">
-<span class="eqno">(6.5)<a class="headerlink" href="#equation-eq-transfer-matrix-int" title="Permalink to this equation">¶</a></span>\[\tensorbf{M}_{int} =  \mid \tensorbf{D}_0^{-1} \tensorbf{D}_1 \mid^2 \mid \tensorbf{P}_1 \mid ^2 \mid \tensorbf{D}_1^{-1} \tensorbf{D}_2 \mid ^2\]</div>
+<span class="eqno">(6.10)<a class="headerlink" href="#equation-eq-transfer-matrix-int" title="Permalink to this equation">¶</a></span>\[\tensorbf{T}_{int} =  \mid \tensorbf{D}_0^{-1} \tensorbf{D}_1 \mid^2 \mid \tensorbf{P}_1 \mid ^2 \mid \tensorbf{D}_1^{-1} \tensorbf{D}_2 \mid ^2\]</div>
 <p>The use of intensities instead of amplitudes ensures that the phase information is lost.
 The actual implementation is appropriate for a multi-layer system where all dielectric layers are treated as being incoherent films, whatever their thickness.</p>
-</section>
-<section id="partially-incoherent-thin-film">
-<h2><span class="section-number">6.3. </span>Partially incoherent thin film<a class="headerlink" href="#partially-incoherent-thin-film" title="Permalink to this heading">¶</a></h2>
-<p>PDgui caters for partial incoherence, where some incoherence is introduced by lack of planarity, or uncertainties in the orientation angle of the crystal, by randomly averaging over spectra produced by varying the thickness, the orientation angles of the crystal and the incident light.
-The sampling is done over a uniform distribution.  A single percentage is given for all parameters.  For the thickness the percentage is a percentage of the initial thicknes.  For angles the percentage is a percentage of 90 <span class="math notranslate nohighlight">\(^\circ\)</span>.</p>
-<p>Because of the random sampling in the partially incoherent case it has sometimes been found necessary to smooth the calculated spectra using a Savitzky-Golay filter.
-The parameters of the filter are the kernel size (the number of points to averaged) and a polynomial degree for the fitting of those points.
-If a kernel size of less than 2 is given, then no filtering is performed.  The kernel size should be and odd number.
-The settings in PDGui typically start with a sample of 20 calculations and no filter.</p>
-</section>
-<section id="thick-slab">
-<h2><span class="section-number">6.4. </span>Thick Slab<a class="headerlink" href="#thick-slab" title="Permalink to this heading">¶</a></h2>
-<p>For those cases where the partially incoherent thin film and incoherent thin film modes are not appropiate and only reflectance is of interest, the calculation mode referred to as a “thick slab” can be used.
-This mode assumes that there are only two (sem-infinite) media:
-the media through which the incident light travels and the crystalline media by which it is reflected.
-When using the “thick slab” mode, there is no substrate.
-Instead the bottom dielectric layer is taken to be semi-infinite.</p>
-<p>Transmission is not of interest in this case, as in the case of a thick crystal it assumed that total absorption will take place and that there will be no internal reflection within the crystal.
-This mode is similar to a standard Fresnel calculation of reflectance (R) but is appropriate for general permittivity tensors.
-As a result of the assumptions associated with a “thick slab” it is assumed that transmittance (T) through a semi-infinite dielectric with some absorption will be zero and therefore the absorptance (A) will be;</p>
-<div class="math notranslate nohighlight" id="equation-thick-absorptance">
-<span class="eqno">(6.6)<a class="headerlink" href="#equation-thick-absorptance" title="Permalink to this equation">¶</a></span>\[A = 1 - R\]</div>
-<p>For all other modes, the absorptance is defined as below;</p>
+<p>The “Incoherent (phase averaging)” method, which is implemented for both transform and scattering matrix formalisms, instead averages over the phase of the propagating matrix (<span class="math notranslate nohighlight">\(\tensorbf{P}_i\)</span>) for the backward travelling waves in the incoherent material.</p>
+<div class="math notranslate nohighlight" id="equation-eq-incoherent-averaging">
+<span class="eqno">(6.11)<a class="headerlink" href="#equation-eq-incoherent-averaging" title="Permalink to this equation">¶</a></span>\[\begin{split} \tensor{P}_i = \begin{bmatrix}
+     e^{-ik_0 d_i q_i^1} &amp; 0 &amp; 0 &amp; 0 \\
+     0 &amp; e^{-ik_0 d_i q_i^2} &amp; 0 &amp; 0 \\
+     0 &amp; 0 &amp; e^{-ik_0 d_i q_i^3} &amp; 0 \\
+     0 &amp; 0 &amp; 0 &amp; e^{-ik_0 d_i q_i^4}
+    \end{bmatrix}\end{split}\]</div>
+<p>The layer thickness is <span class="math notranslate nohighlight">\(d_i\)</span>, <span class="math notranslate nohighlight">\(\fieldbf{q}_i\)</span> are the wavevectors of the 4 modes.
+The backward travelling waves are modified by adding a phase between 0 and <span class="math notranslate nohighlight">\(2 \pi\)</span>.  Early implementations of this method chose the phase at random and the final results were averaged over many phases <span id="id13">[<a class="reference internal" href="zreferences.html#id77" title="M. Claudia Troparevsky, Adrian S. Sabau, Andrew R. Lupini, and Zhenyu Zhang. Transfer-matrix formalism for the calculation of optical response in multilayer systems: from coherent to incoherent interference. Optics Express, 18:24715, 2010. doi:10.1364/oe.18.024715.">52</a>]</span>.
+It has been shown <span id="id14">[<a class="reference internal" href="zreferences.html#id88" title="Rudi Santbergen, Arno H.M. Smets, and Miro Zeman. Optical model for multilayer structures with coherent, partly coherent and incoherent layers. Optics Express, 21(S2):A262, 2013. doi:10.1364/oe.21.00a262.">53</a>]</span> that a more efficient procedure is to average over an equally spaced range of phases.
+In PDGui 10 equally spaced phases are used and the full range of possible phase variation is considered.
+In principle it is also possible to treat some partial incoherence by limiting the range of phases considered.</p>
+<p>A third method for treating incoherence, called “Incoherent (non-reflective)” is also implemented for both transfer and scattering matrix methods.  This method sets the amplitude of the internally reflected wave to zero.
+This has the effect of artificially increasing the absorptance in the layer.</p>
+<p>For all methods, the absorptance (<span class="math notranslate nohighlight">\(A\)</span>) is defined from the reflectance (<span class="math notranslate nohighlight">\(R\)</span>) and transmittance (<span class="math notranslate nohighlight">\(T\)</span>) as below;</p>
 <div class="math notranslate nohighlight" id="equation-full-absorptance">
-<span class="eqno">(6.7)<a class="headerlink" href="#equation-full-absorptance" title="Permalink to this equation">¶</a></span>\[A = 1 - R - T\]</div>
+<span class="eqno">(6.12)<a class="headerlink" href="#equation-full-absorptance" title="Permalink to this equation">¶</a></span>\[A = 1 - R - T\]</div>
 </section>
 <section id="comparison-of-computational-approaches">
-<h2><span class="section-number">6.5. </span>Comparison of computational approaches<a class="headerlink" href="#comparison-of-computational-approaches" title="Permalink to this heading">¶</a></h2>
-<p><a class="reference internal" href="#fig-mode-comparison"><span class="std std-numref">Fig. 6.2</span></a> shows a comparison of the approaches discussed above to MgO.
-The DFT calculations were performed by Castep.  The incident angle is 45<sup>o</sup> and the film thickness is 1μ.
-The ‘Thick slab’ mode can be regarded as a limiting case as the simulated slab becomes thicker, the calculations tend to follow the ‘thick slab’ curve more closely.
-The ‘Coherent thin film’ curve shows large amplitude oscillations before and after the restrahlung region of absorption.  These are damped by including partial incoherence but are not completely removed.
-The partial incoherence settings in this case were; 100 samples and up to 10% deviation in incident angle, thickness and crystal orientation, with no smoothing.
-The incoherent curve shows no oscillations and follows the thick mode curve near the restrahlung region.</p>
-<figure class="align-default" id="id9">
-<span id="fig-mode-comparison"></span><a class="reference internal image-reference" href="_images/single_crystal_mode_comparison.png"><img alt="_images/single_crystal_mode_comparison.png" src="_images/single_crystal_mode_comparison.png" style="width: 556.2px; height: 532.8000000000001px;" /></a>
+<h2><span class="section-number">6.4. </span>Comparison of computational approaches<a class="headerlink" href="#comparison-of-computational-approaches" title="Permalink to this heading">¶</a></h2>
+<p><a class="reference internal" href="#fig-mode-comparison"><span class="std std-numref">Fig. 6.2</span></a> shows a comparison of the approaches discussed above applied to MgO.
+The DFT calculations were performed by Castep.  The incident angle is 45<sup>o</sup> and the film thickness is 10μ.
+The calculations were performed using the transform matrix method.
+The ‘Coherent’ curve shows large amplitude oscillations before and after the Reststrahlen region of absorption.
+The ‘Incoherent (phase averaging)’ and ‘Incoherent (intensity)’ are similar at high frequencies, but at low frequencies the intensity calculation shows higher reflectance.</p>
+<figure class="align-default" id="id16">
+<span id="fig-mode-comparison"></span><a class="reference internal image-reference" href="_images/single_crystal_mode_comparison.png"><img alt="_images/single_crystal_mode_comparison.png" src="_images/single_crystal_mode_comparison.png" style="width: 678.6px; height: 557.1px;" /></a>
 <figcaption>
-<p><span class="caption-number">Fig. 6.2 </span><span class="caption-text">Comparison of methods</span><a class="headerlink" href="#id9" title="Permalink to this image">¶</a></p>
+<p><span class="caption-number">Fig. 6.2 </span><span class="caption-text">Comparison of Incoherent Methods</span><a class="headerlink" href="#id16" title="Permalink to this image">¶</a></p>
 </figcaption>
 </figure>
-<p>It is common to see numerical problems in regions where the extinction coefficient is high and the dielectric is thick.  The numerical probles manifest themselves with sudden spikes in reflectance and indicate that thinner samples should be considered.
-To address these numerical problems an option has been included in PDGui which allows thick films to be subdivided (sliced) into many thin films.
-If the user experiences numerical issues, changes in film thickness and the slicing technique may help to alleviate the problem.</p>
+<p>With the transfer matrix method, it is common to see numerical problems in regions where the extinction coefficient is high and the dielectric is thick.  The numerical problems manifest themselves with either with sudden spikes in reflectance or with a ‘Warning exponential overflow occured’ message.</p>
+<p>These problems manifest themselves acutely in calculations on l-alanine.  The DFT calculations were performed by Crystal.  <a class="reference internal" href="#fig-tm-sm-comparison"><span class="std std-numref">Fig. 6.3</span></a> shows the predicted p-polarised reflection for a 1mm film of the (001) surface with an azimuthal angle of 90<sup>o</sup>.</p>
+<figure class="align-default" id="id17">
+<span id="fig-tm-sm-comparison"></span><a class="reference internal image-reference" href="_images/single_crystal_TM_SM_comparison.png"><img alt="_images/single_crystal_TM_SM_comparison.png" src="_images/single_crystal_TM_SM_comparison.png" style="width: 682.2px; height: 568.8000000000001px;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 6.3 </span><span class="caption-text">Comparison of Transfer and Scattering Matrix and Methods</span><a class="headerlink" href="#id17" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
+<p>The transfer and scattering matrix methods agree well with each other upto about 114 cm<sup>-1</sup>.  Above 180 cm<sup>-1</sup> the transfer matrix method is completely unstable, while the scattering matrix method works well.</p>
 </section>
 <section id="crystal-laboratory-coordinate-frames">
-<span id="crystal-and-laboratory-coordinates"></span><h2><span class="section-number">6.6. </span>Crystal &amp; Laboratory Coordinate Frames<a class="headerlink" href="#crystal-laboratory-coordinate-frames" title="Permalink to this heading">¶</a></h2>
+<span id="crystal-and-laboratory-coordinates"></span><h2><span class="section-number">6.5. </span>Crystal &amp; Laboratory Coordinate Frames<a class="headerlink" href="#crystal-laboratory-coordinate-frames" title="Permalink to this heading">¶</a></h2>
 <p>There are two coordinate systems to consider.  The first is the laboratory coordinate system (X,Y,Z).
-It is assumed that the normal to the crystal surface is aligned with the Z-axis and that the incident radiation is in the X-Z plane.  P-polarised light is polarised parallel to this plane and S-polarised perpendicular (senkrecht) to this plane.
-The laboratory frame is illustrated in <a class="reference internal" href="#fig-lab-coords2"><span class="std std-numref">Fig. 6.3</span></a>.</p>
+It is assumed that the normal to the crystal surface is aligned with the Z-axis and that the incident radiation is in the X-Z plane.  p-polarised light is polarised parallel to this plane and s-polarised perpendicular (senkrecht) to this plane.
+The laboratory frame is illustrated in <a class="reference internal" href="#fig-lab-coords2"><span class="std std-numref">Fig. 6.4</span></a>.</p>
 <p>The other coordinate system of interest is that of the crystal.  The calculation of the permittivity tensor is performed in the crystal coordinate system (x,y,z).  The crystal plane is defined by a set of Miller indices (hkl) and the normal to the crystal surface is rotated to align with the laboratory Z-axis.  Finally in the laboratory frame the crystal may be rotated around the Z-axis by the azimuthal angle <span class="math notranslate nohighlight">\(\phi\)</span>.
 The precise definition of the azimuthal angle is somewhat arbitrary as it depends on the crystal unit-cell definition, but PDGui provides information of the details of the relationship between the crystal axes and the laboratory frame.
-The arrangement described is illustrated in the Figure below where <span class="math notranslate nohighlight">\(E_s\)</span> and <span class="math notranslate nohighlight">\(E_p\)</span> are the field directions of the S- and P polarised incident light respectively.
+The arrangement described is illustrated in the Figure below where <span class="math notranslate nohighlight">\(E_s\)</span> and <span class="math notranslate nohighlight">\(E_p\)</span> are the field directions of the s- and p- polarised incident light respectively.
 Information about the crystal coordinates relative to the laboratory frame is given in the GUI.</p>
-<figure class="align-default" id="id10">
+<figure class="align-default" id="id18">
 <span id="fig-lab-coords2"></span><a class="reference internal image-reference" href="_images/SingleCrystalGeometry.png"><img alt="_images/SingleCrystalGeometry.png" src="_images/SingleCrystalGeometry.png" style="width: 1152.0px; height: 648.0px;" /></a>
 <figcaption>
-<p><span class="caption-number">Fig. 6.3 </span><span class="caption-text">Definition of single crystal laboratory coordinates in PDGui</span><a class="headerlink" href="#id10" title="Permalink to this image">¶</a></p>
+<p><span class="caption-number">Fig. 6.4 </span><span class="caption-text">Definition of single crystal laboratory coordinates in PDGui</span><a class="headerlink" href="#id18" title="Permalink to this image">¶</a></p>
 </figcaption>
 </figure>
 </section>
@@ -194,12 +248,11 @@ Information about the crystal coordinates relative to the laboratory frame is gi
     <h3><a href="index.html">Page contents</a></h3>
     <ul>
 <li><a class="reference internal" href="#">6. Theory for Single Crystal Optics</a><ul>
-<li><a class="reference internal" href="#coherent-thin-film">6.1. Coherent thin film</a></li>
-<li><a class="reference internal" href="#incoherent-thin-film">6.2. Incoherent thin film</a></li>
-<li><a class="reference internal" href="#partially-incoherent-thin-film">6.3. Partially incoherent thin film</a></li>
-<li><a class="reference internal" href="#thick-slab">6.4. Thick Slab</a></li>
-<li><a class="reference internal" href="#comparison-of-computational-approaches">6.5. Comparison of computational approaches</a></li>
-<li><a class="reference internal" href="#crystal-laboratory-coordinate-frames">6.6. Crystal &amp; Laboratory Coordinate Frames</a></li>
+<li><a class="reference internal" href="#the-transfer-matrix">6.1. The Transfer Matrix</a></li>
+<li><a class="reference internal" href="#the-scattering-matrix">6.2. The Scattering Matrix</a></li>
+<li><a class="reference internal" href="#incoherence">6.3. Incoherence</a></li>
+<li><a class="reference internal" href="#comparison-of-computational-approaches">6.4. Comparison of computational approaches</a></li>
+<li><a class="reference internal" href="#crystal-laboratory-coordinate-frames">6.5. Crystal &amp; Laboratory Coordinate Frames</a></li>
 </ul>
 </li>
 </ul>
@@ -208,7 +261,7 @@ Information about the crystal coordinates relative to the laboratory frame is gi
   <div class="sphinxprev">
     <h4>Previous page</h4>
     <p class="topless"><a href="theory_powder.html"
-                          title="Previous page">&larr; <span class="section-number">5. </span>Theory for Powder Light Scattering</a></p>
+                          title="Previous page">&larr; <span class="section-number">5. </span>Theory for Light Scattering from Powders</a></p>
   </div>
   <div class="sphinxnext">
     <h4>Next page</h4>
@@ -265,7 +318,7 @@ Information about the crystal coordinates relative to the laboratory frame is gi
           <a href="analysis.html" title="7. Phonon Analysis"
              >next</a> &nbsp; &nbsp;</li>
         <li class="right" >
-          <a href="theory_powder.html" title="5. Theory for Powder Light Scattering"
+          <a href="theory_powder.html" title="5. Theory for Light Scattering from Powders"
              >previous</a> &nbsp; &nbsp;</li>
     <li><a href="index.html">PDielec: John Kendrick &amp; Andrew Burnett</a> &#187;</li>
 

@@ -14,6 +14,8 @@ To run the scripts use a command such as;
 pdgui -script a-axis.py
 ```
 
+There are also some scripts for comparing the scattering and transfer matrix methods.  These are; transfer_matrix.py, scattering_vs_transfer.py and scattering_matrix.py.
+
 We would like to thank the authors of the paper below for providing the experimental data and for helpful discussions.
 
 
