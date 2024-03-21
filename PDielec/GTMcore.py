@@ -86,6 +86,7 @@ import numpy as np
 import scipy.linalg as lag
 import sys
 import copy
+import PDielec.Utilities as Utilities
 
 c_const = 299792458 # m/s
 eps0 = 8.854e-12 ## vacuum permittivity
@@ -770,6 +771,7 @@ class Layer:
     def update_sm(self, f, zeta):
         """Shortcut to recalculate all layer properties.
            Appropriate for a scattering matrix method
+           This avoids the calculation of the exponential it just calculates the exponents
 
         Parameters
         ----------
@@ -1436,12 +1438,15 @@ class ScatteringMatrixSystem(System):
             self.superstrate.calculate_scattering_matrix(self.substrate)
         else:
             self.superstrate.calculate_scattering_matrix(self.layers[0])
+            #Utilities.printsp('SM super-0 ',self.superstrate.SMatrix.S)
         # Next every layer in the devices with the next layer, but not the last layer in the device
-        for index,layer in enumerate(self.layers[:-2]):
+        for index,layer in enumerate(self.layers[:-1]):
             layer.calculate_scattering_matrix(self.layers[index+1])
+            #Utilities.printsp('SM {}-{}'.format(index,index+1),layer.SMatrix.S)
         # Now calculate the scattering matrix between the last layer in the device and the substrate
         if len(self.layers) > 0:
             self.layers[-1].calculate_scattering_matrix(self.substrate)
+            #Utilities.printsp('SM last-substrate',self.layers[-1].SMatrix.S)
         # Note that the substrate does not have a scattering matrix
         return
 
