@@ -550,7 +550,7 @@ class PlottingTab(QWidget):
                 for key in sorted(settings,key=str.lower):
                     sp.writeNextRow([key, settings[key]],col=1,check=1)
                 dielectricLayerIndex = scenario.getDielectricLayerIndex()
-                if dielectricLayerIndex is not None:
+                if dielectricLayerIndex is not None and scenario.layers[dielectricLayerIndex].isTensor():
                     sp.writeNextRow('Dielectric layer laboratory frame:')
                     sp.writeNextRow(scenario.layers[dielectricLayerIndex].labframe[0].tolist(), col=2, check=1)
                     sp.writeNextRow(scenario.layers[dielectricLayerIndex].labframe[1].tolist(), col=2, check=1)
