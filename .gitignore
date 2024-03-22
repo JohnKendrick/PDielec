@@ -21,6 +21,7 @@ parts/
 sdist/
 var/
 API/_build
+.ipynb_checkpoints
 *.egg-info/
 .installed.cfg
 *.egg
