@@ -696,7 +696,6 @@ class ExperimentOutputReader(GenericOutputReader):
         return
 
     def _read_static_dielectric(self, line):
-        # the is epsilon infinity
         """
         Read and process static dielectric data.
 
@@ -724,6 +723,7 @@ class ExperimentOutputReader(GenericOutputReader):
         ValueError
             If the input lines cannot be converted into complex numbers.
         """        
+        # the is epsilon infinity
         od = []
         line = self._read_line()
         od.append([complex(f) for f in line.split()[0:3]])
@@ -741,3 +741,20 @@ class ExperimentOutputReader(GenericOutputReader):
         if self.CrystalPermittivity:
             self.CrystalPermittivity.setEpsilonInfinity(self.zerof_optical_dielectric)
         return
+
+    def calculate_mass_weighted_normal_modes(self):
+        """
+        Calculate the mass weight normal modes
+
+        Parameters
+        ----------
+        None
+
+        Returns
+        -------
+        np.array
+            Returns an array for the mass weighted normal modes which in this case is zero
+            The array has a shape 3*nions, nions, 3
+        """        
+        self.mass_weighted_normal_modes = np.zeros( (3*self.nions,self.nions,3) )
+        return self.mass_weighted_normal_modes
