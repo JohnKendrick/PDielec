@@ -668,6 +668,24 @@ if applicable, updates the <cite>CrystalPermittivity</cite> object’s epsilon i
 </section>
 </dd></dl>
 
+<dl class="py method">
+<dt class="sig sig-object py" id="PDielec.ExperimentOutputReader.ExperimentOutputReader.calculate_mass_weighted_normal_modes">
+<span class="sig-name descname"><span class="pre">calculate_mass_weighted_normal_modes</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/ExperimentOutputReader.html#ExperimentOutputReader.calculate_mass_weighted_normal_modes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.ExperimentOutputReader.ExperimentOutputReader.calculate_mass_weighted_normal_modes" title="Permalink to this definition">#</a></dt>
+<dd><p>Calculate the mass weight normal modes</p>
+<section id="id39">
+<h4>Parameters<a class="headerlink" href="#id39" title="Permalink to this heading">#</a></h4>
+<p>None</p>
+</section>
+<section id="id40">
+<h4>Returns<a class="headerlink" href="#id40" title="Permalink to this heading">#</a></h4>
+<dl class="simple">
+<dt>np.array</dt><dd><p>Returns an array for the mass weighted normal modes which in this case is zero
+The array has a shape 3*nions, nions, 3</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
 </dd></dl>
 
 </section>
@@ -748,6 +766,7 @@ if applicable, updates the <cite>CrystalPermittivity</cite> object’s epsilon i
 <li><a class="reference internal" href="#PDielec.ExperimentOutputReader.ExperimentOutputReader._read_output_files"><code class="docutils literal notranslate"><span class="pre">ExperimentOutputReader._read_output_files()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.ExperimentOutputReader.ExperimentOutputReader._read_species"><code class="docutils literal notranslate"><span class="pre">ExperimentOutputReader._read_species()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.ExperimentOutputReader.ExperimentOutputReader._read_static_dielectric"><code class="docutils literal notranslate"><span class="pre">ExperimentOutputReader._read_static_dielectric()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.ExperimentOutputReader.ExperimentOutputReader.calculate_mass_weighted_normal_modes"><code class="docutils literal notranslate"><span class="pre">ExperimentOutputReader.calculate_mass_weighted_normal_modes()</span></code></a></li>
 </ul>
 </li>
 </ul>

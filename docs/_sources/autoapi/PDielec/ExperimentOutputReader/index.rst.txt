@@ -387,4 +387,19 @@ Classes
           If the input lines cannot be converted into complex numbers.
 
 
+   .. py:method:: calculate_mass_weighted_normal_modes()
+
+      Calculate the mass weight normal modes
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      np.array
+          Returns an array for the mass weighted normal modes which in this case is zero
+          The array has a shape 3*nions, nions, 3
+
+
 

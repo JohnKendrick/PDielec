@@ -970,7 +970,6 @@
         <span class="k">return</span></div>
 
 <div class="viewcode-block" id="ExperimentOutputReader._read_static_dielectric"><a class="viewcode-back" href="../../autoapi/PDielec/ExperimentOutputReader/index.html#PDielec.ExperimentOutputReader.ExperimentOutputReader._read_static_dielectric">[docs]</a>    <span class="k">def</span> <span class="nf">_read_static_dielectric</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
-        <span class="c1"># the is epsilon infinity</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Read and process static dielectric data.</span>
 
@@ -998,6 +997,7 @@
 <span class="sd">        ValueError</span>
 <span class="sd">            If the input lines cannot be converted into complex numbers.</span>
 <span class="sd">        &quot;&quot;&quot;</span>        
+        <span class="c1"># the is epsilon infinity</span>
         <span class="n">od</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">line</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_line</span><span class="p">()</span>
         <span class="n">od</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="nb">complex</span><span class="p">(</span><span class="n">f</span><span class="p">)</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">]])</span>
@@ -1014,7 +1014,24 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">zerof_optical_dielectric</span> <span class="o">=</span> <span class="n">odc</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">CrystalPermittivity</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">CrystalPermittivity</span><span class="o">.</span><span class="n">setEpsilonInfinity</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">zerof_optical_dielectric</span><span class="p">)</span>
-        <span class="k">return</span></div></div>
+        <span class="k">return</span></div>
+
+<div class="viewcode-block" id="ExperimentOutputReader.calculate_mass_weighted_normal_modes"><a class="viewcode-back" href="../../autoapi/PDielec/ExperimentOutputReader/index.html#PDielec.ExperimentOutputReader.ExperimentOutputReader.calculate_mass_weighted_normal_modes">[docs]</a>    <span class="k">def</span> <span class="nf">calculate_mass_weighted_normal_modes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calculate the mass weight normal modes</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        None</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        np.array</span>
+<span class="sd">            Returns an array for the mass weighted normal modes which in this case is zero</span>
+<span class="sd">            The array has a shape 3*nions, nions, 3</span>
+<span class="sd">        &quot;&quot;&quot;</span>        
+        <span class="bp">self</span><span class="o">.</span><span class="n">mass_weighted_normal_modes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span> <span class="p">(</span><span class="mi">3</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">nions</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">nions</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">mass_weighted_normal_modes</span></div></div>
 </pre></div>
         </article>
       </div>
