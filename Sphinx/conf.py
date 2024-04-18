@@ -12,24 +12,25 @@
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #
-# import os
-# import sys
-# sys.path.insert(0, os.path.abspath('.'))
+import os
+import sys
+sys.path.insert(0, os.path.abspath('..'))
+from PDielec import __version__
 
 
 # -- Project information -----------------------------------------------------
 
 project = 'PDielec'
-copyright = '2018, John Kendrick and Andrew Burnett'
+copyright = '2024, John Kendrick and Andrew Burnett'
 author = 'John Kendrick and Andrew Burnett'
 
 numfig = True
 numfig_secnum_depth = 1
 
 # The short X.Y version
-version = '8.1'
+version = __version__
 # The full version, including alpha/beta/rc tags
-release = '8.1.0'
+release = __version__
 
 
 # -- General configuration ---------------------------------------------------
@@ -68,10 +69,50 @@ preamble_maths = r'''
 #mathjax_path = 'https://cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js'
 mathjax_path = 'https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML'
 extensions = [
+    'autoapi.extension',
+    'sphinx.ext.viewcode',
+#    'sphinx.ext.napoleon',
+#    'sphinx.ext.todo',
+#    'sphinx.ext.coverage',
     'sphinx.ext.mathjax',
     'sphinxcontrib.bibtex',
+#    'PSphinxTheme.ext.table_styling',
     'cloud_sptheme.ext.table_styling',
 ]
+# Autoapi stuff starts here
+rst_prolog = """
+.. role:: summarylabel
+"""
+
+html_css_files = [
+    "css/custom.css",
+]
+
+def contains(seq, item):
+    return item in seq
+
+def prepare_jinja_env(jinja_env) -> None:
+    jinja_env.tests["contains"] = contains
+autoapi_prepare_jinja_env = prepare_jinja_env
+autoapi_member_order = "groupwise"
+autoapi_dirs = ['../PDielec']
+autoapi_type = "python"
+autoapi_template_dir="_template/autoapi"
+autoapi_keep_files = True
+autoapi_add_toctree_entry = True
+autoapi_ignore = ['*test_qdialog*','*error_with_QForm*','*test_ttm*','*test_gtm*']
+autoapi_options = [
+    "members",
+    "special-members",
+    "private-members",
+    "undoc-members",
+    "show-inheritance",
+    "show-module-summary",
+    "imported-members",
+]
+autodoc_typehints = "signature"
+# Autoapi stuff ends here
+
 
 bibtex_bibfiles = ['pdielec.bib']
 mathjax_config = {
@@ -125,6 +166,7 @@ html_theme = 'alabaster'
 html_theme = 'bizstyle'
 html_theme = 'python_docs_theme'
 html_theme = 'cloud'
+html_theme = 'furo'
 
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the

@@ -1,0 +1,1248 @@
+:py:mod:`PDielec.Calculator`
+============================
+
+.. py:module:: PDielec.Calculator
+
+.. autoapi-nested-parse::
+
+   Copyright 2024 John Kendrick
+
+   This file is part of PDielec
+
+   This program is free software; you can redistribute it and/or modify
+   it under the terms of the MIT License
+
+   This program is distributed in the hope that it will be useful,
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+
+   You should have received a copy of the MIT License
+   along with this program, if not see https://opensource.org/licenses/MIT
+
+
+
+Module Contents
+---------------
+
+
+Functions
+~~~~~~~~~
+
+.. autoapisummary::
+
+   PDielec.Calculator._brug_iter_error
+   PDielec.Calculator._brug_minimise_scalar
+   PDielec.Calculator._brug_minimise_tensor
+   PDielec.Calculator.absorption_from_mode_intensities
+   PDielec.Calculator.anisotropic_mie_scattering
+   PDielec.Calculator.average_tensor
+   PDielec.Calculator.averaged_permittivity
+   PDielec.Calculator.balan
+   PDielec.Calculator.bruggeman_iter
+   PDielec.Calculator.bruggeman_minimise
+   PDielec.Calculator.calculate_bubble_refractive_index
+   PDielec.Calculator.calculate_centre_of_mass
+   PDielec.Calculator.calculate_distance
+   PDielec.Calculator.calculate_energy_distribution
+   PDielec.Calculator.calculate_permittivity
+   PDielec.Calculator.calculate_refractive_index
+   PDielec.Calculator.calculate_refractive_index_scalar
+   PDielec.Calculator.calculate_size_factor
+   PDielec.Calculator.cleanup_symbol
+   PDielec.Calculator.coherent
+   PDielec.Calculator.coherent2
+   PDielec.Calculator.construct_projection_operator
+   PDielec.Calculator.determineEulerAngles
+   PDielec.Calculator.direction_from_shape
+   PDielec.Calculator.euler_rotation
+   PDielec.Calculator.fibonacci_sphere
+   PDielec.Calculator.foldy_scattering
+   PDielec.Calculator.get_pool
+   PDielec.Calculator.hodrick_prescott_filter
+   PDielec.Calculator.infrared_intensities
+   PDielec.Calculator.initialise_complex_diagonal_tensor
+   PDielec.Calculator.initialise_diagonal_tensor
+   PDielec.Calculator.initialise_ellipsoid_depolarisation_matrix
+   PDielec.Calculator.initialise_needle_depolarisation_matrix
+   PDielec.Calculator.initialise_plate_depolarisation_matrix
+   PDielec.Calculator.initialise_sphere_depolarisation_matrix
+   PDielec.Calculator.initialise_unit_tensor
+   PDielec.Calculator.ionic_permittivity
+   PDielec.Calculator.longitudinal_modes
+   PDielec.Calculator.maxwell
+   PDielec.Calculator.maxwell_sihvola
+   PDielec.Calculator.mie_scattering
+   PDielec.Calculator.normal_modes
+   PDielec.Calculator.orthogonalise_projection_operator
+   PDielec.Calculator.oscillator_strengths
+   PDielec.Calculator.reflectance_atr
+   PDielec.Calculator.rogridgues_rotations
+   PDielec.Calculator.solve_effective_medium_equations
+   PDielec.Calculator.spherical_averaged_mie_scattering
+   PDielec.Calculator.waterman_truell_scattering
+
+
+
+Attributes
+~~~~~~~~~~
+
+.. autoapisummary::
+
+   PDielec.Calculator.points_on_sphere
+
+
+.. py:function:: _brug_iter_error(epsbr, eps1, eps2, shape, L, f1, size)
+
+   Routine to calculate the error in the Bruggeman method.
+
+   Parameters
+   ----------
+   variables : list of 2 floats
+       The real and imaginary components of the scalar permittivity
+   eps1      : tensor (3x3)
+       Permittivity of phase 1
+   eps2      : tensor (3x3)
+       Permittivity of phase 2
+   L         : 3x3 tensor
+       Depolarisation tensor
+   f1        : float
+       The volume fraction of phase 1
+   size      : float
+       The size of the particle
+
+   Returns
+   -------
+   float : The error associated with the current values of the permittivities
+
+
+.. py:function:: _brug_minimise_scalar(variables, eps1, eps2, shape, L, f1, size)
+
+   Bruggeman method using scalar quantities (suitable for powell minimisation method)
+
+   Parameters
+   ----------
+   variables : list of 2 floats
+       The real and imaginary components of the scalar permittivity
+   eps1      : tensor (3x3)
+       Permittivity of phase 1
+   eps2      : tensor (3x3)
+       Permittivity of phase 2
+   L         : 3x3 tensor
+       Depolarisation tensor
+   f1        : float
+       The volume fraction of phase 1
+   size      : float
+       The size of the particle
+
+   Returns
+   -------
+   float : The error associated with the current values of the permittivities
+
+
+.. py:function:: _brug_minimise_tensor(variables, eps1, eps2, shape, L, f1, size)
+
+   Bruggeman method using tensor quantities
+
+   Parameters
+   ----------
+   variables : list of 2 floats
+       The real and imaginary components of the scalar permittivity
+   eps1      : tensor (3x3)
+       Permittivity of phase 1
+   eps2      : tensor (3x3)
+       Permittivity of phase 2
+   L         : 3x3 tensor
+       Depolarisation tensor
+   f1        : float
+       The volume fraction of phase 1
+   size      : float
+       The size of the particle
+
+   Returns
+   -------
+   float : The error associated with the current values of the permittivities
+
+
+.. py:function:: absorption_from_mode_intensities(f, modes, frequencies, sigmas, intensities)
+
+   Calculate the absorption from the frequencies and intensities using a Lorentzian.
+
+   Parameters
+   ----------
+   f : float
+       The frequency of the absorption in cm-1.
+   modes : list of ints
+       A list of the modes 
+   frequencies : list of reals
+       Mode frequencies (cm-1)
+   sigmas : list of reals
+       Mode widths in cm-1
+   intensities : list of reals
+       Mode intensities (D2/A2/amu).
+
+   Returns
+   -------
+   float
+       The molar absorption coefficient at f, in L/mol/cm.
+
+   Notes
+   -----
+   The number 4225.6 converts the units of D2/A2/amu to L mole-1 cm-1 cm-1.
+
+
+.. py:function:: anisotropic_mie_scattering(dielectric_medium, crystal_permittivity, shape, L, vf, size, size_mu, size_distribution_sigma)
+
+   Calculate the effective constant permittivity using a Mie scattering approach.
+
+   Parameters
+   ----------
+   dielectric_medium : array_like (3x3)
+       The dielectric constant tensor of the medium.
+   crystal_permittivity : array_like (3x3)
+       The total frequency dielectric constant tensor at the current frequency.
+   shape : str
+       The name of the current shape (NOT USED).
+   L : array_like
+       The shape's depolarisation matrix (NOT USED).
+   size : float
+       The dimensionless size parameter for the frequency under consideration.
+   size_distribution_sigma : float
+       The log normal value of sigma.
+   vf : float
+       The volume fraction of filler.
+
+   Notes
+   -----
+   Mie only works for spherical particles, so the `shape`, and `L` parameters are ignored.
+
+   Returns
+   -------
+   effective_dielectric_constant : float
+       The effective dielectric constant.
+
+
+.. py:function:: average_tensor(t)
+
+   Return the averaged tensor.
+
+   Parameters
+   ----------
+   t : tensor (3x3)
+
+   Returns
+   -------
+   output : tensor
+       The averaged tensor.
+
+
+.. py:function:: averaged_permittivity(dielectric_medium, crystal_permittivity, shape, L, vf, size)
+
+   Calculate the effective constant permittivity using the averaged permittivity method.
+
+   Parameters
+   ----------
+   dielectric_medium : array_like (3x3)
+       The dielectric constant tensor of the medium.
+   crystal_permittivity : array_like (3x3)
+       The total frequency dielectric constant tensor at the current frequency.
+   shape : str
+       The name of the current shape.
+   L : array_like (3x3)
+       The shape's depolarisation matrix.
+   size : float
+       The dimensionless size parameter for the frequency under consideration (not used).
+
+   Returns
+   -------
+   array_like
+       The effective dielectric constant.
+
+
+.. py:function:: balan(dielectric_medium, crystal_permittivity, shape, L, vf, size)
+
+   Calculate the effective constant permittivity using the method of Balan.
+
+   Parameters
+   ----------
+   dielectric_medium : array_like (3x3)
+       The dielectric constant tensor of the medium.
+   crystal_permittivity : array_like (3x3)
+       The total frequency dielectric constant tensor at the current frequency.
+   shape : str
+       The name of the current shape.
+   L : array_like (3x3)
+       The shape's depolarisation matrix.
+   size : float
+       The dimensionless size parameter for the frequency under consideration (not used).
+
+   Returns
+   -------
+   array_like
+       The effective dielectric constant.
+
+
+.. py:function:: bruggeman_iter(eps1, eps2, shape, L, f2, size, epsbr)
+
+   Calculate the effective constant permittivity using the method of Bruggeman. (Iteration)
+
+   Parameters
+   ----------
+   eps1 : array_like (3x3)
+       The dielectric constant tensor of medium 1.
+   eps2 : array_like (3x3)
+       The dielectric constant tensor of medium 2.
+   shape : str
+       The name of the current shape.
+   L : array_like (3x3)
+       The shape's depolarisation matrix.
+   f2 : float
+       The volume fraction of component 2.
+   size : float
+       The dimensionless size parameter for the frequency under consideration.
+   epsbr : float (3x3)
+       An initial guess at the solution.
+
+   Returns
+   -------
+   tensor (3x3)
+       The effective dielectric constant.
+
+   Notes
+   -----
+   This function applies homogenization formalisms to active dielectric composite materials as discussed in the work of Tom G. Mackay and Akhlesh Lakhtakia.
+
+
+.. py:function:: bruggeman_minimise(eps1, eps2, shape, L, f2, size, epsbr)
+
+   Calculate the effective constant permittivity using the method of Bruggeman (minimisation).
+
+   Parameters
+   ----------
+   eps1 : array_like (3x3)
+       The dielectric constant tensor of medium 1.
+   eps2 : array_like (3x3)
+       The dielectric constant tensor of medium 2.
+   shape : str
+       The name of the current shape.
+   L : array_like (3x3)
+       The shape's depolarisation matrix.
+   f2 : float
+       The volume fraction of component 2.
+   size : float
+       The dimensionless size parameter for the frequency under consideration.
+   epsbr : float (3x3)
+       An initial guess at the solution.
+
+   Returns
+   -------
+   tensor (3x3)
+       The effective dielectric constant.
+
+   Notes
+   -----
+   This function applies homogenization formalisms to active dielectric composite materials as discussed in the work of Tom G. Mackay and Akhlesh Lakhtakia.
+
+
+.. py:function:: calculate_bubble_refractive_index(v_cm1, ri_medium, vf, radius_mu)
+
+   Calculate the scattering from bubbles embedded in a possibly complex dielectric at a given frequency.
+
+   Parameters
+   ----------
+   v_cm1 : float
+       The frequency in cm-1.
+   ri_medium : float
+       The refractive index of the medium.
+   vf : float
+       The volume fraction of bubbles.
+   radius_mu : float
+       The radius of the bubbles in microns.
+
+   Returns
+   -------
+   effective_dielectric_constant : float
+       The effective dielectric constant.
+   ri_medium : float
+       The refractive index of the medium
+
+   Notes
+   -----
+   This function calculates the scattering from bubbles embedded in a dielectric medium, which can have a complex refractive index. It considers the frequency of interest, the refractive index of the medium, the volume fraction of bubbles, and the radius of the bubbles to calculate the effective dielectric constant and its associated refractive index.
+
+
+.. py:function:: calculate_centre_of_mass(xyzs, masses)
+
+   Calculate centre of mass.
+
+   Parameters
+   ----------
+   xyzs : list of xyz coordinates of the atoms
+   masses : list of the atomic masses
+
+   Returns
+   -------
+   mass : float - The total mass
+   cm   : vector (3) - the coordinates of the centre of mass
+
+
+.. py:function:: calculate_distance(a, b)
+
+   Calculate the distance between a and b.
+
+   Parameters
+   ----------
+   a : list of reals
+       Coordinates of a
+   b : list of reals
+       Coordinates of b
+
+   Returns
+   -------
+   float
+       The distance between a and b
+
+
+
+.. py:function:: calculate_energy_distribution(cell, frequencies, normal_modes, debug=False)
+
+   Calculate energy distribution in the phonon modes.
+
+   Parameters
+   ----------
+   cell : unit cell object
+       The unit cell object
+   frequencies : array_like
+       The frequencies in cm-1.
+   normal_modes : array_like
+       The mass weighted normal modes.
+
+
+.. py:function:: calculate_permittivity(refractive_index, debug=False)
+
+   Calculate the permittivity from the refractive index.
+
+   Parameters
+   ----------
+   refractive_index : complex
+       The refractive index from which the permittivity is calculated.
+
+   Returns
+   -------
+   complex
+       The calculated permittivity.
+
+
+.. py:function:: calculate_refractive_index(dielectric, debug=False)
+
+   Calculate the refractive index from the dielectric constant.
+
+   Calculate the trace of the dielectric and calculate both square roots.
+   Then choose the root with the largest imaginary component. This obeys the Konig-Kramer requirements.
+
+   Parameters
+   ----------
+   dielectric : complex
+
+   Returns
+   -------
+   complex
+       The refractive index calculated from the dielectric constant.
+
+   Notes
+   -----
+   The calculation of the refractive index from the dielectric constant involves
+   the trace of the dielectric tensor and the selection of the square root with
+   the largest imaginary component.
+
+
+.. py:function:: calculate_refractive_index_scalar(dielectric_scalar, debug=False)
+
+   Calculate the refractive index from the dielectric constant.
+
+   Calculate the trace of the dielectric and calculate both square roots.
+   Then choose the root with the largest imaginary component. This obeys the Konig-Kramer requirements.
+
+   Parameters
+   ----------
+   dielectric_scalar : complex
+
+   Returns
+   -------
+   complex
+       The refractive index calculated from the dielectric constant.
+
+   Notes
+   -----
+   The calculation of the refractive index from the dielectric constant involves
+   the trace of the dielectric tensor and the selection of the square root with
+   the largest imaginary component to satisfy the Konig-Kramer conditions.
+
+
+.. py:function:: calculate_size_factor(x)
+
+   Calculate a size effect using Equations 10.38 and 10.39 in Sihvola.
+
+   If x is small the result is  close to 1
+
+   Parameters
+   ----------
+   x : float
+      The size of the particle
+
+   Returns
+   -------
+   float
+       Size effect
+
+
+.. py:function:: cleanup_symbol(s)
+
+   Return a true element from the symbol
+
+   Parameters
+   ----------
+   s : str
+
+   Returns
+   -------
+   str
+       The cleaned symbol
+
+
+.. py:function:: coherent(dielectric_medium, crystal_permittivity, shape, L, vf, size, dielectric_apparent)
+
+   Calculate the effective constant permittivity using the Coherent method
+
+   Parameters
+   ----------
+   dielectric_medium : tensor (3x3)
+       The dielectric constant tensor of the medium.
+   crystal_permittivity : tensor (3x3)
+       The total frequency dielectric constant tensor at the current frequency.
+   shape : str
+       The name of the current shape.
+   L : matrix (3x3)
+       The shape's depolarisation matrix.
+   size : float
+       The dimensionless size parameter for the frequency under consideration.
+   vf : float
+       The volume fraction of filler.
+
+   Returns
+   -------
+   tensor
+       The effective dielectric constant.
+
+
+.. py:function:: coherent2(dielectric_medium, dielectric_apparent, crystal_permittivity, shape, L, vf, size)
+
+   Calculate the effective constant permittivity using the Coherent2 method
+
+   Parameters
+   ----------
+   dielectric_medium : tensor (3x3)
+       The dielectric constant tensor of the medium.
+   crystal_permittivity : tensor (3x3)
+       The total frequency dielectric constant tensor at the current frequency.
+   shape : str
+       The name of the current shape.
+   L : matrix (3x3)
+       The shape's depolarisation matrix.
+   size : float
+       The dimensionless size parameter for the frequency under consideration.
+   vf : float
+       The volume fraction of filler.
+
+   Returns
+   -------
+   tensor (3x3)
+       The effective dielectric constant.
+
+
+.. py:function:: construct_projection_operator(atoms, xyzs, masses, nats)
+
+   Construct the projection operator for the molecule defined by atoms, xyz, masses.
+
+   Parameters
+   ----------
+   atoms : list of atom types
+   xyz : list of atom coordinates vector (3)
+   masses : list of atom masses
+
+   Returns
+   -------
+   type
+       Description of the returned object.
+
+
+.. py:function:: determineEulerAngles(R)
+
+   Determine the euler angles of a rotation matrix.
+
+   Parameters
+   ----------
+   R : tensor (3,3)
+       The rotation matrix
+
+   Returns
+   -------
+   theta, phi, psi : float
+       The Euler angles
+
+
+.. py:function:: direction_from_shape(data, reader)
+
+   Determine the unique direction of the shape from the shape data.
+
+   Parameters
+   ----------
+   data : list of strings
+       Data may contain a miller indices which defines a surface, e.g., (1,1,-1), 
+       or a direction as a miller direction vector, e.g., [1,0,-1].
+
+   Returns
+   -------
+   out : vector (3)
+       Description of the unique direction determined from the data.
+
+
+
+.. py:function:: euler_rotation(vector, theta, phi, psi)
+
+   Apply a passive Euler rotation to a vector.
+
+   Parameters
+   ----------
+   vector : vector (3)
+   theta  : float
+   phi    : float
+   psi    : float
+
+   Returns
+   -------
+   vector (3)
+
+   Notes
+   -----
+   A passive Euler rotation refers to the rotation of the coordinate system 
+   while the vector remains fixed. This operation is often used in 
+   physics and engineering to describe the orientation of an object 
+   with respect to a reference coordinate system.
+
+
+.. py:function:: fibonacci_sphere(samples=1, randomize=True)
+
+   Generate points on a sphere using the Fibonacci lattice method.
+
+   This method generates points on the surface of a sphere in a way that they are evenly distributed. The distribution follows
+   the Fibonacci Sphere algorithm, which is useful for creating well-distributed points across the surface of a sphere.
+   Optionally, the points can be randomized slightly to avoid patterns.
+
+   Parameters
+   ----------
+   samples : int, optional
+       The number of points to generate on the sphere. Default is 1.
+   randomize : bool, optional
+       If `True`, the points generation will include a random factor to slightly change the distribution of points.
+       This can be useful to avoid symmetric patterns. Default is `True`.
+
+   Returns
+   -------
+   list
+       A list of points where each point is represented as a list `[x, y, z]`, indicating its position on the sphere.
+
+   Notes
+   -----
+   - The algorithm works by placing points at equal distances along a spiral around the sphere.
+   - The `randomize` option applies a random offset to the spiral, which can help in reducing visual patterns in the distribution.
+
+   Examples
+   --------
+   Generate 100 points on a sphere without randomization:
+
+   >>> points = fibonacci_sphere(100, randomize=False)
+   >>> len(points)
+   100
+
+   Generate 5 points on a sphere with default settings (including randomization):
+
+   >>> points = fibonacci_sphere(5)
+   >>> len(points)
+   5
+
+
+.. py:function:: foldy_scattering(lambda_vacuum_nm, N_nm, radius_nm, ri_medium)
+
+   Calculate the new wave number based on the Foldy's approximation for light scattering.
+
+   Parameters
+   ----------
+   lambda_vacuum_nm : float
+       The wavelength of light in vacuum in nanometers.
+   N_nm : float
+       The concentration of scatterers in inverse cubic nanometers.
+   radius_nm : float
+       The.radius of the scatterer in nanometers.
+   ri_medium : float
+       The refractive index of the medium.
+
+   Returns
+   -------
+   new_k : complex
+       The new wave number corrected for scattering effects.
+
+   Notes
+   -----
+   The function computes a new wave number based on the original wave number,
+   scatterer size, scatterer refractive index, and scatterer concentration using
+   Foldy's approximation. This involves Mie scattering calculations to determine
+   the scattering coefficients, which are then used to adjust the wave number in
+   the medium accounting for collective scattering effects.
+
+   References
+   ----------
+   The implementation and theoretical background can be found in:
+   - L. Foldy, "The Multiple Scattering of Waves. I. General Theory of Isotropic
+   Scattering by Randomly Distributed Scatterers," Phys. Rev. 67, 107–119 (1945).
+   - Mie scattering theory.
+
+   See Also
+   --------
+   Mie.MieS1S2 : Function used to calculate scattering coefficients based on Mie theory.
+
+
+.. py:function:: get_pool(ncpus, threading, initializer=None, initargs=None, debugger=None)
+
+   Return a pool of processors given the number of cpus and whether threading is requested.
+
+   Parameters
+   ----------
+   ncpus : int 
+       the number of processors
+   threading : bool 
+       true if threading is to be used
+   initializer : function
+       Function to be called before getting the pool
+   initargs : function arguments
+       Any other parameters
+
+   Returns
+   -------
+   pool : the pool of processors
+
+
+
+.. py:function:: hodrick_prescott_filter(y, damping, lambda_value, niters)
+
+   Apply a Hodrick Prescott filter to the spectrum in x, y.
+
+   Parameters
+   ----------
+   y : array_like
+       The experimental absorption data.
+   damping : float
+       The damping factor used to damp the iterations.
+   lambda_value : float
+       The chosen smoothing factor.
+   niters : int
+       The number of iterations
+
+   Returns
+   -------
+   list of floats : The new spectrum
+
+   Notes
+   -----
+   Based on ideas in the thesis of Mayank Kaushik (University Adelaide).
+
+
+.. py:function:: infrared_intensities(oscillator_strengths)
+
+   Calculate the IR intensities from the trace of the oscillator strengths.
+
+   Returns
+   -------
+   np.array
+       An array of the calculated IR intensities in units of (D/A)^2/amu.
+
+
+.. py:function:: initialise_complex_diagonal_tensor(reals)
+
+   Initialise a complex 3x3 tensor with the given diagonal components.
+
+   Parameters
+   ----------
+   reals : list
+       A list of 3 real numbers for the diagonals.
+
+   Returns
+   -------
+   array
+       The returned tensor is a complex 3x3 array.
+
+
+.. py:function:: initialise_diagonal_tensor(reals)
+
+   Initialise a real 3x3 tensor with the given diagonal components.
+
+   Parameters
+   ----------
+   reals : list
+       A list of 3 real numbers for the diagonals.
+
+   Returns
+   -------
+   array
+       The returned tensor is a real 3x3 array.
+
+
+.. py:function:: initialise_ellipsoid_depolarisation_matrix(unique, aoverb)
+
+   Initialise a 3x3 tensor with the ellipsoid depolarisation matrix.
+
+   Parameters
+   ----------
+   aoverb : float
+       The ratio of a / b (the ratio of the principle axis lengths of the ellipsoid)
+
+   Returns
+   -------
+   np.array
+       The Ellipsoid dpolarisation tensor
+
+
+.. py:function:: initialise_needle_depolarisation_matrix(unique)
+
+   Initialise a 3x3 tensor with the needle depolarisation matrix.
+
+   Parameters
+   ----------
+   unique: np.array
+       The unique direction of the needle
+
+   Returns
+   -------
+   ndarray
+       A 3x3 tensor initialized with the plate depolarisation matrix.
+
+
+.. py:function:: initialise_plate_depolarisation_matrix(normal)
+
+   Initialise a 3x3 tensor with the plate depolarisation matrix, returns a tensor.
+
+   Parameters
+   ----------
+   normal : np.array
+       A 3 vector giving the normal direction of the plate
+
+   Returns
+   -------
+   ndarray
+       A 3x3 tensor initialized with the plate depolarisation matrix.
+
+
+.. py:function:: initialise_sphere_depolarisation_matrix()
+
+   Initialise a 3x3 tensor with the sphere depolarisation matrix, returns a tensor.
+
+   Parmeters
+   ---------
+   None
+
+   Returns
+   -------
+   ndarray
+       A 3x3 tensor representing the sphere depolarisation matrix.
+
+
+.. py:function:: initialise_unit_tensor()
+
+   Initialise a 3x3 tensor to a unit tensor.
+
+   Parameters
+   ----------
+   None
+
+   Returns
+   -------
+   array
+       The returned tensor is a 3x3 array.
+
+
+.. py:function:: ionic_permittivity(mode_list, oscillator_strengths, frequencies, volume)
+
+   Calculate the low frequency permittivity or zero frequency permittivity.
+
+   Parameters
+   ----------
+   oscillator_strengths : array_like
+       Oscillator strengths, in atomic units.
+   frequencies : array_like
+       Frequencies, in atomic units.
+   volume : float
+       Volume, in atomic units.
+
+   Returns
+   -------
+   3x3 np.array 
+       The calculated low frequency permittivity or zero frequency permittivity.
+
+   Notes
+   -----
+   The calculation of low frequency permittivity or zero frequency permittivity
+   requires oscillator strengths, frequencies, and volume all to be specified
+   in atomic units. 
+
+
+.. py:function:: longitudinal_modes(frequencies, normal_modes, born_charges, masses, epsilon_inf, volume, qlist, reader)
+
+   Apply the nonanalytic correction to the dynamical matrix and calculate the LO frequencies.
+
+   Parameters
+   ----------
+   frequencies : array_like
+       The frequencies (f) in atomic units.
+   normal_modes : array_like
+       The mass weighted normal modes (U).
+   born_charges : array_like
+       The born charges (Z) stored as
+       `[[Z1x, Z1y, Z1z], [Z2x, Z2y, Z2z], [Z3x, Z3y, Z3z]]`,
+       where 1, 2, 3 are the directions of the field and x, y, z are the coordinates of the atom.
+   qlist : list
+       A list of direction vectors.
+
+   Returns
+   -------
+   list
+       A list of (real) frequencies in atomic units. Any imaginary frequencies are set to 0.
+
+   Notes
+   -----
+   If projection was requested in the reader, the correction is modified to ensure translational invariance.
+
+
+.. py:function:: maxwell(dielectric_medium, crystal_permittivity, shape, L, vf, size)
+
+   Calculate the effective constant permittivity using the Maxwell Garnett method.
+
+   Parameters
+   ----------
+   dielectric_medium : tensor (3x3)
+       The dielectric constant tensor of the medium.
+   crystal_permittivity : tensor (3x3)
+       The total frequency dielectric constant tensor at the current frequency.
+   shape : str
+       The name of the current shape.
+   L : matrix (3x3)
+       The shape's depolarisation matrix.
+   size : float
+       The dimensionless size parameter for the frequency under consideration.
+   vf : float
+       The volume fraction of filler.
+
+   Returns
+   -------
+   tensor (3x3)
+       The effective dielectric constant.
+
+
+.. py:function:: maxwell_sihvola(dielectric_medium, crystal_permittivity, shape, L, vf, size)
+
+   Calculate the effective constant permittivity using the Maxwell Garnett method.
+
+   Parameters
+   ----------
+   dielectric_medium : tensor (3x3)
+       The dielectric constant tensor of the medium.
+   crystal_permittivity : tensor (3x3)
+       The total frequency dielectric constant tensor at the current frequency.
+   shape : str
+       The name of the current shape.
+   L : matrix (3x3)
+       The shape's depolarisation matrix.
+   size : float
+       The dimensionless size parameter for the frequency under consideration.
+   vf : float
+       The volume fraction of filler.
+
+   Returns
+   -------
+   tensor
+       The effective dielectric constant.
+
+
+.. py:function:: mie_scattering(dielectric_medium, crystal_permittivity, shape, L, vf, size, size_mu, size_distribution_sigma)
+
+   Calculate the effective constant permittivity using a Mie scattering approach.
+
+   Parameters
+   ----------
+   dielectric_medium : array_like (3x3)
+       Dielectric constant tensor of the medium.
+   crystal_permittivity : array_like (3x3)
+       Total frequency dielectric constant tensor at the current frequency.
+   shape : str, optional
+       The name of the current shape (NOT USED).
+   L : array_like, optional
+       The shape's depolarisation matrix (NOT USED).
+   size : float
+       The dimensionless size parameter for the frequency under consideration.
+   size_distribution_sigma : float
+       The log normal value of sigma.
+   vf : float
+       The volume fraction of filler.
+
+   Returns
+   -------
+   float or array_like
+       The effective dielectric constant.
+
+   Notes
+   -----
+   In this method, the MG method is used to calculate the averaged effective permittivity.
+   Then, the permittivity of the isotropic sphere that would give the same average permittivity is calculated.
+   Finally, the Mie scattering of that sphere is calculated. The routine returns the effective dielectric constant.
+
+
+.. py:function:: normal_modes(masses, mass_weighted_normal_modes)
+
+   Transform from mass weighted coordinates to xyz.
+
+   Note this returns an array object. The returned normal modes have NOT been renormalized.
+   The input masses are in atomic units. The output normal modes are in atomic units.
+
+   Parameters
+   ----------
+   None
+
+   Returns
+   -------
+   np.array
+       An array of xyz coordinates derived from mass-weighted coordinates.
+
+   Notes
+   -----
+   The transformation to xyz coordinates does not involve renormalization of the normal modes.
+   Both the input masses and the output normal modes are in atomic units.
+
+
+.. py:function:: orthogonalise_projection_operator(ps)
+
+   Orthogonalise the list of projection operators ps.
+
+   Use Gramm Schmidt orthogonalisation to perform the operation
+
+   Parameters
+   ----------
+   ps : list of operators
+       The projection operators to orthogonalise.
+
+   Returns
+   -------
+   out : list of operators
+       The orthogonalised projection operators.
+
+   Notes
+   -----
+   This function orthogonalises a set of projection operators.
+
+
+
+.. py:function:: oscillator_strengths(normal_modes, born_charges)
+
+   Calculate oscillator strengths from the normal modes and the born charges.
+
+   Parameters
+   ----------
+   normal_modes : array_like
+       Normal modes are in the mass weighted coordinate system and normalized.
+   born_charges : array_like
+       Born charges are in electrons, so in atomic units.
+
+   Returns
+   -------
+   array_like
+       Oscillator strengths calculated from the given normal modes and born charges.
+
+
+.. py:function:: reflectance_atr(ns, n0, theta, atrSPolFraction)
+
+   Calculate the atr s and p reflectance.
+
+   Parameters
+   ----------
+   ns : complex
+       The complex permittivity of the effective medium.
+   n0 : complex
+       The permittivity of atr material.
+   theta : float
+       The angle of incidence in degrees.
+   atrSPolFraction : float
+       The fraction of S wave to be considered. The amount of P wave is 1 - atrSPolFraction.
+
+   Returns
+   -------
+   rs : float
+       The s-wave Fresnel amplitude.
+   rp : float
+       The p-wave Fresnel amplitude.
+
+
+.. py:function:: rogridgues_rotations(efield)
+
+   Take the field directions in efield and use each direction to calculate a random rotation about that axis.
+   Use the field (which is a random unit vector in xyz space) to generate an orthogonal rotation matrix
+   using the Rodrigues rotation formula A = I3.cos(theta) + (1-cos(theta)) e . eT + ex sin(theta),
+   where I3 is a unit matrix, e is the direction, and ex is the cross product matrix:
+
+   .. math::
+
+       \begin{align}
+       &\text{ex} = \begin{pmatrix} 0 & -e3 & e2 \\ e3 & 0 & -e1 \\ -e2 & e1 & 0 \end{pmatrix}
+       \end{align}
+
+   Parameters
+   ----------
+   efield : array_like
+       The field directions, where each direction is used to calculate a random rotation about that axis. Assumes the field is real.
+
+   Returns
+   -------
+   list of ndarray
+       A list of rotation matrices for each direction in efield.
+
+   Notes
+   -----
+   - The input field is assumed to be real.
+   - Output is a list of 3x3 rotation matrices.
+
+
+.. py:function:: solve_effective_medium_equations(method, vf, size_mu, size_distribution_sigma, matrixPermittivityFunction, shape, L, concentration, atrPermittivity, atrTheta, atrSPol, bubble_vf, bubble_radius, previous_solution_shared, atuple)
+
+   Solve the effective medium equations.
+
+   Parameters
+   ----------
+   method : str
+       The method to be used, options include bruggeman, balan, maxwell, maxwell-garnet, averagedpermittivity, maxwell-sihvola, coherent, bruggeman-minimise, mie, anisotropic-mie.
+   vf : float
+       The volume fraction of dielectric.
+   size_mu : float
+       The particle size in micron
+   size_distribution_sigma : float
+       The width of the size distribution.
+   matrixPermittivityFunction : function
+       Function returning the matrix permittivity at a frequency.
+   shape : str
+       The shape of the particles.
+   L : array
+       The depolarisation matrix.
+   concentration : float
+       The concentration of particles.
+   AtrPermittivity : float
+       The permittivity of the ATR substrate.
+   AtrTheta : float
+       The ATR angle of incidence.
+   atrSPol : str
+       The ATR polarisation.
+   bubble_vf : float
+       Volume fraction of bubbles.
+   bubble_radius : float
+       The radius of bubbles.
+   previous_solution_shared : bool
+       Use the previous solution to speed up iterations in the case of Bruggeman and coherent methods.
+   atuple : tuple
+       A tuple containing frequency in cm-1 (v_cm1) and a rank 3 tensor of the permittivity of the crystal at a given frequency (crystalPermittivity).
+
+   Returns
+   -------
+   Tuple of results
+       v_cm1
+       method
+       size_mu
+       size_distribution_sigma
+       shape
+       data
+       trace
+       absorption_coefficient
+       molar_absorption_coefficient
+       spatr
+
+
+.. py:function:: spherical_averaged_mie_scattering(dielectric_medium, crystal_permittivity, shape, L, vf, size, size_mu, size_distribution_sigma)
+
+   Calculate the effective constant permittivity using a Mie scattering approach.
+
+   Parameters
+   ----------
+   dielectric_medium : array_like (3x3)
+       The dielectric constant tensor of the medium.
+   crystal_permittivity : array_like (3x3)
+       The total frequency dielectric constant tensor at the current frequency.
+   shape : str
+       The name of the current shape. This parameter is ignored as Mie scattering 
+       only works for spherical particles.
+   L : array_like (3x3)
+       The shape's depolarisation matrix. This parameter is ignored as Mie scattering
+       only works for spherical particles.
+   size : float
+       The dimensionless size parameter for the frequency under consideration.
+   size_distribution_sigma : float
+       The log normal value of sigma.
+   vf : float
+       The volume fraction of filler.
+
+   Returns
+   -------
+   float
+       The effective dielectric constant. This is calculated by accounting for 
+       the anisotropy of the permittivity through sampling many directions 
+       and calculating the scattering in each direction.
+
+   Notes
+   -----
+   Mie scattering is applicable only to spherical particles, hence parameters such 
+   as `shape` and `L` are not used in this calculation. The routine considers the 
+   anisotropy of the permittivity by sampling various directions and computing 
+   the scattering for each to calculate the effective dielectric constant.
+
+
+.. py:function:: waterman_truell_scattering(lambda_vacuum_nm, N_nm, radius_nm, ri_medium)
+
+   Calculate the effective wavenumber based on Waterman-Truell scattering model.
+
+   Parameters
+   ----------
+   lambda_vacuum_nm : float
+       Wavelength of the incident light in vacuum, in nanometers.
+   N_nm : float
+       Number density of scatterers, in inverse cubic nanometers.
+   radius_nm : float
+       Radius of a scatterer, in nanometers.
+   ri_medium : float
+       Refractive index of the medium.
+
+   Returns
+   -------
+   new_k : complex
+       The complex effective wavenumber calculated based on the Waterman-Truell
+       scattering model, which accounts for the multiple scattering effects
+       among the particles in the medium.
+
+   Notes
+   -----
+   The Waterman-Truell scattering model is a method to calculate the effective
+   wavenumber of a medium containing scatterers. This calculation takes into
+   account the size of the scatterers, their number density, and the refractive
+   index of the medium.
+
+   The model utilizes the Mie scattering solutions to evaluate the forward scattering
+   amplitudes, which are then used to approximate the effective wavenumber for
+   wave propagation in the medium. This model is particularly useful in the study
+   of wave scattering in composite materials and biological tissues.
+
+
+.. py:data:: points_on_sphere
+
+   
+

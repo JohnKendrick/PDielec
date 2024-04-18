@@ -1,3 +1,28 @@
+'''
+App
+
+The MIT License (MIT)
+
+Copyright (c) 2024 John Kendrick
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+'''
 import sys
 import os.path
 from PyQt5.QtWidgets import QMainWindow, QApplication
@@ -10,7 +35,89 @@ version = PDielec.__init__.__version__
 
 class App(QMainWindow):
 
+    """
+    A class representing the main application window.
+
+    This class initializes the main application window with various configurations based on command line arguments and environment variables. It includes functionalities to read scripts, handle command line inputs, set up multiprocessing or threading as needed, and manage application events.
+
+    Parameters
+    ----------
+    args : list
+        List of command line arguments passed to the application.
+    progressbar : QProgressBar
+        A progress bar object to display progress of operations in the application.
+
+    Attributes
+    ----------
+    program_exit : bool
+        Flag indicating whether the application should exit after executing any script.
+    debug : bool
+        Debugging mode flag.
+    scripting : bool
+        Flag indicating whether the application is running in scripting mode.
+    scriptname : str
+        The name of the script file to be executed if scripting mode is enabled.
+    version : str
+        The version of the PDielec package.
+    title : str
+        The window title.
+    left : int
+        The x-coordinate of the window's position.
+    top : int
+        The y-coordinate of the window's position.
+    width : int
+        The width of the window.
+    height : int
+        The height of the window.
+    notebook : NoteBook
+        The notebook widget that acts as the central widget of the application.
+
+    Methods
+    -------
+    print_usage()
+        Prints usage information for the command line interface.
+    setMyWindowTitle(title)
+        Sets the window title to a formatted string including the version and the given title.
+    readScript(scriptname, spreadsheet_name='')
+        Executes the commands from a script file and optionally sets the spreadsheet file name.
+    closeEvent(event)
+        Handles the close event, ensuring that multiprocessing pools are properly closed.
+    """    
     def __init__(self, args, progressbar):
+        """
+        Initialize the GUI with user-specified options from command-line arguments.
+
+        Parameters
+        ----------
+        args : list
+            Command-line arguments passed to the program.
+        progressbar : ProgressBar or similar
+            Progress bar object to display progress visually in the GUI.
+
+        Raises
+        ------
+        SystemExit
+            If command-line arguments specify an exit condition or if invalid options are
+            provided that prevent the program from running correctly.
+
+        Notes
+        -----
+        This constructor processes command-line arguments to configure various aspects
+        of the GUI, such as whether debugging is enabled, the number of CPUs to use,
+        whether to enable threading, and specifies files and scenarios to be used. It
+        initiates the GUI with these settings and handles any requests for help or
+        program exit specified via command-line arguments.
+
+        Examples
+        --------
+        Command-line usage could involve arguments like:
+
+        - To specify the program should not show splash: `--nosplash`
+        - To exit after processing: `--exit`
+        - To specify a script to run: `--script my_script.py`
+        - To set the number of CPUs used: `--cpus 4`
+        - For help: `--help`
+        """        
         super().__init__()
         program = ''
         filename = ''
@@ -148,6 +255,38 @@ class App(QMainWindow):
         return
 
     def print_usage(self):
+        """
+        Print usage information for the PDielec package's graphical user interface.
+
+        This function prints the general usage information, available commands, and options for the graphical user interface to the PDielec package.
+
+        Parameters
+        ----------
+        None
+
+        Returns
+        -------
+        None
+
+        Notes
+        -----
+        The usage information includes:
+
+        - `program`: The name of the program which created the output file. Supported programs are 'vasp', 'phonopy', 'gulp', 'castep', 'abinit', and 'qe'. The program is guessed from the filename if not specified.
+        - `filename`: The name of the output file.
+        - `spreadsheet file`: An optional name of a spreadsheet file (must end with .xlsx). If provided, both program and filename must be specified.
+        - `-scenario type`: Changes the default scenario to "type", which can be either "powder" or "crystal".
+        - `-spreadsheet file`: An alternative way to specify the spreadsheet file.
+        - `-program`: An alternative way to specify the program.
+        - `-script file`: Specifies that initial commands are read from a script file.
+        - `-nosplash`: No splash screen is presented, which is useful for batch running.
+        - `-threading`: Use threads instead of multiprocessing.
+        - `-cpus 0`: Specify the number of processors or tasks; 0 uses all available.
+        - `-version`: Prints the version of the code.
+        - `-exit`: Exit the program after executing any script.
+        - `-help`: Prints out help information.
+        - `-debug`: Switches on debugging information.
+        """        
         print('pdgui - graphical user interface to the PDielec package')
         print('pdgui [program] filename [spreadsheet] [options]')
         print('     program      The name of the program which created the outputfile')
@@ -170,11 +309,49 @@ class App(QMainWindow):
         return
 
     def setMyWindowTitle(self,title):
+        """
+        Set the window title with the provided title appended to the PDGui version.
+
+        Parameters
+        ----------
+        title : str
+
+        Returns
+        -------
+        None
+            The title to be appended after the PDGui version.
+
+        Notes
+        -----
+        This function modifies the window title attribute of the instance and then updates the actual window title to reflect this change. The version of the PDGui is prefixed to the given title.
+        """        
         self.title = 'PDGui {}  - '.format(self.version) + title
         self.setWindowTitle(self.title)
         return
 
     def readScript(self,scriptname,spreadsheet_name=''):
+        """
+        Read and execute a script, optionally changing the working directory to the script's location and optionally setting a spreadsheet name.
+
+        Parameters
+        ----------
+        scriptname : str
+            The file path of the script to be executed.
+        spreadsheet_name : str, optional
+            The name of the spreadsheet, default is blank
+
+        Returns
+        -------
+        None
+            The name of the spreadsheet to set in the notebook settings, by default an empty string which implies no spreadsheet name will be set.
+
+        Notes
+        -----
+        This function changes the current working directory to the directory of the script if its directory part is non-empty. It executes the script in the current Python environment using `exec()`. It also sets various notebook flags such as `scripting` and `overwriting`.
+
+        After executing the script, it potentially updates the spreadsheet name in the notebook's mainTab settings if a non-empty `spreadsheet_name` is provided. It refreshes the notebook and processes pending Qt events with `QCoreApplication.processEvents()`.
+
+        """        
         debugger.print('Start:: readScript')
         self.notebook.scripting = True
         directory = os.path.dirname(scriptname)
@@ -210,6 +387,36 @@ class App(QMainWindow):
 
     def closeEvent(self, event):
         # Make sure any spread sheet is closed
+        """
+        Handle the close event of the application.
+
+        This method is called automatically when the close event is fired, typically when
+        the user tries to close the application window. It ensures that the multiprocessing
+        pool is properly terminated before the application shuts down.
+
+        Parameters
+        ----------
+        event : QCloseEvent
+
+        Returns
+        -------
+        None
+            The close event.
+
+        Notes
+        -----
+        This function must be a method of a class that inherits from a PyQt or PySide 
+        widget which has a closeEvent method to override, such as QMainWindow, QDialog, etc.
+
+        The `self.notebook.pool` is an instance of a multiprocessing pool, which needs
+        to be closed and joined properly to ensure all processes are terminated cleanly before the application exits.
+
+        The `super(App, self).closeEvent(event)` call makes sure that any close event operations defined in the 
+        base class (from which the current class is derived) are also executed.
+
+        When the application is about to close, this method ensures clean termination
+        of multiprocessing resources and performs any additional base class close event handling.
+        """        
         debugger.print('Close event has been captured')
         self.notebook.pool.close()
         self.notebook.pool.join()

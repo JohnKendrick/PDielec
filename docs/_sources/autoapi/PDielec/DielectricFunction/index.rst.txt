@@ -1,0 +1,578 @@
+:py:mod:`PDielec.DielectricFunction`
+====================================
+
+.. py:module:: PDielec.DielectricFunction
+
+.. autoapi-nested-parse::
+
+   DielectricFunction
+
+   Provides an interface to different mechanisms for providing dielectric information to pdielec and pdgui
+
+   Copyright 2024 John Kendrick
+
+   This file is part of PDielec
+
+   This program is free software; you can redistribute it and/or modify
+   it under the terms of the MIT License
+
+   This program is distributed in the hope that it will be useful,
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+
+   You should have received a copy of the MIT License
+   along with this program, if not see https://opensource.org/licenses/MIT
+
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   PDielec.DielectricFunction.ConstantScalar
+   PDielec.DielectricFunction.ConstantTensor
+   PDielec.DielectricFunction.DFT
+   PDielec.DielectricFunction.DielectricFunction
+   PDielec.DielectricFunction.DrudeLorentz
+   PDielec.DielectricFunction.FPSQ
+   PDielec.DielectricFunction.Sellmeier
+   PDielec.DielectricFunction.Tabulate1
+   PDielec.DielectricFunction.Tabulate3
+   PDielec.DielectricFunction.Tabulate6
+   PDielec.DielectricFunction.TabulateScalar
+
+
+
+
+.. py:class:: ConstantScalar(value)
+
+
+   Bases: :py:obj:`DielectricFunction`
+
+   A class for a complex constant scalar dielectric function.
+
+   Inherits from DielectricFunction. Provides a calculate() function to return
+   the permittivity.
+
+   Methods
+   -------
+   calculate()
+       Calculates and returns the permittivity of the dielectric function.
+
+   .. py:method:: calculate(v)
+
+      Calculate the permittivity at a specified frequency.
+
+      Parameters
+      ----------
+      v : float
+          The frequency at which to calculate the permittivity.
+
+      Returns
+      -------
+      float
+          The permittivity at frequency v.
+
+
+
+.. py:class:: ConstantTensor(value)
+
+
+   Bases: :py:obj:`DielectricFunction`
+
+   A class for a complex constant tensor dielectric function.
+
+   Inherits from DielectricFunction.
+   Provides a calculate() function to return the permittivity.
+
+   Methods
+   -------
+   calculate()
+       Calculates and returns the permittivity.
+
+
+   .. py:method:: calculate(v)
+
+      Calculate the permittivity at a given frequency.
+
+      Parameters
+      ----------
+      v : float
+          The frequency in internal units.
+
+      Returns
+      -------
+      ndarray
+          The permittivity at frequency v as a 3x3 tensor.
+
+
+
+.. py:class:: DFT(mode_list, mode_frequencies, mode_sigmas, mode_oscillator_strengths, crystal_volume, drude, drude_plasma, drude_sigma)
+
+
+   Bases: :py:obj:`DielectricFunction`
+
+   A class for a complex constant tensor dielectric function.
+
+   Inherits from DielectricFunction.
+   Suitable for use in calculating the permittivity from DFT calculations.
+   Internal units for this function are atomic units.
+   Provides a calculate() function to return the permittivity.
+
+   Methods
+   -------
+   calculate()
+       Returns the permittivity based on the DFT calculations.
+
+   Notes
+   -----
+   The internal units for all calculations within this class are atomic units.
+
+   .. py:method:: calculate(v)
+
+      Calculate the permittivity at a given frequency.
+
+      Parameters
+      ----------
+      v : float
+          The frequency in cm-1.
+
+      Returns
+      -------
+      ndarray
+          The permittivity at frequency v as a 3x3 tensor.
+
+
+
+.. py:class:: DielectricFunction
+
+
+   Provide a base class to different dielectric functions.
+
+   Attributes
+   ----------
+   epsilon_infinity : ndarray
+       A 3x3 tensor (numpy array) representing the optical permittivity.
+   volume : float
+       Volume of crystal unit cells.
+   volume_au : float
+       Volume of crystal unit cells in atomic units.
+   vs_cm1 : ndarray
+       An array of floats representing the frequencies of any tabulation.
+   isScalarFunction : bool
+       True if this function is a scalar function, False otherwise.
+
+   Methods
+   -------
+   setVolume(volume)
+       Change the unit cell volume.
+   setEpsilonInfinity(eps)
+       Change epsilon infinity.
+   function()
+       Return the calculate function for this object.
+   calculate(v)
+       Return the value of the permittivity at frequency v.
+   dielectricContributionsFromDrude(f, frequency, sigma, volume)
+       Calculates permittivity from a Drude Model.
+   dielectricContributionsFromModes(f, modes, frequencies, sigmas, strengths, volume)
+       Calculates permittivity from a Drude-Lorentz model.
+
+   .. py:attribute:: possible_epsTypes
+      :value: ['dft', 'fpsq', 'drude-lorentz', 'sellmeier']
+
+      
+
+   .. py:method:: dielectriContributionsFromDrude(f, frequency, sigma, volume)
+
+      Calculate the dielectric function for a set of a Drude oscillator
+
+      The units of the parameters must be self-consistent.  Atomic units is a good choice.
+
+      Parameters
+      ----------
+      f : float
+          The frequency of the dielectric response.
+      frequency : float
+          The frequency of the drude oscillator.
+      sigma : float
+          The width of the oscillator.
+      volume : float
+          The volume of the cell
+
+      Returns
+      -------
+      tensor (3x3)
+          A complex scalar dielectric.
+
+
+   .. py:method:: dielectriContributionsFromModes(f, modes, frequencies, sigmas, strengths, volume)
+
+      Calculate the dielectric function for a set of modes.
+
+      Parameters
+      ----------
+      modes : list of int
+          A list of the modes to be considered.
+      frequencies : list of float
+          The frequency of each mode.
+      sigmas : list of float
+          The width of each mode.
+      strengths : list of float
+          The strengths of each mode.
+      volume : float
+          The volume of the cell
+
+      Returns
+      -------
+      tensor (3x3)
+          A complex scalar representing the dielectric function.
+
+
+   .. py:method:: function()
+
+      Return the function used to calculate the permittivity.
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      a function
+
+
+   .. py:method:: getHighestFrequency()
+
+      Return the highest tabulated frequency in cm-1.
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      float
+          The highest tabulated frequency in cm-1.
+
+
+   .. py:method:: getLowestFrequency()
+
+      Returns the lowest tabulated frequency in cm-1.
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      The lowest tabulated frequency in cm-1.
+
+
+   .. py:method:: isScalar()
+
+      Returns true if the dielectric function is a scalar
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      bool
+          True if the dielectric function returns a scalar value, False otherwise.
+
+
+   .. py:method:: isTensor()
+
+      Returns true if the dielectric function is a tensor
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      bool
+          True if the dielectric function returns a tensor, otherwise False.
+
+
+   .. py:method:: print(v1_cm1, v2_cm1, v_inc=1, diagonal_only=True, file=None)
+
+      Print the permittivity over a range of frequencies to a file
+
+      Parameters
+      ----------
+      v1_cm1 : float
+          Starting frequency
+      v2_cm1 : float
+          Finishing frequency
+      v_inc : float, optional
+          Incrementing frequency, default is 1
+      diagonal_only: bool,optional
+          If true only the diagonal values are printed
+      file : str, optional
+          Filename for printing.  If 'None' then stdout is used
+
+      Returns
+      -------
+      None
+
+
+   .. py:method:: setEpsilonInfinity(eps)
+
+      Set epsilon infinity for dielectric calculations.
+
+      Parameters
+      ----------
+      eps : tensor (3x3)
+          The value of eps_infinity.
+
+      Returns
+      -------
+      None
+
+
+   .. py:method:: setVolume(volume)
+
+      Set the volume for dielectric calculations.
+
+      Parameters
+      ----------
+      volume : float
+          The volume in angs^3.
+
+      Returns
+      -------
+      None
+
+
+
+.. py:class:: DrudeLorentz(vs_cm1, strengths_cm1, sigmas_cm1)
+
+
+   Bases: :py:obj:`DielectricFunction`
+
+   A class for a complex constant tensor dielectric function.
+
+   Inherits from DielectricFunction.
+   Provides a calculate() function to return the permittivity.
+
+   Methods
+   -------
+   calculate()
+       Calculates and returns the permittivity.
+
+   Examples
+   --------
+   None
+
+   .. py:method:: calculate(v)
+
+      Calculate the permittivity at a given frequency.
+
+      Parameters
+      ----------
+      v : float
+          The frequency in cm-1
+
+      Returns
+      -------
+      tensor
+          The permittivity at frequency v as a diagonal 3x3 tensor.
+
+
+
+.. py:class:: FPSQ(omega_tos, gamma_tos, omega_los, gamma_los)
+
+
+   Bases: :py:obj:`DielectricFunction`
+
+   A complex constant tensor FPSQ dielectric function.
+
+   Inherits from DielectricFunction.
+   Provides a calculate() function to return the permittivity.
+
+   .. py:method:: calculate(v)
+
+      Calculate the diagonal permittivity 3x3 tensor at a given frequency.
+
+      Parameters
+      ----------
+      v : float
+          The frequency in cm-1
+
+      Returns
+      -------
+      numpy.ndarray
+          The diagonal permittivity 3x3 tensor at frequency v.
+
+
+
+.. py:class:: Sellmeier(Bs, Cs)
+
+
+   Bases: :py:obj:`DielectricFunction`
+
+   A complex constant tensor Sellmeier dielectric function.
+
+   Inherits from DielectricFunction. Provides a calculate() function to return the permittivity.
+
+
+   .. py:method:: calculate(v)
+
+      Calculate the diagonal permittivity 3x3 tensor at a given frequency.
+
+      Parameters
+      ----------
+      v : float
+          The frequency in cm-1.
+
+      Returns
+      -------
+      ndarray
+          The diagonal permittivity 3x3 tensor at frequency v.
+
+      Notes
+      -----
+      The Sellmeier parameters are in microns^2.
+
+
+
+.. py:class:: Tabulate1(vs_cm1, permittivities)
+
+
+   Bases: :py:obj:`DielectricFunction`
+
+   A class for a complex constant tensor dielectric function.
+
+   Inherits from DielectricFunction.
+   Represents an isotropic dielectric function.
+   Provides a calculate() function to return the permittivity.
+
+   Methods
+   -------
+   calculate()
+       Returns the permittivity of the dielectric function.
+
+   .. py:method:: calculate(v)
+
+      Calculate the isotropic permittivity at a given frequency.
+
+      Parameters
+      ----------
+      v : float
+          The frequency in internal units.
+
+      Returns
+      -------
+      numpy.ndarray
+          The isotropic permittivity at frequency v as a 3x3 tensor.
+
+
+
+.. py:class:: Tabulate3(vs_cm1, epsxx, epsyy, epszz)
+
+
+   Bases: :py:obj:`DielectricFunction`
+
+   A class for a complex constant tensor dielectric function.
+
+   Inherits from DielectricFunction.
+   Represents an orthorhombic dielectric function.
+   Provides a calculate() function to return the permittivity.
+
+   Methods
+   -------
+   calculate()
+       Return the permittivity of the dielectric function.
+
+   .. py:method:: calculate(v)
+
+      Calculate the permittivity at a given frequency.
+
+      Parameters
+      ----------
+      v : float
+          The frequency in internal units.
+
+      Returns
+      -------
+      numpy.ndarray
+          The permittivity at frequency v as a diagonal 3x3 tensor.
+
+
+
+.. py:class:: Tabulate6(vs_cm1, epsxx, epsyy, epszz, epsxy, epsxz, epsyz)
+
+
+   Bases: :py:obj:`DielectricFunction`
+
+   A class for a complex constant tensor dielectric function.
+
+   Inherits from DielectricFunction.
+   Represents an non-isotropic dielectric function.
+   Provides a calculate() function to return the permittivity.
+
+   Methods
+   -------
+   calculate()
+       Returns the permittivity of the dielectric.
+
+   .. py:method:: calculate(v)
+
+      Calculate the symmetric permittivity tensor at a given frequency.
+
+      Parameters
+      ----------
+      v : float
+          The frequency in cm-1.
+
+      Returns
+      -------
+      numpy.ndarray
+          The full permittivity tensor at frequency v as a 3x3 tensor.
+
+
+
+.. py:class:: TabulateScalar(vs_cm1, permittivities)
+
+
+   Bases: :py:obj:`DielectricFunction`
+
+   A class for a complex tabulated scalar dielectric function.
+
+   Inherits from DielectricFunction. Represents an isotropic material dielectric function. Provides a calculate() function to return the permittivity.
+
+   Methods
+   -------
+   calculate()
+       Compute the permittivity of the material.
+
+   Notes
+   -----
+   None
+
+   Examples
+   --------
+   None
+
+   .. py:method:: calculate(v)
+
+      Calculate the permittivity at a given frequency.
+
+      Parameters
+      ----------
+      v : float
+          The frequency in internal units.
+
+      Returns
+      -------
+      float
+          The permittivity at frequency v as a scalar.
+
+
+

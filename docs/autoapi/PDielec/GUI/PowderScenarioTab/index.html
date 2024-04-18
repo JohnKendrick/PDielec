@@ -1,0 +1,994 @@
+<!doctype html>
+<html class="no-js" lang="en" data-content_root="">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="index" title="Index" href="../../../../genindex.html" /><link rel="search" title="Search" href="../../../../search.html" /><link rel="next" title="PDielec.GUI.ScenarioTab" href="../ScenarioTab/index.html" /><link rel="prev" title="PDielec.GUI.PlottingTab" href="../PlottingTab/index.html" />
+
+    <!-- Generated with Sphinx 7.1.2 and Furo 2024.01.29 -->
+        <title>PDielec.GUI.PowderScenarioTab - PDielec: John Kendrick &amp; Andrew Burnett</title>
+      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=80d5e7a1" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?v=135e06be" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css?v=eafc0fe6" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/table_styling.css?v=a1a2a898" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo-extensions.css?v=36a5483c" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/css/custom.css?v=2e0a580d" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f8f8f8;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-half" viewBox="0 0 24 24">
+    <title>Auto light/dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M13 12h5" />
+      <path d="M13 15h4" />
+      <path d="M13 18h1" />
+      <path d="M13 9h4" />
+      <path d="M13 6h1" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../../../../index.html"><div class="brand">PDielec: John Kendrick & Andrew Burnett</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../../../../index.html">
+  
+  
+  <span class="sidebar-brand-text">PDielec: John Kendrick & Andrew Burnett</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../../../../search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <p class="caption" role="heading"><span class="caption-text">Software</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pdgui.html">PDGui</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../software.html">Other Software Components</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Theory</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../theory_powder.html">Theory for Light Scattering from Powders</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../theory_single_crystal.html">Theory for Single Crystal Optics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../analysis.html">Phonon Analysis</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Applications</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../application_notes_1.html">Applications of Effective Medium Theory</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../application_notes_2.html">Single Crystal Applications</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API</span></p>
+<ul class="current">
+<li class="toctree-l1 current has-children"><a class="reference internal" href="../../../index.html">API Reference</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of API Reference</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l2 current has-children"><a class="reference internal" href="../../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec</span></code></a><input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of PDielec</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l3 current has-children"><a class="reference internal" href="../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI</span></code></a><input checked="" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of PDielec.GUI</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="../AnalysisTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.AnalysisTab</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../App/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.App</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../FitterTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.FitterTab</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../MainTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.MainTab</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../NoteBook/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.NoteBook</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../OpenGLWidget/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.OpenGLWidget</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../PlottingTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.PlottingTab</span></code></a></li>
+<li class="toctree-l4 current current-page"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.PowderScenarioTab</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../ScenarioTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.ScenarioTab</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../SettingsTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.SettingsTab</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../SingleCrystalLayer/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.SingleCrystalLayer</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../SingleCrystalScenarioTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.SingleCrystalScenarioTab</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../SpreadSheetManager/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.SpreadSheetManager</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../ViewerTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.ViewerTab</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../AbinitOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.AbinitOutputReader</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../Calculator/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.Calculator</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../CastepOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.CastepOutputReader</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../Constants/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.Constants</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../CrystalOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.CrystalOutputReader</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../DielectricFunction/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.DielectricFunction</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ExperimentOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.ExperimentOutputReader</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../GTMcore/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GTMcore</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../GenericOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GenericOutputReader</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../GulpOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GulpOutputReader</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../HelperRoutines/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.HelperRoutines</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../IO/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.IO</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../Materials/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.Materials</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../Mie/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.Mie</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../PhonopyOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.PhonopyOutputReader</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../Plotter/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.Plotter</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../QEOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.QEOutputReader</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../SuperCell/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.SuperCell</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../UnitCell/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.UnitCell</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../Utilities/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.Utilities</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../VaspOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.VaspOutputReader</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../checkcsv/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.checkcsv</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../checkexcel/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.checkexcel</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../graphdatagenerator/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.graphdatagenerator</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../p1reader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.p1reader</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../p2cif/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.p2cif</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../pdcompare/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.pdcompare</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../pdgui/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.pdgui</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../pdmake/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.pdmake</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../pickled_reader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.pickled_reader</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../preader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.preader</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../vibanalysis/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.vibanalysis</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../pdgui/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.pdgui</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../preader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.preader</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../pdmake/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.pdmake</span></code></a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">References</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../zreferences.html">References</a></li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main">
+          <section id="module-PDielec.GUI.PowderScenarioTab">
+<span id="pdielec-gui-powderscenariotab"></span><h1><a class="reference internal" href="#module-PDielec.GUI.PowderScenarioTab" title="PDielec.GUI.PowderScenarioTab"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.PowderScenarioTab</span></code></a><a class="headerlink" href="#module-PDielec.GUI.PowderScenarioTab" title="Permalink to this heading">#</a></h1>
+<p>PowderScenarioTab</p>
+<p>The MIT License (MIT)</p>
+<p>Copyright (c) 2024 John Kendrick</p>
+<p>Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the “Software”), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:</p>
+<p>The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.</p>
+<p>THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.</p>
+<section id="module-contents">
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this heading">#</a></h2>
+<section id="classes">
+<h3>Classes<a class="headerlink" href="#classes" title="Permalink to this heading">#</a></h3>
+<div class="table-wrapper autosummary longtable docutils container">
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#PDielec.GUI.PowderScenarioTab.PowderScenarioTab" title="PDielec.GUI.PowderScenarioTab.PowderScenarioTab"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PowderScenarioTab</span></code></a></p></td>
+<td><p>A class for managing the Powder Scenario Tab</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<dl class="py class">
+<dt class="sig sig-object py" id="PDielec.GUI.PowderScenarioTab.PowderScenarioTab">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PDielec.GUI.PowderScenarioTab.</span></span><span class="sig-name descname"><span class="pre">PowderScenarioTab</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">debug</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/PowderScenarioTab.html#PowderScenarioTab"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.PowderScenarioTab.PowderScenarioTab" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="../ScenarioTab/index.html#PDielec.GUI.ScenarioTab.ScenarioTab" title="PDielec.GUI.ScenarioTab.ScenarioTab"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PDielec.GUI.ScenarioTab.ScenarioTab</span></code></a></p>
+<p>A class for managing the Powder Scenario Tab</p>
+<p>It inherits from <cite>ScenarioTab</cite>, thus utilizing its layout and properties,
+with additional features and settings pertinent to powder scenarios.</p>
+<section id="attributes">
+<h4>Attributes<a class="headerlink" href="#attributes" title="Permalink to this heading">#</a></h4>
+<dl class="simple">
+<dt>scenarioType<span class="classifier">str</span></dt><dd><p>Defines the type of scenario as ‘Powder’.</p>
+</dd>
+<dt>settings<span class="classifier">dict</span></dt><dd><p>Dictionary holding various settings related to the scenario.</p>
+</dd>
+<dt>methods<span class="classifier">list</span></dt><dd><p>List of available effective medium methods.</p>
+</dd>
+<dt>shapes<span class="classifier">list</span></dt><dd><p>List of available particle shapes.</p>
+</dd>
+<dt>materialNames<span class="classifier">list</span></dt><dd><p>List of available material names.</p>
+</dd>
+<dt>materialDefined<span class="classifier">bool</span></dt><dd><p>Indicates whether the material is defined manually or not.</p>
+</dd>
+<dt>direction<span class="classifier">ndarray</span></dt><dd><p>Array defining the unique direction for particle shape.</p>
+</dd>
+<dt>depolarisation<span class="classifier">ndarray (3x3)</span></dt><dd><p>Array defining the depolarisation factors.</p>
+</dd>
+<dt>scenarioIndex<span class="classifier">any</span></dt><dd><p>Index associated with the current scenario.</p>
+</dd>
+<dt>refreshRequired<span class="classifier">bool</span></dt><dd><p>Indicates if UI refresh is required.</p>
+</dd>
+<dt>calculationRequired<span class="classifier">bool</span></dt><dd><p>Indicates if recalculation is required due to parameter changes.</p>
+</dd>
+<dt>reader<span class="classifier">An dft output reader</span></dt><dd><p>Used to read external data.</p>
+</dd>
+<dt>realPermittivity<span class="classifier">list</span></dt><dd><p>List holding real parts of permittivity values.</p>
+</dd>
+<dt>imagPermittivity<span class="classifier">list</span></dt><dd><p>List holding imaginary parts of permittivity values.</p>
+</dd>
+<dt>absorptionCoefficient<span class="classifier">list</span></dt><dd><p>List to hold absorption coefficient values.</p>
+</dd>
+<dt>molarAbsorptionCoefficient<span class="classifier">list</span></dt><dd><p>List to hold molar absorption coefficient values.</p>
+</dd>
+<dt>sp_atr<span class="classifier">list</span></dt><dd><p>List to hold ATR specific calculation results.</p>
+</dd>
+</dl>
+</section>
+<section id="methods">
+<h4>Methods<a class="headerlink" href="#methods" title="Permalink to this heading">#</a></h4>
+<dl class="simple">
+<dt>crystal_density()</dt><dd><p>Compute and return the density of the crystal based on its volume and mass.</p>
+</dd>
+<dt>openDB_button_clicked()</dt><dd><p>Handler for the event where the database open button is clicked.</p>
+</dd>
+<dt>on_h_sb_changed(value)</dt><dd><p>Handler for changes in the ‘h’ dimension parameter of the crystal’s unique direction.</p>
+</dd>
+<dt>on_k_sb_changed(value)</dt><dd><p>Handler for changes in the ‘k’ dimension parameter of the crystal’s unique direction.</p>
+</dd>
+<dt>on_l_sb_changed(value)</dt><dd><p>Handler for changes in the ‘l’ dimension parameter of the crystal’s unique direction.</p>
+</dd>
+<dt>on_shape_cb_activated(index)</dt><dd><p>Handler for changes in the selected shape of powder particles.</p>
+</dd>
+<dt>on_methods_cb_activated(index)</dt><dd><p>Handler to deal with changes in the selected calculation method for effective medium theory.</p>
+</dd>
+<dt>on_mf_sb_changed(value)</dt><dd><p>Handler for changes to the mass fraction value, updating the volume fraction value accordingly.</p>
+</dd>
+<dt>update_vf_sb()</dt><dd><p>Update the volume fraction spinbox according to the mass fraction and recalculates as necessary.</p>
+</dd>
+<dt>on_aoverb_sb_changed(value)</dt><dd><p>Handler for changes to the ellipsoid a/b ratio or eccentricity.</p>
+</dd>
+<dt>on_legend_le_changed(text)</dt><dd><p>Handler for changes to the legend label of the powder scenario.</p>
+</dd>
+<dt>on_sigma_sb_changed(value)</dt><dd><p>Handler for changes to the particle size distribution sigma.</p>
+</dd>
+<dt>on_size_sb_changed(value)</dt><dd><p>Handler for changes to the particle size.</p>
+</dd>
+<dt>on_vf_sb_changed(value)</dt><dd><p>Handle changes to the volume fraction spinbox, updating mass fraction accordingly.</p>
+</dd>
+<dt>update_mf_sb()</dt><dd><p>Update the mass fraction spinbox according to the volume fraction and recalculates as necessary.</p>
+</dd>
+<dt>on_matrix_cb_activated(index)</dt><dd><p>Handler for changes to the selected support matrix in the ComboBox.</p>
+</dd>
+<dt>on_density_sb_changed(value)</dt><dd><p>Handle changes to the density spinbox of the support matrix.</p>
+</dd>
+<dt>on_bubble_vf_sb_changed(value)</dt><dd><p>Handle changes to the bubble volume fraction spinbox.</p>
+</dd>
+<dt>on_bubble_radius_sb_changed(value)</dt><dd><p>Handle changes to the bubble radius spinbox.</p>
+</dd>
+<dt>on_permittivity_i_sb_changed(value)</dt><dd><p>Handle changes to the imaginary part of the support matrix permittivity.</p>
+</dd>
+<dt>on_permittivity_r_sb_changed(value)</dt><dd><p>Handle changes to the real part of the support matrix permittivity.</p>
+</dd>
+<dt>on_atr_index_sb_changed(value)</dt><dd><p>Handle changes to the ATR material refractive index spinbox.</p>
+</dd>
+<dt>on_atr_incident_ang_sb_changed(value)</dt><dd><p>Handle changes to the ATR incident angle spinbox.</p>
+</dd>
+<dt>on_atr_spolfrac_sb_changed(value)</dt><dd><p>Handle changes to the ATR s-polarisation fraction spinbox.</p>
+</dd>
+<dt>change_greyed_out()</dt><dd><p>Enable or disable elements of the GUI based on the current scenario settings.</p>
+</dd>
+<dt>calculate(vs_cm1)</dt><dd><p>Calculate the powder absorption for the given frequency range.</p>
+</dd>
+<dt>get_result(vs_cm1, plot_type)</dt><dd><p>Return the calculation result for the specified plot type.</p>
+</dd>
+<dt>get_results(vs_cm1)</dt><dd><p>Prepare the necessary results for displaying or processing.</p>
+</dd>
+<dt>refresh(force=False)</dt><dd><p>Refresh the GUI interface with up to date values.</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="PDielec.GUI.PowderScenarioTab.PowderScenarioTab.calculate">
+<span class="sig-name descname"><span class="pre">calculate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vs_cm1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/PowderScenarioTab.html#PowderScenarioTab.calculate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.PowderScenarioTab.PowderScenarioTab.calculate" title="Permalink to this definition">#</a></dt>
+<dd><p>Calculate the powder absorption for the range of frequencies in vs_cm1.</p>
+<section id="parameters">
+<h5>Parameters<a class="headerlink" href="#parameters" title="Permalink to this heading">#</a></h5>
+<dl class="simple">
+<dt>vs_cm1<span class="classifier">array_like</span></dt><dd><p>Array of frequencies for which to calculate the powder absorption.</p>
+</dd>
+</dl>
+</section>
+<section id="returns">
+<h5>Returns<a class="headerlink" href="#returns" title="Permalink to this heading">#</a></h5>
+<dl class="simple">
+<dt>array_like</dt><dd><p>The calculated powder absorption for the given range of frequencies.</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PDielec.GUI.PowderScenarioTab.PowderScenarioTab.change_greyed_out">
+<span class="sig-name descname"><span class="pre">change_greyed_out</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/PowderScenarioTab.html#PowderScenarioTab.change_greyed_out"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.PowderScenarioTab.PowderScenarioTab.change_greyed_out" title="Permalink to this definition">#</a></dt>
+<dd><p>Modify UI elements based on the selected effective medium method.</p>
+<p>This function updates the enabled status of UI elements such as size, sigma, and shape selection based on the currently selected effective medium method in the settings. It also updates the particle shape setting if necessary and adjusts the UI to reflect any changes.</p>
+<section id="id1">
+<h5>Parameters<a class="headerlink" href="#id1" title="Permalink to this heading">#</a></h5>
+<p>None</p>
+</section>
+<section id="id2">
+<h5>Returns<a class="headerlink" href="#id2" title="Permalink to this heading">#</a></h5>
+<p>int</p>
+</section>
+<section id="notes">
+<h5>Notes<a class="headerlink" href="#notes" title="Permalink to this heading">#</a></h5>
+<ul class="simple">
+<li><p>The method checks the ‘Effective medium method’ and ‘Particle shape’ in the settings.</p></li>
+<li><p>For ‘Mie’ and ‘Anisotropic-Mie’ methods, it enables size and sigma spinboxes and sets the particle shape to ‘Sphere’, disabling all other shapes.</p></li>
+<li><p>For ‘Averaged Permittivity’, it disables size and sigma spinboxes and sets the particle shape to ‘Sphere’.</p></li>
+<li><p>For ‘Maxwell-Garnett’ and ‘Bruggeman’, it enables the size spinbox and disables the sigma spinbox, allowing all shapes to be selected.</p></li>
+<li><p>If the particle shape is set to ‘Ellipsoid’, ‘Plate’, or ‘Needle’, it enables direction (h, k, l) spinboxes and adjusts the display label accordingly. For ‘Sphere’, it disables these spinboxes.</p></li>
+</ul>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PDielec.GUI.PowderScenarioTab.PowderScenarioTab.crystal_density">
+<span class="sig-name descname"><span class="pre">crystal_density</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/PowderScenarioTab.html#PowderScenarioTab.crystal_density"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.PowderScenarioTab.PowderScenarioTab.crystal_density" title="Permalink to this definition">#</a></dt>
+<dd><p>Find the crystal density from the current reader and return the density.</p>
+<section id="id3">
+<h5>Returns<a class="headerlink" href="#id3" title="Permalink to this heading">#</a></h5>
+<dl class="simple">
+<dt>float</dt><dd><p>The crystal density.</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PDielec.GUI.PowderScenarioTab.PowderScenarioTab.get_result">
+<span class="sig-name descname"><span class="pre">get_result</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vs_cm1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plot_type</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/PowderScenarioTab.html#PowderScenarioTab.get_result"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.PowderScenarioTab.PowderScenarioTab.get_result" title="Permalink to this definition">#</a></dt>
+<dd><section id="id4">
+<h5>Parameters<a class="headerlink" href="#id4" title="Permalink to this heading">#</a></h5>
+<dl class="simple">
+<dt>vs_cm1<span class="classifier">list</span></dt><dd><p>A list of frequencies in cm-1</p>
+</dd>
+<dt>plot_type<span class="classifier">str</span></dt><dd><p>A string indicating the type of result to return.
+One of: ‘Powder Molar Absorption’, ‘Powder Absorption’, ‘Powder Real Permittivity’, ‘Powder Imaginary Permittivity’, ‘Powder ATR’</p>
+</dd>
+</dl>
+</section>
+<section id="id5">
+<h5>Returns<a class="headerlink" href="#id5" title="Permalink to this heading">#</a></h5>
+<dl class="simple">
+<dt>list</dt><dd><p>A list of the required results.</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PDielec.GUI.PowderScenarioTab.PowderScenarioTab.get_results">
+<span class="sig-name descname"><span class="pre">get_results</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vs_cm1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/PowderScenarioTab.html#PowderScenarioTab.get_results"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.PowderScenarioTab.PowderScenarioTab.get_results" title="Permalink to this definition">#</a></dt>
+<dd><p>Return the results of the effective medium theory calculation.</p>
+<p>This routine jut causes a refresh and calculation if it is needed.
+See get_result() for accessing the results themselves</p>
+<section id="id6">
+<h5>Parameters<a class="headerlink" href="#id6" title="Permalink to this heading">#</a></h5>
+<dl class="simple">
+<dt>vs_cm1<span class="classifier">list</span></dt><dd><p>A list of frequencies in cm-1</p>
+</dd>
+</dl>
+</section>
+<section id="id7">
+<h5>Returns<a class="headerlink" href="#id7" title="Permalink to this heading">#</a></h5>
+<p>None</p>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PDielec.GUI.PowderScenarioTab.PowderScenarioTab.on_aoverb_sb_changed">
+<span class="sig-name descname"><span class="pre">on_aoverb_sb_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/PowderScenarioTab.html#PowderScenarioTab.on_aoverb_sb_changed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.PowderScenarioTab.PowderScenarioTab.on_aoverb_sb_changed" title="Permalink to this definition">#</a></dt>
+<dd><p>Handle a change to the a/b ratio for an ellipsoid.</p>
+<section id="id8">
+<h5>Parameters<a class="headerlink" href="#id8" title="Permalink to this heading">#</a></h5>
+<dl class="simple">
+<dt>value<span class="classifier">float</span></dt><dd><p>The a/b ratio of the elllipsoid</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PDielec.GUI.PowderScenarioTab.PowderScenarioTab.on_atr_incident_ang_sb_changed">
+<span class="sig-name descname"><span class="pre">on_atr_incident_ang_sb_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/PowderScenarioTab.html#PowderScenarioTab.on_atr_incident_ang_sb_changed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.PowderScenarioTab.PowderScenarioTab.on_atr_incident_ang_sb_changed" title="Permalink to this definition">#</a></dt>
+<dd><p>Handles the update to the ATR incident angle situation.</p>
+<p>This method updates the ATR incident angle setting based on user inputs or changes. It also triggers an update to ensure the new settings are reflected across the application.</p>
+<section id="id9">
+<h5>Parameters<a class="headerlink" href="#id9" title="Permalink to this heading">#</a></h5>
+<dl class="simple">
+<dt>value<span class="classifier">float or int</span></dt><dd><p>The new value for the ATR incident angle.</p>
+</dd>
+</dl>
+</section>
+<section id="id10">
+<h5>Returns<a class="headerlink" href="#id10" title="Permalink to this heading">#</a></h5>
+<p>int</p>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PDielec.GUI.PowderScenarioTab.PowderScenarioTab.on_atr_index_sb_changed">
+<span class="sig-name descname"><span class="pre">on_atr_index_sb_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/PowderScenarioTab.html#PowderScenarioTab.on_atr_index_sb_changed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.PowderScenarioTab.PowderScenarioTab.on_atr_index_sb_changed" title="Permalink to this definition">#</a></dt>
+<dd><p>Handle the change in settings for ATR material refractive index.</p>
+<section id="id11">
+<h5>Parameters<a class="headerlink" href="#id11" title="Permalink to this heading">#</a></h5>
+<dl class="simple">
+<dt>value<span class="classifier">float</span></dt><dd><p>The new value for the ATR material refractive index.</p>
+</dd>
+</dl>
+</section>
+<section id="id12">
+<h5>Returns<a class="headerlink" href="#id12" title="Permalink to this heading">#</a></h5>
+<p>int</p>
+</section>
+<section id="id13">
+<h5>Notes<a class="headerlink" href="#id13" title="Permalink to this heading">#</a></h5>
+<ul class="simple">
+<li><p>This function updates the ‘ATR material refractive index’ in the settings dictionary.</p></li>
+<li><p>Marks the instance as requiring a refresh, possibly to update some UI elements or calculations.</p></li>
+</ul>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PDielec.GUI.PowderScenarioTab.PowderScenarioTab.on_atr_spolfrac_sb_changed">
+<span class="sig-name descname"><span class="pre">on_atr_spolfrac_sb_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/PowderScenarioTab.html#PowderScenarioTab.on_atr_spolfrac_sb_changed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.PowderScenarioTab.PowderScenarioTab.on_atr_spolfrac_sb_changed" title="Permalink to this definition">#</a></dt>
+<dd><p>Updates the ATR S polarisation fraction setting and marks refresh as required.</p>
+<section id="id14">
+<h5>Parameters<a class="headerlink" href="#id14" title="Permalink to this heading">#</a></h5>
+<dl class="simple">
+<dt>value<span class="classifier">float</span></dt><dd><p>The new value for the ATR S polarisation fraction.</p>
+</dd>
+</dl>
+</section>
+<section id="id15">
+<h5>Returns<a class="headerlink" href="#id15" title="Permalink to this heading">#</a></h5>
+<p>int</p>
+</section>
+<section id="id16">
+<h5>Notes<a class="headerlink" href="#id16" title="Permalink to this heading">#</a></h5>
+<ul class="simple">
+<li><p>This function updates the settings dictionary on the <cite>self</cite> object with the new value for the key ‘ATR S polarisation fraction’.</p></li>
+<li><p>The refresh flag <cite>self.refreshRequired</cite> is set to <cite>True</cite> to indicate that some action is needed to reflect the change in the application.</p></li>
+</ul>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PDielec.GUI.PowderScenarioTab.PowderScenarioTab.on_bubble_radius_sb_changed">
+<span class="sig-name descname"><span class="pre">on_bubble_radius_sb_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/PowderScenarioTab.html#PowderScenarioTab.on_bubble_radius_sb_changed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.PowderScenarioTab.PowderScenarioTab.on_bubble_radius_sb_changed" title="Permalink to this definition">#</a></dt>
+<dd><p>Update the bubble radius setting and mark refresh as required.</p>
+<p>This method updates the ‘Bubble radius’ in the settings dictionary and marks the instance for refresh.</p>
+<section id="id17">
+<h5>Parameters<a class="headerlink" href="#id17" title="Permalink to this heading">#</a></h5>
+<dl class="simple">
+<dt>value<span class="classifier">float</span></dt><dd><p>The new value to update the bubble radius setting with.</p>
+</dd>
+</dl>
+</section>
+<section id="id18">
+<h5>Returns<a class="headerlink" href="#id18" title="Permalink to this heading">#</a></h5>
+<p>int</p>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PDielec.GUI.PowderScenarioTab.PowderScenarioTab.on_bubble_vf_sb_changed">
+<span class="sig-name descname"><span class="pre">on_bubble_vf_sb_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/PowderScenarioTab.html#PowderScenarioTab.on_bubble_vf_sb_changed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.PowderScenarioTab.PowderScenarioTab.on_bubble_vf_sb_changed" title="Permalink to this definition">#</a></dt>
+<dd><p>Handle a change to the bubble volume fraction</p>
+<p>A change in the bubble volume fraction causes changes in the volume and mass fractions
+These are calculated according to the mass or volume fraction having priority and the spinboxed updated.
+A refresh is forced</p>
+<section id="id19">
+<h5>Parameters<a class="headerlink" href="#id19" title="Permalink to this heading">#</a></h5>
+<dl class="simple">
+<dt>value<span class="classifier">float</span></dt><dd><p>The bubble volume fraction</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PDielec.GUI.PowderScenarioTab.PowderScenarioTab.on_density_sb_changed">
+<span class="sig-name descname"><span class="pre">on_density_sb_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/PowderScenarioTab.html#PowderScenarioTab.on_density_sb_changed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.PowderScenarioTab.PowderScenarioTab.on_density_sb_changed" title="Permalink to this definition">#</a></dt>
+<dd><p>Handle a change to the matrix density</p>
+<p>Changes in density cause changes in the volume and mass fractions.
+These are calculated according to the mass or volume fraction having priority and the spinboxed updated.
+A refresh is forced</p>
+<section id="id20">
+<h5>Parameters<a class="headerlink" href="#id20" title="Permalink to this heading">#</a></h5>
+<dl class="simple">
+<dt>value<span class="classifier">float</span></dt><dd><p>The density</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PDielec.GUI.PowderScenarioTab.PowderScenarioTab.on_h_sb_changed">
+<span class="sig-name descname"><span class="pre">on_h_sb_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/PowderScenarioTab.html#PowderScenarioTab.on_h_sb_changed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.PowderScenarioTab.PowderScenarioTab.on_h_sb_changed" title="Permalink to this definition">#</a></dt>
+<dd><p>Handle a change to the h parameter of the (hkl) surface.</p>
+<section id="id21">
+<h5>Parameters<a class="headerlink" href="#id21" title="Permalink to this heading">#</a></h5>
+<p>value : int</p>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PDielec.GUI.PowderScenarioTab.PowderScenarioTab.on_k_sb_changed">
+<span class="sig-name descname"><span class="pre">on_k_sb_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/PowderScenarioTab.html#PowderScenarioTab.on_k_sb_changed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.PowderScenarioTab.PowderScenarioTab.on_k_sb_changed" title="Permalink to this definition">#</a></dt>
+<dd><p>Handle a change to the k parameter of the (hkl) surface</p>
+<section id="id22">
+<h5>Parameters<a class="headerlink" href="#id22" title="Permalink to this heading">#</a></h5>
+<p>value : int</p>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PDielec.GUI.PowderScenarioTab.PowderScenarioTab.on_l_sb_changed">
+<span class="sig-name descname"><span class="pre">on_l_sb_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/PowderScenarioTab.html#PowderScenarioTab.on_l_sb_changed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.PowderScenarioTab.PowderScenarioTab.on_l_sb_changed" title="Permalink to this definition">#</a></dt>
+<dd><p>Handle a change to the l parameter of the (hkl) surface.</p>
+<section id="id23">
+<h5>Parameters<a class="headerlink" href="#id23" title="Permalink to this heading">#</a></h5>
+<p>value : int</p>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PDielec.GUI.PowderScenarioTab.PowderScenarioTab.on_legend_le_changed">
+<span class="sig-name descname"><span class="pre">on_legend_le_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/PowderScenarioTab.html#PowderScenarioTab.on_legend_le_changed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.PowderScenarioTab.PowderScenarioTab.on_legend_le_changed" title="Permalink to this definition">#</a></dt>
+<dd><p>Handle a legend change.</p>
+<section id="id24">
+<h5>Parameters<a class="headerlink" href="#id24" title="Permalink to this heading">#</a></h5>
+<dl class="simple">
+<dt>text<span class="classifier">str</span></dt><dd><p>The legend</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PDielec.GUI.PowderScenarioTab.PowderScenarioTab.on_matrix_cb_activated">
+<span class="sig-name descname"><span class="pre">on_matrix_cb_activated</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/PowderScenarioTab.html#PowderScenarioTab.on_matrix_cb_activated"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.PowderScenarioTab.PowderScenarioTab.on_matrix_cb_activated" title="Permalink to this definition">#</a></dt>
+<dd><p>Handle a change to the support matrix supplied by the materials’ database.</p>
+<p>A refresh is flagged and the matrix name set from the combobox.
+QT signals are blocked while data is being updated.
+A material object is defined on the basis of the matrix name and the database
+A refresh is performed</p>
+<section id="id25">
+<h5>Parameters<a class="headerlink" href="#id25" title="Permalink to this heading">#</a></h5>
+<dl class="simple">
+<dt>index<span class="classifier">int</span></dt><dd><p>The index is not used but the associated text of the combobox is.</p>
+</dd>
+</dl>
+</section>
+<section id="id26">
+<h5>Returns<a class="headerlink" href="#id26" title="Permalink to this heading">#</a></h5>
+<p>None</p>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PDielec.GUI.PowderScenarioTab.PowderScenarioTab.on_methods_cb_activated">
+<span class="sig-name descname"><span class="pre">on_methods_cb_activated</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/PowderScenarioTab.html#PowderScenarioTab.on_methods_cb_activated"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.PowderScenarioTab.PowderScenarioTab.on_methods_cb_activated" title="Permalink to this definition">#</a></dt>
+<dd><p>Handle changes in the calculation method for the effective medium theory</p>
+<section id="id27">
+<h5>Parameters<a class="headerlink" href="#id27" title="Permalink to this heading">#</a></h5>
+<dl class="simple">
+<dt>index</dt><dd><p>The index in the list of methods</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PDielec.GUI.PowderScenarioTab.PowderScenarioTab.on_mf_sb_changed">
+<span class="sig-name descname"><span class="pre">on_mf_sb_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/PowderScenarioTab.html#PowderScenarioTab.on_mf_sb_changed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.PowderScenarioTab.PowderScenarioTab.on_mf_sb_changed" title="Permalink to this definition">#</a></dt>
+<dd><p>Handle a mass fraction change and update the volume fraction.</p>
+<p>The mass fraction is prioritized and stored.  The volume fraction is calculated.</p>
+<section id="id28">
+<h5>Parameters<a class="headerlink" href="#id28" title="Permalink to this heading">#</a></h5>
+<dl class="simple">
+<dt>value<span class="classifier">float</span></dt><dd><p>The mass fraction</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PDielec.GUI.PowderScenarioTab.PowderScenarioTab.on_permittivity_i_sb_changed">
+<span class="sig-name descname"><span class="pre">on_permittivity_i_sb_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/PowderScenarioTab.html#PowderScenarioTab.on_permittivity_i_sb_changed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.PowderScenarioTab.PowderScenarioTab.on_permittivity_i_sb_changed" title="Permalink to this definition">#</a></dt>
+<dd><p>Update the imaginary part of the permittivity in the matrix material settings and trigger a refresh.</p>
+<section id="id29">
+<h5>Parameters<a class="headerlink" href="#id29" title="Permalink to this heading">#</a></h5>
+<dl class="simple">
+<dt>value<span class="classifier">float</span></dt><dd><p>The new imaginary part of the permittivity to be set.</p>
+</dd>
+</dl>
+</section>
+<section id="id30">
+<h5>Returns<a class="headerlink" href="#id30" title="Permalink to this heading">#</a></h5>
+<p>int</p>
+</section>
+<section id="id31">
+<h5>Notes<a class="headerlink" href="#id31" title="Permalink to this heading">#</a></h5>
+<ul class="simple">
+<li><p>Updates the imaginary part of the <cite>Matrix permittivity</cite> in the settings dictionary with the new value, keeping the real part unchanged.</p></li>
+<li><p>Replaces the permittivity object of the matrix material with a new constant scalar permittivity object created using the updated <cite>Matrix permittivity</cite>.</p></li>
+<li><p>Marks the matrix material as manually defined and triggers a required refresh to update any dependent calculations or displays.</p></li>
+</ul>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PDielec.GUI.PowderScenarioTab.PowderScenarioTab.on_permittivity_r_sb_changed">
+<span class="sig-name descname"><span class="pre">on_permittivity_r_sb_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/PowderScenarioTab.html#PowderScenarioTab.on_permittivity_r_sb_changed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.PowderScenarioTab.PowderScenarioTab.on_permittivity_r_sb_changed" title="Permalink to this definition">#</a></dt>
+<dd><p>Update the real part of the permittivity in the matrix material settings and refresh the material definition.</p>
+<section id="id32">
+<h5>Parameters<a class="headerlink" href="#id32" title="Permalink to this heading">#</a></h5>
+<dl class="simple">
+<dt>value<span class="classifier">float</span></dt><dd><p>The new real value of the matrix permittivity to be set.</p>
+</dd>
+</dl>
+</section>
+<section id="id33">
+<h5>Returns<a class="headerlink" href="#id33" title="Permalink to this heading">#</a></h5>
+<p>int</p>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PDielec.GUI.PowderScenarioTab.PowderScenarioTab.on_shape_cb_activated">
+<span class="sig-name descname"><span class="pre">on_shape_cb_activated</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/PowderScenarioTab.html#PowderScenarioTab.on_shape_cb_activated"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.PowderScenarioTab.PowderScenarioTab.on_shape_cb_activated" title="Permalink to this definition">#</a></dt>
+<dd><p>Handle changes to the shape of the powder particles</p>
+<section id="id34">
+<h5>Parameters<a class="headerlink" href="#id34" title="Permalink to this heading">#</a></h5>
+<dl class="simple">
+<dt>index</dt><dd><p>The index in the list of shapes</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PDielec.GUI.PowderScenarioTab.PowderScenarioTab.on_sigma_sb_changed">
+<span class="sig-name descname"><span class="pre">on_sigma_sb_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/PowderScenarioTab.html#PowderScenarioTab.on_sigma_sb_changed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.PowderScenarioTab.PowderScenarioTab.on_sigma_sb_changed" title="Permalink to this definition">#</a></dt>
+<dd><p>Handle a particle size distribution change</p>
+<section id="id35">
+<h5>Parameters<a class="headerlink" href="#id35" title="Permalink to this heading">#</a></h5>
+<dl class="simple">
+<dt>value<span class="classifier">float</span></dt><dd><p>The particle size distribution width in microns</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PDielec.GUI.PowderScenarioTab.PowderScenarioTab.on_size_sb_changed">
+<span class="sig-name descname"><span class="pre">on_size_sb_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/PowderScenarioTab.html#PowderScenarioTab.on_size_sb_changed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.PowderScenarioTab.PowderScenarioTab.on_size_sb_changed" title="Permalink to this definition">#</a></dt>
+<dd><p>Handle a particle size change</p>
+<section id="id36">
+<h5>Parameters<a class="headerlink" href="#id36" title="Permalink to this heading">#</a></h5>
+<dl class="simple">
+<dt>value<span class="classifier">float</span></dt><dd><p>The particle size in microns</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PDielec.GUI.PowderScenarioTab.PowderScenarioTab.on_vf_sb_changed">
+<span class="sig-name descname"><span class="pre">on_vf_sb_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/PowderScenarioTab.html#PowderScenarioTab.on_vf_sb_changed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.PowderScenarioTab.PowderScenarioTab.on_vf_sb_changed" title="Permalink to this definition">#</a></dt>
+<dd><p>Handle a volume fraction change, alter the mass fraction accordingly.</p>
+<section id="id37">
+<h5>Parameters<a class="headerlink" href="#id37" title="Permalink to this heading">#</a></h5>
+<dl class="simple">
+<dt>value<span class="classifier">float</span></dt><dd><p>The volume fraction</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PDielec.GUI.PowderScenarioTab.PowderScenarioTab.openDB_button_clicked">
+<span class="sig-name descname"><span class="pre">openDB_button_clicked</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/PowderScenarioTab.html#PowderScenarioTab.openDB_button_clicked"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.PowderScenarioTab.PowderScenarioTab.openDB_button_clicked" title="Permalink to this definition">#</a></dt>
+<dd><p>Open a new materials’ database.</p>
+<section id="id38">
+<h5>Returns<a class="headerlink" href="#id38" title="Permalink to this heading">#</a></h5>
+<p>None</p>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PDielec.GUI.PowderScenarioTab.PowderScenarioTab.refresh">
+<span class="sig-name descname"><span class="pre">refresh</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">force</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/PowderScenarioTab.html#PowderScenarioTab.refresh"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.PowderScenarioTab.PowderScenarioTab.refresh" title="Permalink to this definition">#</a></dt>
+<dd><p>Refresh the GUI interface with up to date values.</p>
+<section id="id39">
+<h5>Parameters<a class="headerlink" href="#id39" title="Permalink to this heading">#</a></h5>
+<dl class="simple">
+<dt>force<span class="classifier">bool</span></dt><dd><p>If True, then a refresh is forced regardless of the state of the scenario.</p>
+</dd>
+</dl>
+</section>
+<section id="id40">
+<h5>Returns<a class="headerlink" href="#id40" title="Permalink to this heading">#</a></h5>
+<p>None</p>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PDielec.GUI.PowderScenarioTab.PowderScenarioTab.update_mf_sb">
+<span class="sig-name descname"><span class="pre">update_mf_sb</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/PowderScenarioTab.html#PowderScenarioTab.update_mf_sb"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.PowderScenarioTab.PowderScenarioTab.update_mf_sb" title="Permalink to this definition">#</a></dt>
+<dd><p>Update the mass fraction and according to the volume fraction.</p>
+<section id="id41">
+<h5>Parameters<a class="headerlink" href="#id41" title="Permalink to this heading">#</a></h5>
+<p>None</p>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PDielec.GUI.PowderScenarioTab.PowderScenarioTab.update_vf_sb">
+<span class="sig-name descname"><span class="pre">update_vf_sb</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/PowderScenarioTab.html#PowderScenarioTab.update_vf_sb"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.PowderScenarioTab.PowderScenarioTab.update_vf_sb" title="Permalink to this definition">#</a></dt>
+<dd><p>Update the volume fraction according to the mass fraction.</p>
+<section id="id42">
+<h5>Parameters<a class="headerlink" href="#id42" title="Permalink to this heading">#</a></h5>
+<p>None</p>
+</section>
+</dd></dl>
+
+</section>
+</dd></dl>
+
+</section>
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="../ScenarioTab/index.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.ScenarioTab</span></code></div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="../PlottingTab/index.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.PlottingTab</span></code></div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2024, John Kendrick and Andrew Burnett
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.PowderScenarioTab</span></code></a><ul>
+<li><a class="reference internal" href="#module-contents">Module Contents</a><ul>
+<li><a class="reference internal" href="#classes">Classes</a><ul>
+<li><a class="reference internal" href="#PDielec.GUI.PowderScenarioTab.PowderScenarioTab"><code class="docutils literal notranslate"><span class="pre">PowderScenarioTab</span></code></a><ul>
+<li><a class="reference internal" href="#PDielec.GUI.PowderScenarioTab.PowderScenarioTab.calculate"><code class="docutils literal notranslate"><span class="pre">PowderScenarioTab.calculate()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.GUI.PowderScenarioTab.PowderScenarioTab.change_greyed_out"><code class="docutils literal notranslate"><span class="pre">PowderScenarioTab.change_greyed_out()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.GUI.PowderScenarioTab.PowderScenarioTab.crystal_density"><code class="docutils literal notranslate"><span class="pre">PowderScenarioTab.crystal_density()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.GUI.PowderScenarioTab.PowderScenarioTab.get_result"><code class="docutils literal notranslate"><span class="pre">PowderScenarioTab.get_result()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.GUI.PowderScenarioTab.PowderScenarioTab.get_results"><code class="docutils literal notranslate"><span class="pre">PowderScenarioTab.get_results()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.GUI.PowderScenarioTab.PowderScenarioTab.on_aoverb_sb_changed"><code class="docutils literal notranslate"><span class="pre">PowderScenarioTab.on_aoverb_sb_changed()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.GUI.PowderScenarioTab.PowderScenarioTab.on_atr_incident_ang_sb_changed"><code class="docutils literal notranslate"><span class="pre">PowderScenarioTab.on_atr_incident_ang_sb_changed()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.GUI.PowderScenarioTab.PowderScenarioTab.on_atr_index_sb_changed"><code class="docutils literal notranslate"><span class="pre">PowderScenarioTab.on_atr_index_sb_changed()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.GUI.PowderScenarioTab.PowderScenarioTab.on_atr_spolfrac_sb_changed"><code class="docutils literal notranslate"><span class="pre">PowderScenarioTab.on_atr_spolfrac_sb_changed()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.GUI.PowderScenarioTab.PowderScenarioTab.on_bubble_radius_sb_changed"><code class="docutils literal notranslate"><span class="pre">PowderScenarioTab.on_bubble_radius_sb_changed()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.GUI.PowderScenarioTab.PowderScenarioTab.on_bubble_vf_sb_changed"><code class="docutils literal notranslate"><span class="pre">PowderScenarioTab.on_bubble_vf_sb_changed()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.GUI.PowderScenarioTab.PowderScenarioTab.on_density_sb_changed"><code class="docutils literal notranslate"><span class="pre">PowderScenarioTab.on_density_sb_changed()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.GUI.PowderScenarioTab.PowderScenarioTab.on_h_sb_changed"><code class="docutils literal notranslate"><span class="pre">PowderScenarioTab.on_h_sb_changed()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.GUI.PowderScenarioTab.PowderScenarioTab.on_k_sb_changed"><code class="docutils literal notranslate"><span class="pre">PowderScenarioTab.on_k_sb_changed()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.GUI.PowderScenarioTab.PowderScenarioTab.on_l_sb_changed"><code class="docutils literal notranslate"><span class="pre">PowderScenarioTab.on_l_sb_changed()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.GUI.PowderScenarioTab.PowderScenarioTab.on_legend_le_changed"><code class="docutils literal notranslate"><span class="pre">PowderScenarioTab.on_legend_le_changed()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.GUI.PowderScenarioTab.PowderScenarioTab.on_matrix_cb_activated"><code class="docutils literal notranslate"><span class="pre">PowderScenarioTab.on_matrix_cb_activated()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.GUI.PowderScenarioTab.PowderScenarioTab.on_methods_cb_activated"><code class="docutils literal notranslate"><span class="pre">PowderScenarioTab.on_methods_cb_activated()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.GUI.PowderScenarioTab.PowderScenarioTab.on_mf_sb_changed"><code class="docutils literal notranslate"><span class="pre">PowderScenarioTab.on_mf_sb_changed()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.GUI.PowderScenarioTab.PowderScenarioTab.on_permittivity_i_sb_changed"><code class="docutils literal notranslate"><span class="pre">PowderScenarioTab.on_permittivity_i_sb_changed()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.GUI.PowderScenarioTab.PowderScenarioTab.on_permittivity_r_sb_changed"><code class="docutils literal notranslate"><span class="pre">PowderScenarioTab.on_permittivity_r_sb_changed()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.GUI.PowderScenarioTab.PowderScenarioTab.on_shape_cb_activated"><code class="docutils literal notranslate"><span class="pre">PowderScenarioTab.on_shape_cb_activated()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.GUI.PowderScenarioTab.PowderScenarioTab.on_sigma_sb_changed"><code class="docutils literal notranslate"><span class="pre">PowderScenarioTab.on_sigma_sb_changed()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.GUI.PowderScenarioTab.PowderScenarioTab.on_size_sb_changed"><code class="docutils literal notranslate"><span class="pre">PowderScenarioTab.on_size_sb_changed()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.GUI.PowderScenarioTab.PowderScenarioTab.on_vf_sb_changed"><code class="docutils literal notranslate"><span class="pre">PowderScenarioTab.on_vf_sb_changed()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.GUI.PowderScenarioTab.PowderScenarioTab.openDB_button_clicked"><code class="docutils literal notranslate"><span class="pre">PowderScenarioTab.openDB_button_clicked()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.GUI.PowderScenarioTab.PowderScenarioTab.refresh"><code class="docutils literal notranslate"><span class="pre">PowderScenarioTab.refresh()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.GUI.PowderScenarioTab.PowderScenarioTab.update_mf_sb"><code class="docutils literal notranslate"><span class="pre">PowderScenarioTab.update_mf_sb()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.GUI.PowderScenarioTab.PowderScenarioTab.update_vf_sb"><code class="docutils literal notranslate"><span class="pre">PowderScenarioTab.update_vf_sb()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js?v=01b4f342"></script>
+    <script src="../../../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../../../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../../../../_static/scripts/furo.js?v=32e29ea5"></script>
+    </body>
+</html>

@@ -1,0 +1,442 @@
+:py:mod:`PDielec.UnitCell`
+==========================
+
+.. py:module:: PDielec.UnitCell
+
+.. autoapi-nested-parse::
+
+   Hold unit cell information and its associated calculated properties.
+
+   Copyright 2024 John Kendrick
+
+   This file is part of PDielec
+
+   This program is free software; you can redistribute it and/or modify
+   it under the terms of the MIT License
+
+   This program is distributed in the hope that it will be useful,
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+
+   You should have received a copy of the MIT License
+   along with this program, if not see https://opensource.org/licenses/MIT
+
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   PDielec.UnitCell.UnitCell
+
+
+
+
+.. py:class:: UnitCell(a=None, b=None, c=None, alpha=None, beta=None, gamma=None)
+
+
+   Hold unit cell information and its associated calculated properties.
+
+   .. py:method:: _calculate_reciprocal_lattice(lattice)
+
+      Calculate the reciprocal lattice
+
+      Parameters
+      ----------
+      3x3 list of floats
+          Lattice as [a, b, c] where a/b/c are [x,y,z]
+
+      Returns
+      -------
+      None
+
+      Returns
+      -------
+      sets the reciprocal lattice vectors
+
+
+   .. py:method:: calculateCentreOfMass(atom_list=None, units='xyz')
+
+      Calculate the centre of mass for a given set of atoms.
+
+      Parameters
+      ----------
+      atom_list : list, optional
+          A list of atom indices for which the centre of mass should be calculated.
+          If None, the centre of mass will be calculated for all atoms in the system. Default is None.
+      units : {'xyz', 'mass', 'abc'}, optional
+          The units in which to return the centre of mass:
+          - 'xyz' returns the centre of mass coordinates in Cartesian (x, y, z) units.
+          - 'mass' returns the total mass of the atoms in `atom_list`.
+          - 'abc' returns the centre of mass in fractional (a, b, c) coordinates.
+          If not specified, 'xyz' is used as default.
+
+      Returns
+      -------
+      numpy.ndarray or float or tuple
+          The centre of mass in the specified units. The type of the return value depends on the `units` parameter:
+          - If 'xyz', returns a numpy array with the x, y, z coordinates of the centre of mass.
+          - If 'mass', returns a float representing the total mass of the specified atoms.
+          - If 'abc', returns a numpy array with the a, b, c fractional coordinates of the centre of mass.
+          - If the units are not recognized, a tuple containing the total mass, Cartesian coordinates, and fractional coordinates of the centre of mass is returned.
+
+      See Also
+      --------
+      convert_xyz_to_abc : A method to convert Cartesian coordinates to fractional coordinates.
+
+      Examples
+      --------
+      >>> calculateCentreOfMass(atom_list=[1, 2, 3], units='xyz')
+      array([0.1, 0.2, 0.3])
+      >>> calculateCentreOfMass(units='mass')
+      50.2
+      >>> calculateCentreOfMass(units='abc')
+      array([0.4, 0.5, 0.6])
+
+
+   .. py:method:: calculate_density()
+
+      Calculate the density of the crystal.
+
+      Returns the density in g/cc.  If the mass is not known, then returns 1.0
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      float
+          The density in gms/cc
+
+
+   .. py:method:: calculate_molecular_contents(scale, toler, covalent_radii)
+
+      Finds whole molecules in the unit cell.
+
+      Does this by creating a supercell and exploring adjacent cells to see if there is any bonding to atoms in the adjacent cell
+      A new unit cell is created containing whole molecules, the order of the atoms in the new cell is different.
+      The routine returns the new unit cell, the number of molecules and the old ordering of the atoms.
+
+      Parameters
+      ----------
+      scale : float
+          The scale factor applied to the covalent radii.
+      toler : float
+          The tolerance added to the scaled sum of radii to determine the maximum allowable distance between atoms i and j for them to be considered bonded.
+      covalent_radii : list of float
+          A list of covalent radii for the atoms
+
+      Returns
+      -------
+      new_unit_cell, len(new_molecules), old_order
+
+      Notes
+      -----
+      The formula used to calculate the largest distance apart atoms i and j can be for a bond is:
+      `scale * (radi + radj) + toler`
+
+
+   .. py:method:: calculate_volume()
+
+      Calculate the volume
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      volume : float
+
+
+   .. py:method:: convert_abc_to_unitcell(a, b, c, alpha_degs, beta_degs, gamma_degs)
+
+      Convert a, b, c, alpha, beta, gamma to a unit cell
+
+      Parameters
+      ----------
+      a : type
+          Description of parameter `a`.
+      b : type
+          Description of parameter `b`.
+      c : type
+          Description of parameter `c`.
+      alpha : type
+          Description of parameter `alpha`.
+      beta : type
+          Description of parameter `beta`.
+      gamma : type
+          Description of parameter `gamma`.
+
+      Returns
+      -------
+      lattice : list of floats (3,3) list
+          The lattice parameters
+
+
+   .. py:method:: convert_abc_to_xyz(abc)
+
+      Convert abc coordinates to xyz coordinates.
+
+      Parameters
+      ----------
+      abc : list of fractional coordinates
+
+      Returns
+      -------
+      xyz : list of coordinates
+
+
+
+   .. py:method:: convert_hkl_to_xyz(hkl)
+
+      Convert hkl miller indices to xyz coordinates.
+
+      Parameters
+      ----------
+      hkl : list of hkl coordinates
+
+      Returns
+      -------
+      xyz : list of xyz coordinates
+
+
+   .. py:method:: convert_hkl_to_xyz2(hkl)
+
+      Convert hkl coordinates to xyz coordinates (written as a check on convert_hkl_to_xyz)
+
+      Parameters
+      ----------
+      hkl : list of hkl miller indices
+
+      Returns
+      -------
+      xyz : list of xyz coordinates
+
+
+
+   .. py:method:: convert_unitcell_to_abc()
+
+      Convert a unit cell to the equivalent a, b, c, alpha, beta, gamma designation.
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      a, b, c : float
+          The lengths of the cell edges.
+      alpha, beta, gamma : float
+          The angles between the edges in degrees.
+
+
+   .. py:method:: convert_xyz_to_abc(xyz)
+
+      Convert xyz coordinates to abc lattice coordinates.
+
+      Parameters
+      ----------
+      xyz: list of coordinates
+
+      Returns
+      -------
+      abc : list of fractional coordinates
+
+
+   .. py:method:: find_symmetry()
+
+      Find the space group symmetry of the unit cell.
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      sets self.spacegroup
+
+
+   .. py:method:: getBoundingBox()
+
+      Generate the corners and edges of a bounding box.
+
+      This method calculates the corners and edges of a bounding box based on predefined coordinates. These coordinates are transformed using a conversion method before being paired into edges.
+
+      Returns
+      -------
+      tuple of list
+          A tuple containing two elements:
+          - The first element is a list of corners' coordinates after conversion (`list` of `np.ndarray`).
+          - The second element is a list of tuples, each consisting of a pair of corners representing an edge (`list` of `tuple`).
+
+      Example
+      -------
+      To fetch the bounding box coordinates and edges, simply call:
+
+      ```python
+      corners_xyz, edges = object.getBoundingBox()
+      ```
+
+
+   .. py:method:: print()
+
+      Prints the details of the given unit cell.
+
+      This method prints formatted details of the unit cell object, including lattice parameters (a, b, c, alpha, beta, gamma), lattice vectors, element names, fractional coordinates, Cartesian coordinates, and molecular information if any molecules are defined within the unit cell.
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      None
+
+
+   .. py:method:: set_atom_labels(atom_labels)
+
+      Set the atom labels for a molecule.
+
+      Parameters
+      ----------
+      atom_labels : list
+          A list containing the labels of atoms.
+
+      Returns
+      -------
+      None
+
+      Notes
+      -----
+      This method updates the `atom_labels` attribute of the molecule with the
+      provided list of atom labels. Each element in the input `atom_labels` list 
+      is appended to the `self.atom_labels` attribute.
+
+
+   .. py:method:: set_atomic_masses(masses)
+
+      Set the atomic masses for the elements.
+
+      Parameters
+      ----------
+      masses : list
+          The atomic masses to be assigned. This can be a list or a dictionary of atomic masses.
+
+      Returns
+      -------
+      None
+
+
+   .. py:method:: set_bonds(bonds)
+
+      Define a list of bonds for the unit cell
+
+      Parameters
+      ----------
+      bonds : a list of integer tuple
+         The bonding list for the cell
+
+      Returns
+      -------
+      None
+
+
+   .. py:method:: set_element_names(element_names)
+
+      Set the names of elements in the object after cleaning them up.
+
+      Parameters
+      ----------
+      element_names : list
+          A list of strings representing element names to be cleaned and stored.
+
+      Returns
+      -------
+      None
+
+      Notes
+      -----
+      This function takes a list of element names, cleans each name using the 
+      `cleanup_symbol` function (not defined here), and then updates the object's 
+      `element_names` attribute with the cleaned names.
+
+
+   .. py:method:: set_fractional_coordinates(coords)
+
+      Set the fractional coordinates and calculate the xyz coordinates.
+
+      Parameters
+      ----------
+      coords : a list of fractional coordinates
+
+      Returns
+      -------
+      None
+
+
+   .. py:method:: set_molecules(molecules)
+
+      Define a list of molecules, each molecule is a list of atom coordinates.
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      None
+
+
+   .. py:method:: set_xyz_coordinates(coords)
+
+      Set the xyz coordinates and calculate the fractional coordinates.
+
+      Parameters
+      ----------
+      coords : a list of fractional coordinates
+
+      Returns
+      -------
+      None
+
+
+   .. py:method:: write_cif(filename='', file_=sys.stdout)
+
+      Write the crystallographic information file (CIF) representation of a structure.
+
+      Parameters
+      ----------
+      filename : str, optional
+          The name of the file to be written. If not provided, the CIF data is printed to stdout.
+      file\_ : object, optional
+          An output stream object. Default is sys.stdout.
+
+      Returns
+      -------
+      None
+
+      Notes
+      -----
+      This method prints the CIF representation of a structure, including the space group,
+      cell dimensions, angles, volume, and the fractional coordinates of the atoms.
+      If a filename is provided, the CIF data will be written to that file. Otherwise,
+      it will be printed to standard output.
+
+      Examples
+      --------
+      To print the CIF representation to standard output, simply call the method without arguments:
+
+      >>> self.write_cif()
+
+      To write the CIF representation to a file named "example.cif":
+
+      >>> cell.write_cif('example.cif')
+
+
+

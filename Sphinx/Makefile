@@ -14,7 +14,10 @@ help:
 
 
 .PHONY: html
+# Do a clean build by deleting autoapi and _build
 html:
+	rm -rf autoapi
+	rm -rf _build
 	sphinx-build -M html "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS)
 	rsync -r _build/html/* ../docs
 

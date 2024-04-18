@@ -1,3 +1,28 @@
+'''
+PowderScenarioTab
+
+The MIT License (MIT)
+
+Copyright (c) 2024 John Kendrick
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+'''
 # -*- coding: utf8 -*-
 from PyQt5.QtWidgets         import QPushButton, QWidget
 from PyQt5.QtWidgets         import QComboBox, QLabel, QLineEdit, QDoubleSpinBox
@@ -22,7 +47,159 @@ import numpy as np
 import os
 
 class PowderScenarioTab(ScenarioTab):
+    """
+    A class for managing the Powder Scenario Tab
+
+    It inherits from `ScenarioTab`, thus utilizing its layout and properties, 
+    with additional features and settings pertinent to powder scenarios.
+
+    Attributes
+    ----------
+    scenarioType : str
+        Defines the type of scenario as 'Powder'.
+    settings : dict
+        Dictionary holding various settings related to the scenario.
+    methods : list
+        List of available effective medium methods.
+    shapes : list
+        List of available particle shapes.
+    materialNames : list
+        List of available material names.
+    materialDefined : bool
+        Indicates whether the material is defined manually or not.
+    direction : ndarray
+        Array defining the unique direction for particle shape.
+    depolarisation : ndarray (3x3)
+        Array defining the depolarisation factors.
+    scenarioIndex : any
+        Index associated with the current scenario.
+    refreshRequired : bool
+        Indicates if UI refresh is required.
+    calculationRequired : bool
+        Indicates if recalculation is required due to parameter changes.
+    reader : An dft output reader
+        Used to read external data.
+    realPermittivity : list
+        List holding real parts of permittivity values.
+    imagPermittivity : list
+        List holding imaginary parts of permittivity values.
+    absorptionCoefficient : list
+        List to hold absorption coefficient values.
+    molarAbsorptionCoefficient : list
+        List to hold molar absorption coefficient values.
+    sp_atr : list
+        List to hold ATR specific calculation results.
+
+    Methods
+    -------
+    crystal_density()
+        Compute and return the density of the crystal based on its volume and mass.
+    openDB_button_clicked()
+        Handler for the event where the database open button is clicked.
+    on_h_sb_changed(value)
+        Handler for changes in the 'h' dimension parameter of the crystal's unique direction.
+    on_k_sb_changed(value)
+        Handler for changes in the 'k' dimension parameter of the crystal's unique direction.
+    on_l_sb_changed(value)
+        Handler for changes in the 'l' dimension parameter of the crystal's unique direction.
+    on_shape_cb_activated(index)
+        Handler for changes in the selected shape of powder particles.
+    on_methods_cb_activated(index)
+        Handler to deal with changes in the selected calculation method for effective medium theory.
+    on_mf_sb_changed(value)
+        Handler for changes to the mass fraction value, updating the volume fraction value accordingly.
+    update_vf_sb()
+        Update the volume fraction spinbox according to the mass fraction and recalculates as necessary.
+    on_aoverb_sb_changed(value)
+        Handler for changes to the ellipsoid a/b ratio or eccentricity.
+    on_legend_le_changed(text)
+        Handler for changes to the legend label of the powder scenario.
+    on_sigma_sb_changed(value)
+        Handler for changes to the particle size distribution sigma.
+    on_size_sb_changed(value)
+        Handler for changes to the particle size.
+    on_vf_sb_changed(value)
+        Handle changes to the volume fraction spinbox, updating mass fraction accordingly.
+    update_mf_sb()
+        Update the mass fraction spinbox according to the volume fraction and recalculates as necessary.
+    on_matrix_cb_activated(index)
+        Handler for changes to the selected support matrix in the ComboBox.
+    on_density_sb_changed(value)
+        Handle changes to the density spinbox of the support matrix.
+    on_bubble_vf_sb_changed(value)
+        Handle changes to the bubble volume fraction spinbox.
+    on_bubble_radius_sb_changed(value)
+        Handle changes to the bubble radius spinbox.
+    on_permittivity_i_sb_changed(value)
+        Handle changes to the imaginary part of the support matrix permittivity.
+    on_permittivity_r_sb_changed(value)
+        Handle changes to the real part of the support matrix permittivity.
+    on_atr_index_sb_changed(value)
+        Handle changes to the ATR material refractive index spinbox.
+    on_atr_incident_ang_sb_changed(value)
+        Handle changes to the ATR incident angle spinbox.
+    on_atr_spolfrac_sb_changed(value)
+        Handle changes to the ATR s-polarisation fraction spinbox.
+    change_greyed_out()
+        Enable or disable elements of the GUI based on the current scenario settings.
+    calculate(vs_cm1)
+        Calculate the powder absorption for the given frequency range.
+    get_result(vs_cm1, plot_type)
+        Return the calculation result for the specified plot type.
+    get_results(vs_cm1)
+        Prepare the necessary results for displaying or processing.
+    refresh(force=False)
+        Refresh the GUI interface with up to date values.
+    """    
     def __init__(self, parent, debug=False):
+        """
+        Initialize the ScenarioTab subclass for Powder Scenario with UI and connectivity.
+
+        Parameters
+        ----------
+        parent : QWidget
+            The parent widget to attach to this scenario tab.
+        debug : bool, optional
+            If set to True, debug messages will be printed. Defaults to False.
+
+        Attributes
+        ----------
+        scenarioType : str
+            Defines the type of scenario as 'Powder'.
+        settings : dict
+            Dictionary holding various settings related to the scenario.
+        methods : list
+            List of available effective medium methods.
+        shapes : list
+            List of available particle shapes.
+        materialNames : list
+            List of available material names.
+        materialDefined : bool
+            Indicates whether the material is defined manually or not.
+        direction : ndarray
+            Array defining the unique direction for particle shape.
+        depolarisation : ndarray (3x3)
+            Array defining the depolarisation factors.
+        scenarioIndex : any
+            Index associated with the current scenario.
+        refreshRequired : bool
+            Indicates if UI refresh is required.
+        calculationRequired : bool
+            Indicates if recalculation is required due to parameter changes.
+        reader : An dft output reader
+            Used to read external data.
+        realPermittivity : list
+            List holding real parts of permittivity values.
+        imagPermittivity : list
+            List holding imaginary parts of permittivity values.
+        absorptionCoefficient : list
+            List to hold absorption coefficient values.
+        molarAbsorptionCoefficient : list
+            List to hold molar absorption coefficient values.
+        sp_atr : list
+            List to hold ATR specific calculation results.
+
+        """        
         ScenarioTab.__init__(self,parent)
         global debugger
         debugger = Debug(debug,'PowderScenarioTab:')
@@ -356,7 +533,14 @@ class PowderScenarioTab(ScenarioTab):
         return
 
     def crystal_density(self):
-        '''Find the crystal density from the current reader and return the density'''
+        '''
+        Find the crystal density from the current reader and return the density.
+
+        Returns
+        -------
+        float
+            The crystal density.
+        '''
         if not self.reader:
             debugger.print('Finished:: crystal_density - no reader')
             return 1.0
@@ -369,7 +553,13 @@ class PowderScenarioTab(ScenarioTab):
         return density
 
     def openDB_button_clicked(self):
-        '''Open a new materials' database'''
+        '''
+        Open a new materials' database.
+
+        Returns
+        -------
+        None
+        '''
         debugger.print('Start:: openDB_button_clicked')
         self.openDataBase()
         if self.settings['Matrix'] not in self.materialNames:
@@ -389,28 +579,54 @@ class PowderScenarioTab(ScenarioTab):
         return
 
     def on_h_sb_changed(self,value):
-        '''Handle a change to the h parameter of the (hkl) surface'''
+        '''
+        Handle a change to the h parameter of the (hkl) surface.
+
+        Parameters
+        ----------
+        value : int
+        '''
         debugger.print(self.settings['Legend'],'on_h_sb_changed', value)
         self.refreshRequired = True
         self.settings['Unique direction - h'] = value
         return
 
     def on_k_sb_changed(self,value):
-        '''Handle a change to the k parameter of the (hkl) surface'''
+        '''
+        Handle a change to the k parameter of the (hkl) surface
+
+        Parameters
+        ----------
+        value : int
+        '''
         debugger.print(self.settings['Legend'],'on_k_sb_changed', value)
         self.refreshRequired = True
         self.settings['Unique direction - k'] = value
         return
 
     def on_l_sb_changed(self,value):
-        '''Handle a change to the l parameter of the (hkl) surface'''
+        '''
+        Handle a change to the l parameter of the (hkl) surface.
+
+        Parameters
+        ----------
+        value : int
+        '''
         debugger.print(self.settings['Legend'],'on_l_sb_changed', value)
         self.refreshRequired = True
         self.settings['Unique direction - l'] = value
         return
 
     def on_shape_cb_activated(self,index):
-        '''Handle changes to the shape of the powder particles'''
+        '''
+        Handle changes to the shape of the powder particles
+
+        Parameters
+        ----------
+        index
+            The index in the list of shapes
+
+        '''
         debugger.print(self.settings['Legend'],'on shape cb activated', index)
         self.refreshRequired = True
         self.settings['Particle shape'] = self.shapes[index]
@@ -422,7 +638,14 @@ class PowderScenarioTab(ScenarioTab):
         return
 
     def on_methods_cb_activated(self,index):
-        '''Handle changes in the calculation method for the effective medium theory'''
+        '''
+        Handle changes in the calculation method for the effective medium theory
+
+        Parameters
+        ----------
+        index
+            The index in the list of methods
+        '''
         debugger.print(self.settings['Legend'],'on methods cb activated', index)
         self.refreshRequired = True
         self.settings['Effective medium method'] = self.methods[index]
@@ -441,7 +664,16 @@ class PowderScenarioTab(ScenarioTab):
         return
 
     def on_mf_sb_changed(self,value):
-        '''Handle a mass fraction change and update the volume fraction'''
+        '''
+        Handle a mass fraction change and update the volume fraction.
+
+        The mass fraction is prioritized and stored.  The volume fraction is calculated.
+
+        Parameters
+        ----------
+        value : float
+            The mass fraction
+        '''
         debugger.print(self.settings['Legend'],'on mass fraction line edit changed', value)
         self.refreshRequired = True
         self.settings['Mass or volume fraction'] = 'mass'
@@ -450,7 +682,13 @@ class PowderScenarioTab(ScenarioTab):
         return
 
     def update_vf_sb(self):
-        '''Update the volume fraction according to the mass fraction'''
+        '''
+        Update the volume fraction according to the mass fraction.
+
+        Parameters
+        ----------
+        None
+        '''
         mf1 = self.settings['Mass fraction']
         mf2 = 1.0 - mf1
         rho1 = self.crystal_density()
@@ -475,35 +713,72 @@ class PowderScenarioTab(ScenarioTab):
         return
 
     def on_aoverb_sb_changed(self,value):
-        '''Handle a change to the a/b ratio for an ellipsoid'''
+        '''
+        Handle a change to the a/b ratio for an ellipsoid.
+
+        Parameters
+        ----------
+        value : float
+            The a/b ratio of the elllipsoid
+        '''
         debugger.print(self.settings['Legend'],'on_aoverb_le_changed',value)
         self.refreshRequired = True
         self.settings['Ellipsoid a/b'] = value
         return
 
     def on_legend_le_changed(self,text):
-        '''Handle a legend change'''
+        '''
+        Handle a legend change.
+
+        Parameters
+        ----------
+        text : str
+            The legend
+
+        '''
         debugger.print(self.settings['Legend'],'on legend change', text)
         self.refreshRequired = True
         self.settings['Legend'] = text
         return
 
     def on_sigma_sb_changed(self,value):
-        '''Handle a particle size distribution change'''
+        '''
+        Handle a particle size distribution change
+
+        Parameters
+        ----------
+        value : float
+            The particle size distribution width in microns
+        '''
         debugger.print(self.settings['Legend'],'on sigma line edit changed', value)
         self.refreshRequired = True
         self.settings['Particle size distribution sigma(mu)'] = value
         return
 
     def on_size_sb_changed(self,value):
-        '''Handle a particle size change'''
+        '''
+        Handle a particle size change
+
+        Parameters
+        ----------
+        value : float
+            The particle size in microns
+        '''
         debugger.print(self.settings['Legend'],'on size line edit changed', value)
         self.refreshRequired = True
         self.settings['Particle size(mu)'] = value
         return
 
     def on_vf_sb_changed(self,value):
-        '''Handle a volume fraction change, alter the mass fraction accordingly'''
+        '''
+        Handle a volume fraction change, alter the mass fraction accordingly.
+
+        Parameters
+        ----------
+        value : float
+            The volume fraction
+
+        '''
         debugger.print(self.settings['Legend'],'Start:: on_vf_sb_changed', value)
         self.refreshRequired = True
         self.settings['Mass or volume fraction'] = 'volume'
@@ -513,7 +788,13 @@ class PowderScenarioTab(ScenarioTab):
         return
 
     def update_mf_sb(self):
-        '''Update the mass fraction and according to the volume fraction'''
+        '''
+        Update the mass fraction and according to the volume fraction.
+
+        Parameters
+        ----------
+        None
+        '''
         debugger.print(self.settings['Legend'],'Start:: update_mf_sb')
         vf1 = self.settings['Volume fraction']
         vf2 = 1.0 - vf1 - self.settings['Bubble volume fraction']
@@ -533,7 +814,23 @@ class PowderScenarioTab(ScenarioTab):
         return
 
     def on_matrix_cb_activated(self,index):
-        '''Handle a change to the support matrix supplied by the materials' database'''
+        '''
+        Handle a change to the support matrix supplied by the materials' database.
+
+        A refresh is flagged and the matrix name set from the combobox.
+        QT signals are blocked while data is being updated.
+        A material object is defined on the basis of the matrix name and the database
+        A refresh is performed
+
+        Parameters
+        ----------
+        index : int
+            The index is not used but the associated text of the combobox is.
+
+        Returns
+        -------
+        None
+        '''
         debugger.print(self.settings['Legend'],'on matrix combobox activated', index)
         debugger.print(self.settings['Legend'],'on matrix combobox activated', self.matrix_cb.currentText())
         # We will need to recalculate everything for a new support matrix
@@ -602,7 +899,18 @@ class PowderScenarioTab(ScenarioTab):
         return
 
     def on_density_sb_changed(self,value):
-        '''Handle a change to the matrix density'''
+        '''
+        Handle a change to the matrix density
+
+        Changes in density cause changes in the volume and mass fractions.  
+        These are calculated according to the mass or volume fraction having priority and the spinboxed updated.
+        A refresh is forced
+
+        Parameters
+        ----------
+        value : float
+            The density
+        '''
         self.settings['Matrix density'] = value
         # update the matrix density
         self.matrixMaterial.setDensity(value)
@@ -623,7 +931,18 @@ class PowderScenarioTab(ScenarioTab):
         return
 
     def on_bubble_vf_sb_changed(self,value):
-        '''Handle a change to the bubble volume fraction'''
+        '''
+        Handle a change to the bubble volume fraction
+
+        A change in the bubble volume fraction causes changes in the volume and mass fractions
+        These are calculated according to the mass or volume fraction having priority and the spinboxed updated.
+        A refresh is forced
+
+        Parameters
+        ----------
+        value : float
+            The bubble volume fraction
+        '''
         self.settings['Bubble volume fraction'] = value/100.0
         if self.settings['Mass or volume fraction'] == 'volume':
             self.update_mf_sb()
@@ -634,12 +953,44 @@ class PowderScenarioTab(ScenarioTab):
         return
 
     def on_bubble_radius_sb_changed(self,value):
+        """
+        Update the bubble radius setting and mark refresh as required.
+
+        This method updates the 'Bubble radius' in the settings dictionary and marks the instance for refresh.
+
+        Parameters
+        ----------
+        value : float 
+            The new value to update the bubble radius setting with.
+
+        Returns
+        -------
+        int
+        """        
         self.settings['Bubble radius'] = value
         debugger.print(self.settings['Legend'],'on bubble raduys line edit changed', value)
         self.refreshRequired = True
         return
 
     def on_permittivity_i_sb_changed(self,value):
+        """
+        Update the imaginary part of the permittivity in the matrix material settings and trigger a refresh.
+
+        Parameters
+        ----------
+        value : float
+            The new imaginary part of the permittivity to be set.
+
+        Returns
+        -------
+        int
+
+        Notes
+        -----
+        - Updates the imaginary part of the `Matrix permittivity` in the settings dictionary with the new value, keeping the real part unchanged.
+        - Replaces the permittivity object of the matrix material with a new constant scalar permittivity object created using the updated `Matrix permittivity`.
+        - Marks the matrix material as manually defined and triggers a required refresh to update any dependent calculations or displays.
+        """        
         self.refreshRequired = True
         real = np.real(self.settings['Matrix permittivity'])
         self.settings['Matrix permittivity'] = complex(real,value)
@@ -653,6 +1004,19 @@ class PowderScenarioTab(ScenarioTab):
         return
 
     def on_permittivity_r_sb_changed(self,value):
+        """
+        Update the real part of the permittivity in the matrix material settings and refresh the material definition.
+
+        Parameters
+        ----------
+        value : float
+            The new real value of the matrix permittivity to be set.
+
+        Returns
+        -------
+        int
+
+        """        
         self.refreshRequired = True
         imaginary = np.imag(self.settings['Matrix permittivity'])
         self.settings['Matrix permittivity'] = complex(value,imaginary)
@@ -666,18 +1030,66 @@ class PowderScenarioTab(ScenarioTab):
         return
 
     def on_atr_index_sb_changed(self,value):
+        """
+        Handle the change in settings for ATR material refractive index.
+
+        Parameters
+        ----------
+        value : float
+            The new value for the ATR material refractive index.
+
+        Returns
+        -------
+        int
+
+        Notes
+        -----
+        - This function updates the 'ATR material refractive index' in the settings dictionary.
+        - Marks the instance as requiring a refresh, possibly to update some UI elements or calculations.
+        """        
         self.settings['ATR material refractive index'] = value
         debugger.print(self.settings['Legend'],'on atr index line edit changed', value)
         self.refreshRequired = True
         return
 
     def on_atr_incident_ang_sb_changed(self,value):
+        """
+        Handles the update to the ATR incident angle situation.
+
+        This method updates the ATR incident angle setting based on user inputs or changes. It also triggers an update to ensure the new settings are reflected across the application.
+
+        Parameters
+        ----------
+        value : float or int
+            The new value for the ATR incident angle.
+
+        Returns
+        -------
+        int
+        """        
         self.settings['ATR theta'] = value
         debugger.print(self.settings['Legend'],'on atr incident angle line edit changed', value)
         self.refreshRequired = True
         return
 
     def on_atr_spolfrac_sb_changed(self,value):
+        """
+        Updates the ATR S polarisation fraction setting and marks refresh as required.
+
+        Parameters
+        ----------
+        value : float
+            The new value for the ATR S polarisation fraction. 
+
+        Returns
+        -------
+        int
+
+        Notes
+        -----
+        - This function updates the settings dictionary on the `self` object with the new value for the key 'ATR S polarisation fraction'.
+        - The refresh flag `self.refreshRequired` is set to `True` to indicate that some action is needed to reflect the change in the application.
+        """        
         self.settings['ATR S polarisation fraction'] = value
         debugger.print(self.settings['Legend'],'on atr spolfraction line edit changed', value)
         self.refreshRequired = True
@@ -685,6 +1097,27 @@ class PowderScenarioTab(ScenarioTab):
 
     def change_greyed_out(self):
         # Have a look through the settings and see if we need to grey anything out
+        """
+        Modify UI elements based on the selected effective medium method.
+
+        This function updates the enabled status of UI elements such as size, sigma, and shape selection based on the currently selected effective medium method in the settings. It also updates the particle shape setting if necessary and adjusts the UI to reflect any changes.
+
+        Parameters
+        ----------
+        None
+
+        Returns
+        -------
+        int
+
+        Notes
+        -----
+        - The method checks the 'Effective medium method' and 'Particle shape' in the settings.
+        - For 'Mie' and 'Anisotropic-Mie' methods, it enables size and sigma spinboxes and sets the particle shape to 'Sphere', disabling all other shapes.
+        - For 'Averaged Permittivity', it disables size and sigma spinboxes and sets the particle shape to 'Sphere'.
+        - For 'Maxwell-Garnett' and 'Bruggeman', it enables the size spinbox and disables the sigma spinbox, allowing all shapes to be selected.
+        - If the particle shape is set to 'Ellipsoid', 'Plate', or 'Needle', it enables direction (h, k, l) spinboxes and adjusts the display label accordingly. For 'Sphere', it disables these spinboxes.
+        """        
         debugger.print(self.settings['Legend'],'Start:: change_greyed_out')
         method = self.settings['Effective medium method']
         if method == 'Mie' or method == 'Anisotropic-Mie':
@@ -753,7 +1186,19 @@ class PowderScenarioTab(ScenarioTab):
         return
 
     def calculate(self, vs_cm1):
-        """Calculate the powder absorption for the range of frequencies in vs_cm1"""
+        """
+        Calculate the powder absorption for the range of frequencies in vs_cm1.
+
+        Parameters
+        ----------
+        vs_cm1 : array_like
+            Array of frequencies for which to calculate the powder absorption.
+
+        Returns
+        -------
+        array_like
+            The calculated powder absorption for the given range of frequencies.
+        """
         # Only allow a calculation if the plottingTab is defined
         debugger.print(self.settings['Legend'],'Start:: calculate')
         if not self.calculationRequired:
@@ -838,7 +1283,20 @@ class PowderScenarioTab(ScenarioTab):
         return
 
     def get_result(self, vs_cm1, plot_type):
-        """Return a particular result"""
+        """
+        Parameters
+        ----------
+        vs_cm1 : list
+            A list of frequencies in cm-1
+        plot_type : str
+            A string indicating the type of result to return.
+            One of: 'Powder Molar Absorption', 'Powder Absorption', 'Powder Real Permittivity', 'Powder Imaginary Permittivity', 'Powder ATR'
+
+        Returns
+        -------
+        list
+            A list of the required results.
+        """
         debugger.print(self.settings['Legend'],'Start:: get_result')
         self.get_results(vs_cm1)
         debugger.print(self.settings['Legend'],'Finished:: get_result')
@@ -858,7 +1316,21 @@ class PowderScenarioTab(ScenarioTab):
 
 
     def get_results(self, vs_cm1):
-        """Return the results of the effective medium theory calculation"""
+        """
+        Return the results of the effective medium theory calculation.
+
+        This routine jut causes a refresh and calculation if it is needed.
+        See get_result() for accessing the results themselves
+
+        Parameters
+        ----------
+        vs_cm1 : list
+            A list of frequencies in cm-1
+
+        Returns
+        -------
+        None
+        """
         debugger.print(self.settings['Legend'],'Start:: get_results', len(vs_cm1))
         if len(vs_cm1) > 0 and ( self.refreshRequired or len(self.vs_cm1) != len(vs_cm1) or self.vs_cm1[0] != vs_cm1[0] or self.vs_cm1[1] != vs_cm1[1] ) :
             debugger.print(self.settings['Legend'],'get_results recalculating')
@@ -872,8 +1344,17 @@ class PowderScenarioTab(ScenarioTab):
 
 
     def refresh(self,force=False):
-        '''Refresh the GUI interface with up to date values
-           if force is True then a refresh is forced whatever the state of the scenario
+        '''
+        Refresh the GUI interface with up to date values.
+
+        Parameters
+        ----------
+        force : bool
+            If True, then a refresh is forced regardless of the state of the scenario.
+
+        Returns
+        -------
+        None
         '''
         debugger.print(self.settings['Legend'],'Start:: refresh, force =', force)
         if not self.refreshRequired and not force:

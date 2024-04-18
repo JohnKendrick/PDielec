@@ -1,5 +1,44 @@
 #!/usr/bin/env python
-"""Read the contents of a single file containing DFT output and create a csv style file of information"""
+"""
+Read the contents of a single file containing DFT output and create a csv style file of information
+
+Parse command-line arguments to set program configuration and process a specified file.
+
+This function does not have a formal return but exits with different messages and statuses based on the command-line inputs. It processes various command-line arguments to configure the behavior of a software utility, specifically targeting file analysis with support for multiple programs. It also supports debug mode and handles command-line requests for help and version information.
+
+Parameters
+----------
+This function does not accept parameters directly through its definition. Instead, it uses command-line arguments parsed from `sys.argv`:
+
+- `-debug` : Enable debug mode.
+- `-help` : Print help message and exit.
+- `-version` : Print software version and exit.
+- `-program` : Specify the program to use for analysis. When set to 'phonopy', an additional quantum mechanics program argument is required.
+- Any other argument is considered as the filename for analysis.
+
+The MIT License (MIT)
+
+Copyright (c) 2024 John Kendrick
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+"""
+
 from __future__ import print_function
 import numpy as np
 import os, sys
@@ -8,6 +47,23 @@ import PDielec.__init__
 version = PDielec.__init__.__version__
 
 def print_help():
+    """
+    Prints the help message for the p1reader program to stderr.
+
+    This function displays the usage of the `p1reader` command, including accepted programs, flags, and additional
+    optional arguments.
+
+    Notes
+    -----
+    This function directly prints to `sys.stderr` and exits the program, it does not return any value.
+    It also prints the current version of the PDielec library being used.
+
+    Examples
+    --------
+    To display the help message, simply call the function without any arguments:
+
+    >>> print_help()
+    """    
     print('p1reader -program program [-version] filename', file=sys.stderr)
     print('  \"program\" must be one of \"abinit\", \"castep\", \"crystal\", \"gulp\"       ', file=sys.stderr)
     print('           \"phonopy\", \"qe\", \"vasp\", \"experiment\", \"auto\"               ', file=sys.stderr)
@@ -23,6 +79,38 @@ def print_help():
 
 def main():
     # Start processing the directories
+    """
+    Parse command-line arguments to set program configuration and process a specified file.
+
+    This function does not have a formal return but exits with different messages and statuses based on the command-line inputs. It processes various command-line arguments to configure the behavior of a software utility, specifically targeting file analysis with support for multiple programs. It also supports debug mode and handles command-line requests for help and version information.
+
+    Parameters
+    ----------
+    This function does not accept parameters directly through its definition. Instead, it uses command-line arguments parsed from `sys.argv`:
+    - `-debug` : Enable debug mode.
+    - `-help` : Print help message and exit.
+    - `-version` : Print software version and exit.
+    - `-program` : Specify the program to use for analysis. When set to 'phonopy', an additional quantum mechanics program argument is required.
+    - Any other argument is considered as the filename for analysis.
+
+    Raises
+    ------
+    SystemExit
+        This function may call `exit()` which stops script execution and can be considered as raising `SystemExit` in various scenarios:
+        - If less than one argument is provided.
+        - If the `-version` argument is provided.
+        - If no program is specified or an unrecognized program is given.
+        - If `phonopy` is chosen but an unrecognized quantum mechanics (QM) program is specified.
+        - If the specified file does not exist.
+        - When critical configuration issues are encountered.
+
+    Notes
+    -----
+    - It is assumed that `print_help`, `Utilities.find_program_from_name`, and `Utilities.get_reader` are defined elsewhere.
+    - The function makes extensive use of `sys.argv` for argument parsing and `sys.stderr` for error and status messaging.
+    - The function supports a flexible addition of program types and respective validation.
+    - The handling of `-debug`, `-help`, `-version`, and program-specific arguments provides an example of a rudimentary command-line interface.
+    """    
     if len(sys.argv) <= 1 :
         print_help()
     filename = ''

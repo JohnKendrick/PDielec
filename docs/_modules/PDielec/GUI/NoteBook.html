@@ -1,0 +1,1236 @@
+<!doctype html>
+<html class="no-js" lang="en" data-content_root="">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
+
+    <!-- Generated with Sphinx 7.1.2 and Furo 2024.01.29 -->
+        <title>PDielec.GUI.NoteBook - PDielec: John Kendrick &amp; Andrew Burnett</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=135e06be" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=eafc0fe6" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/table_styling.css?v=a1a2a898" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo-extensions.css?v=36a5483c" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/css/custom.css?v=2e0a580d" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f8f8f8;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-half" viewBox="0 0 24 24">
+    <title>Auto light/dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M13 12h5" />
+      <path d="M13 15h4" />
+      <path d="M13 18h1" />
+      <path d="M13 9h4" />
+      <path d="M13 6h1" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../../../index.html"><div class="brand">PDielec: John Kendrick & Andrew Burnett</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon no-toc" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../../../index.html">
+  
+  
+  <span class="sidebar-brand-text">PDielec: John Kendrick & Andrew Burnett</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../../../search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <p class="caption" role="heading"><span class="caption-text">Software</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pdgui.html">PDGui</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../software.html">Other Software Components</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Theory</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../theory_powder.html">Theory for Light Scattering from Powders</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../theory_single_crystal.html">Theory for Single Crystal Optics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../analysis.html">Phonon Analysis</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Applications</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../application_notes_1.html">Applications of Effective Medium Theory</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../application_notes_2.html">Single Crystal Applications</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API</span></p>
+<ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../autoapi/index.html">API Reference</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of API Reference</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../autoapi/PDielec/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of PDielec</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../autoapi/PDielec/GUI/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of PDielec.GUI</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../autoapi/PDielec/GUI/AnalysisTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.AnalysisTab</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../autoapi/PDielec/GUI/App/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.App</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../autoapi/PDielec/GUI/FitterTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.FitterTab</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../autoapi/PDielec/GUI/MainTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.MainTab</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../autoapi/PDielec/GUI/NoteBook/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.NoteBook</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../autoapi/PDielec/GUI/OpenGLWidget/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.OpenGLWidget</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../autoapi/PDielec/GUI/PlottingTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.PlottingTab</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../autoapi/PDielec/GUI/PowderScenarioTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.PowderScenarioTab</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../autoapi/PDielec/GUI/ScenarioTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.ScenarioTab</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../autoapi/PDielec/GUI/SettingsTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.SettingsTab</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../autoapi/PDielec/GUI/SingleCrystalLayer/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.SingleCrystalLayer</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../autoapi/PDielec/GUI/SingleCrystalScenarioTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.SingleCrystalScenarioTab</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../autoapi/PDielec/GUI/SpreadSheetManager/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.SpreadSheetManager</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../autoapi/PDielec/GUI/ViewerTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.ViewerTab</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../autoapi/PDielec/AbinitOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.AbinitOutputReader</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../autoapi/PDielec/Calculator/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.Calculator</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../autoapi/PDielec/CastepOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.CastepOutputReader</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../autoapi/PDielec/Constants/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.Constants</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../autoapi/PDielec/CrystalOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.CrystalOutputReader</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../autoapi/PDielec/DielectricFunction/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.DielectricFunction</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../autoapi/PDielec/ExperimentOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.ExperimentOutputReader</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../autoapi/PDielec/GTMcore/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GTMcore</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../autoapi/PDielec/GenericOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GenericOutputReader</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../autoapi/PDielec/GulpOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GulpOutputReader</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../autoapi/PDielec/HelperRoutines/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.HelperRoutines</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../autoapi/PDielec/IO/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.IO</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../autoapi/PDielec/Materials/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.Materials</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../autoapi/PDielec/Mie/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.Mie</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../autoapi/PDielec/PhonopyOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.PhonopyOutputReader</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../autoapi/PDielec/Plotter/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.Plotter</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../autoapi/PDielec/QEOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.QEOutputReader</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../autoapi/PDielec/SuperCell/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.SuperCell</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../autoapi/PDielec/UnitCell/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.UnitCell</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../autoapi/PDielec/Utilities/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.Utilities</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../autoapi/PDielec/VaspOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.VaspOutputReader</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../autoapi/PDielec/checkcsv/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.checkcsv</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../autoapi/PDielec/checkexcel/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.checkexcel</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../autoapi/PDielec/graphdatagenerator/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.graphdatagenerator</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../autoapi/PDielec/p1reader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.p1reader</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../autoapi/PDielec/p2cif/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.p2cif</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../autoapi/PDielec/pdcompare/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.pdcompare</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../autoapi/PDielec/pdgui/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.pdgui</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../autoapi/PDielec/pdmake/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.pdmake</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../autoapi/PDielec/pickled_reader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.pickled_reader</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../autoapi/PDielec/preader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.preader</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../autoapi/PDielec/vibanalysis/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.vibanalysis</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../autoapi/PDielec/pdgui/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.pdgui</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../autoapi/PDielec/preader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.preader</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../autoapi/PDielec/pdmake/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.pdmake</span></code></a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">References</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../zreferences.html">References</a></li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon no-toc" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main">
+          <h1>Source code for PDielec.GUI.NoteBook</h1><div class="highlight"><pre>
+<span></span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">NoteBook </span>
+
+<span class="sd">The MIT License (MIT)</span>
+
+<span class="sd">Copyright (c) 2024 John Kendrick</span>
+
+<span class="sd">Permission is hereby granted, free of charge, to any person obtaining a copy</span>
+<span class="sd">of this software and associated documentation files (the &quot;Software&quot;), to deal</span>
+<span class="sd">in the Software without restriction, including without limitation the rights</span>
+<span class="sd">to use, copy, modify, merge, publish, distribute, sublicense, and/or sell</span>
+<span class="sd">copies of the Software, and to permit persons to whom the Software is</span>
+<span class="sd">furnished to do so, subject to the following conditions:</span>
+
+<span class="sd">The above copyright notice and this permission notice shall be included in all</span>
+<span class="sd">copies or substantial portions of the Software.</span>
+
+<span class="sd">THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR</span>
+<span class="sd">IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,</span>
+<span class="sd">FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE</span>
+<span class="sd">AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER</span>
+<span class="sd">LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,</span>
+<span class="sd">OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE</span>
+<span class="sd">SOFTWARE.</span>
+<span class="sd">&#39;&#39;&#39;</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">copy</span>
+<span class="kn">import</span> <span class="nn">psutil</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">PyQt5.QtWidgets</span>                      <span class="kn">import</span>  <span class="n">QWidget</span><span class="p">,</span> <span class="n">QTabWidget</span>
+<span class="kn">from</span> <span class="nn">PyQt5.QtWidgets</span>                      <span class="kn">import</span>  <span class="n">QVBoxLayout</span>
+<span class="kn">from</span> <span class="nn">PyQt5.QtWidgets</span>                      <span class="kn">import</span>  <span class="n">QApplication</span>
+<span class="kn">from</span> <span class="nn">PyQt5.QtWidgets</span>                      <span class="kn">import</span>  <span class="n">QFileDialog</span>
+<span class="kn">from</span> <span class="nn">PyQt5.QtWidgets</span>                      <span class="kn">import</span>  <span class="n">QMessageBox</span>
+<span class="kn">from</span> <span class="nn">PyQt5.QtCore</span>                         <span class="kn">import</span>  <span class="n">Qt</span>
+<span class="kn">from</span> <span class="nn">PDielec.GUI.MainTab</span>                  <span class="kn">import</span>  <span class="n">MainTab</span>
+<span class="kn">from</span> <span class="nn">PDielec.GUI.SettingsTab</span>              <span class="kn">import</span>  <span class="n">SettingsTab</span>
+<span class="kn">from</span> <span class="nn">PDielec.GUI.PowderScenarioTab</span>        <span class="kn">import</span>  <span class="n">PowderScenarioTab</span>
+<span class="kn">from</span> <span class="nn">PDielec.GUI.SingleCrystalScenarioTab</span> <span class="kn">import</span>  <span class="n">SingleCrystalScenarioTab</span>
+<span class="kn">from</span> <span class="nn">PDielec.GUI.PlottingTab</span>              <span class="kn">import</span>  <span class="n">PlottingTab</span>
+<span class="kn">from</span> <span class="nn">PDielec.GUI.AnalysisTab</span>              <span class="kn">import</span>  <span class="n">AnalysisTab</span>
+<span class="kn">from</span> <span class="nn">PDielec.GUI.ViewerTab</span>                <span class="kn">import</span>  <span class="n">ViewerTab</span>
+<span class="kn">from</span> <span class="nn">PDielec.GUI.FitterTab</span>                <span class="kn">import</span>  <span class="n">FitterTab</span>
+<span class="kn">from</span> <span class="nn">PDielec.Utilities</span>                    <span class="kn">import</span>  <span class="n">Debug</span>
+<span class="kn">from</span> <span class="nn">PDielec.GUI.SpreadSheetManager</span>       <span class="kn">import</span>  <span class="n">SpreadSheetManager</span>
+<span class="kn">import</span> <span class="nn">PDielec.Calculator</span>                 <span class="k">as</span>      <span class="nn">Calculator</span>
+
+
+<div class="viewcode-block" id="NoteBook"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/NoteBook/index.html#PDielec.GUI.NoteBook.NoteBook">[docs]</a><span class="k">class</span> <span class="nc">NoteBook</span><span class="p">(</span><span class="n">QWidget</span><span class="p">):</span>
+
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A Qt widget that holds tabs for managing different aspects of a notebook-like interface. </span>
+
+<span class="sd">    This class manages a complex interface which includes a range of functionalities </span>
+<span class="sd">    such as handling various scenarios (e.g., Powder or SingleCrystal), managing computational </span>
+<span class="sd">    resources, offering plotting abilities, managing settings, etc. It utilizes multithreading, </span>
+<span class="sd">    handles external spreadsheet files for input and output, and provides a user interface </span>
+<span class="sd">    for configuring and monitoring the progress of analytical or simulation tasks.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    parent : QWidget</span>
+<span class="sd">        The parent widget.</span>
+<span class="sd">    program : str</span>
+<span class="sd">        Description or identifier of the program associated with the notebook.</span>
+<span class="sd">    filename : str</span>
+<span class="sd">        Name of the file, if any, associated with the notebook.</span>
+<span class="sd">    spreadsheet : type</span>
+<span class="sd">        The spreadsheet object associated with the notebook.</span>
+<span class="sd">    debug : bool, optional</span>
+<span class="sd">        Flag to activate debug mode, by default False.</span>
+<span class="sd">    progressbar : QProgressBar, optional</span>
+<span class="sd">        A progressbar object to reflect the current progress, by default None.</span>
+<span class="sd">    scripting : bool, optional</span>
+<span class="sd">        Flag to indicate if the notebook is used in scripting mode, by default False.</span>
+<span class="sd">    default_scenario : str, optional</span>
+<span class="sd">        The type of default scenario to load at initiation, by default &#39;powder&#39;.</span>
+<span class="sd">    ncpus : int, optional</span>
+<span class="sd">        The number of CPUs to use, by default 0 which means autodetect.</span>
+<span class="sd">    threading : bool, optional</span>
+<span class="sd">        Flag to enable threading, by default False.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    app : QWidget</span>
+<span class="sd">        The application the notebook is part of.</span>
+<span class="sd">    reader : type</span>
+<span class="sd">        Reserved for future use, currently None.</span>
+<span class="sd">    progressbars : list of QProgressBar</span>
+<span class="sd">        List of progress bar objects for tracking progress.</span>
+<span class="sd">    progressbar_status : int</span>
+<span class="sd">        Current status of the progressbar.</span>
+<span class="sd">    progressbar_maximum : int</span>
+<span class="sd">        Maximum value of the progressbar.</span>
+<span class="sd">    spreadsheet : type</span>
+<span class="sd">        Spreadsheet object associated with the notebook.</span>
+<span class="sd">    threading : bool</span>
+<span class="sd">        State of threading use.</span>
+<span class="sd">    ncpus : int</span>
+<span class="sd">        Number of CPUs being used.</span>
+<span class="sd">    layout : QVBoxLayout</span>
+<span class="sd">        The layout for adding widgets to the notebook.</span>
+<span class="sd">    tabOffSet : int</span>
+<span class="sd">        Offset value for tab indices.</span>
+<span class="sd">    plottingTab : QWidget</span>
+<span class="sd">        Tab for managing plotting related functions.</span>
+<span class="sd">    settingsTab : QWidget</span>
+<span class="sd">        Tab for managing settings.</span>
+<span class="sd">    analysisTab : QWidget</span>
+<span class="sd">        Tab for managing analysis functions.</span>
+<span class="sd">    viewerTab : QWidget</span>
+<span class="sd">        Tab for managing 3D viewing options.</span>
+<span class="sd">    fitterTab : QWidget</span>
+<span class="sd">        Tab for managing fitting tasks.</span>
+<span class="sd">    scenarios : list of QWidget</span>
+<span class="sd">        List containing scenario-specific tabs.</span>
+<span class="sd">    tabs : QTabWidget</span>
+<span class="sd">        The QTabWidget managing multiple tabs in the notebook interface.</span>
+<span class="sd">    debug : bool</span>
+<span class="sd">        Debug mode state.</span>
+<span class="sd">    overwriting : bool</span>
+<span class="sd">        State indicating if overwriting files without prompt is enabled.</span>
+<span class="sd">    &quot;&quot;&quot;</span>    
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">,</span> <span class="n">program</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">spreadsheet</span><span class="p">,</span> <span class="n">debug</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">progressbar</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">scripting</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">default_scenario</span><span class="o">=</span><span class="s1">&#39;powder&#39;</span><span class="p">,</span><span class="n">ncpus</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">threading</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Constructor for the main application window or component.</span>
+
+<span class="sd">        This method initializes the main widget with all necessary components</span>
+<span class="sd">        such as the settings, plotting, analysis, viewer, and fitter tabs, along</span>
+<span class="sd">        with the scenarios management logic. It sets up the multiprocessing capabilities,</span>
+<span class="sd">        reads the provided files, and sets up the debugging interface.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        parent : QWidget</span>
+<span class="sd">            The parent widget which this widget is a part of.</span>
+<span class="sd">        program : Various possible types</span>
+<span class="sd">            Represents the program or application being run. This parameter&#39;s type and</span>
+<span class="sd">            use may depend on the context in which this constructor is called.</span>
+<span class="sd">        filename : str</span>
+<span class="sd">            The path to a file that is relevant for initializing the application.</span>
+<span class="sd">            This could be a configuration file, a data file, etc.</span>
+<span class="sd">        spreadsheet : Various possible types</span>
+<span class="sd">            An object or identifier for a spreadsheet component or functionality</span>
+<span class="sd">            within the application. The exact type and use can vary based on context.</span>
+<span class="sd">        debug : bool, optional</span>
+<span class="sd">            Flag to enable debugging mode. Defaults to False.</span>
+<span class="sd">        progressbar : QProgressBar or similar, optional</span>
+<span class="sd">            A progress bar component for the UI. If None, no progress bar is used.</span>
+<span class="sd">            Defaults to None.</span>
+<span class="sd">        scripting : bool, optional</span>
+<span class="sd">            Flag to indicate whether the application is being used in a scripting mode.</span>
+<span class="sd">            Defaults to False.</span>
+<span class="sd">        default_scenario : str, optional</span>
+<span class="sd">            Specifies the default scenario to be loaded at startup. Possible values</span>
+<span class="sd">            might include &#39;powder&#39;, &#39;single crystal&#39;, etc. Defaults to &#39;powder&#39;.</span>
+<span class="sd">        ncpus : int, optional</span>
+<span class="sd">            The number of CPUs to be used for multiprocessing. If set to 0, the</span>
+<span class="sd">            application will try to use all physical cores available. Defaults to 0.</span>
+<span class="sd">        threading : bool, optional</span>
+<span class="sd">            Flag to enable or disable threading features. Defaults to False.</span>
+
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+<span class="sd">        This constructor initializes the GUI components of the application,</span>
+<span class="sd">        sets up multiprocessing/threading as specified, handles file reading</span>
+<span class="sd">        and application settings, and prepares the different analysis and</span>
+<span class="sd">        visualization tabs. It is vital for setting up the initial state</span>
+<span class="sd">        of the application&#39;s main window or a major component within a larger</span>
+<span class="sd">        UI framework.</span>
+<span class="sd">        &quot;&quot;&quot;</span>        
+        <span class="nb">super</span><span class="p">(</span><span class="n">QWidget</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">parent</span><span class="p">)</span>
+        <span class="k">global</span> <span class="n">debugger</span>
+        <span class="n">debugger</span> <span class="o">=</span> <span class="n">Debug</span><span class="p">(</span><span class="n">debug</span><span class="p">,</span><span class="s1">&#39;NoteBook:&#39;</span><span class="p">)</span>
+        <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s1">&#39;Start:: Initialising&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">app</span> <span class="o">=</span> <span class="n">parent</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">reader</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">progressbars</span><span class="o">=</span><span class="p">[</span><span class="n">progressbar</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">progressbar</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">progressbars</span> <span class="o">=</span> <span class="p">[</span> <span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">progressbar_status</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">progressbar_maximum</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">spreadsheet</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">threading</span> <span class="o">=</span> <span class="n">threading</span>
+        <span class="k">if</span> <span class="n">default_scenario</span> <span class="o">==</span> <span class="s1">&#39;powder&#39;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">currentScenarioTab</span> <span class="o">=</span> <span class="n">PowderScenarioTab</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">currentScenarioTab</span> <span class="o">=</span> <span class="n">SingleCrystalScenarioTab</span>
+        <span class="k">if</span> <span class="n">ncpus</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ncpus</span> <span class="o">=</span> <span class="n">psutil</span><span class="o">.</span><span class="n">cpu_count</span><span class="p">(</span><span class="n">logical</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ncpus</span> <span class="o">=</span> <span class="n">ncpus</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">startPool</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scripting</span> <span class="o">=</span> <span class="n">scripting</span>
+        <span class="c1"># Overwriting of files is not allowed with a prompt</span>
+        <span class="c1"># If scripting is used then overwriting is allowed</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">overwriting</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">debug</span> <span class="o">=</span> <span class="n">debug</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">layout</span> <span class="o">=</span> <span class="n">QVBoxLayout</span><span class="p">()</span>
+        <span class="c1"># The number of tabs before we have scenarios</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tabOffSet</span> <span class="o">=</span> <span class="mi">2</span>
+        <span class="c1"># Set the plotting tab to None in case a scenario tries to read it</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">plottingTab</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">settingsTab</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">analysisTab</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">viewerTab</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fitterTab</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scenarios</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="c1">#</span>
+        <span class="c1"># Initialize tab screen</span>
+        <span class="c1">#</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tabs</span> <span class="o">=</span> <span class="n">QTabWidget</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tabs</span><span class="o">.</span><span class="n">currentChanged</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">on_tabs_currentChanged</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mainTab</span> <span class="o">=</span> <span class="n">MainTab</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">program</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">spreadsheet</span><span class="p">,</span> <span class="n">debug</span><span class="o">=</span><span class="n">debug</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">settingsTab</span> <span class="o">=</span> <span class="n">SettingsTab</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">debug</span><span class="o">=</span><span class="n">debug</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">filename</span> <span class="o">!=</span> <span class="s1">&#39;&#39;</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">scripting</span><span class="p">:</span>
+            <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s1">&#39;Refreshing settingsTab in notebook initialisation - filename&#39;</span><span class="p">,</span><span class="n">filename</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">settingsTab</span><span class="o">.</span><span class="n">refresh</span><span class="p">()</span>
+        <span class="c1">#</span>
+        <span class="c1"># Open more windows</span>
+        <span class="c1">#</span>
+        <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s1">&#39;Initialising the first scenario&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scenarios</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scenarios</span><span class="o">.</span><span class="n">append</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">currentScenarioTab</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">debug</span><span class="o">=</span><span class="n">debug</span> <span class="p">)</span> <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scenarios</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">setScenarioIndex</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scenarios</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;Legend&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;Scenario 1&#39;</span>
+        <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s1">&#39;Finished adding the first scenario&#39;</span><span class="p">)</span>
+        <span class="c1">#</span>
+        <span class="c1"># Open the plotting tab</span>
+        <span class="c1">#</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">plottingTab</span> <span class="o">=</span> <span class="n">PlottingTab</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">debug</span><span class="o">=</span><span class="n">debug</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">filename</span> <span class="o">!=</span> <span class="s1">&#39;&#39;</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">scripting</span><span class="p">:</span>
+            <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s1">&#39;Refreshing plotting because filename is set&#39;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">plottingTab</span><span class="o">.</span><span class="n">refresh</span><span class="p">()</span>
+        <span class="c1">#</span>
+        <span class="c1"># Open the Analysis tab</span>
+        <span class="c1">#</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">analysisTab</span> <span class="o">=</span> <span class="n">AnalysisTab</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">debug</span><span class="o">=</span><span class="n">debug</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">filename</span> <span class="o">!=</span> <span class="s1">&#39;&#39;</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">scripting</span><span class="p">:</span>
+            <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s1">&#39;Refreshing analysis because filename is set&#39;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">analysisTab</span><span class="o">.</span><span class="n">refresh</span><span class="p">()</span>
+        <span class="c1">#</span>
+        <span class="c1"># Open the Viewer tab</span>
+        <span class="c1">#</span>
+        <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s1">&#39;Initialising the viewer tab&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">viewerTab</span> <span class="o">=</span> <span class="n">ViewerTab</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">debug</span><span class="o">=</span><span class="n">debug</span><span class="p">)</span>
+        <span class="c1">#</span>
+        <span class="c1"># Open the Fitter tab</span>
+        <span class="c1">#</span>
+        <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s1">&#39;Initialising the fitter tab&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fitterTab</span> <span class="o">=</span> <span class="n">FitterTab</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">debug</span><span class="o">=</span><span class="n">debug</span><span class="p">)</span>
+        <span class="c1">#</span>
+        <span class="c1"># Add tabs</span>
+        <span class="c1">#</span>
+        <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s1">&#39;Adding all tabs to the notebook&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tabs</span><span class="o">.</span><span class="n">addTab</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mainTab</span><span class="p">,</span><span class="s1">&#39;Main&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tabs</span><span class="o">.</span><span class="n">addTab</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">settingsTab</span><span class="p">,</span><span class="s1">&#39;Settings&#39;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">tab</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">scenarios</span><span class="p">):</span>
+            <span class="n">tab</span><span class="o">.</span><span class="n">requestRefresh</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">tabs</span><span class="o">.</span><span class="n">addTab</span><span class="p">(</span><span class="n">tab</span><span class="p">,</span><span class="s1">&#39;Scenario &#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tabs</span><span class="o">.</span><span class="n">addTab</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">plottingTab</span><span class="p">,</span><span class="s1">&#39;Plotting&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tabs</span><span class="o">.</span><span class="n">addTab</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">analysisTab</span><span class="p">,</span><span class="s1">&#39;Analysis&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tabs</span><span class="o">.</span><span class="n">addTab</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">viewerTab</span><span class="p">,</span><span class="s1">&#39;3D Viewer&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tabs</span><span class="o">.</span><span class="n">addTab</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fitterTab</span><span class="p">,</span><span class="s1">&#39;Fitter&#39;</span><span class="p">)</span>
+
+        <span class="c1"># Add the tab widget</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tabs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setLayout</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">layout</span><span class="p">)</span>
+        <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s1">&#39;Finished:: Initialising&#39;</span><span class="p">)</span>
+        <span class="k">return</span>
+
+<div class="viewcode-block" id="NoteBook.startPool"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/NoteBook/index.html#PDielec.GUI.NoteBook.NoteBook.startPool">[docs]</a>    <span class="k">def</span> <span class="nf">startPool</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initializes a pool of worker processes or threads for computation.</span>
+
+<span class="sd">        This method initializes a pool based on the instance&#39;s specified number of CPUs and the threading model. It accesses a global debugger variable for potential debugging purposes.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        None</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        None</span>
+
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+<span class="sd">        - The `Calculator.get_pool` method is expected to be a class method or static method of the class `Calculator` that initializes a pool of worker processes or threads.</span>
+<span class="sd">        - The pool is stored in the instance&#39;s `pool` attribute.</span>
+<span class="sd">        - The method uses a global variable `debugger` which should be defined elsewhere in the global scope for debugging purposes.</span>
+<span class="sd">        - The number of CPUs (`ncpus`) and the threading model (`threading`) are not parameters of this method, but are expected to be attributes of the instance (`self`).</span>
+<span class="sd">        &quot;&quot;&quot;</span>        
+        <span class="k">global</span> <span class="n">debugger</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pool</span> <span class="o">=</span> <span class="n">Calculator</span><span class="o">.</span><span class="n">get_pool</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ncpus</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">threading</span><span class="p">,</span> <span class="n">debugger</span> <span class="o">=</span> <span class="n">debugger</span><span class="p">)</span>
+        <span class="k">return</span></div>
+
+<div class="viewcode-block" id="NoteBook.requestRefresh"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/NoteBook/index.html#PDielec.GUI.NoteBook.NoteBook.requestRefresh">[docs]</a>    <span class="k">def</span> <span class="nf">requestRefresh</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Request a refresh operation.</span>
+
+<span class="sd">        This method toggles the refresh requirement state to true, indicating that a refresh is needed.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        None</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        None</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>        
+        <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s1">&#39;Start:: requestRefresh&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">refreshRequired</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s1">&#39;Finished:: requestRefresh&#39;</span><span class="p">)</span>
+        <span class="k">return</span></div>
+
+<div class="viewcode-block" id="NoteBook.addScenario"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/NoteBook/index.html#PDielec.GUI.NoteBook.NoteBook.addScenario">[docs]</a>    <span class="k">def</span> <span class="nf">addScenario</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">scenarioType</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">copyFromIndex</span><span class="o">=-</span><span class="mi">2</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Add a new scenario tab</span>
+
+<span class="sd">        If a copy is requested then copy the appropriate information into the new tab.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        scenarioType : string</span>
+<span class="sd">             scenarioType can be one of &#39;Powder&#39; or &#39;SingleCrystal&#39;</span>
+<span class="sd">        copyFromIndex : int</span>
+<span class="sd">             if copyFromIndex is not -2 then use the index to determine the scenario type</span>
+<span class="sd">             if copyFromIndex is -2 and the scenarioType has not been specified then just use the last scenario type there is</span>
+<span class="sd">             Otherwise just find the last scenario type to copy</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        None</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s1">&#39;Start:: addScenario for scenarioType&#39;</span><span class="p">,</span> <span class="n">scenarioType</span><span class="p">,</span><span class="n">copyFromIndex</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">copyFromIndex</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">2</span><span class="p">:</span>
+            <span class="c1"># If the copyFromIndex is not -2 then we override the scenarioType</span>
+            <span class="n">last</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">scenarios</span><span class="p">[</span><span class="n">copyFromIndex</span><span class="p">]</span>
+            <span class="n">scenarioType</span> <span class="o">=</span> <span class="n">last</span><span class="o">.</span><span class="n">scenarioType</span>
+            <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s1">&#39;scenario type has been set from copyFromIndex&#39;</span><span class="p">,</span><span class="n">scenarioType</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">scenarioType</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c1"># The default behaviour with no parameters in the call, use the last scenario in the list</span>
+            <span class="n">last</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">scenarios</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">scenarioType</span> <span class="o">=</span> <span class="n">last</span><span class="o">.</span><span class="n">scenarioType</span>
+            <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s1">&#39;scenario type has been set from the last scenario&#39;</span><span class="p">,</span><span class="n">scenarioType</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># copyFromIndex is default so we find the last scenario of scenarioType in the list</span>
+            <span class="n">last</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="k">for</span> <span class="n">scenario</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">scenarios</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">scenarioType</span> <span class="o">==</span> <span class="n">scenario</span><span class="o">.</span><span class="n">scenarioType</span><span class="p">:</span>
+                    <span class="n">last</span> <span class="o">=</span> <span class="n">scenario</span>
+            <span class="c1"># end for</span>
+        <span class="c1"># Create a new scenario</span>
+        <span class="k">if</span> <span class="n">scenarioType</span> <span class="o">==</span> <span class="s1">&#39;Powder&#39;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">currentScenarioTab</span> <span class="o">=</span> <span class="n">PowderScenarioTab</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">currentScenarioTab</span> <span class="o">=</span> <span class="n">SingleCrystalScenarioTab</span>
+        <span class="c1"># Add the scenario to the end of the list</span>
+        <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s1">&#39;Appending the new scenario&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scenarios</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">currentScenarioTab</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">debug</span><span class="p">))</span>
+        <span class="c1"># If we have found a previous scenario of the same time set the settings to it</span>
+        <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s1">&#39;Checking the value of last&#39;</span><span class="p">,</span><span class="n">last</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">last</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s1">&#39;Copying settings from old to new scenario&#39;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">scenarios</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">settings</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">last</span><span class="o">.</span><span class="n">settings</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scenarios</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">requestRefresh</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scenarios</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">refresh</span><span class="p">()</span>
+        <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">scenarios</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tabs</span><span class="o">.</span><span class="n">insertTab</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tabOffSet</span><span class="o">+</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">scenarios</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span><span class="s1">&#39;Scenario &#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">n</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tabs</span><span class="o">.</span><span class="n">setCurrentIndex</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tabOffSet</span><span class="o">+</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">scenario</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">scenarios</span><span class="p">):</span>
+            <span class="n">scenario</span><span class="o">.</span><span class="n">setScenarioIndex</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">tabs</span><span class="o">.</span><span class="n">setTabText</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tabOffSet</span><span class="o">+</span><span class="n">i</span><span class="p">,</span><span class="s1">&#39;Scenario &#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span>
+        <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s1">&#39;Finished:: addScenario for scenarioType&#39;</span><span class="p">,</span> <span class="n">scenarioType</span><span class="p">,</span><span class="n">copyFromIndex</span><span class="p">)</span>
+        <span class="k">return</span></div>
+
+<div class="viewcode-block" id="NoteBook.print_settings"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/NoteBook/index.html#PDielec.GUI.NoteBook.NoteBook.print_settings">[docs]</a>    <span class="k">def</span> <span class="nf">print_settings</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="c1"># Print the settings of all the settings that have been used to a file settings.py</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Prints the current program settings to a file.</span>
+
+<span class="sd">        Each tab in the notebook is processed in turn, including all the scenarios.</span>
+<span class="sd">        This allows a script to be written which can be used to recall a configuration of the program.</span>
+<span class="sd">        Some settings need careful handling, for example the sigmas_cm1 values for the settingsTab</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        filename : str, optional</span>
+<span class="sd">            The name of the file to save the settings. If not specified, a save file dialog will be shown.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        None</span>
+<span class="sd">        &quot;&quot;&quot;</span>        
+        <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s1">&#39;Start:: print_settings, filename=&#39;</span><span class="p">,</span><span class="n">filename</span><span class="p">)</span>
+        <span class="n">qf</span> <span class="o">=</span> <span class="n">QFileDialog</span><span class="p">()</span>
+        <span class="n">qf</span><span class="o">.</span><span class="n">setWindowTitle</span><span class="p">(</span><span class="s1">&#39;Save the program settings to a file&#39;</span><span class="p">)</span>
+        <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s1">&#39;print_settings, directory=&#39;</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">mainTab</span><span class="o">.</span><span class="n">directory</span><span class="p">)</span>
+        <span class="n">qf</span><span class="o">.</span><span class="n">setDirectory</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mainTab</span><span class="o">.</span><span class="n">directory</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">filename</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">filename</span><span class="p">,</span><span class="n">selection</span> <span class="o">=</span> <span class="n">qf</span><span class="o">.</span><span class="n">getSaveFileName</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">filename</span> <span class="o">==</span> <span class="s1">&#39;&#39;</span><span class="p">:</span>
+            <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s1">&#39;Start:: print_settings, filename is blank&#39;</span><span class="p">)</span>
+            <span class="k">return</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Current settings will be saved to &#39;</span><span class="o">+</span><span class="n">filename</span><span class="p">)</span>
+        <span class="n">fd</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span><span class="s1">&#39;w&#39;</span><span class="p">)</span>
+        <span class="c1"># Handle the special case of the first scenario</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;#&#39;</span><span class="p">,</span><span class="n">file</span><span class="o">=</span><span class="n">fd</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;# Handle the special case of the first scenario&#39;</span><span class="p">,</span><span class="n">file</span><span class="o">=</span><span class="n">fd</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;#&#39;</span><span class="p">,</span><span class="n">file</span><span class="o">=</span><span class="n">fd</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;self.notebook.switchScenario(0,scenarioType=</span><span class="se">\&quot;</span><span class="s1">&#39;</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">scenarios</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">scenarioType</span><span class="o">+</span><span class="s1">&#39;</span><span class="se">\&quot;</span><span class="s1">)&#39;</span><span class="p">,</span><span class="n">file</span><span class="o">=</span><span class="n">fd</span> <span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;#&#39;</span><span class="p">,</span><span class="n">file</span><span class="o">=</span><span class="n">fd</span><span class="p">)</span>
+        <span class="c1"># Print settings of mainTab</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">print_tab_settings</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mainTab</span><span class="p">,</span> <span class="s1">&#39;mainTab&#39;</span><span class="p">,</span><span class="n">fd</span><span class="p">)</span>
+        <span class="c1">#print(&#39;tab.requestRefresh()&#39;,file=fd)</span>
+        <span class="c1"># Print settings of settingsTab</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">print_tab_settings</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">settingsTab</span><span class="p">,</span> <span class="s1">&#39;settingsTab&#39;</span><span class="p">,</span><span class="n">fd</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;tab.sigmas_cm1 =&#39;</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">settingsTab</span><span class="o">.</span><span class="n">sigmas_cm1</span><span class="p">,</span><span class="n">file</span><span class="o">=</span><span class="n">fd</span><span class="p">)</span>
+        <span class="c1">#print(&#39;tab.requestRefresh()&#39;,file=fd)</span>
+        <span class="c1"># Print settings of scenarios</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">tab</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">scenarios</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">print_tab_settings</span><span class="p">(</span><span class="n">tab</span><span class="p">,</span> <span class="s1">&#39;scenarios[</span><span class="si">{}</span><span class="s1">]&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">),</span> <span class="n">fd</span><span class="p">,</span> <span class="n">new_scenario</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">print_tab_settings</span><span class="p">(</span><span class="n">tab</span><span class="p">,</span> <span class="s1">&#39;scenarios[</span><span class="si">{}</span><span class="s1">]&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">),</span> <span class="n">fd</span><span class="p">,</span> <span class="n">new_scenario</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+            <span class="c1">#print(&#39;tab.requestRefresh()&#39;,file=fd)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">print_tab_settings</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">analysisTab</span><span class="p">,</span> <span class="s1">&#39;analysisTab&#39;</span><span class="p">,</span><span class="n">fd</span><span class="p">)</span>
+        <span class="c1">#print(&#39;tab.requestRefresh()&#39;,file=fd)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">print_tab_settings</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">viewerTab</span><span class="p">,</span> <span class="s1">&#39;viewerTab&#39;</span><span class="p">,</span><span class="n">fd</span><span class="p">)</span>
+        <span class="c1">#print(&#39;tab.requestRefresh()&#39;,file=fd)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">print_tab_settings</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fitterTab</span><span class="p">,</span> <span class="s1">&#39;fitterTab&#39;</span><span class="p">,</span><span class="n">fd</span><span class="p">)</span>
+        <span class="c1">#print(&#39;tab.requestRefresh()&#39;,file=fd)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">print_tab_settings</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">plottingTab</span><span class="p">,</span> <span class="s1">&#39;plottingTab&#39;</span><span class="p">,</span><span class="n">fd</span><span class="p">)</span>
+        <span class="c1">#print(&#39;tab.requestRefresh()&#39;,file=fd)</span>
+        <span class="n">fd</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s1">&#39;Finished:: print_settings, filename=&#39;</span><span class="p">,</span><span class="n">filename</span><span class="p">)</span>
+        <span class="k">return</span></div>
+
+<div class="viewcode-block" id="NoteBook.print_tab_settings"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/NoteBook/index.html#PDielec.GUI.NoteBook.NoteBook.print_tab_settings">[docs]</a>    <span class="k">def</span> <span class="nf">print_tab_settings</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">tab</span><span class="p">,</span><span class="n">title</span><span class="p">,</span><span class="n">fd</span><span class="p">,</span><span class="n">new_scenario</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Prints the configuration settings of a specified tab to a file descriptor.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        tab : Object</span>
+<span class="sd">            An object representing a tab that contains settings and other attributes.</span>
+<span class="sd">        title : str</span>
+<span class="sd">            The title of the tab.</span>
+<span class="sd">        fd : file descriptor</span>
+<span class="sd">            An open file descriptor where the settings should be printed.</span>
+<span class="sd">        new_scenario : bool, optional</span>
+<span class="sd">            A flag indicating whether this is a new scenario, by default False.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        None</span>
+
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+<span class="sd">        This function iterates through the settings of the provided tab object and</span>
+<span class="sd">        prints each setting to the provided file descriptor. If `new_scenario` is</span>
+<span class="sd">        True, it adds a scenario definition to the file. It handles special cases</span>
+<span class="sd">        for certain settings like &#39;Optical permittivity&#39; and &#39;Mass definition&#39;,</span>
+<span class="sd">        and formats string values and others appropriately for printing.</span>
+<span class="sd">        &quot;&quot;&quot;</span>        
+        <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s1">&#39;Start:: print_tab_settings&#39;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;#&#39;</span><span class="p">,</span><span class="n">file</span><span class="o">=</span><span class="n">fd</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;#&#39;</span><span class="p">,</span><span class="n">file</span><span class="o">=</span><span class="n">fd</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">new_scenario</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;self.notebook.addScenario(scenarioType=</span><span class="se">\&quot;</span><span class="s1">&#39;</span><span class="o">+</span><span class="n">tab</span><span class="o">.</span><span class="n">scenarioType</span><span class="o">+</span><span class="s1">&#39;</span><span class="se">\&quot;</span><span class="s1">)&#39;</span><span class="p">,</span><span class="n">file</span><span class="o">=</span><span class="n">fd</span> <span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;tab = self.notebook.&#39;</span><span class="o">+</span><span class="n">title</span><span class="p">,</span><span class="n">file</span><span class="o">=</span><span class="n">fd</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">tab</span><span class="o">.</span><span class="n">settings</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">item</span> <span class="o">==</span> <span class="s1">&#39;Optical permittivity&#39;</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">tab</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;Optical permittivity edited&#39;</span><span class="p">]:</span>
+                    <span class="k">pass</span>
+            <span class="k">elif</span> <span class="n">item</span> <span class="o">==</span> <span class="s1">&#39;Mass definition&#39;</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;tab.settings[</span><span class="se">\&#39;</span><span class="s1">&#39;</span><span class="o">+</span><span class="n">item</span><span class="o">+</span><span class="s1">&#39;</span><span class="se">\&#39;</span><span class="s1">] = </span><span class="se">\&#39;</span><span class="si">{}</span><span class="se">\&#39;</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">tab</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="n">item</span><span class="p">]),</span><span class="n">file</span><span class="o">=</span><span class="n">fd</span><span class="p">)</span>
+                <span class="c1"># Check to see if the mass_definition is gui, if so set all the masses</span>
+                <span class="k">if</span> <span class="n">tab</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="n">item</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;gui&#39;</span><span class="p">:</span>
+                    <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">tab</span><span class="o">.</span><span class="n">masses_dictionary</span><span class="p">:</span>
+                        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;tab.masses_dictionary[</span><span class="se">\&#39;</span><span class="s1">&#39;</span><span class="o">+</span><span class="n">c</span><span class="o">+</span><span class="s1">&#39;</span><span class="se">\&#39;</span><span class="s1">] = &#39;</span><span class="p">,</span><span class="n">tab</span><span class="o">.</span><span class="n">masses_dictionary</span><span class="p">[</span><span class="n">c</span><span class="p">],</span><span class="n">file</span><span class="o">=</span><span class="n">fd</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">value</span> <span class="o">=</span> <span class="n">tab</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="n">item</span><span class="p">]</span>
+                <span class="k">if</span> <span class="s1">&#39;str&#39;</span> <span class="ow">in</span> <span class="nb">str</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">value</span><span class="p">)):</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;tab.settings[</span><span class="se">\&#39;</span><span class="s1">&#39;</span><span class="o">+</span><span class="n">item</span><span class="o">+</span><span class="s1">&#39;</span><span class="se">\&#39;</span><span class="s1">] = </span><span class="se">\&#39;</span><span class="si">{}</span><span class="se">\&#39;</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">tab</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="n">item</span><span class="p">]),</span><span class="n">file</span><span class="o">=</span><span class="n">fd</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;tab.settings[</span><span class="se">\&#39;</span><span class="s1">&#39;</span><span class="o">+</span><span class="n">item</span><span class="o">+</span><span class="s1">&#39;</span><span class="se">\&#39;</span><span class="s1">] = &#39;</span><span class="p">,</span> <span class="n">tab</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="n">item</span><span class="p">],</span><span class="n">file</span><span class="o">=</span><span class="n">fd</span><span class="p">)</span>
+        <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s1">&#39;Finished:: print_tab_settings&#39;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="NoteBook.deleteAllScenarios"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/NoteBook/index.html#PDielec.GUI.NoteBook.NoteBook.deleteAllScenarios">[docs]</a>    <span class="k">def</span> <span class="nf">deleteAllScenarios</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Delete all scenarios except the first one.</span>
+
+<span class="sd">        This method sequentially deletes each scenario from the end of the collection until only one scenario is left. It also removes the corresponding tabs.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        None</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        None</span>
+<span class="sd">        &quot;&quot;&quot;</span>        
+        <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s1">&#39;Start:: deleteAllScenarios&#39;</span><span class="p">)</span>
+        <span class="c1"># Don&#39;t delete the last scenario</span>
+        <span class="n">index</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">scenarios</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span>
+        <span class="k">while</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">scenarios</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">tabs</span><span class="o">.</span><span class="n">removeTab</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tabOffSet</span><span class="o">+</span><span class="n">index</span><span class="p">)</span>
+            <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">scenarios</span><span class="p">[</span><span class="n">index</span><span class="p">]</span>
+            <span class="n">index</span> <span class="o">-=</span> <span class="mi">1</span>
+        <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s1">&#39;Finished:: deleteAllScenarios&#39;</span><span class="p">)</span>
+        <span class="k">return</span></div>
+
+<div class="viewcode-block" id="NoteBook.deleteScenario"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/NoteBook/index.html#PDielec.GUI.NoteBook.NoteBook.deleteScenario">[docs]</a>    <span class="k">def</span> <span class="nf">deleteScenario</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">index</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Delete a scenario from the scenarios list and update tabs accordingly.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        index : int</span>
+<span class="sd">            The index of the scenario to be deleted.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        None</span>
+
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+<span class="sd">        This function will remove a scenario from the scenarios list at the specified index</span>
+<span class="sd">        and update the tabs in the UI to reflect this change. It ensures that there is at least</span>
+<span class="sd">        one scenario remaining. If the scenario to be deleted is the first one, the selection</span>
+<span class="sd">        moves to the next available scenario. Otherwise, it selects the previous scenario.</span>
+<span class="sd">        &quot;&quot;&quot;</span>        
+        <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s1">&#39;Start:: deleteScenario&#39;</span><span class="p">,</span><span class="n">index</span><span class="p">)</span>
+        <span class="c1"># Don&#39;t delete the last scenario</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">scenarios</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">tabs</span><span class="o">.</span><span class="n">removeTab</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tabOffSet</span><span class="o">+</span><span class="n">index</span><span class="p">)</span>
+            <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">scenarios</span><span class="p">[</span><span class="n">index</span><span class="p">]</span>
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">scenario</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">scenarios</span><span class="p">):</span>
+                <span class="n">scenario</span><span class="o">.</span><span class="n">setScenarioIndex</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">tabs</span><span class="o">.</span><span class="n">setTabText</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tabOffSet</span><span class="o">+</span><span class="n">i</span><span class="p">,</span><span class="s1">&#39;Scenario &#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span>
+            <span class="k">if</span> <span class="n">index</span><span class="o">-</span><span class="mi">1</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">index</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">tabs</span><span class="o">.</span><span class="n">setCurrentIndex</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tabOffSet</span><span class="o">+</span><span class="n">index</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s1">&#39;Finished:: deleteScenario&#39;</span><span class="p">,</span><span class="n">index</span><span class="p">)</span>
+        <span class="k">return</span></div>
+
+<div class="viewcode-block" id="NoteBook.switchScenario"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/NoteBook/index.html#PDielec.GUI.NoteBook.NoteBook.switchScenario">[docs]</a>    <span class="k">def</span> <span class="nf">switchScenario</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">index</span><span class="p">,</span><span class="n">scenarioType</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Switch the scenario tab based on the scenario type.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        index : int</span>
+<span class="sd">            The index of the scenario to switch to.</span>
+<span class="sd">        scenarioType : str, optional</span>
+<span class="sd">            The type of scenario to switch to. Can be &#39;Powder&#39; or None. If None, the</span>
+<span class="sd">            scenario type is determined by the current scenario&#39;s type.</span>
+<span class="sd">            If the scenarioType is anything else a &#39;SingleCrystal&#39; scenario is switched to.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        None</span>
+
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+<span class="sd">        - This method switches the current scenario to a new scenario based on the</span>
+<span class="sd">          given scenario type or the current scenario&#39;s type if no scenario type is</span>
+<span class="sd">          provided.</span>
+<span class="sd">        - The method updates the current scenario tab and refreshes the UI to reflect</span>
+<span class="sd">          the new scenario.</span>
+<span class="sd">        - If `scenarioType` is &#39;Powder&#39;, switch to a Powder scenario tab. Otherwise,</span>
+<span class="sd">          switch to a Single Crystal scenario tab.</span>
+<span class="sd">        - This function also updates all scenario tabs&#39; names based on their index</span>
+<span class="sd">          and requests a refresh of the currently selected scenario.</span>
+
+<span class="sd">        See Also</span>
+<span class="sd">        --------</span>
+<span class="sd">        SingleCrystalScenarioTab, PowderScenarioTab : Classes representing different types of scenario tabs.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>        
+        <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s1">&#39;Start:: switch for scenario&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+        <span class="c1"># Replace the scenario with the other scenario type</span>
+        <span class="n">scenario</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">scenarios</span><span class="p">[</span><span class="n">index</span><span class="p">]</span>
+        <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s1">&#39;Current scenario type&#39;</span><span class="p">,</span> <span class="n">scenario</span><span class="o">.</span><span class="n">scenarioType</span><span class="p">,</span> <span class="n">scenarioType</span><span class="p">)</span>
+        <span class="c1">#</span>
+        <span class="c1"># If scenarioType is specified in the call then force that type</span>
+        <span class="c1"># Otherwise switch type</span>
+        <span class="c1">#</span>
+        <span class="k">if</span> <span class="n">scenarioType</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">scenario</span><span class="o">.</span><span class="n">scenarioType</span> <span class="o">==</span> <span class="s1">&#39;Powder&#39;</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">currentScenarioTab</span> <span class="o">=</span> <span class="n">SingleCrystalScenarioTab</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">currentScenarioTab</span> <span class="o">=</span> <span class="n">PowderScenarioTab</span>
+            <span class="c1"># end if</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">scenarioType</span> <span class="o">==</span> <span class="s1">&#39;Powder&#39;</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">currentScenarioTab</span> <span class="o">=</span> <span class="n">PowderScenarioTab</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">currentScenarioTab</span> <span class="o">=</span> <span class="n">SingleCrystalScenarioTab</span>
+            <span class="c1"># end if</span>
+        <span class="c1">#end if</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scenarios</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">=</span>  <span class="bp">self</span><span class="o">.</span><span class="n">currentScenarioTab</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">debug</span><span class="p">)</span>
+        <span class="n">scenario</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">scenarios</span><span class="p">[</span><span class="n">index</span><span class="p">]</span>
+        <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s1">&#39;Current scenario type now&#39;</span><span class="p">,</span> <span class="n">scenario</span><span class="o">.</span><span class="n">scenarioType</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tabs</span><span class="o">.</span><span class="n">removeTab</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tabOffSet</span><span class="o">+</span><span class="n">index</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tabs</span><span class="o">.</span><span class="n">insertTab</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tabOffSet</span><span class="o">+</span><span class="n">index</span><span class="p">,</span><span class="n">scenario</span><span class="p">,</span><span class="s1">&#39;Scenario &#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">index</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">scenario</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">scenarios</span><span class="p">):</span>
+            <span class="n">scenario</span><span class="o">.</span><span class="n">setScenarioIndex</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">tabs</span><span class="o">.</span><span class="n">setTabText</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tabOffSet</span><span class="o">+</span><span class="n">i</span><span class="p">,</span><span class="s1">&#39;Scenario &#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scenarios</span><span class="p">[</span><span class="n">index</span><span class="p">]</span><span class="o">.</span><span class="n">requestRefresh</span><span class="p">()</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">scripting</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">scenarios</span><span class="p">[</span><span class="n">index</span><span class="p">]</span><span class="o">.</span><span class="n">refresh</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tabs</span><span class="o">.</span><span class="n">setCurrentIndex</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tabOffSet</span><span class="o">+</span><span class="n">index</span><span class="p">)</span>
+        <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s1">&#39;Finished:: switch for scenario&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">return</span></div>
+
+<div class="viewcode-block" id="NoteBook.refresh"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/NoteBook/index.html#PDielec.GUI.NoteBook.NoteBook.refresh">[docs]</a>    <span class="k">def</span> <span class="nf">refresh</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">force</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Refreshes the current state, optionally forcing a refresh regardless of scripting constraints.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        force : bool, optional</span>
+<span class="sd">            Force a refresh even if scripting is active, by default False.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        None</span>
+
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+<span class="sd">        This method initiates a refresh process on various components such as the main settings, scenarios, and several tabs including plotting, analysis, viewer, and fitter. It adjusts the active tab based on the current number of scenarios. If &#39;force&#39; is set to True, the refresh process is executed disregarding any active scripting conditions.</span>
+<span class="sd">        &quot;&quot;&quot;</span>        
+        <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s1">&#39;Started:: newrefresh&#39;</span><span class="p">,</span><span class="n">force</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">force</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">scripting</span><span class="p">:</span>
+            <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s1">&#39;Finished:: newrefresh Notebook aborting refresh because of scripting&#39;</span><span class="p">)</span>
+            <span class="k">return</span>
+        <span class="n">ntabs</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">scenarios</span><span class="p">)</span> <span class="o">+</span> <span class="mi">4</span>
+        <span class="c1"># Do a refresh on the mainTab and the settingsTab</span>
+        <span class="c1"># Add all the scenarios</span>
+        <span class="c1"># This should caused anything that needs reading in to be read and processed</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mainTab</span><span class="o">.</span><span class="n">refresh</span><span class="p">(</span><span class="n">force</span><span class="o">=</span><span class="n">force</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">settingsTab</span><span class="o">.</span><span class="n">refresh</span><span class="p">(</span><span class="n">force</span><span class="o">=</span><span class="n">force</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">tab</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">scenarios</span><span class="p">:</span>
+            <span class="n">tab</span><span class="o">.</span><span class="n">refresh</span><span class="p">(</span><span class="n">force</span><span class="o">=</span><span class="n">force</span><span class="p">)</span>
+        <span class="c1"># Request refreshes on everything else</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">plottingTab</span><span class="o">.</span><span class="n">requestRefresh</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">analysisTab</span><span class="o">.</span><span class="n">requestRefresh</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">viewerTab</span><span class="o">.</span><span class="n">requestRefresh</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fitterTab</span><span class="o">.</span><span class="n">requestRefresh</span><span class="p">()</span>
+        <span class="c1"># In a script we do not change the tab index, but we need the analysis tab and the plotter tab to be refreshed</span>
+        <span class="c1"># So do it here, leave the GUI after a script showing the plotter tab</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tabs</span><span class="o">.</span><span class="n">setCurrentIndex</span><span class="p">(</span><span class="n">ntabs</span><span class="o">-</span><span class="mi">3</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tabs</span><span class="o">.</span><span class="n">setCurrentIndex</span><span class="p">(</span><span class="n">ntabs</span><span class="o">-</span><span class="mi">4</span><span class="p">)</span>
+        <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s1">&#39;Finished:: newrefresh&#39;</span><span class="p">,</span><span class="n">force</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="NoteBook.writeSpreadsheet"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/NoteBook/index.html#PDielec.GUI.NoteBook.NoteBook.writeSpreadsheet">[docs]</a>    <span class="k">def</span> <span class="nf">writeSpreadsheet</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Write data to an Excel spreadsheet.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        None</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        None</span>
+
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+<span class="sd">        This function assumes that the Excel spreadsheet is an attribute of the object this method belongs to. It attempts to write data to various tabs within the spreadsheet, namely &#39;mainTab&#39;, &#39;settingsTab&#39;, &#39;analysisTab&#39;, and &#39;plottingTab&#39;. The method opens the spreadsheet, writes data to these tabs if the spreadsheet is not `None`, and then closes the spreadsheet. </span>
+<span class="sd">        &quot;&quot;&quot;</span>        
+        <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s1">&#39;Start:: Write spreadsheet&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">open_excel_spreadsheet</span><span class="p">()</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">spreadsheet</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">mainTab</span><span class="o">.</span><span class="n">writeSpreadsheet</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">settingsTab</span><span class="o">.</span><span class="n">writeSpreadsheet</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">analysisTab</span><span class="o">.</span><span class="n">writeSpreadsheet</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">plottingTab</span><span class="o">.</span><span class="n">writeSpreadsheet</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">spreadsheet</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s1">&#39;Finished:: Write spreadsheet&#39;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="NoteBook.open_excel_spreadsheet"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/NoteBook/index.html#PDielec.GUI.NoteBook.NoteBook.open_excel_spreadsheet">[docs]</a>    <span class="k">def</span> <span class="nf">open_excel_spreadsheet</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Open an Excel spreadsheet based on the filename set in settings.</span>
+
+<span class="sd">        This method tries to open an Excel spreadsheet file (.xlsx) whose name is provided in the &#39;Excel file name&#39; setting of the &#39;mainTab&#39; attribute. It checks for the validity of the filename (i.e., whether it ends in &#39;.xlsx&#39;) and existence in the specified directory. On failure, it alerts the user accordingly.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        None</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        None</span>
+
+
+<span class="sd">        Raises</span>
+<span class="sd">        ------</span>
+<span class="sd">        QMessageBox</span>
+<span class="sd">            - If the spreadsheet name is not valid (does not end in .xlsx).</span>
+<span class="sd">            - If the spreadsheet name is empty.</span>
+<span class="sd">        &quot;&quot;&quot;</span>        
+        <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s1">&#39;Start:: open_spreadsheet clicked&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mainTab</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;Excel file name&#39;</span><span class="p">])</span> <span class="o">&gt;</span> <span class="mi">5</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">mainTab</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;Excel file name&#39;</span><span class="p">][</span><span class="o">-</span><span class="mi">5</span><span class="p">:]</span> <span class="o">==</span> <span class="s1">&#39;.xlsx&#39;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">directory</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mainTab</span><span class="o">.</span><span class="n">directory</span>
+            <span class="c1"># open the file name with the directory of the output file name</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">openSpreadSheet</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">directory</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">mainTab</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;Excel file name&#39;</span><span class="p">]))</span>
+        <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mainTab</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;Excel file name&#39;</span><span class="p">])</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">mainTab</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;Excel file name&#39;</span><span class="p">][</span><span class="o">-</span><span class="mi">5</span><span class="p">:]</span> <span class="o">!=</span> <span class="s1">&#39;.xlsx&#39;</span><span class="p">:</span>
+            <span class="c1"># The file isn&#39;t valid so tell the user there is a problem</span>
+            <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s1">&#39;open_spreadsheet spreadsheet name is not valid&#39;</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">mainTab</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;Excel file name&#39;</span><span class="p">])</span>
+            <span class="n">QMessageBox</span><span class="o">.</span><span class="n">about</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="s1">&#39;Spreadsheet name&#39;</span><span class="p">,</span><span class="s1">&#39;File name of spreadsheet must end in  .xlsx&#39;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s1">&#39;open_spreadsheet spreadsheet name is empty&#39;</span><span class="p">)</span>
+        <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s1">&#39;Finished:: open_spreadsheet clicked&#39;</span><span class="p">)</span>
+        <span class="k">return</span></div>
+
+<div class="viewcode-block" id="NoteBook.openSpreadSheet"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/NoteBook/index.html#PDielec.GUI.NoteBook.NoteBook.openSpreadSheet">[docs]</a>    <span class="k">def</span> <span class="nf">openSpreadSheet</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">filename</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Open or create a spreadsheet file.</span>
+
+<span class="sd">        This function checks whether the specified spreadsheet (.xlsx) file exists. If the file exists and overwriting is allowed or confirmed by the user, it opens and overwrites the file. If the file does not exist, it creates a new spreadsheet file. The function also closes any previously opened spreadsheet before attempting to open or create a new one.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        filename : str</span>
+<span class="sd">            The name of the spreadsheet file to open or create.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        None</span>
+
+
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+<span class="sd">        - The function relies on the &#39;SpreadSheetManager&#39; class for handling spreadsheet operations.</span>
+<span class="sd">        - The function raises no exceptions, but will print a message if the provided filename does not have a &#39;.xlsx&#39; extension.</span>
+<span class="sd">        &quot;&quot;&quot;</span>        
+        <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s1">&#39;Start:: openSpreadSheet&#39;</span><span class="p">,</span> <span class="n">filename</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">spreadsheet</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">spreadsheet</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">filename</span><span class="p">[</span><span class="o">-</span><span class="mi">5</span><span class="p">:]</span> <span class="o">==</span> <span class="s1">&#39;.xlsx&#39;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
+                <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s1">&#39;Spreadsheet file already exists&#39;</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">directory</span><span class="p">)</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">overwriting</span><span class="p">:</span>
+                    <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s1">&#39;Overwriting existing spreadsheet anyway&#39;</span><span class="p">,</span><span class="n">filename</span><span class="p">)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">spreadsheet</span> <span class="o">=</span> <span class="n">SpreadSheetManager</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">answer</span> <span class="o">=</span> <span class="n">QMessageBox</span><span class="o">.</span><span class="n">question</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">,</span><span class="s1">&#39;Spreadsheet already exists.  Continue?&#39;</span><span class="p">,</span> <span class="n">QMessageBox</span><span class="o">.</span><span class="n">Yes</span> <span class="o">|</span> <span class="n">QMessageBox</span><span class="o">.</span><span class="n">No</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">answer</span> <span class="o">==</span> <span class="n">QMessageBox</span><span class="o">.</span><span class="n">Yes</span><span class="p">:</span>
+                        <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s1">&#39;Overwriting existing spreadsheet&#39;</span><span class="p">,</span><span class="n">filename</span><span class="p">)</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">spreadsheet</span> <span class="o">=</span> <span class="n">SpreadSheetManager</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s1">&#39;Creating a new spreadsheet&#39;</span><span class="p">,</span><span class="n">filename</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">spreadsheet</span> <span class="o">=</span> <span class="n">SpreadSheetManager</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+           <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;spreadsheet name not valid&#39;</span><span class="p">,</span> <span class="n">filename</span><span class="p">)</span>
+        <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s1">&#39;Finished:: openSpreadSheet&#39;</span><span class="p">,</span> <span class="n">filename</span><span class="p">)</span>
+        <span class="k">return</span></div>
+
+<div class="viewcode-block" id="NoteBook.on_tabs_currentChanged"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/NoteBook/index.html#PDielec.GUI.NoteBook.NoteBook.on_tabs_currentChanged">[docs]</a>    <span class="k">def</span> <span class="nf">on_tabs_currentChanged</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tabindex</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Handle tab change events and refresh content accordingly.</span>
+
+<span class="sd">        This function responds to changes in the current tab index within a tabbed interface. It refreshes the content of the new current tab based on the index of the tab. This includes refreshing content in tabs corresponding to settings, plotting, analysis, viewing, fitting, or specific scenarios.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        tabindex : int</span>
+<span class="sd">            The index of the newly selected tab.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        None</span>
+
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+<span class="sd">        - The function first checks if scripting is currently active; if so, it exits early without refreshing to avoid conflicts.</span>
+<span class="sd">        - The `ntabs` variable calculates the total number of tabs dynamically based on the number of scenarios present.</span>
+<span class="sd">        - The function determines which tab has been selected based on the `tabindex` and calls the appropriate refresh function for the content of that tab.</span>
+<span class="sd">        - For predefined tabs (such as settings, plotting, analysis, viewing, and fitting tabs), direct refresh calls are made.</span>
+<span class="sd">        - For scenario-specific tabs, which are dynamically added based on the number of scenarios, the function calculates the appropriate scenario index and triggers a refresh for the selected scenario.</span>
+<span class="sd">        &quot;&quot;&quot;</span>        
+        <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s1">&#39;Start:: on_tabs_currentChanged&#39;</span><span class="p">,</span> <span class="n">tabindex</span><span class="p">)</span>
+        <span class="c1"># </span>
+        <span class="c1"># If scripting do not refresh tabs</span>
+        <span class="c1">#</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">scripting</span><span class="p">:</span>
+            <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s1">&#39;Finished:: Exiting on_tabs_currentChanged without refreshing&#39;</span><span class="p">)</span>
+            <span class="k">return</span>
+        <span class="c1">#       Number of tabs</span>
+        <span class="n">ntabs</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">scenarios</span><span class="p">)</span> <span class="o">+</span> <span class="mi">4</span>
+        <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s1">&#39;Number of tabs&#39;</span><span class="p">,</span><span class="n">ntabs</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">tabindex</span> <span class="o">==</span> <span class="n">ntabs</span><span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+            <span class="c1"># fitter tab</span>
+            <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s1">&#39;Calling fitterTab refresh&#39;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">fitterTab</span><span class="o">.</span><span class="n">refresh</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="n">tabindex</span> <span class="o">==</span> <span class="n">ntabs</span><span class="o">-</span><span class="mi">2</span><span class="p">:</span>
+            <span class="c1"># viewer tab</span>
+            <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s1">&#39;Calling viewerTab refresh&#39;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">viewerTab</span><span class="o">.</span><span class="n">refresh</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="n">tabindex</span> <span class="o">==</span> <span class="n">ntabs</span><span class="o">-</span><span class="mi">3</span><span class="p">:</span>
+            <span class="c1"># analysis tab</span>
+            <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s1">&#39;Calling analysisTab refresh&#39;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">analysisTab</span><span class="o">.</span><span class="n">refresh</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="n">tabindex</span> <span class="o">==</span> <span class="n">ntabs</span><span class="o">-</span><span class="mi">4</span><span class="p">:</span>
+            <span class="c1"># plottings tab</span>
+            <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s1">&#39;Calling plottingTab refresh&#39;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">plottingTab</span><span class="o">.</span><span class="n">refresh</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="n">tabindex</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="c1"># settings tab</span>
+            <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s1">&#39;Calling settingsTab refresh&#39;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">settingsTab</span><span class="o">.</span><span class="n">refresh</span><span class="p">()</span>
+        <span class="k">else</span> <span class="p">:</span>
+            <span class="c1">#  Refresh scenario tabs</span>
+            <span class="n">scenarioTabIndex</span> <span class="o">=</span> <span class="n">tabindex</span><span class="o">-</span><span class="mi">2</span>
+            <span class="k">if</span> <span class="n">scenarioTabIndex</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">scenarioTabIndex</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">scenarios</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">scenarios</span><span class="p">[</span><span class="n">scenarioTabIndex</span><span class="p">]</span><span class="o">.</span><span class="n">refresh</span><span class="p">()</span>
+        <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s1">&#39;Exiting on_tabs_currentChanged()&#39;</span><span class="p">)</span>
+        <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s1">&#39;Finished:: on_tabs_currentChanged&#39;</span><span class="p">,</span> <span class="n">tabindex</span><span class="p">)</span>
+        <span class="k">return</span></div>
+
+<div class="viewcode-block" id="NoteBook.keyPressEvent"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/NoteBook/index.html#PDielec.GUI.NoteBook.NoteBook.keyPressEvent">[docs]</a>    <span class="k">def</span> <span class="nf">keyPressEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">e</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Handle key press events for the application.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        e : QKeyEvent</span>
+<span class="sd">            An event parameter containing details of the key that was pressed.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        None</span>
+
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+<span class="sd">        This function checks for specific key combinations (Control + S, and Control + C) and performs actions accordingly:</span>
+<span class="sd">        - Control + S: Calls the `print_settings` method.</span>
+<span class="sd">        - Control + C: Prints a message and exits the program.</span>
+<span class="sd">        &quot;&quot;&quot;</span>        
+        <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s1">&#39;Start:: keyPressEvent&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">key</span><span class="p">()</span> <span class="o">==</span> <span class="n">Qt</span><span class="o">.</span><span class="n">Key_S</span><span class="p">)</span>  <span class="ow">and</span> <span class="n">QApplication</span><span class="o">.</span><span class="n">keyboardModifiers</span><span class="p">()</span> <span class="ow">and</span> <span class="n">Qt</span><span class="o">.</span><span class="n">ControlModifier</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Control S has been pressed&#39;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">print_settings</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">key</span><span class="p">()</span> <span class="o">==</span> <span class="n">Qt</span><span class="o">.</span><span class="n">Key_C</span><span class="p">)</span>  <span class="ow">and</span> <span class="n">QApplication</span><span class="o">.</span><span class="n">keyboardModifiers</span><span class="p">()</span> <span class="ow">and</span> <span class="n">Qt</span><span class="o">.</span><span class="n">ControlModifier</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Control C has been pressed&#39;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;The program will close down&#39;</span><span class="p">)</span>
+            <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">()</span>
+        <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s1">&#39;Finished:: keyPressEvent&#39;</span><span class="p">)</span>
+        <span class="k">return</span></div>
+
+<div class="viewcode-block" id="NoteBook.progressbars_set_maximum"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/NoteBook/index.html#PDielec.GUI.NoteBook.NoteBook.progressbars_set_maximum">[docs]</a>    <span class="k">def</span> <span class="nf">progressbars_set_maximum</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">maximum</span> <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Set the maximum value for all progress bars in an object and reset their current status.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        maximum : int</span>
+<span class="sd">            The maximum value to set for each progress bar.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        None</span>
+<span class="sd">    </span>
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+<span class="sd">        This method sets the maximum value of all progress bars stored in the object&#39;s `progressbars` attribute. It also resets the progress to 0. </span>
+<span class="sd">        &quot;&quot;&quot;</span>        
+        <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s1">&#39;Start:: progressbars_set_maximum&#39;</span><span class="p">,</span><span class="n">maximum</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">progressbar_status</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">progressbar_maximum</span> <span class="o">=</span> <span class="n">maximum</span>
+        <span class="k">for</span> <span class="n">bar</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">progressbars</span><span class="p">:</span>
+            <span class="n">bar</span><span class="o">.</span><span class="n">setMaximum</span><span class="p">(</span><span class="n">maximum</span><span class="p">)</span>
+            <span class="n">bar</span><span class="o">.</span><span class="n">setValue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">progressbar_status</span><span class="p">)</span>
+        <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s1">&#39;Finished:: progressbars_set_maximum&#39;</span><span class="p">,</span><span class="n">maximum</span><span class="p">)</span>
+        <span class="k">return</span></div>
+
+<div class="viewcode-block" id="NoteBook.progressbars_update"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/NoteBook/index.html#PDielec.GUI.NoteBook.NoteBook.progressbars_update">[docs]</a>    <span class="k">def</span> <span class="nf">progressbars_update</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">increment</span><span class="o">=</span><span class="mi">1</span> <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Update the progress bars status by a specified increment.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        increment : int, optional</span>
+<span class="sd">            The value by which to increment the progress bar status, by default 1.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        None</span>
+
+<span class="sd">        This method increments the progress bar status stored in `progressbar_status` by the specified `increment` amount. It then sets this updated value as the new value for all progress bars stored in the `progressbars` list attribute of the instance.</span>
+<span class="sd">        &quot;&quot;&quot;</span>        
+        <span class="bp">self</span><span class="o">.</span><span class="n">progressbar_status</span> <span class="o">+=</span> <span class="n">increment</span>
+        <span class="k">for</span> <span class="n">bar</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">progressbars</span><span class="p">:</span>
+            <span class="n">bar</span><span class="o">.</span><span class="n">setValue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">progressbar_status</span><span class="p">)</span>
+        <span class="k">return</span></div>
+
+<div class="viewcode-block" id="NoteBook.progressbars_add"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/NoteBook/index.html#PDielec.GUI.NoteBook.NoteBook.progressbars_add">[docs]</a>    <span class="k">def</span> <span class="nf">progressbars_add</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">bar</span> <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Add a progress bar to the list of progress bars.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        bar : object</span>
+<span class="sd">            The progress bar object to be added.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        None</span>
+
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+<span class="sd">        After adding the new progress bar to the list, this method updates the maximum value </span>
+<span class="sd">        of all progress bars by calling `self.progressbars_set_maximum` with the current </span>
+<span class="sd">        maximum value defined in `self.progressbar_maximum`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>        
+        <span class="bp">self</span><span class="o">.</span><span class="n">progressbars</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">bar</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">progressbars_set_maximum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">progressbar_maximum</span><span class="p">)</span>
+        <span class="k">return</span></div></div>
+
+
+</pre></div>
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          
+          
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2024, John Kendrick and Andrew Burnett
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer no-toc">
+      
+      
+      
+    </aside>
+  </div>
+</div><script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js?v=01b4f342"></script>
+    <script src="../../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../../../_static/scripts/furo.js?v=32e29ea5"></script>
+    </body>
+</html>

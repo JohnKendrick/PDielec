@@ -1,0 +1,227 @@
+:py:mod:`PDielec.SuperCell`
+===========================
+
+.. py:module:: PDielec.SuperCell
+
+.. autoapi-nested-parse::
+
+   Copyright 2024 John Kendrick
+
+   This file is part of PDielec
+
+   This program is free software; you can redistribute it and/or modify
+   it under the terms of the MIT License
+
+   This program is distributed in the hope that it will be useful,
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+
+   You should have received a copy of the MIT License
+   along with this program, if not see https://opensource.org/licenses/MIT
+
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   PDielec.SuperCell.SuperCell
+
+
+
+
+.. py:class:: SuperCell(aUnitCell, anImageSpecifier)
+
+
+   Hold super-cell information; the unit cell and the super-cell size.
+
+   .. py:method:: calculateBonds()
+
+      Calculate the bonding in the supercell.
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      list
+          A list of the bonds as pairs of atom indexes
+
+      Notes
+      -----
+      The bonding in the unit-cell is assumed to be valid whole-molecule bonding
+      the bonds are not recalculated, just extended into the super-cell
+
+
+   .. py:method:: calculateCentreOfBox()
+
+      This is not the centre of mass. We calculate the centre of the super-cell in cartesian coordinates.
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      vector
+          The centre of the images in the box
+
+
+   .. py:method:: calculateCentreOfMass(units='xyz')
+
+      Calculate the center of mass for a molecular structure.
+
+      Parameters
+      ----------
+      units : str, optional
+          The units in which the center of mass should be returned. Options are 'xyz' for mass and Cartesian coordinates,
+          'mass' for the total mass only, 'abc' for mass and fractional coordinates, or any other string
+          to return a tuple with all three values (mass, Cartesian coordinates, fractional coordinates).
+          The default value is 'xyz'.
+
+      Returns
+      -------
+      numpy.ndarray or float or tuple
+          Depending on the value of `units`:
+          If 'xyz', returns a tuple with mass and a numpy.ndarray of Cartesian coordinates of the center of mass.
+          If 'mass', returns the total mass as a float.
+          If 'abc', returns tuple with mass and a numpy.ndarray of fractional coordinates of the center of mass.
+          For any other value of `units`, returns a tuple containing the total mass (float), Cartesian
+          coordinates (numpy.ndarray), and fractional coordinates (numpy.ndarray) of the center of mass.
+
+      Raises
+      ------
+      ValueError
+          If the `units` parameter does not match one of the expected values.
+
+
+   .. py:method:: calculateNormalModes(modes)
+
+      Calculate and return the normal modes of the supercell.
+
+      Normal modes are initially an np array of nmodes, 3*nions.
+      The number of modes stays the same but the number of ions
+      increases according to the number of images.
+
+      Parameters
+      ----------
+      modes : a list of ints
+          A list of the modes to be used in the calculation
+
+      Returns
+      -------
+      np.ndarray
+          Array representing the normal modes of the supercell. Initially, this is an array
+          of shape (nmodes, 3*nions), where `nmodes` is the number of modes and `nions` is the
+          number of ions per mode. The shape may vary as the number of ions increases with the
+          number of images.
+
+
+   .. py:method:: calculateXYZ()
+
+      Calculate and return the cartesian coordinates of the supercell.
+
+      The fractional cell coordinates of the unit cell are used to calculate the XYZ coordinates of the super-cell
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      output : array
+          The Cartesian coordinates of the supercell.
+
+
+   .. py:method:: createImages(anImageSpecifier)
+
+      Create a list of images extending by ia, jb, kc units in the a, b, c directions. The image specifier is a list of the form [ia, jb, kc].
+
+      Parameters
+      ----------
+      anImageSpecifier : list (ia, jb, kc)
+          ia an integer specifying extension in the a direction.
+          jb an integer specifying extension in the b direction.
+          kc an integer specifying extension in the c direction.
+
+      Returns
+      -------
+      list
+          A list of created images.
+
+
+   .. py:method:: getBoundingBox(originABC=[0, 0, 0])
+
+      Calculate the bounding box of an object in Cartesian coordinates based on its image specifications and an origin.
+
+      Return a box with 8 corners and 12 edges which represent the supercel in cartesian space
+      - Corners in abc space
+      - shift the origin to originABC
+
+      Parameters
+      ----------
+      originABC : array-like, optional
+          The origin coordinates (A, B, C) to which the bounding box will be translated.
+          defaults to 0,0,0
+
+      Returns
+      -------
+      tuple
+          A tuple containing two elements:
+
+          - corners_xyz : list
+            A list of corner points in XYZ coordinates specifying the bounding box, shifted to the provided origin.
+
+          - edges : list
+            A list of tuples, each representing an edge of the bounding box defined by a pair of XYZ coordinates.
+
+      Notes
+      -----
+      The function calculates the center of the bounding box, re-centers the corners to the provided origin, and then builds edges between these corners in XYZ space.
+
+
+   .. py:method:: getElementNames()
+
+      Calculate and return the element names of the supercell.
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      list
+          The element names of the supercell.
+
+
+   .. py:method:: print()
+
+      Print the contents of the SuperCell
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      None
+
+      Example
+      --------
+      ```
+      # Create a 3x2x1 super-cell
+      import PDielec.SuperCell as SC
+      import PDielec.UnitCell as UC
+      uc=UC.UnitCell(1.0,2.0,3.0,90.0,90.0,90.0)
+      imageSpecifier = [3,2,1]
+      sc=SC.SuperCell(uc,imageSpecifier)
+      sc.print()
+      ```
+
+
+

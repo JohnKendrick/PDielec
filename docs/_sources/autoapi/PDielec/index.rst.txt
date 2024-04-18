@@ -1,0 +1,89 @@
+:py:mod:`PDielec`
+=================
+
+.. py:module:: PDielec
+
+.. autoapi-nested-parse::
+
+   PDielec: library for processing DFT calculations for infrared and terahertz spectroscopy
+   The MIT License (MIT)
+
+   Copyright (c) 2024 John Kendrick
+
+   Permission is hereby granted, free of charge, to any person obtaining a copy
+   of this software and associated documentation files (the "Software"), to deal
+   in the Software without restriction, including without limitation the rights
+   to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+   copies of the Software, and to permit persons to whom the Software is
+   furnished to do so, subject to the following conditions:
+
+   The above copyright notice and this permission notice shall be included in all
+   copies or substantial portions of the Software.
+
+   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+   IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+   FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+   AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+   LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+   SOFTWARE.
+
+
+
+Subpackages
+-----------
+.. toctree::
+   :titlesonly:
+   :maxdepth: 3
+
+   GUI/index.rst
+
+
+Submodules
+----------
+.. toctree::
+   :titlesonly:
+   :maxdepth: 1
+
+   AbinitOutputReader/index.rst
+   Calculator/index.rst
+   CastepOutputReader/index.rst
+   Constants/index.rst
+   CrystalOutputReader/index.rst
+   DielectricFunction/index.rst
+   ExperimentOutputReader/index.rst
+   GTMcore/index.rst
+   GenericOutputReader/index.rst
+   GulpOutputReader/index.rst
+   HelperRoutines/index.rst
+   IO/index.rst
+   Materials/index.rst
+   Mie/index.rst
+   PhonopyOutputReader/index.rst
+   Plotter/index.rst
+   QEOutputReader/index.rst
+   SuperCell/index.rst
+   UnitCell/index.rst
+   Utilities/index.rst
+   VaspOutputReader/index.rst
+   checkcsv/index.rst
+   checkexcel/index.rst
+   graphdatagenerator/index.rst
+   p1reader/index.rst
+   p2cif/index.rst
+   pdcompare/index.rst
+   pdgui/index.rst
+   pdmake/index.rst
+   pickled_reader/index.rst
+   preader/index.rst
+   vibanalysis/index.rst
+
+
+Package Contents
+----------------
+
+.. py:data:: __version__
+   :value: '8.1.1'
+
+   
+

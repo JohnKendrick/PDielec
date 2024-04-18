@@ -1,0 +1,1073 @@
+<!doctype html>
+<html class="no-js" lang="en" data-content_root="">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" /><link rel="next" title="PDielec.ExperimentOutputReader" href="../ExperimentOutputReader/index.html" /><link rel="prev" title="PDielec.CrystalOutputReader" href="../CrystalOutputReader/index.html" />
+
+    <!-- Generated with Sphinx 7.1.2 and Furo 2024.01.29 -->
+        <title>PDielec.DielectricFunction - PDielec: John Kendrick &amp; Andrew Burnett</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=135e06be" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=eafc0fe6" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/table_styling.css?v=a1a2a898" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo-extensions.css?v=36a5483c" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/css/custom.css?v=2e0a580d" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f8f8f8;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-half" viewBox="0 0 24 24">
+    <title>Auto light/dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M13 12h5" />
+      <path d="M13 15h4" />
+      <path d="M13 18h1" />
+      <path d="M13 9h4" />
+      <path d="M13 6h1" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../../../index.html"><div class="brand">PDielec: John Kendrick & Andrew Burnett</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../../../index.html">
+  
+  
+  <span class="sidebar-brand-text">PDielec: John Kendrick & Andrew Burnett</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../../../search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <p class="caption" role="heading"><span class="caption-text">Software</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pdgui.html">PDGui</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../software.html">Other Software Components</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Theory</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../theory_powder.html">Theory for Light Scattering from Powders</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../theory_single_crystal.html">Theory for Single Crystal Optics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../analysis.html">Phonon Analysis</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Applications</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../application_notes_1.html">Applications of Effective Medium Theory</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../application_notes_2.html">Single Crystal Applications</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API</span></p>
+<ul class="current">
+<li class="toctree-l1 current has-children"><a class="reference internal" href="../../index.html">API Reference</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of API Reference</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l2 current has-children"><a class="reference internal" href="../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec</span></code></a><input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of PDielec</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l3 has-children"><a class="reference internal" href="../GUI/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of PDielec.GUI</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../GUI/AnalysisTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.AnalysisTab</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../GUI/App/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.App</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../GUI/FitterTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.FitterTab</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../GUI/MainTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.MainTab</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../GUI/NoteBook/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.NoteBook</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../GUI/OpenGLWidget/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.OpenGLWidget</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../GUI/PlottingTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.PlottingTab</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../GUI/PowderScenarioTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.PowderScenarioTab</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../GUI/ScenarioTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.ScenarioTab</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../GUI/SettingsTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.SettingsTab</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../GUI/SingleCrystalLayer/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.SingleCrystalLayer</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../GUI/SingleCrystalScenarioTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.SingleCrystalScenarioTab</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../GUI/SpreadSheetManager/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.SpreadSheetManager</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../GUI/ViewerTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.ViewerTab</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../AbinitOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.AbinitOutputReader</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Calculator/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.Calculator</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../CastepOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.CastepOutputReader</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Constants/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.Constants</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../CrystalOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.CrystalOutputReader</span></code></a></li>
+<li class="toctree-l3 current current-page"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.DielectricFunction</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ExperimentOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.ExperimentOutputReader</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../GTMcore/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GTMcore</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../GenericOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GenericOutputReader</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../GulpOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GulpOutputReader</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../HelperRoutines/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.HelperRoutines</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../IO/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.IO</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Materials/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.Materials</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Mie/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.Mie</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PhonopyOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.PhonopyOutputReader</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Plotter/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.Plotter</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../QEOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.QEOutputReader</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../SuperCell/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.SuperCell</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../UnitCell/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.UnitCell</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Utilities/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.Utilities</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../VaspOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.VaspOutputReader</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../checkcsv/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.checkcsv</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../checkexcel/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.checkexcel</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../graphdatagenerator/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.graphdatagenerator</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../p1reader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.p1reader</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../p2cif/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.p2cif</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../pdcompare/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.pdcompare</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../pdgui/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.pdgui</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../pdmake/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.pdmake</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../pickled_reader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.pickled_reader</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../preader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.preader</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../vibanalysis/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.vibanalysis</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../pdgui/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.pdgui</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../preader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.preader</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pdmake/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.pdmake</span></code></a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">References</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../zreferences.html">References</a></li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main">
+          <section id="module-PDielec.DielectricFunction">
+<span id="pdielec-dielectricfunction"></span><h1><a class="reference internal" href="#module-PDielec.DielectricFunction" title="PDielec.DielectricFunction"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.DielectricFunction</span></code></a><a class="headerlink" href="#module-PDielec.DielectricFunction" title="Permalink to this heading">#</a></h1>
+<p>DielectricFunction</p>
+<p>Provides an interface to different mechanisms for providing dielectric information to pdielec and pdgui</p>
+<p>Copyright 2024 John Kendrick</p>
+<p>This file is part of PDielec</p>
+<p>This program is free software; you can redistribute it and/or modify
+it under the terms of the MIT License</p>
+<p>This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.</p>
+<p>You should have received a copy of the MIT License
+along with this program, if not see <a class="reference external" href="https://opensource.org/licenses/MIT">https://opensource.org/licenses/MIT</a></p>
+<section id="module-contents">
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this heading">#</a></h2>
+<section id="classes">
+<h3>Classes<a class="headerlink" href="#classes" title="Permalink to this heading">#</a></h3>
+<div class="table-wrapper autosummary longtable docutils container">
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#PDielec.DielectricFunction.ConstantScalar" title="PDielec.DielectricFunction.ConstantScalar"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ConstantScalar</span></code></a></p></td>
+<td><p>A class for a complex constant scalar dielectric function.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#PDielec.DielectricFunction.ConstantTensor" title="PDielec.DielectricFunction.ConstantTensor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ConstantTensor</span></code></a></p></td>
+<td><p>A class for a complex constant tensor dielectric function.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#PDielec.DielectricFunction.DFT" title="PDielec.DielectricFunction.DFT"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DFT</span></code></a></p></td>
+<td><p>A class for a complex constant tensor dielectric function.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#PDielec.DielectricFunction.DielectricFunction" title="PDielec.DielectricFunction.DielectricFunction"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DielectricFunction</span></code></a></p></td>
+<td><p>Provide a base class to different dielectric functions.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#PDielec.DielectricFunction.DrudeLorentz" title="PDielec.DielectricFunction.DrudeLorentz"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DrudeLorentz</span></code></a></p></td>
+<td><p>A class for a complex constant tensor dielectric function.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#PDielec.DielectricFunction.FPSQ" title="PDielec.DielectricFunction.FPSQ"><code class="xref py py-obj docutils literal notranslate"><span class="pre">FPSQ</span></code></a></p></td>
+<td><p>A complex constant tensor FPSQ dielectric function.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#PDielec.DielectricFunction.Sellmeier" title="PDielec.DielectricFunction.Sellmeier"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Sellmeier</span></code></a></p></td>
+<td><p>A complex constant tensor Sellmeier dielectric function.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#PDielec.DielectricFunction.Tabulate1" title="PDielec.DielectricFunction.Tabulate1"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Tabulate1</span></code></a></p></td>
+<td><p>A class for a complex constant tensor dielectric function.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#PDielec.DielectricFunction.Tabulate3" title="PDielec.DielectricFunction.Tabulate3"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Tabulate3</span></code></a></p></td>
+<td><p>A class for a complex constant tensor dielectric function.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#PDielec.DielectricFunction.Tabulate6" title="PDielec.DielectricFunction.Tabulate6"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Tabulate6</span></code></a></p></td>
+<td><p>A class for a complex constant tensor dielectric function.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#PDielec.DielectricFunction.TabulateScalar" title="PDielec.DielectricFunction.TabulateScalar"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TabulateScalar</span></code></a></p></td>
+<td><p>A class for a complex tabulated scalar dielectric function.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<dl class="py class">
+<dt class="sig sig-object py" id="PDielec.DielectricFunction.ConstantScalar">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PDielec.DielectricFunction.</span></span><span class="sig-name descname"><span class="pre">ConstantScalar</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/DielectricFunction.html#ConstantScalar"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.DielectricFunction.ConstantScalar" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#PDielec.DielectricFunction.DielectricFunction" title="PDielec.DielectricFunction.DielectricFunction"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DielectricFunction</span></code></a></p>
+<p>A class for a complex constant scalar dielectric function.</p>
+<p>Inherits from DielectricFunction. Provides a calculate() function to return
+the permittivity.</p>
+<section id="methods">
+<h4>Methods<a class="headerlink" href="#methods" title="Permalink to this heading">#</a></h4>
+<dl class="simple">
+<dt>calculate()</dt><dd><p>Calculates and returns the permittivity of the dielectric function.</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="PDielec.DielectricFunction.ConstantScalar.calculate">
+<span class="sig-name descname"><span class="pre">calculate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">v</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/DielectricFunction.html#ConstantScalar.calculate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.DielectricFunction.ConstantScalar.calculate" title="Permalink to this definition">#</a></dt>
+<dd><p>Calculate the permittivity at a specified frequency.</p>
+<section id="parameters">
+<h5>Parameters<a class="headerlink" href="#parameters" title="Permalink to this heading">#</a></h5>
+<dl class="simple">
+<dt>v<span class="classifier">float</span></dt><dd><p>The frequency at which to calculate the permittivity.</p>
+</dd>
+</dl>
+</section>
+<section id="returns">
+<h5>Returns<a class="headerlink" href="#returns" title="Permalink to this heading">#</a></h5>
+<dl class="simple">
+<dt>float</dt><dd><p>The permittivity at frequency v.</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+</section>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="PDielec.DielectricFunction.ConstantTensor">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PDielec.DielectricFunction.</span></span><span class="sig-name descname"><span class="pre">ConstantTensor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/DielectricFunction.html#ConstantTensor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.DielectricFunction.ConstantTensor" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#PDielec.DielectricFunction.DielectricFunction" title="PDielec.DielectricFunction.DielectricFunction"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DielectricFunction</span></code></a></p>
+<p>A class for a complex constant tensor dielectric function.</p>
+<p>Inherits from DielectricFunction.
+Provides a calculate() function to return the permittivity.</p>
+<section id="id1">
+<h4>Methods<a class="headerlink" href="#id1" title="Permalink to this heading">#</a></h4>
+<dl class="simple">
+<dt>calculate()</dt><dd><p>Calculates and returns the permittivity.</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="PDielec.DielectricFunction.ConstantTensor.calculate">
+<span class="sig-name descname"><span class="pre">calculate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">v</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/DielectricFunction.html#ConstantTensor.calculate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.DielectricFunction.ConstantTensor.calculate" title="Permalink to this definition">#</a></dt>
+<dd><p>Calculate the permittivity at a given frequency.</p>
+<section id="id2">
+<h5>Parameters<a class="headerlink" href="#id2" title="Permalink to this heading">#</a></h5>
+<dl class="simple">
+<dt>v<span class="classifier">float</span></dt><dd><p>The frequency in internal units.</p>
+</dd>
+</dl>
+</section>
+<section id="id3">
+<h5>Returns<a class="headerlink" href="#id3" title="Permalink to this heading">#</a></h5>
+<dl class="simple">
+<dt>ndarray</dt><dd><p>The permittivity at frequency v as a 3x3 tensor.</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+</section>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="PDielec.DielectricFunction.DFT">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PDielec.DielectricFunction.</span></span><span class="sig-name descname"><span class="pre">DFT</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mode_list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode_frequencies</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode_sigmas</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode_oscillator_strengths</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">crystal_volume</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">drude</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">drude_plasma</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">drude_sigma</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/DielectricFunction.html#DFT"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.DielectricFunction.DFT" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#PDielec.DielectricFunction.DielectricFunction" title="PDielec.DielectricFunction.DielectricFunction"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DielectricFunction</span></code></a></p>
+<p>A class for a complex constant tensor dielectric function.</p>
+<p>Inherits from DielectricFunction.
+Suitable for use in calculating the permittivity from DFT calculations.
+Internal units for this function are atomic units.
+Provides a calculate() function to return the permittivity.</p>
+<section id="id4">
+<h4>Methods<a class="headerlink" href="#id4" title="Permalink to this heading">#</a></h4>
+<dl class="simple">
+<dt>calculate()</dt><dd><p>Returns the permittivity based on the DFT calculations.</p>
+</dd>
+</dl>
+</section>
+<section id="notes">
+<h4>Notes<a class="headerlink" href="#notes" title="Permalink to this heading">#</a></h4>
+<p>The internal units for all calculations within this class are atomic units.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="PDielec.DielectricFunction.DFT.calculate">
+<span class="sig-name descname"><span class="pre">calculate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">v</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/DielectricFunction.html#DFT.calculate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.DielectricFunction.DFT.calculate" title="Permalink to this definition">#</a></dt>
+<dd><p>Calculate the permittivity at a given frequency.</p>
+<section id="id5">
+<h5>Parameters<a class="headerlink" href="#id5" title="Permalink to this heading">#</a></h5>
+<dl class="simple">
+<dt>v<span class="classifier">float</span></dt><dd><p>The frequency in cm-1.</p>
+</dd>
+</dl>
+</section>
+<section id="id6">
+<h5>Returns<a class="headerlink" href="#id6" title="Permalink to this heading">#</a></h5>
+<dl class="simple">
+<dt>ndarray</dt><dd><p>The permittivity at frequency v as a 3x3 tensor.</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+</section>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="PDielec.DielectricFunction.DielectricFunction">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PDielec.DielectricFunction.</span></span><span class="sig-name descname"><span class="pre">DielectricFunction</span></span><a class="reference internal" href="../../../_modules/PDielec/DielectricFunction.html#DielectricFunction"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.DielectricFunction.DielectricFunction" title="Permalink to this definition">#</a></dt>
+<dd><p>Provide a base class to different dielectric functions.</p>
+<section id="attributes">
+<h4>Attributes<a class="headerlink" href="#attributes" title="Permalink to this heading">#</a></h4>
+<dl class="simple">
+<dt>epsilon_infinity<span class="classifier">ndarray</span></dt><dd><p>A 3x3 tensor (numpy array) representing the optical permittivity.</p>
+</dd>
+<dt>volume<span class="classifier">float</span></dt><dd><p>Volume of crystal unit cells.</p>
+</dd>
+<dt>volume_au<span class="classifier">float</span></dt><dd><p>Volume of crystal unit cells in atomic units.</p>
+</dd>
+<dt>vs_cm1<span class="classifier">ndarray</span></dt><dd><p>An array of floats representing the frequencies of any tabulation.</p>
+</dd>
+<dt>isScalarFunction<span class="classifier">bool</span></dt><dd><p>True if this function is a scalar function, False otherwise.</p>
+</dd>
+</dl>
+</section>
+<section id="id7">
+<h4>Methods<a class="headerlink" href="#id7" title="Permalink to this heading">#</a></h4>
+<dl class="simple">
+<dt>setVolume(volume)</dt><dd><p>Change the unit cell volume.</p>
+</dd>
+<dt>setEpsilonInfinity(eps)</dt><dd><p>Change epsilon infinity.</p>
+</dd>
+<dt>function()</dt><dd><p>Return the calculate function for this object.</p>
+</dd>
+<dt>calculate(v)</dt><dd><p>Return the value of the permittivity at frequency v.</p>
+</dd>
+<dt>dielectricContributionsFromDrude(f, frequency, sigma, volume)</dt><dd><p>Calculates permittivity from a Drude Model.</p>
+</dd>
+<dt>dielectricContributionsFromModes(f, modes, frequencies, sigmas, strengths, volume)</dt><dd><p>Calculates permittivity from a Drude-Lorentz model.</p>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PDielec.DielectricFunction.DielectricFunction.possible_epsTypes">
+<span class="sig-name descname"><span class="pre">possible_epsTypes</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['dft',</span> <span class="pre">'fpsq',</span> <span class="pre">'drude-lorentz',</span> <span class="pre">'sellmeier']</span></em><a class="headerlink" href="#PDielec.DielectricFunction.DielectricFunction.possible_epsTypes" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PDielec.DielectricFunction.DielectricFunction.dielectriContributionsFromDrude">
+<span class="sig-name descname"><span class="pre">dielectriContributionsFromDrude</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">f</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">frequency</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">volume</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/DielectricFunction.html#DielectricFunction.dielectriContributionsFromDrude"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.DielectricFunction.DielectricFunction.dielectriContributionsFromDrude" title="Permalink to this definition">#</a></dt>
+<dd><p>Calculate the dielectric function for a set of a Drude oscillator</p>
+<p>The units of the parameters must be self-consistent.  Atomic units is a good choice.</p>
+<section id="id8">
+<h5>Parameters<a class="headerlink" href="#id8" title="Permalink to this heading">#</a></h5>
+<dl class="simple">
+<dt>f<span class="classifier">float</span></dt><dd><p>The frequency of the dielectric response.</p>
+</dd>
+<dt>frequency<span class="classifier">float</span></dt><dd><p>The frequency of the drude oscillator.</p>
+</dd>
+<dt>sigma<span class="classifier">float</span></dt><dd><p>The width of the oscillator.</p>
+</dd>
+<dt>volume<span class="classifier">float</span></dt><dd><p>The volume of the cell</p>
+</dd>
+</dl>
+</section>
+<section id="id9">
+<h5>Returns<a class="headerlink" href="#id9" title="Permalink to this heading">#</a></h5>
+<dl class="simple">
+<dt>tensor (3x3)</dt><dd><p>A complex scalar dielectric.</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PDielec.DielectricFunction.DielectricFunction.dielectriContributionsFromModes">
+<span class="sig-name descname"><span class="pre">dielectriContributionsFromModes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">f</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">modes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">frequencies</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigmas</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">strengths</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">volume</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/DielectricFunction.html#DielectricFunction.dielectriContributionsFromModes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.DielectricFunction.DielectricFunction.dielectriContributionsFromModes" title="Permalink to this definition">#</a></dt>
+<dd><p>Calculate the dielectric function for a set of modes.</p>
+<section id="id10">
+<h5>Parameters<a class="headerlink" href="#id10" title="Permalink to this heading">#</a></h5>
+<dl class="simple">
+<dt>modes<span class="classifier">list of int</span></dt><dd><p>A list of the modes to be considered.</p>
+</dd>
+<dt>frequencies<span class="classifier">list of float</span></dt><dd><p>The frequency of each mode.</p>
+</dd>
+<dt>sigmas<span class="classifier">list of float</span></dt><dd><p>The width of each mode.</p>
+</dd>
+<dt>strengths<span class="classifier">list of float</span></dt><dd><p>The strengths of each mode.</p>
+</dd>
+<dt>volume<span class="classifier">float</span></dt><dd><p>The volume of the cell</p>
+</dd>
+</dl>
+</section>
+<section id="id11">
+<h5>Returns<a class="headerlink" href="#id11" title="Permalink to this heading">#</a></h5>
+<dl class="simple">
+<dt>tensor (3x3)</dt><dd><p>A complex scalar representing the dielectric function.</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PDielec.DielectricFunction.DielectricFunction.function">
+<span class="sig-name descname"><span class="pre">function</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/DielectricFunction.html#DielectricFunction.function"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.DielectricFunction.DielectricFunction.function" title="Permalink to this definition">#</a></dt>
+<dd><p>Return the function used to calculate the permittivity.</p>
+<section id="id12">
+<h5>Parameters<a class="headerlink" href="#id12" title="Permalink to this heading">#</a></h5>
+<p>None</p>
+</section>
+<section id="id13">
+<h5>Returns<a class="headerlink" href="#id13" title="Permalink to this heading">#</a></h5>
+<p>a function</p>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PDielec.DielectricFunction.DielectricFunction.getHighestFrequency">
+<span class="sig-name descname"><span class="pre">getHighestFrequency</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/DielectricFunction.html#DielectricFunction.getHighestFrequency"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.DielectricFunction.DielectricFunction.getHighestFrequency" title="Permalink to this definition">#</a></dt>
+<dd><p>Return the highest tabulated frequency in cm-1.</p>
+<section id="id14">
+<h5>Parameters<a class="headerlink" href="#id14" title="Permalink to this heading">#</a></h5>
+<p>None</p>
+</section>
+<section id="id15">
+<h5>Returns<a class="headerlink" href="#id15" title="Permalink to this heading">#</a></h5>
+<dl class="simple">
+<dt>float</dt><dd><p>The highest tabulated frequency in cm-1.</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PDielec.DielectricFunction.DielectricFunction.getLowestFrequency">
+<span class="sig-name descname"><span class="pre">getLowestFrequency</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/DielectricFunction.html#DielectricFunction.getLowestFrequency"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.DielectricFunction.DielectricFunction.getLowestFrequency" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns the lowest tabulated frequency in cm-1.</p>
+<section id="id16">
+<h5>Parameters<a class="headerlink" href="#id16" title="Permalink to this heading">#</a></h5>
+<p>None</p>
+</section>
+<section id="id17">
+<h5>Returns<a class="headerlink" href="#id17" title="Permalink to this heading">#</a></h5>
+<p>The lowest tabulated frequency in cm-1.</p>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PDielec.DielectricFunction.DielectricFunction.isScalar">
+<span class="sig-name descname"><span class="pre">isScalar</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/DielectricFunction.html#DielectricFunction.isScalar"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.DielectricFunction.DielectricFunction.isScalar" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns true if the dielectric function is a scalar</p>
+<section id="id18">
+<h5>Parameters<a class="headerlink" href="#id18" title="Permalink to this heading">#</a></h5>
+<p>None</p>
+</section>
+<section id="id19">
+<h5>Returns<a class="headerlink" href="#id19" title="Permalink to this heading">#</a></h5>
+<dl class="simple">
+<dt>bool</dt><dd><p>True if the dielectric function returns a scalar value, False otherwise.</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PDielec.DielectricFunction.DielectricFunction.isTensor">
+<span class="sig-name descname"><span class="pre">isTensor</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/DielectricFunction.html#DielectricFunction.isTensor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.DielectricFunction.DielectricFunction.isTensor" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns true if the dielectric function is a tensor</p>
+<section id="id20">
+<h5>Parameters<a class="headerlink" href="#id20" title="Permalink to this heading">#</a></h5>
+<p>None</p>
+</section>
+<section id="id21">
+<h5>Returns<a class="headerlink" href="#id21" title="Permalink to this heading">#</a></h5>
+<dl class="simple">
+<dt>bool</dt><dd><p>True if the dielectric function returns a tensor, otherwise False.</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PDielec.DielectricFunction.DielectricFunction.print">
+<span class="sig-name descname"><span class="pre">print</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">v1_cm1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v2_cm1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v_inc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">diagonal_only</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/DielectricFunction.html#DielectricFunction.print"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.DielectricFunction.DielectricFunction.print" title="Permalink to this definition">#</a></dt>
+<dd><p>Print the permittivity over a range of frequencies to a file</p>
+<section id="id22">
+<h5>Parameters<a class="headerlink" href="#id22" title="Permalink to this heading">#</a></h5>
+<dl class="simple">
+<dt>v1_cm1<span class="classifier">float</span></dt><dd><p>Starting frequency</p>
+</dd>
+<dt>v2_cm1<span class="classifier">float</span></dt><dd><p>Finishing frequency</p>
+</dd>
+<dt>v_inc<span class="classifier">float, optional</span></dt><dd><p>Incrementing frequency, default is 1</p>
+</dd>
+<dt>diagonal_only: bool,optional</dt><dd><p>If true only the diagonal values are printed</p>
+</dd>
+<dt>file<span class="classifier">str, optional</span></dt><dd><p>Filename for printing.  If ‘None’ then stdout is used</p>
+</dd>
+</dl>
+</section>
+<section id="id23">
+<h5>Returns<a class="headerlink" href="#id23" title="Permalink to this heading">#</a></h5>
+<p>None</p>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PDielec.DielectricFunction.DielectricFunction.setEpsilonInfinity">
+<span class="sig-name descname"><span class="pre">setEpsilonInfinity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">eps</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/DielectricFunction.html#DielectricFunction.setEpsilonInfinity"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.DielectricFunction.DielectricFunction.setEpsilonInfinity" title="Permalink to this definition">#</a></dt>
+<dd><p>Set epsilon infinity for dielectric calculations.</p>
+<section id="id24">
+<h5>Parameters<a class="headerlink" href="#id24" title="Permalink to this heading">#</a></h5>
+<dl class="simple">
+<dt>eps<span class="classifier">tensor (3x3)</span></dt><dd><p>The value of eps_infinity.</p>
+</dd>
+</dl>
+</section>
+<section id="id25">
+<h5>Returns<a class="headerlink" href="#id25" title="Permalink to this heading">#</a></h5>
+<p>None</p>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PDielec.DielectricFunction.DielectricFunction.setVolume">
+<span class="sig-name descname"><span class="pre">setVolume</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">volume</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/DielectricFunction.html#DielectricFunction.setVolume"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.DielectricFunction.DielectricFunction.setVolume" title="Permalink to this definition">#</a></dt>
+<dd><p>Set the volume for dielectric calculations.</p>
+<section id="id26">
+<h5>Parameters<a class="headerlink" href="#id26" title="Permalink to this heading">#</a></h5>
+<dl class="simple">
+<dt>volume<span class="classifier">float</span></dt><dd><p>The volume in angs^3.</p>
+</dd>
+</dl>
+</section>
+<section id="id27">
+<h5>Returns<a class="headerlink" href="#id27" title="Permalink to this heading">#</a></h5>
+<p>None</p>
+</section>
+</dd></dl>
+
+</section>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="PDielec.DielectricFunction.DrudeLorentz">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PDielec.DielectricFunction.</span></span><span class="sig-name descname"><span class="pre">DrudeLorentz</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vs_cm1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">strengths_cm1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigmas_cm1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/DielectricFunction.html#DrudeLorentz"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.DielectricFunction.DrudeLorentz" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#PDielec.DielectricFunction.DielectricFunction" title="PDielec.DielectricFunction.DielectricFunction"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DielectricFunction</span></code></a></p>
+<p>A class for a complex constant tensor dielectric function.</p>
+<p>Inherits from DielectricFunction.
+Provides a calculate() function to return the permittivity.</p>
+<section id="id28">
+<h4>Methods<a class="headerlink" href="#id28" title="Permalink to this heading">#</a></h4>
+<dl class="simple">
+<dt>calculate()</dt><dd><p>Calculates and returns the permittivity.</p>
+</dd>
+</dl>
+</section>
+<section id="examples">
+<h4>Examples<a class="headerlink" href="#examples" title="Permalink to this heading">#</a></h4>
+<p>None</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="PDielec.DielectricFunction.DrudeLorentz.calculate">
+<span class="sig-name descname"><span class="pre">calculate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">v</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/DielectricFunction.html#DrudeLorentz.calculate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.DielectricFunction.DrudeLorentz.calculate" title="Permalink to this definition">#</a></dt>
+<dd><p>Calculate the permittivity at a given frequency.</p>
+<section id="id29">
+<h5>Parameters<a class="headerlink" href="#id29" title="Permalink to this heading">#</a></h5>
+<dl class="simple">
+<dt>v<span class="classifier">float</span></dt><dd><p>The frequency in cm-1</p>
+</dd>
+</dl>
+</section>
+<section id="id30">
+<h5>Returns<a class="headerlink" href="#id30" title="Permalink to this heading">#</a></h5>
+<dl class="simple">
+<dt>tensor</dt><dd><p>The permittivity at frequency v as a diagonal 3x3 tensor.</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+</section>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="PDielec.DielectricFunction.FPSQ">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PDielec.DielectricFunction.</span></span><span class="sig-name descname"><span class="pre">FPSQ</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">omega_tos</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma_tos</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">omega_los</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma_los</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/DielectricFunction.html#FPSQ"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.DielectricFunction.FPSQ" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#PDielec.DielectricFunction.DielectricFunction" title="PDielec.DielectricFunction.DielectricFunction"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DielectricFunction</span></code></a></p>
+<p>A complex constant tensor FPSQ dielectric function.</p>
+<p>Inherits from DielectricFunction.
+Provides a calculate() function to return the permittivity.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="PDielec.DielectricFunction.FPSQ.calculate">
+<span class="sig-name descname"><span class="pre">calculate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">v</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/DielectricFunction.html#FPSQ.calculate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.DielectricFunction.FPSQ.calculate" title="Permalink to this definition">#</a></dt>
+<dd><p>Calculate the diagonal permittivity 3x3 tensor at a given frequency.</p>
+<section id="id31">
+<h4>Parameters<a class="headerlink" href="#id31" title="Permalink to this heading">#</a></h4>
+<dl class="simple">
+<dt>v<span class="classifier">float</span></dt><dd><p>The frequency in cm-1</p>
+</dd>
+</dl>
+</section>
+<section id="id32">
+<h4>Returns<a class="headerlink" href="#id32" title="Permalink to this heading">#</a></h4>
+<dl class="simple">
+<dt>numpy.ndarray</dt><dd><p>The diagonal permittivity 3x3 tensor at frequency v.</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="PDielec.DielectricFunction.Sellmeier">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PDielec.DielectricFunction.</span></span><span class="sig-name descname"><span class="pre">Sellmeier</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Bs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Cs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/DielectricFunction.html#Sellmeier"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.DielectricFunction.Sellmeier" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#PDielec.DielectricFunction.DielectricFunction" title="PDielec.DielectricFunction.DielectricFunction"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DielectricFunction</span></code></a></p>
+<p>A complex constant tensor Sellmeier dielectric function.</p>
+<p>Inherits from DielectricFunction. Provides a calculate() function to return the permittivity.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="PDielec.DielectricFunction.Sellmeier.calculate">
+<span class="sig-name descname"><span class="pre">calculate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">v</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/DielectricFunction.html#Sellmeier.calculate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.DielectricFunction.Sellmeier.calculate" title="Permalink to this definition">#</a></dt>
+<dd><p>Calculate the diagonal permittivity 3x3 tensor at a given frequency.</p>
+<section id="id33">
+<h4>Parameters<a class="headerlink" href="#id33" title="Permalink to this heading">#</a></h4>
+<dl class="simple">
+<dt>v<span class="classifier">float</span></dt><dd><p>The frequency in cm-1.</p>
+</dd>
+</dl>
+</section>
+<section id="id34">
+<h4>Returns<a class="headerlink" href="#id34" title="Permalink to this heading">#</a></h4>
+<dl class="simple">
+<dt>ndarray</dt><dd><p>The diagonal permittivity 3x3 tensor at frequency v.</p>
+</dd>
+</dl>
+</section>
+<section id="id35">
+<h4>Notes<a class="headerlink" href="#id35" title="Permalink to this heading">#</a></h4>
+<p>The Sellmeier parameters are in microns^2.</p>
+</section>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="PDielec.DielectricFunction.Tabulate1">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PDielec.DielectricFunction.</span></span><span class="sig-name descname"><span class="pre">Tabulate1</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vs_cm1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">permittivities</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/DielectricFunction.html#Tabulate1"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.DielectricFunction.Tabulate1" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#PDielec.DielectricFunction.DielectricFunction" title="PDielec.DielectricFunction.DielectricFunction"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DielectricFunction</span></code></a></p>
+<p>A class for a complex constant tensor dielectric function.</p>
+<p>Inherits from DielectricFunction.
+Represents an isotropic dielectric function.
+Provides a calculate() function to return the permittivity.</p>
+<section id="id36">
+<h4>Methods<a class="headerlink" href="#id36" title="Permalink to this heading">#</a></h4>
+<dl class="simple">
+<dt>calculate()</dt><dd><p>Returns the permittivity of the dielectric function.</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="PDielec.DielectricFunction.Tabulate1.calculate">
+<span class="sig-name descname"><span class="pre">calculate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">v</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/DielectricFunction.html#Tabulate1.calculate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.DielectricFunction.Tabulate1.calculate" title="Permalink to this definition">#</a></dt>
+<dd><p>Calculate the isotropic permittivity at a given frequency.</p>
+<section id="id37">
+<h5>Parameters<a class="headerlink" href="#id37" title="Permalink to this heading">#</a></h5>
+<dl class="simple">
+<dt>v<span class="classifier">float</span></dt><dd><p>The frequency in internal units.</p>
+</dd>
+</dl>
+</section>
+<section id="id38">
+<h5>Returns<a class="headerlink" href="#id38" title="Permalink to this heading">#</a></h5>
+<dl class="simple">
+<dt>numpy.ndarray</dt><dd><p>The isotropic permittivity at frequency v as a 3x3 tensor.</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+</section>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="PDielec.DielectricFunction.Tabulate3">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PDielec.DielectricFunction.</span></span><span class="sig-name descname"><span class="pre">Tabulate3</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vs_cm1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epsxx</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epsyy</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epszz</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/DielectricFunction.html#Tabulate3"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.DielectricFunction.Tabulate3" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#PDielec.DielectricFunction.DielectricFunction" title="PDielec.DielectricFunction.DielectricFunction"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DielectricFunction</span></code></a></p>
+<p>A class for a complex constant tensor dielectric function.</p>
+<p>Inherits from DielectricFunction.
+Represents an orthorhombic dielectric function.
+Provides a calculate() function to return the permittivity.</p>
+<section id="id39">
+<h4>Methods<a class="headerlink" href="#id39" title="Permalink to this heading">#</a></h4>
+<dl class="simple">
+<dt>calculate()</dt><dd><p>Return the permittivity of the dielectric function.</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="PDielec.DielectricFunction.Tabulate3.calculate">
+<span class="sig-name descname"><span class="pre">calculate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">v</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/DielectricFunction.html#Tabulate3.calculate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.DielectricFunction.Tabulate3.calculate" title="Permalink to this definition">#</a></dt>
+<dd><p>Calculate the permittivity at a given frequency.</p>
+<section id="id40">
+<h5>Parameters<a class="headerlink" href="#id40" title="Permalink to this heading">#</a></h5>
+<dl class="simple">
+<dt>v<span class="classifier">float</span></dt><dd><p>The frequency in internal units.</p>
+</dd>
+</dl>
+</section>
+<section id="id41">
+<h5>Returns<a class="headerlink" href="#id41" title="Permalink to this heading">#</a></h5>
+<dl class="simple">
+<dt>numpy.ndarray</dt><dd><p>The permittivity at frequency v as a diagonal 3x3 tensor.</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+</section>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="PDielec.DielectricFunction.Tabulate6">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PDielec.DielectricFunction.</span></span><span class="sig-name descname"><span class="pre">Tabulate6</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vs_cm1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epsxx</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epsyy</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epszz</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epsxy</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epsxz</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epsyz</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/DielectricFunction.html#Tabulate6"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.DielectricFunction.Tabulate6" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#PDielec.DielectricFunction.DielectricFunction" title="PDielec.DielectricFunction.DielectricFunction"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DielectricFunction</span></code></a></p>
+<p>A class for a complex constant tensor dielectric function.</p>
+<p>Inherits from DielectricFunction.
+Represents an non-isotropic dielectric function.
+Provides a calculate() function to return the permittivity.</p>
+<section id="id42">
+<h4>Methods<a class="headerlink" href="#id42" title="Permalink to this heading">#</a></h4>
+<dl class="simple">
+<dt>calculate()</dt><dd><p>Returns the permittivity of the dielectric.</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="PDielec.DielectricFunction.Tabulate6.calculate">
+<span class="sig-name descname"><span class="pre">calculate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">v</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/DielectricFunction.html#Tabulate6.calculate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.DielectricFunction.Tabulate6.calculate" title="Permalink to this definition">#</a></dt>
+<dd><p>Calculate the symmetric permittivity tensor at a given frequency.</p>
+<section id="id43">
+<h5>Parameters<a class="headerlink" href="#id43" title="Permalink to this heading">#</a></h5>
+<dl class="simple">
+<dt>v<span class="classifier">float</span></dt><dd><p>The frequency in cm-1.</p>
+</dd>
+</dl>
+</section>
+<section id="id44">
+<h5>Returns<a class="headerlink" href="#id44" title="Permalink to this heading">#</a></h5>
+<dl class="simple">
+<dt>numpy.ndarray</dt><dd><p>The full permittivity tensor at frequency v as a 3x3 tensor.</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+</section>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="PDielec.DielectricFunction.TabulateScalar">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PDielec.DielectricFunction.</span></span><span class="sig-name descname"><span class="pre">TabulateScalar</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vs_cm1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">permittivities</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/DielectricFunction.html#TabulateScalar"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.DielectricFunction.TabulateScalar" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#PDielec.DielectricFunction.DielectricFunction" title="PDielec.DielectricFunction.DielectricFunction"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DielectricFunction</span></code></a></p>
+<p>A class for a complex tabulated scalar dielectric function.</p>
+<p>Inherits from DielectricFunction. Represents an isotropic material dielectric function. Provides a calculate() function to return the permittivity.</p>
+<section id="id45">
+<h4>Methods<a class="headerlink" href="#id45" title="Permalink to this heading">#</a></h4>
+<dl class="simple">
+<dt>calculate()</dt><dd><p>Compute the permittivity of the material.</p>
+</dd>
+</dl>
+</section>
+<section id="id46">
+<h4>Notes<a class="headerlink" href="#id46" title="Permalink to this heading">#</a></h4>
+<p>None</p>
+</section>
+<section id="id47">
+<h4>Examples<a class="headerlink" href="#id47" title="Permalink to this heading">#</a></h4>
+<p>None</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="PDielec.DielectricFunction.TabulateScalar.calculate">
+<span class="sig-name descname"><span class="pre">calculate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">v</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/DielectricFunction.html#TabulateScalar.calculate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.DielectricFunction.TabulateScalar.calculate" title="Permalink to this definition">#</a></dt>
+<dd><p>Calculate the permittivity at a given frequency.</p>
+<section id="id48">
+<h5>Parameters<a class="headerlink" href="#id48" title="Permalink to this heading">#</a></h5>
+<dl class="simple">
+<dt>v<span class="classifier">float</span></dt><dd><p>The frequency in internal units.</p>
+</dd>
+</dl>
+</section>
+<section id="id49">
+<h5>Returns<a class="headerlink" href="#id49" title="Permalink to this heading">#</a></h5>
+<dl class="simple">
+<dt>float</dt><dd><p>The permittivity at frequency v as a scalar.</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+</section>
+</dd></dl>
+
+</section>
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="../ExperimentOutputReader/index.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.ExperimentOutputReader</span></code></div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="../CrystalOutputReader/index.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.CrystalOutputReader</span></code></div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2024, John Kendrick and Andrew Burnett
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.DielectricFunction</span></code></a><ul>
+<li><a class="reference internal" href="#module-contents">Module Contents</a><ul>
+<li><a class="reference internal" href="#classes">Classes</a><ul>
+<li><a class="reference internal" href="#PDielec.DielectricFunction.ConstantScalar"><code class="docutils literal notranslate"><span class="pre">ConstantScalar</span></code></a><ul>
+<li><a class="reference internal" href="#PDielec.DielectricFunction.ConstantScalar.calculate"><code class="docutils literal notranslate"><span class="pre">ConstantScalar.calculate()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#PDielec.DielectricFunction.ConstantTensor"><code class="docutils literal notranslate"><span class="pre">ConstantTensor</span></code></a><ul>
+<li><a class="reference internal" href="#PDielec.DielectricFunction.ConstantTensor.calculate"><code class="docutils literal notranslate"><span class="pre">ConstantTensor.calculate()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#PDielec.DielectricFunction.DFT"><code class="docutils literal notranslate"><span class="pre">DFT</span></code></a><ul>
+<li><a class="reference internal" href="#PDielec.DielectricFunction.DFT.calculate"><code class="docutils literal notranslate"><span class="pre">DFT.calculate()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#PDielec.DielectricFunction.DielectricFunction"><code class="docutils literal notranslate"><span class="pre">DielectricFunction</span></code></a><ul>
+<li><a class="reference internal" href="#PDielec.DielectricFunction.DielectricFunction.possible_epsTypes"><code class="docutils literal notranslate"><span class="pre">DielectricFunction.possible_epsTypes</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.DielectricFunction.DielectricFunction.dielectriContributionsFromDrude"><code class="docutils literal notranslate"><span class="pre">DielectricFunction.dielectriContributionsFromDrude()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.DielectricFunction.DielectricFunction.dielectriContributionsFromModes"><code class="docutils literal notranslate"><span class="pre">DielectricFunction.dielectriContributionsFromModes()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.DielectricFunction.DielectricFunction.function"><code class="docutils literal notranslate"><span class="pre">DielectricFunction.function()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.DielectricFunction.DielectricFunction.getHighestFrequency"><code class="docutils literal notranslate"><span class="pre">DielectricFunction.getHighestFrequency()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.DielectricFunction.DielectricFunction.getLowestFrequency"><code class="docutils literal notranslate"><span class="pre">DielectricFunction.getLowestFrequency()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.DielectricFunction.DielectricFunction.isScalar"><code class="docutils literal notranslate"><span class="pre">DielectricFunction.isScalar()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.DielectricFunction.DielectricFunction.isTensor"><code class="docutils literal notranslate"><span class="pre">DielectricFunction.isTensor()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.DielectricFunction.DielectricFunction.print"><code class="docutils literal notranslate"><span class="pre">DielectricFunction.print()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.DielectricFunction.DielectricFunction.setEpsilonInfinity"><code class="docutils literal notranslate"><span class="pre">DielectricFunction.setEpsilonInfinity()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.DielectricFunction.DielectricFunction.setVolume"><code class="docutils literal notranslate"><span class="pre">DielectricFunction.setVolume()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#PDielec.DielectricFunction.DrudeLorentz"><code class="docutils literal notranslate"><span class="pre">DrudeLorentz</span></code></a><ul>
+<li><a class="reference internal" href="#PDielec.DielectricFunction.DrudeLorentz.calculate"><code class="docutils literal notranslate"><span class="pre">DrudeLorentz.calculate()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#PDielec.DielectricFunction.FPSQ"><code class="docutils literal notranslate"><span class="pre">FPSQ</span></code></a><ul>
+<li><a class="reference internal" href="#PDielec.DielectricFunction.FPSQ.calculate"><code class="docutils literal notranslate"><span class="pre">FPSQ.calculate()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#PDielec.DielectricFunction.Sellmeier"><code class="docutils literal notranslate"><span class="pre">Sellmeier</span></code></a><ul>
+<li><a class="reference internal" href="#PDielec.DielectricFunction.Sellmeier.calculate"><code class="docutils literal notranslate"><span class="pre">Sellmeier.calculate()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#PDielec.DielectricFunction.Tabulate1"><code class="docutils literal notranslate"><span class="pre">Tabulate1</span></code></a><ul>
+<li><a class="reference internal" href="#PDielec.DielectricFunction.Tabulate1.calculate"><code class="docutils literal notranslate"><span class="pre">Tabulate1.calculate()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#PDielec.DielectricFunction.Tabulate3"><code class="docutils literal notranslate"><span class="pre">Tabulate3</span></code></a><ul>
+<li><a class="reference internal" href="#PDielec.DielectricFunction.Tabulate3.calculate"><code class="docutils literal notranslate"><span class="pre">Tabulate3.calculate()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#PDielec.DielectricFunction.Tabulate6"><code class="docutils literal notranslate"><span class="pre">Tabulate6</span></code></a><ul>
+<li><a class="reference internal" href="#PDielec.DielectricFunction.Tabulate6.calculate"><code class="docutils literal notranslate"><span class="pre">Tabulate6.calculate()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#PDielec.DielectricFunction.TabulateScalar"><code class="docutils literal notranslate"><span class="pre">TabulateScalar</span></code></a><ul>
+<li><a class="reference internal" href="#PDielec.DielectricFunction.TabulateScalar.calculate"><code class="docutils literal notranslate"><span class="pre">TabulateScalar.calculate()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js?v=01b4f342"></script>
+    <script src="../../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../../../_static/scripts/furo.js?v=32e29ea5"></script>
+    </body>
+</html>

@@ -1,0 +1,1192 @@
+<!doctype html>
+<html class="no-js" lang="en" data-content_root="">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" />
+
+    <!-- Generated with Sphinx 7.1.2 and Furo 2024.01.29 -->
+        <title>PDielec.UnitCell - PDielec: John Kendrick &amp; Andrew Burnett</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=135e06be" />
+    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=eafc0fe6" />
+    <link rel="stylesheet" type="text/css" href="../../_static/table_styling.css?v=a1a2a898" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?v=36a5483c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css?v=2e0a580d" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f8f8f8;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-half" viewBox="0 0 24 24">
+    <title>Auto light/dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M13 12h5" />
+      <path d="M13 15h4" />
+      <path d="M13 18h1" />
+      <path d="M13 9h4" />
+      <path d="M13 6h1" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../../index.html"><div class="brand">PDielec: John Kendrick & Andrew Burnett</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon no-toc" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../../index.html">
+  
+  
+  <span class="sidebar-brand-text">PDielec: John Kendrick & Andrew Burnett</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../../search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <p class="caption" role="heading"><span class="caption-text">Software</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../pdgui.html">PDGui</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../software.html">Other Software Components</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Theory</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../theory_powder.html">Theory for Light Scattering from Powders</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../theory_single_crystal.html">Theory for Single Crystal Optics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../analysis.html">Phonon Analysis</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Applications</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../application_notes_1.html">Applications of Effective Medium Theory</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../application_notes_2.html">Single Crystal Applications</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API</span></p>
+<ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../autoapi/index.html">API Reference</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of API Reference</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../autoapi/PDielec/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of PDielec</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../autoapi/PDielec/GUI/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of PDielec.GUI</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../autoapi/PDielec/GUI/AnalysisTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.AnalysisTab</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../autoapi/PDielec/GUI/App/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.App</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../autoapi/PDielec/GUI/FitterTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.FitterTab</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../autoapi/PDielec/GUI/MainTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.MainTab</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../autoapi/PDielec/GUI/NoteBook/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.NoteBook</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../autoapi/PDielec/GUI/OpenGLWidget/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.OpenGLWidget</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../autoapi/PDielec/GUI/PlottingTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.PlottingTab</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../autoapi/PDielec/GUI/PowderScenarioTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.PowderScenarioTab</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../autoapi/PDielec/GUI/ScenarioTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.ScenarioTab</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../autoapi/PDielec/GUI/SettingsTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.SettingsTab</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../autoapi/PDielec/GUI/SingleCrystalLayer/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.SingleCrystalLayer</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../autoapi/PDielec/GUI/SingleCrystalScenarioTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.SingleCrystalScenarioTab</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../autoapi/PDielec/GUI/SpreadSheetManager/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.SpreadSheetManager</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../autoapi/PDielec/GUI/ViewerTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.ViewerTab</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/AbinitOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.AbinitOutputReader</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/Calculator/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.Calculator</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/CastepOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.CastepOutputReader</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/Constants/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.Constants</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/CrystalOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.CrystalOutputReader</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/DielectricFunction/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.DielectricFunction</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/ExperimentOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.ExperimentOutputReader</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/GTMcore/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GTMcore</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/GenericOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GenericOutputReader</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/GulpOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GulpOutputReader</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/HelperRoutines/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.HelperRoutines</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/IO/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.IO</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/Materials/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.Materials</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/Mie/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.Mie</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/PhonopyOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.PhonopyOutputReader</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/Plotter/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.Plotter</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/QEOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.QEOutputReader</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/SuperCell/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.SuperCell</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/UnitCell/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.UnitCell</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/Utilities/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.Utilities</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/VaspOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.VaspOutputReader</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/checkcsv/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.checkcsv</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/checkexcel/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.checkexcel</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/graphdatagenerator/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.graphdatagenerator</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/p1reader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.p1reader</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/p2cif/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.p2cif</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/pdcompare/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.pdcompare</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/pdgui/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.pdgui</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/pdmake/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.pdmake</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/pickled_reader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.pickled_reader</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/preader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.preader</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/vibanalysis/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.vibanalysis</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../autoapi/PDielec/pdgui/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.pdgui</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../autoapi/PDielec/preader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.preader</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../autoapi/PDielec/pdmake/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.pdmake</span></code></a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">References</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../zreferences.html">References</a></li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon no-toc" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main">
+          <h1>Source code for PDielec.UnitCell</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!/usr/bin/python</span>
+<span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">Hold unit cell information and its associated calculated properties.</span>
+
+<span class="sd">Copyright 2024 John Kendrick</span>
+
+<span class="sd">This file is part of PDielec</span>
+
+<span class="sd">This program is free software; you can redistribute it and/or modify</span>
+<span class="sd">it under the terms of the MIT License</span>
+
+<span class="sd">This program is distributed in the hope that it will be useful,</span>
+<span class="sd">but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="sd">MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.</span>
+
+<span class="sd">You should have received a copy of the MIT License</span>
+<span class="sd">along with this program, if not see https://opensource.org/licenses/MIT</span>
+<span class="sd">&#39;&#39;&#39;</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">math</span>
+<span class="kn">from</span> <span class="nn">PDielec.Calculator</span>  <span class="kn">import</span> <span class="n">calculate_distance</span>
+<span class="kn">from</span> <span class="nn">PDielec.Plotter</span>     <span class="kn">import</span> <span class="n">print_reals</span><span class="p">,</span> <span class="n">print_ints</span><span class="p">,</span> <span class="n">print_strings</span>
+<span class="kn">from</span> <span class="nn">PDielec.Calculator</span>  <span class="kn">import</span> <span class="n">cleanup_symbol</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+
+
+<div class="viewcode-block" id="UnitCell"><a class="viewcode-back" href="../../autoapi/PDielec/UnitCell/index.html#PDielec.UnitCell.UnitCell">[docs]</a><span class="k">class</span> <span class="nc">UnitCell</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Hold unit cell information and its associated calculated properties.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">beta</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">gamma</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize the class instance with optional lattice parameters and calculate the reciprocal lattice.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        a, b, c : float or array, optional</span>
+<span class="sd">            Lattice vectors or cell lengths. If not specified, they default to [1.0, 0.0, 0.0], [0.0, 1.0, 0.0], and [0.0, 0.0, 1.0], respectively.</span>
+<span class="sd">        alpha, beta, gamma : float, optional</span>
+<span class="sd">            Lattice angles (in degrees). These are only used if all three angles are specified, otherwise, the default lattice (orthorhombic) is used.</span>
+
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+<span class="sd">        This constructor initializes an instance with empty lists for fractional coordinates, xyz coordinates, element names, atom labels, bonds, and molecules. It also initializes an empty list for atomic masses and zero for total mass. If the angles alpha, beta, and gamma are provided, it attempts to convert the provided lattice parameters (a, b, c, alpha, beta, gamma) into a 3x3 lattice matrix. If not, it directly assigns a, b, and c as lattice vectors. Finally, it calculates and sets the reciprocal lattice for the instance.</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">        ```python</span>
+<span class="sd">        a = [2.853604, -1.647529, 0.0]</span>
+<span class="sd">        b = [0.0,       3.295058, 0.0]</span>
+<span class="sd">        c = [0.0,       0.0,      5.284824]</span>
+<span class="sd">        cell = UnitCell( a, b, c )</span>
+<span class="sd">        cell.set_element_names([&#39;Zn&#39;, &#39;Zn&#39;, &#39;O&#39;, &#39;O&#39;])</span>
+<span class="sd">        coords = [ [ 0.333333,    0.666667,    0.000900 ]</span>
+<span class="sd">                   [ 0.666667,    0.333333,    0.500900 ]</span>
+<span class="sd">                   [ 0.333333,    0.666667,    0.381600 ]</span>
+<span class="sd">                   [ 0.666667,    0.333333,    0.881600 ] ]</span>
+<span class="sd">        cell.set_fractional_coordinates(coords)</span>
+<span class="sd">        cell.print()</span>
+<span class="sd">        ```</span>
+<span class="sd">        &quot;&quot;&quot;</span>        
+        <span class="bp">self</span><span class="o">.</span><span class="n">fractional_coordinates</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">xyz_coordinates</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">element_names</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">atom_labels</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bonds</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nions</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">molecules</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">atomic_masses</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">centres_of_mass</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">total_mass</span> <span class="o">=</span> <span class="mf">0.0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lattice</span> <span class="o">=</span> <span class="p">[[</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">]]</span>
+        <span class="k">if</span> <span class="n">gamma</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">lattice</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">convert_abc_to_unitcell</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">beta</span><span class="p">,</span> <span class="n">gamma</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">lattice</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">a</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">lattice</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">b</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">lattice</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">c</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_calculate_reciprocal_lattice</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lattice</span><span class="p">)</span>
+
+<div class="viewcode-block" id="UnitCell.write_cif"><a class="viewcode-back" href="../../autoapi/PDielec/UnitCell/index.html#PDielec.UnitCell.UnitCell.write_cif">[docs]</a>    <span class="k">def</span> <span class="nf">write_cif</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">file_</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Write the crystallographic information file (CIF) representation of a structure.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        filename : str, optional</span>
+<span class="sd">            The name of the file to be written. If not provided, the CIF data is printed to stdout.</span>
+<span class="sd">        file\_ : object, optional</span>
+<span class="sd">            An output stream object. Default is sys.stdout.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        None</span>
+
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+<span class="sd">        This method prints the CIF representation of a structure, including the space group,</span>
+<span class="sd">        cell dimensions, angles, volume, and the fractional coordinates of the atoms.</span>
+<span class="sd">        If a filename is provided, the CIF data will be written to that file. Otherwise,</span>
+<span class="sd">        it will be printed to standard output.</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">        To print the CIF representation to standard output, simply call the method without arguments:</span>
+
+<span class="sd">        &gt;&gt;&gt; self.write_cif()</span>
+
+<span class="sd">        To write the CIF representation to a file named &quot;example.cif&quot;:</span>
+
+<span class="sd">        &gt;&gt;&gt; cell.write_cif(&#39;example.cif&#39;)</span>
+<span class="sd">        &quot;&quot;&quot;</span>        
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;data_&#39;</span><span class="o">+</span><span class="n">filename</span><span class="p">,</span>                                  <span class="n">file</span><span class="o">=</span><span class="n">file_</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;_space_group_IT_number 1&#39;</span><span class="p">,</span>                        <span class="n">file</span><span class="o">=</span><span class="n">file_</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;_symmetry_space_group_name_H-M </span><span class="se">\&#39;</span><span class="s1">P 1</span><span class="se">\&#39;</span><span class="s1">&#39;</span><span class="p">,</span>          <span class="n">file</span><span class="o">=</span><span class="n">file_</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;_symmetry_Int_Tables_number        1  &#39;</span><span class="p">,</span>          <span class="n">file</span><span class="o">=</span><span class="n">file_</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;_cell_length_a      </span><span class="si">{:12.6f}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="p">),</span>     <span class="n">file</span><span class="o">=</span><span class="n">file_</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;_cell_length_b      </span><span class="si">{:12.6f}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">b</span><span class="p">),</span>     <span class="n">file</span><span class="o">=</span><span class="n">file_</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;_cell_length_c      </span><span class="si">{:12.6f}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">c</span><span class="p">),</span>     <span class="n">file</span><span class="o">=</span><span class="n">file_</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;_cell_angle_alpha   </span><span class="si">{:12.6f}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">alpha</span><span class="p">),</span> <span class="n">file</span><span class="o">=</span><span class="n">file_</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;_cell_angle_beta    </span><span class="si">{:12.6f}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">beta</span><span class="p">),</span>  <span class="n">file</span><span class="o">=</span><span class="n">file_</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;_cell_angle_gamma   </span><span class="si">{:12.6f}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">gamma</span><span class="p">),</span> <span class="n">file</span><span class="o">=</span><span class="n">file_</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;_cell_volume        </span><span class="si">{:12.6f}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">volume</span><span class="p">),</span><span class="n">file</span><span class="o">=</span><span class="n">file_</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;loop_&#39;</span><span class="p">,</span>                                           <span class="n">file</span><span class="o">=</span><span class="n">file_</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;_atom_site_label&#39;</span><span class="p">,</span>                                <span class="n">file</span><span class="o">=</span><span class="n">file_</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;_atom_site_type_symbol&#39;</span><span class="p">,</span>                          <span class="n">file</span><span class="o">=</span><span class="n">file_</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;_atom_site_fract_x&#39;</span><span class="p">,</span>                              <span class="n">file</span><span class="o">=</span><span class="n">file_</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;_atom_site_fract_y&#39;</span><span class="p">,</span>                              <span class="n">file</span><span class="o">=</span><span class="n">file_</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;_atom_site_fract_z&#39;</span><span class="p">,</span>                              <span class="n">file</span><span class="o">=</span><span class="n">file_</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,(</span><span class="n">frac</span><span class="p">,</span><span class="n">el</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fractional_coordinates</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">element_names</span><span class="p">)):</span>
+            <span class="n">symbol</span> <span class="o">=</span> <span class="n">el</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span> <span class="s1">&#39;</span><span class="si">{}</span><span class="s1"> </span><span class="si">{}</span><span class="s1"> </span><span class="si">{:12.6f}</span><span class="s1"> </span><span class="si">{:12.6f}</span><span class="s1"> </span><span class="si">{:12.6f}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">symbol</span><span class="p">,</span> <span class="n">el</span><span class="p">,</span> <span class="n">frac</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">frac</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">frac</span><span class="p">[</span><span class="mi">2</span><span class="p">]),</span> <span class="n">file</span><span class="o">=</span><span class="n">file_</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">,</span>                                               <span class="n">file</span><span class="o">=</span><span class="n">file_</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;#END&#39;</span><span class="p">,</span>                                            <span class="n">file</span><span class="o">=</span><span class="n">file_</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">,</span>                                               <span class="n">file</span><span class="o">=</span><span class="n">file_</span><span class="p">)</span>
+        <span class="k">return</span></div>
+
+<div class="viewcode-block" id="UnitCell.getBoundingBox"><a class="viewcode-back" href="../../autoapi/PDielec/UnitCell/index.html#PDielec.UnitCell.UnitCell.getBoundingBox">[docs]</a>    <span class="k">def</span> <span class="nf">getBoundingBox</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Generate the corners and edges of a bounding box.</span>
+
+<span class="sd">        This method calculates the corners and edges of a bounding box based on predefined coordinates. These coordinates are transformed using a conversion method before being paired into edges.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        tuple of list</span>
+<span class="sd">            A tuple containing two elements:</span>
+<span class="sd">            - The first element is a list of corners&#39; coordinates after conversion (`list` of `np.ndarray`).</span>
+<span class="sd">            - The second element is a list of tuples, each consisting of a pair of corners representing an edge (`list` of `tuple`).</span>
+
+<span class="sd">        Example</span>
+<span class="sd">        -------</span>
+<span class="sd">        To fetch the bounding box coordinates and edges, simply call:</span>
+
+<span class="sd">        ```python</span>
+<span class="sd">        corners_xyz, edges = object.getBoundingBox()</span>
+<span class="sd">        ```</span>
+<span class="sd">        &quot;&quot;&quot;</span>        
+        <span class="c1"># Return a box with 12 edges which represent the unit cell in cartesian space</span>
+        <span class="c1">#  7---6</span>
+        <span class="c1"># /|  /|</span>
+        <span class="c1"># 3---2|</span>
+        <span class="c1"># |4--|5</span>
+        <span class="c1"># 0---1/</span>
+        <span class="c1"># Corners in abc space</span>
+        <span class="n">corners</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">corners</span><span class="o">.</span><span class="n">append</span><span class="p">(</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span><span class="mf">0.0</span><span class="p">,</span><span class="mf">0.0</span><span class="p">]</span> <span class="p">)</span> <span class="p">)</span>
+        <span class="n">corners</span><span class="o">.</span><span class="n">append</span><span class="p">(</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span> <span class="p">[</span><span class="mf">1.0</span><span class="p">,</span><span class="mf">0.0</span><span class="p">,</span><span class="mf">0.0</span><span class="p">]</span> <span class="p">)</span> <span class="p">)</span>
+        <span class="n">corners</span><span class="o">.</span><span class="n">append</span><span class="p">(</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span> <span class="p">[</span><span class="mf">1.0</span><span class="p">,</span><span class="mf">1.0</span><span class="p">,</span><span class="mf">0.0</span><span class="p">]</span> <span class="p">)</span> <span class="p">)</span>
+        <span class="n">corners</span><span class="o">.</span><span class="n">append</span><span class="p">(</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span><span class="mf">1.0</span><span class="p">,</span><span class="mf">0.0</span><span class="p">]</span> <span class="p">)</span> <span class="p">)</span>
+        <span class="n">corners</span><span class="o">.</span><span class="n">append</span><span class="p">(</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span><span class="mf">0.0</span><span class="p">,</span><span class="mf">1.0</span><span class="p">]</span> <span class="p">)</span> <span class="p">)</span>
+        <span class="n">corners</span><span class="o">.</span><span class="n">append</span><span class="p">(</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span> <span class="p">[</span><span class="mf">1.0</span><span class="p">,</span><span class="mf">0.0</span><span class="p">,</span><span class="mf">1.0</span><span class="p">]</span> <span class="p">)</span> <span class="p">)</span>
+        <span class="n">corners</span><span class="o">.</span><span class="n">append</span><span class="p">(</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span> <span class="p">[</span><span class="mf">1.0</span><span class="p">,</span><span class="mf">1.0</span><span class="p">,</span><span class="mf">1.0</span><span class="p">]</span> <span class="p">)</span> <span class="p">)</span>
+        <span class="n">corners</span><span class="o">.</span><span class="n">append</span><span class="p">(</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span><span class="mf">1.0</span><span class="p">,</span><span class="mf">1.0</span><span class="p">]</span> <span class="p">)</span> <span class="p">)</span>
+        <span class="c1"># Now calculate the corners in cartesian space</span>
+        <span class="n">corners_xyz</span> <span class="o">=</span> <span class="p">[</span> <span class="bp">self</span><span class="o">.</span><span class="n">convert_abc_to_xyz</span><span class="p">(</span><span class="n">corner</span><span class="p">)</span> <span class="k">for</span> <span class="n">corner</span> <span class="ow">in</span> <span class="n">corners</span> <span class="p">]</span>
+        <span class="c1"># Now calculate the edges each edge is a tuple with a beginning coordinate and an end coordinate</span>
+        <span class="n">edges</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">edges</span><span class="o">.</span><span class="n">append</span><span class="p">(</span> <span class="p">(</span><span class="n">corners_xyz</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="p">,</span> <span class="n">corners_xyz</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="p">)</span>
+        <span class="n">edges</span><span class="o">.</span><span class="n">append</span><span class="p">(</span> <span class="p">(</span><span class="n">corners_xyz</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="p">,</span> <span class="n">corners_xyz</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="p">)</span>
+        <span class="n">edges</span><span class="o">.</span><span class="n">append</span><span class="p">(</span> <span class="p">(</span><span class="n">corners_xyz</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="p">,</span> <span class="n">corners_xyz</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span> <span class="p">)</span>
+        <span class="n">edges</span><span class="o">.</span><span class="n">append</span><span class="p">(</span> <span class="p">(</span><span class="n">corners_xyz</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="p">,</span> <span class="n">corners_xyz</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="p">)</span>
+        <span class="n">edges</span><span class="o">.</span><span class="n">append</span><span class="p">(</span> <span class="p">(</span><span class="n">corners_xyz</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="p">,</span> <span class="n">corners_xyz</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="p">)</span>
+        <span class="n">edges</span><span class="o">.</span><span class="n">append</span><span class="p">(</span> <span class="p">(</span><span class="n">corners_xyz</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="p">,</span> <span class="n">corners_xyz</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="p">)</span>
+        <span class="n">edges</span><span class="o">.</span><span class="n">append</span><span class="p">(</span> <span class="p">(</span><span class="n">corners_xyz</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span> <span class="p">,</span> <span class="n">corners_xyz</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span> <span class="p">)</span>
+        <span class="n">edges</span><span class="o">.</span><span class="n">append</span><span class="p">(</span> <span class="p">(</span><span class="n">corners_xyz</span><span class="p">[</span><span class="mi">7</span><span class="p">]</span> <span class="p">,</span> <span class="n">corners_xyz</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span> <span class="p">)</span>
+        <span class="n">edges</span><span class="o">.</span><span class="n">append</span><span class="p">(</span> <span class="p">(</span><span class="n">corners_xyz</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="p">,</span> <span class="n">corners_xyz</span><span class="p">[</span><span class="mi">4</span><span class="p">])</span> <span class="p">)</span>
+        <span class="n">edges</span><span class="o">.</span><span class="n">append</span><span class="p">(</span> <span class="p">(</span><span class="n">corners_xyz</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span> <span class="p">,</span> <span class="n">corners_xyz</span><span class="p">[</span><span class="mi">5</span><span class="p">])</span> <span class="p">)</span>
+        <span class="n">edges</span><span class="o">.</span><span class="n">append</span><span class="p">(</span> <span class="p">(</span><span class="n">corners_xyz</span><span class="p">[</span><span class="mi">7</span><span class="p">]</span> <span class="p">,</span> <span class="n">corners_xyz</span><span class="p">[</span><span class="mi">6</span><span class="p">])</span> <span class="p">)</span>
+        <span class="n">edges</span><span class="o">.</span><span class="n">append</span><span class="p">(</span> <span class="p">(</span><span class="n">corners_xyz</span><span class="p">[</span><span class="mi">7</span><span class="p">]</span> <span class="p">,</span> <span class="n">corners_xyz</span><span class="p">[</span><span class="mi">4</span><span class="p">])</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="n">corners_xyz</span><span class="p">,</span><span class="n">edges</span></div>
+
+<div class="viewcode-block" id="UnitCell.calculate_density"><a class="viewcode-back" href="../../autoapi/PDielec/UnitCell/index.html#PDielec.UnitCell.UnitCell.calculate_density">[docs]</a>    <span class="k">def</span> <span class="nf">calculate_density</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Calculate the density of the crystal.</span>
+<span class="sd">  </span>
+<span class="sd">        Returns the density in g/cc.  If the mass is not known, then returns 1.0</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        None</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        float</span>
+<span class="sd">            The density in gms/cc</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">volume</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">calculate_volume</span><span class="p">()</span>
+        <span class="n">mass</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">atomic_masses</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">mass</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">density</span> <span class="o">=</span> <span class="mf">1.0</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">density</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">volume</span><span class="o">/</span><span class="n">mass</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">density</span></div>
+
+<div class="viewcode-block" id="UnitCell.print"><a class="viewcode-back" href="../../autoapi/PDielec/UnitCell/index.html#PDielec.UnitCell.UnitCell.print">[docs]</a>    <span class="k">def</span> <span class="nf">print</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Prints the details of the given unit cell.</span>
+
+<span class="sd">        This method prints formatted details of the unit cell object, including lattice parameters (a, b, c, alpha, beta, gamma), lattice vectors, element names, fractional coordinates, Cartesian coordinates, and molecular information if any molecules are defined within the unit cell.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        None</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        None</span>
+<span class="sd">        &quot;&quot;&quot;</span>        
+        <span class="n">print_reals</span><span class="p">(</span><span class="s1">&#39;Unit Cell a,b,c &#39;</span><span class="p">,[</span><span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">b</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">c</span><span class="p">],</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">{:12.6f}</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">print_reals</span><span class="p">(</span><span class="s1">&#39;Unit Cell alpha,beta,gamma&#39;</span><span class="p">,[</span><span class="bp">self</span><span class="o">.</span><span class="n">alpha</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">beta</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">gamma</span><span class="p">],</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">{:12.6f}</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">print_reals</span><span class="p">(</span><span class="s1">&#39;lattice&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">lattice</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">{:12.6f}</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">print_reals</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">lattice</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">{:12.6f}</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">print_reals</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">lattice</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">{:12.6f}</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">print_strings</span><span class="p">(</span><span class="s1">&#39;Element names&#39;</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">element_names</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">element_names</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">print_reals</span><span class="p">(</span><span class="s1">&#39;Fractional coords&#39;</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">fractional_coordinates</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">{:12.6f}</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">frac</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">fractional_coordinates</span><span class="p">[</span><span class="mi">1</span><span class="p">:]:</span>
+                <span class="n">print_reals</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">,</span><span class="n">frac</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">{:12.6f}</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="n">print_reals</span><span class="p">(</span><span class="s1">&#39;Cartesian coords&#39;</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">xyz_coordinates</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">{:12.6f}</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">xyz</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">xyz_coordinates</span><span class="p">[</span><span class="mi">1</span><span class="p">:]:</span>
+                <span class="n">print_reals</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">,</span><span class="n">xyz</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">{:12.6f}</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">molecules</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">molid</span><span class="p">,</span><span class="n">atoms</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">molecules</span><span class="p">):</span>
+                    <span class="n">mass</span><span class="p">,</span> <span class="n">cm_xyz</span><span class="p">,</span> <span class="n">cm_frac</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">calculateCentreOfMass</span><span class="p">(</span><span class="n">atom_list</span><span class="o">=</span><span class="n">atoms</span><span class="p">,</span><span class="n">units</span><span class="o">=</span><span class="s1">&#39;all&#39;</span><span class="p">)</span>
+                    <span class="n">molstring</span> <span class="o">=</span> <span class="s1">&#39;Molecule &#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">molid</span><span class="p">)</span><span class="o">+</span><span class="s1">&#39;:&#39;</span>
+                    <span class="n">print_ints</span><span class="p">(</span><span class="s1">&#39;Atoms in &#39;</span><span class="o">+</span><span class="n">molstring</span><span class="p">,</span><span class="n">atoms</span><span class="p">)</span>
+                    <span class="n">print_reals</span><span class="p">(</span><span class="s1">&#39;Mass of &#39;</span><span class="o">+</span><span class="n">molstring</span><span class="p">,[</span> <span class="n">mass</span> <span class="p">],</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">{:12.6f}</span><span class="s1">&#39;</span><span class="p">)</span>
+                    <span class="n">print_reals</span><span class="p">(</span><span class="s1">&#39;Centre of Mass  (xyz) of &#39;</span><span class="o">+</span><span class="n">molstring</span><span class="p">,</span> <span class="n">cm_xyz</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">{:12.6f}</span><span class="s1">&#39;</span><span class="p">)</span>
+                    <span class="n">print_reals</span><span class="p">(</span><span class="s1">&#39;Centre of Mass (frac) of &#39;</span><span class="o">+</span><span class="n">molstring</span><span class="p">,</span> <span class="n">cm_frac</span><span class="p">,</span><span class="nb">format</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">{:12.6f}</span><span class="s1">&#39;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="UnitCell.calculateCentreOfMass"><a class="viewcode-back" href="../../autoapi/PDielec/UnitCell/index.html#PDielec.UnitCell.UnitCell.calculateCentreOfMass">[docs]</a>    <span class="k">def</span> <span class="nf">calculateCentreOfMass</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">atom_list</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">units</span><span class="o">=</span><span class="s1">&#39;xyz&#39;</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calculate the centre of mass for a given set of atoms.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        atom_list : list, optional</span>
+<span class="sd">            A list of atom indices for which the centre of mass should be calculated.</span>
+<span class="sd">            If None, the centre of mass will be calculated for all atoms in the system. Default is None.</span>
+<span class="sd">        units : {&#39;xyz&#39;, &#39;mass&#39;, &#39;abc&#39;}, optional</span>
+<span class="sd">            The units in which to return the centre of mass:</span>
+<span class="sd">            - &#39;xyz&#39; returns the centre of mass coordinates in Cartesian (x, y, z) units.</span>
+<span class="sd">            - &#39;mass&#39; returns the total mass of the atoms in `atom_list`.</span>
+<span class="sd">            - &#39;abc&#39; returns the centre of mass in fractional (a, b, c) coordinates.</span>
+<span class="sd">            If not specified, &#39;xyz&#39; is used as default.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        numpy.ndarray or float or tuple</span>
+<span class="sd">            The centre of mass in the specified units. The type of the return value depends on the `units` parameter:</span>
+<span class="sd">            - If &#39;xyz&#39;, returns a numpy array with the x, y, z coordinates of the centre of mass.</span>
+<span class="sd">            - If &#39;mass&#39;, returns a float representing the total mass of the specified atoms.</span>
+<span class="sd">            - If &#39;abc&#39;, returns a numpy array with the a, b, c fractional coordinates of the centre of mass.</span>
+<span class="sd">            - If the units are not recognized, a tuple containing the total mass, Cartesian coordinates, and fractional coordinates of the centre of mass is returned.</span>
+
+<span class="sd">        See Also</span>
+<span class="sd">        --------</span>
+<span class="sd">        convert_xyz_to_abc : A method to convert Cartesian coordinates to fractional coordinates.</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">        &gt;&gt;&gt; calculateCentreOfMass(atom_list=[1, 2, 3], units=&#39;xyz&#39;)</span>
+<span class="sd">        array([0.1, 0.2, 0.3])</span>
+<span class="sd">        &gt;&gt;&gt; calculateCentreOfMass(units=&#39;mass&#39;)</span>
+<span class="sd">        50.2</span>
+<span class="sd">        &gt;&gt;&gt; calculateCentreOfMass(units=&#39;abc&#39;)</span>
+<span class="sd">        array([0.4, 0.5, 0.6])</span>
+<span class="sd">        &quot;&quot;&quot;</span>        
+        <span class="c1"># Calculate the centre of mass - if the atom list is given just use that</span>
+        <span class="c1"># The centre of mass can be returned in units of &#39;xyz&#39; space or &#39;abc&#39; space</span>
+        <span class="c1"># if units=&#39;all&#39; a tuple of (mass,cm_xyz,cm_abc) is returned</span>
+        <span class="k">if</span> <span class="n">atom_list</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">atom_list</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nions</span><span class="p">)</span>
+        <span class="n">mass</span> <span class="o">=</span> <span class="mf">0.0</span>
+        <span class="n">cm</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">atom_index</span> <span class="ow">in</span> <span class="n">atom_list</span><span class="p">:</span>
+            <span class="n">mass</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">atomic_masses</span><span class="p">[</span><span class="n">atom_index</span><span class="p">]</span>
+            <span class="n">cm</span> <span class="o">=</span> <span class="n">cm</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">atomic_masses</span><span class="p">[</span><span class="n">atom_index</span><span class="p">]</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">xyz_coordinates</span><span class="p">[</span><span class="n">atom_index</span><span class="p">]</span>
+        <span class="n">cm_xyz</span> <span class="o">=</span> <span class="n">cm</span> <span class="o">/</span> <span class="n">mass</span>
+        <span class="k">if</span> <span class="n">units</span> <span class="o">==</span> <span class="s1">&#39;xyz&#39;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">cm_xyz</span>
+        <span class="k">elif</span> <span class="n">units</span> <span class="o">==</span> <span class="s1">&#39;mass&#39;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">mass</span>
+        <span class="k">elif</span> <span class="n">units</span> <span class="o">==</span> <span class="s1">&#39;abc&#39;</span><span class="p">:</span>
+            <span class="n">cm_fractional</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">convert_xyz_to_abc</span><span class="p">(</span><span class="n">cm_xyz</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">cm_fractional</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">cm_fractional</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">convert_xyz_to_abc</span><span class="p">(</span><span class="n">cm_xyz</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">mass</span><span class="p">,</span> <span class="n">cm_xyz</span><span class="p">,</span> <span class="n">cm_fractional</span></div>
+
+<div class="viewcode-block" id="UnitCell.set_atomic_masses"><a class="viewcode-back" href="../../autoapi/PDielec/UnitCell/index.html#PDielec.UnitCell.UnitCell.set_atomic_masses">[docs]</a>    <span class="k">def</span> <span class="nf">set_atomic_masses</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">masses</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Set the atomic masses for the elements.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        masses : list</span>
+<span class="sd">            The atomic masses to be assigned. This can be a list or a dictionary of atomic masses.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        None</span>
+<span class="sd">        &quot;&quot;&quot;</span>        
+        <span class="bp">self</span><span class="o">.</span><span class="n">atomic_masses</span> <span class="o">=</span> <span class="n">masses</span></div>
+
+<div class="viewcode-block" id="UnitCell.convert_unitcell_to_abc"><a class="viewcode-back" href="../../autoapi/PDielec/UnitCell/index.html#PDielec.UnitCell.UnitCell.convert_unitcell_to_abc">[docs]</a>    <span class="k">def</span> <span class="nf">convert_unitcell_to_abc</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Convert a unit cell to the equivalent a, b, c, alpha, beta, gamma designation.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        None</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        a, b, c : float</span>
+<span class="sd">            The lengths of the cell edges.</span>
+<span class="sd">        alpha, beta, gamma : float</span>
+<span class="sd">            The angles between the edges in degrees.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lattice</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">lattice</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+        <span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lattice</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">lattice</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+        <span class="n">c</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lattice</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">lattice</span><span class="p">[</span><span class="mi">2</span><span class="p">]))</span>
+        <span class="n">gamma</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arccos</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lattice</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">lattice</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">/</span> <span class="p">(</span><span class="n">a</span><span class="o">*</span><span class="n">b</span><span class="p">))</span>
+        <span class="n">beta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arccos</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lattice</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">lattice</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span> <span class="o">/</span> <span class="p">(</span><span class="n">a</span><span class="o">*</span><span class="n">c</span><span class="p">))</span>
+        <span class="n">alpha</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arccos</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lattice</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">lattice</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span> <span class="o">/</span> <span class="p">(</span><span class="n">b</span><span class="o">*</span><span class="n">c</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span><span class="n">alpha</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span><span class="n">beta</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span><span class="n">gamma</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="UnitCell.convert_abc_to_unitcell"><a class="viewcode-back" href="../../autoapi/PDielec/UnitCell/index.html#PDielec.UnitCell.UnitCell.convert_abc_to_unitcell">[docs]</a>    <span class="k">def</span> <span class="nf">convert_abc_to_unitcell</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">alpha_degs</span><span class="p">,</span> <span class="n">beta_degs</span><span class="p">,</span> <span class="n">gamma_degs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Convert a, b, c, alpha, beta, gamma to a unit cell</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        a : type</span>
+<span class="sd">            Description of parameter `a`.</span>
+<span class="sd">        b : type</span>
+<span class="sd">            Description of parameter `b`.</span>
+<span class="sd">        c : type</span>
+<span class="sd">            Description of parameter `c`.</span>
+<span class="sd">        alpha : type</span>
+<span class="sd">            Description of parameter `alpha`.</span>
+<span class="sd">        beta : type</span>
+<span class="sd">            Description of parameter `beta`.</span>
+<span class="sd">        gamma : type</span>
+<span class="sd">            Description of parameter `gamma`.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        lattice : list of floats (3,3) list</span>
+<span class="sd">            The lattice parameters</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># This is castep convention, need to check it works with vasp</span>
+        <span class="n">alpha</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">alpha_degs</span><span class="p">)</span>
+        <span class="n">beta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">beta_degs</span><span class="p">)</span>
+        <span class="n">gamma</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">gamma_degs</span><span class="p">)</span>
+        <span class="n">lattice</span> <span class="o">=</span> <span class="p">[[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">]]</span>
+        <span class="n">lattice</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">c</span><span class="p">]</span>
+        <span class="n">lattice</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">b</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">alpha</span><span class="p">),</span> <span class="n">b</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">alpha</span><span class="p">)]</span>
+        <span class="n">z</span> <span class="o">=</span> <span class="n">a</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">beta</span><span class="p">)</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="n">a</span> <span class="o">*</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">gamma</span><span class="p">)</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">alpha</span><span class="p">)</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">beta</span><span class="p">))</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">alpha</span><span class="p">)</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">a</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mf">1.0</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">beta</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="p">(</span><span class="n">y</span><span class="o">/</span><span class="n">a</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+        <span class="n">lattice</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_calculate_reciprocal_lattice</span><span class="p">(</span><span class="n">lattice</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">lattice</span></div>
+
+<div class="viewcode-block" id="UnitCell._calculate_reciprocal_lattice"><a class="viewcode-back" href="../../autoapi/PDielec/UnitCell/index.html#PDielec.UnitCell.UnitCell._calculate_reciprocal_lattice">[docs]</a>    <span class="k">def</span> <span class="nf">_calculate_reciprocal_lattice</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lattice</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calculate the reciprocal lattice</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        3x3 list of floats</span>
+<span class="sd">            Lattice as [a, b, c] where a/b/c are [x,y,z]</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        None</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        sets the reciprocal lattice vectors</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lattice</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">lattice</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">b</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">c</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">alpha</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">beta</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">gamma</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">convert_unitcell_to_abc</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">volume</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">calculate_volume</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">inverse_lattice</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lattice</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">reciprocal_lattice</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">inverse_lattice</span></div>
+
+<div class="viewcode-block" id="UnitCell.calculate_volume"><a class="viewcode-back" href="../../autoapi/PDielec/UnitCell/index.html#PDielec.UnitCell.UnitCell.calculate_volume">[docs]</a>    <span class="k">def</span> <span class="nf">calculate_volume</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calculate the volume</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        None</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        volume : float</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">volume</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lattice</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lattice</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">lattice</span><span class="p">[</span><span class="mi">2</span><span class="p">])))</span>
+        <span class="k">return</span> <span class="n">volume</span></div>
+
+<div class="viewcode-block" id="UnitCell.convert_xyz_to_abc"><a class="viewcode-back" href="../../autoapi/PDielec/UnitCell/index.html#PDielec.UnitCell.UnitCell.convert_xyz_to_abc">[docs]</a>    <span class="k">def</span> <span class="nf">convert_xyz_to_abc</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xyz</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Convert xyz coordinates to abc lattice coordinates.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        xyz: list of coordinates</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        abc : list of fractional coordinates</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">xyz</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">xyz</span><span class="p">)</span>
+        <span class="n">abc</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">xyz</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">reciprocal_lattice</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">abc</span></div>
+
+<div class="viewcode-block" id="UnitCell.convert_hkl_to_xyz"><a class="viewcode-back" href="../../autoapi/PDielec/UnitCell/index.html#PDielec.UnitCell.UnitCell.convert_hkl_to_xyz">[docs]</a>    <span class="k">def</span> <span class="nf">convert_hkl_to_xyz</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hkl</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Convert hkl miller indices to xyz coordinates.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        hkl : list of hkl coordinates</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        xyz : list of xyz coordinates</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">hkl</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">hkl</span><span class="p">)</span>
+        <span class="n">xyz</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">hkl</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">reciprocal_lattice</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">xyz</span></div>
+
+<div class="viewcode-block" id="UnitCell.convert_abc_to_xyz"><a class="viewcode-back" href="../../autoapi/PDielec/UnitCell/index.html#PDielec.UnitCell.UnitCell.convert_abc_to_xyz">[docs]</a>    <span class="k">def</span> <span class="nf">convert_abc_to_xyz</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">abc</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Convert abc coordinates to xyz coordinates.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        abc : list of fractional coordinates</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        xyz : list of coordinates</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">abc</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">abc</span><span class="p">)</span>
+        <span class="n">xyz</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">abc</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">lattice</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">xyz</span></div>
+
+<div class="viewcode-block" id="UnitCell.convert_hkl_to_xyz2"><a class="viewcode-back" href="../../autoapi/PDielec/UnitCell/index.html#PDielec.UnitCell.UnitCell.convert_hkl_to_xyz2">[docs]</a>    <span class="k">def</span> <span class="nf">convert_hkl_to_xyz2</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hkl</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Convert hkl coordinates to xyz coordinates (written as a check on convert_hkl_to_xyz)</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        hkl : list of hkl miller indices</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        xyz : list of xyz coordinates</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Use the hkl miller indices to calculate the normal to a plane in cartesian space</span>
+        <span class="n">p</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">hkl</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">p</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lattice</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="n">hkl</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">hkl</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">p</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lattice</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">/</span> <span class="n">hkl</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">hkl</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">p</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lattice</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">/</span> <span class="n">hkl</span><span class="p">[</span><span class="mi">2</span><span class="p">]))</span>
+        <span class="k">if</span> <span class="n">hkl</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">p</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lattice</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">p</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="k">if</span> <span class="n">hkl</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">p</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lattice</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">p</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="k">if</span> <span class="n">hkl</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">p</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lattice</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="n">p</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">p12</span> <span class="o">=</span> <span class="n">p</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">p</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">p13</span> <span class="o">=</span> <span class="n">p</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">p</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">normal</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="n">p12</span><span class="p">,</span> <span class="n">p13</span><span class="p">)</span>
+        <span class="n">norm</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">normal</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">norm</span> <span class="o">&lt;</span> <span class="mf">1.0e-8</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Error in unit cell, calculation of normal to miller index failed&quot;</span><span class="p">)</span>
+            <span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">normal</span> <span class="o">=</span> <span class="n">normal</span> <span class="o">/</span> <span class="n">norm</span>
+        <span class="k">return</span> <span class="n">normal</span></div>
+
+<div class="viewcode-block" id="UnitCell.set_fractional_coordinates"><a class="viewcode-back" href="../../autoapi/PDielec/UnitCell/index.html#PDielec.UnitCell.UnitCell.set_fractional_coordinates">[docs]</a>    <span class="k">def</span> <span class="nf">set_fractional_coordinates</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coords</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Set the fractional coordinates and calculate the xyz coordinates.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        coords : a list of fractional coordinates</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fractional_coordinates</span> <span class="o">=</span> <span class="n">coords</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">xyz_coordinates</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">convert_abc_to_xyz</span><span class="p">(</span><span class="n">coords</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nions</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">coords</span><span class="p">)</span>
+        <span class="k">return</span></div>
+
+<div class="viewcode-block" id="UnitCell.set_xyz_coordinates"><a class="viewcode-back" href="../../autoapi/PDielec/UnitCell/index.html#PDielec.UnitCell.UnitCell.set_xyz_coordinates">[docs]</a>    <span class="k">def</span> <span class="nf">set_xyz_coordinates</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coords</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Set the xyz coordinates and calculate the fractional coordinates.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        coords : a list of fractional coordinates</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">xyz_coordinates</span> <span class="o">=</span> <span class="n">coords</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fractional_coordinates</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">convert_xyz_to_abc</span><span class="p">(</span><span class="n">coords</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nions</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">coords</span><span class="p">)</span>
+        <span class="k">return</span></div>
+
+<div class="viewcode-block" id="UnitCell.set_element_names"><a class="viewcode-back" href="../../autoapi/PDielec/UnitCell/index.html#PDielec.UnitCell.UnitCell.set_element_names">[docs]</a>    <span class="k">def</span> <span class="nf">set_element_names</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">element_names</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Set the names of elements in the object after cleaning them up.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        element_names : list</span>
+<span class="sd">            A list of strings representing element names to be cleaned and stored.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        None</span>
+
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+<span class="sd">        This function takes a list of element names, cleans each name using the </span>
+<span class="sd">        `cleanup_symbol` function (not defined here), and then updates the object&#39;s </span>
+<span class="sd">        `element_names` attribute with the cleaned names.</span>
+<span class="sd">        &quot;&quot;&quot;</span>        
+        <span class="bp">self</span><span class="o">.</span><span class="n">element_names</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">el</span> <span class="ow">in</span> <span class="n">element_names</span><span class="p">:</span>
+          <span class="n">el</span> <span class="o">=</span> <span class="n">cleanup_symbol</span><span class="p">(</span><span class="n">el</span><span class="p">)</span>
+          <span class="bp">self</span><span class="o">.</span><span class="n">element_names</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">el</span><span class="p">)</span>
+        <span class="k">return</span></div>
+
+<div class="viewcode-block" id="UnitCell.set_atom_labels"><a class="viewcode-back" href="../../autoapi/PDielec/UnitCell/index.html#PDielec.UnitCell.UnitCell.set_atom_labels">[docs]</a>    <span class="k">def</span> <span class="nf">set_atom_labels</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">atom_labels</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Set the atom labels for a molecule.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        atom_labels : list</span>
+<span class="sd">            A list containing the labels of atoms.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        None</span>
+
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+<span class="sd">        This method updates the `atom_labels` attribute of the molecule with the</span>
+<span class="sd">        provided list of atom labels. Each element in the input `atom_labels` list </span>
+<span class="sd">        is appended to the `self.atom_labels` attribute.</span>
+<span class="sd">        &quot;&quot;&quot;</span>        
+        <span class="bp">self</span><span class="o">.</span><span class="n">atom_labels</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">el</span> <span class="ow">in</span> <span class="n">atom_labels</span><span class="p">:</span>
+          <span class="bp">self</span><span class="o">.</span><span class="n">atom_labels</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">el</span><span class="p">)</span>
+        <span class="k">return</span></div>
+
+<div class="viewcode-block" id="UnitCell.find_symmetry"><a class="viewcode-back" href="../../autoapi/PDielec/UnitCell/index.html#PDielec.UnitCell.UnitCell.find_symmetry">[docs]</a>    <span class="k">def</span> <span class="nf">find_symmetry</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Find the space group symmetry of the unit cell.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        None</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        sets self.spacegroup</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="kn">from</span> <span class="nn">spglib</span> <span class="kn">import</span> <span class="n">get_spacegroup</span>
+        <span class="n">cell</span> <span class="o">=</span> <span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">lattice</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">fractional_coordinates</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">atomic_nos</span> <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">spacegroup</span> <span class="o">=</span> <span class="n">get_spacegroup</span><span class="p">(</span><span class="n">cell</span><span class="p">,</span> <span class="n">symmprec</span><span class="o">=</span><span class="mf">1e-5</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Symmetry space group is&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">spacegroup</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="UnitCell.calculate_molecular_contents"><a class="viewcode-back" href="../../autoapi/PDielec/UnitCell/index.html#PDielec.UnitCell.UnitCell.calculate_molecular_contents">[docs]</a>    <span class="k">def</span> <span class="nf">calculate_molecular_contents</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">scale</span><span class="p">,</span> <span class="n">toler</span><span class="p">,</span> <span class="n">covalent_radii</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Finds whole molecules in the unit cell.</span>
+
+<span class="sd">        Does this by creating a supercell and exploring adjacent cells to see if there is any bonding to atoms in the adjacent cell</span>
+<span class="sd">        A new unit cell is created containing whole molecules, the order of the atoms in the new cell is different.</span>
+<span class="sd">        The routine returns the new unit cell, the number of molecules and the old ordering of the atoms.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        scale : float</span>
+<span class="sd">            The scale factor applied to the covalent radii.</span>
+<span class="sd">        toler : float</span>
+<span class="sd">            The tolerance added to the scaled sum of radii to determine the maximum allowable distance between atoms i and j for them to be considered bonded.</span>
+<span class="sd">        covalent_radii : list of float</span>
+<span class="sd">            A list of covalent radii for the atoms</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        new_unit_cell, len(new_molecules), old_order</span>
+
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+<span class="sd">        The formula used to calculate the largest distance apart atoms i and j can be for a bond is:</span>
+<span class="sd">        `scale * (radi + radj) + toler`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Calculate the contents of all the cells adjacent to the central cell</span>
+        <span class="n">adjacents</span> <span class="o">=</span> <span class="p">(</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span> <span class="p">)</span>
+        <span class="n">translations</span> <span class="o">=</span> <span class="p">[</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">adjacents</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">adjacents</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">adjacents</span> <span class="p">]</span>
+        <span class="n">fractional_supercell</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">index_supercell</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">tr</span> <span class="ow">in</span> <span class="n">translations</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">l</span><span class="p">,</span><span class="n">a</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fractional_coordinates</span><span class="p">):</span>
+                <span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">,</span><span class="n">k</span> <span class="o">=</span> <span class="n">tr</span>
+                <span class="n">index_supercell</span><span class="o">.</span><span class="n">append</span><span class="p">(</span> <span class="n">l</span> <span class="p">)</span>
+                <span class="n">new_position</span> <span class="o">=</span> <span class="p">[</span> <span class="p">(</span><span class="n">xyz1</span> <span class="o">+</span> <span class="n">xyz2</span><span class="p">)</span>  <span class="k">for</span> <span class="n">xyz1</span><span class="p">,</span> <span class="n">xyz2</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">tr</span><span class="p">)</span> <span class="p">]</span>
+                <span class="n">fractional_supercell</span><span class="o">.</span><span class="n">append</span><span class="p">(</span> <span class="n">new_position</span> <span class="p">)</span>
+                <span class="c1">#jk print(&#39;New positions &#39;,new_position,l,i,j,k)</span>
+        <span class="c1"># Convert fractional supercell coordinates to xyz</span>
+        <span class="c1"># xyz_supercell will be an np array</span>
+        <span class="n">xyz_supercell</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty_like</span><span class="p">(</span><span class="n">fractional_supercell</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">abc</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">fractional_supercell</span><span class="p">):</span>
+            <span class="n">xyz_supercell</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">convert_abc_to_xyz</span><span class="p">(</span><span class="n">abc</span><span class="p">)</span>
+        <span class="c1"># put the atoms into boxes of boxSize</span>
+        <span class="n">BoxAtoms</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">BoxNeighbours</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">boxSize</span> <span class="o">=</span> <span class="mf">0.0</span>
+        <span class="c1"># calculate boxsize</span>
+        <span class="n">rmax</span> <span class="o">=</span> <span class="mf">0.0</span>
+        <span class="k">for</span> <span class="n">el</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">element_names</span><span class="p">:</span>
+            <span class="c1">#jk print(&quot;Element name&quot;,el)</span>
+            <span class="k">if</span> <span class="n">covalent_radii</span><span class="p">[</span><span class="n">el</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">rmax</span><span class="p">:</span>
+                <span class="n">rmax</span> <span class="o">=</span> <span class="n">covalent_radii</span><span class="p">[</span><span class="n">el</span><span class="p">]</span>
+        <span class="n">boxSize</span> <span class="o">=</span> <span class="mf">2.0</span><span class="o">*</span><span class="n">scale</span><span class="o">*</span><span class="n">rmax</span> <span class="o">+</span> <span class="mf">0.5</span> <span class="o">+</span> <span class="n">toler</span>
+        <span class="c1">#jk print(&#39;rmax = &#39;,rmax)</span>
+        <span class="c1"># Put atoms into boxes and store the box info in Atom_box_id</span>
+        <span class="n">Atom_box_id</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">xyz</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">xyz_supercell</span><span class="p">):</span>
+            <span class="n">a</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span> <span class="n">math</span><span class="o">.</span><span class="n">floor</span><span class="p">(</span><span class="n">xyz</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">/</span><span class="n">boxSize</span><span class="p">)</span> <span class="p">)</span>
+            <span class="n">b</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span> <span class="n">math</span><span class="o">.</span><span class="n">floor</span><span class="p">(</span><span class="n">xyz</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">/</span><span class="n">boxSize</span><span class="p">)</span> <span class="p">)</span>
+            <span class="n">c</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span> <span class="n">math</span><span class="o">.</span><span class="n">floor</span><span class="p">(</span><span class="n">xyz</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">/</span><span class="n">boxSize</span><span class="p">)</span> <span class="p">)</span>
+            <span class="n">abc</span> <span class="o">=</span> <span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="n">c</span><span class="p">)</span>
+            <span class="n">Atom_box_id</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">abc</span><span class="p">)</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">BoxAtoms</span><span class="p">[</span><span class="n">abc</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+            <span class="k">except</span><span class="p">:</span>
+                <span class="n">BoxAtoms</span><span class="p">[</span><span class="n">abc</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        <span class="c1"># Calculate the neighbouring boxes for each occupied box</span>
+        <span class="k">for</span> <span class="n">abc</span> <span class="ow">in</span> <span class="n">BoxAtoms</span><span class="p">:</span>
+            <span class="c1">#jk print(&#39;Box &#39;,abc, BoxAtoms[abc])</span>
+            <span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="n">c</span> <span class="o">=</span> <span class="n">abc</span>
+            <span class="n">BoxNeighbours</span><span class="p">[</span><span class="n">abc</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="p">[</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]:</span>
+              <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="p">[</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]:</span>
+                <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="p">[</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]:</span>
+                  <span class="n">BoxNeighbours</span><span class="p">[</span><span class="n">abc</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span> <span class="p">(</span><span class="n">a</span><span class="o">+</span><span class="n">i</span><span class="p">,</span><span class="n">b</span><span class="o">+</span><span class="n">j</span><span class="p">,</span><span class="n">c</span><span class="o">+</span><span class="n">k</span><span class="p">)</span> <span class="p">)</span>
+        <span class="c1"># end for abc in Box1</span>
+
+        <span class="c1"># Calculate the bonding the supercell</span>
+        <span class="n">bondedToAtom</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">xyzi</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">xyz_supercell</span><span class="p">):</span>
+            <span class="c1">#jk print(&#39;Calculating bonding to &#39;,i,xyzi)</span>
+            <span class="n">bondedToAtom</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="c1"># Find the element name for this atom in the supercell</span>
+            <span class="n">ip</span> <span class="o">=</span> <span class="n">index_supercell</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="n">i_el</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">element_names</span><span class="p">[</span><span class="n">ip</span><span class="p">]</span>
+            <span class="c1"># lookup all of the boxes that might hold a bonding atom</span>
+            <span class="n">cell</span> <span class="o">=</span> <span class="n">Atom_box_id</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="k">for</span> <span class="n">abc</span> <span class="ow">in</span> <span class="n">BoxNeighbours</span><span class="p">[</span><span class="n">cell</span><span class="p">]:</span>
+                <span class="c1"># lookup all the atoms that are in that cell</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">BoxAtoms</span><span class="p">[</span><span class="n">abc</span><span class="p">]:</span>
+                        <span class="k">if</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">i</span><span class="p">:</span>
+                            <span class="c1"># Find the element name for this atom in the supercell</span>
+                            <span class="n">jp</span> <span class="o">=</span> <span class="n">index_supercell</span><span class="p">[</span><span class="n">j</span><span class="p">]</span>
+                            <span class="n">j_el</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">element_names</span><span class="p">[</span><span class="n">jp</span><span class="p">]</span>
+                            <span class="n">dist1</span> <span class="o">=</span> <span class="n">scale</span><span class="o">*</span><span class="p">(</span> <span class="n">covalent_radii</span><span class="p">[</span><span class="n">i_el</span><span class="p">]</span> <span class="o">+</span> <span class="n">covalent_radii</span><span class="p">[</span><span class="n">j_el</span><span class="p">])</span> <span class="o">+</span> <span class="n">toler</span>
+                            <span class="n">dist2</span> <span class="o">=</span> <span class="n">calculate_distance</span><span class="p">(</span><span class="n">xyzi</span><span class="p">,</span><span class="n">xyz_supercell</span><span class="p">[</span><span class="n">j</span><span class="p">])</span>
+                            <span class="k">if</span> <span class="n">dist2</span> <span class="o">&lt;</span> <span class="n">dist1</span><span class="p">:</span>
+                                <span class="n">bondedToAtom</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">j</span><span class="p">)</span>
+                                <span class="n">bondedToAtom</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+                                <span class="c1">#jk print(&#39;new bond&#39;, i, j, i_el, j_el, xyzi, xyz_supercell[j], dist1, dist2)</span>
+                            <span class="c1"># end if dist2 &lt; dist1</span>
+                        <span class="c1"># end if j &lt; i</span>
+                    <span class="c1"># end for j</span>
+                <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+                    <span class="k">pass</span>
+            <span class="c1"># end for abc</span>
+        <span class="c1"># end for i,a</span>
+        <span class="c1">#</span>
+        <span class="c1"># Now we have to find how many molecules we have in the cell</span>
+        <span class="c1"># There must be at least one molecule in the cell and it must contain the first atom</span>
+        <span class="c1">#</span>
+        <span class="c1"># BelongsToMolecule[i] holds which molecule the ith atom belongs to</span>
+        <span class="n">belongsToMolecule</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="c1"># molecules is a dictionary of molecules each entry is a is a list of atoms</span>
+        <span class="n">molecules</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">molID</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+        <span class="c1"># We stop when all the atoms in the original cell belong to a molecule</span>
+        <span class="n">remainingAtoms</span> <span class="o">=</span> <span class="p">[</span> <span class="n">atom</span> <span class="k">for</span> <span class="n">atom</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nions</span><span class="p">)</span> <span class="p">]</span>
+        <span class="n">bonds</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">while</span> <span class="nb">len</span><span class="p">(</span><span class="n">remainingAtoms</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="c1">#jk print(&quot;Remaining atoms&quot;)</span>
+            <span class="c1">#jk print(remainingAtoms)</span>
+            <span class="c1"># create a new molecule from the first atom which has no molecule assigned to it</span>
+            <span class="n">molID</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="n">useAtom</span> <span class="o">=</span> <span class="n">remainingAtoms</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">belongsToMolecule</span><span class="p">[</span><span class="n">useAtom</span><span class="p">]</span> <span class="o">=</span> <span class="n">molID</span>
+            <span class="n">molecules</span><span class="p">[</span><span class="n">molID</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span> <span class="n">useAtom</span> <span class="p">]</span>
+            <span class="n">remainingAtoms</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">useAtom</span><span class="p">)</span>
+            <span class="c1"># Now using this new molecule with its only atom as a seed find any atoms connected to it</span>
+            <span class="c1"># We need to continue searching for bonded atoms until there are no more to be found</span>
+            <span class="n">moreAtomsToBeFound</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="k">while</span> <span class="n">moreAtomsToBeFound</span><span class="p">:</span>
+                <span class="n">moreAtomsToBeFound</span> <span class="o">=</span> <span class="kc">False</span>
+                <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">xyz_supercell</span><span class="p">)):</span>
+                    <span class="c1"># has this atom been assigned a molecule yet?</span>
+                    <span class="k">if</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">belongsToMolecule</span><span class="p">:</span>
+                        <span class="c1"># atom i is already assigned to a molecule</span>
+                        <span class="n">useThisMolecule</span> <span class="o">=</span> <span class="n">belongsToMolecule</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+                        <span class="c1">#jk print(&quot;Using this molecule&quot;, useThisMolecule)</span>
+                        <span class="c1"># Go through all the atoms bonded to i and add to the current molecule</span>
+                        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">bondedToAtom</span><span class="p">[</span><span class="n">i</span><span class="p">]:</span>
+                            <span class="n">jx</span> <span class="o">=</span> <span class="n">index_supercell</span><span class="p">[</span><span class="n">j</span><span class="p">]</span>
+                            <span class="c1">#jk print(&quot;atom j / jx is bonded to atom i&quot;,j,jx,i)</span>
+                            <span class="c1"># The image of j in the original cell might not be available, and j might be bonded</span>
+                            <span class="k">if</span> <span class="n">jx</span> <span class="ow">in</span> <span class="n">remainingAtoms</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">belongsToMolecule</span><span class="p">:</span>
+                                <span class="c1"># if j was not already in a molecule then we have new information</span>
+                                <span class="n">moreAtomsToBeFound</span> <span class="o">=</span> <span class="kc">True</span>
+                                <span class="n">molecules</span><span class="p">[</span><span class="n">useThisMolecule</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">j</span><span class="p">)</span>
+                                <span class="n">belongsToMolecule</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">useThisMolecule</span>
+                                <span class="c1">#jk print(&quot;Removing atom index(j) from remaining atoms&quot;,index_supercell[j])</span>
+                                <span class="n">remainingAtoms</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">jx</span><span class="p">)</span>
+                            <span class="c1"># The j&#39;th atom could be already specified and we have a ring....</span>
+                            <span class="c1"># We also need to make sure that we have unique bonds</span>
+                            <span class="k">if</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">belongsToMolecule</span><span class="p">:</span>
+                                <span class="k">if</span> <span class="n">i</span> <span class="o">&gt;</span> <span class="n">j</span> <span class="ow">and</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">bonds</span><span class="p">:</span>
+                                    <span class="n">bonds</span><span class="o">.</span><span class="n">append</span><span class="p">(</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">)</span> <span class="p">)</span>
+                                <span class="k">elif</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">j</span> <span class="ow">and</span> <span class="p">(</span><span class="n">j</span><span class="p">,</span><span class="n">i</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">bonds</span><span class="p">:</span>
+                                    <span class="n">bonds</span><span class="o">.</span><span class="n">append</span><span class="p">(</span> <span class="p">(</span><span class="n">j</span><span class="p">,</span><span class="n">i</span><span class="p">)</span> <span class="p">)</span>
+                        <span class="c1"># end for j</span>
+                    <span class="c1"># end if i in</span>
+                <span class="c1"># end for i</span>
+            <span class="c1"># while moreAtomsToBeFound</span>
+        <span class="c1"># until all the atoms belong to a molecule</span>
+        <span class="c1">#jk print(&#39;Number of molecules&#39;, molID+1)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">centres_of_mass</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">total_mass</span> <span class="o">=</span> <span class="mf">0.0</span>
+        <span class="k">for</span> <span class="n">mol_index</span> <span class="ow">in</span> <span class="n">molecules</span><span class="p">:</span>
+            <span class="c1">#jk print(&#39;Molecule &#39;,mol_index)</span>
+            <span class="c1">#jk print(&#39;Atoms &#39;,molecules[mol_index])</span>
+            <span class="k">for</span> <span class="n">atom_index</span> <span class="ow">in</span> <span class="n">molecules</span><span class="p">[</span><span class="n">mol_index</span><span class="p">]:</span>
+                <span class="n">index</span> <span class="o">=</span> <span class="n">index_supercell</span><span class="p">[</span><span class="n">atom_index</span><span class="p">]</span>
+                <span class="c1">#jk print(&#39;New atom index, old index&#39;, atom_index, index, self.element_names[index])</span>
+            <span class="c1"># Calculate centre of mass</span>
+            <span class="n">mass</span> <span class="o">=</span> <span class="mf">0.0</span>
+            <span class="n">cm</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">atom_index</span> <span class="ow">in</span> <span class="n">molecules</span><span class="p">[</span><span class="n">mol_index</span><span class="p">]:</span>
+                <span class="n">index</span> <span class="o">=</span> <span class="n">index_supercell</span><span class="p">[</span><span class="n">atom_index</span><span class="p">]</span>
+                <span class="n">mass</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">atomic_masses</span><span class="p">[</span><span class="n">index</span><span class="p">]</span>
+                <span class="n">cm</span> <span class="o">=</span> <span class="n">cm</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">atomic_masses</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">*</span> <span class="n">xyz_supercell</span><span class="p">[</span><span class="n">atom_index</span><span class="p">]</span>
+            <span class="n">cm_xyz</span> <span class="o">=</span> <span class="n">cm</span> <span class="o">/</span> <span class="n">mass</span>
+            <span class="n">cm_fractional</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">convert_xyz_to_abc</span><span class="p">(</span><span class="n">cm_xyz</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">centres_of_mass</span><span class="o">.</span><span class="n">append</span><span class="p">(</span> <span class="n">cm_fractional</span> <span class="p">)</span>
+            <span class="c1">#jk print(&#39;Mass&#39;, mass)</span>
+            <span class="c1">#jk print(&#39;Centre of mass&#39;, cm_fractional)</span>
+        <span class="c1"># Create a new unit cell with the atoms shifted so that whole molecules are ordered and within the cell</span>
+        <span class="n">new_molecules</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">new_fractional</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty_like</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fractional_coordinates</span><span class="p">)</span>
+        <span class="n">new_element_names</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">new_index</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">new_masses</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">old_order</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">mol_index</span> <span class="ow">in</span> <span class="n">molecules</span><span class="p">:</span>
+            <span class="n">new_atom_index</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">cm</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">centres_of_mass</span><span class="p">[</span><span class="n">mol_index</span><span class="p">]</span>
+            <span class="n">shift</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span> <span class="p">[</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">]</span> <span class="p">)</span>
+            <span class="k">if</span> <span class="n">cm</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mf">0.0</span><span class="p">:</span>
+                <span class="n">shift</span> <span class="o">+=</span> <span class="p">[</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span> <span class="p">]</span>
+            <span class="k">elif</span> <span class="n">cm</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mf">1.0</span><span class="p">:</span>
+                <span class="n">shift</span> <span class="o">+=</span> <span class="p">[</span><span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span> <span class="p">]</span>
+            <span class="k">if</span> <span class="n">cm</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mf">0.0</span><span class="p">:</span>
+                <span class="n">shift</span> <span class="o">+=</span> <span class="p">[</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span> <span class="p">]</span>
+            <span class="k">elif</span> <span class="n">cm</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mf">1.0</span><span class="p">:</span>
+                <span class="n">shift</span> <span class="o">+=</span> <span class="p">[</span> <span class="mf">0.0</span><span class="p">,</span><span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span> <span class="p">]</span>
+            <span class="k">if</span> <span class="n">cm</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mf">0.0</span><span class="p">:</span>
+                <span class="n">shift</span> <span class="o">+=</span> <span class="p">[</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span> <span class="p">]</span>
+            <span class="k">elif</span> <span class="n">cm</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mf">1.0</span><span class="p">:</span>
+                <span class="n">shift</span> <span class="o">+=</span> <span class="p">[</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span><span class="o">-</span><span class="mf">1.0</span> <span class="p">]</span>
+            <span class="k">for</span> <span class="n">atom_index</span> <span class="ow">in</span> <span class="n">molecules</span><span class="p">[</span><span class="n">mol_index</span><span class="p">]:</span>
+                <span class="n">old_index</span> <span class="o">=</span> <span class="n">index_supercell</span><span class="p">[</span><span class="n">atom_index</span><span class="p">]</span>
+                <span class="n">old_order</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">old_index</span><span class="p">)</span>
+                <span class="n">new_fractional</span><span class="p">[</span><span class="n">new_index</span><span class="p">]</span> <span class="o">=</span> <span class="n">shift</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">fractional_supercell</span><span class="p">[</span><span class="n">atom_index</span><span class="p">])</span>
+                <span class="n">new_element_names</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">element_names</span><span class="p">[</span><span class="n">old_index</span><span class="p">])</span>
+                <span class="n">new_masses</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">atomic_masses</span><span class="p">[</span><span class="n">old_index</span><span class="p">])</span>
+                <span class="n">new_atom_index</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">new_index</span><span class="p">)</span>
+                <span class="n">new_index</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="n">new_molecules</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">new_atom_index</span><span class="p">)</span>
+        <span class="c1"># as well as being able to go from the new order and look up the old order</span>
+        <span class="c1"># we need to be able to take the old order and look up what the new order is</span>
+        <span class="n">invert_old_order</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">old_order</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">j</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">old_order</span><span class="p">):</span>
+            <span class="n">invert_old_order</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">i</span>
+        <span class="n">new_bonds</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">bond</span> <span class="ow">in</span> <span class="n">bonds</span><span class="p">:</span>
+            <span class="n">i</span><span class="p">,</span><span class="n">j</span> <span class="o">=</span> <span class="n">bond</span>
+            <span class="n">ix</span> <span class="o">=</span> <span class="n">invert_old_order</span><span class="p">[</span><span class="n">index_supercell</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span>
+            <span class="n">jx</span> <span class="o">=</span> <span class="n">invert_old_order</span><span class="p">[</span><span class="n">index_supercell</span><span class="p">[</span><span class="n">j</span><span class="p">]]</span>
+            <span class="n">new_bonds</span><span class="o">.</span><span class="n">append</span><span class="p">(</span> <span class="p">(</span><span class="n">ix</span><span class="p">,</span><span class="n">jx</span><span class="p">)</span> <span class="p">)</span>
+        <span class="n">new_unit_cell</span> <span class="o">=</span> <span class="n">UnitCell</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">b</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">c</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">alpha</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">beta</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">gamma</span> <span class="p">)</span>
+        <span class="n">new_unit_cell</span><span class="o">.</span><span class="n">set_fractional_coordinates</span><span class="p">(</span><span class="n">new_fractional</span><span class="o">.</span><span class="n">tolist</span><span class="p">())</span>
+        <span class="n">new_unit_cell</span><span class="o">.</span><span class="n">set_element_names</span><span class="p">(</span><span class="n">new_element_names</span><span class="p">)</span>
+        <span class="n">new_unit_cell</span><span class="o">.</span><span class="n">set_atomic_masses</span><span class="p">(</span><span class="n">new_masses</span><span class="p">)</span>
+        <span class="n">new_unit_cell</span><span class="o">.</span><span class="n">set_molecules</span><span class="p">(</span><span class="n">new_molecules</span><span class="p">)</span>
+        <span class="n">new_unit_cell</span><span class="o">.</span><span class="n">set_bonds</span><span class="p">(</span><span class="n">new_bonds</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">new_unit_cell</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">new_molecules</span><span class="p">),</span> <span class="n">old_order</span></div>
+
+<div class="viewcode-block" id="UnitCell.set_bonds"><a class="viewcode-back" href="../../autoapi/PDielec/UnitCell/index.html#PDielec.UnitCell.UnitCell.set_bonds">[docs]</a>    <span class="k">def</span> <span class="nf">set_bonds</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bonds</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Define a list of bonds for the unit cell</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        bonds : a list of integer tuple</span>
+<span class="sd">           The bonding list for the cell</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        None</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bonds</span> <span class="o">=</span> <span class="n">bonds</span>
+        <span class="k">return</span></div>
+
+<div class="viewcode-block" id="UnitCell.set_molecules"><a class="viewcode-back" href="../../autoapi/PDielec/UnitCell/index.html#PDielec.UnitCell.UnitCell.set_molecules">[docs]</a>    <span class="k">def</span> <span class="nf">set_molecules</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">molecules</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Define a list of molecules, each molecule is a list of atom coordinates.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        None</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        None</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">molecules</span> <span class="o">=</span> <span class="n">molecules</span>
+        <span class="k">return</span></div></div>
+
+</pre></div>
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          
+          
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2024, John Kendrick and Andrew Burnett
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer no-toc">
+      
+      
+      
+    </aside>
+  </div>
+</div><script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=01b4f342"></script>
+    <script src="../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../../_static/scripts/furo.js?v=32e29ea5"></script>
+    </body>
+</html>

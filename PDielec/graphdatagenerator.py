@@ -1,30 +1,55 @@
 #!/usr/bin/env python
-#
-# Copyright 2015 John Kendrick
-#
-# This file is part of PDielec
-#
-# This program is free software; you can redistribute it and/or modify
-# it under the terms of the MIT License
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-#
-# You should have received a copy of the MIT License
-# along with this program, if not see https://opensource.org/licenses/MIT
-#
-'''PDielec driver program to calculate dielectric response at infrared and THz frequencies'''
-from __future__ import print_function
+'''
+PDielec driver program to calculate dielectric response at infrared and THz frequencies
+
+Copyright 2024 John Kendrick
+
+This file is part of PDielec
+
+This program is free software; you can redistribute it and/or modify
+it under the terms of the MIT License
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+
+You should have received a copy of the MIT License
+along with this program, if not see https://opensource.org/licenses/MIT
+'''
 import sys
 import numpy as np
 from openpyxl import load_workbook
 
 
 def main():
-    '''Main Driver routine for graphdatagenerator - reads a collection of spreadsheets with spectra and generates single spreadsheet collating results'''
+    '''
+    Main driver routine for graphdatagenerator.
+
+    This routine reads a collection of spreadsheets containing spectra and generates a single spreadsheet that collates the results.
+
+   ::
+
+       graphdatagenerator file1 file2...
+       graphdatagenerator: Calculates the cross-correlation of spectra calculated using pdielec
+                -column column  Take the data from column in each spreadsheet
+                                C Averaged
+                                D MG      
+                                E Mie/0.1 
+                                F Mie/1.0 
+                                G Mie/2.0 
+                                H Mie/3.0 
+                -sheet [molar/absorption/real/imaginary/atr]
+                -excel filename
+
+    '''
     def show_usage():
-        '''Show graphdatagenerator usage'''
+        '''
+        Show graphdatagenerator usage.
+
+        Returns
+        -------
+        None
+        '''
         print('graphdatagenerator file1 file2...')
         print('graphdatagenerator: Calculates the cross-correlation of spectra calculated using pdielec')
         print('         -column column  Take the data from column in each spreadsheet')

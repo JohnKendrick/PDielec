@@ -1,0 +1,205 @@
+:py:mod:`PDielec.HelperRoutines`
+================================
+
+.. py:module:: PDielec.HelperRoutines
+
+.. autoapi-nested-parse::
+
+   Helper Routines - Useful for scripting and Jupyter Notebooks
+
+   Copyright 2024 John Kendrick
+
+   This file is part of PDielec
+
+   This program is free software; you can redistribute it and/or modify
+   it under the terms of the MIT License
+
+   This program is distributed in the hope that it will be useful,
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+
+   You should have received a copy of the MIT License
+   along with this program, if not see https://opensource.org/licenses/MIT
+
+
+
+Module Contents
+---------------
+
+
+Functions
+~~~~~~~~~
+
+.. autoapisummary::
+
+   PDielec.HelperRoutines.calculateDFTPermittivityObject
+   PDielec.HelperRoutines.calculatePowderSpectrum
+   PDielec.HelperRoutines.calculateSingleCrystalSpectrum
+   PDielec.HelperRoutines.getMaterial
+   PDielec.HelperRoutines.main
+   PDielec.HelperRoutines.powderTest
+   PDielec.HelperRoutines.singleCrystalTest
+
+
+
+.. py:function:: calculateDFTPermittivityObject(reader, sigma=5.0)
+
+   Define a permittivity object for the DFT calculation from the given reader
+
+   This routine reads in the details of the DFT calculation
+   Calculates the hessian and normal modes
+   Calculates the oscillator strength
+   Finally it defines a permittivity object from which the permittivity can be calculated
+
+   Parameters
+   ----------
+   reader : outputReader object
+       An output reader object
+   sigma  : float
+       Default Lorentzian widths in cm-1
+
+   Returns
+   -------
+   permittivityObject
+
+
+
+.. py:function:: calculatePowderSpectrum(frequencies_cm1, dielectric, matrix, volume_fraction, method='Maxwell-Garnett')
+
+   Calculate the powder IR spectrum of a mixture of spherical dielectric particles in a matrix with a given volume fraction.
+
+   Parameters
+   ----------
+   frequencies_cm1 : list
+       A list of frequencies in cm-1.
+   dielectric : material
+       A material with a tensor permittivity.
+   matrix : material
+       A material with a scalar permittivity.
+   volume_fraction : float
+       The volume fraction of dielectric.
+   method : str
+       One of 'Maxwell-Garnett', 'Bruggeman'.
+
+   Returns
+   -------
+   float
+       Absorption coefficient in cm-1.
+
+   Example
+   -------
+   ```
+   frequencies_cm1 = np.arange( 0, 200, 0.2 )
+   matrix = getMaterial('ptfe')
+   dielectric = getMaterial('Sapphire')
+   method = 'Maxwell-Garnett' 
+   volume_fraction = 0.1
+   absorption = calculatePowderSpectrum(frequencies_cm1,dielectric, matrix, volume_fraction)
+   ```
+
+
+.. py:function:: calculateSingleCrystalSpectrum(frequencies_cm1, layers, incident_angle, global_azimuthal_angle, method='Scattering matrix')
+
+   Calculate a single crystal spectrum.
+
+   Calculate a single crystal spectrum from the frequencies, a list of layers, the incident angle
+   the global azimuthal angle and optional specification of the method of calculation.
+
+   Parameters
+   ----------
+   frequencies_cm1 : list
+       A list of frequencies in cm-1.
+   layers : list
+       A list of layers.
+   incident_angle : float
+       The incident angle in degrees.
+   global_azimuthal_angle : float
+       The global azimuthal angle in degrees.
+   method : str
+       The method for solving Maxwell's equation ('Scattering matrix' or 'Transfer matrix').
+
+   Returns
+   -------
+   ((reflp,refls) (tranp, trans) (absop, absos)) : list of nd.arrrays
+       - reflp the p- polarised reflection at each frequency as an np.array
+       - refls the s- polarised reflection at each frequency as an np.array
+       - tranp the p- polarised transmittance at each frequency as an np.array
+       - trans the s- polarised transmittance at each frequency as an np.array
+       - absop the p- polarised absorptance at each frequency as an np.array
+       - absos the s- polarised absorptance at each frequency as an np.array
+
+   Example
+   -------
+
+   ::
+
+       air = getMaterial('air')
+       ptfe = getMaterial('ptfe')
+       Sapphire = getMaterial('Sapphire')
+       layers = []
+       # Add a substrate
+       layers.append(SingleCrystalLayer(ptfe,thickness=1.0,thicknessUnit='um'))
+        # Add the dielectric layer
+       layers.append(SingleCrystalLayer(Sapphire,hkl=[0,0,1],azimuthal=0.0,thickness=1.0,thicknessUnit='um',
+                                        incoherentOption='Coherent'))
+        # Add the superstrate
+       layers.append(SingleCrystalLayer(air,thickness=1.0,thicknessUnit='um'))
+       frequencies_cm1 = np.arange( 0, 200, 0.2 )
+       incident_angle = 80.0
+       global_azimuthal_angle = 0.0
+       (reflectance, transmittance, absorptance) = calculateSingleCrystalSpectrum(frequencies_cm1,layers,incident_angl e, global_azimuthal_angle, method='Scattering matrix')
+
+
+
+.. py:function:: getMaterial(name, dataBaseName='MaterialsDataBase.xlsx', mass_definition='average', qmprogram='vasp')
+
+   Get a material with the given name.
+
+   If the name is a file name, it is treated as a DFT (Density Functional Theory) or experimental file.
+   If the name is a material name in the material database, this is used instead.
+
+   Parameters
+   ----------
+   name : str
+       The name of the material, which can be a file name or a material name existing in the database.
+   dataBaseName : str
+       The name of the database which will be searched from the material
+   mass_definition : str
+       Can be 'average' or 'isotope'
+   qmprogram : str
+       The name of the QM program used in the case of Phonopy DFT calculations
+
+   Returns
+   -------
+   Material
+       The material obtained based on the given name.
+
+   Examples
+   --------
+   ```
+   material1 = get_material("example.dft")
+   material2 = get_material("gold")
+   ```
+
+
+.. py:function:: main()
+
+   Execute the main sequence of operations.
+
+   This function runs single crystal and powder tests in sequence.
+
+   Returns
+   -------
+   None
+
+
+.. py:function:: powderTest()
+
+   Test powder calculation
+
+
+.. py:function:: singleCrystalTest()
+
+   Test single crystal calculation
+
+

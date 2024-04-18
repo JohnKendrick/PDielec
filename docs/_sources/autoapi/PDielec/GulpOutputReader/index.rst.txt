@@ -1,0 +1,287 @@
+:py:mod:`PDielec.GulpOutputReader`
+==================================
+
+.. py:module:: PDielec.GulpOutputReader
+
+.. autoapi-nested-parse::
+
+   Read the contents of a Gulp output file
+
+   It is quite difficult to work out what is a suitable set of commands for gulp
+   The following seems to work OK, important are
+   phon - a phonon calculation
+   intens - calculate the IR intensities
+   eigen - print the eigen vectors of the dynamical matrix
+   cart - print the cartesian coordinates (this is the only way of see what all the atom types are)
+   nosym - make sure the calculation is done in P1
+   qeq molq optimise conp qok nomodcoord prop phon intens eigen cart
+
+   Copyright 2014 John Kendrick
+
+   This file is part of PDielec
+
+   This program is free software; you can redistribute it and/or modify
+   it under the terms of the MIT License
+
+   This program is distributed in the hope that it will be useful,
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+
+   You should have received a copy of the MIT License
+   along with this program, if not see https://opensource.org/licenses/MIT
+
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   PDielec.GulpOutputReader.GulpOutputReader
+
+
+
+
+.. py:class:: GulpOutputReader(names)
+
+
+   Bases: :py:obj:`PDielec.GenericOutputReader.GenericOutputReader`
+
+   Read the contents of a Gulp output file.
+
+   This function provides a way to read and interpret the contents of a Gulp output file, 
+   advising on a suitable set of command parameters that can be used for various calculations 
+   such as phonon calculations, IR intensity calculations, printing eigen vectors of the dynamical 
+   matrix, and printing cartesian coordinates. It emphasizes the importance of certain parameters 
+   to ensure accurate and comprehensive results.
+
+   Notes
+   -----
+   It is quite difficult to work out what is a suitable set of commands for Gulp. The following seems 
+   to work OK, with emphasis on these important parameters:
+   - phon: a phonon calculation.
+   - intens: calculate the IR intensities.
+   - eigen: print the eigen vectors of the dynamical matrix.
+   - cart: print the cartesian coordinates (this is the only way of seeing what all the atom types are).
+   - nosym: make sure the calculation is done in P1.
+   Also includes options for various modifications and optimizations like qeq, molq, optimise, conp, qok, 
+   nomodcoord, and prop.
+
+   .. py:method:: _read_born_charges(line)
+
+      Read the born charges from the gulp file.
+
+      This function reads the born charges as arranged in the gulp file. Each column 
+      in the output fetched refers to a given field direction, and each row refers 
+      to the atomic displacement. The function rearranges the output to match the 
+      required tensor format where 1, 2, and 3 are the field directions, and x, y, 
+      and z are the atomic displacements.
+
+      Parameters
+      ----------
+      line : str
+          Ignored
+
+      Returns
+      -------
+      numpy.ndarray
+          The born charges arranged in the tensor format as specified. The format
+          of the tensor is a square matrix where each row is [ax, ay, az] for atomic
+          displacements under a particular field direction.
+
+      Examples
+      --------
+      Consider the output format [[a1x a1y a1z]
+                                  [a2x a2y a2z]
+                                  [a3x a3y a3z]]
+
+      The function rearranges it to the required format:
+      [[a1x a1y a1z] [a2x a2y a2z] [a3x a3y a3z]]
+
+      Notes
+      -----
+      The original output from the gulp file is read line by line, with each line representing
+      the atomic displacement in each of the field directions. The reformatted output aligns
+      these displacements into a more conventional tensor format for further processing or
+      analysis.
+
+
+   .. py:method:: _read_cellcontents(line)
+
+      Read the cell contents in xyz space
+
+      Parameters
+      ----------
+      line : str (not used)
+
+      Returns
+      -------
+      None
+
+
+   .. py:method:: _read_cellcontentsf(line)
+
+      Read the cell contents in fractional space.
+
+      Parameters
+      ----------
+      line : str (not used)
+
+      Returns
+      -------
+      None
+
+
+   .. py:method:: _read_elastic_constants(line)
+
+      Read the elastic constants.
+
+      Parameters
+      ----------
+      line : str (not used)
+
+      Returns
+      -------
+      None
+
+
+   .. py:method:: _read_energies(line)
+
+      Read energies
+
+      Parameters
+      ----------
+      line : str
+
+      Returns
+      -------
+      None
+
+
+   .. py:method:: _read_external_pressure(line)
+
+      Read external pressure
+
+      Parameters
+      ----------
+      line : str
+
+      Returns
+      -------
+      None
+
+
+   .. py:method:: _read_frequencies(line)
+
+      Read the frequencies
+
+      Parameters
+      ----------
+      line : str (not used)
+
+
+   .. py:method:: _read_lattice(line)
+
+      Read the lattice vectors.
+
+      Parameters
+      ----------
+      line : str (not used)
+
+      Returns
+      -------
+      None
+
+
+   .. py:method:: _read_number_of_irreducible_atoms(line)
+
+      Read the number of irreducible atoms
+
+      Parameters
+      ----------
+      line : str 
+
+      Returns
+      -------
+      None
+
+
+   .. py:method:: _read_optical_dielectric(line)
+
+      Read optical dielectric constant
+
+      Parameters
+      ----------
+      line : str (not used)
+
+
+   .. py:method:: _read_output_files()
+
+      Initialise the phrases needed to search the .gout file and the routines to use when a match is found. Read the .gout file.
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      None
+
+
+   .. py:method:: _read_species(line)
+
+      Read species information
+
+      Parameters
+      ----------
+      line : str (not used)
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: _read_static_dielectric(line)
+
+      Read static dielectric constant
+
+      Parameters
+      ----------
+      line : str (not used)
+
+      Returns
+      -------
+      None
+
+
+   .. py:method:: _read_temperature(line)
+
+      Read temperature
+
+      Parameters
+      ----------
+      line : str
+
+      Returns
+      -------
+      None
+
+
+   .. py:method:: _read_total_number_of_atoms(line)
+
+      Read the number of atoms.
+
+      Parameters
+      ----------
+      line : str 
+
+      Returns
+      -------
+      None
+
+
+

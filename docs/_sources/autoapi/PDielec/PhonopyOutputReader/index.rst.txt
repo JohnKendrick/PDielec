@@ -1,0 +1,98 @@
+:py:mod:`PDielec.PhonopyOutputReader`
+=====================================
+
+.. py:module:: PDielec.PhonopyOutputReader
+
+.. autoapi-nested-parse::
+
+   Read the contents of a directory containing Phonopy input and output files.
+
+   Copyright 2024 John Kendrick
+
+   This file is part of PDielec
+
+   This program is free software; you can redistribute it and/or modify
+   it under the terms of the MIT License
+
+   This program is distributed in the hope that it will be useful,
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+
+   You should have received a copy of the MIT License
+   along with this program, if not see https://opensource.org/licenses/MIT
+
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   PDielec.PhonopyOutputReader.PhonopyOutputReader
+
+
+
+
+.. py:class:: PhonopyOutputReader(names, qmreader)
+
+
+   Bases: :py:obj:`PDielec.GenericOutputReader.GenericOutputReader`
+
+   Read the contents of a directory containing Phonopy input and output files.
+
+   Inherits from GenericOutputReader
+
+
+   .. py:method:: _read_output_files()
+
+      Read the Phonopy files in the directory.
+
+      Uses the qmreader to read in the electronic structure information and copies it to the current object.
+      Then it reads the dynamical matrix from phonopy
+
+
+   .. py:method:: read_dynamical_matrix()
+
+      Read and process the dynamical matrix from output files.
+
+      This method reads the dynamical matrix and other relevant data from the specified
+      output files, calculates the Hessian matrix, converts its units, and computes the
+      eigenvalues and eigenvectors to determine frequencies and mass-weighted normal modes.
+
+      Parameters
+      ----------
+      None explicitly, but relies on the instance attributes `_outputfiles` and `nions` 
+      to determine the files to read and number of ions, respectively.
+
+      Returns
+      -------
+      None
+          This method directly modifies the instance attributes `_old_masses`, `frequencies`, 
+          and `mass_weighted_normal_modes` based on the data read and calculations performed.
+
+      Raises
+      ------
+      FileNotFoundError
+          If any of the specified output files cannot be found or opened.
+      YAMLError
+          If there is an error parsing the YAML files.
+      MemoryError
+          If there is insufficient memory to compute the eigendecomposition.
+
+      Notes
+      -----
+      - It first attempts to use the CLoader for parsing YAML files for performance reasons and falls
+        back to the standard Loader if CLoader is not available, issuing a warning in such cases.
+      - The dynamical matrix is processed to compute real-valued Hessian by considering only the real
+        parts. It is then converted to the desired units before computing the eigenvalues and eigenvectors.
+      - The method computes frequencies in THz by first converting the eigenvalues from the Hessian to
+        the correct units, then calculates the square root of their absolute values, preserving the sign
+        to distinguish between real and imaginary modes.
+      - Mass-weighted normal modes are then computed for each ion based on the eigenvectors, and the 
+        frequencies and normal modes are stored in corresponding instance attributes.
+
+
+

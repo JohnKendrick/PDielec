@@ -74,6 +74,7 @@ jquery-3.5.1.js
 *.nma
 *.qti~
 ~$*
+Sphinx/autoapi
 
 # Andrew Burnett
 Data/

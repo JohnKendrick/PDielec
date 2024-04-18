@@ -1,5 +1,20 @@
 #!/usr/bin/env python
-"""Read in two csv files and check that the float contents are the same"""
+'''
+Read in two excel files and check that the float contents are the same
+
+Copyright 2024 John Kendrick
+
+This file is part of PDielec
+
+This program is free software; you can redistribute it and/or modify
+it under the terms of the MIT License
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+
+You should have received a copy of the MIT License along with this program, if not see https://opensource.org/licenses/MIT
+'''
 from __future__ import print_function
 import sys
 from termcolor import colored
@@ -10,6 +25,47 @@ global threshold
 def main():
 
     # Start processing the directories
+    """
+    Compare two Excel files for any significant numerical changes and report discrepancies.
+
+    This script takes in two Excel files as arguments and optionally,
+    a threshold for numerical comparison and a flag for full sheet comparison.
+
+    Full comparison includes 'Settings' and 'Scenarios' sheets by default excluded.
+
+    Parameters
+    ----------
+    None directly to the function. Parses command line arguments:
+    - Two file paths.
+    - Optional `-thresh` followed by a float value for the threshold of numerical difference (default is 1.0E-3).
+    - Optional `-f` flag for forcing a full comparison including typically excluded sheets.
+
+    Returns
+    -------
+    tuple
+        A tuple containing the following elements:
+        - Number of errors (`nerrors`): int
+        - Row of the last error or discrepancy (`row`): int
+        - Column of the last error or discrepancy (`col`): int
+        - Sheet name where the last error or discrepancy was found (`sheet`): str
+        - First file name (`file1`): str
+        - Value from the first file associated with the last discrepancy (`value1`): float or str
+        - Second file name (`file2`): str
+        - Value from the second file associated with the last discrepancy (`value2`): float or str
+        - Maximum percentage error found during the comparison (`max_percentage_error`): float
+
+    Raises
+    ------
+    Depends on the Excel library used, typically:
+    - `openpyxl.utils.exceptions.InvalidFileException` if an invalid file or path is provided.
+    - Other exceptions related to file I/O or processing might be raised depending on the content and structure of the input Excel files.
+
+    Notes
+    -----
+    - The script will immediately exit with usage instructions if less than two file paths are provided.
+    - Numerical difference is calculated only for numeric data. For text data, a simplified equivalence check is done.
+    - The script output includes printing to standard error for usage, errors, or status, with optional ANSI color highlighting.
+    """    
     if len(sys.argv) <= 1 :
         print('checkexcel file file2 [-thresh 1.0E-3] [-f]', file=sys.stderr)
         print('         Compare the two excel files for any significant changes', file=sys.stderr)

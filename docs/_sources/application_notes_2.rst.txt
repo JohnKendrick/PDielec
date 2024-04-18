@@ -43,8 +43,8 @@ The effect of thickness on the "Incoherent (intensity)" method is shown in :numr
 This method uses intensities rather than amplitudes for the transfer matrix and as a result, all the phase information is lost, resulting in no interferences after internal reflections.
 The calculations shown are for p- polarised incident radiation.
 
-The incoherent method deviates from the thick slab results at very low frequencies, but as the film thickness increases the deviations become smaller.
-Similarly at frequencies above the LO frequency, the deviations from the thick slab results are less for the thicker films.
+The incoherent method deviates from the 'thick slab' results at very low frequencies, but as the film thickness increases the deviations become smaller.
+Similarly at frequencies above the LO frequency, the deviations from the 'thick slab' results are less for the thicker films.
 The user needs to be aware that for large thicknesses the calculation of the propagation matrix can lead to numerical overflows.  
 These manifest themselves as sudden changes in reflectance or transmittance.
 In such cases it is recommended to use the 'Incoherent (non-reflective)' method or use the scattering matrix method with Incoherent (phase averaging).
@@ -187,7 +187,7 @@ The following geometries can be used by PDGui to ensure the relevant axis is ali
     | the [010] surface azimuthal angle = 0
 
 
-The two figures below show the reflectance on s-polarised light along the a-axis and these figures show very good agreement with Figure 1 in the published experimental work :cite:`Pierre2013a`.
+The two figures below show the reflectance of s-polarised light along the a-axis and these figures show very good agreement with Figure 1 in the published experimental work :cite:`Pierre2013a`.
 The data for this calculation can be found by looking in the :ref:`Examples` section of the installation guide under the Experimental/forsterite example.
 
 
@@ -229,8 +229,11 @@ To initialise PDGui with the results of the DFT calculation and starting the GUI
 The *Main Tab* shows the calculated unit cell and the frequencies as calculated by Crystal17.
 
 .. _fig-lalanine-maintab:
+
 .. figure:: ./_static/Figures/lalanine-maintab.png
    :scale: 90%
+
+   L-alanine Main Tab
 
 The *Settings Tab* (see below) shows those settings which affect the calculation of the permittivity.  By default, the frequencies are modified by projecting out any translational degrees of freedom.  
 This is shown by the three zero frequencies in the table of frequencies and is a result of selecting *Apply Eckart conditions?*
@@ -244,8 +247,11 @@ In this example, we have typed in the contribution from a Crystal17 calculation 
 The resulting spectrum is not very sensitive to these settings.
 
 .. _fig-lalanine-settingstab:
+
 .. figure:: ./_static/Figures/lalanine-settingstab.png
    :scale: 90%
+
+   L-alanine Settings Tab
 
 The next tab is the *Scenario tab* which is used to reflect the experimental parameters that are possible.  
 In this case, we are looking at the single crystal scenario.
@@ -262,10 +268,12 @@ This corresponds to s-polarised light, so we will be looking at the s-component 
 An important parameter to consider is the thickness of the film and the method by which we will calculate the transmission and reflectivity.   
 To start with we will use the *Coherent* mode and a thickness of 0.2mm.  Experimentally :cite:`Allen2023`, the crystal thickness was measured to be 0.5±0.1mm, but with this thickness the calculation showed little transmission in the chosen frequency range. 
 
-
 .. _fig-lalanine-scenariotab:
+
 .. figure:: ./_static/Figures/lalanine-scenariotab.png
    :scale: 90%
+
+   L-alanine Scenario Tab
 
 
 The resulting spectrum is shown below.  
@@ -273,8 +281,11 @@ It can be seen that there are regular oscillations in the transmittance, especia
 These are due to interference of the directly transmitted light and light that has undergone internal reflection and generated a series of decaying etalons.
 
 .. _fig-lalanine-plottertab-coherent:
+
 .. figure:: ./_static/Figures/lalanine-plottingtab-coherent.png
    :scale: 90%
+
+   L-alanine Plotter Tab showing coherent light transmittance
 
 
 To see if we can remove this we will change the option for this layer in the *Scenario tab* to *Incoherent (intensity)*.
@@ -290,22 +301,32 @@ A major advantage of using the *Fitter tab* to understand the calculated spectru
 This also shows the cross-correlation between experiment and calculation, for this example the value is 0.9379 (where 1 is a perfect match).
 
 
-.. _fig-lalanine-plottertab-coherent-aaxis:
+.. _fig-lalanine-fittertab-incoherent-aaxis:
+
 .. figure:: ./_static/Figures/lalanine-fittertab-incoherent-aaxis.png
    :scale: 90%
+
+   L-alanine Plotter Tab showing incoherent light transmittance for a-axis polarised light
 
 
 Plots for the b-axis and c-axis electric fields are shown below.  The b-axis example is given by using the same (001) surface but using an azimuthal angle of 0\ :superscript:`o`.  The thickness used for the b-axis example is 0.1mm, smaller than the 0.2mm used for the a-axis example.
 The c-axis field transmittance example uses the (010) surface with an azimuthal angle of 0\ :superscript:`o` and a thickness of 0.1mm.
 
-.. _fig-lalanine-plottertab-coherent-baxis:
+.. _fig-lalanine-plottertab-incoherent-baxis:
+
 .. figure:: ./_static/Figures/lalanine-fittertab-incoherent-baxis.png
    :scale: 90%
 
+   L-alanine Plotter Tab showing incoherent light transmittance for b-axis polarised light
+   
+
 
 .. _fig-lalanine-plottertab-coherent-caxis:
+
 .. figure:: ./_static/Figures/lalanine-fittertab-incoherent-caxis.png
    :scale: 90%
+
+   L-alanine Plotter Tab showing incoherent light transmittance for c-axis polarised light
 
 AlN on Silicon and Silicon Carbide
 ==================================
@@ -314,7 +335,7 @@ This is an example of a multilayer system where two layers are anisotropic.
 In an experimental and theoretical study of the infrared reflectance of aluminium nitride on silicon and silicon carbide, MacMillan, Devaty and Choyke :cite:`MacMillan1993` used a four parameter semi-quantum  (FPSQ) model to describe their experimental results on aluminium nitride on various substrates.
 In the Examples/Experimental/AlN directory the file AlN.exp provides an experimental file that describes their FPSQ model in a format the PDGui can use.
 In addition, parameters for the permittivities of silicon and 6H-SiC are given in the TestDataBase.xlsx file in the same directory.  
-The 6H-SiC permittivities are provided by a Drude-Lorentz model and the silicon permittivities is calculated from an experimental refractive index.
+The 6H-SiC permittivities are provided by a Drude-Lorentz model and the silicon permittivities are calculated from an experimental refractive index.
 References for the origins of the models and experimental data are given in the spreadsheet.
 
 The first experimental/calculated system considered :cite:`MacMillan1993` was the reflectance of a 0.92μ AlN on a Si substrate.  
@@ -325,11 +346,14 @@ The bottom layer is treated as a semi-infinite layer, so the size of the silicon
 The scenario is shown below:
 
 .. _fig-aln-on-si-etalons-scenario:
+
 .. figure:: ./_static/Figures/AlN-on-Si-Etalons-Scenario.png
    :scale: 90%
 
+   AlN on Silicon Scenario Tab
+
 Two comparisons are made with the calculated results of the published paper after digitising Figures 1 and 2 of the paper.  
-In the first the range of the plot extends for 0 to 6000 |cm-1| and clearly shows the etalons associated with the interference.
+In the first, the range of the plot extends for 0 to 6000 |cm-1| and clearly shows the etalons associated with the interference.
 In the second the plot examines the region between 400 and 1200 |cm-1|.  
 The agreement is excellent.
 
@@ -337,9 +361,13 @@ The agreement is excellent.
 .. figure:: ./_static/Figures/AlN-on-Si-Etalons.svg
    :scale: 90%
 
+   AlN on Silicon reflectance comparison with experiment
+
 .. _fig-aln-on-si-close-up:
 .. figure:: ./_static/Figures/AlN-on-Si-Close-Up.svg
    :scale: 90%
+
+   AlN on Silicon reflectance low frequency comparison with experiment
 
 Figure 3 of the paper shows the reflectance of a 0.98μm film of AlN on the (0001) surface of 6H_SiC. 
 To model this with PDGui two layers have been created, one for the dielectric layer, which has been created from an experimental file, and one for SiC, which has been taken from MaterialsDatabase.xlsx.
@@ -350,11 +378,15 @@ The top layer (the superstrate) is air below which is the *Dielectric layer* (Al
 .. figure:: ./_static/Figures/AlN_on_SiC_LayerEditor.png
    :scale: 90%
 
+   AlN on SiC Scenario Tab
+
 A comparison is given below between the calculated spectrum reported in the paper and that produced by PDGui.
 
 .. _fig-aln-on-sic:
 .. figure:: ./_static/Figures/AlN-on-6H-SiC.svg
    :scale: 90%
+
+   AlN on SiC reflectance compared with experiment
 
 A final comparison is made between Figure 4 of the paper and the results of PDGui.   
 In this case, a 0.24μm film of SiC is supported on a 0.56μm film of AlN, which is deposited on a substrate of Silicon.
@@ -365,18 +397,22 @@ The ScenarioTab for this system is shown below.
 .. figure:: ./_static/Figures/SiC_on_AlN-LayerEditor.png
    :scale: 90%
 
+   SiC on AlN on Silicon Scenario Tab
+
 A comparison is given below between the calculated spectrum reported in the paper and that produced by PDGui.
 
 .. _fig-sic-on-aln:
 .. figure:: ./_static/Figures/6H-SiC-on-AlN.svg
    :scale: 90%
 
+   SiC on AlN on Silicon reflectance comparison with experiment
+
 Sapphire Orientation Dependence of Polarized Infrared Light
 ===========================================================
 
 Sapphire and ruby are :math:`\alpha` Al :subscript:`2` O :subscript:`3`, which belongs to an hexagonal crystal system.
 Due to the complexity of vibrations in the infrared red region and to the anisotropy of the permittivity, the polarized IR reflectance is sensitive to the crystal plane  and to its orientation.
-Lee et. al.. :cite:`Lee2014` measured the infrared reflectance response of sapphire and fitted an FPSQ model to the experimental observations.
+Lee et. al. :cite:`Lee2014` measured the infrared reflectance response of sapphire and fitted an FPSQ model to the experimental observations.
 As confirmation of the correct behaviour of PDGui for the generation of crystal surfaces and for the calculation of reflectance, the FPSQ model proposed by Lee et. al. has been incorporated into the materials' database of PDGui and the calculations reported in their paper have been reproduced.
 To achieve this, a simple experiment file for air has been used as the dielectric medium.
 Files with the information necessary to reproduce the results presented here are available on the PDielec GitHub in the Examples/Experiment/Sapphire directory.
@@ -390,13 +426,15 @@ For the c-plane the only other related surface to (0001) would be (000-1) and th
 
 The figure shows the settings in the *Single Crystal Scenario Tab*.  The *DataBase.xlsx* file is being used as the materials database and the last layer in the list of layers (Silicon) will be treated as a semi-infinite material.
 The *Angle of incidence* is set to 7.2 :superscript:`o` as specified in the paper.
-The dielectric film in this case is simply air, which has a constant unit permittivity, its thickness is arbitrary and it is only present here to allow the program to operate as it needs and dielectric material.
+The 'dielectric' film in this case is air, which has a constant unit permittivity, its thickness is arbitrary.
 The second layer is a 1.0μm film of sapphire taken from the database with (hkl) set to (001).
 The layer was added using the *Layer Editor*.
 
 .. _fig-sapphire-scenario:
 .. figure:: ./_static/Figures/Sapphire-scenario-tab.png
    :scale: 90%
+
+   Sapphire scenario tab
 
 The a-plane family of surfaces are described by (11-20) and its permutations: (1-210), (-2110) (-1-120), (-12-10) and (2-1-10).
 This is equivalent to the Miller notation (110), (1-20), (-210), (-1-10), (-120) and (2-10).
@@ -407,6 +445,8 @@ Once the correct orientation has been chosen the azimuthal angle of the complete
 .. _fig-sapphire-a-layer-editor:
 .. figure:: ./_static/Figures/Sapphire-a-layer-editor.png
    :scale: 90%
+
+   Sapphire layer editor
 
 The r-plane family of surfaces are described by (1-102), (10-12), (01-12), (-110-2), (-101-2) and (0-11-2).
 The equivalent Miller index descriptions are (1-12), (102), (012), (-11-2), (-10-2) and (0-1-2).

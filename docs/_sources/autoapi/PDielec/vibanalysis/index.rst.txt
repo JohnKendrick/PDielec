@@ -1,0 +1,270 @@
+:py:mod:`PDielec.vibanalysis`
+=============================
+
+.. py:module:: PDielec.vibanalysis
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   PDielec.vibanalysis.Atom
+   PDielec.vibanalysis.System
+   PDielec.vibanalysis.Vibration
+
+
+
+Functions
+~~~~~~~~~
+
+.. autoapisummary::
+
+   PDielec.vibanalysis.InitialiseVaOpts
+   PDielec.vibanalysis.VMARD
+   PDielec.vibanalysis.VMBLD
+   PDielec.vibanalysis.VMLD
+   PDielec.vibanalysis.VMP
+   PDielec.vibanalysis.angleAmp
+   PDielec.vibanalysis.animateIC
+   PDielec.vibanalysis.animateMode
+   PDielec.vibanalysis.bondLength
+   PDielec.vibanalysis.main
+   PDielec.vibanalysis.makeIC
+   PDielec.vibanalysis.modeStr
+   PDielec.vibanalysis.oopAmp
+   PDielec.vibanalysis.printResults
+   PDielec.vibanalysis.punchIC
+   PDielec.vibanalysis.readG09log
+   PDielec.vibanalysis.readHess
+   PDielec.vibanalysis.readMopac2016
+   PDielec.vibanalysis.readPDielec
+   PDielec.vibanalysis.readUserIC
+   PDielec.vibanalysis.torsionAmp
+
+
+
+.. py:class:: Atom(symbol, r, mass=None)
+
+
+   .. py:method:: punch()
+
+
+
+.. py:class:: System
+
+
+   .. py:method:: addAtom(symbol, pos, mass=None)
+
+
+   .. py:method:: addDisplacements(idx, displacements)
+
+
+   .. py:method:: addVibIntensity(idx, val, kind='IR')
+
+
+   .. py:method:: addVibSymmetry(idx, sym='')
+
+
+   .. py:method:: addVibration(frequency)
+
+
+   .. py:method:: checkADM()
+
+      Check orthogonalyty of the ADM
+
+
+   .. py:method:: makeADM()
+
+
+   .. py:method:: makeGeo()
+
+
+   .. py:method:: massWeightS()
+
+
+   .. py:method:: massWeightVibrations()
+
+
+   .. py:method:: normalizeS()
+
+
+   .. py:method:: normalizeVibrations()
+
+
+   .. py:method:: punch()
+
+
+   .. py:method:: removeVibrations(elst=list(range(6)))
+
+
+   .. py:method:: sortVibrations()
+
+
+   .. py:method:: tripleMass()
+
+
+
+.. py:class:: Vibration(freq, ndegs, adv=[], ir=None, raman=None, sym='')
+
+
+   .. py:method:: addVMARD(coefs, r2=0.0, exvar=0.0)
+
+
+   .. py:method:: addVMBLD(coefs, r2=0.0, exvar=0.0)
+
+
+   .. py:method:: addVMLD(coefs, r2=0.0, exvar=0.0)
+
+
+   .. py:method:: addVMP(vmp)
+
+
+   .. py:method:: editDisplacements(d)
+
+
+   .. py:method:: editIntensity(val, t='IR')
+
+
+   .. py:method:: string(n=-1)
+
+
+
+.. py:function:: InitialiseVaOpts()
+
+   Define default options for the Vibanalysis package
+
+
+.. py:function:: VMARD(of, s)
+
+   Performs a Linear Decomposition of the vibrational modes 
+   using Bayesian regression with Automatic Relevance Determination
+   over the internal coordinates stored in the system s.
+   Inputs:
+   - of: handle for the output file
+   - s:  the system
+
+
+.. py:function:: VMBLD(of, s)
+
+   Performs a Linear Decomposition of the vibrational modes 
+   over the internal coordinates stored in the system s using Bayesian 
+   Ridge Regression.
+   Inputs:
+   - of: handle for the output file
+   - s:  the system
+
+
+.. py:function:: VMLD(of, s)
+
+   Performs a Linear Decomposition of the vibrational modes 
+   over the internal coordinates stored in the system s.
+   Inputs:
+   - of: handle for the output file
+   - s:  the system
+
+
+.. py:function:: VMP(of, s)
+
+   Performs a simple projection of the normal modes 
+   over the internal coordinates S stored in system s. Other inputs:
+   - of: handle for the output file (for logging)
+
+
+.. py:function:: angleAmp(geo, al, deg=False)
+
+   Returns amplitude (optnialy in degs) for the valence angle formed by
+   the atoms in al, with al[1] being the apex (numbering starts at 0).
+
+
+.. py:function:: animateIC(tfn, s, m, nsteps=50, damp=0.33)
+
+   displaces geo over internal coordinate m and punches a xyz file tfn
+
+
+.. py:function:: animateMode(tfn, s, m, nsteps=50, damp=0.33)
+
+   displaces geo over vibrational displacement m and punches a xyz file tfn
+
+
+.. py:function:: bondLength(geo, bl)
+
+   Returns distance between atoms bl[1] and bl[0]
+   (numbering starts at 0) in geometry geo
+
+
+.. py:function:: main()
+
+
+.. py:function:: makeIC(o, useric=[])
+
+   Automatically identifies internal coordinates using 
+   connectivity deduced from covalent radii and generates
+   Wilson's S matrix for the specified geometry
+
+
+.. py:function:: modeStr(mode, symbs)
+
+   returns a formatted string describing mode
+
+
+.. py:function:: oopAmp(geo, al, deg=False)
+
+   Returns amplitude (optnialy in degs) for the out-of-plane angle formed by
+   the atoms in al, with al[1] being the central atom (numbering starts at 0).
+
+
+.. py:function:: printResults(o, s)
+
+   Prints the results of the analysis stored in system s onto file o
+
+
+.. py:function:: punchIC(o, s)
+
+   Punches a list of internal coordinates and their
+   meassured values to file o
+
+
+.. py:function:: readG09log(ifn)
+
+   Opens Gaussian09 log file ifn and returns a System object with
+   information regarding the system and vibrations.
+   Depending on Linear and Transition, freqs and modes will be
+   pruned out of the translational and rotational components.
+
+
+.. py:function:: readHess(ifn)
+
+   Opens Orca Hess file ifn and returns A System object.
+   Depending on Linear and Transition, freqs and modes will be
+   pruned out of the translational and rotational components.
+
+
+.. py:function:: readMopac2016(ifn)
+
+   Opens a MOPAC2016 output file ifn and returns A System object.
+   Depending on Linear and Transition, freqs and modes will be
+   pruned out of the translational and rotational components.
+
+
+.. py:function:: readPDielec(ifn)
+
+   Use PDielec library to read hessian information.
+   only the first 3 modes will be pruned; the translational components.
+
+
+.. py:function:: readUserIC(fn)
+
+   Reads additional internal coordinates defined by the user
+
+
+.. py:function:: torsionAmp(geo, al, deg=False)
+
+   Returns amplitude (optnialy in degs) for the 0-1-2-3 torsion angle formed by
+   the atoms in al, with al[1] and al[2] defining the central bond
+   (numbering starts at 0).
+
+

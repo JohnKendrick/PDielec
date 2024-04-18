@@ -1,0 +1,773 @@
+<!doctype html>
+<html class="no-js" lang="en" data-content_root="">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" /><link rel="next" title="PDielec.GTMcore" href="../GTMcore/index.html" /><link rel="prev" title="PDielec.DielectricFunction" href="../DielectricFunction/index.html" />
+
+    <!-- Generated with Sphinx 7.1.2 and Furo 2024.01.29 -->
+        <title>PDielec.ExperimentOutputReader - PDielec: John Kendrick &amp; Andrew Burnett</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=135e06be" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=eafc0fe6" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/table_styling.css?v=a1a2a898" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo-extensions.css?v=36a5483c" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/css/custom.css?v=2e0a580d" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f8f8f8;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-half" viewBox="0 0 24 24">
+    <title>Auto light/dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M13 12h5" />
+      <path d="M13 15h4" />
+      <path d="M13 18h1" />
+      <path d="M13 9h4" />
+      <path d="M13 6h1" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../../../index.html"><div class="brand">PDielec: John Kendrick & Andrew Burnett</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../../../index.html">
+  
+  
+  <span class="sidebar-brand-text">PDielec: John Kendrick & Andrew Burnett</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../../../search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <p class="caption" role="heading"><span class="caption-text">Software</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pdgui.html">PDGui</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../software.html">Other Software Components</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Theory</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../theory_powder.html">Theory for Light Scattering from Powders</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../theory_single_crystal.html">Theory for Single Crystal Optics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../analysis.html">Phonon Analysis</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Applications</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../application_notes_1.html">Applications of Effective Medium Theory</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../application_notes_2.html">Single Crystal Applications</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API</span></p>
+<ul class="current">
+<li class="toctree-l1 current has-children"><a class="reference internal" href="../../index.html">API Reference</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of API Reference</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l2 current has-children"><a class="reference internal" href="../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec</span></code></a><input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of PDielec</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l3 has-children"><a class="reference internal" href="../GUI/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of PDielec.GUI</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../GUI/AnalysisTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.AnalysisTab</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../GUI/App/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.App</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../GUI/FitterTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.FitterTab</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../GUI/MainTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.MainTab</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../GUI/NoteBook/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.NoteBook</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../GUI/OpenGLWidget/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.OpenGLWidget</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../GUI/PlottingTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.PlottingTab</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../GUI/PowderScenarioTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.PowderScenarioTab</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../GUI/ScenarioTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.ScenarioTab</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../GUI/SettingsTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.SettingsTab</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../GUI/SingleCrystalLayer/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.SingleCrystalLayer</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../GUI/SingleCrystalScenarioTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.SingleCrystalScenarioTab</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../GUI/SpreadSheetManager/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.SpreadSheetManager</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../GUI/ViewerTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.ViewerTab</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../AbinitOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.AbinitOutputReader</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Calculator/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.Calculator</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../CastepOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.CastepOutputReader</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Constants/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.Constants</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../CrystalOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.CrystalOutputReader</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../DielectricFunction/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.DielectricFunction</span></code></a></li>
+<li class="toctree-l3 current current-page"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.ExperimentOutputReader</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../GTMcore/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GTMcore</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../GenericOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GenericOutputReader</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../GulpOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GulpOutputReader</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../HelperRoutines/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.HelperRoutines</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../IO/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.IO</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Materials/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.Materials</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Mie/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.Mie</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PhonopyOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.PhonopyOutputReader</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Plotter/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.Plotter</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../QEOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.QEOutputReader</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../SuperCell/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.SuperCell</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../UnitCell/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.UnitCell</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Utilities/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.Utilities</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../VaspOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.VaspOutputReader</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../checkcsv/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.checkcsv</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../checkexcel/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.checkexcel</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../graphdatagenerator/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.graphdatagenerator</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../p1reader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.p1reader</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../p2cif/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.p2cif</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../pdcompare/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.pdcompare</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../pdgui/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.pdgui</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../pdmake/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.pdmake</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../pickled_reader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.pickled_reader</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../preader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.preader</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../vibanalysis/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.vibanalysis</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../pdgui/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.pdgui</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../preader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.preader</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pdmake/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.pdmake</span></code></a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">References</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../zreferences.html">References</a></li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main">
+          <section id="module-PDielec.ExperimentOutputReader">
+<span id="pdielec-experimentoutputreader"></span><h1><a class="reference internal" href="#module-PDielec.ExperimentOutputReader" title="PDielec.ExperimentOutputReader"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.ExperimentOutputReader</span></code></a><a class="headerlink" href="#module-PDielec.ExperimentOutputReader" title="Permalink to this heading">#</a></h1>
+<p>Read the contents of a directory containing Experiment input and output files.</p>
+<p>Copyright 2024 John Kendrick</p>
+<p>This file is part of PDielec</p>
+<p>This program is free software; you can redistribute it and/or modify
+it under the terms of the MIT License</p>
+<p>This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.</p>
+<p>You should have received a copy of the MIT License
+along with this program, if not see <a class="reference external" href="https://opensource.org/licenses/MIT">https://opensource.org/licenses/MIT</a></p>
+<section id="module-contents">
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this heading">#</a></h2>
+<section id="classes">
+<h3>Classes<a class="headerlink" href="#classes" title="Permalink to this heading">#</a></h3>
+<div class="table-wrapper autosummary longtable docutils container">
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#PDielec.ExperimentOutputReader.ExperimentOutputReader" title="PDielec.ExperimentOutputReader.ExperimentOutputReader"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ExperimentOutputReader</span></code></a></p></td>
+<td><p>Read the contents of a directory containing Experiment input and output files.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<dl class="py class">
+<dt class="sig sig-object py" id="PDielec.ExperimentOutputReader.ExperimentOutputReader">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PDielec.ExperimentOutputReader.</span></span><span class="sig-name descname"><span class="pre">ExperimentOutputReader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">names</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/ExperimentOutputReader.html#ExperimentOutputReader"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.ExperimentOutputReader.ExperimentOutputReader" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="../GenericOutputReader/index.html#PDielec.GenericOutputReader.GenericOutputReader" title="PDielec.GenericOutputReader.GenericOutputReader"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PDielec.GenericOutputReader.GenericOutputReader</span></code></a></p>
+<p>Read the contents of a directory containing Experiment input and output files.</p>
+<p>Inherits from GenericOutputReader</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="PDielec.ExperimentOutputReader.ExperimentOutputReader._read_constant_model">
+<span class="sig-name descname"><span class="pre">_read_constant_model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/ExperimentOutputReader.html#ExperimentOutputReader._read_constant_model"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.ExperimentOutputReader.ExperimentOutputReader._read_constant_model" title="Permalink to this definition">#</a></dt>
+<dd><p>Read in a full constant dielectric tensor 3 values on each line.</p>
+<section id="parameters">
+<h4>Parameters<a class="headerlink" href="#parameters" title="Permalink to this heading">#</a></h4>
+<p>line : str</p>
+</section>
+<section id="returns">
+<h4>Returns<a class="headerlink" href="#returns" title="Permalink to this heading">#</a></h4>
+<p>None</p>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PDielec.ExperimentOutputReader.ExperimentOutputReader._read_cpk_coords">
+<span class="sig-name descname"><span class="pre">_read_cpk_coords</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/ExperimentOutputReader.html#ExperimentOutputReader._read_cpk_coords"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.ExperimentOutputReader.ExperimentOutputReader._read_cpk_coords" title="Permalink to this definition">#</a></dt>
+<dd><p>Read CPK coordinates from a given line and update class attributes accordingly.</p>
+<section id="id1">
+<h4>Parameters<a class="headerlink" href="#id1" title="Permalink to this heading">#</a></h4>
+<dl class="simple">
+<dt>line<span class="classifier">str</span></dt><dd><p>The initial line input to start reading CPK coordinates from.</p>
+</dd>
+</dl>
+</section>
+<section id="id2">
+<h4>Returns<a class="headerlink" href="#id2" title="Permalink to this heading">#</a></h4>
+<p>None</p>
+</section>
+<section id="notes">
+<h4>Notes<a class="headerlink" href="#notes" title="Permalink to this heading">#</a></h4>
+<ul class="simple">
+<li><p>This method directly modifies several attributes of the class instance it
+belongs to, including lists of species, ions, and masses, as well as data
+structures related to unit cells.</p></li>
+<li><p>This method utilizes <cite>self.nspecies</cite>, <cite>self.nions</cite>, <cite>self.species</cite>, <cite>self.masses_per_type</cite>,
+<cite>self._ion_type_index</cite>, <cite>self.ions_per_type</cite>, <cite>self.atom_type_list</cite>, <cite>self.masses</cite>,
+<cite>self.unit_cells</cite>, <cite>self.oscillator_strengths</cite>, and <cite>self.frequencies</cite> as
+relevant attributes that get updated.</p></li>
+<li><p>Initial coordinates and species names for each unit cell are eventually encapsulated
+in <cite>self.unit_cells</cite> with their respective setter methods.</p></li>
+<li><p>The method is designed to handle CPK format data incrementally, assuming that the
+beginning of a new entry is marked by a line that doesn’t start with ‘&amp;end’ or ‘end’.</p></li>
+</ul>
+</section>
+<section id="raises">
+<h4>Raises<a class="headerlink" href="#raises" title="Permalink to this heading">#</a></h4>
+<ul class="simple">
+<li><p>This function implicitly assumes correct formatting and content of the input data.
+If the data is not correctly formatted or if <cite>_read_line</cite> fails to read further
+lines as expected, unexpected behavior or errors could occur.</p></li>
+</ul>
+</section>
+<section id="see-also">
+<h4>See Also<a class="headerlink" href="#see-also" title="Permalink to this heading">#</a></h4>
+<p>_read_line : Method used to read the next line for continued parsing.</p>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PDielec.ExperimentOutputReader.ExperimentOutputReader._read_cpk_lattice_vectors">
+<span class="sig-name descname"><span class="pre">_read_cpk_lattice_vectors</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/ExperimentOutputReader.html#ExperimentOutputReader._read_cpk_lattice_vectors"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.ExperimentOutputReader.ExperimentOutputReader._read_cpk_lattice_vectors" title="Permalink to this definition">#</a></dt>
+<dd><p>Process a cpk input file with cell information</p>
+<section id="id3">
+<h4>Parameters<a class="headerlink" href="#id3" title="Permalink to this heading">#</a></h4>
+<p>line : str</p>
+</section>
+<section id="id4">
+<h4>Returns<a class="headerlink" href="#id4" title="Permalink to this heading">#</a></h4>
+<p>None</p>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PDielec.ExperimentOutputReader.ExperimentOutputReader._read_drude_lorentz_model">
+<span class="sig-name descname"><span class="pre">_read_drude_lorentz_model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/ExperimentOutputReader.html#ExperimentOutputReader._read_drude_lorentz_model"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.ExperimentOutputReader.ExperimentOutputReader._read_drude_lorentz_model" title="Permalink to this definition">#</a></dt>
+<dd><p>Read in the drude_lorentz model parameters.</p>
+<section id="id5">
+<h4>Parameters<a class="headerlink" href="#id5" title="Permalink to this heading">#</a></h4>
+<p>line : str</p>
+</section>
+<section id="id6">
+<h4>Returns<a class="headerlink" href="#id6" title="Permalink to this heading">#</a></h4>
+<p>None</p>
+</section>
+<section id="id7">
+<h4>Notes<a class="headerlink" href="#id7" title="Permalink to this heading">#</a></h4>
+<p>A simple example of a 2 oscillator model is given below. All units are in cm-1.</p>
+<p><code class="docutils literal notranslate"><span class="pre">`</span>
+<span class="pre">drude-lorentz</span>
+<span class="pre">xx</span>&#160; <span class="pre">1</span>
+<span class="pre">413.7</span> <span class="pre">1050.0</span>&#160; <span class="pre">22.2</span>
+<span class="pre">yy</span>&#160; <span class="pre">1</span>
+<span class="pre">413.7</span> <span class="pre">1050.0</span>&#160; <span class="pre">22.2</span>
+<span class="pre">zz</span>&#160; <span class="pre">1</span>
+<span class="pre">413.7</span> <span class="pre">1050.0</span>&#160; <span class="pre">22.2</span>
+<span class="pre">`</span></code></p>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PDielec.ExperimentOutputReader.ExperimentOutputReader._read_fpsq_model">
+<span class="sig-name descname"><span class="pre">_read_fpsq_model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/ExperimentOutputReader.html#ExperimentOutputReader._read_fpsq_model"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.ExperimentOutputReader.ExperimentOutputReader._read_fpsq_model" title="Permalink to this definition">#</a></dt>
+<dd><p>Read in the fpsq model parameters.</p>
+<p>There is a separator between each diagonal contribution to the permittivity.</p>
+<section id="id8">
+<h4>Parameters<a class="headerlink" href="#id8" title="Permalink to this heading">#</a></h4>
+<p>line : str</p>
+</section>
+<section id="id9">
+<h4>Returns<a class="headerlink" href="#id9" title="Permalink to this heading">#</a></h4>
+<p>None</p>
+</section>
+<section id="id10">
+<h4>Notes<a class="headerlink" href="#id10" title="Permalink to this heading">#</a></h4>
+<p>The input format is expected to follow the example below for alpha quartz:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">epsxx</span> <span class="mi">4</span> <span class="c1"># 1.5K Data # A2 Phonon modes</span>
+  <span class="mf">360.7</span>     <span class="mf">1.5</span>        <span class="mf">384.8</span>    <span class="mf">1.5</span>
+  <span class="mf">497.9</span>     <span class="mf">3.1</span>        <span class="mf">553.6</span>    <span class="mf">2.8</span>
+  <span class="mf">773.7</span>     <span class="mf">5.4</span>        <span class="mf">789.9</span>    <span class="mf">6.3</span>
+ <span class="mf">1073.0</span>     <span class="mf">6.2</span>       <span class="mf">1238.7</span>   <span class="mf">12.4</span>
+<span class="n">epsyy</span> <span class="mi">4</span>
+  <span class="mf">360.7</span>     <span class="mf">1.5</span>        <span class="mf">384.8</span>    <span class="mf">1.5</span>
+  <span class="mf">497.9</span>     <span class="mf">3.1</span>        <span class="mf">553.6</span>    <span class="mf">2.8</span>
+  <span class="mf">773.7</span>     <span class="mf">5.4</span>        <span class="mf">789.9</span>    <span class="mf">6.3</span>
+ <span class="mf">1073.0</span>     <span class="mf">6.2</span>       <span class="mf">1238.7</span>   <span class="mf">12.4</span>
+<span class="n">epszz</span> <span class="mi">6</span> <span class="c1"># E Phonon modes</span>
+  <span class="mf">391.5</span>     <span class="mf">1.5</span>        <span class="mf">403.0</span>    <span class="mf">1.5</span>
+  <span class="mf">454.0</span>     <span class="mf">2.6</span>        <span class="mf">510.5</span>    <span class="mf">1.5</span>
+  <span class="mf">695.9</span>     <span class="mf">4.9</span>        <span class="mf">698.4</span>    <span class="mf">4.0</span>
+  <span class="mf">797.2</span>     <span class="mf">4.8</span>        <span class="mf">810.0</span>    <span class="mf">4.3</span>
+ <span class="mf">1063.7</span>     <span class="mf">6.1</span>       <span class="mf">1230.7</span>    <span class="mf">8.2</span>
+ <span class="mf">1157.2</span>     <span class="mf">6.2</span>       <span class="mf">1154.9</span>    <span class="mf">6.1</span>
+</pre></div>
+</div>
+<p>Each section starts with <cite>epsxx</cite>, <cite>epsyy</cite>, or <cite>epszz</cite> followed by the number of modes.
+After that, data lines include mode frequencies and corresponding contributions.</p>
+</section>
+<section id="id11">
+<h4>Returns<a class="headerlink" href="#id11" title="Permalink to this heading">#</a></h4>
+<p>None</p>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PDielec.ExperimentOutputReader.ExperimentOutputReader._read_fractional_coordinates">
+<span class="sig-name descname"><span class="pre">_read_fractional_coordinates</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/ExperimentOutputReader.html#ExperimentOutputReader._read_fractional_coordinates"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.ExperimentOutputReader.ExperimentOutputReader._read_fractional_coordinates" title="Permalink to this definition">#</a></dt>
+<dd><p>Read and process fractional coordinates from a string line.</p>
+<p>This method reads a string representing a line containing the number of ions followed by the fractional coordinates and species of each ion. It updates the instance variables associated with the ions’ type, position, mass, and further initializes oscillator strengths and frequencies arrays if they haven’t been initialized yet.</p>
+<section id="id12">
+<h4>Parameters<a class="headerlink" href="#id12" title="Permalink to this heading">#</a></h4>
+<dl class="simple">
+<dt>line<span class="classifier">str</span></dt><dd><p>The line from which the number of ions and their fractional coordinates will be extracted. The line format is expected to be ‘num_ions species x y z’ for each ion, where ‘num_ions’ is the total number of ions, ‘species’ is the species identifier, and ‘x y z’ are the fractional coordinates.</p>
+</dd>
+</dl>
+</section>
+<section id="id13">
+<h4>Returns<a class="headerlink" href="#id13" title="Permalink to this heading">#</a></h4>
+<p>None</p>
+</section>
+<section id="id14">
+<h4>Notes<a class="headerlink" href="#id14" title="Permalink to this heading">#</a></h4>
+<p>This method updates several instance variables:
+- <cite>nions</cite>: The total number of ions as determined from <cite>line</cite>.
+- <cite>ions_per_type</cite>: A list that tracks the number of ions per species.
+- <cite>masses</cite>: A list of masses for each ion, ordered accordingly.
+- <cite>atom_type_list</cite>: A list mapping each ion to its species index.
+- <cite>unit_cells[-1]</cite>: The coordinates and element names for ions in the most recent unit cell are set based on the processed line.
+- Oscillator strengths <cite>oscillator_strengths</cite> and frequencies <cite>frequencies</cite> arrays are initialized as zero arrays if they haven’t been already.</p>
+<p>Exceptions related to file reading or value conversion within the method are implicitly assumed to be handled outside of its scope.</p>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PDielec.ExperimentOutputReader.ExperimentOutputReader._read_frequencies">
+<span class="sig-name descname"><span class="pre">_read_frequencies</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/ExperimentOutputReader.html#ExperimentOutputReader._read_frequencies"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.ExperimentOutputReader.ExperimentOutputReader._read_frequencies" title="Permalink to this definition">#</a></dt>
+<dd><p>Reads frequencies and oscillator strengths from a line and appends them to the object’s attributes.</p>
+<section id="id15">
+<h4>Parameters<a class="headerlink" href="#id15" title="Permalink to this heading">#</a></h4>
+<dl class="simple">
+<dt>line<span class="classifier">str</span></dt><dd><p>A string containing the frequency count, followed by lines of frequencies and strengths.</p>
+</dd>
+</dl>
+</section>
+<section id="id16">
+<h4>Returns<a class="headerlink" href="#id16" title="Permalink to this heading">#</a></h4>
+<p>None.</p>
+</section>
+<section id="id17">
+<h4>Notes<a class="headerlink" href="#id17" title="Permalink to this heading">#</a></h4>
+<p>This method reads the ‘nfreq’ (number of frequencies) from the initial given line. Then, for each frequency, it reads
+the corresponding line to extract the frequency and its oscillator strength. These values are stored in the object’s
+‘frequencies’ and ‘oscillator_strengths’ lists, respectively. Each oscillator strength is initialized as a diagonal
+tensor with identical values across the diagonal.</p>
+<p>The method assumes ‘line’ is in a specific format, where the first entry in a line after splitting is the frequency
+and the second entry is the oscillator strength. It also uses ‘_read_line’ method, which is not defined in the snippet,
+to read each subsequent line for the frequencies and their oscillator strengths. Furthermore, ‘initialise_diagonal_tensor’
+is used to convert the scalar strength values into tensor form, which is not detailed here.</p>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PDielec.ExperimentOutputReader.ExperimentOutputReader._read_interpolate1_model">
+<span class="sig-name descname"><span class="pre">_read_interpolate1_model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/ExperimentOutputReader.html#ExperimentOutputReader._read_interpolate1_model"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.ExperimentOutputReader.ExperimentOutputReader._read_interpolate1_model" title="Permalink to this definition">#</a></dt>
+<dd><p>Read in a tabulated permittivity and use it for interpolation.</p>
+<p>Only a single permittivity is given (real &amp; imaginary) which is taken to be isotropic</p>
+<section id="id18">
+<h4>Parameters<a class="headerlink" href="#id18" title="Permalink to this heading">#</a></h4>
+<p>line : str</p>
+</section>
+<section id="id19">
+<h4>Returns<a class="headerlink" href="#id19" title="Permalink to this heading">#</a></h4>
+<p>None</p>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PDielec.ExperimentOutputReader.ExperimentOutputReader._read_interpolate3_model">
+<span class="sig-name descname"><span class="pre">_read_interpolate3_model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/ExperimentOutputReader.html#ExperimentOutputReader._read_interpolate3_model"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.ExperimentOutputReader.ExperimentOutputReader._read_interpolate3_model" title="Permalink to this definition">#</a></dt>
+<dd><p>Read in a tabulated permittivity and use it for interpolation.</p>
+<p>Three permittivities are given from the diagonal components of the tensor</p>
+<section id="id20">
+<h4>Parameters<a class="headerlink" href="#id20" title="Permalink to this heading">#</a></h4>
+<p>line : str</p>
+</section>
+<section id="id21">
+<h4>Returns<a class="headerlink" href="#id21" title="Permalink to this heading">#</a></h4>
+<p>None</p>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PDielec.ExperimentOutputReader.ExperimentOutputReader._read_interpolate6_model">
+<span class="sig-name descname"><span class="pre">_read_interpolate6_model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/ExperimentOutputReader.html#ExperimentOutputReader._read_interpolate6_model"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.ExperimentOutputReader.ExperimentOutputReader._read_interpolate6_model" title="Permalink to this definition">#</a></dt>
+<dd><p>Read in a tabulated permittivity and use it for interpolation.</p>
+<p>This is a full 6 parameter permittivity matrix</p>
+<section id="id22">
+<h4>Parameters<a class="headerlink" href="#id22" title="Permalink to this heading">#</a></h4>
+<p>line : str</p>
+</section>
+<section id="id23">
+<h4>Returns<a class="headerlink" href="#id23" title="Permalink to this heading">#</a></h4>
+<p>None</p>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PDielec.ExperimentOutputReader.ExperimentOutputReader._read_lattice_vectors">
+<span class="sig-name descname"><span class="pre">_read_lattice_vectors</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/ExperimentOutputReader.html#ExperimentOutputReader._read_lattice_vectors"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.ExperimentOutputReader.ExperimentOutputReader._read_lattice_vectors" title="Permalink to this definition">#</a></dt>
+<dd><p>Reads and processes lattice vectors from an input line, then updates internal structures with the new unit cell.</p>
+<p>This method is intended to parse a series of lines that describe lattice vectors, scale them appropriately, and update the object’s list of unit cells as well as other relevant properties like volume and, optionally, crystal permittivity.</p>
+<section id="id24">
+<h4>Parameters<a class="headerlink" href="#id24" title="Permalink to this heading">#</a></h4>
+<dl class="simple">
+<dt>line<span class="classifier">str</span></dt><dd><p>The first line from which to begin reading the lattice vector information.</p>
+</dd>
+</dl>
+</section>
+<section id="id25">
+<h4>Returns<a class="headerlink" href="#id25" title="Permalink to this heading">#</a></h4>
+<p>None</p>
+</section>
+<section id="id26">
+<h4>See Also<a class="headerlink" href="#id26" title="Permalink to this heading">#</a></h4>
+<p>UnitCell : A class or function used to represent and manipulate unit cell information.</p>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PDielec.ExperimentOutputReader.ExperimentOutputReader._read_line">
+<span class="sig-name descname"><span class="pre">_read_line</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/ExperimentOutputReader.html#ExperimentOutputReader._read_line"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.ExperimentOutputReader.ExperimentOutputReader._read_line" title="Permalink to this definition">#</a></dt>
+<dd><p>Read and return the next non-comment, non-empty line from the file.</p>
+<p>This method reads lines from a file, skipping over any lines that are
+either empty, contain only whitespace, or start with the ‘#’ character
+(indicating a comment).</p>
+<section id="id27">
+<h4>Parameters<a class="headerlink" href="#id27" title="Permalink to this heading">#</a></h4>
+<p>None</p>
+</section>
+<section id="id28">
+<h4>Returns<a class="headerlink" href="#id28" title="Permalink to this heading">#</a></h4>
+<dl class="simple">
+<dt>str</dt><dd><p>The next non-empty, non-comment line from the file. If the end of the
+file is reached, the returned string will be empty.</p>
+</dd>
+</dl>
+</section>
+<section id="id29">
+<h4>Notes<a class="headerlink" href="#id29" title="Permalink to this heading">#</a></h4>
+<ul class="simple">
+<li><p>Lines consisting solely of whitespace characters (spaces, tabs, newlines) are considered empty.</p></li>
+</ul>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PDielec.ExperimentOutputReader.ExperimentOutputReader._read_output_files">
+<span class="sig-name descname"><span class="pre">_read_output_files</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/ExperimentOutputReader.html#ExperimentOutputReader._read_output_files"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.ExperimentOutputReader.ExperimentOutputReader._read_output_files" title="Permalink to this definition">#</a></dt>
+<dd><p>Define the search strings and read the Experiment files in the directory.</p>
+<section id="id30">
+<h4>Parameters<a class="headerlink" href="#id30" title="Permalink to this heading">#</a></h4>
+<p>None</p>
+</section>
+<section id="id31">
+<h4>Returns<a class="headerlink" href="#id31" title="Permalink to this heading">#</a></h4>
+<p>None</p>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PDielec.ExperimentOutputReader.ExperimentOutputReader._read_species">
+<span class="sig-name descname"><span class="pre">_read_species</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/ExperimentOutputReader.html#ExperimentOutputReader._read_species"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.ExperimentOutputReader.ExperimentOutputReader._read_species" title="Permalink to this definition">#</a></dt>
+<dd><p>Read species information from a line.</p>
+<section id="id32">
+<h4>Parameters<a class="headerlink" href="#id32" title="Permalink to this heading">#</a></h4>
+<dl class="simple">
+<dt>line<span class="classifier">str</span></dt><dd><p>A string containing the number of species followed by species’ information in subsequent lines.</p>
+</dd>
+</dl>
+</section>
+<section id="id33">
+<h4>Returns<a class="headerlink" href="#id33" title="Permalink to this heading">#</a></h4>
+<p>None</p>
+</section>
+<section id="id34">
+<h4>Notes<a class="headerlink" href="#id34" title="Permalink to this heading">#</a></h4>
+<p>This function updates the object’s <cite>species</cite>, <cite>masses_per_type</cite>, and <cite>ion_type_index</cite> attributes with the information read from the input line(s). Initially, it reads the total number of species from the first line. Then, for each species, it reads its name and mass, appends these to the <cite>species</cite> and <cite>masses_per_type</cite> lists, respectively, and updates the <cite>ion_type_index</cite> dictionary to map the species name to its type index. The <cite>nspecies</cite> attribute is updated with the current number of species after each iteration.</p>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PDielec.ExperimentOutputReader.ExperimentOutputReader._read_static_dielectric">
+<span class="sig-name descname"><span class="pre">_read_static_dielectric</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/ExperimentOutputReader.html#ExperimentOutputReader._read_static_dielectric"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.ExperimentOutputReader.ExperimentOutputReader._read_static_dielectric" title="Permalink to this definition">#</a></dt>
+<dd><p>Read and process static dielectric data.</p>
+<section id="id35">
+<h4>Parameters<a class="headerlink" href="#id35" title="Permalink to this heading">#</a></h4>
+<dl class="simple">
+<dt>line<span class="classifier">str</span></dt><dd><p>Not used but overwritten</p>
+</dd>
+</dl>
+</section>
+<section id="id36">
+<h4>Returns<a class="headerlink" href="#id36" title="Permalink to this heading">#</a></h4>
+<p>None</p>
+</section>
+<section id="id37">
+<h4>Notes<a class="headerlink" href="#id37" title="Permalink to this heading">#</a></h4>
+<p>This method is designed to be used within a class that handles reading and processing
+simulation output data. It assumes access to a <cite>_read_line</cite> method which reads individual
+lines from the output, and potentially a <cite>CrystalPermittivity</cite> object for storing results.
+This method processes three lines of dielectric data, converts them into complex numbers,
+and checks if the imaginary part of the overall dielectric constant is negligible. If it is,
+the dielectric constant is treated as real. The result is stored in the class instance and,
+if applicable, updates the <cite>CrystalPermittivity</cite> object’s epsilon infinity value.</p>
+</section>
+<section id="id38">
+<h4>Raises<a class="headerlink" href="#id38" title="Permalink to this heading">#</a></h4>
+<dl class="simple">
+<dt>ValueError</dt><dd><p>If the input lines cannot be converted into complex numbers.</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="../GTMcore/index.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GTMcore</span></code></div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="../DielectricFunction/index.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.DielectricFunction</span></code></div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2024, John Kendrick and Andrew Burnett
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.ExperimentOutputReader</span></code></a><ul>
+<li><a class="reference internal" href="#module-contents">Module Contents</a><ul>
+<li><a class="reference internal" href="#classes">Classes</a><ul>
+<li><a class="reference internal" href="#PDielec.ExperimentOutputReader.ExperimentOutputReader"><code class="docutils literal notranslate"><span class="pre">ExperimentOutputReader</span></code></a><ul>
+<li><a class="reference internal" href="#PDielec.ExperimentOutputReader.ExperimentOutputReader._read_constant_model"><code class="docutils literal notranslate"><span class="pre">ExperimentOutputReader._read_constant_model()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.ExperimentOutputReader.ExperimentOutputReader._read_cpk_coords"><code class="docutils literal notranslate"><span class="pre">ExperimentOutputReader._read_cpk_coords()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.ExperimentOutputReader.ExperimentOutputReader._read_cpk_lattice_vectors"><code class="docutils literal notranslate"><span class="pre">ExperimentOutputReader._read_cpk_lattice_vectors()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.ExperimentOutputReader.ExperimentOutputReader._read_drude_lorentz_model"><code class="docutils literal notranslate"><span class="pre">ExperimentOutputReader._read_drude_lorentz_model()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.ExperimentOutputReader.ExperimentOutputReader._read_fpsq_model"><code class="docutils literal notranslate"><span class="pre">ExperimentOutputReader._read_fpsq_model()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.ExperimentOutputReader.ExperimentOutputReader._read_fractional_coordinates"><code class="docutils literal notranslate"><span class="pre">ExperimentOutputReader._read_fractional_coordinates()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.ExperimentOutputReader.ExperimentOutputReader._read_frequencies"><code class="docutils literal notranslate"><span class="pre">ExperimentOutputReader._read_frequencies()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.ExperimentOutputReader.ExperimentOutputReader._read_interpolate1_model"><code class="docutils literal notranslate"><span class="pre">ExperimentOutputReader._read_interpolate1_model()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.ExperimentOutputReader.ExperimentOutputReader._read_interpolate3_model"><code class="docutils literal notranslate"><span class="pre">ExperimentOutputReader._read_interpolate3_model()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.ExperimentOutputReader.ExperimentOutputReader._read_interpolate6_model"><code class="docutils literal notranslate"><span class="pre">ExperimentOutputReader._read_interpolate6_model()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.ExperimentOutputReader.ExperimentOutputReader._read_lattice_vectors"><code class="docutils literal notranslate"><span class="pre">ExperimentOutputReader._read_lattice_vectors()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.ExperimentOutputReader.ExperimentOutputReader._read_line"><code class="docutils literal notranslate"><span class="pre">ExperimentOutputReader._read_line()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.ExperimentOutputReader.ExperimentOutputReader._read_output_files"><code class="docutils literal notranslate"><span class="pre">ExperimentOutputReader._read_output_files()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.ExperimentOutputReader.ExperimentOutputReader._read_species"><code class="docutils literal notranslate"><span class="pre">ExperimentOutputReader._read_species()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.ExperimentOutputReader.ExperimentOutputReader._read_static_dielectric"><code class="docutils literal notranslate"><span class="pre">ExperimentOutputReader._read_static_dielectric()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js?v=01b4f342"></script>
+    <script src="../../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../../../_static/scripts/furo.js?v=32e29ea5"></script>
+    </body>
+</html>

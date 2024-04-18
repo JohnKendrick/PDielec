@@ -56,7 +56,7 @@ Magnesium oxide is an isotropic medium, the initial unit cell and the space grou
 
 Because MgO is isotropic with only a single frequency contributing to the permittivity, it makes a useful example application to illustrate several features of PDielec.
 The real and imaginary frequency-dependent permittivities of the perfect crystal are shown in :numref:`fig-mgo-permittivity`, where a damping factor (:math:`\sigma`) of 10 |cm-1| has been used.
-The figure shows one component of the diagonal, isotropic matrix.
+The Figure shows one component of the diagonal, isotropic matrix.
 In the Figure the real permittivity at zero frequency corresponds to the static permittivity in :numref:`tab-mgo-properties`, and at frequencies above the absorption at 388 |cm-1| the permittivity tends to the optical permittivity as the frequency increases. The real permittivity has zero values at 388.3 and 693.7 |cm-1| which are the TO and LO frequencies respectively.
 The data for this calculation can be found by looking in the :ref:`Examples` section of the installation guide under the Castep/MgO example.
 
@@ -90,7 +90,7 @@ volume fractions the Bruggeman mixing rule predicts a similar absorption
 to the Maxwell-Garnett. Indeed as the volume fraction approaches zero
 the two rules predict the same absorption characteristics. However, even
 at the relatively low 1% loading, the Bruggeman mixing rule shows
-and additional broadening of the peak; the shape of the absorption peak has
+an additional broadening of the peak; the shape of the absorption peak has
 lost its Lorentzian characteristic shape as can be seen clearly in
 :numref:`fig-mgo-vf-bg`.  At 10% loading the Bruggeman predicted absorption is broad with
 the peak shifted to lower wavenumber. This broadening increases with
@@ -239,7 +239,7 @@ The data for this calculation can be found by looking in the :ref:`Examples` sec
    +------------------------------------------+-----------------------------+--------------------------------------+
 
 
-:numref:`fig-calcite` shows the results of analysis of the results using PDielec. The damping parameter used in the calculation was a value of 5 |cm-1|. A 10% volume fraction was used with sphere and plate morphologies for the particles. The unique axis for the plate was taken to be the normal to the (211) surfaces in the primitive cell axes (or the (104) surfaces in the standard unit cell). Such surfaces define the rhombohedral faces commonly seen in calcite crystals :cite:`DeOliveira1997`. :numref:`fig-calcite` shows that the doubly degenerate TO absorption peak at 620 |cm-1| is not significantly affected by spherical particles and there is a small shift to higher frequencies in the case of plate-like particles. The non-degenerate TO transition at 732 |cm-1|, which corresponds to the motion of the carbon atom of the carbonate along the unique direction of the slab, shows a shift to 786 and 819 |cm-1| for the sphere and plate respectively. The doubly degenerate peak at 1463 |cm-1| is shifted to 1480 |cm-1| by spherical particles and is split by plate-like particles with one component which shifts to 1491 |cm-1| .
+:numref:`fig-calcite` shows the resultant spectra after postprocessing with PDielec. The damping parameter used in the calculation was a value of 5 |cm-1|. A 10% volume fraction was used with sphere and plate morphologies for the particles. The unique axis for the plate was taken to be the normal to the (211) surfaces in the primitive cell axes (or the (104) surfaces in the standard unit cell). Such surfaces define the rhombohedral faces commonly seen in calcite crystals :cite:`DeOliveira1997`. :numref:`fig-calcite` shows that the doubly degenerate TO absorption peak at 620 |cm-1| is not significantly affected by spherical particles and there is a small shift to higher frequencies in the case of plate-like particles. The non-degenerate TO transition at 732 |cm-1|, which corresponds to the motion of the carbon atom of the carbonate along the unique direction of the slab, shows a shift to 786 and 819 |cm-1| for the sphere and plate respectively. The doubly degenerate peak at 1463 |cm-1| is shifted to 1480 |cm-1| by spherical particles and is split by plate-like particles with one component which shifts to 1491 |cm-1| .
 The data for this calculation can be found by looking in the :ref:`Examples` section of the installation guide under the Gulp/calcite example.
 
 
@@ -312,7 +312,7 @@ The data for this calculation can be found by looking in the :ref:`Examples` sec
 L-aspartic Acid using CASTEP
 ============================
 
-L-aspartic acid is a zwitterion in the solid state so the shape of the particles used in the measurement of IR and THz spectra may be important. The starting geometry for optimisation of the unit cell and molecular structure of L-aspartic acid was taken from Derissen et al :cite:`Derissen1968`. The PBE :cite:`Perdew1996a` functional was used with a plane wave energy cutoff of 1000 eV and norm-conserving pseudo-potentials. A dispersion correction using the Tkatchenko-Scheffler scheme :cite:`Tkatchenko2009c` available in CASTEP was applied for both the geometry optimisation and the calculation of the phonon spectrum at the gamma point, with a value S~6~ scaling factor :cite:`Juliano2015` of 1.0. A summary of the results of the calculations is shown in :numref:`tab-aspartic-properties`.
+L-aspartic acid is a zwitterion in the solid state so the shape of the particles used in the measurement of IR and THz spectra may be important. The starting geometry for optimisation of the unit cell and molecular structure of L-aspartic acid was taken from Derissen et al :cite:`Derissen1968`. The PBE :cite:`Perdew1996a` functional was used with a plane wave energy cutoff of 1000 eV and norm-conserving pseudo-potentials. A dispersion correction using the Tkatchenko-Scheffler scheme :cite:`Tkatchenko2009c` available in CASTEP was applied for both the geometry optimisation and the calculation of the phonon spectrum at the gamma point, with an S\ :subscript:`6` scaling factor :cite:`Juliano2015` of 1.0. A summary of the results of the calculations is shown in :numref:`tab-aspartic-properties`.
 
 
 .. table:: Experimental and calculated properties of L-aspartic acid
@@ -398,7 +398,7 @@ MgO Example using Mie Scattering
 ================================
 
 :numref:`fig-mgo-mie` compares a Mie scattering calculation with the results from Maxwell-Garnett effective medium theory. The same data set was used for the CASTEP, MgO example. A volume fraction of 1% was used with a small sphere radius (0.1 μm) and a broadening of 5 |cm-1| embedded in a matrix of PTFE. A power expansion in the size parameter of the Mie expressions
-indicates that for small sizes of particles, the Mie and the Maxwell-Garnett methods should be the same. This is verified in Figure 13.
+indicates that for small sizes of particles, the Mie and the Maxwell-Garnett methods should be the same. This is verified in Figure.
 The data for this calculation can be found by looking in the :ref:`Examples` section of the installation guide under the Mie/MgO example.
 
 
@@ -445,7 +445,7 @@ To better understand what makes particles large or small :numref:`tab-mgo-mie-si
    +------------+-----------------------+--------+--------+--------+---------+
 
 
-Figure :numref:`fig-mgo-mie-sizes` shows how the Mie predictions change as the particle radius changes from 0.2 to 1.6 μm. As the particle size increases the peak above 500 |cm-1| splits into two. One broader peak moves to a lower frequency as the particle size increases and the peak at about 550 |cm-1| loses intensity as the particle size increases. There is also the onset of absorption at 388 |cm-1| which corresponds to the bulk TO modes.
+:numref:`fig-mgo-mie-sizes` shows how the Mie predictions change as the particle radius changes from 0.2 to 1.6 μm. As the particle size increases the peak above 500 |cm-1| splits into two. One broader peak moves to a lower frequency as the particle size increases and the peak at about 550 |cm-1| loses intensity as the particle size increases. There is also the onset of absorption at 388 |cm-1| which corresponds to the bulk TO modes.
 
 .. _fig-mgo-mie-sizes:
 
@@ -454,7 +454,7 @@ Figure :numref:`fig-mgo-mie-sizes` shows how the Mie predictions change as the p
 
    Variation in absorption calculated by the Mie method for different radii of spheres. 1% volume fraction of MgO in PTFE and a broadening of 5 |cm-1|
 
-Figure :numref:`fig-mgo-mie-sizes-big` shows the effect of increasing the particle size further. More structure appears in the absorption, with increasing absorption around
+:numref:`fig-mgo-mie-sizes-big` shows the effect of increasing the particle size further. More structure appears in the absorption, with increasing absorption around
 the bulk TO frequency. Above 4.0 μm there is more low frequency structure
 appearing, below 300 |cm-1|.
 The data for this calculation can be found by looking in the :ref:`Examples` section of the installation guide under the Mie/MgO example.
@@ -487,9 +487,9 @@ ZnO is an anisotropic material, so the treatment described here using Mie scatte
    ZnO spheres using Mie
 
 
-Figures :numref:`fig-zno-maxwell-garnett` and :numref:`fig-zno-mie` compare the capabilities of the Maxwell-Garnett and Mie methods for describing volume fraction effects. Figure :numref:`fig-zno-maxwell-garnett` shows that Maxwell-Garnett predicts a lowering of intensity and frequency of the high-frequency peak as the volume fraction is increased. Figure :numref:`fig-zno-mie` illustrates that Mie theory shows no effect of the change in volume fraction. This is to be expected as the theory assumes that each sphere is isolated and does not affect the other spheres around it. It should be pointed out that the figures are plotting molar absorption coefficients. The actual absorption would increase with volume fraction of ZnO.
+Figures :numref:`fig-zno-maxwell-garnett` and :numref:`fig-zno-mie` compare the capabilities of the Maxwell-Garnett and Mie methods for describing volume fraction effects. :numref:`fig-zno-maxwell-garnett` shows that Maxwell-Garnett predicts a lowering of intensity and frequency of the high-frequency peak as the volume fraction is increased. :numref:`fig-zno-mie` illustrates that Mie theory shows no effect of the change in volume fraction. This is to be expected as the theory assumes that each sphere is isolated and does not affect the other spheres around it. It should be pointed out that the figures are plotting molar absorption coefficients. The actual absorption would increase with volume fraction of ZnO.
 
-Figure :numref:`fig-zno-mie-sizes` shows that the variation of the Mie scattering with sphere radius follows a similar pattern to that observed in MgO, though slightly more complex. The initial peaks at about 440 and 460 |cm-1| broaden and shift to lower frequencies as the particle size increases. Bulk bands around 350 and 372 |cm-1| can be seen which grow in intensity and shift to lower frequencies as the particle size increases.
+:numref:`fig-zno-mie-sizes` shows that the variation of the Mie scattering with sphere radius follows a similar pattern to that observed in MgO, though slightly more complex. The initial peaks at about 440 and 460 |cm-1| broaden and shift to lower frequencies as the particle size increases. Bulk bands around 350 and 372 |cm-1| can be seen which grow in intensity and shift to lower frequencies as the particle size increases.
 The data for this calculation can be found by looking in the :ref:`Examples` section of the installation guide under the Vasp/ZnO/application_note_mie example.
 
 .. _fig-zno-mie-sizes:
@@ -506,7 +506,9 @@ Fitting the ATR Spectrum of Na\ :subscript:`2`\ (SO\ :subscript:`4`\ )\ :subscri
 ======================================================================================
 
 To calculate the expected Attenuated Total Reflectance spectrum of Na\ :subscript:`2`\ (SO\ :subscript:`4`\ )\ :subscript:`2` a VASP calculation was performed of the optimised structure followed by the dynamical matrix and the phonon spectrum at the :math:`\Gamma` point.
-After reading in the OUTCAR with PDGui, the scenario tab is modified to reflect the materials used in an ATR experiment.  The support matrix is set to air and the volume fraction of the dielectric is set 80%.  When looking at the plot with the plotting tab, ensure that the 'Powder ATR' plot type is used.  This ensures that the fitter tab uses that plot for the fitting.  For the case of non-polarised radiation the choice of 0.5 for the 'ATR S polarisation fraction' is appropriate.
+After reading in the OUTCAR with PDGui, the scenario tab is modified to reflect the materials used in an ATR experiment.  The support matrix is set to air and the volume fraction of the dielectric is set 80%. 
+This value needs to be chosen to reflect the particle shape and size distribution.  
+When looking at the plot with the plotting tab, ensure that the 'Powder ATR' plot type is used.  This ensures that the fitter tab uses that plot for the fitting.  For the case of non-polarised radiation the choice of 0.5 for the 'ATR S polarisation fraction' is appropriate.
 The settings tab will look like the tab shown below.
 
 .. _Na2SO42-scenario:

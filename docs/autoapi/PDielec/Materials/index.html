@@ -1,0 +1,1147 @@
+<!doctype html>
+<html class="no-js" lang="en" data-content_root="">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" /><link rel="next" title="PDielec.Mie" href="../Mie/index.html" /><link rel="prev" title="PDielec.IO" href="../IO/index.html" />
+
+    <!-- Generated with Sphinx 7.1.2 and Furo 2024.01.29 -->
+        <title>PDielec.Materials - PDielec: John Kendrick &amp; Andrew Burnett</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=135e06be" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=eafc0fe6" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/table_styling.css?v=a1a2a898" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo-extensions.css?v=36a5483c" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/css/custom.css?v=2e0a580d" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f8f8f8;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-half" viewBox="0 0 24 24">
+    <title>Auto light/dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M13 12h5" />
+      <path d="M13 15h4" />
+      <path d="M13 18h1" />
+      <path d="M13 9h4" />
+      <path d="M13 6h1" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../../../index.html"><div class="brand">PDielec: John Kendrick & Andrew Burnett</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../../../index.html">
+  
+  
+  <span class="sidebar-brand-text">PDielec: John Kendrick & Andrew Burnett</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../../../search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <p class="caption" role="heading"><span class="caption-text">Software</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pdgui.html">PDGui</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../software.html">Other Software Components</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Theory</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../theory_powder.html">Theory for Light Scattering from Powders</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../theory_single_crystal.html">Theory for Single Crystal Optics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../analysis.html">Phonon Analysis</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Applications</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../application_notes_1.html">Applications of Effective Medium Theory</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../application_notes_2.html">Single Crystal Applications</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API</span></p>
+<ul class="current">
+<li class="toctree-l1 current has-children"><a class="reference internal" href="../../index.html">API Reference</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of API Reference</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l2 current has-children"><a class="reference internal" href="../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec</span></code></a><input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of PDielec</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l3 has-children"><a class="reference internal" href="../GUI/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of PDielec.GUI</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../GUI/AnalysisTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.AnalysisTab</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../GUI/App/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.App</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../GUI/FitterTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.FitterTab</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../GUI/MainTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.MainTab</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../GUI/NoteBook/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.NoteBook</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../GUI/OpenGLWidget/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.OpenGLWidget</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../GUI/PlottingTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.PlottingTab</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../GUI/PowderScenarioTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.PowderScenarioTab</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../GUI/ScenarioTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.ScenarioTab</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../GUI/SettingsTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.SettingsTab</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../GUI/SingleCrystalLayer/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.SingleCrystalLayer</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../GUI/SingleCrystalScenarioTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.SingleCrystalScenarioTab</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../GUI/SpreadSheetManager/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.SpreadSheetManager</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../GUI/ViewerTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.ViewerTab</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../AbinitOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.AbinitOutputReader</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Calculator/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.Calculator</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../CastepOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.CastepOutputReader</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Constants/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.Constants</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../CrystalOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.CrystalOutputReader</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../DielectricFunction/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.DielectricFunction</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ExperimentOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.ExperimentOutputReader</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../GTMcore/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GTMcore</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../GenericOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GenericOutputReader</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../GulpOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GulpOutputReader</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../HelperRoutines/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.HelperRoutines</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../IO/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.IO</span></code></a></li>
+<li class="toctree-l3 current current-page"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.Materials</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Mie/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.Mie</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PhonopyOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.PhonopyOutputReader</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Plotter/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.Plotter</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../QEOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.QEOutputReader</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../SuperCell/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.SuperCell</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../UnitCell/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.UnitCell</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Utilities/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.Utilities</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../VaspOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.VaspOutputReader</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../checkcsv/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.checkcsv</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../checkexcel/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.checkexcel</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../graphdatagenerator/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.graphdatagenerator</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../p1reader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.p1reader</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../p2cif/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.p2cif</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../pdcompare/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.pdcompare</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../pdgui/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.pdgui</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../pdmake/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.pdmake</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../pickled_reader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.pickled_reader</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../preader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.preader</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../vibanalysis/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.vibanalysis</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../pdgui/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.pdgui</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../preader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.preader</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pdmake/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.pdmake</span></code></a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">References</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../zreferences.html">References</a></li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main">
+          <section id="module-PDielec.Materials">
+<span id="pdielec-materials"></span><h1><a class="reference internal" href="#module-PDielec.Materials" title="PDielec.Materials"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.Materials</span></code></a><a class="headerlink" href="#module-PDielec.Materials" title="Permalink to this heading">#</a></h1>
+<p>Materials DataBase</p>
+<p>The MIT License (MIT)</p>
+<p>Copyright (c) 2024 John Kendrick</p>
+<p>Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the “Software”), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:</p>
+<p>The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.</p>
+<p>THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.</p>
+<section id="module-contents">
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this heading">#</a></h2>
+<section id="classes">
+<h3>Classes<a class="headerlink" href="#classes" title="Permalink to this heading">#</a></h3>
+<div class="table-wrapper autosummary longtable docutils container">
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#PDielec.Materials.Constant" title="PDielec.Materials.Constant"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Constant</span></code></a></p></td>
+<td><p>A class representing a material with constant scalar permittivity, inheriting from the <cite>Material</cite> class.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#PDielec.Materials.DrudeLorentz" title="PDielec.Materials.DrudeLorentz"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DrudeLorentz</span></code></a></p></td>
+<td><p>A subclass representing a material with a Lorentz-Drude model permittivity.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#PDielec.Materials.External" title="PDielec.Materials.External"><code class="xref py py-obj docutils literal notranslate"><span class="pre">External</span></code></a></p></td>
+<td><p>A class for representing materials with externally specified permittivity.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#PDielec.Materials.FPSQ" title="PDielec.Materials.FPSQ"><code class="xref py py-obj docutils literal notranslate"><span class="pre">FPSQ</span></code></a></p></td>
+<td><p>Class representing a material with a FPSQ model for permittivity.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#PDielec.Materials.Material" title="PDielec.Materials.Material"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Material</span></code></a></p></td>
+<td><p>A class for representing materials with properties like name, density, permittivity, and unit cell.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#PDielec.Materials.MaterialsDataBase" title="PDielec.Materials.MaterialsDataBase"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MaterialsDataBase</span></code></a></p></td>
+<td><p>A class for managing a database of materials' properties. This database is initialized from an Excel spreadsheet which contains various material properties including names, densities, refractive indices, and permittivities, among others. Additional functionalities include validation checks, retrieval of sheet names, material information, and specific data based on the property of interest (e.g., constant permittivity, tabulated refractive index).</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#PDielec.Materials.Sellmeier" title="PDielec.Materials.Sellmeier"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Sellmeier</span></code></a></p></td>
+<td><p>A class to define materials using the Sellmeier model for permittivity.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#PDielec.Materials.Tabulated" title="PDielec.Materials.Tabulated"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Tabulated</span></code></a></p></td>
+<td><p>A class for materials with tabulated permittivities.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<dl class="py class">
+<dt class="sig sig-object py" id="PDielec.Materials.Constant">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PDielec.Materials.</span></span><span class="sig-name descname"><span class="pre">Constant</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">permittivity</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">density</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cell</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/Materials.html#Constant"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.Materials.Constant" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#PDielec.Materials.Material" title="PDielec.Materials.Material"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Material</span></code></a></p>
+<p>A class representing a material with constant scalar permittivity, inheriting from the <cite>Material</cite> class.</p>
+<section id="attributes">
+<h4>Attributes<a class="headerlink" href="#attributes" title="Permalink to this heading">#</a></h4>
+<dl class="simple">
+<dt>type<span class="classifier">str</span></dt><dd><p>The type of material, set to ‘Constant permittivity’.</p>
+</dd>
+</dl>
+</section>
+<section id="methods">
+<h4>Methods<a class="headerlink" href="#methods" title="Permalink to this heading">#</a></h4>
+<p>Inherits methods from the <cite>Material</cite> class.</p>
+</section>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="PDielec.Materials.DrudeLorentz">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PDielec.Materials.</span></span><span class="sig-name descname"><span class="pre">DrudeLorentz</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epsinf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">omegas</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">strengths</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gammas</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">density</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cell</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/Materials.html#DrudeLorentz"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.Materials.DrudeLorentz" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#PDielec.Materials.Material" title="PDielec.Materials.Material"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Material</span></code></a></p>
+<p>A subclass representing a material with a Lorentz-Drude model permittivity.</p>
+<section id="parameters">
+<h4>Parameters<a class="headerlink" href="#parameters" title="Permalink to this heading">#</a></h4>
+<dl class="simple">
+<dt>name<span class="classifier">str</span></dt><dd><p>The name of the material.</p>
+</dd>
+<dt>epsinf<span class="classifier">array_like</span></dt><dd><p>Epsilon infinity, either a 3x3 list or a 3x3 array representing the static dielectric constant.</p>
+</dd>
+<dt>omegas<span class="classifier">list</span></dt><dd><p>The transverse optical (TO) frequencies.</p>
+</dd>
+<dt>strengths<span class="classifier">list</span></dt><dd><p>The oscillator strengths for each resonance.</p>
+</dd>
+<dt>gammas<span class="classifier">list</span></dt><dd><p>The damping (or broadening) factors for each resonance.</p>
+</dd>
+<dt>density<span class="classifier">float, optional</span></dt><dd><p>The density of the material in grams per milliliter (g/ml). Default is None.</p>
+</dd>
+<dt>cell<span class="classifier">unitCell, optional</span></dt><dd><p>The unit cell of the material. Default is None.</p>
+</dd>
+</dl>
+</section>
+<section id="notes">
+<h4>Notes<a class="headerlink" href="#notes" title="Permalink to this heading">#</a></h4>
+<p>The Drude-Lorentz model is used to calculate the permittivity of the material
+by considering the contributions from both free electrons (Drude) and bound electrons
+(Lorentz). This class requires specifying the infinite frequency dielectric constant (<cite>epsinf</cite>),
+the transverse optical frequencies (<cite>omegas</cite>), the oscillator strengths (<cite>strengths</cite>),
+and the damping factors (<cite>gammas</cite>) for each resonance in the material.</p>
+</section>
+<section id="examples">
+<h4>Examples<a class="headerlink" href="#examples" title="Permalink to this heading">#</a></h4>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">drude_lorentz_material</span> <span class="o">=</span> <span class="n">DrudeLorentz</span><span class="p">(</span><span class="s2">&quot;Gold&quot;</span><span class="p">,</span> <span class="p">[[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]],</span>
+<span class="gp">... </span>                                      <span class="p">[</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">],</span>
+<span class="gp">... </span>                                      <span class="n">density</span><span class="o">=</span><span class="mf">19.3</span><span class="p">)</span>
+<span class="go">This represents a Drude-Lorentz material with the name &quot;Gold&quot;, an isotropic epsilon infinity,</span>
+<span class="go">two resonances with specified frequencies, strengths, and damping factors, and</span>
+<span class="go">a density of 19.3 g/ml.</span>
+</pre></div>
+</div>
+</section>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="PDielec.Materials.External">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PDielec.Materials.</span></span><span class="sig-name descname"><span class="pre">External</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">permittivityObject</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">density</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cell</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/Materials.html#External"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.Materials.External" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#PDielec.Materials.Material" title="PDielec.Materials.Material"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Material</span></code></a></p>
+<p>A class for representing materials with externally specified permittivity.</p>
+<p>This class inherits from the <cite>Material</cite> class and is used to define materials
+where the permittivity is specified externally, rather than calculated or predefined.
+Permittivity can be a complex value indicating both the real and imaginary parts.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="PDielec.Materials.FPSQ">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PDielec.Materials.</span></span><span class="sig-name descname"><span class="pre">FPSQ</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epsinf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">omega_tos</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma_tos</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">omega_los</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma_los</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">density</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cell</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/Materials.html#FPSQ"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.Materials.FPSQ" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#PDielec.Materials.Material" title="PDielec.Materials.Material"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Material</span></code></a></p>
+<p>Class representing a material with a FPSQ model for permittivity.</p>
+<section id="id1">
+<h4>Parameters<a class="headerlink" href="#id1" title="Permalink to this heading">#</a></h4>
+<dl class="simple">
+<dt>name<span class="classifier">str</span></dt><dd><p>The name of the material.</p>
+</dd>
+<dt>epsinf<span class="classifier">array_like</span></dt><dd><p>Epsilon infinity (eps0), either a 3x3 list or a 3x3 array representing the dielectric constant at infinite frequency.</p>
+</dd>
+<dt>omega_tos<span class="classifier">list</span></dt><dd><p>The transverse optical (TO) frequencies.</p>
+</dd>
+<dt>gamma_tos<span class="classifier">list</span></dt><dd><p>The TO absorption widths.</p>
+</dd>
+<dt>omega_los<span class="classifier">list</span></dt><dd><p>The longitudinal optical (LO) frequencies.</p>
+</dd>
+<dt>gamma_los<span class="classifier">list</span></dt><dd><p>The LO absorption widths.</p>
+</dd>
+<dt>density<span class="classifier">float, optional</span></dt><dd><p>The density of the material in grams per milliliter (g/ml).</p>
+</dd>
+<dt>cell<span class="classifier">unitCell, optional</span></dt><dd><p>The unit cell of the material.</p>
+</dd>
+</dl>
+</section>
+<section id="id2">
+<h4>Notes<a class="headerlink" href="#id2" title="Permalink to this heading">#</a></h4>
+<p>The FPSQ (fitted phonon simple quantum) model is used to describe the permittivity of the material. This model is based on the harmonic oscillator model and describes the permittivity as a function of frequency.</p>
+</section>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="PDielec.Materials.Material">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PDielec.Materials.</span></span><span class="sig-name descname"><span class="pre">Material</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">density</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">permittivityObject</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cell</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/Materials.html#Material"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.Materials.Material" title="Permalink to this definition">#</a></dt>
+<dd><p>A class for representing materials with properties like name, density, permittivity, and unit cell.</p>
+<section id="id3">
+<h4>Attributes<a class="headerlink" href="#id3" title="Permalink to this heading">#</a></h4>
+<dl class="simple">
+<dt>density<span class="classifier">float</span></dt><dd><p>The density of the material, which may be calculated based on the cell if not provided initially.</p>
+</dd>
+<dt>cell<span class="classifier">Cell or None</span></dt><dd><p>The unit cell of the material if provided.</p>
+</dd>
+<dt>name<span class="classifier">str</span></dt><dd><p>The name of the material.</p>
+</dd>
+<dt>type<span class="classifier">str</span></dt><dd><p>A string indicating the type of the object. Defaults to ‘Base Class’ for the base Material class.</p>
+</dd>
+<dt>permittivityObject<span class="classifier">DielectricFunction or None</span></dt><dd><p>An object to handle the permittivity calculations for the material.</p>
+</dd>
+</dl>
+</section>
+<section id="id4">
+<h4>Methods<a class="headerlink" href="#id4" title="Permalink to this heading">#</a></h4>
+<dl class="simple">
+<dt>getName()</dt><dd><p>Returns the name of the material.</p>
+</dd>
+<dt>getInformation()</dt><dd><p>Returns information about the material, including its type and, if applicable, its permittivity frequency range.</p>
+</dd>
+<dt>print()</dt><dd><p>Prints information about the material, such as its name, density, type, and permittivity details.</p>
+</dd>
+<dt>isScalar()</dt><dd><p>Checks and returns True if the material’s permittivity is scalar.</p>
+</dd>
+<dt>isTensor()</dt><dd><p>Checks and returns True if the material’s permittivity is tensor.</p>
+</dd>
+<dt>setPermittivityObject(permittivityObject)</dt><dd><p>Sets the permittivityObject for the material.</p>
+</dd>
+<dt>getPermittivityObject()</dt><dd><p>Returns the permittivityObject of the material.</p>
+</dd>
+<dt>getPermittivityFunction()</dt><dd><p>Returns the permittivity function from the permittivityObject.</p>
+</dd>
+<dt>setDensity(value)</dt><dd><p>Sets the density of the material.</p>
+</dd>
+<dt>getDensity()</dt><dd><p>Returns the density of the material.</p>
+</dd>
+<dt>setCell(cell)</dt><dd><p>Sets the cell of the material and updates the density if it was initially None.</p>
+</dd>
+<dt>getCell()</dt><dd><p>Returns the cell of the material.</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="PDielec.Materials.Material.getCell">
+<span class="sig-name descname"><span class="pre">getCell</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/Materials.html#Material.getCell"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.Materials.Material.getCell" title="Permalink to this definition">#</a></dt>
+<dd><p>Return the cell</p>
+<section id="id5">
+<h5>Parameters<a class="headerlink" href="#id5" title="Permalink to this heading">#</a></h5>
+<p>None</p>
+</section>
+<section id="returns">
+<h5>Returns<a class="headerlink" href="#returns" title="Permalink to this heading">#</a></h5>
+<p>self.cell</p>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PDielec.Materials.Material.getDensity">
+<span class="sig-name descname"><span class="pre">getDensity</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/Materials.html#Material.getDensity"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.Materials.Material.getDensity" title="Permalink to this definition">#</a></dt>
+<dd><p>Return the density</p>
+<section id="id6">
+<h5>Parameters<a class="headerlink" href="#id6" title="Permalink to this heading">#</a></h5>
+<p>None</p>
+</section>
+<section id="id7">
+<h5>Returns<a class="headerlink" href="#id7" title="Permalink to this heading">#</a></h5>
+<p>self.density</p>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PDielec.Materials.Material.getInformation">
+<span class="sig-name descname"><span class="pre">getInformation</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/Materials.html#Material.getInformation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.Materials.Material.getInformation" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns information about the material.</p>
+<section id="id8">
+<h5>Parameters<a class="headerlink" href="#id8" title="Permalink to this heading">#</a></h5>
+<p>None</p>
+</section>
+<section id="id9">
+<h5>Returns<a class="headerlink" href="#id9" title="Permalink to this heading">#</a></h5>
+<dl class="simple">
+<dt>str</dt><dd><p>A description of the material.</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PDielec.Materials.Material.getName">
+<span class="sig-name descname"><span class="pre">getName</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/Materials.html#Material.getName"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.Materials.Material.getName" title="Permalink to this definition">#</a></dt>
+<dd><p>Get the name attribute of the object.</p>
+<section id="id10">
+<h5>Parameters<a class="headerlink" href="#id10" title="Permalink to this heading">#</a></h5>
+<p>None</p>
+</section>
+<section id="id11">
+<h5>Returns<a class="headerlink" href="#id11" title="Permalink to this heading">#</a></h5>
+<dl class="simple">
+<dt>str</dt><dd><p>The name attribute of the object.</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PDielec.Materials.Material.getPermittivityFunction">
+<span class="sig-name descname"><span class="pre">getPermittivityFunction</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/Materials.html#Material.getPermittivityFunction"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.Materials.Material.getPermittivityFunction" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns the permittivity function.</p>
+<section id="id12">
+<h5>Parameters<a class="headerlink" href="#id12" title="Permalink to this heading">#</a></h5>
+<p>None</p>
+</section>
+<section id="id13">
+<h5>Returns<a class="headerlink" href="#id13" title="Permalink to this heading">#</a></h5>
+<dl class="simple">
+<dt>permittivityObjectFunction</dt><dd><p>Return the permittivity object function</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PDielec.Materials.Material.getPermittivityObject">
+<span class="sig-name descname"><span class="pre">getPermittivityObject</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/Materials.html#Material.getPermittivityObject"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.Materials.Material.getPermittivityObject" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns the permittivity object.</p>
+<section id="id14">
+<h5>Parameters<a class="headerlink" href="#id14" title="Permalink to this heading">#</a></h5>
+<p>None</p>
+</section>
+<section id="id15">
+<h5>Returns<a class="headerlink" href="#id15" title="Permalink to this heading">#</a></h5>
+<dl class="simple">
+<dt>permittivityObject</dt><dd><p>Return the permittivity object (dielectric function object)</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PDielec.Materials.Material.isScalar">
+<span class="sig-name descname"><span class="pre">isScalar</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/Materials.html#Material.isScalar"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.Materials.Material.isScalar" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns true if the material returns a scalar permittivity.</p>
+<section id="id16">
+<h5>Parameters<a class="headerlink" href="#id16" title="Permalink to this heading">#</a></h5>
+<p>None</p>
+</section>
+<section id="id17">
+<h5>Returns<a class="headerlink" href="#id17" title="Permalink to this heading">#</a></h5>
+<dl class="simple">
+<dt>bool</dt><dd><p>True if the material returns a scalar permittivity, False otherwise.</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PDielec.Materials.Material.isTensor">
+<span class="sig-name descname"><span class="pre">isTensor</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/Materials.html#Material.isTensor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.Materials.Material.isTensor" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns true if the material returns a tensor permittivity.</p>
+<section id="id18">
+<h5>Parameters<a class="headerlink" href="#id18" title="Permalink to this heading">#</a></h5>
+<p>None</p>
+</section>
+<section id="id19">
+<h5>Returns<a class="headerlink" href="#id19" title="Permalink to this heading">#</a></h5>
+<dl class="simple">
+<dt>bool</dt><dd><p>True if the material returns a tensor permittivity, False otherwise.</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PDielec.Materials.Material.print">
+<span class="sig-name descname"><span class="pre">print</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/Materials.html#Material.print"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.Materials.Material.print" title="Permalink to this definition">#</a></dt>
+<dd><p>Print information about the material.</p>
+<section id="id20">
+<h5>Parameters<a class="headerlink" href="#id20" title="Permalink to this heading">#</a></h5>
+<p>None</p>
+</section>
+<section id="id21">
+<h5>Returns<a class="headerlink" href="#id21" title="Permalink to this heading">#</a></h5>
+<p>None</p>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PDielec.Materials.Material.setCell">
+<span class="sig-name descname"><span class="pre">setCell</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cell</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/Materials.html#Material.setCell"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.Materials.Material.setCell" title="Permalink to this definition">#</a></dt>
+<dd><p>Set the unit cell</p>
+<section id="id22">
+<h5>Parameters<a class="headerlink" href="#id22" title="Permalink to this heading">#</a></h5>
+<p>cell : a unit cell</p>
+</section>
+<section id="id23">
+<h5>Returns<a class="headerlink" href="#id23" title="Permalink to this heading">#</a></h5>
+<p>None</p>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PDielec.Materials.Material.setDensity">
+<span class="sig-name descname"><span class="pre">setDensity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/Materials.html#Material.setDensity"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.Materials.Material.setDensity" title="Permalink to this definition">#</a></dt>
+<dd><p>Set the density</p>
+<section id="id24">
+<h5>Parameters<a class="headerlink" href="#id24" title="Permalink to this heading">#</a></h5>
+<p>value : float</p>
+</section>
+<section id="id25">
+<h5>Returns<a class="headerlink" href="#id25" title="Permalink to this heading">#</a></h5>
+<p>None</p>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PDielec.Materials.Material.setPermittivityObject">
+<span class="sig-name descname"><span class="pre">setPermittivityObject</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">permittivityObject</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/Materials.html#Material.setPermittivityObject"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.Materials.Material.setPermittivityObject" title="Permalink to this definition">#</a></dt>
+<dd><p>Set the permittivity object.</p>
+<section id="id26">
+<h5>Parameters<a class="headerlink" href="#id26" title="Permalink to this heading">#</a></h5>
+<p>permittivityObject : a permittivity object (dielectric function object)</p>
+</section>
+<section id="id27">
+<h5>Returns<a class="headerlink" href="#id27" title="Permalink to this heading">#</a></h5>
+<p>None</p>
+</section>
+</dd></dl>
+
+</section>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="PDielec.Materials.MaterialsDataBase">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PDielec.Materials.</span></span><span class="sig-name descname"><span class="pre">MaterialsDataBase</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">debug</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/Materials.html#MaterialsDataBase"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.Materials.MaterialsDataBase" title="Permalink to this definition">#</a></dt>
+<dd><p>A class for managing a database of materials’ properties. This database is initialized from an Excel spreadsheet which contains various material properties including names, densities, refractive indices, and permittivities, among others. Additional functionalities include validation checks, retrieval of sheet names, material information, and specific data based on the property of interest (e.g., constant permittivity, tabulated refractive index).</p>
+<section id="id28">
+<h4>Attributes<a class="headerlink" href="#id28" title="Permalink to this heading">#</a></h4>
+<dl class="simple">
+<dt>filename<span class="classifier">str</span></dt><dd><p>The path to the Excel spreadsheet containing materials data.</p>
+</dd>
+<dt>sheetNames<span class="classifier">list</span></dt><dd><p>A list of strings representing the names of the sheets within the Excel spreadsheet.</p>
+</dd>
+<dt>debug<span class="classifier">bool, optional</span></dt><dd><p>A flag indicating whether debugging information should be printed. Default is False.</p>
+</dd>
+</dl>
+</section>
+<section id="id29">
+<h4>Methods<a class="headerlink" href="#id29" title="Permalink to this heading">#</a></h4>
+<dl class="simple">
+<dt>__init__(filename, debug=False)</dt><dd><p>Initializes the MaterialsDataBase class with a given Excel spreadsheet and a debug flag.</p>
+</dd>
+<dt>getFileName()</dt><dd><p>Returns the filename of the Excel spreadsheet being used as the database.</p>
+</dd>
+<dt>valid()</dt><dd><p>Checks if the spreadsheet is a valid materials database based on certain criteria.</p>
+</dd>
+<dt>getSheetNames()</dt><dd><p>Retrieves a sorted list of sheet names within the spreadsheet, including additional predefined names.</p>
+</dd>
+<dt>getMaterial(sheet)</dt><dd><p>Returns a material object based on the data in a given sheet of the Excel spreadsheet.</p>
+</dd>
+<dt>readConstantRefractiveIndex(sheet, worksheet, density)</dt><dd><p>Reads constant refractive index data for a given material from the spreadsheet.</p>
+</dd>
+<dt>readConstantPermittivity(sheet, worksheet, density)</dt><dd><p>Reads constant permittivity data for a given material from the spreadsheet.</p>
+</dd>
+<dt>readTabulatedRefractiveIndex(sheet, worksheet, density)</dt><dd><p>Reads tabulated refractive index data for a given material from the spreadsheet.</p>
+</dd>
+<dt>readTabulatedPermittivity(sheet, worksheet, density)</dt><dd><p>Reads tabulated permittivity data for a given material from the spreadsheet.</p>
+</dd>
+<dt>readLorentzDrude(sheet, worksheet, density, unitCell)</dt><dd><p>Reads Drude-Lorentz model parameters for a given material from the spreadsheet.</p>
+</dd>
+<dt>readFPSQ(sheet, worksheet, density, unitCell)</dt><dd><p>Reads FPSQ model parameters for a given material from the spreadsheet.</p>
+</dd>
+<dt>readSellmeier(sheet, worksheet, density, unitCell)</dt><dd><p>Reads Sellmeier model parameters for a given material from the spreadsheet.</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="PDielec.Materials.MaterialsDataBase.getFileName">
+<span class="sig-name descname"><span class="pre">getFileName</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/Materials.html#MaterialsDataBase.getFileName"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.Materials.MaterialsDataBase.getFileName" title="Permalink to this definition">#</a></dt>
+<dd><p>Return the filename</p>
+<section id="id30">
+<h5>Parameters<a class="headerlink" href="#id30" title="Permalink to this heading">#</a></h5>
+<p>None</p>
+</section>
+<section id="id31">
+<h5>Returns<a class="headerlink" href="#id31" title="Permalink to this heading">#</a></h5>
+<dl class="simple">
+<dt>str</dt><dd><p>The filename.</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PDielec.Materials.MaterialsDataBase.getMaterial">
+<span class="sig-name descname"><span class="pre">getMaterial</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sheet</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/Materials.html#MaterialsDataBase.getMaterial"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.Materials.MaterialsDataBase.getMaterial" title="Permalink to this definition">#</a></dt>
+<dd><p>Return a material object based on the data in sheet (an excel sheet).</p>
+<p>If one of the following is requested: air, vacuum, ptfe, ldpe, mdpe, kbr, nujol, then
+the material is created even if it is not in the database.</p>
+<section id="id32">
+<h5>Parameters<a class="headerlink" href="#id32" title="Permalink to this heading">#</a></h5>
+<dl class="simple">
+<dt>sheet<span class="classifier">Excel sheet</span></dt><dd><p>The excel sheet containing the material data.</p>
+</dd>
+</dl>
+</section>
+<section id="id33">
+<h5>Returns<a class="headerlink" href="#id33" title="Permalink to this heading">#</a></h5>
+<dl class="simple">
+<dt>Material object</dt><dd><p>The material object created from the excel sheet data.</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PDielec.Materials.MaterialsDataBase.getSheetNames">
+<span class="sig-name descname"><span class="pre">getSheetNames</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/Materials.html#MaterialsDataBase.getSheetNames"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.Materials.MaterialsDataBase.getSheetNames" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns a list of the sheetnames in the database.</p>
+<p>As well as the sheets in the database, there are some default materials which will be added
+to the list of materials and which are provided internally by this module.</p>
+<section id="id34">
+<h5>Parameters<a class="headerlink" href="#id34" title="Permalink to this heading">#</a></h5>
+<p>None</p>
+</section>
+<section id="id35">
+<h5>Returns<a class="headerlink" href="#id35" title="Permalink to this heading">#</a></h5>
+<dl class="simple">
+<dt>list</dt><dd><p>A list of the sheet names present in the database.</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PDielec.Materials.MaterialsDataBase.readConstantPermittivity">
+<span class="sig-name descname"><span class="pre">readConstantPermittivity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sheet</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">worksheet</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">density</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/Materials.html#MaterialsDataBase.readConstantPermittivity"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.Materials.MaterialsDataBase.readConstantPermittivity" title="Permalink to this definition">#</a></dt>
+<dd><p>Read constant permittivity data from the spreadsheet.</p>
+<section id="id36">
+<h5>Parameters<a class="headerlink" href="#id36" title="Permalink to this heading">#</a></h5>
+<dl class="simple">
+<dt>sheet<span class="classifier">str</span></dt><dd><p>The worksheet name.</p>
+</dd>
+<dt>worksheet<span class="classifier">worksheet</span></dt><dd><p>The worksheet instance.</p>
+</dd>
+<dt>density<span class="classifier">float</span></dt><dd><p>The density of the material.</p>
+</dd>
+</dl>
+</section>
+<section id="id37">
+<h5>Returns<a class="headerlink" href="#id37" title="Permalink to this heading">#</a></h5>
+<p>None</p>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PDielec.Materials.MaterialsDataBase.readConstantRefractiveIndex">
+<span class="sig-name descname"><span class="pre">readConstantRefractiveIndex</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sheet</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">worksheet</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">density</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/Materials.html#MaterialsDataBase.readConstantRefractiveIndex"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.Materials.MaterialsDataBase.readConstantRefractiveIndex" title="Permalink to this definition">#</a></dt>
+<dd><p>Read constant refractive index from the spreadsheet.</p>
+<section id="id38">
+<h5>Parameters<a class="headerlink" href="#id38" title="Permalink to this heading">#</a></h5>
+<dl class="simple">
+<dt>sheet<span class="classifier">str</span></dt><dd><p>The worksheet name.</p>
+</dd>
+<dt>worksheet<span class="classifier">worksheet</span></dt><dd><p>The worksheet.</p>
+</dd>
+<dt>density<span class="classifier">float</span></dt><dd><p>The density of the material.</p>
+</dd>
+</dl>
+</section>
+<section id="id39">
+<h5>Returns<a class="headerlink" href="#id39" title="Permalink to this heading">#</a></h5>
+<p>None</p>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PDielec.Materials.MaterialsDataBase.readFPSQ">
+<span class="sig-name descname"><span class="pre">readFPSQ</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sheet</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">worksheet</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">density</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unitCell</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/Materials.html#MaterialsDataBase.readFPSQ"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.Materials.MaterialsDataBase.readFPSQ" title="Permalink to this definition">#</a></dt>
+<dd><p>Read FPSQ data from the spreadsheet.</p>
+<section id="id40">
+<h5>Parameters<a class="headerlink" href="#id40" title="Permalink to this heading">#</a></h5>
+<dl class="simple">
+<dt>sheet<span class="classifier">str</span></dt><dd><p>The worksheet name.</p>
+</dd>
+<dt>worksheet<span class="classifier">worksheet</span></dt><dd><p>The actual worksheet object.</p>
+</dd>
+<dt>density<span class="classifier">float</span></dt><dd><p>The density of the material.</p>
+</dd>
+<dt>unitCell<span class="classifier">object</span></dt><dd><p>The unit cell.</p>
+</dd>
+</dl>
+</section>
+<section id="id41">
+<h5>Returns<a class="headerlink" href="#id41" title="Permalink to this heading">#</a></h5>
+<p>None</p>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PDielec.Materials.MaterialsDataBase.readLorentzDrude">
+<span class="sig-name descname"><span class="pre">readLorentzDrude</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sheet</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">worksheet</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">density</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unitCell</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/Materials.html#MaterialsDataBase.readLorentzDrude"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.Materials.MaterialsDataBase.readLorentzDrude" title="Permalink to this definition">#</a></dt>
+<dd><p>Read Drude-Lorentz data from the spreadsheet.</p>
+<section id="id42">
+<h5>Parameters<a class="headerlink" href="#id42" title="Permalink to this heading">#</a></h5>
+<dl class="simple">
+<dt>sheet<span class="classifier">str</span></dt><dd><p>The worksheet name.</p>
+</dd>
+<dt>worksheet<span class="classifier">worksheet</span></dt><dd><p>The worksheet.</p>
+</dd>
+<dt>density<span class="classifier">float</span></dt><dd><p>The density of the material.</p>
+</dd>
+<dt>unitCell<span class="classifier">object</span></dt><dd><p>The unit cell.</p>
+</dd>
+</dl>
+</section>
+<section id="id43">
+<h5>Returns<a class="headerlink" href="#id43" title="Permalink to this heading">#</a></h5>
+<p>None</p>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PDielec.Materials.MaterialsDataBase.readSellmeier">
+<span class="sig-name descname"><span class="pre">readSellmeier</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sheet</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">worksheet</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">density</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unitCell</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/Materials.html#MaterialsDataBase.readSellmeier"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.Materials.MaterialsDataBase.readSellmeier" title="Permalink to this definition">#</a></dt>
+<dd><p>Read Sellmeier data from the spreadsheet.</p>
+<section id="id44">
+<h5>Parameters<a class="headerlink" href="#id44" title="Permalink to this heading">#</a></h5>
+<dl class="simple">
+<dt>sheet<span class="classifier">str</span></dt><dd><p>The worksheet name.</p>
+</dd>
+<dt>worksheet<span class="classifier">worksheet</span></dt><dd><p>The worksheet.</p>
+</dd>
+<dt>density<span class="classifier">float</span></dt><dd><p>The density of the material.</p>
+</dd>
+<dt>unitCell<span class="classifier">object</span></dt><dd><p>The unit cell.</p>
+</dd>
+</dl>
+</section>
+<section id="id45">
+<h5>Returns<a class="headerlink" href="#id45" title="Permalink to this heading">#</a></h5>
+<p>None</p>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PDielec.Materials.MaterialsDataBase.readTabulatedPermittivity">
+<span class="sig-name descname"><span class="pre">readTabulatedPermittivity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sheet</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">worksheet</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">density</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/Materials.html#MaterialsDataBase.readTabulatedPermittivity"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.Materials.MaterialsDataBase.readTabulatedPermittivity" title="Permalink to this definition">#</a></dt>
+<dd><p>Read tabulated permittivity data from the spreadsheet.</p>
+<section id="id46">
+<h5>Parameters<a class="headerlink" href="#id46" title="Permalink to this heading">#</a></h5>
+<dl class="simple">
+<dt>sheet<span class="classifier">str</span></dt><dd><p>The worksheet name.</p>
+</dd>
+<dt>worksheet<span class="classifier">worksheet</span></dt><dd><p>The worksheet.</p>
+</dd>
+<dt>density<span class="classifier">float</span></dt><dd><p>The density of the material.</p>
+</dd>
+</dl>
+</section>
+<section id="id47">
+<h5>Returns<a class="headerlink" href="#id47" title="Permalink to this heading">#</a></h5>
+<p>None</p>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PDielec.Materials.MaterialsDataBase.readTabulatedRefractiveIndex">
+<span class="sig-name descname"><span class="pre">readTabulatedRefractiveIndex</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sheet</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">worksheet</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">density</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/Materials.html#MaterialsDataBase.readTabulatedRefractiveIndex"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.Materials.MaterialsDataBase.readTabulatedRefractiveIndex" title="Permalink to this definition">#</a></dt>
+<dd><p>Read tabulated refractive index data from the spreadsheet.</p>
+<section id="id48">
+<h5>Parameters<a class="headerlink" href="#id48" title="Permalink to this heading">#</a></h5>
+<dl class="simple">
+<dt>sheet<span class="classifier">str</span></dt><dd><p>The worksheet name.</p>
+</dd>
+<dt>worksheet<span class="classifier">worksheet</span></dt><dd><p>The worksheet.</p>
+</dd>
+<dt>density<span class="classifier">float</span></dt><dd><p>The density of the material.</p>
+</dd>
+</dl>
+</section>
+<section id="id49">
+<h5>Returns<a class="headerlink" href="#id49" title="Permalink to this heading">#</a></h5>
+<p>None</p>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PDielec.Materials.MaterialsDataBase.valid">
+<span class="sig-name descname"><span class="pre">valid</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/Materials.html#MaterialsDataBase.valid"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.Materials.MaterialsDataBase.valid" title="Permalink to this definition">#</a></dt>
+<dd><p>Test to see if the spreadsheet is a valid materials database.</p>
+<section id="id50">
+<h5>Parameters<a class="headerlink" href="#id50" title="Permalink to this heading">#</a></h5>
+<p>None</p>
+</section>
+<section id="id51">
+<h5>Returns<a class="headerlink" href="#id51" title="Permalink to this heading">#</a></h5>
+<dl class="simple">
+<dt>bool</dt><dd><p>True if the spreadshee is ‘valid’</p>
+</dd>
+</dl>
+</section>
+<section id="id52">
+<h5>Notes<a class="headerlink" href="#id52" title="Permalink to this heading">#</a></h5>
+<p>None</p>
+</section>
+</dd></dl>
+
+</section>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="PDielec.Materials.Sellmeier">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PDielec.Materials.</span></span><span class="sig-name descname"><span class="pre">Sellmeier</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Bs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Cs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">density</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cell</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/Materials.html#Sellmeier"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.Materials.Sellmeier" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#PDielec.Materials.Material" title="PDielec.Materials.Material"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Material</span></code></a></p>
+<p>A class to define materials using the Sellmeier model for permittivity.</p>
+<section id="id53">
+<h4>Parameters<a class="headerlink" href="#id53" title="Permalink to this heading">#</a></h4>
+<dl class="simple">
+<dt>name<span class="classifier">str</span></dt><dd><p>The name of the material.</p>
+</dd>
+<dt>Bs<span class="classifier">list or array_like</span></dt><dd><p>The B parameters (coefficients) in the Sellmeier equation.</p>
+</dd>
+<dt>Cs<span class="classifier">list or array_like</span></dt><dd><p>The C parameters (coefficients) in the Sellmeier equation.</p>
+</dd>
+<dt>density<span class="classifier">float, optional</span></dt><dd><p>The density of the material in g/ml. Default is None.</p>
+</dd>
+<dt>cell<span class="classifier">unitCell, optional</span></dt><dd><p>The unit cell of the material. Default is None.</p>
+</dd>
+</dl>
+</section>
+<section id="id54">
+<h4>Attributes<a class="headerlink" href="#id54" title="Permalink to this heading">#</a></h4>
+<dl class="simple">
+<dt>type<span class="classifier">str</span></dt><dd><p>The type of the material, which is ‘Sellmeier’ for instances of this class.</p>
+</dd>
+</dl>
+</section>
+<section id="id55">
+<h4>Methods<a class="headerlink" href="#id55" title="Permalink to this heading">#</a></h4>
+<dl class="simple">
+<dt>__init__(self, name, Bs, Cs, density=None, cell=None)</dt><dd><p>Initializes a Sellmeier material with specified parameters.</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="PDielec.Materials.Tabulated">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PDielec.Materials.</span></span><span class="sig-name descname"><span class="pre">Tabulated</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vs_cm1</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">permittivities</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">density</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cell</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/Materials.html#Tabulated"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.Materials.Tabulated" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#PDielec.Materials.Material" title="PDielec.Materials.Material"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Material</span></code></a></p>
+<p>A class for materials with tabulated permittivities.</p>
+<section id="id56">
+<h4>Parameters<a class="headerlink" href="#id56" title="Permalink to this heading">#</a></h4>
+<dl class="simple">
+<dt>name<span class="classifier">str</span></dt><dd><p>The name of the material.</p>
+</dd>
+<dt>vs_cm1<span class="classifier">list or None, optional</span></dt><dd><p>The list of tabulated frequencies in cm-1. Defaults to None.</p>
+</dd>
+<dt>permittivities<span class="classifier">array-like or None, optional</span></dt><dd><p>The permittivities, either as a single vector (n,) or a tensor (3,n) or (6,n) for more complex materials.
+Defaults to None.</p>
+</dd>
+<dt>density<span class="classifier">float or None, optional</span></dt><dd><p>The density of the material in g/ml. Defaults to None.</p>
+</dd>
+<dt>cell<span class="classifier">unitCell or None, optional</span></dt><dd><p>The unit cell of the material. Defaults to None.</p>
+</dd>
+</dl>
+</section>
+<section id="id57">
+<h4>Notes<a class="headerlink" href="#id57" title="Permalink to this heading">#</a></h4>
+<ul class="simple">
+<li><p>This class is designed to handle materials with a constant permittivity as well as those
+requiring more complex permittivity tensors.</p></li>
+<li><p>The permittivity can be defined using either a scalar for simple materials or tensors for materials
+that require a support matrix.</p></li>
+<li><p>The constructor converts the input lists of frequencies (<cite>vs_cm1</cite>) and permittivities into numpy arrays,
+and then generates the appropriate permittivity object depending on the complexity of the material’s permittivities.</p></li>
+</ul>
+</section>
+<section id="see-also">
+<h4>See Also<a class="headerlink" href="#see-also" title="Permalink to this heading">#</a></h4>
+<p>DielectricFunction : Parent class that provides methods to handle different types of permittivities.</p>
+</section>
+<section id="id58">
+<h4>Examples<a class="headerlink" href="#id58" title="Permalink to this heading">#</a></h4>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">material1</span> <span class="o">=</span> <span class="n">Tabulated</span><span class="p">(</span><span class="s2">&quot;Quartz&quot;</span><span class="p">,</span> <span class="n">vs_cm1</span><span class="o">=</span><span class="p">[</span><span class="mi">500</span><span class="p">,</span> <span class="mi">1000</span><span class="p">,</span> <span class="mi">1500</span><span class="p">],</span> <span class="n">permittivities</span><span class="o">=</span><span class="p">[</span><span class="mf">2.1</span><span class="p">,</span> <span class="mf">2.3</span><span class="p">,</span> <span class="mf">2.5</span><span class="p">],</span> <span class="n">density</span><span class="o">=</span><span class="mf">2.65</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">material2</span> <span class="o">=</span> <span class="n">Tabulated</span><span class="p">(</span><span class="s2">&quot;Synthetic&quot;</span><span class="p">,</span> <span class="n">vs_cm1</span><span class="o">=</span><span class="p">[</span><span class="mi">200</span><span class="p">,</span> <span class="mi">400</span><span class="p">,</span> <span class="mi">600</span><span class="p">],</span> <span class="n">permittivities</span><span class="o">=</span><span class="p">[[</span><span class="mf">2.1</span><span class="p">,</span> <span class="mf">2.3</span><span class="p">,</span> <span class="mf">2.5</span><span class="p">],</span> <span class="p">[</span><span class="mf">2.4</span><span class="p">,</span> <span class="mf">2.6</span><span class="p">,</span> <span class="mf">2.8</span><span class="p">],</span> <span class="p">[</span><span class="mf">3.0</span><span class="p">,</span> <span class="mf">3.2</span><span class="p">,</span> <span class="mf">3.4</span><span class="p">]],</span> <span class="n">density</span><span class="o">=</span><span class="mf">1.5</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</dd></dl>
+
+</section>
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="../Mie/index.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.Mie</span></code></div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="../IO/index.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.IO</span></code></div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2024, John Kendrick and Andrew Burnett
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.Materials</span></code></a><ul>
+<li><a class="reference internal" href="#module-contents">Module Contents</a><ul>
+<li><a class="reference internal" href="#classes">Classes</a><ul>
+<li><a class="reference internal" href="#PDielec.Materials.Constant"><code class="docutils literal notranslate"><span class="pre">Constant</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.Materials.DrudeLorentz"><code class="docutils literal notranslate"><span class="pre">DrudeLorentz</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.Materials.External"><code class="docutils literal notranslate"><span class="pre">External</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.Materials.FPSQ"><code class="docutils literal notranslate"><span class="pre">FPSQ</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.Materials.Material"><code class="docutils literal notranslate"><span class="pre">Material</span></code></a><ul>
+<li><a class="reference internal" href="#PDielec.Materials.Material.getCell"><code class="docutils literal notranslate"><span class="pre">Material.getCell()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.Materials.Material.getDensity"><code class="docutils literal notranslate"><span class="pre">Material.getDensity()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.Materials.Material.getInformation"><code class="docutils literal notranslate"><span class="pre">Material.getInformation()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.Materials.Material.getName"><code class="docutils literal notranslate"><span class="pre">Material.getName()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.Materials.Material.getPermittivityFunction"><code class="docutils literal notranslate"><span class="pre">Material.getPermittivityFunction()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.Materials.Material.getPermittivityObject"><code class="docutils literal notranslate"><span class="pre">Material.getPermittivityObject()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.Materials.Material.isScalar"><code class="docutils literal notranslate"><span class="pre">Material.isScalar()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.Materials.Material.isTensor"><code class="docutils literal notranslate"><span class="pre">Material.isTensor()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.Materials.Material.print"><code class="docutils literal notranslate"><span class="pre">Material.print()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.Materials.Material.setCell"><code class="docutils literal notranslate"><span class="pre">Material.setCell()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.Materials.Material.setDensity"><code class="docutils literal notranslate"><span class="pre">Material.setDensity()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.Materials.Material.setPermittivityObject"><code class="docutils literal notranslate"><span class="pre">Material.setPermittivityObject()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#PDielec.Materials.MaterialsDataBase"><code class="docutils literal notranslate"><span class="pre">MaterialsDataBase</span></code></a><ul>
+<li><a class="reference internal" href="#PDielec.Materials.MaterialsDataBase.getFileName"><code class="docutils literal notranslate"><span class="pre">MaterialsDataBase.getFileName()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.Materials.MaterialsDataBase.getMaterial"><code class="docutils literal notranslate"><span class="pre">MaterialsDataBase.getMaterial()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.Materials.MaterialsDataBase.getSheetNames"><code class="docutils literal notranslate"><span class="pre">MaterialsDataBase.getSheetNames()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.Materials.MaterialsDataBase.readConstantPermittivity"><code class="docutils literal notranslate"><span class="pre">MaterialsDataBase.readConstantPermittivity()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.Materials.MaterialsDataBase.readConstantRefractiveIndex"><code class="docutils literal notranslate"><span class="pre">MaterialsDataBase.readConstantRefractiveIndex()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.Materials.MaterialsDataBase.readFPSQ"><code class="docutils literal notranslate"><span class="pre">MaterialsDataBase.readFPSQ()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.Materials.MaterialsDataBase.readLorentzDrude"><code class="docutils literal notranslate"><span class="pre">MaterialsDataBase.readLorentzDrude()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.Materials.MaterialsDataBase.readSellmeier"><code class="docutils literal notranslate"><span class="pre">MaterialsDataBase.readSellmeier()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.Materials.MaterialsDataBase.readTabulatedPermittivity"><code class="docutils literal notranslate"><span class="pre">MaterialsDataBase.readTabulatedPermittivity()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.Materials.MaterialsDataBase.readTabulatedRefractiveIndex"><code class="docutils literal notranslate"><span class="pre">MaterialsDataBase.readTabulatedRefractiveIndex()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.Materials.MaterialsDataBase.valid"><code class="docutils literal notranslate"><span class="pre">MaterialsDataBase.valid()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#PDielec.Materials.Sellmeier"><code class="docutils literal notranslate"><span class="pre">Sellmeier</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.Materials.Tabulated"><code class="docutils literal notranslate"><span class="pre">Tabulated</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js?v=01b4f342"></script>
+    <script src="../../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../../../_static/scripts/furo.js?v=32e29ea5"></script>
+    </body>
+</html>

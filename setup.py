@@ -1,16 +1,27 @@
 import setuptools
 
 # Update this for every PyPi release
-version = "8.1.0"
+version = "8.1.1"
 
 with open("README.md", "r") as fh:
     long_description = fh.read()
-
+with open("LICENSE.txt", "r") as fh:
+    licence = fh.readlines()
 
 init_lines = ["# Created by setup.py, whilst creating a new PyPi release\n","__version__ = \"{}\"\n".format(version)]
 with open("PDielec/__init__.py", "w") as fh:
+    fh.writelines(['\'\'\'\n'])
+    fh.writelines(['PDielec: library for processing DFT calculations for infrared and terahertz spectroscopy\n'])
+    fh.writelines(['\n'])
+    fh.writelines(licence)
+    fh.writelines(['\'\'\'\n'])
     fh.writelines(init_lines)
 with open("PDielec/GUI/__init__.py", "w") as fh:
+    fh.writelines(['\'\'\'\n'])
+    fh.writelines(['PDGui: GUI for processing DFT calculations for infrared and terahertz spectroscopy\n'])
+    fh.writelines(['\n'])
+    fh.writelines(licence)
+    fh.writelines(['\'\'\'\n'])
     fh.writelines(init_lines)
 
 setuptools.setup(

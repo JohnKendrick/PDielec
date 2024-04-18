@@ -1,0 +1,1144 @@
+<!doctype html>
+<html class="no-js" lang="en" data-content_root="">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" /><link rel="next" title="PDielec.pickled_reader" href="../pickled_reader/index.html" /><link rel="prev" title="PDielec.pdgui" href="../pdgui/index.html" />
+
+    <!-- Generated with Sphinx 7.1.2 and Furo 2024.01.29 -->
+        <title>PDielec.pdmake - PDielec: John Kendrick &amp; Andrew Burnett</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=135e06be" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=eafc0fe6" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/table_styling.css?v=a1a2a898" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo-extensions.css?v=36a5483c" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/css/custom.css?v=2e0a580d" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f8f8f8;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-half" viewBox="0 0 24 24">
+    <title>Auto light/dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M13 12h5" />
+      <path d="M13 15h4" />
+      <path d="M13 18h1" />
+      <path d="M13 9h4" />
+      <path d="M13 6h1" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../../../index.html"><div class="brand">PDielec: John Kendrick & Andrew Burnett</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../../../index.html">
+  
+  
+  <span class="sidebar-brand-text">PDielec: John Kendrick & Andrew Burnett</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../../../search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <p class="caption" role="heading"><span class="caption-text">Software</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pdgui.html">PDGui</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../software.html">Other Software Components</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Theory</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../theory_powder.html">Theory for Light Scattering from Powders</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../theory_single_crystal.html">Theory for Single Crystal Optics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../analysis.html">Phonon Analysis</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Applications</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../application_notes_1.html">Applications of Effective Medium Theory</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../application_notes_2.html">Single Crystal Applications</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API</span></p>
+<ul class="current">
+<li class="toctree-l1 current has-children"><a class="reference internal" href="../../index.html">API Reference</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of API Reference</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l2 current has-children"><a class="reference internal" href="../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec</span></code></a><input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of PDielec</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l3 has-children"><a class="reference internal" href="../GUI/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of PDielec.GUI</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../GUI/AnalysisTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.AnalysisTab</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../GUI/App/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.App</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../GUI/FitterTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.FitterTab</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../GUI/MainTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.MainTab</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../GUI/NoteBook/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.NoteBook</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../GUI/OpenGLWidget/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.OpenGLWidget</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../GUI/PlottingTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.PlottingTab</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../GUI/PowderScenarioTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.PowderScenarioTab</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../GUI/ScenarioTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.ScenarioTab</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../GUI/SettingsTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.SettingsTab</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../GUI/SingleCrystalLayer/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.SingleCrystalLayer</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../GUI/SingleCrystalScenarioTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.SingleCrystalScenarioTab</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../GUI/SpreadSheetManager/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.SpreadSheetManager</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../GUI/ViewerTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.ViewerTab</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../AbinitOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.AbinitOutputReader</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Calculator/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.Calculator</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../CastepOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.CastepOutputReader</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Constants/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.Constants</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../CrystalOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.CrystalOutputReader</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../DielectricFunction/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.DielectricFunction</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ExperimentOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.ExperimentOutputReader</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../GTMcore/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GTMcore</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../GenericOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GenericOutputReader</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../GulpOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GulpOutputReader</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../HelperRoutines/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.HelperRoutines</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../IO/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.IO</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Materials/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.Materials</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Mie/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.Mie</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PhonopyOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.PhonopyOutputReader</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Plotter/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.Plotter</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../QEOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.QEOutputReader</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../SuperCell/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.SuperCell</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../UnitCell/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.UnitCell</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Utilities/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.Utilities</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../VaspOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.VaspOutputReader</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../checkcsv/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.checkcsv</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../checkexcel/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.checkexcel</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../graphdatagenerator/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.graphdatagenerator</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../p1reader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.p1reader</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../p2cif/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.p2cif</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../pdcompare/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.pdcompare</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../pdgui/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.pdgui</span></code></a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.pdmake</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../pickled_reader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.pickled_reader</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../preader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.preader</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../vibanalysis/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.vibanalysis</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../pdgui/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.pdgui</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../preader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.preader</span></code></a></li>
+<li class="toctree-l1 current current-page"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.pdmake</span></code></a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">References</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../zreferences.html">References</a></li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main">
+          <section id="module-PDielec.pdmake">
+<span id="pdielec-pdmake"></span><h1><a class="reference internal" href="#module-PDielec.pdmake" title="PDielec.pdmake"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.pdmake</span></code></a><a class="headerlink" href="#module-PDielec.pdmake" title="Permalink to this heading">#</a></h1>
+<p>A Makefile system for testing and installing PDGui and PDielec</p>
+<p>This script accepts various command-line arguments to perform different actions such as running tests, benchmarks, cleaning build directories, and installing scripts.</p>
+<section id="command-line-options">
+<h2>Command line options<a class="headerlink" href="#command-line-options" title="Permalink to this heading">#</a></h2>
+<blockquote>
+<div><ul class="simple">
+<li><p><cite>test</cite> or <cite>tests</cite>: Runs all test cases.</p></li>
+<li><p><cite>test-singlecrystal</cite>: Runs tests for single crystal analysis.</p></li>
+<li><p><cite>test-preader</cite>: Runs tests for the preader component.</p></li>
+<li><p><cite>test-p2cif</cite>: Runs tests for the p2cif component.</p></li>
+<li><p><cite>test-pdgui</cite>: Runs tests for the PDGUI component.</p></li>
+<li><p><cite>test-vibanalysis</cite>: Runs tests for vibrational analysis.</p></li>
+<li><p><cite>benchmarks</cite>: Executes benchmark tests.</p></li>
+<li><p><cite>pypi</cite>: Runs commands for PyPI distribution.</p></li>
+<li><p><cite>clean</cite>: Cleans up directories.</p></li>
+<li><p><cite>install</cite>: Installs necessary scripts.</p></li>
+<li><p><cite>scripts</cite> or <cite>-scripts</cite>: Specifies the directory for scripts (expects a directory path next).</p></li>
+<li><p><cite>-root</cite> or <cite>–root</cite>: Specifies the root directory to operate in.</p></li>
+<li><p><cite>-debug</cite> or <cite>–debug</cite> or <cite>-d</cite>: Enables debug mode.</p></li>
+<li><p><cite>-usesystem</cite>: Use system installed binaries rather than local ones.</p></li>
+<li><p><cite>-view</cite> or <cite>–view</cite> or <cite>-v</cite>: Enables viewing mode.</p></li>
+<li><p><cite>-regenerate</cite>: Forces regeneration of test data.</p></li>
+<li><p><cite>-padding</cite>: Sets padding for some operation (expects an integer value next).</p></li>
+<li><p><cite>-directory</cite> or <cite>–directory</cite>: Sets the directory for some operation (expects a directory path next).</p></li>
+<li><p><cite>&lt;filename&gt;.pdmake</cite>: Specifies a PDMakefile to execute.</p></li>
+</ul>
+</div></blockquote>
+<p>The MIT License (MIT)</p>
+<p>Copyright (c) 2024 John Kendrick</p>
+<p>Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the “Software”), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:</p>
+<p>The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.</p>
+<p>THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.</p>
+</section>
+<section id="module-contents">
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this heading">#</a></h2>
+<section id="functions">
+<h3>Functions<a class="headerlink" href="#functions" title="Permalink to this heading">#</a></h3>
+<div class="table-wrapper autosummary longtable docutils container">
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#PDielec.pdmake.changePadding" title="PDielec.pdmake.changePadding"><code class="xref py py-obj docutils literal notranslate"><span class="pre">changePadding</span></code></a>(all)</p></td>
+<td><p>Change the padding based on the maximum length of elements in a list or the predefined setting.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#PDielec.pdmake.checkLocalExecutables" title="PDielec.pdmake.checkLocalExecutables"><code class="xref py py-obj docutils literal notranslate"><span class="pre">checkLocalExecutables</span></code></a>()</p></td>
+<td><p>Check to see if the rootDirectory has the executables we need.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#PDielec.pdmake.compareFiles" title="PDielec.pdmake.compareFiles"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compareFiles</span></code></a>(file1, file2)</p></td>
+<td><p>Compare two text files for differences.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#PDielec.pdmake.compareNmaFiles" title="PDielec.pdmake.compareNmaFiles"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compareNmaFiles</span></code></a>(file1, file2)</p></td>
+<td><p>Compare two NMA files for differences within a tolerance.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#PDielec.pdmake.findRootDirectory" title="PDielec.pdmake.findRootDirectory"><code class="xref py py-obj docutils literal notranslate"><span class="pre">findRootDirectory</span></code></a>(start)</p></td>
+<td><p>Find the root directory starting from start.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#PDielec.pdmake.install" title="PDielec.pdmake.install"><code class="xref py py-obj docutils literal notranslate"><span class="pre">install</span></code></a>(scripts)</p></td>
+<td><p>Install a set of scripts into a specified directory.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#PDielec.pdmake.main" title="PDielec.pdmake.main"><code class="xref py py-obj docutils literal notranslate"><span class="pre">main</span></code></a>()</p></td>
+<td><p>Main routine to process command line arguments and execute actions.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#PDielec.pdmake.mychdir" title="PDielec.pdmake.mychdir"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mychdir</span></code></a>(directory)</p></td>
+<td><p>Local version of os.chdir with some testing.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#PDielec.pdmake.readNmaFile" title="PDielec.pdmake.readNmaFile"><code class="xref py py-obj docutils literal notranslate"><span class="pre">readNmaFile</span></code></a>(file)</p></td>
+<td><p>Read and extract data from an NMA file.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#PDielec.pdmake.readPdMakefile" title="PDielec.pdmake.readPdMakefile"><code class="xref py py-obj docutils literal notranslate"><span class="pre">readPdMakefile</span></code></a>(directory, filename)</p></td>
+<td><p>Read a custom makefile and return the title and instructions.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#PDielec.pdmake.redirect" title="PDielec.pdmake.redirect"><code class="xref py py-obj docutils literal notranslate"><span class="pre">redirect</span></code></a>(file)</p></td>
+<td><p>Redirect the standard output to a specified file.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#PDielec.pdmake.runClean" title="PDielec.pdmake.runClean"><code class="xref py py-obj docutils literal notranslate"><span class="pre">runClean</span></code></a>()</p></td>
+<td><p>Clean old results from the Examples directory.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#PDielec.pdmake.runP2CifTest" title="PDielec.pdmake.runP2CifTest"><code class="xref py py-obj docutils literal notranslate"><span class="pre">runP2CifTest</span></code></a>(title, instructions, regenerate)</p></td>
+<td><p>Run a test on p2cif.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#PDielec.pdmake.runPDGuiTest" title="PDielec.pdmake.runPDGuiTest"><code class="xref py py-obj docutils literal notranslate"><span class="pre">runPDGuiTest</span></code></a>(title, instructions, regenerate[, benchmarks])</p></td>
+<td><p>Run a pdgui test.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#PDielec.pdmake.runPdMakefile" title="PDielec.pdmake.runPdMakefile"><code class="xref py py-obj docutils literal notranslate"><span class="pre">runPdMakefile</span></code></a>(directory, pdmakefile, regenerate[, ...])</p></td>
+<td><p>Run a specific pdMakefile.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#PDielec.pdmake.runPreaderTest" title="PDielec.pdmake.runPreaderTest"><code class="xref py py-obj docutils literal notranslate"><span class="pre">runPreaderTest</span></code></a>(title, instructions, regenerate)</p></td>
+<td><p>Run a preader test.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#PDielec.pdmake.runPyInstaller" title="PDielec.pdmake.runPyInstaller"><code class="xref py py-obj docutils literal notranslate"><span class="pre">runPyInstaller</span></code></a>()</p></td>
+<td><p>Runs the PyInstaller command with specified options and handles platform specific adjustments.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#PDielec.pdmake.runPyPi" title="PDielec.pdmake.runPyPi"><code class="xref py py-obj docutils literal notranslate"><span class="pre">runPyPi</span></code></a>()</p></td>
+<td><p>Creates PyPi distribution files, restricted by OS.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#PDielec.pdmake.runTests" title="PDielec.pdmake.runTests"><code class="xref py py-obj docutils literal notranslate"><span class="pre">runTests</span></code></a>(testlist, testType, regenerate)</p></td>
+<td><p>Run the tests given in the directories stored in testlist.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#PDielec.pdmake.runVibAnalysis" title="PDielec.pdmake.runVibAnalysis"><code class="xref py py-obj docutils literal notranslate"><span class="pre">runVibAnalysis</span></code></a>(title, instructions, regenerate)</p></td>
+<td><p>Run a vibanalysis test.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#PDielec.pdmake.testForRootDirectory" title="PDielec.pdmake.testForRootDirectory"><code class="xref py py-obj docutils literal notranslate"><span class="pre">testForRootDirectory</span></code></a>(path)</p></td>
+<td><p>Test if a given path contains a subdirectory named 'Examples'.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#PDielec.pdmake.usage" title="PDielec.pdmake.usage"><code class="xref py py-obj docutils literal notranslate"><span class="pre">usage</span></code></a>()</p></td>
+<td><p>Print usage instructions for the command line tool.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="attributes">
+<h3>Attributes<a class="headerlink" href="#attributes" title="Permalink to this heading">#</a></h3>
+<div class="table-wrapper autosummary longtable docutils container">
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#PDielec.pdmake.benchmarks" title="PDielec.pdmake.benchmarks"><code class="xref py py-obj docutils literal notranslate"><span class="pre">benchmarks</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#PDielec.pdmake.debug" title="PDielec.pdmake.debug"><code class="xref py py-obj docutils literal notranslate"><span class="pre">debug</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#PDielec.pdmake.print" title="PDielec.pdmake.print"><code class="xref py py-obj docutils literal notranslate"><span class="pre">print</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#PDielec.pdmake.settings" title="PDielec.pdmake.settings"><code class="xref py py-obj docutils literal notranslate"><span class="pre">settings</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#PDielec.pdmake.test_p2cif" title="PDielec.pdmake.test_p2cif"><code class="xref py py-obj docutils literal notranslate"><span class="pre">test_p2cif</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#PDielec.pdmake.test_pdgui" title="PDielec.pdmake.test_pdgui"><code class="xref py py-obj docutils literal notranslate"><span class="pre">test_pdgui</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#PDielec.pdmake.test_preader" title="PDielec.pdmake.test_preader"><code class="xref py py-obj docutils literal notranslate"><span class="pre">test_preader</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#PDielec.pdmake.test_singlecrystal" title="PDielec.pdmake.test_singlecrystal"><code class="xref py py-obj docutils literal notranslate"><span class="pre">test_singlecrystal</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#PDielec.pdmake.test_vibanalysis" title="PDielec.pdmake.test_vibanalysis"><code class="xref py py-obj docutils literal notranslate"><span class="pre">test_vibanalysis</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#PDielec.pdmake.useLocal" title="PDielec.pdmake.useLocal"><code class="xref py py-obj docutils literal notranslate"><span class="pre">useLocal</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#PDielec.pdmake.viewing" title="PDielec.pdmake.viewing"><code class="xref py py-obj docutils literal notranslate"><span class="pre">viewing</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<dl class="py function">
+<dt class="sig sig-object py" id="PDielec.pdmake.changePadding">
+<span class="sig-prename descclassname"><span class="pre">PDielec.pdmake.</span></span><span class="sig-name descname"><span class="pre">changePadding</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">all</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/pdmake.html#changePadding"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.pdmake.changePadding" title="Permalink to this definition">#</a></dt>
+<dd><p>Change the padding based on the maximum length of elements in a list or the predefined setting.</p>
+<section id="parameters">
+<h4>Parameters<a class="headerlink" href="#parameters" title="Permalink to this heading">#</a></h4>
+<dl class="simple">
+<dt>all<span class="classifier">list</span></dt><dd><p>A list containing elements whose lengths are to be compared.</p>
+</dd>
+</dl>
+</section>
+<section id="returns">
+<h4>Returns<a class="headerlink" href="#returns" title="Permalink to this heading">#</a></h4>
+<dl class="simple">
+<dt>int</dt><dd><p>The maximum length found in the list or the predefined padding value, whichever is greater.</p>
+</dd>
+</dl>
+</section>
+<section id="notes">
+<h4>Notes<a class="headerlink" href="#notes" title="Permalink to this heading">#</a></h4>
+<p>This function assumes the presence of a global dictionary named <cite>settings</cite> with a key ‘padding’
+that stores the default padding value. If the maximum length of an element in the list is
+less than ‘settings[‘padding’]’, the function returns ‘settings[‘padding’]’. Otherwise,
+it returns the maximum length found.</p>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="PDielec.pdmake.checkLocalExecutables">
+<span class="sig-prename descclassname"><span class="pre">PDielec.pdmake.</span></span><span class="sig-name descname"><span class="pre">checkLocalExecutables</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/pdmake.html#checkLocalExecutables"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.pdmake.checkLocalExecutables" title="Permalink to this definition">#</a></dt>
+<dd><p>Check to see if the rootDirectory has the executables we need.</p>
+<section id="id1">
+<h4>Parameters<a class="headerlink" href="#id1" title="Permalink to this heading">#</a></h4>
+<dl class="simple">
+<dt>rootDirectory<span class="classifier">str</span></dt><dd><p>The path to the root directory to check.</p>
+</dd>
+</dl>
+</section>
+<section id="id2">
+<h4>Returns<a class="headerlink" href="#id2" title="Permalink to this heading">#</a></h4>
+<dl class="simple">
+<dt>bool</dt><dd><p>True if the executables are found, False otherwise.</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="PDielec.pdmake.compareFiles">
+<span class="sig-prename descclassname"><span class="pre">PDielec.pdmake.</span></span><span class="sig-name descname"><span class="pre">compareFiles</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file2</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/pdmake.html#compareFiles"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.pdmake.compareFiles" title="Permalink to this definition">#</a></dt>
+<dd><p>Compare two text files for differences.</p>
+<p>This function opens and reads two text files line by line and then compares them word by word,
+ignoring certain punctuation marks. If any differences are found in either numeric values
+(floating-point comparison) or text strings, they are counted as errors. Numeric differences
+are considered errors if the relative difference between them is more than 0.0001, provided
+both numbers are not insignificantly small. The total count of such errors is returned.
+Optionally, if the global variable ‘debug’ is set to True, details of each difference are printed.</p>
+<section id="id3">
+<h4>Parameters<a class="headerlink" href="#id3" title="Permalink to this heading">#</a></h4>
+<dl class="simple">
+<dt>file1<span class="classifier">str</span></dt><dd><p>The path to the first file to be compared.</p>
+</dd>
+<dt>file2<span class="classifier">str</span></dt><dd><p>The path to the second file to be compared.</p>
+</dd>
+</dl>
+</section>
+<section id="id4">
+<h4>Returns<a class="headerlink" href="#id4" title="Permalink to this heading">#</a></h4>
+<dl class="simple">
+<dt>int</dt><dd><p>The total number of errors (differences) found.</p>
+</dd>
+</dl>
+</section>
+<section id="id5">
+<h4>Notes<a class="headerlink" href="#id5" title="Permalink to this heading">#</a></h4>
+<ul class="simple">
+<li><p>The function makes use of a global variable ‘debug’ which, if set to True,
+enables printing detailed information about each found difference directly to the console.</p></li>
+<li><p>It’s assumed that both files can be opened and read successfully. The function
+does not explicitly handle I/O errors, such as a file not existing.</p></li>
+<li><p>Special characters ‘(’, ‘)’, ‘%’, ‘/’, and ‘' are ignored during the comparison.</p></li>
+<li><p>For numerical comparison, the function employs a relative difference check to
+determine if two numbers should be considered different, taking into account
+floating-point inaccuracies.</p></li>
+</ul>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="PDielec.pdmake.compareNmaFiles">
+<span class="sig-prename descclassname"><span class="pre">PDielec.pdmake.</span></span><span class="sig-name descname"><span class="pre">compareNmaFiles</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file2</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/pdmake.html#compareNmaFiles"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.pdmake.compareNmaFiles" title="Permalink to this definition">#</a></dt>
+<dd><p>Compare two NMA files for differences within a tolerance.</p>
+<section id="id6">
+<h4>Parameters<a class="headerlink" href="#id6" title="Permalink to this heading">#</a></h4>
+<dl class="simple">
+<dt>file1<span class="classifier">str</span></dt><dd><p>The path to the first NMA file.</p>
+</dd>
+<dt>file2<span class="classifier">str</span></dt><dd><p>The path to the second NMA file.</p>
+</dd>
+</dl>
+</section>
+<section id="id7">
+<h4>Returns<a class="headerlink" href="#id7" title="Permalink to this heading">#</a></h4>
+<dl class="simple">
+<dt>int</dt><dd><p>The number of differences detected in frequency, redox, and energy
+values between the two NMA files.</p>
+</dd>
+</dl>
+</section>
+<section id="id8">
+<h4>Notes<a class="headerlink" href="#id8" title="Permalink to this heading">#</a></h4>
+<p>This function reads two NMA files using the <cite>readNmaFile</cite> function,
+which returns the frequency (f), redox (r), and energy (e) values
+for each file. The comparison is done based on a tolerance of 1e-06,
+and the total number of differences in these values are counted and returned.</p>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="PDielec.pdmake.findRootDirectory">
+<span class="sig-prename descclassname"><span class="pre">PDielec.pdmake.</span></span><span class="sig-name descname"><span class="pre">findRootDirectory</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">start</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/pdmake.html#findRootDirectory"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.pdmake.findRootDirectory" title="Permalink to this definition">#</a></dt>
+<dd><p>Find the root directory starting from start.</p>
+<section id="id9">
+<h4>Parameters<a class="headerlink" href="#id9" title="Permalink to this heading">#</a></h4>
+<dl class="simple">
+<dt>start<span class="classifier">str</span></dt><dd><p>The starting directory path.</p>
+</dd>
+</dl>
+</section>
+<section id="id10">
+<h4>Returns<a class="headerlink" href="#id10" title="Permalink to this heading">#</a></h4>
+<dl class="simple">
+<dt>str</dt><dd><p>The root directory path.</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="PDielec.pdmake.install">
+<span class="sig-prename descclassname"><span class="pre">PDielec.pdmake.</span></span><span class="sig-name descname"><span class="pre">install</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scripts</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/pdmake.html#install"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.pdmake.install" title="Permalink to this definition">#</a></dt>
+<dd><p>Install a set of scripts into a specified directory.</p>
+<section id="id11">
+<h4>Parameters<a class="headerlink" href="#id11" title="Permalink to this heading">#</a></h4>
+<dl class="simple">
+<dt>scripts<span class="classifier">str</span></dt><dd><p>The directory where the scripts will be copied to.</p>
+</dd>
+</dl>
+</section>
+<section id="id12">
+<h4>Notes<a class="headerlink" href="#id12" title="Permalink to this heading">#</a></h4>
+<p>This function copies a predefined list of scripts and directories into
+the specified <cite>scripts</cite> directory. It utilizes shell commands to perform the
+copy operation and to create necessary subdirectories. Global variable
+<cite>rootDirectory</cite> should be set before calling this function as it is used to
+determine the source directory of the scripts. The installation progress is
+printed to the console.</p>
+</section>
+<section id="raises">
+<h4>Raises<a class="headerlink" href="#raises" title="Permalink to this heading">#</a></h4>
+<p>This function does not explicitly raise exceptions, but subprocess.run
+may raise exceptions related to the execution of shell commands.</p>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="PDielec.pdmake.main">
+<span class="sig-prename descclassname"><span class="pre">PDielec.pdmake.</span></span><span class="sig-name descname"><span class="pre">main</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/pdmake.html#main"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.pdmake.main" title="Permalink to this definition">#</a></dt>
+<dd><p>Main routine to process command line arguments and execute actions.</p>
+<p>This script accepts various command-line arguments to perform different actions such as running tests, benchmarks, cleaning build directories, and installing scripts.</p>
+<section id="id13">
+<h4>Command line options<a class="headerlink" href="#id13" title="Permalink to this heading">#</a></h4>
+<ul class="simple">
+<li><p><cite>test</cite> or <cite>tests</cite>: Runs all test cases.</p></li>
+<li><p><cite>test-singlecrystal</cite>: Runs tests for single crystal analysis.</p></li>
+<li><p><cite>test-preader</cite>: Runs tests for the preader component.</p></li>
+<li><p><cite>test-p2cif</cite>: Runs tests for the p2cif component.</p></li>
+<li><p><cite>test-pdgui</cite>: Runs tests for the PDGUI component.</p></li>
+<li><p><cite>test-vibanalysis</cite>: Runs tests for vibrational analysis.</p></li>
+<li><p><cite>benchmarks</cite>: Executes benchmark tests.</p></li>
+<li><p><cite>pypi</cite>: Runs commands for PyPI distribution.</p></li>
+<li><p><cite>clean</cite>: Cleans up directories.</p></li>
+<li><p><cite>install</cite>: Installs necessary scripts.</p></li>
+<li><p><cite>scripts</cite> or <cite>-scripts</cite>: Specifies the directory for scripts (expects a directory path next).</p></li>
+<li><p><cite>-root</cite> or <cite>–root</cite>: Specifies the root directory to operate in.</p></li>
+<li><p><cite>-debug</cite> or <cite>–debug</cite> or <cite>-d</cite>: Enables debug mode.</p></li>
+<li><p><cite>-usesystem</cite>: Use system installed binaries rather than local ones.</p></li>
+<li><p><cite>-view</cite> or <cite>–view</cite> or <cite>-v</cite>: Enables viewing mode.</p></li>
+<li><p><cite>-regenerate</cite>: Forces regeneration of test data.</p></li>
+<li><p><cite>-padding</cite>: Sets padding for some operation (expects an integer value next).</p></li>
+<li><p><cite>-directory</cite> or <cite>–directory</cite>: Sets the directory for some operation (expects a directory path next).</p></li>
+<li><p><cite>&lt;filename&gt;.pdmake</cite>: Specifies a PDMakefile to execute.</p></li>
+</ul>
+</section>
+<section id="id14">
+<h4>Raises<a class="headerlink" href="#id14" title="Permalink to this heading">#</a></h4>
+<dl class="simple">
+<dt>SystemExit</dt><dd><p>If an invalid command line argument is provided or certain conditions are not met (e.g., invalid root directory, command not executed in the PDielec home directory).</p>
+</dd>
+</dl>
+</section>
+<section id="id15">
+<h4>Notes<a class="headerlink" href="#id15" title="Permalink to this heading">#</a></h4>
+<ul class="simple">
+<li><p>It uses global variables for configuration options like <cite>debug</cite>, <cite>viewing</cite>, <cite>settings</cite>, <cite>rootDirectory</cite>, and <cite>useLocal</cite>.</p></li>
+<li><p>Requires the <cite>os</cite>, <cite>sys</cite>, and specific project function imports to function.</p></li>
+<li><p>The script changes the current working directory multiple times, which affects relative path usage.</p></li>
+</ul>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="PDielec.pdmake.mychdir">
+<span class="sig-prename descclassname"><span class="pre">PDielec.pdmake.</span></span><span class="sig-name descname"><span class="pre">mychdir</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">directory</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/pdmake.html#mychdir"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.pdmake.mychdir" title="Permalink to this definition">#</a></dt>
+<dd><p>Local version of os.chdir with some testing.</p>
+<section id="id16">
+<h4>Notes<a class="headerlink" href="#id16" title="Permalink to this heading">#</a></h4>
+<p>This is a local implementation of os.chdir which includes
+additional testing or functionality tailored to specific needs.</p>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="PDielec.pdmake.readNmaFile">
+<span class="sig-prename descclassname"><span class="pre">PDielec.pdmake.</span></span><span class="sig-name descname"><span class="pre">readNmaFile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/pdmake.html#readNmaFile"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.pdmake.readNmaFile" title="Permalink to this definition">#</a></dt>
+<dd><p>Read and extract data from an NMA file.</p>
+<section id="id17">
+<h4>Parameters<a class="headerlink" href="#id17" title="Permalink to this heading">#</a></h4>
+<dl class="simple">
+<dt>file<span class="classifier">str</span></dt><dd><p>The path to the NMA file to be read.</p>
+</dd>
+</dl>
+</section>
+<section id="id18">
+<h4>Returns<a class="headerlink" href="#id18" title="Permalink to this heading">#</a></h4>
+<dl class="simple">
+<dt>tuple</dt><dd><p>A tuple containing three elements:
+- The sum of all frequencies excluding the first three.
+- The sum of all R squared values excluding the first three.
+- The sum of all explained variance values excluding the first three.</p>
+</dd>
+</dl>
+</section>
+<section id="id19">
+<h4>Notes<a class="headerlink" href="#id19" title="Permalink to this heading">#</a></h4>
+<p>This function reads an NMA (Normal Mode Analysis) file, looking for lines that contain
+‘Mode’, ‘R**2’, or ‘Explained’. For lines starting with ‘Mode’, it extracts the
+frequency values, excluding the first three modes which are typically zero or negligible.
+For ‘R**2’ and ‘Explained’ lines, it extracts their respective values under the same conditions.
+All extracted values are then summed up and returned.</p>
+</section>
+<section id="id20">
+<h4>Raises<a class="headerlink" href="#id20" title="Permalink to this heading">#</a></h4>
+<dl class="simple">
+<dt>FileNotFoundError</dt><dd><p>If the file specified by the ‘file’ parameter does not exist.</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="PDielec.pdmake.readPdMakefile">
+<span class="sig-prename descclassname"><span class="pre">PDielec.pdmake.</span></span><span class="sig-name descname"><span class="pre">readPdMakefile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">directory</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/pdmake.html#readPdMakefile"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.pdmake.readPdMakefile" title="Permalink to this definition">#</a></dt>
+<dd><p>Read a custom makefile and return the title and instructions.</p>
+<section id="id21">
+<h4>Parameters<a class="headerlink" href="#id21" title="Permalink to this heading">#</a></h4>
+<dl class="simple">
+<dt>directory<span class="classifier">str</span></dt><dd><p>The directory in which the makefile is located. If the directory name is
+provided and the <cite>settings[‘title’]</cite> is not ‘title’, the directory name is used as the title.
+If the directory is not provided (empty string), the current working directory is used as the title.</p>
+</dd>
+<dt>filename<span class="classifier">str</span></dt><dd><p>The name of the makefile to be read.</p>
+</dd>
+</dl>
+</section>
+<section id="id22">
+<h4>Returns<a class="headerlink" href="#id22" title="Permalink to this heading">#</a></h4>
+<dl class="simple">
+<dt>tuple</dt><dd><p>A tuple returning a dictionary of instructions
+- title (str): The title for the makefile, determined based on the <cite>settings[‘title’]</cite> value or the directory name, or the current working directory.
+- instructions (dict): A dictionary where each key is an instruction extracted from the makefile, and the value is a list of arguments for that instruction.</p>
+</dd>
+</dl>
+</section>
+<section id="id23">
+<h4>Raises<a class="headerlink" href="#id23" title="Permalink to this heading">#</a></h4>
+<dl class="simple">
+<dt>FileNotFoundError</dt><dd><p>If the specified file cannot be found or read.</p>
+</dd>
+</dl>
+</section>
+<section id="id24">
+<h4>Notes<a class="headerlink" href="#id24" title="Permalink to this heading">#</a></h4>
+<ul class="simple">
+<li><dl class="simple">
+<dt>This function uses two global variables:</dt><dd><ul>
+<li><p><cite>settings</cite>: A dictionary that contains various settings, including ‘title’ and ‘padding’.
+‘title’ is used to determine if the title should be extracted from the makefile’s first line,
+and ‘padding’ determines how much padding the title should have when displayed.</p></li>
+<li><p><cite>debug</cite>: A boolean flag used to control debugging output. If <cite>True</cite>, additional information
+about the function’s operation will be printed to the standard output.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p>The function removes line continuation characters and treats the continued lines as a single line.</p></li>
+<li><p>Lines starting with <cite>#</cite> are treated as comments and ignored.</p></li>
+<li><p>It’s assumed that <cite>os</cite> module has been imported for <cite>os.getcwd()</cite> to work, though it is not explicitly
+stated in the function definition.</p></li>
+</ul>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="PDielec.pdmake.redirect">
+<span class="sig-prename descclassname"><span class="pre">PDielec.pdmake.</span></span><span class="sig-name descname"><span class="pre">redirect</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/pdmake.html#redirect"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.pdmake.redirect" title="Permalink to this definition">#</a></dt>
+<dd><p>Redirect the standard output to a specified file.</p>
+<p>This function is a context manager that redirects <cite>sys.stdout</cite> to a file,
+optionally suppressing stderr output if not in debug mode. It is useful for
+capturing the output of a block of code to a file.</p>
+<section id="id25">
+<h4>Parameters<a class="headerlink" href="#id25" title="Permalink to this heading">#</a></h4>
+<dl class="simple">
+<dt>file<span class="classifier">str</span></dt><dd><p>The path to the file where the stdout will be redirected.</p>
+</dd>
+</dl>
+</section>
+<section id="yields">
+<h4>Yields<a class="headerlink" href="#yields" title="Permalink to this heading">#</a></h4>
+<dl class="simple">
+<dt>_io.TextIOWrapper</dt><dd><p>A writable stream associated with the log file.</p>
+</dd>
+</dl>
+</section>
+<section id="id26">
+<h4>Notes<a class="headerlink" href="#id26" title="Permalink to this heading">#</a></h4>
+<p><cite>sys.stderr</cite> is redirected to <cite>os.devnull</cite> if <cite>debug</cite> is <cite>False</cite>, effectively
+suppressing any error messages unless in debug mode. Ensure that debug status is
+properly set before using this context manager.</p>
+<p>Upon exiting the <cite>with</cite> block, stdout and stderr are restored to their original
+state.</p>
+</section>
+<section id="id27">
+<h4>Raises<a class="headerlink" href="#id27" title="Permalink to this heading">#</a></h4>
+<dl class="simple">
+<dt>AttributeError</dt><dd><p>If an attribute not supported by the <cite>sys.stdout</cite> is being accessed through
+the Logger class.</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="PDielec.pdmake.runClean">
+<span class="sig-prename descclassname"><span class="pre">PDielec.pdmake.</span></span><span class="sig-name descname"><span class="pre">runClean</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/pdmake.html#runClean"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.pdmake.runClean" title="Permalink to this definition">#</a></dt>
+<dd><p>Clean old results from the Examples directory.</p>
+<p>This function navigates to the root directory and removes specific file types related to old results. Supported file types for deletion include .xlsx, .csv, .cif, and .nma files. This operation is not supported on Windows platforms and will return immediately if attempted.</p>
+<section id="id28">
+<h4>Notes<a class="headerlink" href="#id28" title="Permalink to this heading">#</a></h4>
+<ul class="simple">
+<li><p>The function checks the operating system and will not execute on Windows systems (<cite>os.name == ‘nt’</cite>).</p></li>
+<li><p>It navigates to a directory specified by a global variable <cite>rootDirectory</cite>.</p></li>
+<li><p>Uses <cite>subprocess.run</cite> with <cite>shell=True</cite> to execute shell commands for deleting files. This operation involves running <cite>find</cite> commands to locate and remove files with specified extensions.</p></li>
+<li><p>It assumes that the <cite>rootDirectory</cite> global variable and necessary imports (<cite>os</cite>, <cite>subprocess</cite>) are correctly defined elsewhere.</p></li>
+</ul>
+</section>
+<section id="id29">
+<h4>Raises<a class="headerlink" href="#id29" title="Permalink to this heading">#</a></h4>
+<p>None</p>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="PDielec.pdmake.runP2CifTest">
+<span class="sig-prename descclassname"><span class="pre">PDielec.pdmake.</span></span><span class="sig-name descname"><span class="pre">runP2CifTest</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">title</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">instructions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">regenerate</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/pdmake.html#runP2CifTest"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.pdmake.runP2CifTest" title="Permalink to this definition">#</a></dt>
+<dd><p>Run a test on p2cif.</p>
+<section id="id30">
+<h4>Parameters<a class="headerlink" href="#id30" title="Permalink to this heading">#</a></h4>
+<dl class="simple">
+<dt>title<span class="classifier">str</span></dt><dd><p>The title of the test</p>
+</dd>
+<dt>instructions<span class="classifier">str</span></dt><dd><p>The command line parameters.</p>
+</dd>
+<dt>regenerate<span class="classifier">bool</span></dt><dd><p>Set to True if the reference file is overwritten.</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="PDielec.pdmake.runPDGuiTest">
+<span class="sig-prename descclassname"><span class="pre">PDielec.pdmake.</span></span><span class="sig-name descname"><span class="pre">runPDGuiTest</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">title</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">instructions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">regenerate</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">benchmarks</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/pdmake.html#runPDGuiTest"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.pdmake.runPDGuiTest" title="Permalink to this definition">#</a></dt>
+<dd><p>Run a pdgui test.</p>
+<section id="id31">
+<h4>Parameters<a class="headerlink" href="#id31" title="Permalink to this heading">#</a></h4>
+<dl class="simple">
+<dt>title<span class="classifier">str</span></dt><dd><p>The title of the test</p>
+</dd>
+<dt>instructions<span class="classifier">str</span></dt><dd><p>The command line parameters.</p>
+</dd>
+<dt>regenerate<span class="classifier">bool</span></dt><dd><p>Set to true if the reference file is overwritten.</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="PDielec.pdmake.runPdMakefile">
+<span class="sig-prename descclassname"><span class="pre">PDielec.pdmake.</span></span><span class="sig-name descname"><span class="pre">runPdMakefile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">directory</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pdmakefile</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">regenerate</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">benchmarks</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/pdmake.html#runPdMakefile"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.pdmake.runPdMakefile" title="Permalink to this definition">#</a></dt>
+<dd><p>Run a specific pdMakefile.</p>
+<section id="id32">
+<h4>Parameters<a class="headerlink" href="#id32" title="Permalink to this heading">#</a></h4>
+<dl class="simple">
+<dt>directory<span class="classifier">str</span></dt><dd><p>Directory where the pdmakefile will be run</p>
+</dd>
+<dt>pdmakefile<span class="classifier">str</span></dt><dd><p>Name of the pdmakefile</p>
+</dd>
+<dt>regenerate<span class="classifier">bool</span></dt><dd><p>True if this is a regeneration of data</p>
+</dd>
+<dt>benchmarks<span class="classifier">bool (Option default is false)</span></dt><dd><p>True if this is a benchmark</p>
+</dd>
+</dl>
+</section>
+<section id="id33">
+<h4>Notes<a class="headerlink" href="#id33" title="Permalink to this heading">#</a></h4>
+<p>The routine reads the pdmakefile and determines the type of pdmakefile and the instructions
+Then the instructions are processed according to the context (preader, pdgui, p2cif or vibanalysis)</p>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="PDielec.pdmake.runPreaderTest">
+<span class="sig-prename descclassname"><span class="pre">PDielec.pdmake.</span></span><span class="sig-name descname"><span class="pre">runPreaderTest</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">title</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">instructions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">regenerate</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/pdmake.html#runPreaderTest"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.pdmake.runPreaderTest" title="Permalink to this definition">#</a></dt>
+<dd><p>Run a preader test.</p>
+<section id="id34">
+<h4>Parameters<a class="headerlink" href="#id34" title="Permalink to this heading">#</a></h4>
+<dl class="simple">
+<dt>title<span class="classifier">str</span></dt><dd><p>The title of the test</p>
+</dd>
+<dt>instructions<span class="classifier">str</span></dt><dd><p>The command line parameters.</p>
+</dd>
+<dt>regenerate<span class="classifier">bool, optional</span></dt><dd><p>Set to true if the reference file is overwritten. Default is False.</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="PDielec.pdmake.runPyInstaller">
+<span class="sig-prename descclassname"><span class="pre">PDielec.pdmake.</span></span><span class="sig-name descname"><span class="pre">runPyInstaller</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/pdmake.html#runPyInstaller"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.pdmake.runPyInstaller" title="Permalink to this definition">#</a></dt>
+<dd><p>Runs the PyInstaller command with specified options and handles platform specific adjustments.</p>
+<p>This function attempts to create a standalone application using PyInstaller based on a given spec file. It also performs additional copying steps required for the application to run properly. If executed on a Windows platform, the function will halt and inform the user about the incompatibility.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="PDielec.pdmake.runPyPi">
+<span class="sig-prename descclassname"><span class="pre">PDielec.pdmake.</span></span><span class="sig-name descname"><span class="pre">runPyPi</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/pdmake.html#runPyPi"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.pdmake.runPyPi" title="Permalink to this definition">#</a></dt>
+<dd><p>Creates PyPi distribution files, restricted by OS.</p>
+<p>This function changes the current working directory to <cite>rootDirectory</cite>
+and runs a series of shell commands that clean up previous distribution files and
+create new PyPi distribution files. The function is not designed to run on Windows OS.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="PDielec.pdmake.runTests">
+<span class="sig-prename descclassname"><span class="pre">PDielec.pdmake.</span></span><span class="sig-name descname"><span class="pre">runTests</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">testlist</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">testType</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">regenerate</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/pdmake.html#runTests"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.pdmake.runTests" title="Permalink to this definition">#</a></dt>
+<dd><p>Run the tests given in the directories stored in testlist.</p>
+<section id="id35">
+<h4>Parameters<a class="headerlink" href="#id35" title="Permalink to this heading">#</a></h4>
+<dl class="simple">
+<dt>testlist<span class="classifier">list of str</span></dt><dd><p>The directories where the tests are stored.</p>
+</dd>
+<dt>testType<span class="classifier">{‘pdgui’, ‘preader’, ‘p2cif’, ‘benchmark’}</span></dt><dd><p>The type of tests to run.</p>
+</dd>
+<dt>regenerate<span class="classifier">bool</span></dt><dd><p>If True, the test data will be regenerated.</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="PDielec.pdmake.runVibAnalysis">
+<span class="sig-prename descclassname"><span class="pre">PDielec.pdmake.</span></span><span class="sig-name descname"><span class="pre">runVibAnalysis</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">title</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">instructions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">regenerate</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/pdmake.html#runVibAnalysis"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.pdmake.runVibAnalysis" title="Permalink to this definition">#</a></dt>
+<dd><p>Run a vibanalysis test.</p>
+<section id="id36">
+<h4>Parameters<a class="headerlink" href="#id36" title="Permalink to this heading">#</a></h4>
+<dl class="simple">
+<dt>title<span class="classifier">str</span></dt><dd><p>The title of the test</p>
+</dd>
+<dt>instructions<span class="classifier">str</span></dt><dd><p>The command line parameters.</p>
+</dd>
+<dt>regenerate<span class="classifier">bool</span></dt><dd><p>Set to True if the reference file is overwritten.</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="PDielec.pdmake.testForRootDirectory">
+<span class="sig-prename descclassname"><span class="pre">PDielec.pdmake.</span></span><span class="sig-name descname"><span class="pre">testForRootDirectory</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/pdmake.html#testForRootDirectory"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.pdmake.testForRootDirectory" title="Permalink to this definition">#</a></dt>
+<dd><p>Test if a given path contains a subdirectory named ‘Examples’.</p>
+<p>This function checks if the given path has a direct subdirectory
+called ‘Examples’ and returns a boolean indicating the result.</p>
+<section id="id37">
+<h4>Parameters<a class="headerlink" href="#id37" title="Permalink to this heading">#</a></h4>
+<dl class="simple">
+<dt>path<span class="classifier">str</span></dt><dd><p>The directory path to test for the existence of a ‘Examples’ subdirectory.</p>
+</dd>
+</dl>
+</section>
+<section id="id38">
+<h4>Returns<a class="headerlink" href="#id38" title="Permalink to this heading">#</a></h4>
+<dl class="simple">
+<dt>bool</dt><dd><p>Returns True if the ‘Examples’ subdirectory exists within the given path,
+otherwise returns False.</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="PDielec.pdmake.usage">
+<span class="sig-prename descclassname"><span class="pre">PDielec.pdmake.</span></span><span class="sig-name descname"><span class="pre">usage</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/pdmake.html#usage"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.pdmake.usage" title="Permalink to this definition">#</a></dt>
+<dd><p>Print usage instructions for the command line tool.</p>
+<p>This function outputs instructions to <cite>sys.stderr</cite> for using the command line tool, including available commands and options. It also handles platform-specific instructions for Linux systems.</p>
+<dl class="simple">
+<dt>SystemExit</dt><dd><p>This function will terminate the program after displaying the usage message.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="PDielec.pdmake.benchmarks">
+<span class="sig-prename descclassname"><span class="pre">PDielec.pdmake.</span></span><span class="sig-name descname"><span class="pre">benchmarks</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['Castep/AsparticAcid',</span> <span class="pre">'Castep/Isoleucine',</span> <span class="pre">'Castep/MgO',</span> <span class="pre">'Castep/Bubbles',</span> <span class="pre">'Castep/Na2SO42',...</span></em><a class="headerlink" href="#PDielec.pdmake.benchmarks" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="PDielec.pdmake.debug">
+<span class="sig-prename descclassname"><span class="pre">PDielec.pdmake.</span></span><span class="sig-name descname"><span class="pre">debug</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></em><a class="headerlink" href="#PDielec.pdmake.debug" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="PDielec.pdmake.print">
+<span class="sig-prename descclassname"><span class="pre">PDielec.pdmake.</span></span><span class="sig-name descname"><span class="pre">print</span></span><a class="headerlink" href="#PDielec.pdmake.print" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="PDielec.pdmake.settings">
+<span class="sig-prename descclassname"><span class="pre">PDielec.pdmake.</span></span><span class="sig-name descname"><span class="pre">settings</span></span><a class="headerlink" href="#PDielec.pdmake.settings" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="PDielec.pdmake.test_p2cif">
+<span class="sig-prename descclassname"><span class="pre">PDielec.pdmake.</span></span><span class="sig-name descname"><span class="pre">test_p2cif</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['P2Cif/']</span></em><a class="headerlink" href="#PDielec.pdmake.test_p2cif" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="PDielec.pdmake.test_pdgui">
+<span class="sig-prename descclassname"><span class="pre">PDielec.pdmake.</span></span><span class="sig-name descname"><span class="pre">test_pdgui</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['ATR/AlAs',</span> <span class="pre">'ATR/Na2SO42',</span> <span class="pre">'ATR/Na2SO42_fit',</span> <span class="pre">'AbInit/AlAs',</span> <span class="pre">'AbInit/BaTiO3',...</span></em><a class="headerlink" href="#PDielec.pdmake.test_pdgui" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="PDielec.pdmake.test_preader">
+<span class="sig-prename descclassname"><span class="pre">PDielec.pdmake.</span></span><span class="sig-name descname"><span class="pre">test_preader</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['Castep/preader',</span> <span class="pre">'Vasp/preader',</span> <span class="pre">'Phonopy/preader',</span> <span class="pre">'Gulp/preader',</span> <span class="pre">'Crystal/preader',...</span></em><a class="headerlink" href="#PDielec.pdmake.test_preader" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="PDielec.pdmake.test_singlecrystal">
+<span class="sig-prename descclassname"><span class="pre">PDielec.pdmake.</span></span><span class="sig-name descname"><span class="pre">test_singlecrystal</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['Experiment/fpsq',</span> <span class="pre">'Experiment/Mayerhofer',</span> <span class="pre">'SingleCrystal/Bi2Se3',...</span></em><a class="headerlink" href="#PDielec.pdmake.test_singlecrystal" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="PDielec.pdmake.test_vibanalysis">
+<span class="sig-prename descclassname"><span class="pre">PDielec.pdmake.</span></span><span class="sig-name descname"><span class="pre">test_vibanalysis</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['VibAnalysis/AsparticAcid',</span> <span class="pre">'VibAnalysis/BaTiO3',</span> <span class="pre">'VibAnalysis/Cocaine',...</span></em><a class="headerlink" href="#PDielec.pdmake.test_vibanalysis" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="PDielec.pdmake.useLocal">
+<span class="sig-prename descclassname"><span class="pre">PDielec.pdmake.</span></span><span class="sig-name descname"><span class="pre">useLocal</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">True</span></em><a class="headerlink" href="#PDielec.pdmake.useLocal" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="PDielec.pdmake.viewing">
+<span class="sig-prename descclassname"><span class="pre">PDielec.pdmake.</span></span><span class="sig-name descname"><span class="pre">viewing</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></em><a class="headerlink" href="#PDielec.pdmake.viewing" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+</section>
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="../pickled_reader/index.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.pickled_reader</span></code></div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="../pdgui/index.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.pdgui</span></code></div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2024, John Kendrick and Andrew Burnett
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.pdmake</span></code></a><ul>
+<li><a class="reference internal" href="#command-line-options">Command line options</a></li>
+<li><a class="reference internal" href="#module-contents">Module Contents</a><ul>
+<li><a class="reference internal" href="#functions">Functions</a></li>
+<li><a class="reference internal" href="#attributes">Attributes</a><ul>
+<li><a class="reference internal" href="#PDielec.pdmake.changePadding"><code class="docutils literal notranslate"><span class="pre">changePadding()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.pdmake.checkLocalExecutables"><code class="docutils literal notranslate"><span class="pre">checkLocalExecutables()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.pdmake.compareFiles"><code class="docutils literal notranslate"><span class="pre">compareFiles()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.pdmake.compareNmaFiles"><code class="docutils literal notranslate"><span class="pre">compareNmaFiles()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.pdmake.findRootDirectory"><code class="docutils literal notranslate"><span class="pre">findRootDirectory()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.pdmake.install"><code class="docutils literal notranslate"><span class="pre">install()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.pdmake.main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.pdmake.mychdir"><code class="docutils literal notranslate"><span class="pre">mychdir()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.pdmake.readNmaFile"><code class="docutils literal notranslate"><span class="pre">readNmaFile()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.pdmake.readPdMakefile"><code class="docutils literal notranslate"><span class="pre">readPdMakefile()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.pdmake.redirect"><code class="docutils literal notranslate"><span class="pre">redirect()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.pdmake.runClean"><code class="docutils literal notranslate"><span class="pre">runClean()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.pdmake.runP2CifTest"><code class="docutils literal notranslate"><span class="pre">runP2CifTest()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.pdmake.runPDGuiTest"><code class="docutils literal notranslate"><span class="pre">runPDGuiTest()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.pdmake.runPdMakefile"><code class="docutils literal notranslate"><span class="pre">runPdMakefile()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.pdmake.runPreaderTest"><code class="docutils literal notranslate"><span class="pre">runPreaderTest()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.pdmake.runPyInstaller"><code class="docutils literal notranslate"><span class="pre">runPyInstaller()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.pdmake.runPyPi"><code class="docutils literal notranslate"><span class="pre">runPyPi()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.pdmake.runTests"><code class="docutils literal notranslate"><span class="pre">runTests()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.pdmake.runVibAnalysis"><code class="docutils literal notranslate"><span class="pre">runVibAnalysis()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.pdmake.testForRootDirectory"><code class="docutils literal notranslate"><span class="pre">testForRootDirectory()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.pdmake.usage"><code class="docutils literal notranslate"><span class="pre">usage()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.pdmake.benchmarks"><code class="docutils literal notranslate"><span class="pre">benchmarks</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.pdmake.debug"><code class="docutils literal notranslate"><span class="pre">debug</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.pdmake.print"><code class="docutils literal notranslate"><span class="pre">print</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.pdmake.settings"><code class="docutils literal notranslate"><span class="pre">settings</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.pdmake.test_p2cif"><code class="docutils literal notranslate"><span class="pre">test_p2cif</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.pdmake.test_pdgui"><code class="docutils literal notranslate"><span class="pre">test_pdgui</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.pdmake.test_preader"><code class="docutils literal notranslate"><span class="pre">test_preader</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.pdmake.test_singlecrystal"><code class="docutils literal notranslate"><span class="pre">test_singlecrystal</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.pdmake.test_vibanalysis"><code class="docutils literal notranslate"><span class="pre">test_vibanalysis</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.pdmake.useLocal"><code class="docutils literal notranslate"><span class="pre">useLocal</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.pdmake.viewing"><code class="docutils literal notranslate"><span class="pre">viewing</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js?v=01b4f342"></script>
+    <script src="../../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../../../_static/scripts/furo.js?v=32e29ea5"></script>
+    </body>
+</html>

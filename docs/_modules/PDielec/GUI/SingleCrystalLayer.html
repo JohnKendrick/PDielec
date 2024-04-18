@@ -1,0 +1,1306 @@
+<!doctype html>
+<html class="no-js" lang="en" data-content_root="">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
+
+    <!-- Generated with Sphinx 7.1.2 and Furo 2024.01.29 -->
+        <title>PDielec.GUI.SingleCrystalLayer - PDielec: John Kendrick &amp; Andrew Burnett</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=135e06be" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=eafc0fe6" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/table_styling.css?v=a1a2a898" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo-extensions.css?v=36a5483c" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/css/custom.css?v=2e0a580d" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f8f8f8;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-half" viewBox="0 0 24 24">
+    <title>Auto light/dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M13 12h5" />
+      <path d="M13 15h4" />
+      <path d="M13 18h1" />
+      <path d="M13 9h4" />
+      <path d="M13 6h1" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../../../index.html"><div class="brand">PDielec: John Kendrick & Andrew Burnett</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon no-toc" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../../../index.html">
+  
+  
+  <span class="sidebar-brand-text">PDielec: John Kendrick & Andrew Burnett</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../../../search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <p class="caption" role="heading"><span class="caption-text">Software</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pdgui.html">PDGui</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../software.html">Other Software Components</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Theory</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../theory_powder.html">Theory for Light Scattering from Powders</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../theory_single_crystal.html">Theory for Single Crystal Optics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../analysis.html">Phonon Analysis</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Applications</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../application_notes_1.html">Applications of Effective Medium Theory</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../application_notes_2.html">Single Crystal Applications</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API</span></p>
+<ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../autoapi/index.html">API Reference</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of API Reference</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../autoapi/PDielec/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of PDielec</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../autoapi/PDielec/GUI/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of PDielec.GUI</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../autoapi/PDielec/GUI/AnalysisTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.AnalysisTab</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../autoapi/PDielec/GUI/App/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.App</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../autoapi/PDielec/GUI/FitterTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.FitterTab</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../autoapi/PDielec/GUI/MainTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.MainTab</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../autoapi/PDielec/GUI/NoteBook/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.NoteBook</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../autoapi/PDielec/GUI/OpenGLWidget/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.OpenGLWidget</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../autoapi/PDielec/GUI/PlottingTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.PlottingTab</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../autoapi/PDielec/GUI/PowderScenarioTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.PowderScenarioTab</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../autoapi/PDielec/GUI/ScenarioTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.ScenarioTab</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../autoapi/PDielec/GUI/SettingsTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.SettingsTab</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../autoapi/PDielec/GUI/SingleCrystalLayer/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.SingleCrystalLayer</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../autoapi/PDielec/GUI/SingleCrystalScenarioTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.SingleCrystalScenarioTab</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../autoapi/PDielec/GUI/SpreadSheetManager/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.SpreadSheetManager</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../autoapi/PDielec/GUI/ViewerTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.ViewerTab</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../autoapi/PDielec/AbinitOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.AbinitOutputReader</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../autoapi/PDielec/Calculator/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.Calculator</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../autoapi/PDielec/CastepOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.CastepOutputReader</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../autoapi/PDielec/Constants/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.Constants</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../autoapi/PDielec/CrystalOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.CrystalOutputReader</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../autoapi/PDielec/DielectricFunction/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.DielectricFunction</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../autoapi/PDielec/ExperimentOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.ExperimentOutputReader</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../autoapi/PDielec/GTMcore/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GTMcore</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../autoapi/PDielec/GenericOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GenericOutputReader</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../autoapi/PDielec/GulpOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GulpOutputReader</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../autoapi/PDielec/HelperRoutines/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.HelperRoutines</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../autoapi/PDielec/IO/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.IO</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../autoapi/PDielec/Materials/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.Materials</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../autoapi/PDielec/Mie/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.Mie</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../autoapi/PDielec/PhonopyOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.PhonopyOutputReader</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../autoapi/PDielec/Plotter/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.Plotter</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../autoapi/PDielec/QEOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.QEOutputReader</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../autoapi/PDielec/SuperCell/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.SuperCell</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../autoapi/PDielec/UnitCell/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.UnitCell</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../autoapi/PDielec/Utilities/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.Utilities</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../autoapi/PDielec/VaspOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.VaspOutputReader</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../autoapi/PDielec/checkcsv/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.checkcsv</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../autoapi/PDielec/checkexcel/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.checkexcel</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../autoapi/PDielec/graphdatagenerator/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.graphdatagenerator</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../autoapi/PDielec/p1reader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.p1reader</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../autoapi/PDielec/p2cif/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.p2cif</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../autoapi/PDielec/pdcompare/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.pdcompare</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../autoapi/PDielec/pdgui/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.pdgui</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../autoapi/PDielec/pdmake/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.pdmake</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../autoapi/PDielec/pickled_reader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.pickled_reader</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../autoapi/PDielec/preader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.preader</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../autoapi/PDielec/vibanalysis/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.vibanalysis</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../autoapi/PDielec/pdgui/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.pdgui</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../autoapi/PDielec/preader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.preader</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../autoapi/PDielec/pdmake/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.pdmake</span></code></a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">References</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../zreferences.html">References</a></li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon no-toc" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main">
+          <h1>Source code for PDielec.GUI.SingleCrystalLayer</h1><div class="highlight"><pre>
+<span></span>
+<span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">The MIT License (MIT)</span>
+
+<span class="sd">Copyright (c) 2024 John Kendrick</span>
+
+<span class="sd">Permission is hereby granted, free of charge, to any person obtaining a copy</span>
+<span class="sd">of this software and associated documentation files (the &quot;Software&quot;), to deal</span>
+<span class="sd">in the Software without restriction, including without limitation the rights</span>
+<span class="sd">to use, copy, modify, merge, publish, distribute, sublicense, and/or sell</span>
+<span class="sd">copies of the Software, and to permit persons to whom the Software is</span>
+<span class="sd">furnished to do so, subject to the following conditions:</span>
+
+<span class="sd">The above copyright notice and this permission notice shall be included in all</span>
+<span class="sd">copies or substantial portions of the Software.</span>
+
+<span class="sd">THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR</span>
+<span class="sd">IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,</span>
+<span class="sd">FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE</span>
+<span class="sd">AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER</span>
+<span class="sd">LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,</span>
+<span class="sd">OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE</span>
+<span class="sd">SOFTWARE.</span>
+<span class="sd">&#39;&#39;&#39;</span>
+<span class="c1"># -*- coding: utf8 -*-</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">PyQt5.QtWidgets</span>            <span class="kn">import</span> <span class="n">QPushButton</span><span class="p">,</span> <span class="n">QWidget</span><span class="p">,</span> <span class="n">QFrame</span><span class="p">,</span> <span class="n">QDialog</span>
+<span class="kn">from</span> <span class="nn">PyQt5.QtWidgets</span>            <span class="kn">import</span> <span class="n">QComboBox</span><span class="p">,</span> <span class="n">QLabel</span><span class="p">,</span> <span class="n">QLineEdit</span><span class="p">,</span> <span class="n">QListWidget</span>
+<span class="kn">from</span> <span class="nn">PyQt5.QtWidgets</span>            <span class="kn">import</span> <span class="n">QVBoxLayout</span><span class="p">,</span> <span class="n">QHBoxLayout</span><span class="p">,</span> <span class="n">QFormLayout</span>
+<span class="kn">from</span> <span class="nn">PyQt5.QtWidgets</span>            <span class="kn">import</span> <span class="n">QSpinBox</span><span class="p">,</span><span class="n">QDoubleSpinBox</span><span class="p">,</span> <span class="n">QCheckBox</span>
+<span class="kn">from</span> <span class="nn">PyQt5.QtWidgets</span>            <span class="kn">import</span> <span class="n">QSizePolicy</span><span class="p">,</span> <span class="n">QDialogButtonBox</span>
+<span class="kn">from</span> <span class="nn">PyQt5.QtCore</span>               <span class="kn">import</span> <span class="n">QCoreApplication</span><span class="p">,</span> <span class="n">Qt</span>
+<span class="kn">from</span> <span class="nn">PDielec.Utilities</span>          <span class="kn">import</span> <span class="n">Debug</span>
+<span class="kn">import</span> <span class="nn">PDielec.Calculator</span> <span class="k">as</span> <span class="nn">Calculator</span>
+
+<div class="viewcode-block" id="SingleCrystalLayer"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/SingleCrystalLayer/index.html#PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer">[docs]</a><span class="k">class</span> <span class="nc">SingleCrystalLayer</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A class representing a single crystal layer.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    material : Material</span>
+<span class="sd">        The material of the layer.</span>
+<span class="sd">    hkl : list of int</span>
+<span class="sd">        The Miller indices of the plane of interest in the crystal.</span>
+<span class="sd">    incoherentOption : str</span>
+<span class="sd">        The incoherent interaction option for the layer.</span>
+<span class="sd">    azimuthal : float</span>
+<span class="sd">        The azimuthal angle of rotation of the crystal about the z-axis, in degrees.</span>
+<span class="sd">    thickness : float</span>
+<span class="sd">        The thickness of the layer in the specified units.</span>
+<span class="sd">    thicknessUnit : str</span>
+<span class="sd">        The units used for the thickness measurement.</span>
+<span class="sd">    dielectricFlag : bool</span>
+<span class="sd">        A flag indicating if the layer material is the dielectric material.</span>
+<span class="sd">    euler : ndarray</span>
+<span class="sd">        The Euler rotation matrix for the crystal to laboratory frame transformation, stored as a 3x3 numpy array with `dtype=np.longdouble`.</span>
+<span class="sd">    euler_inverse : ndarray</span>
+<span class="sd">        The inverse of the Euler rotation matrix, stored as a 3x3 numpy array with `dtype=np.longdouble`.</span>
+<span class="sd">    labframe_w : </span>
+<span class="sd">        Placeholder attribute for GUI interactions, not initialized within the class definition.</span>
+<span class="sd">    labframe : ndarray</span>
+<span class="sd">        The lattice vectors of the crystal in the laboratory frame, stored as a numpy array.</span>
+<span class="sd">    phaseShift : float</span>
+<span class="sd">        The phase shift for the layer.</span>
+
+<span class="sd">    Methods</span>
+<span class="sd">    -------</span>
+<span class="sd">    print()</span>
+<span class="sd">        Prints the main attributes of the layer.</span>
+<span class="sd">    getPhaseShift()</span>
+<span class="sd">        Returns the phase shift for the layer.</span>
+<span class="sd">    setPhaseShift(phaseShift)</span>
+<span class="sd">        Sets the phase shift for the layer.</span>
+<span class="sd">    setAzimuthal(angle)</span>
+<span class="sd">        Sets the azimuthal angle of the layer and recalculates the Euler matrix.</span>
+<span class="sd">    isCoherent()</span>
+<span class="sd">        Returns True if the layer is coherent, False otherwise.</span>
+<span class="sd">    getIncoherentOption()</span>
+<span class="sd">        Returns the incoherent interaction option for the layer.</span>
+<span class="sd">    setIncoherentOption(option)</span>
+<span class="sd">        Sets the incoherent interaction option for the layer.</span>
+<span class="sd">    getAzimuthal()</span>
+<span class="sd">        Returns the azimuthal angle.</span>
+<span class="sd">    setThickness(thickness)</span>
+<span class="sd">        Sets the thickness of the layer.</span>
+<span class="sd">    getThickness()</span>
+<span class="sd">        Returns the thickness of the layer.</span>
+<span class="sd">    getThicknessInMetres()</span>
+<span class="sd">        Converts and returns the thickness of the layer in meters.</span>
+<span class="sd">    setThicknessUnit(thicknessUnit)</span>
+<span class="sd">        Sets the unit of thickness measurement.</span>
+<span class="sd">    getThicknessUnit()</span>
+<span class="sd">        Returns the unit of thickness measurement.</span>
+<span class="sd">    setHKL(hkl)</span>
+<span class="sd">        Sets the Miller indices for the plane of interest in the crystal.</span>
+<span class="sd">    getHKL()</span>
+<span class="sd">        Returns the Miller indices of the plane of interest.</span>
+<span class="sd">    getName()</span>
+<span class="sd">        Returns the name of the material.</span>
+<span class="sd">    getMaterial()</span>
+<span class="sd">        Returns the material object associated with the layer.</span>
+<span class="sd">    getPermittivityFunction()</span>
+<span class="sd">        Returns the permittivity tensor for the crystal at the surface and azimuthal angle specified.</span>
+<span class="sd">    isTensor()</span>
+<span class="sd">        Returns True if the material of the layer is a tensor material, False otherwise.</span>
+<span class="sd">    isScalar()</span>
+<span class="sd">        Returns True if the material of the layer is a scalar material, False otherwise.</span>
+<span class="sd">    isDielectric()</span>
+<span class="sd">        Returns True if the material of the layer is the dielectric being studied.</span>
+<span class="sd">    calculate_euler_matrix()</span>
+<span class="sd">        Calculates the Euler angles for the crystal to lab frame transformation.</span>
+<span class="sd">    azimuthalRotationMatrix(angle)</span>
+<span class="sd">        Calculates a rotation matrix for the azimuthal angle.</span>
+<span class="sd">    changeLabFrameInfo()</span>
+<span class="sd">        Changes the Lab Frame Information, used with GUI interactions.</span>
+<span class="sd">    getLabFrame()</span>
+<span class="sd">        Returns the information of the crystal axes in the laboratory frame.</span>
+<span class="sd">    calculateLabFrameEpsilon(v)</span>
+<span class="sd">        Computes the permittivity tensor for the material at a given frequency and transforms it to the laboratory frame.</span>
+<span class="sd">    invert(m)</span>
+<span class="sd">        Calculates the inverse of a given 3x3 complex matrix.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    The class heavily relies on numpy for various calculations including matrix manipulations and rotation calculations.</span>
+<span class="sd">    &quot;&quot;&quot;</span>    
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">material</span><span class="p">,</span><span class="n">hkl</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span><span class="n">azimuthal</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span><span class="n">thickness</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span><span class="n">thicknessUnit</span><span class="o">=</span><span class="s1">&#39;nm&#39;</span><span class="p">,</span><span class="n">incoherentOption</span><span class="o">=</span><span class="s1">&#39;Coherent&#39;</span><span class="p">,</span><span class="n">dielectricFlag</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        A single crystal layer class to handle layers.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        material : Material</span>
+<span class="sd">            An instance of Material object, which contains:</span>
+<span class="sd">              - name (str)</span>
+<span class="sd">              - density (float)</span>
+<span class="sd">              - permittivity (float)</span>
+<span class="sd">              - unit cell (UnitCell)</span>
+<span class="sd">        hkl : list of int</span>
+<span class="sd">            A list of 3 integers defining the plane of interest.</span>
+<span class="sd">        azimuthal : float</span>
+<span class="sd">            The azimuthal angle of rotation of the crystal about the z-axis.</span>
+<span class="sd">        thickness : float</span>
+<span class="sd">            The thickness of the layer in the specified thickness units.</span>
+<span class="sd">        thicknessUnits : {&#39;ang&#39;,&#39;nm&#39;, &#39;um&#39;, &#39;mm&#39;, &#39;cm&#39;}</span>
+<span class="sd">            The units of thickness measurement.</span>
+<span class="sd">        incoherentOption : {&#39;Coherent&#39;, &#39;Incoherent (intensity)&#39;, &#39;Incoherent (phase cancelling)&#39;, &#39;Incoherent (phase averaging)&#39;, &#39;Incoherent non-reflective&#39;}</span>
+<span class="sd">            The option for handling incoherent scattering. </span>
+<span class="sd">        dielectricFlag : bool</span>
+<span class="sd">            True if the layer material is the dielectric being studied (ie it was read in as a DFT calculation), False otherwise.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">material</span> <span class="o">=</span> <span class="n">material</span>
+        <span class="k">if</span> <span class="n">material</span><span class="o">.</span><span class="n">isScalar</span><span class="p">():</span>
+            <span class="n">hkl</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">hkl</span> <span class="o">=</span> <span class="n">hkl</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">incoherentOption</span> <span class="o">=</span> <span class="n">incoherentOption</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">azimuthal</span> <span class="o">=</span> <span class="n">azimuthal</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">thickness</span> <span class="o">=</span> <span class="n">thickness</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">thicknessUnit</span> <span class="o">=</span> <span class="n">thicknessUnit</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dielectricFlag</span> <span class="o">=</span> <span class="n">dielectricFlag</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">euler</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">),</span><span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">longdouble</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">euler_inverse</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">),</span><span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">longdouble</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">labframe_w</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">labframe</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">phaseShift</span> <span class="o">=</span> <span class="mf">0.0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">calculate_euler_matrix</span><span class="p">()</span>
+
+<div class="viewcode-block" id="SingleCrystalLayer.print"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/SingleCrystalLayer/index.html#PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.print">[docs]</a>    <span class="k">def</span> <span class="nf">print</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Print the main attributes of the layer.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        None</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;------------------ &#39;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Material         : &#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">material</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;HKL              :      &#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">hkl</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Azimuthal        :&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">azimuthal</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Thickness        :&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">thickness</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Thickness unit   :&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">thicknessUnit</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Dielectric flag  :&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dielectricFlag</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Incoherent option:&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">incoherentOption</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Phase shift      :&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">phaseShift</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SingleCrystalLayer.getPhaseShift"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/SingleCrystalLayer/index.html#PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.getPhaseShift">[docs]</a>    <span class="k">def</span> <span class="nf">getPhaseShift</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Get the phase shift for the layer</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        None</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        float</span>
+<span class="sd">            The phase shift used in the averaged phase shift method</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">phaseShift</span></div>
+
+<div class="viewcode-block" id="SingleCrystalLayer.setPhaseShift"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/SingleCrystalLayer/index.html#PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.setPhaseShift">[docs]</a>    <span class="k">def</span> <span class="nf">setPhaseShift</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">phaseShift</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Set the phase shift for the layer</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        phaseShift : float</span>
+<span class="sd">           The phase shift</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        None</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">phaseShift</span> <span class="o">=</span> <span class="n">phaseShift</span>
+        <span class="k">return</span></div>
+
+<div class="viewcode-block" id="SingleCrystalLayer.setAzimuthal"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/SingleCrystalLayer/index.html#PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.setAzimuthal">[docs]</a>    <span class="k">def</span> <span class="nf">setAzimuthal</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">angle</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Set the azimuthal angle of the layer and calculate the Euler matrix.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        angle : float</span>
+<span class="sd">           The azimuthal angle in degrees</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        None</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">azimuthal</span> <span class="o">=</span> <span class="n">angle</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">calculate_euler_matrix</span><span class="p">()</span>
+        <span class="k">return</span> </div>
+
+<div class="viewcode-block" id="SingleCrystalLayer.isCoherent"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/SingleCrystalLayer/index.html#PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.isCoherent">[docs]</a>    <span class="k">def</span> <span class="nf">isCoherent</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Returns True if this is a coherent layer, False otherwise.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        None</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        bool</span>
+<span class="sd">            True if this is a coherent layer, False otherwise.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">incoherentOption</span> <span class="o">==</span> <span class="s1">&#39;Coherent&#39;</span><span class="p">:</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">return</span> <span class="n">result</span></div>
+
+<div class="viewcode-block" id="SingleCrystalLayer.getIncoherentOption"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/SingleCrystalLayer/index.html#PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.getIncoherentOption">[docs]</a>    <span class="k">def</span> <span class="nf">getIncoherentOption</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the value of the incoherent option attribute.</span>
+
+<span class="sd">        This will return &#39;Coherent&#39; for a coherent layer</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        None</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        type</span>
+<span class="sd">            The value of the `incoherentOption` attribute of the object.</span>
+<span class="sd">        &quot;&quot;&quot;</span>        
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">incoherentOption</span></div>
+
+<div class="viewcode-block" id="SingleCrystalLayer.setIncoherentOption"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/SingleCrystalLayer/index.html#PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.setIncoherentOption">[docs]</a>    <span class="k">def</span> <span class="nf">setIncoherentOption</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">option</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Set the incoherent option</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        option : string</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        None</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">incoherentOption</span> <span class="o">=</span> <span class="n">option</span>
+        <span class="k">return</span> </div>
+
+<div class="viewcode-block" id="SingleCrystalLayer.getAzimuthal"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/SingleCrystalLayer/index.html#PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.getAzimuthal">[docs]</a>    <span class="k">def</span> <span class="nf">getAzimuthal</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Get the azimuthal angle</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        None</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        float</span>
+<span class="sd">            The azimuthal angle.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">azimuthal</span></div>
+
+<div class="viewcode-block" id="SingleCrystalLayer.setThickness"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/SingleCrystalLayer/index.html#PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.setThickness">[docs]</a>    <span class="k">def</span> <span class="nf">setThickness</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">thickness</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Set the thickness.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        thickness : float</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        None</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">thickness</span> <span class="o">=</span> <span class="n">thickness</span>
+        <span class="k">return</span> </div>
+
+<div class="viewcode-block" id="SingleCrystalLayer.getThickness"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/SingleCrystalLayer/index.html#PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.getThickness">[docs]</a>    <span class="k">def</span> <span class="nf">getThickness</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Get the thickness</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        None</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        float</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">thickness</span></div>
+
+<div class="viewcode-block" id="SingleCrystalLayer.getThicknessInMetres"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/SingleCrystalLayer/index.html#PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.getThicknessInMetres">[docs]</a>    <span class="k">def</span> <span class="nf">getThicknessInMetres</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Get the thickness in metres</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        None</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        float</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">thickness_conversion_factors</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;ang&#39;</span><span class="p">:</span><span class="mf">1.0E-10</span><span class="p">,</span> <span class="s1">&#39;nm&#39;</span><span class="p">:</span><span class="mf">1.0E-9</span><span class="p">,</span> <span class="s1">&#39;um&#39;</span><span class="p">:</span><span class="mf">1.0E-6</span><span class="p">,</span> <span class="s1">&#39;mm&#39;</span><span class="p">:</span><span class="mf">1.0E-3</span><span class="p">,</span> <span class="s1">&#39;cm&#39;</span><span class="p">:</span><span class="mf">1.0E-2</span><span class="p">}</span>
+        <span class="n">tom</span> <span class="o">=</span> <span class="n">thickness_conversion_factors</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">thicknessUnit</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">tom</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">thickness</span></div>
+
+<div class="viewcode-block" id="SingleCrystalLayer.setThicknessUnit"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/SingleCrystalLayer/index.html#PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.setThicknessUnit">[docs]</a>    <span class="k">def</span> <span class="nf">setThicknessUnit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">thicknessUnit</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Set the thickness unit.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        thicknessUnit</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        None</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">thicknessUnit</span> <span class="o">=</span> <span class="n">thicknessUnit</span>
+        <span class="k">return</span> </div>
+
+<div class="viewcode-block" id="SingleCrystalLayer.getThicknessUnit"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/SingleCrystalLayer/index.html#PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.getThicknessUnit">[docs]</a>    <span class="k">def</span> <span class="nf">getThicknessUnit</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Get the thickness unit</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        None</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        str</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">thicknessUnit</span></div>
+
+<div class="viewcode-block" id="SingleCrystalLayer.setHKL"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/SingleCrystalLayer/index.html#PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.setHKL">[docs]</a>    <span class="k">def</span> <span class="nf">setHKL</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hkl</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Set the hkl and recalculate the Euler matrix</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        hkl : list of 3 ints</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        None</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">hkl</span> <span class="o">=</span> <span class="n">hkl</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">calculate_euler_matrix</span><span class="p">()</span>
+        <span class="k">return</span> </div>
+
+<div class="viewcode-block" id="SingleCrystalLayer.getHKL"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/SingleCrystalLayer/index.html#PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.getHKL">[docs]</a>    <span class="k">def</span> <span class="nf">getHKL</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Get the hkl.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        None</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        list of 3 ints</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">hkl</span></div>
+
+<div class="viewcode-block" id="SingleCrystalLayer.getName"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/SingleCrystalLayer/index.html#PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.getName">[docs]</a>    <span class="k">def</span> <span class="nf">getName</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Return the material name</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        None</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        str</span>
+<span class="sd">            The name of the material.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">material</span><span class="o">.</span><span class="n">getName</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="SingleCrystalLayer.getMaterial"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/SingleCrystalLayer/index.html#PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.getMaterial">[docs]</a>    <span class="k">def</span> <span class="nf">getMaterial</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Return the material</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        None</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        an instance of a Materials object</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">material</span></div>
+
+<div class="viewcode-block" id="SingleCrystalLayer.getPermittivityFunction"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/SingleCrystalLayer/index.html#PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.getPermittivityFunction">[docs]</a>    <span class="k">def</span> <span class="nf">getPermittivityFunction</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Return the permittivity function associated with this material</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        None</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        A permittivity function</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">calculateLabFrameEpsilon</span></div>
+
+<div class="viewcode-block" id="SingleCrystalLayer.isTensor"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/SingleCrystalLayer/index.html#PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.isTensor">[docs]</a>    <span class="k">def</span> <span class="nf">isTensor</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Return true if the material of the layer is a tensor material.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        None</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        bool</span>
+<span class="sd">            True if the material of the layer is a tensor material, False otherwise.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">getMaterial</span><span class="p">()</span><span class="o">.</span><span class="n">isTensor</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="SingleCrystalLayer.isScalar"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/SingleCrystalLayer/index.html#PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.isScalar">[docs]</a>    <span class="k">def</span> <span class="nf">isScalar</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Return true if the material of the layer is a scalar material.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        None</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        bool</span>
+<span class="sd">            True if the material of the layer is a scalar material, False otherwise.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">getMaterial</span><span class="p">()</span><span class="o">.</span><span class="n">isScalar</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="SingleCrystalLayer.isDielectric"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/SingleCrystalLayer/index.html#PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.isDielectric">[docs]</a>    <span class="k">def</span> <span class="nf">isDielectric</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Return true if the material of the layer is the dielectric material.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        None</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        bool</span>
+<span class="sd">            True if the material of the layer is the dielectric material, otherwise False.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">dielectricFlag</span></div>
+
+<div class="viewcode-block" id="SingleCrystalLayer.calculate_euler_matrix"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/SingleCrystalLayer/index.html#PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.calculate_euler_matrix">[docs]</a>    <span class="k">def</span> <span class="nf">calculate_euler_matrix</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Calculate the Euler angles for the crystal to lab transformation.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        None</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        None</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="c1"># Get plane specification</span>
+        <span class="n">hkl</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">hkl</span>
+        <span class="n">sum2</span> <span class="o">=</span> <span class="n">hkl</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">hkl</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">hkl</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="n">hkl</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">hkl</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">*</span><span class="n">hkl</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">sum2</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">return</span> 
+        <span class="n">x</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="n">z</span> <span class="o">=</span> <span class="mi">2</span>
+        <span class="c1"># convert normal to plane to a direction in xyz coordinates</span>
+        <span class="n">planez</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">material</span><span class="o">.</span><span class="n">cell</span><span class="o">.</span><span class="n">convert_hkl_to_xyz</span><span class="p">(</span><span class="n">hkl</span><span class="p">)</span>
+        <span class="n">planez</span> <span class="o">/=</span>  <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">planez</span><span class="p">)</span>
+        <span class="n">plane</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span> <span class="p">)</span>
+        <span class="n">lab</span>   <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">identity</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+        <span class="n">plane</span><span class="p">[</span><span class="n">z</span><span class="p">]</span> <span class="o">=</span> <span class="n">planez</span>
+        <span class="k">if</span> <span class="n">plane</span><span class="p">[</span><span class="n">z</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mf">0.99999999</span> <span class="ow">and</span> <span class="n">plane</span><span class="p">[</span><span class="n">z</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span> <span class="o">&gt;</span> <span class="o">-</span><span class="mf">0.99999999</span><span class="p">:</span>
+            <span class="n">plane</span><span class="p">[</span><span class="n">x</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="n">plane</span><span class="p">[</span><span class="n">z</span><span class="p">],</span> <span class="n">lab</span><span class="p">[</span><span class="n">z</span><span class="p">])</span>
+            <span class="n">plane</span><span class="p">[</span><span class="n">y</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="n">plane</span><span class="p">[</span><span class="n">z</span><span class="p">],</span> <span class="n">plane</span><span class="p">[</span><span class="n">x</span><span class="p">])</span>
+            <span class="n">plane</span><span class="p">[</span><span class="n">x</span><span class="p">]</span> <span class="o">/=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">plane</span><span class="p">[</span><span class="n">y</span><span class="p">])</span>
+            <span class="n">plane</span><span class="p">[</span><span class="n">y</span><span class="p">]</span> <span class="o">/=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">plane</span><span class="p">[</span><span class="n">y</span><span class="p">])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">plane</span><span class="p">[</span><span class="n">x</span><span class="p">]</span> <span class="o">=</span> <span class="n">lab</span><span class="p">[</span><span class="n">x</span><span class="p">]</span>
+            <span class="n">plane</span><span class="p">[</span><span class="n">y</span><span class="p">]</span> <span class="o">=</span> <span class="n">lab</span><span class="p">[</span><span class="n">y</span><span class="p">]</span>
+            <span class="n">plane</span><span class="p">[</span><span class="n">z</span><span class="p">]</span> <span class="o">=</span> <span class="n">lab</span><span class="p">[</span><span class="n">z</span><span class="p">]</span>
+        <span class="c1"># Calculate the rotation matrix which transforms us to a unit matrix</span>
+        <span class="n">rotation</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">pinv</span><span class="p">(</span><span class="n">plane</span><span class="p">)</span>
+        <span class="c1"># Because the formula used for the Euler transform is based on an active transform</span>
+        <span class="c1"># We calculate the angles using the transpose of the rotation matrix</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">euler</span> <span class="o">=</span> <span class="n">rotation</span><span class="o">.</span><span class="n">T</span>
+        <span class="c1"># Rotate by azimuthal angle</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">euler</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">azimuthalRotationMatrix</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">azimuthal</span><span class="p">),</span><span class="bp">self</span><span class="o">.</span><span class="n">euler</span><span class="p">)</span>
+        <span class="c1"># Calculate and keep euler inverse</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">euler_inverse</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">invert</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">euler</span><span class="p">)</span>
+        <span class="c1"># Calculate lab frame</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">labframe</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">euler</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">material</span><span class="o">.</span><span class="n">cell</span><span class="o">.</span><span class="n">lattice</span><span class="o">.</span><span class="n">T</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
+        <span class="n">normal_to_plane_lab</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">euler</span><span class="p">,</span><span class="n">plane</span><span class="p">[</span><span class="n">z</span><span class="p">])</span>
+        <span class="k">if</span> <span class="n">normal_to_plane_lab</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mf">0.9999</span> <span class="ow">and</span> <span class="n">normal_to_plane_lab</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">&gt;</span> <span class="o">-</span><span class="mf">0.9999</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Error in Euler rotations - surface normal is not along Z-axis&#39;</span><span class="p">,</span> <span class="n">normal_to_plane_lab</span><span class="p">)</span>
+            <span class="n">exit</span><span class="p">()</span>
+        <span class="k">return</span> </div>
+
+<div class="viewcode-block" id="SingleCrystalLayer.azimuthalRotationMatrix"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/SingleCrystalLayer/index.html#PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.azimuthalRotationMatrix">[docs]</a>    <span class="k">def</span> <span class="nf">azimuthalRotationMatrix</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">angle</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Calculate a rotation matrix for the azimuthal angle (in degrees).</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        angle : float</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        ndarray 3x3</span>
+<span class="sd">            The rotation matrix for the given azimuthal angle.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">angle</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">angle</span><span class="p">)</span>
+        <span class="n">matrix</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+        <span class="c1"># in numpy the first index is the column, the second is the row</span>
+        <span class="n">matrix</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">angle</span><span class="p">)</span>
+        <span class="n">matrix</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">angle</span><span class="p">)</span>
+        <span class="n">matrix</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">angle</span><span class="p">)</span>
+        <span class="n">matrix</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="o">+</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">angle</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">matrix</span></div>
+
+<div class="viewcode-block" id="SingleCrystalLayer.changeLabFrameInfo"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/SingleCrystalLayer/index.html#PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.changeLabFrameInfo">[docs]</a>    <span class="k">def</span> <span class="nf">changeLabFrameInfo</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Change the Lab Frame Info panel.</span>
+
+<span class="sd">        Information about the relationship between the crystal and labframe coordinate systems is presented.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">labframe_w</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="n">c</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getLabFrame</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">labframe_w</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">labframe_w</span><span class="o">.</span><span class="n">addItem</span><span class="p">(</span><span class="s1">&#39;crystal a-axis in lab frame: </span><span class="si">{: 3.5f}</span><span class="s1">, </span><span class="si">{: 3.5f}</span><span class="s1">, </span><span class="si">{: 3.5f}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">a</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="n">a</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span> <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">labframe_w</span><span class="o">.</span><span class="n">addItem</span><span class="p">(</span><span class="s1">&#39;crystal b-axis in lab frame: </span><span class="si">{: 3.5f}</span><span class="s1">, </span><span class="si">{: 3.5f}</span><span class="s1">, </span><span class="si">{: 3.5f}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">b</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">b</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="n">b</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span> <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">labframe_w</span><span class="o">.</span><span class="n">addItem</span><span class="p">(</span><span class="s1">&#39;crystal c-axis in lab frame: </span><span class="si">{: 3.5f}</span><span class="s1">, </span><span class="si">{: 3.5f}</span><span class="s1">, </span><span class="si">{: 3.5f}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">c</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">c</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="n">c</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span> <span class="p">)</span>
+        <span class="k">return</span></div>
+
+<div class="viewcode-block" id="SingleCrystalLayer.getLabFrame"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/SingleCrystalLayer/index.html#PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.getLabFrame">[docs]</a>    <span class="k">def</span> <span class="nf">getLabFrame</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Return the a, b, and c cell axes in the laboratory frame coordinates.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        None</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        (a, b, c) : 3 lists of floats each with 3 elements</span>
+<span class="sd">            - a, The a cell axis in the laboratory frame.</span>
+<span class="sd">            - b, The b cell axis in the laboratory frame.</span>
+<span class="sd">            - c, The c cell axis in the laboratory frame.</span>
+
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">labframe</span></div>
+
+<div class="viewcode-block" id="SingleCrystalLayer.calculateLabFrameEpsilon"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/SingleCrystalLayer/index.html#PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.calculateLabFrameEpsilon">[docs]</a>    <span class="k">def</span> <span class="nf">calculateLabFrameEpsilon</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Get the permittivity for this material at frequency v and transform it to the laboratory frame.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        None</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        v : float</span>
+<span class="sd">            Frequency at which the permittivity is evaluated.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        float</span>
+<span class="sd">            The permittivity of the material in the laboratory frame.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">epsilon_xstal</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">material</span><span class="o">.</span><span class="n">getPermittivityFunction</span><span class="p">()(</span><span class="n">v</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">material</span><span class="o">.</span><span class="n">isScalar</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">labFrameEpsilon</span> <span class="o">=</span> <span class="n">epsilon_xstal</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">labFrameEpsilon</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">euler</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">epsilon_xstal</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">euler_inverse</span><span class="p">))</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">labFrameEpsilon</span></div>
+
+<div class="viewcode-block" id="SingleCrystalLayer.invert"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/SingleCrystalLayer/index.html#PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer.invert">[docs]</a>    <span class="k">def</span> <span class="nf">invert</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">m</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calculate the inverse of m</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        m : complex 3x3 array</span>
+<span class="sd">            The input matrix for which to calculate the inverse.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        numpy.ndarray</span>
+<span class="sd">            The inverse of `m` as a 3x3 complex numpy array.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">m1</span><span class="p">,</span> <span class="n">m2</span><span class="p">,</span> <span class="n">m3</span><span class="p">,</span> <span class="n">m4</span><span class="p">,</span> <span class="n">m5</span><span class="p">,</span> <span class="n">m6</span><span class="p">,</span> <span class="n">m7</span><span class="p">,</span> <span class="n">m8</span><span class="p">,</span> <span class="n">m9</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+        <span class="n">determinant</span> <span class="o">=</span> <span class="n">m1</span><span class="o">*</span><span class="n">m5</span><span class="o">*</span><span class="n">m9</span> <span class="o">+</span> <span class="n">m4</span><span class="o">*</span><span class="n">m8</span><span class="o">*</span><span class="n">m3</span> <span class="o">+</span> <span class="n">m7</span><span class="o">*</span><span class="n">m2</span><span class="o">*</span><span class="n">m6</span> <span class="o">-</span> <span class="n">m1</span><span class="o">*</span><span class="n">m6</span><span class="o">*</span><span class="n">m8</span> <span class="o">-</span> <span class="n">m3</span><span class="o">*</span><span class="n">m5</span><span class="o">*</span><span class="n">m7</span> <span class="o">-</span> <span class="n">m2</span><span class="o">*</span><span class="n">m4</span><span class="o">*</span><span class="n">m9</span>  
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="n">m5</span><span class="o">*</span><span class="n">m9</span><span class="o">-</span><span class="n">m6</span><span class="o">*</span><span class="n">m8</span><span class="p">,</span> <span class="n">m3</span><span class="o">*</span><span class="n">m8</span><span class="o">-</span><span class="n">m2</span><span class="o">*</span><span class="n">m9</span><span class="p">,</span> <span class="n">m2</span><span class="o">*</span><span class="n">m6</span><span class="o">-</span><span class="n">m3</span><span class="o">*</span><span class="n">m5</span><span class="p">],</span>
+                         <span class="p">[</span><span class="n">m6</span><span class="o">*</span><span class="n">m7</span><span class="o">-</span><span class="n">m4</span><span class="o">*</span><span class="n">m9</span><span class="p">,</span> <span class="n">m1</span><span class="o">*</span><span class="n">m9</span><span class="o">-</span><span class="n">m3</span><span class="o">*</span><span class="n">m7</span><span class="p">,</span> <span class="n">m3</span><span class="o">*</span><span class="n">m4</span><span class="o">-</span><span class="n">m1</span><span class="o">*</span><span class="n">m6</span><span class="p">],</span>
+                         <span class="p">[</span><span class="n">m4</span><span class="o">*</span><span class="n">m8</span><span class="o">-</span><span class="n">m5</span><span class="o">*</span><span class="n">m7</span><span class="p">,</span> <span class="n">m2</span><span class="o">*</span><span class="n">m7</span><span class="o">-</span><span class="n">m1</span><span class="o">*</span><span class="n">m8</span><span class="p">,</span> <span class="n">m1</span><span class="o">*</span><span class="n">m5</span><span class="o">-</span><span class="n">m2</span><span class="o">*</span><span class="n">m4</span><span class="p">]])</span><span class="o">/</span><span class="n">determinant</span></div></div>
+
+<div class="viewcode-block" id="ShowLayerWindow"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/SingleCrystalLayer/index.html#PDielec.GUI.SingleCrystalLayer.ShowLayerWindow">[docs]</a><span class="k">class</span> <span class="nc">ShowLayerWindow</span><span class="p">(</span><span class="n">QDialog</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A GUI window for displaying and editing the properties of a layer in a project.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    layer : object</span>
+<span class="sd">        The layer that is displayed or being edited in this window.</span>
+<span class="sd">    message : str</span>
+<span class="sd">        The message displayed at the top of the window.</span>
+<span class="sd">    layout : QVBoxLayout</span>
+<span class="sd">        The main layout of the window.</span>
+<span class="sd">    buttonBox : QDialogButtonBox</span>
+<span class="sd">        The dialog box containing Ok and Cancel buttons.</span>
+
+<span class="sd">    Methods</span>
+<span class="sd">    -------</span>
+<span class="sd">    getLayer()</span>
+<span class="sd">        Return the layer being edited or displayed.</span>
+<span class="sd">    drawLayerWidget()</span>
+<span class="sd">        Create a QWidget displaying all information about the layer.</span>
+<span class="sd">    drawLayerWidgetLine1()</span>
+<span class="sd">        Add widgets to display the first line of layer properties.</span>
+<span class="sd">    drawLayerWidgetLine2()</span>
+<span class="sd">        Add widgets to display the second line of layer properties related to the crystallographic direction (hkl).</span>
+<span class="sd">    drawLayerWidgetLine3()</span>
+<span class="sd">        Add widgets for displaying the third line of layer properties related to lab frame information.</span>
+<span class="sd">    changeLabFrameInfo()</span>
+<span class="sd">        Update the displayed lab frame information based on the layer&#39;s current state.</span>
+<span class="sd">    on_film_thickness_sb_changed(value)</span>
+<span class="sd">        Respond to changes in the film thickness spin box.</span>
+<span class="sd">    on_azimuthal_angle_sb_changed(value)</span>
+<span class="sd">        Respond to changes in the azimuthal angle spin box.</span>
+<span class="sd">    on_hkl_sb_changed(value, hkorl)</span>
+<span class="sd">        Respond to changes in the h, k, or l spin boxes.</span>
+<span class="sd">    on_thickness_units_cb_activated(index)</span>
+<span class="sd">        Respond to thickness unit selection changes.</span>
+<span class="sd">    &quot;&quot;&quot;</span>    
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">layer</span><span class="p">,</span> <span class="n">message</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">debug</span><span class="o">=</span><span class="kc">False</span> <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize a ShowLayerWindow instance.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        layer : object</span>
+<span class="sd">            The layer object to be displayed or acted upon in the window.</span>
+<span class="sd">        message : str, optional</span>
+<span class="sd">            Custom message to display in the window. The default is an empty string.</span>
+<span class="sd">        parent : QWidget, optional</span>
+<span class="sd">            The parent widget of this window. The default is None.</span>
+<span class="sd">        debug : bool, optional</span>
+<span class="sd">            Flag to enable or disable debug mode. The default is False.</span>
+
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+<span class="sd">        This constructor initializes the ShowLayerWindow by setting up the UI elements</span>
+<span class="sd">        including buttons and the layout. It also configures the debug mode according</span>
+<span class="sd">        to the provided argument.</span>
+<span class="sd">        &quot;&quot;&quot;</span>        
+        <span class="nb">super</span><span class="p">(</span><span class="n">ShowLayerWindow</span><span class="p">,</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">parent</span><span class="p">)</span>
+        <span class="k">global</span> <span class="n">debugger</span>
+        <span class="n">debugger</span> <span class="o">=</span> <span class="n">Debug</span><span class="p">(</span><span class="n">debug</span><span class="p">,</span><span class="s1">&#39;ShowLayerWindow&#39;</span><span class="p">)</span>
+        <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s1">&#39;Start:: initialiser&#39;</span><span class="p">)</span>
+        <span class="c1"># Set up the buttons of the button box</span>
+        <span class="n">QBtn</span> <span class="o">=</span> <span class="n">QDialogButtonBox</span><span class="o">.</span><span class="n">Ok</span> <span class="o">|</span> <span class="n">QDialogButtonBox</span><span class="o">.</span><span class="n">Cancel</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">buttonBox</span> <span class="o">=</span> <span class="n">QDialogButtonBox</span><span class="p">(</span><span class="n">QBtn</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">buttonBox</span><span class="o">.</span><span class="n">accepted</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">accept</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">buttonBox</span><span class="o">.</span><span class="n">rejected</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">reject</span><span class="p">)</span>
+        <span class="c1"># Initialize the layer</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">layer</span> <span class="o">=</span> <span class="n">layer</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">message</span> <span class="o">=</span> <span class="n">message</span>
+        <span class="c1"># The dialog will have a vertical layout</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">layout</span> <span class="o">=</span> <span class="n">QVBoxLayout</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="c1"># Create the layer widget to display</span>
+        <span class="n">layerWidget</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">drawLayerWidget</span><span class="p">()</span>
+        <span class="c1"># Add the widget showing the layer information</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">layerWidget</span><span class="p">)</span>
+        <span class="c1"># Add the button box</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">buttonBox</span><span class="p">)</span>
+        <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s1">&#39;Finished:: initialiser&#39;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="ShowLayerWindow.getLayer"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/SingleCrystalLayer/index.html#PDielec.GUI.SingleCrystalLayer.ShowLayerWindow.getLayer">[docs]</a>    <span class="k">def</span> <span class="nf">getLayer</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Return the edited layer</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        None</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        self.layer : An instance of a single crystal layer</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">layer</span></div>
+
+<div class="viewcode-block" id="ShowLayerWindow.drawLayerWidget"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/SingleCrystalLayer/index.html#PDielec.GUI.SingleCrystalLayer.ShowLayerWindow.drawLayerWidget">[docs]</a>    <span class="k">def</span> <span class="nf">drawLayerWidget</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Create a layer widget showing all the information about the layer.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        None</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        None</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s1">&#39;drawLayerWidget&#39;</span><span class="p">)</span>
+        <span class="n">widget</span> <span class="o">=</span> <span class="n">QWidget</span><span class="p">()</span>
+        <span class="n">form</span> <span class="o">=</span> <span class="n">QFormLayout</span><span class="p">()</span>
+        <span class="n">label</span> <span class="o">=</span> <span class="n">QLabel</span><span class="p">(</span><span class="s1">&#39;Layer type:&#39;</span><span class="p">)</span>
+        <span class="n">form</span><span class="o">.</span><span class="n">addRow</span><span class="p">(</span><span class="n">label</span><span class="p">,</span><span class="n">QLabel</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">message</span><span class="p">))</span>
+        <span class="n">label</span> <span class="o">=</span> <span class="n">QLabel</span><span class="p">(</span><span class="s1">&#39;Material:&#39;</span><span class="p">)</span>
+        <span class="n">material</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">layer</span><span class="o">.</span><span class="n">getMaterial</span><span class="p">()</span>
+        <span class="n">materialName</span> <span class="o">=</span> <span class="n">material</span><span class="o">.</span><span class="n">getName</span><span class="p">()</span>
+        <span class="n">form</span><span class="o">.</span><span class="n">addRow</span><span class="p">(</span><span class="n">label</span><span class="p">,</span><span class="n">QLabel</span><span class="p">(</span><span class="n">materialName</span><span class="p">))</span>
+        <span class="n">label</span><span class="p">,</span><span class="n">layout</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">drawLayerWidgetLine1</span><span class="p">()</span>
+        <span class="n">form</span><span class="o">.</span><span class="n">addRow</span><span class="p">(</span><span class="n">label</span><span class="p">,</span><span class="n">layout</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">layer</span><span class="o">.</span><span class="n">getMaterial</span><span class="p">()</span><span class="o">.</span><span class="n">isTensor</span><span class="p">():</span>
+            <span class="n">label</span><span class="p">,</span><span class="n">layout</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">drawLayerWidgetLine2</span><span class="p">()</span>
+            <span class="n">form</span><span class="o">.</span><span class="n">addRow</span><span class="p">(</span><span class="n">label</span><span class="p">,</span><span class="n">layout</span><span class="p">)</span>
+            <span class="n">label</span><span class="p">,</span><span class="n">layout</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">drawLayerWidgetLine3</span><span class="p">()</span>
+            <span class="n">form</span><span class="o">.</span><span class="n">addRow</span><span class="p">(</span><span class="n">label</span><span class="p">,</span><span class="n">layout</span><span class="p">)</span>
+        <span class="n">widget</span><span class="o">.</span><span class="n">setLayout</span><span class="p">(</span><span class="n">form</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">widget</span></div>
+
+<div class="viewcode-block" id="ShowLayerWindow.drawLayerWidgetLine1"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/SingleCrystalLayer/index.html#PDielec.GUI.SingleCrystalLayer.ShowLayerWindow.drawLayerWidgetLine1">[docs]</a>    <span class="k">def</span> <span class="nf">drawLayerWidgetLine1</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Add the first line of the layer description</span>
+
+<span class="sd">        Shows the material name and the film thickness and units. </span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        None</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        None</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">hbox</span> <span class="o">=</span> <span class="n">QHBoxLayout</span><span class="p">()</span>
+        <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s1">&#39;drawLayerWidgetLine1&#39;</span><span class="p">)</span>
+        <span class="c1"># Define material name</span>
+        <span class="n">material</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">layer</span><span class="o">.</span><span class="n">getMaterial</span><span class="p">()</span>
+        <span class="n">materialName</span> <span class="o">=</span> <span class="n">material</span><span class="o">.</span><span class="n">getName</span><span class="p">()</span>
+        <span class="n">materialLabel</span> <span class="o">=</span> <span class="n">QLabel</span><span class="p">(</span><span class="n">materialName</span><span class="p">)</span>
+        <span class="n">materialThickness</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">layer</span><span class="o">.</span><span class="n">getThickness</span><span class="p">()</span>
+        <span class="c1"># Handle thickness</span>
+        <span class="n">film_thickness_sb</span> <span class="o">=</span> <span class="n">QDoubleSpinBox</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="n">film_thickness_sb</span><span class="o">.</span><span class="n">setSizePolicy</span><span class="p">(</span><span class="n">QSizePolicy</span><span class="o">.</span><span class="n">Expanding</span><span class="p">,</span><span class="n">QSizePolicy</span><span class="o">.</span><span class="n">Fixed</span><span class="p">)</span>
+        <span class="n">film_thickness_sb</span><span class="o">.</span><span class="n">setToolTip</span><span class="p">(</span><span class="s1">&#39;Define the thin film thickness in the defined thickness units&#39;</span><span class="p">)</span>
+        <span class="n">film_thickness_sb</span><span class="o">.</span><span class="n">setRange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">100000</span><span class="p">)</span>
+        <span class="n">film_thickness_sb</span><span class="o">.</span><span class="n">setSingleStep</span><span class="p">(</span><span class="mf">0.01</span><span class="p">)</span>
+        <span class="n">film_thickness_sb</span><span class="o">.</span><span class="n">setValue</span><span class="p">(</span><span class="n">materialThickness</span><span class="p">)</span>
+        <span class="n">film_thickness_sb</span><span class="o">.</span><span class="n">valueChanged</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">on_film_thickness_sb_changed</span><span class="p">)</span>
+        <span class="c1"># Handle thickness units</span>
+        <span class="n">thicknessUnit</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">layer</span><span class="o">.</span><span class="n">getThicknessUnit</span><span class="p">()</span>
+        <span class="n">thickness_units_cb</span> <span class="o">=</span> <span class="n">QComboBox</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="n">thickness_units_cb</span><span class="o">.</span><span class="n">setSizePolicy</span><span class="p">(</span><span class="n">QSizePolicy</span><span class="o">.</span><span class="n">Expanding</span><span class="p">,</span><span class="n">QSizePolicy</span><span class="o">.</span><span class="n">Fixed</span><span class="p">)</span>
+        <span class="n">thickness_units_cb</span><span class="o">.</span><span class="n">setToolTip</span><span class="p">(</span><span class="s1">&#39;Set the units to be used for thickness; either nm, um, mm or cm&#39;</span><span class="p">)</span>
+        <span class="n">thickness_units_cb</span><span class="o">.</span><span class="n">addItems</span><span class="p">(</span> <span class="p">[</span><span class="s1">&#39;nm&#39;</span><span class="p">,</span><span class="s1">&#39;um&#39;</span><span class="p">,</span><span class="s1">&#39;mm&#39;</span><span class="p">,</span><span class="s1">&#39;cm&#39;</span><span class="p">]</span> <span class="p">)</span>
+        <span class="n">index</span> <span class="o">=</span> <span class="n">thickness_units_cb</span><span class="o">.</span><span class="n">findText</span><span class="p">(</span><span class="n">thicknessUnit</span><span class="p">,</span> <span class="n">Qt</span><span class="o">.</span><span class="n">MatchFixedString</span><span class="p">)</span>
+        <span class="n">thickness_units_cb</span><span class="o">.</span><span class="n">setCurrentIndex</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
+        <span class="n">thickness_units_cb</span><span class="o">.</span><span class="n">activated</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">on_thickness_units_cb_activated</span><span class="p">)</span>
+        <span class="n">thicknessLabel</span> <span class="o">=</span> <span class="n">QLabel</span><span class="p">(</span><span class="s1">&#39;Thickness:&#39;</span><span class="p">)</span>
+        <span class="n">thicknessLabel</span><span class="o">.</span><span class="n">setToolTip</span><span class="p">(</span><span class="s1">&#39;Define the depth of the thin crystal in the defined thickness units.&#39;</span><span class="p">)</span>
+        <span class="c1"># Create the line of widgets</span>
+        <span class="n">hbox</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">film_thickness_sb</span><span class="p">)</span>
+        <span class="n">hbox</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">thickness_units_cb</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">thicknessLabel</span><span class="p">,</span><span class="n">hbox</span></div>
+
+<div class="viewcode-block" id="ShowLayerWindow.drawLayerWidgetLine2"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/SingleCrystalLayer/index.html#PDielec.GUI.SingleCrystalLayer.ShowLayerWindow.drawLayerWidgetLine2">[docs]</a>    <span class="k">def</span> <span class="nf">drawLayerWidgetLine2</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Add the second line of the layer description</span>
+
+<span class="sd">        Shows the hkl specification and the azimuthal angle</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        None</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        None</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s1">&#39;drawLayerWidgetLine2&#39;</span><span class="p">)</span>
+        <span class="n">hbox</span> <span class="o">=</span> <span class="n">QHBoxLayout</span><span class="p">()</span>
+        <span class="c1"># define hkl</span>
+        <span class="n">h_sb</span> <span class="o">=</span> <span class="n">QSpinBox</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="n">h_sb</span><span class="o">.</span><span class="n">setToolTip</span><span class="p">(</span><span class="s1">&#39;Define the h dimension of the unique direction&#39;</span><span class="p">)</span>
+        <span class="n">h_sb</span><span class="o">.</span><span class="n">setRange</span><span class="p">(</span><span class="o">-</span><span class="mi">20</span><span class="p">,</span><span class="mi">20</span><span class="p">)</span>
+        <span class="n">h_sb</span><span class="o">.</span><span class="n">setSingleStep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">h_sb</span><span class="o">.</span><span class="n">setValue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">layer</span><span class="o">.</span><span class="n">getHKL</span><span class="p">()[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">h_sb</span><span class="o">.</span><span class="n">valueChanged</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">on_hkl_sb_changed</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="mi">0</span><span class="p">))</span>
+        <span class="n">k_sb</span> <span class="o">=</span> <span class="n">QSpinBox</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="n">k_sb</span><span class="o">.</span><span class="n">setToolTip</span><span class="p">(</span><span class="s1">&#39;Define the k dimension of the unique direction&#39;</span><span class="p">)</span>
+        <span class="n">k_sb</span><span class="o">.</span><span class="n">setRange</span><span class="p">(</span><span class="o">-</span><span class="mi">20</span><span class="p">,</span><span class="mi">20</span><span class="p">)</span>
+        <span class="n">k_sb</span><span class="o">.</span><span class="n">setSingleStep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">k_sb</span><span class="o">.</span><span class="n">setValue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">layer</span><span class="o">.</span><span class="n">getHKL</span><span class="p">()[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">k_sb</span><span class="o">.</span><span class="n">valueChanged</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">on_hkl_sb_changed</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
+        <span class="n">l_sb</span> <span class="o">=</span> <span class="n">QSpinBox</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="n">l_sb</span><span class="o">.</span><span class="n">setToolTip</span><span class="p">(</span><span class="s1">&#39;Define the l dimension of the unique direction&#39;</span><span class="p">)</span>
+        <span class="n">l_sb</span><span class="o">.</span><span class="n">setRange</span><span class="p">(</span><span class="o">-</span><span class="mi">20</span><span class="p">,</span><span class="mi">20</span><span class="p">)</span>
+        <span class="n">l_sb</span><span class="o">.</span><span class="n">setSingleStep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">l_sb</span><span class="o">.</span><span class="n">setValue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">layer</span><span class="o">.</span><span class="n">getHKL</span><span class="p">()[</span><span class="mi">2</span><span class="p">])</span>
+        <span class="n">l_sb</span><span class="o">.</span><span class="n">valueChanged</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">on_hkl_sb_changed</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="mi">2</span><span class="p">))</span>
+        <span class="n">hklLabel</span> <span class="o">=</span> <span class="n">QLabel</span><span class="p">(</span><span class="s1">&#39;hkl:&#39;</span><span class="p">)</span>
+        <span class="n">hklLabel</span><span class="o">.</span><span class="n">setToolTip</span><span class="p">(</span><span class="s1">&#39;Define the crystal surface (hkl). Defines the unique direction in crystallographic units.&#39;</span><span class="p">)</span>
+        <span class="c1"># define azimuthal angle</span>
+        <span class="n">azimuthal</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">layer</span><span class="o">.</span><span class="n">getAzimuthal</span><span class="p">()</span>
+        <span class="n">azimuthal_angle_sb</span> <span class="o">=</span> <span class="n">QDoubleSpinBox</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="n">azimuthal_angle_sb</span><span class="o">.</span><span class="n">setToolTip</span><span class="p">(</span><span class="s1">&#39;Define the slab azimuthal angle (rotation of the crystal about the lab Z-axis).</span><span class="se">\n</span><span class="s1">The orientation of the crystal in the laboratory frame can be seen in the laboratory frame information below&#39;</span><span class="p">)</span>
+        <span class="n">azimuthal_angle_sb</span><span class="o">.</span><span class="n">setRange</span><span class="p">(</span><span class="o">-</span><span class="mi">180</span><span class="p">,</span><span class="mi">360</span><span class="p">)</span>
+        <span class="n">azimuthal_angle_sb</span><span class="o">.</span><span class="n">setSingleStep</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+        <span class="n">azimuthal_angle_sb</span><span class="o">.</span><span class="n">setValue</span><span class="p">(</span><span class="n">azimuthal</span><span class="p">)</span>
+        <span class="n">azimuthal_angle_sb</span><span class="o">.</span><span class="n">valueChanged</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">on_azimuthal_angle_sb_changed</span><span class="p">)</span>
+        <span class="n">azimuthalLabel</span> <span class="o">=</span> <span class="n">QLabel</span><span class="p">(</span><span class="s1">&#39;Azimuthal:&#39;</span><span class="p">)</span>
+        <span class="c1"># Create the line of widgets</span>
+        <span class="n">hbox</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">h_sb</span><span class="p">)</span>
+        <span class="n">hbox</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">k_sb</span><span class="p">)</span>
+        <span class="n">hbox</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">l_sb</span><span class="p">)</span>
+        <span class="n">hbox</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">azimuthalLabel</span><span class="p">)</span>
+        <span class="n">hbox</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">azimuthal_angle_sb</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">hklLabel</span><span class="p">,</span><span class="n">hbox</span></div>
+
+<div class="viewcode-block" id="ShowLayerWindow.drawLayerWidgetLine3"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/SingleCrystalLayer/index.html#PDielec.GUI.SingleCrystalLayer.ShowLayerWindow.drawLayerWidgetLine3">[docs]</a>    <span class="k">def</span> <span class="nf">drawLayerWidgetLine3</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Add the third line of the layer description</span>
+
+<span class="sd">        Shows the relationship between crystal and labframe coordinate systems</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        None</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        None</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s1">&#39;drawLayerWidgetLine3&#39;</span><span class="p">)</span>
+        <span class="n">hbox</span> <span class="o">=</span> <span class="n">QHBoxLayout</span><span class="p">()</span>
+        <span class="n">label</span> <span class="o">=</span> <span class="n">QLabel</span><span class="p">(</span><span class="s1">&#39;Lab frame</span><span class="se">\n</span><span class="s1">information&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
+        <span class="n">label</span><span class="o">.</span><span class="n">setToolTip</span><span class="p">(</span><span class="s1">&#39;The normal to the surface defines the Z-axis in the  lab frame</span><span class="se">\n</span><span class="s1">The incident and reflected light lie in the XZ plane</span><span class="se">\n</span><span class="s1">The p-polarization is direction lies in the XZ plane, s-polarisation is parallel to Y&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">labframe_w</span> <span class="o">=</span> <span class="n">QListWidget</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="n">fm</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">labframe_w</span><span class="o">.</span><span class="n">fontMetrics</span><span class="p">()</span>
+        <span class="n">h</span> <span class="o">=</span> <span class="n">fm</span><span class="o">.</span><span class="n">ascent</span><span class="p">()</span> <span class="o">+</span> <span class="n">fm</span><span class="o">.</span><span class="n">descent</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">labframe_w</span><span class="o">.</span><span class="n">setMaximumHeight</span><span class="p">(</span><span class="mi">6</span><span class="o">*</span><span class="n">h</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">labframe_w</span><span class="o">.</span><span class="n">setToolTip</span><span class="p">(</span><span class="s1">&#39;The normal to the surface defines the Z-axis in the  lab frame</span><span class="se">\n</span><span class="s1">The incident and reflected light lie in the XZ plane</span><span class="se">\n</span><span class="s1">The p-polarization is direction lies in the XZ plane, s-polarisation is parallel to Y&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">changeLabFrameInfo</span><span class="p">()</span>
+        <span class="n">hbox</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">labframe_w</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">label</span><span class="p">,</span><span class="n">hbox</span></div>
+
+<div class="viewcode-block" id="ShowLayerWindow.changeLabFrameInfo"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/SingleCrystalLayer/index.html#PDielec.GUI.SingleCrystalLayer.ShowLayerWindow.changeLabFrameInfo">[docs]</a>    <span class="k">def</span> <span class="nf">changeLabFrameInfo</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Update the lab frame information in the labframe widget.</span>
+
+<span class="sd">        Shows a, b and c crystal axis in the labframe.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        None</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        None</span>
+
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="n">c</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">layer</span><span class="o">.</span><span class="n">getLabFrame</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">labframe_w</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">labframe_w</span><span class="o">.</span><span class="n">addItem</span><span class="p">(</span><span class="s1">&#39;crystal a-axis in lab frame: </span><span class="si">{: 3.5f}</span><span class="s1">, </span><span class="si">{: 3.5f}</span><span class="s1">, </span><span class="si">{: 3.5f}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">a</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="n">a</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span> <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">labframe_w</span><span class="o">.</span><span class="n">addItem</span><span class="p">(</span><span class="s1">&#39;crystal b-axis in lab frame: </span><span class="si">{: 3.5f}</span><span class="s1">, </span><span class="si">{: 3.5f}</span><span class="s1">, </span><span class="si">{: 3.5f}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">b</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">b</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="n">b</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span> <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">labframe_w</span><span class="o">.</span><span class="n">addItem</span><span class="p">(</span><span class="s1">&#39;crystal c-axis in lab frame: </span><span class="si">{: 3.5f}</span><span class="s1">, </span><span class="si">{: 3.5f}</span><span class="s1">, </span><span class="si">{: 3.5f}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">c</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">c</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="n">c</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span> <span class="p">)</span>
+        <span class="k">return</span></div>
+
+<div class="viewcode-block" id="ShowLayerWindow.on_film_thickness_sb_changed"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/SingleCrystalLayer/index.html#PDielec.GUI.SingleCrystalLayer.ShowLayerWindow.on_film_thickness_sb_changed">[docs]</a>    <span class="k">def</span> <span class="nf">on_film_thickness_sb_changed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">value</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Handle film thickness spin box change.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        value : float</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        None</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s1">&#39;on_film_thickness_sb_changed&#39;</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">layer</span><span class="o">.</span><span class="n">setThickness</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+        <span class="k">return</span></div>
+
+<div class="viewcode-block" id="ShowLayerWindow.on_azimuthal_angle_sb_changed"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/SingleCrystalLayer/index.html#PDielec.GUI.SingleCrystalLayer.ShowLayerWindow.on_azimuthal_angle_sb_changed">[docs]</a>    <span class="k">def</span> <span class="nf">on_azimuthal_angle_sb_changed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">value</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Handle azimuthal spin box change.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        value : float</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        None</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s1">&#39;on_azimuthal_angl_sb_changed&#39;</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">layer</span><span class="o">.</span><span class="n">setAzimuthal</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">layer</span><span class="o">.</span><span class="n">changeLabFrameInfo</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">changeLabFrameInfo</span><span class="p">()</span>
+        <span class="k">return</span></div>
+
+<div class="viewcode-block" id="ShowLayerWindow.on_hkl_sb_changed"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/SingleCrystalLayer/index.html#PDielec.GUI.SingleCrystalLayer.ShowLayerWindow.on_hkl_sb_changed">[docs]</a>    <span class="k">def</span> <span class="nf">on_hkl_sb_changed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">value</span><span class="p">,</span><span class="n">hkorl</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Handle h, k, or l change.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        value : int</span>
+<span class="sd">           The value of h, k or l</span>
+<span class="sd">        hkorl : int</span>
+<span class="sd">            0, 1, or 2 for h, k or l respectively.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        None</span>
+
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s1">&#39;on_h_sb_changed&#39;</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+        <span class="n">hkl</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">layer</span><span class="o">.</span><span class="n">getHKL</span><span class="p">()</span>
+        <span class="n">hkl</span><span class="p">[</span><span class="n">hkorl</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">layer</span><span class="o">.</span><span class="n">setHKL</span><span class="p">(</span><span class="n">hkl</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">layer</span><span class="o">.</span><span class="n">changeLabFrameInfo</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">changeLabFrameInfo</span><span class="p">()</span>
+        <span class="k">return</span></div>
+
+<div class="viewcode-block" id="ShowLayerWindow.on_thickness_units_cb_activated"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/SingleCrystalLayer/index.html#PDielec.GUI.SingleCrystalLayer.ShowLayerWindow.on_thickness_units_cb_activated">[docs]</a>    <span class="k">def</span> <span class="nf">on_thickness_units_cb_activated</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Handle activation of thickness units combobox.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        index : int</span>
+<span class="sd">            The index of the selected item in the combobox.</span>
+<span class="sd">            One of &#39;nm&#39;, &#39;um&#39;, &#39;mm&#39;, &#39;cm&#39;</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        None</span>
+<span class="sd">        &quot;&quot;&quot;</span>        
+        <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s1">&#39;Start:: on_thickness_units_cb_activated&#39;</span><span class="p">,</span><span class="n">index</span><span class="p">)</span>
+        <span class="n">units</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;nm&#39;</span><span class="p">,</span><span class="s1">&#39;um&#39;</span><span class="p">,</span><span class="s1">&#39;mm&#39;</span><span class="p">,</span><span class="s1">&#39;cm&#39;</span><span class="p">]</span>
+        <span class="n">unit</span> <span class="o">=</span> <span class="n">units</span><span class="p">[</span><span class="n">index</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">layer</span><span class="o">.</span><span class="n">setThicknessUnit</span><span class="p">(</span><span class="n">unit</span><span class="p">)</span>
+        <span class="k">return</span></div></div>
+</pre></div>
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          
+          
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2024, John Kendrick and Andrew Burnett
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer no-toc">
+      
+      
+      
+    </aside>
+  </div>
+</div><script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js?v=01b4f342"></script>
+    <script src="../../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../../../_static/scripts/furo.js?v=32e29ea5"></script>
+    </body>
+</html>

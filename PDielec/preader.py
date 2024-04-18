@@ -1,6 +1,55 @@
 #!/usr/bin/env python
-"""Read the contents of a directory containing DFT output and create a csv style file of information"""
-from __future__ import print_function
+"""
+Read the contents of a directory containing DFT output and create a csv style file of information
+
+::
+
+    preader -program program [-eckart] [-neutral] [-nocalculation] [-masses average] [-pickle name] [-version] filenames .....
+      "program" must be one of "abinit", "castep", "crystal", "gulp"
+               "phonopy", "qe", "vasp", "experiment", "auto"
+               The default is auto, so the program tries to guess the package from
+               the contents of the directory.  However this is not fool-proof!
+               If phonopy is used it must be followed by the QM package
+               in auto mode if the file was created by a phonopy VASP is assumed
+      -masses [average|isotope|program]  chooses the atomic mass definition average
+              The default is "average"
+      -mass  element mass
+              Change the mass of the element specified
+      -eckart projects out the translational components. Default is no projection
+      -neutral imposes neutrality on the Born charges of the molecule.
+               Default is no neutrality is imposed
+      -nocalculation requests no calculations are performed
+               A single line is output with results obtained by reading the output
+               any of -mass -masses -eckart -neutral or -crystal are ignored
+      -debug   to switch on more debug information
+      -pickle  write each file reader to a pickled dump file for later processing
+               the name of the file to hold all the pickled readers is given
+               If the file exists it is not overwritten
+      -version print the version of PDielec library being used
+
+
+The MIT License (MIT)
+
+Copyright (c) 2024 John Kendrick
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+"""
 import numpy as np
 import os, sys
 import psutil
@@ -14,12 +63,40 @@ from multiprocessing.dummy import Pool
 version = PDielec.__init__.__version__
 
 def set_affinity_on_worker():
-    """When a new worker process is created, the affinity is set to all CPUs"""
+    """
+    When a new worker process is created, the affinity is set to all CPUs.
+    """
     #JK print("I'm the process %d, setting affinity to all CPUs." % os.getpid())
     #JK for the time being this is simply commented out, but might be useful at some point
     #os.system("taskset -p 0xff %d > /dev/null" % os.getpid())
 
 def read_a_file( calling_parameters):
+    """
+    Read data from a file and process it based on the given parameters.
+
+    Parameters
+    ----------
+    calling_parameters : tuple
+        A tuple that contains various parameters used for reading and processing the file. This includes:
+        - name : str (Name of the file.)
+        - eckart : bool (Specifies whether Eckart conditions should be applied.)
+        - neutral : bool (Specifies whether to neutralise Born charges.)
+        - mass_definition : str (Specifies the method of mass calculation ('average', 'isotope', or 'program').)
+        - mass_dictionary : dict (A dictionary containing mass information when `mass_definition` is not 'program'.)
+        - global_no_calculation : bool (A flag to indicate whether any calculations should be performed.)
+        - program : str (Name of the computational chemistry program used to generate the file.)
+        - qmprogram : str (Specifies the quantum mechanics program used.)
+        - debug : bool (If set to True, additional debug information will be printed.)
+
+    Returns
+    -------
+    tuple
+        A tuple containing:
+        - reader : object (An object capable of reading and processing the data from the specified file.)
+        - name : str (Name of the file that was processed.)
+        - results_string : list (A list of strings that represent the processed data ready for output. Depending on conditions, it includes the initial and modified frequencies, intensities, and optionally calculated molar absorption rates.)
+
+    """    
     name, eckart, neutral, mass_definition, mass_dictionary, global_no_calculation, program, qmprogram, debug = calling_parameters
     reader = Utilities.get_reader(name,program,qmprogram)
     # The order that the settings are applied is important
@@ -205,6 +282,23 @@ def read_a_file( calling_parameters):
     return reader,name,results_string
 
 def print_help():
+    """
+    Display the help message for the preader program.
+
+    This function prints out the usage of the preader program, including the supported flags and their descriptions.
+
+    Notes
+    -----
+    The function internally directs its output to `sys.stderr` instead of the default `sys.stdout`, to separate the help message from other outputs. It also exits the program after displaying the help message by calling `exit()`. 
+
+    Examples
+    --------
+    To display the help message, simply call the function without any arguments:
+    
+        >>> print_help()
+
+    No output is returned by this function as it directs its message to `sys.stderr` and exits the program.
+    """    
     print('preader -program program [-eckart] [-neutral] [-nocalculation] [-masses average] [-pickle name] [-version] filenames .....', file=sys.stderr)
     print('  \"program\" must be one of \"abinit\", \"castep\", \"crystal\", \"gulp\"       ', file=sys.stderr)
     print('           \"phonopy\", \"qe\", \"vasp\", \"experiment\", \"auto\"               ', file=sys.stderr)
@@ -232,6 +326,36 @@ def print_help():
 
 
 def main():
+    """
+    Process command line arguments
+
+
+    ::
+
+        preader -program program [-eckart] [-neutral] [-nocalculation] [-masses average] [-pickle name] [-version] filenames .....
+          "program" must be one of "abinit", "castep", "crystal", "gulp"
+                   "phonopy", "qe", "vasp", "experiment", "auto"
+                   The default is auto, so the program tries to guess the package from
+                   the contents of the directory.  However this is not fool-proof!
+                   If phonopy is used it must be followed by the QM package
+                   in auto mode if the file was created by a phonopy VASP is assumed
+          -masses [average|isotope|program]  chooses the atomic mass definition average
+                  The default is "average"
+          -mass  element mass
+                  Change the mass of the element specified
+          -eckart projects out the translational components. Default is no projection
+          -neutral imposes neutrality on the Born charges of the molecule.
+                   Default is no neutrality is imposed
+          -nocalculation requests no calculations are performed
+                   A single line is output with results obtained by reading the output
+                   any of -mass -masses -eckart -neutral or -crystal are ignored
+          -debug   to switch on more debug information
+          -pickle  write each file reader to a pickled dump file for later processing
+                   the name of the file to hold all the pickled readers is given
+                   If the file exists it is not overwritten
+          -version print the version of PDielec library being used
+
+    """    
     # Start processing the directories
     if len(sys.argv) <= 1 :
         print_help()

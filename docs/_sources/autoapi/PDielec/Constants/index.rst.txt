@@ -1,0 +1,177 @@
+:py:mod:`PDielec.Constants`
+===========================
+
+.. py:module:: PDielec.Constants
+
+.. autoapi-nested-parse::
+
+   Constants module 
+
+   Copyright 2024 John Kendrick
+
+   This file is part of PDielec
+
+   This program is free software; you can redistribute it and/or modify
+   it under the terms of the MIT License
+
+   This program is distributed in the hope that it will be useful,
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+
+   You should have received a copy of the MIT License
+   along with this program, if not see https://opensource.org/licenses/MIT
+
+
+
+Module Contents
+---------------
+
+.. py:data:: PI
+
+   
+
+.. py:data:: amu
+
+   
+
+.. py:data:: amu_si
+
+   
+
+.. py:data:: angs2bohr
+
+   
+
+.. py:data:: angstrom
+
+   
+
+.. py:data:: atomic_number_to_element
+
+   
+
+.. py:data:: average_masses
+
+   
+
+.. py:data:: avogadro_si
+   :value: 6.02214179e+23
+
+   
+
+.. py:data:: boltzmann_si
+
+   
+
+.. py:data:: coulomb
+
+   
+
+.. py:data:: covalent_radii
+
+   
+
+.. py:data:: d2byamuang2
+
+   
+
+.. py:data:: debye
+
+   
+
+.. py:data:: debye_si
+
+   
+
+.. py:data:: electron_gyromagnetic_ratio_si
+   :value: 176085977000.0
+
+   
+
+.. py:data:: electron_mass_si
+   :value: 9.10938215e-31
+
+   
+
+.. py:data:: elemental_colours
+
+   
+
+.. py:data:: elementary_charge_si
+   :value: 1.602176487e-19
+
+   
+
+.. py:data:: epsilon_0_si
+
+   
+
+.. py:data:: fine_structure_si
+
+   
+
+.. py:data:: hartree2ev
+   :value: 27.2114
+
+   
+
+.. py:data:: hbar_si
+
+   
+
+.. py:data:: hertz
+
+   
+
+.. py:data:: inv4pi
+
+   
+
+.. py:data:: isotope_masses
+
+   
+
+.. py:data:: isotopic_masses
+
+   
+
+.. py:data:: joule
+
+   
+
+.. py:data:: metre
+
+   
+
+.. py:data:: molar_gas_si
+   :value: 8.314472
+
+   
+
+.. py:data:: mu_0_si
+
+   
+
+.. py:data:: planck_si
+   :value: 6.62606896e-34
+
+   
+
+.. py:data:: proton_mass_si
+   :value: 1.672621637e-27
+
+   
+
+.. py:data:: speed_light_si
+   :value: 299792458.0
+
+   
+
+.. py:data:: strength_conv
+
+   
+
+.. py:data:: wavenumber
+
+   
+
