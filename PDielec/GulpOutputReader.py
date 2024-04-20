@@ -275,10 +275,7 @@ class GulpOutputReader(GenericOutputReader):
         y = float(line.split()[1])
         z = float(line.split()[2])
         cvector = [x, y, z]
-        cell = UnitCell(avector, bvector, cvector)
-        self.unit_cells.append(cell)
-        self.volume = cell.volume
-        self.ncells = len(self.unit_cells)
+        cell = UnitCell(avector, bvector, cvector, 'Angstrom')
         # Convert fractional coordinates to cartesians
         if len(self._cartesian_coordinates) == 0:
             if len(self._fractional_coordinates) == 0:
@@ -289,8 +286,11 @@ class GulpOutputReader(GenericOutputReader):
                 self.cartesian_coordinates.append(atom_cart)
             # end for
         # end if
-        self.unit_cells[-1].set_fractional_coordinates(self._fractional_coordinates)
-        self.unit_cells[-1].set_element_names(self._atom_types)
+        cell.set_fractional_coordinates(self._fractional_coordinates)
+        cell.set_element_names(self._atom_types)
+        self.unit_cells.append(cell)
+        self.volume = cell.getVolume('Angstrom')
+        self.ncells = len(self.unit_cells)
 
     def _read_cellcontents(self, line):
         """

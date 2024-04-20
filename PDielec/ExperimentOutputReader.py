@@ -499,6 +499,8 @@ class ExperimentOutputReader(GenericOutputReader):
         """
         Process a cpk input file with cell information
 
+        The lattice vectors are assumed to be in Angstrom
+
         Parameters
         ----------
         line : str
@@ -526,10 +528,10 @@ class ExperimentOutputReader(GenericOutputReader):
             line = line.lower()
             split_line = line.split()
         # end while
-        cell = UnitCell(a,b,c,alpha,beta,gamma)
+        cell = UnitCell(a,b,c,alpha,beta,gamma,units='Angstrom')
         self.unit_cells.append(cell)
         self.ncells = len(self.unit_cells)
-        self.volume = cell.volume
+        self.volume = cell.getVolume(units='Angstrom')
         if self.CrystalPermittivity:
             self.CrystalPermittivity.setVolume(self.volume)
         return
@@ -539,6 +541,7 @@ class ExperimentOutputReader(GenericOutputReader):
         Reads and processes lattice vectors from an input line, then updates internal structures with the new unit cell.
 
         This method is intended to parse a series of lines that describe lattice vectors, scale them appropriately, and update the object's list of unit cells as well as other relevant properties like volume and, optionally, crystal permittivity.
+        The lattice vectors are assumed to be in Angstrom
 
         Parameters
         ----------
@@ -561,10 +564,10 @@ class ExperimentOutputReader(GenericOutputReader):
         bvector = [scalar*float(line.split()[0]), scalar*float(line.split()[1]), scalar*float(line.split()[2])]
         line = self._read_line()
         cvector = [scalar*float(line.split()[0]), scalar*float(line.split()[1]), scalar*float(line.split()[2])]
-        cell = UnitCell(avector, bvector, cvector)
+        cell = UnitCell(avector, bvector, cvector, units='Angstrom')
         self.unit_cells.append(cell)
         self.ncells = len(self.unit_cells)
-        self.volume = cell.volume
+        self.volume = cell.getVolume('Angstrom')
         if self.CrystalPermittivity:
             self.CrystalPermittivity.setVolume(self.volume)
         return
@@ -572,6 +575,8 @@ class ExperimentOutputReader(GenericOutputReader):
     def _read_cpk_coords(self, line):
         """
         Read CPK coordinates from a given line and update class attributes accordingly.
+
+        The coordinates are assumed to be in Angstrom
 
         Parameters
         ----------
@@ -638,7 +643,7 @@ class ExperimentOutputReader(GenericOutputReader):
             line = line.replace(',',' ')
             split_line = line.split()
         # end while
-        self.unit_cells[-1].set_xyz_coordinates(ions)
+        self.unit_cells[-1].set_xyz_coordinates(ions,units='Angstrom')
         self.unit_cells[-1].set_element_names(species_list)
         if self.oscillator_strengths == None:
             self.oscillator_strengths = np.zeros( (3*self.nions,3,3) )

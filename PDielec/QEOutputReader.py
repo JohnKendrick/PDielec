@@ -634,9 +634,9 @@ class QEOutputReader(GenericOutputReader):
         bvector = [float(f)*self._alat/angs2bohr for f in linea[0:3]]
         linea = self.file_descriptor.readline().split()
         cvector = [float(f)*self._alat/angs2bohr for f in linea[0:3]]
-        self.unit_cells.append(UnitCell(avector, bvector, cvector))
+        self.unit_cells.append(UnitCell(avector, bvector, cvector,units='Angstrom'))
         self.ncells = len(self.unit_cells)
-        self.volume = self.unit_cells[-1].volume
+        self.volume = self.unit_cells[-1].getVolume('Angstrom')
         if self.debug:
             print('_read_cell_parameters: volume={}'.format(self.volume))
         return
@@ -671,9 +671,9 @@ class QEOutputReader(GenericOutputReader):
         bvector = [float(f)*self._alat/angs2bohr for f in linea[0:3]]
         linea = self.file_descriptor.readline().split()
         cvector = [float(f)*self._alat/angs2bohr for f in linea[0:3]]
-        self.unit_cells.append(UnitCell(avector, bvector, cvector))
+        self.unit_cells.append(UnitCell(avector, bvector, cvector,units='Angstrom'))
         self.ncells = len(self.unit_cells)
-        self.volume = self.unit_cells[-1].volume
+        self.volume = self.unit_cells[-1].getVolume('Angstrom')
         if self.debug:
             print('_read_lattices_vectors: volume={}'.format(self.volume))
         self._read_masses()
@@ -766,10 +766,10 @@ class QEOutputReader(GenericOutputReader):
             self.atom_type_list.append(species_index-1)
             self.ions_per_type[species_index-1] += 1
             species_list.append(self.species[species_index-1])
-        self.unit_cells[-1].set_xyz_coordinates(xyz_coordinates)
+        self.unit_cells[-1].set_xyz_coordinates(xyz_coordinates,units='Angstrom')
         self.unit_cells[-1].set_element_names(species_list)
         self.ncells = len(self.unit_cells)
-        self.volume = self.unit_cells[-1].volume
+        self.volume = self.unit_cells[-1].getVolume('Angstrom')
         if self.debug:
             print('_read_dyng_coordinates: volume={}'.format(self.volume))
         return

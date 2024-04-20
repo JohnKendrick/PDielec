@@ -603,7 +603,7 @@ class Material():
         self.type               = 'Base Class'
         self.permittivityObject = permittivityObject
         if self.density is None and self.cell is not None:
-            self.density = self.cell.calculate_density()
+            self.density = self.cell.getDensity('cm')
 
     def getName(self):
         """

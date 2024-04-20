@@ -305,7 +305,7 @@ class CastepOutputReader(GenericOutputReader):
         bvector = [float(line.split()[0]), float(line.split()[1]), float(line.split()[2])]
         line = self.file_descriptor.readline()
         cvector = [float(line.split()[0]), float(line.split()[1]), float(line.split()[2])]
-        self.unit_cells.append(UnitCell(avector, bvector, cvector))
+        self.unit_cells.append(UnitCell(avector, bvector, cvector,units='Angstrom'))
         self.ncells = len(self.unit_cells)
         line = self._read_till_phrase(re.compile(' *Lattice*'))
         line = self._read_till_phrase(re.compile(' *Current cell volume'))

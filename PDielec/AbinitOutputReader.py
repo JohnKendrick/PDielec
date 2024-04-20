@@ -661,7 +661,7 @@ class AbinitOutputReader(GenericOutputReader):
         avector = [f * self._acell[0] for f in avector]
         bvector = [f * self._acell[1] for f in bvector]
         cvector = [f * self._acell[2] for f in cvector]
-        self.unit_cells.append(UnitCell(avector, bvector, cvector))
+        self.unit_cells.append(UnitCell(avector, bvector, cvector,units='Angstrom'))
         self.ncells = len(self.unit_cells)
-        self.volume = self.unit_cells[-1].volume
+        self.volume = self.unit_cells[-1].getVolume('Angstrom')
         return

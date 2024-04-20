@@ -642,7 +642,7 @@ class VaspOutputReader(GenericOutputReader):
         bvector = [float(line.split()[0]), float(line.split()[1]), float(line.split()[2])]
         line = self.file_descriptor.readline()
         cvector = [float(line.split()[0]), float(line.split()[1]), float(line.split()[2])]
-        cell = UnitCell(avector, bvector, cvector)
+        cell = UnitCell(avector, bvector, cvector,units='Angstrom')
         if self.ncells > 0:
             cell.set_fractional_coordinates(self.unit_cells[-1].fractional_coordinates)
             cell.set_element_names(self.species_list)

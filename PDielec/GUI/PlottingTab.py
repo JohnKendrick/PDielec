@@ -66,6 +66,9 @@ def convert_frequency_units( value, unit_in, unit_out ):
     '''
     Convert between frequency and wavelength units.
 
+    The input can be either a scalar value or a numpy array of values. The function will return the converted value(s) in the output units specified.
+    The unit strings are turned into lower-case so case is irrelevant
+
     Parameters
     ----------
     unit_in : str
@@ -80,17 +83,17 @@ def convert_frequency_units( value, unit_in, unit_out ):
     scalar or numpy array
         The converted value(s) in the output units specified.
 
-    Notes
-    -----
-    The input can be either a scalar value or a numpy array of values. The function will return the converted value(s) in the output units specified.
     '''
+
+    unit_in  = unit_in.lower()
+    unit_out = unit_out.lower()
     # the conversion dictionary has a tuple for each unit
     # the first entry is the multiplicative factor, the second is the operator
     # To convert wavelength they have to be scaled and then inverted
     wavenumber = { 'cm-1'       : (1,'*'),
                    'wavenumber' : (1,'*'),
-                   'THz'        : (33.356,'*'),
-                   'GHz'        : (33.356E+3,'*'),
+                   'thz'        : (33.356,'*'),
+                   'ghz'        : (33.356E+3,'*'),
                    'ang'        : (1E-8,'/'),
                    'nm'         : (1E-7,'/'),
                    'um'         : (1E-4,'/'),
