@@ -70,7 +70,7 @@ tab.settings['Super Cell'] =  [1, 1, 1]
 #
 #
 tab = self.notebook.fitterTab
-tab.settings['Excel file name'] = 'ATR_Spectra_for_fitting.xlsx'
+tab.settings['Experimental file name'] = 'ATR_Spectra_for_fitting.xlsx'
 tab.settings['Plot title'] = 'Experimental and Calculated Spectral Comparison'
 tab.settings['Fitting type'] = 'Minimise x-correlation'
 tab.settings['Number of iterations'] =  20
