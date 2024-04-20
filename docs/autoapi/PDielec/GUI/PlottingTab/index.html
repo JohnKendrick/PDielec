@@ -830,6 +830,8 @@ The output data starts from the second column (index 1), and for each row writte
 <dt class="sig sig-object py" id="PDielec.GUI.PlottingTab.convert_frequency_units">
 <span class="sig-prename descclassname"><span class="pre">PDielec.GUI.PlottingTab.</span></span><span class="sig-name descname"><span class="pre">convert_frequency_units</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unit_in</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unit_out</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/PlottingTab.html#convert_frequency_units"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.PlottingTab.convert_frequency_units" title="Permalink to this definition">#</a></dt>
 <dd><p>Convert between frequency and wavelength units.</p>
+<p>The input can be either a scalar value or a numpy array of values. The function will return the converted value(s) in the output units specified.
+The unit strings are turned into lower-case so case is irrelevant</p>
 <section id="id42">
 <h4>Parameters<a class="headerlink" href="#id42" title="Permalink to this heading">#</a></h4>
 <dl class="simple">
@@ -848,10 +850,6 @@ The output data starts from the second column (index 1), and for each row writte
 </dd>
 </dl>
 </section>
-<section id="id44">
-<h4>Notes<a class="headerlink" href="#id44" title="Permalink to this heading">#</a></h4>
-<p>The input can be either a scalar value or a numpy array of values. The function will return the converted value(s) in the output units specified.</p>
-</section>
 </dd></dl>
 
 <dl class="py function">
@@ -860,8 +858,8 @@ The output data starts from the second column (index 1), and for each row writte
 <dd><p>Return true if this is a frequency unit, false if a wavelength.</p>
 <p>Units of frequency are ‘wavenumber’,’THz’,’GHz’
 Units of wavelength are ‘ang’,’nm’,’um’,’mm’,’cm’ or ‘m’</p>
-<section id="id45">
-<h4>Returns<a class="headerlink" href="#id45" title="Permalink to this heading">#</a></h4>
+<section id="id44">
+<h4>Returns<a class="headerlink" href="#id44" title="Permalink to this heading">#</a></h4>
 <dl class="simple">
 <dt>bool</dt><dd><p>True if this is a frequency unit, False if a wavelength.</p>
 </dd>

@@ -62,6 +62,8 @@ Classes
 
       Read CPK coordinates from a given line and update class attributes accordingly.
 
+      The coordinates are assumed to be in Angstrom
+
       Parameters
       ----------
       line : str
@@ -104,6 +106,8 @@ Classes
    .. py:method:: _read_cpk_lattice_vectors(line)
 
       Process a cpk input file with cell information
+
+      The lattice vectors are assumed to be in Angstrom
 
       Parameters
       ----------
@@ -289,6 +293,7 @@ Classes
       Reads and processes lattice vectors from an input line, then updates internal structures with the new unit cell.
 
       This method is intended to parse a series of lines that describe lattice vectors, scale them appropriately, and update the object's list of unit cells as well as other relevant properties like volume and, optionally, crystal permittivity.
+      The lattice vectors are assumed to be in Angstrom
 
       Parameters
       ----------

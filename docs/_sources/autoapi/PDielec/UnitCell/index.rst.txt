@@ -36,7 +36,7 @@ Classes
 
 
 
-.. py:class:: UnitCell(a=None, b=None, c=None, alpha=None, beta=None, gamma=None)
+.. py:class:: UnitCell(a=None, b=None, c=None, alpha=None, beta=None, gamma=None, units='Angstrom')
 
 
    Hold unit cell information and its associated calculated properties.
@@ -59,7 +59,7 @@ Classes
       sets the reciprocal lattice vectors
 
 
-   .. py:method:: calculateCentreOfMass(atom_list=None, units='xyz')
+   .. py:method:: calculateCentreOfMass(atom_list=None, output='xyz')
 
       Calculate the centre of mass for a given set of atoms.
 
@@ -68,7 +68,7 @@ Classes
       atom_list : list, optional
           A list of atom indices for which the centre of mass should be calculated.
           If None, the centre of mass will be calculated for all atoms in the system. Default is None.
-      units : {'xyz', 'mass', 'abc'}, optional
+      output : {'xyz', 'mass', 'abc'}, optional
           The units in which to return the centre of mass:
           - 'xyz' returns the centre of mass coordinates in Cartesian (x, y, z) units.
           - 'mass' returns the total mass of the atoms in `atom_list`.
@@ -90,28 +90,12 @@ Classes
 
       Examples
       --------
-      >>> calculateCentreOfMass(atom_list=[1, 2, 3], units='xyz')
+      >>> calculateCentreOfMass(atom_list=[1, 2, 3], output='xyz')
       array([0.1, 0.2, 0.3])
-      >>> calculateCentreOfMass(units='mass')
+      >>> calculateCentreOfMass(output='mass')
       50.2
-      >>> calculateCentreOfMass(units='abc')
+      >>> calculateCentreOfMass(output='abc')
       array([0.4, 0.5, 0.6])
-
-
-   .. py:method:: calculate_density()
-
-      Calculate the density of the crystal.
-
-      Returns the density in g/cc.  If the mass is not known, then returns 1.0
-
-      Parameters
-      ----------
-      None
-
-      Returns
-      -------
-      float
-          The density in gms/cc
 
 
    .. py:method:: calculate_molecular_contents(scale, toler, covalent_radii)
@@ -139,19 +123,6 @@ Classes
       -----
       The formula used to calculate the largest distance apart atoms i and j can be for a bond is:
       `scale * (radi + radj) + toler`
-
-
-   .. py:method:: calculate_volume()
-
-      Calculate the volume
-
-      Parameters
-      ----------
-      None
-
-      Returns
-      -------
-      volume : float
 
 
    .. py:method:: convert_abc_to_unitcell(a, b, c, alpha_degs, beta_degs, gamma_degs)
@@ -220,6 +191,33 @@ Classes
 
 
 
+   .. py:method:: convert_length_units(value, units_in, units_out)
+
+      "
+      Convert between different length units
+
+      The 'internal' unit is taken to be the Angstrom so units are relative to the Angstrom
+      The unit strings are made lowercase, so case should be irrelevant
+
+      Parameters
+      ----------
+      units_in : str
+          The units of the input value(s). Can be one of '
+      units_out : str
+          The units of the output value(s). Must be one of 'a.u. au bohr ang angs angstrom nm um mm cm m'
+      input_value : float or list of floats or a numpy array
+          The value(s) for which the conversion is to be made.
+
+      Returns
+      -------
+      scalar or numpy array
+          The converted value(s) in the output units specified.
+
+      Notes
+      -----
+      The input can be either a scalar value, a list or a numpy array of values. The function will return the converted value(s) in the output units specified.
+
+
    .. py:method:: convert_unitcell_to_abc()
 
       Convert a unit cell to the equivalent a, b, c, alpha, beta, gamma designation.
@@ -262,11 +260,16 @@ Classes
       sets self.spacegroup
 
 
-   .. py:method:: getBoundingBox()
+   .. py:method:: getBoundingBox(units='Angstrom')
 
       Generate the corners and edges of a bounding box.
 
       This method calculates the corners and edges of a bounding box based on predefined coordinates. These coordinates are transformed using a conversion method before being paired into edges.
+
+      Parameters
+      ----------
+      units : str
+          An optional unit of length required for output, default is Angstrom
 
       Returns
       -------
@@ -277,11 +280,41 @@ Classes
 
       Example
       -------
-      To fetch the bounding box coordinates and edges, simply call:
+      To fetch the bounding box coordinates and edges, simply call: ::
 
-      ```python
-      corners_xyz, edges = object.getBoundingBox()
-      ```
+          corners_xyz, edges = object.getBoundingBox()
+
+
+
+   .. py:method:: getDensity(units='cm')
+
+      Calculate the density of the crystal.
+
+      Returns the density in g/cc.  If the mass is not known, then returns 1.0
+
+      Parameters
+      ----------
+      units : str
+          Optional parameter giving the output unit of length, default is cm, so volume will be cm3
+
+      Returns
+      -------
+      float
+          The density in gms/cc
+
+
+   .. py:method:: getVolume(units='cm')
+
+      Calculate the volume
+
+      Parameters
+      ----------
+      units : str
+          An optional string indicating the required unit of length for the output value, default is cm
+
+      Returns
+      -------
+      volume : float
 
 
    .. py:method:: print()
@@ -393,13 +426,16 @@ Classes
       None
 
 
-   .. py:method:: set_xyz_coordinates(coords)
+   .. py:method:: set_xyz_coordinates(coords, units='Angstrom')
 
       Set the xyz coordinates and calculate the fractional coordinates.
 
       Parameters
       ----------
-      coords : a list of fractional coordinates
+      coords : a list of xyz coordinates
+          A list of xyz coordinates, the unit of length must agree with the lattice
+      units : str
+          A unit of length with should agree with the lattice parameter units, if it doesn't theen the coordinates are converted to the cell units of length.  The default is Angstrom.
 
       Returns
       -------
@@ -425,6 +461,7 @@ Classes
       -----
       This method prints the CIF representation of a structure, including the space group,
       cell dimensions, angles, volume, and the fractional coordinates of the atoms.
+      Any lengths are converted to Angstrom, the volumes is give as Angstrom^3
       If a filename is provided, the CIF data will be written to that file. Otherwise,
       it will be printed to standard output.
 

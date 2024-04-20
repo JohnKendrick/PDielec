@@ -512,6 +512,9 @@ Attributes
 
    Convert between frequency and wavelength units.
 
+   The input can be either a scalar value or a numpy array of values. The function will return the converted value(s) in the output units specified.
+   The unit strings are turned into lower-case so case is irrelevant
+
    Parameters
    ----------
    unit_in : str
@@ -526,9 +529,6 @@ Attributes
    scalar or numpy array
        The converted value(s) in the output units specified.
 
-   Notes
-   -----
-   The input can be either a scalar value or a numpy array of values. The function will return the converted value(s) in the output units specified.
 
 
 .. py:function:: isThisAFrequencyUnit(unit)

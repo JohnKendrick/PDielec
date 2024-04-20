@@ -322,6 +322,7 @@ along with this program, if not see <a class="reference external" href="https://
 <dt class="sig sig-object py" id="PDielec.ExperimentOutputReader.ExperimentOutputReader._read_cpk_coords">
 <span class="sig-name descname"><span class="pre">_read_cpk_coords</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/ExperimentOutputReader.html#ExperimentOutputReader._read_cpk_coords"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.ExperimentOutputReader.ExperimentOutputReader._read_cpk_coords" title="Permalink to this definition">#</a></dt>
 <dd><p>Read CPK coordinates from a given line and update class attributes accordingly.</p>
+<p>The coordinates are assumed to be in Angstrom</p>
 <section id="id1">
 <h4>Parameters<a class="headerlink" href="#id1" title="Permalink to this heading">#</a></h4>
 <dl class="simple">
@@ -367,6 +368,7 @@ lines as expected, unexpected behavior or errors could occur.</p></li>
 <dt class="sig sig-object py" id="PDielec.ExperimentOutputReader.ExperimentOutputReader._read_cpk_lattice_vectors">
 <span class="sig-name descname"><span class="pre">_read_cpk_lattice_vectors</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/ExperimentOutputReader.html#ExperimentOutputReader._read_cpk_lattice_vectors"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.ExperimentOutputReader.ExperimentOutputReader._read_cpk_lattice_vectors" title="Permalink to this definition">#</a></dt>
 <dd><p>Process a cpk input file with cell information</p>
+<p>The lattice vectors are assumed to be in Angstrom</p>
 <section id="id3">
 <h4>Parameters<a class="headerlink" href="#id3" title="Permalink to this heading">#</a></h4>
 <p>line : str</p>
@@ -554,7 +556,8 @@ is used to convert the scalar strength values into tensor form, which is not det
 <dt class="sig sig-object py" id="PDielec.ExperimentOutputReader.ExperimentOutputReader._read_lattice_vectors">
 <span class="sig-name descname"><span class="pre">_read_lattice_vectors</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/ExperimentOutputReader.html#ExperimentOutputReader._read_lattice_vectors"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.ExperimentOutputReader.ExperimentOutputReader._read_lattice_vectors" title="Permalink to this definition">#</a></dt>
 <dd><p>Reads and processes lattice vectors from an input line, then updates internal structures with the new unit cell.</p>
-<p>This method is intended to parse a series of lines that describe lattice vectors, scale them appropriately, and update the object’s list of unit cells as well as other relevant properties like volume and, optionally, crystal permittivity.</p>
+<p>This method is intended to parse a series of lines that describe lattice vectors, scale them appropriately, and update the object’s list of unit cells as well as other relevant properties like volume and, optionally, crystal permittivity.
+The lattice vectors are assumed to be in Angstrom</p>
 <section id="id24">
 <h4>Parameters<a class="headerlink" href="#id24" title="Permalink to this heading">#</a></h4>
 <dl class="simple">

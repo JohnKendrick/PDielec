@@ -340,6 +340,9 @@
 <span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Convert between frequency and wavelength units.</span>
 
+<span class="sd">    The input can be either a scalar value or a numpy array of values. The function will return the converted value(s) in the output units specified.</span>
+<span class="sd">    The unit strings are turned into lower-case so case is irrelevant</span>
+
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    unit_in : str</span>
@@ -354,17 +357,17 @@
 <span class="sd">    scalar or numpy array</span>
 <span class="sd">        The converted value(s) in the output units specified.</span>
 
-<span class="sd">    Notes</span>
-<span class="sd">    -----</span>
-<span class="sd">    The input can be either a scalar value or a numpy array of values. The function will return the converted value(s) in the output units specified.</span>
 <span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="n">unit_in</span>  <span class="o">=</span> <span class="n">unit_in</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+    <span class="n">unit_out</span> <span class="o">=</span> <span class="n">unit_out</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
     <span class="c1"># the conversion dictionary has a tuple for each unit</span>
     <span class="c1"># the first entry is the multiplicative factor, the second is the operator</span>
     <span class="c1"># To convert wavelength they have to be scaled and then inverted</span>
     <span class="n">wavenumber</span> <span class="o">=</span> <span class="p">{</span> <span class="s1">&#39;cm-1&#39;</span>       <span class="p">:</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="s1">&#39;*&#39;</span><span class="p">),</span>
                    <span class="s1">&#39;wavenumber&#39;</span> <span class="p">:</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="s1">&#39;*&#39;</span><span class="p">),</span>
-                   <span class="s1">&#39;THz&#39;</span>        <span class="p">:</span> <span class="p">(</span><span class="mf">33.356</span><span class="p">,</span><span class="s1">&#39;*&#39;</span><span class="p">),</span>
-                   <span class="s1">&#39;GHz&#39;</span>        <span class="p">:</span> <span class="p">(</span><span class="mf">33.356E+3</span><span class="p">,</span><span class="s1">&#39;*&#39;</span><span class="p">),</span>
+                   <span class="s1">&#39;thz&#39;</span>        <span class="p">:</span> <span class="p">(</span><span class="mf">33.356</span><span class="p">,</span><span class="s1">&#39;*&#39;</span><span class="p">),</span>
+                   <span class="s1">&#39;ghz&#39;</span>        <span class="p">:</span> <span class="p">(</span><span class="mf">33.356E+3</span><span class="p">,</span><span class="s1">&#39;*&#39;</span><span class="p">),</span>
                    <span class="s1">&#39;ang&#39;</span>        <span class="p">:</span> <span class="p">(</span><span class="mf">1E-8</span><span class="p">,</span><span class="s1">&#39;/&#39;</span><span class="p">),</span>
                    <span class="s1">&#39;nm&#39;</span>         <span class="p">:</span> <span class="p">(</span><span class="mf">1E-7</span><span class="p">,</span><span class="s1">&#39;/&#39;</span><span class="p">),</span>
                    <span class="s1">&#39;um&#39;</span>         <span class="p">:</span> <span class="p">(</span><span class="mf">1E-4</span><span class="p">,</span><span class="s1">&#39;/&#39;</span><span class="p">),</span>
