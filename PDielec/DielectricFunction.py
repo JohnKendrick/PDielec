@@ -71,6 +71,119 @@ class DielectricFunction:
         if self.volume_angs:
             self.volume_au = volume*angstrom*angstrom*angstrom
 
+    def setFrequencies(self, frequencies):
+        '''
+        Sets the frequencies of a Lorentzian permittivity
+
+        The default is to print an error message unless the DielectricFunction is a Lorentzian
+
+        Parameters
+        ----------
+        frequencies : 1d array of floats
+            The frequencies in cm-1
+
+        Returns
+        -------
+        None
+
+        '''
+        print('Error is DielectricFunction.setFrequencies: unable to set frequencies of a non-Lorentzian function')
+        return 
+
+
+    def getFrequencies(self):
+        '''
+        Returns the frequencies of a Lorentzian permittivity
+
+        The default is to return None, only return an array if the permittivity is Lorentzian
+
+        Parameters
+        ----------
+        None
+
+        Returns
+        -------
+        None
+
+        '''
+        return None
+
+
+    def setOscillatorStrengths(self, strengths):
+        '''
+        Sets the oscillator strengths of a Lorentzian permittivity
+
+        The default is to print an error message unless the DielectricFunction is a Lorentzian
+
+        Parameters
+        ----------
+        strengths : 1d array of floats
+            The oscillator strengths in cm-1
+
+        Returns
+        -------
+        None
+
+        '''
+        print('Error is DielectricFunction.setOscillatorStrengths: unable to set oscillator strengths of a non-Lorentzian function')
+        return 
+
+
+    def getOscillatorStrengths(self):
+        '''
+        Returns the oscillator strengths of a Lorentzian permittivity
+
+        The default is to return None, only return an array if the permittivity is Lorentzian
+
+        Parameters
+        ----------
+        None
+
+        Returns
+        -------
+        None
+
+        '''
+        return None
+
+    def setSigmas(self, sigmas):
+        '''
+        Sets the sigma parameters of a Lorentzian permittivity
+
+        The default is to print an error message unless the DielectricFunction is a Lorentzian
+
+        Parameters
+        ----------
+        sigma : 1d array of floats
+            The sigma parameters in cm-1
+
+        Returns
+        -------
+        None
+
+        '''
+        print('Error is DielectricFunction.setSigmas: unable to set sigmas of a non-Lorentzian function')
+        return 
+
+
+    def getSigmas(self):
+        '''
+        Returns the sigma parameters of a Lorentzian permittivity
+
+        The default is to return None, only return an array if the permittivity is Lorentzian
+
+        Parameters
+        ----------
+        None
+
+        Returns
+        -------
+        None
+
+        '''
+        return None
+
+
     def isTensor(self):
         '''
         Returns true if the dielectric function is a tensor
@@ -674,6 +787,124 @@ class DFT(DielectricFunction):
             eps = eps + self.dielectricContributionFromDrude(v_au, self.drude_plasma, self.drude_sigma, self.crystal_volume)
         return eps + self.epsilon_infinity
 
+    def setFrequencies(self,frequencies):
+        '''
+        Sets the frequencies of a DFT permittivity
+
+        The frequencies are converted to atomic units
+
+        Parameters
+        ----------
+        strengths : 1d array of floats
+            The frequencies in cm-1
+
+        Returns
+        -------
+        None
+
+        '''
+        frequencies = np.array(frequencies)
+        self.mode_frequencies = wavenumber * frequencies
+        return 
+
+
+    def getFrequencies(self):
+        '''
+        Returns the frequencies of a DFT permittivity
+
+        The frequencies are in units of cm-1
+
+        Parameters
+        ----------
+        None
+
+        Returns
+        -------
+        1d array of floats
+            The frequencies in cm-1
+
+        '''
+        return self.mode_frequencies / wavenumber
+
+    def setOscillatorStrengths(self,strengths):
+        '''
+        Sets the oscillator strengths of a DFT permittivity
+
+        The oscillator strengths are converted to atomic units
+
+        Parameters
+        ----------
+        strengths : 1d array of floats
+            The oscillator strengths parameters in cm-1
+
+        Returns
+        -------
+        None
+
+        '''
+        strengths = np.array(strengths)
+        self.mode_oscillator_strengths = wavenumber * strengths
+        return 
+
+
+    def getOscillatorStrengths(self):
+        '''
+        Returns the oscillator strengths of a DFT permittivity
+
+        The returned strengths are in units of cm-1
+
+        Parameters
+        ----------
+        None
+
+        Returns
+        -------
+        1d array of floats
+            The oscillator strengths in cm-1
+
+        '''
+        return self.mode_oscillator_strengths / wavenumber
+
+    def setSigmas(self,sigmas):
+        '''
+        Sets the sigma parameters of a DFT permittivity
+
+        The sigmas parameter is converted to atomic units
+
+        Parameters
+        ----------
+        sigmas : 1d array of floats
+            The sigma parameters in cm-1
+
+        Returns
+        -------
+        None
+
+        '''
+        sigmas = np.array(sigmas)
+        self.mode_sigmas = wavenumber * sigmas
+        return 
+
+
+    def getSigmas(self):
+        '''
+        Returns the sigma parameters of a DFT permittivity
+
+        The returned sigmas are in units of cm-1
+
+        Parameters
+        ----------
+        None
+
+        Returns
+        -------
+        1d array of floats
+            The sigma parameters of  Drude-Lorentzian permittivity
+
+        '''
+        return self.mode_sigmas / wavenumber
+
+
 class DrudeLorentz(DielectricFunction):
     '''
     A class for a complex constant tensor dielectric function.
@@ -738,6 +969,121 @@ class DrudeLorentz(DielectricFunction):
             for v, strength, sigma in zip(vs, strengths,sigmas):
                 eps[xyz,xyz] += strength * strength / complex((v*v - f_cm1*f_cm1), -sigma*f_cm1)
         return eps + self.epsilon_infinity
+
+    def setFrequencies(self,frequencies):
+        '''
+        Sets the frequencies of a Drude-Lorentz permittivity
+
+        The frequencies are in cm-1
+
+        Parameters
+        ----------
+        strengths : 1d array of floats
+            The frequencies in cm-1
+
+        Returns
+        -------
+        None
+
+        '''
+        frequencies = np.array(frequencies)
+        self.vs_cm1 = frequencies
+        return 
+
+
+    def getFrequencies(self):
+        '''
+        Returns the frequencies of a Drude-Lorentz permittivity
+
+        The frequencies are in units of cm-1
+
+        Parameters
+        ----------
+        None
+
+        Returns
+        -------
+        1d array of floats
+            The frequencies in cm-1
+
+        '''
+        return self.vs_cm1
+
+    def setOscillatorStrengths(self,strengths):
+        '''
+        Sets the oscillator strengths of a Drude-Lorentz permittivity
+
+        The oscillator strengths are in cm-1
+
+        Parameters
+        ----------
+        strengths : 1d array of floats
+            The oscillator strengths parameters in cm-1
+
+        Returns
+        -------
+        None
+
+        '''
+        strengths = np.array(strengths)
+        self.strengths = strengths
+        return 
+
+    def getOscillatorStrengths(self):
+        '''
+        Returns the oscillator strengths of a Drude-Lorentz permittivity
+
+        The returned strengths are in units of cm-1
+
+        Parameters
+        ----------
+        None
+
+        Returns
+        -------
+        1d array of floats
+            The oscillator strengths in cm-1
+
+        '''
+        return self.strengths
+
+    def setSigmas(self,sigmas):
+        '''
+        Sets the sigma parameters of a Drude-Lorentz permittivity
+
+        The default is to print an error message unless the DielectricFunction is a Lorentzian
+
+        Parameters
+        ----------
+        sigmas : 1d array of floats
+            The sigma parameters in cm-1
+
+        Returns
+        -------
+        None
+
+        '''
+        self.sigmas_cm1 = sigmas
+        return 
+
+
+    def getSigmas(self):
+        '''
+        Returns the sigma parameters of a Lorentzian permittivity
+
+        The returned sigmas are in units of cm-1
+
+        Parameters
+        ----------
+        None
+
+        Returns
+        -------
+        1d array of floats
+
+        '''
+        return self.sigmas_cm1
+
 
 class FPSQ(DielectricFunction):
     '''

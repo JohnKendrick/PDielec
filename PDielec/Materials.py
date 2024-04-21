@@ -557,6 +557,18 @@ class Material():
         Returns the name of the material.
     getInformation()
         Returns information about the material, including its type and, if applicable, its permittivity frequency range.
+    getSigmas()
+        If the material has a lorentzian dielectric this routine returns the sigma parameters
+    setSigmas()
+        If the material has a lorentzian dielectric this routine sets the sigma parameters
+    getFrequencies()
+        If the material has a lorentzian dielectric this routine returns the frequencies
+    setFrequencies()
+        If the material has a lorentzian dielectric this routine sets the frequencies
+    getOscillatorStrengths()
+        If the material has a lorentzian dielectric this routine returns the oscillator strengths
+    setOscillatorStrengths()
+        If the material has a lorentzian dielectric this routine sets the oscillator strengths
     print()
         Prints information about the material, such as its name, density, type, and permittivity details.
     isScalar()
@@ -738,6 +750,104 @@ class Material():
             Return the permittivity object function
         '''
         return self.permittivityObject.function()
+
+    def setFrequencies(self,frequencies):
+        '''
+        Sets the frequencies for a Lorentzian permittivity
+
+        Parameters
+        ----------
+        frequencies : 1D array of floats
+            The frequencies for a Drude-Lorentzian permittivity in cm-1
+
+        Returns
+        -------
+        None
+
+        '''
+        self.permittivityObject.setFrequencies(frequencies)
+        return 
+
+    def getFrequencies(self):
+        '''
+        Gets the frequencies for a Lorentzian permittivity
+
+        Parameters
+        ----------
+        None
+
+        Returns
+        -------
+        1d array of floats
+            Returns the frequencies for a Lorentzian function in cm-1
+        '''
+        return self.permittivityObject.getFrequencies()
+
+    def setOscillatorStrengths(self,strengths):
+        '''
+        Sets the oscillator strengths for a Lorentzian permittivity
+
+        Parameters
+        ----------
+        sigmas : 1D array of floats
+            The oscillator strengths for a Lorentzian permittivity function in cm-1
+
+        Returns
+        -------
+        None
+
+        '''
+        self.permittivityObject.setOscillatorStrengths(strengths)
+        return 
+
+    def getOscillatorStrengths(self):
+        '''
+        Gets the oscillator strengths for a Lorentzian permittivity
+
+        Parameters
+        ----------
+        None
+
+        Returns
+        -------
+        1d array of floats
+            Returns the oscillator strengths for a Lorentzian permittivity function in cm-1
+        '''
+        return self.permittivityObject.getOscillatorStrengths()
+
+
+    def setSigmas(self,sigmas):
+        '''
+        Sets the sigma parameters for a Lorentzian permittivity
+
+        Parameters
+        ----------
+        sigmas : 1D array of floats
+            The sigma parameters for a Lorentzian permittivity function in cm-1
+
+        Returns
+        -------
+        None
+
+        '''
+        self.permittivityObject.setSigmas(sigmas)
+        return 
+
+    def getSigmas(self):
+        '''
+        Gets the sigma parameters for a Lorentzian permittivity
+
+        Parameters
+        ----------
+        None
+
+        Returns
+        -------
+        1d array of floats
+            Returns the sigma parameters for a Lorentz permittivity function in cm-1
+        '''
+        return self.permittivityObject.getSigmas()
+
 
     def setDensity(self, value):
         '''

@@ -1,3 +1,9 @@
+version 8.1.1
+  The documentation has been revamped.  An API description is now generated from each class and routine.
+  The examples of Jupyter notebooks has been added to.
+  Static routines have been created in the FitterTab to allow their use in notebooks
+  The UnitCell and SuperCell classes have been enhance to use a units specifier
+  Added new routines to the Materials and DielectricFunction classes to allow sigmas, oscillator strengths and frequencies to be changed 
 version 8.1.0
   Modifications to the plotter tab to allow the use of wavelength and frequency units
   Redesign of the single crystal scenario tab.  The new design means that scripts are not backwards compatible.
