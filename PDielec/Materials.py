@@ -789,7 +789,7 @@ class Material():
 
         Parameters
         ----------
-        sigmas : 1D array of floats
+        strengths : a 3x3 array of floats for each frequency
             The oscillator strengths for a Lorentzian permittivity function in cm-1
 
         Returns
@@ -804,13 +804,15 @@ class Material():
         '''
         Gets the oscillator strengths for a Lorentzian permittivity
 
+        The oscillator strength of each transition is a 3x3 matrix
+
         Parameters
         ----------
         None
 
         Returns
         -------
-        1d array of floats
+        list of 3x3 array of floats
             Returns the oscillator strengths for a Lorentzian permittivity function in cm-1
         '''
         return self.permittivityObject.getOscillatorStrengths()

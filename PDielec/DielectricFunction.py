@@ -834,7 +834,7 @@ class DFT(DielectricFunction):
 
         Parameters
         ----------
-        strengths : 1d array of floats
+        strengths : 3x3 array for each frequency
             The oscillator strengths parameters in cm-1
 
         Returns
@@ -859,7 +859,7 @@ class DFT(DielectricFunction):
 
         Returns
         -------
-        1d array of floats
+        3x3 array of floats for each frequency
             The oscillator strengths in cm-1
 
         '''
