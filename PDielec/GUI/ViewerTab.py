@@ -900,7 +900,7 @@ class ViewerTab(QWidget):
         self.natoms = len(self.XYZ)
         self.number_of_modes = len(self.normal_modes)
         # get the cell edges for the bounding box, shifted to the centre of mass origin
-        totalMass,centreOfMassXYZ,centreOfMassABC = self.super_cell.calculateCentreOfMass(units=all)
+        totalMass,centreOfMassXYZ,centreOfMassABC = self.super_cell.calculateCentreOfMass(output=all)
         self.cell_corners,self.cell_edges = self.super_cell.getBoundingBox(centreOfMassABC)
         self.element_names = self.super_cell.getElementNames()
         self.species = self.reader.getSpecies()

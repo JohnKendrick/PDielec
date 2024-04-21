@@ -334,14 +334,14 @@ class SuperCell:
         return centre
 
 
-    def calculateCentreOfMass(self,units='xyz'):
+    def calculateCentreOfMass(self,output='xyz'):
         """
         Calculate the center of mass for a molecular structure.
 
         Parameters
         ----------
-        units : str, optional
-            The units in which the center of mass should be returned. Options are 'xyz' for mass and Cartesian coordinates,
+        output : str, optional
+            The output. Options are 'xyz' for mass and Cartesian coordinates,
             'mass' for the total mass only, 'abc' for mass and fractional coordinates, or any other string
             to return a tuple with all three values (mass, Cartesian coordinates, fractional coordinates).
             The default value is 'xyz'.
@@ -353,21 +353,16 @@ class SuperCell:
             If 'xyz', returns a tuple with mass and a numpy.ndarray of Cartesian coordinates of the center of mass.
             If 'mass', returns the total mass as a float.
             If 'abc', returns tuple with mass and a numpy.ndarray of fractional coordinates of the center of mass.
-            For any other value of `units`, returns a tuple containing the total mass (float), Cartesian
+            For any other value of `output`, returns a tuple containing the total mass (float), Cartesian
             coordinates (numpy.ndarray), and fractional coordinates (numpy.ndarray) of the center of mass.
-
-        Raises
-        ------
-        ValueError
-            If the `units` parameter does not match one of the expected values.
         """        
         # Calculate the centre of mass 
-        # The centre of mass can be returned in units of 'xyz' space or 'abc' space
-        # if units='all' a tuple of (mass,cm_xyz,cm_abc) is returned
-        # if units='mass' a mass is returned
+        # The centre of mass can be returned as 'xyz' space or 'abc' space
+        # if output='all' a tuple of (mass,cm_xyz,cm_abc) is returned
+        # if output='mass' a mass is returned
         mass = 0.0
         cm_fractional = np.zeros(3)
-        unit_mass, unit_cm_xyz, unit_cm_fractional = self.unitCell.calculateCentreOfMass(units=all)
+        unit_mass, unit_cm_xyz, unit_cm_fractional = self.unitCell.calculateCentreOfMass(output=all)
         for  i,j,k in self.imageList:
             cm_fractional[0] += i + unit_cm_fractional [0]
             cm_fractional[1] += j + unit_cm_fractional [1]
@@ -376,11 +371,11 @@ class SuperCell:
         #end for i,j,k
         cm_fractional = cm_fractional/len(self.imageList)
         cm_xyz = self.unitCell.convert_abc_to_xyz(cm_fractional)
-        if units == 'xyz':
+        if output == 'xyz':
             return cm_xyz
-        elif units == 'mass':
+        elif output == 'mass':
             return mass
-        elif units == 'abc':
+        elif output == 'abc':
             return cm_fractional
         else:
             return mass, cm_xyz, cm_fractional

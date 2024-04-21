@@ -278,7 +278,7 @@ def calculatePowderSpectrum(frequencies_cm1, dielectric, matrix, volume_fraction
          absorptionCoefficient.append(absorption_coefficient)
          molarAbsorptionCoefficient.append(molar_absorption_coefficient)
          sp_atr.append(spatr)
-    return absorptionCoefficient
+    return np.array(absorptionCoefficient)
 
 def powderTest():
     '''
