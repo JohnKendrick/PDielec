@@ -831,6 +831,18 @@
 <span class="sd">        Returns the name of the material.</span>
 <span class="sd">    getInformation()</span>
 <span class="sd">        Returns information about the material, including its type and, if applicable, its permittivity frequency range.</span>
+<span class="sd">    getSigmas()</span>
+<span class="sd">        If the material has a lorentzian dielectric this routine returns the sigma parameters</span>
+<span class="sd">    setSigmas()</span>
+<span class="sd">        If the material has a lorentzian dielectric this routine sets the sigma parameters</span>
+<span class="sd">    getFrequencies()</span>
+<span class="sd">        If the material has a lorentzian dielectric this routine returns the frequencies</span>
+<span class="sd">    setFrequencies()</span>
+<span class="sd">        If the material has a lorentzian dielectric this routine sets the frequencies</span>
+<span class="sd">    getOscillatorStrengths()</span>
+<span class="sd">        If the material has a lorentzian dielectric this routine returns the oscillator strengths</span>
+<span class="sd">    setOscillatorStrengths()</span>
+<span class="sd">        If the material has a lorentzian dielectric this routine sets the oscillator strengths</span>
 <span class="sd">    print()</span>
 <span class="sd">        Prints information about the material, such as its name, density, type, and permittivity details.</span>
 <span class="sd">    isScalar()</span>
@@ -1012,6 +1024,104 @@
 <span class="sd">            Return the permittivity object function</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">permittivityObject</span><span class="o">.</span><span class="n">function</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="Material.setFrequencies"><a class="viewcode-back" href="../../autoapi/PDielec/Materials/index.html#PDielec.Materials.Material.setFrequencies">[docs]</a>    <span class="k">def</span> <span class="nf">setFrequencies</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">frequencies</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Sets the frequencies for a Lorentzian permittivity</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        frequencies : 1D array of floats</span>
+<span class="sd">            The frequencies for a Drude-Lorentzian permittivity in cm-1</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        None</span>
+
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">permittivityObject</span><span class="o">.</span><span class="n">setFrequencies</span><span class="p">(</span><span class="n">frequencies</span><span class="p">)</span>
+        <span class="k">return</span> </div>
+
+<div class="viewcode-block" id="Material.getFrequencies"><a class="viewcode-back" href="../../autoapi/PDielec/Materials/index.html#PDielec.Materials.Material.getFrequencies">[docs]</a>    <span class="k">def</span> <span class="nf">getFrequencies</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Gets the frequencies for a Lorentzian permittivity</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        None</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        1d array of floats</span>
+<span class="sd">            Returns the frequencies for a Lorentzian function in cm-1</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">permittivityObject</span><span class="o">.</span><span class="n">getFrequencies</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="Material.setOscillatorStrengths"><a class="viewcode-back" href="../../autoapi/PDielec/Materials/index.html#PDielec.Materials.Material.setOscillatorStrengths">[docs]</a>    <span class="k">def</span> <span class="nf">setOscillatorStrengths</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">strengths</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Sets the oscillator strengths for a Lorentzian permittivity</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        sigmas : 1D array of floats</span>
+<span class="sd">            The oscillator strengths for a Lorentzian permittivity function in cm-1</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        None</span>
+
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">permittivityObject</span><span class="o">.</span><span class="n">setOscillatorStrengths</span><span class="p">(</span><span class="n">strengths</span><span class="p">)</span>
+        <span class="k">return</span> </div>
+
+<div class="viewcode-block" id="Material.getOscillatorStrengths"><a class="viewcode-back" href="../../autoapi/PDielec/Materials/index.html#PDielec.Materials.Material.getOscillatorStrengths">[docs]</a>    <span class="k">def</span> <span class="nf">getOscillatorStrengths</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Gets the oscillator strengths for a Lorentzian permittivity</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        None</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        1d array of floats</span>
+<span class="sd">            Returns the oscillator strengths for a Lorentzian permittivity function in cm-1</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">permittivityObject</span><span class="o">.</span><span class="n">getOscillatorStrengths</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="Material.setSigmas"><a class="viewcode-back" href="../../autoapi/PDielec/Materials/index.html#PDielec.Materials.Material.setSigmas">[docs]</a>    <span class="k">def</span> <span class="nf">setSigmas</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">sigmas</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Sets the sigma parameters for a Lorentzian permittivity</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        sigmas : 1D array of floats</span>
+<span class="sd">            The sigma parameters for a Lorentzian permittivity function in cm-1</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        None</span>
+
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">permittivityObject</span><span class="o">.</span><span class="n">setSigmas</span><span class="p">(</span><span class="n">sigmas</span><span class="p">)</span>
+        <span class="k">return</span> </div>
+
+<div class="viewcode-block" id="Material.getSigmas"><a class="viewcode-back" href="../../autoapi/PDielec/Materials/index.html#PDielec.Materials.Material.getSigmas">[docs]</a>    <span class="k">def</span> <span class="nf">getSigmas</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Gets the sigma parameters for a Lorentzian permittivity</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        None</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        1d array of floats</span>
+<span class="sd">            Returns the sigma parameters for a Lorentz permittivity function in cm-1</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">permittivityObject</span><span class="o">.</span><span class="n">getSigmas</span><span class="p">()</span></div>
+
 
 <div class="viewcode-block" id="Material.setDensity"><a class="viewcode-back" href="../../autoapi/PDielec/Materials/index.html#PDielec.Materials.Material.setDensity">[docs]</a>    <span class="k">def</span> <span class="nf">setDensity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>

@@ -345,6 +345,119 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">volume_angs</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">volume_au</span> <span class="o">=</span> <span class="n">volume</span><span class="o">*</span><span class="n">angstrom</span><span class="o">*</span><span class="n">angstrom</span><span class="o">*</span><span class="n">angstrom</span>
 
+<div class="viewcode-block" id="DielectricFunction.setFrequencies"><a class="viewcode-back" href="../../autoapi/PDielec/DielectricFunction/index.html#PDielec.DielectricFunction.DielectricFunction.setFrequencies">[docs]</a>    <span class="k">def</span> <span class="nf">setFrequencies</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">frequencies</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Sets the frequencies of a Lorentzian permittivity</span>
+
+<span class="sd">        The default is to print an error message unless the DielectricFunction is a Lorentzian</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        frequencies : 1d array of floats</span>
+<span class="sd">            The frequencies in cm-1</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        None</span>
+
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Error is DielectricFunction.setFrequencies: unable to set frequencies of a non-Lorentzian function&#39;</span><span class="p">)</span>
+        <span class="k">return</span> </div>
+
+
+<div class="viewcode-block" id="DielectricFunction.getFrequencies"><a class="viewcode-back" href="../../autoapi/PDielec/DielectricFunction/index.html#PDielec.DielectricFunction.DielectricFunction.getFrequencies">[docs]</a>    <span class="k">def</span> <span class="nf">getFrequencies</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Returns the frequencies of a Lorentzian permittivity</span>
+
+<span class="sd">        The default is to return None, only return an array if the permittivity is Lorentzian</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        None</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        None</span>
+
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="kc">None</span></div>
+
+
+<div class="viewcode-block" id="DielectricFunction.setOscillatorStrengths"><a class="viewcode-back" href="../../autoapi/PDielec/DielectricFunction/index.html#PDielec.DielectricFunction.DielectricFunction.setOscillatorStrengths">[docs]</a>    <span class="k">def</span> <span class="nf">setOscillatorStrengths</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">strengths</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Sets the oscillator strengths of a Lorentzian permittivity</span>
+
+<span class="sd">        The default is to print an error message unless the DielectricFunction is a Lorentzian</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        strengths : 1d array of floats</span>
+<span class="sd">            The oscillator strengths in cm-1</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        None</span>
+
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Error is DielectricFunction.setOscillatorStrengths: unable to set oscillator strengths of a non-Lorentzian function&#39;</span><span class="p">)</span>
+        <span class="k">return</span> </div>
+
+
+<div class="viewcode-block" id="DielectricFunction.getOscillatorStrengths"><a class="viewcode-back" href="../../autoapi/PDielec/DielectricFunction/index.html#PDielec.DielectricFunction.DielectricFunction.getOscillatorStrengths">[docs]</a>    <span class="k">def</span> <span class="nf">getOscillatorStrengths</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Returns the oscillator strengths of a Lorentzian permittivity</span>
+
+<span class="sd">        The default is to return None, only return an array if the permittivity is Lorentzian</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        None</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        None</span>
+
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="kc">None</span></div>
+
+<div class="viewcode-block" id="DielectricFunction.setSigmas"><a class="viewcode-back" href="../../autoapi/PDielec/DielectricFunction/index.html#PDielec.DielectricFunction.DielectricFunction.setSigmas">[docs]</a>    <span class="k">def</span> <span class="nf">setSigmas</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sigmas</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Sets the sigma parameters of a Lorentzian permittivity</span>
+
+<span class="sd">        The default is to print an error message unless the DielectricFunction is a Lorentzian</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        sigma : 1d array of floats</span>
+<span class="sd">            The sigma parameters in cm-1</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        None</span>
+
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Error is DielectricFunction.setSigmas: unable to set sigmas of a non-Lorentzian function&#39;</span><span class="p">)</span>
+        <span class="k">return</span> </div>
+
+
+<div class="viewcode-block" id="DielectricFunction.getSigmas"><a class="viewcode-back" href="../../autoapi/PDielec/DielectricFunction/index.html#PDielec.DielectricFunction.DielectricFunction.getSigmas">[docs]</a>    <span class="k">def</span> <span class="nf">getSigmas</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Returns the sigma parameters of a Lorentzian permittivity</span>
+
+<span class="sd">        The default is to return None, only return an array if the permittivity is Lorentzian</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        None</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        None</span>
+
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="kc">None</span></div>
+
+
 <div class="viewcode-block" id="DielectricFunction.isTensor"><a class="viewcode-back" href="../../autoapi/PDielec/DielectricFunction/index.html#PDielec.DielectricFunction.DielectricFunction.isTensor">[docs]</a>    <span class="k">def</span> <span class="nf">isTensor</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Returns true if the dielectric function is a tensor</span>
@@ -946,7 +1059,125 @@
                                                    <span class="bp">self</span><span class="o">.</span><span class="n">crystal_volume</span><span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">drude</span><span class="p">:</span>
             <span class="n">eps</span> <span class="o">=</span> <span class="n">eps</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">dielectricContributionFromDrude</span><span class="p">(</span><span class="n">v_au</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">drude_plasma</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">drude_sigma</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">crystal_volume</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">eps</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">epsilon_infinity</span></div></div>
+        <span class="k">return</span> <span class="n">eps</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">epsilon_infinity</span></div>
+
+<div class="viewcode-block" id="DFT.setFrequencies"><a class="viewcode-back" href="../../autoapi/PDielec/DielectricFunction/index.html#PDielec.DielectricFunction.DFT.setFrequencies">[docs]</a>    <span class="k">def</span> <span class="nf">setFrequencies</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">frequencies</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Sets the frequencies of a DFT permittivity</span>
+
+<span class="sd">        The frequencies are converted to atomic units</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        strengths : 1d array of floats</span>
+<span class="sd">            The frequencies in cm-1</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        None</span>
+
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">frequencies</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">frequencies</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mode_frequencies</span> <span class="o">=</span> <span class="n">wavenumber</span> <span class="o">*</span> <span class="n">frequencies</span>
+        <span class="k">return</span> </div>
+
+
+<div class="viewcode-block" id="DFT.getFrequencies"><a class="viewcode-back" href="../../autoapi/PDielec/DielectricFunction/index.html#PDielec.DielectricFunction.DFT.getFrequencies">[docs]</a>    <span class="k">def</span> <span class="nf">getFrequencies</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Returns the frequencies of a DFT permittivity</span>
+
+<span class="sd">        The frequencies are in units of cm-1</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        None</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        1d array of floats</span>
+<span class="sd">            The frequencies in cm-1</span>
+
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">mode_frequencies</span> <span class="o">/</span> <span class="n">wavenumber</span></div>
+
+<div class="viewcode-block" id="DFT.setOscillatorStrengths"><a class="viewcode-back" href="../../autoapi/PDielec/DielectricFunction/index.html#PDielec.DielectricFunction.DFT.setOscillatorStrengths">[docs]</a>    <span class="k">def</span> <span class="nf">setOscillatorStrengths</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">strengths</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Sets the oscillator strengths of a DFT permittivity</span>
+
+<span class="sd">        The oscillator strengths are converted to atomic units</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        strengths : 1d array of floats</span>
+<span class="sd">            The oscillator strengths parameters in cm-1</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        None</span>
+
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">strengths</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">strengths</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mode_oscillator_strengths</span> <span class="o">=</span> <span class="n">wavenumber</span> <span class="o">*</span> <span class="n">strengths</span>
+        <span class="k">return</span> </div>
+
+
+<div class="viewcode-block" id="DFT.getOscillatorStrengths"><a class="viewcode-back" href="../../autoapi/PDielec/DielectricFunction/index.html#PDielec.DielectricFunction.DFT.getOscillatorStrengths">[docs]</a>    <span class="k">def</span> <span class="nf">getOscillatorStrengths</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Returns the oscillator strengths of a DFT permittivity</span>
+
+<span class="sd">        The returned strengths are in units of cm-1</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        None</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        1d array of floats</span>
+<span class="sd">            The oscillator strengths in cm-1</span>
+
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">mode_oscillator_strengths</span> <span class="o">/</span> <span class="n">wavenumber</span></div>
+
+<div class="viewcode-block" id="DFT.setSigmas"><a class="viewcode-back" href="../../autoapi/PDielec/DielectricFunction/index.html#PDielec.DielectricFunction.DFT.setSigmas">[docs]</a>    <span class="k">def</span> <span class="nf">setSigmas</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">sigmas</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Sets the sigma parameters of a DFT permittivity</span>
+
+<span class="sd">        The sigmas parameter is converted to atomic units</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        sigmas : 1d array of floats</span>
+<span class="sd">            The sigma parameters in cm-1</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        None</span>
+
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">sigmas</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">sigmas</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mode_sigmas</span> <span class="o">=</span> <span class="n">wavenumber</span> <span class="o">*</span> <span class="n">sigmas</span>
+        <span class="k">return</span> </div>
+
+
+<div class="viewcode-block" id="DFT.getSigmas"><a class="viewcode-back" href="../../autoapi/PDielec/DielectricFunction/index.html#PDielec.DielectricFunction.DFT.getSigmas">[docs]</a>    <span class="k">def</span> <span class="nf">getSigmas</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Returns the sigma parameters of a DFT permittivity</span>
+
+<span class="sd">        The returned sigmas are in units of cm-1</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        None</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        1d array of floats</span>
+<span class="sd">            The sigma parameters of  Drude-Lorentzian permittivity</span>
+
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">mode_sigmas</span> <span class="o">/</span> <span class="n">wavenumber</span></div></div>
+
 
 <div class="viewcode-block" id="DrudeLorentz"><a class="viewcode-back" href="../../autoapi/PDielec/DielectricFunction/index.html#PDielec.DielectricFunction.DrudeLorentz">[docs]</a><span class="k">class</span> <span class="nc">DrudeLorentz</span><span class="p">(</span><span class="n">DielectricFunction</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
@@ -1011,7 +1242,122 @@
         <span class="k">for</span> <span class="n">xyz</span><span class="p">,</span> <span class="p">(</span><span class="n">vs</span><span class="p">,</span> <span class="n">strengths</span><span class="p">,</span> <span class="n">sigmas</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vs_cm1</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">strengths_cm1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">sigmas_cm1</span><span class="p">)):</span>
             <span class="k">for</span> <span class="n">v</span><span class="p">,</span> <span class="n">strength</span><span class="p">,</span> <span class="n">sigma</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">vs</span><span class="p">,</span> <span class="n">strengths</span><span class="p">,</span><span class="n">sigmas</span><span class="p">):</span>
                 <span class="n">eps</span><span class="p">[</span><span class="n">xyz</span><span class="p">,</span><span class="n">xyz</span><span class="p">]</span> <span class="o">+=</span> <span class="n">strength</span> <span class="o">*</span> <span class="n">strength</span> <span class="o">/</span> <span class="nb">complex</span><span class="p">((</span><span class="n">v</span><span class="o">*</span><span class="n">v</span> <span class="o">-</span> <span class="n">f_cm1</span><span class="o">*</span><span class="n">f_cm1</span><span class="p">),</span> <span class="o">-</span><span class="n">sigma</span><span class="o">*</span><span class="n">f_cm1</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">eps</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">epsilon_infinity</span></div></div>
+        <span class="k">return</span> <span class="n">eps</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">epsilon_infinity</span></div>
+
+<div class="viewcode-block" id="DrudeLorentz.setFrequencies"><a class="viewcode-back" href="../../autoapi/PDielec/DielectricFunction/index.html#PDielec.DielectricFunction.DrudeLorentz.setFrequencies">[docs]</a>    <span class="k">def</span> <span class="nf">setFrequencies</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">frequencies</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Sets the frequencies of a Drude-Lorentz permittivity</span>
+
+<span class="sd">        The frequencies are in cm-1</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        strengths : 1d array of floats</span>
+<span class="sd">            The frequencies in cm-1</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        None</span>
+
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">frequencies</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">frequencies</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vs_cm1</span> <span class="o">=</span> <span class="n">frequencies</span>
+        <span class="k">return</span> </div>
+
+
+<div class="viewcode-block" id="DrudeLorentz.getFrequencies"><a class="viewcode-back" href="../../autoapi/PDielec/DielectricFunction/index.html#PDielec.DielectricFunction.DrudeLorentz.getFrequencies">[docs]</a>    <span class="k">def</span> <span class="nf">getFrequencies</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Returns the frequencies of a Drude-Lorentz permittivity</span>
+
+<span class="sd">        The frequencies are in units of cm-1</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        None</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        1d array of floats</span>
+<span class="sd">            The frequencies in cm-1</span>
+
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">vs_cm1</span></div>
+
+<div class="viewcode-block" id="DrudeLorentz.setOscillatorStrengths"><a class="viewcode-back" href="../../autoapi/PDielec/DielectricFunction/index.html#PDielec.DielectricFunction.DrudeLorentz.setOscillatorStrengths">[docs]</a>    <span class="k">def</span> <span class="nf">setOscillatorStrengths</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">strengths</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Sets the oscillator strengths of a Drude-Lorentz permittivity</span>
+
+<span class="sd">        The oscillator strengths are in cm-1</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        strengths : 1d array of floats</span>
+<span class="sd">            The oscillator strengths parameters in cm-1</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        None</span>
+
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">strengths</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">strengths</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">strengths</span> <span class="o">=</span> <span class="n">strengths</span>
+        <span class="k">return</span> </div>
+
+<div class="viewcode-block" id="DrudeLorentz.getOscillatorStrengths"><a class="viewcode-back" href="../../autoapi/PDielec/DielectricFunction/index.html#PDielec.DielectricFunction.DrudeLorentz.getOscillatorStrengths">[docs]</a>    <span class="k">def</span> <span class="nf">getOscillatorStrengths</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Returns the oscillator strengths of a Drude-Lorentz permittivity</span>
+
+<span class="sd">        The returned strengths are in units of cm-1</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        None</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        1d array of floats</span>
+<span class="sd">            The oscillator strengths in cm-1</span>
+
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">strengths</span></div>
+
+<div class="viewcode-block" id="DrudeLorentz.setSigmas"><a class="viewcode-back" href="../../autoapi/PDielec/DielectricFunction/index.html#PDielec.DielectricFunction.DrudeLorentz.setSigmas">[docs]</a>    <span class="k">def</span> <span class="nf">setSigmas</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">sigmas</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Sets the sigma parameters of a Drude-Lorentz permittivity</span>
+
+<span class="sd">        The default is to print an error message unless the DielectricFunction is a Lorentzian</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        sigmas : 1d array of floats</span>
+<span class="sd">            The sigma parameters in cm-1</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        None</span>
+
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sigmas_cm1</span> <span class="o">=</span> <span class="n">sigmas</span>
+        <span class="k">return</span> </div>
+
+
+<div class="viewcode-block" id="DrudeLorentz.getSigmas"><a class="viewcode-back" href="../../autoapi/PDielec/DielectricFunction/index.html#PDielec.DielectricFunction.DrudeLorentz.getSigmas">[docs]</a>    <span class="k">def</span> <span class="nf">getSigmas</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Returns the sigma parameters of a Lorentzian permittivity</span>
+
+<span class="sd">        The returned sigmas are in units of cm-1</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        None</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        1d array of floats</span>
+
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">sigmas_cm1</span></div></div>
+
 
 <div class="viewcode-block" id="FPSQ"><a class="viewcode-back" href="../../autoapi/PDielec/DielectricFunction/index.html#PDielec.DielectricFunction.FPSQ">[docs]</a><span class="k">class</span> <span class="nc">FPSQ</span><span class="p">(</span><span class="n">DielectricFunction</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>

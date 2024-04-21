@@ -43,6 +43,19 @@ Classes
 
 
 
+Functions
+~~~~~~~~~
+
+.. autoapisummary::
+
+   PDielec.GUI.FitterTab.calculateCrossCorrelation
+   PDielec.GUI.FitterTab.calculateSpectralDifference
+   PDielec.GUI.FitterTab.find_delimiter
+   PDielec.GUI.FitterTab.is_float
+   PDielec.GUI.FitterTab.read_experimental_file
+   PDielec.GUI.FitterTab.resample_experimental_spectrum
+
+
 
 .. py:class:: FitterTab(parent, debug=False)
 
@@ -98,10 +111,6 @@ Classes
        Optimises the fitting parameters.
    optimiseFunction(self, variables)
        Function to be optimised during the fitting process.
-   calculateSpectralDifference(self, scaling_factor)
-       Calculates the spectral difference between experimental and calculated spectra.
-   calculateCrossCorrelation(self, scaling_factor)
-       Calculates the cross-correlation between experimental and calculated spectra.
    redraw_sigmas_tw(self)
        Redraws the table widget for sigma values based on current settings.
    on_fitting_type_cb_activated(self, index)
@@ -110,12 +119,6 @@ Classes
        Handles selection changes in the scenario combo box.
    on_spectrafile_le_return(self)
        Handles actions to take when the spectra file line edit has a return event.
-   is_float(self, element)
-       Tests if the given element can be converted to a float.
-   find_delimiter(self, filename)
-       Finds the delimiter used in a given CSV file.
-   read_experimental_file(self)
-       Reads experimental spectrum data from a specified file.
    on_spectrafile_le_changed(self, text)
        Handles changes to the spectra file line edit text.
    on_sigmas_tw_itemChanged(self, item)
@@ -128,78 +131,6 @@ Classes
        Refreshes the interface based on current settings and data.
    requestRefresh(self)
        Requests a refresh of the interface.
-   resample_experimental_spectrum(self)
-       Resamples the experimental spectrum to match the calculated spectrum frequency points.
-
-   .. py:method:: calculateCrossCorrelation(scaling_factor)
-
-      Calculates the cross-correlation between the experimental spectrum and a calculated spectrum, with an applied scaling factor.
-
-      Parameters
-      ----------
-      scaling_factor : float
-          The factor by which the x-axis of the calculated spectrum is scaled.
-
-      Returns
-      -------
-      tuple
-          A tuple containing:
-          - lag: The lag at which the maximum correlation occurs.
-          - max_corr: The maximum correlation value.
-          - center_corr: The correlation value at the center (zero lag).
-
-      Notes
-      -----
-      The calculated spectrum's x-axis is rescaled according to the `scaling_factor`. The correlation is performed on the normalized (zero-mean unit-variance) spectra. Interpolation of the calculated spectrum onto the experimental spectrum's x-axis is performed using cubic interpolation.
-
-
-   .. py:method:: calculateSpectralDifference(scaling_factor)
-
-      Calculate the root mean square error (RMSE) between a resampled experimental spectrum and a calculated spectrum after applying a scaling factor.
-
-      Parameters
-      ----------
-      scaling_factor : float
-          The factor by which to scale the experimental spectrum before comparing with the calculated spectrum.
-
-      Returns
-      -------
-      float
-          The root mean square error between the resampled experimental spectrum and the scaled calculated spectrum.
-
-      Notes
-      -----
-      - This method modifies the spectra by scaling, normalization, and thresholding before calculating the RMSE.
-      - If the resampled experimental spectrum is empty, the method returns 0.0 immediately.
-      - The method assumes that `self.resampled_experimental_spectrum` and `self.calculated_spectrum` are accessible and properly formatted.
-      - Assumes `self.settings['Spectral difference threshold']` is defined and accessible, and is used to filter out values below this threshold.
-      - Uses cubic interpolation for scaling the calculated spectrum.
-      - Normalization is performed based on the maximum value in the experimental spectrum.
-
-      Raises
-      ------
-      - This function implicitly depends on the correctness of external variables and the environment (e.g., `self.resampled_experimental_spectrum`, `self.calculated_spectrum`, `self.settings`, and `self.xaxis`). Errors related to these dependencies are not explicitly handled by this function.
-
-
-   .. py:method:: find_delimiter(filename)
-
-      Find the delimiter used in a CSV file.
-
-      Parameters
-      ----------
-      filename : str
-          The path to the file for which the delimiter is to be determined.
-
-      Returns
-      -------
-      str
-          The detected delimiter character.
-
-      Notes
-      -----
-      This function uses the `csv.Sniffer` class to deduce the delimiter of
-      the given file by analyzing the first 5000 bytes of the file.
-
 
    .. py:method:: fittingButtonClicked()
 
@@ -220,20 +151,6 @@ Classes
       -------
       None
 
-
-
-   .. py:method:: is_float(element)
-
-      Test to see if element is a float.
-
-      Parameters
-      ----------
-      element : Any
-
-      Returns
-      -------
-      bool
-          True if the element is a float, False otherwise.
 
 
    .. py:method:: on_baseline_cb_changed(value)
@@ -608,20 +525,6 @@ Classes
       Prints the key and value of each setting in the instance's `settings` attribute, with the help of the `debugger` print method.
 
 
-   .. py:method:: read_experimental_file()
-
-      Read an experimental file.
-
-      Parameters
-      ----------
-      None
-
-      Returns
-      -------
-      self.experimental_frequencies
-      self.experimental_spectrum
-
-
    .. py:method:: redraw_sigmas_tw()
 
       Redraw the table widget for sigmas.
@@ -734,29 +637,165 @@ Classes
 
 
 
-   .. py:method:: resample_experimental_spectrum()
 
-      Resample the experimental spectrum to match calculated frequencies and optionally apply baseline removal.
+.. py:function:: calculateCrossCorrelation(xaxis, calculated_spectrum, experimental_spectrum, scaling_factor=1.0, debug=False)
 
-      This method modifies the experimental spectrum to align with the calculated 
-      frequencies. It pads the spectrum at both ends with zeros outside the calculated
-      frequencies range, then uses cubic interpolation over the whole range. 
-      If the 'Baseline removal' setting is enabled, applies the Hodrick-Prescott filter 
-      for baseline removal on the resampled spectrum.
+   Calculates the cross-correlation between the experimental spectrum and a calculated spectrum, with an applied scaling factor.
 
-      Parameters
-      ----------
-      None 
-      - self.experimental_frequencies : array_like (The original frequency values of the experimental spectrum.)
-      - self.experimental_spectrum : array_like (The original intensity values of the experimental spectrum.)
-      - self.calculated_frequencies : array_like (The frequency values of the calculated spectrum.)
-      - self.settings : dict (A dictionary of settings, which may include keys for 'Baseline removal' and 'HPFilter lambda'.)
+   The calculated and experimental spectra share the same frequencies (xaxis).  If a scaling factor is applied, 
+   the calculated spectrum x-axis is rescaled according to the scaling factor.
 
-      Returns
-      -------
-      None
-          Modifies the instance's resampled_experimental_spectrum in place.
+   Parameters
+   ----------
+   xaxis : 1d array of floats
+       An array frequencies valid for both the calculated and experimental spectra
+   calculated_spectrum : 1d array of floats
+       The calculated spectrum
+   experimental_spectrum : 1d array of floats
+       The experimental spectrum
+   scaling_factor : float, optional
+       The factor by which the x-axis of the calculated spectrum is scaled, default is 1.0
+   debug : boolean, optional
+       Set to true for debugging information
 
+   Returns
+   -------
+   tuple
+       A tuple containing:
+       - lag: The lag at which the maximum correlation occurs.
+       - max_corr: The maximum correlation value.
+       - center_corr: The correlation value at the center (zero lag).
+
+   Notes
+   -----
+   The calculated spectrum's x-axis is rescaled according to the `scaling_factor`. The correlation is performed on the normalized (zero-mean unit-variance) spectra. Interpolation of the calculated spectrum onto the experimental spectrum's x-axis is performed using cubic interpolation.
+
+
+.. py:function:: calculateSpectralDifference(xaxis, calculated_spectrum, experimental_spectrum, spectral_threshold=0.05, scaling_factor=1.0, debug=False)
+
+   Calculate the root mean square error (RMSE) between a renormalised experimental spectrum and calculated spectrum after applying a scaling factor.
+
+   Parameters
+   ----------
+   xaxis : 1d array of floats
+       An array frequencies valid for both the calculated and experimental spectra
+   calculated_spectrum : 1d array of floats
+       The calculated spectrum
+   experimental_spectrum : 1d array of floats
+       The experimental spectrum
+   scaling_factor : float, optional
+       The factor by which the x-axis of the calculated spectrum is scaled, default is 1.0
+   spectral_threshold : float,optional
+       Only signals greater than the threshold are considered in the difference calculation. Default is 0.05
+   debug : boolean, optional
+       Set to true for debugging information
+
+   Returns
+   -------
+   float
+       The root mean square error between the resampled experimental spectrum and the scaled calculated spectrum.
+
+   Notes
+   -----
+   - This method modifies the spectra by scaling, normalization, and thresholding before calculating the RMSE.
+   - If the resampled experimental spectrum is empty, the method returns 0.0 immediately.
+   - Uses cubic interpolation for scaling the calculated spectrum.
+   - Normalization is performed based on the maximum value in the experimental spectrum.
+
+
+.. py:function:: find_delimiter(filename)
+
+   Find the delimiter used in a CSV file.
+
+   Parameters
+   ----------
+   filename : str
+       The path to the file for which the delimiter is to be determined.
+
+   Returns
+   -------
+   str
+       The detected delimiter character.
+
+   Notes
+   -----
+   This function uses the `csv.Sniffer` class to deduce the delimiter of
+   the given file by analyzing the first 5000 bytes of the file.
+
+
+.. py:function:: is_float(element)
+
+   Test to see if element is a float.
+
+   Parameters
+   ----------
+   element : Any
+
+   Returns
+   -------
+   bool
+       True if the element is a float, False otherwise.
+
+
+.. py:function:: read_experimental_file(file_name, frequency_column=1, spectrum_column=2, sheet_name=None, debug=False)
+
+   Read an experimental file.
+
+   Parameters
+   ----------
+   file_name : str
+       An xlsx or a csv file containing the experimental spectrum
+   frequency_column : int
+       The frequency column in the spread sheet, default is 1.  The first column in a sheet is column 1
+   spectrum_column : int
+       The spectrum column in the spread sheet, default is 2.  The first column in a sheet is column 1
+   sheet_name : str
+       The name of the spreadsheet to be used to extract the frequency and spectrum, default is None
+   debug : boolean
+       True if debug information is needed, default is False
+
+   Returns
+   -------
+   experimental_frequencies : an array of floats
+       The experimental frequencies in cm-1
+   experimental_spectrum : an array of floats
+       The experimental spectrum
+
+   Errors
+   ------
+   If any errors occur, such as a file not existing, empty arrays/lists are returned, :w
+
+
+
+.. py:function:: resample_experimental_spectrum(calculated_frequencies, experimental_frequencies, experimental_spectrum, baseline_removal='False', HPFilter_lambda=7.0, debug=False)
+
+   Resample the experimental spectrum to match calculated frequencies and optionally apply baseline removal.
+
+   This method modifies the experimental spectrum to align with the calculated 
+   frequencies. It pads the spectrum at both ends with zeros outside the calculated
+   frequencies range, then uses cubic interpolation over the whole range. 
+   If 'baseline_removal' is enabled, applies the Hodrick-Prescott filter 
+   for baseline removal on the resampled spectrum.
+
+   Parameters
+   ----------
+   calculated_frequencies : array of floats
+       The frequencies the caculated spectrum is tabulated 
+   experimental_frequencies : array of floats
+       The frequencies the experimental spectrum is tabulated 
+   experimental_spectrum : array of floats
+       The experimental spectrum
+   baseline_removal : boolean
+       Optional switches on baseline removal using a Hodrick-Prescott filter, default is False
+   HPFilter_lambda : float
+       The value of lambda in in the Hodrick-Prescott filter, default value is 7.0
+   debug : boolean
+       Optional switches on some debug information, default is False
+
+   Returns
+   -------
+   None
+       Modifies the instance's resampled_experimental_spectrum in place.
 
 
 

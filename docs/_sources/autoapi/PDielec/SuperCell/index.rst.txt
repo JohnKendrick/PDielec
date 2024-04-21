@@ -72,14 +72,14 @@ Classes
           The centre of the images in the box
 
 
-   .. py:method:: calculateCentreOfMass(units='xyz')
+   .. py:method:: calculateCentreOfMass(output='xyz')
 
       Calculate the center of mass for a molecular structure.
 
       Parameters
       ----------
-      units : str, optional
-          The units in which the center of mass should be returned. Options are 'xyz' for mass and Cartesian coordinates,
+      output : str, optional
+          The output. Options are 'xyz' for mass and Cartesian coordinates,
           'mass' for the total mass only, 'abc' for mass and fractional coordinates, or any other string
           to return a tuple with all three values (mass, Cartesian coordinates, fractional coordinates).
           The default value is 'xyz'.
@@ -91,13 +91,8 @@ Classes
           If 'xyz', returns a tuple with mass and a numpy.ndarray of Cartesian coordinates of the center of mass.
           If 'mass', returns the total mass as a float.
           If 'abc', returns tuple with mass and a numpy.ndarray of fractional coordinates of the center of mass.
-          For any other value of `units`, returns a tuple containing the total mass (float), Cartesian
+          For any other value of `output`, returns a tuple containing the total mass (float), Cartesian
           coordinates (numpy.ndarray), and fractional coordinates (numpy.ndarray) of the center of mass.
-
-      Raises
-      ------
-      ValueError
-          If the `units` parameter does not match one of the expected values.
 
 
    .. py:method:: calculateNormalModes(modes)

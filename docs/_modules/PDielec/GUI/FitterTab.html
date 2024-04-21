@@ -322,6 +322,316 @@
 <span class="kn">from</span> <span class="nn">scipy.interpolate</span> <span class="kn">import</span> <span class="n">interp1d</span>
 <span class="kn">from</span> <span class="nn">scipy.optimize</span> <span class="kn">import</span> <span class="n">minimize</span>
 
+<div class="viewcode-block" id="is_float"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/FitterTab/index.html#PDielec.GUI.FitterTab.is_float">[docs]</a><span class="k">def</span> <span class="nf">is_float</span><span class="p">(</span><span class="n">element</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Test to see if element is a float.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    element : Any</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    bool</span>
+<span class="sd">        True if the element is a float, False otherwise.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1">#If you expect None to be passed:</span>
+    <span class="k">if</span> <span class="n">element</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span> 
+        <span class="k">return</span> <span class="kc">False</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="nb">float</span><span class="p">(</span><span class="n">element</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">True</span>
+    <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">False</span></div>
+
+<div class="viewcode-block" id="find_delimiter"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/FitterTab/index.html#PDielec.GUI.FitterTab.find_delimiter">[docs]</a><span class="k">def</span> <span class="nf">find_delimiter</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Find the delimiter used in a CSV file.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    filename : str</span>
+<span class="sd">        The path to the file for which the delimiter is to be determined.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    str</span>
+<span class="sd">        The detected delimiter character.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    This function uses the `csv.Sniffer` class to deduce the delimiter of</span>
+<span class="sd">    the given file by analyzing the first 5000 bytes of the file.</span>
+<span class="sd">    &quot;&quot;&quot;</span>        
+    <span class="kn">import</span> <span class="nn">csv</span>
+    <span class="n">sniffer</span> <span class="o">=</span> <span class="n">csv</span><span class="o">.</span><span class="n">Sniffer</span><span class="p">()</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
+        <span class="n">delimiter</span> <span class="o">=</span> <span class="n">sniffer</span><span class="o">.</span><span class="n">sniff</span><span class="p">(</span><span class="n">fp</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="mi">5000</span><span class="p">))</span><span class="o">.</span><span class="n">delimiter</span>
+    <span class="k">return</span> <span class="n">delimiter</span></div>
+
+<div class="viewcode-block" id="read_experimental_file"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/FitterTab/index.html#PDielec.GUI.FitterTab.read_experimental_file">[docs]</a><span class="k">def</span> <span class="nf">read_experimental_file</span><span class="p">(</span><span class="n">file_name</span><span class="p">,</span><span class="n">frequency_column</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">spectrum_column</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">sheet_name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">debug</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Read an experimental file.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    file_name : str</span>
+<span class="sd">        An xlsx or a csv file containing the experimental spectrum</span>
+<span class="sd">    frequency_column : int</span>
+<span class="sd">        The frequency column in the spread sheet, default is 1.  The first column in a sheet is column 1</span>
+<span class="sd">    spectrum_column : int</span>
+<span class="sd">        The spectrum column in the spread sheet, default is 2.  The first column in a sheet is column 1</span>
+<span class="sd">    sheet_name : str</span>
+<span class="sd">        The name of the spreadsheet to be used to extract the frequency and spectrum, default is None</span>
+<span class="sd">    debug : boolean</span>
+<span class="sd">        True if debug information is needed, default is False</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    experimental_frequencies : an array of floats</span>
+<span class="sd">        The experimental frequencies in cm-1</span>
+<span class="sd">    experimental_spectrum : an array of floats</span>
+<span class="sd">        The experimental spectrum</span>
+
+<span class="sd">    Errors</span>
+<span class="sd">    ------</span>
+<span class="sd">    If any errors occur, such as a file not existing, empty arrays/lists are returned, :w</span>
+
+<span class="sd">    &quot;&quot;&quot;</span> 
+    <span class="n">experimental_frequencies</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">experimental_spectrum</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">if</span> <span class="n">debug</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;FitterTab: Start:: read_experimental_file&#39;</span><span class="p">,</span><span class="n">file_name</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">file_name</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">debug</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;FitterTab: Finished:: read_experimental_file does not exist&#39;</span><span class="p">,</span><span class="n">file_name</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">experimental_frequencies</span><span class="p">,</span> <span class="n">experimental_spectrum</span>
+    <span class="k">if</span> <span class="n">file_name</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;.csv&#39;</span><span class="p">):</span>
+        <span class="c1"># Read in a csv file, discard alphanumerics</span>
+        <span class="kn">import</span> <span class="nn">csv</span>
+        <span class="n">delimiter</span> <span class="o">=</span> <span class="n">find_delimiter</span><span class="p">(</span><span class="n">file_name</span><span class="p">)</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">file_name</span><span class="p">)</span> <span class="k">as</span> <span class="n">fd</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">debug</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;FitterTab: Reading csv file::&#39;</span><span class="p">)</span>
+            <span class="n">csv_reader</span> <span class="o">=</span> <span class="n">csv</span><span class="o">.</span><span class="n">reader</span><span class="p">(</span><span class="n">fd</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="n">delimiter</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">csv_reader</span><span class="p">:</span>
+               <span class="c1"># attempt to convert string to float</span>
+               <span class="k">if</span> <span class="n">is_float</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="n">frequency_column</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span> <span class="ow">and</span> <span class="n">is_float</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="n">spectrum_column</span><span class="o">-</span><span class="mi">1</span><span class="p">]):</span>
+                   <span class="n">experimental_frequencies</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="n">frequency_column</span><span class="o">-</span><span class="mi">1</span><span class="p">]))</span>
+                   <span class="n">experimental_spectrum</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="n">spectrum_column</span><span class="o">-</span><span class="mi">1</span><span class="p">]))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c1"># Read in a xlsx file, discard alphanumerics</span>
+        <span class="kn">from</span> <span class="nn">openpyxl</span> <span class="kn">import</span> <span class="n">load_workbook</span>
+        <span class="kn">import</span> <span class="nn">warnings</span>
+        <span class="k">if</span> <span class="n">debug</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;FitterTab: Reading xlsx file::&#39;</span><span class="p">)</span>
+        <span class="k">with</span> <span class="n">warnings</span><span class="o">.</span><span class="n">catch_warnings</span><span class="p">():</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">simplefilter</span><span class="p">(</span><span class="s2">&quot;ignore&quot;</span><span class="p">)</span>
+            <span class="n">wb</span> <span class="o">=</span> <span class="n">load_workbook</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="n">file_name</span><span class="p">,</span> <span class="n">read_only</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">sheetnames</span> <span class="o">=</span> <span class="n">wb</span><span class="o">.</span><span class="n">sheetnames</span>
+        <span class="k">if</span> <span class="n">sheet_name</span> <span class="ow">in</span> <span class="n">sheetnames</span><span class="p">:</span>
+            <span class="n">ws</span> <span class="o">=</span> <span class="n">wb</span><span class="p">[</span><span class="n">sheet_name</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">ws</span> <span class="o">=</span> <span class="n">wb</span><span class="o">.</span><span class="n">worksheets</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">ws</span><span class="o">.</span><span class="n">rows</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="n">frequency_column</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">complex</span><span class="p">)):</span>
+                <span class="n">experimental_frequencies</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="n">frequency_column</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+                <span class="n">experimental_spectrum</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="n">spectrum_column</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+        <span class="n">wb</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">debug</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;FitterTab: Finished:: read_experimental_file&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">experimental_frequencies</span><span class="p">,</span> <span class="n">experimental_spectrum</span></div>
+
+<div class="viewcode-block" id="resample_experimental_spectrum"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/FitterTab/index.html#PDielec.GUI.FitterTab.resample_experimental_spectrum">[docs]</a><span class="k">def</span> <span class="nf">resample_experimental_spectrum</span><span class="p">(</span><span class="n">calculated_frequencies</span><span class="p">,</span>
+                                   <span class="n">experimental_frequencies</span><span class="p">,</span> <span class="n">experimental_spectrum</span><span class="p">,</span>
+                                   <span class="n">baseline_removal</span><span class="o">=</span><span class="s1">&#39;False&#39;</span><span class="p">,</span> <span class="n">HPFilter_lambda</span><span class="o">=</span><span class="mf">7.0</span><span class="p">,</span>
+                                   <span class="n">debug</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Resample the experimental spectrum to match calculated frequencies and optionally apply baseline removal.</span>
+
+<span class="sd">    This method modifies the experimental spectrum to align with the calculated </span>
+<span class="sd">    frequencies. It pads the spectrum at both ends with zeros outside the calculated</span>
+<span class="sd">    frequencies range, then uses cubic interpolation over the whole range. </span>
+<span class="sd">    If &#39;baseline_removal&#39; is enabled, applies the Hodrick-Prescott filter </span>
+<span class="sd">    for baseline removal on the resampled spectrum.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    calculated_frequencies : array of floats</span>
+<span class="sd">        The frequencies the caculated spectrum is tabulated </span>
+<span class="sd">    experimental_frequencies : array of floats</span>
+<span class="sd">        The frequencies the experimental spectrum is tabulated </span>
+<span class="sd">    experimental_spectrum : array of floats</span>
+<span class="sd">        The experimental spectrum</span>
+<span class="sd">    baseline_removal : boolean</span>
+<span class="sd">        Optional switches on baseline removal using a Hodrick-Prescott filter, default is False</span>
+<span class="sd">    HPFilter_lambda : float</span>
+<span class="sd">        The value of lambda in in the Hodrick-Prescott filter, default value is 7.0</span>
+<span class="sd">    debug : boolean</span>
+<span class="sd">        Optional switches on some debug information, default is False</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    None</span>
+<span class="sd">        Modifies the instance&#39;s resampled_experimental_spectrum in place.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>        
+    <span class="k">if</span> <span class="p">(</span><span class="n">debug</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Start:: Resample_experimental_spectrum&#39;</span><span class="p">)</span>
+    <span class="c1">#</span>
+    <span class="c1"># If the experimental frequencies starts at a higher frequency </span>
+    <span class="c1"># than the calculated frequencies then add new frequencies to pad the range out</span>
+    <span class="c1">#</span>
+    <span class="n">xaxis</span> <span class="o">=</span> <span class="n">calculated_frequencies</span>
+    <span class="c1"># indices is true if the experimental frequency is outside the range of the calculated</span>
+    <span class="n">indices</span> <span class="o">=</span> <span class="n">xaxis</span> <span class="o">&lt;</span> <span class="n">experimental_frequencies</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    
+    <span class="n">padded_xaxis</span> <span class="o">=</span> <span class="n">xaxis</span><span class="p">[</span><span class="n">indices</span><span class="p">]</span>
+    <span class="n">padded_yaxis</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span> <span class="mi">0</span> <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="n">indices</span> <span class="k">if</span> <span class="n">index</span> <span class="p">])</span>
+    <span class="c1"># Add the experimental frequencies</span>
+    <span class="n">padded_xaxis</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">padded_xaxis</span><span class="p">,</span><span class="n">experimental_frequencies</span><span class="p">)</span>
+    <span class="n">padded_yaxis</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">padded_yaxis</span><span class="p">,</span><span class="n">experimental_spectrum</span><span class="p">)</span>
+    <span class="c1"># If the experimental frequencies ends at a lower frequency </span>
+    <span class="c1"># than the calculated frequencies then add new frequencies to pad the range out</span>
+    <span class="n">indices</span> <span class="o">=</span> <span class="n">xaxis</span> <span class="o">&gt;</span> <span class="n">experimental_frequencies</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">padded_xaxis</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">padded_xaxis</span><span class="p">,</span><span class="n">xaxis</span><span class="p">[</span><span class="n">indices</span><span class="p">])</span>
+    <span class="n">padded_yaxis</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">padded_yaxis</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span> <span class="mi">0</span> <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="n">indices</span> <span class="k">if</span> <span class="n">index</span> <span class="p">])</span> <span class="p">)</span>
+    <span class="c1"># </span>
+    <span class="c1"># Create a function using the padded frequencies to calculate the spectrum at the calculated frequencies</span>
+    <span class="c1">#</span>
+    <span class="n">f</span> <span class="o">=</span> <span class="n">interp1d</span><span class="p">(</span><span class="n">padded_xaxis</span><span class="p">,</span> <span class="n">padded_yaxis</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="s1">&#39;cubic&#39;</span><span class="p">,</span><span class="n">fill_value</span><span class="o">=</span><span class="s1">&#39;extrapolate&#39;</span><span class="p">)</span>
+    <span class="c1"># Store the experimental spectrum at the calculated frequencies</span>
+    <span class="n">resampled_experimental_spectrum</span> <span class="o">=</span> <span class="n">f</span><span class="p">(</span><span class="n">xaxis</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">baseline_removal</span><span class="p">:</span>
+        <span class="c1"># Apply a Hodrick-Prescott filter to remove the background</span>
+        <span class="n">resampled_experimental_spectrum</span> <span class="o">=</span> <span class="n">Calculator</span><span class="o">.</span><span class="n">hodrick_prescott_filter</span><span class="p">(</span>
+                                      <span class="n">resampled_experimental_spectrum</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">,</span>
+                                      <span class="n">HPFilter_lambda</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">debug</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Finished:: Resample_experimental_spectrum&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">resampled_experimental_spectrum</span></div>
+
+<div class="viewcode-block" id="calculateCrossCorrelation"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/FitterTab/index.html#PDielec.GUI.FitterTab.calculateCrossCorrelation">[docs]</a><span class="k">def</span> <span class="nf">calculateCrossCorrelation</span><span class="p">(</span><span class="n">xaxis</span><span class="p">,</span> <span class="n">calculated_spectrum</span><span class="p">,</span> <span class="n">experimental_spectrum</span><span class="p">,</span>
+                              <span class="n">scaling_factor</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">debug</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculates the cross-correlation between the experimental spectrum and a calculated spectrum, with an applied scaling factor.</span>
+
+<span class="sd">    The calculated and experimental spectra share the same frequencies (xaxis).  If a scaling factor is applied, </span>
+<span class="sd">    the calculated spectrum x-axis is rescaled according to the scaling factor.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    xaxis : 1d array of floats</span>
+<span class="sd">        An array frequencies valid for both the calculated and experimental spectra</span>
+<span class="sd">    calculated_spectrum : 1d array of floats</span>
+<span class="sd">        The calculated spectrum</span>
+<span class="sd">    experimental_spectrum : 1d array of floats</span>
+<span class="sd">        The experimental spectrum</span>
+<span class="sd">    scaling_factor : float, optional</span>
+<span class="sd">        The factor by which the x-axis of the calculated spectrum is scaled, default is 1.0</span>
+<span class="sd">    debug : boolean, optional</span>
+<span class="sd">        Set to true for debugging information</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    tuple</span>
+<span class="sd">        A tuple containing:</span>
+<span class="sd">        - lag: The lag at which the maximum correlation occurs.</span>
+<span class="sd">        - max_corr: The maximum correlation value.</span>
+<span class="sd">        - center_corr: The correlation value at the center (zero lag).</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    The calculated spectrum&#39;s x-axis is rescaled according to the `scaling_factor`. The correlation is performed on the normalized (zero-mean unit-variance) spectra. Interpolation of the calculated spectrum onto the experimental spectrum&#39;s x-axis is performed using cubic interpolation.</span>
+<span class="sd">    &quot;&quot;&quot;</span>        
+    <span class="k">if</span> <span class="n">debug</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Start:: calculateCrossCorrelation&#39;</span><span class="p">,</span><span class="n">scaling_factor</span><span class="p">)</span>
+    <span class="c1"># Calculate the cross correlation coefficient between the experimental and the first scenario</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">experimental_spectrum</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">calculated_spectrum</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">xaxis</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">debug</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;The experimental spectrum has not been specified&#39;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">experimental_spectrum</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;calculateCrossCorrelation experimental_spectrum is not defined&#39;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">calculated_spectrum</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;calculateCrossCorrelation experimental_spectrum is not defined&#39;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">xaxis</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;calculateCrossCorrelation the x-axis frequencies are not defined&#39;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Finshed:: calculateCrossCorrelation&#39;</span><span class="p">,</span><span class="n">scaling_factor</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">(</span><span class="mf">0.0</span><span class="p">,</span><span class="mf">0.0</span><span class="p">,</span><span class="mf">0.0</span><span class="p">)</span>
+    <span class="c1"># col1 contains the experimental spectrum</span>
+    <span class="n">col1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">experimental_spectrum</span><span class="p">)</span>
+    <span class="n">col1</span> <span class="o">=</span> <span class="p">(</span> <span class="n">col1</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">col1</span><span class="p">))</span> <span class="o">/</span> <span class="p">(</span> <span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">col1</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">col1</span><span class="p">))</span> <span class="p">)</span>
+    <span class="c1"># col2 contains the calculated spectrum</span>
+    <span class="n">col2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">calculated_spectrum</span><span class="p">)</span>
+    <span class="c1"># The new xaxis for the calculated spectrum is scaling_factor*xaxis</span>
+    <span class="n">f</span> <span class="o">=</span> <span class="n">interp1d</span><span class="p">(</span><span class="n">scaling_factor</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">xaxis</span><span class="p">),</span> <span class="n">col2</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="s1">&#39;cubic&#39;</span><span class="p">,</span><span class="n">fill_value</span><span class="o">=</span><span class="s1">&#39;extrapolate&#39;</span><span class="p">)</span>
+    <span class="n">col2</span> <span class="o">=</span> <span class="n">f</span><span class="p">(</span><span class="n">xaxis</span><span class="p">)</span>
+    <span class="n">col2</span> <span class="o">=</span> <span class="p">(</span> <span class="n">col2</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">col2</span><span class="p">))</span> <span class="o">/</span> <span class="p">(</span> <span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">col2</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">col2</span><span class="p">))</span> <span class="p">)</span>
+    <span class="n">correlation</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">correlate</span><span class="p">(</span><span class="n">col1</span><span class="p">,</span> <span class="n">col2</span><span class="p">,</span>  <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;full&#39;</span><span class="p">)</span>
+    <span class="n">lag</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">correlation</span><span class="p">)</span> <span class="o">-</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">correlation</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span>
+    <span class="n">lag</span> <span class="o">=</span> <span class="p">(</span><span class="n">xaxis</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">xaxis</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">*</span> <span class="n">lag</span>
+    <span class="k">if</span> <span class="n">debug</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;lag , max(corr), index&#39;</span><span class="p">,</span> <span class="n">lag</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">correlation</span><span class="p">),</span><span class="n">correlation</span><span class="p">[</span><span class="nb">int</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">correlation</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span><span class="p">)])</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Finshed:: calculateCrossCorrelation&#39;</span><span class="p">,</span><span class="n">scaling_factor</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">lag</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">correlation</span><span class="p">),</span><span class="n">correlation</span><span class="p">[</span><span class="nb">int</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">correlation</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span><span class="p">)])</span></div>
+
+<div class="viewcode-block" id="calculateSpectralDifference"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/FitterTab/index.html#PDielec.GUI.FitterTab.calculateSpectralDifference">[docs]</a><span class="k">def</span> <span class="nf">calculateSpectralDifference</span><span class="p">(</span><span class="n">xaxis</span><span class="p">,</span><span class="n">calculated_spectrum</span><span class="p">,</span><span class="n">experimental_spectrum</span><span class="p">,</span>
+                            <span class="n">spectral_threshold</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span> <span class="n">scaling_factor</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">debug</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculate the root mean square error (RMSE) between a renormalised experimental spectrum and calculated spectrum after applying a scaling factor.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    xaxis : 1d array of floats</span>
+<span class="sd">        An array frequencies valid for both the calculated and experimental spectra</span>
+<span class="sd">    calculated_spectrum : 1d array of floats</span>
+<span class="sd">        The calculated spectrum</span>
+<span class="sd">    experimental_spectrum : 1d array of floats</span>
+<span class="sd">        The experimental spectrum</span>
+<span class="sd">    scaling_factor : float, optional</span>
+<span class="sd">        The factor by which the x-axis of the calculated spectrum is scaled, default is 1.0</span>
+<span class="sd">    spectral_threshold : float,optional</span>
+<span class="sd">        Only signals greater than the threshold are considered in the difference calculation. Default is 0.05</span>
+<span class="sd">    debug : boolean, optional</span>
+<span class="sd">        Set to true for debugging information</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    float</span>
+<span class="sd">        The root mean square error between the resampled experimental spectrum and the scaled calculated spectrum.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    - This method modifies the spectra by scaling, normalization, and thresholding before calculating the RMSE.</span>
+<span class="sd">    - If the resampled experimental spectrum is empty, the method returns 0.0 immediately.</span>
+<span class="sd">    - Uses cubic interpolation for scaling the calculated spectrum.</span>
+<span class="sd">    - Normalization is performed based on the maximum value in the experimental spectrum.</span>
+<span class="sd">    &quot;&quot;&quot;</span>        
+    <span class="k">if</span> <span class="n">debug</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;FitterTab: calculateSpectralDifference&#39;</span><span class="p">,</span><span class="n">scaling_factor</span><span class="p">)</span>
+    <span class="c1"># Calculate the spectral difference  between the experimental and the first scenario</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">experimental_spectrum</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mf">0.0</span>
+    <span class="c1"># col1 contains the experimental spectrum</span>
+    <span class="n">col1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">experimental_spectrum</span><span class="p">)</span>
+    <span class="n">maxcol1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">col1</span><span class="p">)</span>
+    <span class="n">col1</span> <span class="o">=</span> <span class="n">col1</span> <span class="o">/</span> <span class="n">maxcol1</span>
+    <span class="n">col1</span><span class="p">[</span> <span class="n">col1</span><span class="o">&lt;</span> <span class="n">spectral_threshold</span> <span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span>
+    <span class="c1"># col2 contains the calculated spectrum</span>
+    <span class="n">col2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">calculated_spectrum</span><span class="p">)</span>
+    <span class="c1"># The new xaxis for the calculated spectrum is scaling_factor*xaxis</span>
+    <span class="n">f</span> <span class="o">=</span> <span class="n">interp1d</span><span class="p">(</span><span class="n">scaling_factor</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">xaxis</span><span class="p">),</span> <span class="n">col2</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="s1">&#39;cubic&#39;</span><span class="p">,</span><span class="n">fill_value</span><span class="o">=</span><span class="s1">&#39;extrapolate&#39;</span><span class="p">)</span>
+    <span class="n">col2</span> <span class="o">=</span> <span class="n">f</span><span class="p">(</span><span class="n">xaxis</span><span class="p">)</span>
+    <span class="c1"># Note the normalisation of col2 is to col1 (the experimental spectrum)</span>
+    <span class="n">col2</span> <span class="o">=</span> <span class="n">col2</span> <span class="o">/</span> <span class="n">maxcol1</span>
+    <span class="n">col2</span><span class="p">[</span> <span class="n">col2</span><span class="o">&lt;</span> <span class="n">spectral_threshold</span> <span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span>
+    <span class="n">diff</span> <span class="o">=</span> <span class="n">col1</span> <span class="o">-</span> <span class="n">col2</span>
+    <span class="n">rmse</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">diff</span><span class="p">,</span><span class="n">diff</span><span class="p">)</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">col2</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">debug</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;FitterTab: rmse&#39;</span><span class="p">,</span><span class="n">rmse</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;FitterTab: Finished:: optimiseFunction&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">rmse</span></div>
+
 <div class="viewcode-block" id="FitterTab"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/FitterTab/index.html#PDielec.GUI.FitterTab.FitterTab">[docs]</a><span class="k">class</span> <span class="nc">FitterTab</span><span class="p">(</span><span class="n">QWidget</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A class for managing and displaying a spectroscopic fitting interface within a QWidget.</span>
@@ -373,10 +683,6 @@
 <span class="sd">        Optimises the fitting parameters.</span>
 <span class="sd">    optimiseFunction(self, variables)</span>
 <span class="sd">        Function to be optimised during the fitting process.</span>
-<span class="sd">    calculateSpectralDifference(self, scaling_factor)</span>
-<span class="sd">        Calculates the spectral difference between experimental and calculated spectra.</span>
-<span class="sd">    calculateCrossCorrelation(self, scaling_factor)</span>
-<span class="sd">        Calculates the cross-correlation between experimental and calculated spectra.</span>
 <span class="sd">    redraw_sigmas_tw(self)</span>
 <span class="sd">        Redraws the table widget for sigma values based on current settings.</span>
 <span class="sd">    on_fitting_type_cb_activated(self, index)</span>
@@ -385,12 +691,6 @@
 <span class="sd">        Handles selection changes in the scenario combo box.</span>
 <span class="sd">    on_spectrafile_le_return(self)</span>
 <span class="sd">        Handles actions to take when the spectra file line edit has a return event.</span>
-<span class="sd">    is_float(self, element)</span>
-<span class="sd">        Tests if the given element can be converted to a float.</span>
-<span class="sd">    find_delimiter(self, filename)</span>
-<span class="sd">        Finds the delimiter used in a given CSV file.</span>
-<span class="sd">    read_experimental_file(self)</span>
-<span class="sd">        Reads experimental spectrum data from a specified file.</span>
 <span class="sd">    on_spectrafile_le_changed(self, text)</span>
 <span class="sd">        Handles changes to the spectra file line edit text.</span>
 <span class="sd">    on_sigmas_tw_itemChanged(self, item)</span>
@@ -403,8 +703,6 @@
 <span class="sd">        Refreshes the interface based on current settings and data.</span>
 <span class="sd">    requestRefresh(self)</span>
 <span class="sd">        Requests a refresh of the interface.</span>
-<span class="sd">    resample_experimental_spectrum(self)</span>
-<span class="sd">        Resamples the experimental spectrum to match the calculated spectrum frequency points.</span>
 <span class="sd">    &quot;&quot;&quot;</span>    
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">,</span> <span class="n">debug</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -578,8 +876,6 @@
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">modes_fitted</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">modes_selected</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">modes_selected</span> <span class="o">=</span> <span class="p">[</span> <span class="kc">False</span>  <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">modes_selected</span> <span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">sigmas_tw</span> <span class="o">=</span> <span class="n">FixedQTableWidget</span><span class="p">(</span><span class="n">parent</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span><span class="n">rows</span><span class="o">=</span><span class="mi">7</span><span class="p">)</span>
-        <span class="c1">#jk sizePolicy = QSizePolicy(QSizePolicy.Minimum,QSizePolicy.Minimum)</span>
-        <span class="c1">#jk self.sigmas_tw.setSizePolicy(sizePolicy)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">sigmas_tw</span><span class="o">.</span><span class="n">setToolTip</span><span class="p">(</span><span class="s1">&#39;Choose the sigmas which will be used in the fitting&#39;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">sigmas_tw</span><span class="o">.</span><span class="n">itemChanged</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">on_sigmas_tw_itemChanged</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">sigmas_tw</span><span class="o">.</span><span class="n">setRowCount</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sigmas_cm1</span><span class="p">)))</span>
@@ -1139,102 +1435,6 @@
         <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s1">&#39;Finished:: optimiseFunction&#39;</span><span class="p">,</span><span class="n">function_value</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">function_value</span></div>
 
-<div class="viewcode-block" id="FitterTab.calculateSpectralDifference"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/FitterTab/index.html#PDielec.GUI.FitterTab.FitterTab.calculateSpectralDifference">[docs]</a>    <span class="k">def</span> <span class="nf">calculateSpectralDifference</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">scaling_factor</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Calculate the root mean square error (RMSE) between a resampled experimental spectrum and a calculated spectrum after applying a scaling factor.</span>
-
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        scaling_factor : float</span>
-<span class="sd">            The factor by which to scale the experimental spectrum before comparing with the calculated spectrum.</span>
-
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        float</span>
-<span class="sd">            The root mean square error between the resampled experimental spectrum and the scaled calculated spectrum.</span>
-
-<span class="sd">        Notes</span>
-<span class="sd">        -----</span>
-<span class="sd">        - This method modifies the spectra by scaling, normalization, and thresholding before calculating the RMSE.</span>
-<span class="sd">        - If the resampled experimental spectrum is empty, the method returns 0.0 immediately.</span>
-<span class="sd">        - The method assumes that `self.resampled_experimental_spectrum` and `self.calculated_spectrum` are accessible and properly formatted.</span>
-<span class="sd">        - Assumes `self.settings[&#39;Spectral difference threshold&#39;]` is defined and accessible, and is used to filter out values below this threshold.</span>
-<span class="sd">        - Uses cubic interpolation for scaling the calculated spectrum.</span>
-<span class="sd">        - Normalization is performed based on the maximum value in the experimental spectrum.</span>
-
-<span class="sd">        Raises</span>
-<span class="sd">        ------</span>
-<span class="sd">        - This function implicitly depends on the correctness of external variables and the environment (e.g., `self.resampled_experimental_spectrum`, `self.calculated_spectrum`, `self.settings`, and `self.xaxis`). Errors related to these dependencies are not explicitly handled by this function.</span>
-<span class="sd">        &quot;&quot;&quot;</span>        
-        <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s1">&#39;calculateSpectralDifference&#39;</span><span class="p">,</span><span class="n">scaling_factor</span><span class="p">)</span>
-        <span class="c1"># Calculate the spectral difference  between the experimental and the first scenario</span>
-        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">resampled_experimental_spectrum</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="k">return</span> <span class="mf">0.0</span>
-        <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s1">&#39;Start:: optimiseFunction&#39;</span><span class="p">)</span>
-        <span class="c1"># col1 contains the resampled_experimental spectrum</span>
-        <span class="n">col1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">resampled_experimental_spectrum</span><span class="p">)</span>
-        <span class="n">maxcol1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">col1</span><span class="p">)</span>
-        <span class="n">col1</span> <span class="o">=</span> <span class="n">col1</span> <span class="o">/</span> <span class="n">maxcol1</span>
-        <span class="n">col1</span><span class="p">[</span> <span class="n">col1</span><span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;Spectral difference threshold&#39;</span><span class="p">]</span> <span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span>
-<span class="c1">#        for i,val in enumerate(col1):</span>
-<span class="c1">#            if val &lt; self.settings[&#39;Spectral difference threshold&#39;]:</span>
-<span class="c1">#                col1[i] = 0.0</span>
-        <span class="c1"># col2 contains the calculated spectrum</span>
-        <span class="n">col2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">calculated_spectrum</span><span class="p">)</span>
-        <span class="c1"># The new xaxis for the calculated spectrum is scaling_factor*xaxis</span>
-        <span class="n">f</span> <span class="o">=</span> <span class="n">interp1d</span><span class="p">(</span><span class="n">scaling_factor</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">xaxis</span><span class="p">),</span> <span class="n">col2</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="s1">&#39;cubic&#39;</span><span class="p">,</span><span class="n">fill_value</span><span class="o">=</span><span class="s1">&#39;extrapolate&#39;</span><span class="p">)</span>
-        <span class="n">col2</span> <span class="o">=</span> <span class="n">f</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">xaxis</span><span class="p">)</span>
-        <span class="n">col2</span> <span class="o">=</span> <span class="n">col2</span> <span class="o">/</span> <span class="n">maxcol1</span>
-        <span class="n">col1</span><span class="p">[</span> <span class="n">col1</span><span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;Spectral difference threshold&#39;</span><span class="p">]</span> <span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span>
-        <span class="n">diff</span> <span class="o">=</span> <span class="n">col1</span> <span class="o">-</span> <span class="n">col2</span>
-        <span class="n">rmse</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">diff</span><span class="p">,</span><span class="n">diff</span><span class="p">)</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">col2</span><span class="p">))</span>
-        <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s1">&#39;rmse&#39;</span><span class="p">,</span><span class="n">rmse</span><span class="p">)</span>
-        <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s1">&#39;Finished:: optimiseFunction&#39;</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">rmse</span></div>
-
-<div class="viewcode-block" id="FitterTab.calculateCrossCorrelation"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/FitterTab/index.html#PDielec.GUI.FitterTab.FitterTab.calculateCrossCorrelation">[docs]</a>    <span class="k">def</span> <span class="nf">calculateCrossCorrelation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">scaling_factor</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Calculates the cross-correlation between the experimental spectrum and a calculated spectrum, with an applied scaling factor.</span>
-
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        scaling_factor : float</span>
-<span class="sd">            The factor by which the x-axis of the calculated spectrum is scaled.</span>
-
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        tuple</span>
-<span class="sd">            A tuple containing:</span>
-<span class="sd">            - lag: The lag at which the maximum correlation occurs.</span>
-<span class="sd">            - max_corr: The maximum correlation value.</span>
-<span class="sd">            - center_corr: The correlation value at the center (zero lag).</span>
-
-<span class="sd">        Notes</span>
-<span class="sd">        -----</span>
-<span class="sd">        The calculated spectrum&#39;s x-axis is rescaled according to the `scaling_factor`. The correlation is performed on the normalized (zero-mean unit-variance) spectra. Interpolation of the calculated spectrum onto the experimental spectrum&#39;s x-axis is performed using cubic interpolation.</span>
-<span class="sd">        &quot;&quot;&quot;</span>        
-        <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s1">&#39;Start:: calculateCrossCorrelation&#39;</span><span class="p">,</span><span class="n">scaling_factor</span><span class="p">)</span>
-        <span class="c1"># Calculate the cross correlation coefficient between the experimental and the first scenario</span>
-        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">resampled_experimental_spectrum</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s1">&#39;calculateCrossCorrelation resampled_experimental_spectrum is not defined&#39;</span><span class="p">)</span>
-            <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s1">&#39;Finshed:: calculateCrossCorrelation&#39;</span><span class="p">,</span><span class="n">scaling_factor</span><span class="p">)</span>
-            <span class="k">return</span> <span class="p">(</span><span class="mf">0.0</span><span class="p">,</span><span class="mf">0.0</span><span class="p">,</span><span class="mf">0.0</span><span class="p">)</span>
-        <span class="c1"># col1 contains the experimental spectrum</span>
-        <span class="n">col1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">resampled_experimental_spectrum</span><span class="p">)</span>
-        <span class="n">col1</span> <span class="o">=</span> <span class="p">(</span> <span class="n">col1</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">col1</span><span class="p">))</span> <span class="o">/</span> <span class="p">(</span> <span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">col1</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">col1</span><span class="p">))</span> <span class="p">)</span>
-        <span class="c1"># col2 contains the calculated spectrum</span>
-        <span class="n">col2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">calculated_spectrum</span><span class="p">)</span>
-        <span class="c1"># The new xaxis for the calculated spectrum is scaling_factor*xaxis</span>
-        <span class="n">f</span> <span class="o">=</span> <span class="n">interp1d</span><span class="p">(</span><span class="n">scaling_factor</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">xaxis</span><span class="p">),</span> <span class="n">col2</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="s1">&#39;cubic&#39;</span><span class="p">,</span><span class="n">fill_value</span><span class="o">=</span><span class="s1">&#39;extrapolate&#39;</span><span class="p">)</span>
-        <span class="n">col2</span> <span class="o">=</span> <span class="n">f</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">xaxis</span><span class="p">)</span>
-        <span class="n">col2</span> <span class="o">=</span> <span class="p">(</span> <span class="n">col2</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">col2</span><span class="p">))</span> <span class="o">/</span> <span class="p">(</span> <span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">col2</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">col2</span><span class="p">))</span> <span class="p">)</span>
-        <span class="n">correlation</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">correlate</span><span class="p">(</span><span class="n">col1</span><span class="p">,</span> <span class="n">col2</span><span class="p">,</span>  <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;full&#39;</span><span class="p">)</span>
-        <span class="n">lag</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">correlation</span><span class="p">)</span> <span class="o">-</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">correlation</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span>
-        <span class="n">lag</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">xaxis</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">xaxis</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">*</span> <span class="n">lag</span>
-        <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s1">&#39;lag , max(corr), index&#39;</span><span class="p">,</span> <span class="n">lag</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">correlation</span><span class="p">),</span><span class="n">correlation</span><span class="p">[</span><span class="nb">int</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">correlation</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span><span class="p">)])</span>
-        <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s1">&#39;Finshed:: calculateCrossCorrelation&#39;</span><span class="p">,</span><span class="n">scaling_factor</span><span class="p">)</span>
-        <span class="k">return</span> <span class="p">(</span><span class="n">lag</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">correlation</span><span class="p">),</span><span class="n">correlation</span><span class="p">[</span><span class="nb">int</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">correlation</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span><span class="p">)])</span></div>
-
 
 <div class="viewcode-block" id="FitterTab.redraw_sigmas_tw"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/FitterTab/index.html#PDielec.GUI.FitterTab.FitterTab.redraw_sigmas_tw">[docs]</a>    <span class="k">def</span> <span class="nf">redraw_sigmas_tw</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -1381,103 +1581,6 @@
         <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s1">&#39;Finished:: on_spectrafile_le_return&#39;</span><span class="p">)</span>
         <span class="k">return</span></div>
 
-<div class="viewcode-block" id="FitterTab.is_float"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/FitterTab/index.html#PDielec.GUI.FitterTab.FitterTab.is_float">[docs]</a>    <span class="k">def</span> <span class="nf">is_float</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">element</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Test to see if element is a float.</span>
-
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        element : Any</span>
-
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        bool</span>
-<span class="sd">            True if the element is a float, False otherwise.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c1">#If you expect None to be passed:</span>
-        <span class="k">if</span> <span class="n">element</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span> 
-            <span class="k">return</span> <span class="kc">False</span>
-        <span class="k">try</span><span class="p">:</span>
-            <span class="nb">float</span><span class="p">(</span><span class="n">element</span><span class="p">)</span>
-            <span class="k">return</span> <span class="kc">True</span>
-        <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
-            <span class="k">return</span> <span class="kc">False</span></div>
-
-<div class="viewcode-block" id="FitterTab.find_delimiter"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/FitterTab/index.html#PDielec.GUI.FitterTab.FitterTab.find_delimiter">[docs]</a>    <span class="k">def</span> <span class="nf">find_delimiter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">filename</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Find the delimiter used in a CSV file.</span>
-
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        filename : str</span>
-<span class="sd">            The path to the file for which the delimiter is to be determined.</span>
-
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        str</span>
-<span class="sd">            The detected delimiter character.</span>
-
-<span class="sd">        Notes</span>
-<span class="sd">        -----</span>
-<span class="sd">        This function uses the `csv.Sniffer` class to deduce the delimiter of</span>
-<span class="sd">        the given file by analyzing the first 5000 bytes of the file.</span>
-<span class="sd">        &quot;&quot;&quot;</span>        
-        <span class="kn">import</span> <span class="nn">csv</span>
-        <span class="n">sniffer</span> <span class="o">=</span> <span class="n">csv</span><span class="o">.</span><span class="n">Sniffer</span><span class="p">()</span>
-        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
-            <span class="n">delimiter</span> <span class="o">=</span> <span class="n">sniffer</span><span class="o">.</span><span class="n">sniff</span><span class="p">(</span><span class="n">fp</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="mi">5000</span><span class="p">))</span><span class="o">.</span><span class="n">delimiter</span>
-        <span class="k">return</span> <span class="n">delimiter</span></div>
-
-<div class="viewcode-block" id="FitterTab.read_experimental_file"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/FitterTab/index.html#PDielec.GUI.FitterTab.FitterTab.read_experimental_file">[docs]</a>    <span class="k">def</span> <span class="nf">read_experimental_file</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Read an experimental file.</span>
-
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        None</span>
-
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        self.experimental_frequencies</span>
-<span class="sd">        self.experimental_spectrum</span>
-<span class="sd">        &quot;&quot;&quot;</span> 
-        <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s1">&#39;Start:: read_experimental_file&#39;</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;Experimental file name&#39;</span><span class="p">])</span>
-        <span class="n">file_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;Experimental file name&#39;</span><span class="p">]</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">file_name</span><span class="p">):</span>
-            <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s1">&#39;Finished:: read_experimental_file does not exist&#39;</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;Experimental file name&#39;</span><span class="p">])</span>
-            <span class="k">return</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">experimental_file_has_been_read</span><span class="p">:</span>
-            <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s1">&#39;Finished:: read_experimental_file has been read&#39;</span><span class="p">)</span>
-            <span class="k">return</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">experimental_frequencies</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">experimental_spectrum</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">if</span> <span class="n">file_name</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;.csv&#39;</span><span class="p">):</span>
-            <span class="c1"># Read in a csv file, discard alphanumerics</span>
-            <span class="kn">import</span> <span class="nn">csv</span>
-            <span class="n">delimiter</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">find_delimiter</span><span class="p">(</span><span class="n">file_name</span><span class="p">)</span>
-            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">file_name</span><span class="p">)</span> <span class="k">as</span> <span class="n">fd</span><span class="p">:</span>
-                <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s1">&#39;Reading csv file::&#39;</span><span class="p">)</span>
-                <span class="n">csv_reader</span> <span class="o">=</span> <span class="n">csv</span><span class="o">.</span><span class="n">reader</span><span class="p">(</span><span class="n">fd</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="n">delimiter</span><span class="p">)</span>
-                <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">csv_reader</span><span class="p">:</span>
-                   <span class="c1"># attempt to convert string to float</span>
-                   <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_float</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_float</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
-                       <span class="bp">self</span><span class="o">.</span><span class="n">experimental_frequencies</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
-                       <span class="bp">self</span><span class="o">.</span><span class="n">experimental_spectrum</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="c1"># Read in a xlsx file, discard alphanumerics</span>
-            <span class="kn">from</span> <span class="nn">openpyxl</span> <span class="kn">import</span> <span class="n">load_workbook</span>
-            <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s1">&#39;Reading xlsx file::&#39;</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">wb</span> <span class="o">=</span> <span class="n">load_workbook</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;Experimental file name&#39;</span><span class="p">],</span> <span class="n">read_only</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">ws</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">wb</span><span class="o">.</span><span class="n">worksheets</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-            <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">ws</span><span class="o">.</span><span class="n">rows</span><span class="p">:</span>
-                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">complex</span><span class="p">)):</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">experimental_frequencies</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">experimental_spectrum</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">experimental_file_has_been_read</span> <span class="o">=</span> <span class="kc">True</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">refreshRequired</span> <span class="o">=</span> <span class="kc">True</span>
-        <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s1">&#39;Finished:: read_experimental_file&#39;</span><span class="p">)</span>
-        <span class="k">return</span></div>
-
 <div class="viewcode-block" id="FitterTab.on_spectrafile_le_changed"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/FitterTab/index.html#PDielec.GUI.FitterTab.FitterTab.on_spectrafile_le_changed">[docs]</a>    <span class="k">def</span> <span class="nf">on_spectrafile_le_changed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">text</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Handle changes to the spectra file input field.</span>
@@ -1592,8 +1695,14 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>        
         <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s1">&#39;Start:: replot&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">xaxis</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">calculated_frequencies</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">resampled_experimental_spectrum</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">resample_experimental_spectrum</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">resampled_experimental_spectrum</span> <span class="o">=</span> <span class="n">resample_experimental_spectrum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">xaxis</span><span class="p">,</span>
+                                                       <span class="bp">self</span><span class="o">.</span><span class="n">experimental_frequencies</span><span class="p">,</span>
+                                                       <span class="bp">self</span><span class="o">.</span><span class="n">experimental_spectrum</span><span class="p">,</span>
+                                                       <span class="n">baseline_removal</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;Baseline removal&#39;</span><span class="p">],</span>
+                                                       <span class="n">HPFilter_lambda</span>  <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;HPFilter lambda&#39;</span><span class="p">],</span>
+                                                       <span class="n">debug</span><span class="o">=</span><span class="n">debugger</span><span class="o">.</span><span class="n">state</span><span class="p">())</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">resampled_experimental_spectrum</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">calculated_frequencies</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">calculated_spectra</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">scenario_legends</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">plot_label</span><span class="p">)</span>
         <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s1">&#39;Finished:: replot&#39;</span><span class="p">)</span>
         <span class="k">return</span></div>
@@ -1646,7 +1755,13 @@
         <span class="c1"># use the settings values to initialise the widgets</span>
         <span class="c1">#</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">spectrafile_le</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;Experimental file name&#39;</span><span class="p">])</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">read_experimental_file</span><span class="p">()</span>
+        <span class="c1">#</span>
+        <span class="c1"># Only read the file again if we have to</span>
+        <span class="c1">#</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">experimental_file_has_been_read</span> <span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">experimental_frequencies</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">experimental_spectrum</span> <span class="o">=</span> <span class="n">read_experimental_file</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;Experimental file name&#39;</span><span class="p">],</span><span class="n">debug</span><span class="o">=</span><span class="n">debugger</span><span class="o">.</span><span class="n">state</span><span class="p">())</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">experimental_frequencies</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">experimental_file_has_been_read</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">plot_label</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">notebook</span><span class="o">.</span><span class="n">plottingTab</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;Plot type&#39;</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">scenario_legends</span> <span class="o">=</span> <span class="p">[</span> <span class="n">scenario</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;Legend&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">scenario</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">notebook</span><span class="o">.</span><span class="n">scenarios</span> <span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">scenario_cb</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
@@ -1675,11 +1790,31 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">redraw_sigmas_tw</span><span class="p">()</span>
         <span class="c1"># Resample the spectrum</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">calculated_frequencies</span> <span class="o">=</span> <span class="p">[</span> <span class="n">vs_cm1</span> <span class="k">for</span> <span class="n">scenario</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">notebook</span><span class="o">.</span><span class="n">scenarios</span> <span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">xaxis</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">calculated_frequencies</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rmse</span> <span class="o">=</span> <span class="mf">0.0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lag</span>  <span class="o">=</span> <span class="mf">0.0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">xcorr0</span>  <span class="o">=</span> <span class="mf">1.0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">xcorr1</span>  <span class="o">=</span> <span class="mf">1.0</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">experimental_spectrum</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">resample_experimental_spectrum</span><span class="p">()</span>
-        <span class="n">scaling_factor</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;Frequency scaling factor&#39;</span><span class="p">]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">lag</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">xcorr0</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">xcorr1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">calculateCrossCorrelation</span><span class="p">(</span><span class="n">scaling_factor</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">rmse</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">calculateSpectralDifference</span><span class="p">(</span><span class="n">scaling_factor</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">resampled_experimental_spectrum</span> <span class="o">=</span> <span class="n">resample_experimental_spectrum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">xaxis</span><span class="p">,</span>
+                                                       <span class="bp">self</span><span class="o">.</span><span class="n">experimental_frequencies</span><span class="p">,</span>
+                                                       <span class="bp">self</span><span class="o">.</span><span class="n">experimental_spectrum</span><span class="p">,</span>
+                                                       <span class="n">baseline_removal</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;Baseline removal&#39;</span><span class="p">],</span>
+                                                       <span class="n">HPFilter_lambda</span>  <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;HPFilter lambda&#39;</span><span class="p">],</span>
+                                                       <span class="n">debug</span><span class="o">=</span><span class="n">debugger</span><span class="o">.</span><span class="n">state</span><span class="p">())</span>
+            <span class="n">scaling_factor</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;Frequency scaling factor&#39;</span><span class="p">]</span>
+            <span class="n">spectral_threshold</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;Spectral difference threshold&#39;</span><span class="p">],</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">lag</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">xcorr0</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">xcorr1</span> <span class="o">=</span> <span class="n">calculateCrossCorrelation</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">xaxis</span><span class="p">,</span>
+                                                                     <span class="bp">self</span><span class="o">.</span><span class="n">calculated_spectrum</span><span class="p">,</span>
+                                                                     <span class="bp">self</span><span class="o">.</span><span class="n">resampled_experimental_spectrum</span><span class="p">,</span>
+                                                                     <span class="n">scaling_factor</span><span class="o">=</span><span class="n">scaling_factor</span><span class="p">,</span>
+                                                                     <span class="n">debug</span><span class="o">=</span><span class="n">debugger</span><span class="o">.</span><span class="n">state</span><span class="p">())</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">rmse</span> <span class="o">=</span> <span class="n">calculateSpectralDifference</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">xaxis</span><span class="p">,</span>
+                                                <span class="bp">self</span><span class="o">.</span><span class="n">calculated_spectrum</span><span class="p">,</span>
+                                                <span class="bp">self</span><span class="o">.</span><span class="n">resampled_experimental_spectrum</span><span class="p">,</span>
+                                                <span class="n">scaling_factor</span><span class="o">=</span><span class="n">scaling_factor</span><span class="p">,</span>
+                                                <span class="n">spectral_threshold</span><span class="o">=</span><span class="n">spectral_threshold</span><span class="p">,</span>
+                                                <span class="n">debug</span><span class="o">=</span><span class="n">debugger</span><span class="o">.</span><span class="n">state</span><span class="p">())</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">cross_correlation_le</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{:6.4f}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">xcorr0</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">lag_frequency_le</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{:8.2f}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lag</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">frequency_scaling_le</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{:8.2f}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;Frequency scaling factor&#39;</span><span class="p">]))</span>
@@ -1709,66 +1844,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s1">&#39;Start:: requestRefresh&#39;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">refreshRequired</span> <span class="o">=</span> <span class="kc">True</span>
-        <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s1">&#39;Finished:: requestRefresh&#39;</span><span class="p">)</span></div>
-
-<div class="viewcode-block" id="FitterTab.resample_experimental_spectrum"><a class="viewcode-back" href="../../../autoapi/PDielec/GUI/FitterTab/index.html#PDielec.GUI.FitterTab.FitterTab.resample_experimental_spectrum">[docs]</a>    <span class="k">def</span> <span class="nf">resample_experimental_spectrum</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-    <span class="c1">#</span>
-    <span class="c1">#  The experimental spectrum needs to be in the same range as the calculated spectrum</span>
-    <span class="c1">#  It also needs to be calculated at the same frequencies as the calculated spectrum</span>
-    <span class="c1">#</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Resample the experimental spectrum to match calculated frequencies and optionally apply baseline removal.</span>
-
-<span class="sd">        This method modifies the experimental spectrum to align with the calculated </span>
-<span class="sd">        frequencies. It pads the spectrum at both ends with zeros outside the calculated</span>
-<span class="sd">        frequencies range, then uses cubic interpolation over the whole range. </span>
-<span class="sd">        If the &#39;Baseline removal&#39; setting is enabled, applies the Hodrick-Prescott filter </span>
-<span class="sd">        for baseline removal on the resampled spectrum.</span>
-
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        None </span>
-<span class="sd">        - self.experimental_frequencies : array_like (The original frequency values of the experimental spectrum.)</span>
-<span class="sd">        - self.experimental_spectrum : array_like (The original intensity values of the experimental spectrum.)</span>
-<span class="sd">        - self.calculated_frequencies : array_like (The frequency values of the calculated spectrum.)</span>
-<span class="sd">        - self.settings : dict (A dictionary of settings, which may include keys for &#39;Baseline removal&#39; and &#39;HPFilter lambda&#39;.)</span>
-
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        None</span>
-<span class="sd">            Modifies the instance&#39;s resampled_experimental_spectrum in place.</span>
-
-<span class="sd">        &quot;&quot;&quot;</span>        
-        <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s1">&#39;Start:: Resample_experimental_spectrum&#39;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">xaxis</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">calculated_frequencies</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-        <span class="c1"># If the experimental frequencies starts at a higher frequency </span>
-        <span class="c1"># than the calculated frequencies then add new frequencies to pad the range out</span>
-        <span class="c1">#indices = np.where (self.xaxis &lt; self.experimental_frequencies[0])</span>
-        <span class="n">indices</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">xaxis</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">experimental_frequencies</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-        <span class="n">padded_xaxis</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">xaxis</span><span class="p">[</span><span class="n">indices</span><span class="p">]</span>
-        <span class="n">padded_yaxis</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span> <span class="mi">0</span> <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="n">indices</span> <span class="k">if</span> <span class="n">index</span> <span class="p">])</span>
-        <span class="c1"># Add the experimental frequencies</span>
-        <span class="n">padded_xaxis</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">padded_xaxis</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">experimental_frequencies</span><span class="p">)</span>
-        <span class="n">padded_yaxis</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">padded_yaxis</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">experimental_spectrum</span><span class="p">)</span>
-        <span class="c1"># If the experimental frequencies ends at a lower frequency </span>
-        <span class="c1"># than the calculated frequencies then add new frequencies to pad the range out</span>
-        <span class="n">indices</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">xaxis</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">experimental_frequencies</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
-        <span class="n">padded_xaxis</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">padded_xaxis</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">xaxis</span><span class="p">[</span><span class="n">indices</span><span class="p">])</span>
-        <span class="n">padded_yaxis</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">padded_yaxis</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span> <span class="mi">0</span> <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="n">indices</span> <span class="k">if</span> <span class="n">index</span> <span class="p">])</span> <span class="p">)</span>
-        <span class="c1"># </span>
-        <span class="c1"># Create a function using the padded frequencies to calculate the spectrum at the calculated frequencies</span>
-        <span class="n">f</span> <span class="o">=</span> <span class="n">interp1d</span><span class="p">(</span><span class="n">padded_xaxis</span><span class="p">,</span> <span class="n">padded_yaxis</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="s1">&#39;cubic&#39;</span><span class="p">,</span><span class="n">fill_value</span><span class="o">=</span><span class="s1">&#39;extrapolate&#39;</span><span class="p">)</span>
-        <span class="c1"># Store the experimental spectrum at the calculated frequencies</span>
-        <span class="n">resampled_experimental_spectrum</span> <span class="o">=</span> <span class="n">f</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">xaxis</span><span class="p">)</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;Baseline removal&#39;</span><span class="p">]:</span>
-            <span class="c1"># Apply a Hodrick-Prescott filter to remove the background</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">resampled_experimental_spectrum</span> <span class="o">=</span> <span class="n">Calculator</span><span class="o">.</span><span class="n">hodrick_prescott_filter</span><span class="p">(</span>
-                                          <span class="n">resampled_experimental_spectrum</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">,</span>
-                                          <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;HPFilter lambda&#39;</span><span class="p">],</span> <span class="mi">10</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">resampled_experimental_spectrum</span> <span class="o">=</span> <span class="n">resampled_experimental_spectrum</span>
-        <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s1">&#39;Finished:: Resample_experimental_spectrum&#39;</span><span class="p">)</span>
-        <span class="k">return</span></div></div>
+        <span class="n">debugger</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s1">&#39;Finished:: requestRefresh&#39;</span><span class="p">)</span></div></div>
 
 </pre></div>
         </article>

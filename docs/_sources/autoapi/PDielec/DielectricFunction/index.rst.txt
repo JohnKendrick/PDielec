@@ -147,6 +147,108 @@ Classes
           The permittivity at frequency v as a 3x3 tensor.
 
 
+   .. py:method:: getFrequencies()
+
+      Returns the frequencies of a DFT permittivity
+
+      The frequencies are in units of cm-1
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      1d array of floats
+          The frequencies in cm-1
+
+
+
+   .. py:method:: getOscillatorStrengths()
+
+      Returns the oscillator strengths of a DFT permittivity
+
+      The returned strengths are in units of cm-1
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      1d array of floats
+          The oscillator strengths in cm-1
+
+
+
+   .. py:method:: getSigmas()
+
+      Returns the sigma parameters of a DFT permittivity
+
+      The returned sigmas are in units of cm-1
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      1d array of floats
+          The sigma parameters of  Drude-Lorentzian permittivity
+
+
+
+   .. py:method:: setFrequencies(frequencies)
+
+      Sets the frequencies of a DFT permittivity
+
+      The frequencies are converted to atomic units
+
+      Parameters
+      ----------
+      strengths : 1d array of floats
+          The frequencies in cm-1
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: setOscillatorStrengths(strengths)
+
+      Sets the oscillator strengths of a DFT permittivity
+
+      The oscillator strengths are converted to atomic units
+
+      Parameters
+      ----------
+      strengths : 1d array of floats
+          The oscillator strengths parameters in cm-1
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: setSigmas(sigmas)
+
+      Sets the sigma parameters of a DFT permittivity
+
+      The sigmas parameter is converted to atomic units
+
+      Parameters
+      ----------
+      sigmas : 1d array of floats
+          The sigma parameters in cm-1
+
+      Returns
+      -------
+      None
+
+
+
 
 .. py:class:: DielectricFunction
 
@@ -245,6 +347,22 @@ Classes
       a function
 
 
+   .. py:method:: getFrequencies()
+
+      Returns the frequencies of a Lorentzian permittivity
+
+      The default is to return None, only return an array if the permittivity is Lorentzian
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      None
+
+
+
    .. py:method:: getHighestFrequency()
 
       Return the highest tabulated frequency in cm-1.
@@ -270,6 +388,38 @@ Classes
       Returns
       -------
       The lowest tabulated frequency in cm-1.
+
+
+   .. py:method:: getOscillatorStrengths()
+
+      Returns the oscillator strengths of a Lorentzian permittivity
+
+      The default is to return None, only return an array if the permittivity is Lorentzian
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: getSigmas()
+
+      Returns the sigma parameters of a Lorentzian permittivity
+
+      The default is to return None, only return an array if the permittivity is Lorentzian
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      None
+
 
 
    .. py:method:: isScalar()
@@ -336,6 +486,57 @@ Classes
       None
 
 
+   .. py:method:: setFrequencies(frequencies)
+
+      Sets the frequencies of a Lorentzian permittivity
+
+      The default is to print an error message unless the DielectricFunction is a Lorentzian
+
+      Parameters
+      ----------
+      frequencies : 1d array of floats
+          The frequencies in cm-1
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: setOscillatorStrengths(strengths)
+
+      Sets the oscillator strengths of a Lorentzian permittivity
+
+      The default is to print an error message unless the DielectricFunction is a Lorentzian
+
+      Parameters
+      ----------
+      strengths : 1d array of floats
+          The oscillator strengths in cm-1
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: setSigmas(sigmas)
+
+      Sets the sigma parameters of a Lorentzian permittivity
+
+      The default is to print an error message unless the DielectricFunction is a Lorentzian
+
+      Parameters
+      ----------
+      sigma : 1d array of floats
+          The sigma parameters in cm-1
+
+      Returns
+      -------
+      None
+
+
+
    .. py:method:: setVolume(volume)
 
       Set the volume for dielectric calculations.
@@ -383,6 +584,107 @@ Classes
       -------
       tensor
           The permittivity at frequency v as a diagonal 3x3 tensor.
+
+
+   .. py:method:: getFrequencies()
+
+      Returns the frequencies of a Drude-Lorentz permittivity
+
+      The frequencies are in units of cm-1
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      1d array of floats
+          The frequencies in cm-1
+
+
+
+   .. py:method:: getOscillatorStrengths()
+
+      Returns the oscillator strengths of a Drude-Lorentz permittivity
+
+      The returned strengths are in units of cm-1
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      1d array of floats
+          The oscillator strengths in cm-1
+
+
+
+   .. py:method:: getSigmas()
+
+      Returns the sigma parameters of a Lorentzian permittivity
+
+      The returned sigmas are in units of cm-1
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      1d array of floats
+
+
+
+   .. py:method:: setFrequencies(frequencies)
+
+      Sets the frequencies of a Drude-Lorentz permittivity
+
+      The frequencies are in cm-1
+
+      Parameters
+      ----------
+      strengths : 1d array of floats
+          The frequencies in cm-1
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: setOscillatorStrengths(strengths)
+
+      Sets the oscillator strengths of a Drude-Lorentz permittivity
+
+      The oscillator strengths are in cm-1
+
+      Parameters
+      ----------
+      strengths : 1d array of floats
+          The oscillator strengths parameters in cm-1
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: setSigmas(sigmas)
+
+      Sets the sigma parameters of a Drude-Lorentz permittivity
+
+      The default is to print an error message unless the DielectricFunction is a Lorentzian
+
+      Parameters
+      ----------
+      sigmas : 1d array of floats
+          The sigma parameters in cm-1
+
+      Returns
+      -------
+      None
+
 
 
 

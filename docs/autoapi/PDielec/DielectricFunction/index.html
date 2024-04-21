@@ -440,6 +440,114 @@ Provides a calculate() function to return the permittivity.</p>
 </section>
 </dd></dl>
 
+<dl class="py method">
+<dt class="sig sig-object py" id="PDielec.DielectricFunction.DFT.getFrequencies">
+<span class="sig-name descname"><span class="pre">getFrequencies</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/DielectricFunction.html#DFT.getFrequencies"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.DielectricFunction.DFT.getFrequencies" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns the frequencies of a DFT permittivity</p>
+<p>The frequencies are in units of cm-1</p>
+<section id="id7">
+<h5>Parameters<a class="headerlink" href="#id7" title="Permalink to this heading">#</a></h5>
+<p>None</p>
+</section>
+<section id="id8">
+<h5>Returns<a class="headerlink" href="#id8" title="Permalink to this heading">#</a></h5>
+<dl class="simple">
+<dt>1d array of floats</dt><dd><p>The frequencies in cm-1</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PDielec.DielectricFunction.DFT.getOscillatorStrengths">
+<span class="sig-name descname"><span class="pre">getOscillatorStrengths</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/DielectricFunction.html#DFT.getOscillatorStrengths"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.DielectricFunction.DFT.getOscillatorStrengths" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns the oscillator strengths of a DFT permittivity</p>
+<p>The returned strengths are in units of cm-1</p>
+<section id="id9">
+<h5>Parameters<a class="headerlink" href="#id9" title="Permalink to this heading">#</a></h5>
+<p>None</p>
+</section>
+<section id="id10">
+<h5>Returns<a class="headerlink" href="#id10" title="Permalink to this heading">#</a></h5>
+<dl class="simple">
+<dt>1d array of floats</dt><dd><p>The oscillator strengths in cm-1</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PDielec.DielectricFunction.DFT.getSigmas">
+<span class="sig-name descname"><span class="pre">getSigmas</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/DielectricFunction.html#DFT.getSigmas"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.DielectricFunction.DFT.getSigmas" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns the sigma parameters of a DFT permittivity</p>
+<p>The returned sigmas are in units of cm-1</p>
+<section id="id11">
+<h5>Parameters<a class="headerlink" href="#id11" title="Permalink to this heading">#</a></h5>
+<p>None</p>
+</section>
+<section id="id12">
+<h5>Returns<a class="headerlink" href="#id12" title="Permalink to this heading">#</a></h5>
+<dl class="simple">
+<dt>1d array of floats</dt><dd><p>The sigma parameters of  Drude-Lorentzian permittivity</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PDielec.DielectricFunction.DFT.setFrequencies">
+<span class="sig-name descname"><span class="pre">setFrequencies</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">frequencies</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/DielectricFunction.html#DFT.setFrequencies"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.DielectricFunction.DFT.setFrequencies" title="Permalink to this definition">#</a></dt>
+<dd><p>Sets the frequencies of a DFT permittivity</p>
+<p>The frequencies are converted to atomic units</p>
+<section id="id13">
+<h5>Parameters<a class="headerlink" href="#id13" title="Permalink to this heading">#</a></h5>
+<dl class="simple">
+<dt>strengths<span class="classifier">1d array of floats</span></dt><dd><p>The frequencies in cm-1</p>
+</dd>
+</dl>
+</section>
+<section id="id14">
+<h5>Returns<a class="headerlink" href="#id14" title="Permalink to this heading">#</a></h5>
+<p>None</p>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PDielec.DielectricFunction.DFT.setOscillatorStrengths">
+<span class="sig-name descname"><span class="pre">setOscillatorStrengths</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">strengths</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/DielectricFunction.html#DFT.setOscillatorStrengths"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.DielectricFunction.DFT.setOscillatorStrengths" title="Permalink to this definition">#</a></dt>
+<dd><p>Sets the oscillator strengths of a DFT permittivity</p>
+<p>The oscillator strengths are converted to atomic units</p>
+<section id="id15">
+<h5>Parameters<a class="headerlink" href="#id15" title="Permalink to this heading">#</a></h5>
+<dl class="simple">
+<dt>strengths<span class="classifier">1d array of floats</span></dt><dd><p>The oscillator strengths parameters in cm-1</p>
+</dd>
+</dl>
+</section>
+<section id="id16">
+<h5>Returns<a class="headerlink" href="#id16" title="Permalink to this heading">#</a></h5>
+<p>None</p>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PDielec.DielectricFunction.DFT.setSigmas">
+<span class="sig-name descname"><span class="pre">setSigmas</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sigmas</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/DielectricFunction.html#DFT.setSigmas"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.DielectricFunction.DFT.setSigmas" title="Permalink to this definition">#</a></dt>
+<dd><p>Sets the sigma parameters of a DFT permittivity</p>
+<p>The sigmas parameter is converted to atomic units</p>
+<section id="id17">
+<h5>Parameters<a class="headerlink" href="#id17" title="Permalink to this heading">#</a></h5>
+<dl class="simple">
+<dt>sigmas<span class="classifier">1d array of floats</span></dt><dd><p>The sigma parameters in cm-1</p>
+</dd>
+</dl>
+</section>
+<section id="id18">
+<h5>Returns<a class="headerlink" href="#id18" title="Permalink to this heading">#</a></h5>
+<p>None</p>
+</section>
+</dd></dl>
+
 </section>
 </dd></dl>
 
@@ -462,8 +570,8 @@ Provides a calculate() function to return the permittivity.</p>
 </dd>
 </dl>
 </section>
-<section id="id7">
-<h4>Methods<a class="headerlink" href="#id7" title="Permalink to this heading">#</a></h4>
+<section id="id19">
+<h4>Methods<a class="headerlink" href="#id19" title="Permalink to this heading">#</a></h4>
 <dl class="simple">
 <dt>setVolume(volume)</dt><dd><p>Change the unit cell volume.</p>
 </dd>
@@ -488,8 +596,8 @@ Provides a calculate() function to return the permittivity.</p>
 <span class="sig-name descname"><span class="pre">dielectriContributionsFromDrude</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">f</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">frequency</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">volume</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/DielectricFunction.html#DielectricFunction.dielectriContributionsFromDrude"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.DielectricFunction.DielectricFunction.dielectriContributionsFromDrude" title="Permalink to this definition">#</a></dt>
 <dd><p>Calculate the dielectric function for a set of a Drude oscillator</p>
 <p>The units of the parameters must be self-consistent.  Atomic units is a good choice.</p>
-<section id="id8">
-<h5>Parameters<a class="headerlink" href="#id8" title="Permalink to this heading">#</a></h5>
+<section id="id20">
+<h5>Parameters<a class="headerlink" href="#id20" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>f<span class="classifier">float</span></dt><dd><p>The frequency of the dielectric response.</p>
 </dd>
@@ -501,8 +609,8 @@ Provides a calculate() function to return the permittivity.</p>
 </dd>
 </dl>
 </section>
-<section id="id9">
-<h5>Returns<a class="headerlink" href="#id9" title="Permalink to this heading">#</a></h5>
+<section id="id21">
+<h5>Returns<a class="headerlink" href="#id21" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>tensor (3x3)</dt><dd><p>A complex scalar dielectric.</p>
 </dd>
@@ -514,8 +622,8 @@ Provides a calculate() function to return the permittivity.</p>
 <dt class="sig sig-object py" id="PDielec.DielectricFunction.DielectricFunction.dielectriContributionsFromModes">
 <span class="sig-name descname"><span class="pre">dielectriContributionsFromModes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">f</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">modes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">frequencies</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigmas</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">strengths</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">volume</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/DielectricFunction.html#DielectricFunction.dielectriContributionsFromModes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.DielectricFunction.DielectricFunction.dielectriContributionsFromModes" title="Permalink to this definition">#</a></dt>
 <dd><p>Calculate the dielectric function for a set of modes.</p>
-<section id="id10">
-<h5>Parameters<a class="headerlink" href="#id10" title="Permalink to this heading">#</a></h5>
+<section id="id22">
+<h5>Parameters<a class="headerlink" href="#id22" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>modes<span class="classifier">list of int</span></dt><dd><p>A list of the modes to be considered.</p>
 </dd>
@@ -529,8 +637,8 @@ Provides a calculate() function to return the permittivity.</p>
 </dd>
 </dl>
 </section>
-<section id="id11">
-<h5>Returns<a class="headerlink" href="#id11" title="Permalink to this heading">#</a></h5>
+<section id="id23">
+<h5>Returns<a class="headerlink" href="#id23" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>tensor (3x3)</dt><dd><p>A complex scalar representing the dielectric function.</p>
 </dd>
@@ -542,13 +650,28 @@ Provides a calculate() function to return the permittivity.</p>
 <dt class="sig sig-object py" id="PDielec.DielectricFunction.DielectricFunction.function">
 <span class="sig-name descname"><span class="pre">function</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/DielectricFunction.html#DielectricFunction.function"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.DielectricFunction.DielectricFunction.function" title="Permalink to this definition">#</a></dt>
 <dd><p>Return the function used to calculate the permittivity.</p>
-<section id="id12">
-<h5>Parameters<a class="headerlink" href="#id12" title="Permalink to this heading">#</a></h5>
+<section id="id24">
+<h5>Parameters<a class="headerlink" href="#id24" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
-<section id="id13">
-<h5>Returns<a class="headerlink" href="#id13" title="Permalink to this heading">#</a></h5>
+<section id="id25">
+<h5>Returns<a class="headerlink" href="#id25" title="Permalink to this heading">#</a></h5>
 <p>a function</p>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PDielec.DielectricFunction.DielectricFunction.getFrequencies">
+<span class="sig-name descname"><span class="pre">getFrequencies</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/DielectricFunction.html#DielectricFunction.getFrequencies"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.DielectricFunction.DielectricFunction.getFrequencies" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns the frequencies of a Lorentzian permittivity</p>
+<p>The default is to return None, only return an array if the permittivity is Lorentzian</p>
+<section id="id26">
+<h5>Parameters<a class="headerlink" href="#id26" title="Permalink to this heading">#</a></h5>
+<p>None</p>
+</section>
+<section id="id27">
+<h5>Returns<a class="headerlink" href="#id27" title="Permalink to this heading">#</a></h5>
+<p>None</p>
 </section>
 </dd></dl>
 
@@ -556,12 +679,12 @@ Provides a calculate() function to return the permittivity.</p>
 <dt class="sig sig-object py" id="PDielec.DielectricFunction.DielectricFunction.getHighestFrequency">
 <span class="sig-name descname"><span class="pre">getHighestFrequency</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/DielectricFunction.html#DielectricFunction.getHighestFrequency"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.DielectricFunction.DielectricFunction.getHighestFrequency" title="Permalink to this definition">#</a></dt>
 <dd><p>Return the highest tabulated frequency in cm-1.</p>
-<section id="id14">
-<h5>Parameters<a class="headerlink" href="#id14" title="Permalink to this heading">#</a></h5>
+<section id="id28">
+<h5>Parameters<a class="headerlink" href="#id28" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
-<section id="id15">
-<h5>Returns<a class="headerlink" href="#id15" title="Permalink to this heading">#</a></h5>
+<section id="id29">
+<h5>Returns<a class="headerlink" href="#id29" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>float</dt><dd><p>The highest tabulated frequency in cm-1.</p>
 </dd>
@@ -573,13 +696,43 @@ Provides a calculate() function to return the permittivity.</p>
 <dt class="sig sig-object py" id="PDielec.DielectricFunction.DielectricFunction.getLowestFrequency">
 <span class="sig-name descname"><span class="pre">getLowestFrequency</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/DielectricFunction.html#DielectricFunction.getLowestFrequency"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.DielectricFunction.DielectricFunction.getLowestFrequency" title="Permalink to this definition">#</a></dt>
 <dd><p>Returns the lowest tabulated frequency in cm-1.</p>
-<section id="id16">
-<h5>Parameters<a class="headerlink" href="#id16" title="Permalink to this heading">#</a></h5>
+<section id="id30">
+<h5>Parameters<a class="headerlink" href="#id30" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
-<section id="id17">
-<h5>Returns<a class="headerlink" href="#id17" title="Permalink to this heading">#</a></h5>
+<section id="id31">
+<h5>Returns<a class="headerlink" href="#id31" title="Permalink to this heading">#</a></h5>
 <p>The lowest tabulated frequency in cm-1.</p>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PDielec.DielectricFunction.DielectricFunction.getOscillatorStrengths">
+<span class="sig-name descname"><span class="pre">getOscillatorStrengths</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/DielectricFunction.html#DielectricFunction.getOscillatorStrengths"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.DielectricFunction.DielectricFunction.getOscillatorStrengths" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns the oscillator strengths of a Lorentzian permittivity</p>
+<p>The default is to return None, only return an array if the permittivity is Lorentzian</p>
+<section id="id32">
+<h5>Parameters<a class="headerlink" href="#id32" title="Permalink to this heading">#</a></h5>
+<p>None</p>
+</section>
+<section id="id33">
+<h5>Returns<a class="headerlink" href="#id33" title="Permalink to this heading">#</a></h5>
+<p>None</p>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PDielec.DielectricFunction.DielectricFunction.getSigmas">
+<span class="sig-name descname"><span class="pre">getSigmas</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/DielectricFunction.html#DielectricFunction.getSigmas"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.DielectricFunction.DielectricFunction.getSigmas" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns the sigma parameters of a Lorentzian permittivity</p>
+<p>The default is to return None, only return an array if the permittivity is Lorentzian</p>
+<section id="id34">
+<h5>Parameters<a class="headerlink" href="#id34" title="Permalink to this heading">#</a></h5>
+<p>None</p>
+</section>
+<section id="id35">
+<h5>Returns<a class="headerlink" href="#id35" title="Permalink to this heading">#</a></h5>
+<p>None</p>
 </section>
 </dd></dl>
 
@@ -587,12 +740,12 @@ Provides a calculate() function to return the permittivity.</p>
 <dt class="sig sig-object py" id="PDielec.DielectricFunction.DielectricFunction.isScalar">
 <span class="sig-name descname"><span class="pre">isScalar</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/DielectricFunction.html#DielectricFunction.isScalar"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.DielectricFunction.DielectricFunction.isScalar" title="Permalink to this definition">#</a></dt>
 <dd><p>Returns true if the dielectric function is a scalar</p>
-<section id="id18">
-<h5>Parameters<a class="headerlink" href="#id18" title="Permalink to this heading">#</a></h5>
+<section id="id36">
+<h5>Parameters<a class="headerlink" href="#id36" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
-<section id="id19">
-<h5>Returns<a class="headerlink" href="#id19" title="Permalink to this heading">#</a></h5>
+<section id="id37">
+<h5>Returns<a class="headerlink" href="#id37" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>bool</dt><dd><p>True if the dielectric function returns a scalar value, False otherwise.</p>
 </dd>
@@ -604,12 +757,12 @@ Provides a calculate() function to return the permittivity.</p>
 <dt class="sig sig-object py" id="PDielec.DielectricFunction.DielectricFunction.isTensor">
 <span class="sig-name descname"><span class="pre">isTensor</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/DielectricFunction.html#DielectricFunction.isTensor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.DielectricFunction.DielectricFunction.isTensor" title="Permalink to this definition">#</a></dt>
 <dd><p>Returns true if the dielectric function is a tensor</p>
-<section id="id20">
-<h5>Parameters<a class="headerlink" href="#id20" title="Permalink to this heading">#</a></h5>
+<section id="id38">
+<h5>Parameters<a class="headerlink" href="#id38" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
-<section id="id21">
-<h5>Returns<a class="headerlink" href="#id21" title="Permalink to this heading">#</a></h5>
+<section id="id39">
+<h5>Returns<a class="headerlink" href="#id39" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>bool</dt><dd><p>True if the dielectric function returns a tensor, otherwise False.</p>
 </dd>
@@ -621,8 +774,8 @@ Provides a calculate() function to return the permittivity.</p>
 <dt class="sig sig-object py" id="PDielec.DielectricFunction.DielectricFunction.print">
 <span class="sig-name descname"><span class="pre">print</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">v1_cm1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v2_cm1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v_inc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">diagonal_only</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/DielectricFunction.html#DielectricFunction.print"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.DielectricFunction.DielectricFunction.print" title="Permalink to this definition">#</a></dt>
 <dd><p>Print the permittivity over a range of frequencies to a file</p>
-<section id="id22">
-<h5>Parameters<a class="headerlink" href="#id22" title="Permalink to this heading">#</a></h5>
+<section id="id40">
+<h5>Parameters<a class="headerlink" href="#id40" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>v1_cm1<span class="classifier">float</span></dt><dd><p>Starting frequency</p>
 </dd>
@@ -636,8 +789,8 @@ Provides a calculate() function to return the permittivity.</p>
 </dd>
 </dl>
 </section>
-<section id="id23">
-<h5>Returns<a class="headerlink" href="#id23" title="Permalink to this heading">#</a></h5>
+<section id="id41">
+<h5>Returns<a class="headerlink" href="#id41" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 </dd></dl>
@@ -646,15 +799,69 @@ Provides a calculate() function to return the permittivity.</p>
 <dt class="sig sig-object py" id="PDielec.DielectricFunction.DielectricFunction.setEpsilonInfinity">
 <span class="sig-name descname"><span class="pre">setEpsilonInfinity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">eps</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/DielectricFunction.html#DielectricFunction.setEpsilonInfinity"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.DielectricFunction.DielectricFunction.setEpsilonInfinity" title="Permalink to this definition">#</a></dt>
 <dd><p>Set epsilon infinity for dielectric calculations.</p>
-<section id="id24">
-<h5>Parameters<a class="headerlink" href="#id24" title="Permalink to this heading">#</a></h5>
+<section id="id42">
+<h5>Parameters<a class="headerlink" href="#id42" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>eps<span class="classifier">tensor (3x3)</span></dt><dd><p>The value of eps_infinity.</p>
 </dd>
 </dl>
 </section>
-<section id="id25">
-<h5>Returns<a class="headerlink" href="#id25" title="Permalink to this heading">#</a></h5>
+<section id="id43">
+<h5>Returns<a class="headerlink" href="#id43" title="Permalink to this heading">#</a></h5>
+<p>None</p>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PDielec.DielectricFunction.DielectricFunction.setFrequencies">
+<span class="sig-name descname"><span class="pre">setFrequencies</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">frequencies</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/DielectricFunction.html#DielectricFunction.setFrequencies"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.DielectricFunction.DielectricFunction.setFrequencies" title="Permalink to this definition">#</a></dt>
+<dd><p>Sets the frequencies of a Lorentzian permittivity</p>
+<p>The default is to print an error message unless the DielectricFunction is a Lorentzian</p>
+<section id="id44">
+<h5>Parameters<a class="headerlink" href="#id44" title="Permalink to this heading">#</a></h5>
+<dl class="simple">
+<dt>frequencies<span class="classifier">1d array of floats</span></dt><dd><p>The frequencies in cm-1</p>
+</dd>
+</dl>
+</section>
+<section id="id45">
+<h5>Returns<a class="headerlink" href="#id45" title="Permalink to this heading">#</a></h5>
+<p>None</p>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PDielec.DielectricFunction.DielectricFunction.setOscillatorStrengths">
+<span class="sig-name descname"><span class="pre">setOscillatorStrengths</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">strengths</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/DielectricFunction.html#DielectricFunction.setOscillatorStrengths"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.DielectricFunction.DielectricFunction.setOscillatorStrengths" title="Permalink to this definition">#</a></dt>
+<dd><p>Sets the oscillator strengths of a Lorentzian permittivity</p>
+<p>The default is to print an error message unless the DielectricFunction is a Lorentzian</p>
+<section id="id46">
+<h5>Parameters<a class="headerlink" href="#id46" title="Permalink to this heading">#</a></h5>
+<dl class="simple">
+<dt>strengths<span class="classifier">1d array of floats</span></dt><dd><p>The oscillator strengths in cm-1</p>
+</dd>
+</dl>
+</section>
+<section id="id47">
+<h5>Returns<a class="headerlink" href="#id47" title="Permalink to this heading">#</a></h5>
+<p>None</p>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PDielec.DielectricFunction.DielectricFunction.setSigmas">
+<span class="sig-name descname"><span class="pre">setSigmas</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sigmas</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/DielectricFunction.html#DielectricFunction.setSigmas"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.DielectricFunction.DielectricFunction.setSigmas" title="Permalink to this definition">#</a></dt>
+<dd><p>Sets the sigma parameters of a Lorentzian permittivity</p>
+<p>The default is to print an error message unless the DielectricFunction is a Lorentzian</p>
+<section id="id48">
+<h5>Parameters<a class="headerlink" href="#id48" title="Permalink to this heading">#</a></h5>
+<dl class="simple">
+<dt>sigma<span class="classifier">1d array of floats</span></dt><dd><p>The sigma parameters in cm-1</p>
+</dd>
+</dl>
+</section>
+<section id="id49">
+<h5>Returns<a class="headerlink" href="#id49" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 </dd></dl>
@@ -663,15 +870,15 @@ Provides a calculate() function to return the permittivity.</p>
 <dt class="sig sig-object py" id="PDielec.DielectricFunction.DielectricFunction.setVolume">
 <span class="sig-name descname"><span class="pre">setVolume</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">volume</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/DielectricFunction.html#DielectricFunction.setVolume"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.DielectricFunction.DielectricFunction.setVolume" title="Permalink to this definition">#</a></dt>
 <dd><p>Set the volume for dielectric calculations.</p>
-<section id="id26">
-<h5>Parameters<a class="headerlink" href="#id26" title="Permalink to this heading">#</a></h5>
+<section id="id50">
+<h5>Parameters<a class="headerlink" href="#id50" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>volume<span class="classifier">float</span></dt><dd><p>The volume in angs^3.</p>
 </dd>
 </dl>
 </section>
-<section id="id27">
-<h5>Returns<a class="headerlink" href="#id27" title="Permalink to this heading">#</a></h5>
+<section id="id51">
+<h5>Returns<a class="headerlink" href="#id51" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 </dd></dl>
@@ -686,8 +893,8 @@ Provides a calculate() function to return the permittivity.</p>
 <p>A class for a complex constant tensor dielectric function.</p>
 <p>Inherits from DielectricFunction.
 Provides a calculate() function to return the permittivity.</p>
-<section id="id28">
-<h4>Methods<a class="headerlink" href="#id28" title="Permalink to this heading">#</a></h4>
+<section id="id52">
+<h4>Methods<a class="headerlink" href="#id52" title="Permalink to this heading">#</a></h4>
 <dl class="simple">
 <dt>calculate()</dt><dd><p>Calculates and returns the permittivity.</p>
 </dd>
@@ -700,19 +907,124 @@ Provides a calculate() function to return the permittivity.</p>
 <dt class="sig sig-object py" id="PDielec.DielectricFunction.DrudeLorentz.calculate">
 <span class="sig-name descname"><span class="pre">calculate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">v</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/DielectricFunction.html#DrudeLorentz.calculate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.DielectricFunction.DrudeLorentz.calculate" title="Permalink to this definition">#</a></dt>
 <dd><p>Calculate the permittivity at a given frequency.</p>
-<section id="id29">
-<h5>Parameters<a class="headerlink" href="#id29" title="Permalink to this heading">#</a></h5>
+<section id="id53">
+<h5>Parameters<a class="headerlink" href="#id53" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>v<span class="classifier">float</span></dt><dd><p>The frequency in cm-1</p>
 </dd>
 </dl>
 </section>
-<section id="id30">
-<h5>Returns<a class="headerlink" href="#id30" title="Permalink to this heading">#</a></h5>
+<section id="id54">
+<h5>Returns<a class="headerlink" href="#id54" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>tensor</dt><dd><p>The permittivity at frequency v as a diagonal 3x3 tensor.</p>
 </dd>
 </dl>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PDielec.DielectricFunction.DrudeLorentz.getFrequencies">
+<span class="sig-name descname"><span class="pre">getFrequencies</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/DielectricFunction.html#DrudeLorentz.getFrequencies"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.DielectricFunction.DrudeLorentz.getFrequencies" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns the frequencies of a Drude-Lorentz permittivity</p>
+<p>The frequencies are in units of cm-1</p>
+<section id="id55">
+<h5>Parameters<a class="headerlink" href="#id55" title="Permalink to this heading">#</a></h5>
+<p>None</p>
+</section>
+<section id="id56">
+<h5>Returns<a class="headerlink" href="#id56" title="Permalink to this heading">#</a></h5>
+<dl class="simple">
+<dt>1d array of floats</dt><dd><p>The frequencies in cm-1</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PDielec.DielectricFunction.DrudeLorentz.getOscillatorStrengths">
+<span class="sig-name descname"><span class="pre">getOscillatorStrengths</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/DielectricFunction.html#DrudeLorentz.getOscillatorStrengths"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.DielectricFunction.DrudeLorentz.getOscillatorStrengths" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns the oscillator strengths of a Drude-Lorentz permittivity</p>
+<p>The returned strengths are in units of cm-1</p>
+<section id="id57">
+<h5>Parameters<a class="headerlink" href="#id57" title="Permalink to this heading">#</a></h5>
+<p>None</p>
+</section>
+<section id="id58">
+<h5>Returns<a class="headerlink" href="#id58" title="Permalink to this heading">#</a></h5>
+<dl class="simple">
+<dt>1d array of floats</dt><dd><p>The oscillator strengths in cm-1</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PDielec.DielectricFunction.DrudeLorentz.getSigmas">
+<span class="sig-name descname"><span class="pre">getSigmas</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/DielectricFunction.html#DrudeLorentz.getSigmas"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.DielectricFunction.DrudeLorentz.getSigmas" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns the sigma parameters of a Lorentzian permittivity</p>
+<p>The returned sigmas are in units of cm-1</p>
+<section id="id59">
+<h5>Parameters<a class="headerlink" href="#id59" title="Permalink to this heading">#</a></h5>
+<p>None</p>
+</section>
+<section id="id60">
+<h5>Returns<a class="headerlink" href="#id60" title="Permalink to this heading">#</a></h5>
+<p>1d array of floats</p>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PDielec.DielectricFunction.DrudeLorentz.setFrequencies">
+<span class="sig-name descname"><span class="pre">setFrequencies</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">frequencies</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/DielectricFunction.html#DrudeLorentz.setFrequencies"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.DielectricFunction.DrudeLorentz.setFrequencies" title="Permalink to this definition">#</a></dt>
+<dd><p>Sets the frequencies of a Drude-Lorentz permittivity</p>
+<p>The frequencies are in cm-1</p>
+<section id="id61">
+<h5>Parameters<a class="headerlink" href="#id61" title="Permalink to this heading">#</a></h5>
+<dl class="simple">
+<dt>strengths<span class="classifier">1d array of floats</span></dt><dd><p>The frequencies in cm-1</p>
+</dd>
+</dl>
+</section>
+<section id="id62">
+<h5>Returns<a class="headerlink" href="#id62" title="Permalink to this heading">#</a></h5>
+<p>None</p>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PDielec.DielectricFunction.DrudeLorentz.setOscillatorStrengths">
+<span class="sig-name descname"><span class="pre">setOscillatorStrengths</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">strengths</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/DielectricFunction.html#DrudeLorentz.setOscillatorStrengths"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.DielectricFunction.DrudeLorentz.setOscillatorStrengths" title="Permalink to this definition">#</a></dt>
+<dd><p>Sets the oscillator strengths of a Drude-Lorentz permittivity</p>
+<p>The oscillator strengths are in cm-1</p>
+<section id="id63">
+<h5>Parameters<a class="headerlink" href="#id63" title="Permalink to this heading">#</a></h5>
+<dl class="simple">
+<dt>strengths<span class="classifier">1d array of floats</span></dt><dd><p>The oscillator strengths parameters in cm-1</p>
+</dd>
+</dl>
+</section>
+<section id="id64">
+<h5>Returns<a class="headerlink" href="#id64" title="Permalink to this heading">#</a></h5>
+<p>None</p>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PDielec.DielectricFunction.DrudeLorentz.setSigmas">
+<span class="sig-name descname"><span class="pre">setSigmas</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sigmas</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/DielectricFunction.html#DrudeLorentz.setSigmas"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.DielectricFunction.DrudeLorentz.setSigmas" title="Permalink to this definition">#</a></dt>
+<dd><p>Sets the sigma parameters of a Drude-Lorentz permittivity</p>
+<p>The default is to print an error message unless the DielectricFunction is a Lorentzian</p>
+<section id="id65">
+<h5>Parameters<a class="headerlink" href="#id65" title="Permalink to this heading">#</a></h5>
+<dl class="simple">
+<dt>sigmas<span class="classifier">1d array of floats</span></dt><dd><p>The sigma parameters in cm-1</p>
+</dd>
+</dl>
+</section>
+<section id="id66">
+<h5>Returns<a class="headerlink" href="#id66" title="Permalink to this heading">#</a></h5>
+<p>None</p>
 </section>
 </dd></dl>
 
@@ -730,15 +1042,15 @@ Provides a calculate() function to return the permittivity.</p>
 <dt class="sig sig-object py" id="PDielec.DielectricFunction.FPSQ.calculate">
 <span class="sig-name descname"><span class="pre">calculate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">v</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/DielectricFunction.html#FPSQ.calculate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.DielectricFunction.FPSQ.calculate" title="Permalink to this definition">#</a></dt>
 <dd><p>Calculate the diagonal permittivity 3x3 tensor at a given frequency.</p>
-<section id="id31">
-<h4>Parameters<a class="headerlink" href="#id31" title="Permalink to this heading">#</a></h4>
+<section id="id67">
+<h4>Parameters<a class="headerlink" href="#id67" title="Permalink to this heading">#</a></h4>
 <dl class="simple">
 <dt>v<span class="classifier">float</span></dt><dd><p>The frequency in cm-1</p>
 </dd>
 </dl>
 </section>
-<section id="id32">
-<h4>Returns<a class="headerlink" href="#id32" title="Permalink to this heading">#</a></h4>
+<section id="id68">
+<h4>Returns<a class="headerlink" href="#id68" title="Permalink to this heading">#</a></h4>
 <dl class="simple">
 <dt>numpy.ndarray</dt><dd><p>The diagonal permittivity 3x3 tensor at frequency v.</p>
 </dd>
@@ -758,22 +1070,22 @@ Provides a calculate() function to return the permittivity.</p>
 <dt class="sig sig-object py" id="PDielec.DielectricFunction.Sellmeier.calculate">
 <span class="sig-name descname"><span class="pre">calculate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">v</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/DielectricFunction.html#Sellmeier.calculate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.DielectricFunction.Sellmeier.calculate" title="Permalink to this definition">#</a></dt>
 <dd><p>Calculate the diagonal permittivity 3x3 tensor at a given frequency.</p>
-<section id="id33">
-<h4>Parameters<a class="headerlink" href="#id33" title="Permalink to this heading">#</a></h4>
+<section id="id69">
+<h4>Parameters<a class="headerlink" href="#id69" title="Permalink to this heading">#</a></h4>
 <dl class="simple">
 <dt>v<span class="classifier">float</span></dt><dd><p>The frequency in cm-1.</p>
 </dd>
 </dl>
 </section>
-<section id="id34">
-<h4>Returns<a class="headerlink" href="#id34" title="Permalink to this heading">#</a></h4>
+<section id="id70">
+<h4>Returns<a class="headerlink" href="#id70" title="Permalink to this heading">#</a></h4>
 <dl class="simple">
 <dt>ndarray</dt><dd><p>The diagonal permittivity 3x3 tensor at frequency v.</p>
 </dd>
 </dl>
 </section>
-<section id="id35">
-<h4>Notes<a class="headerlink" href="#id35" title="Permalink to this heading">#</a></h4>
+<section id="id71">
+<h4>Notes<a class="headerlink" href="#id71" title="Permalink to this heading">#</a></h4>
 <p>The Sellmeier parameters are in microns^2.</p>
 </section>
 </dd></dl>
@@ -788,8 +1100,8 @@ Provides a calculate() function to return the permittivity.</p>
 <p>Inherits from DielectricFunction.
 Represents an isotropic dielectric function.
 Provides a calculate() function to return the permittivity.</p>
-<section id="id36">
-<h4>Methods<a class="headerlink" href="#id36" title="Permalink to this heading">#</a></h4>
+<section id="id72">
+<h4>Methods<a class="headerlink" href="#id72" title="Permalink to this heading">#</a></h4>
 <dl class="simple">
 <dt>calculate()</dt><dd><p>Returns the permittivity of the dielectric function.</p>
 </dd>
@@ -798,15 +1110,15 @@ Provides a calculate() function to return the permittivity.</p>
 <dt class="sig sig-object py" id="PDielec.DielectricFunction.Tabulate1.calculate">
 <span class="sig-name descname"><span class="pre">calculate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">v</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/DielectricFunction.html#Tabulate1.calculate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.DielectricFunction.Tabulate1.calculate" title="Permalink to this definition">#</a></dt>
 <dd><p>Calculate the isotropic permittivity at a given frequency.</p>
-<section id="id37">
-<h5>Parameters<a class="headerlink" href="#id37" title="Permalink to this heading">#</a></h5>
+<section id="id73">
+<h5>Parameters<a class="headerlink" href="#id73" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>v<span class="classifier">float</span></dt><dd><p>The frequency in internal units.</p>
 </dd>
 </dl>
 </section>
-<section id="id38">
-<h5>Returns<a class="headerlink" href="#id38" title="Permalink to this heading">#</a></h5>
+<section id="id74">
+<h5>Returns<a class="headerlink" href="#id74" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>numpy.ndarray</dt><dd><p>The isotropic permittivity at frequency v as a 3x3 tensor.</p>
 </dd>
@@ -825,8 +1137,8 @@ Provides a calculate() function to return the permittivity.</p>
 <p>Inherits from DielectricFunction.
 Represents an orthorhombic dielectric function.
 Provides a calculate() function to return the permittivity.</p>
-<section id="id39">
-<h4>Methods<a class="headerlink" href="#id39" title="Permalink to this heading">#</a></h4>
+<section id="id75">
+<h4>Methods<a class="headerlink" href="#id75" title="Permalink to this heading">#</a></h4>
 <dl class="simple">
 <dt>calculate()</dt><dd><p>Return the permittivity of the dielectric function.</p>
 </dd>
@@ -835,15 +1147,15 @@ Provides a calculate() function to return the permittivity.</p>
 <dt class="sig sig-object py" id="PDielec.DielectricFunction.Tabulate3.calculate">
 <span class="sig-name descname"><span class="pre">calculate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">v</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/DielectricFunction.html#Tabulate3.calculate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.DielectricFunction.Tabulate3.calculate" title="Permalink to this definition">#</a></dt>
 <dd><p>Calculate the permittivity at a given frequency.</p>
-<section id="id40">
-<h5>Parameters<a class="headerlink" href="#id40" title="Permalink to this heading">#</a></h5>
+<section id="id76">
+<h5>Parameters<a class="headerlink" href="#id76" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>v<span class="classifier">float</span></dt><dd><p>The frequency in internal units.</p>
 </dd>
 </dl>
 </section>
-<section id="id41">
-<h5>Returns<a class="headerlink" href="#id41" title="Permalink to this heading">#</a></h5>
+<section id="id77">
+<h5>Returns<a class="headerlink" href="#id77" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>numpy.ndarray</dt><dd><p>The permittivity at frequency v as a diagonal 3x3 tensor.</p>
 </dd>
@@ -862,8 +1174,8 @@ Provides a calculate() function to return the permittivity.</p>
 <p>Inherits from DielectricFunction.
 Represents an non-isotropic dielectric function.
 Provides a calculate() function to return the permittivity.</p>
-<section id="id42">
-<h4>Methods<a class="headerlink" href="#id42" title="Permalink to this heading">#</a></h4>
+<section id="id78">
+<h4>Methods<a class="headerlink" href="#id78" title="Permalink to this heading">#</a></h4>
 <dl class="simple">
 <dt>calculate()</dt><dd><p>Returns the permittivity of the dielectric.</p>
 </dd>
@@ -872,15 +1184,15 @@ Provides a calculate() function to return the permittivity.</p>
 <dt class="sig sig-object py" id="PDielec.DielectricFunction.Tabulate6.calculate">
 <span class="sig-name descname"><span class="pre">calculate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">v</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/DielectricFunction.html#Tabulate6.calculate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.DielectricFunction.Tabulate6.calculate" title="Permalink to this definition">#</a></dt>
 <dd><p>Calculate the symmetric permittivity tensor at a given frequency.</p>
-<section id="id43">
-<h5>Parameters<a class="headerlink" href="#id43" title="Permalink to this heading">#</a></h5>
+<section id="id79">
+<h5>Parameters<a class="headerlink" href="#id79" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>v<span class="classifier">float</span></dt><dd><p>The frequency in cm-1.</p>
 </dd>
 </dl>
 </section>
-<section id="id44">
-<h5>Returns<a class="headerlink" href="#id44" title="Permalink to this heading">#</a></h5>
+<section id="id80">
+<h5>Returns<a class="headerlink" href="#id80" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>numpy.ndarray</dt><dd><p>The full permittivity tensor at frequency v as a 3x3 tensor.</p>
 </dd>
@@ -897,33 +1209,33 @@ Provides a calculate() function to return the permittivity.</p>
 <dd><p>Bases: <a class="reference internal" href="#PDielec.DielectricFunction.DielectricFunction" title="PDielec.DielectricFunction.DielectricFunction"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DielectricFunction</span></code></a></p>
 <p>A class for a complex tabulated scalar dielectric function.</p>
 <p>Inherits from DielectricFunction. Represents an isotropic material dielectric function. Provides a calculate() function to return the permittivity.</p>
-<section id="id45">
-<h4>Methods<a class="headerlink" href="#id45" title="Permalink to this heading">#</a></h4>
+<section id="id81">
+<h4>Methods<a class="headerlink" href="#id81" title="Permalink to this heading">#</a></h4>
 <dl class="simple">
 <dt>calculate()</dt><dd><p>Compute the permittivity of the material.</p>
 </dd>
 </dl>
 </section>
-<section id="id46">
-<h4>Notes<a class="headerlink" href="#id46" title="Permalink to this heading">#</a></h4>
+<section id="id82">
+<h4>Notes<a class="headerlink" href="#id82" title="Permalink to this heading">#</a></h4>
 <p>None</p>
 </section>
-<section id="id47">
-<h4>Examples<a class="headerlink" href="#id47" title="Permalink to this heading">#</a></h4>
+<section id="id83">
+<h4>Examples<a class="headerlink" href="#id83" title="Permalink to this heading">#</a></h4>
 <p>None</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.DielectricFunction.TabulateScalar.calculate">
 <span class="sig-name descname"><span class="pre">calculate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">v</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/DielectricFunction.html#TabulateScalar.calculate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.DielectricFunction.TabulateScalar.calculate" title="Permalink to this definition">#</a></dt>
 <dd><p>Calculate the permittivity at a given frequency.</p>
-<section id="id48">
-<h5>Parameters<a class="headerlink" href="#id48" title="Permalink to this heading">#</a></h5>
+<section id="id84">
+<h5>Parameters<a class="headerlink" href="#id84" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>v<span class="classifier">float</span></dt><dd><p>The frequency in internal units.</p>
 </dd>
 </dl>
 </section>
-<section id="id49">
-<h5>Returns<a class="headerlink" href="#id49" title="Permalink to this heading">#</a></h5>
+<section id="id85">
+<h5>Returns<a class="headerlink" href="#id85" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>float</dt><dd><p>The permittivity at frequency v as a scalar.</p>
 </dd>
@@ -1006,6 +1318,12 @@ Provides a calculate() function to return the permittivity.</p>
 </li>
 <li><a class="reference internal" href="#PDielec.DielectricFunction.DFT"><code class="docutils literal notranslate"><span class="pre">DFT</span></code></a><ul>
 <li><a class="reference internal" href="#PDielec.DielectricFunction.DFT.calculate"><code class="docutils literal notranslate"><span class="pre">DFT.calculate()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.DielectricFunction.DFT.getFrequencies"><code class="docutils literal notranslate"><span class="pre">DFT.getFrequencies()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.DielectricFunction.DFT.getOscillatorStrengths"><code class="docutils literal notranslate"><span class="pre">DFT.getOscillatorStrengths()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.DielectricFunction.DFT.getSigmas"><code class="docutils literal notranslate"><span class="pre">DFT.getSigmas()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.DielectricFunction.DFT.setFrequencies"><code class="docutils literal notranslate"><span class="pre">DFT.setFrequencies()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.DielectricFunction.DFT.setOscillatorStrengths"><code class="docutils literal notranslate"><span class="pre">DFT.setOscillatorStrengths()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.DielectricFunction.DFT.setSigmas"><code class="docutils literal notranslate"><span class="pre">DFT.setSigmas()</span></code></a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#PDielec.DielectricFunction.DielectricFunction"><code class="docutils literal notranslate"><span class="pre">DielectricFunction</span></code></a><ul>
@@ -1013,17 +1331,29 @@ Provides a calculate() function to return the permittivity.</p>
 <li><a class="reference internal" href="#PDielec.DielectricFunction.DielectricFunction.dielectriContributionsFromDrude"><code class="docutils literal notranslate"><span class="pre">DielectricFunction.dielectriContributionsFromDrude()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.DielectricFunction.DielectricFunction.dielectriContributionsFromModes"><code class="docutils literal notranslate"><span class="pre">DielectricFunction.dielectriContributionsFromModes()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.DielectricFunction.DielectricFunction.function"><code class="docutils literal notranslate"><span class="pre">DielectricFunction.function()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.DielectricFunction.DielectricFunction.getFrequencies"><code class="docutils literal notranslate"><span class="pre">DielectricFunction.getFrequencies()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.DielectricFunction.DielectricFunction.getHighestFrequency"><code class="docutils literal notranslate"><span class="pre">DielectricFunction.getHighestFrequency()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.DielectricFunction.DielectricFunction.getLowestFrequency"><code class="docutils literal notranslate"><span class="pre">DielectricFunction.getLowestFrequency()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.DielectricFunction.DielectricFunction.getOscillatorStrengths"><code class="docutils literal notranslate"><span class="pre">DielectricFunction.getOscillatorStrengths()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.DielectricFunction.DielectricFunction.getSigmas"><code class="docutils literal notranslate"><span class="pre">DielectricFunction.getSigmas()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.DielectricFunction.DielectricFunction.isScalar"><code class="docutils literal notranslate"><span class="pre">DielectricFunction.isScalar()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.DielectricFunction.DielectricFunction.isTensor"><code class="docutils literal notranslate"><span class="pre">DielectricFunction.isTensor()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.DielectricFunction.DielectricFunction.print"><code class="docutils literal notranslate"><span class="pre">DielectricFunction.print()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.DielectricFunction.DielectricFunction.setEpsilonInfinity"><code class="docutils literal notranslate"><span class="pre">DielectricFunction.setEpsilonInfinity()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.DielectricFunction.DielectricFunction.setFrequencies"><code class="docutils literal notranslate"><span class="pre">DielectricFunction.setFrequencies()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.DielectricFunction.DielectricFunction.setOscillatorStrengths"><code class="docutils literal notranslate"><span class="pre">DielectricFunction.setOscillatorStrengths()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.DielectricFunction.DielectricFunction.setSigmas"><code class="docutils literal notranslate"><span class="pre">DielectricFunction.setSigmas()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.DielectricFunction.DielectricFunction.setVolume"><code class="docutils literal notranslate"><span class="pre">DielectricFunction.setVolume()</span></code></a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#PDielec.DielectricFunction.DrudeLorentz"><code class="docutils literal notranslate"><span class="pre">DrudeLorentz</span></code></a><ul>
 <li><a class="reference internal" href="#PDielec.DielectricFunction.DrudeLorentz.calculate"><code class="docutils literal notranslate"><span class="pre">DrudeLorentz.calculate()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.DielectricFunction.DrudeLorentz.getFrequencies"><code class="docutils literal notranslate"><span class="pre">DrudeLorentz.getFrequencies()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.DielectricFunction.DrudeLorentz.getOscillatorStrengths"><code class="docutils literal notranslate"><span class="pre">DrudeLorentz.getOscillatorStrengths()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.DielectricFunction.DrudeLorentz.getSigmas"><code class="docutils literal notranslate"><span class="pre">DrudeLorentz.getSigmas()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.DielectricFunction.DrudeLorentz.setFrequencies"><code class="docutils literal notranslate"><span class="pre">DrudeLorentz.setFrequencies()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.DielectricFunction.DrudeLorentz.setOscillatorStrengths"><code class="docutils literal notranslate"><span class="pre">DrudeLorentz.setOscillatorStrengths()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.DielectricFunction.DrudeLorentz.setSigmas"><code class="docutils literal notranslate"><span class="pre">DrudeLorentz.setSigmas()</span></code></a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#PDielec.DielectricFunction.FPSQ"><code class="docutils literal notranslate"><span class="pre">FPSQ</span></code></a><ul>

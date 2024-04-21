@@ -342,12 +342,12 @@ the bonds are not recalculated, just extended into the super-cell</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.SuperCell.SuperCell.calculateCentreOfMass">
-<span class="sig-name descname"><span class="pre">calculateCentreOfMass</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">units</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'xyz'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/SuperCell.html#SuperCell.calculateCentreOfMass"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.SuperCell.SuperCell.calculateCentreOfMass" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">calculateCentreOfMass</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">output</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'xyz'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/SuperCell.html#SuperCell.calculateCentreOfMass"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.SuperCell.SuperCell.calculateCentreOfMass" title="Permalink to this definition">#</a></dt>
 <dd><p>Calculate the center of mass for a molecular structure.</p>
 <section id="id3">
 <h4>Parameters<a class="headerlink" href="#id3" title="Permalink to this heading">#</a></h4>
 <dl class="simple">
-<dt>units<span class="classifier">str, optional</span></dt><dd><p>The units in which the center of mass should be returned. Options are ‘xyz’ for mass and Cartesian coordinates,
+<dt>output<span class="classifier">str, optional</span></dt><dd><p>The output. Options are ‘xyz’ for mass and Cartesian coordinates,
 ‘mass’ for the total mass only, ‘abc’ for mass and fractional coordinates, or any other string
 to return a tuple with all three values (mass, Cartesian coordinates, fractional coordinates).
 The default value is ‘xyz’.</p>
@@ -361,15 +361,8 @@ The default value is ‘xyz’.</p>
 If ‘xyz’, returns a tuple with mass and a numpy.ndarray of Cartesian coordinates of the center of mass.
 If ‘mass’, returns the total mass as a float.
 If ‘abc’, returns tuple with mass and a numpy.ndarray of fractional coordinates of the center of mass.
-For any other value of <cite>units</cite>, returns a tuple containing the total mass (float), Cartesian
+For any other value of <cite>output</cite>, returns a tuple containing the total mass (float), Cartesian
 coordinates (numpy.ndarray), and fractional coordinates (numpy.ndarray) of the center of mass.</p>
-</dd>
-</dl>
-</section>
-<section id="raises">
-<h4>Raises<a class="headerlink" href="#raises" title="Permalink to this heading">#</a></h4>
-<dl class="simple">
-<dt>ValueError</dt><dd><p>If the <cite>units</cite> parameter does not match one of the expected values.</p>
 </dd>
 </dl>
 </section>

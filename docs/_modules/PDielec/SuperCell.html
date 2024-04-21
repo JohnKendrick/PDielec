@@ -608,14 +608,14 @@
         <span class="k">return</span> <span class="n">centre</span></div>
 
 
-<div class="viewcode-block" id="SuperCell.calculateCentreOfMass"><a class="viewcode-back" href="../../autoapi/PDielec/SuperCell/index.html#PDielec.SuperCell.SuperCell.calculateCentreOfMass">[docs]</a>    <span class="k">def</span> <span class="nf">calculateCentreOfMass</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">units</span><span class="o">=</span><span class="s1">&#39;xyz&#39;</span><span class="p">):</span>
+<div class="viewcode-block" id="SuperCell.calculateCentreOfMass"><a class="viewcode-back" href="../../autoapi/PDielec/SuperCell/index.html#PDielec.SuperCell.SuperCell.calculateCentreOfMass">[docs]</a>    <span class="k">def</span> <span class="nf">calculateCentreOfMass</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">output</span><span class="o">=</span><span class="s1">&#39;xyz&#39;</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Calculate the center of mass for a molecular structure.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        units : str, optional</span>
-<span class="sd">            The units in which the center of mass should be returned. Options are &#39;xyz&#39; for mass and Cartesian coordinates,</span>
+<span class="sd">        output : str, optional</span>
+<span class="sd">            The output. Options are &#39;xyz&#39; for mass and Cartesian coordinates,</span>
 <span class="sd">            &#39;mass&#39; for the total mass only, &#39;abc&#39; for mass and fractional coordinates, or any other string</span>
 <span class="sd">            to return a tuple with all three values (mass, Cartesian coordinates, fractional coordinates).</span>
 <span class="sd">            The default value is &#39;xyz&#39;.</span>
@@ -627,21 +627,16 @@
 <span class="sd">            If &#39;xyz&#39;, returns a tuple with mass and a numpy.ndarray of Cartesian coordinates of the center of mass.</span>
 <span class="sd">            If &#39;mass&#39;, returns the total mass as a float.</span>
 <span class="sd">            If &#39;abc&#39;, returns tuple with mass and a numpy.ndarray of fractional coordinates of the center of mass.</span>
-<span class="sd">            For any other value of `units`, returns a tuple containing the total mass (float), Cartesian</span>
+<span class="sd">            For any other value of `output`, returns a tuple containing the total mass (float), Cartesian</span>
 <span class="sd">            coordinates (numpy.ndarray), and fractional coordinates (numpy.ndarray) of the center of mass.</span>
-
-<span class="sd">        Raises</span>
-<span class="sd">        ------</span>
-<span class="sd">        ValueError</span>
-<span class="sd">            If the `units` parameter does not match one of the expected values.</span>
 <span class="sd">        &quot;&quot;&quot;</span>        
         <span class="c1"># Calculate the centre of mass </span>
-        <span class="c1"># The centre of mass can be returned in units of &#39;xyz&#39; space or &#39;abc&#39; space</span>
-        <span class="c1"># if units=&#39;all&#39; a tuple of (mass,cm_xyz,cm_abc) is returned</span>
-        <span class="c1"># if units=&#39;mass&#39; a mass is returned</span>
+        <span class="c1"># The centre of mass can be returned as &#39;xyz&#39; space or &#39;abc&#39; space</span>
+        <span class="c1"># if output=&#39;all&#39; a tuple of (mass,cm_xyz,cm_abc) is returned</span>
+        <span class="c1"># if output=&#39;mass&#39; a mass is returned</span>
         <span class="n">mass</span> <span class="o">=</span> <span class="mf">0.0</span>
         <span class="n">cm_fractional</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
-        <span class="n">unit_mass</span><span class="p">,</span> <span class="n">unit_cm_xyz</span><span class="p">,</span> <span class="n">unit_cm_fractional</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">unitCell</span><span class="o">.</span><span class="n">calculateCentreOfMass</span><span class="p">(</span><span class="n">units</span><span class="o">=</span><span class="nb">all</span><span class="p">)</span>
+        <span class="n">unit_mass</span><span class="p">,</span> <span class="n">unit_cm_xyz</span><span class="p">,</span> <span class="n">unit_cm_fractional</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">unitCell</span><span class="o">.</span><span class="n">calculateCentreOfMass</span><span class="p">(</span><span class="n">output</span><span class="o">=</span><span class="nb">all</span><span class="p">)</span>
         <span class="k">for</span>  <span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">,</span><span class="n">k</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">imageList</span><span class="p">:</span>
             <span class="n">cm_fractional</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+=</span> <span class="n">i</span> <span class="o">+</span> <span class="n">unit_cm_fractional</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span>
             <span class="n">cm_fractional</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+=</span> <span class="n">j</span> <span class="o">+</span> <span class="n">unit_cm_fractional</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span>
@@ -650,11 +645,11 @@
         <span class="c1">#end for i,j,k</span>
         <span class="n">cm_fractional</span> <span class="o">=</span> <span class="n">cm_fractional</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">imageList</span><span class="p">)</span>
         <span class="n">cm_xyz</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">unitCell</span><span class="o">.</span><span class="n">convert_abc_to_xyz</span><span class="p">(</span><span class="n">cm_fractional</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">units</span> <span class="o">==</span> <span class="s1">&#39;xyz&#39;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">output</span> <span class="o">==</span> <span class="s1">&#39;xyz&#39;</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">cm_xyz</span>
-        <span class="k">elif</span> <span class="n">units</span> <span class="o">==</span> <span class="s1">&#39;mass&#39;</span><span class="p">:</span>
+        <span class="k">elif</span> <span class="n">output</span> <span class="o">==</span> <span class="s1">&#39;mass&#39;</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">mass</span>
-        <span class="k">elif</span> <span class="n">units</span> <span class="o">==</span> <span class="s1">&#39;abc&#39;</span><span class="p">:</span>
+        <span class="k">elif</span> <span class="n">output</span> <span class="o">==</span> <span class="s1">&#39;abc&#39;</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">cm_fractional</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">mass</span><span class="p">,</span> <span class="n">cm_xyz</span><span class="p">,</span> <span class="n">cm_fractional</span></div></div>
