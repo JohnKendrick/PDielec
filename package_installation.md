@@ -178,3 +178,11 @@ git push --set-upstream origin pdielec_3.6.1   # Not sure about this
 git status
 ```
 
+# Install SPHINX for documentation
+
+```
+pip install sphinx
+pip install sphinx-autoapi
+pip install furo
+```
+
