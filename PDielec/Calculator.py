@@ -1616,7 +1616,7 @@ def direction_from_shape(data, reader):
     if not len(hkl) == 3:
         print("Error encountered in interpretting the miller surface / vector", data)
         exit(1)
-    cell = reader.unit_cells[-1]
+    cell = reader.get_unit_cell()
     if surface:
         direction = cell.convert_hkl_to_xyz(hkl)
     else:

@@ -107,7 +107,7 @@ def main():
         print('NEW READER type={}, file={}'.format(reader.type,reader.names[0]))
         reader.print()
         print('LAST CELL')
-        lastcell = reader.unit_cells[-1]
+        lastcell = reader.get_unit_cell()
         lastcell.print()
     # End of for loop over readers
 # end of def main

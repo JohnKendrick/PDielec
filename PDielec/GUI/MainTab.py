@@ -481,7 +481,7 @@ class MainTab(QWidget):
         self.notebook.reader = self.reader
         if self.debug:
             self.reader.print()
-        cell = self.reader.unit_cells[-1]
+        cell = self.reader.get_unit_cell()
         a = cell.lattice[0]
         b = cell.lattice[1]
         c = cell.lattice[2]

@@ -715,9 +715,8 @@ class AnalysisTab(QWidget):
         scale = self.settings['Covalent radius scaling']
         tolerance = self.settings['Bonding tolerance']
         # Find the last unit cell read by the reader and its masses
-        cell = self.reader.unit_cells[-1]
-        atom_masses = self.reader.masses
-        cell.set_atomic_masses(atom_masses)
+        cell = self.reader.get_unit_cell()
+        atom_masses = cell.get_atomic_masses()
         self.cell_of_molecules,nmols,self.original_atomic_order = cell.calculate_molecular_contents(scale, tolerance, self.element_radii)
         # if the number of molecules has changed then tell the viewerTab that the cell has changed
         if self.number_of_molecules != nmols:

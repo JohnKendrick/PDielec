@@ -200,7 +200,7 @@ def read_a_file( calling_parameters):
     # absorption units here are L/mole/cm-1
     # Continue reading any data from the output file
     frequencies_cm1.sort()
-    unitCell = reader.unit_cells[-1]
+    unitCell = reader.get_unit_cell()
     a,b,c,alpha,beta,gamma = unitCell.convert_unitcell_to_abc()
     if not no_calculation:
         eps0 = np.real(ionicv)

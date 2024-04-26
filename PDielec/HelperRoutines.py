@@ -54,8 +54,9 @@ def calculateDFTPermittivityObject(reader,sigma=5.0):
     sigmas_cm1 = [ sigma for i in frequencies_cm1 ]
     sigmas_au = wavenumber*np.array(sigmas_cm1)
     epsilon_inf = reader.zerof_optical_dielectric
-    volume_au = angstrom*angstrom*angstrom*reader.volume
-    masses = np.array(reader.masses)*amu
+    cell = reader.get_unit_cell()
+    volume_au = angstrom*angstrom*angstrom*cell.getVolume()
+    masses = np.array(cell.get_atomic_masses())*amu
     mass_weighted_normal_modes = reader.calculate_mass_weighted_normal_modes()
     born_charges = np.array(reader.born_charges)
     if reader.type == 'Experimental output':
@@ -122,7 +123,7 @@ def getMaterial(name,dataBaseName='MaterialsDataBase.xlsx',qmprogram='vasp'):
         reader = Utilities.get_reader(name,program,qmprogram)
         reader.read_output()
         permittivityObject=calculateDFTPermittivityObject(reader,sigma=5.0)
-        cell = reader.unit_cells[-1]
+        cell = reader.get_unit_cell()
         material = External('Dielectric layer',permittivityObject=permittivityObject,cell=cell)
     else:
         dataBase = MaterialsDataBase(dataBaseName)

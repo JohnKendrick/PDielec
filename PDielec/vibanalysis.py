@@ -438,8 +438,7 @@ def readPDielec(ifn):
         # calculate the intensities from the trace of the oscillator strengths
         intensities = Calculator.infrared_intensities(oscillator_strengths)
         # get masses, geometry (in angs) and atomic symbols
-        cell = reader.unit_cells[-1]
-        cell.set_atomic_masses(reader.masses)
+        cell = reader.get_unit_cell()
         # We need to see if we can generate whole molecules using translational symmetry
         scale = 1.1      # Scaling factor for covalent radii
         tolerance  = Opts['tol']  # Tolerance in bonding
@@ -451,7 +450,7 @@ def readPDielec(ifn):
         nmodes,nions,temp = np.shape(normal_modes)
         new_normal_modes = np.zeros( (nmodes,3*nions) )
         new_mass_weighted_normal_modes = np.zeros( (nmodes,3*nions) )
-        masses = new_cell.atomic_masses
+        masses = new_cell.get_atomic_masses()
         for imode,mode in enumerate(mass_weighted_normal_modes):
             for index,old_index in enumerate(original_atomic_order):
                 i = index*3

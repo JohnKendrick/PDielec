@@ -384,6 +384,21 @@ class UnitCell:
             cm_fractional = self.convert_xyz_to_abc(cm_xyz)
             return mass, cm_xyz, cm_fractional
 
+    def get_atomic_masses(self):
+        """
+        Get the atomic masses for the elements.
+
+        Paramaters
+        ----------
+        None
+
+        Returns
+        -------
+        masses : list
+            The atomic masses 
+        """        
+        return self.atomic_masses
+
     def set_atomic_masses(self, masses):
         """
         Set the atomic masses for the elements.

@@ -102,7 +102,7 @@ def read_a_file( calling_parameters):
     reader = Utilities.get_reader(name,program,qmprogram)
     reader.debug = debug
     reader.read_output()
-    return name,reader.unit_cells[-1]
+    return name,reader.get_unit_cell()
 
 def main():
     # Start processing the directories

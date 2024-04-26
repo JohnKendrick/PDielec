@@ -413,6 +413,53 @@ class GenericOutputReader:
         print(" ")
         return
 
+    def get_unit_cell(self):
+        """
+        Return the last unit cell in the reader
+
+        The routine adds the current set of masses to the unit cell
+
+        Parameters
+        ----------
+        None
+
+        Returns
+        -------
+        unitCell object
+            The last unit cell read by the reader
+
+        """
+
+        # Access the last unit cell in the reader
+        cell = self.unit_cells[-1]
+        # Add the current masses in the reader to the unit cell
+        cell.set_atomic_masses(self.masses)
+        # return the cell
+        return cell
+
+    def get_crystal_density(self):
+        """
+        Return the crystal density in g/cc
+
+        The volume is in angstrom^3, the masses are in atomic mass units, the density is in g/cc
+
+        Parameters
+        ----------
+        None
+
+        Returns
+        -------
+        float
+            Density in g/cc
+
+        """
+
+        mtotal = 0.0
+        for m in self.masses:
+            mtotal = mtotal + m
+        density = mtotal/(avogadro_si * self.volume * 1.0e-24)
+        return density
+
     def _read_output_files(self):
         """
         Read the through the output files.

@@ -402,7 +402,7 @@ class SingleCrystalScenarioTab(ScenarioTab):
         # Get the last unit cell in the reader
         self.cell = None
         if self.reader is not None:
-            self.cell = self.reader.unit_cells[-1]
+            self.cell = self.reader.get_unit_cell()
         # Set the exponent threshold to be used by GTM
         self.exponent_threshold = 11000    
         # Open the database and get the material names
@@ -1748,7 +1748,7 @@ class SingleCrystalScenarioTab(ScenarioTab):
         for w in self.findChildren(QWidget):
             w.blockSignals(True)
         # Initialise the cell
-        self.cell = self.reader.unit_cells[-1]
+        self.cell = self.reader.get_unit_cell()
         self.DataBase = MaterialsDataBase(self.settings['Materials database'],debug=debugger.state())
         self.settings['Materials database'] = self.DataBase.getFileName()
         self.database_le.setText(self.settings['Materials database'])

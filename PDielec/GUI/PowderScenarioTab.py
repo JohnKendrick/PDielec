@@ -544,12 +544,7 @@ class PowderScenarioTab(ScenarioTab):
         if not self.reader:
             debugger.print('Finished:: crystal_density - no reader')
             return 1.0
-        volume = self.reader.volume
-        mass = 0.0
-        for m in self.reader.masses:
-            mass += m
-        density = mass / (avogadro_si * volume * 1.0e-24)
-        debugger.print('Finished:: crystal_density',density)
+        density = self.reader.get_crystal_density()
         return density
 
     def openDB_button_clicked(self):
@@ -1211,7 +1206,7 @@ class PowderScenarioTab(ScenarioTab):
             debugger.print(self.settings['Legend'],'Finished:: calculate - immediate return because reader unavailable')
             return None
         debugger.print(self.settings['Legend'],'calculate - number of frequencies',len(vs_cm1))
-        cell = self.reader.unit_cells[-1]
+        cell = self.reader.get_unit_cell()
         shape = self.settings['Particle shape']
         hkl = [self.settings['Unique direction - h'], self.settings['Unique direction - k'], self.settings['Unique direction - l']]
         if shape == 'Ellipsoid':
