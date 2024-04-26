@@ -308,6 +308,7 @@ class UnitCell:
         print_reals('', self.lattice[1], format='{:12.6f}')
         print_reals('', self.lattice[2], format='{:12.6f}')
         print_strings('Element names',self.element_names)
+        print_reals('Element masses',self.atomic_masses)
         if len(self.element_names) > 0:
             print_reals('Fractional coords',self.fractional_coordinates[0], format='{:12.6f}')
             for frac in self.fractional_coordinates[1:]:
