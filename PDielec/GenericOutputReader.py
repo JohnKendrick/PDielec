@@ -266,7 +266,7 @@ class GenericOutputReader:
             print("new mass_dictionary", dictionary)
         return dictionary
 
-    def set_edited_masses(masses):
+    def set_edited_masses(self,masses):
         """
         Sets the edited masses attribute if the length matches the original masses attribute.
 
