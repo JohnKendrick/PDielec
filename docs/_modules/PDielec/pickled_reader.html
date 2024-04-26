@@ -381,7 +381,7 @@
         <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;NEW READER type=</span><span class="si">{}</span><span class="s1">, file=</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">reader</span><span class="o">.</span><span class="n">type</span><span class="p">,</span><span class="n">reader</span><span class="o">.</span><span class="n">names</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
         <span class="n">reader</span><span class="o">.</span><span class="n">print</span><span class="p">()</span>
         <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;LAST CELL&#39;</span><span class="p">)</span>
-        <span class="n">lastcell</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">unit_cells</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">lastcell</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">get_unit_cell</span><span class="p">()</span>
         <span class="n">lastcell</span><span class="o">.</span><span class="n">print</span><span class="p">()</span></div>
     <span class="c1"># End of for loop over readers</span>
 <span class="c1"># end of def main</span>

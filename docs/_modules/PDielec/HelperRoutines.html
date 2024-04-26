@@ -328,8 +328,9 @@
     <span class="n">sigmas_cm1</span> <span class="o">=</span> <span class="p">[</span> <span class="n">sigma</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">frequencies_cm1</span> <span class="p">]</span>
     <span class="n">sigmas_au</span> <span class="o">=</span> <span class="n">wavenumber</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">sigmas_cm1</span><span class="p">)</span>
     <span class="n">epsilon_inf</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">zerof_optical_dielectric</span>
-    <span class="n">volume_au</span> <span class="o">=</span> <span class="n">angstrom</span><span class="o">*</span><span class="n">angstrom</span><span class="o">*</span><span class="n">angstrom</span><span class="o">*</span><span class="n">reader</span><span class="o">.</span><span class="n">volume</span>
-    <span class="n">masses</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">reader</span><span class="o">.</span><span class="n">masses</span><span class="p">)</span><span class="o">*</span><span class="n">amu</span>
+    <span class="n">cell</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">get_unit_cell</span><span class="p">()</span>
+    <span class="n">volume_au</span> <span class="o">=</span> <span class="n">cell</span><span class="o">.</span><span class="n">getVolume</span><span class="p">(</span><span class="s1">&#39;Bohr&#39;</span><span class="p">)</span>
+    <span class="n">masses</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">cell</span><span class="o">.</span><span class="n">get_atomic_masses</span><span class="p">())</span><span class="o">*</span><span class="n">amu</span>
     <span class="n">mass_weighted_normal_modes</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">calculate_mass_weighted_normal_modes</span><span class="p">()</span>
     <span class="n">born_charges</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">reader</span><span class="o">.</span><span class="n">born_charges</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">reader</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s1">&#39;Experimental output&#39;</span><span class="p">:</span>
@@ -362,7 +363,7 @@
     <span class="n">permittivityObject</span><span class="o">.</span><span class="n">setEpsilonInfinity</span><span class="p">(</span><span class="n">epsilon_inf</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">permittivityObject</span></div>
 
-<div class="viewcode-block" id="getMaterial"><a class="viewcode-back" href="../../autoapi/PDielec/HelperRoutines/index.html#PDielec.HelperRoutines.getMaterial">[docs]</a><span class="k">def</span> <span class="nf">getMaterial</span><span class="p">(</span><span class="n">name</span><span class="p">,</span><span class="n">dataBaseName</span><span class="o">=</span><span class="s1">&#39;MaterialsDataBase.xlsx&#39;</span><span class="p">,</span><span class="n">mass_definition</span><span class="o">=</span><span class="s1">&#39;average&#39;</span><span class="p">,</span><span class="n">qmprogram</span><span class="o">=</span><span class="s1">&#39;vasp&#39;</span><span class="p">):</span>
+<div class="viewcode-block" id="getMaterial"><a class="viewcode-back" href="../../autoapi/PDielec/HelperRoutines/index.html#PDielec.HelperRoutines.getMaterial">[docs]</a><span class="k">def</span> <span class="nf">getMaterial</span><span class="p">(</span><span class="n">name</span><span class="p">,</span><span class="n">dataBaseName</span><span class="o">=</span><span class="s1">&#39;MaterialsDataBase.xlsx&#39;</span><span class="p">,</span><span class="n">qmprogram</span><span class="o">=</span><span class="s1">&#39;vasp&#39;</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Get a material with the given name.</span>
 
@@ -375,8 +376,6 @@
 <span class="sd">        The name of the material, which can be a file name or a material name existing in the database.</span>
 <span class="sd">    dataBaseName : str</span>
 <span class="sd">        The name of the database which will be searched from the material</span>
-<span class="sd">    mass_definition : str</span>
-<span class="sd">        Can be &#39;average&#39; or &#39;isotope&#39;</span>
 <span class="sd">    qmprogram : str</span>
 <span class="sd">        The name of the QM program used in the case of Phonopy DFT calculations</span>
 
@@ -398,7 +397,7 @@
         <span class="n">reader</span> <span class="o">=</span> <span class="n">Utilities</span><span class="o">.</span><span class="n">get_reader</span><span class="p">(</span><span class="n">name</span><span class="p">,</span><span class="n">program</span><span class="p">,</span><span class="n">qmprogram</span><span class="p">)</span>
         <span class="n">reader</span><span class="o">.</span><span class="n">read_output</span><span class="p">()</span>
         <span class="n">permittivityObject</span><span class="o">=</span><span class="n">calculateDFTPermittivityObject</span><span class="p">(</span><span class="n">reader</span><span class="p">,</span><span class="n">sigma</span><span class="o">=</span><span class="mf">5.0</span><span class="p">)</span>
-        <span class="n">cell</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">unit_cells</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">cell</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">get_unit_cell</span><span class="p">()</span>
         <span class="n">material</span> <span class="o">=</span> <span class="n">External</span><span class="p">(</span><span class="s1">&#39;Dielectric layer&#39;</span><span class="p">,</span><span class="n">permittivityObject</span><span class="o">=</span><span class="n">permittivityObject</span><span class="p">,</span><span class="n">cell</span><span class="o">=</span><span class="n">cell</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">dataBase</span> <span class="o">=</span> <span class="n">MaterialsDataBase</span><span class="p">(</span><span class="n">dataBaseName</span><span class="p">)</span>

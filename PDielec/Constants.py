@@ -15,68 +15,113 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
 You should have received a copy of the MIT License
 along with this program, if not see https://opensource.org/licenses/MIT
+
+This file supplies some numerical constants
+
+The following are some basic definitions.  
+The values were supplied from the NIST web site 
+`physics.nist.gov <physics.nist.gov>`_ .
+They are consistent with the 2018 CODATA recommended values of physical constants
+
+
++----------------------+-------------------+----------------------------+
+| Constant name        | Value             |   Comment                  |
++======================+===================+============================+
+| hartree2ev           | 27.211386245988   | convert Hartree to eV      |
++----------------------+-------------------+----------------------------+
+| speed_light_si       | 299792458.0       | Speed of light m s-1       |
++----------------------+-------------------+----------------------------+
+| planck_si            | 6.62607015e-34    | Planck's constant J Hz-1   |
++----------------------+-------------------+----------------------------+
+| elementary_charge_si | 1.602176634e-19   | Elementary charge, C       |
++----------------------+-------------------+----------------------------+
+| electron_mass_si     | 9.1093837015-31   | Electron mass in SI units  |
++----------------------+-------------------+----------------------------+
+| avogadro_si          | 6.02214076e23     | Avogadro's number          |
++----------------------+-------------------+----------------------------+
+| boltzmann_si         | 1.380649E-23      | Boltzmann's constant J K-1 |
++----------------------+-------------------+----------------------------+
+| mu_0_si              | 1.25663706212E-6  | Vacuum permeability N A-2  |
++----------------------+-------------------+----------------------------+
+
+The following are some derived constants:
+
++---------------------+-------------------------------------------------+
+| Constant name       |                       Comment                   |
++=====================+=================================================+
+| hbar_si             | h bar                                           |
++---------------------+-------------------------------------------------+
+| fine_structure      | Fine structure constant                         |
++---------------------+-------------------------------------------------+
+| molar_gas_si        | The molar gas constant (SI)                     |
++---------------------+-------------------------------------------------+
+| coulomb             | The SI unit of charge                           |
++---------------------+-------------------------------------------------+
+| metre               | The SI unit of length                           |
++---------------------+-------------------------------------------------+
+| angstrom            | An angstrom                                     |
++---------------------+-------------------------------------------------+
+| amu                 | Converts 1g to atomic units of mass             |
++---------------------+-------------------------------------------------+
+| debye               | The Debye unit in SI                            |
++---------------------+-------------------------------------------------+
+| d2byamuang2         | A conversion factor to convert absorption units |
++---------------------+-------------------------------------------------+
+| joule               | A Joule                                         |
++---------------------+-------------------------------------------------+
+| hertz               | A Hertz                                         |
++---------------------+-------------------------------------------------+
+| wavenumber          | A wavenumber (cm-1)                             |
++---------------------+-------------------------------------------------+
+| strengthconv        | Convert oscillator strength to SI               |
++---------------------+-------------------------------------------------+
+| angs2bohr           | Convert angstrom to Bohr                        |
++---------------------+-------------------------------------------------+
+
+The masses of the elements are taken from:
+J. R. de Laeter, J. K. Boehlke, P. De Bievre, H. Hidaka, H. S. Peiser, K. J. R. Rosman and P. D. P. Taylor (2003).
+"Atomic weights of the elements. Review 2000 (IUPAC Technical Report)"
+
+isotopic_masses is a dictionary of masses for each element, the key is an element name.  The contents is a list of tuples, each tuple contains, three numbers: the first is the isotope, the second is its mass and the last is its percentage occurence on average.
+
+covalent_radii is a dictionary of covalent radii taken from: Beatriz Cordero, Veronica Gomex, Ana E. Platero-Prats, Marc Reves, Jorge Echeverria, Eduard Cremades, Flavia Barragan and Santiago Alvarez (2008) Covalent Radii Revisited - Dalton Trans. (21) 2832-2838 doi:10.1039/b801115j
+
+elemental_colours is a dictionary of an RGB list for each element
+
+atomic_number_to_element is a dictionary which has an element name key and a content of the atomic number
+
 '''
-"""Define some useful constants
-The following are some basic definitions
-+-------------------+-------------------+------------------------+
-| Constant name     | Value             |   Comment              |
-+===================+===================+========================+
-| hartree2ev        | 27.2114           | convert Hartree to eV  |
-+-------------------+-------------------+------------------------+
-| PI                |                   | 2.0 * math.acos(0.0)
-+-------------------+-------------------+------------------------+
-inv4pi = 1.0 / (4.0 * PI)
-speed_light_si = 299792458.0
-mu_0_si = 4.0*PI*1e-7
-epsilon_0_si = 1.0/(mu_0_si*speed_light_si*speed_light_si)
-planck_si = 6.62606896e-34
-elementary_charge_si = 1.602176487e-19
-electron_mass_si = 9.10938215e-31
-proton_mass_si = 1.672621637e-27
-electron_gyromagnetic_ratio_si = 1.76085977e11
-avogadro_si = 6.02214179e23
-molar_gas_si = 8.314472
-hbar_si = planck_si/(2.0*PI)
-fine_structure_si = elementary_charge_si*elementary_charge_si / (4*PI*epsilon_0_si*hbar_si*speed_light_si)
-boltzmann_si = molar_gas_si/avogadro_si
-amu_si = 1.0E-3 / avogadro_si
-# Derived units
 
-"""
-
-import math
+import numpy as np
 
 # define some useful basic constants
-hartree2ev = 27.2114
-PI = 2.0 * math.acos(0.0)
-inv4pi = 1.0 / (4.0 * PI)
-speed_light_si = 299792458.0
-mu_0_si = 4.0*PI*1e-7
-epsilon_0_si = 1.0/(mu_0_si*speed_light_si*speed_light_si)
-planck_si = 6.62606896e-34
-elementary_charge_si = 1.602176487e-19
-electron_mass_si = 9.10938215e-31
-proton_mass_si = 1.672621637e-27
-electron_gyromagnetic_ratio_si = 1.76085977e11
-avogadro_si = 6.02214179e23
-molar_gas_si = 8.314472
-hbar_si = planck_si/(2.0*PI)
-fine_structure_si = elementary_charge_si*elementary_charge_si / (4*PI*epsilon_0_si*hbar_si*speed_light_si)
-boltzmann_si = molar_gas_si/avogadro_si
-amu_si = 1.0E-3 / avogadro_si
+hartree2ev           = 27.211386245988   # convert Hartree to eV
+speed_light_si       = 299792458.0       # Speed of light m s-1
+planck_si            = 6.62607015e-34    # Planck's constant J Hz-1 
+elementary_charge_si = 1.602176634e-19   # Elementary charge C
+electron_mass_si     = 9.1093837015E-31  # Electron mass kg
+avogadro_si          = 6.02214076e23     # Avogadro's number 
+boltzmann_si         = 1.380649E-23      # Boltzmann's constant J K-1
+mu_0_si              = 1.25663706212E-6  # Vacuum permeability N A-2
+bohr_si              = 5.29177210903E-11 # Bohr radius m
+
 # Derived units
-coulomb = 1.0 / elementary_charge_si
-metre = electron_mass_si*speed_light_si*fine_structure_si/hbar_si
-angstrom = 1.E-10 * metre
-amu = 1.E-3 / avogadro_si / electron_mass_si
-debye_si = 1.0E-21 / speed_light_si
-debye = debye_si * coulomb * metre
-d2byamuang2 = debye*debye / (angstrom * angstrom * amu)
-joule = 1.0 / (fine_structure_si*fine_structure_si * electron_mass_si * speed_light_si*speed_light_si)
-hertz = planck_si*joule
-wavenumber = hertz*speed_light_si*100.0
-strength_conv = 1.0 / d2byamuang2
-angs2bohr = 1.0 / 0.5291772083
+hbar_si          = planck_si/(2.0*np.pi)
+epsilon_0_si     = 1.0/(mu_0_si*speed_light_si*speed_light_si)
+fine_structure   = elementary_charge_si*elementary_charge_si / (4*np.pi*epsilon_0_si*hbar_si*speed_light_si)
+molar_gas_si     = boltzmann_si * avogadro_si
+coulomb          = 1.0 / elementary_charge_si
+metre            = electron_mass_si*speed_light_si*fine_structure/hbar_si
+angstrom         = 1.E-10 * metre
+amu              = 1.E-3 / avogadro_si / electron_mass_si
+debye            = 1.0E-21 / speed_light_si * coulomb * metre
+joule            = 1.0 / (fine_structure*fine_structure * electron_mass_si * speed_light_si*speed_light_si)
+hertz            = planck_si*joule
+wavenumber       = hertz*speed_light_si*100.0
+d2byamuang2      = debye*debye / (angstrom *angstrom * amu )
+strength_conv    = 1.0 / d2byamuang2
+angs2bohr        = 1.0E-10 / bohr_si
+
 # J. R. de Laeter, J. K. Boehlke, P. De Bievre, H. Hidaka, H. S. Peiser, K. J. R. Rosman and P. D. P. Taylor (2003).
 # "Atomic weights of the elements. Review 2000 (IUPAC Technical Report)"
 isotopic_masses={

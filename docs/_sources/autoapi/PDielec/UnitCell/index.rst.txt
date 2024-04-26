@@ -317,6 +317,20 @@ Classes
       volume : float
 
 
+   .. py:method:: get_atomic_masses()
+
+      Get the atomic masses for the elements.
+
+      Paramaters
+      ----------
+      None
+
+      Returns
+      -------
+      masses : list
+          The atomic masses 
+
+
    .. py:method:: print()
 
       Prints the details of the given unit cell.

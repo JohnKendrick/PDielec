@@ -474,7 +474,7 @@
     <span class="c1"># absorption units here are L/mole/cm-1</span>
     <span class="c1"># Continue reading any data from the output file</span>
     <span class="n">frequencies_cm1</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
-    <span class="n">unitCell</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">unit_cells</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">unitCell</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">get_unit_cell</span><span class="p">()</span>
     <span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="n">c</span><span class="p">,</span><span class="n">alpha</span><span class="p">,</span><span class="n">beta</span><span class="p">,</span><span class="n">gamma</span> <span class="o">=</span> <span class="n">unitCell</span><span class="o">.</span><span class="n">convert_unitcell_to_abc</span><span class="p">()</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">no_calculation</span><span class="p">:</span>
         <span class="n">eps0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">real</span><span class="p">(</span><span class="n">ionicv</span><span class="p">)</span>

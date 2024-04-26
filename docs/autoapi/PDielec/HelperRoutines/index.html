@@ -301,7 +301,7 @@ along with this program, if not see <a class="reference external" href="https://
 <tr class="row-odd"><td><p><a class="reference internal" href="#PDielec.HelperRoutines.calculateSingleCrystalSpectrum" title="PDielec.HelperRoutines.calculateSingleCrystalSpectrum"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calculateSingleCrystalSpectrum</span></code></a>(frequencies_cm1, ...[, ...])</p></td>
 <td><p>Calculate a single crystal spectrum.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#PDielec.HelperRoutines.getMaterial" title="PDielec.HelperRoutines.getMaterial"><code class="xref py py-obj docutils literal notranslate"><span class="pre">getMaterial</span></code></a>(name[, dataBaseName, mass_definition, ...])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#PDielec.HelperRoutines.getMaterial" title="PDielec.HelperRoutines.getMaterial"><code class="xref py py-obj docutils literal notranslate"><span class="pre">getMaterial</span></code></a>(name[, dataBaseName, qmprogram])</p></td>
 <td><p>Get a material with the given name.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#PDielec.HelperRoutines.main" title="PDielec.HelperRoutines.main"><code class="xref py py-obj docutils literal notranslate"><span class="pre">main</span></code></a>()</p></td>
@@ -437,7 +437,7 @@ the global azimuthal angle and optional specification of the method of calculati
 
 <dl class="py function">
 <dt class="sig sig-object py" id="PDielec.HelperRoutines.getMaterial">
-<span class="sig-prename descclassname"><span class="pre">PDielec.HelperRoutines.</span></span><span class="sig-name descname"><span class="pre">getMaterial</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dataBaseName</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'MaterialsDataBase.xlsx'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mass_definition</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'average'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">qmprogram</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'vasp'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/HelperRoutines.html#getMaterial"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.HelperRoutines.getMaterial" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">PDielec.HelperRoutines.</span></span><span class="sig-name descname"><span class="pre">getMaterial</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dataBaseName</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'MaterialsDataBase.xlsx'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">qmprogram</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'vasp'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/HelperRoutines.html#getMaterial"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.HelperRoutines.getMaterial" title="Permalink to this definition">#</a></dt>
 <dd><p>Get a material with the given name.</p>
 <p>If the name is a file name, it is treated as a DFT (Density Functional Theory) or experimental file.
 If the name is a material name in the material database, this is used instead.</p>
@@ -447,8 +447,6 @@ If the name is a material name in the material database, this is used instead.</
 <dt>name<span class="classifier">str</span></dt><dd><p>The name of the material, which can be a file name or a material name existing in the database.</p>
 </dd>
 <dt>dataBaseName<span class="classifier">str</span></dt><dd><p>The name of the database which will be searched from the material</p>
-</dd>
-<dt>mass_definition<span class="classifier">str</span></dt><dd><p>Can be ‘average’ or ‘isotope’</p>
 </dd>
 <dt>qmprogram<span class="classifier">str</span></dt><dd><p>The name of the QM program used in the case of Phonopy DFT calculations</p>
 </dd>

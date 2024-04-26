@@ -151,7 +151,7 @@ Functions
 
 
 
-.. py:function:: getMaterial(name, dataBaseName='MaterialsDataBase.xlsx', mass_definition='average', qmprogram='vasp')
+.. py:function:: getMaterial(name, dataBaseName='MaterialsDataBase.xlsx', qmprogram='vasp')
 
    Get a material with the given name.
 
@@ -164,8 +164,6 @@ Functions
        The name of the material, which can be a file name or a material name existing in the database.
    dataBaseName : str
        The name of the database which will be searched from the material
-   mass_definition : str
-       Can be 'average' or 'isotope'
    qmprogram : str
        The name of the QM program used in the case of Phonopy DFT calculations
 

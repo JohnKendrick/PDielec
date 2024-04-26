@@ -320,6 +320,40 @@ Classes
           A list of cleaned species symbols.
 
 
+   .. py:method:: get_crystal_density()
+
+      Return the crystal density in g/cc
+
+      The volume is in angstrom^3, the masses are in atomic mass units, the density is in g/cc
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      float
+          Density in g/cc
+
+
+
+   .. py:method:: get_unit_cell()
+
+      Return the last unit cell in the reader
+
+      The routine adds the current set of masses to the unit cell
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      unitCell object
+          The last unit cell read by the reader
+
+
+
    .. py:method:: mass_dictionary()
 
       Generate a dictionary mapping chemical species symbols to their masses.
@@ -467,7 +501,7 @@ Classes
       method to avoid setting the masses to an unintended state.
 
 
-   .. py:method:: set_edited_masses()
+   .. py:method:: set_edited_masses(masses)
 
       Sets the edited masses attribute if the length matches the original masses attribute.
 

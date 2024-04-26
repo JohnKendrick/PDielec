@@ -582,6 +582,7 @@
         <span class="n">print_reals</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">lattice</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">{:12.6f}</span><span class="s1">&#39;</span><span class="p">)</span>
         <span class="n">print_reals</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">lattice</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">{:12.6f}</span><span class="s1">&#39;</span><span class="p">)</span>
         <span class="n">print_strings</span><span class="p">(</span><span class="s1">&#39;Element names&#39;</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">element_names</span><span class="p">)</span>
+        <span class="n">print_reals</span><span class="p">(</span><span class="s1">&#39;Element masses&#39;</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">atomic_masses</span><span class="p">)</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">element_names</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
             <span class="n">print_reals</span><span class="p">(</span><span class="s1">&#39;Fractional coords&#39;</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">fractional_coordinates</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">{:12.6f}</span><span class="s1">&#39;</span><span class="p">)</span>
             <span class="k">for</span> <span class="n">frac</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">fractional_coordinates</span><span class="p">[</span><span class="mi">1</span><span class="p">:]:</span>
@@ -657,6 +658,21 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="n">cm_fractional</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">convert_xyz_to_abc</span><span class="p">(</span><span class="n">cm_xyz</span><span class="p">)</span>
             <span class="k">return</span> <span class="n">mass</span><span class="p">,</span> <span class="n">cm_xyz</span><span class="p">,</span> <span class="n">cm_fractional</span></div>
+
+<div class="viewcode-block" id="UnitCell.get_atomic_masses"><a class="viewcode-back" href="../../autoapi/PDielec/UnitCell/index.html#PDielec.UnitCell.UnitCell.get_atomic_masses">[docs]</a>    <span class="k">def</span> <span class="nf">get_atomic_masses</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get the atomic masses for the elements.</span>
+
+<span class="sd">        Paramaters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        None</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        masses : list</span>
+<span class="sd">            The atomic masses </span>
+<span class="sd">        &quot;&quot;&quot;</span>        
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">atomic_masses</span></div>
 
 <div class="viewcode-block" id="UnitCell.set_atomic_masses"><a class="viewcode-back" href="../../autoapi/PDielec/UnitCell/index.html#PDielec.UnitCell.UnitCell.set_atomic_masses">[docs]</a>    <span class="k">def</span> <span class="nf">set_atomic_masses</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">masses</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>

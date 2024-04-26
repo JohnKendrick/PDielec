@@ -285,21 +285,121 @@ but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.</p>
 <p>You should have received a copy of the MIT License
 along with this program, if not see <a class="reference external" href="https://opensource.org/licenses/MIT">https://opensource.org/licenses/MIT</a></p>
+<p>This file supplies some numerical constants</p>
+<p>The following are some basic definitions.
+The values were supplied from the NIST web site
+<a class="reference external" href="physics.nist.gov">physics.nist.gov</a> .
+They are consistent with the 2018 CODATA recommended values of physical constants</p>
+<div class="table-wrapper docutils container">
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Constant name</p></th>
+<th class="head"><p>Value</p></th>
+<th class="head"><p>Comment</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>hartree2ev</p></td>
+<td><p>27.211386245988</p></td>
+<td><p>convert Hartree to eV</p></td>
+</tr>
+<tr class="row-odd"><td><p>speed_light_si</p></td>
+<td><p>299792458.0</p></td>
+<td><p>Speed of light m s-1</p></td>
+</tr>
+<tr class="row-even"><td><p>planck_si</p></td>
+<td><p>6.62607015e-34</p></td>
+<td><p>Planck’s constant J Hz-1</p></td>
+</tr>
+<tr class="row-odd"><td><p>elementary_charge_si</p></td>
+<td><p>1.602176634e-19</p></td>
+<td><p>Elementary charge, C</p></td>
+</tr>
+<tr class="row-even"><td><p>electron_mass_si</p></td>
+<td><p>9.1093837015-31</p></td>
+<td><p>Electron mass in SI units</p></td>
+</tr>
+<tr class="row-odd"><td><p>avogadro_si</p></td>
+<td><p>6.02214076e23</p></td>
+<td><p>Avogadro’s number</p></td>
+</tr>
+<tr class="row-even"><td><p>boltzmann_si</p></td>
+<td><p>1.380649E-23</p></td>
+<td><p>Boltzmann’s constant J K-1</p></td>
+</tr>
+<tr class="row-odd"><td><p>mu_0_si</p></td>
+<td><p>1.25663706212E-6</p></td>
+<td><p>Vacuum permeability N A-2</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>The following are some derived constants:</p>
+<div class="table-wrapper docutils container">
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Constant name</p></th>
+<th class="head"><p>Comment</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>hbar_si</p></td>
+<td><p>h bar</p></td>
+</tr>
+<tr class="row-odd"><td><p>fine_structure</p></td>
+<td><p>Fine structure constant</p></td>
+</tr>
+<tr class="row-even"><td><p>molar_gas_si</p></td>
+<td><p>The molar gas constant (SI)</p></td>
+</tr>
+<tr class="row-odd"><td><p>coulomb</p></td>
+<td><p>The SI unit of charge</p></td>
+</tr>
+<tr class="row-even"><td><p>metre</p></td>
+<td><p>The SI unit of length</p></td>
+</tr>
+<tr class="row-odd"><td><p>angstrom</p></td>
+<td><p>An angstrom</p></td>
+</tr>
+<tr class="row-even"><td><p>amu</p></td>
+<td><p>Converts 1g to atomic units of mass</p></td>
+</tr>
+<tr class="row-odd"><td><p>debye</p></td>
+<td><p>The Debye unit in SI</p></td>
+</tr>
+<tr class="row-even"><td><p>d2byamuang2</p></td>
+<td><p>A conversion factor to convert absorption units</p></td>
+</tr>
+<tr class="row-odd"><td><p>joule</p></td>
+<td><p>A Joule</p></td>
+</tr>
+<tr class="row-even"><td><p>hertz</p></td>
+<td><p>A Hertz</p></td>
+</tr>
+<tr class="row-odd"><td><p>wavenumber</p></td>
+<td><p>A wavenumber (cm-1)</p></td>
+</tr>
+<tr class="row-even"><td><p>strengthconv</p></td>
+<td><p>Convert oscillator strength to SI</p></td>
+</tr>
+<tr class="row-odd"><td><p>angs2bohr</p></td>
+<td><p>Convert angstrom to Bohr</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>The masses of the elements are taken from:
+J. R. de Laeter, J. K. Boehlke, P. De Bievre, H. Hidaka, H. S. Peiser, K. J. R. Rosman and P. D. P. Taylor (2003).
+“Atomic weights of the elements. Review 2000 (IUPAC Technical Report)”</p>
+<p>isotopic_masses is a dictionary of masses for each element, the key is an element name.  The contents is a list of tuples, each tuple contains, three numbers: the first is the isotope, the second is its mass and the last is its percentage occurence on average.</p>
+<p>covalent_radii is a dictionary of covalent radii taken from: Beatriz Cordero, Veronica Gomex, Ana E. Platero-Prats, Marc Reves, Jorge Echeverria, Eduard Cremades, Flavia Barragan and Santiago Alvarez (2008) Covalent Radii Revisited - Dalton Trans. (21) 2832-2838 doi:10.1039/b801115j</p>
+<p>elemental_colours is a dictionary of an RGB list for each element</p>
+<p>atomic_number_to_element is a dictionary which has an element name key and a content of the atomic number</p>
 <section id="module-contents">
 <h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this heading">#</a></h2>
 <dl class="py data">
-<dt class="sig sig-object py" id="PDielec.Constants.PI">
-<span class="sig-prename descclassname"><span class="pre">PDielec.Constants.</span></span><span class="sig-name descname"><span class="pre">PI</span></span><a class="headerlink" href="#PDielec.Constants.PI" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py data">
 <dt class="sig sig-object py" id="PDielec.Constants.amu">
 <span class="sig-prename descclassname"><span class="pre">PDielec.Constants.</span></span><span class="sig-name descname"><span class="pre">amu</span></span><a class="headerlink" href="#PDielec.Constants.amu" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py data">
-<dt class="sig sig-object py" id="PDielec.Constants.amu_si">
-<span class="sig-prename descclassname"><span class="pre">PDielec.Constants.</span></span><span class="sig-name descname"><span class="pre">amu_si</span></span><a class="headerlink" href="#PDielec.Constants.amu_si" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py data">
@@ -324,12 +424,17 @@ along with this program, if not see <a class="reference external" href="https://
 
 <dl class="py data">
 <dt class="sig sig-object py" id="PDielec.Constants.avogadro_si">
-<span class="sig-prename descclassname"><span class="pre">PDielec.Constants.</span></span><span class="sig-name descname"><span class="pre">avogadro_si</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">6.02214179e+23</span></em><a class="headerlink" href="#PDielec.Constants.avogadro_si" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">PDielec.Constants.</span></span><span class="sig-name descname"><span class="pre">avogadro_si</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">6.02214076e+23</span></em><a class="headerlink" href="#PDielec.Constants.avogadro_si" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="PDielec.Constants.bohr_si">
+<span class="sig-prename descclassname"><span class="pre">PDielec.Constants.</span></span><span class="sig-name descname"><span class="pre">bohr_si</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">5.29177210903e-11</span></em><a class="headerlink" href="#PDielec.Constants.bohr_si" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py data">
 <dt class="sig sig-object py" id="PDielec.Constants.boltzmann_si">
-<span class="sig-prename descclassname"><span class="pre">PDielec.Constants.</span></span><span class="sig-name descname"><span class="pre">boltzmann_si</span></span><a class="headerlink" href="#PDielec.Constants.boltzmann_si" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">PDielec.Constants.</span></span><span class="sig-name descname"><span class="pre">boltzmann_si</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1.380649e-23</span></em><a class="headerlink" href="#PDielec.Constants.boltzmann_si" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py data">
@@ -353,18 +458,8 @@ along with this program, if not see <a class="reference external" href="https://
 <dd></dd></dl>
 
 <dl class="py data">
-<dt class="sig sig-object py" id="PDielec.Constants.debye_si">
-<span class="sig-prename descclassname"><span class="pre">PDielec.Constants.</span></span><span class="sig-name descname"><span class="pre">debye_si</span></span><a class="headerlink" href="#PDielec.Constants.debye_si" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py data">
-<dt class="sig sig-object py" id="PDielec.Constants.electron_gyromagnetic_ratio_si">
-<span class="sig-prename descclassname"><span class="pre">PDielec.Constants.</span></span><span class="sig-name descname"><span class="pre">electron_gyromagnetic_ratio_si</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">176085977000.0</span></em><a class="headerlink" href="#PDielec.Constants.electron_gyromagnetic_ratio_si" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py data">
 <dt class="sig sig-object py" id="PDielec.Constants.electron_mass_si">
-<span class="sig-prename descclassname"><span class="pre">PDielec.Constants.</span></span><span class="sig-name descname"><span class="pre">electron_mass_si</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">9.10938215e-31</span></em><a class="headerlink" href="#PDielec.Constants.electron_mass_si" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">PDielec.Constants.</span></span><span class="sig-name descname"><span class="pre">electron_mass_si</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">9.1093837015e-31</span></em><a class="headerlink" href="#PDielec.Constants.electron_mass_si" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py data">
@@ -374,7 +469,7 @@ along with this program, if not see <a class="reference external" href="https://
 
 <dl class="py data">
 <dt class="sig sig-object py" id="PDielec.Constants.elementary_charge_si">
-<span class="sig-prename descclassname"><span class="pre">PDielec.Constants.</span></span><span class="sig-name descname"><span class="pre">elementary_charge_si</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1.602176487e-19</span></em><a class="headerlink" href="#PDielec.Constants.elementary_charge_si" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">PDielec.Constants.</span></span><span class="sig-name descname"><span class="pre">elementary_charge_si</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1.602176634e-19</span></em><a class="headerlink" href="#PDielec.Constants.elementary_charge_si" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py data">
@@ -383,13 +478,13 @@ along with this program, if not see <a class="reference external" href="https://
 <dd></dd></dl>
 
 <dl class="py data">
-<dt class="sig sig-object py" id="PDielec.Constants.fine_structure_si">
-<span class="sig-prename descclassname"><span class="pre">PDielec.Constants.</span></span><span class="sig-name descname"><span class="pre">fine_structure_si</span></span><a class="headerlink" href="#PDielec.Constants.fine_structure_si" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="PDielec.Constants.fine_structure">
+<span class="sig-prename descclassname"><span class="pre">PDielec.Constants.</span></span><span class="sig-name descname"><span class="pre">fine_structure</span></span><a class="headerlink" href="#PDielec.Constants.fine_structure" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py data">
 <dt class="sig sig-object py" id="PDielec.Constants.hartree2ev">
-<span class="sig-prename descclassname"><span class="pre">PDielec.Constants.</span></span><span class="sig-name descname"><span class="pre">hartree2ev</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">27.2114</span></em><a class="headerlink" href="#PDielec.Constants.hartree2ev" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">PDielec.Constants.</span></span><span class="sig-name descname"><span class="pre">hartree2ev</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">27.211386245988</span></em><a class="headerlink" href="#PDielec.Constants.hartree2ev" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py data">
@@ -400,11 +495,6 @@ along with this program, if not see <a class="reference external" href="https://
 <dl class="py data">
 <dt class="sig sig-object py" id="PDielec.Constants.hertz">
 <span class="sig-prename descclassname"><span class="pre">PDielec.Constants.</span></span><span class="sig-name descname"><span class="pre">hertz</span></span><a class="headerlink" href="#PDielec.Constants.hertz" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py data">
-<dt class="sig sig-object py" id="PDielec.Constants.inv4pi">
-<span class="sig-prename descclassname"><span class="pre">PDielec.Constants.</span></span><span class="sig-name descname"><span class="pre">inv4pi</span></span><a class="headerlink" href="#PDielec.Constants.inv4pi" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py data">
@@ -429,22 +519,17 @@ along with this program, if not see <a class="reference external" href="https://
 
 <dl class="py data">
 <dt class="sig sig-object py" id="PDielec.Constants.molar_gas_si">
-<span class="sig-prename descclassname"><span class="pre">PDielec.Constants.</span></span><span class="sig-name descname"><span class="pre">molar_gas_si</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">8.314472</span></em><a class="headerlink" href="#PDielec.Constants.molar_gas_si" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">PDielec.Constants.</span></span><span class="sig-name descname"><span class="pre">molar_gas_si</span></span><a class="headerlink" href="#PDielec.Constants.molar_gas_si" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py data">
 <dt class="sig sig-object py" id="PDielec.Constants.mu_0_si">
-<span class="sig-prename descclassname"><span class="pre">PDielec.Constants.</span></span><span class="sig-name descname"><span class="pre">mu_0_si</span></span><a class="headerlink" href="#PDielec.Constants.mu_0_si" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">PDielec.Constants.</span></span><span class="sig-name descname"><span class="pre">mu_0_si</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1.25663706212e-06</span></em><a class="headerlink" href="#PDielec.Constants.mu_0_si" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py data">
 <dt class="sig sig-object py" id="PDielec.Constants.planck_si">
-<span class="sig-prename descclassname"><span class="pre">PDielec.Constants.</span></span><span class="sig-name descname"><span class="pre">planck_si</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">6.62606896e-34</span></em><a class="headerlink" href="#PDielec.Constants.planck_si" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py data">
-<dt class="sig sig-object py" id="PDielec.Constants.proton_mass_si">
-<span class="sig-prename descclassname"><span class="pre">PDielec.Constants.</span></span><span class="sig-name descname"><span class="pre">proton_mass_si</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1.672621637e-27</span></em><a class="headerlink" href="#PDielec.Constants.proton_mass_si" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">PDielec.Constants.</span></span><span class="sig-name descname"><span class="pre">planck_si</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">6.62607015e-34</span></em><a class="headerlink" href="#PDielec.Constants.planck_si" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py data">
@@ -522,30 +607,26 @@ along with this program, if not see <a class="reference external" href="https://
             <ul>
 <li><a class="reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.Constants</span></code></a><ul>
 <li><a class="reference internal" href="#module-contents">Module Contents</a><ul>
-<li><a class="reference internal" href="#PDielec.Constants.PI"><code class="docutils literal notranslate"><span class="pre">PI</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.Constants.amu"><code class="docutils literal notranslate"><span class="pre">amu</span></code></a></li>
-<li><a class="reference internal" href="#PDielec.Constants.amu_si"><code class="docutils literal notranslate"><span class="pre">amu_si</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.Constants.angs2bohr"><code class="docutils literal notranslate"><span class="pre">angs2bohr</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.Constants.angstrom"><code class="docutils literal notranslate"><span class="pre">angstrom</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.Constants.atomic_number_to_element"><code class="docutils literal notranslate"><span class="pre">atomic_number_to_element</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.Constants.average_masses"><code class="docutils literal notranslate"><span class="pre">average_masses</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.Constants.avogadro_si"><code class="docutils literal notranslate"><span class="pre">avogadro_si</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.Constants.bohr_si"><code class="docutils literal notranslate"><span class="pre">bohr_si</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.Constants.boltzmann_si"><code class="docutils literal notranslate"><span class="pre">boltzmann_si</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.Constants.coulomb"><code class="docutils literal notranslate"><span class="pre">coulomb</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.Constants.covalent_radii"><code class="docutils literal notranslate"><span class="pre">covalent_radii</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.Constants.d2byamuang2"><code class="docutils literal notranslate"><span class="pre">d2byamuang2</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.Constants.debye"><code class="docutils literal notranslate"><span class="pre">debye</span></code></a></li>
-<li><a class="reference internal" href="#PDielec.Constants.debye_si"><code class="docutils literal notranslate"><span class="pre">debye_si</span></code></a></li>
-<li><a class="reference internal" href="#PDielec.Constants.electron_gyromagnetic_ratio_si"><code class="docutils literal notranslate"><span class="pre">electron_gyromagnetic_ratio_si</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.Constants.electron_mass_si"><code class="docutils literal notranslate"><span class="pre">electron_mass_si</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.Constants.elemental_colours"><code class="docutils literal notranslate"><span class="pre">elemental_colours</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.Constants.elementary_charge_si"><code class="docutils literal notranslate"><span class="pre">elementary_charge_si</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.Constants.epsilon_0_si"><code class="docutils literal notranslate"><span class="pre">epsilon_0_si</span></code></a></li>
-<li><a class="reference internal" href="#PDielec.Constants.fine_structure_si"><code class="docutils literal notranslate"><span class="pre">fine_structure_si</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.Constants.fine_structure"><code class="docutils literal notranslate"><span class="pre">fine_structure</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.Constants.hartree2ev"><code class="docutils literal notranslate"><span class="pre">hartree2ev</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.Constants.hbar_si"><code class="docutils literal notranslate"><span class="pre">hbar_si</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.Constants.hertz"><code class="docutils literal notranslate"><span class="pre">hertz</span></code></a></li>
-<li><a class="reference internal" href="#PDielec.Constants.inv4pi"><code class="docutils literal notranslate"><span class="pre">inv4pi</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.Constants.isotope_masses"><code class="docutils literal notranslate"><span class="pre">isotope_masses</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.Constants.isotopic_masses"><code class="docutils literal notranslate"><span class="pre">isotopic_masses</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.Constants.joule"><code class="docutils literal notranslate"><span class="pre">joule</span></code></a></li>
@@ -553,7 +634,6 @@ along with this program, if not see <a class="reference external" href="https://
 <li><a class="reference internal" href="#PDielec.Constants.molar_gas_si"><code class="docutils literal notranslate"><span class="pre">molar_gas_si</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.Constants.mu_0_si"><code class="docutils literal notranslate"><span class="pre">mu_0_si</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.Constants.planck_si"><code class="docutils literal notranslate"><span class="pre">planck_si</span></code></a></li>
-<li><a class="reference internal" href="#PDielec.Constants.proton_mass_si"><code class="docutils literal notranslate"><span class="pre">proton_mass_si</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.Constants.speed_light_si"><code class="docutils literal notranslate"><span class="pre">speed_light_si</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.Constants.strength_conv"><code class="docutils literal notranslate"><span class="pre">strength_conv</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.Constants.wavenumber"><code class="docutils literal notranslate"><span class="pre">wavenumber</span></code></a></li>

@@ -1063,7 +1063,7 @@
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        sigmas : 1D array of floats</span>
+<span class="sd">        strengths : a 3x3 array of floats for each frequency</span>
 <span class="sd">            The oscillator strengths for a Lorentzian permittivity function in cm-1</span>
 
 <span class="sd">        Returns</span>
@@ -1078,13 +1078,15 @@
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Gets the oscillator strengths for a Lorentzian permittivity</span>
 
+<span class="sd">        The oscillator strength of each transition is a 3x3 matrix</span>
+
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        None</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        1d array of floats</span>
+<span class="sd">        list of 3x3 array of floats</span>
 <span class="sd">            Returns the oscillator strengths for a Lorentzian permittivity function in cm-1</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">permittivityObject</span><span class="o">.</span><span class="n">getOscillatorStrengths</span><span class="p">()</span></div>

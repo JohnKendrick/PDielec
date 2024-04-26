@@ -42,7 +42,7 @@ from PyQt5.QtWidgets                import QSizePolicy, QApplication, QStyle
 from PyQt5.QtWidgets                import QTableWidget, QTableWidgetItem
 from PyQt5.QtCore                   import QCoreApplication, Qt, QSize
 from PyQt5.QtGui                    import QIcon
-from PDielec.Constants              import wavenumber, PI, avogadro_si, angstrom, speed_light_si
+from PDielec.Constants              import wavenumber, avogadro_si, angstrom, speed_light_si
 from PDielec.Utilities              import Debug
 from PDielec.GUI.ScenarioTab        import ScenarioTab
 from PDielec.Materials              import MaterialsDataBase

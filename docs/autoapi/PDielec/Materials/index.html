@@ -574,6 +574,7 @@ Permittivity can be a complex value indicating both the real and imaginary parts
 <dt class="sig sig-object py" id="PDielec.Materials.Material.getOscillatorStrengths">
 <span class="sig-name descname"><span class="pre">getOscillatorStrengths</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/Materials.html#Material.getOscillatorStrengths"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.Materials.Material.getOscillatorStrengths" title="Permalink to this definition">#</a></dt>
 <dd><p>Gets the oscillator strengths for a Lorentzian permittivity</p>
+<p>The oscillator strength of each transition is a 3x3 matrix</p>
 <section id="id14">
 <h5>Parameters<a class="headerlink" href="#id14" title="Permalink to this heading">#</a></h5>
 <p>None</p>
@@ -581,7 +582,7 @@ Permittivity can be a complex value indicating both the real and imaginary parts
 <section id="id15">
 <h5>Returns<a class="headerlink" href="#id15" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
-<dt>1d array of floats</dt><dd><p>Returns the oscillator strengths for a Lorentzian permittivity function in cm-1</p>
+<dt>list of 3x3 array of floats</dt><dd><p>Returns the oscillator strengths for a Lorentzian permittivity function in cm-1</p>
 </dd>
 </dl>
 </section>
@@ -738,7 +739,7 @@ Permittivity can be a complex value indicating both the real and imaginary parts
 <section id="id34">
 <h5>Parameters<a class="headerlink" href="#id34" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
-<dt>sigmas<span class="classifier">1D array of floats</span></dt><dd><p>The oscillator strengths for a Lorentzian permittivity function in cm-1</p>
+<dt>strengths<span class="classifier">a 3x3 array of floats for each frequency</span></dt><dd><p>The oscillator strengths for a Lorentzian permittivity function in cm-1</p>
 </dd>
 </dl>
 </section>
