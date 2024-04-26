@@ -33,7 +33,7 @@ from PyQt5.QtWidgets  import  QVBoxLayout, QHBoxLayout, QFormLayout
 from PyQt5.QtWidgets  import  QSpinBox,QDoubleSpinBox
 from PyQt5.QtWidgets  import  QSizePolicy
 from PyQt5.QtCore     import  QCoreApplication, Qt
-from PDielec.Constants import  PI, avogadro_si, angstrom
+from PDielec.Constants import  avogadro_si, angstrom
 # Import plotting requirements
 import matplotlib
 import matplotlib.figure

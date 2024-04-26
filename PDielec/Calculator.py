@@ -25,7 +25,7 @@ import numpy as np
 import scipy.optimize as sc
 import PDielec.GTMcore as GTM
 import string
-from   PDielec.Constants import PI, d2byamuang2, speed_light_si, wavenumber
+from   PDielec.Constants import d2byamuang2, speed_light_si, wavenumber
 from   scipy.integrate import trapz
 from   scipy.stats import lognorm
 
@@ -302,7 +302,7 @@ def fibonacci_sphere(samples=1,randomize=True):
 
     points = []
     offset = 2./samples
-    increment = math.pi * (3. - math.sqrt(5.));
+    increment = np.pi * (3. - math.sqrt(5.));
 
     for i in range(samples):
         y = ((i * offset) - 1) + (offset / 2);
@@ -345,7 +345,7 @@ def ionic_permittivity(mode_list, oscillator_strengths, frequencies, volume):
     for imode in mode_list:
         permittivity = permittivity + oscillator_strengths[imode] / (frequencies[imode] * frequencies[imode])
     # end for
-    return permittivity * (4 * PI / volume)
+    return permittivity * (4 * np.pi / volume)
 
 def infrared_intensities(oscillator_strengths):
     """
@@ -431,7 +431,7 @@ def longitudinal_modes(frequencies, normal_modes, born_charges, masses, epsilon_
     # Loop over q values
     for q in qlist:
         # Now calculate the nonanalytic part
-        constant = 4.0 * PI / (np.dot(np.dot(q, epsilon_inf), q) * volume)
+        constant = 4.0 * np.pi / (np.dot(np.dot(q, epsilon_inf), q) * volume)
         # Loop over atom a
         for a, za in enumerate(born_charges):
             # atom is the atom index
@@ -571,7 +571,7 @@ def rogridgues_rotations(efield):
     rotations = []
     for field in efield:
         # Calculate a random angle between 0 and 180
-        theta = PI*np.random.rand()
+        theta = np.pi*np.random.rand()
         cos   = np.cos(theta)
         sin   = np.sin(theta)
         rotation = np.zeros((3, 3))
@@ -621,7 +621,7 @@ def absorption_from_mode_intensities(f, modes, frequencies, sigmas, intensities)
         v = np.real(frequencies[mode])
         sigma = sigmas[mode]
         icastep = intensities[mode]
-        absorption = absorption + 2.0 * 4225.6 * icastep / PI * (sigma / (4.0 * (f - v)*(f - v) + sigma*sigma))
+        absorption = absorption + 2.0 * 4225.6 * icastep / np.pi * (sigma / (4.0 * (f - v)*(f - v) + sigma*sigma))
     return absorption
 
 def calculate_size_factor (x):
@@ -753,13 +753,13 @@ def spherical_averaged_mie_scattering(dielectric_medium, crystal_permittivity, s
     # Where the refractive index is taken to be sqrt(emedium) (non magnetic materials)
     emedium = np.trace(dielectric_medium) / 3.0
     refractive_index_medium = np.real(np.sqrt(emedium))
-    lambda_vacuum_mu = 2 * PI * size_mu / size
+    lambda_vacuum_mu = 2 * np.pi * size_mu / size
     wavelength_nm = lambda_vacuum_mu * 1000 / refractive_index_medium
     radius_nm = size_mu * 1000
     # The wavevector in nm-1
-    k_nm = 2 * PI / wavelength_nm
+    k_nm = 2 * np.pi / wavelength_nm
     # volume of a particle in nm^3
-    V_nm = 4.0/3.0 * PI * radius_nm * radius_nm * radius_nm
+    V_nm = 4.0/3.0 * np.pi * radius_nm * radius_nm * radius_nm
     # Number density of particles (number / nm^3)
     N_nm = vf / V_nm
     # If there is a size distribution set up to use it
@@ -789,7 +789,7 @@ def spherical_averaged_mie_scattering(dielectric_medium, crystal_permittivity, s
             s1_factors = []
             for r in dp:
                 # The size parameter is 2pi r / lambda
-                x = 2 * PI * r / lambda_vacuum_mu
+                x = 2 * np.pi * r / lambda_vacuum_mu
                 # Calculate the S1 and S2 scattering factors, and store in a list
                 s1,s2 = Mie.MieS1S2(refractive_index, x*refractive_index_medium, 1)
                 s1_factors.append(s1)
@@ -811,7 +811,7 @@ def spherical_averaged_mie_scattering(dielectric_medium, crystal_permittivity, s
         # See van de Hulst page 129, 130
         # Refractive index of material is
         # the sign of the imaginary component has changed for compatibility with MG/Bruggeman
-        refractive_index = refractive_index_medium * ( 1.0 + i * s1 * 2 * PI * N_nm / ( k_nm * k_nm * k_nm ) )
+        refractive_index = refractive_index_medium * ( 1.0 + i * s1 * 2 * np.pi * N_nm / ( k_nm * k_nm * k_nm ) )
         trace += refractive_index
     # return an isotropic tensor
     trace = trace / len(points_on_sphere)
@@ -877,13 +877,13 @@ def mie_scattering(dielectric_medium, crystal_permittivity, shape, L, vf, size, 
     # Where the refractive index is taken to be sqrt(emedium) (non magnetic materials)
     emedium = np.trace(dielectric_medium) / 3.0
     refractive_index_medium = np.real(np.sqrt(emedium))
-    lambda_vacuum_mu = 2 * PI * size_mu / size
+    lambda_vacuum_mu = 2 * np.pi * size_mu / size
     wavelength_nm = lambda_vacuum_mu * 1000 / refractive_index_medium
     radius_nm = size_mu * 1000
     # The wavevector in nm-1
-    k_nm = 2 * PI / wavelength_nm
+    k_nm = 2 * np.pi / wavelength_nm
     # volume of a particle in nm^3
-    V_nm = 4.0/3.0 * PI * radius_nm * radius_nm * radius_nm
+    V_nm = 4.0/3.0 * np.pi * radius_nm * radius_nm * radius_nm
     # Number density of particles (number / nm^3)
     N_nm = vf / V_nm
     # If there is a size distribution set up to use it
@@ -906,7 +906,7 @@ def mie_scattering(dielectric_medium, crystal_permittivity, shape, L, vf, size, 
         s1_factors = []
         for r in dp:
             # The size parameter is 2pi r / lambda
-            x = 2 * PI * r / lambda_vacuum_mu
+            x = 2 * np.pi * r / lambda_vacuum_mu
             # Calculate the S1 and S2 scattering factors, and store in a list
             s1,s2 = Mie.MieS1S2(refractive_index, x*refractive_index_medium, 1)
             s1_factors.append(s1)
@@ -928,7 +928,7 @@ def mie_scattering(dielectric_medium, crystal_permittivity, shape, L, vf, size, 
     # See van de Hulst page 129, 130
     # Refractive index of material is
     # the sign of the imaginary component has changed for compatibility with MG/Bruggeman
-    refractive_index = refractive_index_medium * ( 1.0 + i * s1 * 2 * PI * N_nm / ( k_nm * k_nm * k_nm ) )
+    refractive_index = refractive_index_medium * ( 1.0 + i * s1 * 2 * np.pi * N_nm / ( k_nm * k_nm * k_nm ) )
     eff = refractive_index * refractive_index
     effdielec = np.array([[eff, 0, 0], [0, eff, 0], [0, 0, eff]])
     return effdielec
@@ -972,7 +972,7 @@ def anisotropic_mie_scattering(dielectric_medium, crystal_permittivity, shape, L
     # Where the refractive index is taken to be sqrt(emedium) (non magnetic materials)
     emedium = np.trace(dielectric_medium) / 3.0
     refractive_index_medium = np.real(np.sqrt(emedium))
-    lambda_vacuum_mu = 2 * PI * size_mu / size
+    lambda_vacuum_mu = 2 * np.pi * size_mu / size
     wavelength_nm = lambda_vacuum_mu * 1000 / refractive_index_medium
     radius_nm = size_mu * 1000
     # To account for anisotropy we diagonalise the real part of the dielectric matrix and transform
@@ -982,9 +982,9 @@ def anisotropic_mie_scattering(dielectric_medium, crystal_permittivity, shape, L
     # Transform the full dielectric matrix
     rotated_dielec = np.matmul(U.T,np.matmul(crystal_permittivity,U))
     # The wavevector in nm-1
-    k_nm = 2 * PI / wavelength_nm
+    k_nm = 2 * np.pi / wavelength_nm
     # volume of a particle in nm^3
-    V_nm = 4.0/3.0 * PI * radius_nm * radius_nm * radius_nm
+    V_nm = 4.0/3.0 * np.pi * radius_nm * radius_nm * radius_nm
     # Number density of particles (number / nm^3)
     N_nm = vf / V_nm
     # If there is a size distribution set up to use it
@@ -1011,7 +1011,7 @@ def anisotropic_mie_scattering(dielectric_medium, crystal_permittivity, shape, L
             s1_factors = []
             for r in dp:
                 # The size parameter is 2pi r / lambda
-                x = 2 * PI * r / lambda_vacuum_mu
+                x = 2 * np.pi * r / lambda_vacuum_mu
                 # Calculate the S1 and S2 scattering factors, and store in a list
                 s1,s2 = Mie.MieS1S2(refractive_index, x*refractive_index_medium, 1)
                 s1_factors.append(s1)
@@ -1033,7 +1033,7 @@ def anisotropic_mie_scattering(dielectric_medium, crystal_permittivity, shape, L
         # See van de Hulst page 129, 130
         # Refractive index of material is
         # the sign of the imaginary component has changed for compatibility with MG/Bruggeman
-        refractive_index = refractive_index_medium * ( 1.0 + i * s1 * 2 * PI * N_nm / ( k_nm * k_nm * k_nm ) )
+        refractive_index = refractive_index_medium * ( 1.0 + i * s1 * 2 * np.pi * N_nm / ( k_nm * k_nm * k_nm ) )
         trace += refractive_index
     # return an isotropic tensor
     trace = trace / 3.0
@@ -1761,7 +1761,7 @@ def solve_effective_medium_equations(
     # This is different but related to Genzel and Martin Equation 16, Phys. Stat. Sol. 51(1972) 91-
     # I've add a factor of log10(e) because we need to assume a decadic Beer's law
     # units are cm-1
-    absorption_coefficient = v_cm1 * 4*PI * np.imag(refractive_index) * math.log10(math.e)
+    absorption_coefficient = v_cm1 * 4*np.pi * np.imag(refractive_index) * math.log10(math.e)
     # units are cm-1 L moles-1
     molar_absorption_coefficient = absorption_coefficient / concentration / vf
     # calculate the ATR reflectance
@@ -1809,12 +1809,12 @@ def calculate_bubble_refractive_index(v_cm1, ri_medium, vf, radius_mu):
     # The effective wave number k = sqrt(emedium)*2pi*v/c (complex!)
     radius_nm = radius_mu * 1000
     # volume of a bubble in nm^3
-    V_nm = 4.0/3.0 * PI * radius_nm * radius_nm * radius_nm
+    V_nm = 4.0/3.0 * np.pi * radius_nm * radius_nm * radius_nm
     # Number density of bubbles (number / nm^3)
     N_nm = vf / V_nm
     k_nm = waterman_truell_scattering(lambda_vacuum_nm, N_nm, radius_nm, ri_medium)
     # k_nm = foldy_scattering(lambda_vacuum_nm, N_nm, radius_nm, ri_medium)
-    ri_medium = k_nm *lambda_vacuum_nm / (2*PI)
+    ri_medium = k_nm *lambda_vacuum_nm / (2*np.pi)
     eff_medium = ri_medium * ri_medium
     effdielec = np.array([[eff_medium, 0, 0], [0, eff_medium, 0], [0, 0, eff_medium]])
     return effdielec,ri_medium
@@ -1858,7 +1858,7 @@ def foldy_scattering(lambda_vacuum_nm, N_nm,radius_nm,ri_medium):
     --------
     Mie.MieS1S2 : Function used to calculate scattering coefficients based on Mie theory.
     """    
-    k_nm = 2*PI*ri_medium/lambda_vacuum_nm
+    k_nm = 2*np.pi*ri_medium/lambda_vacuum_nm
     # The size parameter is now also complex and dimensionless
     size = k_nm*radius_nm
     refractive_index = 1.0 / ri_medium
@@ -1866,7 +1866,7 @@ def foldy_scattering(lambda_vacuum_nm, N_nm,radius_nm,ri_medium):
     s10,s20 = Mie.MieS1S2(refractive_index, size*ri_medium, 1)
     i = complex(0,1)
     f0 = i * s10 / k_nm
-    new_k = np.sqrt( k_nm*k_nm + 4*PI*N_nm*f0 )
+    new_k = np.sqrt( k_nm*k_nm + 4*np.pi*N_nm*f0 )
     if new_k.imag < 0.0:
         new_k = new_k.conjugate()
     return new_k
@@ -1905,7 +1905,7 @@ def waterman_truell_scattering(lambda_vacuum_nm, N_nm,radius_nm,ri_medium):
     wave propagation in the medium. This model is particularly useful in the study
     of wave scattering in composite materials and biological tissues.
     """    
-    k_nm = 2*PI*ri_medium/lambda_vacuum_nm
+    k_nm = 2*np.pi*ri_medium/lambda_vacuum_nm
     # The size parameter is now also complex and dimensionless
     size = k_nm*radius_nm
     refractive_index = 1.0 / ri_medium
@@ -1918,7 +1918,7 @@ def waterman_truell_scattering(lambda_vacuum_nm, N_nm,radius_nm,ri_medium):
     f1 = i*s11
     # print('Waterman_truell',abs(f0+f1))
     k2 = k_nm*k_nm
-    f = 2*PI*N_nm/(k_nm*k_nm*k_nm)
+    f = 2*np.pi*N_nm/(k_nm*k_nm*k_nm)
     new_k = np.sqrt( k2 * ( (1+f*f0)*(1+f*f0) - f*f1*f*f1 ) )
     if new_k.imag < 0.0:
         new_k = new_k.conjugate()

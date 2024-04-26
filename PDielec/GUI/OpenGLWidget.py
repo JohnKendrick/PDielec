@@ -40,7 +40,6 @@ from PyQt5.QtWidgets import QOpenGLWidget
 from PyQt5.QtCore    import Qt
 from PyQt5.QtCore    import QTimer
 from PyQt5.QtGui     import QSurfaceFormat
-from PDielec.Constants import PI
 from PDielec.Utilities import Debug
 
 class OpenGLWidget(QOpenGLWidget):
@@ -1424,7 +1423,7 @@ class Cylinder():
         height = math.sqrt(np.dot(p,p))
         p = p / height
         t = np.cross(z, p)
-        angle = 180.0 / PI * math.acos( np.dot(z,p) )
+        angle = 180.0 / np.pi * math.acos( np.dot(z,p) )
         self.angle = angle
         self.height = height
         self.rotation = t
@@ -1514,7 +1513,7 @@ class Arrow():
         z = np.array( [0.0, 0.0, 1.0] )
         t = np.cross(z, p)
         height = math.sqrt(np.dot(p,p)) + 1.0E-8
-        angle = 180.0 / PI * math.acos( np.dot(z,p) / height )
+        angle = 180.0 / np.pi * math.acos( np.dot(z,p) / height )
         p = p / height
         self.angle = angle
         self.height = height*scale

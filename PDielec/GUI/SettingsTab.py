@@ -35,7 +35,7 @@ from PyQt5.QtWidgets            import  QVBoxLayout, QFormLayout
 from PyQt5.QtWidgets            import  QDoubleSpinBox, QTableWidget, QTableWidgetItem
 from PyQt5.QtWidgets            import  QSizePolicy
 from PyQt5.QtCore               import  Qt, QSize, QCoreApplication
-from PDielec.Constants          import  wavenumber, amu, PI, angstrom
+from PDielec.Constants          import  wavenumber, amu, angstrom
 from PDielec.Constants          import  average_masses, isotope_masses
 from PDielec.Utilities          import  Debug
 from functools                  import  partial
@@ -585,7 +585,7 @@ class SettingsTab(QWidget):
             yn = 'No'
             if selected:
                 yn = 'Yes'
-            sp.writeNextRow([mode, yn, sigma, f, intensity, 4225.6*intensity, 2*4225.6*intensity/sigma/PI], col=1)
+            sp.writeNextRow([mode, yn, sigma, f, intensity, 4225.6*intensity, 2*4225.6*intensity/sigma/np.pi], col=1)
         debugger.print('Finished:: writeSpreadsheet')
 
     def redraw_output_tw(self):
@@ -645,7 +645,7 @@ class SettingsTab(QWidget):
             items.append(QTableWidgetItem('{0:.2f}'.format(intensity*4225.6) ) )
             itemFlags.append( otherFlags )
             # Maximum extinction L/mole/cm
-            items.append(QTableWidgetItem('{0:.2f}'.format(2*intensity*4225.6/self.sigmas_cm1[i]/PI) ) )
+            items.append(QTableWidgetItem('{0:.2f}'.format(2*intensity*4225.6/self.sigmas_cm1[i]/np.pi) ) )
             itemFlags.append( otherFlags )
             for j,(item,flag) in enumerate(zip(items,itemFlags)):
                 item.setFlags(flag)
