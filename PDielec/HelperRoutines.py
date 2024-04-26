@@ -88,7 +88,7 @@ def calculateDFTPermittivityObject(reader,sigma=5.0):
     permittivityObject.setEpsilonInfinity(epsilon_inf)
     return permittivityObject
 
-def getMaterial(name,dataBaseName='MaterialsDataBase.xlsx',mass_definition='average',qmprogram='vasp'):
+def getMaterial(name,dataBaseName='MaterialsDataBase.xlsx',qmprogram='vasp'):
     '''
     Get a material with the given name.
 
@@ -101,8 +101,6 @@ def getMaterial(name,dataBaseName='MaterialsDataBase.xlsx',mass_definition='aver
         The name of the material, which can be a file name or a material name existing in the database.
     dataBaseName : str
         The name of the database which will be searched from the material
-    mass_definition : str
-        Can be 'average' or 'isotope'
     qmprogram : str
         The name of the QM program used in the case of Phonopy DFT calculations
 
