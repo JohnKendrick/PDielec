@@ -100,7 +100,11 @@ autoapi_type = "python"
 autoapi_template_dir="_template/autoapi"
 autoapi_keep_files = True
 autoapi_add_toctree_entry = True
-autoapi_ignore = ['*test_qdialog*','*error_with_QForm*','*test_ttm*','*test_gtm*']
+autoapi_ignore = [
+                  '*test_qdialog*',
+                  '*error_with_QForm*',
+                  '*test_ttm*',
+                  '*test_gtm*']
 autoapi_options = [
     "members",
     "special-members",
@@ -111,6 +115,20 @@ autoapi_options = [
     "imported-members",
 ]
 autodoc_typehints = "signature"
+def skip_member(app, what, name, obj, skip, options):
+    skipping_list = [ 'convert_hkl_to_xyz2',
+                     'spherical_averaged_mie_scattering',
+                     'fibonacci_sphere',
+                     'rodrigues_rotations',
+                     'foldy_scattering',
+                     'coherent2',
+                    ]
+    if obj.name in skipping_list:
+        skip = True
+    return skip
+def setup(sphinx):
+    sphinx.connect("autoapi-skip-member", skip_member)
+
 # Autoapi stuff ends here
 
 

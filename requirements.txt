@@ -14,3 +14,4 @@ psutil
 scikit-learn
 sphinx
 cloud_sptheme
+spglib

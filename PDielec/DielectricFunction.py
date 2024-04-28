@@ -30,6 +30,10 @@ class DielectricFunction:
     '''
     Provide a base class to different dielectric functions.
 
+    There is a close relationship between the dielectric function and a material.
+    The Material module allows data to be read in for different dielectric models.
+    Once the data has been read in a DielectricFunction is created which is appropriate for the data.
+
     Attributes
     ----------
     epsilon_infinity : ndarray
@@ -53,6 +57,18 @@ class DielectricFunction:
         Return the calculate function for this object.
     calculate(v)
         Return the value of the permittivity at frequency v.
+    setFrequencies(frequencies)
+        Set frequencies 
+    getFrequencies()
+        Get frequencies 
+    setSigmas(sigmas)
+        Set sigmas 
+    getSigmas()
+        Get sigmas 
+    setOscillatorStrengths(strengths)
+        Set strengths 
+    getOscillatorStrengths()
+        Get strengths 
     dielectricContributionsFromDrude(f, frequency, sigma, volume)
         Calculates permittivity from a Drude Model.
     dielectricContributionsFromModes(f, modes, frequencies, sigmas, strengths, volume)
@@ -408,6 +424,13 @@ class ConstantTensor(DielectricFunction):
     -------
     calculate()
         Calculates and returns the permittivity.
+
+    Example
+    ------- ::
+
+        permittivity = np.array([ [ 2.0, 0.0, 0.0 ] , [ 0.0, 3.0, 0.0 ], [ 0.0, 0.0, 4.0 ] ])
+        df = ConstantTensor(permittivity)
+        newMaterial = Material('New material name',permittivityObject=df,cell=UnitCell(2, 2, 2))
 
     '''
     def __init__(self, value):

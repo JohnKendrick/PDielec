@@ -310,7 +310,6 @@
 <span class="kn">from</span>   <span class="nn">PDielec</span> <span class="kn">import</span> <span class="n">Mie</span>
 
 <span class="n">Mie</span><span class="o">.</span><span class="n">crossover</span> <span class="o">=</span> <span class="mf">0.01</span>
-<span class="n">points_on_sphere</span> <span class="o">=</span> <span class="kc">None</span>
 
 <div class="viewcode-block" id="initialise_unit_tensor"><a class="viewcode-back" href="../../autoapi/PDielec/Calculator/index.html#PDielec.Calculator.initialise_unit_tensor">[docs]</a><span class="k">def</span> <span class="nf">initialise_unit_tensor</span><span class="p">():</span>
 <span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
@@ -530,7 +529,7 @@
     <span class="n">tensor</span> <span class="o">=</span> <span class="n">tensor</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">trace</span><span class="p">(</span><span class="n">tensor</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">tensor</span></div>
 
-<div class="viewcode-block" id="fibonacci_sphere"><a class="viewcode-back" href="../../autoapi/PDielec/Calculator/index.html#PDielec.Calculator.fibonacci_sphere">[docs]</a><span class="k">def</span> <span class="nf">fibonacci_sphere</span><span class="p">(</span><span class="n">samples</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">randomize</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">fibonacci_sphere</span><span class="p">(</span><span class="n">samples</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">randomize</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Generate points on a sphere using the Fibonacci lattice method.</span>
 
@@ -589,7 +588,7 @@
 
         <span class="n">points</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">z</span><span class="p">])</span>
 
-    <span class="k">return</span> <span class="n">points</span></div>
+    <span class="k">return</span> <span class="n">points</span>
 
 <div class="viewcode-block" id="ionic_permittivity"><a class="viewcode-back" href="../../autoapi/PDielec/Calculator/index.html#PDielec.Calculator.ionic_permittivity">[docs]</a><span class="k">def</span> <span class="nf">ionic_permittivity</span><span class="p">(</span><span class="n">mode_list</span><span class="p">,</span> <span class="n">oscillator_strengths</span><span class="p">,</span> <span class="n">frequencies</span><span class="p">,</span> <span class="n">volume</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
@@ -814,7 +813,7 @@
         <span class="n">normal_modes</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">=</span> <span class="n">mode</span> <span class="o">*</span> <span class="n">array_m</span>
     <span class="k">return</span> <span class="n">normal_modes</span></div>
 
-<div class="viewcode-block" id="rogridgues_rotations"><a class="viewcode-back" href="../../autoapi/PDielec/Calculator/index.html#PDielec.Calculator.rogridgues_rotations">[docs]</a><span class="k">def</span> <span class="nf">rogridgues_rotations</span><span class="p">(</span><span class="n">efield</span><span class="p">):</span>
+<div class="viewcode-block" id="rodridgues_rotations"><a class="viewcode-back" href="../../autoapi/PDielec/Calculator/index.html#PDielec.Calculator.rodridgues_rotations">[docs]</a><span class="k">def</span> <span class="nf">rodridgues_rotations</span><span class="p">(</span><span class="n">efield</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Take the field directions in efield and use each direction to calculate a random rotation about that axis.</span>
 <span class="sd">    Use the field (which is a random unit vector in xyz space) to generate an orthogonal rotation matrix</span>
@@ -980,7 +979,7 @@
     <span class="n">effdielec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="n">trace</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">trace</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">trace</span><span class="p">]])</span>
     <span class="k">return</span> <span class="n">effdielec</span></div>
 
-<div class="viewcode-block" id="spherical_averaged_mie_scattering"><a class="viewcode-back" href="../../autoapi/PDielec/Calculator/index.html#PDielec.Calculator.spherical_averaged_mie_scattering">[docs]</a><span class="k">def</span> <span class="nf">spherical_averaged_mie_scattering</span><span class="p">(</span><span class="n">dielectric_medium</span><span class="p">,</span> <span class="n">crystal_permittivity</span><span class="p">,</span> <span class="n">shape</span><span class="p">,</span> <span class="n">L</span><span class="p">,</span> <span class="n">vf</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">size_mu</span><span class="p">,</span> <span class="n">size_distribution_sigma</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">spherical_averaged_mie_scattering</span><span class="p">(</span><span class="n">dielectric_medium</span><span class="p">,</span> <span class="n">crystal_permittivity</span><span class="p">,</span> <span class="n">shape</span><span class="p">,</span> <span class="n">L</span><span class="p">,</span> <span class="n">vf</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">size_mu</span><span class="p">,</span> <span class="n">size_distribution_sigma</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Calculate the effective constant permittivity using a Mie scattering approach.</span>
 
@@ -1017,7 +1016,7 @@
 <span class="sd">    anisotropy of the permittivity by sampling various directions and computing </span>
 <span class="sd">    the scattering for each to calculate the effective dielectric constant.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">global</span> <span class="n">points_on_sphere</span>
+    <span class="n">points_on_sphere</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="c1"># define i as a complex number</span>
     <span class="n">i</span> <span class="o">=</span> <span class="nb">complex</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
     <span class="c1"># We need to taken account of the change in wavelength and the change in size parameter due to the</span>
@@ -1092,7 +1091,7 @@
     <span class="n">eff</span> <span class="o">=</span> <span class="n">trace</span> <span class="o">*</span> <span class="n">trace</span>
     <span class="n">effdielec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="n">eff</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">eff</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">eff</span><span class="p">]])</span>
     <span class="c1">#print (&quot;radius_nm, eff&quot;, radius_nm, eff)</span>
-    <span class="k">return</span> <span class="n">effdielec</span></div>
+    <span class="k">return</span> <span class="n">effdielec</span>
 
 
 <div class="viewcode-block" id="mie_scattering"><a class="viewcode-back" href="../../autoapi/PDielec/Calculator/index.html#PDielec.Calculator.mie_scattering">[docs]</a><span class="k">def</span> <span class="nf">mie_scattering</span><span class="p">(</span><span class="n">dielectric_medium</span><span class="p">,</span> <span class="n">crystal_permittivity</span><span class="p">,</span> <span class="n">shape</span><span class="p">,</span> <span class="n">L</span><span class="p">,</span> <span class="n">vf</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">size_mu</span><span class="p">,</span> <span class="n">size_distribution_sigma</span><span class="p">):</span>
@@ -2093,7 +2092,7 @@
     <span class="n">effdielec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="n">eff_medium</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">eff_medium</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">eff_medium</span><span class="p">]])</span>
     <span class="k">return</span> <span class="n">effdielec</span><span class="p">,</span><span class="n">ri_medium</span></div>
 
-<div class="viewcode-block" id="foldy_scattering"><a class="viewcode-back" href="../../autoapi/PDielec/Calculator/index.html#PDielec.Calculator.foldy_scattering">[docs]</a><span class="k">def</span> <span class="nf">foldy_scattering</span><span class="p">(</span><span class="n">lambda_vacuum_nm</span><span class="p">,</span> <span class="n">N_nm</span><span class="p">,</span><span class="n">radius_nm</span><span class="p">,</span><span class="n">ri_medium</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">foldy_scattering</span><span class="p">(</span><span class="n">lambda_vacuum_nm</span><span class="p">,</span> <span class="n">N_nm</span><span class="p">,</span><span class="n">radius_nm</span><span class="p">,</span><span class="n">ri_medium</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Calculate the new wave number based on the Foldy&#39;s approximation for light scattering.</span>
 
@@ -2143,7 +2142,7 @@
     <span class="n">new_k</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span> <span class="n">k_nm</span><span class="o">*</span><span class="n">k_nm</span> <span class="o">+</span> <span class="mi">4</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">*</span><span class="n">N_nm</span><span class="o">*</span><span class="n">f0</span> <span class="p">)</span>
     <span class="k">if</span> <span class="n">new_k</span><span class="o">.</span><span class="n">imag</span> <span class="o">&lt;</span> <span class="mf">0.0</span><span class="p">:</span>
         <span class="n">new_k</span> <span class="o">=</span> <span class="n">new_k</span><span class="o">.</span><span class="n">conjugate</span><span class="p">()</span>
-    <span class="k">return</span> <span class="n">new_k</span></div>
+    <span class="k">return</span> <span class="n">new_k</span>
 
 <div class="viewcode-block" id="waterman_truell_scattering"><a class="viewcode-back" href="../../autoapi/PDielec/Calculator/index.html#PDielec.Calculator.waterman_truell_scattering">[docs]</a><span class="k">def</span> <span class="nf">waterman_truell_scattering</span><span class="p">(</span><span class="n">lambda_vacuum_nm</span><span class="p">,</span> <span class="n">N_nm</span><span class="p">,</span><span class="n">radius_nm</span><span class="p">,</span><span class="n">ri_medium</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>

@@ -55,8 +55,6 @@ Functions
    PDielec.Calculator.determineEulerAngles
    PDielec.Calculator.direction_from_shape
    PDielec.Calculator.euler_rotation
-   PDielec.Calculator.fibonacci_sphere
-   PDielec.Calculator.foldy_scattering
    PDielec.Calculator.get_pool
    PDielec.Calculator.hodrick_prescott_filter
    PDielec.Calculator.infrared_intensities
@@ -76,19 +74,10 @@ Functions
    PDielec.Calculator.orthogonalise_projection_operator
    PDielec.Calculator.oscillator_strengths
    PDielec.Calculator.reflectance_atr
-   PDielec.Calculator.rogridgues_rotations
+   PDielec.Calculator.rodridgues_rotations
    PDielec.Calculator.solve_effective_medium_equations
-   PDielec.Calculator.spherical_averaged_mie_scattering
    PDielec.Calculator.waterman_truell_scattering
 
-
-
-Attributes
-~~~~~~~~~~
-
-.. autoapisummary::
-
-   PDielec.Calculator.points_on_sphere
 
 
 .. py:function:: _brug_iter_error(epsbr, eps1, eps2, shape, L, f1, size)
@@ -630,87 +619,6 @@ Attributes
    with respect to a reference coordinate system.
 
 
-.. py:function:: fibonacci_sphere(samples=1, randomize=True)
-
-   Generate points on a sphere using the Fibonacci lattice method.
-
-   This method generates points on the surface of a sphere in a way that they are evenly distributed. The distribution follows
-   the Fibonacci Sphere algorithm, which is useful for creating well-distributed points across the surface of a sphere.
-   Optionally, the points can be randomized slightly to avoid patterns.
-
-   Parameters
-   ----------
-   samples : int, optional
-       The number of points to generate on the sphere. Default is 1.
-   randomize : bool, optional
-       If `True`, the points generation will include a random factor to slightly change the distribution of points.
-       This can be useful to avoid symmetric patterns. Default is `True`.
-
-   Returns
-   -------
-   list
-       A list of points where each point is represented as a list `[x, y, z]`, indicating its position on the sphere.
-
-   Notes
-   -----
-   - The algorithm works by placing points at equal distances along a spiral around the sphere.
-   - The `randomize` option applies a random offset to the spiral, which can help in reducing visual patterns in the distribution.
-
-   Examples
-   --------
-   Generate 100 points on a sphere without randomization:
-
-   >>> points = fibonacci_sphere(100, randomize=False)
-   >>> len(points)
-   100
-
-   Generate 5 points on a sphere with default settings (including randomization):
-
-   >>> points = fibonacci_sphere(5)
-   >>> len(points)
-   5
-
-
-.. py:function:: foldy_scattering(lambda_vacuum_nm, N_nm, radius_nm, ri_medium)
-
-   Calculate the new wave number based on the Foldy's approximation for light scattering.
-
-   Parameters
-   ----------
-   lambda_vacuum_nm : float
-       The wavelength of light in vacuum in nanometers.
-   N_nm : float
-       The concentration of scatterers in inverse cubic nanometers.
-   radius_nm : float
-       The.radius of the scatterer in nanometers.
-   ri_medium : float
-       The refractive index of the medium.
-
-   Returns
-   -------
-   new_k : complex
-       The new wave number corrected for scattering effects.
-
-   Notes
-   -----
-   The function computes a new wave number based on the original wave number,
-   scatterer size, scatterer refractive index, and scatterer concentration using
-   Foldy's approximation. This involves Mie scattering calculations to determine
-   the scattering coefficients, which are then used to adjust the wave number in
-   the medium accounting for collective scattering effects.
-
-   References
-   ----------
-   The implementation and theoretical background can be found in:
-   - L. Foldy, "The Multiple Scattering of Waves. I. General Theory of Isotropic
-   Scattering by Randomly Distributed Scatterers," Phys. Rev. 67, 107–119 (1945).
-   - Mie scattering theory.
-
-   See Also
-   --------
-   Mie.MieS1S2 : Function used to calculate scattering coefficients based on Mie theory.
-
-
 .. py:function:: get_pool(ncpus, threading, initializer=None, initargs=None, debugger=None)
 
    Return a pool of processors given the number of cpus and whether threading is requested.
@@ -1088,7 +996,7 @@ Attributes
        The p-wave Fresnel amplitude.
 
 
-.. py:function:: rogridgues_rotations(efield)
+.. py:function:: rodridgues_rotations(efield)
 
    Take the field directions in efield and use each direction to calculate a random rotation about that axis.
    Use the field (which is a random unit vector in xyz space) to generate an orthogonal rotation matrix
@@ -1169,44 +1077,6 @@ Attributes
        spatr
 
 
-.. py:function:: spherical_averaged_mie_scattering(dielectric_medium, crystal_permittivity, shape, L, vf, size, size_mu, size_distribution_sigma)
-
-   Calculate the effective constant permittivity using a Mie scattering approach.
-
-   Parameters
-   ----------
-   dielectric_medium : array_like (3x3)
-       The dielectric constant tensor of the medium.
-   crystal_permittivity : array_like (3x3)
-       The total frequency dielectric constant tensor at the current frequency.
-   shape : str
-       The name of the current shape. This parameter is ignored as Mie scattering 
-       only works for spherical particles.
-   L : array_like (3x3)
-       The shape's depolarisation matrix. This parameter is ignored as Mie scattering
-       only works for spherical particles.
-   size : float
-       The dimensionless size parameter for the frequency under consideration.
-   size_distribution_sigma : float
-       The log normal value of sigma.
-   vf : float
-       The volume fraction of filler.
-
-   Returns
-   -------
-   float
-       The effective dielectric constant. This is calculated by accounting for 
-       the anisotropy of the permittivity through sampling many directions 
-       and calculating the scattering in each direction.
-
-   Notes
-   -----
-   Mie scattering is applicable only to spherical particles, hence parameters such 
-   as `shape` and `L` are not used in this calculation. The routine considers the 
-   anisotropy of the permittivity by sampling various directions and computing 
-   the scattering for each to calculate the effective dielectric constant.
-
-
 .. py:function:: waterman_truell_scattering(lambda_vacuum_nm, N_nm, radius_nm, ri_medium)
 
    Calculate the effective wavenumber based on Waterman-Truell scattering model.
@@ -1241,8 +1111,4 @@ Attributes
    wave propagation in the medium. This model is particularly useful in the study
    of wave scattering in composite materials and biological tissues.
 
-
-.. py:data:: points_on_sphere
-
-   
 

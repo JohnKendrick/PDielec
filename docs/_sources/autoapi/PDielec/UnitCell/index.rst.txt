@@ -35,6 +35,14 @@ Classes
 
 
 
+Functions
+~~~~~~~~~
+
+.. autoapisummary::
+
+   PDielec.UnitCell.convert_length_units
+
+
 
 .. py:class:: UnitCell(a=None, b=None, c=None, alpha=None, beta=None, gamma=None, units='Angstrom')
 
@@ -69,7 +77,7 @@ Classes
           A list of atom indices for which the centre of mass should be calculated.
           If None, the centre of mass will be calculated for all atoms in the system. Default is None.
       output : {'xyz', 'mass', 'abc'}, optional
-          The units in which to return the centre of mass:
+          The output requested:
           - 'xyz' returns the centre of mass coordinates in Cartesian (x, y, z) units.
           - 'mass' returns the total mass of the atoms in `atom_list`.
           - 'abc' returns the centre of mass in fractional (a, b, c) coordinates.
@@ -78,11 +86,11 @@ Classes
       Returns
       -------
       numpy.ndarray or float or tuple
-          The centre of mass in the specified units. The type of the return value depends on the `units` parameter:
+          The centre of mass as requested by output:
           - If 'xyz', returns a numpy array with the x, y, z coordinates of the centre of mass.
           - If 'mass', returns a float representing the total mass of the specified atoms.
           - If 'abc', returns a numpy array with the a, b, c fractional coordinates of the centre of mass.
-          - If the units are not recognized, a tuple containing the total mass, Cartesian coordinates, and fractional coordinates of the centre of mass is returned.
+          - If the ouput are not recognized, a tuple containing the total mass, Cartesian coordinates, and fractional coordinates of the centre of mass is returned.
 
       See Also
       --------
@@ -177,47 +185,6 @@ Classes
       xyz : list of xyz coordinates
 
 
-   .. py:method:: convert_hkl_to_xyz2(hkl)
-
-      Convert hkl coordinates to xyz coordinates (written as a check on convert_hkl_to_xyz)
-
-      Parameters
-      ----------
-      hkl : list of hkl miller indices
-
-      Returns
-      -------
-      xyz : list of xyz coordinates
-
-
-
-   .. py:method:: convert_length_units(value, units_in, units_out)
-
-      "
-      Convert between different length units
-
-      The 'internal' unit is taken to be the Angstrom so units are relative to the Angstrom
-      The unit strings are made lowercase, so case should be irrelevant
-
-      Parameters
-      ----------
-      units_in : str
-          The units of the input value(s). Can be one of '
-      units_out : str
-          The units of the output value(s). Must be one of 'a.u. au bohr ang angs angstrom nm um mm cm m'
-      input_value : float or list of floats or a numpy array
-          The value(s) for which the conversion is to be made.
-
-      Returns
-      -------
-      scalar or numpy array
-          The converted value(s) in the output units specified.
-
-      Notes
-      -----
-      The input can be either a scalar value, a list or a numpy array of values. The function will return the converted value(s) in the output units specified.
-
-
    .. py:method:: convert_unitcell_to_abc()
 
       Convert a unit cell to the equivalent a, b, c, alpha, beta, gamma designation.
@@ -247,7 +214,7 @@ Classes
       abc : list of fractional coordinates
 
 
-   .. py:method:: find_symmetry()
+   .. py:method:: find_symmetry(symprec=1e-05, angle_tolerance=-1.0)
 
       Find the space group symmetry of the unit cell.
 
@@ -257,7 +224,8 @@ Classes
 
       Returns
       -------
-      sets self.spacegroup
+      a tuple
+          (international table symbol, number])
 
 
    .. py:method:: getBoundingBox(units='Angstrom')
@@ -321,7 +289,7 @@ Classes
 
       Get the atomic masses for the elements.
 
-      Paramaters
+      Parameters
       ----------
       None
 
@@ -329,6 +297,20 @@ Classes
       -------
       masses : list
           The atomic masses 
+
+
+   .. py:method:: get_atomic_numbers()
+
+      Get the atomic numbers for the elements.
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      list of ints
+          The atomic numbers
 
 
    .. py:method:: print()
@@ -449,14 +431,14 @@ Classes
       coords : a list of xyz coordinates
           A list of xyz coordinates, the unit of length must agree with the lattice
       units : str
-          A unit of length with should agree with the lattice parameter units, if it doesn't theen the coordinates are converted to the cell units of length.  The default is Angstrom.
+          A unit of length for the input values.  The default is Angstrom.
 
       Returns
       -------
       None
 
 
-   .. py:method:: write_cif(filename='', file_=sys.stdout)
+   .. py:method:: write_cif(filename=None, file_=sys.stdout)
 
       Write the crystallographic information file (CIF) representation of a structure.
 
@@ -489,5 +471,32 @@ Classes
 
       >>> cell.write_cif('example.cif')
 
+
+
+.. py:function:: convert_length_units(value, units_in, units_out)
+
+   "
+   Convert between different length units
+
+   The 'internal' unit is taken to be the Angstrom so units are relative to the Angstrom
+   The unit strings are made lowercase, so case should be irrelevant
+
+   Parameters
+   ----------
+   units_in : str
+       The units of the input value(s). Can be one of '
+   units_out : str
+       The units of the output value(s). Must be one of 'a.u. au bohr ang angs angstrom nm um mm cm m'
+   input_value : float or list of floats or a numpy array
+       The value(s) for which the conversion is to be made.
+
+   Returns
+   -------
+   scalar or numpy array
+       The converted value(s) in the output units specified.
+
+   Notes
+   -----
+   The input can be either a scalar value, a list or a numpy array of values. The function will return the converted value(s) in the output units specified.
 
 

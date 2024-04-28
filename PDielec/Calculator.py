@@ -36,7 +36,6 @@ from   scipy.stats import lognorm
 from   PDielec import Mie
 
 Mie.crossover = 0.01
-points_on_sphere = None
 
 def initialise_unit_tensor():
     '''
@@ -540,7 +539,7 @@ def normal_modes(masses, mass_weighted_normal_modes):
         normal_modes[index] = mode * array_m
     return normal_modes
 
-def rogridgues_rotations(efield):
+def rodridgues_rotations(efield):
     """
     Take the field directions in efield and use each direction to calculate a random rotation about that axis.
     Use the field (which is a random unit vector in xyz space) to generate an orthogonal rotation matrix
@@ -743,7 +742,7 @@ def spherical_averaged_mie_scattering(dielectric_medium, crystal_permittivity, s
     anisotropy of the permittivity by sampling various directions and computing 
     the scattering for each to calculate the effective dielectric constant.
     """
-    global points_on_sphere
+    points_on_sphere = None
     # define i as a complex number
     i = complex(0,1)
     # We need to taken account of the change in wavelength and the change in size parameter due to the

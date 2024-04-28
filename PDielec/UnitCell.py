@@ -22,8 +22,64 @@ import math
 from PDielec.Calculator  import calculate_distance
 from PDielec.Plotter     import print_reals, print_ints, print_strings
 from PDielec.Calculator  import cleanup_symbol
-from PDielec.Constants   import avogadro_si
+from PDielec.Constants   import avogadro_si, element_to_atomic_number
 import sys
+
+def convert_length_units(value, units_in, units_out):
+    """"
+    Convert between different length units
+
+    The 'internal' unit is taken to be the Angstrom so units are relative to the Angstrom
+    The unit strings are made lowercase, so case should be irrelevant
+
+    Parameters
+    ----------
+    units_in : str
+        The units of the input value(s). Can be one of '
+    units_out : str
+        The units of the output value(s). Must be one of 'a.u. au bohr ang angs angstrom nm um mm cm m'
+    input_value : float or list of floats or a numpy array
+        The value(s) for which the conversion is to be made.
+
+    Returns
+    -------
+    scalar or numpy array
+        The converted value(s) in the output units specified.
+
+    Notes
+    -----
+    The input can be either a scalar value, a list or a numpy array of values. The function will return the converted value(s) in the output units specified.
+    """
+    # the conversion dictionary has a value that converts the key unit to angstroms
+    angstroms = { 'a.u.'       : 0.5291772, 
+                  'au'         : 0.5291772, 
+                  'bohr'       : 0.5291772, 
+                  'ang'        : 1.0000000,
+                  'angs'       : 1.0000000,
+                  'angstrom'   : 1.0000000,
+                  'angstroms'  : 1.0000000,
+                  'nm'         : 1.0E1    ,
+                  'um'         : 1.0E4    ,
+                  'mm'         : 1.0E7    ,
+                  'cm'         : 1.0E8    ,
+                  'm'          : 1.0E10   ,
+                 }
+    units_in  = units_in.lower()
+    units_out = units_out.lower()
+    # Deal with a possible list
+    wasList = False
+    if isinstance(value, list):
+        wasList = True
+        value = np.array(value)
+    # Convert the input unit angstrom
+    scale = angstroms[units_in]
+    value = scale * value     
+    # convert the internal value from angstrom to the output unit
+    scale = angstroms[units_out]
+    value = value / scale
+    if wasList:
+        value = value.tolist()
+    return value
 
 
 class UnitCell:
@@ -84,64 +140,7 @@ class UnitCell:
             self.lattice[2] = c
         self._calculate_reciprocal_lattice(self.lattice)
 
-    def convert_length_units(self,value, units_in, units_out):
-        """"
-        Convert between different length units
-
-        The 'internal' unit is taken to be the Angstrom so units are relative to the Angstrom
-        The unit strings are made lowercase, so case should be irrelevant
-
-        Parameters
-        ----------
-        units_in : str
-            The units of the input value(s). Can be one of '
-        units_out : str
-            The units of the output value(s). Must be one of 'a.u. au bohr ang angs angstrom nm um mm cm m'
-        input_value : float or list of floats or a numpy array
-            The value(s) for which the conversion is to be made.
-
-        Returns
-        -------
-        scalar or numpy array
-            The converted value(s) in the output units specified.
-
-        Notes
-        -----
-        The input can be either a scalar value, a list or a numpy array of values. The function will return the converted value(s) in the output units specified.
-        """
-        # the conversion dictionary has a value that converts the key unit to angstroms
-        angstroms = { 'a.u.'       : 0.5291772, 
-                      'au'         : 0.5291772, 
-                      'bohr'       : 0.5291772, 
-                      'ang'        : 1.0000000,
-                      'angs'       : 1.0000000,
-                      'angstrom'   : 1.0000000,
-                      'angstroms'  : 1.0000000,
-                      'nm'         : 1.0E1    ,
-                      'um'         : 1.0E4    ,
-                      'mm'         : 1.0E7    ,
-                      'cm'         : 1.0E8    ,
-                      'm'          : 1.0E10   ,
-                     }
-        units_in  = units_in.lower()
-        units_out = units_out.lower()
-        # Deal with a possible list
-        wasList = False
-        if isinstance(value, list):
-            wasList = True
-            value = np.array(value)
-        # Convert the input unit angstrom
-        scale = angstroms[units_in]
-        value = scale * value     
-        # convert the internal value from angstrom to the output unit
-        scale = angstroms[units_out]
-        value = value / scale
-        if wasList:
-            value = value.tolist()
-        return value
-
-
-    def write_cif(self, filename='', file_=sys.stdout):
+    def write_cif(self, filename=None, file_=sys.stdout):
         """
         Write the crystallographic information file (CIF) representation of a structure.
 
@@ -174,12 +173,18 @@ class UnitCell:
 
         >>> cell.write_cif('example.cif')
         """        
-        abc = self.convert_length_units( [self.a, self.b, self.c],units='Angstrom' )
-        volume = self.getVolume(units='Angstrom')
-        print('data_'+filename,                                  file=file_)
-        print('_space_group_IT_number 1',                        file=file_)
-        print('_symmetry_space_group_name_H-M \'P 1\'',          file=file_)
-        print('_symmetry_Int_Tables_number        1  ',          file=file_)
+        # Open the filename if it is given
+        if filename is not None:
+            file_ = open(filename,'w')
+        abc = convert_length_units( [self.a, self.b, self.c],self.units,'Angstrom' )
+        volume = self.getVolume('Angstrom')
+        spg_symbol, spg_number = self.find_symmetry()
+        if filename is not None:
+            print('data_'+filename,file=file_)
+        else:
+            print('data_',         file=file_)
+        print('_symmetry_space_group_name_H-M \'{}\''.format(spg_symbol),file=file_)
+        print('_symmetry_Int_Tables_number      {}  '.format(spg_number),file=file_)
         print('_cell_length_a      {:12.6f}'.format(abc[0]),     file=file_)
         print('_cell_length_b      {:12.6f}'.format(abc[1]),     file=file_)
         print('_cell_length_c      {:12.6f}'.format(abc[2]),     file=file_)
@@ -259,8 +264,8 @@ class UnitCell:
         edges.append( (corners_xyz[7] , corners_xyz[6]) )
         edges.append( (corners_xyz[7] , corners_xyz[4]) )
         # Convert to the required output unit
-        corners = self.convert_length_units(corners,units)
-        edges   = self.convert_length_units(edges  ,units)
+        corners = convert_length_units(corners,self.units,units)
+        edges   = convert_length_units(edges  ,self.units,units)
         return corners_xyz,edges
 
     def getDensity(self, units='cm'):
@@ -301,7 +306,11 @@ class UnitCell:
         -------
         None
         """        
-        print('Units for length are: ', self.units)
+
+        spg_symbol, spg_number = self.find_symmetry()
+        print      ('Space group international symbol is: ',spg_symbol)
+        print      ('Space group number is              : ',spg_number)
+        print      ('Units for length are: ', self.units)
         print_reals('Unit Cell a,b,c ',[self.a, self.b, self.c], format='{:12.6f}')
         print_reals('Unit Cell alpha,beta,gamma',[self.alpha, self.beta, self.gamma], format='{:12.6f}')
         print_reals('lattice', self.lattice[0], format='{:12.6f}')
@@ -335,7 +344,7 @@ class UnitCell:
             A list of atom indices for which the centre of mass should be calculated.
             If None, the centre of mass will be calculated for all atoms in the system. Default is None.
         output : {'xyz', 'mass', 'abc'}, optional
-            The units in which to return the centre of mass:
+            The output requested:
             - 'xyz' returns the centre of mass coordinates in Cartesian (x, y, z) units.
             - 'mass' returns the total mass of the atoms in `atom_list`.
             - 'abc' returns the centre of mass in fractional (a, b, c) coordinates.
@@ -344,11 +353,11 @@ class UnitCell:
         Returns
         -------
         numpy.ndarray or float or tuple
-            The centre of mass in the specified units. The type of the return value depends on the `units` parameter:
+            The centre of mass as requested by output:
             - If 'xyz', returns a numpy array with the x, y, z coordinates of the centre of mass.
             - If 'mass', returns a float representing the total mass of the specified atoms.
             - If 'abc', returns a numpy array with the a, b, c fractional coordinates of the centre of mass.
-            - If the units are not recognized, a tuple containing the total mass, Cartesian coordinates, and fractional coordinates of the centre of mass is returned.
+            - If the ouput are not recognized, a tuple containing the total mass, Cartesian coordinates, and fractional coordinates of the centre of mass is returned.
 
         See Also
         --------
@@ -364,7 +373,7 @@ class UnitCell:
         array([0.4, 0.5, 0.6])
         """        
         # Calculate the centre of mass - if the atom list is given just use that
-        # The centre of mass can be returned in units of 'xyz' space or 'abc' space
+        # The centre of mass can be returned in as 'xyz' space or 'abc' space
         # if output='all' a tuple of (mass,cm_xyz,cm_abc) is returned
         if atom_list == None:
             atom_list = range(self.nions)
@@ -385,11 +394,26 @@ class UnitCell:
             cm_fractional = self.convert_xyz_to_abc(cm_xyz)
             return mass, cm_xyz, cm_fractional
 
+    def get_atomic_numbers(self):
+        """
+        Get the atomic numbers for the elements.
+
+        Parameters
+        ----------
+        None
+
+        Returns
+        -------
+        list of ints
+            The atomic numbers
+        """        
+        return [element_to_atomic_number[el] for el in self.element_names]
+
     def get_atomic_masses(self):
         """
         Get the atomic masses for the elements.
 
-        Paramaters
+        Parameters
         ----------
         None
 
@@ -511,7 +535,7 @@ class UnitCell:
         -------
         volume : float
         """
-        lattice = self.convert_length_units(self.lattice,self.units,units)
+        lattice = convert_length_units(self.lattice,self.units,units)
         volume = np.abs(np.dot(lattice[0], np.cross(lattice[1], lattice[2])))
         return volume
 
@@ -627,13 +651,13 @@ class UnitCell:
         coords : a list of xyz coordinates
             A list of xyz coordinates, the unit of length must agree with the lattice
         units : str
-            A unit of length with should agree with the lattice parameter units, if it doesn't theen the coordinates are converted to the cell units of length.  The default is Angstrom.
+            A unit of length for the input values.  The default is Angstrom.
 
         Returns
         -------
         None
         """
-        self.xyz_coordinates = self.convert_length_units(coords,units,self.units)
+        self.xyz_coordinates = convert_length_units(coords,units,self.units)
         self.fractional_coordinates = self.convert_xyz_to_abc(coords)
         self.nions = len(coords)
         return
@@ -687,7 +711,7 @@ class UnitCell:
           self.atom_labels.append(el)
         return
 
-    def find_symmetry(self):
+    def find_symmetry(self,symprec=1e-5,angle_tolerance=-1.0):
         """
         Find the space group symmetry of the unit cell.
 
@@ -697,12 +721,19 @@ class UnitCell:
 
         Returns
         -------
-        sets self.spacegroup
+        a tuple
+            (international table symbol, number])
         """
+        atomic_nos = self.get_atomic_numbers()
+        if len(atomic_nos) <= 0:
+            return 'P 1', 1
         from spglib import get_spacegroup
-        cell = ( self.lattice, self.fractional_coordinates, self.atomic_nos )
-        self.spacegroup = get_spacegroup(cell, symmprec=1e-5)
-        print("Symmetry space group is", self.spacegroup)
+        cell = ( self.lattice, self.fractional_coordinates, atomic_nos )
+        spacegroup = get_spacegroup(cell, symprec=symprec,angle_tolerance=angle_tolerance)
+        sp = spacegroup.split()
+        symbol = sp[0]
+        number = int(sp[1].replace('(','').replace(')',''))
+        return symbol,number
 
     def calculate_molecular_contents(self, scale, toler, covalent_radii):
         """
@@ -730,6 +761,8 @@ class UnitCell:
         The formula used to calculate the largest distance apart atoms i and j can be for a bond is:
         `scale * (radi + radj) + toler`
         """
+        #print('jk06 ')
+        #self.print()
         # Calculate the contents of all the cells adjacent to the central cell
         adjacents = ( 0, -1, 1 )
         translations = [ (i, j, k) for i in adjacents for j in adjacents for k in adjacents ]

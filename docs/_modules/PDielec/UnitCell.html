@@ -296,8 +296,64 @@
 <span class="kn">from</span> <span class="nn">PDielec.Calculator</span>  <span class="kn">import</span> <span class="n">calculate_distance</span>
 <span class="kn">from</span> <span class="nn">PDielec.Plotter</span>     <span class="kn">import</span> <span class="n">print_reals</span><span class="p">,</span> <span class="n">print_ints</span><span class="p">,</span> <span class="n">print_strings</span>
 <span class="kn">from</span> <span class="nn">PDielec.Calculator</span>  <span class="kn">import</span> <span class="n">cleanup_symbol</span>
-<span class="kn">from</span> <span class="nn">PDielec.Constants</span>   <span class="kn">import</span> <span class="n">avogadro_si</span>
+<span class="kn">from</span> <span class="nn">PDielec.Constants</span>   <span class="kn">import</span> <span class="n">avogadro_si</span><span class="p">,</span> <span class="n">element_to_atomic_number</span>
 <span class="kn">import</span> <span class="nn">sys</span>
+
+<div class="viewcode-block" id="convert_length_units"><a class="viewcode-back" href="../../autoapi/PDielec/UnitCell/index.html#PDielec.UnitCell.convert_length_units">[docs]</a><span class="k">def</span> <span class="nf">convert_length_units</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">units_in</span><span class="p">,</span> <span class="n">units_out</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;&quot;</span>
+<span class="sd">    Convert between different length units</span>
+
+<span class="sd">    The &#39;internal&#39; unit is taken to be the Angstrom so units are relative to the Angstrom</span>
+<span class="sd">    The unit strings are made lowercase, so case should be irrelevant</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    units_in : str</span>
+<span class="sd">        The units of the input value(s). Can be one of &#39;</span>
+<span class="sd">    units_out : str</span>
+<span class="sd">        The units of the output value(s). Must be one of &#39;a.u. au bohr ang angs angstrom nm um mm cm m&#39;</span>
+<span class="sd">    input_value : float or list of floats or a numpy array</span>
+<span class="sd">        The value(s) for which the conversion is to be made.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    scalar or numpy array</span>
+<span class="sd">        The converted value(s) in the output units specified.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    The input can be either a scalar value, a list or a numpy array of values. The function will return the converted value(s) in the output units specified.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># the conversion dictionary has a value that converts the key unit to angstroms</span>
+    <span class="n">angstroms</span> <span class="o">=</span> <span class="p">{</span> <span class="s1">&#39;a.u.&#39;</span>       <span class="p">:</span> <span class="mf">0.5291772</span><span class="p">,</span> 
+                  <span class="s1">&#39;au&#39;</span>         <span class="p">:</span> <span class="mf">0.5291772</span><span class="p">,</span> 
+                  <span class="s1">&#39;bohr&#39;</span>       <span class="p">:</span> <span class="mf">0.5291772</span><span class="p">,</span> 
+                  <span class="s1">&#39;ang&#39;</span>        <span class="p">:</span> <span class="mf">1.0000000</span><span class="p">,</span>
+                  <span class="s1">&#39;angs&#39;</span>       <span class="p">:</span> <span class="mf">1.0000000</span><span class="p">,</span>
+                  <span class="s1">&#39;angstrom&#39;</span>   <span class="p">:</span> <span class="mf">1.0000000</span><span class="p">,</span>
+                  <span class="s1">&#39;angstroms&#39;</span>  <span class="p">:</span> <span class="mf">1.0000000</span><span class="p">,</span>
+                  <span class="s1">&#39;nm&#39;</span>         <span class="p">:</span> <span class="mf">1.0E1</span>    <span class="p">,</span>
+                  <span class="s1">&#39;um&#39;</span>         <span class="p">:</span> <span class="mf">1.0E4</span>    <span class="p">,</span>
+                  <span class="s1">&#39;mm&#39;</span>         <span class="p">:</span> <span class="mf">1.0E7</span>    <span class="p">,</span>
+                  <span class="s1">&#39;cm&#39;</span>         <span class="p">:</span> <span class="mf">1.0E8</span>    <span class="p">,</span>
+                  <span class="s1">&#39;m&#39;</span>          <span class="p">:</span> <span class="mf">1.0E10</span>   <span class="p">,</span>
+                 <span class="p">}</span>
+    <span class="n">units_in</span>  <span class="o">=</span> <span class="n">units_in</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+    <span class="n">units_out</span> <span class="o">=</span> <span class="n">units_out</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+    <span class="c1"># Deal with a possible list</span>
+    <span class="n">wasList</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+        <span class="n">wasList</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+    <span class="c1"># Convert the input unit angstrom</span>
+    <span class="n">scale</span> <span class="o">=</span> <span class="n">angstroms</span><span class="p">[</span><span class="n">units_in</span><span class="p">]</span>
+    <span class="n">value</span> <span class="o">=</span> <span class="n">scale</span> <span class="o">*</span> <span class="n">value</span>     
+    <span class="c1"># convert the internal value from angstrom to the output unit</span>
+    <span class="n">scale</span> <span class="o">=</span> <span class="n">angstroms</span><span class="p">[</span><span class="n">units_out</span><span class="p">]</span>
+    <span class="n">value</span> <span class="o">=</span> <span class="n">value</span> <span class="o">/</span> <span class="n">scale</span>
+    <span class="k">if</span> <span class="n">wasList</span><span class="p">:</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">value</span></div>
 
 
 <div class="viewcode-block" id="UnitCell"><a class="viewcode-back" href="../../autoapi/PDielec/UnitCell/index.html#PDielec.UnitCell.UnitCell">[docs]</a><span class="k">class</span> <span class="nc">UnitCell</span><span class="p">:</span>
@@ -358,64 +414,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">lattice</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">c</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_calculate_reciprocal_lattice</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lattice</span><span class="p">)</span>
 
-<div class="viewcode-block" id="UnitCell.convert_length_units"><a class="viewcode-back" href="../../autoapi/PDielec/UnitCell/index.html#PDielec.UnitCell.UnitCell.convert_length_units">[docs]</a>    <span class="k">def</span> <span class="nf">convert_length_units</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">value</span><span class="p">,</span> <span class="n">units_in</span><span class="p">,</span> <span class="n">units_out</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;&quot;</span>
-<span class="sd">        Convert between different length units</span>
-
-<span class="sd">        The &#39;internal&#39; unit is taken to be the Angstrom so units are relative to the Angstrom</span>
-<span class="sd">        The unit strings are made lowercase, so case should be irrelevant</span>
-
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        units_in : str</span>
-<span class="sd">            The units of the input value(s). Can be one of &#39;</span>
-<span class="sd">        units_out : str</span>
-<span class="sd">            The units of the output value(s). Must be one of &#39;a.u. au bohr ang angs angstrom nm um mm cm m&#39;</span>
-<span class="sd">        input_value : float or list of floats or a numpy array</span>
-<span class="sd">            The value(s) for which the conversion is to be made.</span>
-
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        scalar or numpy array</span>
-<span class="sd">            The converted value(s) in the output units specified.</span>
-
-<span class="sd">        Notes</span>
-<span class="sd">        -----</span>
-<span class="sd">        The input can be either a scalar value, a list or a numpy array of values. The function will return the converted value(s) in the output units specified.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c1"># the conversion dictionary has a value that converts the key unit to angstroms</span>
-        <span class="n">angstroms</span> <span class="o">=</span> <span class="p">{</span> <span class="s1">&#39;a.u.&#39;</span>       <span class="p">:</span> <span class="mf">0.5291772</span><span class="p">,</span> 
-                      <span class="s1">&#39;au&#39;</span>         <span class="p">:</span> <span class="mf">0.5291772</span><span class="p">,</span> 
-                      <span class="s1">&#39;bohr&#39;</span>       <span class="p">:</span> <span class="mf">0.5291772</span><span class="p">,</span> 
-                      <span class="s1">&#39;ang&#39;</span>        <span class="p">:</span> <span class="mf">1.0000000</span><span class="p">,</span>
-                      <span class="s1">&#39;angs&#39;</span>       <span class="p">:</span> <span class="mf">1.0000000</span><span class="p">,</span>
-                      <span class="s1">&#39;angstrom&#39;</span>   <span class="p">:</span> <span class="mf">1.0000000</span><span class="p">,</span>
-                      <span class="s1">&#39;angstroms&#39;</span>  <span class="p">:</span> <span class="mf">1.0000000</span><span class="p">,</span>
-                      <span class="s1">&#39;nm&#39;</span>         <span class="p">:</span> <span class="mf">1.0E1</span>    <span class="p">,</span>
-                      <span class="s1">&#39;um&#39;</span>         <span class="p">:</span> <span class="mf">1.0E4</span>    <span class="p">,</span>
-                      <span class="s1">&#39;mm&#39;</span>         <span class="p">:</span> <span class="mf">1.0E7</span>    <span class="p">,</span>
-                      <span class="s1">&#39;cm&#39;</span>         <span class="p">:</span> <span class="mf">1.0E8</span>    <span class="p">,</span>
-                      <span class="s1">&#39;m&#39;</span>          <span class="p">:</span> <span class="mf">1.0E10</span>   <span class="p">,</span>
-                     <span class="p">}</span>
-        <span class="n">units_in</span>  <span class="o">=</span> <span class="n">units_in</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
-        <span class="n">units_out</span> <span class="o">=</span> <span class="n">units_out</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
-        <span class="c1"># Deal with a possible list</span>
-        <span class="n">wasList</span> <span class="o">=</span> <span class="kc">False</span>
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
-            <span class="n">wasList</span> <span class="o">=</span> <span class="kc">True</span>
-            <span class="n">value</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
-        <span class="c1"># Convert the input unit angstrom</span>
-        <span class="n">scale</span> <span class="o">=</span> <span class="n">angstroms</span><span class="p">[</span><span class="n">units_in</span><span class="p">]</span>
-        <span class="n">value</span> <span class="o">=</span> <span class="n">scale</span> <span class="o">*</span> <span class="n">value</span>     
-        <span class="c1"># convert the internal value from angstrom to the output unit</span>
-        <span class="n">scale</span> <span class="o">=</span> <span class="n">angstroms</span><span class="p">[</span><span class="n">units_out</span><span class="p">]</span>
-        <span class="n">value</span> <span class="o">=</span> <span class="n">value</span> <span class="o">/</span> <span class="n">scale</span>
-        <span class="k">if</span> <span class="n">wasList</span><span class="p">:</span>
-            <span class="n">value</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
-        <span class="k">return</span> <span class="n">value</span></div>
-
-
-<div class="viewcode-block" id="UnitCell.write_cif"><a class="viewcode-back" href="../../autoapi/PDielec/UnitCell/index.html#PDielec.UnitCell.UnitCell.write_cif">[docs]</a>    <span class="k">def</span> <span class="nf">write_cif</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">file_</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="p">):</span>
+<div class="viewcode-block" id="UnitCell.write_cif"><a class="viewcode-back" href="../../autoapi/PDielec/UnitCell/index.html#PDielec.UnitCell.UnitCell.write_cif">[docs]</a>    <span class="k">def</span> <span class="nf">write_cif</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">file_</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Write the crystallographic information file (CIF) representation of a structure.</span>
 
@@ -448,12 +447,18 @@
 
 <span class="sd">        &gt;&gt;&gt; cell.write_cif(&#39;example.cif&#39;)</span>
 <span class="sd">        &quot;&quot;&quot;</span>        
-        <span class="n">abc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">convert_length_units</span><span class="p">(</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">b</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">c</span><span class="p">],</span><span class="n">units</span><span class="o">=</span><span class="s1">&#39;Angstrom&#39;</span> <span class="p">)</span>
-        <span class="n">volume</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getVolume</span><span class="p">(</span><span class="n">units</span><span class="o">=</span><span class="s1">&#39;Angstrom&#39;</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;data_&#39;</span><span class="o">+</span><span class="n">filename</span><span class="p">,</span>                                  <span class="n">file</span><span class="o">=</span><span class="n">file_</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;_space_group_IT_number 1&#39;</span><span class="p">,</span>                        <span class="n">file</span><span class="o">=</span><span class="n">file_</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;_symmetry_space_group_name_H-M </span><span class="se">\&#39;</span><span class="s1">P 1</span><span class="se">\&#39;</span><span class="s1">&#39;</span><span class="p">,</span>          <span class="n">file</span><span class="o">=</span><span class="n">file_</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;_symmetry_Int_Tables_number        1  &#39;</span><span class="p">,</span>          <span class="n">file</span><span class="o">=</span><span class="n">file_</span><span class="p">)</span>
+        <span class="c1"># Open the filename if it is given</span>
+        <span class="k">if</span> <span class="n">filename</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">file_</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span><span class="s1">&#39;w&#39;</span><span class="p">)</span>
+        <span class="n">abc</span> <span class="o">=</span> <span class="n">convert_length_units</span><span class="p">(</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">b</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">c</span><span class="p">],</span><span class="bp">self</span><span class="o">.</span><span class="n">units</span><span class="p">,</span><span class="s1">&#39;Angstrom&#39;</span> <span class="p">)</span>
+        <span class="n">volume</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getVolume</span><span class="p">(</span><span class="s1">&#39;Angstrom&#39;</span><span class="p">)</span>
+        <span class="n">spg_symbol</span><span class="p">,</span> <span class="n">spg_number</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">find_symmetry</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">filename</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;data_&#39;</span><span class="o">+</span><span class="n">filename</span><span class="p">,</span><span class="n">file</span><span class="o">=</span><span class="n">file_</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;data_&#39;</span><span class="p">,</span>         <span class="n">file</span><span class="o">=</span><span class="n">file_</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;_symmetry_space_group_name_H-M </span><span class="se">\&#39;</span><span class="si">{}</span><span class="se">\&#39;</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">spg_symbol</span><span class="p">),</span><span class="n">file</span><span class="o">=</span><span class="n">file_</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;_symmetry_Int_Tables_number      </span><span class="si">{}</span><span class="s1">  &#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">spg_number</span><span class="p">),</span><span class="n">file</span><span class="o">=</span><span class="n">file_</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;_cell_length_a      </span><span class="si">{:12.6f}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">abc</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span>     <span class="n">file</span><span class="o">=</span><span class="n">file_</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;_cell_length_b      </span><span class="si">{:12.6f}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">abc</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span>     <span class="n">file</span><span class="o">=</span><span class="n">file_</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;_cell_length_c      </span><span class="si">{:12.6f}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">abc</span><span class="p">[</span><span class="mi">2</span><span class="p">]),</span>     <span class="n">file</span><span class="o">=</span><span class="n">file_</span><span class="p">)</span>
@@ -533,8 +538,8 @@
         <span class="n">edges</span><span class="o">.</span><span class="n">append</span><span class="p">(</span> <span class="p">(</span><span class="n">corners_xyz</span><span class="p">[</span><span class="mi">7</span><span class="p">]</span> <span class="p">,</span> <span class="n">corners_xyz</span><span class="p">[</span><span class="mi">6</span><span class="p">])</span> <span class="p">)</span>
         <span class="n">edges</span><span class="o">.</span><span class="n">append</span><span class="p">(</span> <span class="p">(</span><span class="n">corners_xyz</span><span class="p">[</span><span class="mi">7</span><span class="p">]</span> <span class="p">,</span> <span class="n">corners_xyz</span><span class="p">[</span><span class="mi">4</span><span class="p">])</span> <span class="p">)</span>
         <span class="c1"># Convert to the required output unit</span>
-        <span class="n">corners</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">convert_length_units</span><span class="p">(</span><span class="n">corners</span><span class="p">,</span><span class="n">units</span><span class="p">)</span>
-        <span class="n">edges</span>   <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">convert_length_units</span><span class="p">(</span><span class="n">edges</span>  <span class="p">,</span><span class="n">units</span><span class="p">)</span>
+        <span class="n">corners</span> <span class="o">=</span> <span class="n">convert_length_units</span><span class="p">(</span><span class="n">corners</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">units</span><span class="p">,</span><span class="n">units</span><span class="p">)</span>
+        <span class="n">edges</span>   <span class="o">=</span> <span class="n">convert_length_units</span><span class="p">(</span><span class="n">edges</span>  <span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">units</span><span class="p">,</span><span class="n">units</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">corners_xyz</span><span class="p">,</span><span class="n">edges</span></div>
 
 <div class="viewcode-block" id="UnitCell.getDensity"><a class="viewcode-back" href="../../autoapi/PDielec/UnitCell/index.html#PDielec.UnitCell.UnitCell.getDensity">[docs]</a>    <span class="k">def</span> <span class="nf">getDensity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">units</span><span class="o">=</span><span class="s1">&#39;cm&#39;</span><span class="p">):</span>
@@ -575,7 +580,11 @@
 <span class="sd">        -------</span>
 <span class="sd">        None</span>
 <span class="sd">        &quot;&quot;&quot;</span>        
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Units for length are: &#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">units</span><span class="p">)</span>
+
+        <span class="n">spg_symbol</span><span class="p">,</span> <span class="n">spg_number</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">find_symmetry</span><span class="p">()</span>
+        <span class="nb">print</span>      <span class="p">(</span><span class="s1">&#39;Space group international symbol is: &#39;</span><span class="p">,</span><span class="n">spg_symbol</span><span class="p">)</span>
+        <span class="nb">print</span>      <span class="p">(</span><span class="s1">&#39;Space group number is              : &#39;</span><span class="p">,</span><span class="n">spg_number</span><span class="p">)</span>
+        <span class="nb">print</span>      <span class="p">(</span><span class="s1">&#39;Units for length are: &#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">units</span><span class="p">)</span>
         <span class="n">print_reals</span><span class="p">(</span><span class="s1">&#39;Unit Cell a,b,c &#39;</span><span class="p">,[</span><span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">b</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">c</span><span class="p">],</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">{:12.6f}</span><span class="s1">&#39;</span><span class="p">)</span>
         <span class="n">print_reals</span><span class="p">(</span><span class="s1">&#39;Unit Cell alpha,beta,gamma&#39;</span><span class="p">,[</span><span class="bp">self</span><span class="o">.</span><span class="n">alpha</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">beta</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">gamma</span><span class="p">],</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">{:12.6f}</span><span class="s1">&#39;</span><span class="p">)</span>
         <span class="n">print_reals</span><span class="p">(</span><span class="s1">&#39;lattice&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">lattice</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">{:12.6f}</span><span class="s1">&#39;</span><span class="p">)</span>
@@ -609,7 +618,7 @@
 <span class="sd">            A list of atom indices for which the centre of mass should be calculated.</span>
 <span class="sd">            If None, the centre of mass will be calculated for all atoms in the system. Default is None.</span>
 <span class="sd">        output : {&#39;xyz&#39;, &#39;mass&#39;, &#39;abc&#39;}, optional</span>
-<span class="sd">            The units in which to return the centre of mass:</span>
+<span class="sd">            The output requested:</span>
 <span class="sd">            - &#39;xyz&#39; returns the centre of mass coordinates in Cartesian (x, y, z) units.</span>
 <span class="sd">            - &#39;mass&#39; returns the total mass of the atoms in `atom_list`.</span>
 <span class="sd">            - &#39;abc&#39; returns the centre of mass in fractional (a, b, c) coordinates.</span>
@@ -618,11 +627,11 @@
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        numpy.ndarray or float or tuple</span>
-<span class="sd">            The centre of mass in the specified units. The type of the return value depends on the `units` parameter:</span>
+<span class="sd">            The centre of mass as requested by output:</span>
 <span class="sd">            - If &#39;xyz&#39;, returns a numpy array with the x, y, z coordinates of the centre of mass.</span>
 <span class="sd">            - If &#39;mass&#39;, returns a float representing the total mass of the specified atoms.</span>
 <span class="sd">            - If &#39;abc&#39;, returns a numpy array with the a, b, c fractional coordinates of the centre of mass.</span>
-<span class="sd">            - If the units are not recognized, a tuple containing the total mass, Cartesian coordinates, and fractional coordinates of the centre of mass is returned.</span>
+<span class="sd">            - If the ouput are not recognized, a tuple containing the total mass, Cartesian coordinates, and fractional coordinates of the centre of mass is returned.</span>
 
 <span class="sd">        See Also</span>
 <span class="sd">        --------</span>
@@ -638,7 +647,7 @@
 <span class="sd">        array([0.4, 0.5, 0.6])</span>
 <span class="sd">        &quot;&quot;&quot;</span>        
         <span class="c1"># Calculate the centre of mass - if the atom list is given just use that</span>
-        <span class="c1"># The centre of mass can be returned in units of &#39;xyz&#39; space or &#39;abc&#39; space</span>
+        <span class="c1"># The centre of mass can be returned in as &#39;xyz&#39; space or &#39;abc&#39; space</span>
         <span class="c1"># if output=&#39;all&#39; a tuple of (mass,cm_xyz,cm_abc) is returned</span>
         <span class="k">if</span> <span class="n">atom_list</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">atom_list</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nions</span><span class="p">)</span>
@@ -659,11 +668,26 @@
             <span class="n">cm_fractional</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">convert_xyz_to_abc</span><span class="p">(</span><span class="n">cm_xyz</span><span class="p">)</span>
             <span class="k">return</span> <span class="n">mass</span><span class="p">,</span> <span class="n">cm_xyz</span><span class="p">,</span> <span class="n">cm_fractional</span></div>
 
+<div class="viewcode-block" id="UnitCell.get_atomic_numbers"><a class="viewcode-back" href="../../autoapi/PDielec/UnitCell/index.html#PDielec.UnitCell.UnitCell.get_atomic_numbers">[docs]</a>    <span class="k">def</span> <span class="nf">get_atomic_numbers</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get the atomic numbers for the elements.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        None</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        list of ints</span>
+<span class="sd">            The atomic numbers</span>
+<span class="sd">        &quot;&quot;&quot;</span>        
+        <span class="k">return</span> <span class="p">[</span><span class="n">element_to_atomic_number</span><span class="p">[</span><span class="n">el</span><span class="p">]</span> <span class="k">for</span> <span class="n">el</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">element_names</span><span class="p">]</span></div>
+
 <div class="viewcode-block" id="UnitCell.get_atomic_masses"><a class="viewcode-back" href="../../autoapi/PDielec/UnitCell/index.html#PDielec.UnitCell.UnitCell.get_atomic_masses">[docs]</a>    <span class="k">def</span> <span class="nf">get_atomic_masses</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Get the atomic masses for the elements.</span>
 
-<span class="sd">        Paramaters</span>
+<span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        None</span>
 
@@ -785,7 +809,7 @@
 <span class="sd">        -------</span>
 <span class="sd">        volume : float</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">lattice</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">convert_length_units</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lattice</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">units</span><span class="p">,</span><span class="n">units</span><span class="p">)</span>
+        <span class="n">lattice</span> <span class="o">=</span> <span class="n">convert_length_units</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lattice</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">units</span><span class="p">,</span><span class="n">units</span><span class="p">)</span>
         <span class="n">volume</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">lattice</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="n">lattice</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">lattice</span><span class="p">[</span><span class="mi">2</span><span class="p">])))</span>
         <span class="k">return</span> <span class="n">volume</span></div>
 
@@ -838,7 +862,7 @@
         <span class="n">xyz</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">abc</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">lattice</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">xyz</span></div>
 
-<div class="viewcode-block" id="UnitCell.convert_hkl_to_xyz2"><a class="viewcode-back" href="../../autoapi/PDielec/UnitCell/index.html#PDielec.UnitCell.UnitCell.convert_hkl_to_xyz2">[docs]</a>    <span class="k">def</span> <span class="nf">convert_hkl_to_xyz2</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hkl</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">convert_hkl_to_xyz2</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hkl</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Convert hkl coordinates to xyz coordinates (written as a check on convert_hkl_to_xyz)</span>
 
@@ -873,7 +897,7 @@
             <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Error in unit cell, calculation of normal to miller index failed&quot;</span><span class="p">)</span>
             <span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
         <span class="n">normal</span> <span class="o">=</span> <span class="n">normal</span> <span class="o">/</span> <span class="n">norm</span>
-        <span class="k">return</span> <span class="n">normal</span></div>
+        <span class="k">return</span> <span class="n">normal</span>
 
 <div class="viewcode-block" id="UnitCell.set_fractional_coordinates"><a class="viewcode-back" href="../../autoapi/PDielec/UnitCell/index.html#PDielec.UnitCell.UnitCell.set_fractional_coordinates">[docs]</a>    <span class="k">def</span> <span class="nf">set_fractional_coordinates</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coords</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -901,13 +925,13 @@
 <span class="sd">        coords : a list of xyz coordinates</span>
 <span class="sd">            A list of xyz coordinates, the unit of length must agree with the lattice</span>
 <span class="sd">        units : str</span>
-<span class="sd">            A unit of length with should agree with the lattice parameter units, if it doesn&#39;t theen the coordinates are converted to the cell units of length.  The default is Angstrom.</span>
+<span class="sd">            A unit of length for the input values.  The default is Angstrom.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        None</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">xyz_coordinates</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">convert_length_units</span><span class="p">(</span><span class="n">coords</span><span class="p">,</span><span class="n">units</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">units</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">xyz_coordinates</span> <span class="o">=</span> <span class="n">convert_length_units</span><span class="p">(</span><span class="n">coords</span><span class="p">,</span><span class="n">units</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">units</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">fractional_coordinates</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">convert_xyz_to_abc</span><span class="p">(</span><span class="n">coords</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">nions</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">coords</span><span class="p">)</span>
         <span class="k">return</span></div>
@@ -961,7 +985,7 @@
           <span class="bp">self</span><span class="o">.</span><span class="n">atom_labels</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">el</span><span class="p">)</span>
         <span class="k">return</span></div>
 
-<div class="viewcode-block" id="UnitCell.find_symmetry"><a class="viewcode-back" href="../../autoapi/PDielec/UnitCell/index.html#PDielec.UnitCell.UnitCell.find_symmetry">[docs]</a>    <span class="k">def</span> <span class="nf">find_symmetry</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="UnitCell.find_symmetry"><a class="viewcode-back" href="../../autoapi/PDielec/UnitCell/index.html#PDielec.UnitCell.UnitCell.find_symmetry">[docs]</a>    <span class="k">def</span> <span class="nf">find_symmetry</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">symprec</span><span class="o">=</span><span class="mf">1e-5</span><span class="p">,</span><span class="n">angle_tolerance</span><span class="o">=-</span><span class="mf">1.0</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Find the space group symmetry of the unit cell.</span>
 
@@ -971,12 +995,19 @@
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        sets self.spacegroup</span>
+<span class="sd">        a tuple</span>
+<span class="sd">            (international table symbol, number])</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">atomic_nos</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_atomic_numbers</span><span class="p">()</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">atomic_nos</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s1">&#39;P 1&#39;</span><span class="p">,</span> <span class="mi">1</span>
         <span class="kn">from</span> <span class="nn">spglib</span> <span class="kn">import</span> <span class="n">get_spacegroup</span>
-        <span class="n">cell</span> <span class="o">=</span> <span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">lattice</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">fractional_coordinates</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">atomic_nos</span> <span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">spacegroup</span> <span class="o">=</span> <span class="n">get_spacegroup</span><span class="p">(</span><span class="n">cell</span><span class="p">,</span> <span class="n">symmprec</span><span class="o">=</span><span class="mf">1e-5</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Symmetry space group is&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">spacegroup</span><span class="p">)</span></div>
+        <span class="n">cell</span> <span class="o">=</span> <span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">lattice</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">fractional_coordinates</span><span class="p">,</span> <span class="n">atomic_nos</span> <span class="p">)</span>
+        <span class="n">spacegroup</span> <span class="o">=</span> <span class="n">get_spacegroup</span><span class="p">(</span><span class="n">cell</span><span class="p">,</span> <span class="n">symprec</span><span class="o">=</span><span class="n">symprec</span><span class="p">,</span><span class="n">angle_tolerance</span><span class="o">=</span><span class="n">angle_tolerance</span><span class="p">)</span>
+        <span class="n">sp</span> <span class="o">=</span> <span class="n">spacegroup</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+        <span class="n">symbol</span> <span class="o">=</span> <span class="n">sp</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">number</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">sp</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;(&#39;</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;)&#39;</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">symbol</span><span class="p">,</span><span class="n">number</span></div>
 
 <div class="viewcode-block" id="UnitCell.calculate_molecular_contents"><a class="viewcode-back" href="../../autoapi/PDielec/UnitCell/index.html#PDielec.UnitCell.UnitCell.calculate_molecular_contents">[docs]</a>    <span class="k">def</span> <span class="nf">calculate_molecular_contents</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">scale</span><span class="p">,</span> <span class="n">toler</span><span class="p">,</span> <span class="n">covalent_radii</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -1004,6 +1035,8 @@
 <span class="sd">        The formula used to calculate the largest distance apart atoms i and j can be for a bond is:</span>
 <span class="sd">        `scale * (radi + radj) + toler`</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1">#print(&#39;jk06 &#39;)</span>
+        <span class="c1">#self.print()</span>
         <span class="c1"># Calculate the contents of all the cells adjacent to the central cell</span>
         <span class="n">adjacents</span> <span class="o">=</span> <span class="p">(</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span> <span class="p">)</span>
         <span class="n">translations</span> <span class="o">=</span> <span class="p">[</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">adjacents</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">adjacents</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">adjacents</span> <span class="p">]</span>

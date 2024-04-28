@@ -60,6 +60,7 @@ setuptools.setup(
         'psutil',
         'dill',
         'requests',
+        'spglib',
     ],
     classifiers=[
         "Development Status :: 5 - Production/Stable",

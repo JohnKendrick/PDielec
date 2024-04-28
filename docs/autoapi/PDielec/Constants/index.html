@@ -394,7 +394,8 @@ J. R. de Laeter, J. K. Boehlke, P. De Bievre, H. Hidaka, H. S. Peiser, K. J. R. 
 <p>isotopic_masses is a dictionary of masses for each element, the key is an element name.  The contents is a list of tuples, each tuple contains, three numbers: the first is the isotope, the second is its mass and the last is its percentage occurence on average.</p>
 <p>covalent_radii is a dictionary of covalent radii taken from: Beatriz Cordero, Veronica Gomex, Ana E. Platero-Prats, Marc Reves, Jorge Echeverria, Eduard Cremades, Flavia Barragan and Santiago Alvarez (2008) Covalent Radii Revisited - Dalton Trans. (21) 2832-2838 doi:10.1039/b801115j</p>
 <p>elemental_colours is a dictionary of an RGB list for each element</p>
-<p>atomic_number_to_element is a dictionary which has an element name key and a content of the atomic number</p>
+<p>atomic_number_to_element is a dictionary which has an atomic number key and returns an element string</p>
+<p>element_to_atomic_number a dictionary which an has an element name key and a content of the atomic number</p>
 <section id="module-contents">
 <h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this heading">#</a></h2>
 <dl class="py data">
@@ -460,6 +461,11 @@ J. R. de Laeter, J. K. Boehlke, P. De Bievre, H. Hidaka, H. S. Peiser, K. J. R. 
 <dl class="py data">
 <dt class="sig sig-object py" id="PDielec.Constants.electron_mass_si">
 <span class="sig-prename descclassname"><span class="pre">PDielec.Constants.</span></span><span class="sig-name descname"><span class="pre">electron_mass_si</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">9.1093837015e-31</span></em><a class="headerlink" href="#PDielec.Constants.electron_mass_si" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="PDielec.Constants.element_to_atomic_number">
+<span class="sig-prename descclassname"><span class="pre">PDielec.Constants.</span></span><span class="sig-name descname"><span class="pre">element_to_atomic_number</span></span><a class="headerlink" href="#PDielec.Constants.element_to_atomic_number" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py data">
@@ -620,6 +626,7 @@ J. R. de Laeter, J. K. Boehlke, P. De Bievre, H. Hidaka, H. S. Peiser, K. J. R. 
 <li><a class="reference internal" href="#PDielec.Constants.d2byamuang2"><code class="docutils literal notranslate"><span class="pre">d2byamuang2</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.Constants.debye"><code class="docutils literal notranslate"><span class="pre">debye</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.Constants.electron_mass_si"><code class="docutils literal notranslate"><span class="pre">electron_mass_si</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.Constants.element_to_atomic_number"><code class="docutils literal notranslate"><span class="pre">element_to_atomic_number</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.Constants.elemental_colours"><code class="docutils literal notranslate"><span class="pre">elemental_colours</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.Constants.elementary_charge_si"><code class="docutils literal notranslate"><span class="pre">elementary_charge_si</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.Constants.epsilon_0_si"><code class="docutils literal notranslate"><span class="pre">epsilon_0_si</span></code></a></li>

@@ -205,7 +205,7 @@ def main():
     results_map_object.wait()
     results = results_map_object.get()
     for name,cell in results:
-        cell.write_cif(filename=name,file_=sys.stdout)
+        cell.write_cif(file_=sys.stdout)
     #
     p.close()
     p.join()

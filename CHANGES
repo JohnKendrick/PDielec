@@ -4,6 +4,7 @@ version 8.1.1
   Static routines have been created in the FitterTab to allow their use in notebooks
   The UnitCell and SuperCell classes have been enhance to use a units specifier
   Added new routines to the Materials and DielectricFunction classes to allow sigmas, oscillator strengths and frequencies to be changed 
+  The write_cif() routine in UnitCell has been modified slightly to allow files to be written to
 version 8.1.0
   Modifications to the plotter tab to allow the use of wavelength and frequency units
   Redesign of the single crystal scenario tab.  The new design means that scripts are not backwards compatible.

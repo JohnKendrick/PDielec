@@ -304,6 +304,10 @@
 <span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Provide a base class to different dielectric functions.</span>
 
+<span class="sd">    There is a close relationship between the dielectric function and a material.</span>
+<span class="sd">    The Material module allows data to be read in for different dielectric models.</span>
+<span class="sd">    Once the data has been read in a DielectricFunction is created which is appropriate for the data.</span>
+
 <span class="sd">    Attributes</span>
 <span class="sd">    ----------</span>
 <span class="sd">    epsilon_infinity : ndarray</span>
@@ -327,6 +331,18 @@
 <span class="sd">        Return the calculate function for this object.</span>
 <span class="sd">    calculate(v)</span>
 <span class="sd">        Return the value of the permittivity at frequency v.</span>
+<span class="sd">    setFrequencies(frequencies)</span>
+<span class="sd">        Set frequencies </span>
+<span class="sd">    getFrequencies()</span>
+<span class="sd">        Get frequencies </span>
+<span class="sd">    setSigmas(sigmas)</span>
+<span class="sd">        Set sigmas </span>
+<span class="sd">    getSigmas()</span>
+<span class="sd">        Get sigmas </span>
+<span class="sd">    setOscillatorStrengths(strengths)</span>
+<span class="sd">        Set strengths </span>
+<span class="sd">    getOscillatorStrengths()</span>
+<span class="sd">        Get strengths </span>
 <span class="sd">    dielectricContributionsFromDrude(f, frequency, sigma, volume)</span>
 <span class="sd">        Calculates permittivity from a Drude Model.</span>
 <span class="sd">    dielectricContributionsFromModes(f, modes, frequencies, sigmas, strengths, volume)</span>
@@ -682,6 +698,13 @@
 <span class="sd">    -------</span>
 <span class="sd">    calculate()</span>
 <span class="sd">        Calculates and returns the permittivity.</span>
+
+<span class="sd">    Example</span>
+<span class="sd">    ------- ::</span>
+
+<span class="sd">        permittivity = np.array([ [ 2.0, 0.0, 0.0 ] , [ 0.0, 3.0, 0.0 ], [ 0.0, 0.0, 4.0 ] ])</span>
+<span class="sd">        df = ConstantTensor(permittivity)</span>
+<span class="sd">        newMaterial = Material(&#39;New material name&#39;,permittivityObject=df,cell=UnitCell(2, 2, 2))</span>
 
 <span class="sd">    &#39;&#39;&#39;</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
