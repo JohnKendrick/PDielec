@@ -5,8 +5,6 @@
 
 .. autoapi-nested-parse::
 
-   # vibAnalyis
-
    vibAnalysis is a Python tool written by Filipe Teixeira the original is available on 
    github at https://github.com/teixeirafilipe/vibAnalysis.
 
