@@ -19,10 +19,10 @@ along with this program, if not see https://opensource.org/licenses/MIT
 
 import numpy as np
 import math
-from PDielec.Calculator  import calculate_distance
-from PDielec.Plotter     import print_reals, print_ints, print_strings
+from PDielec.Calculator  import calculate_distance, calculate_angle, calculate_torsion
 from PDielec.Calculator  import cleanup_symbol
-from PDielec.Constants   import avogadro_si, element_to_atomic_number
+from PDielec.Plotter     import print_reals, print_ints, print_strings
+from PDielec.Constants   import avogadro_si, element_to_atomic_number, covalent_radii
 import sys
 
 def convert_length_units(value, units_in, units_out):
@@ -711,6 +711,27 @@ class UnitCell:
           self.atom_labels.append(el)
         return
 
+    def get_atom_labels(self):
+        """
+        get the atom labels for a molecule.
+
+        If the labels have not been set, then a list of labels is created from the element names
+
+        Parameters
+        ----------
+        None
+            A list containing the labels of atoms.
+
+        Returns
+        -------
+        A list of atom labels
+        """        
+        if len(self.atom_labels) == 0:
+            for i,el in enumerate(self.element_names):
+                label = el+str(i+1)
+                self.atom_labels.append(label)
+        return self.atom_labels
+
     def find_symmetry(self,symprec=1e-5,angle_tolerance=-1.0):
         """
         Find the space group symmetry of the unit cell.
@@ -735,7 +756,7 @@ class UnitCell:
         number = int(sp[1].replace('(','').replace(')',''))
         return symbol,number
 
-    def calculate_molecular_contents(self, scale, toler, covalent_radii):
+    def calculate_molecular_contents(self, scale=1.1, tolerance=0.1, radii=None):
         """
         Finds whole molecules in the unit cell.
 
@@ -745,12 +766,12 @@ class UnitCell:
 
         Parameters
         ----------
-        scale : float
-            The scale factor applied to the covalent radii.
-        toler : float
+        scale : float, optional
+            The scale factor applied to the covalent radii. Default is 1.1
+        tolerance : float, optional. Default is 0.1
             The tolerance added to the scaled sum of radii to determine the maximum allowable distance between atoms i and j for them to be considered bonded.
-        covalent_radii : list of float
-            A list of covalent radii for the atoms
+        radii : a dictionary, optional
+            A dictionary of covalent radii for the atoms, key is the element name.  If not given then the package radii are used from PDielec.Constants
 
         Returns
         -------
@@ -759,10 +780,11 @@ class UnitCell:
         Notes
         -----
         The formula used to calculate the largest distance apart atoms i and j can be for a bond is:
-        `scale * (radi + radj) + toler`
+        `scale * (radi + radj) + tolerance`
         """
-        #print('jk06 ')
-        #self.print()
+        # Check that the covalent radius has been given
+        if radii is None:
+            radii = covalent_radii.copy()
         # Calculate the contents of all the cells adjacent to the central cell
         adjacents = ( 0, -1, 1 )
         translations = [ (i, j, k) for i in adjacents for j in adjacents for k in adjacents ]
@@ -788,9 +810,9 @@ class UnitCell:
         rmax = 0.0
         for el in self.element_names:
             #jk print("Element name",el)
-            if covalent_radii[el] > rmax:
-                rmax = covalent_radii[el]
-        boxSize = 2.0*scale*rmax + 0.5 + toler
+            if radii[el] > rmax:
+                rmax = radii[el]
+        boxSize = 2.0*scale*rmax + 0.5 + tolerance
         #jk print('rmax = ',rmax)
         # Put atoms into boxes and store the box info in Atom_box_id
         Atom_box_id = []
@@ -833,7 +855,7 @@ class UnitCell:
                             # Find the element name for this atom in the supercell
                             jp = index_supercell[j]
                             j_el = self.element_names[jp]
-                            dist1 = scale*( covalent_radii[i_el] + covalent_radii[j_el]) + toler
+                            dist1 = scale*( radii[i_el] + radii[j_el]) + tolerance
                             dist2 = calculate_distance(xyzi,xyz_supercell[j])
                             if dist2 < dist1:
                                 bondedToAtom[i].append(j)
@@ -974,9 +996,117 @@ class UnitCell:
         new_unit_cell.set_bonds(new_bonds)
         return new_unit_cell, len(new_molecules), old_order
 
+    def get_bonds(self):
+        '''
+        Returns a list of bonds for the unit cell
+
+        It also returns a list of the bond lengths in angstrom
+
+        Parameters
+        ----------
+        None
+
+        Returns
+        -------
+        (list of bonds, list of bondlengths)
+            list of bonds is a list of pairs of integers denoting a bond
+            list of bond lengths is a list of floats
+        '''
+        bond_lengths = []
+        for i,j in self.bonds:
+            bond_length = calculate_distance(self.xyz_coordinates[i],self.xyz_coordinates[j])
+            bond_length = convert_length_units(bond_length,self.units,'Angstrom')
+            bond_lengths.append(bond_length)
+        return self.bonds, bond_lengths
+
+    def get_bond_angles(self):
+        '''
+        Returns a list of atoms that form bonded angles for the unit cell
+
+        It also returns a list of the angles in degrees
+
+        Parameters
+        ----------
+        None
+
+        Returns
+        -------
+        (list of 3 integer tuples, list of bond angles)
+            list of angles is a list of 3 integers denoting involved in the angle
+            list of angles is a list of floats
+        '''
+        angle_list = []
+        for i,j in self.bonds:
+            for k,l in self.bonds:
+                if i == k and j != l:
+                    if l > j and (l, i, j) not in angle_list:
+                        angle_list.append( (l, i, j) )
+                    elif (j, i, l) not in angle_list:
+                        angle_list.append( (j, i, l) )
+                if i == l and j != k:
+                    if k > j and (k, i, j) not in angle_list:
+                        angle_list.append( (k, i, j) )
+                    elif (j, i, k) not in angle_list:
+                        angle_list.append( (j, i, k) )
+        angles = []
+        for atoms in angle_list:
+            i,j,k = atoms
+            a = self.xyz_coordinates[i]
+            b = self.xyz_coordinates[j]
+            c = self.xyz_coordinates[k]
+            angle = calculate_angle(a,b,c)
+            angles.append(angle)
+        return angle_list, angles
+
+    def get_torsions(self):
+        '''
+        Returns a list of atoms that form torsion angles for the unit cell
+
+        It also returns a list of the angles in degrees
+
+        Parameters
+        ----------
+        None
+
+        Returns
+        -------
+        (list of 4 integer tuples, list of torsion angles)
+            list of torsions is a list of 4 integers denoting involved in the angle
+            list of angles is a list of floats
+        '''
+        angle_list, angles = self.get_bond_angles()
+        # Generate a list of torsion angles
+        torsion_list = []
+        for i,j,k in angle_list:
+            for l1,l2 in self.bonds:
+                if l1 == i and l2 != j:
+                    if (l2,i,j,k) not in torsion_list:
+                        torsion_list.append( (l2,i,j,k) )
+                if l2 == i and l1 != j:
+                    if (l1,i,j,k) not in torsion_list:
+                        torsion_list.append( (l1,i,j,k) )
+                if l1 == k and l2 != j:
+                    if (i,j,k,l2) not in torsion_list:
+                        torsion_list.append( (i,j,k,l2) )
+                if l2 == k and l1 != j:
+                    if (i,j,k,l1) not in torsion_list:
+                        torsion_list.append( (i,j,k,l1) )
+        # Calculate the value of the torsion angle
+        angles = []
+        for i,j,k,l in torsion_list:
+            a = self.xyz_coordinates[i]
+            b = self.xyz_coordinates[j]
+            c = self.xyz_coordinates[k]
+            d = self.xyz_coordinates[l]
+            angle = calculate_torsion(a,b,c,d)
+            angles.append(angle)
+        return torsion_list, angles
+
     def set_bonds(self, bonds):
         '''
         Define a list of bonds for the unit cell
+
+        Some checking is performed.  If the bonds has duplicates but in a different order, then they are removed.
 
         Parameters
         ----------
@@ -987,7 +1117,21 @@ class UnitCell:
         -------
         None
         '''
-        self.bonds = bonds
+        # Check that the bonds are unique
+        new_list = []
+        for i,j in bonds:
+            if (j,i) in bonds:
+                if i > j:
+                    new_list.append( (i,j) )
+            else:
+                if i>j:
+                    new_list.append( (i,j) )
+                else:
+                    new_list.append( (j,i) )
+        if len(new_list) > 0:
+            self.bonds = new_list
+        else:
+            self.bonds = bonds
         return
 
     def set_molecules(self, molecules):

@@ -1,5 +1,23 @@
 #! /usr/bin/env python3
 # -*- coding: utf8 -*-
+"""
+# vibAnalyis
+
+vibAnalysis is a Python tool written by Filipe Teixeira the original is available on 
+github at https://github.com/teixeirafilipe/vibAnalysis.
+
+The package uses the Vibrational Mode Decomoposition method to describe the normal modes of a molecule.
+It has been modified to interface directly with PDielec package and to treat periodic systems at the phonon gamma point.  
+An example of the use of the modified program are give below; ::
+
+   vibanalysis --autosel phonon.castep
+
+The modified program creates a PDielec reader for the phonon.castep file, and uses the reader to provide
+all the data required by the vibAnalysis.  
+All of the options available to the original code are available to this modified version.
+Full details of the options available can be viewed at https://github.com/teixeirafilipe/vibAnalysis.
+"""
+
 
 ##########################################################################
 #                                                                        #
@@ -442,7 +460,7 @@ def readPDielec(ifn):
         # We need to see if we can generate whole molecules using translational symmetry
         scale = 1.1      # Scaling factor for covalent radii
         tolerance  = Opts['tol']  # Tolerance in bonding
-        new_cell,natoms,original_atomic_order = cell.calculate_molecular_contents(scale, tolerance, covalent_radii)
+        new_cell,natoms,original_atomic_order = cell.calculate_molecular_contents(scale=scale, tolerance=tolerance)
         print('Bonding tolerance',tolerance,file=sys.stderr)
         print('Number of molecules',len(new_cell.molecules),file=sys.stderr)
         # Reorder the normal mode atoms so that the mass weighted normal modes order 

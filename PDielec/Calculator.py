@@ -113,10 +113,81 @@ def calculate_distance(a,b):
         The distance between a and b
 
     '''
-    d = 0.0
-    for c1, c2 in zip(a,b):
-        d += (c2 - c1)*(c2 - c1)
-    return math.sqrt(d)
+    a = np.array(a)
+    b = np.array(b)
+    c = a - b
+    return np.linalg.norm(c)
+
+
+def calculate_angle(a,b,c):
+    '''
+    Calculate the angle between a, b and c in degrees
+
+    The bond is a-b-c, b is the central atom
+
+    Parameters
+    ----------
+    a : list of reals
+        Coordinates of a
+    b : list of reals
+        Coordinates of b
+    c : list of reals
+        Coordinates of c
+
+    Returns
+    -------
+    float
+        The angle between a-b-c in degrees
+
+    '''
+    a = np.array(a)
+    b = np.array(b)
+    c = np.array(c)
+    ba = a - b
+    bc = c - b
+    ba = ba / np.linalg.norm(ba)
+    bc = bc / np.linalg.norm(bc)
+    theta = np.arccos(np.dot(ba,bc))
+    return np.rad2deg(theta)
+
+def calculate_torsion(a,b,c,d):
+    '''
+    Calculate the torsion angle between a, b, c and d in degrees
+
+    Parameters
+    ----------
+    a : list of reals
+        Coordinates of a
+    b : list of reals
+        Coordinates of b
+    c : list of reals
+        Coordinates of c
+    d : list of reals
+        Coordinates of d
+
+    Returns
+    -------
+    float
+        The torsion angle between a-b-c-d in degrees
+
+    '''
+    a = np.array(a)
+    b = np.array(b)
+    c = np.array(c)
+    d = np.array(d)
+    # There are 3 bonds
+    a_ba = -1.0*(b - a)
+    b_cb = c - b
+    c_dc = d - c
+    # Calculate the perpendicular to abc and bcd
+    axb = np.cross( a_ba, b_cb)
+    bxc = np.cross( c_dc, b_cb)
+    abc = np.cross(axb,bxc)
+    y = np.dot(abc,b_cb)/np.linalg.norm(b_cb)
+    x = np.dot(axb,bxc)
+    theta = np.arctan2(y,x)
+    return np.rad2deg(theta)
+
 
 def initialise_sphere_depolarisation_matrix():
     '''

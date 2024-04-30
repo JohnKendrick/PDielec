@@ -330,7 +330,6 @@ class AnalysisTab(QWidget):
         col = item.column()
         try:
             debugger.print('Changing the element radius',col,item.text())
-            #self.element_radii[self.species[col]] = float(item.text())
             self.settings['Radii'][col] = float(item.text())
             self.calculate()
             self.plot()
@@ -717,7 +716,7 @@ class AnalysisTab(QWidget):
         # Find the last unit cell read by the reader and its masses
         cell = self.reader.get_unit_cell()
         atom_masses = cell.get_atomic_masses()
-        self.cell_of_molecules,nmols,self.original_atomic_order = cell.calculate_molecular_contents(scale, tolerance, self.element_radii)
+        self.cell_of_molecules,nmols,self.original_atomic_order = cell.calculate_molecular_contents(scale=scale, tolerance=tolerance, radii=self.element_radii)
         # if the number of molecules has changed then tell the viewerTab that the cell has changed
         if self.number_of_molecules != nmols:
             if self.notebook.viewerTab is not None:
