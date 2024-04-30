@@ -1,8 +1,6 @@
 #! /usr/bin/env python3
 # -*- coding: utf8 -*-
 """
-# vibAnalyis
-
 vibAnalysis is a Python tool written by Filipe Teixeira the original is available on 
 github at https://github.com/teixeirafilipe/vibAnalysis.
 

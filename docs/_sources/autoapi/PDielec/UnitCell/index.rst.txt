@@ -106,7 +106,7 @@ Functions
       array([0.4, 0.5, 0.6])
 
 
-   .. py:method:: calculate_molecular_contents(scale, toler, covalent_radii)
+   .. py:method:: calculate_molecular_contents(scale=1.1, tolerance=0.1, radii=None)
 
       Finds whole molecules in the unit cell.
 
@@ -116,12 +116,12 @@ Functions
 
       Parameters
       ----------
-      scale : float
-          The scale factor applied to the covalent radii.
-      toler : float
+      scale : float, optional
+          The scale factor applied to the covalent radii. Default is 1.1
+      tolerance : float, optional. Default is 0.1
           The tolerance added to the scaled sum of radii to determine the maximum allowable distance between atoms i and j for them to be considered bonded.
-      covalent_radii : list of float
-          A list of covalent radii for the atoms
+      radii : a dictionary, optional
+          A dictionary of covalent radii for the atoms, key is the element name.  If not given then the package radii are used from PDielec.Constants
 
       Returns
       -------
@@ -130,7 +130,7 @@ Functions
       Notes
       -----
       The formula used to calculate the largest distance apart atoms i and j can be for a bond is:
-      `scale * (radi + radj) + toler`
+      `scale * (radi + radj) + tolerance`
 
 
    .. py:method:: convert_abc_to_unitcell(a, b, c, alpha_degs, beta_degs, gamma_degs)
@@ -285,6 +285,22 @@ Functions
       volume : float
 
 
+   .. py:method:: get_atom_labels()
+
+      get the atom labels for a molecule.
+
+      If the labels have not been set, then a list of labels is created from the element names
+
+      Parameters
+      ----------
+      None
+          A list containing the labels of atoms.
+
+      Returns
+      -------
+      A list of atom labels
+
+
    .. py:method:: get_atomic_masses()
 
       Get the atomic masses for the elements.
@@ -311,6 +327,57 @@ Functions
       -------
       list of ints
           The atomic numbers
+
+
+   .. py:method:: get_bond_angles()
+
+      Returns a list of atoms that form bonded angles for the unit cell
+
+      It also returns a list of the angles in degrees
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      (list of 3 integer tuples, list of bond angles)
+          list of angles is a list of 3 integers denoting involved in the angle
+          list of angles is a list of floats
+
+
+   .. py:method:: get_bonds()
+
+      Returns a list of bonds for the unit cell
+
+      It also returns a list of the bond lengths in angstrom
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      (list of bonds, list of bondlengths)
+          list of bonds is a list of pairs of integers denoting a bond
+          list of bond lengths is a list of floats
+
+
+   .. py:method:: get_torsions()
+
+      Returns a list of atoms that form torsion angles for the unit cell
+
+      It also returns a list of the angles in degrees
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      (list of 4 integer tuples, list of torsion angles)
+          list of torsions is a list of 4 integers denoting involved in the angle
+          list of angles is a list of floats
 
 
    .. py:method:: print()
@@ -365,6 +432,8 @@ Functions
    .. py:method:: set_bonds(bonds)
 
       Define a list of bonds for the unit cell
+
+      Some checking is performed.  If the bonds has duplicates but in a different order, then they are removed.
 
       Parameters
       ----------

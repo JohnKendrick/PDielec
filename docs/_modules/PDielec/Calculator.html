@@ -387,10 +387,81 @@
 <span class="sd">        The distance between a and b</span>
 
 <span class="sd">    &#39;&#39;&#39;</span>
-    <span class="n">d</span> <span class="o">=</span> <span class="mf">0.0</span>
-    <span class="k">for</span> <span class="n">c1</span><span class="p">,</span> <span class="n">c2</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">):</span>
-        <span class="n">d</span> <span class="o">+=</span> <span class="p">(</span><span class="n">c2</span> <span class="o">-</span> <span class="n">c1</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">c2</span> <span class="o">-</span> <span class="n">c1</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">d</span><span class="p">)</span></div>
+    <span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+    <span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+    <span class="n">c</span> <span class="o">=</span> <span class="n">a</span> <span class="o">-</span> <span class="n">b</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">c</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="calculate_angle"><a class="viewcode-back" href="../../autoapi/PDielec/Calculator/index.html#PDielec.Calculator.calculate_angle">[docs]</a><span class="k">def</span> <span class="nf">calculate_angle</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="n">c</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Calculate the angle between a, b and c in degrees</span>
+
+<span class="sd">    The bond is a-b-c, b is the central atom</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    a : list of reals</span>
+<span class="sd">        Coordinates of a</span>
+<span class="sd">    b : list of reals</span>
+<span class="sd">        Coordinates of b</span>
+<span class="sd">    c : list of reals</span>
+<span class="sd">        Coordinates of c</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    float</span>
+<span class="sd">        The angle between a-b-c in degrees</span>
+
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+    <span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+    <span class="n">c</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
+    <span class="n">ba</span> <span class="o">=</span> <span class="n">a</span> <span class="o">-</span> <span class="n">b</span>
+    <span class="n">bc</span> <span class="o">=</span> <span class="n">c</span> <span class="o">-</span> <span class="n">b</span>
+    <span class="n">ba</span> <span class="o">=</span> <span class="n">ba</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">ba</span><span class="p">)</span>
+    <span class="n">bc</span> <span class="o">=</span> <span class="n">bc</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">bc</span><span class="p">)</span>
+    <span class="n">theta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arccos</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">ba</span><span class="p">,</span><span class="n">bc</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">rad2deg</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="calculate_torsion"><a class="viewcode-back" href="../../autoapi/PDielec/Calculator/index.html#PDielec.Calculator.calculate_torsion">[docs]</a><span class="k">def</span> <span class="nf">calculate_torsion</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="n">c</span><span class="p">,</span><span class="n">d</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Calculate the torsion angle between a, b, c and d in degrees</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    a : list of reals</span>
+<span class="sd">        Coordinates of a</span>
+<span class="sd">    b : list of reals</span>
+<span class="sd">        Coordinates of b</span>
+<span class="sd">    c : list of reals</span>
+<span class="sd">        Coordinates of c</span>
+<span class="sd">    d : list of reals</span>
+<span class="sd">        Coordinates of d</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    float</span>
+<span class="sd">        The torsion angle between a-b-c-d in degrees</span>
+
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+    <span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+    <span class="n">c</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
+    <span class="n">d</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+    <span class="c1"># There are 3 bonds</span>
+    <span class="n">a_ba</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1.0</span><span class="o">*</span><span class="p">(</span><span class="n">b</span> <span class="o">-</span> <span class="n">a</span><span class="p">)</span>
+    <span class="n">b_cb</span> <span class="o">=</span> <span class="n">c</span> <span class="o">-</span> <span class="n">b</span>
+    <span class="n">c_dc</span> <span class="o">=</span> <span class="n">d</span> <span class="o">-</span> <span class="n">c</span>
+    <span class="c1"># Calculate the perpendicular to abc and bcd</span>
+    <span class="n">axb</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span> <span class="n">a_ba</span><span class="p">,</span> <span class="n">b_cb</span><span class="p">)</span>
+    <span class="n">bxc</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span> <span class="n">c_dc</span><span class="p">,</span> <span class="n">b_cb</span><span class="p">)</span>
+    <span class="n">abc</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="n">axb</span><span class="p">,</span><span class="n">bxc</span><span class="p">)</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">abc</span><span class="p">,</span><span class="n">b_cb</span><span class="p">)</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">b_cb</span><span class="p">)</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">axb</span><span class="p">,</span><span class="n">bxc</span><span class="p">)</span>
+    <span class="n">theta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arctan2</span><span class="p">(</span><span class="n">y</span><span class="p">,</span><span class="n">x</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">rad2deg</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span></div>
+
 
 <div class="viewcode-block" id="initialise_sphere_depolarisation_matrix"><a class="viewcode-back" href="../../autoapi/PDielec/Calculator/index.html#PDielec.Calculator.initialise_sphere_depolarisation_matrix">[docs]</a><span class="k">def</span> <span class="nf">initialise_sphere_depolarisation_matrix</span><span class="p">():</span>
 <span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
@@ -1437,7 +1508,7 @@
         <span class="n">dielectric_apparent</span> <span class="o">=</span> <span class="mf">0.1</span> <span class="o">*</span> <span class="n">dielectric_apparent</span> <span class="o">+</span> <span class="mf">0.9</span> <span class="o">*</span> <span class="n">coherent2</span><span class="p">(</span><span class="n">dielectric_medium</span><span class="p">,</span> <span class="n">dielectric_apparent</span><span class="p">,</span> <span class="n">crystal_permittivity</span><span class="p">,</span> <span class="n">shape</span><span class="p">,</span> <span class="n">L</span><span class="p">,</span> <span class="n">vf</span><span class="p">,</span> <span class="n">size</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">dielectric_apparent</span></div>
 
-<div class="viewcode-block" id="coherent2"><a class="viewcode-back" href="../../autoapi/PDielec/Calculator/index.html#PDielec.Calculator.coherent2">[docs]</a><span class="k">def</span> <span class="nf">coherent2</span><span class="p">(</span><span class="n">dielectric_medium</span><span class="p">,</span> <span class="n">dielectric_apparent</span><span class="p">,</span> <span class="n">crystal_permittivity</span><span class="p">,</span> <span class="n">shape</span><span class="p">,</span> <span class="n">L</span><span class="p">,</span> <span class="n">vf</span><span class="p">,</span> <span class="n">size</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">coherent2</span><span class="p">(</span><span class="n">dielectric_medium</span><span class="p">,</span> <span class="n">dielectric_apparent</span><span class="p">,</span> <span class="n">crystal_permittivity</span><span class="p">,</span> <span class="n">shape</span><span class="p">,</span> <span class="n">L</span><span class="p">,</span> <span class="n">vf</span><span class="p">,</span> <span class="n">size</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Calculate the effective constant permittivity using the Coherent2 method</span>
 
@@ -1477,7 +1548,7 @@
     <span class="n">effd</span>         <span class="o">=</span> <span class="n">dielectric_medium</span> <span class="o">+</span> <span class="n">polarisation</span>
     <span class="n">trace</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">trace</span><span class="p">(</span><span class="n">effd</span><span class="p">)</span> <span class="o">/</span> <span class="mf">3.0</span>
     <span class="n">effdielec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="n">trace</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">trace</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">trace</span><span class="p">]])</span>
-    <span class="k">return</span> <span class="n">effdielec</span></div>
+    <span class="k">return</span> <span class="n">effdielec</span>
 
 <div class="viewcode-block" id="bruggeman_minimise"><a class="viewcode-back" href="../../autoapi/PDielec/Calculator/index.html#PDielec.Calculator.bruggeman_minimise">[docs]</a><span class="k">def</span> <span class="nf">bruggeman_minimise</span><span class="p">(</span> <span class="n">eps1</span><span class="p">,</span> <span class="n">eps2</span><span class="p">,</span> <span class="n">shape</span><span class="p">,</span> <span class="n">L</span><span class="p">,</span> <span class="n">f2</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">epsbr</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>

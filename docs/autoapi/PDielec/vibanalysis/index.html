@@ -275,6 +275,19 @@
         <article role="main">
           <section id="module-PDielec.vibanalysis">
 <span id="pdielec-vibanalysis"></span><h1><a class="reference internal" href="#module-PDielec.vibanalysis" title="PDielec.vibanalysis"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.vibanalysis</span></code></a><a class="headerlink" href="#module-PDielec.vibanalysis" title="Permalink to this heading">#</a></h1>
+<p># vibAnalyis</p>
+<p>vibAnalysis is a Python tool written by Filipe Teixeira the original is available on
+github at <a class="reference external" href="https://github.com/teixeirafilipe/vibAnalysis">https://github.com/teixeirafilipe/vibAnalysis</a>.</p>
+<p>The package uses the Vibrational Mode Decomoposition method to describe the normal modes of a molecule.
+It has been modified to interface directly with PDielec package and to treat periodic systems at the phonon gamma point.
+An example of the use of the modified program are give below;</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">vibanalysis</span> <span class="o">--</span><span class="n">autosel</span> <span class="n">phonon</span><span class="o">.</span><span class="n">castep</span>
+</pre></div>
+</div>
+<p>The modified program creates a PDielec reader for the phonon.castep file, and uses the reader to provide
+all the data required by the vibAnalysis.
+All of the options available to the original code are available to this modified version.
+Full details of the options available can be viewed at <a class="reference external" href="https://github.com/teixeirafilipe/vibAnalysis">https://github.com/teixeirafilipe/vibAnalysis</a>.</p>
 <section id="module-contents">
 <h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this heading">#</a></h2>
 <section id="classes">

@@ -293,10 +293,10 @@
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">math</span>
-<span class="kn">from</span> <span class="nn">PDielec.Calculator</span>  <span class="kn">import</span> <span class="n">calculate_distance</span>
-<span class="kn">from</span> <span class="nn">PDielec.Plotter</span>     <span class="kn">import</span> <span class="n">print_reals</span><span class="p">,</span> <span class="n">print_ints</span><span class="p">,</span> <span class="n">print_strings</span>
+<span class="kn">from</span> <span class="nn">PDielec.Calculator</span>  <span class="kn">import</span> <span class="n">calculate_distance</span><span class="p">,</span> <span class="n">calculate_angle</span><span class="p">,</span> <span class="n">calculate_torsion</span>
 <span class="kn">from</span> <span class="nn">PDielec.Calculator</span>  <span class="kn">import</span> <span class="n">cleanup_symbol</span>
-<span class="kn">from</span> <span class="nn">PDielec.Constants</span>   <span class="kn">import</span> <span class="n">avogadro_si</span><span class="p">,</span> <span class="n">element_to_atomic_number</span>
+<span class="kn">from</span> <span class="nn">PDielec.Plotter</span>     <span class="kn">import</span> <span class="n">print_reals</span><span class="p">,</span> <span class="n">print_ints</span><span class="p">,</span> <span class="n">print_strings</span>
+<span class="kn">from</span> <span class="nn">PDielec.Constants</span>   <span class="kn">import</span> <span class="n">avogadro_si</span><span class="p">,</span> <span class="n">element_to_atomic_number</span><span class="p">,</span> <span class="n">covalent_radii</span>
 <span class="kn">import</span> <span class="nn">sys</span>
 
 <div class="viewcode-block" id="convert_length_units"><a class="viewcode-back" href="../../autoapi/PDielec/UnitCell/index.html#PDielec.UnitCell.convert_length_units">[docs]</a><span class="k">def</span> <span class="nf">convert_length_units</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">units_in</span><span class="p">,</span> <span class="n">units_out</span><span class="p">):</span>
@@ -985,6 +985,27 @@
           <span class="bp">self</span><span class="o">.</span><span class="n">atom_labels</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">el</span><span class="p">)</span>
         <span class="k">return</span></div>
 
+<div class="viewcode-block" id="UnitCell.get_atom_labels"><a class="viewcode-back" href="../../autoapi/PDielec/UnitCell/index.html#PDielec.UnitCell.UnitCell.get_atom_labels">[docs]</a>    <span class="k">def</span> <span class="nf">get_atom_labels</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        get the atom labels for a molecule.</span>
+
+<span class="sd">        If the labels have not been set, then a list of labels is created from the element names</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        None</span>
+<span class="sd">            A list containing the labels of atoms.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        A list of atom labels</span>
+<span class="sd">        &quot;&quot;&quot;</span>        
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">atom_labels</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">el</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">element_names</span><span class="p">):</span>
+                <span class="n">label</span> <span class="o">=</span> <span class="n">el</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">atom_labels</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">label</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">atom_labels</span></div>
+
 <div class="viewcode-block" id="UnitCell.find_symmetry"><a class="viewcode-back" href="../../autoapi/PDielec/UnitCell/index.html#PDielec.UnitCell.UnitCell.find_symmetry">[docs]</a>    <span class="k">def</span> <span class="nf">find_symmetry</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">symprec</span><span class="o">=</span><span class="mf">1e-5</span><span class="p">,</span><span class="n">angle_tolerance</span><span class="o">=-</span><span class="mf">1.0</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Find the space group symmetry of the unit cell.</span>
@@ -1009,7 +1030,7 @@
         <span class="n">number</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">sp</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;(&#39;</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;)&#39;</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">))</span>
         <span class="k">return</span> <span class="n">symbol</span><span class="p">,</span><span class="n">number</span></div>
 
-<div class="viewcode-block" id="UnitCell.calculate_molecular_contents"><a class="viewcode-back" href="../../autoapi/PDielec/UnitCell/index.html#PDielec.UnitCell.UnitCell.calculate_molecular_contents">[docs]</a>    <span class="k">def</span> <span class="nf">calculate_molecular_contents</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">scale</span><span class="p">,</span> <span class="n">toler</span><span class="p">,</span> <span class="n">covalent_radii</span><span class="p">):</span>
+<div class="viewcode-block" id="UnitCell.calculate_molecular_contents"><a class="viewcode-back" href="../../autoapi/PDielec/UnitCell/index.html#PDielec.UnitCell.UnitCell.calculate_molecular_contents">[docs]</a>    <span class="k">def</span> <span class="nf">calculate_molecular_contents</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="mf">1.1</span><span class="p">,</span> <span class="n">tolerance</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">radii</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Finds whole molecules in the unit cell.</span>
 
@@ -1019,12 +1040,12 @@
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        scale : float</span>
-<span class="sd">            The scale factor applied to the covalent radii.</span>
-<span class="sd">        toler : float</span>
+<span class="sd">        scale : float, optional</span>
+<span class="sd">            The scale factor applied to the covalent radii. Default is 1.1</span>
+<span class="sd">        tolerance : float, optional. Default is 0.1</span>
 <span class="sd">            The tolerance added to the scaled sum of radii to determine the maximum allowable distance between atoms i and j for them to be considered bonded.</span>
-<span class="sd">        covalent_radii : list of float</span>
-<span class="sd">            A list of covalent radii for the atoms</span>
+<span class="sd">        radii : a dictionary, optional</span>
+<span class="sd">            A dictionary of covalent radii for the atoms, key is the element name.  If not given then the package radii are used from PDielec.Constants</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -1033,10 +1054,11 @@
 <span class="sd">        Notes</span>
 <span class="sd">        -----</span>
 <span class="sd">        The formula used to calculate the largest distance apart atoms i and j can be for a bond is:</span>
-<span class="sd">        `scale * (radi + radj) + toler`</span>
+<span class="sd">        `scale * (radi + radj) + tolerance`</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c1">#print(&#39;jk06 &#39;)</span>
-        <span class="c1">#self.print()</span>
+        <span class="c1"># Check that the covalent radius has been given</span>
+        <span class="k">if</span> <span class="n">radii</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">radii</span> <span class="o">=</span> <span class="n">covalent_radii</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
         <span class="c1"># Calculate the contents of all the cells adjacent to the central cell</span>
         <span class="n">adjacents</span> <span class="o">=</span> <span class="p">(</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span> <span class="p">)</span>
         <span class="n">translations</span> <span class="o">=</span> <span class="p">[</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">adjacents</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">adjacents</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">adjacents</span> <span class="p">]</span>
@@ -1062,9 +1084,9 @@
         <span class="n">rmax</span> <span class="o">=</span> <span class="mf">0.0</span>
         <span class="k">for</span> <span class="n">el</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">element_names</span><span class="p">:</span>
             <span class="c1">#jk print(&quot;Element name&quot;,el)</span>
-            <span class="k">if</span> <span class="n">covalent_radii</span><span class="p">[</span><span class="n">el</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">rmax</span><span class="p">:</span>
-                <span class="n">rmax</span> <span class="o">=</span> <span class="n">covalent_radii</span><span class="p">[</span><span class="n">el</span><span class="p">]</span>
-        <span class="n">boxSize</span> <span class="o">=</span> <span class="mf">2.0</span><span class="o">*</span><span class="n">scale</span><span class="o">*</span><span class="n">rmax</span> <span class="o">+</span> <span class="mf">0.5</span> <span class="o">+</span> <span class="n">toler</span>
+            <span class="k">if</span> <span class="n">radii</span><span class="p">[</span><span class="n">el</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">rmax</span><span class="p">:</span>
+                <span class="n">rmax</span> <span class="o">=</span> <span class="n">radii</span><span class="p">[</span><span class="n">el</span><span class="p">]</span>
+        <span class="n">boxSize</span> <span class="o">=</span> <span class="mf">2.0</span><span class="o">*</span><span class="n">scale</span><span class="o">*</span><span class="n">rmax</span> <span class="o">+</span> <span class="mf">0.5</span> <span class="o">+</span> <span class="n">tolerance</span>
         <span class="c1">#jk print(&#39;rmax = &#39;,rmax)</span>
         <span class="c1"># Put atoms into boxes and store the box info in Atom_box_id</span>
         <span class="n">Atom_box_id</span> <span class="o">=</span> <span class="p">[]</span>
@@ -1107,7 +1129,7 @@
                             <span class="c1"># Find the element name for this atom in the supercell</span>
                             <span class="n">jp</span> <span class="o">=</span> <span class="n">index_supercell</span><span class="p">[</span><span class="n">j</span><span class="p">]</span>
                             <span class="n">j_el</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">element_names</span><span class="p">[</span><span class="n">jp</span><span class="p">]</span>
-                            <span class="n">dist1</span> <span class="o">=</span> <span class="n">scale</span><span class="o">*</span><span class="p">(</span> <span class="n">covalent_radii</span><span class="p">[</span><span class="n">i_el</span><span class="p">]</span> <span class="o">+</span> <span class="n">covalent_radii</span><span class="p">[</span><span class="n">j_el</span><span class="p">])</span> <span class="o">+</span> <span class="n">toler</span>
+                            <span class="n">dist1</span> <span class="o">=</span> <span class="n">scale</span><span class="o">*</span><span class="p">(</span> <span class="n">radii</span><span class="p">[</span><span class="n">i_el</span><span class="p">]</span> <span class="o">+</span> <span class="n">radii</span><span class="p">[</span><span class="n">j_el</span><span class="p">])</span> <span class="o">+</span> <span class="n">tolerance</span>
                             <span class="n">dist2</span> <span class="o">=</span> <span class="n">calculate_distance</span><span class="p">(</span><span class="n">xyzi</span><span class="p">,</span><span class="n">xyz_supercell</span><span class="p">[</span><span class="n">j</span><span class="p">])</span>
                             <span class="k">if</span> <span class="n">dist2</span> <span class="o">&lt;</span> <span class="n">dist1</span><span class="p">:</span>
                                 <span class="n">bondedToAtom</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">j</span><span class="p">)</span>
@@ -1248,9 +1270,117 @@
         <span class="n">new_unit_cell</span><span class="o">.</span><span class="n">set_bonds</span><span class="p">(</span><span class="n">new_bonds</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">new_unit_cell</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">new_molecules</span><span class="p">),</span> <span class="n">old_order</span></div>
 
+<div class="viewcode-block" id="UnitCell.get_bonds"><a class="viewcode-back" href="../../autoapi/PDielec/UnitCell/index.html#PDielec.UnitCell.UnitCell.get_bonds">[docs]</a>    <span class="k">def</span> <span class="nf">get_bonds</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Returns a list of bonds for the unit cell</span>
+
+<span class="sd">        It also returns a list of the bond lengths in angstrom</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        None</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        (list of bonds, list of bondlengths)</span>
+<span class="sd">            list of bonds is a list of pairs of integers denoting a bond</span>
+<span class="sd">            list of bond lengths is a list of floats</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">bond_lengths</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">j</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">bonds</span><span class="p">:</span>
+            <span class="n">bond_length</span> <span class="o">=</span> <span class="n">calculate_distance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">xyz_coordinates</span><span class="p">[</span><span class="n">i</span><span class="p">],</span><span class="bp">self</span><span class="o">.</span><span class="n">xyz_coordinates</span><span class="p">[</span><span class="n">j</span><span class="p">])</span>
+            <span class="n">bond_length</span> <span class="o">=</span> <span class="n">convert_length_units</span><span class="p">(</span><span class="n">bond_length</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">units</span><span class="p">,</span><span class="s1">&#39;Angstrom&#39;</span><span class="p">)</span>
+            <span class="n">bond_lengths</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">bond_length</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">bonds</span><span class="p">,</span> <span class="n">bond_lengths</span></div>
+
+<div class="viewcode-block" id="UnitCell.get_bond_angles"><a class="viewcode-back" href="../../autoapi/PDielec/UnitCell/index.html#PDielec.UnitCell.UnitCell.get_bond_angles">[docs]</a>    <span class="k">def</span> <span class="nf">get_bond_angles</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Returns a list of atoms that form bonded angles for the unit cell</span>
+
+<span class="sd">        It also returns a list of the angles in degrees</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        None</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        (list of 3 integer tuples, list of bond angles)</span>
+<span class="sd">            list of angles is a list of 3 integers denoting involved in the angle</span>
+<span class="sd">            list of angles is a list of floats</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">angle_list</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">j</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">bonds</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">k</span><span class="p">,</span><span class="n">l</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">bonds</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="n">k</span> <span class="ow">and</span> <span class="n">j</span> <span class="o">!=</span> <span class="n">l</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">l</span> <span class="o">&gt;</span> <span class="n">j</span> <span class="ow">and</span> <span class="p">(</span><span class="n">l</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">angle_list</span><span class="p">:</span>
+                        <span class="n">angle_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span> <span class="p">(</span><span class="n">l</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">)</span> <span class="p">)</span>
+                    <span class="k">elif</span> <span class="p">(</span><span class="n">j</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">l</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">angle_list</span><span class="p">:</span>
+                        <span class="n">angle_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span> <span class="p">(</span><span class="n">j</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">l</span><span class="p">)</span> <span class="p">)</span>
+                <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="n">l</span> <span class="ow">and</span> <span class="n">j</span> <span class="o">!=</span> <span class="n">k</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">k</span> <span class="o">&gt;</span> <span class="n">j</span> <span class="ow">and</span> <span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">angle_list</span><span class="p">:</span>
+                        <span class="n">angle_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span> <span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">)</span> <span class="p">)</span>
+                    <span class="k">elif</span> <span class="p">(</span><span class="n">j</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">angle_list</span><span class="p">:</span>
+                        <span class="n">angle_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span> <span class="p">(</span><span class="n">j</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span> <span class="p">)</span>
+        <span class="n">angles</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">atoms</span> <span class="ow">in</span> <span class="n">angle_list</span><span class="p">:</span>
+            <span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">,</span><span class="n">k</span> <span class="o">=</span> <span class="n">atoms</span>
+            <span class="n">a</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">xyz_coordinates</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="n">b</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">xyz_coordinates</span><span class="p">[</span><span class="n">j</span><span class="p">]</span>
+            <span class="n">c</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">xyz_coordinates</span><span class="p">[</span><span class="n">k</span><span class="p">]</span>
+            <span class="n">angle</span> <span class="o">=</span> <span class="n">calculate_angle</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="n">c</span><span class="p">)</span>
+            <span class="n">angles</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">angle</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">angle_list</span><span class="p">,</span> <span class="n">angles</span></div>
+
+<div class="viewcode-block" id="UnitCell.get_torsions"><a class="viewcode-back" href="../../autoapi/PDielec/UnitCell/index.html#PDielec.UnitCell.UnitCell.get_torsions">[docs]</a>    <span class="k">def</span> <span class="nf">get_torsions</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Returns a list of atoms that form torsion angles for the unit cell</span>
+
+<span class="sd">        It also returns a list of the angles in degrees</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        None</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        (list of 4 integer tuples, list of torsion angles)</span>
+<span class="sd">            list of torsions is a list of 4 integers denoting involved in the angle</span>
+<span class="sd">            list of angles is a list of floats</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">angle_list</span><span class="p">,</span> <span class="n">angles</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_bond_angles</span><span class="p">()</span>
+        <span class="c1"># Generate a list of torsion angles</span>
+        <span class="n">torsion_list</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">,</span><span class="n">k</span> <span class="ow">in</span> <span class="n">angle_list</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">l1</span><span class="p">,</span><span class="n">l2</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">bonds</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">l1</span> <span class="o">==</span> <span class="n">i</span> <span class="ow">and</span> <span class="n">l2</span> <span class="o">!=</span> <span class="n">j</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="p">(</span><span class="n">l2</span><span class="p">,</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">,</span><span class="n">k</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">torsion_list</span><span class="p">:</span>
+                        <span class="n">torsion_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span> <span class="p">(</span><span class="n">l2</span><span class="p">,</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">,</span><span class="n">k</span><span class="p">)</span> <span class="p">)</span>
+                <span class="k">if</span> <span class="n">l2</span> <span class="o">==</span> <span class="n">i</span> <span class="ow">and</span> <span class="n">l1</span> <span class="o">!=</span> <span class="n">j</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="p">(</span><span class="n">l1</span><span class="p">,</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">,</span><span class="n">k</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">torsion_list</span><span class="p">:</span>
+                        <span class="n">torsion_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span> <span class="p">(</span><span class="n">l1</span><span class="p">,</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">,</span><span class="n">k</span><span class="p">)</span> <span class="p">)</span>
+                <span class="k">if</span> <span class="n">l1</span> <span class="o">==</span> <span class="n">k</span> <span class="ow">and</span> <span class="n">l2</span> <span class="o">!=</span> <span class="n">j</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">,</span><span class="n">k</span><span class="p">,</span><span class="n">l2</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">torsion_list</span><span class="p">:</span>
+                        <span class="n">torsion_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">,</span><span class="n">k</span><span class="p">,</span><span class="n">l2</span><span class="p">)</span> <span class="p">)</span>
+                <span class="k">if</span> <span class="n">l2</span> <span class="o">==</span> <span class="n">k</span> <span class="ow">and</span> <span class="n">l1</span> <span class="o">!=</span> <span class="n">j</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">,</span><span class="n">k</span><span class="p">,</span><span class="n">l1</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">torsion_list</span><span class="p">:</span>
+                        <span class="n">torsion_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">,</span><span class="n">k</span><span class="p">,</span><span class="n">l1</span><span class="p">)</span> <span class="p">)</span>
+        <span class="c1"># Calculate the value of the torsion angle</span>
+        <span class="n">angles</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">,</span><span class="n">k</span><span class="p">,</span><span class="n">l</span> <span class="ow">in</span> <span class="n">torsion_list</span><span class="p">:</span>
+            <span class="n">a</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">xyz_coordinates</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="n">b</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">xyz_coordinates</span><span class="p">[</span><span class="n">j</span><span class="p">]</span>
+            <span class="n">c</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">xyz_coordinates</span><span class="p">[</span><span class="n">k</span><span class="p">]</span>
+            <span class="n">d</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">xyz_coordinates</span><span class="p">[</span><span class="n">l</span><span class="p">]</span>
+            <span class="n">angle</span> <span class="o">=</span> <span class="n">calculate_torsion</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="n">c</span><span class="p">,</span><span class="n">d</span><span class="p">)</span>
+            <span class="n">angles</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">angle</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">torsion_list</span><span class="p">,</span> <span class="n">angles</span></div>
+
 <div class="viewcode-block" id="UnitCell.set_bonds"><a class="viewcode-back" href="../../autoapi/PDielec/UnitCell/index.html#PDielec.UnitCell.UnitCell.set_bonds">[docs]</a>    <span class="k">def</span> <span class="nf">set_bonds</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bonds</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Define a list of bonds for the unit cell</span>
+
+<span class="sd">        Some checking is performed.  If the bonds has duplicates but in a different order, then they are removed.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -1261,7 +1391,21 @@
 <span class="sd">        -------</span>
 <span class="sd">        None</span>
 <span class="sd">        &#39;&#39;&#39;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">bonds</span> <span class="o">=</span> <span class="n">bonds</span>
+        <span class="c1"># Check that the bonds are unique</span>
+        <span class="n">new_list</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">j</span> <span class="ow">in</span> <span class="n">bonds</span><span class="p">:</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">j</span><span class="p">,</span><span class="n">i</span><span class="p">)</span> <span class="ow">in</span> <span class="n">bonds</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">i</span> <span class="o">&gt;</span> <span class="n">j</span><span class="p">:</span>
+                    <span class="n">new_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">)</span> <span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">i</span><span class="o">&gt;</span><span class="n">j</span><span class="p">:</span>
+                    <span class="n">new_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">)</span> <span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">new_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span> <span class="p">(</span><span class="n">j</span><span class="p">,</span><span class="n">i</span><span class="p">)</span> <span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">new_list</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">bonds</span> <span class="o">=</span> <span class="n">new_list</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">bonds</span> <span class="o">=</span> <span class="n">bonds</span>
         <span class="k">return</span></div>
 
 <div class="viewcode-block" id="UnitCell.set_molecules"><a class="viewcode-back" href="../../autoapi/PDielec/UnitCell/index.html#PDielec.UnitCell.UnitCell.set_molecules">[docs]</a>    <span class="k">def</span> <span class="nf">set_molecules</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">molecules</span><span class="p">):</span>

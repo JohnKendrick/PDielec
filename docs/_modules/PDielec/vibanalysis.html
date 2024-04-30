@@ -274,6 +274,24 @@
           <h1>Source code for PDielec.vibanalysis</h1><div class="highlight"><pre>
 <span></span><span class="ch">#! /usr/bin/env python3</span>
 <span class="c1"># -*- coding: utf8 -*-</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd"># vibAnalyis</span>
+
+<span class="sd">vibAnalysis is a Python tool written by Filipe Teixeira the original is available on </span>
+<span class="sd">github at https://github.com/teixeirafilipe/vibAnalysis.</span>
+
+<span class="sd">The package uses the Vibrational Mode Decomoposition method to describe the normal modes of a molecule.</span>
+<span class="sd">It has been modified to interface directly with PDielec package and to treat periodic systems at the phonon gamma point.  </span>
+<span class="sd">An example of the use of the modified program are give below; ::</span>
+
+<span class="sd">   vibanalysis --autosel phonon.castep</span>
+
+<span class="sd">The modified program creates a PDielec reader for the phonon.castep file, and uses the reader to provide</span>
+<span class="sd">all the data required by the vibAnalysis.  </span>
+<span class="sd">All of the options available to the original code are available to this modified version.</span>
+<span class="sd">Full details of the options available can be viewed at https://github.com/teixeirafilipe/vibAnalysis.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
 
 <span class="c1">##########################################################################</span>
 <span class="c1">#                                                                        #</span>
@@ -716,7 +734,7 @@
         <span class="c1"># We need to see if we can generate whole molecules using translational symmetry</span>
         <span class="n">scale</span> <span class="o">=</span> <span class="mf">1.1</span>      <span class="c1"># Scaling factor for covalent radii</span>
         <span class="n">tolerance</span>  <span class="o">=</span> <span class="n">Opts</span><span class="p">[</span><span class="s1">&#39;tol&#39;</span><span class="p">]</span>  <span class="c1"># Tolerance in bonding</span>
-        <span class="n">new_cell</span><span class="p">,</span><span class="n">natoms</span><span class="p">,</span><span class="n">original_atomic_order</span> <span class="o">=</span> <span class="n">cell</span><span class="o">.</span><span class="n">calculate_molecular_contents</span><span class="p">(</span><span class="n">scale</span><span class="p">,</span> <span class="n">tolerance</span><span class="p">,</span> <span class="n">covalent_radii</span><span class="p">)</span>
+        <span class="n">new_cell</span><span class="p">,</span><span class="n">natoms</span><span class="p">,</span><span class="n">original_atomic_order</span> <span class="o">=</span> <span class="n">cell</span><span class="o">.</span><span class="n">calculate_molecular_contents</span><span class="p">(</span><span class="n">scale</span><span class="o">=</span><span class="n">scale</span><span class="p">,</span> <span class="n">tolerance</span><span class="o">=</span><span class="n">tolerance</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Bonding tolerance&#39;</span><span class="p">,</span><span class="n">tolerance</span><span class="p">,</span><span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Number of molecules&#39;</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">new_cell</span><span class="o">.</span><span class="n">molecules</span><span class="p">),</span><span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
         <span class="c1"># Reorder the normal mode atoms so that the mass weighted normal modes order </span>

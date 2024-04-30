@@ -40,6 +40,7 @@ Functions
    PDielec.Calculator.balan
    PDielec.Calculator.bruggeman_iter
    PDielec.Calculator.bruggeman_minimise
+   PDielec.Calculator.calculate_angle
    PDielec.Calculator.calculate_bubble_refractive_index
    PDielec.Calculator.calculate_centre_of_mass
    PDielec.Calculator.calculate_distance
@@ -48,9 +49,9 @@ Functions
    PDielec.Calculator.calculate_refractive_index
    PDielec.Calculator.calculate_refractive_index_scalar
    PDielec.Calculator.calculate_size_factor
+   PDielec.Calculator.calculate_torsion
    PDielec.Calculator.cleanup_symbol
    PDielec.Calculator.coherent
-   PDielec.Calculator.coherent2
    PDielec.Calculator.construct_projection_operator
    PDielec.Calculator.determineEulerAngles
    PDielec.Calculator.direction_from_shape
@@ -332,6 +333,28 @@ Functions
    This function applies homogenization formalisms to active dielectric composite materials as discussed in the work of Tom G. Mackay and Akhlesh Lakhtakia.
 
 
+.. py:function:: calculate_angle(a, b, c)
+
+   Calculate the angle between a, b and c in degrees
+
+   The bond is a-b-c, b is the central atom
+
+   Parameters
+   ----------
+   a : list of reals
+       Coordinates of a
+   b : list of reals
+       Coordinates of b
+   c : list of reals
+       Coordinates of c
+
+   Returns
+   -------
+   float
+       The angle between a-b-c in degrees
+
+
+
 .. py:function:: calculate_bubble_refractive_index(v_cm1, ri_medium, vf, radius_mu)
 
    Calculate the scattering from bubbles embedded in a possibly complex dielectric at a given frequency.
@@ -484,6 +507,28 @@ Functions
        Size effect
 
 
+.. py:function:: calculate_torsion(a, b, c, d)
+
+   Calculate the torsion angle between a, b, c and d in degrees
+
+   Parameters
+   ----------
+   a : list of reals
+       Coordinates of a
+   b : list of reals
+       Coordinates of b
+   c : list of reals
+       Coordinates of c
+   d : list of reals
+       Coordinates of d
+
+   Returns
+   -------
+   float
+       The torsion angle between a-b-c-d in degrees
+
+
+
 .. py:function:: cleanup_symbol(s)
 
    Return a true element from the symbol
@@ -520,31 +565,6 @@ Functions
    Returns
    -------
    tensor
-       The effective dielectric constant.
-
-
-.. py:function:: coherent2(dielectric_medium, dielectric_apparent, crystal_permittivity, shape, L, vf, size)
-
-   Calculate the effective constant permittivity using the Coherent2 method
-
-   Parameters
-   ----------
-   dielectric_medium : tensor (3x3)
-       The dielectric constant tensor of the medium.
-   crystal_permittivity : tensor (3x3)
-       The total frequency dielectric constant tensor at the current frequency.
-   shape : str
-       The name of the current shape.
-   L : matrix (3x3)
-       The shape's depolarisation matrix.
-   size : float
-       The dimensionless size parameter for the frequency under consideration.
-   vf : float
-       The volume fraction of filler.
-
-   Returns
-   -------
-   tensor (3x3)
        The effective dielectric constant.
 
 
