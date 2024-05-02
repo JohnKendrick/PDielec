@@ -29,3 +29,6 @@ This uses the calculateSingleCrystalSpectrum() helper function.
 Illustrate the properties of the SuperCell class.
 ## UnitCell.ipynb
 Illustrate the properties of the UnitCell class.
+## compareDFTAbsorptions
+Compares calculations on Na2(SO4)2 using different DFT methods.  
+The results of the calculations are collected together as separate directories in Na2SO42/
