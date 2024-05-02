@@ -27,8 +27,10 @@ from PDielec.GUI.SingleCrystalLayer        import SingleCrystalLayer
 from PDielec.GUI.SingleCrystalScenarioTab  import solve_single_crystal_equations
 from PDielec.Materials                     import Material,MaterialsDataBase,External
 from PDielec.Constants                     import wavenumber, angstrom, amu
+from PDielec.Constants                     import average_masses, isotope_masses
 
-def calculateDFTPermittivityObject(reader,sigma=5.0):
+
+def calculateDFTPermittivityObject(reader,sigma=5.0,eckart=True,mass_definition='Average'):
     '''
     Define a permittivity object for the DFT calculation from the given reader
 
@@ -43,21 +45,48 @@ def calculateDFTPermittivityObject(reader,sigma=5.0):
         An output reader object
     sigma  : float
         Default Lorentzian widths in cm-1
+    eckart  : boolean
+        If true apply eckart conditions in the reader
+    mass_definition : string or list of floats
+        Default is 'Average'
+        If a list of floats it is a list of the masses to be used.
+        If a string it must be one of 'Average', 'Isotope' or 'Program' (case is irrelevant)
+        - Average causes the average weight for the element to be used
+        - Isotope causes the most common isotope weight to be used
+        - Program means use the mass used by the program
 
     Returns
     -------
     permittivityObject
 
     '''
+    reader.eckart = eckart
+    epsilon_inf = reader.zerof_optical_dielectric
+    cell = reader.get_unit_cell()
+    volume_au = cell.getVolume('Bohr')
+    mass_dictionary = []
+    reader.reset_masses()
+    if isinstance(mass_definition,list) or isinstance(mass_definition,np.ndarray):
+        reader.set_edited_masses(mass_definition)
+    else:
+        mass_definition = mass_definition.lower()
+        if mass_definition == 'average':
+            reader.change_masses(average_masses, mass_dictionary)
+        elif mass_definition == 'program':
+            pass
+        elif mass_definition == 'isotope':
+            reader.change_masses(isotope_masses, mass_dictionary)
+        else:
+            print('Helper: Error unkown mass definition', mass_definition )
+    masses = np.array(reader.masses)*amu
+    # The reader uses the internal masses to calculate the massweighted normal modes
+    mass_weighted_normal_modes = reader.calculate_mass_weighted_normal_modes()
+    masses = np.array(reader.masses)*amu
+    # The frequencies will change if the masses change, so get them after changing the masses
     frequencies_cm1 = np.array(reader.frequencies)
     frequencies_au = wavenumber*frequencies_cm1
     sigmas_cm1 = [ sigma for i in frequencies_cm1 ]
     sigmas_au = wavenumber*np.array(sigmas_cm1)
-    epsilon_inf = reader.zerof_optical_dielectric
-    cell = reader.get_unit_cell()
-    volume_au = cell.getVolume('Bohr')
-    masses = np.array(cell.get_atomic_masses())*amu
-    mass_weighted_normal_modes = reader.calculate_mass_weighted_normal_modes()
     born_charges = np.array(reader.born_charges)
     if reader.type == 'Experimental output':
         # Obtain oscillator strength from reader
@@ -89,7 +118,7 @@ def calculateDFTPermittivityObject(reader,sigma=5.0):
     permittivityObject.setEpsilonInfinity(epsilon_inf)
     return permittivityObject
 
-def getMaterial(name,dataBaseName='MaterialsDataBase.xlsx',qmprogram='vasp'):
+def getMaterial(name,dataBaseName='MaterialsDataBase.xlsx',qmprogram='vasp',eckart=True,mass_definition='Average'):
     '''
     Get a material with the given name.
 
@@ -102,8 +131,19 @@ def getMaterial(name,dataBaseName='MaterialsDataBase.xlsx',qmprogram='vasp'):
         The name of the material, which can be a file name or a material name existing in the database.
     dataBaseName : str
         The name of the database which will be searched from the material
-    qmprogram : str
+    qmprogram : str, optional
         The name of the QM program used in the case of Phonopy DFT calculations
+        Defaults to 'vasp'
+    eckart  : boolean, optional
+        If true apply eckart conditions in the reader. Defaults to true.
+    mass_definition : string or list of floats, optional
+        Default is 'Average'
+        If a list of floats it is a list of the masses to be used.
+        If a string it must be one of 'Average', 'Isotope' or 'Program' (case is irrelevant)
+        - Average causes the average weight for the element to be used
+        - Isotope causes the most common isotope weight to be used
+        - Program means use the mass used by the program
+
 
     Returns
     -------
@@ -122,7 +162,7 @@ def getMaterial(name,dataBaseName='MaterialsDataBase.xlsx',qmprogram='vasp'):
     if len(program) > 1:
         reader = Utilities.get_reader(name,program,qmprogram)
         reader.read_output()
-        permittivityObject=calculateDFTPermittivityObject(reader,sigma=5.0)
+        permittivityObject=calculateDFTPermittivityObject(reader,sigma=5.0,eckart=eckart,mass_definition=mass_definition)
         cell = reader.get_unit_cell()
         material = External('Dielectric layer',permittivityObject=permittivityObject,cell=cell)
     else:
