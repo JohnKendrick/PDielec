@@ -1,4 +1,18 @@
 #!/usr/bin/env python
+#
+# Copyright 2024 John Kendrick & Andrew Burnett
+#
+# This file is part of PDielec
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the MIT License
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+#
+# You should have received a copy of the MIT License along with this program, if not see https://opensource.org/licenses/MIT
+#
 '''
 PDielec driver program to compare a collection of spreadsheets with spectra
 
@@ -15,20 +29,6 @@ PDielec driver program to compare a collection of spreadsheets with spectra
                 -rmin rmin  Use rows from rmin to rmax (rows start from 2)
                 -sheet [molar/absorption/real/imaginary/atr]
                 -excel filename
-
-Copyright 2024 John Kendrick
-
-This file is part of PDielec
-
-This program is free software; you can redistribute it and/or modify
-it under the terms of the MIT License
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-
-You should have received a copy of the MIT License
-along with this program, if not see https://opensource.org/licenses/MIT
 '''
 from __future__ import print_function
 import sys

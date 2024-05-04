@@ -275,24 +275,7 @@
         <article role="main">
           <section id="module-PDielec.GUI.AnalysisTab">
 <span id="pdielec-gui-analysistab"></span><h1><a class="reference internal" href="#module-PDielec.GUI.AnalysisTab" title="PDielec.GUI.AnalysisTab"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.AnalysisTab</span></code></a><a class="headerlink" href="#module-PDielec.GUI.AnalysisTab" title="Permalink to this heading">#</a></h1>
-<p>AnalysisTab</p>
-<p>The MIT License (MIT)</p>
-<p>Copyright (c) 2024 John Kendrick</p>
-<p>Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the “Software”), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:</p>
-<p>The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.</p>
-<p>THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.</p>
+<p>AnalysisTab Module</p>
 <section id="module-contents">
 <h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this heading">#</a></h2>
 <section id="classes">
@@ -313,6 +296,15 @@ SOFTWARE.</p>
 <p>A widget class for analyzing vibrational modes, molecular composition, and bonding configurations within a molecular dataset.</p>
 <p>This class inherits from QWidget
 Key features include plotting vibrational mode decompositions</p>
+<section id="parameters">
+<h4>Parameters<a class="headerlink" href="#parameters" title="Permalink to this heading">#</a></h4>
+<dl class="simple">
+<dt>parent<span class="classifier">QObject</span></dt><dd><p>The parent widget or object, typically the main application or main window in which this widget will be embedded.</p>
+</dd>
+<dt>debug<span class="classifier">bool, optional</span></dt><dd><p>Indicates if debugging is enabled for this widget. The default is False.</p>
+</dd>
+</dl>
+</section>
 <section id="attributes">
 <h4>Attributes<a class="headerlink" href="#attributes" title="Permalink to this heading">#</a></h4>
 <dl class="simple">
@@ -409,8 +401,8 @@ Key features include plotting vibrational mode decompositions</p>
 <p>This method orchestrates the calculation process, setting up necessary parameters, processing molecular contents
 based on the provided settings, calculating normal modes and their mass weighting, and finally computing the energy
 distribution among the modes. It updates the UI and internal state as necessary based on the calculation results.</p>
-<section id="parameters">
-<h5>Parameters<a class="headerlink" href="#parameters" title="Permalink to this heading">#</a></h5>
+<section id="id1">
+<h5>Parameters<a class="headerlink" href="#id1" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 <section id="returns">
@@ -434,15 +426,15 @@ distribution among the modes. It updates the UI and internal state as necessary 
 <dt class="sig sig-object py" id="PDielec.GUI.AnalysisTab.AnalysisTab.on_element_radii_tw_itemChanged">
 <span class="sig-name descname"><span class="pre">on_element_radii_tw_itemChanged</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">item</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/AnalysisTab.html#AnalysisTab.on_element_radii_tw_itemChanged"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.AnalysisTab.AnalysisTab.on_element_radii_tw_itemChanged" title="Permalink to this definition">#</a></dt>
 <dd><p>Respond to changes in element radii within a widget.</p>
-<section id="id1">
-<h5>Parameters<a class="headerlink" href="#id1" title="Permalink to this heading">#</a></h5>
+<section id="id2">
+<h5>Parameters<a class="headerlink" href="#id2" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>item<span class="classifier">QTableWidgetItem</span></dt><dd><p>The table widget item that was changed. This item contains the new radius value as its text, and its column indicates which element’s radius was modified.</p>
 </dd>
 </dl>
 </section>
-<section id="id2">
-<h5>Returns<a class="headerlink" href="#id2" title="Permalink to this heading">#</a></h5>
+<section id="id3">
+<h5>Returns<a class="headerlink" href="#id3" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 </dd></dl>
@@ -451,19 +443,19 @@ distribution among the modes. It updates the UI and internal state as necessary 
 <dt class="sig sig-object py" id="PDielec.GUI.AnalysisTab.AnalysisTab.on_element_radii_tw_itemClicked">
 <span class="sig-name descname"><span class="pre">on_element_radii_tw_itemClicked</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">item</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/AnalysisTab.html#AnalysisTab.on_element_radii_tw_itemClicked"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.AnalysisTab.AnalysisTab.on_element_radii_tw_itemClicked" title="Permalink to this definition">#</a></dt>
 <dd><p>Handle the item clicked event for a TableWidget related to element radii.</p>
-<section id="id3">
-<h5>Parameters<a class="headerlink" href="#id3" title="Permalink to this heading">#</a></h5>
+<section id="id4">
+<h5>Parameters<a class="headerlink" href="#id4" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>item<span class="classifier">QTableWidgetItem</span></dt><dd><p>The item from the TableWidget that was clicked.</p>
 </dd>
 </dl>
 </section>
-<section id="id4">
-<h5>Returns<a class="headerlink" href="#id4" title="Permalink to this heading">#</a></h5>
+<section id="id5">
+<h5>Returns<a class="headerlink" href="#id5" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
-<section id="id5">
-<h5>Notes<a class="headerlink" href="#id5" title="Permalink to this heading">#</a></h5>
+<section id="id6">
+<h5>Notes<a class="headerlink" href="#id6" title="Permalink to this heading">#</a></h5>
 <p>This function unblocks signals for the <cite>element_radii_tw</cite> TableWidget after an item click
 event has occurred, allowing subsequent events to be processed.</p>
 </section>
@@ -473,15 +465,15 @@ event has occurred, allowing subsequent events to be processed.</p>
 <dt class="sig sig-object py" id="PDielec.GUI.AnalysisTab.AnalysisTab.on_plottype_cb_changed">
 <span class="sig-name descname"><span class="pre">on_plottype_cb_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/AnalysisTab.html#AnalysisTab.on_plottype_cb_changed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.AnalysisTab.AnalysisTab.on_plottype_cb_changed" title="Permalink to this definition">#</a></dt>
 <dd><p>Handle a change in plot type selection.</p>
-<section id="id6">
-<h5>Parameters<a class="headerlink" href="#id6" title="Permalink to this heading">#</a></h5>
+<section id="id7">
+<h5>Parameters<a class="headerlink" href="#id7" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>index<span class="classifier">int</span></dt><dd><p>The new index that indicates the selected plot type.</p>
 </dd>
 </dl>
 </section>
-<section id="id7">
-<h5>Returns<a class="headerlink" href="#id7" title="Permalink to this heading">#</a></h5>
+<section id="id8">
+<h5>Returns<a class="headerlink" href="#id8" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 </dd></dl>
@@ -495,15 +487,15 @@ scaling factor for the covalent radius is adjusted in a graphical user interface
 It updates the stored ‘Covalent radius scaling’ value, marks that a refresh is
 required, calculates necessary data based on new settings, and finally triggers
 a plot update.</p>
-<section id="id8">
-<h5>Parameters<a class="headerlink" href="#id8" title="Permalink to this heading">#</a></h5>
+<section id="id9">
+<h5>Parameters<a class="headerlink" href="#id9" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>value<span class="classifier">float</span></dt><dd><p>The new scale value for the covalent radius.</p>
 </dd>
 </dl>
 </section>
-<section id="id9">
-<h5>Returns<a class="headerlink" href="#id9" title="Permalink to this heading">#</a></h5>
+<section id="id10">
+<h5>Returns<a class="headerlink" href="#id10" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 </dd></dl>
@@ -512,15 +504,15 @@ a plot update.</p>
 <dt class="sig sig-object py" id="PDielec.GUI.AnalysisTab.AnalysisTab.on_title_changed">
 <span class="sig-name descname"><span class="pre">on_title_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/AnalysisTab.html#AnalysisTab.on_title_changed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.AnalysisTab.AnalysisTab.on_title_changed" title="Permalink to this definition">#</a></dt>
 <dd><p>Handle title change events.</p>
-<section id="id10">
-<h5>Parameters<a class="headerlink" href="#id10" title="Permalink to this heading">#</a></h5>
+<section id="id11">
+<h5>Parameters<a class="headerlink" href="#id11" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>text<span class="classifier">str</span></dt><dd><p>The new title text.</p>
 </dd>
 </dl>
 </section>
-<section id="id11">
-<h5>Returns<a class="headerlink" href="#id11" title="Permalink to this heading">#</a></h5>
+<section id="id12">
+<h5>Returns<a class="headerlink" href="#id12" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 </dd></dl>
@@ -530,15 +522,15 @@ a plot update.</p>
 <span class="sig-name descname"><span class="pre">on_tolerance_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/AnalysisTab.html#AnalysisTab.on_tolerance_changed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.AnalysisTab.AnalysisTab.on_tolerance_changed" title="Permalink to this definition">#</a></dt>
 <dd><p>Handle the event when the tolerance value changes.</p>
 <p>This function updates the ‘Bonding tolerance’ setting based on the provided value, marks the system as requiring a refresh, and then recalculates and replots the data.</p>
-<section id="id12">
-<h5>Parameters<a class="headerlink" href="#id12" title="Permalink to this heading">#</a></h5>
+<section id="id13">
+<h5>Parameters<a class="headerlink" href="#id13" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>value<span class="classifier">float</span></dt><dd><p>The new tolerance value.</p>
 </dd>
 </dl>
 </section>
-<section id="id13">
-<h5>Returns<a class="headerlink" href="#id13" title="Permalink to this heading">#</a></h5>
+<section id="id14">
+<h5>Returns<a class="headerlink" href="#id14" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 </dd></dl>
@@ -547,15 +539,15 @@ a plot update.</p>
 <dt class="sig sig-object py" id="PDielec.GUI.AnalysisTab.AnalysisTab.on_vmax_changed">
 <span class="sig-name descname"><span class="pre">on_vmax_changed</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/AnalysisTab.html#AnalysisTab.on_vmax_changed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.AnalysisTab.AnalysisTab.on_vmax_changed" title="Permalink to this definition">#</a></dt>
 <dd><p>Handle the change in maximum value for frequency.</p>
-<section id="id14">
-<h5>Parameters<a class="headerlink" href="#id14" title="Permalink to this heading">#</a></h5>
+<section id="id15">
+<h5>Parameters<a class="headerlink" href="#id15" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>text<span class="classifier">str</span></dt><dd><p>The new title text.</p>
 </dd>
 </dl>
 </section>
-<section id="id15">
-<h5>Returns<a class="headerlink" href="#id15" title="Permalink to this heading">#</a></h5>
+<section id="id16">
+<h5>Returns<a class="headerlink" href="#id16" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 </dd></dl>
@@ -564,15 +556,15 @@ a plot update.</p>
 <dt class="sig sig-object py" id="PDielec.GUI.AnalysisTab.AnalysisTab.on_vmin_changed">
 <span class="sig-name descname"><span class="pre">on_vmin_changed</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/AnalysisTab.html#AnalysisTab.on_vmin_changed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.AnalysisTab.AnalysisTab.on_vmin_changed" title="Permalink to this definition">#</a></dt>
 <dd><p>Handles the change in minimum value of frequency.</p>
-<section id="id16">
-<h5>Parameters<a class="headerlink" href="#id16" title="Permalink to this heading">#</a></h5>
+<section id="id17">
+<h5>Parameters<a class="headerlink" href="#id17" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>text<span class="classifier">str</span></dt><dd><p>The new title text.</p>
 </dd>
 </dl>
 </section>
-<section id="id17">
-<h5>Returns<a class="headerlink" href="#id17" title="Permalink to this heading">#</a></h5>
+<section id="id18">
+<h5>Returns<a class="headerlink" href="#id18" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 </dd></dl>
@@ -582,15 +574,15 @@ a plot update.</p>
 <span class="sig-name descname"><span class="pre">on_width_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/AnalysisTab.html#AnalysisTab.on_width_changed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.AnalysisTab.AnalysisTab.on_width_changed" title="Permalink to this definition">#</a></dt>
 <dd><p>Handle changes to the width property.</p>
 <p>This method is called when the width property of an object is changed. It updates the stored width value in the object’s settings and then re-plots the object to reflect the new width.</p>
-<section id="id18">
-<h5>Parameters<a class="headerlink" href="#id18" title="Permalink to this heading">#</a></h5>
+<section id="id19">
+<h5>Parameters<a class="headerlink" href="#id19" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>value<span class="classifier">int or float</span></dt><dd><p>The new value for the width.</p>
 </dd>
 </dl>
 </section>
-<section id="id19">
-<h5>Returns<a class="headerlink" href="#id19" title="Permalink to this heading">#</a></h5>
+<section id="id20">
+<h5>Returns<a class="headerlink" href="#id20" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 </dd></dl>
@@ -603,16 +595,16 @@ a plot update.</p>
 or ‘molecular’, depending on the state of <cite>plot_type_index</cite>. If no data
 reader is associated with the instance or if there are no frequencies
 to plot, the function will terminate without plotting.</p>
-<section id="id20">
-<h5>Parameters<a class="headerlink" href="#id20" title="Permalink to this heading">#</a></h5>
-<p>None</p>
-</section>
 <section id="id21">
-<h5>Returns<a class="headerlink" href="#id21" title="Permalink to this heading">#</a></h5>
+<h5>Parameters<a class="headerlink" href="#id21" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 <section id="id22">
-<h5>Notes<a class="headerlink" href="#id22" title="Permalink to this heading">#</a></h5>
+<h5>Returns<a class="headerlink" href="#id22" title="Permalink to this heading">#</a></h5>
+<p>None</p>
+</section>
+<section id="id23">
+<h5>Notes<a class="headerlink" href="#id23" title="Permalink to this heading">#</a></h5>
 <p>This method relies on <cite>self.reader</cite> to be non-<cite>None</cite>, <cite>self.frequencies_cm1</cite> to
 contain frequency data, and <cite>self.plot_type_index</cite> to determine the plotting
 strategy. It calls <cite>self.plot_internal_external()</cite> or <cite>self.plot_molecular()</cite>
@@ -624,16 +616,16 @@ based on the value of <cite>self.plot_type_index</cite>.</p>
 <dt class="sig sig-object py" id="PDielec.GUI.AnalysisTab.AnalysisTab.plot_internal_external">
 <span class="sig-name descname"><span class="pre">plot_internal_external</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/AnalysisTab.html#AnalysisTab.plot_internal_external"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.AnalysisTab.AnalysisTab.plot_internal_external" title="Permalink to this definition">#</a></dt>
 <dd><p>Plot the internal and external composition of vibrational energy for modes within specified frequency ranges.</p>
-<section id="id23">
-<h5>Parameters<a class="headerlink" href="#id23" title="Permalink to this heading">#</a></h5>
-<p>None</p>
-</section>
 <section id="id24">
-<h5>Returns<a class="headerlink" href="#id24" title="Permalink to this heading">#</a></h5>
+<h5>Parameters<a class="headerlink" href="#id24" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 <section id="id25">
-<h5>Notes<a class="headerlink" href="#id25" title="Permalink to this heading">#</a></h5>
+<h5>Returns<a class="headerlink" href="#id25" title="Permalink to this heading">#</a></h5>
+<p>None</p>
+</section>
+<section id="id26">
+<h5>Notes<a class="headerlink" href="#id26" title="Permalink to this heading">#</a></h5>
 <ul class="simple">
 <li><p>This method modifies the subplot attribute by adding the bar plots for the internal and external energy contributions of different vibrational modes within the specified frequency ranges.</p></li>
 <li><p>This method utilizes the ‘Minimum frequency’ and ‘Maximum frequency’ values from the settings attribute to filter modes for plotting.</p></li>
@@ -651,16 +643,16 @@ based on the value of <cite>self.plot_type_index</cite>.</p>
 <p>This method visualizes the distribution of vibrational energy across different molecules
 within specified frequency limits. It creates a bar chart representing the percentage of
 energy attributed to each molecule per mode within the set frequency range.</p>
-<section id="id26">
-<h5>Parameters<a class="headerlink" href="#id26" title="Permalink to this heading">#</a></h5>
-<p>None</p>
-</section>
 <section id="id27">
-<h5>Returns<a class="headerlink" href="#id27" title="Permalink to this heading">#</a></h5>
+<h5>Parameters<a class="headerlink" href="#id27" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 <section id="id28">
-<h5>Notes<a class="headerlink" href="#id28" title="Permalink to this heading">#</a></h5>
+<h5>Returns<a class="headerlink" href="#id28" title="Permalink to this heading">#</a></h5>
+<p>None</p>
+</section>
+<section id="id29">
+<h5>Notes<a class="headerlink" href="#id29" title="Permalink to this heading">#</a></h5>
 <ul class="simple">
 <li><p><cite>self.settings</cite> should contain ‘Minimum frequency’, ‘Maximum frequency’, and ‘Bar width’ keys.</p></li>
 <li><p><cite>self.mode_energies</cite> must be a list where each element is a tuple containing mode energies
@@ -682,15 +674,15 @@ are appropriately imported or accessible within the scope.</p></li>
 <span class="sig-name descname"><span class="pre">refresh</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">force</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/AnalysisTab.html#AnalysisTab.refresh"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.AnalysisTab.AnalysisTab.refresh" title="Permalink to this definition">#</a></dt>
 <dd><p>Refresh the widget state, optionally enforcing refresh.</p>
 <p>This method updates the widgets’ states and values according to the current settings. It first checks if a refresh is required or if the <cite>force</cite> parameter is set to <cite>True</cite>. If neither condition is met, it exits early. Otherwise, it proceeds to block signals from all child QWidget instances to avoid unwanted signal emission during state update. It then updates various UI components with new settings values, calculates and plots according to the updated settings, and finally re-enables signals for all child QWidget instances.</p>
-<section id="id29">
-<h5>Parameters<a class="headerlink" href="#id29" title="Permalink to this heading">#</a></h5>
+<section id="id30">
+<h5>Parameters<a class="headerlink" href="#id30" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>force<span class="classifier">bool, optional</span></dt><dd><p>If set to <cite>True</cite>, the widget refresh is forced even if it is deemed not required. Defaults to <cite>False</cite>.</p>
 </dd>
 </dl>
 </section>
-<section id="id30">
-<h5>Returns<a class="headerlink" href="#id30" title="Permalink to this heading">#</a></h5>
+<section id="id31">
+<h5>Returns<a class="headerlink" href="#id31" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 </dd></dl>
@@ -700,12 +692,12 @@ are appropriately imported or accessible within the scope.</p></li>
 <span class="sig-name descname"><span class="pre">requestRefresh</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/AnalysisTab.html#AnalysisTab.requestRefresh"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.AnalysisTab.AnalysisTab.requestRefresh" title="Permalink to this definition">#</a></dt>
 <dd><p>Marks the instance as requiring a refresh.</p>
 <p>Sets the instance attribute <cite>refreshRequired</cite> to True, indicating that a refresh is necessary.</p>
-<section id="id31">
-<h5>Parameters<a class="headerlink" href="#id31" title="Permalink to this heading">#</a></h5>
+<section id="id32">
+<h5>Parameters<a class="headerlink" href="#id32" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
-<section id="id32">
-<h5>Returns<a class="headerlink" href="#id32" title="Permalink to this heading">#</a></h5>
+<section id="id33">
+<h5>Returns<a class="headerlink" href="#id33" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 </dd></dl>
@@ -714,8 +706,8 @@ are appropriately imported or accessible within the scope.</p></li>
 <dt class="sig sig-object py" id="PDielec.GUI.AnalysisTab.AnalysisTab.setCovalentRadius">
 <span class="sig-name descname"><span class="pre">setCovalentRadius</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">element</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">radius</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/AnalysisTab.html#AnalysisTab.setCovalentRadius"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.AnalysisTab.AnalysisTab.setCovalentRadius" title="Permalink to this definition">#</a></dt>
 <dd><p>Set the covalent radius for a given element and update the plot.</p>
-<section id="id33">
-<h5>Parameters<a class="headerlink" href="#id33" title="Permalink to this heading">#</a></h5>
+<section id="id34">
+<h5>Parameters<a class="headerlink" href="#id34" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>element<span class="classifier">str</span></dt><dd><p>The chemical symbol of the element for which to set the covalent radius.</p>
 </dd>
@@ -723,8 +715,8 @@ are appropriately imported or accessible within the scope.</p></li>
 </dd>
 </dl>
 </section>
-<section id="id34">
-<h5>Returns<a class="headerlink" href="#id34" title="Permalink to this heading">#</a></h5>
+<section id="id35">
+<h5>Returns<a class="headerlink" href="#id35" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 </dd></dl>
@@ -738,12 +730,12 @@ a reader object, a program, and a filename are set and available. If any of thes
 with a message. It then checks if custom radii are set in the settings; if not, it defaults to using pre-defined radii.
 The species and their corresponding radii are then used to populate the table widget. After the table is populated,
 it updates the settings with the possibly new radii values.</p>
-<section id="id35">
-<h5>Parameters<a class="headerlink" href="#id35" title="Permalink to this heading">#</a></h5>
+<section id="id36">
+<h5>Parameters<a class="headerlink" href="#id36" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
-<section id="id36">
-<h5>Returns<a class="headerlink" href="#id36" title="Permalink to this heading">#</a></h5>
+<section id="id37">
+<h5>Returns<a class="headerlink" href="#id37" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 </dd></dl>
@@ -756,12 +748,12 @@ it updates the settings with the possibly new radii values.</p>
 attribute of the class instance. It selects a worksheet named ‘Analysis’,
 writes a header row and data rows containing calculated percentages of
 vibrational mode contributions for molecules and internal/external modes.</p>
-<section id="id37">
-<h5>Parameters<a class="headerlink" href="#id37" title="Permalink to this heading">#</a></h5>
+<section id="id38">
+<h5>Parameters<a class="headerlink" href="#id38" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
-<section id="id38">
-<h5>Returns<a class="headerlink" href="#id38" title="Permalink to this heading">#</a></h5>
+<section id="id39">
+<h5>Returns<a class="headerlink" href="#id39" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 </dd></dl>

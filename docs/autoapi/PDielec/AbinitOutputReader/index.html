@@ -275,15 +275,7 @@
         <article role="main">
           <section id="module-PDielec.AbinitOutputReader">
 <span id="pdielec-abinitoutputreader"></span><h1><a class="reference internal" href="#module-PDielec.AbinitOutputReader" title="PDielec.AbinitOutputReader"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.AbinitOutputReader</span></code></a><a class="headerlink" href="#module-PDielec.AbinitOutputReader" title="Permalink to this heading">#</a></h1>
-<p>AbinitOutputReader</p>
-<p>Copyright 2024 John Kendrick</p>
-<p>This file is part of PDielec</p>
-<p>This program is free software; you can redistribute it and/or modify
-it under the terms of the MIT License</p>
-<p>This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.</p>
-<p>You should have received a copy of the MIT License along with this program, if not see <a class="reference external" href="https://opensource.org/licenses/MIT">https://opensource.org/licenses/MIT</a></p>
+<p>AbinitOutputReader module</p>
 <section id="module-contents">
 <h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this heading">#</a></h2>
 <section id="classes">
@@ -302,12 +294,14 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.</p>
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PDielec.AbinitOutputReader.</span></span><span class="sig-name descname"><span class="pre">AbinitOutputReader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filenames</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/AbinitOutputReader.html#AbinitOutputReader"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.AbinitOutputReader.AbinitOutputReader" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="../GenericOutputReader/index.html#PDielec.GenericOutputReader.GenericOutputReader" title="PDielec.GenericOutputReader.GenericOutputReader"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PDielec.GenericOutputReader.GenericOutputReader</span></code></a></p>
 <p>Read the contents of a directory containing Abinit input and output files.</p>
+<p>Inherits from <a class="reference internal" href="../GenericOutputReader/index.html#PDielec.GenericOutputReader.GenericOutputReader" title="PDielec.GenericOutputReader.GenericOutputReader"><code class="xref py py-class docutils literal notranslate"><span class="pre">GenericOutputReader</span></code></a></p>
+<section id="parameters">
+<h4>Parameters<a class="headerlink" href="#parameters" title="Permalink to this heading">#</a></h4>
 <dl class="simple">
-<dt>Inherits:</dt><dd><ul class="simple">
-<li><p>from GenericOutputReader</p></li>
-</ul>
+<dt>filenames<span class="classifier">list or str</span></dt><dd><p>A list of filenames or a single filename string corresponding to the Abinit output files to be processed.</p>
 </dd>
 </dl>
+</section>
 <section id="attributes">
 <h4>Attributes<a class="headerlink" href="#attributes" title="Permalink to this heading">#</a></h4>
 <dl class="simple">
@@ -326,8 +320,8 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.</p>
 <dt class="sig sig-object py" id="PDielec.AbinitOutputReader.AbinitOutputReader._read_acell">
 <span class="sig-name descname"><span class="pre">_read_acell</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/AbinitOutputReader.html#AbinitOutputReader._read_acell"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.AbinitOutputReader.AbinitOutputReader._read_acell" title="Permalink to this definition">#</a></dt>
 <dd><p>Read and convert cell parameters from bohr to Ångström.</p>
-<section id="parameters">
-<h5>Parameters<a class="headerlink" href="#parameters" title="Permalink to this heading">#</a></h5>
+<section id="id1">
+<h5>Parameters<a class="headerlink" href="#id1" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>line<span class="classifier">str</span></dt><dd><p>A string containing the cell parameters in Ångström units separated by spaces. This string should start with an identifier followed by three numerical values corresponding to the cell parameters.</p>
 </dd>
@@ -348,16 +342,16 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.</p>
 <dd><p>Read the number of bands from a line and update the band count.</p>
 <p>This private method parses a given line to extract the number of bands
 and updates the <cite>nbands</cite> attribute of the object accordingly.</p>
-<section id="id1">
-<h5>Parameters<a class="headerlink" href="#id1" title="Permalink to this heading">#</a></h5>
+<section id="id2">
+<h5>Parameters<a class="headerlink" href="#id2" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>line<span class="classifier">str</span></dt><dd><p>The line containing the band information, expected to have the number
 of bands as its second element when split by whitespace.</p>
 </dd>
 </dl>
 </section>
-<section id="id2">
-<h5>Returns<a class="headerlink" href="#id2" title="Permalink to this heading">#</a></h5>
+<section id="id3">
+<h5>Returns<a class="headerlink" href="#id3" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 </dd></dl>
@@ -375,15 +369,15 @@ so the output is arranged as follows:</p>
 </pre></div>
 </div>
 <p>where 1, 2, 3 are the field directions and x, y, z are the atomic displacements.</p>
-<section id="id3">
-<h5>Parameters<a class="headerlink" href="#id3" title="Permalink to this heading">#</a></h5>
+<section id="id4">
+<h5>Parameters<a class="headerlink" href="#id4" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>line<span class="classifier">str</span></dt><dd><p>Not used</p>
 </dd>
 </dl>
 </section>
-<section id="id4">
-<h5>Returns<a class="headerlink" href="#id4" title="Permalink to this heading">#</a></h5>
+<section id="id5">
+<h5>Returns<a class="headerlink" href="#id5" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>numpy.ndarray</dt><dd><p>A 2D array where each row represents a field direction and each column represents an atomic displacement in the x, y, and z directions.</p>
 </dd>
@@ -396,19 +390,19 @@ so the output is arranged as follows:</p>
 <span class="sig-name descname"><span class="pre">_read_dynamical</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/AbinitOutputReader.html#AbinitOutputReader._read_dynamical"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.AbinitOutputReader.AbinitOutputReader._read_dynamical" title="Permalink to this definition">#</a></dt>
 <dd><p>Read and populate the Hessian matrix from a file.</p>
 <p>This method takes a line from a file, reads the dynamical matrix data from subsequent lines, and computes the Hessian matrix from these data.</p>
-<section id="id5">
-<h5>Parameters<a class="headerlink" href="#id5" title="Permalink to this heading">#</a></h5>
+<section id="id6">
+<h5>Parameters<a class="headerlink" href="#id6" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>line<span class="classifier">str</span></dt><dd><p>The current line being read from the file. This parameter is not directly used in the function but indicates the starting point in the file from where to read the dynamical matrix data.</p>
 </dd>
 </dl>
 </section>
-<section id="id6">
-<h5>Returns<a class="headerlink" href="#id6" title="Permalink to this heading">#</a></h5>
+<section id="id7">
+<h5>Returns<a class="headerlink" href="#id7" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
-<section id="id7">
-<h5>Notes<a class="headerlink" href="#id7" title="Permalink to this heading">#</a></h5>
+<section id="id8">
+<h5>Notes<a class="headerlink" href="#id8" title="Permalink to this heading">#</a></h5>
 <p>This method assumes the file format is structured in a specific way, where each line after the first four lines (which are skipped) contains the indices and value needed to populate the Hessian matrix.
 The Hessian matrix is used in molecular dynamics and vibrational analysis to describe the second-order interaction between atoms.</p>
 </section>
@@ -423,19 +417,19 @@ The Hessian matrix is used in molecular dynamics and vibrational analysis to des
 <span class="sig-name descname"><span class="pre">_read_electrons</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/AbinitOutputReader.html#AbinitOutputReader._read_electrons"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.AbinitOutputReader.AbinitOutputReader._read_electrons" title="Permalink to this definition">#</a></dt>
 <dd><p>Read and set the number of electrons from a given line.</p>
 <p>This method sets the number of electrons for the object based on the string input. It expects the string to be formatted in a specific way where the seventh item (index 6, as indexing is zero-based) when split by whitespace, is convertible to float and represents the number of electrons.</p>
-<section id="id8">
-<h5>Parameters<a class="headerlink" href="#id8" title="Permalink to this heading">#</a></h5>
+<section id="id9">
+<h5>Parameters<a class="headerlink" href="#id9" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>line<span class="classifier">str</span></dt><dd><p>The input string containing electron information. It’s expected that the seventh item in this string, when split by whitespace, can be converted to a float.</p>
 </dd>
 </dl>
 </section>
-<section id="id9">
-<h5>Returns<a class="headerlink" href="#id9" title="Permalink to this heading">#</a></h5>
+<section id="id10">
+<h5>Returns<a class="headerlink" href="#id10" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
-<section id="id10">
-<h5>Notes<a class="headerlink" href="#id10" title="Permalink to this heading">#</a></h5>
+<section id="id11">
+<h5>Notes<a class="headerlink" href="#id11" title="Permalink to this heading">#</a></h5>
 <p>This method modifies the object’s state by setting the ‘electrons’ attribute.</p>
 </section>
 </dd></dl>
@@ -445,15 +439,15 @@ The Hessian matrix is used in molecular dynamics and vibrational analysis to des
 <span class="sig-name descname"><span class="pre">_read_energy_cutoff</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/AbinitOutputReader.html#AbinitOutputReader._read_energy_cutoff"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.AbinitOutputReader.AbinitOutputReader._read_energy_cutoff" title="Permalink to this definition">#</a></dt>
 <dd><p>Process and update the energy cutoff value from a given line.</p>
 <p>This function reads a line containing energy information, converts the energy value from Hartree to electron volts (eV), and updates the object’s energy_cutoff attribute accordingly.</p>
-<section id="id11">
-<h5>Parameters<a class="headerlink" href="#id11" title="Permalink to this heading">#</a></h5>
+<section id="id12">
+<h5>Parameters<a class="headerlink" href="#id12" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>line<span class="classifier">str</span></dt><dd><p>A string containing the energy cutoff information. It is expected that the energy value is in Hartree units and is the second token in the string when split by whitespace.</p>
 </dd>
 </dl>
 </section>
-<section id="id12">
-<h5>Returns<a class="headerlink" href="#id12" title="Permalink to this heading">#</a></h5>
+<section id="id13">
+<h5>Returns<a class="headerlink" href="#id13" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 </dd></dl>
@@ -464,21 +458,21 @@ The Hessian matrix is used in molecular dynamics and vibrational analysis to des
 <dd><p>Read zero frequency optical permittivity</p>
 <p>Parse epsilon related data, and populates the <cite>zerof_optical_dielectric</cite> array
 based on the read data.</p>
-<section id="id13">
-<h5>Parameters<a class="headerlink" href="#id13" title="Permalink to this heading">#</a></h5>
+<section id="id14">
+<h5>Parameters<a class="headerlink" href="#id14" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>line<span class="classifier">str</span></dt><dd><p>The current line being processed. This parameter is not directly used
 in the function but typically represents the context in which this method is called.</p>
 </dd>
 </dl>
 </section>
-<section id="id14">
-<h5>Returns<a class="headerlink" href="#id14" title="Permalink to this heading">#</a></h5>
+<section id="id15">
+<h5>Returns<a class="headerlink" href="#id15" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 <p>This method does not return any value.</p>
 </section>
-<section id="id15">
-<h5>See Also<a class="headerlink" href="#id15" title="Permalink to this heading">#</a></h5>
+<section id="id16">
+<h5>See Also<a class="headerlink" href="#id16" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>file_descriptor<span class="classifier">An attribute that should be an open file object from which</span></dt><dd><p>the data is read.</p>
 </dd>
@@ -492,20 +486,20 @@ in the function but typically represents the context in which this method is cal
 <dt class="sig sig-object py" id="PDielec.AbinitOutputReader.AbinitOutputReader._read_kpoint_grid">
 <span class="sig-name descname"><span class="pre">_read_kpoint_grid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/AbinitOutputReader.html#AbinitOutputReader._read_kpoint_grid"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.AbinitOutputReader.AbinitOutputReader._read_kpoint_grid" title="Permalink to this definition">#</a></dt>
 <dd><p>Parse and set the k-point grid from a given line of text.</p>
-<section id="id16">
-<h5>Parameters<a class="headerlink" href="#id16" title="Permalink to this heading">#</a></h5>
+<section id="id17">
+<h5>Parameters<a class="headerlink" href="#id17" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>line<span class="classifier">str</span></dt><dd><p>A string containing k-point grid information, expected to have integers
 at specific positions (1st, 5th, and 9th words).</p>
 </dd>
 </dl>
 </section>
-<section id="id17">
-<h5>Returns<a class="headerlink" href="#id17" title="Permalink to this heading">#</a></h5>
+<section id="id18">
+<h5>Returns<a class="headerlink" href="#id18" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
-<section id="id18">
-<h5>Notes<a class="headerlink" href="#id18" title="Permalink to this heading">#</a></h5>
+<section id="id19">
+<h5>Notes<a class="headerlink" href="#id19" title="Permalink to this heading">#</a></h5>
 <p>This function is intended to be used internally within its class.
 It reads a line of text, extracts integers from specific positions,
 and sets them as the k-point grid dimensions for the instance.</p>
@@ -518,8 +512,8 @@ and sets them as the k-point grid dimensions for the instance.</p>
 <dd><p>Read and store the k-points from a line of text.</p>
 <p>This method processes a line of text to extract the number of k-points
 and stores it in the instance variable <cite>kpoints</cite>.</p>
-<section id="id19">
-<h5>Parameters<a class="headerlink" href="#id19" title="Permalink to this heading">#</a></h5>
+<section id="id20">
+<h5>Parameters<a class="headerlink" href="#id20" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>line<span class="classifier">str</span></dt><dd><p>A line of text that includes the number of k-points, expected to be
 in a format where the number of k-points follows a keyword, separated
@@ -527,12 +521,12 @@ by spaces (e.g., “KPOINTS 100”).</p>
 </dd>
 </dl>
 </section>
-<section id="id20">
-<h5>Returns<a class="headerlink" href="#id20" title="Permalink to this heading">#</a></h5>
+<section id="id21">
+<h5>Returns<a class="headerlink" href="#id21" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
-<section id="id21">
-<h5>Notes<a class="headerlink" href="#id21" title="Permalink to this heading">#</a></h5>
+<section id="id22">
+<h5>Notes<a class="headerlink" href="#id22" title="Permalink to this heading">#</a></h5>
 <p>The method does not return any value but updates the instance variable
 <cite>kpoints</cite> with the integer value of the k-points extracted from the input line.</p>
 </section>
@@ -543,25 +537,25 @@ by spaces (e.g., “KPOINTS 100”).</p>
 <span class="sig-name descname"><span class="pre">_read_lattice_vectors</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/AbinitOutputReader.html#AbinitOutputReader._read_lattice_vectors"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.AbinitOutputReader.AbinitOutputReader._read_lattice_vectors" title="Permalink to this definition">#</a></dt>
 <dd><p>Read lattice vectors from a line of a file and update the object state.</p>
 <p>Reads three lines starting from the given line from the file associated with the object’s file descriptor, interprets them as lattice vectors, scales them according to the object’s _acell attribute, and updates the object by appending a new <cite>UnitCell</cite> to its <cite>unit_cells</cite> list and updating the <cite>ncells</cite> and <cite>volume</cite> attributes.</p>
-<section id="id22">
-<h5>Parameters<a class="headerlink" href="#id22" title="Permalink to this heading">#</a></h5>
+<section id="id23">
+<h5>Parameters<a class="headerlink" href="#id23" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>line<span class="classifier">str</span></dt><dd><p>The line from which to start reading lattice vectors. This line should contain the first lattice vector.</p>
 </dd>
 </dl>
 </section>
-<section id="id23">
-<h5>Returns<a class="headerlink" href="#id23" title="Permalink to this heading">#</a></h5>
+<section id="id24">
+<h5>Returns<a class="headerlink" href="#id24" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
-<section id="id24">
-<h5>Notes<a class="headerlink" href="#id24" title="Permalink to this heading">#</a></h5>
+<section id="id25">
+<h5>Notes<a class="headerlink" href="#id25" title="Permalink to this heading">#</a></h5>
 <p>This method modifies the internal state of the object by adding a new <cite>UnitCell</cite> to <cite>unit_cells</cite>, updating <cite>ncells</cite> to the new total number of unit cells, and updating <cite>volume</cite> to the volume of the most recently added <cite>UnitCell</cite>.</p>
 <p>This method assumes that <cite>line</cite> is formatted correctly, with lattice vector components being float-convertible strings separated by spaces. It also assumes that <cite>self.file_descriptor</cite> is an open file object positioned appropriately to read the subsequent lines for the b and c vectors.</p>
 <p>This method requires that <cite>self._acell</cite> is already set to an iterable of three scaling factors corresponding to each of the a, b, and c lattice vectors.</p>
 </section>
-<section id="id25">
-<h5>See Also<a class="headerlink" href="#id25" title="Permalink to this heading">#</a></h5>
+<section id="id26">
+<h5>See Also<a class="headerlink" href="#id26" title="Permalink to this heading">#</a></h5>
 <p>UnitCell : The class used to represent a unit cell, which takes vectors a, b, and c as parameters to its constructor.</p>
 </section>
 </dd></dl>
@@ -572,15 +566,15 @@ by spaces (e.g., “KPOINTS 100”).</p>
 <dd><p>Parse and save masses from a given line of text.</p>
 <p>Extracts and converts to float each mass value from a string,
 excluding the first token, and saves them into <cite>masses_per_type</cite>.</p>
-<section id="id26">
-<h5>Parameters<a class="headerlink" href="#id26" title="Permalink to this heading">#</a></h5>
+<section id="id27">
+<h5>Parameters<a class="headerlink" href="#id27" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>line<span class="classifier">str</span></dt><dd><p>The input string containing mass values starting from the second token.</p>
 </dd>
 </dl>
 </section>
-<section id="id27">
-<h5>Returns<a class="headerlink" href="#id27" title="Permalink to this heading">#</a></h5>
+<section id="id28">
+<h5>Returns<a class="headerlink" href="#id28" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 </dd></dl>
@@ -590,19 +584,19 @@ excluding the first token, and saves them into <cite>masses_per_type</cite>.</p>
 <span class="sig-name descname"><span class="pre">_read_natom</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/AbinitOutputReader.html#AbinitOutputReader._read_natom"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.AbinitOutputReader.AbinitOutputReader._read_natom" title="Permalink to this definition">#</a></dt>
 <dd><p>Reads and processes the number of atoms from a given line.</p>
 <p>This method reads the number of atoms from a given line of text, sets the object’s ‘nions’ attribute to this number, and initializes the ‘_charges’ attribute to a zero array with shape <cite>(nions, 3, 3)</cite>. This method does not return any value.</p>
-<section id="id28">
-<h5>Parameters<a class="headerlink" href="#id28" title="Permalink to this heading">#</a></h5>
+<section id="id29">
+<h5>Parameters<a class="headerlink" href="#id29" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>line<span class="classifier">str</span></dt><dd><p>A line of text containing the number of atoms.</p>
 </dd>
 </dl>
 </section>
-<section id="id29">
-<h5>Returns<a class="headerlink" href="#id29" title="Permalink to this heading">#</a></h5>
+<section id="id30">
+<h5>Returns<a class="headerlink" href="#id30" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
-<section id="id30">
-<h5>See Also<a class="headerlink" href="#id30" title="Permalink to this heading">#</a></h5>
+<section id="id31">
+<h5>See Also<a class="headerlink" href="#id31" title="Permalink to this heading">#</a></h5>
 <p>numpy.zeros : Used to initialize the ‘_charges’ attribute.</p>
 </section>
 </dd></dl>
@@ -611,8 +605,8 @@ excluding the first token, and saves them into <cite>masses_per_type</cite>.</p>
 <dt class="sig sig-object py" id="PDielec.AbinitOutputReader.AbinitOutputReader._read_ntypat">
 <span class="sig-name descname"><span class="pre">_read_ntypat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/AbinitOutputReader.html#AbinitOutputReader._read_ntypat"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.AbinitOutputReader.AbinitOutputReader._read_ntypat" title="Permalink to this definition">#</a></dt>
 <dd><p>Read and set the number of species from a given line.</p>
-<section id="id31">
-<h5>Parameters<a class="headerlink" href="#id31" title="Permalink to this heading">#</a></h5>
+<section id="id32">
+<h5>Parameters<a class="headerlink" href="#id32" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>line<span class="classifier">str</span></dt><dd><p>A string containing the information of the number of species,
 where the relevant data is expected to be in the second token
@@ -620,8 +614,8 @@ when splitting the string by whitespace.</p>
 </dd>
 </dl>
 </section>
-<section id="id32">
-<h5>Returns<a class="headerlink" href="#id32" title="Permalink to this heading">#</a></h5>
+<section id="id33">
+<h5>Returns<a class="headerlink" href="#id33" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 </dd></dl>
@@ -631,15 +625,15 @@ when splitting the string by whitespace.</p>
 <span class="sig-name descname"><span class="pre">_read_occupancy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/AbinitOutputReader.html#AbinitOutputReader._read_occupancy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.AbinitOutputReader.AbinitOutputReader._read_occupancy" title="Permalink to this definition">#</a></dt>
 <dd><p>Read and calculate the total occupancy from a line or lines in a file.</p>
 <p>This method reads occupancies from a given line, and if necessary, continues reading the next lines from the file until it gathers occupancies equal to the number of bands (<cite>self.nbands</cite>). It then calculates the sum of these occupancies and updates the total number of electrons.</p>
-<section id="id33">
-<h5>Parameters<a class="headerlink" href="#id33" title="Permalink to this heading">#</a></h5>
+<section id="id34">
+<h5>Parameters<a class="headerlink" href="#id34" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>line<span class="classifier">str</span></dt><dd><p>A string containing the occupancies for one or multiple bands. Each occupancy is expected to be separated by a space. The first item, if present, is ignored as it is not an occupancy value.</p>
 </dd>
 </dl>
 </section>
-<section id="id34">
-<h5>Returns<a class="headerlink" href="#id34" title="Permalink to this heading">#</a></h5>
+<section id="id35">
+<h5>Returns<a class="headerlink" href="#id35" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 <section id="attributes-modified">
@@ -656,8 +650,8 @@ when splitting the string by whitespace.</p>
 </dd>
 </dl>
 </section>
-<section id="id35">
-<h5>Notes<a class="headerlink" href="#id35" title="Permalink to this heading">#</a></h5>
+<section id="id36">
+<h5>Notes<a class="headerlink" href="#id36" title="Permalink to this heading">#</a></h5>
 <ul class="simple">
 <li><p>This method modifies the state of the object by setting <cite>self.electrons</cite> based on the read occupancies.</p></li>
 <li><p>It implicitly relies on <cite>self.nbands</cite> to know how many occupancy values need to be read.</p></li>
@@ -669,12 +663,12 @@ when splitting the string by whitespace.</p>
 <dt class="sig sig-object py" id="PDielec.AbinitOutputReader.AbinitOutputReader._read_output_files">
 <span class="sig-name descname"><span class="pre">_read_output_files</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/AbinitOutputReader.html#AbinitOutputReader._read_output_files"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.AbinitOutputReader.AbinitOutputReader._read_output_files" title="Permalink to this definition">#</a></dt>
 <dd><p>Define the strings to be used for searching and Read the Abinit file names</p>
-<section id="id36">
-<h5>Parameters<a class="headerlink" href="#id36" title="Permalink to this heading">#</a></h5>
+<section id="id37">
+<h5>Parameters<a class="headerlink" href="#id37" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
-<section id="id37">
-<h5>Returns<a class="headerlink" href="#id37" title="Permalink to this heading">#</a></h5>
+<section id="id38">
+<h5>Returns<a class="headerlink" href="#id38" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 </dd></dl>
@@ -683,19 +677,19 @@ when splitting the string by whitespace.</p>
 <dt class="sig sig-object py" id="PDielec.AbinitOutputReader.AbinitOutputReader._read_pressure">
 <span class="sig-name descname"><span class="pre">_read_pressure</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/AbinitOutputReader.html#AbinitOutputReader._read_pressure"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.AbinitOutputReader.AbinitOutputReader._read_pressure" title="Permalink to this definition">#</a></dt>
 <dd><p>Read and update the pressure attribute from a line of text.</p>
-<section id="id38">
-<h5>Parameters<a class="headerlink" href="#id38" title="Permalink to this heading">#</a></h5>
+<section id="id39">
+<h5>Parameters<a class="headerlink" href="#id39" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>line<span class="classifier">str</span></dt><dd><p>A line of text containing pressure data. The pressure value is expected to be the eighth element (index 7) in a space-separated list.</p>
 </dd>
 </dl>
 </section>
-<section id="id39">
-<h5>Returns<a class="headerlink" href="#id39" title="Permalink to this heading">#</a></h5>
+<section id="id40">
+<h5>Returns<a class="headerlink" href="#id40" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
-<section id="id40">
-<h5>Notes<a class="headerlink" href="#id40" title="Permalink to this heading">#</a></h5>
+<section id="id41">
+<h5>Notes<a class="headerlink" href="#id41" title="Permalink to this heading">#</a></h5>
 <p>The function expects <cite>line</cite> to be a well-formatted string containing at least 8 space-separated values. The eighth value is converted to a float and stored in the <cite>pressure</cite> attribute of the class instance. This function does not return any value.</p>
 </section>
 </dd></dl>
@@ -704,15 +698,15 @@ when splitting the string by whitespace.</p>
 <dt class="sig sig-object py" id="PDielec.AbinitOutputReader.AbinitOutputReader._read_total_energy">
 <span class="sig-name descname"><span class="pre">_read_total_energy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/AbinitOutputReader.html#AbinitOutputReader._read_total_energy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.AbinitOutputReader.AbinitOutputReader._read_total_energy" title="Permalink to this definition">#</a></dt>
 <dd><p>Read and store total energy values from a line.</p>
-<section id="id41">
-<h5>Parameters<a class="headerlink" href="#id41" title="Permalink to this heading">#</a></h5>
+<section id="id42">
+<h5>Parameters<a class="headerlink" href="#id42" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>line<span class="classifier">str</span></dt><dd><p>A string containing energy information, expected to have a numeric value at the 5th position (index 4) which represents energy in Hartrees.</p>
 </dd>
 </dl>
 </section>
-<section id="id42">
-<h5>Returns<a class="headerlink" href="#id42" title="Permalink to this heading">#</a></h5>
+<section id="id43">
+<h5>Returns<a class="headerlink" href="#id43" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 </dd></dl>
@@ -721,15 +715,15 @@ when splitting the string by whitespace.</p>
 <dt class="sig sig-object py" id="PDielec.AbinitOutputReader.AbinitOutputReader._read_typat">
 <span class="sig-name descname"><span class="pre">_read_typat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/AbinitOutputReader.html#AbinitOutputReader._read_typat"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.AbinitOutputReader.AbinitOutputReader._read_typat" title="Permalink to this definition">#</a></dt>
 <dd><p>Process and read atom type patterns from a line of text.</p>
-<section id="id43">
-<h5>Parameters<a class="headerlink" href="#id43" title="Permalink to this heading">#</a></h5>
+<section id="id44">
+<h5>Parameters<a class="headerlink" href="#id44" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>line<span class="classifier">str</span></dt><dd><p>The line of text containing atom type patterns to be processed.</p>
 </dd>
 </dl>
 </section>
-<section id="id44">
-<h5>Returns<a class="headerlink" href="#id44" title="Permalink to this heading">#</a></h5>
+<section id="id45">
+<h5>Returns<a class="headerlink" href="#id45" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 <section id="attributes-set">
@@ -754,19 +748,19 @@ list is used to assign element names to the unit cells.</p>
 <dt class="sig sig-object py" id="PDielec.AbinitOutputReader.AbinitOutputReader._read_xred">
 <span class="sig-name descname"><span class="pre">_read_xred</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/AbinitOutputReader.html#AbinitOutputReader._read_xred"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.AbinitOutputReader.AbinitOutputReader._read_xred" title="Permalink to this definition">#</a></dt>
 <dd><p>Read the fractional coordinates from a file and update the last unit cell’s fractional coordinates and element names.</p>
-<section id="id45">
-<h5>Parameters<a class="headerlink" href="#id45" title="Permalink to this heading">#</a></h5>
+<section id="id46">
+<h5>Parameters<a class="headerlink" href="#id46" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>line<span class="classifier">str</span></dt><dd><p>The initial line containing part of the fractional coordinates.</p>
 </dd>
 </dl>
 </section>
-<section id="id46">
-<h5>Returns<a class="headerlink" href="#id46" title="Permalink to this heading">#</a></h5>
+<section id="id47">
+<h5>Returns<a class="headerlink" href="#id47" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
-<section id="id47">
-<h5>Notes<a class="headerlink" href="#id47" title="Permalink to this heading">#</a></h5>
+<section id="id48">
+<h5>Notes<a class="headerlink" href="#id48" title="Permalink to this heading">#</a></h5>
 <ul class="simple">
 <li><p>This method assumes that the current context includes attributes for ‘nions’ (the number of ions),
 ‘file_descriptor’ (a file object for reading), ‘unit_cells’ (a list of unit cell objects),
@@ -791,19 +785,19 @@ last unit cell using these mappings.</p></li>
 <p>This method extracts atomic species from a given line, converts them to
 their element representation using their atomic numbers, and stores them
 in a list. The total number of species processed is also updated.</p>
-<section id="id48">
-<h5>Parameters<a class="headerlink" href="#id48" title="Permalink to this heading">#</a></h5>
+<section id="id49">
+<h5>Parameters<a class="headerlink" href="#id49" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>line<span class="classifier">str</span></dt><dd><p>A string containing atomic numbers of elements, typically read from a file.</p>
 </dd>
 </dl>
 </section>
-<section id="id49">
-<h5>Returns<a class="headerlink" href="#id49" title="Permalink to this heading">#</a></h5>
+<section id="id50">
+<h5>Returns<a class="headerlink" href="#id50" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
-<section id="id50">
-<h5>Notes<a class="headerlink" href="#id50" title="Permalink to this heading">#</a></h5>
+<section id="id51">
+<h5>Notes<a class="headerlink" href="#id51" title="Permalink to this heading">#</a></h5>
 <ul class="simple">
 <li><p>Atomic numbers in the line are expected to be separated by space.</p></li>
 <li><p>The atomic numbers are converted to integers with a small increment to
@@ -812,8 +806,8 @@ account for any floating-point representation issues.</p></li>
 names capitalized, and <cite>nspecies</cite> with the count of unique species.</p></li>
 </ul>
 </section>
-<section id="id51">
-<h5>See Also<a class="headerlink" href="#id51" title="Permalink to this heading">#</a></h5>
+<section id="id52">
+<h5>See Also<a class="headerlink" href="#id52" title="Permalink to this heading">#</a></h5>
 <p>atomic_number_to_element : Dictionary mapping atomic numbers to element symbols.</p>
 </section>
 </dd></dl>

@@ -275,15 +275,7 @@
         <article role="main">
           <section id="module-PDielec.Calculator">
 <span id="pdielec-calculator"></span><h1><a class="reference internal" href="#module-PDielec.Calculator" title="PDielec.Calculator"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.Calculator</span></code></a><a class="headerlink" href="#module-PDielec.Calculator" title="Permalink to this heading">#</a></h1>
-<p>Copyright 2024 John Kendrick</p>
-<p>This file is part of PDielec</p>
-<p>This program is free software; you can redistribute it and/or modify
-it under the terms of the MIT License</p>
-<p>This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.</p>
-<p>You should have received a copy of the MIT License
-along with this program, if not see <a class="reference external" href="https://opensource.org/licenses/MIT">https://opensource.org/licenses/MIT</a></p>
+<p>Calculator module</p>
 <section id="module-contents">
 <h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this heading">#</a></h2>
 <section id="functions">
@@ -869,7 +861,7 @@ cm   : vector (3) - the coordinates of the centre of mass</p>
 <span class="sig-prename descclassname"><span class="pre">PDielec.Calculator.</span></span><span class="sig-name descname"><span class="pre">calculate_refractive_index</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dielectric</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">debug</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/Calculator.html#calculate_refractive_index"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.Calculator.calculate_refractive_index" title="Permalink to this definition">#</a></dt>
 <dd><p>Calculate the refractive index from the dielectric constant.</p>
 <p>Calculate the trace of the dielectric and calculate both square roots.
-Then choose the root with the largest imaginary component. This obeys the Konig-Kramer requirements.</p>
+Then choose the root with the largest imaginary component. This obeys the Kramers-Konig requirements.</p>
 <section id="id34">
 <h4>Parameters<a class="headerlink" href="#id34" title="Permalink to this heading">#</a></h4>
 <p>dielectric : complex</p>

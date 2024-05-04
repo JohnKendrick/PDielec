@@ -5,21 +5,9 @@
 
 .. autoapi-nested-parse::
 
-   Helper Routines - Useful for scripting and Jupyter Notebooks
+   Helper Routines - Useful for scripting and in Jupyter Notebooks
 
-   Copyright 2024 John Kendrick
-
-   This file is part of PDielec
-
-   This program is free software; you can redistribute it and/or modify
-   it under the terms of the MIT License
-
-   This program is distributed in the hope that it will be useful,
-   but WITHOUT ANY WARRANTY; without even the implied warranty of
-   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-
-   You should have received a copy of the MIT License
-   along with this program, if not see https://opensource.org/licenses/MIT
+   These routines are a useful starting point for investigating the way the code operates
 
 
 
@@ -36,13 +24,10 @@ Functions
    PDielec.HelperRoutines.calculatePowderSpectrum
    PDielec.HelperRoutines.calculateSingleCrystalSpectrum
    PDielec.HelperRoutines.getMaterial
-   PDielec.HelperRoutines.main
-   PDielec.HelperRoutines.powderTest
-   PDielec.HelperRoutines.singleCrystalTest
 
 
 
-.. py:function:: calculateDFTPermittivityObject(reader, sigma=5.0)
+.. py:function:: calculateDFTPermittivityObject(reader, sigma=5.0, eckart=True, mass_definition='Average')
 
    Define a permittivity object for the DFT calculation from the given reader
 
@@ -54,13 +39,22 @@ Functions
    Parameters
    ----------
    reader : outputReader object
-       An output reader object
+       An output reader object, see :class:`~PDielec.GenericOutputReader` and its sub-classes.
    sigma  : float
        Default Lorentzian widths in cm-1
+   eckart  : boolean
+       If true apply eckart conditions in the reader
+   mass_definition : string or list of floats
+       Default is 'Average'
+       If a list of floats it is a list of the masses to be used.
+       If a string it must be one of 'Average', 'Isotope' or 'Program' (case is irrelevant)
+       - Average causes the average weight for the element to be used
+       - Isotope causes the most common isotope weight to be used
+       - Program means use the mass used by the program
 
    Returns
    -------
-   permittivityObject
+   permittivityObject (see :class:`~PDielec.DielectricFunction.DielectricFunction` and its sub-classes)
 
 
 
@@ -102,21 +96,22 @@ Functions
 
    Calculate a single crystal spectrum.
 
-   Calculate a single crystal spectrum from the frequencies, a list of layers, the incident angle
+   Calculate a single crystal spectrum from the frequencies, a list of layers (:class:`~PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer`), the incident angle
    the global azimuthal angle and optional specification of the method of calculation.
+   Information about the layer class can be found here (:class:`~PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer`)
 
    Parameters
    ----------
    frequencies_cm1 : list
        A list of frequencies in cm-1.
    layers : list
-       A list of layers.
+       A list of layers ( :class:`~PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer`)
    incident_angle : float
        The incident angle in degrees.
    global_azimuthal_angle : float
        The global azimuthal angle in degrees.
    method : str
-       The method for solving Maxwell's equation ('Scattering matrix' or 'Transfer matrix').
+       The method for solving Maxwell's equation either 'Scattering matrix' (the default) or 'Transfer matrix. See (:class:`~PDielec.GTMcore.ScatteringMatrixSystem` or :class:`~PDielec.GTMcore.TransferMatrixSystem`) for more information.
 
    Returns
    -------
@@ -151,12 +146,13 @@ Functions
 
 
 
-.. py:function:: getMaterial(name, dataBaseName='MaterialsDataBase.xlsx', qmprogram='vasp')
+.. py:function:: getMaterial(name, dataBaseName='MaterialsDataBase.xlsx', qmprogram='vasp', eckart=True, mass_definition='Average')
 
    Get a material with the given name.
 
    If the name is a file name, it is treated as a DFT (Density Functional Theory) or experimental file.
    If the name is a material name in the material database, this is used instead.
+   Information about the material class can be found here (:class:`~PDielec.Materials.Material`)
 
    Parameters
    ----------
@@ -164,12 +160,23 @@ Functions
        The name of the material, which can be a file name or a material name existing in the database.
    dataBaseName : str
        The name of the database which will be searched from the material
-   qmprogram : str
+   qmprogram : str, optional
        The name of the QM program used in the case of Phonopy DFT calculations
+       Defaults to 'vasp'
+   eckart  : boolean, optional
+       If true apply eckart conditions in the reader. Defaults to true.
+   mass_definition : string or list of floats, optional
+       Default is 'Average'
+       If a list of floats it is a list of the masses to be used.
+       If a string it must be one of 'Average', 'Isotope' or 'Program' (case is irrelevant)
+       - Average causes the average weight for the element to be used
+       - Isotope causes the most common isotope weight to be used
+       - Program means use the mass used by the program
+
 
    Returns
    -------
-   Material
+   Material (see :class:`~PDielec.Materials.Material`)
        The material obtained based on the given name.
 
    Examples
@@ -178,26 +185,5 @@ Functions
    material1 = get_material("example.dft")
    material2 = get_material("gold")
    ```
-
-
-.. py:function:: main()
-
-   Execute the main sequence of operations.
-
-   This function runs single crystal and powder tests in sequence.
-
-   Returns
-   -------
-   None
-
-
-.. py:function:: powderTest()
-
-   Test powder calculation
-
-
-.. py:function:: singleCrystalTest()
-
-   Test single crystal calculation
 
 

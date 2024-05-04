@@ -1,21 +1,21 @@
 #!/usr/bin/python
+#
+# Copyright 2024 John Kendrick & Andrew Burnett
+#
+# This file is part of PDielec
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the MIT License
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+#
+# You should have received a copy of the MIT License along with this program, if not see https://opensource.org/licenses/MIT
+#
 '''
-Copyright 2024 John Kendrick
-
-This file is part of PDielec
-
-This program is free software; you can redistribute it and/or modify
-it under the terms of the MIT License
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-
-You should have received a copy of the MIT License
-along with this program, if not see https://opensource.org/licenses/MIT
-
+Calculator module
 '''
-"""Calculate useful properties, used to be DielectricConstant.py """
 import math
 import sys
 import os
@@ -1563,7 +1563,7 @@ def calculate_refractive_index(dielectric, debug=False):
     Calculate the refractive index from the dielectric constant.
 
     Calculate the trace of the dielectric and calculate both square roots.
-    Then choose the root with the largest imaginary component. This obeys the Konig-Kramer requirements.
+    Then choose the root with the largest imaginary component. This obeys the Kramers-Konig requirements.
 
     Parameters
     ----------

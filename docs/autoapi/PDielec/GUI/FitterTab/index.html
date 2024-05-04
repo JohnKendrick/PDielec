@@ -275,24 +275,7 @@
         <article role="main">
           <section id="module-PDielec.GUI.FitterTab">
 <span id="pdielec-gui-fittertab"></span><h1><a class="reference internal" href="#module-PDielec.GUI.FitterTab" title="PDielec.GUI.FitterTab"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.FitterTab</span></code></a><a class="headerlink" href="#module-PDielec.GUI.FitterTab" title="Permalink to this heading">#</a></h1>
-<p>FitterTab.py</p>
-<p>The MIT License (MIT)</p>
-<p>Copyright (c) 2024 John Kendrick</p>
-<p>Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the “Software”), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:</p>
-<p>The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.</p>
-<p>THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.</p>
+<p>FitterTab module</p>
 <section id="module-contents">
 <h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this heading">#</a></h2>
 <section id="classes">
@@ -337,7 +320,18 @@ SOFTWARE.</p>
 <dt class="sig sig-object py" id="PDielec.GUI.FitterTab.FitterTab">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PDielec.GUI.FitterTab.</span></span><span class="sig-name descname"><span class="pre">FitterTab</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">debug</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/FitterTab.html#FitterTab"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.FitterTab.FitterTab" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">PyQt5.QtWidgets.QWidget</span></code></p>
-<p>A class for managing and displaying a spectroscopic fitting interface within a QWidget.</p>
+<p>A class for managing and displaying a spectroscopic fitting interface within a QWidget.
+Initialize the main widget with its components and connect signals to slots.</p>
+<p>This constructor sets up the UI for a spectral analysis widget, initializing all the GUI components such as buttons, combo boxes, spin boxes, and plotting canvases. It also sets up the initial state for various attributes related to the spectral analysis settings and data.</p>
+<section id="parameters">
+<h4>Parameters<a class="headerlink" href="#parameters" title="Permalink to this heading">#</a></h4>
+<dl class="simple">
+<dt>parent<span class="classifier">QWidget</span></dt><dd><p>The parent widget.</p>
+</dd>
+<dt>debug<span class="classifier">bool, optional</span></dt><dd><p>Flag to indicate whether debugging messages should be printed, by default False.</p>
+</dd>
+</dl>
+</section>
 <section id="attributes">
 <h4>Attributes<a class="headerlink" href="#attributes" title="Permalink to this heading">#</a></h4>
 <dl class="simple">
@@ -418,8 +412,8 @@ state - either “Perform fitting” or “Interrupt fitting”. It also
 triggers re-plotting and refreshes the UI. If the fitting process
 starts, it performs optimization and then resets the button’s state
 to allow a new fitting process.</p>
-<section id="parameters">
-<h5>Parameters<a class="headerlink" href="#parameters" title="Permalink to this heading">#</a></h5>
+<section id="id1">
+<h5>Parameters<a class="headerlink" href="#id1" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 <section id="returns">
@@ -433,15 +427,15 @@ to allow a new fitting process.</p>
 <span class="sig-name descname"><span class="pre">on_baseline_cb_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/FitterTab.html#FitterTab.on_baseline_cb_changed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.FitterTab.FitterTab.on_baseline_cb_changed" title="Permalink to this definition">#</a></dt>
 <dd><p>Handle the change event of the baseline checkbox.</p>
 <p>This method is called when the baseline checkbox state changes. It updates the setting for baseline removal and marks refresh as required.</p>
-<section id="id1">
-<h5>Parameters<a class="headerlink" href="#id1" title="Permalink to this heading">#</a></h5>
+<section id="id2">
+<h5>Parameters<a class="headerlink" href="#id2" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>value<span class="classifier">str</span></dt><dd><p>The new value or state of the baseline checkbox. The actual data type and use of this parameter depend on the specific implementation and could vary.</p>
 </dd>
 </dl>
 </section>
-<section id="id2">
-<h5>Returns<a class="headerlink" href="#id2" title="Permalink to this heading">#</a></h5>
+<section id="id3">
+<h5>Returns<a class="headerlink" href="#id3" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 </dd></dl>
@@ -451,15 +445,15 @@ to allow a new fitting process.</p>
 <span class="sig-name descname"><span class="pre">on_fitting_type_cb_activated</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/FitterTab.html#FitterTab.on_fitting_type_cb_activated"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.FitterTab.FitterTab.on_fitting_type_cb_activated" title="Permalink to this definition">#</a></dt>
 <dd><p>Handle the activation of a fitting type option.</p>
 <p>This method updates the current settings to reflect the selected fitting type based on the provided index. It also marks the state as requiring a refresh.</p>
-<section id="id3">
-<h5>Parameters<a class="headerlink" href="#id3" title="Permalink to this heading">#</a></h5>
+<section id="id4">
+<h5>Parameters<a class="headerlink" href="#id4" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>index<span class="classifier">int</span></dt><dd><p>The index of the selected fitting type in the fitting type definitions list.</p>
 </dd>
 </dl>
 </section>
-<section id="id4">
-<h5>Returns<a class="headerlink" href="#id4" title="Permalink to this heading">#</a></h5>
+<section id="id5">
+<h5>Returns<a class="headerlink" href="#id5" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 </dd></dl>
@@ -469,19 +463,19 @@ to allow a new fitting process.</p>
 <span class="sig-name descname"><span class="pre">on_frequency_scaling_factor_sb_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/FitterTab.html#FitterTab.on_frequency_scaling_factor_sb_changed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.FitterTab.FitterTab.on_frequency_scaling_factor_sb_changed" title="Permalink to this definition">#</a></dt>
 <dd><p>Handle changes in the frequency scaling factor setting.</p>
 <p>This function changes the frequency scaling factor setting. It updates the setting with the new value and marks a refresh as necessary. It also handles conversion errors gracefully.</p>
-<section id="id5">
-<h5>Parameters<a class="headerlink" href="#id5" title="Permalink to this heading">#</a></h5>
+<section id="id6">
+<h5>Parameters<a class="headerlink" href="#id6" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>value<span class="classifier">str</span></dt><dd><p>The new value for the frequency scaling factor setting. The function attempts to convert this to a float.</p>
 </dd>
 </dl>
 </section>
-<section id="id6">
-<h5>Returns<a class="headerlink" href="#id6" title="Permalink to this heading">#</a></h5>
+<section id="id7">
+<h5>Returns<a class="headerlink" href="#id7" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
-<section id="id7">
-<h5>Notes<a class="headerlink" href="#id7" title="Permalink to this heading">#</a></h5>
+<section id="id8">
+<h5>Notes<a class="headerlink" href="#id8" title="Permalink to this heading">#</a></h5>
 <ul class="simple">
 <li><p>The <cite>self.refreshRequired</cite> flag is set to True regardless of whether the conversion succeeds.</p></li>
 </ul>
@@ -492,15 +486,15 @@ to allow a new fitting process.</p>
 <dt class="sig sig-object py" id="PDielec.GUI.FitterTab.FitterTab.on_hpfilter_lambda_sb_changed">
 <span class="sig-name descname"><span class="pre">on_hpfilter_lambda_sb_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/FitterTab.html#FitterTab.on_hpfilter_lambda_sb_changed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.FitterTab.FitterTab.on_hpfilter_lambda_sb_changed" title="Permalink to this definition">#</a></dt>
 <dd><p>Handle changes to the high-pass filter lambda scrollbar value.</p>
-<section id="id8">
-<h5>Parameters<a class="headerlink" href="#id8" title="Permalink to this heading">#</a></h5>
+<section id="id9">
+<h5>Parameters<a class="headerlink" href="#id9" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>value<span class="classifier">str</span></dt><dd><p>The new value from the high-pass filter lambda scrollbar, intended to be converted to float.</p>
 </dd>
 </dl>
 </section>
-<section id="id9">
-<h5>Returns<a class="headerlink" href="#id9" title="Permalink to this heading">#</a></h5>
+<section id="id10">
+<h5>Returns<a class="headerlink" href="#id10" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 </dd></dl>
@@ -509,19 +503,19 @@ to allow a new fitting process.</p>
 <dt class="sig sig-object py" id="PDielec.GUI.FitterTab.FitterTab.on_independent_yaxes_cb_changed">
 <span class="sig-name descname"><span class="pre">on_independent_yaxes_cb_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/FitterTab.html#FitterTab.on_independent_yaxes_cb_changed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.FitterTab.FitterTab.on_independent_yaxes_cb_changed" title="Permalink to this definition">#</a></dt>
 <dd><p>Handles the change of state for the independent Y-axes checkbox.</p>
-<section id="id10">
-<h5>Parameters<a class="headerlink" href="#id10" title="Permalink to this heading">#</a></h5>
+<section id="id11">
+<h5>Parameters<a class="headerlink" href="#id11" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>value<span class="classifier">bool</span></dt><dd><p>The new state of the checkbox. The actual value might not be used in the function but represents the change.</p>
 </dd>
 </dl>
 </section>
-<section id="id11">
-<h5>Returns<a class="headerlink" href="#id11" title="Permalink to this heading">#</a></h5>
+<section id="id12">
+<h5>Returns<a class="headerlink" href="#id12" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
-<section id="id12">
-<h5>Notes<a class="headerlink" href="#id12" title="Permalink to this heading">#</a></h5>
+<section id="id13">
+<h5>Notes<a class="headerlink" href="#id13" title="Permalink to this heading">#</a></h5>
 <p>This function is triggered upon the change of the ‘independent_yaxes_cb’ checkbox state. It updates the settings dictionary with the new state of the ‘Independent y-axes’ option and sets the ‘refreshRequired’ flag to True, indicating that a refresh is needed to reflect the changes in the UI or data visualization.</p>
 </section>
 </dd></dl>
@@ -531,12 +525,12 @@ to allow a new fitting process.</p>
 <span class="sig-name descname"><span class="pre">on_iterations_sb_changed</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/FitterTab.html#FitterTab.on_iterations_sb_changed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.FitterTab.FitterTab.on_iterations_sb_changed" title="Permalink to this definition">#</a></dt>
 <dd><p>Handle changes in the iterations spin box value.</p>
 <p>This method is called when the iterations spin box value is changed. It updates the ‘Number of iterations’ setting with the new value and flags that a refresh is required.</p>
-<section id="id13">
-<h5>Parameters<a class="headerlink" href="#id13" title="Permalink to this heading">#</a></h5>
+<section id="id14">
+<h5>Parameters<a class="headerlink" href="#id14" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
-<section id="id14">
-<h5>Returns<a class="headerlink" href="#id14" title="Permalink to this heading">#</a></h5>
+<section id="id15">
+<h5>Returns<a class="headerlink" href="#id15" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 </dd></dl>
@@ -546,15 +540,15 @@ to allow a new fitting process.</p>
 <span class="sig-name descname"><span class="pre">on_optimise_frequency_scaling_cb_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/FitterTab.html#FitterTab.on_optimise_frequency_scaling_cb_changed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.FitterTab.FitterTab.on_optimise_frequency_scaling_cb_changed" title="Permalink to this definition">#</a></dt>
 <dd><p>Handles changes in the frequency scaling optimization option.</p>
 <p>This method updates the ‘Optimise frequency scaling’ setting based on the state of a checkbox and marks that a refresh is required based on the new setting.</p>
-<section id="id15">
-<h5>Parameters<a class="headerlink" href="#id15" title="Permalink to this heading">#</a></h5>
+<section id="id16">
+<h5>Parameters<a class="headerlink" href="#id16" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>value<span class="classifier">bool</span></dt><dd><p>The value or state that triggered the change. This parameter is logged but not directly used to set the ‘Optimise frequency scaling’ option.</p>
 </dd>
 </dl>
 </section>
-<section id="id16">
-<h5>Returns<a class="headerlink" href="#id16" title="Permalink to this heading">#</a></h5>
+<section id="id17">
+<h5>Returns<a class="headerlink" href="#id17" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 </dd></dl>
@@ -564,15 +558,15 @@ to allow a new fitting process.</p>
 <span class="sig-name descname"><span class="pre">on_scenario_cb_activated</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/FitterTab.html#FitterTab.on_scenario_cb_activated"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.FitterTab.FitterTab.on_scenario_cb_activated" title="Permalink to this definition">#</a></dt>
 <dd><p>Handle scenario combobox activation.</p>
 <p>This function is triggered when a scenario combobox option is selected. It logs the activation with the selected index, marks that a refresh is required, and updates the settings to reflect the new scenario.</p>
-<section id="id17">
-<h5>Parameters<a class="headerlink" href="#id17" title="Permalink to this heading">#</a></h5>
+<section id="id18">
+<h5>Parameters<a class="headerlink" href="#id18" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>index<span class="classifier">int</span></dt><dd><p>The index of the activated scenario.</p>
 </dd>
 </dl>
 </section>
-<section id="id18">
-<h5>Returns<a class="headerlink" href="#id18" title="Permalink to this heading">#</a></h5>
+<section id="id19">
+<h5>Returns<a class="headerlink" href="#id19" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 </dd></dl>
@@ -584,15 +578,15 @@ to allow a new fitting process.</p>
 <p>This method updates mode fitting status and sigma values based on changes in a table widget,
 redraws the table widget, and refreshes output based on the modifications. It also handles error
 for invalid numeric input for sigma values.</p>
-<section id="id19">
-<h5>Parameters<a class="headerlink" href="#id19" title="Permalink to this heading">#</a></h5>
+<section id="id20">
+<h5>Parameters<a class="headerlink" href="#id20" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>item<span class="classifier">QTableWidgetItem</span></dt><dd><p>The table widget item that has been changed.</p>
 </dd>
 </dl>
 </section>
-<section id="id20">
-<h5>Returns<a class="headerlink" href="#id20" title="Permalink to this heading">#</a></h5>
+<section id="id21">
+<h5>Returns<a class="headerlink" href="#id21" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 <section id="side-effects">
@@ -611,19 +605,19 @@ for invalid numeric input for sigma values.</p>
 <span class="sig-name descname"><span class="pre">on_spectrafile_le_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/FitterTab.html#FitterTab.on_spectrafile_le_changed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.FitterTab.FitterTab.on_spectrafile_le_changed" title="Permalink to this definition">#</a></dt>
 <dd><p>Handle changes to the spectra file input field.</p>
 <p>This method is triggered when the text of the spectrum file input field changes. It updates the ‘Experimental file name’ setting with the new text, marks the current experimental file as unread, and indicates that a refresh is required.</p>
-<section id="id21">
-<h5>Parameters<a class="headerlink" href="#id21" title="Permalink to this heading">#</a></h5>
+<section id="id22">
+<h5>Parameters<a class="headerlink" href="#id22" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>text<span class="classifier">str</span></dt><dd><p>The new text from the spectra file input field. Not directly used after method update.</p>
 </dd>
 </dl>
 </section>
-<section id="id22">
-<h5>Returns<a class="headerlink" href="#id22" title="Permalink to this heading">#</a></h5>
+<section id="id23">
+<h5>Returns<a class="headerlink" href="#id23" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
-<section id="id23">
-<h5>Notes<a class="headerlink" href="#id23" title="Permalink to this heading">#</a></h5>
+<section id="id24">
+<h5>Notes<a class="headerlink" href="#id24" title="Permalink to this heading">#</a></h5>
 <p>The actual text used in processing is fetched directly from the <cite>spectrafile_le</cite> attribute, not from the <cite>text</cite> argument.</p>
 </section>
 </dd></dl>
@@ -633,16 +627,16 @@ for invalid numeric input for sigma values.</p>
 <span class="sig-name descname"><span class="pre">on_spectrafile_le_return</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/FitterTab.html#FitterTab.on_spectrafile_le_return"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.FitterTab.FitterTab.on_spectrafile_le_return" title="Permalink to this definition">#</a></dt>
 <dd><p>Handle file selection for experimental spectra.</p>
 <p>This method is executed when an action associated with the <cite>spectrafile_le</cite> widget is performed. It prompts the user to select a file if the currently specified file does not exist or cannot be found. It updates the application’s settings with the new file name, if a file is selected.</p>
-<section id="id24">
-<h5>Parameters<a class="headerlink" href="#id24" title="Permalink to this heading">#</a></h5>
-<p>None</p>
-</section>
 <section id="id25">
-<h5>Returns<a class="headerlink" href="#id25" title="Permalink to this heading">#</a></h5>
+<h5>Parameters<a class="headerlink" href="#id25" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 <section id="id26">
-<h5>Notes<a class="headerlink" href="#id26" title="Permalink to this heading">#</a></h5>
+<h5>Returns<a class="headerlink" href="#id26" title="Permalink to this heading">#</a></h5>
+<p>None</p>
+</section>
+<section id="id27">
+<h5>Notes<a class="headerlink" href="#id27" title="Permalink to this heading">#</a></h5>
 <p>The method first checks if the file specified in the <cite>spectrafile_le</cite> widget exists. If it does not, a file dialog is opened for the user to select a file. If a file is selected, the method updates the application’s settings and the text of the <cite>spectrafile_le</cite> widget to reflect the new file name. Additionally, it sets a flag indicating that a refresh is required and that the experimental file needs to be read again. Finally, it triggers the last button pressed action.</p>
 <p>This method utilizes <cite>os.path.isfile</cite> to check file existence, <cite>QFileDialog</cite> for file selection.</p>
 </section>
@@ -654,15 +648,15 @@ for invalid numeric input for sigma values.</p>
 <dd><p>Handle changes in spectral difference threshold setting.</p>
 <p>This function is called when the ‘Spectral difference threshold’ setting is changed.
 It updates the setting value, converting it to a float, and sets a flag indicating that a refresh is required.</p>
-<section id="id27">
-<h5>Parameters<a class="headerlink" href="#id27" title="Permalink to this heading">#</a></h5>
+<section id="id28">
+<h5>Parameters<a class="headerlink" href="#id28" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>value<span class="classifier">str</span></dt><dd><p>The new value for the ‘Spectral difference threshold’ setting. The function attempts to convert this to a float.</p>
 </dd>
 </dl>
 </section>
-<section id="id28">
-<h5>Returns<a class="headerlink" href="#id28" title="Permalink to this heading">#</a></h5>
+<section id="id29">
+<h5>Returns<a class="headerlink" href="#id29" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 </dd></dl>
@@ -672,15 +666,15 @@ It updates the setting value, converting it to a float, and sets a flag indicati
 <span class="sig-name descname"><span class="pre">on_spectrum_scaling_cb_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/FitterTab.html#FitterTab.on_spectrum_scaling_cb_changed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.FitterTab.FitterTab.on_spectrum_scaling_cb_changed" title="Permalink to this definition">#</a></dt>
 <dd><p>Handles the change event of the spectrum scaling checkbox.</p>
 <p>This method is triggered whenever the spectrum scaling checkbox’s state changes. It updates the settings to reflect the current state of the checkbox and flags that a refresh is required.</p>
-<section id="id29">
-<h5>Parameters<a class="headerlink" href="#id29" title="Permalink to this heading">#</a></h5>
+<section id="id30">
+<h5>Parameters<a class="headerlink" href="#id30" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>value<span class="classifier">bool</span></dt><dd><p>The new value of the spectrum scaling checkbox. The specific type and significance can vary depending on the implementation details of the checkbox and its handlers.</p>
 </dd>
 </dl>
 </section>
-<section id="id30">
-<h5>Returns<a class="headerlink" href="#id30" title="Permalink to this heading">#</a></h5>
+<section id="id31">
+<h5>Returns<a class="headerlink" href="#id31" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 </dd></dl>
@@ -689,19 +683,19 @@ It updates the setting value, converting it to a float, and sets a flag indicati
 <dt class="sig sig-object py" id="PDielec.GUI.FitterTab.FitterTab.on_spectrum_scaling_factor_sb_changed">
 <span class="sig-name descname"><span class="pre">on_spectrum_scaling_factor_sb_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/FitterTab.html#FitterTab.on_spectrum_scaling_factor_sb_changed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.FitterTab.FitterTab.on_spectrum_scaling_factor_sb_changed" title="Permalink to this definition">#</a></dt>
 <dd><p>Handles the change in spectrum scaling factor.</p>
-<section id="id31">
-<h5>Parameters<a class="headerlink" href="#id31" title="Permalink to this heading">#</a></h5>
+<section id="id32">
+<h5>Parameters<a class="headerlink" href="#id32" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>value<span class="classifier">str</span></dt><dd><p>The new value for the spectrum scaling factor. Expected to be convertible to float.</p>
 </dd>
 </dl>
 </section>
-<section id="id32">
-<h5>Returns<a class="headerlink" href="#id32" title="Permalink to this heading">#</a></h5>
+<section id="id33">
+<h5>Returns<a class="headerlink" href="#id33" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
-<section id="id33">
-<h5>Notes<a class="headerlink" href="#id33" title="Permalink to this heading">#</a></h5>
+<section id="id34">
+<h5>Notes<a class="headerlink" href="#id34" title="Permalink to this heading">#</a></h5>
 <p>This function attempts to update the ‘Spectrum scaling factor’ setting with the new value after converting it to float. If the conversion fails, a message is printed indicating the failure.</p>
 </section>
 </dd></dl>
@@ -714,12 +708,12 @@ It updates the setting value, converting it to a float, and sets a flag indicati
 within the constraints of predefined modes. The function iterates to minimize the discrepancy
 between modeled and experimental data. It employs the Nelder-Mead optimization method for
 solving the problem.</p>
-<section id="id34">
-<h5>Parameters<a class="headerlink" href="#id34" title="Permalink to this heading">#</a></h5>
+<section id="id35">
+<h5>Parameters<a class="headerlink" href="#id35" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
-<section id="id35">
-<h5>Returns<a class="headerlink" href="#id35" title="Permalink to this heading">#</a></h5>
+<section id="id36">
+<h5>Returns<a class="headerlink" href="#id36" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>list or OptimizeResult</dt><dd><p>The final optimization point as a list if no sigma has been selected for optimisation,
 or as an <cite>OptimizeResult</cite> object returned by <cite>scipy.optimize.minimize</cite>. The return type
@@ -727,8 +721,8 @@ depends on whether the optimization process is executed.</p>
 </dd>
 </dl>
 </section>
-<section id="id36">
-<h5>Notes<a class="headerlink" href="#id36" title="Permalink to this heading">#</a></h5>
+<section id="id37">
+<h5>Notes<a class="headerlink" href="#id37" title="Permalink to this heading">#</a></h5>
 <p>The function uses several attributes of the class instance it belongs to:
 - <cite>modes_fitted</cite> to determine which modes are fitted.
 - <cite>sigmas_cm1</cite> as initial sigma points for optimization.
@@ -748,8 +742,8 @@ optimise the fitting function according to the predefined criteria
 (e.g., minimize cross-correlation or spectral difference). It updates
 GUI components and recalculates the function value based on the new
 configuration.</p>
-<section id="id37">
-<h5>Parameters<a class="headerlink" href="#id37" title="Permalink to this heading">#</a></h5>
+<section id="id38">
+<h5>Parameters<a class="headerlink" href="#id38" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>variables<span class="classifier">list or array-like</span></dt><dd><p>The variables used for optimization. This could include sigma values
 for each element to be fitted and optionally a scaling factor for
@@ -757,8 +751,8 @@ frequency scaling, depending on the configuration.</p>
 </dd>
 </dl>
 </section>
-<section id="id38">
-<h5>Returns<a class="headerlink" href="#id38" title="Permalink to this heading">#</a></h5>
+<section id="id39">
+<h5>Returns<a class="headerlink" href="#id39" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>float</dt><dd><p>The function value after optimization, which is either the negative
 cross-correlation or the root mean square error (RMSE), based on the
@@ -766,8 +760,8 @@ fitting type setting.</p>
 </dd>
 </dl>
 </section>
-<section id="id39">
-<h5>Notes<a class="headerlink" href="#id39" title="Permalink to this heading">#</a></h5>
+<section id="id40">
+<h5>Notes<a class="headerlink" href="#id40" title="Permalink to this heading">#</a></h5>
 <ul class="simple">
 <li><p><cite>calculationInProgress</cite> is a boolean attribute of the
 object that indicates whether a calculation can proceed.</p></li>
@@ -796,8 +790,8 @@ predefined extremely negative value (e.g., -9.9e+99).</p>
 <p>This method plots provided experimental and calculated data sets using Matplotlib. It supports plotting
 data with independent y-axes and applying frequency shift and scaling to the x-axis. The plot appearance,
 including color mapping, line width, and labels, is customizable.</p>
-<section id="id40">
-<h5>Parameters<a class="headerlink" href="#id40" title="Permalink to this heading">#</a></h5>
+<section id="id41">
+<h5>Parameters<a class="headerlink" href="#id41" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>experiment<span class="classifier">array_like</span></dt><dd><p>The experimental data to be plotted. If empty, no experimental data is plotted.</p>
 </dd>
@@ -811,12 +805,12 @@ including color mapping, line width, and labels, is customizable.</p>
 </dd>
 </dl>
 </section>
-<section id="id41">
-<h5>Returns<a class="headerlink" href="#id41" title="Permalink to this heading">#</a></h5>
+<section id="id42">
+<h5>Returns<a class="headerlink" href="#id42" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
-<section id="id42">
-<h5>Raises<a class="headerlink" href="#id42" title="Permalink to this heading">#</a></h5>
+<section id="id43">
+<h5>Raises<a class="headerlink" href="#id43" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>ValueError</dt><dd><p>If <cite>xs</cite>, <cite>ys</cite>, and <cite>legends</cite> lists do not have the same length.</p>
 </dd>
@@ -828,12 +822,12 @@ including color mapping, line width, and labels, is customizable.</p>
 <dt class="sig sig-object py" id="PDielec.GUI.FitterTab.FitterTab.print_settings">
 <span class="sig-name descname"><span class="pre">print_settings</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/FitterTab.html#FitterTab.print_settings"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.FitterTab.FitterTab.print_settings" title="Permalink to this definition">#</a></dt>
 <dd><p>Prints the settings attributes of the instance.</p>
-<section id="id43">
-<h5>Parameters<a class="headerlink" href="#id43" title="Permalink to this heading">#</a></h5>
+<section id="id44">
+<h5>Parameters<a class="headerlink" href="#id44" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
-<section id="id44">
-<h5>Returns<a class="headerlink" href="#id44" title="Permalink to this heading">#</a></h5>
+<section id="id45">
+<h5>Returns<a class="headerlink" href="#id45" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 <p>Prints the key and value of each setting in the instance’s <cite>settings</cite> attribute, with the help of the <cite>debugger</cite> print method.</p>
 </section>
@@ -848,16 +842,16 @@ information. It checks if the data lists (<cite>sigmas_cm1</cite>, <cite>frequen
 and then proceeds to populate the table. Each row in the table corresponds to a unique sigma, frequency,
 and intensity value. The method also handles item selection and editing properties based on the state of
 <cite>modes_selected</cite> and <cite>modes_fitted</cite> attributes.</p>
-<section id="id45">
-<h5>Parameters<a class="headerlink" href="#id45" title="Permalink to this heading">#</a></h5>
-<p>None</p>
-</section>
 <section id="id46">
-<h5>Returns<a class="headerlink" href="#id46" title="Permalink to this heading">#</a></h5>
+<h5>Parameters<a class="headerlink" href="#id46" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 <section id="id47">
-<h5>Notes<a class="headerlink" href="#id47" title="Permalink to this heading">#</a></h5>
+<h5>Returns<a class="headerlink" href="#id47" title="Permalink to this heading">#</a></h5>
+<p>None</p>
+</section>
+<section id="id48">
+<h5>Notes<a class="headerlink" href="#id48" title="Permalink to this heading">#</a></h5>
 <ul class="simple">
 <li><p><cite>sigmas_cm1</cite>, <cite>frequencies_cm1</cite>, and <cite>intensities</cite> are lists that store sigma, frequency, and intensity data, respectively.</p></li>
 <li><p><cite>modes_selected</cite> and <cite>modes_fitted</cite> are lists that store boolean values indicating whether a mode is selected and
@@ -870,19 +864,19 @@ whether it is fitted, respectively.</p></li>
 <dt class="sig sig-object py" id="PDielec.GUI.FitterTab.FitterTab.refresh">
 <span class="sig-name descname"><span class="pre">refresh</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">force</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/FitterTab.html#FitterTab.refresh"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.FitterTab.FitterTab.refresh" title="Permalink to this definition">#</a></dt>
 <dd><p>Refreshes the state of the application based on user-defined conditions and settings.</p>
-<section id="id48">
-<h5>Parameters<a class="headerlink" href="#id48" title="Permalink to this heading">#</a></h5>
+<section id="id49">
+<h5>Parameters<a class="headerlink" href="#id49" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>force<span class="classifier">bool, optional</span></dt><dd><p>If True, the refresh proceeds regardless of whether it is deemed necessary based on the internal state. Defaults to False.</p>
 </dd>
 </dl>
 </section>
-<section id="id49">
-<h5>Returns<a class="headerlink" href="#id49" title="Permalink to this heading">#</a></h5>
+<section id="id50">
+<h5>Returns<a class="headerlink" href="#id50" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
-<section id="id50">
-<h5>Notes<a class="headerlink" href="#id50" title="Permalink to this heading">#</a></h5>
+<section id="id51">
+<h5>Notes<a class="headerlink" href="#id51" title="Permalink to this heading">#</a></h5>
 <p>The refresh process involves several key steps including checking if a refresh is required, updating plotting data from settings, reading an experimental file, setting GUI components based on notebook scenarios, and recalculating spectra. If the refresh is aborted either due to being unnecessary or because there are no frequencies, it returns early. Additionally, if <cite>force</cite> is True, it ignores the check for whether a refresh is required and proceeds with the refresh.</p>
 <p>After updating relevant class attributes and GUI components, the function recalculates cross-correlation, root-mean-square error (RMSE) between experimental and calculated spectra, and updates the display with these metrics.</p>
 </section>
@@ -893,12 +887,12 @@ whether it is fitted, respectively.</p></li>
 <span class="sig-name descname"><span class="pre">replot</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/FitterTab.html#FitterTab.replot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.FitterTab.FitterTab.replot" title="Permalink to this definition">#</a></dt>
 <dd><p>Replots the experimental spectrum along with calculated frequencies and spectra.</p>
 <p>This method will initially check if there is a resampled experimental spectrum. If such a spectrum exists, the spectrum is resampled. Subsequently, it calls the plot method with the updated data along with other related information such as legends and labels.</p>
-<section id="id51">
-<h5>Parameters<a class="headerlink" href="#id51" title="Permalink to this heading">#</a></h5>
+<section id="id52">
+<h5>Parameters<a class="headerlink" href="#id52" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
-<section id="id52">
-<h5>Returns<a class="headerlink" href="#id52" title="Permalink to this heading">#</a></h5>
+<section id="id53">
+<h5>Returns<a class="headerlink" href="#id53" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 </dd></dl>
@@ -908,16 +902,16 @@ whether it is fitted, respectively.</p></li>
 <span class="sig-name descname"><span class="pre">replotButton1Clicked</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/FitterTab.html#FitterTab.replotButton1Clicked"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.FitterTab.FitterTab.replotButton1Clicked" title="Permalink to this definition">#</a></dt>
 <dd><p>Handle the click event on the replot button.</p>
 <p>This method is triggered when the replot button is clicked. It sets up the necessary flags for the replot operation and invokes the refresh method to update the plot.</p>
-<section id="id53">
-<h5>Parameters<a class="headerlink" href="#id53" title="Permalink to this heading">#</a></h5>
-<p>None</p>
-</section>
 <section id="id54">
-<h5>Returns<a class="headerlink" href="#id54" title="Permalink to this heading">#</a></h5>
+<h5>Parameters<a class="headerlink" href="#id54" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 <section id="id55">
-<h5>Notes<a class="headerlink" href="#id55" title="Permalink to this heading">#</a></h5>
+<h5>Returns<a class="headerlink" href="#id55" title="Permalink to this heading">#</a></h5>
+<p>None</p>
+</section>
+<section id="id56">
+<h5>Notes<a class="headerlink" href="#id56" title="Permalink to this heading">#</a></h5>
 <p>This method modifies the instance attributes to reflect that a replot is required without a frequency shift, and it bookmarks the last button pressed as ‘replotButton1Clicked’. It also calls the <cite>self.refresh</cite> method to initiate the replotting process.</p>
 </section>
 </dd></dl>
@@ -929,12 +923,12 @@ whether it is fitted, respectively.</p></li>
 <p>This method updates various attributes to indicate that a refresh of the plot is required,
 specifically with a frequency shift. It records that this button was the last one pressed
 and then initiates the refresh process.</p>
-<section id="id56">
-<h5>Parameters<a class="headerlink" href="#id56" title="Permalink to this heading">#</a></h5>
+<section id="id57">
+<h5>Parameters<a class="headerlink" href="#id57" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
-<section id="id57">
-<h5>Returns<a class="headerlink" href="#id57" title="Permalink to this heading">#</a></h5>
+<section id="id58">
+<h5>Returns<a class="headerlink" href="#id58" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 </dd></dl>
@@ -943,12 +937,12 @@ and then initiates the refresh process.</p>
 <dt class="sig sig-object py" id="PDielec.GUI.FitterTab.FitterTab.requestRefresh">
 <span class="sig-name descname"><span class="pre">requestRefresh</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/FitterTab.html#FitterTab.requestRefresh"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.FitterTab.FitterTab.requestRefresh" title="Permalink to this definition">#</a></dt>
 <dd><p>Request a refresh of the interface.</p>
-<section id="id58">
-<h5>Parameters<a class="headerlink" href="#id58" title="Permalink to this heading">#</a></h5>
+<section id="id59">
+<h5>Parameters<a class="headerlink" href="#id59" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
-<section id="id59">
-<h5>Returns<a class="headerlink" href="#id59" title="Permalink to this heading">#</a></h5>
+<section id="id60">
+<h5>Returns<a class="headerlink" href="#id60" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 </dd></dl>
@@ -962,8 +956,8 @@ and then initiates the refresh process.</p>
 <dd><p>Calculates the cross-correlation between the experimental spectrum and a calculated spectrum, with an applied scaling factor.</p>
 <p>The calculated and experimental spectra share the same frequencies (xaxis).  If a scaling factor is applied,
 the calculated spectrum x-axis is rescaled according to the scaling factor.</p>
-<section id="id60">
-<h4>Parameters<a class="headerlink" href="#id60" title="Permalink to this heading">#</a></h4>
+<section id="id61">
+<h4>Parameters<a class="headerlink" href="#id61" title="Permalink to this heading">#</a></h4>
 <dl class="simple">
 <dt>xaxis<span class="classifier">1d array of floats</span></dt><dd><p>An array frequencies valid for both the calculated and experimental spectra</p>
 </dd>
@@ -977,8 +971,8 @@ the calculated spectrum x-axis is rescaled according to the scaling factor.</p>
 </dd>
 </dl>
 </section>
-<section id="id61">
-<h4>Returns<a class="headerlink" href="#id61" title="Permalink to this heading">#</a></h4>
+<section id="id62">
+<h4>Returns<a class="headerlink" href="#id62" title="Permalink to this heading">#</a></h4>
 <dl class="simple">
 <dt>tuple</dt><dd><p>A tuple containing:
 - lag: The lag at which the maximum correlation occurs.
@@ -987,8 +981,8 @@ the calculated spectrum x-axis is rescaled according to the scaling factor.</p>
 </dd>
 </dl>
 </section>
-<section id="id62">
-<h4>Notes<a class="headerlink" href="#id62" title="Permalink to this heading">#</a></h4>
+<section id="id63">
+<h4>Notes<a class="headerlink" href="#id63" title="Permalink to this heading">#</a></h4>
 <p>The calculated spectrum’s x-axis is rescaled according to the <cite>scaling_factor</cite>. The correlation is performed on the normalized (zero-mean unit-variance) spectra. Interpolation of the calculated spectrum onto the experimental spectrum’s x-axis is performed using cubic interpolation.</p>
 </section>
 </dd></dl>
@@ -997,8 +991,8 @@ the calculated spectrum x-axis is rescaled according to the scaling factor.</p>
 <dt class="sig sig-object py" id="PDielec.GUI.FitterTab.calculateSpectralDifference">
 <span class="sig-prename descclassname"><span class="pre">PDielec.GUI.FitterTab.</span></span><span class="sig-name descname"><span class="pre">calculateSpectralDifference</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xaxis</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">calculated_spectrum</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">experimental_spectrum</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spectral_threshold</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.05</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scaling_factor</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">debug</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/FitterTab.html#calculateSpectralDifference"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.FitterTab.calculateSpectralDifference" title="Permalink to this definition">#</a></dt>
 <dd><p>Calculate the root mean square error (RMSE) between a renormalised experimental spectrum and calculated spectrum after applying a scaling factor.</p>
-<section id="id63">
-<h4>Parameters<a class="headerlink" href="#id63" title="Permalink to this heading">#</a></h4>
+<section id="id64">
+<h4>Parameters<a class="headerlink" href="#id64" title="Permalink to this heading">#</a></h4>
 <dl class="simple">
 <dt>xaxis<span class="classifier">1d array of floats</span></dt><dd><p>An array frequencies valid for both the calculated and experimental spectra</p>
 </dd>
@@ -1014,15 +1008,15 @@ the calculated spectrum x-axis is rescaled according to the scaling factor.</p>
 </dd>
 </dl>
 </section>
-<section id="id64">
-<h4>Returns<a class="headerlink" href="#id64" title="Permalink to this heading">#</a></h4>
+<section id="id65">
+<h4>Returns<a class="headerlink" href="#id65" title="Permalink to this heading">#</a></h4>
 <dl class="simple">
 <dt>float</dt><dd><p>The root mean square error between the resampled experimental spectrum and the scaled calculated spectrum.</p>
 </dd>
 </dl>
 </section>
-<section id="id65">
-<h4>Notes<a class="headerlink" href="#id65" title="Permalink to this heading">#</a></h4>
+<section id="id66">
+<h4>Notes<a class="headerlink" href="#id66" title="Permalink to this heading">#</a></h4>
 <ul class="simple">
 <li><p>This method modifies the spectra by scaling, normalization, and thresholding before calculating the RMSE.</p></li>
 <li><p>If the resampled experimental spectrum is empty, the method returns 0.0 immediately.</p></li>
@@ -1036,22 +1030,22 @@ the calculated spectrum x-axis is rescaled according to the scaling factor.</p>
 <dt class="sig sig-object py" id="PDielec.GUI.FitterTab.find_delimiter">
 <span class="sig-prename descclassname"><span class="pre">PDielec.GUI.FitterTab.</span></span><span class="sig-name descname"><span class="pre">find_delimiter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/FitterTab.html#find_delimiter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.FitterTab.find_delimiter" title="Permalink to this definition">#</a></dt>
 <dd><p>Find the delimiter used in a CSV file.</p>
-<section id="id66">
-<h4>Parameters<a class="headerlink" href="#id66" title="Permalink to this heading">#</a></h4>
+<section id="id67">
+<h4>Parameters<a class="headerlink" href="#id67" title="Permalink to this heading">#</a></h4>
 <dl class="simple">
 <dt>filename<span class="classifier">str</span></dt><dd><p>The path to the file for which the delimiter is to be determined.</p>
 </dd>
 </dl>
 </section>
-<section id="id67">
-<h4>Returns<a class="headerlink" href="#id67" title="Permalink to this heading">#</a></h4>
+<section id="id68">
+<h4>Returns<a class="headerlink" href="#id68" title="Permalink to this heading">#</a></h4>
 <dl class="simple">
 <dt>str</dt><dd><p>The detected delimiter character.</p>
 </dd>
 </dl>
 </section>
-<section id="id68">
-<h4>Notes<a class="headerlink" href="#id68" title="Permalink to this heading">#</a></h4>
+<section id="id69">
+<h4>Notes<a class="headerlink" href="#id69" title="Permalink to this heading">#</a></h4>
 <p>This function uses the <cite>csv.Sniffer</cite> class to deduce the delimiter of
 the given file by analyzing the first 5000 bytes of the file.</p>
 </section>
@@ -1061,12 +1055,12 @@ the given file by analyzing the first 5000 bytes of the file.</p>
 <dt class="sig sig-object py" id="PDielec.GUI.FitterTab.is_float">
 <span class="sig-prename descclassname"><span class="pre">PDielec.GUI.FitterTab.</span></span><span class="sig-name descname"><span class="pre">is_float</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">element</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/FitterTab.html#is_float"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.FitterTab.is_float" title="Permalink to this definition">#</a></dt>
 <dd><p>Test to see if element is a float.</p>
-<section id="id69">
-<h4>Parameters<a class="headerlink" href="#id69" title="Permalink to this heading">#</a></h4>
+<section id="id70">
+<h4>Parameters<a class="headerlink" href="#id70" title="Permalink to this heading">#</a></h4>
 <p>element : Any</p>
 </section>
-<section id="id70">
-<h4>Returns<a class="headerlink" href="#id70" title="Permalink to this heading">#</a></h4>
+<section id="id71">
+<h4>Returns<a class="headerlink" href="#id71" title="Permalink to this heading">#</a></h4>
 <dl class="simple">
 <dt>bool</dt><dd><p>True if the element is a float, False otherwise.</p>
 </dd>
@@ -1078,8 +1072,8 @@ the given file by analyzing the first 5000 bytes of the file.</p>
 <dt class="sig sig-object py" id="PDielec.GUI.FitterTab.read_experimental_file">
 <span class="sig-prename descclassname"><span class="pre">PDielec.GUI.FitterTab.</span></span><span class="sig-name descname"><span class="pre">read_experimental_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">frequency_column</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spectrum_column</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sheet_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">debug</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/FitterTab.html#read_experimental_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.FitterTab.read_experimental_file" title="Permalink to this definition">#</a></dt>
 <dd><p>Read an experimental file.</p>
-<section id="id71">
-<h4>Parameters<a class="headerlink" href="#id71" title="Permalink to this heading">#</a></h4>
+<section id="id72">
+<h4>Parameters<a class="headerlink" href="#id72" title="Permalink to this heading">#</a></h4>
 <dl class="simple">
 <dt>file_name<span class="classifier">str</span></dt><dd><p>An xlsx or a csv file containing the experimental spectrum</p>
 </dd>
@@ -1093,8 +1087,8 @@ the given file by analyzing the first 5000 bytes of the file.</p>
 </dd>
 </dl>
 </section>
-<section id="id72">
-<h4>Returns<a class="headerlink" href="#id72" title="Permalink to this heading">#</a></h4>
+<section id="id73">
+<h4>Returns<a class="headerlink" href="#id73" title="Permalink to this heading">#</a></h4>
 <dl class="simple">
 <dt>experimental_frequencies<span class="classifier">an array of floats</span></dt><dd><p>The experimental frequencies in cm-1</p>
 </dd>
@@ -1117,8 +1111,8 @@ frequencies. It pads the spectrum at both ends with zeros outside the calculated
 frequencies range, then uses cubic interpolation over the whole range.
 If ‘baseline_removal’ is enabled, applies the Hodrick-Prescott filter
 for baseline removal on the resampled spectrum.</p>
-<section id="id73">
-<h4>Parameters<a class="headerlink" href="#id73" title="Permalink to this heading">#</a></h4>
+<section id="id74">
+<h4>Parameters<a class="headerlink" href="#id74" title="Permalink to this heading">#</a></h4>
 <dl class="simple">
 <dt>calculated_frequencies<span class="classifier">array of floats</span></dt><dd><p>The frequencies the caculated spectrum is tabulated</p>
 </dd>
@@ -1134,8 +1128,8 @@ for baseline removal on the resampled spectrum.</p>
 </dd>
 </dl>
 </section>
-<section id="id74">
-<h4>Returns<a class="headerlink" href="#id74" title="Permalink to this heading">#</a></h4>
+<section id="id75">
+<h4>Returns<a class="headerlink" href="#id75" title="Permalink to this heading">#</a></h4>
 <dl class="simple">
 <dt>None</dt><dd><p>Modifies the instance’s resampled_experimental_spectrum in place.</p>
 </dd>

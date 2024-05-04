@@ -276,15 +276,6 @@
           <section id="module-PDielec.PhonopyOutputReader">
 <span id="pdielec-phonopyoutputreader"></span><h1><a class="reference internal" href="#module-PDielec.PhonopyOutputReader" title="PDielec.PhonopyOutputReader"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.PhonopyOutputReader</span></code></a><a class="headerlink" href="#module-PDielec.PhonopyOutputReader" title="Permalink to this heading">#</a></h1>
 <p>Read the contents of a directory containing Phonopy input and output files.</p>
-<p>Copyright 2024 John Kendrick</p>
-<p>This file is part of PDielec</p>
-<p>This program is free software; you can redistribute it and/or modify
-it under the terms of the MIT License</p>
-<p>This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.</p>
-<p>You should have received a copy of the MIT License
-along with this program, if not see <a class="reference external" href="https://opensource.org/licenses/MIT">https://opensource.org/licenses/MIT</a></p>
 <section id="module-contents">
 <h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this heading">#</a></h2>
 <section id="classes">
@@ -303,7 +294,20 @@ along with this program, if not see <a class="reference external" href="https://
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PDielec.PhonopyOutputReader.</span></span><span class="sig-name descname"><span class="pre">PhonopyOutputReader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">names</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">qmreader</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/PhonopyOutputReader.html#PhonopyOutputReader"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.PhonopyOutputReader.PhonopyOutputReader" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="../GenericOutputReader/index.html#PDielec.GenericOutputReader.GenericOutputReader" title="PDielec.GenericOutputReader.GenericOutputReader"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PDielec.GenericOutputReader.GenericOutputReader</span></code></a></p>
 <p>Read the contents of a directory containing Phonopy input and output files.</p>
-<p>Inherits from GenericOutputReader</p>
+<p>Inherits from <a class="reference internal" href="../GenericOutputReader/index.html#PDielec.GenericOutputReader.GenericOutputReader" title="PDielec.GenericOutputReader.GenericOutputReader"><code class="xref py py-class docutils literal notranslate"><span class="pre">GenericOutputReader</span></code></a></p>
+<section id="parameters">
+<h4>Parameters<a class="headerlink" href="#parameters" title="Permalink to this heading">#</a></h4>
+<dl class="simple">
+<dt>names<span class="classifier">list</span></dt><dd><p>A list of file names to be used.</p>
+</dd>
+<dt>qmreader<span class="classifier">object</span></dt><dd><p>An instance of another class used for reading.</p>
+</dd>
+</dl>
+</section>
+<section id="notes">
+<h4>Notes<a class="headerlink" href="#notes" title="Permalink to this heading">#</a></h4>
+<p>This method sets the type of the output to ‘Phonopy output’ and
+associates a quantum mechanics (QM) reader object with the instance.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.PhonopyOutputReader.PhonopyOutputReader._read_output_files">
 <span class="sig-name descname"><span class="pre">_read_output_files</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/PhonopyOutputReader.html#PhonopyOutputReader._read_output_files"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.PhonopyOutputReader.PhonopyOutputReader._read_output_files" title="Permalink to this definition">#</a></dt>
@@ -319,13 +323,13 @@ Then it reads the dynamical matrix from phonopy</p>
 <p>This method reads the dynamical matrix and other relevant data from the specified
 output files, calculates the Hessian matrix, converts its units, and computes the
 eigenvalues and eigenvectors to determine frequencies and mass-weighted normal modes.</p>
-<section id="parameters">
-<h4>Parameters<a class="headerlink" href="#parameters" title="Permalink to this heading">#</a></h4>
+<section id="id1">
+<h5>Parameters<a class="headerlink" href="#id1" title="Permalink to this heading">#</a></h5>
 <p>None explicitly, but relies on the instance attributes <cite>_outputfiles</cite> and <cite>nions</cite>
 to determine the files to read and number of ions, respectively.</p>
 </section>
 <section id="returns">
-<h4>Returns<a class="headerlink" href="#returns" title="Permalink to this heading">#</a></h4>
+<h5>Returns<a class="headerlink" href="#returns" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>None</dt><dd><p>This method directly modifies the instance attributes <cite>_old_masses</cite>, <cite>frequencies</cite>,
 and <cite>mass_weighted_normal_modes</cite> based on the data read and calculations performed.</p>
@@ -333,7 +337,7 @@ and <cite>mass_weighted_normal_modes</cite> based on the data read and calculati
 </dl>
 </section>
 <section id="raises">
-<h4>Raises<a class="headerlink" href="#raises" title="Permalink to this heading">#</a></h4>
+<h5>Raises<a class="headerlink" href="#raises" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>FileNotFoundError</dt><dd><p>If any of the specified output files cannot be found or opened.</p>
 </dd>
@@ -343,8 +347,8 @@ and <cite>mass_weighted_normal_modes</cite> based on the data read and calculati
 </dd>
 </dl>
 </section>
-<section id="notes">
-<h4>Notes<a class="headerlink" href="#notes" title="Permalink to this heading">#</a></h4>
+<section id="id2">
+<h5>Notes<a class="headerlink" href="#id2" title="Permalink to this heading">#</a></h5>
 <ul class="simple">
 <li><p>It first attempts to use the CLoader for parsing YAML files for performance reasons and falls
 back to the standard Loader if CLoader is not available, issuing a warning in such cases.</p></li>
@@ -359,6 +363,7 @@ frequencies and normal modes are stored in corresponding instance attributes.</p
 </section>
 </dd></dl>
 
+</section>
 </dd></dl>
 
 </section>

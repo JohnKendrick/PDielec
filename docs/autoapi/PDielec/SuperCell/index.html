@@ -275,15 +275,7 @@
         <article role="main">
           <section id="module-PDielec.SuperCell">
 <span id="pdielec-supercell"></span><h1><a class="reference internal" href="#module-PDielec.SuperCell" title="PDielec.SuperCell"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.SuperCell</span></code></a><a class="headerlink" href="#module-PDielec.SuperCell" title="Permalink to this heading">#</a></h1>
-<p>Copyright 2024 John Kendrick</p>
-<p>This file is part of PDielec</p>
-<p>This program is free software; you can redistribute it and/or modify
-it under the terms of the MIT License</p>
-<p>This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.</p>
-<p>You should have received a copy of the MIT License
-along with this program, if not see <a class="reference external" href="https://opensource.org/licenses/MIT">https://opensource.org/licenses/MIT</a></p>
+<p>The SuperCell module</p>
 <section id="module-contents">
 <h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this heading">#</a></h2>
 <section id="classes">
@@ -301,23 +293,52 @@ along with this program, if not see <a class="reference external" href="https://
 <dt class="sig sig-object py" id="PDielec.SuperCell.SuperCell">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PDielec.SuperCell.</span></span><span class="sig-name descname"><span class="pre">SuperCell</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">aUnitCell</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">anImageSpecifier</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/SuperCell.html#SuperCell"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.SuperCell.SuperCell" title="Permalink to this definition">#</a></dt>
 <dd><p>Hold super-cell information; the unit cell and the super-cell size.</p>
-<dl class="py method">
-<dt class="sig sig-object py" id="PDielec.SuperCell.SuperCell.calculateBonds">
-<span class="sig-name descname"><span class="pre">calculateBonds</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/SuperCell.html#SuperCell.calculateBonds"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.SuperCell.SuperCell.calculateBonds" title="Permalink to this definition">#</a></dt>
-<dd><p>Calculate the bonding in the supercell.</p>
 <section id="parameters">
 <h4>Parameters<a class="headerlink" href="#parameters" title="Permalink to this heading">#</a></h4>
-<p>None</p>
+<dl>
+<dt>aUnitCell<span class="classifier"><a class="reference internal" href="../UnitCell/index.html#PDielec.UnitCell.UnitCell" title="PDielec.UnitCell.UnitCell"><code class="xref py py-class docutils literal notranslate"><span class="pre">UnitCell</span></code></a></span></dt><dd><p>The unit cell associated with this instance.</p>
+</dd>
+<dt>anImageSpecifier<span class="classifier">list or tuple</span></dt><dd><p>The list or tuples of 3 numbers used to generate images.</p>
+</dd>
+</dl>
 </section>
-<section id="returns">
-<h4>Returns<a class="headerlink" href="#returns" title="Permalink to this heading">#</a></h4>
-<dl class="simple">
-<dt>list</dt><dd><p>A list of the bonds as pairs of atom indexes</p>
+<section id="attributes">
+<h4>Attributes<a class="headerlink" href="#attributes" title="Permalink to this heading">#</a></h4>
+<dl>
+<dt>unitCell<span class="classifier"><a class="reference internal" href="../UnitCell/index.html#PDielec.UnitCell.UnitCell" title="PDielec.UnitCell.UnitCell"><code class="xref py py-class docutils literal notranslate"><span class="pre">UnitCell</span></code></a></span></dt><dd><p>The unit cell associated with this instance. (see <a class="reference internal" href="../UnitCell/index.html#PDielec.UnitCell.UnitCell" title="PDielec.UnitCell.UnitCell"><code class="xref py py-class docutils literal notranslate"><span class="pre">UnitCell</span></code></a>)</p>
+</dd>
+<dt>imageList<span class="classifier">NoneType or list</span></dt><dd><p>Initialized as None, can later hold a list of images of the cell</p>
+</dd>
+<dt>imageSpecifier<span class="classifier">list or tuple</span></dt><dd><p>A list or tuple of 3 numbers which indicate the number of images of the cell to be created</p>
+</dd>
+<dt>XYZ<span class="classifier">NoneType or array_like</span></dt><dd><p>Initialized as None, can later hold XYZ coordinates. (Cartesian coordinates)</p>
 </dd>
 </dl>
 </section>
 <section id="notes">
 <h4>Notes<a class="headerlink" href="#notes" title="Permalink to this heading">#</a></h4>
+<p>This method automatically invokes the createImages method at the end of initialization.</p>
+</section>
+<section id="see-also">
+<h4>See also<a class="headerlink" href="#see-also" title="Permalink to this heading">#</a></h4>
+<p><a class="reference internal" href="../UnitCell/index.html#PDielec.UnitCell.UnitCell" title="PDielec.UnitCell.UnitCell"><code class="xref py py-class docutils literal notranslate"><span class="pre">UnitCell</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="PDielec.SuperCell.SuperCell.calculateBonds">
+<span class="sig-name descname"><span class="pre">calculateBonds</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/SuperCell.html#SuperCell.calculateBonds"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.SuperCell.SuperCell.calculateBonds" title="Permalink to this definition">#</a></dt>
+<dd><p>Calculate the bonding in the supercell.</p>
+<section id="id1">
+<h5>Parameters<a class="headerlink" href="#id1" title="Permalink to this heading">#</a></h5>
+<p>None</p>
+</section>
+<section id="returns">
+<h5>Returns<a class="headerlink" href="#returns" title="Permalink to this heading">#</a></h5>
+<dl class="simple">
+<dt>list</dt><dd><p>A list of the bonds as pairs of atom indexes</p>
+</dd>
+</dl>
+</section>
+<section id="id2">
+<h5>Notes<a class="headerlink" href="#id2" title="Permalink to this heading">#</a></h5>
 <p>The bonding in the unit-cell is assumed to be valid whole-molecule bonding
 the bonds are not recalculated, just extended into the super-cell</p>
 </section>
@@ -327,12 +348,12 @@ the bonds are not recalculated, just extended into the super-cell</p>
 <dt class="sig sig-object py" id="PDielec.SuperCell.SuperCell.calculateCentreOfBox">
 <span class="sig-name descname"><span class="pre">calculateCentreOfBox</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/SuperCell.html#SuperCell.calculateCentreOfBox"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.SuperCell.SuperCell.calculateCentreOfBox" title="Permalink to this definition">#</a></dt>
 <dd><p>This is not the centre of mass. We calculate the centre of the super-cell in cartesian coordinates.</p>
-<section id="id1">
-<h4>Parameters<a class="headerlink" href="#id1" title="Permalink to this heading">#</a></h4>
+<section id="id3">
+<h5>Parameters<a class="headerlink" href="#id3" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
-<section id="id2">
-<h4>Returns<a class="headerlink" href="#id2" title="Permalink to this heading">#</a></h4>
+<section id="id4">
+<h5>Returns<a class="headerlink" href="#id4" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>vector</dt><dd><p>The centre of the images in the box</p>
 </dd>
@@ -344,8 +365,8 @@ the bonds are not recalculated, just extended into the super-cell</p>
 <dt class="sig sig-object py" id="PDielec.SuperCell.SuperCell.calculateCentreOfMass">
 <span class="sig-name descname"><span class="pre">calculateCentreOfMass</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">output</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'xyz'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/SuperCell.html#SuperCell.calculateCentreOfMass"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.SuperCell.SuperCell.calculateCentreOfMass" title="Permalink to this definition">#</a></dt>
 <dd><p>Calculate the center of mass for a molecular structure.</p>
-<section id="id3">
-<h4>Parameters<a class="headerlink" href="#id3" title="Permalink to this heading">#</a></h4>
+<section id="id5">
+<h5>Parameters<a class="headerlink" href="#id5" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>output<span class="classifier">str, optional</span></dt><dd><p>The output. Options are ‘xyz’ for mass and Cartesian coordinates,
 ‘mass’ for the total mass only, ‘abc’ for mass and fractional coordinates, or any other string
@@ -354,8 +375,8 @@ The default value is ‘xyz’.</p>
 </dd>
 </dl>
 </section>
-<section id="id4">
-<h4>Returns<a class="headerlink" href="#id4" title="Permalink to this heading">#</a></h4>
+<section id="id6">
+<h5>Returns<a class="headerlink" href="#id6" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>numpy.ndarray or float or tuple</dt><dd><p>Depending on the value of <cite>units</cite>:
 If ‘xyz’, returns a tuple with mass and a numpy.ndarray of Cartesian coordinates of the center of mass.
@@ -375,15 +396,15 @@ coordinates (numpy.ndarray), and fractional coordinates (numpy.ndarray) of the c
 <p>Normal modes are initially an np array of nmodes, 3*nions.
 The number of modes stays the same but the number of ions
 increases according to the number of images.</p>
-<section id="id5">
-<h4>Parameters<a class="headerlink" href="#id5" title="Permalink to this heading">#</a></h4>
+<section id="id7">
+<h5>Parameters<a class="headerlink" href="#id7" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>modes<span class="classifier">a list of ints</span></dt><dd><p>A list of the modes to be used in the calculation</p>
 </dd>
 </dl>
 </section>
-<section id="id6">
-<h4>Returns<a class="headerlink" href="#id6" title="Permalink to this heading">#</a></h4>
+<section id="id8">
+<h5>Returns<a class="headerlink" href="#id8" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>np.ndarray</dt><dd><p>Array representing the normal modes of the supercell. Initially, this is an array
 of shape (nmodes, 3*nions), where <cite>nmodes</cite> is the number of modes and <cite>nions</cite> is the
@@ -399,12 +420,12 @@ number of images.</p>
 <span class="sig-name descname"><span class="pre">calculateXYZ</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/SuperCell.html#SuperCell.calculateXYZ"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.SuperCell.SuperCell.calculateXYZ" title="Permalink to this definition">#</a></dt>
 <dd><p>Calculate and return the cartesian coordinates of the supercell.</p>
 <p>The fractional cell coordinates of the unit cell are used to calculate the XYZ coordinates of the super-cell</p>
-<section id="id7">
-<h4>Parameters<a class="headerlink" href="#id7" title="Permalink to this heading">#</a></h4>
+<section id="id9">
+<h5>Parameters<a class="headerlink" href="#id9" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
-<section id="id8">
-<h4>Returns<a class="headerlink" href="#id8" title="Permalink to this heading">#</a></h4>
+<section id="id10">
+<h5>Returns<a class="headerlink" href="#id10" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>output<span class="classifier">array</span></dt><dd><p>The Cartesian coordinates of the supercell.</p>
 </dd>
@@ -416,8 +437,8 @@ number of images.</p>
 <dt class="sig sig-object py" id="PDielec.SuperCell.SuperCell.createImages">
 <span class="sig-name descname"><span class="pre">createImages</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">anImageSpecifier</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/SuperCell.html#SuperCell.createImages"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.SuperCell.SuperCell.createImages" title="Permalink to this definition">#</a></dt>
 <dd><p>Create a list of images extending by ia, jb, kc units in the a, b, c directions. The image specifier is a list of the form [ia, jb, kc].</p>
-<section id="id9">
-<h4>Parameters<a class="headerlink" href="#id9" title="Permalink to this heading">#</a></h4>
+<section id="id11">
+<h5>Parameters<a class="headerlink" href="#id11" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>anImageSpecifier<span class="classifier">list (ia, jb, kc)</span></dt><dd><p>ia an integer specifying extension in the a direction.
 jb an integer specifying extension in the b direction.
@@ -425,8 +446,8 @@ kc an integer specifying extension in the c direction.</p>
 </dd>
 </dl>
 </section>
-<section id="id10">
-<h4>Returns<a class="headerlink" href="#id10" title="Permalink to this heading">#</a></h4>
+<section id="id12">
+<h5>Returns<a class="headerlink" href="#id12" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>list</dt><dd><p>A list of created images.</p>
 </dd>
@@ -441,16 +462,16 @@ kc an integer specifying extension in the c direction.</p>
 <p>Return a box with 8 corners and 12 edges which represent the supercel in cartesian space
 - Corners in abc space
 - shift the origin to originABC</p>
-<section id="id11">
-<h4>Parameters<a class="headerlink" href="#id11" title="Permalink to this heading">#</a></h4>
+<section id="id13">
+<h5>Parameters<a class="headerlink" href="#id13" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>originABC<span class="classifier">array-like, optional</span></dt><dd><p>The origin coordinates (A, B, C) to which the bounding box will be translated.
 defaults to 0,0,0</p>
 </dd>
 </dl>
 </section>
-<section id="id12">
-<h4>Returns<a class="headerlink" href="#id12" title="Permalink to this heading">#</a></h4>
+<section id="id14">
+<h5>Returns<a class="headerlink" href="#id14" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>tuple</dt><dd><p>A tuple containing two elements:</p>
 <ul class="simple">
@@ -462,8 +483,8 @@ A list of tuples, each representing an edge of the bounding box defined by a pai
 </dd>
 </dl>
 </section>
-<section id="id13">
-<h4>Notes<a class="headerlink" href="#id13" title="Permalink to this heading">#</a></h4>
+<section id="id15">
+<h5>Notes<a class="headerlink" href="#id15" title="Permalink to this heading">#</a></h5>
 <p>The function calculates the center of the bounding box, re-centers the corners to the provided origin, and then builds edges between these corners in XYZ space.</p>
 </section>
 </dd></dl>
@@ -472,12 +493,12 @@ A list of tuples, each representing an edge of the bounding box defined by a pai
 <dt class="sig sig-object py" id="PDielec.SuperCell.SuperCell.getElementNames">
 <span class="sig-name descname"><span class="pre">getElementNames</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/SuperCell.html#SuperCell.getElementNames"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.SuperCell.SuperCell.getElementNames" title="Permalink to this definition">#</a></dt>
 <dd><p>Calculate and return the element names of the supercell.</p>
-<section id="id14">
-<h4>Parameters<a class="headerlink" href="#id14" title="Permalink to this heading">#</a></h4>
+<section id="id16">
+<h5>Parameters<a class="headerlink" href="#id16" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
-<section id="id15">
-<h4>Returns<a class="headerlink" href="#id15" title="Permalink to this heading">#</a></h4>
+<section id="id17">
+<h5>Returns<a class="headerlink" href="#id17" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>list</dt><dd><p>The element names of the supercell.</p>
 </dd>
@@ -489,16 +510,16 @@ A list of tuples, each representing an edge of the bounding box defined by a pai
 <dt class="sig sig-object py" id="PDielec.SuperCell.SuperCell.print">
 <span class="sig-name descname"><span class="pre">print</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/SuperCell.html#SuperCell.print"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.SuperCell.SuperCell.print" title="Permalink to this definition">#</a></dt>
 <dd><p>Print the contents of the SuperCell</p>
-<section id="id16">
-<h4>Parameters<a class="headerlink" href="#id16" title="Permalink to this heading">#</a></h4>
+<section id="id18">
+<h5>Parameters<a class="headerlink" href="#id18" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
-<section id="id17">
-<h4>Returns<a class="headerlink" href="#id17" title="Permalink to this heading">#</a></h4>
+<section id="id19">
+<h5>Returns<a class="headerlink" href="#id19" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 <section id="example">
-<h4>Example<a class="headerlink" href="#example" title="Permalink to this heading">#</a></h4>
+<h5>Example<a class="headerlink" href="#example" title="Permalink to this heading">#</a></h5>
 <p><code class="docutils literal notranslate"><span class="pre">`</span>
 <span class="pre">#</span> <span class="pre">Create</span> <span class="pre">a</span> <span class="pre">3x2x1</span> <span class="pre">super-cell</span>
 <span class="pre">import</span> <span class="pre">PDielec.SuperCell</span> <span class="pre">as</span> <span class="pre">SC</span>
@@ -511,6 +532,7 @@ A list of tuples, each representing an edge of the bounding box defined by a pai
 </section>
 </dd></dl>
 
+</section>
 </dd></dl>
 
 </section>

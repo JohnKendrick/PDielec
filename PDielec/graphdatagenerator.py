@@ -1,20 +1,20 @@
 #!/usr/bin/env python
+#
+# Copyright 2024 John Kendrick & Andrew Burnett
+#
+# This file is part of PDielec
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the MIT License
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+#
+# You should have received a copy of the MIT License along with this program, if not see https://opensource.org/licenses/MIT
+#
 '''
-PDielec driver program to calculate dielectric response at infrared and THz frequencies
-
-Copyright 2024 John Kendrick
-
-This file is part of PDielec
-
-This program is free software; you can redistribute it and/or modify
-it under the terms of the MIT License
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-
-You should have received a copy of the MIT License
-along with this program, if not see https://opensource.org/licenses/MIT
+graphdatagenerator command
 '''
 import sys
 import numpy as np
@@ -26,6 +26,7 @@ def main():
     Main driver routine for graphdatagenerator.
 
     This routine reads a collection of spreadsheets containing spectra and generates a single spreadsheet that collates the results.
+    It is a utility programme and not part of the main PDielec or PDGui packages
 
    ::
 

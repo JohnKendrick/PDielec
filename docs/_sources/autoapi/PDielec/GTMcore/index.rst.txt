@@ -281,6 +281,15 @@ Attributes
 
    Layer class. An instance is a single layer:
 
+   The inherited layer classes wich are used in PDielec are:
+
+       - :class:`CoherentLayer`
+       - :class:`SemiInfiniteLayer`
+       - :class:`IncoherentIntensityLayer`
+       - :class:`IncoherentAveragePhaseLayer`
+       - :class:`IncoherentPhaseLayer`
+       - :class:`IncoherentThickLayer`
+
    Attributes
    ----------
    thickness : float
@@ -782,6 +791,11 @@ Attributes
 
    System class. An instance is an optical system with substrate, superstrate, and layers.
 
+    Derived classes used by PDielec are:
+
+       - :class:`TransferMatrixSystem`
+       - :class:`ScatteringMatrixSystem`
+
    Attributes
    ----------
    theta : float
@@ -1020,7 +1034,7 @@ Attributes
 
 .. py:function:: exact_inv_2x2(M)
 
-   Calculate the inverse of M.
+   Calculate the inverse of 2x2 complex matrix, M.
 
    Parameters
    ----------
@@ -1035,7 +1049,7 @@ Attributes
 
 .. py:function:: exact_inv_3x3(M)
 
-   Calculate the inverse of M
+   Calculate the inverse of a 3x3 complex matrix M
 
    Parameters
    ----------
@@ -1087,12 +1101,10 @@ Attributes
 
 
 .. py:data:: c_const
-   :value: 299792458
 
    
 
 .. py:data:: eps0
-   :value: 8.854e-12
 
    
 

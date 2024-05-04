@@ -6,19 +6,6 @@
 .. autoapi-nested-parse::
 
    Generic reader of output files. An actual reader should inherit from this class.
-   Copyright 2024 John Kendrick
-
-   This file is part of PDielec
-
-   This program is free software; you can redistribute it and/or modify
-   it under the terms of the MIT License
-
-   This program is distributed in the hope that it will be useful,
-   but WITHOUT ANY WARRANTY; without even the implied warranty of
-   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-
-   You should have received a copy of the MIT License
-   along with this program, if not see https://opensource.org/licenses/MIT
 
 
 
@@ -39,6 +26,22 @@ Classes
 
 
    Generic reader of output files. Actual reader should inherit from this class.
+   Examples of readers with this base class:
+
+   - :class:`~PDielec.AbinitOutputReader`
+   - :class:`~PDielec.CastepOutputReader`
+   - :class:`~PDielec.CrystalOutputReader`
+   - :class:`~PDielec.ExperimentOutputReader`
+   - :class:`~PDielec.GulpOutputReader`
+   - :class:`~PDielec.PhonopyOutputReader`
+   - :class:`~PDielec.QEOutputReader`
+   - :class:`~PDielec.VaspOutputReader`
+
+   Parameters
+   ----------
+   filenames : list
+       A list containing file names (strings) to be associated with the instance. These
+       are converted into the absolute paths and stored.
 
    Attributes
    ----------

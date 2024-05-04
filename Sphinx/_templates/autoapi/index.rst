@@ -1,7 +1,10 @@
 API Reference
 =============
 
-This page contains auto-generated API reference documentation [#f1]_.
+The PDielec Application Interface (API)
+PDielec is a suite of modules for the calculation of light transmittance and absorbance in dielectric materials.
+
+This pages were auto-generated [#f1]_.
 
 .. toctree::
    :titlesonly:

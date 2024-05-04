@@ -273,31 +273,22 @@
         <article role="main">
           <h1>Source code for PDielec.GulpOutputReader</h1><div class="highlight"><pre>
 <span></span><span class="ch">#!/usr/bin/python</span>
+<span class="c1">#</span>
+<span class="c1"># Copyright 2024 John Kendrick &amp; Andrew Burnett</span>
+<span class="c1">#</span>
+<span class="c1"># This file is part of PDielec</span>
+<span class="c1">#</span>
+<span class="c1"># This program is free software; you can redistribute it and/or modify</span>
+<span class="c1"># it under the terms of the MIT License</span>
+<span class="c1">#</span>
+<span class="c1"># This program is distributed in the hope that it will be useful,</span>
+<span class="c1"># but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="c1"># MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.</span>
+<span class="c1">#</span>
+<span class="c1"># You should have received a copy of the MIT License along with this program, if not see https://opensource.org/licenses/MIT</span>
+<span class="c1">#</span>
 <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">Read the contents of a Gulp output file</span>
-
-<span class="sd">It is quite difficult to work out what is a suitable set of commands for gulp</span>
-<span class="sd">The following seems to work OK, important are</span>
-<span class="sd">phon - a phonon calculation</span>
-<span class="sd">intens - calculate the IR intensities</span>
-<span class="sd">eigen - print the eigen vectors of the dynamical matrix</span>
-<span class="sd">cart - print the cartesian coordinates (this is the only way of see what all the atom types are)</span>
-<span class="sd">nosym - make sure the calculation is done in P1</span>
-<span class="sd">qeq molq optimise conp qok nomodcoord prop phon intens eigen cart</span>
-
-<span class="sd">Copyright 2014 John Kendrick</span>
-
-<span class="sd">This file is part of PDielec</span>
-
-<span class="sd">This program is free software; you can redistribute it and/or modify</span>
-<span class="sd">it under the terms of the MIT License</span>
-
-<span class="sd">This program is distributed in the hope that it will be useful,</span>
-<span class="sd">but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
-<span class="sd">MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.</span>
-
-<span class="sd">You should have received a copy of the MIT License</span>
-<span class="sd">along with this program, if not see https://opensource.org/licenses/MIT</span>
+<span class="sd">Module to read the contents of a Gulp output file</span>
 <span class="sd">&#39;&#39;&#39;</span>
 
 <span class="kn">import</span> <span class="nn">re</span>
@@ -311,11 +302,49 @@
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Read the contents of a Gulp output file.</span>
 
+<span class="sd">    Inherits from :class:`~PDielec.GenericOutputReader.GenericOutputReader`</span>
+
 <span class="sd">    This function provides a way to read and interpret the contents of a Gulp output file, </span>
 <span class="sd">    advising on a suitable set of command parameters that can be used for various calculations </span>
 <span class="sd">    such as phonon calculations, IR intensity calculations, printing eigen vectors of the dynamical </span>
 <span class="sd">    matrix, and printing cartesian coordinates. It emphasizes the importance of certain parameters </span>
 <span class="sd">    to ensure accurate and comprehensive results.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    names : list</span>
+<span class="sd">        A list containing the name(s) of the Gulp output file(s).</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    _gulpfile : str</span>
+<span class="sd">        The name of the first Gulp output file in the `names` list.</span>
+<span class="sd">    name : str</span>
+<span class="sd">        The absolute path of the `_gulpfile`.</span>
+<span class="sd">    type : str</span>
+<span class="sd">        A string indicating the type of the reader object, set to &#39;Gulp output&#39;.</span>
+<span class="sd">    shells : int</span>
+<span class="sd">        Number of shells, initialized to 0.</span>
+<span class="sd">    ncores : int</span>
+<span class="sd">        Number of cores, initialized to 0.</span>
+<span class="sd">    _cartesian_coordinates : list</span>
+<span class="sd">        List to store cartesian coordinates, initially empty.</span>
+<span class="sd">    _fractional_coordinates : list</span>
+<span class="sd">        List to store fractional coordinates, initially empty.</span>
+<span class="sd">    atomic_charges : list</span>
+<span class="sd">        List to store atomic charges, initially empty.</span>
+<span class="sd">    _mass_dictionary : dict</span>
+<span class="sd">        Dictionary to store mass information, initially empty.</span>
+<span class="sd">    temperature : NoneType or float</span>
+<span class="sd">        Temperature, initialized as None.</span>
+<span class="sd">    elastic_constant_tensor : NoneType or ndarray</span>
+<span class="sd">        Elastic constant tensor, initialized as None.</span>
+<span class="sd">    nshells : NoneType or int</span>
+<span class="sd">        Number of shells, initialized as None (may be updated later).</span>
+<span class="sd">    nions_irreducible : NoneType or int</span>
+<span class="sd">        Number of irreducible ions, initialized as None.</span>
+<span class="sd">    _atom_types : NoneType or list</span>
+<span class="sd">        List of atom types, initialized as None.</span>
 
 <span class="sd">    Notes</span>
 <span class="sd">    -----</span>

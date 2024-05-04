@@ -276,15 +276,6 @@
           <section id="module-PDielec.ExperimentOutputReader">
 <span id="pdielec-experimentoutputreader"></span><h1><a class="reference internal" href="#module-PDielec.ExperimentOutputReader" title="PDielec.ExperimentOutputReader"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.ExperimentOutputReader</span></code></a><a class="headerlink" href="#module-PDielec.ExperimentOutputReader" title="Permalink to this heading">#</a></h1>
 <p>Read the contents of a directory containing Experiment input and output files.</p>
-<p>Copyright 2024 John Kendrick</p>
-<p>This file is part of PDielec</p>
-<p>This program is free software; you can redistribute it and/or modify
-it under the terms of the MIT License</p>
-<p>This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.</p>
-<p>You should have received a copy of the MIT License
-along with this program, if not see <a class="reference external" href="https://opensource.org/licenses/MIT">https://opensource.org/licenses/MIT</a></p>
 <section id="module-contents">
 <h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this heading">#</a></h2>
 <section id="classes">
@@ -303,17 +294,40 @@ along with this program, if not see <a class="reference external" href="https://
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PDielec.ExperimentOutputReader.</span></span><span class="sig-name descname"><span class="pre">ExperimentOutputReader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">names</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/ExperimentOutputReader.html#ExperimentOutputReader"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.ExperimentOutputReader.ExperimentOutputReader" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="../GenericOutputReader/index.html#PDielec.GenericOutputReader.GenericOutputReader" title="PDielec.GenericOutputReader.GenericOutputReader"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PDielec.GenericOutputReader.GenericOutputReader</span></code></a></p>
 <p>Read the contents of a directory containing Experiment input and output files.</p>
-<p>Inherits from GenericOutputReader</p>
+<p>Inherits from <a class="reference internal" href="../GenericOutputReader/index.html#PDielec.GenericOutputReader.GenericOutputReader" title="PDielec.GenericOutputReader.GenericOutputReader"><code class="xref py py-class docutils literal notranslate"><span class="pre">GenericOutputReader</span></code></a></p>
+<section id="parameters">
+<h4>Parameters<a class="headerlink" href="#parameters" title="Permalink to this heading">#</a></h4>
+<dl class="simple">
+<dt>names<span class="classifier">Various types</span></dt><dd><p>Initial parameter used for construction, typically a string or list of identifiers that this instance will process or hold.</p>
+</dd>
+</dl>
+</section>
+<section id="attributes">
+<h4>Attributes<a class="headerlink" href="#attributes" title="Permalink to this heading">#</a></h4>
+<dl class="simple">
+<dt>type<span class="classifier">str</span></dt><dd><p>A string indicating the type of output, set to ‘Experimental output’.</p>
+</dd>
+<dt>_ion_type_index<span class="classifier">dict</span></dt><dd><p>A dictionary to index ion types, initialized as empty.</p>
+</dd>
+<dt>CrystalPermittivity<span class="classifier">NoneType or Various types</span></dt><dd><p>Initially None, intended to hold information about crystal permittivity.</p>
+</dd>
+<dt>zerof_optical_dielectric<span class="classifier">NoneType or Various types</span></dt><dd><p>Initially None, intended to hold zero-frequency optical dielectric information.</p>
+</dd>
+<dt>oscillator_strengths<span class="classifier">NoneType or Various types</span></dt><dd><p>Initially None, intended for storing oscillator strengths data.</p>
+</dd>
+<dt>frequencies<span class="classifier">NoneType or Various types</span></dt><dd><p>Initially None, intended for storing frequencies data.</p>
+</dd>
+</dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.ExperimentOutputReader.ExperimentOutputReader._read_constant_model">
 <span class="sig-name descname"><span class="pre">_read_constant_model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/ExperimentOutputReader.html#ExperimentOutputReader._read_constant_model"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.ExperimentOutputReader.ExperimentOutputReader._read_constant_model" title="Permalink to this definition">#</a></dt>
 <dd><p>Read in a full constant dielectric tensor 3 values on each line.</p>
-<section id="parameters">
-<h4>Parameters<a class="headerlink" href="#parameters" title="Permalink to this heading">#</a></h4>
+<section id="id1">
+<h5>Parameters<a class="headerlink" href="#id1" title="Permalink to this heading">#</a></h5>
 <p>line : str</p>
 </section>
 <section id="returns">
-<h4>Returns<a class="headerlink" href="#returns" title="Permalink to this heading">#</a></h4>
+<h5>Returns<a class="headerlink" href="#returns" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 </dd></dl>
@@ -323,19 +337,19 @@ along with this program, if not see <a class="reference external" href="https://
 <span class="sig-name descname"><span class="pre">_read_cpk_coords</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/ExperimentOutputReader.html#ExperimentOutputReader._read_cpk_coords"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.ExperimentOutputReader.ExperimentOutputReader._read_cpk_coords" title="Permalink to this definition">#</a></dt>
 <dd><p>Read CPK coordinates from a given line and update class attributes accordingly.</p>
 <p>The coordinates are assumed to be in Angstrom</p>
-<section id="id1">
-<h4>Parameters<a class="headerlink" href="#id1" title="Permalink to this heading">#</a></h4>
+<section id="id2">
+<h5>Parameters<a class="headerlink" href="#id2" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>line<span class="classifier">str</span></dt><dd><p>The initial line input to start reading CPK coordinates from.</p>
 </dd>
 </dl>
 </section>
-<section id="id2">
-<h4>Returns<a class="headerlink" href="#id2" title="Permalink to this heading">#</a></h4>
+<section id="id3">
+<h5>Returns<a class="headerlink" href="#id3" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 <section id="notes">
-<h4>Notes<a class="headerlink" href="#notes" title="Permalink to this heading">#</a></h4>
+<h5>Notes<a class="headerlink" href="#notes" title="Permalink to this heading">#</a></h5>
 <ul class="simple">
 <li><p>This method directly modifies several attributes of the class instance it
 belongs to, including lists of species, ions, and masses, as well as data
@@ -351,7 +365,7 @@ beginning of a new entry is marked by a line that doesn’t start with ‘&amp;e
 </ul>
 </section>
 <section id="raises">
-<h4>Raises<a class="headerlink" href="#raises" title="Permalink to this heading">#</a></h4>
+<h5>Raises<a class="headerlink" href="#raises" title="Permalink to this heading">#</a></h5>
 <ul class="simple">
 <li><p>This function implicitly assumes correct formatting and content of the input data.
 If the data is not correctly formatted or if <cite>_read_line</cite> fails to read further
@@ -359,7 +373,7 @@ lines as expected, unexpected behavior or errors could occur.</p></li>
 </ul>
 </section>
 <section id="see-also">
-<h4>See Also<a class="headerlink" href="#see-also" title="Permalink to this heading">#</a></h4>
+<h5>See Also<a class="headerlink" href="#see-also" title="Permalink to this heading">#</a></h5>
 <p>_read_line : Method used to read the next line for continued parsing.</p>
 </section>
 </dd></dl>
@@ -369,12 +383,12 @@ lines as expected, unexpected behavior or errors could occur.</p></li>
 <span class="sig-name descname"><span class="pre">_read_cpk_lattice_vectors</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/ExperimentOutputReader.html#ExperimentOutputReader._read_cpk_lattice_vectors"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.ExperimentOutputReader.ExperimentOutputReader._read_cpk_lattice_vectors" title="Permalink to this definition">#</a></dt>
 <dd><p>Process a cpk input file with cell information</p>
 <p>The lattice vectors are assumed to be in Angstrom</p>
-<section id="id3">
-<h4>Parameters<a class="headerlink" href="#id3" title="Permalink to this heading">#</a></h4>
+<section id="id4">
+<h5>Parameters<a class="headerlink" href="#id4" title="Permalink to this heading">#</a></h5>
 <p>line : str</p>
 </section>
-<section id="id4">
-<h4>Returns<a class="headerlink" href="#id4" title="Permalink to this heading">#</a></h4>
+<section id="id5">
+<h5>Returns<a class="headerlink" href="#id5" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 </dd></dl>
@@ -383,16 +397,16 @@ lines as expected, unexpected behavior or errors could occur.</p></li>
 <dt class="sig sig-object py" id="PDielec.ExperimentOutputReader.ExperimentOutputReader._read_drude_lorentz_model">
 <span class="sig-name descname"><span class="pre">_read_drude_lorentz_model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/ExperimentOutputReader.html#ExperimentOutputReader._read_drude_lorentz_model"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.ExperimentOutputReader.ExperimentOutputReader._read_drude_lorentz_model" title="Permalink to this definition">#</a></dt>
 <dd><p>Read in the drude_lorentz model parameters.</p>
-<section id="id5">
-<h4>Parameters<a class="headerlink" href="#id5" title="Permalink to this heading">#</a></h4>
+<section id="id6">
+<h5>Parameters<a class="headerlink" href="#id6" title="Permalink to this heading">#</a></h5>
 <p>line : str</p>
 </section>
-<section id="id6">
-<h4>Returns<a class="headerlink" href="#id6" title="Permalink to this heading">#</a></h4>
+<section id="id7">
+<h5>Returns<a class="headerlink" href="#id7" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
-<section id="id7">
-<h4>Notes<a class="headerlink" href="#id7" title="Permalink to this heading">#</a></h4>
+<section id="id8">
+<h5>Notes<a class="headerlink" href="#id8" title="Permalink to this heading">#</a></h5>
 <p>A simple example of a 2 oscillator model is given below. All units are in cm-1.</p>
 <p><code class="docutils literal notranslate"><span class="pre">`</span>
 <span class="pre">drude-lorentz</span>
@@ -411,16 +425,16 @@ lines as expected, unexpected behavior or errors could occur.</p></li>
 <span class="sig-name descname"><span class="pre">_read_fpsq_model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/ExperimentOutputReader.html#ExperimentOutputReader._read_fpsq_model"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.ExperimentOutputReader.ExperimentOutputReader._read_fpsq_model" title="Permalink to this definition">#</a></dt>
 <dd><p>Read in the fpsq model parameters.</p>
 <p>There is a separator between each diagonal contribution to the permittivity.</p>
-<section id="id8">
-<h4>Parameters<a class="headerlink" href="#id8" title="Permalink to this heading">#</a></h4>
+<section id="id9">
+<h5>Parameters<a class="headerlink" href="#id9" title="Permalink to this heading">#</a></h5>
 <p>line : str</p>
 </section>
-<section id="id9">
-<h4>Returns<a class="headerlink" href="#id9" title="Permalink to this heading">#</a></h4>
+<section id="id10">
+<h5>Returns<a class="headerlink" href="#id10" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
-<section id="id10">
-<h4>Notes<a class="headerlink" href="#id10" title="Permalink to this heading">#</a></h4>
+<section id="id11">
+<h5>Notes<a class="headerlink" href="#id11" title="Permalink to this heading">#</a></h5>
 <p>The input format is expected to follow the example below for alpha quartz:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">epsxx</span> <span class="mi">4</span> <span class="c1"># 1.5K Data # A2 Phonon modes</span>
   <span class="mf">360.7</span>     <span class="mf">1.5</span>        <span class="mf">384.8</span>    <span class="mf">1.5</span>
@@ -444,8 +458,8 @@ lines as expected, unexpected behavior or errors could occur.</p></li>
 <p>Each section starts with <cite>epsxx</cite>, <cite>epsyy</cite>, or <cite>epszz</cite> followed by the number of modes.
 After that, data lines include mode frequencies and corresponding contributions.</p>
 </section>
-<section id="id11">
-<h4>Returns<a class="headerlink" href="#id11" title="Permalink to this heading">#</a></h4>
+<section id="id12">
+<h5>Returns<a class="headerlink" href="#id12" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 </dd></dl>
@@ -455,19 +469,19 @@ After that, data lines include mode frequencies and corresponding contributions.
 <span class="sig-name descname"><span class="pre">_read_fractional_coordinates</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/ExperimentOutputReader.html#ExperimentOutputReader._read_fractional_coordinates"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.ExperimentOutputReader.ExperimentOutputReader._read_fractional_coordinates" title="Permalink to this definition">#</a></dt>
 <dd><p>Read and process fractional coordinates from a string line.</p>
 <p>This method reads a string representing a line containing the number of ions followed by the fractional coordinates and species of each ion. It updates the instance variables associated with the ions’ type, position, mass, and further initializes oscillator strengths and frequencies arrays if they haven’t been initialized yet.</p>
-<section id="id12">
-<h4>Parameters<a class="headerlink" href="#id12" title="Permalink to this heading">#</a></h4>
+<section id="id13">
+<h5>Parameters<a class="headerlink" href="#id13" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>line<span class="classifier">str</span></dt><dd><p>The line from which the number of ions and their fractional coordinates will be extracted. The line format is expected to be ‘num_ions species x y z’ for each ion, where ‘num_ions’ is the total number of ions, ‘species’ is the species identifier, and ‘x y z’ are the fractional coordinates.</p>
 </dd>
 </dl>
 </section>
-<section id="id13">
-<h4>Returns<a class="headerlink" href="#id13" title="Permalink to this heading">#</a></h4>
+<section id="id14">
+<h5>Returns<a class="headerlink" href="#id14" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
-<section id="id14">
-<h4>Notes<a class="headerlink" href="#id14" title="Permalink to this heading">#</a></h4>
+<section id="id15">
+<h5>Notes<a class="headerlink" href="#id15" title="Permalink to this heading">#</a></h5>
 <p>This method updates several instance variables:
 - <cite>nions</cite>: The total number of ions as determined from <cite>line</cite>.
 - <cite>ions_per_type</cite>: A list that tracks the number of ions per species.
@@ -483,19 +497,19 @@ After that, data lines include mode frequencies and corresponding contributions.
 <dt class="sig sig-object py" id="PDielec.ExperimentOutputReader.ExperimentOutputReader._read_frequencies">
 <span class="sig-name descname"><span class="pre">_read_frequencies</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/ExperimentOutputReader.html#ExperimentOutputReader._read_frequencies"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.ExperimentOutputReader.ExperimentOutputReader._read_frequencies" title="Permalink to this definition">#</a></dt>
 <dd><p>Reads frequencies and oscillator strengths from a line and appends them to the object’s attributes.</p>
-<section id="id15">
-<h4>Parameters<a class="headerlink" href="#id15" title="Permalink to this heading">#</a></h4>
+<section id="id16">
+<h5>Parameters<a class="headerlink" href="#id16" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>line<span class="classifier">str</span></dt><dd><p>A string containing the frequency count, followed by lines of frequencies and strengths.</p>
 </dd>
 </dl>
 </section>
-<section id="id16">
-<h4>Returns<a class="headerlink" href="#id16" title="Permalink to this heading">#</a></h4>
+<section id="id17">
+<h5>Returns<a class="headerlink" href="#id17" title="Permalink to this heading">#</a></h5>
 <p>None.</p>
 </section>
-<section id="id17">
-<h4>Notes<a class="headerlink" href="#id17" title="Permalink to this heading">#</a></h4>
+<section id="id18">
+<h5>Notes<a class="headerlink" href="#id18" title="Permalink to this heading">#</a></h5>
 <p>This method reads the ‘nfreq’ (number of frequencies) from the initial given line. Then, for each frequency, it reads
 the corresponding line to extract the frequency and its oscillator strength. These values are stored in the object’s
 ‘frequencies’ and ‘oscillator_strengths’ lists, respectively. Each oscillator strength is initialized as a diagonal
@@ -512,12 +526,12 @@ is used to convert the scalar strength values into tensor form, which is not det
 <span class="sig-name descname"><span class="pre">_read_interpolate1_model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/ExperimentOutputReader.html#ExperimentOutputReader._read_interpolate1_model"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.ExperimentOutputReader.ExperimentOutputReader._read_interpolate1_model" title="Permalink to this definition">#</a></dt>
 <dd><p>Read in a tabulated permittivity and use it for interpolation.</p>
 <p>Only a single permittivity is given (real &amp; imaginary) which is taken to be isotropic</p>
-<section id="id18">
-<h4>Parameters<a class="headerlink" href="#id18" title="Permalink to this heading">#</a></h4>
+<section id="id19">
+<h5>Parameters<a class="headerlink" href="#id19" title="Permalink to this heading">#</a></h5>
 <p>line : str</p>
 </section>
-<section id="id19">
-<h4>Returns<a class="headerlink" href="#id19" title="Permalink to this heading">#</a></h4>
+<section id="id20">
+<h5>Returns<a class="headerlink" href="#id20" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 </dd></dl>
@@ -527,12 +541,12 @@ is used to convert the scalar strength values into tensor form, which is not det
 <span class="sig-name descname"><span class="pre">_read_interpolate3_model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/ExperimentOutputReader.html#ExperimentOutputReader._read_interpolate3_model"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.ExperimentOutputReader.ExperimentOutputReader._read_interpolate3_model" title="Permalink to this definition">#</a></dt>
 <dd><p>Read in a tabulated permittivity and use it for interpolation.</p>
 <p>Three permittivities are given from the diagonal components of the tensor</p>
-<section id="id20">
-<h4>Parameters<a class="headerlink" href="#id20" title="Permalink to this heading">#</a></h4>
+<section id="id21">
+<h5>Parameters<a class="headerlink" href="#id21" title="Permalink to this heading">#</a></h5>
 <p>line : str</p>
 </section>
-<section id="id21">
-<h4>Returns<a class="headerlink" href="#id21" title="Permalink to this heading">#</a></h4>
+<section id="id22">
+<h5>Returns<a class="headerlink" href="#id22" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 </dd></dl>
@@ -542,12 +556,12 @@ is used to convert the scalar strength values into tensor form, which is not det
 <span class="sig-name descname"><span class="pre">_read_interpolate6_model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/ExperimentOutputReader.html#ExperimentOutputReader._read_interpolate6_model"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.ExperimentOutputReader.ExperimentOutputReader._read_interpolate6_model" title="Permalink to this definition">#</a></dt>
 <dd><p>Read in a tabulated permittivity and use it for interpolation.</p>
 <p>This is a full 6 parameter permittivity matrix</p>
-<section id="id22">
-<h4>Parameters<a class="headerlink" href="#id22" title="Permalink to this heading">#</a></h4>
+<section id="id23">
+<h5>Parameters<a class="headerlink" href="#id23" title="Permalink to this heading">#</a></h5>
 <p>line : str</p>
 </section>
-<section id="id23">
-<h4>Returns<a class="headerlink" href="#id23" title="Permalink to this heading">#</a></h4>
+<section id="id24">
+<h5>Returns<a class="headerlink" href="#id24" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 </dd></dl>
@@ -558,19 +572,19 @@ is used to convert the scalar strength values into tensor form, which is not det
 <dd><p>Reads and processes lattice vectors from an input line, then updates internal structures with the new unit cell.</p>
 <p>This method is intended to parse a series of lines that describe lattice vectors, scale them appropriately, and update the object’s list of unit cells as well as other relevant properties like volume and, optionally, crystal permittivity.
 The lattice vectors are assumed to be in Angstrom</p>
-<section id="id24">
-<h4>Parameters<a class="headerlink" href="#id24" title="Permalink to this heading">#</a></h4>
+<section id="id25">
+<h5>Parameters<a class="headerlink" href="#id25" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>line<span class="classifier">str</span></dt><dd><p>The first line from which to begin reading the lattice vector information.</p>
 </dd>
 </dl>
 </section>
-<section id="id25">
-<h4>Returns<a class="headerlink" href="#id25" title="Permalink to this heading">#</a></h4>
+<section id="id26">
+<h5>Returns<a class="headerlink" href="#id26" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
-<section id="id26">
-<h4>See Also<a class="headerlink" href="#id26" title="Permalink to this heading">#</a></h4>
+<section id="id27">
+<h5>See Also<a class="headerlink" href="#id27" title="Permalink to this heading">#</a></h5>
 <p>UnitCell : A class or function used to represent and manipulate unit cell information.</p>
 </section>
 </dd></dl>
@@ -582,20 +596,20 @@ The lattice vectors are assumed to be in Angstrom</p>
 <p>This method reads lines from a file, skipping over any lines that are
 either empty, contain only whitespace, or start with the ‘#’ character
 (indicating a comment).</p>
-<section id="id27">
-<h4>Parameters<a class="headerlink" href="#id27" title="Permalink to this heading">#</a></h4>
+<section id="id28">
+<h5>Parameters<a class="headerlink" href="#id28" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
-<section id="id28">
-<h4>Returns<a class="headerlink" href="#id28" title="Permalink to this heading">#</a></h4>
+<section id="id29">
+<h5>Returns<a class="headerlink" href="#id29" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>str</dt><dd><p>The next non-empty, non-comment line from the file. If the end of the
 file is reached, the returned string will be empty.</p>
 </dd>
 </dl>
 </section>
-<section id="id29">
-<h4>Notes<a class="headerlink" href="#id29" title="Permalink to this heading">#</a></h4>
+<section id="id30">
+<h5>Notes<a class="headerlink" href="#id30" title="Permalink to this heading">#</a></h5>
 <ul class="simple">
 <li><p>Lines consisting solely of whitespace characters (spaces, tabs, newlines) are considered empty.</p></li>
 </ul>
@@ -606,12 +620,12 @@ file is reached, the returned string will be empty.</p>
 <dt class="sig sig-object py" id="PDielec.ExperimentOutputReader.ExperimentOutputReader._read_output_files">
 <span class="sig-name descname"><span class="pre">_read_output_files</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/ExperimentOutputReader.html#ExperimentOutputReader._read_output_files"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.ExperimentOutputReader.ExperimentOutputReader._read_output_files" title="Permalink to this definition">#</a></dt>
 <dd><p>Define the search strings and read the Experiment files in the directory.</p>
-<section id="id30">
-<h4>Parameters<a class="headerlink" href="#id30" title="Permalink to this heading">#</a></h4>
+<section id="id31">
+<h5>Parameters<a class="headerlink" href="#id31" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
-<section id="id31">
-<h4>Returns<a class="headerlink" href="#id31" title="Permalink to this heading">#</a></h4>
+<section id="id32">
+<h5>Returns<a class="headerlink" href="#id32" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 </dd></dl>
@@ -620,19 +634,19 @@ file is reached, the returned string will be empty.</p>
 <dt class="sig sig-object py" id="PDielec.ExperimentOutputReader.ExperimentOutputReader._read_species">
 <span class="sig-name descname"><span class="pre">_read_species</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/ExperimentOutputReader.html#ExperimentOutputReader._read_species"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.ExperimentOutputReader.ExperimentOutputReader._read_species" title="Permalink to this definition">#</a></dt>
 <dd><p>Read species information from a line.</p>
-<section id="id32">
-<h4>Parameters<a class="headerlink" href="#id32" title="Permalink to this heading">#</a></h4>
+<section id="id33">
+<h5>Parameters<a class="headerlink" href="#id33" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>line<span class="classifier">str</span></dt><dd><p>A string containing the number of species followed by species’ information in subsequent lines.</p>
 </dd>
 </dl>
 </section>
-<section id="id33">
-<h4>Returns<a class="headerlink" href="#id33" title="Permalink to this heading">#</a></h4>
+<section id="id34">
+<h5>Returns<a class="headerlink" href="#id34" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
-<section id="id34">
-<h4>Notes<a class="headerlink" href="#id34" title="Permalink to this heading">#</a></h4>
+<section id="id35">
+<h5>Notes<a class="headerlink" href="#id35" title="Permalink to this heading">#</a></h5>
 <p>This function updates the object’s <cite>species</cite>, <cite>masses_per_type</cite>, and <cite>ion_type_index</cite> attributes with the information read from the input line(s). Initially, it reads the total number of species from the first line. Then, for each species, it reads its name and mass, appends these to the <cite>species</cite> and <cite>masses_per_type</cite> lists, respectively, and updates the <cite>ion_type_index</cite> dictionary to map the species name to its type index. The <cite>nspecies</cite> attribute is updated with the current number of species after each iteration.</p>
 </section>
 </dd></dl>
@@ -641,19 +655,19 @@ file is reached, the returned string will be empty.</p>
 <dt class="sig sig-object py" id="PDielec.ExperimentOutputReader.ExperimentOutputReader._read_static_dielectric">
 <span class="sig-name descname"><span class="pre">_read_static_dielectric</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/ExperimentOutputReader.html#ExperimentOutputReader._read_static_dielectric"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.ExperimentOutputReader.ExperimentOutputReader._read_static_dielectric" title="Permalink to this definition">#</a></dt>
 <dd><p>Read and process static dielectric data.</p>
-<section id="id35">
-<h4>Parameters<a class="headerlink" href="#id35" title="Permalink to this heading">#</a></h4>
+<section id="id36">
+<h5>Parameters<a class="headerlink" href="#id36" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>line<span class="classifier">str</span></dt><dd><p>Not used but overwritten</p>
 </dd>
 </dl>
 </section>
-<section id="id36">
-<h4>Returns<a class="headerlink" href="#id36" title="Permalink to this heading">#</a></h4>
+<section id="id37">
+<h5>Returns<a class="headerlink" href="#id37" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
-<section id="id37">
-<h4>Notes<a class="headerlink" href="#id37" title="Permalink to this heading">#</a></h4>
+<section id="id38">
+<h5>Notes<a class="headerlink" href="#id38" title="Permalink to this heading">#</a></h5>
 <p>This method is designed to be used within a class that handles reading and processing
 simulation output data. It assumes access to a <cite>_read_line</cite> method which reads individual
 lines from the output, and potentially a <cite>CrystalPermittivity</cite> object for storing results.
@@ -662,8 +676,8 @@ and checks if the imaginary part of the overall dielectric constant is negligibl
 the dielectric constant is treated as real. The result is stored in the class instance and,
 if applicable, updates the <cite>CrystalPermittivity</cite> object’s epsilon infinity value.</p>
 </section>
-<section id="id38">
-<h4>Raises<a class="headerlink" href="#id38" title="Permalink to this heading">#</a></h4>
+<section id="id39">
+<h5>Raises<a class="headerlink" href="#id39" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>ValueError</dt><dd><p>If the input lines cannot be converted into complex numbers.</p>
 </dd>
@@ -675,12 +689,12 @@ if applicable, updates the <cite>CrystalPermittivity</cite> object’s epsilon i
 <dt class="sig sig-object py" id="PDielec.ExperimentOutputReader.ExperimentOutputReader.calculate_mass_weighted_normal_modes">
 <span class="sig-name descname"><span class="pre">calculate_mass_weighted_normal_modes</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/ExperimentOutputReader.html#ExperimentOutputReader.calculate_mass_weighted_normal_modes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.ExperimentOutputReader.ExperimentOutputReader.calculate_mass_weighted_normal_modes" title="Permalink to this definition">#</a></dt>
 <dd><p>Calculate the mass weight normal modes</p>
-<section id="id39">
-<h4>Parameters<a class="headerlink" href="#id39" title="Permalink to this heading">#</a></h4>
+<section id="id40">
+<h5>Parameters<a class="headerlink" href="#id40" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
-<section id="id40">
-<h4>Returns<a class="headerlink" href="#id40" title="Permalink to this heading">#</a></h4>
+<section id="id41">
+<h5>Returns<a class="headerlink" href="#id41" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>np.array</dt><dd><p>Returns an array for the mass weighted normal modes which in this case is zero
 The array has a shape 3*nions, nions, 3</p>
@@ -689,6 +703,7 @@ The array has a shape 3*nions, nions, 3</p>
 </section>
 </dd></dl>
 
+</section>
 </dd></dl>
 
 </section>

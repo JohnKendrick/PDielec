@@ -1,21 +1,21 @@
 #!/usr/bin/python
+#
+# Copyright 2024 John Kendrick & Andrew Burnett
+#
+# This file is part of PDielec
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the MIT License
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+#
+# You should have received a copy of the MIT License along with this program, if not see https://opensource.org/licenses/MIT
+#
 '''
-Copyright 2024 John Kendrick
-
-This file is part of PDielec
-
-This program is free software; you can redistribute it and/or modify
-it under the terms of the MIT License
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-
-You should have received a copy of the MIT License
-along with this program, if not see https://opensource.org/licenses/MIT
+The SuperCell module
 '''
-
-"""Hold unit cell information and its associated calculated properties"""
 
 import numpy as np
 from PDielec.Plotter     import print_reals, print_ints, print_strings
@@ -24,6 +24,33 @@ from PDielec.Plotter     import print_reals, print_ints, print_strings
 class SuperCell:
     """
     Hold super-cell information; the unit cell and the super-cell size.
+
+    Parameters
+    ----------
+    aUnitCell : :class:`~PDielec.UnitCell.UnitCell`
+        The unit cell associated with this instance.
+    anImageSpecifier : list or tuple
+        The list or tuples of 3 numbers used to generate images.
+
+    Attributes
+    ----------
+    unitCell : :class:`~PDielec.UnitCell.UnitCell`
+        The unit cell associated with this instance. (see :class:`~PDielec.UnitCell.UnitCell`)
+    imageList : NoneType or list
+        Initialized as None, can later hold a list of images of the cell
+    imageSpecifier : list or tuple
+        A list or tuple of 3 numbers which indicate the number of images of the cell to be created
+    XYZ : NoneType or array_like
+        Initialized as None, can later hold XYZ coordinates. (Cartesian coordinates)
+
+    Notes
+    -----
+    This method automatically invokes the createImages method at the end of initialization.
+
+    See also
+    --------
+
+    :class:`~PDielec.UnitCell.UnitCell`
     """
     def __init__(self, aUnitCell,anImageSpecifier):
         """
@@ -31,14 +58,14 @@ class SuperCell:
 
         Parameters
         ----------
-        aUnitCell : unitCell
+        aUnitCell : :class:`~PDielec.UnitCell.UnitCell`
             The unit cell associated with this instance.
         anImageSpecifier : list or tuple
             The list or tuples of 3 numbers used to generate images.
 
         Attributes
         ----------
-        unitCell : unitCell
+        unitCell : :class:`~PDielec.UnitCell.UnitCell`
             The unit cell associated with this instance.
         imageList : NoneType or list
             Initialized as None, can later hold a list of images of the cell

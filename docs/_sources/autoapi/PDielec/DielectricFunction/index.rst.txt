@@ -7,21 +7,20 @@
 
    DielectricFunction
 
-   Provides an interface to different mechanisms for providing dielectric information to pdielec and pdgui
+   Provides an interface to different mechanisms for providing dielectric information
 
-   Copyright 2024 John Kendrick
+   - Base class :class:`DielectricFunction`
 
-   This file is part of PDielec
-
-   This program is free software; you can redistribute it and/or modify
-   it under the terms of the MIT License
-
-   This program is distributed in the hope that it will be useful,
-   but WITHOUT ANY WARRANTY; without even the implied warranty of
-   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-
-   You should have received a copy of the MIT License
-   along with this program, if not see https://opensource.org/licenses/MIT
+       - Subclass :class:`ConstantTensor`
+       - Subclass :class:`ConstantScalar`
+       - Subclass :class:`TabulateScalar`
+       - Subclass :class:`Tabulate1`
+       - Subclass :class:`Tabulate3`
+       - Subclass :class:`Tabulate6`
+       - Subclass :class:`DFT`
+       - Subclass :class:`DrudeLorentz`
+       - Subclass :class:`FPSQ`
+       - Subclass :class:`Sellmeier`
 
 
 
@@ -53,7 +52,7 @@ Classes
 
    Bases: :py:obj:`DielectricFunction`
 
-   A class for a complex constant scalar dielectric function.
+   A complex constant scalar permittivity
 
    Inherits from DielectricFunction. Provides a calculate() function to return
    the permittivity.
@@ -84,7 +83,7 @@ Classes
 
    Bases: :py:obj:`DielectricFunction`
 
-   A class for a complex constant tensor dielectric function.
+   A complex constant tensor permittivity
 
    Inherits from DielectricFunction.
    Provides a calculate() function to return the permittivity.
@@ -123,7 +122,7 @@ Classes
 
    Bases: :py:obj:`DielectricFunction`
 
-   A class for a complex constant tensor dielectric function.
+   A complex tensor permittivity from a DFT calculation
 
    Inherits from DielectricFunction.
    Suitable for use in calculating the permittivity from DFT calculations.
@@ -580,7 +579,7 @@ Classes
 
    Bases: :py:obj:`DielectricFunction`
 
-   A class for a complex constant tensor dielectric function.
+   A complex tensor Drude-Lorentz permittivity
 
    Inherits from DielectricFunction.
    Provides a calculate() function to return the permittivity.
@@ -716,7 +715,7 @@ Classes
 
    Bases: :py:obj:`DielectricFunction`
 
-   A complex constant tensor FPSQ dielectric function.
+   A complex tensor FPSQ dielectric function.
 
    Inherits from DielectricFunction.
    Provides a calculate() function to return the permittivity.
@@ -742,7 +741,7 @@ Classes
 
    Bases: :py:obj:`DielectricFunction`
 
-   A complex constant tensor Sellmeier dielectric function.
+   A real tensor Sellmeier permittivity
 
    Inherits from DielectricFunction. Provides a calculate() function to return the permittivity.
 
@@ -772,7 +771,7 @@ Classes
 
    Bases: :py:obj:`DielectricFunction`
 
-   A class for a complex constant tensor dielectric function.
+   A complex tabulated isotropic tensor permittivity
 
    Inherits from DielectricFunction.
    Represents an isotropic dielectric function.
@@ -804,7 +803,7 @@ Classes
 
    Bases: :py:obj:`DielectricFunction`
 
-   A class for a complex constant tensor dielectric function.
+   A complex tabulated diagonal tensor permittivity
 
    Inherits from DielectricFunction.
    Represents an orthorhombic dielectric function.
@@ -836,7 +835,7 @@ Classes
 
    Bases: :py:obj:`DielectricFunction`
 
-   A class for a complex constant tensor dielectric function.
+   A complex tabulated, anisotropic tensor permittivity
 
    Inherits from DielectricFunction.
    Represents an non-isotropic dielectric function.
@@ -868,7 +867,7 @@ Classes
 
    Bases: :py:obj:`DielectricFunction`
 
-   A class for a complex tabulated scalar dielectric function.
+   A complex tabulated scalar permittivity
 
    Inherits from DielectricFunction. Represents an isotropic material dielectric function. Provides a calculate() function to return the permittivity.
 

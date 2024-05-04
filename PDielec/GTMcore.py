@@ -90,9 +90,15 @@ import numpy as np
 import scipy.linalg as lag
 import sys
 import copy
+from PDielec.Constants import speed_light_si, epsilon_0_si
 
-c_const = 299792458 # m/s
-eps0 = 8.854e-12 ## vacuum permittivity
+#jk c_const = 299792458 # m/s
+#jk eps0 = 8.854e-12 ## vacuum permittivity
+#
+# JK using PDielec constants
+#
+c_const = speed_light_si
+eps0 = epsilon_0_si            # Doesn't appear to be used
 
 def vacuum_eps(f):
     """
@@ -115,7 +121,7 @@ def vacuum_eps(f):
     
 def exact_inv_2x2(M):
     """
-    Calculate the inverse of M.
+    Calculate the inverse of 2x2 complex matrix, M.
 
     Parameters
     ----------
@@ -136,7 +142,7 @@ def exact_inv_2x2(M):
     
 def exact_inv_3x3(M):
     """
-    Calculate the inverse of M
+    Calculate the inverse of a 3x3 complex matrix M
 
     Parameters
     ----------
@@ -233,6 +239,15 @@ def exact_inv_4x4(M):
 class Layer:
     """
     Layer class. An instance is a single layer:
+    
+    The inherited layer classes wich are used in PDielec are:
+
+        - :class:`CoherentLayer`
+        - :class:`SemiInfiniteLayer`
+        - :class:`IncoherentIntensityLayer`
+        - :class:`IncoherentAveragePhaseLayer`
+        - :class:`IncoherentPhaseLayer`
+        - :class:`IncoherentThickLayer`
 
     Attributes
     ----------
@@ -1361,6 +1376,11 @@ class IncoherentThickLayer(CoherentLayer):
 class System:
     """
     System class. An instance is an optical system with substrate, superstrate, and layers.
+  
+     Derived classes used by PDielec are:
+
+        - :class:`TransferMatrixSystem`
+        - :class:`ScatteringMatrixSystem`
 
     Attributes
     ----------

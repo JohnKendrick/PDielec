@@ -273,24 +273,37 @@
         <article role="main">
           <h1>Source code for PDielec.DielectricFunction</h1><div class="highlight"><pre>
 <span></span><span class="ch">#!/usr/bin/python</span>
+<span class="c1">#</span>
+<span class="c1"># Copyright 2024 John Kendrick &amp; Andrew Burnett</span>
+<span class="c1">#</span>
+<span class="c1"># This file is part of PDielec</span>
+<span class="c1">#</span>
+<span class="c1"># This program is free software; you can redistribute it and/or modify</span>
+<span class="c1"># it under the terms of the MIT License</span>
+<span class="c1">#</span>
+<span class="c1"># This program is distributed in the hope that it will be useful,</span>
+<span class="c1"># but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="c1"># MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.</span>
+<span class="c1">#</span>
+<span class="c1"># You should have received a copy of the MIT License along with this program, if not see https://opensource.org/licenses/MIT</span>
+<span class="c1">#</span>
 <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">DielectricFunction</span>
 
-<span class="sd">Provides an interface to different mechanisms for providing dielectric information to pdielec and pdgui</span>
+<span class="sd">Provides an interface to different mechanisms for providing dielectric information</span>
 
-<span class="sd">Copyright 2024 John Kendrick</span>
+<span class="sd">- Base class :class:`DielectricFunction`</span>
 
-<span class="sd">This file is part of PDielec</span>
-
-<span class="sd">This program is free software; you can redistribute it and/or modify</span>
-<span class="sd">it under the terms of the MIT License</span>
-
-<span class="sd">This program is distributed in the hope that it will be useful,</span>
-<span class="sd">but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
-<span class="sd">MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.</span>
-
-<span class="sd">You should have received a copy of the MIT License</span>
-<span class="sd">along with this program, if not see https://opensource.org/licenses/MIT</span>
+<span class="sd">    - Subclass :class:`ConstantTensor`</span>
+<span class="sd">    - Subclass :class:`ConstantScalar`</span>
+<span class="sd">    - Subclass :class:`TabulateScalar`</span>
+<span class="sd">    - Subclass :class:`Tabulate1`</span>
+<span class="sd">    - Subclass :class:`Tabulate3`</span>
+<span class="sd">    - Subclass :class:`Tabulate6`</span>
+<span class="sd">    - Subclass :class:`DFT`</span>
+<span class="sd">    - Subclass :class:`DrudeLorentz`</span>
+<span class="sd">    - Subclass :class:`FPSQ`</span>
+<span class="sd">    - Subclass :class:`Sellmeier`</span>
 <span class="sd">&#39;&#39;&#39;</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
@@ -689,7 +702,7 @@
 
 <div class="viewcode-block" id="ConstantTensor"><a class="viewcode-back" href="../../autoapi/PDielec/DielectricFunction/index.html#PDielec.DielectricFunction.ConstantTensor">[docs]</a><span class="k">class</span> <span class="nc">ConstantTensor</span><span class="p">(</span><span class="n">DielectricFunction</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">    A class for a complex constant tensor dielectric function.</span>
+<span class="sd">    A complex constant tensor permittivity</span>
 
 <span class="sd">    Inherits from DielectricFunction.</span>
 <span class="sd">    Provides a calculate() function to return the permittivity.</span>
@@ -736,7 +749,7 @@
 
 <div class="viewcode-block" id="ConstantScalar"><a class="viewcode-back" href="../../autoapi/PDielec/DielectricFunction/index.html#PDielec.DielectricFunction.ConstantScalar">[docs]</a><span class="k">class</span> <span class="nc">ConstantScalar</span><span class="p">(</span><span class="n">DielectricFunction</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">    A class for a complex constant scalar dielectric function.</span>
+<span class="sd">    A complex constant scalar permittivity</span>
 
 <span class="sd">    Inherits from DielectricFunction. Provides a calculate() function to return</span>
 <span class="sd">    the permittivity.</span>
@@ -775,7 +788,7 @@
 
 <div class="viewcode-block" id="TabulateScalar"><a class="viewcode-back" href="../../autoapi/PDielec/DielectricFunction/index.html#PDielec.DielectricFunction.TabulateScalar">[docs]</a><span class="k">class</span> <span class="nc">TabulateScalar</span><span class="p">(</span><span class="n">DielectricFunction</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">    A class for a complex tabulated scalar dielectric function.</span>
+<span class="sd">    A complex tabulated scalar permittivity</span>
 
 <span class="sd">    Inherits from DielectricFunction. Represents an isotropic material dielectric function. Provides a calculate() function to return the permittivity.</span>
 
@@ -829,7 +842,7 @@
 
 <div class="viewcode-block" id="Tabulate1"><a class="viewcode-back" href="../../autoapi/PDielec/DielectricFunction/index.html#PDielec.DielectricFunction.Tabulate1">[docs]</a><span class="k">class</span> <span class="nc">Tabulate1</span><span class="p">(</span><span class="n">DielectricFunction</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">    A class for a complex constant tensor dielectric function.</span>
+<span class="sd">    A complex tabulated isotropic tensor permittivity</span>
 
 <span class="sd">    Inherits from DielectricFunction.</span>
 <span class="sd">    Represents an isotropic dielectric function.</span>
@@ -880,7 +893,7 @@
 
 <div class="viewcode-block" id="Tabulate3"><a class="viewcode-back" href="../../autoapi/PDielec/DielectricFunction/index.html#PDielec.DielectricFunction.Tabulate3">[docs]</a><span class="k">class</span> <span class="nc">Tabulate3</span><span class="p">(</span><span class="n">DielectricFunction</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">    A class for a complex constant tensor dielectric function.</span>
+<span class="sd">    A complex tabulated diagonal tensor permittivity</span>
 
 <span class="sd">    Inherits from DielectricFunction.</span>
 <span class="sd">    Represents an orthorhombic dielectric function.</span>
@@ -940,7 +953,7 @@
 
 <div class="viewcode-block" id="Tabulate6"><a class="viewcode-back" href="../../autoapi/PDielec/DielectricFunction/index.html#PDielec.DielectricFunction.Tabulate6">[docs]</a><span class="k">class</span> <span class="nc">Tabulate6</span><span class="p">(</span><span class="n">DielectricFunction</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">    A class for a complex constant tensor dielectric function.</span>
+<span class="sd">    A complex tabulated, anisotropic tensor permittivity</span>
 
 <span class="sd">    Inherits from DielectricFunction.</span>
 <span class="sd">    Represents an non-isotropic dielectric function.</span>
@@ -1012,7 +1025,7 @@
 
 <div class="viewcode-block" id="DFT"><a class="viewcode-back" href="../../autoapi/PDielec/DielectricFunction/index.html#PDielec.DielectricFunction.DFT">[docs]</a><span class="k">class</span> <span class="nc">DFT</span><span class="p">(</span><span class="n">DielectricFunction</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">    A class for a complex constant tensor dielectric function.</span>
+<span class="sd">    A complex tensor permittivity from a DFT calculation</span>
 
 <span class="sd">    Inherits from DielectricFunction.</span>
 <span class="sd">    Suitable for use in calculating the permittivity from DFT calculations.</span>
@@ -1204,7 +1217,7 @@
 
 <div class="viewcode-block" id="DrudeLorentz"><a class="viewcode-back" href="../../autoapi/PDielec/DielectricFunction/index.html#PDielec.DielectricFunction.DrudeLorentz">[docs]</a><span class="k">class</span> <span class="nc">DrudeLorentz</span><span class="p">(</span><span class="n">DielectricFunction</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">    A class for a complex constant tensor dielectric function.</span>
+<span class="sd">    A complex tensor Drude-Lorentz permittivity</span>
 
 <span class="sd">    Inherits from DielectricFunction.</span>
 <span class="sd">    Provides a calculate() function to return the permittivity.</span>
@@ -1384,7 +1397,7 @@
 
 <div class="viewcode-block" id="FPSQ"><a class="viewcode-back" href="../../autoapi/PDielec/DielectricFunction/index.html#PDielec.DielectricFunction.FPSQ">[docs]</a><span class="k">class</span> <span class="nc">FPSQ</span><span class="p">(</span><span class="n">DielectricFunction</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">    A complex constant tensor FPSQ dielectric function.</span>
+<span class="sd">    A complex tensor FPSQ dielectric function.</span>
 
 <span class="sd">    Inherits from DielectricFunction.</span>
 <span class="sd">    Provides a calculate() function to return the permittivity.</span>
@@ -1446,7 +1459,7 @@
 
 <div class="viewcode-block" id="Sellmeier"><a class="viewcode-back" href="../../autoapi/PDielec/DielectricFunction/index.html#PDielec.DielectricFunction.Sellmeier">[docs]</a><span class="k">class</span> <span class="nc">Sellmeier</span><span class="p">(</span><span class="n">DielectricFunction</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">    A complex constant tensor Sellmeier dielectric function.</span>
+<span class="sd">    A real tensor Sellmeier permittivity</span>
 
 <span class="sd">    Inherits from DielectricFunction. Provides a calculate() function to return the permittivity.</span>
 

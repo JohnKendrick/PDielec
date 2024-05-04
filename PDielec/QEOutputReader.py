@@ -1,20 +1,20 @@
 #!/usr/bin/python
+#
+# Copyright 2024 John Kendrick & Andrew Burnett
+#
+# This file is part of PDielec
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the MIT License
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+#
+# You should have received a copy of the MIT License along with this program, if not see https://opensource.org/licenses/MIT
+#
 '''
 QEOutputReader: Read the contents of a QE output file containing QE dynamical matrix.
-
-Copyright 2024 John Kendrick
-
-This file is part of PDielec
-
-This program is free software; you can redistribute it and/or modify
-it under the terms of the MIT License
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-
-You should have received a copy of the MIT License
-along with this program, if not see https://opensource.org/licenses/MIT
 '''
 import re
 import math
@@ -28,7 +28,17 @@ class QEOutputReader(GenericOutputReader):
     """
     Read the contents of a QE output file containing QE dynamical matrix.
 
-    Inherits from GenericOutputReader
+    Inherits from :class:`~PDielec.GenericOutputReader.GenericOutputReader`
+
+    Parameters
+    ----------
+    filenames : str or list
+        The filename or a list of filenames for QE output files.
+
+    Notes
+    -----
+    This constructor initializes a ``GenericOutputReader`` with the given filenames,
+    sets the type attribute to 'QE output', and initializes `_alat` attribute to None.
     """
 
     def __init__(self, filenames):

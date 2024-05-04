@@ -5,27 +5,7 @@
 
 .. autoapi-nested-parse::
 
-   The MIT License (MIT)
-
-   Copyright (c) 2024 John Kendrick
-
-   Permission is hereby granted, free of charge, to any person obtaining a copy
-   of this software and associated documentation files (the "Software"), to deal
-   in the Software without restriction, including without limitation the rights
-   to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-   copies of the Software, and to permit persons to whom the Software is
-   furnished to do so, subject to the following conditions:
-
-   The above copyright notice and this permission notice shall be included in all
-   copies or substantial portions of the Software.
-
-   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-   IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-   FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-   AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-   LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-   SOFTWARE.
+   SingleCrystalLayer module
 
 
 
@@ -50,10 +30,21 @@ Classes
 
    A GUI window for displaying and editing the properties of a layer in a project.
 
+   Parameters
+   ----------
+   layer : object
+       The layer object to be displayed or acted upon in the window. (see :class:`SingleCrystalLayer`)
+   message : str, optional
+       Custom message to display in the window. The default is an empty string.
+   parent : QWidget, optional
+       The parent widget of this window. The default is None.
+   debug : bool, optional
+       Flag to enable or disable debug mode. The default is False.
+
    Attributes
    ----------
    layer : object
-       The layer that is displayed or being edited in this window.
+       The :class:`SingleCrystalLayer` instance that is displayed or being edited in this window.
    message : str
        The message displayed at the top of the window.
    layout : QVBoxLayout
@@ -64,7 +55,7 @@ Classes
    Methods
    -------
    getLayer()
-       Return the layer being edited or displayed.
+       Return the :class:`SingleCrystalLayer` instance being edited or displayed.
    drawLayerWidget()
        Create a QWidget displaying all information about the layer.
    drawLayerWidgetLine1()
@@ -235,14 +226,35 @@ Classes
 
    A class representing a single crystal layer.
 
+   Parameters
+   ----------
+   material : Material
+       An instance of Material object (see :class:`~PDielec.Materials.Material`), which contains:
+         - name (str)
+         - density (float)
+         - permittivity (float)
+         - unit cell (UnitCell)
+   hkl : list of int
+       A list of 3 integers defining the plane of interest.
+   azimuthal : float
+       The azimuthal angle of rotation of the crystal about the z-axis.
+   thickness : float
+       The thickness of the layer in the specified thickness units.
+   thicknessUnits : {'ang','nm', 'um', 'mm', 'cm'}
+       The units of thickness measurement.
+   incoherentOption : {'Coherent', 'Incoherent (intensity)', 'Incoherent (phase cancelling)', 'Incoherent (phase averaging)', 'Incoherent non-reflective'}
+       The option for handling incoherent scattering. 
+   dielectricFlag : bool
+       True if the layer material is the dielectric being studied (ie it was read in as a DFT calculation), False otherwise.
+
    Attributes
    ----------
    material : Material
-       The material of the layer.
+       The material of the layer. (See :class:`~PDielec.Materials.Material`)
    hkl : list of int
        The Miller indices of the plane of interest in the crystal.
    incoherentOption : str
-       The incoherent interaction option for the layer.
+       The incoherent option for the layer.
    azimuthal : float
        The azimuthal angle of rotation of the crystal about the z-axis, in degrees.
    thickness : float

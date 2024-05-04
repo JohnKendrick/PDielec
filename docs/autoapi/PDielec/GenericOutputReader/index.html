@@ -275,16 +275,7 @@
         <article role="main">
           <section id="module-PDielec.GenericOutputReader">
 <span id="pdielec-genericoutputreader"></span><h1><a class="reference internal" href="#module-PDielec.GenericOutputReader" title="PDielec.GenericOutputReader"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GenericOutputReader</span></code></a><a class="headerlink" href="#module-PDielec.GenericOutputReader" title="Permalink to this heading">#</a></h1>
-<p>Generic reader of output files. An actual reader should inherit from this class.
-Copyright 2024 John Kendrick</p>
-<p>This file is part of PDielec</p>
-<p>This program is free software; you can redistribute it and/or modify
-it under the terms of the MIT License</p>
-<p>This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.</p>
-<p>You should have received a copy of the MIT License
-along with this program, if not see <a class="reference external" href="https://opensource.org/licenses/MIT">https://opensource.org/licenses/MIT</a></p>
+<p>Generic reader of output files. An actual reader should inherit from this class.</p>
 <section id="module-contents">
 <h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this heading">#</a></h2>
 <section id="classes">
@@ -301,7 +292,26 @@ along with this program, if not see <a class="reference external" href="https://
 <dl class="py class">
 <dt class="sig sig-object py" id="PDielec.GenericOutputReader.GenericOutputReader">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PDielec.GenericOutputReader.</span></span><span class="sig-name descname"><span class="pre">GenericOutputReader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filenames</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/GenericOutputReader.html#GenericOutputReader"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GenericOutputReader.GenericOutputReader" title="Permalink to this definition">#</a></dt>
-<dd><p>Generic reader of output files. Actual reader should inherit from this class.</p>
+<dd><p>Generic reader of output files. Actual reader should inherit from this class.
+Examples of readers with this base class:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="../AbinitOutputReader/index.html#module-PDielec.AbinitOutputReader" title="PDielec.AbinitOutputReader"><code class="xref py py-class docutils literal notranslate"><span class="pre">AbinitOutputReader</span></code></a></p></li>
+<li><p><a class="reference internal" href="../CastepOutputReader/index.html#module-PDielec.CastepOutputReader" title="PDielec.CastepOutputReader"><code class="xref py py-class docutils literal notranslate"><span class="pre">CastepOutputReader</span></code></a></p></li>
+<li><p><a class="reference internal" href="../CrystalOutputReader/index.html#module-PDielec.CrystalOutputReader" title="PDielec.CrystalOutputReader"><code class="xref py py-class docutils literal notranslate"><span class="pre">CrystalOutputReader</span></code></a></p></li>
+<li><p><a class="reference internal" href="../ExperimentOutputReader/index.html#module-PDielec.ExperimentOutputReader" title="PDielec.ExperimentOutputReader"><code class="xref py py-class docutils literal notranslate"><span class="pre">ExperimentOutputReader</span></code></a></p></li>
+<li><p><a class="reference internal" href="../GulpOutputReader/index.html#module-PDielec.GulpOutputReader" title="PDielec.GulpOutputReader"><code class="xref py py-class docutils literal notranslate"><span class="pre">GulpOutputReader</span></code></a></p></li>
+<li><p><a class="reference internal" href="../PhonopyOutputReader/index.html#module-PDielec.PhonopyOutputReader" title="PDielec.PhonopyOutputReader"><code class="xref py py-class docutils literal notranslate"><span class="pre">PhonopyOutputReader</span></code></a></p></li>
+<li><p><a class="reference internal" href="../QEOutputReader/index.html#module-PDielec.QEOutputReader" title="PDielec.QEOutputReader"><code class="xref py py-class docutils literal notranslate"><span class="pre">QEOutputReader</span></code></a></p></li>
+<li><p><a class="reference internal" href="../VaspOutputReader/index.html#module-PDielec.VaspOutputReader" title="PDielec.VaspOutputReader"><code class="xref py py-class docutils literal notranslate"><span class="pre">VaspOutputReader</span></code></a></p></li>
+</ul>
+<section id="parameters">
+<h4>Parameters<a class="headerlink" href="#parameters" title="Permalink to this heading">#</a></h4>
+<dl class="simple">
+<dt>filenames<span class="classifier">list</span></dt><dd><p>A list containing file names (strings) to be associated with the instance. These
+are converted into the absolute paths and stored.</p>
+</dd>
+</dl>
+</section>
 <section id="attributes">
 <h4>Attributes<a class="headerlink" href="#attributes" title="Permalink to this heading">#</a></h4>
 <dl class="simple">
@@ -351,8 +361,8 @@ each filename to its absolute path.</p>
 <dt class="sig sig-object py" id="PDielec.GenericOutputReader.GenericOutputReader._born_charge_sum_rule">
 <span class="sig-name descname"><span class="pre">_born_charge_sum_rule</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/GenericOutputReader.html#GenericOutputReader._born_charge_sum_rule"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GenericOutputReader.GenericOutputReader._born_charge_sum_rule" title="Permalink to this definition">#</a></dt>
 <dd><p>Apply a simple charge sum rule to all the elements of the born matrices</p>
-<section id="parameters">
-<h5>Parameters<a class="headerlink" href="#parameters" title="Permalink to this heading">#</a></h5>
+<section id="id1">
+<h5>Parameters<a class="headerlink" href="#id1" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 <section id="returns">
@@ -370,16 +380,16 @@ each filename to its absolute path.</p>
 <span class="sig-name descname"><span class="pre">_dynamical_matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hessian</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/GenericOutputReader.html#GenericOutputReader._dynamical_matrix"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GenericOutputReader.GenericOutputReader._dynamical_matrix" title="Permalink to this definition">#</a></dt>
 <dd><p>Process the dynamical matrix.</p>
 <p>Processes the dynamical matrix by performing several steps: symmetrizing the Hessian, which is a nxn matrix of mass-weighted force constants, projecting out translational modes, diagonalizing the Hessian, and finally storing the frequencies and normal modes.</p>
-<section id="id1">
-<h5>Parameters<a class="headerlink" href="#id1" title="Permalink to this heading">#</a></h5>
-<p>None</p>
-</section>
 <section id="id2">
-<h5>Returns<a class="headerlink" href="#id2" title="Permalink to this heading">#</a></h5>
+<h5>Parameters<a class="headerlink" href="#id2" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 <section id="id3">
-<h5>Notes<a class="headerlink" href="#id3" title="Permalink to this heading">#</a></h5>
+<h5>Returns<a class="headerlink" href="#id3" title="Permalink to this heading">#</a></h5>
+<p>None</p>
+</section>
+<section id="id4">
+<h5>Notes<a class="headerlink" href="#id4" title="Permalink to this heading">#</a></h5>
 <ul class="simple">
 <li><p>Hessian is a nxn matrix of the mass weighted force constants.</p></li>
 <li><p>The hessian is symmetrised.</p></li>
@@ -395,8 +405,8 @@ each filename to its absolute path.</p>
 <span class="sig-name descname"><span class="pre">_modify_mass_weighting</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hessian</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">new</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/GenericOutputReader.html#GenericOutputReader._modify_mass_weighting"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GenericOutputReader.GenericOutputReader._modify_mass_weighting" title="Permalink to this definition">#</a></dt>
 <dd><p>Modify the Hessian matrix based on new mass weighting.</p>
 <p>This function iterates over the elements of the Hessian matrix (<cite>hessian</cite>) and adjusts each element based on the square root of the product of elements from a new weighting (<cite>new</cite>).</p>
-<section id="id4">
-<h5>Parameters<a class="headerlink" href="#id4" title="Permalink to this heading">#</a></h5>
+<section id="id5">
+<h5>Parameters<a class="headerlink" href="#id5" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>hessian<span class="classifier">numpy.ndarray</span></dt><dd><p>The original Hessian matrix whose elements are to be modified. It is assumed to be a square matrix with dimensions [3*nions, 3*nions], where nions is the number of ions (or atoms) in the system.</p>
 </dd>
@@ -404,8 +414,8 @@ each filename to its absolute path.</p>
 </dd>
 </dl>
 </section>
-<section id="id5">
-<h5>Returns<a class="headerlink" href="#id5" title="Permalink to this heading">#</a></h5>
+<section id="id6">
+<h5>Returns<a class="headerlink" href="#id6" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>numpy.ndarray</dt><dd><p>The modified Hessian matrix with the same dimensions as the input matrix.</p>
 </dd>
@@ -417,16 +427,16 @@ each filename to its absolute path.</p>
 <dt class="sig sig-object py" id="PDielec.GenericOutputReader.GenericOutputReader._read_output_file">
 <span class="sig-name descname"><span class="pre">_read_output_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/GenericOutputReader.html#GenericOutputReader._read_output_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GenericOutputReader.GenericOutputReader._read_output_file" title="Permalink to this definition">#</a></dt>
 <dd><p>Read through the file ‘name’ for key words. The keywords are established in _read_output_files.</p>
-<section id="id6">
-<h5>Parameters<a class="headerlink" href="#id6" title="Permalink to this heading">#</a></h5>
+<section id="id7">
+<h5>Parameters<a class="headerlink" href="#id7" title="Permalink to this heading">#</a></h5>
 <p>name : str</p>
 </section>
-<section id="id7">
-<h5>Returns<a class="headerlink" href="#id7" title="Permalink to this heading">#</a></h5>
+<section id="id8">
+<h5>Returns<a class="headerlink" href="#id8" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
-<section id="id8">
-<h5>Notes<a class="headerlink" href="#id8" title="Permalink to this heading">#</a></h5>
+<section id="id9">
+<h5>Notes<a class="headerlink" href="#id9" title="Permalink to this heading">#</a></h5>
 <p>The actual implementation for identifying keywords is handled by the <cite>_read_output_files</cite> method.</p>
 </section>
 </dd></dl>
@@ -435,16 +445,16 @@ each filename to its absolute path.</p>
 <dt class="sig sig-object py" id="PDielec.GenericOutputReader.GenericOutputReader._read_output_files">
 <span class="sig-name descname"><span class="pre">_read_output_files</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/GenericOutputReader.html#GenericOutputReader._read_output_files"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GenericOutputReader.GenericOutputReader._read_output_files" title="Permalink to this definition">#</a></dt>
 <dd><p>Read the through the output files.</p>
-<section id="id9">
-<h5>Parameters<a class="headerlink" href="#id9" title="Permalink to this heading">#</a></h5>
-<p>None</p>
-</section>
 <section id="id10">
-<h5>Returns<a class="headerlink" href="#id10" title="Permalink to this heading">#</a></h5>
+<h5>Parameters<a class="headerlink" href="#id10" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 <section id="id11">
-<h5>Notes<a class="headerlink" href="#id11" title="Permalink to this heading">#</a></h5>
+<h5>Returns<a class="headerlink" href="#id11" title="Permalink to this heading">#</a></h5>
+<p>None</p>
+</section>
+<section id="id12">
+<h5>Notes<a class="headerlink" href="#id12" title="Permalink to this heading">#</a></h5>
 <p>This method is over-ridden by the child class</p>
 </section>
 </dd></dl>
@@ -454,15 +464,15 @@ each filename to its absolute path.</p>
 <span class="sig-name descname"><span class="pre">_read_till_phrase</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">phrase</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/GenericOutputReader.html#GenericOutputReader._read_till_phrase"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GenericOutputReader.GenericOutputReader._read_till_phrase" title="Permalink to this definition">#</a></dt>
 <dd><p>Read lines from the current file until a match with phrase is found.
 Once a match is found, return the matching line.</p>
-<section id="id12">
-<h5>Parameters<a class="headerlink" href="#id12" title="Permalink to this heading">#</a></h5>
+<section id="id13">
+<h5>Parameters<a class="headerlink" href="#id13" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>phrase<span class="classifier">str</span></dt><dd><p>The phrase to match in each line of the file.</p>
 </dd>
 </dl>
 </section>
-<section id="id13">
-<h5>Returns<a class="headerlink" href="#id13" title="Permalink to this heading">#</a></h5>
+<section id="id14">
+<h5>Returns<a class="headerlink" href="#id14" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>str</dt><dd><p>The line from the file that matches the phrase.</p>
 </dd>
@@ -474,8 +484,8 @@ Once a match is found, return the matching line.</p>
 <dt class="sig sig-object py" id="PDielec.GenericOutputReader.GenericOutputReader._remove_mass_weighting">
 <span class="sig-name descname"><span class="pre">_remove_mass_weighting</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hessian</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">old</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/GenericOutputReader.html#GenericOutputReader._remove_mass_weighting"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GenericOutputReader.GenericOutputReader._remove_mass_weighting" title="Permalink to this definition">#</a></dt>
 <dd><p>Remove mass-weighting from a Hessian matrix.</p>
-<section id="id14">
-<h5>Parameters<a class="headerlink" href="#id14" title="Permalink to this heading">#</a></h5>
+<section id="id15">
+<h5>Parameters<a class="headerlink" href="#id15" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>hessian<span class="classifier">ndarray</span></dt><dd><p>The Hessian matrix to be un-weighted, typically a square, 2D array where
 the dimension correlates with 3 times the number of ions (nions*3) since
@@ -485,15 +495,15 @@ it includes the x, y, and z coordinates for each ion.</p>
 </dd>
 </dl>
 </section>
-<section id="id15">
-<h5>Returns<a class="headerlink" href="#id15" title="Permalink to this heading">#</a></h5>
+<section id="id16">
+<h5>Returns<a class="headerlink" href="#id16" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>new_hessian<span class="classifier">ndarray</span></dt><dd><p>The mass-weighting removed (un-weighted) Hessian matrix.</p>
 </dd>
 </dl>
 </section>
-<section id="id16">
-<h5>Notes<a class="headerlink" href="#id16" title="Permalink to this heading">#</a></h5>
+<section id="id17">
+<h5>Notes<a class="headerlink" href="#id17" title="Permalink to this heading">#</a></h5>
 <p>This function assumes that the Hessian matrix is provided in a form that
 has been mass-weighted. Each element of the <cite>hessian</cite> input is divided by
 the square root of the product of the mass weights of the corresponding ions,
@@ -509,15 +519,15 @@ original Hessian matrix.</p>
 <dt class="sig sig-object py" id="PDielec.GenericOutputReader.GenericOutputReader._symmetric_orthogonalisation">
 <span class="sig-name descname"><span class="pre">_symmetric_orthogonalisation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/GenericOutputReader.html#GenericOutputReader._symmetric_orthogonalisation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GenericOutputReader.GenericOutputReader._symmetric_orthogonalisation" title="Permalink to this definition">#</a></dt>
 <dd><p>Private routine to perform symmetric orthogonalization.</p>
-<section id="id17">
-<h5>Parameters<a class="headerlink" href="#id17" title="Permalink to this heading">#</a></h5>
+<section id="id18">
+<h5>Parameters<a class="headerlink" href="#id18" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>A<span class="classifier">ndarray</span></dt><dd><p>matrix to be orthogonalised</p>
 </dd>
 </dl>
 </section>
-<section id="id18">
-<h5>Returns<a class="headerlink" href="#id18" title="Permalink to this heading">#</a></h5>
+<section id="id19">
+<h5>Returns<a class="headerlink" href="#id19" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 </dd></dl>
@@ -529,12 +539,12 @@ original Hessian matrix.</p>
 <p>The hessian itself is constructed from the frequencies and normal modes
 Any changes to the atomic masses is applied
 Eckart conditions are applied if requested</p>
-<section id="id19">
-<h5>Parameters<a class="headerlink" href="#id19" title="Permalink to this heading">#</a></h5>
+<section id="id20">
+<h5>Parameters<a class="headerlink" href="#id20" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
-<section id="id20">
-<h5>Returns<a class="headerlink" href="#id20" title="Permalink to this heading">#</a></h5>
+<section id="id21">
+<h5>Returns<a class="headerlink" href="#id21" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>mass_weighted_normal_modes<span class="classifier">np.array</span></dt><dd><p>the mass weighted normal modes</p>
 </dd>
@@ -547,8 +557,8 @@ Eckart conditions are applied if requested</p>
 <span class="sig-name descname"><span class="pre">change_masses</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">new_masses</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mass_dictionary</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/GenericOutputReader.html#GenericOutputReader.change_masses"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GenericOutputReader.GenericOutputReader.change_masses" title="Permalink to this definition">#</a></dt>
 <dd><p>Change the masses of elements in a output reader.</p>
 <p>This function updates the masses of the elements within the reader according to the new masses provided. If the object has already had its masses edited, those edited masses will be used. Otherwise, it sets up or updates the simulation’s internal mass dictionary based on the provided <cite>new_masses</cite> and an optional external <cite>mass_dictionary</cite> for overrides. If debugging is enabled, various diagnostic messages will be printed during the function’s execution.</p>
-<section id="id21">
-<h5>Parameters<a class="headerlink" href="#id21" title="Permalink to this heading">#</a></h5>
+<section id="id22">
+<h5>Parameters<a class="headerlink" href="#id22" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>new_masses<span class="classifier">dict</span></dt><dd><p>A dictionary where keys are element symbols as strings and values are the new masses for these elements.</p>
 </dd>
@@ -556,12 +566,12 @@ Eckart conditions are applied if requested</p>
 </dd>
 </dl>
 </section>
-<section id="id22">
-<h5>Returns<a class="headerlink" href="#id22" title="Permalink to this heading">#</a></h5>
+<section id="id23">
+<h5>Returns<a class="headerlink" href="#id23" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
-<section id="id23">
-<h5>Notes<a class="headerlink" href="#id23" title="Permalink to this heading">#</a></h5>
+<section id="id24">
+<h5>Notes<a class="headerlink" href="#id24" title="Permalink to this heading">#</a></h5>
 <ul class="simple">
 <li><p>It assumes that <cite>cleanup_symbol()</cite> is a function used to standardize or validate the element symbols in <cite>self.species</cite>.</p></li>
 <li><p>It alters <cite>self.masses</cite> and <cite>self.masses_per_type</cite> to reflect changes in masses as per <cite>new_masses</cite> and <cite>mass_dictionary</cite>.</p></li>
@@ -578,12 +588,12 @@ Eckart conditions are applied if requested</p>
 <dd><p>Return a list of cleaned species symbols.</p>
 <p>This method applies a specified cleanup function to each element of
 the <cite>species</cite> attribute and returns the resulting list.</p>
-<section id="id24">
-<h5>Parameters<a class="headerlink" href="#id24" title="Permalink to this heading">#</a></h5>
+<section id="id25">
+<h5>Parameters<a class="headerlink" href="#id25" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
-<section id="id25">
-<h5>Returns<a class="headerlink" href="#id25" title="Permalink to this heading">#</a></h5>
+<section id="id26">
+<h5>Returns<a class="headerlink" href="#id26" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>list</dt><dd><p>A list of cleaned species symbols.</p>
 </dd>
@@ -596,12 +606,12 @@ the <cite>species</cite> attribute and returns the resulting list.</p>
 <span class="sig-name descname"><span class="pre">get_crystal_density</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/GenericOutputReader.html#GenericOutputReader.get_crystal_density"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GenericOutputReader.GenericOutputReader.get_crystal_density" title="Permalink to this definition">#</a></dt>
 <dd><p>Return the crystal density in g/cc</p>
 <p>The volume is in angstrom^3, the masses are in atomic mass units, the density is in g/cc</p>
-<section id="id26">
-<h5>Parameters<a class="headerlink" href="#id26" title="Permalink to this heading">#</a></h5>
+<section id="id27">
+<h5>Parameters<a class="headerlink" href="#id27" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
-<section id="id27">
-<h5>Returns<a class="headerlink" href="#id27" title="Permalink to this heading">#</a></h5>
+<section id="id28">
+<h5>Returns<a class="headerlink" href="#id28" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>float</dt><dd><p>Density in g/cc</p>
 </dd>
@@ -614,12 +624,12 @@ the <cite>species</cite> attribute and returns the resulting list.</p>
 <span class="sig-name descname"><span class="pre">get_unit_cell</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/GenericOutputReader.html#GenericOutputReader.get_unit_cell"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GenericOutputReader.GenericOutputReader.get_unit_cell" title="Permalink to this definition">#</a></dt>
 <dd><p>Return the last unit cell in the reader</p>
 <p>The routine adds the current set of masses to the unit cell</p>
-<section id="id28">
-<h5>Parameters<a class="headerlink" href="#id28" title="Permalink to this heading">#</a></h5>
+<section id="id29">
+<h5>Parameters<a class="headerlink" href="#id29" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
-<section id="id29">
-<h5>Returns<a class="headerlink" href="#id29" title="Permalink to this heading">#</a></h5>
+<section id="id30">
+<h5>Returns<a class="headerlink" href="#id30" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>unitCell object</dt><dd><p>The last unit cell read by the reader</p>
 </dd>
@@ -631,19 +641,19 @@ the <cite>species</cite> attribute and returns the resulting list.</p>
 <dt class="sig sig-object py" id="PDielec.GenericOutputReader.GenericOutputReader.mass_dictionary">
 <span class="sig-name descname"><span class="pre">mass_dictionary</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/GenericOutputReader.html#GenericOutputReader.mass_dictionary"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GenericOutputReader.GenericOutputReader.mass_dictionary" title="Permalink to this definition">#</a></dt>
 <dd><p>Generate a dictionary mapping chemical species symbols to their masses.</p>
-<section id="id30">
-<h5>Parameters<a class="headerlink" href="#id30" title="Permalink to this heading">#</a></h5>
+<section id="id31">
+<h5>Parameters<a class="headerlink" href="#id31" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
-<section id="id31">
-<h5>Returns<a class="headerlink" href="#id31" title="Permalink to this heading">#</a></h5>
+<section id="id32">
+<h5>Returns<a class="headerlink" href="#id32" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>dictionary<span class="classifier">dict</span></dt><dd><p>A dictionary where keys are cleaned up species symbols and values are their corresponding masses.</p>
 </dd>
 </dl>
 </section>
-<section id="id32">
-<h5>Notes<a class="headerlink" href="#id32" title="Permalink to this heading">#</a></h5>
+<section id="id33">
+<h5>Notes<a class="headerlink" href="#id33" title="Permalink to this heading">#</a></h5>
 <p>The function uses a helper function <cite>cleanup_symbol</cite> to clean up the species symbols before using them as keys in the dictionary. If the instance’s <cite>debug</cite> attribute is set to True, the function will print the newly created mass dictionary.</p>
 </section>
 <section id="examples">
@@ -661,16 +671,16 @@ to False and saves the current <cite>born_charges</cite> as <cite>original_born_
 <cite>original_born_charges_are_being_used</cite> is True, indicating that the
 original Born charges are no longer being used directly. It then applies
 the Born charge sum rule by calling the <cite>_born_charge_sum_rule</cite> method.</p>
-<section id="id33">
-<h5>Parameters<a class="headerlink" href="#id33" title="Permalink to this heading">#</a></h5>
-<p>None</p>
-</section>
 <section id="id34">
-<h5>Returns<a class="headerlink" href="#id34" title="Permalink to this heading">#</a></h5>
+<h5>Parameters<a class="headerlink" href="#id34" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 <section id="id35">
-<h5>Notes<a class="headerlink" href="#id35" title="Permalink to this heading">#</a></h5>
+<h5>Returns<a class="headerlink" href="#id35" title="Permalink to this heading">#</a></h5>
+<p>None</p>
+</section>
+<section id="id36">
+<h5>Notes<a class="headerlink" href="#id36" title="Permalink to this heading">#</a></h5>
 <p>This method is intended to be used within a context where Born charges
 (representative of the polarization of ions in a solid under an electric field)
 need to be neutralized or altered from their original state.</p>
@@ -681,16 +691,16 @@ need to be neutralized or altered from their original state.</p>
 <dt class="sig sig-object py" id="PDielec.GenericOutputReader.GenericOutputReader.print">
 <span class="sig-name descname"><span class="pre">print</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/GenericOutputReader.html#GenericOutputReader.print"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GenericOutputReader.GenericOutputReader.print" title="Permalink to this definition">#</a></dt>
 <dd><p>Print information about the reader.</p>
-<section id="id36">
-<h5>Parameters<a class="headerlink" href="#id36" title="Permalink to this heading">#</a></h5>
-<p>None</p>
-</section>
 <section id="id37">
-<h5>Returns<a class="headerlink" href="#id37" title="Permalink to this heading">#</a></h5>
+<h5>Parameters<a class="headerlink" href="#id37" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 <section id="id38">
-<h5>Notes<a class="headerlink" href="#id38" title="Permalink to this heading">#</a></h5>
+<h5>Returns<a class="headerlink" href="#id38" title="Permalink to this heading">#</a></h5>
+<p>None</p>
+</section>
+<section id="id39">
+<h5>Notes<a class="headerlink" href="#id39" title="Permalink to this heading">#</a></h5>
 <p>This function prints out detailed information about the reader it is run on.</p>
 </section>
 </dd></dl>
@@ -699,15 +709,15 @@ need to be neutralized or altered from their original state.</p>
 <dt class="sig sig-object py" id="PDielec.GenericOutputReader.GenericOutputReader.project">
 <span class="sig-name descname"><span class="pre">project</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hessian</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/GenericOutputReader.html#GenericOutputReader.project"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GenericOutputReader.GenericOutputReader.project" title="Permalink to this definition">#</a></dt>
 <dd><p>Apply projection operators to remove translation.</p>
-<section id="id39">
-<h5>Parameters<a class="headerlink" href="#id39" title="Permalink to this heading">#</a></h5>
+<section id="id40">
+<h5>Parameters<a class="headerlink" href="#id40" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>hessian<span class="classifier">np.array</span></dt><dd><p>The given matrix.</p>
 </dd>
 </dl>
 </section>
-<section id="id40">
-<h5>Returns<a class="headerlink" href="#id40" title="Permalink to this heading">#</a></h5>
+<section id="id41">
+<h5>Returns<a class="headerlink" href="#id41" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>np.array</dt><dd><p>The matrix with translational modes projected out.</p>
 </dd>
@@ -719,12 +729,12 @@ need to be neutralized or altered from their original state.</p>
 <dt class="sig sig-object py" id="PDielec.GenericOutputReader.GenericOutputReader.read_output">
 <span class="sig-name descname"><span class="pre">read_output</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/GenericOutputReader.html#GenericOutputReader.read_output"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GenericOutputReader.GenericOutputReader.read_output" title="Permalink to this definition">#</a></dt>
 <dd><p>Interface to the private read output files methods.</p>
-<section id="id41">
-<h5>Parameters<a class="headerlink" href="#id41" title="Permalink to this heading">#</a></h5>
+<section id="id42">
+<h5>Parameters<a class="headerlink" href="#id42" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
-<section id="id42">
-<h5>Returns<a class="headerlink" href="#id42" title="Permalink to this heading">#</a></h5>
+<section id="id43">
+<h5>Returns<a class="headerlink" href="#id43" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 </dd></dl>
@@ -734,16 +744,16 @@ need to be neutralized or altered from their original state.</p>
 <span class="sig-name descname"><span class="pre">reset_born_charges</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/GenericOutputReader.html#GenericOutputReader.reset_born_charges"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GenericOutputReader.GenericOutputReader.reset_born_charges" title="Permalink to this definition">#</a></dt>
 <dd><p>Resets the born charges to their original values if they are not currently being used.</p>
 <p>This method restores the <cite>born_charges</cite> attribute of the instance to the value stored in <cite>original_born_charges</cite>, but only if <cite>original_born_charges_are_being_used</cite> is <cite>False</cite>.</p>
-<section id="id43">
-<h5>Parameters<a class="headerlink" href="#id43" title="Permalink to this heading">#</a></h5>
-<p>None</p>
-</section>
 <section id="id44">
-<h5>Returns<a class="headerlink" href="#id44" title="Permalink to this heading">#</a></h5>
+<h5>Parameters<a class="headerlink" href="#id44" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 <section id="id45">
-<h5>Notes<a class="headerlink" href="#id45" title="Permalink to this heading">#</a></h5>
+<h5>Returns<a class="headerlink" href="#id45" title="Permalink to this heading">#</a></h5>
+<p>None</p>
+</section>
+<section id="id46">
+<h5>Notes<a class="headerlink" href="#id46" title="Permalink to this heading">#</a></h5>
 <p>This method changes the state of the reader by modifying its <cite>born_charges</cite> attribute to match <cite>original_born_charges</cite>, under the condition that <cite>original_born_charges_are_being_used</cite> is <cite>False</cite>.</p>
 </section>
 </dd></dl>
@@ -755,23 +765,23 @@ need to be neutralized or altered from their original state.</p>
 <p>This function resets the mass dictionary of an object to the values specified
 by the object’s <cite>program_mass_dictionary</cite>. Typically used when needing to revert
 any runtime changes to the object’s mass values to their original state.</p>
-<section id="id46">
-<h5>Parameters<a class="headerlink" href="#id46" title="Permalink to this heading">#</a></h5>
-<p>None</p>
-</section>
 <section id="id47">
-<h5>Returns<a class="headerlink" href="#id47" title="Permalink to this heading">#</a></h5>
+<h5>Parameters<a class="headerlink" href="#id47" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 <section id="id48">
-<h5>Notes<a class="headerlink" href="#id48" title="Permalink to this heading">#</a></h5>
+<h5>Returns<a class="headerlink" href="#id48" title="Permalink to this heading">#</a></h5>
+<p>None</p>
+</section>
+<section id="id49">
+<h5>Notes<a class="headerlink" href="#id49" title="Permalink to this heading">#</a></h5>
 <p>If <cite>debug</cite> attribute of the object is True, it prints a message indicating
 that the masses are being reset. This function does not return any value
 but modifies the object’s state by changing its mass dictionary to match
 the <cite>program_mass_dictionary</cite>.</p>
 </section>
-<section id="id49">
-<h5>Examples<a class="headerlink" href="#id49" title="Permalink to this heading">#</a></h5>
+<section id="id50">
+<h5>Examples<a class="headerlink" href="#id50" title="Permalink to this heading">#</a></h5>
 <p>Assuming an object <cite>obj</cite> of a class that has <cite>reset_masses</cite> method, <cite>debug</cite> attribute,
 and <cite>program_mass_dictionary</cite>:</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">obj</span><span class="o">.</span><span class="n">debug</span> <span class="o">=</span> <span class="kc">True</span>
@@ -788,23 +798,23 @@ method to avoid setting the masses to an unintended state.</p>
 <dt class="sig sig-object py" id="PDielec.GenericOutputReader.GenericOutputReader.set_edited_masses">
 <span class="sig-name descname"><span class="pre">set_edited_masses</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">masses</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/GenericOutputReader.html#GenericOutputReader.set_edited_masses"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GenericOutputReader.GenericOutputReader.set_edited_masses" title="Permalink to this definition">#</a></dt>
 <dd><p>Sets the edited masses attribute if the length matches the original masses attribute.</p>
-<section id="id50">
-<h5>Parameters<a class="headerlink" href="#id50" title="Permalink to this heading">#</a></h5>
+<section id="id51">
+<h5>Parameters<a class="headerlink" href="#id51" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>masses<span class="classifier">list</span></dt><dd><p>A list of mass values to be set as the edited masses.</p>
 </dd>
 </dl>
 </section>
-<section id="id51">
-<h5>Returns<a class="headerlink" href="#id51" title="Permalink to this heading">#</a></h5>
+<section id="id52">
+<h5>Returns<a class="headerlink" href="#id52" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
-<section id="id52">
-<h5>Notes<a class="headerlink" href="#id52" title="Permalink to this heading">#</a></h5>
+<section id="id53">
+<h5>Notes<a class="headerlink" href="#id53" title="Permalink to this heading">#</a></h5>
 <p>The method updates the <cite>edited_masses</cite> attribute only if the length of the input list matches the length of the <cite>masses</cite> attribute of the object. If they do not match, an error message is printed, and <cite>edited_masses</cite> is set to <cite>None</cite>.</p>
 </section>
-<section id="id53">
-<h5>Returns<a class="headerlink" href="#id53" title="Permalink to this heading">#</a></h5>
+<section id="id54">
+<h5>Returns<a class="headerlink" href="#id54" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 </dd></dl>

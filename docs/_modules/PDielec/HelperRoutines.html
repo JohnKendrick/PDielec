@@ -273,22 +273,24 @@
         <article role="main">
           <h1>Source code for PDielec.HelperRoutines</h1><div class="highlight"><pre>
 <span></span><span class="ch">#!/usr/bin/python</span>
+<span class="c1">#</span>
+<span class="c1"># Copyright 2024 John Kendrick &amp; Andrew Burnett</span>
+<span class="c1">#</span>
+<span class="c1"># This file is part of PDielec</span>
+<span class="c1">#</span>
+<span class="c1"># This program is free software; you can redistribute it and/or modify</span>
+<span class="c1"># it under the terms of the MIT License</span>
+<span class="c1">#</span>
+<span class="c1"># This program is distributed in the hope that it will be useful,</span>
+<span class="c1"># but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="c1"># MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.</span>
+<span class="c1">#</span>
+<span class="c1"># You should have received a copy of the MIT License along with this program, if not see https://opensource.org/licenses/MIT</span>
+<span class="c1">#</span>
 <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">Helper Routines - Useful for scripting and Jupyter Notebooks</span>
+<span class="sd">Helper Routines - Useful for scripting and in Jupyter Notebooks</span>
 
-<span class="sd">Copyright 2024 John Kendrick</span>
-
-<span class="sd">This file is part of PDielec</span>
-
-<span class="sd">This program is free software; you can redistribute it and/or modify</span>
-<span class="sd">it under the terms of the MIT License</span>
-
-<span class="sd">This program is distributed in the hope that it will be useful,</span>
-<span class="sd">but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
-<span class="sd">MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.</span>
-
-<span class="sd">You should have received a copy of the MIT License</span>
-<span class="sd">along with this program, if not see https://opensource.org/licenses/MIT</span>
+<span class="sd">These routines are a useful starting point for investigating the way the code operates</span>
 <span class="sd">&#39;&#39;&#39;</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span>                      <span class="k">as</span> <span class="nn">np</span>
@@ -301,8 +303,10 @@
 <span class="kn">from</span> <span class="nn">PDielec.GUI.SingleCrystalScenarioTab</span>  <span class="kn">import</span> <span class="n">solve_single_crystal_equations</span>
 <span class="kn">from</span> <span class="nn">PDielec.Materials</span>                     <span class="kn">import</span> <span class="n">Material</span><span class="p">,</span><span class="n">MaterialsDataBase</span><span class="p">,</span><span class="n">External</span>
 <span class="kn">from</span> <span class="nn">PDielec.Constants</span>                     <span class="kn">import</span> <span class="n">wavenumber</span><span class="p">,</span> <span class="n">angstrom</span><span class="p">,</span> <span class="n">amu</span>
+<span class="kn">from</span> <span class="nn">PDielec.Constants</span>                     <span class="kn">import</span> <span class="n">average_masses</span><span class="p">,</span> <span class="n">isotope_masses</span>
 
-<div class="viewcode-block" id="calculateDFTPermittivityObject"><a class="viewcode-back" href="../../autoapi/PDielec/HelperRoutines/index.html#PDielec.HelperRoutines.calculateDFTPermittivityObject">[docs]</a><span class="k">def</span> <span class="nf">calculateDFTPermittivityObject</span><span class="p">(</span><span class="n">reader</span><span class="p">,</span><span class="n">sigma</span><span class="o">=</span><span class="mf">5.0</span><span class="p">):</span>
+
+<div class="viewcode-block" id="calculateDFTPermittivityObject"><a class="viewcode-back" href="../../autoapi/PDielec/HelperRoutines/index.html#PDielec.HelperRoutines.calculateDFTPermittivityObject">[docs]</a><span class="k">def</span> <span class="nf">calculateDFTPermittivityObject</span><span class="p">(</span><span class="n">reader</span><span class="p">,</span><span class="n">sigma</span><span class="o">=</span><span class="mf">5.0</span><span class="p">,</span><span class="n">eckart</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span><span class="n">mass_definition</span><span class="o">=</span><span class="s1">&#39;Average&#39;</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Define a permittivity object for the DFT calculation from the given reader</span>
 
@@ -314,24 +318,51 @@
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    reader : outputReader object</span>
-<span class="sd">        An output reader object</span>
+<span class="sd">        An output reader object, see :class:`~PDielec.GenericOutputReader` and its sub-classes.</span>
 <span class="sd">    sigma  : float</span>
 <span class="sd">        Default Lorentzian widths in cm-1</span>
+<span class="sd">    eckart  : boolean</span>
+<span class="sd">        If true apply eckart conditions in the reader</span>
+<span class="sd">    mass_definition : string or list of floats</span>
+<span class="sd">        Default is &#39;Average&#39;</span>
+<span class="sd">        If a list of floats it is a list of the masses to be used.</span>
+<span class="sd">        If a string it must be one of &#39;Average&#39;, &#39;Isotope&#39; or &#39;Program&#39; (case is irrelevant)</span>
+<span class="sd">        - Average causes the average weight for the element to be used</span>
+<span class="sd">        - Isotope causes the most common isotope weight to be used</span>
+<span class="sd">        - Program means use the mass used by the program</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">    permittivityObject</span>
+<span class="sd">    permittivityObject (see :class:`~PDielec.DielectricFunction.DielectricFunction` and its sub-classes)</span>
 
 <span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">reader</span><span class="o">.</span><span class="n">eckart</span> <span class="o">=</span> <span class="n">eckart</span>
+    <span class="n">epsilon_inf</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">zerof_optical_dielectric</span>
+    <span class="n">cell</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">get_unit_cell</span><span class="p">()</span>
+    <span class="n">volume_au</span> <span class="o">=</span> <span class="n">cell</span><span class="o">.</span><span class="n">getVolume</span><span class="p">(</span><span class="s1">&#39;Bohr&#39;</span><span class="p">)</span>
+    <span class="n">mass_dictionary</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">reader</span><span class="o">.</span><span class="n">reset_masses</span><span class="p">()</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">mass_definition</span><span class="p">,</span><span class="nb">list</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">mass_definition</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+        <span class="n">reader</span><span class="o">.</span><span class="n">set_edited_masses</span><span class="p">(</span><span class="n">mass_definition</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">mass_definition</span> <span class="o">=</span> <span class="n">mass_definition</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">mass_definition</span> <span class="o">==</span> <span class="s1">&#39;average&#39;</span><span class="p">:</span>
+            <span class="n">reader</span><span class="o">.</span><span class="n">change_masses</span><span class="p">(</span><span class="n">average_masses</span><span class="p">,</span> <span class="n">mass_dictionary</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">mass_definition</span> <span class="o">==</span> <span class="s1">&#39;program&#39;</span><span class="p">:</span>
+            <span class="k">pass</span>
+        <span class="k">elif</span> <span class="n">mass_definition</span> <span class="o">==</span> <span class="s1">&#39;isotope&#39;</span><span class="p">:</span>
+            <span class="n">reader</span><span class="o">.</span><span class="n">change_masses</span><span class="p">(</span><span class="n">isotope_masses</span><span class="p">,</span> <span class="n">mass_dictionary</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Helper: Error unkown mass definition&#39;</span><span class="p">,</span> <span class="n">mass_definition</span> <span class="p">)</span>
+    <span class="n">masses</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">reader</span><span class="o">.</span><span class="n">masses</span><span class="p">)</span><span class="o">*</span><span class="n">amu</span>
+    <span class="c1"># The reader uses the internal masses to calculate the massweighted normal modes</span>
+    <span class="n">mass_weighted_normal_modes</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">calculate_mass_weighted_normal_modes</span><span class="p">()</span>
+    <span class="n">masses</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">reader</span><span class="o">.</span><span class="n">masses</span><span class="p">)</span><span class="o">*</span><span class="n">amu</span>
+    <span class="c1"># The frequencies will change if the masses change, so get them after changing the masses</span>
     <span class="n">frequencies_cm1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">reader</span><span class="o">.</span><span class="n">frequencies</span><span class="p">)</span>
     <span class="n">frequencies_au</span> <span class="o">=</span> <span class="n">wavenumber</span><span class="o">*</span><span class="n">frequencies_cm1</span>
     <span class="n">sigmas_cm1</span> <span class="o">=</span> <span class="p">[</span> <span class="n">sigma</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">frequencies_cm1</span> <span class="p">]</span>
     <span class="n">sigmas_au</span> <span class="o">=</span> <span class="n">wavenumber</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">sigmas_cm1</span><span class="p">)</span>
-    <span class="n">epsilon_inf</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">zerof_optical_dielectric</span>
-    <span class="n">cell</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">get_unit_cell</span><span class="p">()</span>
-    <span class="n">volume_au</span> <span class="o">=</span> <span class="n">cell</span><span class="o">.</span><span class="n">getVolume</span><span class="p">(</span><span class="s1">&#39;Bohr&#39;</span><span class="p">)</span>
-    <span class="n">masses</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">cell</span><span class="o">.</span><span class="n">get_atomic_masses</span><span class="p">())</span><span class="o">*</span><span class="n">amu</span>
-    <span class="n">mass_weighted_normal_modes</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">calculate_mass_weighted_normal_modes</span><span class="p">()</span>
     <span class="n">born_charges</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">reader</span><span class="o">.</span><span class="n">born_charges</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">reader</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s1">&#39;Experimental output&#39;</span><span class="p">:</span>
         <span class="c1"># Obtain oscillator strength from reader</span>
@@ -363,12 +394,13 @@
     <span class="n">permittivityObject</span><span class="o">.</span><span class="n">setEpsilonInfinity</span><span class="p">(</span><span class="n">epsilon_inf</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">permittivityObject</span></div>
 
-<div class="viewcode-block" id="getMaterial"><a class="viewcode-back" href="../../autoapi/PDielec/HelperRoutines/index.html#PDielec.HelperRoutines.getMaterial">[docs]</a><span class="k">def</span> <span class="nf">getMaterial</span><span class="p">(</span><span class="n">name</span><span class="p">,</span><span class="n">dataBaseName</span><span class="o">=</span><span class="s1">&#39;MaterialsDataBase.xlsx&#39;</span><span class="p">,</span><span class="n">qmprogram</span><span class="o">=</span><span class="s1">&#39;vasp&#39;</span><span class="p">):</span>
+<div class="viewcode-block" id="getMaterial"><a class="viewcode-back" href="../../autoapi/PDielec/HelperRoutines/index.html#PDielec.HelperRoutines.getMaterial">[docs]</a><span class="k">def</span> <span class="nf">getMaterial</span><span class="p">(</span><span class="n">name</span><span class="p">,</span><span class="n">dataBaseName</span><span class="o">=</span><span class="s1">&#39;MaterialsDataBase.xlsx&#39;</span><span class="p">,</span><span class="n">qmprogram</span><span class="o">=</span><span class="s1">&#39;vasp&#39;</span><span class="p">,</span><span class="n">eckart</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span><span class="n">mass_definition</span><span class="o">=</span><span class="s1">&#39;Average&#39;</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Get a material with the given name.</span>
 
 <span class="sd">    If the name is a file name, it is treated as a DFT (Density Functional Theory) or experimental file.</span>
 <span class="sd">    If the name is a material name in the material database, this is used instead.</span>
+<span class="sd">    Information about the material class can be found here (:class:`~PDielec.Materials.Material`)</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -376,12 +408,23 @@
 <span class="sd">        The name of the material, which can be a file name or a material name existing in the database.</span>
 <span class="sd">    dataBaseName : str</span>
 <span class="sd">        The name of the database which will be searched from the material</span>
-<span class="sd">    qmprogram : str</span>
+<span class="sd">    qmprogram : str, optional</span>
 <span class="sd">        The name of the QM program used in the case of Phonopy DFT calculations</span>
+<span class="sd">        Defaults to &#39;vasp&#39;</span>
+<span class="sd">    eckart  : boolean, optional</span>
+<span class="sd">        If true apply eckart conditions in the reader. Defaults to true.</span>
+<span class="sd">    mass_definition : string or list of floats, optional</span>
+<span class="sd">        Default is &#39;Average&#39;</span>
+<span class="sd">        If a list of floats it is a list of the masses to be used.</span>
+<span class="sd">        If a string it must be one of &#39;Average&#39;, &#39;Isotope&#39; or &#39;Program&#39; (case is irrelevant)</span>
+<span class="sd">        - Average causes the average weight for the element to be used</span>
+<span class="sd">        - Isotope causes the most common isotope weight to be used</span>
+<span class="sd">        - Program means use the mass used by the program</span>
+
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">    Material</span>
+<span class="sd">    Material (see :class:`~PDielec.Materials.Material`)</span>
 <span class="sd">        The material obtained based on the given name.</span>
 
 <span class="sd">    Examples</span>
@@ -396,7 +439,7 @@
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">program</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
         <span class="n">reader</span> <span class="o">=</span> <span class="n">Utilities</span><span class="o">.</span><span class="n">get_reader</span><span class="p">(</span><span class="n">name</span><span class="p">,</span><span class="n">program</span><span class="p">,</span><span class="n">qmprogram</span><span class="p">)</span>
         <span class="n">reader</span><span class="o">.</span><span class="n">read_output</span><span class="p">()</span>
-        <span class="n">permittivityObject</span><span class="o">=</span><span class="n">calculateDFTPermittivityObject</span><span class="p">(</span><span class="n">reader</span><span class="p">,</span><span class="n">sigma</span><span class="o">=</span><span class="mf">5.0</span><span class="p">)</span>
+        <span class="n">permittivityObject</span><span class="o">=</span><span class="n">calculateDFTPermittivityObject</span><span class="p">(</span><span class="n">reader</span><span class="p">,</span><span class="n">sigma</span><span class="o">=</span><span class="mf">5.0</span><span class="p">,</span><span class="n">eckart</span><span class="o">=</span><span class="n">eckart</span><span class="p">,</span><span class="n">mass_definition</span><span class="o">=</span><span class="n">mass_definition</span><span class="p">)</span>
         <span class="n">cell</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">get_unit_cell</span><span class="p">()</span>
         <span class="n">material</span> <span class="o">=</span> <span class="n">External</span><span class="p">(</span><span class="s1">&#39;Dielectric layer&#39;</span><span class="p">,</span><span class="n">permittivityObject</span><span class="o">=</span><span class="n">permittivityObject</span><span class="p">,</span><span class="n">cell</span><span class="o">=</span><span class="n">cell</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
@@ -411,21 +454,22 @@
 <span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Calculate a single crystal spectrum.</span>
 
-<span class="sd">    Calculate a single crystal spectrum from the frequencies, a list of layers, the incident angle</span>
+<span class="sd">    Calculate a single crystal spectrum from the frequencies, a list of layers (:class:`~PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer`), the incident angle</span>
 <span class="sd">    the global azimuthal angle and optional specification of the method of calculation.</span>
+<span class="sd">    Information about the layer class can be found here (:class:`~PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer`)</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    frequencies_cm1 : list</span>
 <span class="sd">        A list of frequencies in cm-1.</span>
 <span class="sd">    layers : list</span>
-<span class="sd">        A list of layers.</span>
+<span class="sd">        A list of layers ( :class:`~PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer`)</span>
 <span class="sd">    incident_angle : float</span>
 <span class="sd">        The incident angle in degrees.</span>
 <span class="sd">    global_azimuthal_angle : float</span>
 <span class="sd">        The global azimuthal angle in degrees.</span>
 <span class="sd">    method : str</span>
-<span class="sd">        The method for solving Maxwell&#39;s equation (&#39;Scattering matrix&#39; or &#39;Transfer matrix&#39;).</span>
+<span class="sd">        The method for solving Maxwell&#39;s equation either &#39;Scattering matrix&#39; (the default) or &#39;Transfer matrix. See (:class:`~PDielec.GTMcore.ScatteringMatrixSystem` or :class:`~PDielec.GTMcore.TransferMatrixSystem`) for more information.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
@@ -552,66 +596,6 @@
          <span class="n">molarAbsorptionCoefficient</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">molar_absorption_coefficient</span><span class="p">)</span>
          <span class="n">sp_atr</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">spatr</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">absorptionCoefficient</span><span class="p">)</span></div>
-
-<div class="viewcode-block" id="powderTest"><a class="viewcode-back" href="../../autoapi/PDielec/HelperRoutines/index.html#PDielec.HelperRoutines.powderTest">[docs]</a><span class="k">def</span> <span class="nf">powderTest</span><span class="p">():</span>
-<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">    Test powder calculation</span>
-<span class="sd">    &#39;&#39;&#39;</span>
-    <span class="n">frequencies_cm1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="mf">0.2</span> <span class="p">)</span>
-    <span class="n">matrix</span> <span class="o">=</span> <span class="n">getMaterial</span><span class="p">(</span><span class="s1">&#39;ptfe&#39;</span><span class="p">)</span>
-    <span class="n">dielectric</span> <span class="o">=</span> <span class="n">getMaterial</span><span class="p">(</span><span class="s1">&#39;Sapphire&#39;</span><span class="p">)</span>
-    <span class="n">method</span> <span class="o">=</span> <span class="s1">&#39;Maxwell-Garnett&#39;</span> 
-    <span class="n">shape</span> <span class="o">=</span> <span class="s1">&#39;Sphere&#39;</span>
-    <span class="n">volume_fraction</span> <span class="o">=</span> <span class="mf">0.1</span>
-    <span class="n">absorption</span> <span class="o">=</span> <span class="n">calculatePowderSpectrum</span><span class="p">(</span><span class="n">frequencies_cm1</span><span class="p">,</span><span class="n">dielectric</span><span class="p">,</span> <span class="n">matrix</span><span class="p">,</span> <span class="n">volume_fraction</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Powder absorption results&#39;</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;      freq&#39;</span><span class="p">,</span> <span class="s1">&#39; absorption&#39;</span><span class="p">,</span> <span class="s1">&#39;      r_s&#39;</span><span class="p">,</span> <span class="s1">&#39;      t_p&#39;</span><span class="p">,</span> <span class="s1">&#39;      t_s&#39;</span><span class="p">,</span> <span class="s1">&#39;      a_p&#39;</span><span class="p">,</span> <span class="s1">&#39;      a_s&#39;</span><span class="p">)</span>
-    <span class="k">for</span> <span class="n">f</span><span class="p">,</span><span class="n">a</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">frequencies_cm1</span><span class="p">,</span><span class="n">absorption</span><span class="p">):</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{:10.2f}{:12.5f}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">f</span><span class="p">,</span><span class="n">a</span><span class="p">))</span></div>
-    
-<div class="viewcode-block" id="singleCrystalTest"><a class="viewcode-back" href="../../autoapi/PDielec/HelperRoutines/index.html#PDielec.HelperRoutines.singleCrystalTest">[docs]</a><span class="k">def</span> <span class="nf">singleCrystalTest</span><span class="p">():</span>
-<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">    Test single crystal calculation</span>
-<span class="sd">    &#39;&#39;&#39;</span>
-    <span class="c1"># Define the materials</span>
-    <span class="n">air</span> <span class="o">=</span> <span class="n">getMaterial</span><span class="p">(</span><span class="s1">&#39;air&#39;</span><span class="p">)</span>
-    <span class="n">ptfe</span> <span class="o">=</span> <span class="n">getMaterial</span><span class="p">(</span><span class="s1">&#39;ptfe&#39;</span><span class="p">)</span>
-    <span class="n">Sapphire</span> <span class="o">=</span> <span class="n">getMaterial</span><span class="p">(</span><span class="s1">&#39;Sapphire&#39;</span><span class="p">)</span>
-    <span class="c1"># Prepare the layers</span>
-    <span class="n">layers</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="c1"># Add a substrate</span>
-    <span class="n">layers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">SingleCrystalLayer</span><span class="p">(</span><span class="n">ptfe</span><span class="p">,</span><span class="n">thickness</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span><span class="n">thicknessUnit</span><span class="o">=</span><span class="s1">&#39;um&#39;</span><span class="p">))</span>
-     <span class="c1"># Add the dielectric layer</span>
-    <span class="n">layers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">SingleCrystalLayer</span><span class="p">(</span><span class="n">Sapphire</span><span class="p">,</span><span class="n">hkl</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span><span class="n">azimuthal</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span><span class="n">thickness</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span><span class="n">thicknessUnit</span><span class="o">=</span><span class="s1">&#39;um&#39;</span><span class="p">,</span>
-                                     <span class="n">incoherentOption</span><span class="o">=</span><span class="s1">&#39;Coherent&#39;</span><span class="p">))</span>
-     <span class="c1"># Add the superstrate</span>
-    <span class="n">layers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">SingleCrystalLayer</span><span class="p">(</span><span class="n">air</span><span class="p">,</span><span class="n">thickness</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span><span class="n">thicknessUnit</span><span class="o">=</span><span class="s1">&#39;um&#39;</span><span class="p">))</span>
-    <span class="n">frequencies_cm1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="mf">0.2</span> <span class="p">)</span>
-    <span class="n">incident_angle</span> <span class="o">=</span> <span class="mf">80.0</span>
-    <span class="n">global_azimuthal_angle</span> <span class="o">=</span> <span class="mf">0.0</span>
-    <span class="p">(</span><span class="n">reflectance</span><span class="p">,</span> <span class="n">transmittance</span><span class="p">,</span> <span class="n">absorptance</span><span class="p">)</span> <span class="o">=</span> <span class="n">calculateSingleCrystalSpectrum</span><span class="p">(</span><span class="n">frequencies_cm1</span><span class="p">,</span><span class="n">layers</span><span class="p">,</span><span class="n">incident_angle</span><span class="p">,</span> <span class="n">global_azimuthal_angle</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;Scattering matrix&#39;</span><span class="p">)</span>
-    <span class="c1"># Print single crystal results</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Single Crystal Results&#39;</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;      freq&#39;</span><span class="p">,</span> <span class="s1">&#39;      r_p&#39;</span><span class="p">,</span> <span class="s1">&#39;      r_s&#39;</span><span class="p">,</span> <span class="s1">&#39;      t_p&#39;</span><span class="p">,</span> <span class="s1">&#39;      t_s&#39;</span><span class="p">,</span> <span class="s1">&#39;      a_p&#39;</span><span class="p">,</span> <span class="s1">&#39;      a_s&#39;</span><span class="p">)</span>
-    <span class="k">for</span> <span class="n">r_p</span><span class="p">,</span><span class="n">r_s</span><span class="p">,</span><span class="n">t_p</span><span class="p">,</span><span class="n">t_s</span><span class="p">,</span><span class="n">a_p</span><span class="p">,</span><span class="n">a_s</span><span class="p">,</span><span class="n">f</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">reflectance</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">reflectance</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="n">transmittance</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">transmittance</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="n">absorptance</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">absorptance</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="n">frequencies_cm1</span><span class="p">):</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{:10.2f}{:10.5f}{:10.5f}{:10.5f}{:10.5f}{:10.5f}{:10.5f}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">f</span><span class="p">,</span><span class="n">r_p</span> <span class="p">,</span> <span class="n">r_s</span> <span class="p">,</span> <span class="n">t_p</span> <span class="p">,</span> <span class="n">t_s</span> <span class="p">,</span> <span class="n">a_p</span> <span class="p">,</span> <span class="n">a_s</span> <span class="p">))</span></div>
-
-<div class="viewcode-block" id="main"><a class="viewcode-back" href="../../autoapi/PDielec/HelperRoutines/index.html#PDielec.HelperRoutines.main">[docs]</a><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Execute the main sequence of operations.</span>
-
-<span class="sd">    This function runs single crystal and powder tests in sequence.</span>
-
-<span class="sd">    Returns</span>
-<span class="sd">    -------</span>
-<span class="sd">    None</span>
-<span class="sd">    &quot;&quot;&quot;</span>    
-    <span class="n">singleCrystalTest</span><span class="p">()</span>
-    <span class="n">powderTest</span><span class="p">()</span>
-    <span class="k">return</span></div>
-
-<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
-    <span class="n">main</span><span class="p">()</span>
 </pre></div>
         </article>
       </div>

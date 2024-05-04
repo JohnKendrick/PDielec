@@ -1,20 +1,20 @@
 #!/usr/bin/python
+#
+# Copyright 2024 John Kendrick & Andrew Burnett
+#
+# This file is part of PDielec
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the MIT License
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+#
+# You should have received a copy of the MIT License along with this program, if not see https://opensource.org/licenses/MIT
+#
 '''
 Read the contents of a directory containing Phonopy input and output files.
-
-Copyright 2024 John Kendrick
-
-This file is part of PDielec
-
-This program is free software; you can redistribute it and/or modify
-it under the terms of the MIT License
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-
-You should have received a copy of the MIT License
-along with this program, if not see https://opensource.org/licenses/MIT
 '''
 
 import numpy as np
@@ -25,8 +25,19 @@ class PhonopyOutputReader(GenericOutputReader):
     """
     Read the contents of a directory containing Phonopy input and output files.
 
-    Inherits from GenericOutputReader
+    Inherits from :class:`~PDielec.GenericOutputReader.GenericOutputReader`
 
+    Parameters
+    ----------
+    names : list
+        A list of file names to be used.
+    qmreader : object
+        An instance of another class used for reading.
+
+    Notes
+    -----
+    This method sets the type of the output to 'Phonopy output' and 
+    associates a quantum mechanics (QM) reader object with the instance.
     """
 
     def __init__(self, names, qmreader):

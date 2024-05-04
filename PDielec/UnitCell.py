@@ -1,20 +1,21 @@
 #!/usr/bin/python
+#
+# Copyright 2024 John Kendrick & Andrew Burnett
+#
+# This file is part of PDielec
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the MIT License
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+#
+# You should have received a copy of the MIT License along with this program, if not see https://opensource.org/licenses/MIT
+#
 '''
 Hold unit cell information and its associated calculated properties.
 
-Copyright 2024 John Kendrick
-
-This file is part of PDielec
-
-This program is free software; you can redistribute it and/or modify
-it under the terms of the MIT License
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-
-You should have received a copy of the MIT License
-along with this program, if not see https://opensource.org/licenses/MIT
 '''
 
 import numpy as np
@@ -85,7 +86,39 @@ def convert_length_units(value, units_in, units_out):
 class UnitCell:
     """
     Hold unit cell information and its associated calculated properties.
+
+    Initialize the class instance with optional lattice parameters and calculate the reciprocal lattice.
+
+    Parameters
+    ----------
+    a, b, c : float or array, optional
+        Lattice vectors or cell lengths. If not specified, they default to [1.0, 0.0, 0.0], [0.0, 1.0, 0.0], and [0.0, 0.0, 1.0], respectively.
+    alpha, beta, gamma : float, optional
+        Lattice angles (in degrees). These are only used if all three angles are specified, otherwise, the default lattice (orthorhombic) is used.
+    units : str
+        An optional unit such as 'a.u., au bohr angs angstrom Angs Angstrom or nm'  The default is Angstrom.
+
+    Notes
+    -----
+    This constructor initializes an instance with empty lists for fractional coordinates, xyz coordinates, element names, atom labels, bonds, and molecules. It also initializes an empty list for atomic masses and zero for total mass. If the angles alpha, beta, and gamma are provided, it attempts to convert the provided lattice parameters (a, b, c, alpha, beta, gamma) into a 3x3 lattice matrix. If not, it directly assigns a, b, and c as lattice vectors. Finally, it calculates and sets the reciprocal lattice for the instance.
+
+    Examples
+    --------
+    ::
+    
+        a = [2.853604, -1.647529, 0.0]
+        b = [0.0,       3.295058, 0.0]
+        c = [0.0,       0.0,      5.284824]
+        cell = UnitCell( a, b, c )
+        cell.set_element_names(['Zn', 'Zn', 'O', 'O'])
+        coords = [ [ 0.333333,    0.666667,    0.000900 ]
+                   [ 0.666667,    0.333333,    0.500900 ]
+                   [ 0.333333,    0.666667,    0.381600 ]
+                   [ 0.666667,    0.333333,    0.881600 ] ]
+        cell.set_fractional_coordinates(coords)
+        cell.print()
     """
+
     def __init__(self, a=None, b=None, c=None, alpha=None, beta=None, gamma=None, units='Angstrom'):
         """
         Initialize the class instance with optional lattice parameters and calculate the reciprocal lattice.
@@ -105,8 +138,8 @@ class UnitCell:
 
         Examples
         --------
-        
         ::
+        
             a = [2.853604, -1.647529, 0.0]
             b = [0.0,       3.295058, 0.0]
             c = [0.0,       0.0,      5.284824]
@@ -167,7 +200,7 @@ class UnitCell:
         --------
         To print the CIF representation to standard output, simply call the method without arguments:
 
-        >>> self.write_cif()
+        >>> cell.write_cif()
 
         To write the CIF representation to a file named "example.cif":
 

@@ -1,19 +1,20 @@
 #!/usr/bin/python
+#
+# Copyright 2024 John Kendrick & Andrew Burnett
+#
+# This file is part of PDielec
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the MIT License
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+#
+# You should have received a copy of the MIT License along with this program, if not see https://opensource.org/licenses/MIT
+#
 '''
-Read contents of a directory containing Crystal input and output files.
-Copyright 2024 John Kendrick
-
- This file is part of PDielec
-
- This program is free software; you can redistribute it and/or modify
- it under the terms of the MIT License
-
- This program is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-
- You should have received a copy of the MIT License
- along with this program, if not see https://opensource.org/licenses/MIT
+A module to read contents of a directory containing Crystal input and output files.
 '''
 import re
 import math
@@ -29,7 +30,16 @@ class CrystalOutputReader(GenericOutputReader):
     """
     Read contents of a directory containing Crystal input and output files.
 
-    Inherits from GenericOutputReader
+    Inherits from :class:`~PDielec.GenericOutputReader.GenericOutputReader`
+
+    Parameters
+    ----------
+    filenames : iterable
+        An iterable object (e.g., list or tuple) containing the file names to be processed.
+
+    Notes
+    -----
+    This function calls the initializer of the parent class 'GenericOutputReader' with the given filenames. It initializes several class attributes including the type of output (set to 'Crystal output'), the method for hessian symmetrisation (set to 'crystal'), and an empty list for fractional coordinates.
     """
 
     def __init__(self, filenames):

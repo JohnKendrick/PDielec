@@ -275,24 +275,7 @@
         <article role="main">
           <section id="module-PDielec.GUI.ViewerTab">
 <span id="pdielec-gui-viewertab"></span><h1><a class="reference internal" href="#module-PDielec.GUI.ViewerTab" title="PDielec.GUI.ViewerTab"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.ViewerTab</span></code></a><a class="headerlink" href="#module-PDielec.GUI.ViewerTab" title="Permalink to this heading">#</a></h1>
-<p>ViewerTab</p>
-<p>The MIT License (MIT)</p>
-<p>Copyright (c) 2024 John Kendrick</p>
-<p>Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the “Software”), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:</p>
-<p>The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.</p>
-<p>THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.</p>
+<p>ViewerTab module</p>
 <section id="module-contents">
 <h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this heading">#</a></h2>
 <section id="classes">
@@ -317,6 +300,15 @@ parameters relevant to molecular structures and their vibrational modes. It allo
 interactive change of settings like atom scaling, super cell configuration, and visualization
 options such as showing arrows for vibrational modes or animation. It also includes functionalities
 to save the visualization in different formats.</p>
+<section id="parameters">
+<h4>Parameters<a class="headerlink" href="#parameters" title="Permalink to this heading">#</a></h4>
+<dl class="simple">
+<dt>parent<span class="classifier">QWidget</span></dt><dd><p>The parent widget to which this widget belongs.</p>
+</dd>
+<dt>debug<span class="classifier">bool, optional</span></dt><dd><p>Flag to enable debugging messages, by default False.</p>
+</dd>
+</dl>
+</section>
 <section id="attributes">
 <h4>Attributes<a class="headerlink" href="#attributes" title="Permalink to this heading">#</a></h4>
 <dl class="simple">
@@ -418,8 +410,8 @@ Each method typically adjusts the ViewerTab’s state or visualization output ac
 <dt class="sig sig-object py" id="PDielec.GUI.ViewerTab.ViewerTab.calculate">
 <span class="sig-name descname"><span class="pre">calculate</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/ViewerTab.html#ViewerTab.calculate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.ViewerTab.ViewerTab.calculate" title="Permalink to this definition">#</a></dt>
 <dd><p>Perform calculations related to the notebook object, including processing program, file name, calculating frequencies, super cells, normal modes, bonds, center of mass, bounding box, element names, species, covalent radii, and updating the UI with calculated values.</p>
-<section id="parameters">
-<h5>Parameters<a class="headerlink" href="#parameters" title="Permalink to this heading">#</a></h5>
+<section id="id1">
+<h5>Parameters<a class="headerlink" href="#id1" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 <section id="returns">
@@ -433,12 +425,12 @@ Each method typically adjusts the ViewerTab’s state or visualization output ac
 <span class="sig-name descname"><span class="pre">calculatePhasePositions</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/ViewerTab.html#ViewerTab.calculatePhasePositions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.ViewerTab.ViewerTab.calculatePhasePositions" title="Permalink to this definition">#</a></dt>
 <dd><p>Calculate and update the phase positions for the normal mode of a molecular structure visualization.</p>
 <p>This function calculates the phase positions for all atoms in a molecular structure over a range of phase steps. It updates the visualization by adding spheres and cylinders to represent atoms and bonds in different phase positions. The phase steps are adjusted to be odd in number, ensuring symmetry around zero phase. The function directly modifies the OpenGL widget used for visualization by deleting existing graphical representations and creating new ones based on the calculated positions.</p>
-<section id="id1">
-<h5>Parameters<a class="headerlink" href="#id1" title="Permalink to this heading">#</a></h5>
+<section id="id2">
+<h5>Parameters<a class="headerlink" href="#id2" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
-<section id="id2">
-<h5>Returns<a class="headerlink" href="#id2" title="Permalink to this heading">#</a></h5>
+<section id="id3">
+<h5>Returns<a class="headerlink" href="#id3" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 </dd></dl>
@@ -448,15 +440,15 @@ Each method typically adjusts the ViewerTab’s state or visualization output ac
 <span class="sig-name descname"><span class="pre">on_arrow_radius_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/ViewerTab.html#ViewerTab.on_arrow_radius_changed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.ViewerTab.ViewerTab.on_arrow_radius_changed" title="Permalink to this definition">#</a></dt>
 <dd><p>Handle the event where the arrow’s radius value is changed.</p>
 <p>This method updates the setting for the arrow’s radius, recalculates, and replots based on the new value.</p>
-<section id="id3">
-<h5>Parameters<a class="headerlink" href="#id3" title="Permalink to this heading">#</a></h5>
+<section id="id4">
+<h5>Parameters<a class="headerlink" href="#id4" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>value<span class="classifier">float</span></dt><dd><p>The new value for the arrow radius.</p>
 </dd>
 </dl>
 </section>
-<section id="id4">
-<h5>Returns<a class="headerlink" href="#id4" title="Permalink to this heading">#</a></h5>
+<section id="id5">
+<h5>Returns<a class="headerlink" href="#id5" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 </dd></dl>
@@ -467,15 +459,15 @@ Each method typically adjusts the ViewerTab’s state or visualization output ac
 <dd><p>Handle changes to atom scaling settings.</p>
 <p>This method updates the atom scaling setting based on a new value,
 recalculates relevant data, and triggers a plot update.</p>
-<section id="id5">
-<h5>Parameters<a class="headerlink" href="#id5" title="Permalink to this heading">#</a></h5>
+<section id="id6">
+<h5>Parameters<a class="headerlink" href="#id6" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>value<span class="classifier">float</span></dt><dd><p>The new value for atom scaling.</p>
 </dd>
 </dl>
 </section>
-<section id="id6">
-<h5>Returns<a class="headerlink" href="#id6" title="Permalink to this heading">#</a></h5>
+<section id="id7">
+<h5>Returns<a class="headerlink" href="#id7" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 </dd></dl>
@@ -486,15 +478,15 @@ recalculates relevant data, and triggers a plot update.</p>
 <dd><p>Handle bond radius change events.</p>
 <p>This method updates the ‘Bond radius’ setting with the new value, recalculates
 the necessary data, and then replots the results.</p>
-<section id="id7">
-<h5>Parameters<a class="headerlink" href="#id7" title="Permalink to this heading">#</a></h5>
+<section id="id8">
+<h5>Parameters<a class="headerlink" href="#id8" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>value<span class="classifier">float</span></dt><dd><p>The new value for the bond radius.</p>
 </dd>
 </dl>
 </section>
-<section id="id8">
-<h5>Returns<a class="headerlink" href="#id8" title="Permalink to this heading">#</a></h5>
+<section id="id9">
+<h5>Returns<a class="headerlink" href="#id9" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 </dd></dl>
@@ -505,15 +497,15 @@ the necessary data, and then replots the results.</p>
 <dd><p>Handle the event when the cell radius setting is changed.</p>
 <p>This method updates the ‘Cell radius’ setting with the new value, recalculates
 the necessary data, and then replots the results.</p>
-<section id="id9">
-<h5>Parameters<a class="headerlink" href="#id9" title="Permalink to this heading">#</a></h5>
+<section id="id10">
+<h5>Parameters<a class="headerlink" href="#id10" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>value<span class="classifier">float</span></dt><dd><p>The new value for the cell radius.</p>
 </dd>
 </dl>
 </section>
-<section id="id10">
-<h5>Returns<a class="headerlink" href="#id10" title="Permalink to this heading">#</a></h5>
+<section id="id11">
+<h5>Returns<a class="headerlink" href="#id11" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 </dd></dl>
@@ -523,15 +515,15 @@ the necessary data, and then replots the results.</p>
 <span class="sig-name descname"><span class="pre">on_coloured_button_clicked</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">boolean</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/ViewerTab.html#ViewerTab.on_coloured_button_clicked"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.ViewerTab.ViewerTab.on_coloured_button_clicked" title="Permalink to this definition">#</a></dt>
 <dd><p>Handle the event when a coloured button is clicked.</p>
 <p>This function triggers a color dialog upon the click of a designated button. It captures the selected color and applies it to a specific setting based on the button’s label (e.g., Background, Cell, Bonds, Arrows). The settings are modified to include the chosen color, and a refresh is triggered to apply the changes.</p>
-<section id="id11">
-<h5>Parameters<a class="headerlink" href="#id11" title="Permalink to this heading">#</a></h5>
+<section id="id12">
+<h5>Parameters<a class="headerlink" href="#id12" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>boolean<span class="classifier">bool</span></dt><dd><p>This parameter is not used in the function.</p>
 </dd>
 </dl>
 </section>
-<section id="id12">
-<h5>Returns<a class="headerlink" href="#id12" title="Permalink to this heading">#</a></h5>
+<section id="id13">
+<h5>Returns<a class="headerlink" href="#id13" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 </dd></dl>
@@ -542,15 +534,15 @@ the necessary data, and then replots the results.</p>
 <dd><p>Handle a click event on an element with colour functionality.</p>
 <p>A colour dialogue is invoked and the chosen colour is assigned to the element in question
 The settings dictionary is updated with the new colours and a refresh requested</p>
-<section id="id13">
-<h5>Parameters<a class="headerlink" href="#id13" title="Permalink to this heading">#</a></h5>
+<section id="id14">
+<h5>Parameters<a class="headerlink" href="#id14" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>boolean<span class="classifier">any</span></dt><dd><p>This parameter is a dummy parameters</p>
 </dd>
 </dl>
 </section>
-<section id="id14">
-<h5>Returns<a class="headerlink" href="#id14" title="Permalink to this heading">#</a></h5>
+<section id="id15">
+<h5>Returns<a class="headerlink" href="#id15" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 </dd></dl>
@@ -562,15 +554,15 @@ The settings dictionary is updated with the new colours and a refresh requested<
 <p>This method checks if the selected filename has a valid extension and exists. If any
 checks fail, it alerts the user and aborts the operation. Otherwise, it proceeds to
 save the current state or image of the OpenGL widget in the specified file format.</p>
-<section id="id15">
-<h5>Parameters<a class="headerlink" href="#id15" title="Permalink to this heading">#</a></h5>
+<section id="id16">
+<h5>Parameters<a class="headerlink" href="#id16" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>boolean<span class="classifier">any</span></dt><dd><p>This is a dummy parameter.</p>
 </dd>
 </dl>
 </section>
-<section id="id16">
-<h5>Returns<a class="headerlink" href="#id16" title="Permalink to this heading">#</a></h5>
+<section id="id17">
+<h5>Returns<a class="headerlink" href="#id17" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 <section id="raises">
@@ -593,15 +585,15 @@ the application’s cursor is restored to its default state after the operation 
 <span class="sig-name descname"><span class="pre">on_filename_le_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/ViewerTab.html#ViewerTab.on_filename_le_changed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.ViewerTab.ViewerTab.on_filename_le_changed" title="Permalink to this definition">#</a></dt>
 <dd><p>Handle changes to the filename line edit.</p>
 <p>This method is triggered when the text in the filename line edit changes. It updates the internal state to reflect the new filename.</p>
-<section id="id17">
-<h5>Parameters<a class="headerlink" href="#id17" title="Permalink to this heading">#</a></h5>
+<section id="id18">
+<h5>Parameters<a class="headerlink" href="#id18" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>text<span class="classifier">str</span></dt><dd><p>The new text from the filename line edit.</p>
 </dd>
 </dl>
 </section>
-<section id="id18">
-<h5>Returns<a class="headerlink" href="#id18" title="Permalink to this heading">#</a></h5>
+<section id="id19">
+<h5>Returns<a class="headerlink" href="#id19" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 </dd></dl>
@@ -611,12 +603,12 @@ the application’s cursor is restored to its default state after the operation 
 <span class="sig-name descname"><span class="pre">on_filename_le_return</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/ViewerTab.html#ViewerTab.on_filename_le_return"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.ViewerTab.ViewerTab.on_filename_le_return" title="Permalink to this definition">#</a></dt>
 <dd><p>Handles the event triggered by the return key press within the filename input field.</p>
 <p>This method is typically invoked when the return (or enter) key is pressed while inputting a filename. It primarily invokes the filename button click event handler, simulating a click operation on the associated button.</p>
-<section id="id19">
-<h5>Parameters<a class="headerlink" href="#id19" title="Permalink to this heading">#</a></h5>
+<section id="id20">
+<h5>Parameters<a class="headerlink" href="#id20" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
-<section id="id20">
-<h5>Returns<a class="headerlink" href="#id20" title="Permalink to this heading">#</a></h5>
+<section id="id21">
+<h5>Returns<a class="headerlink" href="#id21" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 </dd></dl>
@@ -625,15 +617,15 @@ the application’s cursor is restored to its default state after the operation 
 <dt class="sig sig-object py" id="PDielec.GUI.ViewerTab.ViewerTab.on_light_switches_cb_activated">
 <span class="sig-name descname"><span class="pre">on_light_switches_cb_activated</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/ViewerTab.html#ViewerTab.on_light_switches_cb_activated"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.ViewerTab.ViewerTab.on_light_switches_cb_activated" title="Permalink to this definition">#</a></dt>
 <dd><p>Activate or deactivate the light switch based on the current state and updates the GUI accordingly.</p>
-<section id="id21">
-<h5>Parameters<a class="headerlink" href="#id21" title="Permalink to this heading">#</a></h5>
+<section id="id22">
+<h5>Parameters<a class="headerlink" href="#id22" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>index<span class="classifier">int</span></dt><dd><p>Index of the light switch in <cite>self.light_switches</cite> list that needs to be toggled.</p>
 </dd>
 </dl>
 </section>
-<section id="id22">
-<h5>Returns<a class="headerlink" href="#id22" title="Permalink to this heading">#</a></h5>
+<section id="id23">
+<h5>Returns<a class="headerlink" href="#id23" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 </dd></dl>
@@ -643,15 +635,15 @@ the application’s cursor is restored to its default state after the operation 
 <span class="sig-name descname"><span class="pre">on_maximum_displacement_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/ViewerTab.html#ViewerTab.on_maximum_displacement_changed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.ViewerTab.ViewerTab.on_maximum_displacement_changed" title="Permalink to this definition">#</a></dt>
 <dd><p>Handle changes to the maximum displacement setting.</p>
 <p>This method updates the ‘Maximum displacement’ setting, recalculates based on the new value, and then replots the relevant data or figures.</p>
-<section id="id23">
-<h5>Parameters<a class="headerlink" href="#id23" title="Permalink to this heading">#</a></h5>
+<section id="id24">
+<h5>Parameters<a class="headerlink" href="#id24" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>value<span class="classifier">float</span></dt><dd><p>The new value for the maximum displacement setting.</p>
 </dd>
 </dl>
 </section>
-<section id="id24">
-<h5>Returns<a class="headerlink" href="#id24" title="Permalink to this heading">#</a></h5>
+<section id="id25">
+<h5>Returns<a class="headerlink" href="#id25" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 </dd></dl>
@@ -663,15 +655,15 @@ the application’s cursor is restored to its default state after the operation 
 <p>This method updates the plot type index based on the user’s selection and then
 re-plots the data according to the new plot type.
 Plot types can be: ‘Animation’, ‘Arrows’, or ‘No arrows or animation’.</p>
-<section id="id25">
-<h5>Parameters<a class="headerlink" href="#id25" title="Permalink to this heading">#</a></h5>
+<section id="id26">
+<h5>Parameters<a class="headerlink" href="#id26" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>index<span class="classifier">int</span></dt><dd><p>The index of the newly selected plot type.</p>
 </dd>
 </dl>
 </section>
-<section id="id26">
-<h5>Returns<a class="headerlink" href="#id26" title="Permalink to this heading">#</a></h5>
+<section id="id27">
+<h5>Returns<a class="headerlink" href="#id27" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 </dd></dl>
@@ -684,12 +676,12 @@ Plot types can be: ‘Animation’, ‘Arrows’, or ‘No arrows or animation�
 updates the displayed frequency, removes existing arrows from the OpenGL widget,
 computes maximum displacement for scaling, and plots new arrows with updated settings.
 It also invokes the calculate and plot functions to reflect changes in the UI.</p>
-<section id="id27">
-<h5>Parameters<a class="headerlink" href="#id27" title="Permalink to this heading">#</a></h5>
+<section id="id28">
+<h5>Parameters<a class="headerlink" href="#id28" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
-<section id="id28">
-<h5>Returns<a class="headerlink" href="#id28" title="Permalink to this heading">#</a></h5>
+<section id="id29">
+<h5>Returns<a class="headerlink" href="#id29" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 </dd></dl>
@@ -701,15 +693,15 @@ It also invokes the calculate and plot functions to reflect changes in the UI.</
 <p>This function takes a new value for ‘a’, updates the ‘Super Cell’ setting of the object
 accordingly (while keeping ‘b’ and ‘c’ parameters unchanged), marks the object as
 requiring refresh, and finally calls the refresh method.</p>
-<section id="id29">
-<h5>Parameters<a class="headerlink" href="#id29" title="Permalink to this heading">#</a></h5>
+<section id="id30">
+<h5>Parameters<a class="headerlink" href="#id30" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>newa<span class="classifier">int</span></dt><dd><p>The new value for the ‘a’ parameter to be set in the ‘Super Cell’ setting.</p>
 </dd>
 </dl>
 </section>
-<section id="id30">
-<h5>Returns<a class="headerlink" href="#id30" title="Permalink to this heading">#</a></h5>
+<section id="id31">
+<h5>Returns<a class="headerlink" href="#id31" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 </dd></dl>
@@ -721,15 +713,15 @@ requiring refresh, and finally calls the refresh method.</p>
 <p>This function takes a new value for ‘b’, updates the ‘Super Cell’ setting of the object
 accordingly (while keeping ‘a’ and ‘c’ parameters unchanged), marks the object as
 requiring refresh, and finally calls the refresh method.</p>
-<section id="id31">
-<h5>Parameters<a class="headerlink" href="#id31" title="Permalink to this heading">#</a></h5>
+<section id="id32">
+<h5>Parameters<a class="headerlink" href="#id32" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>newb<span class="classifier">int</span></dt><dd><p>The new value for the ‘b’ component of the ‘Super Cell’.</p>
 </dd>
 </dl>
 </section>
-<section id="id32">
-<h5>Returns<a class="headerlink" href="#id32" title="Permalink to this heading">#</a></h5>
+<section id="id33">
+<h5>Returns<a class="headerlink" href="#id33" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 </dd></dl>
@@ -741,15 +733,15 @@ requiring refresh, and finally calls the refresh method.</p>
 <p>This function takes a new value for ‘c’, updates the ‘Super Cell’ setting of the object
 accordingly (while keeping ‘a’ and ‘b’ parameters unchanged), marks the object as
 requiring refresh, and finally calls the refresh method.</p>
-<section id="id33">
-<h5>Parameters<a class="headerlink" href="#id33" title="Permalink to this heading">#</a></h5>
+<section id="id34">
+<h5>Parameters<a class="headerlink" href="#id34" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>newc<span class="classifier">int</span></dt><dd><p>The new value to set for the ‘c’ component of the ‘Super Cell’ setting.</p>
 </dd>
 </dl>
 </section>
-<section id="id34">
-<h5>Returns<a class="headerlink" href="#id34" title="Permalink to this heading">#</a></h5>
+<section id="id35">
+<h5>Returns<a class="headerlink" href="#id35" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 </dd></dl>
@@ -761,12 +753,12 @@ requiring refresh, and finally calls the refresh method.</p>
 <p>This method selects a plotting routine based on the value of <cite>self.plot_type_index</cite>.
 It does an early return if <cite>self.reader</cite> is None, indicating there might be no data
 to plot. It logs the method’s progress using a debugger’s print function.</p>
-<section id="id35">
-<h5>Parameters<a class="headerlink" href="#id35" title="Permalink to this heading">#</a></h5>
+<section id="id36">
+<h5>Parameters<a class="headerlink" href="#id36" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
-<section id="id36">
-<h5>Returns<a class="headerlink" href="#id36" title="Permalink to this heading">#</a></h5>
+<section id="id37">
+<h5>Returns<a class="headerlink" href="#id37" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 </dd></dl>
@@ -779,12 +771,12 @@ to plot. It logs the method’s progress using a debugger’s print function.</p
 an OpenGL widget. It hides any arrows, triggers a visual update,
 and starts the animation process. Debug messages are logged at the
 start and completion of the animation process.</p>
-<section id="id37">
-<h5>Parameters<a class="headerlink" href="#id37" title="Permalink to this heading">#</a></h5>
+<section id="id38">
+<h5>Parameters<a class="headerlink" href="#id38" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
-<section id="id38">
-<h5>Returns<a class="headerlink" href="#id38" title="Permalink to this heading">#</a></h5>
+<section id="id39">
+<h5>Returns<a class="headerlink" href="#id39" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 </dd></dl>
@@ -794,12 +786,12 @@ start and completion of the animation process.</p>
 <span class="sig-name descname"><span class="pre">plot_arrows</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/ViewerTab.html#ViewerTab.plot_arrows"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.ViewerTab.ViewerTab.plot_arrows" title="Permalink to this definition">#</a></dt>
 <dd><p>Plot arrows showing the vibrational mode of a molecule</p>
 <p>This method enables the display of arrows on an associated OpenGL widget, halts any ongoing animations, and triggers a refresh of the widget to ensure the changes are visualized.</p>
-<section id="id39">
-<h5>Parameters<a class="headerlink" href="#id39" title="Permalink to this heading">#</a></h5>
+<section id="id40">
+<h5>Parameters<a class="headerlink" href="#id40" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
-<section id="id40">
-<h5>Returns<a class="headerlink" href="#id40" title="Permalink to this heading">#</a></h5>
+<section id="id41">
+<h5>Returns<a class="headerlink" href="#id41" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 </dd></dl>
@@ -809,12 +801,12 @@ start and completion of the animation process.</p>
 <span class="sig-name descname"><span class="pre">plot_none</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/ViewerTab.html#ViewerTab.plot_none"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.ViewerTab.ViewerTab.plot_none" title="Permalink to this definition">#</a></dt>
 <dd><p>Hides arrow visuals, stops any ongoing animation, and updates the Open GL widget.</p>
 <p>This method is intended to reset or clear the current state of the Open GL widget by disabling any arrow visuals, stopping any animations that might be running, and then updating the widget to reflect these changes.</p>
-<section id="id41">
-<h5>Parameters<a class="headerlink" href="#id41" title="Permalink to this heading">#</a></h5>
+<section id="id42">
+<h5>Parameters<a class="headerlink" href="#id42" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
-<section id="id42">
-<h5>Returns<a class="headerlink" href="#id42" title="Permalink to this heading">#</a></h5>
+<section id="id43">
+<h5>Returns<a class="headerlink" href="#id43" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 </dd></dl>
@@ -824,19 +816,19 @@ start and completion of the animation process.</p>
 <span class="sig-name descname"><span class="pre">refresh</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">force</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/ViewerTab.html#ViewerTab.refresh"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.ViewerTab.ViewerTab.refresh" title="Permalink to this definition">#</a></dt>
 <dd><p>Refresh the state of the object, optionally forcing the refresh.</p>
 <p>This method updates the object’s state by recalculating and refreshing its components. It checks whether a refresh is necessary or if it has been forced. It iterates through child widgets to block signals, updates settings from a notebook, adjusts visual elements based on these settings, and ultimately recalculates and replots data.</p>
-<section id="id43">
-<h5>Parameters<a class="headerlink" href="#id43" title="Permalink to this heading">#</a></h5>
+<section id="id44">
+<h5>Parameters<a class="headerlink" href="#id44" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>force<span class="classifier">bool, optional</span></dt><dd><p>If True, the refresh proceeds regardless of whether it is deemed necessary based on the object state. Default is False.</p>
 </dd>
 </dl>
 </section>
-<section id="id44">
-<h5>Returns<a class="headerlink" href="#id44" title="Permalink to this heading">#</a></h5>
+<section id="id45">
+<h5>Returns<a class="headerlink" href="#id45" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
-<section id="id45">
-<h5>Notes<a class="headerlink" href="#id45" title="Permalink to this heading">#</a></h5>
+<section id="id46">
+<h5>Notes<a class="headerlink" href="#id46" title="Permalink to this heading">#</a></h5>
 <ul class="simple">
 <li><p>The function begins by checking if a refresh is required or has been forced. If neither condition is met, it aborts the refresh.</p></li>
 <li><p>It temporarily changes the cursor to a waiting cursor to indicate processing.</p></li>
@@ -853,12 +845,12 @@ start and completion of the animation process.</p>
 <span class="sig-name descname"><span class="pre">requestRefresh</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/ViewerTab.html#ViewerTab.requestRefresh"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.ViewerTab.ViewerTab.requestRefresh" title="Permalink to this definition">#</a></dt>
 <dd><p>Initiates a refresh request.</p>
 <p>This method sets an internal flag to indicate that a refresh is required.</p>
-<section id="id46">
-<h5>Parameters<a class="headerlink" href="#id46" title="Permalink to this heading">#</a></h5>
+<section id="id47">
+<h5>Parameters<a class="headerlink" href="#id47" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
-<section id="id47">
-<h5>Returns<a class="headerlink" href="#id47" title="Permalink to this heading">#</a></h5>
+<section id="id48">
+<h5>Returns<a class="headerlink" href="#id48" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 </dd></dl>
@@ -868,19 +860,19 @@ start and completion of the animation process.</p>
 <span class="sig-name descname"><span class="pre">save_cif</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/ViewerTab.html#ViewerTab.save_cif"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.ViewerTab.ViewerTab.save_cif" title="Permalink to this definition">#</a></dt>
 <dd><p>Save the crystallographic information file (CIF) for different phases.</p>
 <p>A copy is made of the current unit cell and a cell is wrtten out for each phase of the vibration</p>
-<section id="id48">
-<h5>Parameters<a class="headerlink" href="#id48" title="Permalink to this heading">#</a></h5>
+<section id="id49">
+<h5>Parameters<a class="headerlink" href="#id49" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>filename<span class="classifier">str</span></dt><dd><p>The name of the file where the CIF data will be saved.</p>
 </dd>
 </dl>
 </section>
-<section id="id49">
-<h5>Returns<a class="headerlink" href="#id49" title="Permalink to this heading">#</a></h5>
+<section id="id50">
+<h5>Returns<a class="headerlink" href="#id50" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
-<section id="id50">
-<h5>Notes<a class="headerlink" href="#id50" title="Permalink to this heading">#</a></h5>
+<section id="id51">
+<h5>Notes<a class="headerlink" href="#id51" title="Permalink to this heading">#</a></h5>
 <p>This method relies on the <cite>self.unit_cell</cite> object, which should have a method <cite>set_xyz_coordinates</cite> and <cite>write_cif</cite>. It also uses <cite>self.settings</cite> to retrieve the number of phase steps and the selected mode for CIF generation. The function iterates over a calculated range of phases, updates the unit cell coordinates for each phase, and writes the CIF data to the provided filename. The function assumes that <cite>self.newXYZ</cite> is an iterable object containing new XYZ coordinates for each phase. The CIF files are saved with a description that includes the mode and phase.</p>
 </section>
 </dd></dl>
@@ -889,8 +881,8 @@ start and completion of the animation process.</p>
 <dt class="sig sig-object py" id="PDielec.GUI.ViewerTab.ViewerTab.setColour">
 <span class="sig-name descname"><span class="pre">setColour</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">element</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">colour</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/ViewerTab.html#ViewerTab.setColour"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.ViewerTab.ViewerTab.setColour" title="Permalink to this definition">#</a></dt>
 <dd><p>Set the colour of a specified element in the interface.</p>
-<section id="id51">
-<h5>Parameters<a class="headerlink" href="#id51" title="Permalink to this heading">#</a></h5>
+<section id="id52">
+<h5>Parameters<a class="headerlink" href="#id52" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>element<span class="classifier">str</span></dt><dd><p>The element whose colour is to be set. Can be ‘Background’, ‘Cell’, ‘Arrow’, or any other custom element defined in <cite>element_colours</cite>.</p>
 </dd>
@@ -898,8 +890,8 @@ start and completion of the animation process.</p>
 </dd>
 </dl>
 </section>
-<section id="id52">
-<h5>Returns<a class="headerlink" href="#id52" title="Permalink to this heading">#</a></h5>
+<section id="id53">
+<h5>Returns<a class="headerlink" href="#id53" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 <section id="examples">

@@ -276,15 +276,6 @@
           <section id="module-PDielec.QEOutputReader">
 <span id="pdielec-qeoutputreader"></span><h1><a class="reference internal" href="#module-PDielec.QEOutputReader" title="PDielec.QEOutputReader"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.QEOutputReader</span></code></a><a class="headerlink" href="#module-PDielec.QEOutputReader" title="Permalink to this heading">#</a></h1>
 <p>QEOutputReader: Read the contents of a QE output file containing QE dynamical matrix.</p>
-<p>Copyright 2024 John Kendrick</p>
-<p>This file is part of PDielec</p>
-<p>This program is free software; you can redistribute it and/or modify
-it under the terms of the MIT License</p>
-<p>This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.</p>
-<p>You should have received a copy of the MIT License
-along with this program, if not see <a class="reference external" href="https://opensource.org/licenses/MIT">https://opensource.org/licenses/MIT</a></p>
 <section id="module-contents">
 <h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this heading">#</a></h2>
 <section id="classes">
@@ -303,7 +294,18 @@ along with this program, if not see <a class="reference external" href="https://
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PDielec.QEOutputReader.</span></span><span class="sig-name descname"><span class="pre">QEOutputReader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filenames</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/QEOutputReader.html#QEOutputReader"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.QEOutputReader.QEOutputReader" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="../GenericOutputReader/index.html#PDielec.GenericOutputReader.GenericOutputReader" title="PDielec.GenericOutputReader.GenericOutputReader"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PDielec.GenericOutputReader.GenericOutputReader</span></code></a></p>
 <p>Read the contents of a QE output file containing QE dynamical matrix.</p>
-<p>Inherits from GenericOutputReader</p>
+<p>Inherits from <a class="reference internal" href="../GenericOutputReader/index.html#PDielec.GenericOutputReader.GenericOutputReader" title="PDielec.GenericOutputReader.GenericOutputReader"><code class="xref py py-class docutils literal notranslate"><span class="pre">GenericOutputReader</span></code></a></p>
+<section id="parameters">
+<h4>Parameters<a class="headerlink" href="#parameters" title="Permalink to this heading">#</a></h4>
+<dl class="simple">
+<dt>filenames<span class="classifier">str or list</span></dt><dd><p>The filename or a list of filenames for QE output files.</p>
+</dd>
+</dl>
+</section>
+<section id="notes">
+<h4>Notes<a class="headerlink" href="#notes" title="Permalink to this heading">#</a></h4>
+<p>This constructor initializes a <code class="docutils literal notranslate"><span class="pre">GenericOutputReader</span></code> with the given filenames,
+sets the type attribute to ‘QE output’, and initializes <cite>_alat</cite> attribute to None.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.QEOutputReader.QEOutputReader._read_alat">
 <span class="sig-name descname"><span class="pre">_read_alat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/QEOutputReader.html#QEOutputReader._read_alat"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.QEOutputReader.QEOutputReader._read_alat" title="Permalink to this definition">#</a></dt>
@@ -312,19 +314,19 @@ along with this program, if not see <a class="reference external" href="https://
 for the current object. The value is directly sought from a specified position in the line,
 then adjusted if necessary to match a predefined standard unit conversion threshold.
 This method does not return any value.</p>
-<section id="parameters">
-<h4>Parameters<a class="headerlink" href="#parameters" title="Permalink to this heading">#</a></h4>
+<section id="id1">
+<h5>Parameters<a class="headerlink" href="#id1" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>line<span class="classifier">str</span></dt><dd><p>The line of text from which the lattice parameter is to be read.</p>
 </dd>
 </dl>
 </section>
 <section id="returns">
-<h4>Returns<a class="headerlink" href="#returns" title="Permalink to this heading">#</a></h4>
+<h5>Returns<a class="headerlink" href="#returns" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
-<section id="notes">
-<h4>Notes<a class="headerlink" href="#notes" title="Permalink to this heading">#</a></h4>
+<section id="id2">
+<h5>Notes<a class="headerlink" href="#id2" title="Permalink to this heading">#</a></h5>
 <p>The function checks if the extracted lattice parameter is within a certain threshold (<cite>0.0001</cite>)
 of a predefined conversion factor (<cite>angs2bohr</cite>). If so, it adjusts the lattice parameter to exactly
 match this conversion factor. This functionality assumes that <cite>angs2bohr</cite> is defined elsewhere
@@ -338,26 +340,26 @@ prints should be activated.</p>
 <dt class="sig sig-object py" id="PDielec.QEOutputReader.QEOutputReader._read_alat2">
 <span class="sig-name descname"><span class="pre">_read_alat2</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/QEOutputReader.html#QEOutputReader._read_alat2"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.QEOutputReader.QEOutputReader._read_alat2" title="Permalink to this definition">#</a></dt>
 <dd><p>Read and set the lattice parameter from a given line.</p>
-<section id="id1">
-<h4>Parameters<a class="headerlink" href="#id1" title="Permalink to this heading">#</a></h4>
+<section id="id3">
+<h5>Parameters<a class="headerlink" href="#id3" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>line<span class="classifier">str</span></dt><dd><p>The line from which the lattice parameter is read. It is assumed that the lattice parameter can be found at the third whitespace-separated value in the line.</p>
 </dd>
 </dl>
 </section>
-<section id="id2">
-<h4>Returns<a class="headerlink" href="#id2" title="Permalink to this heading">#</a></h4>
+<section id="id4">
+<h5>Returns<a class="headerlink" href="#id4" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 <section id="attributes-modified">
-<h4>Attributes Modified<a class="headerlink" href="#attributes-modified" title="Permalink to this heading">#</a></h4>
+<h5>Attributes Modified<a class="headerlink" href="#attributes-modified" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>_alat</dt><dd><p>The lattice parameter is set or adjusted within this instance based on the value read from <cite>line</cite>. It is adjusted to <cite>angs2bohr</cite> if the absolute difference between the read value and <cite>angs2bohr</cite> is less than 0.0001.</p>
 </dd>
 </dl>
 </section>
-<section id="id3">
-<h4>Notes<a class="headerlink" href="#id3" title="Permalink to this heading">#</a></h4>
+<section id="id5">
+<h5>Notes<a class="headerlink" href="#id5" title="Permalink to this heading">#</a></h5>
 <p>This method does not return any value. It updates the <cite>_alat</cite> attribute of the class instance with the value read from the input line, after applying necessary conversions and checks.</p>
 </section>
 </dd></dl>
@@ -367,8 +369,8 @@ prints should be activated.</p>
 <span class="sig-name descname"><span class="pre">_read_born_charges</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/QEOutputReader.html#QEOutputReader._read_born_charges"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.QEOutputReader.QEOutputReader._read_born_charges" title="Permalink to this definition">#</a></dt>
 <dd><p>Read and parse Born charges from a file.</p>
 <p>This internal method reads the Born charges of <cite>nions</cite> ions from the file specified by <cite>file_descriptor</cite> and updates the <cite>born_charges</cite> attribute of the class instance.</p>
-<section id="id4">
-<h4>Parameters<a class="headerlink" href="#id4" title="Permalink to this heading">#</a></h4>
+<section id="id6">
+<h5>Parameters<a class="headerlink" href="#id6" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>line<span class="classifier">str</span></dt><dd><p>Dummy argument which is overwritten</p>
 </dd>
@@ -376,12 +378,12 @@ prints should be activated.</p>
 </dd>
 </dl>
 </section>
-<section id="id5">
-<h4>Returns<a class="headerlink" href="#id5" title="Permalink to this heading">#</a></h4>
+<section id="id7">
+<h5>Returns<a class="headerlink" href="#id7" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
-<section id="id6">
-<h4>Notes<a class="headerlink" href="#id6" title="Permalink to this heading">#</a></h4>
+<section id="id8">
+<h5>Notes<a class="headerlink" href="#id8" title="Permalink to this heading">#</a></h5>
 <p>This method reads three lines for each ion, each line corresponding to one of the three Cartesian coordinates (x, y, z). It expects each line to contain three space-separated values, which represent the components of the Born charge tensor for that direction.</p>
 <p>This method directly modifies the <cite>born_charges</cite> attribute of the class instance, appending a 3x3 list (representing the Born charge tensor) for each ion.</p>
 <p>If <cite>self.debug</cite> is True, it prints a debug message upon completion.</p>
@@ -395,19 +397,19 @@ prints should be activated.</p>
 <p>This method parses the cell parameters from a specific line in the input file, updating the internal
 state with the scaled lattice vectors and their corresponding unit cell added to the list of unit cells.
 Additionally, this method updates the total number of cells and the volume of the last unit cell read.</p>
-<section id="id7">
-<h4>Parameters<a class="headerlink" href="#id7" title="Permalink to this heading">#</a></h4>
+<section id="id9">
+<h5>Parameters<a class="headerlink" href="#id9" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>line<span class="classifier">str</span></dt><dd><p>A string representing a line from the input file that contains cell parameters.</p>
 </dd>
 </dl>
 </section>
-<section id="id8">
-<h4>Returns<a class="headerlink" href="#id8" title="Permalink to this heading">#</a></h4>
+<section id="id10">
+<h5>Returns<a class="headerlink" href="#id10" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
-<section id="id9">
-<h4>Notes<a class="headerlink" href="#id9" title="Permalink to this heading">#</a></h4>
+<section id="id11">
+<h5>Notes<a class="headerlink" href="#id11" title="Permalink to this heading">#</a></h5>
 <p>The function expects the <cite>line</cite> input to contain the lattice parameter as its third value after removing parentheses.
 Each subsequent line read from the input file (after the parameter line) is expected to represent the lattice vectors,
 scaled by the lattice parameter and converted from Angstroms to Bohr radii.
@@ -420,19 +422,19 @@ The method directly modifies the object’s state by updating the <cite>unit_cel
 <span class="sig-name descname"><span class="pre">_read_celldm1</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/QEOutputReader.html#QEOutputReader._read_celldm1"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.QEOutputReader.QEOutputReader._read_celldm1" title="Permalink to this definition">#</a></dt>
 <dd><p>Process and update the class attribute _alat based on a line from a file.</p>
 <p>This function is intended to read and process a line that contains a unit of length. It updates the class attribute <cite>_alat</cite> after converting the value properly and checks for conformity within a tolerance. If <cite>debug</cite> is set to True in the class, it also prints the updated <cite>_alat</cite> value.</p>
-<section id="id10">
-<h4>Parameters<a class="headerlink" href="#id10" title="Permalink to this heading">#</a></h4>
+<section id="id12">
+<h5>Parameters<a class="headerlink" href="#id12" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>line<span class="classifier">str</span></dt><dd><p>The line read from a file which contains the value to be processed. It’s expected that the relevant value is the third element of the line when split by whitespace, and it may contain a comma which should be ignored.</p>
 </dd>
 </dl>
 </section>
-<section id="id11">
-<h4>Returns<a class="headerlink" href="#id11" title="Permalink to this heading">#</a></h4>
+<section id="id13">
+<h5>Returns<a class="headerlink" href="#id13" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
-<section id="id12">
-<h4>Notes<a class="headerlink" href="#id12" title="Permalink to this heading">#</a></h4>
+<section id="id14">
+<h5>Notes<a class="headerlink" href="#id14" title="Permalink to this heading">#</a></h5>
 <ul class="simple">
 <li><p>Presumes the existence of a class attribute <cite>_alat</cite> which is updated by this function.</p></li>
 <li><p>Assumes <cite>angs2bohr</cite> is a predefined constant available within the scope of this method for conversion or comparison purposes.</p></li>
@@ -449,16 +451,16 @@ The method directly modifies the object’s state by updating the <cite>unit_cel
 <p>This method reads a specific format from the current position of the file descriptor,
 computes the Hessian matrix based on the read values, and updates the dynamical matrix.
 The routine only reads the gamma point matrix</p>
-<section id="id13">
-<h4>Parameters<a class="headerlink" href="#id13" title="Permalink to this heading">#</a></h4>
+<section id="id15">
+<h5>Parameters<a class="headerlink" href="#id15" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>line<span class="classifier">str</span></dt><dd><p>The line from which to start reading. This parameter is not used in the function
 and likely represents a legacy or placeholder parameter.</p>
 </dd>
 </dl>
 </section>
-<section id="id14">
-<h4>Returns<a class="headerlink" href="#id14" title="Permalink to this heading">#</a></h4>
+<section id="id16">
+<h5>Returns<a class="headerlink" href="#id16" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 </dd></dl>
@@ -468,19 +470,19 @@ and likely represents a legacy or placeholder parameter.</p>
 <span class="sig-name descname"><span class="pre">_read_dyng_coordinates</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/QEOutputReader.html#QEOutputReader._read_dyng_coordinates"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.QEOutputReader.QEOutputReader._read_dyng_coordinates" title="Permalink to this definition">#</a></dt>
 <dd><p>Read dynamic coordinates from a dynG file and update related properties.</p>
 <p>This method reads atomic positions from a line, updating the mass, atomic type list, ions per type, and species list. It scales the coordinates according to the conversion from Angstroms to Bohr units and updates the corresponding <cite>unit_cells</cite> properties.</p>
-<section id="id15">
-<h4>Parameters<a class="headerlink" href="#id15" title="Permalink to this heading">#</a></h4>
+<section id="id17">
+<h5>Parameters<a class="headerlink" href="#id17" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>line<span class="classifier">str</span></dt><dd><p>The line from which coordinates are read. This parameter is mentioned for clarity but technically does not exist in the function’s arguments. The actual reading is from the object’s file_descriptor attribute, thus assuming this function is part of a class handling file input.</p>
 </dd>
 </dl>
 </section>
-<section id="id16">
-<h4>Returns<a class="headerlink" href="#id16" title="Permalink to this heading">#</a></h4>
+<section id="id18">
+<h5>Returns<a class="headerlink" href="#id18" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 <section id="attributes-updated">
-<h4>Attributes Updated<a class="headerlink" href="#attributes-updated" title="Permalink to this heading">#</a></h4>
+<h5>Attributes Updated<a class="headerlink" href="#attributes-updated" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>self.masses<span class="classifier">list</span></dt><dd><p>Updated list of masses based on the atomic positions read.</p>
 </dd>
@@ -497,7 +499,7 @@ and likely represents a legacy or placeholder parameter.</p>
 </dl>
 </section>
 <section id="see-also">
-<h4>See Also<a class="headerlink" href="#see-also" title="Permalink to this heading">#</a></h4>
+<h5>See Also<a class="headerlink" href="#see-also" title="Permalink to this heading">#</a></h5>
 <p><cite>set_xyz_coordinates</cite> : Method used to update xyz coordinates of the last unit cell.
 <cite>set_element_names</cite> : Method used to update element names of the last unit cell.</p>
 </section>
@@ -512,19 +514,19 @@ from a given line, assuming the number of electrons is specified
 in the 5th position of the line when split by whitespace.
 If the debug attribute is set to True, it prints out the value
 of electrons read.</p>
-<section id="id17">
-<h4>Parameters<a class="headerlink" href="#id17" title="Permalink to this heading">#</a></h4>
+<section id="id19">
+<h5>Parameters<a class="headerlink" href="#id19" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>line<span class="classifier">str</span></dt><dd><p>The line from which to read the number of electrons.</p>
 </dd>
 </dl>
 </section>
-<section id="id18">
-<h4>Returns<a class="headerlink" href="#id18" title="Permalink to this heading">#</a></h4>
+<section id="id20">
+<h5>Returns<a class="headerlink" href="#id20" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
-<section id="id19">
-<h4>Notes<a class="headerlink" href="#id19" title="Permalink to this heading">#</a></h4>
+<section id="id21">
+<h5>Notes<a class="headerlink" href="#id21" title="Permalink to this heading">#</a></h5>
 <p>This method modifies the state of the object by setting the
 ‘electrons’ attribute based on the input line.</p>
 </section>
@@ -535,23 +537,23 @@ of electrons read.</p>
 <span class="sig-name descname"><span class="pre">_read_energy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/QEOutputReader.html#QEOutputReader._read_energy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.QEOutputReader.QEOutputReader._read_energy" title="Permalink to this definition">#</a></dt>
 <dd><p>Parse the energy values from a given line and set them to the instance variables.</p>
 <p>This function extracts energy-related values from a provided line of text, then calculates and assigns these values (in electron volts) to instance attributes for final energy without entropy and final free energy, while considering conversion factors. If debugging is enabled, it prints the final free energy.</p>
-<section id="id20">
-<h4>Parameters<a class="headerlink" href="#id20" title="Permalink to this heading">#</a></h4>
+<section id="id22">
+<h5>Parameters<a class="headerlink" href="#id22" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>line<span class="classifier">str</span></dt><dd><p>A string containing energy-related information, expected to follow a pre-determined format where the relevant energy value is the fourth element in a whitespace-separated list.</p>
 </dd>
 </dl>
 </section>
-<section id="id21">
-<h4>Returns<a class="headerlink" href="#id21" title="Permalink to this heading">#</a></h4>
+<section id="id23">
+<h5>Returns<a class="headerlink" href="#id23" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
-<section id="id22">
-<h4>See Also<a class="headerlink" href="#id22" title="Permalink to this heading">#</a></h4>
+<section id="id24">
+<h5>See Also<a class="headerlink" href="#id24" title="Permalink to this heading">#</a></h5>
 <p>hartree2ev : Constant used for conversion from Hartree to electron volts.</p>
 </section>
-<section id="id23">
-<h4>Notes<a class="headerlink" href="#id23" title="Permalink to this heading">#</a></h4>
+<section id="id25">
+<h5>Notes<a class="headerlink" href="#id25" title="Permalink to this heading">#</a></h5>
 <ul class="simple">
 <li><p>Assumes that ‘hartree2ev’ is a predefined conversion constant available in the scope where this function is defined.</p></li>
 <li><p>Utilizes the fourth element in the whitespace-separated list from the input string, after splitting, for the relevant energy-related value.</p></li>
@@ -565,8 +567,8 @@ of electrons read.</p>
 <dt class="sig sig-object py" id="PDielec.QEOutputReader.QEOutputReader._read_energy_cutoff">
 <span class="sig-name descname"><span class="pre">_read_energy_cutoff</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/QEOutputReader.html#QEOutputReader._read_energy_cutoff"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.QEOutputReader.QEOutputReader._read_energy_cutoff" title="Permalink to this definition">#</a></dt>
 <dd><p>Internal method to parse and set the energy cutoff from a line of text.</p>
-<section id="id24">
-<h4>Parameters<a class="headerlink" href="#id24" title="Permalink to this heading">#</a></h4>
+<section id="id26">
+<h5>Parameters<a class="headerlink" href="#id26" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>line<span class="classifier">str</span></dt><dd><p>The line of text containing the energy cutoff information. The expected
 format is such that the relevant numerical value is the fourth element (index 3)
@@ -574,12 +576,12 @@ of the whitespace-separated entries.</p>
 </dd>
 </dl>
 </section>
-<section id="id25">
-<h4>Returns<a class="headerlink" href="#id25" title="Permalink to this heading">#</a></h4>
+<section id="id27">
+<h5>Returns<a class="headerlink" href="#id27" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
-<section id="id26">
-<h4>Notes<a class="headerlink" href="#id26" title="Permalink to this heading">#</a></h4>
+<section id="id28">
+<h5>Notes<a class="headerlink" href="#id28" title="Permalink to this heading">#</a></h5>
 <p>This method directly modifies the <cite>energy_cutoff</cite> attribute of the class instance
 by setting it to the parsed value converted from Hartree to electron volts (eV) and
 divided by 2. The conversion factor <cite>hartree2ev</cite> is expected to be defined elsewhere
@@ -594,19 +596,19 @@ the instance’s <cite>debug</cite> attribute is <cite>True</cite>.</p>
 <span class="sig-name descname"><span class="pre">_read_epsilon</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/QEOutputReader.html#QEOutputReader._read_epsilon"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.QEOutputReader.QEOutputReader._read_epsilon" title="Permalink to this definition">#</a></dt>
 <dd><p>Read and process zero frequency optical permittivity data from the dynG file.</p>
 <p>This method reads the next four lines from a file, processes them to extract optical dielectric constant data, and stores this data in the instance’s <cite>zerof_optical_dielectric</cite> attribute. Specifically, it skips the first line, then reads three lines of numeric values, where each line contains at least three numeric values which are converted to floats and stored in a 2D list assigned to <cite>zerof_optical_dielectric</cite>.</p>
-<section id="id27">
-<h4>Parameters<a class="headerlink" href="#id27" title="Permalink to this heading">#</a></h4>
+<section id="id29">
+<h5>Parameters<a class="headerlink" href="#id29" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>line<span class="classifier">not used</span></dt><dd><p>This parameter is present but not used in the function.</p>
 </dd>
 </dl>
 </section>
-<section id="id28">
-<h4>Returns<a class="headerlink" href="#id28" title="Permalink to this heading">#</a></h4>
+<section id="id30">
+<h5>Returns<a class="headerlink" href="#id30" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
-<section id="id29">
-<h4>Notes<a class="headerlink" href="#id29" title="Permalink to this heading">#</a></h4>
+<section id="id31">
+<h5>Notes<a class="headerlink" href="#id31" title="Permalink to this heading">#</a></h5>
 <ul class="simple">
 <li><p>This method modifies the instance attribute <cite>zerof_optical_dielectric</cite> directly.</p></li>
 <li><p>If the instance attribute <cite>debug</cite> is set to True, this method prints the <cite>zerof_optical_dielectric</cite> attribute after it is updated.</p></li>
@@ -619,19 +621,19 @@ the instance’s <cite>debug</cite> attribute is <cite>True</cite>.</p>
 <span class="sig-name descname"><span class="pre">_read_fractional_coordinates</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/QEOutputReader.html#QEOutputReader._read_fractional_coordinates"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.QEOutputReader.QEOutputReader._read_fractional_coordinates" title="Permalink to this definition">#</a></dt>
 <dd><p>Reads the log file and sets the fractional coordinates and element names for the last unit cell in the object.</p>
 <p>This function iterates over a specified number of lines (defined by <cite>self.nions</cite>) from the object’s file descriptor, parsing each line into species names and their fractional coordinates. These species names and coordinates are then used to set the corresponding properties for the last unit cell managed by the object. Additional side-effects include updating the total number of unit cells (<cite>self.ncells</cite>) and the volume of the last unit cell (<cite>self.volume</cite>), with the option to print the volume if debugging is enabled.</p>
-<section id="id30">
-<h4>Parameters<a class="headerlink" href="#id30" title="Permalink to this heading">#</a></h4>
+<section id="id32">
+<h5>Parameters<a class="headerlink" href="#id32" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>line<span class="classifier">str</span></dt><dd><p>The initial line from which to start reading the fractional coordinates. The actual parameter is not used within the function but symbolically represents the starting point for reading.</p>
 </dd>
 </dl>
 </section>
-<section id="id31">
-<h4>Returns<a class="headerlink" href="#id31" title="Permalink to this heading">#</a></h4>
+<section id="id33">
+<h5>Returns<a class="headerlink" href="#id33" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
-<section id="id32">
-<h4>Notes<a class="headerlink" href="#id32" title="Permalink to this heading">#</a></h4>
+<section id="id34">
+<h5>Notes<a class="headerlink" href="#id34" title="Permalink to this heading">#</a></h5>
 <ul class="simple">
 <li><p>The function directly modifies the object’s state by setting properties of the last unit cell (<cite>self.unit_cells[-1]</cite>) and updating <cite>self.ncells</cite> and <cite>self.volume</cite>.</p></li>
 <li><p>Only operates if <cite>self.nions</cite> is greater than 0.</p></li>
@@ -645,19 +647,19 @@ the instance’s <cite>debug</cite> attribute is <cite>True</cite>.</p>
 <span class="sig-name descname"><span class="pre">_read_header</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/QEOutputReader.html#QEOutputReader._read_header"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.QEOutputReader.QEOutputReader._read_header" title="Permalink to this definition">#</a></dt>
 <dd><p>Read and process the header line from the dynG file.</p>
 <p>This method updates the object’s state by reading the header line from the set file descriptor and parsing it to extract the number of species (nspecies), the number of ions (nions), and the lattice parameter (alat) after converting it to Bohr units if it is within a tolerance range of the conversion factor.</p>
-<section id="id33">
-<h4>Parameters<a class="headerlink" href="#id33" title="Permalink to this heading">#</a></h4>
+<section id="id35">
+<h5>Parameters<a class="headerlink" href="#id35" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>line<span class="classifier">str</span></dt><dd><p>The initial line to read from. Note: This parameter is not used in the current implementation and the function reads directly from the object’s file_descriptor attribute.</p>
 </dd>
 </dl>
 </section>
-<section id="id34">
-<h4>Returns<a class="headerlink" href="#id34" title="Permalink to this heading">#</a></h4>
+<section id="id36">
+<h5>Returns<a class="headerlink" href="#id36" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
-<section id="id35">
-<h4>Notes<a class="headerlink" href="#id35" title="Permalink to this heading">#</a></h4>
+<section id="id37">
+<h5>Notes<a class="headerlink" href="#id37" title="Permalink to this heading">#</a></h5>
 <p>The function assumes that the file has been opened and that the file descriptor is stored in <cite>self.file_descriptor</cite>. The header line is expected to contain at least four space-separated values, with the first, second, and fourth values being integers representing the number of species, the number of ions, and a float representing the lattice parameter, respectively. The <cite>angs2bohr</cite> constant is assumed to be defined elsewhere in the code and is used as a threshold for converting the lattice parameter to Bohr units. If the <cite>debug</cite> attribute of the object is set to True, it prints the lattice parameter after conversion or identification.</p>
 <p>This method modifies the state of the object by setting <cite>nspecies</cite>, <cite>nions</cite>, and <cite>_alat</cite> based on the contents of the header line.</p>
 </section>
@@ -668,19 +670,19 @@ the instance’s <cite>debug</cite> attribute is <cite>True</cite>.</p>
 <span class="sig-name descname"><span class="pre">_read_kpoint_grid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/QEOutputReader.html#QEOutputReader._read_kpoint_grid"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.QEOutputReader.QEOutputReader._read_kpoint_grid" title="Permalink to this definition">#</a></dt>
 <dd><p>Read and set the k-point grid from a line in a file.</p>
 <p>This method reads a line from the file associated with the file_descriptor attribute, parses the first three elements of the line as floating-point numbers, and sets them as the k-point grid. If the debug attribute is set to True, it prints the k-point grid.</p>
-<section id="id36">
-<h4>Parameters<a class="headerlink" href="#id36" title="Permalink to this heading">#</a></h4>
+<section id="id38">
+<h5>Parameters<a class="headerlink" href="#id38" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>line<span class="classifier">str</span></dt><dd><p>The line from which to read the k-point grid. Note that while this parameter is named ‘line’, it is not used directly in the function as the function reads the next line from the file itself.</p>
 </dd>
 </dl>
 </section>
-<section id="id37">
-<h4>Returns<a class="headerlink" href="#id37" title="Permalink to this heading">#</a></h4>
+<section id="id39">
+<h5>Returns<a class="headerlink" href="#id39" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
-<section id="id38">
-<h4>Notes<a class="headerlink" href="#id38" title="Permalink to this heading">#</a></h4>
+<section id="id40">
+<h5>Notes<a class="headerlink" href="#id40" title="Permalink to this heading">#</a></h5>
 <p>This function modifies the state of the object by setting the <cite>kpoint_grid</cite> attribute to the parsed k-point grid values.</p>
 </section>
 </dd></dl>
@@ -690,19 +692,19 @@ the instance’s <cite>debug</cite> attribute is <cite>True</cite>.</p>
 <span class="sig-name descname"><span class="pre">_read_kpoints</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/QEOutputReader.html#QEOutputReader._read_kpoints"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.QEOutputReader.QEOutputReader._read_kpoints" title="Permalink to this definition">#</a></dt>
 <dd><p>Read and store the number of k-points from a given line.</p>
 <p>This is an internal method that extracts the number of k-points from a provided line (assumed to contain this information in a predefined format) and stores it in the class instance. Optionally, it prints debug information if the debug mode is activated.</p>
-<section id="id39">
-<h4>Parameters<a class="headerlink" href="#id39" title="Permalink to this heading">#</a></h4>
+<section id="id41">
+<h5>Parameters<a class="headerlink" href="#id41" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>line<span class="classifier">str</span></dt><dd><p>The line from which the number of k-points is extracted. The line should contain the number of k-points at the 5th position (index 4 when split by whitespace).</p>
 </dd>
 </dl>
 </section>
-<section id="id40">
-<h4>Returns<a class="headerlink" href="#id40" title="Permalink to this heading">#</a></h4>
+<section id="id42">
+<h5>Returns<a class="headerlink" href="#id42" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
-<section id="id41">
-<h4>Notes<a class="headerlink" href="#id41" title="Permalink to this heading">#</a></h4>
+<section id="id43">
+<h5>Notes<a class="headerlink" href="#id43" title="Permalink to this heading">#</a></h5>
 <p>This method modifies the state of the object by setting the <cite>kpoints</cite> attribute.</p>
 </section>
 </dd></dl>
@@ -712,19 +714,19 @@ the instance’s <cite>debug</cite> attribute is <cite>True</cite>.</p>
 <span class="sig-name descname"><span class="pre">_read_lattice_vectors</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/QEOutputReader.html#QEOutputReader._read_lattice_vectors"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.QEOutputReader.QEOutputReader._read_lattice_vectors" title="Permalink to this definition">#</a></dt>
 <dd><p>Reads and processes lattice vectors from a synG file, then updates unit cell information.</p>
 <p>This private method reads the next three lines from an open file, each representing the a, b, and c vectors of a unit cell, respectively. Each vector is scaled according to the attribute <cite>_alat</cite> and a conversion factor from Angstroms to Bohrs. It then updates the list of unit cells with a new <cite>UnitCell</cite> object created from these vectors, recalculates the total number of cells, updates the volume attribute to the volume of the latest unit cell, and, if debug mode is active, prints the volume. Finally, it calls another method to read masses.</p>
-<section id="id42">
-<h4>Parameters<a class="headerlink" href="#id42" title="Permalink to this heading">#</a></h4>
+<section id="id44">
+<h5>Parameters<a class="headerlink" href="#id44" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>line<span class="classifier">str</span></dt><dd><p>The initial line from which to start reading the lattice vectors. Note: This parameter is mentioned for consistency with the function signature, but its utility within the function body as described is not clear and appears to be a placeholder.</p>
 </dd>
 </dl>
 </section>
-<section id="id43">
-<h4>Returns<a class="headerlink" href="#id43" title="Permalink to this heading">#</a></h4>
+<section id="id45">
+<h5>Returns<a class="headerlink" href="#id45" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
-<section id="id44">
-<h4>Attributes Updated<a class="headerlink" href="#id44" title="Permalink to this heading">#</a></h4>
+<section id="id46">
+<h5>Attributes Updated<a class="headerlink" href="#id46" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>unit_cells<span class="classifier">list</span></dt><dd><p>A list of <cite>UnitCell</cite> objects representing the unit cells read from the file. Updated by appending a new <cite>UnitCell</cite>.</p>
 </dd>
@@ -741,16 +743,16 @@ the instance’s <cite>debug</cite> attribute is <cite>True</cite>.</p>
 <span class="sig-name descname"><span class="pre">_read_masses</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/QEOutputReader.html#QEOutputReader._read_masses"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.QEOutputReader.QEOutputReader._read_masses" title="Permalink to this definition">#</a></dt>
 <dd><p>Reads the masses of species from an dynG file and populates mass and species lists.</p>
 <p>This method parses lines from an already opened file object (<cite>file_descriptor</cite>), extracting species names and their corresponding masses, which are then adjusted by multiplying by 2 and dividing by the atomic mass unit (amu). The extracted species names are capitalized and stored, along with the calculated masses, in their respective class attributes. If debugging is enabled, it prints the loaded masses. It also calls <cite>_read_dyng_coordinates</cite> method before finishing, passing an empty string as an argument.</p>
-<section id="id45">
-<h4>Parameters<a class="headerlink" href="#id45" title="Permalink to this heading">#</a></h4>
-<p>None</p>
-</section>
-<section id="id46">
-<h4>Returns<a class="headerlink" href="#id46" title="Permalink to this heading">#</a></h4>
-<p>None</p>
-</section>
 <section id="id47">
-<h4>Attributes Modified<a class="headerlink" href="#id47" title="Permalink to this heading">#</a></h4>
+<h5>Parameters<a class="headerlink" href="#id47" title="Permalink to this heading">#</a></h5>
+<p>None</p>
+</section>
+<section id="id48">
+<h5>Returns<a class="headerlink" href="#id48" title="Permalink to this heading">#</a></h5>
+<p>None</p>
+</section>
+<section id="id49">
+<h5>Attributes Modified<a class="headerlink" href="#id49" title="Permalink to this heading">#</a></h5>
 <ul class="simple">
 <li><dl class="simple">
 <dt><cite>masses_per_type</cite><span class="classifier">list</span></dt><dd><p>A list that this method populates with the calculated masses for each species.</p>
@@ -764,8 +766,8 @@ the instance’s <cite>debug</cite> attribute is <cite>True</cite>.</p>
 </li>
 </ul>
 </section>
-<section id="id48">
-<h4>Notes<a class="headerlink" href="#id48" title="Permalink to this heading">#</a></h4>
+<section id="id50">
+<h5>Notes<a class="headerlink" href="#id50" title="Permalink to this heading">#</a></h5>
 <ul class="simple">
 <li><p>The atomic mass unit (<cite>amu</cite>) is defined elsewhere</p></li>
 <li><p>It’s assumed that <cite>_read_dyng_coordinates</cite> is a method within the same class that takes a single string argument.</p></li>
@@ -778,19 +780,19 @@ the instance’s <cite>debug</cite> attribute is <cite>True</cite>.</p>
 <span class="sig-name descname"><span class="pre">_read_nions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/QEOutputReader.html#QEOutputReader._read_nions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.QEOutputReader.QEOutputReader._read_nions" title="Permalink to this definition">#</a></dt>
 <dd><p>Read the number of ions from a line and update the object’s nions attribute.</p>
 <p>The number of ions is expected to be the fifth element in the line when split by space.</p>
-<section id="id49">
-<h4>Parameters<a class="headerlink" href="#id49" title="Permalink to this heading">#</a></h4>
+<section id="id51">
+<h5>Parameters<a class="headerlink" href="#id51" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>line<span class="classifier">str</span></dt><dd><p>The line from which to extract the number of ions.</p>
 </dd>
 </dl>
 </section>
-<section id="id50">
-<h4>Returns<a class="headerlink" href="#id50" title="Permalink to this heading">#</a></h4>
+<section id="id52">
+<h5>Returns<a class="headerlink" href="#id52" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
-<section id="id51">
-<h4>Notes<a class="headerlink" href="#id51" title="Permalink to this heading">#</a></h4>
+<section id="id53">
+<h5>Notes<a class="headerlink" href="#id53" title="Permalink to this heading">#</a></h5>
 <p>If ‘debug’ attribute of the object is True, this method will print the number of ions found.</p>
 </section>
 </dd></dl>
@@ -799,8 +801,8 @@ the instance’s <cite>debug</cite> attribute is <cite>True</cite>.</p>
 <dt class="sig sig-object py" id="PDielec.QEOutputReader.QEOutputReader._read_output_files">
 <span class="sig-name descname"><span class="pre">_read_output_files</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/QEOutputReader.html#QEOutputReader._read_output_files"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.QEOutputReader.QEOutputReader._read_output_files" title="Permalink to this definition">#</a></dt>
 <dd><p>Process the QE files.</p>
-<section id="id52">
-<h4>Notes<a class="headerlink" href="#id52" title="Permalink to this heading">#</a></h4>
+<section id="id54">
+<h5>Notes<a class="headerlink" href="#id54" title="Permalink to this heading">#</a></h5>
 <p>Defines the search patterns for QE output files</p>
 </section>
 </dd></dl>
@@ -809,8 +811,8 @@ the instance’s <cite>debug</cite> attribute is <cite>True</cite>.</p>
 <dt class="sig sig-object py" id="PDielec.QEOutputReader.QEOutputReader._read_pressure">
 <span class="sig-name descname"><span class="pre">_read_pressure</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/QEOutputReader.html#QEOutputReader._read_pressure"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.QEOutputReader.QEOutputReader._read_pressure" title="Permalink to this definition">#</a></dt>
 <dd><p>Parse a pressure reading from a given line and update the object’s pressure attribute.</p>
-<section id="id53">
-<h4>Parameters<a class="headerlink" href="#id53" title="Permalink to this heading">#</a></h4>
+<section id="id55">
+<h5>Parameters<a class="headerlink" href="#id55" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>line<span class="classifier">str</span></dt><dd><p>A string containing the pressure reading among other space-separated values.
 The pressure value is expected to be at the 6th position in this string
@@ -818,16 +820,17 @@ The pressure value is expected to be at the 6th position in this string
 </dd>
 </dl>
 </section>
-<section id="id54">
-<h4>Returns<a class="headerlink" href="#id54" title="Permalink to this heading">#</a></h4>
+<section id="id56">
+<h5>Returns<a class="headerlink" href="#id56" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
-<section id="id55">
-<h4>Notes<a class="headerlink" href="#id55" title="Permalink to this heading">#</a></h4>
+<section id="id57">
+<h5>Notes<a class="headerlink" href="#id57" title="Permalink to this heading">#</a></h5>
 <p>This function updates the pressure attribute of the object it is called on and optionally prints the updated pressure value if the object’s <cite>debug</cite> attribute is set to True.</p>
 </section>
 </dd></dl>
 
+</section>
 </dd></dl>
 
 </section>

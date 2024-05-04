@@ -275,24 +275,7 @@
         <article role="main">
           <section id="module-PDielec.GUI.SpreadSheetManager">
 <span id="pdielec-gui-spreadsheetmanager"></span><h1><a class="reference internal" href="#module-PDielec.GUI.SpreadSheetManager" title="PDielec.GUI.SpreadSheetManager"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.SpreadSheetManager</span></code></a><a class="headerlink" href="#module-PDielec.GUI.SpreadSheetManager" title="Permalink to this heading">#</a></h1>
-<p>SpreadSheetMamager</p>
-<p>The MIT License (MIT)</p>
-<p>Copyright (c) 2024 John Kendrick</p>
-<p>Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the “Software”), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:</p>
-<p>The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.</p>
-<p>THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.</p>
+<p>SpreadSheetMamager module</p>
 <section id="module-contents">
 <h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this heading">#</a></h2>
 <section id="classes">
@@ -313,6 +296,13 @@ SOFTWARE.</p>
 <p>This class provides methods for managing a workbook with various tabs
 (named worksheets), writing data to these worksheets, and handling complex
 data types specifically tailored for scientific or engineering applications.</p>
+<section id="parameters">
+<h4>Parameters<a class="headerlink" href="#parameters" title="Permalink to this heading">#</a></h4>
+<dl class="simple">
+<dt>filename<span class="classifier">str</span></dt><dd><p>The name of the file to which the workbook will be saved.</p>
+</dd>
+</dl>
+</section>
 <section id="attributes">
 <h4>Attributes<a class="headerlink" href="#attributes" title="Permalink to this heading">#</a></h4>
 <dl class="simple">
@@ -357,8 +347,8 @@ data types specifically tailored for scientific or engineering applications.</p>
 <span class="sig-name descname"><span class="pre">close</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SpreadSheetManager.html#SpreadSheetManager.close"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SpreadSheetManager.SpreadSheetManager.close" title="Permalink to this definition">#</a></dt>
 <dd><p>Close the workbook if it hasn’t been closed already.</p>
 <p>Closes the workbook associated with an instance and sets its status as closed to prevent multiple close operations.</p>
-<section id="parameters">
-<h5>Parameters<a class="headerlink" href="#parameters" title="Permalink to this heading">#</a></h5>
+<section id="id1">
+<h5>Parameters<a class="headerlink" href="#id1" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 <section id="returns">
@@ -373,12 +363,12 @@ data types specifically tailored for scientific or engineering applications.</p>
 <dd><p>Delete all the data in the current worksheet.</p>
 <p>Clears all entries in the worksheet represented by <cite>self</cite> by setting each cell’s value to an empty string.
 After clearing the data, it resets the current position, maximum column, and maximum row counters for the worksheet.</p>
-<section id="id1">
-<h5>Parameters<a class="headerlink" href="#id1" title="Permalink to this heading">#</a></h5>
+<section id="id2">
+<h5>Parameters<a class="headerlink" href="#id2" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
-<section id="id2">
-<h5>Returns<a class="headerlink" href="#id2" title="Permalink to this heading">#</a></h5>
+<section id="id3">
+<h5>Returns<a class="headerlink" href="#id3" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 </dd></dl>
@@ -387,15 +377,15 @@ After clearing the data, it resets the current position, maximum column, and max
 <dt class="sig sig-object py" id="PDielec.GUI.SpreadSheetManager.SpreadSheetManager.openWorkSheet">
 <span class="sig-name descname"><span class="pre">openWorkSheet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tab</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SpreadSheetManager.html#SpreadSheetManager.openWorkSheet"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SpreadSheetManager.SpreadSheetManager.openWorkSheet" title="Permalink to this definition">#</a></dt>
 <dd><p>Open a new worksheet in a workbook.</p>
-<section id="id3">
-<h5>Parameters<a class="headerlink" href="#id3" title="Permalink to this heading">#</a></h5>
+<section id="id4">
+<h5>Parameters<a class="headerlink" href="#id4" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>tab<span class="classifier">str</span></dt><dd><p>The name of the worksheet to be opened.</p>
 </dd>
 </dl>
 </section>
-<section id="id4">
-<h5>Returns<a class="headerlink" href="#id4" title="Permalink to this heading">#</a></h5>
+<section id="id5">
+<h5>Returns<a class="headerlink" href="#id5" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 <section id="notes">
@@ -411,19 +401,19 @@ handled by the instance.</p>
 <dt class="sig sig-object py" id="PDielec.GUI.SpreadSheetManager.SpreadSheetManager.selectWorkSheet">
 <span class="sig-name descname"><span class="pre">selectWorkSheet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SpreadSheetManager.html#SpreadSheetManager.selectWorkSheet"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SpreadSheetManager.SpreadSheetManager.selectWorkSheet" title="Permalink to this definition">#</a></dt>
 <dd><p>Selects or opens a worksheet by name.</p>
-<section id="id5">
-<h5>Parameters<a class="headerlink" href="#id5" title="Permalink to this heading">#</a></h5>
+<section id="id6">
+<h5>Parameters<a class="headerlink" href="#id6" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>name<span class="classifier">str</span></dt><dd><p>The name of the worksheet to select or open.</p>
 </dd>
 </dl>
 </section>
-<section id="id6">
-<h5>Returns<a class="headerlink" href="#id6" title="Permalink to this heading">#</a></h5>
+<section id="id7">
+<h5>Returns<a class="headerlink" href="#id7" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
-<section id="id7">
-<h5>Notes<a class="headerlink" href="#id7" title="Permalink to this heading">#</a></h5>
+<section id="id8">
+<h5>Notes<a class="headerlink" href="#id8" title="Permalink to this heading">#</a></h5>
 <p>This method selects a worksheet if it is already opened. If the worksheet is not
 currently open, it attempts to open the worksheet by calling <cite>openWorkSheet</cite> with
 the worksheet name.</p>
@@ -434,8 +424,8 @@ the worksheet name.</p>
 <dt class="sig sig-object py" id="PDielec.GUI.SpreadSheetManager.SpreadSheetManager.write">
 <span class="sig-name descname"><span class="pre">write</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">row</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">col</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">item</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SpreadSheetManager.html#SpreadSheetManager.write"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SpreadSheetManager.SpreadSheetManager.write" title="Permalink to this definition">#</a></dt>
 <dd><p>Writes an item to a specific position in the active worksheet, handling complex numbers.</p>
-<section id="id8">
-<h5>Parameters<a class="headerlink" href="#id8" title="Permalink to this heading">#</a></h5>
+<section id="id9">
+<h5>Parameters<a class="headerlink" href="#id9" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>row<span class="classifier">int</span></dt><dd><p>The row index where the item will be written.</p>
 </dd>
@@ -446,12 +436,12 @@ its real and imaginary parts are written to adjacent columns.</p>
 </dd>
 </dl>
 </section>
-<section id="id9">
-<h5>Returns<a class="headerlink" href="#id9" title="Permalink to this heading">#</a></h5>
+<section id="id10">
+<h5>Returns<a class="headerlink" href="#id10" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
-<section id="id10">
-<h5>Notes<a class="headerlink" href="#id10" title="Permalink to this heading">#</a></h5>
+<section id="id11">
+<h5>Notes<a class="headerlink" href="#id11" title="Permalink to this heading">#</a></h5>
 <ul class="simple">
 <li><p>This method updates the worksheet’s max column and row based on the provided indices.</p></li>
 <li><p>When writing a complex number, <cite>col</cite> is incremented before writing the imaginary part,
@@ -465,8 +455,8 @@ and the updated column is used for adjusting the max column.</p></li>
 <dt class="sig sig-object py" id="PDielec.GUI.SpreadSheetManager.SpreadSheetManager.writeNextRow">
 <span class="sig-name descname"><span class="pre">writeNextRow</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">items</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">row</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">col</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">check</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SpreadSheetManager.html#SpreadSheetManager.writeNextRow"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SpreadSheetManager.SpreadSheetManager.writeNextRow" title="Permalink to this definition">#</a></dt>
 <dd><p>Writes a sequence of items as a row in a spread sheet, starting from a specified row and column into a grid structure.</p>
-<section id="id11">
-<h5>Parameters<a class="headerlink" href="#id11" title="Permalink to this heading">#</a></h5>
+<section id="id12">
+<h5>Parameters<a class="headerlink" href="#id12" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>items<span class="classifier">list</span></dt><dd><p>A list of items to be written. Items can be strings, numbers, or nested lists where each sub-item is written in subsequent columns.</p>
 </dd>
@@ -478,12 +468,12 @@ and the updated column is used for adjusting the max column.</p></li>
 </dd>
 </dl>
 </section>
-<section id="id12">
-<h5>Returns<a class="headerlink" href="#id12" title="Permalink to this heading">#</a></h5>
+<section id="id13">
+<h5>Returns<a class="headerlink" href="#id13" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
-<section id="id13">
-<h5>Notes<a class="headerlink" href="#id13" title="Permalink to this heading">#</a></h5>
+<section id="id14">
+<h5>Notes<a class="headerlink" href="#id14" title="Permalink to this heading">#</a></h5>
 <ul class="simple">
 <li><p>If <cite>col</cite> is 0, a warning message is printed.</p></li>
 <li><p>The <cite>row</cite> and <cite>col</cite> are updated as items are written, and <cite>row</cite> is incremented after writing all items.</p></li>

@@ -1,20 +1,20 @@
 #!/usr/bin/python
+#
+# Copyright 2024 John Kendrick & Andrew Burnett
+#
+# This file is part of PDielec
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the MIT License
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+#
+# You should have received a copy of the MIT License along with this program, if not see https://opensource.org/licenses/MIT
+#
 '''
 VASP output reader
-
-Copyright 2024 John Kendrick
-
-This file is part of PDielec
-
-This program is free software; you can redistribute it and/or modify
-it under the terms of the MIT License
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-
-You should have received a copy of the MIT License
-along with this program, if not see https://opensource.org/licenses/MIT
 '''
 
 import re
@@ -46,11 +46,34 @@ def myfloat(string):
 class VaspOutputReader(GenericOutputReader):
     """
     Read the contents of a directory containing VASP input and output files.
+
+    Inherits from :class:`~PDielec.GenericOutputReader.GenericOutputReader`
+
+    Parameters
+    ----------
+    names : list of str
+        A list of file names to be used in processing the DFT output files
+
+    Attributes
+    ----------
+    type : str
+        A string attribute that specifies the type of output, set to 'Vasp output'.
+    _pspots : dict
+        A private dictionary for the pseudo potentials
+    _ediff : float
+        A private float for the change in energy on each iteration
+    _pulay : float
+        The Pulay pressure
+    _ibrion : int
+        The value of ibrion
+    _potim : float
+        The value of potim
     """
 
     def __init__(self, names):
         """
         Initialize a new instance of the class.
+
 
         Parameters
         ----------

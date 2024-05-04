@@ -275,24 +275,7 @@
         <article role="main">
           <section id="module-PDielec.GUI.SettingsTab">
 <span id="pdielec-gui-settingstab"></span><h1><a class="reference internal" href="#module-PDielec.GUI.SettingsTab" title="PDielec.GUI.SettingsTab"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.SettingsTab</span></code></a><a class="headerlink" href="#module-PDielec.GUI.SettingsTab" title="Permalink to this heading">#</a></h1>
-<p>SettingsTab</p>
-<p>The MIT License (MIT)</p>
-<p>Copyright (c) 2024 John Kendrick</p>
-<p>Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the “Software”), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:</p>
-<p>The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.</p>
-<p>THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.</p>
+<p>SettingsTab module</p>
 <section id="module-contents">
 <h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this heading">#</a></h2>
 <section id="classes">
@@ -365,6 +348,15 @@ SOFTWARE.</p>
 <dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">PyQt5.QtWidgets.QWidget</span></code></p>
 <p>A class for managing and displaying settings related to optical permittivity, mass calculation, and vibrational calculations for crystal structures within a GUI application.</p>
 <p>This class allows for the configuration of various simulation parameters, such as Eckart conditions, Born charge neutrality, atomic mass definitions, and optical permittivity values. It also enables the calculation of infrared intensities, dielectric functions, and permittivity values based on these settings.</p>
+<section id="id2">
+<h4>Parameters<a class="headerlink" href="#id2" title="Permalink to this heading">#</a></h4>
+<dl class="simple">
+<dt>parent<span class="classifier">QWidget</span></dt><dd><p>The parent widget (container) of this widget.</p>
+</dd>
+<dt>debug<span class="classifier">bool, optional</span></dt><dd><p>Flag indicating whether debugging messages should be printed. Defaults to False.</p>
+</dd>
+</dl>
+</section>
 <section id="attributes">
 <h4>Attributes<a class="headerlink" href="#attributes" title="Permalink to this heading">#</a></h4>
 <dl class="simple">
@@ -406,8 +398,8 @@ SOFTWARE.</p>
 </dd>
 </dl>
 </section>
-<section id="id2">
-<h4>Methods<a class="headerlink" href="#id2" title="Permalink to this heading">#</a></h4>
+<section id="id3">
+<h4>Methods<a class="headerlink" href="#id3" title="Permalink to this heading">#</a></h4>
 <dl class="simple">
 <dt>setElementMass(element, mass)</dt><dd><p>Sets the mass for a specified element.</p>
 </dd>
@@ -456,15 +448,15 @@ SOFTWARE.</p>
 <dt class="sig sig-object py" id="PDielec.GUI.SettingsTab.SettingsTab.calculate">
 <span class="sig-name descname"><span class="pre">calculate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vs_cm1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SettingsTab.html#SettingsTab.calculate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SettingsTab.SettingsTab.calculate" title="Permalink to this definition">#</a></dt>
 <dd><p>Calculate the permittivity of the crystal over the range of frequencies in vs_cm1.</p>
-<section id="id3">
-<h5>Parameters<a class="headerlink" href="#id3" title="Permalink to this heading">#</a></h5>
+<section id="id4">
+<h5>Parameters<a class="headerlink" href="#id4" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>vs_cm1<span class="classifier">list</span></dt><dd><p>Frequencies in cm-1</p>
 </dd>
 </dl>
 </section>
-<section id="id4">
-<h5>Returns<a class="headerlink" href="#id4" title="Permalink to this heading">#</a></h5>
+<section id="id5">
+<h5>Returns<a class="headerlink" href="#id5" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 </dd></dl>
@@ -476,12 +468,12 @@ SOFTWARE.</p>
 <p>This method is responsible for creating a table that includes calculated intensities, frequencies, oscillator strengths,
 and other related parameters required for spectroscopic analysis. It adapts based on reader settings, mass definitions,
 and whether to recalculate selected modes.</p>
-<section id="id5">
-<h5>Parameters<a class="headerlink" href="#id5" title="Permalink to this heading">#</a></h5>
+<section id="id6">
+<h5>Parameters<a class="headerlink" href="#id6" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
-<section id="id6">
-<h5>Returns<a class="headerlink" href="#id6" title="Permalink to this heading">#</a></h5>
+<section id="id7">
+<h5>Returns<a class="headerlink" href="#id7" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 <section id="notes">
@@ -494,8 +486,8 @@ and whether to recalculate selected modes.</p>
 - the method also determines the dielectric function based on the configuration and recalculates selected modes if necessary
 - it finally populates a provided table widget (<cite>self.output_tw</cite>) with computed spectroscopic properties</p>
 </section>
-<section id="id7">
-<h5>See Also<a class="headerlink" href="#id7" title="Permalink to this heading">#</a></h5>
+<section id="id8">
+<h5>See Also<a class="headerlink" href="#id8" title="Permalink to this heading">#</a></h5>
 <ul class="simple">
 <li><p><cite>Calculator.normal_modes</cite>: For calculation of normal modes.</p></li>
 <li><p><cite>Calculator.oscillator_strengths</cite>: For calculating oscillator strengths based on normal modes and born charges.</p></li>
@@ -509,15 +501,15 @@ and whether to recalculate selected modes.</p>
 <dt class="sig sig-object py" id="PDielec.GUI.SettingsTab.SettingsTab.getCrystalPermittivity">
 <span class="sig-name descname"><span class="pre">getCrystalPermittivity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vs_cm1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SettingsTab.html#SettingsTab.getCrystalPermittivity"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SettingsTab.SettingsTab.getCrystalPermittivity" title="Permalink to this definition">#</a></dt>
 <dd><p>Return the crystal permittivity</p>
-<section id="id8">
-<h5>Parameters<a class="headerlink" href="#id8" title="Permalink to this heading">#</a></h5>
+<section id="id9">
+<h5>Parameters<a class="headerlink" href="#id9" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>vs_cm1<span class="classifier">list of floats</span></dt><dd><p>The frequencies in cm-1</p>
 </dd>
 </dl>
 </section>
-<section id="id9">
-<h5>Returns<a class="headerlink" href="#id9" title="Permalink to this heading">#</a></h5>
+<section id="id10">
+<h5>Returns<a class="headerlink" href="#id10" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>self.crystal_permittivity<span class="classifier">array_like</span></dt><dd><p>The crystal permittivity (a 3x3 tensor) at each frequency</p>
 </dd>
@@ -529,12 +521,12 @@ and whether to recalculate selected modes.</p>
 <dt class="sig sig-object py" id="PDielec.GUI.SettingsTab.SettingsTab.getCrystalPermittivityObject">
 <span class="sig-name descname"><span class="pre">getCrystalPermittivityObject</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SettingsTab.html#SettingsTab.getCrystalPermittivityObject"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SettingsTab.SettingsTab.getCrystalPermittivityObject" title="Permalink to this definition">#</a></dt>
 <dd><p>Return the crystal permittivity object</p>
-<section id="id10">
-<h5>Parameters<a class="headerlink" href="#id10" title="Permalink to this heading">#</a></h5>
+<section id="id11">
+<h5>Parameters<a class="headerlink" href="#id11" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
-<section id="id11">
-<h5>Returns<a class="headerlink" href="#id11" title="Permalink to this heading">#</a></h5>
+<section id="id12">
+<h5>Returns<a class="headerlink" href="#id12" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>self.CrystalPermittivityObject<span class="classifier">a permittivity object</span></dt><dd><p>An instance of dielectric function</p>
 </dd>
@@ -547,12 +539,12 @@ and whether to recalculate selected modes.</p>
 <span class="sig-name descname"><span class="pre">on_born_changed</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SettingsTab.html#SettingsTab.on_born_changed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SettingsTab.SettingsTab.on_born_changed" title="Permalink to this definition">#</a></dt>
 <dd><p>Handle changes in the Born checkbox state.</p>
 <p>This method is triggered when the state of the Born checkbox changes. It updates the settings to reflect the new state, marks the session for refresh and recalculation, and then refreshes the UI.</p>
-<section id="id12">
-<h5>Parameters<a class="headerlink" href="#id12" title="Permalink to this heading">#</a></h5>
+<section id="id13">
+<h5>Parameters<a class="headerlink" href="#id13" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
-<section id="id13">
-<h5>Returns<a class="headerlink" href="#id13" title="Permalink to this heading">#</a></h5>
+<section id="id14">
+<h5>Returns<a class="headerlink" href="#id14" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 </dd></dl>
@@ -564,12 +556,12 @@ and whether to recalculate selected modes.</p>
 <p>This function is triggered when the state of the Eckart checkbox changes.
 It logs the state change, updates the settings to reflect the new state,
 marks refresh and recalculations as needed, and triggers a UI refresh.</p>
-<section id="id14">
-<h5>Parameters<a class="headerlink" href="#id14" title="Permalink to this heading">#</a></h5>
+<section id="id15">
+<h5>Parameters<a class="headerlink" href="#id15" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
-<section id="id15">
-<h5>Returns<a class="headerlink" href="#id15" title="Permalink to this heading">#</a></h5>
+<section id="id16">
+<h5>Returns<a class="headerlink" href="#id16" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 </dd></dl>
@@ -579,19 +571,19 @@ marks refresh and recalculations as needed, and triggers a UI refresh.</p>
 <span class="sig-name descname"><span class="pre">on_element_masses_tw_itemChanged</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">item</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SettingsTab.html#SettingsTab.on_element_masses_tw_itemChanged"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SettingsTab.SettingsTab.on_element_masses_tw_itemChanged" title="Permalink to this definition">#</a></dt>
 <dd><p>Handle item changed event in the mass table widget.</p>
 <p>This function is triggered whenever a cell in the masses table widget is edited. It updates the internal masses dictionary based on the new value provided in the table cell. Additionally, it sets some UI components to reflect the change and flags the need for recalculation and refresh.</p>
-<section id="id16">
-<h5>Parameters<a class="headerlink" href="#id16" title="Permalink to this heading">#</a></h5>
+<section id="id17">
+<h5>Parameters<a class="headerlink" href="#id17" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>item<span class="classifier">QTableWidgetItem</span></dt><dd><p>The table widget item that was changed.</p>
 </dd>
 </dl>
 </section>
-<section id="id17">
-<h5>Returns<a class="headerlink" href="#id17" title="Permalink to this heading">#</a></h5>
+<section id="id18">
+<h5>Returns<a class="headerlink" href="#id18" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
-<section id="id18">
-<h5>Notes<a class="headerlink" href="#id18" title="Permalink to this heading">#</a></h5>
+<section id="id19">
+<h5>Notes<a class="headerlink" href="#id19" title="Permalink to this heading">#</a></h5>
 <ul class="simple">
 <li><p><cite>self.reader.getSpecies()</cite> returns a list of elements corresponding to table columns.</p></li>
 <li><p><cite>self.masses_dictionary</cite> is a dict where keys are element symbols and values are their masses.</p></li>
@@ -606,15 +598,15 @@ marks refresh and recalculations as needed, and triggers a UI refresh.</p>
 <span class="sig-name descname"><span class="pre">on_element_masses_tw_itemClicked</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">item</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SettingsTab.html#SettingsTab.on_element_masses_tw_itemClicked"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SettingsTab.SettingsTab.on_element_masses_tw_itemClicked" title="Permalink to this definition">#</a></dt>
 <dd><p>Handles the item clicked event on the element mass table widget.</p>
 <p>The only thing this function does is to make sure that signal from the <cite>element_masses_tw</cite> table widget are not blocked,</p>
-<section id="id19">
-<h5>Parameters<a class="headerlink" href="#id19" title="Permalink to this heading">#</a></h5>
+<section id="id20">
+<h5>Parameters<a class="headerlink" href="#id20" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>item<span class="classifier">QTableWidgetItem</span></dt><dd><p>The item in the table widget that was clicked.</p>
 </dd>
 </dl>
 </section>
-<section id="id20">
-<h5>Returns<a class="headerlink" href="#id20" title="Permalink to this heading">#</a></h5>
+<section id="id21">
+<h5>Returns<a class="headerlink" href="#id21" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 </dd></dl>
@@ -627,27 +619,27 @@ marks refresh and recalculations as needed, and triggers a UI refresh.</p>
 from a combobox, updates related settings, and refreshes the GUI accordingly.
 It disables the 4th option in the combobox if one of the first three options is selected.
 Additionally, it processes all pending events to ensure the GUI is updated immediately.</p>
-<section id="id21">
-<h5>Parameters<a class="headerlink" href="#id21" title="Permalink to this heading">#</a></h5>
+<section id="id22">
+<h5>Parameters<a class="headerlink" href="#id22" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>index<span class="classifier">int</span></dt><dd><p>The index of the selected option in the combobox.</p>
 </dd>
 </dl>
 </section>
-<section id="id22">
-<h5>Returns<a class="headerlink" href="#id22" title="Permalink to this heading">#</a></h5>
+<section id="id23">
+<h5>Returns<a class="headerlink" href="#id23" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
-<section id="id23">
-<h5>Notes<a class="headerlink" href="#id23" title="Permalink to this heading">#</a></h5>
+<section id="id24">
+<h5>Notes<a class="headerlink" href="#id24" title="Permalink to this heading">#</a></h5>
 <ul class="simple">
 <li><p><cite>refresh()</cite> is called to update the UI based on the new selection.</p></li>
 <li><p>It also makes use of <cite>QCoreApplication.processEvents()</cite> to ensure the UI is
 responsive by processing all pending events.</p></li>
 </ul>
 </section>
-<section id="id24">
-<h5>See Also<a class="headerlink" href="#id24" title="Permalink to this heading">#</a></h5>
+<section id="id25">
+<h5>See Also<a class="headerlink" href="#id25" title="Permalink to this heading">#</a></h5>
 <p>set_masses_tw : A method to update the masses table widget based on the selection.
 refresh : A method to refresh the UI components.</p>
 </section>
@@ -658,19 +650,19 @@ refresh : A method to refresh the UI components.</p>
 <span class="sig-name descname"><span class="pre">on_optical_tw_itemChanged</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">item</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SettingsTab.html#SettingsTab.on_optical_tw_itemChanged"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SettingsTab.SettingsTab.on_optical_tw_itemChanged" title="Permalink to this definition">#</a></dt>
 <dd><p>Handle item change events for an optical permittivity table.</p>
 <p>This method updates the optical permittivity settings based on changes made to the table widget items. It enforces symmetry in the optical permittivity matrix, marks the settings as edited, and triggers a series of updates and recalculations.</p>
-<section id="id25">
-<h5>Parameters<a class="headerlink" href="#id25" title="Permalink to this heading">#</a></h5>
+<section id="id26">
+<h5>Parameters<a class="headerlink" href="#id26" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>item<span class="classifier">QTableWidgetItem</span></dt><dd><p>The table widget item that was changed. The item’s row, column, and text are used to update the settings.</p>
 </dd>
 </dl>
 </section>
-<section id="id26">
-<h5>Returns<a class="headerlink" href="#id26" title="Permalink to this heading">#</a></h5>
+<section id="id27">
+<h5>Returns<a class="headerlink" href="#id27" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
-<section id="id27">
-<h5>Notes<a class="headerlink" href="#id27" title="Permalink to this heading">#</a></h5>
+<section id="id28">
+<h5>Notes<a class="headerlink" href="#id28" title="Permalink to this heading">#</a></h5>
 <ul class="simple">
 <li><p>Updates the ‘Optical permittivity’ matrix in the settings dictionary based on the row, column, and text of the changed item.</p></li>
 <li><p>Enforces symmetry by setting the [column][row] element equal to the [row][column] element.</p></li>
@@ -691,15 +683,15 @@ in a graphical user interface built with PyQt or PySide. When a table widget ite
 is clicked, it first prints the start message along with the row and column of the
 clicked item. It then unblocks signals for the table widget and processes any pending
 GUI events, ensuring the application remains responsive.</p>
-<section id="id28">
-<h5>Parameters<a class="headerlink" href="#id28" title="Permalink to this heading">#</a></h5>
+<section id="id29">
+<h5>Parameters<a class="headerlink" href="#id29" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>item<span class="classifier">QTableWidgetItem</span></dt><dd><p>The table widget item that was clicked.</p>
 </dd>
 </dl>
 </section>
-<section id="id29">
-<h5>Returns<a class="headerlink" href="#id29" title="Permalink to this heading">#</a></h5>
+<section id="id30">
+<h5>Returns<a class="headerlink" href="#id30" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 </dd></dl>
@@ -709,19 +701,19 @@ GUI events, ensuring the application remains responsive.</p>
 <span class="sig-name descname"><span class="pre">on_output_tw_itemChanged</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">item</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SettingsTab.html#SettingsTab.on_output_tw_itemChanged"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SettingsTab.SettingsTab.on_output_tw_itemChanged" title="Permalink to this definition">#</a></dt>
 <dd><p>Handle item changes in the output table widget.</p>
 <p>This method is called when an item in the output table widget (<cite>output_tw</cite>) is changed. It manages the selection state of modes based on the state of checkbox items in the first column, updates the “sigmas_cm1” and “frequencies_cm1” lists based on the user input in the respective columns, refreshes the widget, and processes pending GUI events.</p>
-<section id="id30">
-<h5>Parameters<a class="headerlink" href="#id30" title="Permalink to this heading">#</a></h5>
+<section id="id31">
+<h5>Parameters<a class="headerlink" href="#id31" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>item<span class="classifier">QTableWidgetItem</span></dt><dd><p>The table widget item that was changed.</p>
 </dd>
 </dl>
 </section>
-<section id="id31">
-<h5>Returns<a class="headerlink" href="#id31" title="Permalink to this heading">#</a></h5>
+<section id="id32">
+<h5>Returns<a class="headerlink" href="#id32" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
-<section id="id32">
-<h5>Notes<a class="headerlink" href="#id32" title="Permalink to this heading">#</a></h5>
+<section id="id33">
+<h5>Notes<a class="headerlink" href="#id33" title="Permalink to this heading">#</a></h5>
 <ul class="simple">
 <li><p>This method blocks signals from the output table widget at the beginning to prevent recursive calls during its execution.</p></li>
 <li><p>It distinguishes between changes in the first column (selection state and mode sigma values) and the second column (frequency values).</p></li>
@@ -729,8 +721,8 @@ GUI events, ensuring the application remains responsive.</p>
 <li><p>After making changes, this method refreshes the output table widget and enforces a GUI update with <cite>QCoreApplication.processEvents()</cite>.</p></li>
 </ul>
 </section>
-<section id="id33">
-<h5>See Also<a class="headerlink" href="#id33" title="Permalink to this heading">#</a></h5>
+<section id="id34">
+<h5>See Also<a class="headerlink" href="#id34" title="Permalink to this heading">#</a></h5>
 <p>redraw_output_tw : Redraws the output table widget.
 refresh : Refreshes the internal state based on the latest changes.</p>
 </section>
@@ -743,12 +735,12 @@ refresh : Refreshes the internal state based on the latest changes.</p>
 <p>This method is triggered when the sigma value has been changed. It updates the stored sigma value in the settings,
 applies the new sigma value across the pre-defined frequency range, redraws the output table widget, and then
 initiates a refresh to reflect the newly applied changes.</p>
-<section id="id34">
-<h5>Parameters<a class="headerlink" href="#id34" title="Permalink to this heading">#</a></h5>
+<section id="id35">
+<h5>Parameters<a class="headerlink" href="#id35" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
-<section id="id35">
-<h5>Returns<a class="headerlink" href="#id35" title="Permalink to this heading">#</a></h5>
+<section id="id36">
+<h5>Returns<a class="headerlink" href="#id36" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 </dd></dl>
@@ -761,16 +753,16 @@ initiates a refresh to reflect the newly applied changes.</p>
 with new items representing these values and custom flags for item behavior. It also calculates
 and displays additional derived values in the table. Selection flags for each item are set
 based on whether the mode is selected or not. The table’s columns are resized to content at the end.</p>
-<section id="id36">
-<h5>Parameters<a class="headerlink" href="#id36" title="Permalink to this heading">#</a></h5>
-<p>None</p>
-</section>
 <section id="id37">
-<h5>Returns<a class="headerlink" href="#id37" title="Permalink to this heading">#</a></h5>
+<h5>Parameters<a class="headerlink" href="#id37" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 <section id="id38">
-<h5>Notes<a class="headerlink" href="#id38" title="Permalink to this heading">#</a></h5>
+<h5>Returns<a class="headerlink" href="#id38" title="Permalink to this heading">#</a></h5>
+<p>None</p>
+</section>
+<section id="id39">
+<h5>Notes<a class="headerlink" href="#id39" title="Permalink to this heading">#</a></h5>
 <ul class="simple">
 <li><p>This method assumes that <cite>self.frequencies_cm1</cite>, <cite>self.sigmas_cm1</cite>, <cite>self.intensities</cite>, and <cite>self.modes_selected</cite> contain iterable values that are indexed correspondingly.</p></li>
 <li><p>The method temporarily blocks signals from <cite>self.output_tw</cite> to prevent unwanted signal handling during updates.</p></li>
@@ -786,19 +778,19 @@ based on whether the mode is selected or not. The table’s columns are resized 
 <span class="sig-name descname"><span class="pre">refresh</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">force</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SettingsTab.html#SettingsTab.refresh"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SettingsTab.SettingsTab.refresh" title="Permalink to this definition">#</a></dt>
 <dd><p>Refreshes the current state based on notebook content changes or user request.</p>
 <p>This method updates the GUI components such as tables for masses, optical permittivity, sigma value, Eckart term checkbox, and Born charges checkbox based on the changes made in the notebook or when forced by the user. It also triggers refreshes for any associated scenarios, plotting, analysis, and fitting tabs. The method blocks all signals from widgets during the update process to prevent unwanted calls to event handlers.</p>
-<section id="id39">
-<h5>Parameters<a class="headerlink" href="#id39" title="Permalink to this heading">#</a></h5>
+<section id="id40">
+<h5>Parameters<a class="headerlink" href="#id40" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>force<span class="classifier">bool, optional</span></dt><dd><p>If True, forces the refresh even if it’s deemed not necessary. The default is False.</p>
 </dd>
 </dl>
 </section>
-<section id="id40">
-<h5>Returns<a class="headerlink" href="#id40" title="Permalink to this heading">#</a></h5>
+<section id="id41">
+<h5>Returns<a class="headerlink" href="#id41" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
-<section id="id41">
-<h5>Notes<a class="headerlink" href="#id41" title="Permalink to this heading">#</a></h5>
+<section id="id42">
+<h5>Notes<a class="headerlink" href="#id42" title="Permalink to this heading">#</a></h5>
 <ul class="simple">
 <li><p>Blocks all QWidget signals before starting the update process to prevent unintended event handling.</p></li>
 <li><p>Updates various GUI components based on the current notebook’s reader and settings information.</p></li>
@@ -817,16 +809,16 @@ based on whether the mode is selected or not. The table’s columns are resized 
 <p>This function takes no parameters explicitly, it operates on the instance’s attributes.
 It updates the <cite>optical_tw</cite> table widget with optical permittivity values from the <cite>settings</cite> attribute.
 Formatting of the values is to four decimal places and aligned both horizontally and vertically to the center.</p>
-<section id="id42">
-<h5>Parameters<a class="headerlink" href="#id42" title="Permalink to this heading">#</a></h5>
-<p>None</p>
-</section>
 <section id="id43">
-<h5>Returns<a class="headerlink" href="#id43" title="Permalink to this heading">#</a></h5>
+<h5>Parameters<a class="headerlink" href="#id43" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 <section id="id44">
-<h5>Notes<a class="headerlink" href="#id44" title="Permalink to this heading">#</a></h5>
+<h5>Returns<a class="headerlink" href="#id44" title="Permalink to this heading">#</a></h5>
+<p>None</p>
+</section>
+<section id="id45">
+<h5>Notes<a class="headerlink" href="#id45" title="Permalink to this heading">#</a></h5>
 <ul class="simple">
 <li><dl class="simple">
 <dt>Assumes:</dt><dd><ul>
@@ -848,12 +840,12 @@ Formatting of the values is to four decimal places and aligned both horizontally
 <span class="sig-name descname"><span class="pre">requestRefresh</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SettingsTab.html#SettingsTab.requestRefresh"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SettingsTab.SettingsTab.requestRefresh" title="Permalink to this definition">#</a></dt>
 <dd><p>Request to refresh the environment or state.</p>
 <p>This method sets a flag to indicate that a refresh is required, logging the start and end of its execution.</p>
-<section id="id45">
-<h5>Parameters<a class="headerlink" href="#id45" title="Permalink to this heading">#</a></h5>
+<section id="id46">
+<h5>Parameters<a class="headerlink" href="#id46" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
-<section id="id46">
-<h5>Returns<a class="headerlink" href="#id46" title="Permalink to this heading">#</a></h5>
+<section id="id47">
+<h5>Returns<a class="headerlink" href="#id47" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 </dd></dl>
@@ -863,8 +855,8 @@ Formatting of the values is to four decimal places and aligned both horizontally
 <span class="sig-name descname"><span class="pre">setElementMass</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">element</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mass</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SettingsTab.html#SettingsTab.setElementMass"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SettingsTab.SettingsTab.setElementMass" title="Permalink to this definition">#</a></dt>
 <dd><p>Set the mass value of a specific element in the GUI.</p>
 <p>This method updates the mass value for a specified element in the graphical user interface (GUI). It also triggers various updates in the GUI to reflect this change, including updating the mass selection and recalculating modes if required.</p>
-<section id="id47">
-<h5>Parameters<a class="headerlink" href="#id47" title="Permalink to this heading">#</a></h5>
+<section id="id48">
+<h5>Parameters<a class="headerlink" href="#id48" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>element<span class="classifier">str</span></dt><dd><p>The element whose mass is to be set.</p>
 </dd>
@@ -872,12 +864,12 @@ Formatting of the values is to four decimal places and aligned both horizontally
 </dd>
 </dl>
 </section>
-<section id="id48">
-<h5>Returns<a class="headerlink" href="#id48" title="Permalink to this heading">#</a></h5>
+<section id="id49">
+<h5>Returns<a class="headerlink" href="#id49" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
-<section id="id49">
-<h5>Notes<a class="headerlink" href="#id49" title="Permalink to this heading">#</a></h5>
+<section id="id50">
+<h5>Notes<a class="headerlink" href="#id50" title="Permalink to this heading">#</a></h5>
 <ul class="simple">
 <li><p>This method assumes that <cite>self.settings</cite>, <cite>self.masses_dict</cite>, <cite>self.mass_cb</cite>, and other related attributes are already defined in the class.</p></li>
 <li><p>It triggers a refresh of the GUI and potentially recalculates selected modes based on the new mass settings.</p></li>
@@ -890,12 +882,12 @@ Formatting of the values is to four decimal places and aligned both horizontally
 <span class="sig-name descname"><span class="pre">set_masses_tw</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SettingsTab.html#SettingsTab.set_masses_tw"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SettingsTab.SettingsTab.set_masses_tw" title="Permalink to this definition">#</a></dt>
 <dd><p>Set the element masses in the table widget based on the mass_definition setting.</p>
 <p>This method updates the element masses table widget with masses according to the selected mass definition mode (‘average’, ‘program’, ‘isotope’, ‘gui’). It retrieves species information from the reader attribute, calculates or fetches the corresponding masses, and updates an internal dictionary and the table widget accordingly. Signals from the table widget are temporarily blocked to prevent unwanted event triggers during updates.</p>
-<section id="id50">
-<h5>Parameters<a class="headerlink" href="#id50" title="Permalink to this heading">#</a></h5>
+<section id="id51">
+<h5>Parameters<a class="headerlink" href="#id51" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
-<section id="id51">
-<h5>Returns<a class="headerlink" href="#id51" title="Permalink to this heading">#</a></h5>
+<section id="id52">
+<h5>Returns<a class="headerlink" href="#id52" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 </dd></dl>
@@ -905,12 +897,12 @@ Formatting of the values is to four decimal places and aligned both horizontally
 <span class="sig-name descname"><span class="pre">set_optical_permittivity_tw</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SettingsTab.html#SettingsTab.set_optical_permittivity_tw"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SettingsTab.SettingsTab.set_optical_permittivity_tw" title="Permalink to this definition">#</a></dt>
 <dd><p>Set the optical permittivity in the current settings.</p>
 <p>This method sets the ‘Optical permittivity’ value in the settings to the value of <cite>zerof_optical_dielectric</cite> from the reader, triggers a refresh for the optical permittivity widget, and marks the selected modes for recalculation. It also signals that a refresh is required in the application and ensures the GUI events are processed to keep the application responsive.</p>
-<section id="id52">
-<h5>Parameters<a class="headerlink" href="#id52" title="Permalink to this heading">#</a></h5>
+<section id="id53">
+<h5>Parameters<a class="headerlink" href="#id53" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
-<section id="id53">
-<h5>Returns<a class="headerlink" href="#id53" title="Permalink to this heading">#</a></h5>
+<section id="id54">
+<h5>Returns<a class="headerlink" href="#id54" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 </dd></dl>
@@ -920,12 +912,12 @@ Formatting of the values is to four decimal places and aligned both horizontally
 <span class="sig-name descname"><span class="pre">writeSpreadsheet</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SettingsTab.html#SettingsTab.writeSpreadsheet"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.SettingsTab.SettingsTab.writeSpreadsheet" title="Permalink to this definition">#</a></dt>
 <dd><p>Writes the configuration and calculation results to the associated spreadsheet.</p>
 <p>This function iterates through various settings and results stored within the object, such as optical permittivity, mass definitions, and vibrational mode calculations. For each setting or result, it writes the relevant information to a new row in the spreadsheet. The spreadsheet is expected to have a ‘Settings’ worksheet, which this function selects and updates with the provided values.</p>
-<section id="id54">
-<h5>Parameters<a class="headerlink" href="#id54" title="Permalink to this heading">#</a></h5>
+<section id="id55">
+<h5>Parameters<a class="headerlink" href="#id55" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
-<section id="id55">
-<h5>Returns<a class="headerlink" href="#id55" title="Permalink to this heading">#</a></h5>
+<section id="id56">
+<h5>Returns<a class="headerlink" href="#id56" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 </dd></dl>

@@ -1,4 +1,18 @@
 #!/usr/bin/env python
+#
+# Copyright 2024 John Kendrick & Andrew Burnett
+#
+# This file is part of PDielec
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the MIT License
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+#
+# You should have received a copy of the MIT License along with this program, if not see https://opensource.org/licenses/MIT
+#
 '''
 PDgui driver program to calculate dielectric response at infrared and THz frequencies
 
@@ -16,20 +30,6 @@ Notes
     - The function looks for a splash image file in several locations, starting with the executable's directory, and displays it if found unless the splash screen is disabled.
     - If the splash screen is shown, it also includes a progress bar.
 
-
-Copyright 2024 John Kendrick
-
-This file is part of PDielec
-
-This program is free software; you can redistribute it and/or modify
-it under the terms of the MIT License
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-
-You should have received a copy of the MIT License
-along with this program, if not see https://opensource.org/licenses/MIT
 '''
 from __future__ import print_function
 import os
@@ -68,13 +68,20 @@ def main():
     --------
     Command line usage examples:
     - To run the application with a splash screen and debug messages:
-    >>>    python dft_output_file -d
+
+    >>>    pdgui dft_output_file -d
+
     - To run the application without a splash screen:
-    >>>    python dft_output_file -nosplash
+
+    >>>    pdgui dft_output_file -nosplash
+
     - To print the version of the application and exit:
-    >>>    python dft_output_file --version
+
+    >>>    pdgui dft_output_file --version
+
     - To run a script:
-    >>>    python -script script.py
+
+    >>>    pdgui -script script.py
     """    
     show_splash = True
     force_exit = False

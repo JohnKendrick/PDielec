@@ -364,9 +364,15 @@
 <span class="kn">import</span> <span class="nn">scipy.linalg</span> <span class="k">as</span> <span class="nn">lag</span>
 <span class="kn">import</span> <span class="nn">sys</span>
 <span class="kn">import</span> <span class="nn">copy</span>
+<span class="kn">from</span> <span class="nn">PDielec.Constants</span> <span class="kn">import</span> <span class="n">speed_light_si</span><span class="p">,</span> <span class="n">epsilon_0_si</span>
 
-<span class="n">c_const</span> <span class="o">=</span> <span class="mi">299792458</span> <span class="c1"># m/s</span>
-<span class="n">eps0</span> <span class="o">=</span> <span class="mf">8.854e-12</span> <span class="c1">## vacuum permittivity</span>
+<span class="c1">#jk c_const = 299792458 # m/s</span>
+<span class="c1">#jk eps0 = 8.854e-12 ## vacuum permittivity</span>
+<span class="c1">#</span>
+<span class="c1"># JK using PDielec constants</span>
+<span class="c1">#</span>
+<span class="n">c_const</span> <span class="o">=</span> <span class="n">speed_light_si</span>
+<span class="n">eps0</span> <span class="o">=</span> <span class="n">epsilon_0_si</span>            <span class="c1"># Doesn&#39;t appear to be used</span>
 
 <div class="viewcode-block" id="vacuum_eps"><a class="viewcode-back" href="../../autoapi/PDielec/GTMcore/index.html#PDielec.GTMcore.vacuum_eps">[docs]</a><span class="k">def</span> <span class="nf">vacuum_eps</span><span class="p">(</span><span class="n">f</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
@@ -389,7 +395,7 @@
     
 <div class="viewcode-block" id="exact_inv_2x2"><a class="viewcode-back" href="../../autoapi/PDielec/GTMcore/index.html#PDielec.GTMcore.exact_inv_2x2">[docs]</a><span class="k">def</span> <span class="nf">exact_inv_2x2</span><span class="p">(</span><span class="n">M</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Calculate the inverse of M.</span>
+<span class="sd">    Calculate the inverse of 2x2 complex matrix, M.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -410,7 +416,7 @@
     
 <div class="viewcode-block" id="exact_inv_3x3"><a class="viewcode-back" href="../../autoapi/PDielec/GTMcore/index.html#PDielec.GTMcore.exact_inv_3x3">[docs]</a><span class="k">def</span> <span class="nf">exact_inv_3x3</span><span class="p">(</span><span class="n">M</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Calculate the inverse of M</span>
+<span class="sd">    Calculate the inverse of a 3x3 complex matrix M</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -507,6 +513,15 @@
 <div class="viewcode-block" id="Layer"><a class="viewcode-back" href="../../autoapi/PDielec/GTMcore/index.html#PDielec.GTMcore.Layer">[docs]</a><span class="k">class</span> <span class="nc">Layer</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Layer class. An instance is a single layer:</span>
+<span class="sd">    </span>
+<span class="sd">    The inherited layer classes wich are used in PDielec are:</span>
+
+<span class="sd">        - :class:`CoherentLayer`</span>
+<span class="sd">        - :class:`SemiInfiniteLayer`</span>
+<span class="sd">        - :class:`IncoherentIntensityLayer`</span>
+<span class="sd">        - :class:`IncoherentAveragePhaseLayer`</span>
+<span class="sd">        - :class:`IncoherentPhaseLayer`</span>
+<span class="sd">        - :class:`IncoherentThickLayer`</span>
 
 <span class="sd">    Attributes</span>
 <span class="sd">    ----------</span>
@@ -1635,6 +1650,11 @@
 <div class="viewcode-block" id="System"><a class="viewcode-back" href="../../autoapi/PDielec/GTMcore/index.html#PDielec.GTMcore.System">[docs]</a><span class="k">class</span> <span class="nc">System</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    System class. An instance is an optical system with substrate, superstrate, and layers.</span>
+<span class="sd">  </span>
+<span class="sd">     Derived classes used by PDielec are:</span>
+
+<span class="sd">        - :class:`TransferMatrixSystem`</span>
+<span class="sd">        - :class:`ScatteringMatrixSystem`</span>
 
 <span class="sd">    Attributes</span>
 <span class="sd">    ----------</span>

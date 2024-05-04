@@ -276,19 +276,7 @@
           <section id="module-PDielec.IO">
 <span id="pdielec-io"></span><h1><a class="reference internal" href="#module-PDielec.IO" title="PDielec.IO"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.IO</span></code></a><a class="headerlink" href="#module-PDielec.IO" title="Permalink to this heading">#</a></h1>
 <p>Simple IO interface</p>
-<p># Copyright 2024 John Kendrick
-#
-# This file is part of PDielec
-#
-# This program is free software; you can redistribute it and/or modify
-# it under the terms of the MIT License
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-#
-# You should have received a copy of the MIT License
-# along with this program, if not see <a class="reference external" href="https://opensource.org/licenses/MIT">https://opensource.org/licenses/MIT</a></p>
+<p>This aims to reproduce the python readline() io method, with limited functionality but much faster.</p>
 <section id="module-contents">
 <h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this heading">#</a></h2>
 <section id="classes">
@@ -308,7 +296,17 @@
 <dd><p>A class for reading lines from a file and providing an interface similar to file objects.</p>
 <p>The class opens a file upon initialization, reads its lines into memory,
 and allows sequential reading of these lines through the readline method.
-It also provides a close method to reset the reading process.</p>
+It also provides a close method to reset the reading process.
+This speeds up the reading of a file using the usual python readline() method.</p>
+<section id="parameters">
+<h4>Parameters<a class="headerlink" href="#parameters" title="Permalink to this heading">#</a></h4>
+<dl class="simple">
+<dt>filename<span class="classifier">str</span></dt><dd><p>The path to the file to be read.</p>
+</dd>
+<dt>mode<span class="classifier">str</span></dt><dd><p>The mode in which the file should be opened (e.g., ‘r’ for read).</p>
+</dd>
+</dl>
+</section>
 <section id="attributes">
 <h4>Attributes<a class="headerlink" href="#attributes" title="Permalink to this heading">#</a></h4>
 <dl class="simple">
@@ -337,8 +335,8 @@ deleting all lines read from the file from memory.</p>
 <span class="sig-name descname"><span class="pre">close</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/IO.html#pdielec_io.close"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.IO.pdielec_io.close" title="Permalink to this definition">#</a></dt>
 <dd><p>Closes the current object session.</p>
 <p>Resets the index to 0 and deletes the lines attribute from the object.</p>
-<section id="parameters">
-<h5>Parameters<a class="headerlink" href="#parameters" title="Permalink to this heading">#</a></h5>
+<section id="id1">
+<h5>Parameters<a class="headerlink" href="#id1" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 <section id="returns">
@@ -358,12 +356,12 @@ deleting all lines read from the file from memory.</p>
 <p>This method reads a line from the current position within an internal list of lines
 and then advances the position so that subsequent calls will return subsequent lines.
 If the end of the list is reached, it returns an empty string.</p>
-<section id="id1">
-<h5>Parameters<a class="headerlink" href="#id1" title="Permalink to this heading">#</a></h5>
+<section id="id2">
+<h5>Parameters<a class="headerlink" href="#id2" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
-<section id="id2">
-<h5>Returns<a class="headerlink" href="#id2" title="Permalink to this heading">#</a></h5>
+<section id="id3">
+<h5>Returns<a class="headerlink" href="#id3" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>str</dt><dd><p>The next line in the internal list of lines, or an empty string if the end of the list is reached.</p>
 </dd>

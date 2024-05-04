@@ -1,27 +1,21 @@
+#
+# Copyright 2024 John Kendrick & Andrew Burnett
+#
+# This file is part of PDielec
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the MIT License
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+#
+# You should have received a copy of the MIT License along with this program, if not see https://opensource.org/licenses/MIT
+#
 '''
 Materials DataBase
 
-The MIT License (MIT)
-
-Copyright (c) 2024 John Kendrick
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+An interface to the spreadsheet which holds materials data
 '''
 
 import numpy as np
@@ -37,7 +31,32 @@ import sys
 
 class MaterialsDataBase():
     """
-    A class for managing a database of materials' properties. This database is initialized from an Excel spreadsheet which contains various material properties including names, densities, refractive indices, and permittivities, among others. Additional functionalities include validation checks, retrieval of sheet names, material information, and specific data based on the property of interest (e.g., constant permittivity, tabulated refractive index).
+    A class for managing a database of materials' properties.
+
+    This database is initialized from an Excel spreadsheet which contains various material properties including names, densities, refractive indices, and permittivities, among others.
+    Additional functionalities include validation checks, retrieval of sheet names, material information, and specific data based on the property of interest (e.g., constant permittivity, tabulated refractive index).
+    The getMaterial() method returns a material with a dielectric function of the appropriate type.
+    There are routines which read (process) the data stored for the following dielectric functions:
+
+    - constant refractive index
+    - constant permittivity
+    - tabulated refractive index (may be 1, 3 or 6 parameters for isotropic, uniaxial or anisotropic)
+    - tabulated permittivity (may be 1, 3 or 6 parameters for isotropic, uniaxial or anisotropic)
+    - Lorentz-Drude
+    - FPSQ (Four parameters semi-quantum model)
+    - Sellmeier
+    
+    Further information can be found in the following classes and their sub-classes:
+
+    - :class:`~PDielec.Materials.Material`
+    - :class:`~PDielec.DielectricFunction.DielectricFunction`
+
+    Parameters
+    ----------
+    filename : str
+        The filename of the spreadsheet/database.
+    debug : bool, optional
+        Set to true for additional debugging information
 
     Attributes
     ----------
@@ -537,6 +556,44 @@ class MaterialsDataBase():
 class Material():
     """
     A class for representing materials with properties like name, density, permittivity, and unit cell.
+
+    The Material class also contains the permittivity object for the material.  
+    The permittivity object is an instance of :class:`~PDielec.DielectricFunction.DielectricFunction` or one its children.
+    The permittivity object is responsible for calculating the permittivity at the given frequency.
+    The subclasses which inherit from the Material class are: Constant, External, DrudeLorentz, FPSQ, Sellmeier, and Tabulated.
+    Each subclass has an initialisation routine which instantiates the permittivity object of the appropriate type for the material.
+    The relationship between the Material subclass and the DielectricFunction subclass of the permittivity object is shown below.
+
+    +---------------------------+-------------------------------------------------------------+
+    + Material subclass         + DielectricFunction subclass                                 +
+    +===========================+=============================================================+
+    + :class:`Constant`         + :class:`~PDielec.DielectricFunction.Constant`               +
+    +---------------------------+-------------------------------------------------------------+
+    + :class:`External`         + This class is passed a permittivity object which has been   +
+    +                           + defined externally                                          +
+    +---------------------------+-------------------------------------------------------------+
+    + :class:`DrudeLorentz`     + :class:`~PDielec.DielectricFunction.DrudeLorentz`           +
+    +---------------------------+-------------------------------------------------------------+
+    + :class:`FPSQ`             + :class:`~PDielec.DielectricFunction.FPSQ`                   +
+    +---------------------------+-------------------------------------------------------------+
+    + :class:`Sellmeier`        + :class:`~PDielec.DielectricFunction.Sellmeier`              +
+    +---------------------------+-------------------------------------------------------------+
+    + :class:`Tabulated`        +  - :class:`~PDielec.DielectricFunction.TabulateScalar`      +
+    +                           +  - :class:`~PDielec.DielectricFunction.Tabulate3`           +
+    +                           +  - :class:`~PDielec.DielectricFunction.Tabulate3`           +
+    +                           +  - :class:`~PDielec.DielectricFunction.Tabulate6`           +
+    +---------------------------+-------------------------------------------------------------+
+
+    Parameters
+    ----------
+    name : str
+        The name of the material.
+    density : float, optional
+        The density of the material. If not provided and a cell is given, it will be calculated based on the cell.
+    permittivityObject : :class:`~PDielec.DielectricFunction.DielectricFunction`, optional
+        An object representing the dielectric function of the material. This is intended to be passed by classes that inherit from Material, and it should contain methods for calculating scalar/tensor permittivity. (see :class:`~PDielec.DielectricFunction.DielectricFunction` and its sub-classes)
+    cell : :class:`~PDielec.UnitCell.UnitCell`, optional
+        An object representing the unit cell of the material. If provided without a density, the density will be calculated from this cell. (See :class:`~PDielec.UnitCell.UnitCell`)
 
     Attributes
     ----------
@@ -1176,10 +1233,6 @@ class Tabulated(Material):
       that require a support matrix.
     - The constructor converts the input lists of frequencies (`vs_cm1`) and permittivities into numpy arrays,
       and then generates the appropriate permittivity object depending on the complexity of the material's permittivities.
-
-    See Also
-    --------
-    DielectricFunction : Parent class that provides methods to handle different types of permittivities.
 
     Examples
     --------

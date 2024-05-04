@@ -275,24 +275,7 @@
         <article role="main">
           <section id="module-PDielec.GUI.OpenGLWidget">
 <span id="pdielec-gui-openglwidget"></span><h1><a class="reference internal" href="#module-PDielec.GUI.OpenGLWidget" title="PDielec.GUI.OpenGLWidget"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.OpenGLWidget</span></code></a><a class="headerlink" href="#module-PDielec.GUI.OpenGLWidget" title="Permalink to this heading">#</a></h1>
-<p>OpenGLWidget</p>
-<p>The MIT License (MIT)</p>
-<p>Copyright (c) 2024 John Kendrick</p>
-<p>Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the “Software”), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:</p>
-<p>The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.</p>
-<p>THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.</p>
+<p>OpenGLWidget module</p>
 <section id="module-contents">
 <h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this heading">#</a></h2>
 <section id="classes">
@@ -403,7 +386,16 @@ for OpenGL within a Qt application. It supports a wide range of 3D
 visualization tasks, including rendering spheres, cylinders, and arrows
 to represent molecular structures or other 3D objects.</p>
 <section id="id3">
-<h4>Attributes<a class="headerlink" href="#id3" title="Permalink to this heading">#</a></h4>
+<h4>Parameters<a class="headerlink" href="#id3" title="Permalink to this heading">#</a></h4>
+<dl class="simple">
+<dt>parent<span class="classifier">QWidget</span></dt><dd><p>The parent widget.</p>
+</dd>
+<dt>debug<span class="classifier">bool, optional</span></dt><dd><p>Enables debug output if True.</p>
+</dd>
+</dl>
+</section>
+<section id="id4">
+<h4>Attributes<a class="headerlink" href="#id4" title="Permalink to this heading">#</a></h4>
 <dl class="simple">
 <dt>format<span class="classifier">QSurfaceFormat</span></dt><dd><p>Specifies the format options for the rendering context. Common settings include
 samples for multisampling and the swap behavior for double buffering.</p>
@@ -417,15 +409,6 @@ samples for multisampling and the swap behavior for double buffering.</p>
 <dt>light_positions<span class="classifier">list</span></dt><dd><p>Defines positions for up to eight lights in the 3D space.</p>
 </dd>
 <dt>lights<span class="classifier">list</span></dt><dd><p>References to OpenGL light objects, typically provided as constants like GL_LIGHT0, GL_LIGHT1, etc.</p>
-</dd>
-</dl>
-</section>
-<section id="id4">
-<h4>Parameters<a class="headerlink" href="#id4" title="Permalink to this heading">#</a></h4>
-<dl class="simple">
-<dt>parent<span class="classifier">QWidget</span></dt><dd><p>The parent widget.</p>
-</dd>
-<dt>debug<span class="classifier">bool, optional</span></dt><dd><p>Enables debug output if True.</p>
 </dd>
 </dl>
 </section>

@@ -414,10 +414,10 @@ procedure (or the lack of thereoff)</p></li>
 <table class="autosummary longtable docutils align-default">
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#PDielec.GTMcore.exact_inv_2x2" title="PDielec.GTMcore.exact_inv_2x2"><code class="xref py py-obj docutils literal notranslate"><span class="pre">exact_inv_2x2</span></code></a>(M)</p></td>
-<td><p>Calculate the inverse of M.</p></td>
+<td><p>Calculate the inverse of 2x2 complex matrix, M.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#PDielec.GTMcore.exact_inv_3x3" title="PDielec.GTMcore.exact_inv_3x3"><code class="xref py py-obj docutils literal notranslate"><span class="pre">exact_inv_3x3</span></code></a>(M)</p></td>
-<td><p>Calculate the inverse of M</p></td>
+<td><p>Calculate the inverse of a 3x3 complex matrix M</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#PDielec.GTMcore.exact_inv_4x4" title="PDielec.GTMcore.exact_inv_4x4"><code class="xref py py-obj docutils literal notranslate"><span class="pre">exact_inv_4x4</span></code></a>(M)</p></td>
 <td><p>Compute the 'exact' inverse of a 4x4 matrix using the analytical result.</p></td>
@@ -585,6 +585,17 @@ differs from that in the paper.</p>
 <dt class="sig sig-object py" id="PDielec.GTMcore.Layer">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PDielec.GTMcore.</span></span><span class="sig-name descname"><span class="pre">Layer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">thickness</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-06</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epsilon</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theta</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">psi</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exponent_threshold</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">700</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/GTMcore.html#Layer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GTMcore.Layer" title="Permalink to this definition">#</a></dt>
 <dd><p>Layer class. An instance is a single layer:</p>
+<p>The inherited layer classes wich are used in PDielec are:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><a class="reference internal" href="#PDielec.GTMcore.CoherentLayer" title="PDielec.GTMcore.CoherentLayer"><code class="xref py py-class docutils literal notranslate"><span class="pre">CoherentLayer</span></code></a></p></li>
+<li><p><a class="reference internal" href="#PDielec.GTMcore.SemiInfiniteLayer" title="PDielec.GTMcore.SemiInfiniteLayer"><code class="xref py py-class docutils literal notranslate"><span class="pre">SemiInfiniteLayer</span></code></a></p></li>
+<li><p><a class="reference internal" href="#PDielec.GTMcore.IncoherentIntensityLayer" title="PDielec.GTMcore.IncoherentIntensityLayer"><code class="xref py py-class docutils literal notranslate"><span class="pre">IncoherentIntensityLayer</span></code></a></p></li>
+<li><p><a class="reference internal" href="#PDielec.GTMcore.IncoherentAveragePhaseLayer" title="PDielec.GTMcore.IncoherentAveragePhaseLayer"><code class="xref py py-class docutils literal notranslate"><span class="pre">IncoherentAveragePhaseLayer</span></code></a></p></li>
+<li><p><a class="reference internal" href="#PDielec.GTMcore.IncoherentPhaseLayer" title="PDielec.GTMcore.IncoherentPhaseLayer"><code class="xref py py-class docutils literal notranslate"><span class="pre">IncoherentPhaseLayer</span></code></a></p></li>
+<li><p><a class="reference internal" href="#PDielec.GTMcore.IncoherentThickLayer" title="PDielec.GTMcore.IncoherentThickLayer"><code class="xref py py-class docutils literal notranslate"><span class="pre">IncoherentThickLayer</span></code></a></p></li>
+</ul>
+</div></blockquote>
 <section id="id9">
 <h4>Attributes<a class="headerlink" href="#id9" title="Permalink to this heading">#</a></h4>
 <dl class="simple">
@@ -1150,6 +1161,15 @@ a semi-infinite layer.</p>
 <dt class="sig sig-object py" id="PDielec.GTMcore.System">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PDielec.GTMcore.</span></span><span class="sig-name descname"><span class="pre">System</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">substrate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">superstrate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">layers</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/GTMcore.html#System"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GTMcore.System" title="Permalink to this definition">#</a></dt>
 <dd><p>System class. An instance is an optical system with substrate, superstrate, and layers.</p>
+<blockquote>
+<div><p>Derived classes used by PDielec are:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><a class="reference internal" href="#PDielec.GTMcore.TransferMatrixSystem" title="PDielec.GTMcore.TransferMatrixSystem"><code class="xref py py-class docutils literal notranslate"><span class="pre">TransferMatrixSystem</span></code></a></p></li>
+<li><p><a class="reference internal" href="#PDielec.GTMcore.ScatteringMatrixSystem" title="PDielec.GTMcore.ScatteringMatrixSystem"><code class="xref py py-class docutils literal notranslate"><span class="pre">ScatteringMatrixSystem</span></code></a></p></li>
+</ul>
+</div></blockquote>
+</div></blockquote>
 <section id="id59">
 <h4>Attributes<a class="headerlink" href="#id59" title="Permalink to this heading">#</a></h4>
 <dl class="simple">
@@ -1426,7 +1446,7 @@ to distinguish itself from a system which uses the scattering matrix method</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="PDielec.GTMcore.exact_inv_2x2">
 <span class="sig-prename descclassname"><span class="pre">PDielec.GTMcore.</span></span><span class="sig-name descname"><span class="pre">exact_inv_2x2</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">M</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/GTMcore.html#exact_inv_2x2"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GTMcore.exact_inv_2x2" title="Permalink to this definition">#</a></dt>
-<dd><p>Calculate the inverse of M.</p>
+<dd><p>Calculate the inverse of 2x2 complex matrix, M.</p>
 <section id="id88">
 <h4>Parameters<a class="headerlink" href="#id88" title="Permalink to this heading">#</a></h4>
 <dl class="simple">
@@ -1446,7 +1466,7 @@ to distinguish itself from a system which uses the scattering matrix method</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="PDielec.GTMcore.exact_inv_3x3">
 <span class="sig-prename descclassname"><span class="pre">PDielec.GTMcore.</span></span><span class="sig-name descname"><span class="pre">exact_inv_3x3</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">M</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/GTMcore.html#exact_inv_3x3"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GTMcore.exact_inv_3x3" title="Permalink to this definition">#</a></dt>
-<dd><p>Calculate the inverse of M</p>
+<dd><p>Calculate the inverse of a 3x3 complex matrix M</p>
 <section id="id90">
 <h4>Parameters<a class="headerlink" href="#id90" title="Permalink to this heading">#</a></h4>
 <dl class="simple">
@@ -1513,12 +1533,12 @@ to distinguish itself from a system which uses the scattering matrix method</p>
 
 <dl class="py data">
 <dt class="sig sig-object py" id="PDielec.GTMcore.c_const">
-<span class="sig-prename descclassname"><span class="pre">PDielec.GTMcore.</span></span><span class="sig-name descname"><span class="pre">c_const</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">299792458</span></em><a class="headerlink" href="#PDielec.GTMcore.c_const" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">PDielec.GTMcore.</span></span><span class="sig-name descname"><span class="pre">c_const</span></span><a class="headerlink" href="#PDielec.GTMcore.c_const" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py data">
 <dt class="sig sig-object py" id="PDielec.GTMcore.eps0">
-<span class="sig-prename descclassname"><span class="pre">PDielec.GTMcore.</span></span><span class="sig-name descname"><span class="pre">eps0</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">8.854e-12</span></em><a class="headerlink" href="#PDielec.GTMcore.eps0" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">PDielec.GTMcore.</span></span><span class="sig-name descname"><span class="pre">eps0</span></span><a class="headerlink" href="#PDielec.GTMcore.eps0" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
 
 </section>

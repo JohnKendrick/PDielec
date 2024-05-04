@@ -273,22 +273,22 @@
         <article role="main">
           <h1>Source code for PDielec.ExperimentOutputReader</h1><div class="highlight"><pre>
 <span></span><span class="ch">#!/usr/bin/python</span>
+<span class="c1">#</span>
+<span class="c1"># Copyright 2024 John Kendrick &amp; Andrew Burnett</span>
+<span class="c1">#</span>
+<span class="c1"># This file is part of PDielec</span>
+<span class="c1">#</span>
+<span class="c1"># This program is free software; you can redistribute it and/or modify</span>
+<span class="c1"># it under the terms of the MIT License</span>
+<span class="c1">#</span>
+<span class="c1"># This program is distributed in the hope that it will be useful,</span>
+<span class="c1"># but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="c1"># MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.</span>
+<span class="c1">#</span>
+<span class="c1"># You should have received a copy of the MIT License along with this program, if not see https://opensource.org/licenses/MIT</span>
+<span class="c1">#</span>
 <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">Read the contents of a directory containing Experiment input and output files.</span>
-
-<span class="sd">Copyright 2024 John Kendrick</span>
-
-<span class="sd">This file is part of PDielec</span>
-
-<span class="sd">This program is free software; you can redistribute it and/or modify</span>
-<span class="sd">it under the terms of the MIT License</span>
-
-<span class="sd">This program is distributed in the hope that it will be useful,</span>
-<span class="sd">but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
-<span class="sd">MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.</span>
-
-<span class="sd">You should have received a copy of the MIT License</span>
-<span class="sd">along with this program, if not see https://opensource.org/licenses/MIT</span>
 <span class="sd">&#39;&#39;&#39;</span>
 <span class="kn">import</span> <span class="nn">re</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
@@ -302,7 +302,27 @@
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Read the contents of a directory containing Experiment input and output files.</span>
 
-<span class="sd">    Inherits from GenericOutputReader</span>
+<span class="sd">    Inherits from :class:`~PDielec.GenericOutputReader.GenericOutputReader`</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    names : Various types</span>
+<span class="sd">        Initial parameter used for construction, typically a string or list of identifiers that this instance will process or hold.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    type : str</span>
+<span class="sd">        A string indicating the type of output, set to &#39;Experimental output&#39;.</span>
+<span class="sd">    _ion_type_index : dict</span>
+<span class="sd">        A dictionary to index ion types, initialized as empty.</span>
+<span class="sd">    CrystalPermittivity : NoneType or Various types</span>
+<span class="sd">        Initially None, intended to hold information about crystal permittivity.</span>
+<span class="sd">    zerof_optical_dielectric : NoneType or Various types</span>
+<span class="sd">        Initially None, intended to hold zero-frequency optical dielectric information.</span>
+<span class="sd">    oscillator_strengths : NoneType or Various types</span>
+<span class="sd">        Initially None, intended for storing oscillator strengths data.</span>
+<span class="sd">    frequencies : NoneType or Various types</span>
+<span class="sd">        Initially None, intended for storing frequencies data.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">names</span><span class="p">):</span>

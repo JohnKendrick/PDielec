@@ -275,24 +275,7 @@
         <article role="main">
           <section id="module-PDielec.GulpOutputReader">
 <span id="pdielec-gulpoutputreader"></span><h1><a class="reference internal" href="#module-PDielec.GulpOutputReader" title="PDielec.GulpOutputReader"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GulpOutputReader</span></code></a><a class="headerlink" href="#module-PDielec.GulpOutputReader" title="Permalink to this heading">#</a></h1>
-<p>Read the contents of a Gulp output file</p>
-<p>It is quite difficult to work out what is a suitable set of commands for gulp
-The following seems to work OK, important are
-phon - a phonon calculation
-intens - calculate the IR intensities
-eigen - print the eigen vectors of the dynamical matrix
-cart - print the cartesian coordinates (this is the only way of see what all the atom types are)
-nosym - make sure the calculation is done in P1
-qeq molq optimise conp qok nomodcoord prop phon intens eigen cart</p>
-<p>Copyright 2014 John Kendrick</p>
-<p>This file is part of PDielec</p>
-<p>This program is free software; you can redistribute it and/or modify
-it under the terms of the MIT License</p>
-<p>This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.</p>
-<p>You should have received a copy of the MIT License
-along with this program, if not see <a class="reference external" href="https://opensource.org/licenses/MIT">https://opensource.org/licenses/MIT</a></p>
+<p>Module to read the contents of a Gulp output file</p>
 <section id="module-contents">
 <h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this heading">#</a></h2>
 <section id="classes">
@@ -311,11 +294,52 @@ along with this program, if not see <a class="reference external" href="https://
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PDielec.GulpOutputReader.</span></span><span class="sig-name descname"><span class="pre">GulpOutputReader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">names</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/GulpOutputReader.html#GulpOutputReader"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GulpOutputReader.GulpOutputReader" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="../GenericOutputReader/index.html#PDielec.GenericOutputReader.GenericOutputReader" title="PDielec.GenericOutputReader.GenericOutputReader"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PDielec.GenericOutputReader.GenericOutputReader</span></code></a></p>
 <p>Read the contents of a Gulp output file.</p>
+<p>Inherits from <a class="reference internal" href="../GenericOutputReader/index.html#PDielec.GenericOutputReader.GenericOutputReader" title="PDielec.GenericOutputReader.GenericOutputReader"><code class="xref py py-class docutils literal notranslate"><span class="pre">GenericOutputReader</span></code></a></p>
 <p>This function provides a way to read and interpret the contents of a Gulp output file,
 advising on a suitable set of command parameters that can be used for various calculations
 such as phonon calculations, IR intensity calculations, printing eigen vectors of the dynamical
 matrix, and printing cartesian coordinates. It emphasizes the importance of certain parameters
 to ensure accurate and comprehensive results.</p>
+<section id="parameters">
+<h4>Parameters<a class="headerlink" href="#parameters" title="Permalink to this heading">#</a></h4>
+<dl class="simple">
+<dt>names<span class="classifier">list</span></dt><dd><p>A list containing the name(s) of the Gulp output file(s).</p>
+</dd>
+</dl>
+</section>
+<section id="attributes">
+<h4>Attributes<a class="headerlink" href="#attributes" title="Permalink to this heading">#</a></h4>
+<dl class="simple">
+<dt>_gulpfile<span class="classifier">str</span></dt><dd><p>The name of the first Gulp output file in the <cite>names</cite> list.</p>
+</dd>
+<dt>name<span class="classifier">str</span></dt><dd><p>The absolute path of the <cite>_gulpfile</cite>.</p>
+</dd>
+<dt>type<span class="classifier">str</span></dt><dd><p>A string indicating the type of the reader object, set to ‘Gulp output’.</p>
+</dd>
+<dt>shells<span class="classifier">int</span></dt><dd><p>Number of shells, initialized to 0.</p>
+</dd>
+<dt>ncores<span class="classifier">int</span></dt><dd><p>Number of cores, initialized to 0.</p>
+</dd>
+<dt>_cartesian_coordinates<span class="classifier">list</span></dt><dd><p>List to store cartesian coordinates, initially empty.</p>
+</dd>
+<dt>_fractional_coordinates<span class="classifier">list</span></dt><dd><p>List to store fractional coordinates, initially empty.</p>
+</dd>
+<dt>atomic_charges<span class="classifier">list</span></dt><dd><p>List to store atomic charges, initially empty.</p>
+</dd>
+<dt>_mass_dictionary<span class="classifier">dict</span></dt><dd><p>Dictionary to store mass information, initially empty.</p>
+</dd>
+<dt>temperature<span class="classifier">NoneType or float</span></dt><dd><p>Temperature, initialized as None.</p>
+</dd>
+<dt>elastic_constant_tensor<span class="classifier">NoneType or ndarray</span></dt><dd><p>Elastic constant tensor, initialized as None.</p>
+</dd>
+<dt>nshells<span class="classifier">NoneType or int</span></dt><dd><p>Number of shells, initialized as None (may be updated later).</p>
+</dd>
+<dt>nions_irreducible<span class="classifier">NoneType or int</span></dt><dd><p>Number of irreducible ions, initialized as None.</p>
+</dd>
+<dt>_atom_types<span class="classifier">NoneType or list</span></dt><dd><p>List of atom types, initialized as None.</p>
+</dd>
+</dl>
+</section>
 <section id="notes">
 <h4>Notes<a class="headerlink" href="#notes" title="Permalink to this heading">#</a></h4>
 <p>It is quite difficult to work out what is a suitable set of commands for Gulp. The following seems
@@ -336,8 +360,8 @@ in the output fetched refers to a given field direction, and each row refers
 to the atomic displacement. The function rearranges the output to match the
 required tensor format where 1, 2, and 3 are the field directions, and x, y,
 and z are the atomic displacements.</p>
-<section id="parameters">
-<h5>Parameters<a class="headerlink" href="#parameters" title="Permalink to this heading">#</a></h5>
+<section id="id1">
+<h5>Parameters<a class="headerlink" href="#id1" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>line<span class="classifier">str</span></dt><dd><p>Ignored</p>
 </dd>
@@ -362,8 +386,8 @@ displacements under a particular field direction.</p>
 <p>The function rearranges it to the required format:
 [[a1x a1y a1z] [a2x a2y a2z] [a3x a3y a3z]]</p>
 </section>
-<section id="id1">
-<h5>Notes<a class="headerlink" href="#id1" title="Permalink to this heading">#</a></h5>
+<section id="id2">
+<h5>Notes<a class="headerlink" href="#id2" title="Permalink to this heading">#</a></h5>
 <p>The original output from the gulp file is read line by line, with each line representing
 the atomic displacement in each of the field directions. The reformatted output aligns
 these displacements into a more conventional tensor format for further processing or
@@ -375,12 +399,12 @@ analysis.</p>
 <dt class="sig sig-object py" id="PDielec.GulpOutputReader.GulpOutputReader._read_cellcontents">
 <span class="sig-name descname"><span class="pre">_read_cellcontents</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/GulpOutputReader.html#GulpOutputReader._read_cellcontents"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GulpOutputReader.GulpOutputReader._read_cellcontents" title="Permalink to this definition">#</a></dt>
 <dd><p>Read the cell contents in xyz space</p>
-<section id="id2">
-<h5>Parameters<a class="headerlink" href="#id2" title="Permalink to this heading">#</a></h5>
+<section id="id3">
+<h5>Parameters<a class="headerlink" href="#id3" title="Permalink to this heading">#</a></h5>
 <p>line : str (not used)</p>
 </section>
-<section id="id3">
-<h5>Returns<a class="headerlink" href="#id3" title="Permalink to this heading">#</a></h5>
+<section id="id4">
+<h5>Returns<a class="headerlink" href="#id4" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 </dd></dl>
@@ -389,12 +413,12 @@ analysis.</p>
 <dt class="sig sig-object py" id="PDielec.GulpOutputReader.GulpOutputReader._read_cellcontentsf">
 <span class="sig-name descname"><span class="pre">_read_cellcontentsf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/GulpOutputReader.html#GulpOutputReader._read_cellcontentsf"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GulpOutputReader.GulpOutputReader._read_cellcontentsf" title="Permalink to this definition">#</a></dt>
 <dd><p>Read the cell contents in fractional space.</p>
-<section id="id4">
-<h5>Parameters<a class="headerlink" href="#id4" title="Permalink to this heading">#</a></h5>
+<section id="id5">
+<h5>Parameters<a class="headerlink" href="#id5" title="Permalink to this heading">#</a></h5>
 <p>line : str (not used)</p>
 </section>
-<section id="id5">
-<h5>Returns<a class="headerlink" href="#id5" title="Permalink to this heading">#</a></h5>
+<section id="id6">
+<h5>Returns<a class="headerlink" href="#id6" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 </dd></dl>
@@ -403,12 +427,12 @@ analysis.</p>
 <dt class="sig sig-object py" id="PDielec.GulpOutputReader.GulpOutputReader._read_elastic_constants">
 <span class="sig-name descname"><span class="pre">_read_elastic_constants</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/GulpOutputReader.html#GulpOutputReader._read_elastic_constants"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GulpOutputReader.GulpOutputReader._read_elastic_constants" title="Permalink to this definition">#</a></dt>
 <dd><p>Read the elastic constants.</p>
-<section id="id6">
-<h5>Parameters<a class="headerlink" href="#id6" title="Permalink to this heading">#</a></h5>
+<section id="id7">
+<h5>Parameters<a class="headerlink" href="#id7" title="Permalink to this heading">#</a></h5>
 <p>line : str (not used)</p>
 </section>
-<section id="id7">
-<h5>Returns<a class="headerlink" href="#id7" title="Permalink to this heading">#</a></h5>
+<section id="id8">
+<h5>Returns<a class="headerlink" href="#id8" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 </dd></dl>
@@ -417,12 +441,12 @@ analysis.</p>
 <dt class="sig sig-object py" id="PDielec.GulpOutputReader.GulpOutputReader._read_energies">
 <span class="sig-name descname"><span class="pre">_read_energies</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/GulpOutputReader.html#GulpOutputReader._read_energies"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GulpOutputReader.GulpOutputReader._read_energies" title="Permalink to this definition">#</a></dt>
 <dd><p>Read energies</p>
-<section id="id8">
-<h5>Parameters<a class="headerlink" href="#id8" title="Permalink to this heading">#</a></h5>
+<section id="id9">
+<h5>Parameters<a class="headerlink" href="#id9" title="Permalink to this heading">#</a></h5>
 <p>line : str</p>
 </section>
-<section id="id9">
-<h5>Returns<a class="headerlink" href="#id9" title="Permalink to this heading">#</a></h5>
+<section id="id10">
+<h5>Returns<a class="headerlink" href="#id10" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 </dd></dl>
@@ -431,12 +455,12 @@ analysis.</p>
 <dt class="sig sig-object py" id="PDielec.GulpOutputReader.GulpOutputReader._read_external_pressure">
 <span class="sig-name descname"><span class="pre">_read_external_pressure</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/GulpOutputReader.html#GulpOutputReader._read_external_pressure"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GulpOutputReader.GulpOutputReader._read_external_pressure" title="Permalink to this definition">#</a></dt>
 <dd><p>Read external pressure</p>
-<section id="id10">
-<h5>Parameters<a class="headerlink" href="#id10" title="Permalink to this heading">#</a></h5>
+<section id="id11">
+<h5>Parameters<a class="headerlink" href="#id11" title="Permalink to this heading">#</a></h5>
 <p>line : str</p>
 </section>
-<section id="id11">
-<h5>Returns<a class="headerlink" href="#id11" title="Permalink to this heading">#</a></h5>
+<section id="id12">
+<h5>Returns<a class="headerlink" href="#id12" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 </dd></dl>
@@ -445,8 +469,8 @@ analysis.</p>
 <dt class="sig sig-object py" id="PDielec.GulpOutputReader.GulpOutputReader._read_frequencies">
 <span class="sig-name descname"><span class="pre">_read_frequencies</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/GulpOutputReader.html#GulpOutputReader._read_frequencies"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GulpOutputReader.GulpOutputReader._read_frequencies" title="Permalink to this definition">#</a></dt>
 <dd><p>Read the frequencies</p>
-<section id="id12">
-<h5>Parameters<a class="headerlink" href="#id12" title="Permalink to this heading">#</a></h5>
+<section id="id13">
+<h5>Parameters<a class="headerlink" href="#id13" title="Permalink to this heading">#</a></h5>
 <p>line : str (not used)</p>
 </section>
 </dd></dl>
@@ -455,12 +479,12 @@ analysis.</p>
 <dt class="sig sig-object py" id="PDielec.GulpOutputReader.GulpOutputReader._read_lattice">
 <span class="sig-name descname"><span class="pre">_read_lattice</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/GulpOutputReader.html#GulpOutputReader._read_lattice"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GulpOutputReader.GulpOutputReader._read_lattice" title="Permalink to this definition">#</a></dt>
 <dd><p>Read the lattice vectors.</p>
-<section id="id13">
-<h5>Parameters<a class="headerlink" href="#id13" title="Permalink to this heading">#</a></h5>
+<section id="id14">
+<h5>Parameters<a class="headerlink" href="#id14" title="Permalink to this heading">#</a></h5>
 <p>line : str (not used)</p>
 </section>
-<section id="id14">
-<h5>Returns<a class="headerlink" href="#id14" title="Permalink to this heading">#</a></h5>
+<section id="id15">
+<h5>Returns<a class="headerlink" href="#id15" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 </dd></dl>
@@ -469,12 +493,12 @@ analysis.</p>
 <dt class="sig sig-object py" id="PDielec.GulpOutputReader.GulpOutputReader._read_number_of_irreducible_atoms">
 <span class="sig-name descname"><span class="pre">_read_number_of_irreducible_atoms</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/GulpOutputReader.html#GulpOutputReader._read_number_of_irreducible_atoms"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GulpOutputReader.GulpOutputReader._read_number_of_irreducible_atoms" title="Permalink to this definition">#</a></dt>
 <dd><p>Read the number of irreducible atoms</p>
-<section id="id15">
-<h5>Parameters<a class="headerlink" href="#id15" title="Permalink to this heading">#</a></h5>
+<section id="id16">
+<h5>Parameters<a class="headerlink" href="#id16" title="Permalink to this heading">#</a></h5>
 <p>line : str</p>
 </section>
-<section id="id16">
-<h5>Returns<a class="headerlink" href="#id16" title="Permalink to this heading">#</a></h5>
+<section id="id17">
+<h5>Returns<a class="headerlink" href="#id17" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 </dd></dl>
@@ -483,8 +507,8 @@ analysis.</p>
 <dt class="sig sig-object py" id="PDielec.GulpOutputReader.GulpOutputReader._read_optical_dielectric">
 <span class="sig-name descname"><span class="pre">_read_optical_dielectric</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/GulpOutputReader.html#GulpOutputReader._read_optical_dielectric"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GulpOutputReader.GulpOutputReader._read_optical_dielectric" title="Permalink to this definition">#</a></dt>
 <dd><p>Read optical dielectric constant</p>
-<section id="id17">
-<h5>Parameters<a class="headerlink" href="#id17" title="Permalink to this heading">#</a></h5>
+<section id="id18">
+<h5>Parameters<a class="headerlink" href="#id18" title="Permalink to this heading">#</a></h5>
 <p>line : str (not used)</p>
 </section>
 </dd></dl>
@@ -493,12 +517,12 @@ analysis.</p>
 <dt class="sig sig-object py" id="PDielec.GulpOutputReader.GulpOutputReader._read_output_files">
 <span class="sig-name descname"><span class="pre">_read_output_files</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/GulpOutputReader.html#GulpOutputReader._read_output_files"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GulpOutputReader.GulpOutputReader._read_output_files" title="Permalink to this definition">#</a></dt>
 <dd><p>Initialise the phrases needed to search the .gout file and the routines to use when a match is found. Read the .gout file.</p>
-<section id="id18">
-<h5>Parameters<a class="headerlink" href="#id18" title="Permalink to this heading">#</a></h5>
+<section id="id19">
+<h5>Parameters<a class="headerlink" href="#id19" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
-<section id="id19">
-<h5>Returns<a class="headerlink" href="#id19" title="Permalink to this heading">#</a></h5>
+<section id="id20">
+<h5>Returns<a class="headerlink" href="#id20" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 </dd></dl>
@@ -507,12 +531,12 @@ analysis.</p>
 <dt class="sig sig-object py" id="PDielec.GulpOutputReader.GulpOutputReader._read_species">
 <span class="sig-name descname"><span class="pre">_read_species</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/GulpOutputReader.html#GulpOutputReader._read_species"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GulpOutputReader.GulpOutputReader._read_species" title="Permalink to this definition">#</a></dt>
 <dd><p>Read species information</p>
-<section id="id20">
-<h5>Parameters<a class="headerlink" href="#id20" title="Permalink to this heading">#</a></h5>
+<section id="id21">
+<h5>Parameters<a class="headerlink" href="#id21" title="Permalink to this heading">#</a></h5>
 <p>line : str (not used)</p>
 </section>
-<section id="id21">
-<h5>Returns<a class="headerlink" href="#id21" title="Permalink to this heading">#</a></h5>
+<section id="id22">
+<h5>Returns<a class="headerlink" href="#id22" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 </dd></dl>
@@ -521,12 +545,12 @@ analysis.</p>
 <dt class="sig sig-object py" id="PDielec.GulpOutputReader.GulpOutputReader._read_static_dielectric">
 <span class="sig-name descname"><span class="pre">_read_static_dielectric</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/GulpOutputReader.html#GulpOutputReader._read_static_dielectric"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GulpOutputReader.GulpOutputReader._read_static_dielectric" title="Permalink to this definition">#</a></dt>
 <dd><p>Read static dielectric constant</p>
-<section id="id22">
-<h5>Parameters<a class="headerlink" href="#id22" title="Permalink to this heading">#</a></h5>
+<section id="id23">
+<h5>Parameters<a class="headerlink" href="#id23" title="Permalink to this heading">#</a></h5>
 <p>line : str (not used)</p>
 </section>
-<section id="id23">
-<h5>Returns<a class="headerlink" href="#id23" title="Permalink to this heading">#</a></h5>
+<section id="id24">
+<h5>Returns<a class="headerlink" href="#id24" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 </dd></dl>
@@ -535,12 +559,12 @@ analysis.</p>
 <dt class="sig sig-object py" id="PDielec.GulpOutputReader.GulpOutputReader._read_temperature">
 <span class="sig-name descname"><span class="pre">_read_temperature</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/GulpOutputReader.html#GulpOutputReader._read_temperature"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GulpOutputReader.GulpOutputReader._read_temperature" title="Permalink to this definition">#</a></dt>
 <dd><p>Read temperature</p>
-<section id="id24">
-<h5>Parameters<a class="headerlink" href="#id24" title="Permalink to this heading">#</a></h5>
+<section id="id25">
+<h5>Parameters<a class="headerlink" href="#id25" title="Permalink to this heading">#</a></h5>
 <p>line : str</p>
 </section>
-<section id="id25">
-<h5>Returns<a class="headerlink" href="#id25" title="Permalink to this heading">#</a></h5>
+<section id="id26">
+<h5>Returns<a class="headerlink" href="#id26" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 </dd></dl>
@@ -549,12 +573,12 @@ analysis.</p>
 <dt class="sig sig-object py" id="PDielec.GulpOutputReader.GulpOutputReader._read_total_number_of_atoms">
 <span class="sig-name descname"><span class="pre">_read_total_number_of_atoms</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/GulpOutputReader.html#GulpOutputReader._read_total_number_of_atoms"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GulpOutputReader.GulpOutputReader._read_total_number_of_atoms" title="Permalink to this definition">#</a></dt>
 <dd><p>Read the number of atoms.</p>
-<section id="id26">
-<h5>Parameters<a class="headerlink" href="#id26" title="Permalink to this heading">#</a></h5>
+<section id="id27">
+<h5>Parameters<a class="headerlink" href="#id27" title="Permalink to this heading">#</a></h5>
 <p>line : str</p>
 </section>
-<section id="id27">
-<h5>Returns<a class="headerlink" href="#id27" title="Permalink to this heading">#</a></h5>
+<section id="id28">
+<h5>Returns<a class="headerlink" href="#id28" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 </dd></dl>

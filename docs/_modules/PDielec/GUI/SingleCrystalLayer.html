@@ -272,29 +272,22 @@
         </div>
         <article role="main">
           <h1>Source code for PDielec.GUI.SingleCrystalLayer</h1><div class="highlight"><pre>
-<span></span>
+<span></span><span class="c1">#</span>
+<span class="c1"># Copyright 2024 John Kendrick &amp; Andrew Burnett</span>
+<span class="c1">#</span>
+<span class="c1"># This file is part of PDielec</span>
+<span class="c1">#</span>
+<span class="c1"># This program is free software; you can redistribute it and/or modify</span>
+<span class="c1"># it under the terms of the MIT License</span>
+<span class="c1">#</span>
+<span class="c1"># This program is distributed in the hope that it will be useful,</span>
+<span class="c1"># but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="c1"># MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.</span>
+<span class="c1">#</span>
+<span class="c1"># You should have received a copy of the MIT License along with this program, if not see https://opensource.org/licenses/MIT</span>
+<span class="c1">#</span>
 <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">The MIT License (MIT)</span>
-
-<span class="sd">Copyright (c) 2024 John Kendrick</span>
-
-<span class="sd">Permission is hereby granted, free of charge, to any person obtaining a copy</span>
-<span class="sd">of this software and associated documentation files (the &quot;Software&quot;), to deal</span>
-<span class="sd">in the Software without restriction, including without limitation the rights</span>
-<span class="sd">to use, copy, modify, merge, publish, distribute, sublicense, and/or sell</span>
-<span class="sd">copies of the Software, and to permit persons to whom the Software is</span>
-<span class="sd">furnished to do so, subject to the following conditions:</span>
-
-<span class="sd">The above copyright notice and this permission notice shall be included in all</span>
-<span class="sd">copies or substantial portions of the Software.</span>
-
-<span class="sd">THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR</span>
-<span class="sd">IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,</span>
-<span class="sd">FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE</span>
-<span class="sd">AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER</span>
-<span class="sd">LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,</span>
-<span class="sd">OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE</span>
-<span class="sd">SOFTWARE.</span>
+<span class="sd">SingleCrystalLayer module</span>
 <span class="sd">&#39;&#39;&#39;</span>
 <span class="c1"># -*- coding: utf8 -*-</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
@@ -311,14 +304,35 @@
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A class representing a single crystal layer.</span>
 
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    material : Material</span>
+<span class="sd">        An instance of Material object (see :class:`~PDielec.Materials.Material`), which contains:</span>
+<span class="sd">          - name (str)</span>
+<span class="sd">          - density (float)</span>
+<span class="sd">          - permittivity (float)</span>
+<span class="sd">          - unit cell (UnitCell)</span>
+<span class="sd">    hkl : list of int</span>
+<span class="sd">        A list of 3 integers defining the plane of interest.</span>
+<span class="sd">    azimuthal : float</span>
+<span class="sd">        The azimuthal angle of rotation of the crystal about the z-axis.</span>
+<span class="sd">    thickness : float</span>
+<span class="sd">        The thickness of the layer in the specified thickness units.</span>
+<span class="sd">    thicknessUnits : {&#39;ang&#39;,&#39;nm&#39;, &#39;um&#39;, &#39;mm&#39;, &#39;cm&#39;}</span>
+<span class="sd">        The units of thickness measurement.</span>
+<span class="sd">    incoherentOption : {&#39;Coherent&#39;, &#39;Incoherent (intensity)&#39;, &#39;Incoherent (phase cancelling)&#39;, &#39;Incoherent (phase averaging)&#39;, &#39;Incoherent non-reflective&#39;}</span>
+<span class="sd">        The option for handling incoherent scattering. </span>
+<span class="sd">    dielectricFlag : bool</span>
+<span class="sd">        True if the layer material is the dielectric being studied (ie it was read in as a DFT calculation), False otherwise.</span>
+
 <span class="sd">    Attributes</span>
 <span class="sd">    ----------</span>
 <span class="sd">    material : Material</span>
-<span class="sd">        The material of the layer.</span>
+<span class="sd">        The material of the layer. (See :class:`~PDielec.Materials.Material`)</span>
 <span class="sd">    hkl : list of int</span>
 <span class="sd">        The Miller indices of the plane of interest in the crystal.</span>
 <span class="sd">    incoherentOption : str</span>
-<span class="sd">        The incoherent interaction option for the layer.</span>
+<span class="sd">        The incoherent option for the layer.</span>
 <span class="sd">    azimuthal : float</span>
 <span class="sd">        The azimuthal angle of rotation of the crystal about the z-axis, in degrees.</span>
 <span class="sd">    thickness : float</span>
@@ -406,7 +420,7 @@
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        material : Material</span>
-<span class="sd">            An instance of Material object, which contains:</span>
+<span class="sd">            An instance of :class:`~PDielec.Materials.Material`, which contains:</span>
 <span class="sd">              - name (str)</span>
 <span class="sd">              - density (float)</span>
 <span class="sd">              - permittivity (float)</span>
@@ -919,10 +933,21 @@
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A GUI window for displaying and editing the properties of a layer in a project.</span>
 
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    layer : object</span>
+<span class="sd">        The layer object to be displayed or acted upon in the window. (see :class:`SingleCrystalLayer`)</span>
+<span class="sd">    message : str, optional</span>
+<span class="sd">        Custom message to display in the window. The default is an empty string.</span>
+<span class="sd">    parent : QWidget, optional</span>
+<span class="sd">        The parent widget of this window. The default is None.</span>
+<span class="sd">    debug : bool, optional</span>
+<span class="sd">        Flag to enable or disable debug mode. The default is False.</span>
+
 <span class="sd">    Attributes</span>
 <span class="sd">    ----------</span>
 <span class="sd">    layer : object</span>
-<span class="sd">        The layer that is displayed or being edited in this window.</span>
+<span class="sd">        The :class:`SingleCrystalLayer` instance that is displayed or being edited in this window.</span>
 <span class="sd">    message : str</span>
 <span class="sd">        The message displayed at the top of the window.</span>
 <span class="sd">    layout : QVBoxLayout</span>
@@ -933,7 +958,7 @@
 <span class="sd">    Methods</span>
 <span class="sd">    -------</span>
 <span class="sd">    getLayer()</span>
-<span class="sd">        Return the layer being edited or displayed.</span>
+<span class="sd">        Return the :class:`SingleCrystalLayer` instance being edited or displayed.</span>
 <span class="sd">    drawLayerWidget()</span>
 <span class="sd">        Create a QWidget displaying all information about the layer.</span>
 <span class="sd">    drawLayerWidgetLine1()</span>

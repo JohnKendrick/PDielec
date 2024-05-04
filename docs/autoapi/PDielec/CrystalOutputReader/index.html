@@ -275,18 +275,7 @@
         <article role="main">
           <section id="module-PDielec.CrystalOutputReader">
 <span id="pdielec-crystaloutputreader"></span><h1><a class="reference internal" href="#module-PDielec.CrystalOutputReader" title="PDielec.CrystalOutputReader"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.CrystalOutputReader</span></code></a><a class="headerlink" href="#module-PDielec.CrystalOutputReader" title="Permalink to this heading">#</a></h1>
-<p>Read contents of a directory containing Crystal input and output files.
-Copyright 2024 John Kendrick</p>
-<blockquote>
-<div><p>This file is part of PDielec</p>
-<p>This program is free software; you can redistribute it and/or modify
-it under the terms of the MIT License</p>
-<p>This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.</p>
-<p>You should have received a copy of the MIT License
-along with this program, if not see <a class="reference external" href="https://opensource.org/licenses/MIT">https://opensource.org/licenses/MIT</a></p>
-</div></blockquote>
+<p>A module to read contents of a directory containing Crystal input and output files.</p>
 <section id="module-contents">
 <h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this heading">#</a></h2>
 <section id="classes">
@@ -305,17 +294,27 @@ along with this program, if not see <a class="reference external" href="https://
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PDielec.CrystalOutputReader.</span></span><span class="sig-name descname"><span class="pre">CrystalOutputReader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filenames</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/CrystalOutputReader.html#CrystalOutputReader"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.CrystalOutputReader.CrystalOutputReader" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="../GenericOutputReader/index.html#PDielec.GenericOutputReader.GenericOutputReader" title="PDielec.GenericOutputReader.GenericOutputReader"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PDielec.GenericOutputReader.GenericOutputReader</span></code></a></p>
 <p>Read contents of a directory containing Crystal input and output files.</p>
-<p>Inherits from GenericOutputReader</p>
+<p>Inherits from <a class="reference internal" href="../GenericOutputReader/index.html#PDielec.GenericOutputReader.GenericOutputReader" title="PDielec.GenericOutputReader.GenericOutputReader"><code class="xref py py-class docutils literal notranslate"><span class="pre">GenericOutputReader</span></code></a></p>
+<section id="parameters">
+<h4>Parameters<a class="headerlink" href="#parameters" title="Permalink to this heading">#</a></h4>
+<dl class="simple">
+<dt>filenames<span class="classifier">iterable</span></dt><dd><p>An iterable object (e.g., list or tuple) containing the file names to be processed.</p>
+</dd>
+</dl>
+</section>
+<section id="notes">
+<h4>Notes<a class="headerlink" href="#notes" title="Permalink to this heading">#</a></h4>
+<p>This function calls the initializer of the parent class ‘GenericOutputReader’ with the given filenames. It initializes several class attributes including the type of output (set to ‘Crystal output’), the method for hessian symmetrisation (set to ‘crystal’), and an empty list for fractional coordinates.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.CrystalOutputReader.CrystalOutputReader._read_born_charges">
 <span class="sig-name descname"><span class="pre">_read_born_charges</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/CrystalOutputReader.html#CrystalOutputReader._read_born_charges"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.CrystalOutputReader.CrystalOutputReader._read_born_charges" title="Permalink to this definition">#</a></dt>
 <dd><p>Read the born charges from the output file.</p>
-<section id="parameters">
-<h4>Parameters<a class="headerlink" href="#parameters" title="Permalink to this heading">#</a></h4>
+<section id="id1">
+<h5>Parameters<a class="headerlink" href="#id1" title="Permalink to this heading">#</a></h5>
 <p>line : str</p>
 </section>
 <section id="returns">
-<h4>Returns<a class="headerlink" href="#returns" title="Permalink to this heading">#</a></h4>
+<h5>Returns<a class="headerlink" href="#returns" title="Permalink to this heading">#</a></h5>
 <dl>
 <dt>numpy.ndarray</dt><dd><p>A 3x3 array where each row of the output refers to a given field direction and each column in the row refers to the atomic displacement. The output is arranged as:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[[</span><span class="n">a1x</span> <span class="n">a1y</span> <span class="n">a1z</span><span class="p">]</span>
@@ -336,15 +335,15 @@ along with this program, if not see <a class="reference external" href="https://
 <p>This method reads born charges for each ion from a specified file, which contains
 data in three lines per ion. It transposes the read charge matrix and stores
 the result in the <cite>born_charges</cite> instance variable.</p>
-<section id="id1">
-<h4>Parameters<a class="headerlink" href="#id1" title="Permalink to this heading">#</a></h4>
+<section id="id2">
+<h5>Parameters<a class="headerlink" href="#id2" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>filename<span class="classifier">str</span></dt><dd><p>The path to the .born.dat file to be read.</p>
 </dd>
 </dl>
 </section>
-<section id="id2">
-<h4>Returns<a class="headerlink" href="#id2" title="Permalink to this heading">#</a></h4>
+<section id="id3">
+<h5>Returns<a class="headerlink" href="#id3" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 </dd></dl>
@@ -354,16 +353,16 @@ the result in the <cite>born_charges</cite> instance variable.</p>
 <span class="sig-name descname"><span class="pre">_read_born_charges_from_output</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/CrystalOutputReader.html#CrystalOutputReader._read_born_charges_from_output"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.CrystalOutputReader.CrystalOutputReader._read_born_charges_from_output" title="Permalink to this definition">#</a></dt>
 <dd><p>Read Born charges from output file.</p>
 <p>This method is responsible for parsing and reading Born effective charges from a given output file, beginning from the current line position of the file descriptor. It stores the read charges into the <cite>born_charges</cite> list attribute.</p>
-<section id="id3">
-<h4>Parameters<a class="headerlink" href="#id3" title="Permalink to this heading">#</a></h4>
+<section id="id4">
+<h5>Parameters<a class="headerlink" href="#id4" title="Permalink to this heading">#</a></h5>
 <p>line : str</p>
 </section>
-<section id="id4">
-<h4>Returns<a class="headerlink" href="#id4" title="Permalink to this heading">#</a></h4>
+<section id="id5">
+<h5>Returns<a class="headerlink" href="#id5" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 <section id="note">
-<h4>Note<a class="headerlink" href="#note" title="Permalink to this heading">#</a></h4>
+<h5>Note<a class="headerlink" href="#note" title="Permalink to this heading">#</a></h5>
 <p>This method directly modifies the <cite>born_charges</cite> attribute of the class instance by appending the read Born charges. It assumes that the file is correctly positioned before the starts of the Born charges and that it’s formatted in a specific way expected by the logic of this method.</p>
 </section>
 </dd></dl>
@@ -377,16 +376,16 @@ the file ‘HESSFREQ.DAT’ in the specified <cite>open_directory</cite>. If the
 eigenvectors from this file using the method <cite>_read_hessfreq_dat</cite>. If the file does not exist,
 it reads the eigenvectors from output data indicated by ‘line’ using the method
 <cite>_read_output_eigenvectors</cite>.</p>
-<section id="id5">
-<h4>Parameters<a class="headerlink" href="#id5" title="Permalink to this heading">#</a></h4>
+<section id="id6">
+<h5>Parameters<a class="headerlink" href="#id6" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>line<span class="classifier">str</span></dt><dd><p>The line or identifier used to read the eigenvectors from output data, if ‘HESSFREQ.DAT’
 is not available.</p>
 </dd>
 </dl>
 </section>
-<section id="id6">
-<h4>Returns<a class="headerlink" href="#id6" title="Permalink to this heading">#</a></h4>
+<section id="id7">
+<h5>Returns<a class="headerlink" href="#id7" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 </dd></dl>
@@ -395,15 +394,15 @@ is not available.</p>
 <dt class="sig sig-object py" id="PDielec.CrystalOutputReader.CrystalOutputReader._read_electrons">
 <span class="sig-name descname"><span class="pre">_read_electrons</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/CrystalOutputReader.html#CrystalOutputReader._read_electrons"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.CrystalOutputReader.CrystalOutputReader._read_electrons" title="Permalink to this definition">#</a></dt>
 <dd><p>Parse the number of electrons from a string and assign it to the instance variable.</p>
-<section id="id7">
-<h4>Parameters<a class="headerlink" href="#id7" title="Permalink to this heading">#</a></h4>
+<section id="id8">
+<h5>Parameters<a class="headerlink" href="#id8" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>line<span class="classifier">str</span></dt><dd><p>The number of electrons is the sixth element in a space-separated list.</p>
 </dd>
 </dl>
 </section>
-<section id="id8">
-<h4>Returns<a class="headerlink" href="#id8" title="Permalink to this heading">#</a></h4>
+<section id="id9">
+<h5>Returns<a class="headerlink" href="#id9" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 </dd></dl>
@@ -412,8 +411,8 @@ is not available.</p>
 <dt class="sig sig-object py" id="PDielec.CrystalOutputReader.CrystalOutputReader._read_energy">
 <span class="sig-name descname"><span class="pre">_read_energy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/CrystalOutputReader.html#CrystalOutputReader._read_energy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.CrystalOutputReader.CrystalOutputReader._read_energy" title="Permalink to this definition">#</a></dt>
 <dd><p>Reads and sets the free energy and energy without entropy from a line.</p>
-<section id="id9">
-<h4>Parameters<a class="headerlink" href="#id9" title="Permalink to this heading">#</a></h4>
+<section id="id10">
+<h5>Parameters<a class="headerlink" href="#id10" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>line<span class="classifier">str</span></dt><dd><p>A string containing the energy information, expected to be in a format
 where the fourth element (index 3) after splitting contains the energy value
@@ -421,12 +420,12 @@ in Hartrees.</p>
 </dd>
 </dl>
 </section>
-<section id="id10">
-<h4>Returns<a class="headerlink" href="#id10" title="Permalink to this heading">#</a></h4>
+<section id="id11">
+<h5>Returns<a class="headerlink" href="#id11" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
-<section id="notes">
-<h4>Notes<a class="headerlink" href="#notes" title="Permalink to this heading">#</a></h4>
+<section id="id12">
+<h5>Notes<a class="headerlink" href="#id12" title="Permalink to this heading">#</a></h5>
 <p>This method modifies the instance attributes <cite>final_free_energy</cite> and
 <cite>final_energy_without_entropy</cite> by converting the energy value from Hartrees to
 electronvolts (eV) using a conversion factor stored in <cite>hartree2ev</cite>.</p>
@@ -441,16 +440,16 @@ electronvolts (eV) using a conversion factor stored in <cite>hartree2ev</cite>.<
 <p>This method reads a line of text that contains energy values and updates the
 instance’s final free energy and final energy without entropy attributes.
 The energies are assumed to be in Hartree units and are converted to electronvolts (eV).</p>
-<section id="id11">
-<h4>Parameters<a class="headerlink" href="#id11" title="Permalink to this heading">#</a></h4>
+<section id="id13">
+<h5>Parameters<a class="headerlink" href="#id13" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>line<span class="classifier">str</span></dt><dd><p>A string containing the desired energy values. The sixth value in the line
 (when split by whitespace) is assumed to be the energy in Hartree units.</p>
 </dd>
 </dl>
 </section>
-<section id="id12">
-<h4>Returns<a class="headerlink" href="#id12" title="Permalink to this heading">#</a></h4>
+<section id="id14">
+<h5>Returns<a class="headerlink" href="#id14" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 </dd></dl>
@@ -459,16 +458,16 @@ The energies are assumed to be in Hartree units and are converted to electronvol
 <dt class="sig sig-object py" id="PDielec.CrystalOutputReader.CrystalOutputReader._read_energy3">
 <span class="sig-name descname"><span class="pre">_read_energy3</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/CrystalOutputReader.html#CrystalOutputReader._read_energy3"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.CrystalOutputReader.CrystalOutputReader._read_energy3" title="Permalink to this definition">#</a></dt>
 <dd><p>Parse energy information from a given line of text and update object properties.</p>
-<section id="id13">
-<h4>Parameters<a class="headerlink" href="#id13" title="Permalink to this heading">#</a></h4>
+<section id="id15">
+<h5>Parameters<a class="headerlink" href="#id15" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>line<span class="classifier">str</span></dt><dd><p>A line of text containing energy information where the 3rd element (index 2)
 after splitting by whitespace contains the energy value in Hartree units.</p>
 </dd>
 </dl>
 </section>
-<section id="id14">
-<h4>Returns<a class="headerlink" href="#id14" title="Permalink to this heading">#</a></h4>
+<section id="id16">
+<h5>Returns<a class="headerlink" href="#id16" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 </dd></dl>
@@ -478,19 +477,19 @@ after splitting by whitespace contains the energy value in Hartree units.</p>
 <span class="sig-name descname"><span class="pre">_read_epsilon</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/CrystalOutputReader.html#CrystalOutputReader._read_epsilon"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.CrystalOutputReader.CrystalOutputReader._read_epsilon" title="Permalink to this definition">#</a></dt>
 <dd><p>Reads epsilon values from a formatted file and updates the optical dielectric matrix.</p>
 <p>This internal method reads lines from a previously opened file (using the file_descriptor attribute of the object), interpreting data that specifies the components of the optical dielectric tensor. The method updates the object’s <cite>zerof_optical_dielectric</cite> attribute with a 3x3 matrix representing the read optical dielectric values. Optical dielectric components are identified by their ‘XX’, ‘YY’, ‘ZZ’, ‘XY’, ‘XZ’, and ‘YZ’ labels in the file. The method expects the values in a specific format and parses them accordingly.</p>
-<section id="id15">
-<h4>Parameters<a class="headerlink" href="#id15" title="Permalink to this heading">#</a></h4>
+<section id="id17">
+<h5>Parameters<a class="headerlink" href="#id17" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>line<span class="classifier">str</span></dt><dd><p>The initial line passed to the method. Currently, this parameter is not used within the method.</p>
 </dd>
 </dl>
 </section>
-<section id="id16">
-<h4>Returns<a class="headerlink" href="#id16" title="Permalink to this heading">#</a></h4>
+<section id="id18">
+<h5>Returns<a class="headerlink" href="#id18" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
-<section id="id17">
-<h4>Notes<a class="headerlink" href="#id17" title="Permalink to this heading">#</a></h4>
+<section id="id19">
+<h5>Notes<a class="headerlink" href="#id19" title="Permalink to this heading">#</a></h5>
 <ul class="simple">
 <li><p>The method does not return any value but instead updates the <cite>zerof_optical_dielectric</cite> attribute of the object.</p></li>
 <li><p>This method assumes that the file being read is opened and managed elsewhere in the class and that the <cite>file_descriptor</cite> attribute contains a valid file object.</p></li>
@@ -508,19 +507,19 @@ after splitting by whitespace contains the energy value in Hartree units.</p>
 <p>This method processes a line in the file to extract the number of ions and
 then reads the successive lines to acquire the fractional coordinates, species,
 and other related atomic information, storing them into the class attributes.</p>
-<section id="id18">
-<h4>Parameters<a class="headerlink" href="#id18" title="Permalink to this heading">#</a></h4>
+<section id="id20">
+<h5>Parameters<a class="headerlink" href="#id20" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>line<span class="classifier">str</span></dt><dd><p>The initial line to be processed for extracting the total number of ions.</p>
 </dd>
 </dl>
 </section>
-<section id="id19">
-<h4>Returns<a class="headerlink" href="#id19" title="Permalink to this heading">#</a></h4>
+<section id="id21">
+<h5>Returns<a class="headerlink" href="#id21" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 <section id="attributes-updated">
-<h4>Attributes Updated<a class="headerlink" href="#attributes-updated" title="Permalink to this heading">#</a></h4>
+<h5>Attributes Updated<a class="headerlink" href="#attributes-updated" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>nions<span class="classifier">int</span></dt><dd><p>The total number of ions.</p>
 </dd>
@@ -544,19 +543,19 @@ and other related atomic information, storing them into the class attributes.</p
 <dt class="sig sig-object py" id="PDielec.CrystalOutputReader.CrystalOutputReader._read_hessfreq_dat">
 <span class="sig-name descname"><span class="pre">_read_hessfreq_dat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/CrystalOutputReader.html#CrystalOutputReader._read_hessfreq_dat"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.CrystalOutputReader.CrystalOutputReader._read_hessfreq_dat" title="Permalink to this definition">#</a></dt>
 <dd><p>Reads a Hessian frequency data from a given file and updates the dynamical matrix.</p>
-<section id="id20">
-<h4>Parameters<a class="headerlink" href="#id20" title="Permalink to this heading">#</a></h4>
+<section id="id22">
+<h5>Parameters<a class="headerlink" href="#id22" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>filename<span class="classifier">str</span></dt><dd><p>The path to the file containing Hessian frequency data.</p>
 </dd>
 </dl>
 </section>
-<section id="id21">
-<h4>Notes<a class="headerlink" href="#id21" title="Permalink to this heading">#</a></h4>
+<section id="id23">
+<h5>Notes<a class="headerlink" href="#id23" title="Permalink to this heading">#</a></h5>
 <p>This function reads a Hessian frequency data file, processes the data by mass weighting the Hessian matrix, and then updates the dynamical matrix of the system.</p>
 </section>
 <section id="see-also">
-<h4>See Also<a class="headerlink" href="#see-also" title="Permalink to this heading">#</a></h4>
+<h5>See Also<a class="headerlink" href="#see-also" title="Permalink to this heading">#</a></h5>
 <p>_dynamical_matrix : Updates the dynamical matrix of the system using the processed Hessian matrix.</p>
 </section>
 </dd></dl>
@@ -570,20 +569,20 @@ instance’s file descriptor. The second, third, and fourth lines are expected
 to contain ionic dielectric data, each consisting of three floating-point
 numbers. These numbers are stored in a list of lists in the instance variable
 <cite>zerof_static_dielectric</cite>.</p>
-<section id="id22">
-<h4>Parameters<a class="headerlink" href="#id22" title="Permalink to this heading">#</a></h4>
+<section id="id24">
+<h5>Parameters<a class="headerlink" href="#id24" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>line<span class="classifier">str</span></dt><dd><p>This parameter is not used. The function reads lines directly from the
 instance’s file descriptor.</p>
 </dd>
 </dl>
 </section>
-<section id="id23">
-<h4>Returns<a class="headerlink" href="#id23" title="Permalink to this heading">#</a></h4>
+<section id="id25">
+<h5>Returns<a class="headerlink" href="#id25" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
-<section id="id24">
-<h4>Notes<a class="headerlink" href="#id24" title="Permalink to this heading">#</a></h4>
+<section id="id26">
+<h5>Notes<a class="headerlink" href="#id26" title="Permalink to this heading">#</a></h5>
 <p>The method directly modifies the instance variable <cite>zerof_static_dielectric</cite>.
 It is assumed that the file has been adequately positioned before this method
 is called, as it starts reading from the current position of the file
@@ -596,15 +595,15 @@ descriptor’s pointer.</p>
 <span class="sig-name descname"><span class="pre">_read_kpoints</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/CrystalOutputReader.html#CrystalOutputReader._read_kpoints"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.CrystalOutputReader.CrystalOutputReader._read_kpoints" title="Permalink to this definition">#</a></dt>
 <dd><p>Parse a line of text to extract k-point grid dimensions and the total number of k-points.</p>
 <p>The function sets the object’s kpoint_grid attribute to a list of three integers representing the grid dimensions, and the kpoints attribute to an integer representing the total number of k-points.</p>
-<section id="id25">
-<h4>Parameters<a class="headerlink" href="#id25" title="Permalink to this heading">#</a></h4>
+<section id="id27">
+<h5>Parameters<a class="headerlink" href="#id27" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>line<span class="classifier">str</span></dt><dd><p>A string from which k-point grid dimensions and the total number of k-points are extracted. The line is expected to have specific data at predefined positions: the k-point grid dimensions at indices 2, 3, and 4, and the total number of k-points at index 12, according to the split by whitespace.</p>
 </dd>
 </dl>
 </section>
-<section id="id26">
-<h4>Returns<a class="headerlink" href="#id26" title="Permalink to this heading">#</a></h4>
+<section id="id28">
+<h5>Returns<a class="headerlink" href="#id28" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 </dd></dl>
@@ -619,8 +618,8 @@ descriptor’s pointer.</p>
 - Updating the <cite>ncells</cite> attribute to match the length of the <cite>unit_cells</cite> list.
 - Setting the volume of the last unit cell in <cite>unit_cells</cite>.
 - Updating the fractional coordinates and element names of the last unit cell.</p>
-<section id="id27">
-<h4>Parameters<a class="headerlink" href="#id27" title="Permalink to this heading">#</a></h4>
+<section id="id29">
+<h5>Parameters<a class="headerlink" href="#id29" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>line<span class="classifier">str</span></dt><dd><p>The current line from the file where the method starts reading. This parameter is actually not used as the method immediately reads new lines from the file, implying a design choice where the <cite>line</cite> parameter could be omitted or revised.</p>
 </dd>
@@ -634,8 +633,8 @@ descriptor’s pointer.</p>
 <dd><p>Read and parse the masses from a file descriptor line by line.</p>
 <p>This private method reads mass information from consecutive lines of a
 file, updating a list of masses and a list of masses per species type.</p>
-<section id="id28">
-<h4>Notes<a class="headerlink" href="#id28" title="Permalink to this heading">#</a></h4>
+<section id="id30">
+<h5>Notes<a class="headerlink" href="#id30" title="Permalink to this heading">#</a></h5>
 <p>The function uses a file descriptor (self.file_descriptor) that should
 be opened before calling this function. It reads the masses from the
 file, expecting the mass values to be placed at specific positions in
@@ -647,8 +646,8 @@ of masses indexed by species type).</p>
 that <cite>self.nions</cite>, <cite>self.nspecies</cite>, and <cite>self.atom_type_list</cite> are set
 correctly before calling this method.</p>
 </section>
-<section id="id29">
-<h4>Parameters<a class="headerlink" href="#id29" title="Permalink to this heading">#</a></h4>
+<section id="id31">
+<h5>Parameters<a class="headerlink" href="#id31" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>line<span class="classifier">str</span></dt><dd><p>The current line from which to start reading. Note that this
 parameter is not used in the function body and the actual reading
@@ -656,8 +655,8 @@ starts from the next line of the file descriptor.</p>
 </dd>
 </dl>
 </section>
-<section id="id30">
-<h4>Returns<a class="headerlink" href="#id30" title="Permalink to this heading">#</a></h4>
+<section id="id32">
+<h5>Returns<a class="headerlink" href="#id32" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 </dd></dl>
@@ -667,19 +666,19 @@ starts from the next line of the file descriptor.</p>
 <span class="sig-name descname"><span class="pre">_read_output_eigenvectors</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/CrystalOutputReader.html#CrystalOutputReader._read_output_eigenvectors"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.CrystalOutputReader.CrystalOutputReader._read_output_eigenvectors" title="Permalink to this definition">#</a></dt>
 <dd><p>Read and process output eigenvectors from a file descriptor.</p>
 <p>This method reads eigenvector data for each frequency from a file, processes this data by scaling it with the square root of the atom’s masses to generate mass-weighted normal modes, and normalizes these modes.</p>
-<section id="id31">
-<h4>Parameters<a class="headerlink" href="#id31" title="Permalink to this heading">#</a></h4>
+<section id="id33">
+<h5>Parameters<a class="headerlink" href="#id33" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>line<span class="classifier">str</span></dt><dd><p>The current line in the file from which to start reading eigenvectors. This parameter is not explicitly used in the processing inside the function but hints at expecting a certain positioning within the file content.</p>
 </dd>
 </dl>
 </section>
-<section id="id32">
-<h4>Returns<a class="headerlink" href="#id32" title="Permalink to this heading">#</a></h4>
+<section id="id34">
+<h5>Returns<a class="headerlink" href="#id34" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
-<section id="id33">
-<h4>Notes<a class="headerlink" href="#id33" title="Permalink to this heading">#</a></h4>
+<section id="id35">
+<h5>Notes<a class="headerlink" href="#id35" title="Permalink to this heading">#</a></h5>
 <ul class="simple">
 <li><p>This method directly modifies the <cite>frequencies</cite> and <cite>mass_weighted_normal_modes</cite> attributes of the class instance.</p></li>
 <li><p>Atoms’ masses are used to compute mass-weighted normal modes</p></li>
@@ -693,12 +692,13 @@ starts from the next line of the file descriptor.</p>
 <span class="sig-name descname"><span class="pre">_read_output_files</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/CrystalOutputReader.html#CrystalOutputReader._read_output_files"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.CrystalOutputReader.CrystalOutputReader._read_output_files" title="Permalink to this definition">#</a></dt>
 <dd><p>Read the Crystal files in the directory.</p>
 <p>Define the strings used to search for the required information and then process the file</p>
-<section id="id34">
-<h4>Returns<a class="headerlink" href="#id34" title="Permalink to this heading">#</a></h4>
+<section id="id36">
+<h5>Returns<a class="headerlink" href="#id36" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 </dd></dl>
 
+</section>
 </dd></dl>
 
 </section>

@@ -276,15 +276,6 @@
           <section id="module-PDielec.VaspOutputReader">
 <span id="pdielec-vaspoutputreader"></span><h1><a class="reference internal" href="#module-PDielec.VaspOutputReader" title="PDielec.VaspOutputReader"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.VaspOutputReader</span></code></a><a class="headerlink" href="#module-PDielec.VaspOutputReader" title="Permalink to this heading">#</a></h1>
 <p>VASP output reader</p>
-<p>Copyright 2024 John Kendrick</p>
-<p>This file is part of PDielec</p>
-<p>This program is free software; you can redistribute it and/or modify
-it under the terms of the MIT License</p>
-<p>This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.</p>
-<p>You should have received a copy of the MIT License
-along with this program, if not see <a class="reference external" href="https://opensource.org/licenses/MIT">https://opensource.org/licenses/MIT</a></p>
 <section id="module-contents">
 <h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this heading">#</a></h2>
 <section id="classes">
@@ -315,6 +306,30 @@ along with this program, if not see <a class="reference external" href="https://
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PDielec.VaspOutputReader.</span></span><span class="sig-name descname"><span class="pre">VaspOutputReader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">names</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/VaspOutputReader.html#VaspOutputReader"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.VaspOutputReader.VaspOutputReader" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="../GenericOutputReader/index.html#PDielec.GenericOutputReader.GenericOutputReader" title="PDielec.GenericOutputReader.GenericOutputReader"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PDielec.GenericOutputReader.GenericOutputReader</span></code></a></p>
 <p>Read the contents of a directory containing VASP input and output files.</p>
+<p>Inherits from <a class="reference internal" href="../GenericOutputReader/index.html#PDielec.GenericOutputReader.GenericOutputReader" title="PDielec.GenericOutputReader.GenericOutputReader"><code class="xref py py-class docutils literal notranslate"><span class="pre">GenericOutputReader</span></code></a></p>
+<section id="parameters">
+<h4>Parameters<a class="headerlink" href="#parameters" title="Permalink to this heading">#</a></h4>
+<dl class="simple">
+<dt>names<span class="classifier">list of str</span></dt><dd><p>A list of file names to be used in processing the DFT output files</p>
+</dd>
+</dl>
+</section>
+<section id="attributes">
+<h4>Attributes<a class="headerlink" href="#attributes" title="Permalink to this heading">#</a></h4>
+<dl class="simple">
+<dt>type<span class="classifier">str</span></dt><dd><p>A string attribute that specifies the type of output, set to ‘Vasp output’.</p>
+</dd>
+<dt>_pspots<span class="classifier">dict</span></dt><dd><p>A private dictionary for the pseudo potentials</p>
+</dd>
+<dt>_ediff<span class="classifier">float</span></dt><dd><p>A private float for the change in energy on each iteration</p>
+</dd>
+<dt>_pulay<span class="classifier">float</span></dt><dd><p>The Pulay pressure</p>
+</dd>
+<dt>_ibrion<span class="classifier">int</span></dt><dd><p>The value of ibrion</p>
+</dd>
+<dt>_potim<span class="classifier">float</span></dt><dd><p>The value of potim</p>
+</dd>
+</dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.VaspOutputReader.VaspOutputReader._read_array_dimensions">
 <span class="sig-name descname"><span class="pre">_read_array_dimensions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/VaspOutputReader.html#VaspOutputReader._read_array_dimensions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.VaspOutputReader.VaspOutputReader._read_array_dimensions" title="Permalink to this definition">#</a></dt>
@@ -322,19 +337,19 @@ along with this program, if not see <a class="reference external" href="https://
 <p>This method reads lines from a file pointed to by <cite>self.file_descriptor</cite>,
 extracts dimensions for kpoints, nbands, and nions from these lines, and
 sets the corresponding attributes of the class instance.</p>
-<section id="parameters">
-<h4>Parameters<a class="headerlink" href="#parameters" title="Permalink to this heading">#</a></h4>
+<section id="id1">
+<h5>Parameters<a class="headerlink" href="#id1" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>line<span class="classifier">str</span></dt><dd><p>The initial line read from the file, not used after modification.</p>
 </dd>
 </dl>
 </section>
 <section id="returns">
-<h4>Returns<a class="headerlink" href="#returns" title="Permalink to this heading">#</a></h4>
+<h5>Returns<a class="headerlink" href="#returns" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 <section id="notes">
-<h4>Notes<a class="headerlink" href="#notes" title="Permalink to this heading">#</a></h4>
+<h5>Notes<a class="headerlink" href="#notes" title="Permalink to this heading">#</a></h5>
 <p>Assumes specific formatting of the lines being read, where the required
 numbers are located at fixed positions in the lines:
 - <cite>kpoints</cite> is the 4th value in the first line read within the function.
@@ -354,15 +369,15 @@ numbers are located at fixed positions in the lines:
 </pre></div>
 </div>
 <p>where 1, 2, 3 are the field directions and x, y, z are the atomic displacements.</p>
-<section id="id1">
-<h4>Parameters<a class="headerlink" href="#id1" title="Permalink to this heading">#</a></h4>
+<section id="id2">
+<h5>Parameters<a class="headerlink" href="#id2" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>line<span class="classifier">str</span></dt><dd><p>Not used and overridden</p>
 </dd>
 </dl>
 </section>
-<section id="id2">
-<h4>Returns<a class="headerlink" href="#id2" title="Permalink to this heading">#</a></h4>
+<section id="id3">
+<h5>Returns<a class="headerlink" href="#id3" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>numpy.ndarray</dt><dd><p>A numpy array containing the born charges with its shape determined by the field directions and atomic displacements as described above.</p>
 </dd>
@@ -374,8 +389,8 @@ numbers are located at fixed positions in the lines:
 <dt class="sig sig-object py" id="PDielec.VaspOutputReader.VaspOutputReader._read_ediff">
 <span class="sig-name descname"><span class="pre">_read_ediff</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/VaspOutputReader.html#VaspOutputReader._read_ediff"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.VaspOutputReader.VaspOutputReader._read_ediff" title="Permalink to this definition">#</a></dt>
 <dd><p>Read and set the energy difference value from a given line string.</p>
-<section id="id3">
-<h4>Parameters<a class="headerlink" href="#id3" title="Permalink to this heading">#</a></h4>
+<section id="id4">
+<h5>Parameters<a class="headerlink" href="#id4" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>line<span class="classifier">str</span></dt><dd><p>A string containing the energy difference information, where the
 energy difference value is expected to be at the third position
@@ -383,8 +398,8 @@ energy difference value is expected to be at the third position
 </dd>
 </dl>
 </section>
-<section id="id4">
-<h4>Returns<a class="headerlink" href="#id4" title="Permalink to this heading">#</a></h4>
+<section id="id5">
+<h5>Returns<a class="headerlink" href="#id5" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 </dd></dl>
@@ -394,15 +409,15 @@ energy difference value is expected to be at the third position
 <span class="sig-name descname"><span class="pre">_read_eigenvectors</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/VaspOutputReader.html#VaspOutputReader._read_eigenvectors"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.VaspOutputReader.VaspOutputReader._read_eigenvectors" title="Permalink to this definition">#</a></dt>
 <dd><p>Read and process eigenvectors from a file.</p>
 <p>This method extracts frequencies and mass-weighted normal modes from a read file, storing them in the class’s frequencies and mass_weighted_normal_modes attributes, respectively. It assumes the file follows a specific format where frequencies and their corresponding eigenvectors are listed, considering imaginary frequencies if present.</p>
-<section id="id5">
-<h4>Parameters<a class="headerlink" href="#id5" title="Permalink to this heading">#</a></h4>
+<section id="id6">
+<h5>Parameters<a class="headerlink" href="#id6" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>line<span class="classifier">str</span></dt><dd><p>This method operates on the instance’s file_descriptor and nions attributes, assuming they are correctly initialized.</p>
 </dd>
 </dl>
 </section>
-<section id="id6">
-<h4>Returns<a class="headerlink" href="#id6" title="Permalink to this heading">#</a></h4>
+<section id="id7">
+<h5>Returns<a class="headerlink" href="#id7" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 </dd></dl>
@@ -415,8 +430,8 @@ energy difference value is expected to be at the third position
 descriptor, extracts numeric values assumed to be elastic constants, and
 stores a processed version of these constants in the instance attribute
 <cite>elastic_constants</cite>.</p>
-<section id="id7">
-<h4>Parameters<a class="headerlink" href="#id7" title="Permalink to this heading">#</a></h4>
+<section id="id8">
+<h5>Parameters<a class="headerlink" href="#id8" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>line<span class="classifier">str</span></dt><dd><p>The initial line from where to start reading the elastic constants in
 the file. This parameter is somewhat misleading in this context, as the
@@ -425,12 +440,12 @@ overrides it with <cite>self.file_descriptor.readline()</cite>.</p>
 </dd>
 </dl>
 </section>
-<section id="id8">
-<h4>Returns<a class="headerlink" href="#id8" title="Permalink to this heading">#</a></h4>
+<section id="id9">
+<h5>Returns<a class="headerlink" href="#id9" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
-<section id="id9">
-<h4>Notes<a class="headerlink" href="#id9" title="Permalink to this heading">#</a></h4>
+<section id="id10">
+<h5>Notes<a class="headerlink" href="#id10" title="Permalink to this heading">#</a></h5>
 <p>Each line of interest contains numeric values, starting from the second
 value up to the seventh one, inclusive. These values are converted to floats,
 scaled down by a factor of 10 (to convert to GPa), assembled into a 2D array (list of lists),
@@ -443,19 +458,19 @@ converted into a NumPy array, scaled, and then stored as a list in the
 <dt class="sig sig-object py" id="PDielec.VaspOutputReader.VaspOutputReader._read_encut">
 <span class="sig-name descname"><span class="pre">_read_encut</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/VaspOutputReader.html#VaspOutputReader._read_encut"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.VaspOutputReader.VaspOutputReader._read_encut" title="Permalink to this definition">#</a></dt>
 <dd><p>Parse and set the energy cutoff value from a given line.</p>
-<section id="id10">
-<h4>Parameters<a class="headerlink" href="#id10" title="Permalink to this heading">#</a></h4>
+<section id="id11">
+<h5>Parameters<a class="headerlink" href="#id11" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>line<span class="classifier">str</span></dt><dd><p>A string containing the energy cutoff value. The energy cutoff value is the third element in the string when split by whitespace.</p>
 </dd>
 </dl>
 </section>
-<section id="id11">
-<h4>Returns<a class="headerlink" href="#id11" title="Permalink to this heading">#</a></h4>
+<section id="id12">
+<h5>Returns<a class="headerlink" href="#id12" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
-<section id="id12">
-<h4>Notes<a class="headerlink" href="#id12" title="Permalink to this heading">#</a></h4>
+<section id="id13">
+<h5>Notes<a class="headerlink" href="#id13" title="Permalink to this heading">#</a></h5>
 <p>This method does not return any value. It sets the value of <cite>energy_cutoff</cite> attribute of the instance based on the input line.</p>
 </section>
 </dd></dl>
@@ -464,19 +479,19 @@ converted into a NumPy array, scaled, and then stored as a list in the
 <dt class="sig sig-object py" id="PDielec.VaspOutputReader.VaspOutputReader._read_energy">
 <span class="sig-name descname"><span class="pre">_read_energy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/VaspOutputReader.html#VaspOutputReader._read_energy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.VaspOutputReader.VaspOutputReader._read_energy" title="Permalink to this definition">#</a></dt>
 <dd><p>Reads the energy-related values from a file and updates the instance attributes with these values.</p>
-<section id="id13">
-<h4>Parameters<a class="headerlink" href="#id13" title="Permalink to this heading">#</a></h4>
+<section id="id14">
+<h5>Parameters<a class="headerlink" href="#id14" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>line<span class="classifier">str</span></dt><dd><p>The current line in the file from which to start reading. This parameter is not used in the function as the function reads new lines itself.</p>
 </dd>
 </dl>
 </section>
-<section id="id14">
-<h4>Returns<a class="headerlink" href="#id14" title="Permalink to this heading">#</a></h4>
+<section id="id15">
+<h5>Returns<a class="headerlink" href="#id15" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
-<section id="id15">
-<h4>Notes<a class="headerlink" href="#id15" title="Permalink to this heading">#</a></h4>
+<section id="id16">
+<h5>Notes<a class="headerlink" href="#id16" title="Permalink to this heading">#</a></h5>
 <p>This method directly modifies the instance attributes <cite>final_free_energy</cite>, <cite>final_free_energies</cite>, <cite>final_energy_without_entropy</cite>, and <cite>final_energies_without_entropy</cite> by reading values from the file associated with <cite>file_descriptor</cite>. The relevant energy values can be extracted from the 5th and 4th positions (zero-indexed) of the line text split by spaces, on specific lines read in sequence.</p>
 </section>
 </dd></dl>
@@ -485,19 +500,19 @@ converted into a NumPy array, scaled, and then stored as a list in the
 <dt class="sig sig-object py" id="PDielec.VaspOutputReader.VaspOutputReader._read_external_pressure">
 <span class="sig-name descname"><span class="pre">_read_external_pressure</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/VaspOutputReader.html#VaspOutputReader._read_external_pressure"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.VaspOutputReader.VaspOutputReader._read_external_pressure" title="Permalink to this definition">#</a></dt>
 <dd><p>Read and parse external pressure from a given line of text, updating instance attributes.</p>
-<section id="id16">
-<h4>Parameters<a class="headerlink" href="#id16" title="Permalink to this heading">#</a></h4>
+<section id="id17">
+<h5>Parameters<a class="headerlink" href="#id17" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>line<span class="classifier">str</span></dt><dd><p>A line of text expected to contain pressure data at specific positions.</p>
 </dd>
 </dl>
 </section>
-<section id="id17">
-<h4>Returns<a class="headerlink" href="#id17" title="Permalink to this heading">#</a></h4>
+<section id="id18">
+<h5>Returns<a class="headerlink" href="#id18" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
-<section id="id18">
-<h4>Notes<a class="headerlink" href="#id18" title="Permalink to this heading">#</a></h4>
+<section id="id19">
+<h5>Notes<a class="headerlink" href="#id19" title="Permalink to this heading">#</a></h5>
 <p>This method updates the instance’s <cite>pressure</cite> and <cite>_pulay</cite> attributes based on values extracted from the input string. The <cite>pressure</cite> value is obtained from the fourth item in the split string (<cite>line.split()[3]</cite>), and the <cite>_pulay</cite> value is from the ninth item (<cite>line.split()[8]</cite>). Both values are divided by 10.0 to convert from kbar to GPa.</p>
 </section>
 </dd></dl>
@@ -507,15 +522,15 @@ converted into a NumPy array, scaled, and then stored as a list in the
 <span class="sig-name descname"><span class="pre">_read_forces</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/VaspOutputReader.html#VaspOutputReader._read_forces"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.VaspOutputReader.VaspOutputReader._read_forces" title="Permalink to this definition">#</a></dt>
 <dd><p>Read force data from a file and update the iterations datasets with maximum and RMS forces.</p>
 <p>After execution, <cite>self.iterations</cite> will be updated with the new <cite>max_force</cite> and <cite>rms_force</cite> values for the current iteration.</p>
-<section id="id19">
-<h4>Parameters<a class="headerlink" href="#id19" title="Permalink to this heading">#</a></h4>
+<section id="id20">
+<h5>Parameters<a class="headerlink" href="#id20" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>line<span class="classifier">str</span></dt><dd><p>The current line of the file to start reading from.</p>
 </dd>
 </dl>
 </section>
-<section id="id20">
-<h4>Returns<a class="headerlink" href="#id20" title="Permalink to this heading">#</a></h4>
+<section id="id21">
+<h5>Returns<a class="headerlink" href="#id21" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 </dd></dl>
@@ -528,8 +543,8 @@ converted into a NumPy array, scaled, and then stored as a list in the
 the first three space-separated values as fractional coordinates, and appends them
 to the <cite>ions</cite> list. It then sets the fractional coordinates and element names for
 the last unit cell in the <cite>unit_cells</cite> list.</p>
-<section id="id21">
-<h4>Parameters<a class="headerlink" href="#id21" title="Permalink to this heading">#</a></h4>
+<section id="id22">
+<h5>Parameters<a class="headerlink" href="#id22" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>line<span class="classifier">str</span></dt><dd><p>The line from which to start reading the fractional coordinates. This parameter
 is passed but not used directly in the function; instead, subsequent lines are
@@ -537,8 +552,8 @@ read from the file.</p>
 </dd>
 </dl>
 </section>
-<section id="id22">
-<h4>Returns<a class="headerlink" href="#id22" title="Permalink to this heading">#</a></h4>
+<section id="id23">
+<h5>Returns<a class="headerlink" href="#id23" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 </dd></dl>
@@ -548,12 +563,12 @@ read from the file.</p>
 <span class="sig-name descname"><span class="pre">_read_ibrion</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/VaspOutputReader.html#VaspOutputReader._read_ibrion"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.VaspOutputReader.VaspOutputReader._read_ibrion" title="Permalink to this definition">#</a></dt>
 <dd><p>Read and set the IBRION parameter from a given line.</p>
 <p>This method extracts the IBRION value from a formatted line and sets it to the object’s _ibrion attribute.</p>
-<section id="id23">
-<h4>Parameters<a class="headerlink" href="#id23" title="Permalink to this heading">#</a></h4>
+<section id="id24">
+<h5>Parameters<a class="headerlink" href="#id24" title="Permalink to this heading">#</a></h5>
 <p>line : str</p>
 </section>
-<section id="id24">
-<h4>Returns<a class="headerlink" href="#id24" title="Permalink to this heading">#</a></h4>
+<section id="id25">
+<h5>Returns<a class="headerlink" href="#id25" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>None</dt><dd><p>The line of text containing the IBRION value, expected to be at the third position (index 2) when split by whitespace.</p>
 </dd>
@@ -566,19 +581,19 @@ read from the file.</p>
 <span class="sig-name descname"><span class="pre">_read_ionic_dielectric</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/VaspOutputReader.html#VaspOutputReader._read_ionic_dielectric"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.VaspOutputReader.VaspOutputReader._read_ionic_dielectric" title="Permalink to this definition">#</a></dt>
 <dd><p>Reads ionic dielectric constants from a file and updates the zero-frequency static dielectric constant.</p>
 <p>This method assumes the presence of two successive lines in the file corresponding to two dielectric constant values. If any of these lines are marked with an asterisk (*) as missing or do not contain at least three numeric values, default values are used instead. The method calculates the sum of the existing zero-frequency optical dielectric constants and the newly read ionic dielectric constants and updates the corresponding class attribute with this sum.</p>
-<section id="id25">
-<h4>Parameters<a class="headerlink" href="#id25" title="Permalink to this heading">#</a></h4>
+<section id="id26">
+<h5>Parameters<a class="headerlink" href="#id26" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>line<span class="classifier">str</span></dt><dd><p>The initial line from which to start reading the ionic dielectric constants. This parameter is not directly used as the method starts by reading a new line from the file, but it’s implicitly assumed to represent the current position in the file.</p>
 </dd>
 </dl>
 </section>
-<section id="id26">
-<h4>Returns<a class="headerlink" href="#id26" title="Permalink to this heading">#</a></h4>
+<section id="id27">
+<h5>Returns<a class="headerlink" href="#id27" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
-<section id="id27">
-<h4>Notes<a class="headerlink" href="#id27" title="Permalink to this heading">#</a></h4>
+<section id="id28">
+<h5>Notes<a class="headerlink" href="#id28" title="Permalink to this heading">#</a></h5>
 <ul class="simple">
 <li><p>Requires that <cite>self.file_descriptor</cite> is an open file object positioned at the correct line where dielectric information starts.</p></li>
 <li><p>The method directly modifies <cite>self.zerof_static_dielectric</cite> based on read values and calculated sums.</p></li>
@@ -592,15 +607,15 @@ read from the file.</p>
 <span class="sig-name descname"><span class="pre">_read_ionspertype</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/VaspOutputReader.html#VaspOutputReader._read_ionspertype"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.VaspOutputReader.VaspOutputReader._read_ionspertype" title="Permalink to this definition">#</a></dt>
 <dd><p>Reads and stores the number of ions per species from a given line.</p>
 <p>This method processes a string that contains information about the number of ions for each type/species. It updates the attributes <cite>ions_per_type</cite> and <cite>nspecies</cite> of the class.</p>
-<section id="id28">
-<h4>Parameters<a class="headerlink" href="#id28" title="Permalink to this heading">#</a></h4>
+<section id="id29">
+<h5>Parameters<a class="headerlink" href="#id29" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>line<span class="classifier">str</span></dt><dd><p>The line from which the ions per type information will be extracted. The relevant data is expected to start from the fifth element when splitting the line by spaces.</p>
 </dd>
 </dl>
 </section>
-<section id="id29">
-<h4>Returns<a class="headerlink" href="#id29" title="Permalink to this heading">#</a></h4>
+<section id="id30">
+<h5>Returns<a class="headerlink" href="#id30" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 </dd></dl>
@@ -610,19 +625,19 @@ read from the file.</p>
 <span class="sig-name descname"><span class="pre">_read_kpoint_grid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/VaspOutputReader.html#VaspOutputReader._read_kpoint_grid"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.VaspOutputReader.VaspOutputReader._read_kpoint_grid" title="Permalink to this definition">#</a></dt>
 <dd><p>Read and parse the k-point grid dimensions from a file line.</p>
 <p>This method assumes that the current line from which <cite>line</cite> is read contains three integers that represent the dimensions of the k-point grid. These integers are read, converted to integers, and stored in the instance variable <cite>kpoint_grid</cite>.</p>
-<section id="id30">
-<h4>Parameters<a class="headerlink" href="#id30" title="Permalink to this heading">#</a></h4>
+<section id="id31">
+<h5>Parameters<a class="headerlink" href="#id31" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>line<span class="classifier">str</span></dt><dd><p>The current line of the file to read from. This parameter is not used, and the actual line reading happens from <cite>self.file_descriptor</cite>.</p>
 </dd>
 </dl>
 </section>
-<section id="id31">
-<h4>Returns<a class="headerlink" href="#id31" title="Permalink to this heading">#</a></h4>
+<section id="id32">
+<h5>Returns<a class="headerlink" href="#id32" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
-<section id="id32">
-<h4>Notes<a class="headerlink" href="#id32" title="Permalink to this heading">#</a></h4>
+<section id="id33">
+<h5>Notes<a class="headerlink" href="#id33" title="Permalink to this heading">#</a></h5>
 <ul class="simple">
 <li><p>This method modifies the state of the object by setting the <cite>kpoint_grid</cite> attribute.</p></li>
 <li><p>The method reads the next line from <cite>self.file_descriptor</cite>, not from the <cite>line</cite> parameter.</p></li>
@@ -638,19 +653,19 @@ read from the file.</p>
 constructs a new <cite>UnitCell</cite> object from the read vectors, and appends it to the unit cells list.
 If there is at least one <cite>UnitCell</cite> already present, it copies fractional coordinates and element
 names from the last <cite>UnitCell</cite> in the list to the new one.</p>
-<section id="id33">
-<h4>Parameters<a class="headerlink" href="#id33" title="Permalink to this heading">#</a></h4>
+<section id="id34">
+<h5>Parameters<a class="headerlink" href="#id34" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>line<span class="classifier">str</span></dt><dd><p>The line from the input file containing the volume of the UnitCell.</p>
 </dd>
 </dl>
 </section>
-<section id="id34">
-<h4>Returns<a class="headerlink" href="#id34" title="Permalink to this heading">#</a></h4>
+<section id="id35">
+<h5>Returns<a class="headerlink" href="#id35" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 <section id="attributes-modified">
-<h4>Attributes Modified<a class="headerlink" href="#attributes-modified" title="Permalink to this heading">#</a></h4>
+<h5>Attributes Modified<a class="headerlink" href="#attributes-modified" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>volume<span class="classifier">float</span></dt><dd><p>The volume of the UnitCell, updated by parsing the input line.</p>
 </dd>
@@ -666,8 +681,8 @@ names from the last <cite>UnitCell</cite> in the list to the new one.</p>
 <dt class="sig sig-object py" id="PDielec.VaspOutputReader.VaspOutputReader._read_magnet">
 <span class="sig-name descname"><span class="pre">_read_magnet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/VaspOutputReader.html#VaspOutputReader._read_magnet"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.VaspOutputReader.VaspOutputReader._read_magnet" title="Permalink to this definition">#</a></dt>
 <dd><p>Read magnetization properties from a line and update the object attributes.</p>
-<section id="id35">
-<h4>Parameters<a class="headerlink" href="#id35" title="Permalink to this heading">#</a></h4>
+<section id="id36">
+<h5>Parameters<a class="headerlink" href="#id36" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>line<span class="classifier">str</span></dt><dd><p>A string expected to contain information about electrons and,
 optionally, magnetization. The expected format is whitespace-separated
@@ -675,15 +690,15 @@ values where the fourth value is the number of electrons and the sixth</p>
 </dd>
 </dl>
 </section>
-<section id="id36">
-<h4>Returns<a class="headerlink" href="#id36" title="Permalink to this heading">#</a></h4>
+<section id="id37">
+<h5>Returns<a class="headerlink" href="#id37" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>None</dt><dd><p>value, if present, represents the magnetization.</p>
 </dd>
 </dl>
 </section>
-<section id="id37">
-<h4>Notes<a class="headerlink" href="#id37" title="Permalink to this heading">#</a></h4>
+<section id="id38">
+<h5>Notes<a class="headerlink" href="#id38" title="Permalink to this heading">#</a></h5>
 <p>Modifies the object’s <cite>electrons</cite> attribute by setting it to the value parsed
 from the line. If magnetization information is present in the line, it also
 updates the <cite>magnetization</cite> attribute with that value; otherwise, it sets
@@ -698,8 +713,8 @@ updates the <cite>magnetization</cite> attribute with that value; otherwise, it 
 <p>This method extracts the third element from a whitespace-separated list (assumed
 to be a mass), removes semicolons, converts it to a float, and appends it to the
 instance’s list of masses.</p>
-<section id="id38">
-<h4>Parameters<a class="headerlink" href="#id38" title="Permalink to this heading">#</a></h4>
+<section id="id39">
+<h5>Parameters<a class="headerlink" href="#id39" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>line<span class="classifier">str</span></dt><dd><p>A string from which the mass value is to be extracted. It is expected to
 be whitespace-separated with the mass as the third element, potentially
@@ -707,8 +722,8 @@ followed by a semicolon.</p>
 </dd>
 </dl>
 </section>
-<section id="id39">
-<h4>Returns<a class="headerlink" href="#id39" title="Permalink to this heading">#</a></h4>
+<section id="id40">
+<h5>Returns<a class="headerlink" href="#id40" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 </dd></dl>
@@ -717,24 +732,24 @@ followed by a semicolon.</p>
 <dt class="sig sig-object py" id="PDielec.VaspOutputReader.VaspOutputReader._read_nelect">
 <span class="sig-name descname"><span class="pre">_read_nelect</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/VaspOutputReader.html#VaspOutputReader._read_nelect"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.VaspOutputReader.VaspOutputReader._read_nelect" title="Permalink to this definition">#</a></dt>
 <dd><p>Reads and sets the number of electrons from a given line.</p>
-<section id="id40">
-<h4>Parameters<a class="headerlink" href="#id40" title="Permalink to this heading">#</a></h4>
+<section id="id41">
+<h5>Parameters<a class="headerlink" href="#id41" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>line<span class="classifier">str</span></dt><dd><p>A string representation possibly containing information about
 the number of electrons.</p>
 </dd>
 </dl>
 </section>
-<section id="id41">
-<h4>Notes<a class="headerlink" href="#id41" title="Permalink to this heading">#</a></h4>
+<section id="id42">
+<h5>Notes<a class="headerlink" href="#id42" title="Permalink to this heading">#</a></h5>
 <p>This method updates the object’s ‘electrons’ attribute with the number of electrons
 extracted from the given line. It assumes that the number of electrons is indicated
 at the third position (index 2) in the list produced by splitting <cite>line</cite> on whitespace.
 It also assumes that this number can be represented as a float, but converts it to
 an integer before setting the ‘electrons’ attribute.</p>
 </section>
-<section id="id42">
-<h4>Returns<a class="headerlink" href="#id42" title="Permalink to this heading">#</a></h4>
+<section id="id43">
+<h5>Returns<a class="headerlink" href="#id43" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 </dd></dl>
@@ -744,12 +759,12 @@ an integer before setting the ‘electrons’ attribute.</p>
 <span class="sig-name descname"><span class="pre">_read_newmasses</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/VaspOutputReader.html#VaspOutputReader._read_newmasses"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.VaspOutputReader.VaspOutputReader._read_newmasses" title="Permalink to this definition">#</a></dt>
 <dd><p>Reads and processes the “newmasses” from a line in the file descriptor.</p>
 <p>This internal method parses a single line from the file descriptor to read the masses associated with different atom types in a molecular system. Based on the number of species (<cite>nspecies</cite>) and ions per type, it updates <cite>masses_per_type</cite>, <cite>masses</cite>, <cite>atom_type_list</cite>, and <cite>species_list</cite> lists with the parsed and computed information.</p>
-<section id="id43">
-<h4>Parameters<a class="headerlink" href="#id43" title="Permalink to this heading">#</a></h4>
+<section id="id44">
+<h5>Parameters<a class="headerlink" href="#id44" title="Permalink to this heading">#</a></h5>
 <p>line : str</p>
 </section>
-<section id="id44">
-<h4>Returns<a class="headerlink" href="#id44" title="Permalink to this heading">#</a></h4>
+<section id="id45">
+<h5>Returns<a class="headerlink" href="#id45" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>None</dt><dd><p>The string line from which the new masses information is to be read. Note that this parameter is initially passed but not used directly, as the function immediately reads a new line from <cite>self.file_descriptor</cite>.</p>
 </dd>
@@ -763,12 +778,12 @@ an integer before setting the ‘electrons’ attribute.</p>
 <dd><p>Read the vasp files in the directory.</p>
 <p>Define the search strings neeeded and the associated routines will read the required values
 Process the files accordingly</p>
-<section id="id45">
-<h4>Parameters<a class="headerlink" href="#id45" title="Permalink to this heading">#</a></h4>
+<section id="id46">
+<h5>Parameters<a class="headerlink" href="#id46" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
-<section id="id46">
-<h4>Returns<a class="headerlink" href="#id46" title="Permalink to this heading">#</a></h4>
+<section id="id47">
+<h5>Returns<a class="headerlink" href="#id47" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 </dd></dl>
@@ -779,8 +794,8 @@ Process the files accordingly</p>
 <dd><p>Parse and set the POTIM parameter from a line of text.</p>
 <p>This method extracts the POTIM parameter value from a provided string
 and sets it as a floating-point number within the object.</p>
-<section id="id47">
-<h4>Parameters<a class="headerlink" href="#id47" title="Permalink to this heading">#</a></h4>
+<section id="id48">
+<h5>Parameters<a class="headerlink" href="#id48" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>line<span class="classifier">str</span></dt><dd><p>A string typically representing a line from a file containing
 the POTIM parameter. The expected format is: key-value pairs
@@ -789,8 +804,8 @@ in the sequence (index 2 when zero-indexed).</p>
 </dd>
 </dl>
 </section>
-<section id="id48">
-<h4>Returns<a class="headerlink" href="#id48" title="Permalink to this heading">#</a></h4>
+<section id="id49">
+<h5>Returns<a class="headerlink" href="#id49" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 </dd></dl>
@@ -800,15 +815,15 @@ in the sequence (index 2 when zero-indexed).</p>
 <span class="sig-name descname"><span class="pre">_read_pspot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/VaspOutputReader.html#VaspOutputReader._read_pspot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.VaspOutputReader.VaspOutputReader._read_pspot" title="Permalink to this definition">#</a></dt>
 <dd><p>Read and store pseudopotential information from a line.</p>
 <p>This method parses a line to extract pseudopotential information and stores it in the <cite>_pspots</cite> dictionary attribute of the object. The pseudopotential label is used as the key, and its corresponding value as the value in the <cite>_pspots</cite> dictionary.</p>
-<section id="id49">
-<h4>Parameters<a class="headerlink" href="#id49" title="Permalink to this heading">#</a></h4>
+<section id="id50">
+<h5>Parameters<a class="headerlink" href="#id50" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>line<span class="classifier">str</span></dt><dd><p>A string containing the pseudopotential information to be parsed and stored. Expected format: “any_text value label any_other_text”, where “value” and “label” are the parts of interest for storage.</p>
 </dd>
 </dl>
 </section>
-<section id="id50">
-<h4>Returns<a class="headerlink" href="#id50" title="Permalink to this heading">#</a></h4>
+<section id="id51">
+<h5>Returns<a class="headerlink" href="#id51" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 </dd></dl>
@@ -819,15 +834,15 @@ in the sequence (index 2 when zero-indexed).</p>
 <dd><p>Read and skip the next 4 lines from the current position.</p>
 <p>This method reads and discards the next four lines from the file
 associated with the <cite>file_descriptor</cite> attribute of the calling object.</p>
-<section id="id51">
-<h4>Parameters<a class="headerlink" href="#id51" title="Permalink to this heading">#</a></h4>
+<section id="id52">
+<h5>Parameters<a class="headerlink" href="#id52" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>line<span class="classifier">not used</span></dt><dd><p>This parameter is not used but kept for function signature purposes.</p>
 </dd>
 </dl>
 </section>
-<section id="id52">
-<h4>Returns<a class="headerlink" href="#id52" title="Permalink to this heading">#</a></h4>
+<section id="id53">
+<h5>Returns<a class="headerlink" href="#id53" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 </dd></dl>
@@ -837,19 +852,19 @@ associated with the <cite>file_descriptor</cite> attribute of the calling object
 <span class="sig-name descname"><span class="pre">_read_species</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/VaspOutputReader.html#VaspOutputReader._read_species"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.VaspOutputReader.VaspOutputReader._read_species" title="Permalink to this definition">#</a></dt>
 <dd><p>Reads species from a file and updates species information.</p>
 <p>This method reads the number of lines for a species, computes the total charge from these lines, and appends the corresponding element to the species list. It utilizes the atomic_number_to_element dictionary to map the computed total charge to an element symbol.</p>
-<section id="id53">
-<h4>Parameters<a class="headerlink" href="#id53" title="Permalink to this heading">#</a></h4>
+<section id="id54">
+<h5>Parameters<a class="headerlink" href="#id54" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>line<span class="classifier">str</span></dt><dd><p>The initial line to start processing from, typically provides the number of lines for a species.</p>
 </dd>
 </dl>
 </section>
-<section id="id54">
-<h4>Returns<a class="headerlink" href="#id54" title="Permalink to this heading">#</a></h4>
+<section id="id55">
+<h5>Returns<a class="headerlink" href="#id55" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 <section id="see-also">
-<h4>See Also<a class="headerlink" href="#see-also" title="Permalink to this heading">#</a></h4>
+<h5>See Also<a class="headerlink" href="#see-also" title="Permalink to this heading">#</a></h5>
 <p>atomic_number_to_element : A dictionary mapping total charges to element symbols.</p>
 </section>
 </dd></dl>
@@ -858,19 +873,19 @@ associated with the <cite>file_descriptor</cite> attribute of the calling object
 <dt class="sig sig-object py" id="PDielec.VaspOutputReader.VaspOutputReader._read_spin">
 <span class="sig-name descname"><span class="pre">_read_spin</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/VaspOutputReader.html#VaspOutputReader._read_spin"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.VaspOutputReader.VaspOutputReader._read_spin" title="Permalink to this definition">#</a></dt>
 <dd><p>Parse and set the spin from a given line.</p>
-<section id="id55">
-<h4>Parameters<a class="headerlink" href="#id55" title="Permalink to this heading">#</a></h4>
+<section id="id56">
+<h5>Parameters<a class="headerlink" href="#id56" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>line<span class="classifier">str</span></dt><dd><p>The line of text from which the spin value will be extracted.</p>
 </dd>
 </dl>
 </section>
-<section id="id56">
-<h4>Returns<a class="headerlink" href="#id56" title="Permalink to this heading">#</a></h4>
+<section id="id57">
+<h5>Returns<a class="headerlink" href="#id57" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
-<section id="id57">
-<h4>Notes<a class="headerlink" href="#id57" title="Permalink to this heading">#</a></h4>
+<section id="id58">
+<h5>Notes<a class="headerlink" href="#id58" title="Permalink to this heading">#</a></h5>
 <p>This method expects the spin value to be at the third position in the line. The method doesn’t return any value but sets the object’s <cite>spin</cite> attribute based on the extracted integer value.</p>
 </section>
 </dd></dl>
@@ -884,32 +899,33 @@ and parse the static dielectric data. It expects the data to be in specific line
 If a line does not contain data in the expected format or contains an asterisk (‘*’) indicating missing
 or invalid data, a default value is used instead. The parsed data is stored in the instance’s
 zerof_optical_dielectric attribute as a list of lists, where each sublist contains three floating-point numbers.</p>
-<section id="id58">
-<h4>Parameters<a class="headerlink" href="#id58" title="Permalink to this heading">#</a></h4>
+<section id="id59">
+<h5>Parameters<a class="headerlink" href="#id59" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>line<span class="classifier">str</span></dt><dd><p>The initial line from where to begin parsing. (This parameter is currently not used in the implementation
 and the method reads lines directly using the object’s file_descriptor.)</p>
 </dd>
 </dl>
 </section>
-<section id="id59">
-<h4>Returns<a class="headerlink" href="#id59" title="Permalink to this heading">#</a></h4>
+<section id="id60">
+<h5>Returns<a class="headerlink" href="#id60" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 </dd></dl>
 
+</section>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="PDielec.VaspOutputReader.myfloat">
 <span class="sig-prename descclassname"><span class="pre">PDielec.VaspOutputReader.</span></span><span class="sig-name descname"><span class="pre">myfloat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">string</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/VaspOutputReader.html#myfloat"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.VaspOutputReader.myfloat" title="Permalink to this definition">#</a></dt>
 <dd><p>A replacement for float() which will return a large number if it finds a * in the string.</p>
-<section id="id60">
-<h4>Parameters<a class="headerlink" href="#id60" title="Permalink to this heading">#</a></h4>
+<section id="id61">
+<h4>Parameters<a class="headerlink" href="#id61" title="Permalink to this heading">#</a></h4>
 <p>string : str</p>
 </section>
-<section id="id61">
-<h4>Returns<a class="headerlink" href="#id61" title="Permalink to this heading">#</a></h4>
+<section id="id62">
+<h4>Returns<a class="headerlink" href="#id62" title="Permalink to this heading">#</a></h4>
 <dl class="simple">
 <dt>float</dt><dd><p>A standard float conversion of the input or a large number if ‘*’ is found in the input.</p>
 </dd>

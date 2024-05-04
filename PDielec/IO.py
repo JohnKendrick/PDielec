@@ -1,8 +1,6 @@
 #!/usr/bin/python
-'''
-Simple IO interface 
-
-# Copyright 2024 John Kendrick
+#
+# Copyright 2024 John Kendrick & Andrew Burnett
 #
 # This file is part of PDielec
 #
@@ -13,8 +11,13 @@ Simple IO interface
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 #
-# You should have received a copy of the MIT License
-# along with this program, if not see https://opensource.org/licenses/MIT
+# You should have received a copy of the MIT License along with this program, if not see https://opensource.org/licenses/MIT
+#
+'''
+Simple IO interface 
+
+This aims to reproduce the python readline() io method, with limited functionality but much faster.
+
 '''
 import sys
 #
@@ -25,6 +28,14 @@ class pdielec_io:
     The class opens a file upon initialization, reads its lines into memory,
     and allows sequential reading of these lines through the readline method.
     It also provides a close method to reset the reading process.
+    This speeds up the reading of a file using the usual python readline() method.
+
+    Parameters
+    ----------
+    filename : str
+        The path to the file to be read.
+    mode : str
+        The mode in which the file should be opened (e.g., 'r' for read).
 
     Attributes
     ----------

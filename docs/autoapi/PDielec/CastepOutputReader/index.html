@@ -275,16 +275,7 @@
         <article role="main">
           <section id="module-PDielec.CastepOutputReader">
 <span id="pdielec-castepoutputreader"></span><h1><a class="reference internal" href="#module-PDielec.CastepOutputReader" title="PDielec.CastepOutputReader"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.CastepOutputReader</span></code></a><a class="headerlink" href="#module-PDielec.CastepOutputReader" title="Permalink to this heading">#</a></h1>
-<p>CASTEP output reader</p>
-<p>Copyright 2024 John Kendrick</p>
-<p>This file is part of PDielec</p>
-<p>This program is free software; you can redistribute it and/or modify
-it under the terms of the MIT License</p>
-<p>This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.</p>
-<p>You should have received a copy of the MIT License
-along with this program, if not see <a class="reference external" href="https://opensource.org/licenses/MIT">https://opensource.org/licenses/MIT</a></p>
+<p>CastepOutputReader module</p>
 <section id="module-contents">
 <h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this heading">#</a></h2>
 <section id="classes">
@@ -303,21 +294,34 @@ along with this program, if not see <a class="reference external" href="https://
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PDielec.CastepOutputReader.</span></span><span class="sig-name descname"><span class="pre">CastepOutputReader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filenames</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/CastepOutputReader.html#CastepOutputReader"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.CastepOutputReader.CastepOutputReader" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="../GenericOutputReader/index.html#PDielec.GenericOutputReader.GenericOutputReader" title="PDielec.GenericOutputReader.GenericOutputReader"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PDielec.GenericOutputReader.GenericOutputReader</span></code></a></p>
 <p>Read the contents of a Castep output file.</p>
-<p>Inherits from GenericOutputReader</p>
+<p>Inherits from <a class="reference internal" href="../GenericOutputReader/index.html#PDielec.GenericOutputReader.GenericOutputReader" title="PDielec.GenericOutputReader.GenericOutputReader"><code class="xref py py-class docutils literal notranslate"><span class="pre">GenericOutputReader</span></code></a></p>
+<section id="parameters">
+<h4>Parameters<a class="headerlink" href="#parameters" title="Permalink to this heading">#</a></h4>
+<dl class="simple">
+<dt>filenames<span class="classifier">list</span></dt><dd><p>A list of filenames (strings) intended for initialization. The first filename in the list is used to determine the seedname and the types of files to be created (.castep and .phonon).</p>
+</dd>
+</dl>
+</section>
+<section id="notes">
+<h4>Notes<a class="headerlink" href="#notes" title="Permalink to this heading">#</a></h4>
+<ul class="simple">
+<li><p>This method assumes that the filenames provided in the list relate to CASTEP calculation outputs. Specifically, it looks for filenames ending in ‘.castep’ or ‘.phonon’ to set up the necessary output files for the instance.</p></li>
+<li><p>The method does not return a value but initializes the instance with the necessary attributes for further processing and analysis of CASTEP output files.</p></li>
+</ul>
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.CastepOutputReader.CastepOutputReader._read_born_charges">
 <span class="sig-name descname"><span class="pre">_read_born_charges</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/CastepOutputReader.html#CastepOutputReader._read_born_charges"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.CastepOutputReader.CastepOutputReader._read_born_charges" title="Permalink to this definition">#</a></dt>
 <dd><p>Read the born charges from the castep file.</p>
 <p>This function reads the born charges from a provided castep file and arranges the output tensor. Initially, each column of the output refers to a given field direction, and each row refers to the atomic displacement, organizing the numbers in the format <cite>[[a1x a2x a3x], [a1y a2y a3y], [a1z a2z a3z]]</cite>. The function then rearranges these numbers into the desired format: <cite>[[a1x a1y a1z], [a2x a2y a2z], [a3x a3y a3z]]</cite>, where 1, 2, 3 are the field directions, and x, y, z represent the atomic displacements.</p>
-<section id="parameters">
-<h4>Parameters<a class="headerlink" href="#parameters" title="Permalink to this heading">#</a></h4>
+<section id="id1">
+<h5>Parameters<a class="headerlink" href="#id1" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>line<span class="classifier">str</span></dt><dd><p>The initial line from which to start reading in the file. This parameter is part of the method signature for demonstration but is immediately overwritten by the next line read from the file, hence not directly used.</p>
 </dd>
 </dl>
 </section>
 <section id="returns">
-<h4>Returns<a class="headerlink" href="#returns" title="Permalink to this heading">#</a></h4>
+<h5>Returns<a class="headerlink" href="#returns" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>ndarray</dt><dd><p>An array where each row represents the born charges for a particular atomic displacement arranged in the format <cite>[[a1x a1y a1z], [a2x a2y a2z], [a3x a3y a3z]]</cite>.</p>
 </dd>
@@ -334,8 +338,8 @@ species, and fractional coordinates from the input file, and updates the relevan
 attributes including <cite>unit_cells</cite>, <cite>volume</cite>, <cite>volumes</cite>, <cite>nions</cite>, <cite>nspecies</cite>,
 <cite>atom_type_list</cite>, <cite>species</cite>, <cite>ions_per_type</cite>, along with setting the fractional
 coordinates and element names for the latest unit cell.</p>
-<section id="id1">
-<h4>Parameters<a class="headerlink" href="#id1" title="Permalink to this heading">#</a></h4>
+<section id="id2">
+<h5>Parameters<a class="headerlink" href="#id2" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>line<span class="classifier">str</span></dt><dd><p>The initial line from which to start reading. This parameter is not used in the
 current implementation and could be omitted or replaced depending on the method’s
@@ -343,8 +347,8 @@ usage context.</p>
 </dd>
 </dl>
 </section>
-<section id="id2">
-<h4>Returns<a class="headerlink" href="#id2" title="Permalink to this heading">#</a></h4>
+<section id="id3">
+<h5>Returns<a class="headerlink" href="#id3" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 </dd></dl>
@@ -354,19 +358,19 @@ usage context.</p>
 <span class="sig-name descname"><span class="pre">_read_convergence</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/CastepOutputReader.html#CastepOutputReader._read_convergence"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.CastepOutputReader.CastepOutputReader._read_convergence" title="Permalink to this definition">#</a></dt>
 <dd><p>Reads convergence data from a file and updates internal lists with values.</p>
 <p>This internal method reads specific lines from a file that is already opened and updates internal lists for de-ionization energy, maximum force (fmax), maximum displacement (dr_max), and maximum stress (smax) based on the values found in those lines.</p>
-<section id="id3">
-<h4>Parameters<a class="headerlink" href="#id3" title="Permalink to this heading">#</a></h4>
+<section id="id4">
+<h5>Parameters<a class="headerlink" href="#id4" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>line<span class="classifier">str</span></dt><dd><p>Not used but overwritten</p>
 </dd>
 </dl>
 </section>
-<section id="id4">
-<h4>Returns<a class="headerlink" href="#id4" title="Permalink to this heading">#</a></h4>
+<section id="id5">
+<h5>Returns<a class="headerlink" href="#id5" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
-<section id="notes">
-<h4>Notes<a class="headerlink" href="#notes" title="Permalink to this heading">#</a></h4>
+<section id="id6">
+<h5>Notes<a class="headerlink" href="#id6" title="Permalink to this heading">#</a></h5>
 <p>This function assumes that the file being read follows a specific format where the required values are found at known line intervals and in a consistent column position (index 3 after splitting the line).</p>
 <p>The function does not return any value, but it updates the internal state of the object it is a part of.</p>
 </section>
@@ -377,19 +381,19 @@ usage context.</p>
 <span class="sig-name descname"><span class="pre">_read_dielectric</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/CastepOutputReader.html#CastepOutputReader._read_dielectric"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.CastepOutputReader.CastepOutputReader._read_dielectric" title="Permalink to this definition">#</a></dt>
 <dd><p>Read and parse dielectric data from a file.</p>
 <p>This method reads dielectric data from the currently opened file associated with the object. It updates the object’s properties for zero-frequency optical and static dielectric constants.</p>
-<section id="id5">
-<h4>Parameters<a class="headerlink" href="#id5" title="Permalink to this heading">#</a></h4>
+<section id="id7">
+<h5>Parameters<a class="headerlink" href="#id7" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>line<span class="classifier">str</span></dt><dd><p>The initial line from which to start reading. Note: this parameter is actually unused in the function’s current implementation, and reading starts from the next line of the file descriptor’s current position.</p>
 </dd>
 </dl>
 </section>
-<section id="id6">
-<h4>Returns<a class="headerlink" href="#id6" title="Permalink to this heading">#</a></h4>
+<section id="id8">
+<h5>Returns<a class="headerlink" href="#id8" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
-<section id="id7">
-<h4>Notes<a class="headerlink" href="#id7" title="Permalink to this heading">#</a></h4>
+<section id="id9">
+<h5>Notes<a class="headerlink" href="#id9" title="Permalink to this heading">#</a></h5>
 <p>The function assumes that the file’s current position is at the correct start point for reading dielectric data. It reads three consecutive lines from the file, each expected to contain six floating point numbers. The first three numbers of each line are appended to ‘zerof_optical_dielectric’, and the latter three numbers to ‘zerof_static_dielectric’.</p>
 <p>This method modifies the state of the object by updating the ‘zerof_optical_dielectric’ and ‘zerof_static_dielectric’ lists with new data read from the file.</p>
 </section>
@@ -401,8 +405,8 @@ usage context.</p>
 <dd><p>Reads and sets the energy difference from a given line of text.</p>
 <p>This is a private method intended to parse and store the energy difference
 from a standardized formatted line of text.</p>
-<section id="id8">
-<h4>Parameters<a class="headerlink" href="#id8" title="Permalink to this heading">#</a></h4>
+<section id="id10">
+<h5>Parameters<a class="headerlink" href="#id10" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>line<span class="classifier">str</span></dt><dd><p>A line of text, expected to contain numerical values from which
 the energy difference (ediff) is parsed. The value for ediff is
@@ -410,8 +414,8 @@ expected to be the third element when splitting the line by whitespace.</p>
 </dd>
 </dl>
 </section>
-<section id="id9">
-<h4>Returns<a class="headerlink" href="#id9" title="Permalink to this heading">#</a></h4>
+<section id="id11">
+<h5>Returns<a class="headerlink" href="#id11" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 </dd></dl>
@@ -421,19 +425,19 @@ expected to be the third element when splitting the line by whitespace.</p>
 <span class="sig-name descname"><span class="pre">_read_energies</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/CastepOutputReader.html#CastepOutputReader._read_energies"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.CastepOutputReader.CastepOutputReader._read_energies" title="Permalink to this definition">#</a></dt>
 <dd><p>Read and store energy values from a given line.</p>
 <p>Extracts energy-related data from a specified line and updates relevant attributes of the object. Assumes that the sixth (index 5) element in the second line contains the final free energy, the fifth (index 4) element in the given line contains the DFT energy, which is appended to a list, and also set as the final energy without entropy. Additionally, updates the number of geometry steps based on the length of the energiesDFT list.</p>
-<section id="id10">
-<h4>Parameters<a class="headerlink" href="#id10" title="Permalink to this heading">#</a></h4>
+<section id="id12">
+<h5>Parameters<a class="headerlink" href="#id12" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>line<span class="classifier">str</span></dt><dd><p>The line from which energy values are extracted.</p>
 </dd>
 </dl>
 </section>
-<section id="id11">
-<h4>Returns<a class="headerlink" href="#id11" title="Permalink to this heading">#</a></h4>
+<section id="id13">
+<h5>Returns<a class="headerlink" href="#id13" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
-<section id="id12">
-<h4>Notes<a class="headerlink" href="#id12" title="Permalink to this heading">#</a></h4>
+<section id="id14">
+<h5>Notes<a class="headerlink" href="#id14" title="Permalink to this heading">#</a></h5>
 <p>This method expects that ‘line’ follows a specific format, where the fifth (index 4) element is the final energy without entropy and, on the subsequent line, the sixth (index 5) element is the final free energy. It further assumes ‘self.file_descriptor’ to be an open file object positioned at the line immediately following the line containing energy information.</p>
 <p>The method updates four attributes of the object:
 - Appends the energy value to ‘self.energiesDFT’.
@@ -449,22 +453,22 @@ expected to be the third element when splitting the line by whitespace.</p>
 <dd><p>Parse a line of text to read energies and update properties.</p>
 <p>This method reads energies from a given line of text and updates various energy
 related properties of the object.</p>
-<section id="id13">
-<h4>Parameters<a class="headerlink" href="#id13" title="Permalink to this heading">#</a></h4>
+<section id="id15">
+<h5>Parameters<a class="headerlink" href="#id15" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>line<span class="classifier">str</span></dt><dd><p>A line of text that contains energy values.</p>
 </dd>
 </dl>
 </section>
-<section id="id14">
-<h4>Notes<a class="headerlink" href="#id14" title="Permalink to this heading">#</a></h4>
+<section id="id16">
+<h5>Notes<a class="headerlink" href="#id16" title="Permalink to this heading">#</a></h5>
 <p>This method specifically updates the <cite>energiesDFT</cite>, <cite>final_energy_without_entropy</cite>,
 <cite>final_free_energy</cite>, and <cite>geomsteps</cite> attributes of the object based on the energy
 value parsed from the given line. The energy value is expected to be located at
 the fourth position (index 3) when the line is split by spaces.</p>
 </section>
-<section id="id15">
-<h4>Returns<a class="headerlink" href="#id15" title="Permalink to this heading">#</a></h4>
+<section id="id17">
+<h5>Returns<a class="headerlink" href="#id17" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 </dd></dl>
@@ -478,20 +482,20 @@ position (index 5), converts it into a float, and appends it to the class’s
 energiesDFT_disp attribute. It also updates the class attributes for the final
 energy without entropy, the final free energy, and the total number of geometry
 steps (geomsteps) based on the current energy readings.</p>
-<section id="id16">
-<h4>Parameters<a class="headerlink" href="#id16" title="Permalink to this heading">#</a></h4>
+<section id="id18">
+<h5>Parameters<a class="headerlink" href="#id18" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>line<span class="classifier">str</span></dt><dd><p>A string containing energy information, expected to have at least six
 words with the energy value at the sixth position.</p>
 </dd>
 </dl>
 </section>
-<section id="id17">
-<h4>Returns<a class="headerlink" href="#id17" title="Permalink to this heading">#</a></h4>
+<section id="id19">
+<h5>Returns<a class="headerlink" href="#id19" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
-<section id="id18">
-<h4>Notes<a class="headerlink" href="#id18" title="Permalink to this heading">#</a></h4>
+<section id="id20">
+<h5>Notes<a class="headerlink" href="#id20" title="Permalink to this heading">#</a></h5>
 <p>This method directly modifies the attributes of the class instance it belongs
 to. It does not return any value.</p>
 </section>
@@ -502,15 +506,15 @@ to. It does not return any value.</p>
 <span class="sig-name descname"><span class="pre">_read_energy_cutoff</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/CastepOutputReader.html#CastepOutputReader._read_energy_cutoff"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.CastepOutputReader.CastepOutputReader._read_energy_cutoff" title="Permalink to this definition">#</a></dt>
 <dd><p>Extract the energy cutoff value from a given line and store it in the object.</p>
 <p>This method reads a line of text, expects to find a numeric value at the 7th position (0-indexed) in a space-separated list, converts this value to a float, and stores it as the energy cutoff property of the object.</p>
-<section id="id19">
-<h4>Parameters<a class="headerlink" href="#id19" title="Permalink to this heading">#</a></h4>
+<section id="id21">
+<h5>Parameters<a class="headerlink" href="#id21" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>line<span class="classifier">str</span></dt><dd><p>A string containing the energy cutoff value at the 7th position in a space-separated list.</p>
 </dd>
 </dl>
 </section>
-<section id="id20">
-<h4>Returns<a class="headerlink" href="#id20" title="Permalink to this heading">#</a></h4>
+<section id="id22">
+<h5>Returns<a class="headerlink" href="#id22" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 </dd></dl>
@@ -519,19 +523,19 @@ to. It does not return any value.</p>
 <dt class="sig sig-object py" id="PDielec.CastepOutputReader.CastepOutputReader._read_external_pressure">
 <span class="sig-name descname"><span class="pre">_read_external_pressure</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/CastepOutputReader.html#CastepOutputReader._read_external_pressure"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.CastepOutputReader.CastepOutputReader._read_external_pressure" title="Permalink to this definition">#</a></dt>
 <dd><p>Parse an external pressure value from a string and set it.</p>
-<section id="id21">
-<h4>Parameters<a class="headerlink" href="#id21" title="Permalink to this heading">#</a></h4>
+<section id="id23">
+<h5>Parameters<a class="headerlink" href="#id23" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>line<span class="classifier">str</span></dt><dd><p>A string containing the pressure value to parse and set. The expected format is unspecified in this context, but the pressure value should be at the third position (index 2) when the string is split by whitespace.</p>
 </dd>
 </dl>
 </section>
-<section id="id22">
-<h4>Returns<a class="headerlink" href="#id22" title="Permalink to this heading">#</a></h4>
+<section id="id24">
+<h5>Returns<a class="headerlink" href="#id24" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
-<section id="id23">
-<h4>Notes<a class="headerlink" href="#id23" title="Permalink to this heading">#</a></h4>
+<section id="id25">
+<h5>Notes<a class="headerlink" href="#id25" title="Permalink to this heading">#</a></h5>
 <p>This function updates the <cite>pressure</cite> attribute of the class instance based on the value parsed from the input string. The specific use case and format of the input string are not detailed, assuming some domain-specific knowledge is required.</p>
 </section>
 </dd></dl>
@@ -541,19 +545,19 @@ to. It does not return any value.</p>
 <span class="sig-name descname"><span class="pre">_read_frequencies</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/CastepOutputReader.html#CastepOutputReader._read_frequencies"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.CastepOutputReader.CastepOutputReader._read_frequencies" title="Permalink to this definition">#</a></dt>
 <dd><p>Read and process frequencies, intensities, and normal modes from  phonon file.</p>
 <p>This method assumes a specific format of the input file, where frequencies, intensities, and normal mode coordinates are listed in a sequential order. Frequencies and intensities are read first, followed by normal mode vectors for each mode.</p>
-<section id="id24">
-<h4>Parameters<a class="headerlink" href="#id24" title="Permalink to this heading">#</a></h4>
+<section id="id26">
+<h5>Parameters<a class="headerlink" href="#id26" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>line<span class="classifier">str</span></dt><dd><p>The current line in the file from which to start reading the frequency data.</p>
 </dd>
 </dl>
 </section>
-<section id="id25">
-<h4>Returns<a class="headerlink" href="#id25" title="Permalink to this heading">#</a></h4>
+<section id="id27">
+<h5>Returns<a class="headerlink" href="#id27" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 <section id="attributes-modified">
-<h4>Attributes Modified<a class="headerlink" href="#attributes-modified" title="Permalink to this heading">#</a></h4>
+<h5>Attributes Modified<a class="headerlink" href="#attributes-modified" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>mass_weighted_normal_modes<span class="classifier">list</span></dt><dd><p>A list of mass-weighted normal modes. Each normal mode is represented as a list of 3D vectors (lists) for each ion in the structure.</p>
 </dd>
@@ -563,8 +567,8 @@ to. It does not return any value.</p>
 </dd>
 </dl>
 </section>
-<section id="id26">
-<h4>Notes<a class="headerlink" href="#id26" title="Permalink to this heading">#</a></h4>
+<section id="id28">
+<h5>Notes<a class="headerlink" href="#id28" title="Permalink to this heading">#</a></h5>
 <ul class="simple">
 <li><p>This method directly modifies the instance attributes <cite>mass_weighted_normal_modes</cite>, <cite>frequencies</cite>, and <cite>_intensities</cite>.</p></li>
 <li><p>It is assumed that <cite>self.file_descriptor</cite> is an open file object from which the data is read.</p></li>
@@ -578,15 +582,15 @@ to. It does not return any value.</p>
 <span class="sig-name descname"><span class="pre">_read_kpoint_grid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/CastepOutputReader.html#CastepOutputReader._read_kpoint_grid"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.CastepOutputReader.CastepOutputReader._read_kpoint_grid" title="Permalink to this definition">#</a></dt>
 <dd><p>Parse and set the k-point grid dimensions from the given line.</p>
 <p>This method updates the <cite>kpoint_grid</cite> attribute of the object with the k-point grid dimensions obtained from parsing the specified line. The k-point grid dimensions are expected to be located at the 8th, 9th, and 10th positions (1-based indexing) in the line, separated by spaces.</p>
-<section id="id27">
-<h4>Parameters<a class="headerlink" href="#id27" title="Permalink to this heading">#</a></h4>
+<section id="id29">
+<h5>Parameters<a class="headerlink" href="#id29" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>line<span class="classifier">str</span></dt><dd><p>The line from which the k-point grid dimensions are to be extracted.</p>
 </dd>
 </dl>
 </section>
-<section id="id28">
-<h4>Returns<a class="headerlink" href="#id28" title="Permalink to this heading">#</a></h4>
+<section id="id30">
+<h5>Returns<a class="headerlink" href="#id30" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 </dd></dl>
@@ -595,19 +599,19 @@ to. It does not return any value.</p>
 <dt class="sig sig-object py" id="PDielec.CastepOutputReader.CastepOutputReader._read_kpoints">
 <span class="sig-name descname"><span class="pre">_read_kpoints</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/CastepOutputReader.html#CastepOutputReader._read_kpoints"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.CastepOutputReader.CastepOutputReader._read_kpoints" title="Permalink to this definition">#</a></dt>
 <dd><p>Extract number of k-points from a given line of text and update the instance variable.</p>
-<section id="id29">
-<h4>Parameters<a class="headerlink" href="#id29" title="Permalink to this heading">#</a></h4>
+<section id="id31">
+<h5>Parameters<a class="headerlink" href="#id31" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>line<span class="classifier">str</span></dt><dd><p>The line of text from which the number of k-points is extracted.</p>
 </dd>
 </dl>
 </section>
-<section id="id30">
-<h4>Returns<a class="headerlink" href="#id30" title="Permalink to this heading">#</a></h4>
+<section id="id32">
+<h5>Returns<a class="headerlink" href="#id32" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
-<section id="id31">
-<h4>Notes<a class="headerlink" href="#id31" title="Permalink to this heading">#</a></h4>
+<section id="id33">
+<h5>Notes<a class="headerlink" href="#id33" title="Permalink to this heading">#</a></h5>
 <p>This function assumes the number of k-points is always located at the 6th position (index 5) when the line is split by whitespace. It directly updates the <cite>kpoints</cite> attribute of the class instance.</p>
 </section>
 </dd></dl>
@@ -617,15 +621,15 @@ to. It does not return any value.</p>
 <span class="sig-name descname"><span class="pre">_read_masses</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/CastepOutputReader.html#CastepOutputReader._read_masses"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.CastepOutputReader.CastepOutputReader._read_masses" title="Permalink to this definition">#</a></dt>
 <dd><p>Read and parse masses from a file, categorizing them by species.</p>
 <p>This method reads lines from an opened file associated with the instance, extracting the species name, its mass, and the number of ions per species. It updates instance attributes to store this information, organizing masses both by type and in total.</p>
-<section id="id32">
-<h4>Parameters<a class="headerlink" href="#id32" title="Permalink to this heading">#</a></h4>
+<section id="id34">
+<h5>Parameters<a class="headerlink" href="#id34" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>line<span class="classifier">str</span></dt><dd><p>The initial line from which to start reading in the file. This parameter is part of the method signature for demonstration but is immediately overwritten by the next line read from the file, hence not directly used.</p>
 </dd>
 </dl>
 </section>
-<section id="id33">
-<h4>Returns<a class="headerlink" href="#id33" title="Permalink to this heading">#</a></h4>
+<section id="id35">
+<h5>Returns<a class="headerlink" href="#id35" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 </dd></dl>
@@ -634,15 +638,15 @@ to. It does not return any value.</p>
 <dt class="sig sig-object py" id="PDielec.CastepOutputReader.CastepOutputReader._read_nbands">
 <span class="sig-name descname"><span class="pre">_read_nbands</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/CastepOutputReader.html#CastepOutputReader._read_nbands"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.CastepOutputReader.CastepOutputReader._read_nbands" title="Permalink to this definition">#</a></dt>
 <dd><p>Extracts the number of bands from a given line and sets it to the ‘nbands’ attribute of the class.</p>
-<section id="id34">
-<h4>Parameters<a class="headerlink" href="#id34" title="Permalink to this heading">#</a></h4>
+<section id="id36">
+<h5>Parameters<a class="headerlink" href="#id36" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>line<span class="classifier">str</span></dt><dd><p>The line from which the number of bands is to be extracted. It is expected that the fifth element (index 4) when splitting the line by spaces is an integer representing the number of bands.</p>
 </dd>
 </dl>
 </section>
-<section id="id35">
-<h4>Returns<a class="headerlink" href="#id35" title="Permalink to this heading">#</a></h4>
+<section id="id37">
+<h5>Returns<a class="headerlink" href="#id37" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 </dd></dl>
@@ -651,8 +655,8 @@ to. It does not return any value.</p>
 <dt class="sig sig-object py" id="PDielec.CastepOutputReader.CastepOutputReader._read_nbranches">
 <span class="sig-name descname"><span class="pre">_read_nbranches</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/CastepOutputReader.html#CastepOutputReader._read_nbranches"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.CastepOutputReader.CastepOutputReader._read_nbranches" title="Permalink to this definition">#</a></dt>
 <dd><p>Parse the number of branches from a line of text from the phonon file and set it to an instance variable.</p>
-<section id="id36">
-<h4>Parameters<a class="headerlink" href="#id36" title="Permalink to this heading">#</a></h4>
+<section id="id38">
+<h5>Parameters<a class="headerlink" href="#id38" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>line<span class="classifier">str</span></dt><dd><p>The line of text containing the number of branches information.
 It is expected that the number of branches can be found at the fourth position
@@ -660,12 +664,12 @@ It is expected that the number of branches can be found at the fourth position
 </dd>
 </dl>
 </section>
-<section id="id37">
-<h4>Returns<a class="headerlink" href="#id37" title="Permalink to this heading">#</a></h4>
+<section id="id39">
+<h5>Returns<a class="headerlink" href="#id39" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
-<section id="id38">
-<h4>Notes<a class="headerlink" href="#id38" title="Permalink to this heading">#</a></h4>
+<section id="id40">
+<h5>Notes<a class="headerlink" href="#id40" title="Permalink to this heading">#</a></h5>
 <p>This function does not return anything as it sets the parsed number directly to an instance variable named <cite>_nbranches</cite>.</p>
 </section>
 </dd></dl>
@@ -675,15 +679,15 @@ It is expected that the number of branches can be found at the fourth position
 <span class="sig-name descname"><span class="pre">_read_nelect</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/CastepOutputReader.html#CastepOutputReader._read_nelect"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.CastepOutputReader.CastepOutputReader._read_nelect" title="Permalink to this definition">#</a></dt>
 <dd><p>Extracts the number of electrons from a line and assigns it.</p>
 <p>Extracts the number of electrons from a string (line) by parsing it and assigns the value to the instance variable <cite>electrons</cite>.</p>
-<section id="id39">
-<h4>Parameters<a class="headerlink" href="#id39" title="Permalink to this heading">#</a></h4>
+<section id="id41">
+<h5>Parameters<a class="headerlink" href="#id41" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>line<span class="classifier">str</span></dt><dd><p>A string (typically a line from a file) that contains the number of electrons among other text, expected to be found at the fifth position (index 4) when the string is split.</p>
 </dd>
 </dl>
 </section>
-<section id="id40">
-<h4>Returns<a class="headerlink" href="#id40" title="Permalink to this heading">#</a></h4>
+<section id="id42">
+<h5>Returns<a class="headerlink" href="#id42" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 </dd></dl>
@@ -693,12 +697,12 @@ It is expected that the number of branches can be found at the fourth position
 <span class="sig-name descname"><span class="pre">_read_output_files</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/CastepOutputReader.html#CastepOutputReader._read_output_files"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.CastepOutputReader.CastepOutputReader._read_output_files" title="Permalink to this definition">#</a></dt>
 <dd><p>Define the strings needed for searching the files
 process the output files</p>
-<section id="id41">
-<h4>Parameters<a class="headerlink" href="#id41" title="Permalink to this heading">#</a></h4>
+<section id="id43">
+<h5>Parameters<a class="headerlink" href="#id43" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
-<section id="id42">
-<h4>Returns<a class="headerlink" href="#id42" title="Permalink to this heading">#</a></h4>
+<section id="id44">
+<h5>Returns<a class="headerlink" href="#id44" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 </dd></dl>
@@ -707,19 +711,19 @@ process the output files</p>
 <dt class="sig sig-object py" id="PDielec.CastepOutputReader.CastepOutputReader._read_pseudoatom">
 <span class="sig-name descname"><span class="pre">_read_pseudoatom</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/CastepOutputReader.html#CastepOutputReader._read_pseudoatom"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.CastepOutputReader.CastepOutputReader._read_pseudoatom" title="Permalink to this definition">#</a></dt>
 <dd><p>Read and process a pseudoatom line from a data file.</p>
-<section id="id43">
-<h4>Parameters<a class="headerlink" href="#id43" title="Permalink to this heading">#</a></h4>
+<section id="id45">
+<h5>Parameters<a class="headerlink" href="#id45" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>line<span class="classifier">str</span></dt><dd><p>A string representing a line from a data file that contains information about a pseudoatom.</p>
 </dd>
 </dl>
 </section>
-<section id="id44">
-<h4>Returns<a class="headerlink" href="#id44" title="Permalink to this heading">#</a></h4>
+<section id="id46">
+<h5>Returns<a class="headerlink" href="#id46" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
-<section id="id45">
-<h4>Notes<a class="headerlink" href="#id45" title="Permalink to this heading">#</a></h4>
+<section id="id47">
+<h5>Notes<a class="headerlink" href="#id47" title="Permalink to this heading">#</a></h5>
 <p>This method processes a line from a data file, extracting the species from the sixth (index 5) position in the whitespace-separated list. The species name is capitalized and stored, and indices related to the species and ion types are updated accordingly.</p>
 </section>
 </dd></dl>
@@ -731,16 +735,16 @@ process the output files</p>
 <p>This method reads a specific number of lines determined by the <cite>nspecies</cite> attribute from
 the file associated with <cite>file_descriptor</cite>, processes them to extract potential spot
 identifiers and their corresponding values, and stores them in the <cite>_pspots</cite> attribute.</p>
-<section id="id46">
-<h4>Parameters<a class="headerlink" href="#id46" title="Permalink to this heading">#</a></h4>
+<section id="id48">
+<h5>Parameters<a class="headerlink" href="#id48" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>line<span class="classifier">str</span></dt><dd><p>The line from which the reading starts. This initial line is often a header or
 an indicator that the following lines contain the potential spots data.</p>
 </dd>
 </dl>
 </section>
-<section id="id47">
-<h4>Returns<a class="headerlink" href="#id47" title="Permalink to this heading">#</a></h4>
+<section id="id49">
+<h5>Returns<a class="headerlink" href="#id49" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 </dd></dl>
@@ -751,16 +755,16 @@ an indicator that the following lines contain the potential spots data.</p>
 <dd><p>Read and skip the next four lines from the current file position.</p>
 <p>This method reads and discards the next four lines from the file
 associated with this object’s file_descriptor attribute.</p>
-<section id="id48">
-<h4>Parameters<a class="headerlink" href="#id48" title="Permalink to this heading">#</a></h4>
+<section id="id50">
+<h5>Parameters<a class="headerlink" href="#id50" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>line<span class="classifier">str</span></dt><dd><p>This parameter is not used in the function body and serves no purpose
 in the context of this method’s operation.</p>
 </dd>
 </dl>
 </section>
-<section id="id49">
-<h4>Returns<a class="headerlink" href="#id49" title="Permalink to this heading">#</a></h4>
+<section id="id51">
+<h5>Returns<a class="headerlink" href="#id51" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 </dd></dl>
@@ -770,19 +774,20 @@ in the context of this method’s operation.</p>
 <span class="sig-name descname"><span class="pre">_read_spin</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/CastepOutputReader.html#CastepOutputReader._read_spin"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.CastepOutputReader.CastepOutputReader._read_spin" title="Permalink to this definition">#</a></dt>
 <dd><p>Read and set the spin value from a given line of text.</p>
 <p>The spin is extracted from the sixth element (index 5) of the splitted line.</p>
-<section id="id50">
-<h4>Parameters<a class="headerlink" href="#id50" title="Permalink to this heading">#</a></h4>
+<section id="id52">
+<h5>Parameters<a class="headerlink" href="#id52" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>line<span class="classifier">str</span></dt><dd><p>The input line from which the spin is extracted. Expected to have at least six space-separated elements, with the sixth element being a string representation of the spin value.</p>
 </dd>
 </dl>
 </section>
-<section id="id51">
-<h4>Returns<a class="headerlink" href="#id51" title="Permalink to this heading">#</a></h4>
+<section id="id53">
+<h5>Returns<a class="headerlink" href="#id53" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 </dd></dl>
 
+</section>
 </dd></dl>
 
 </section>

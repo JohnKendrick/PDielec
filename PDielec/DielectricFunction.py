@@ -1,22 +1,35 @@
 #!/usr/bin/python
+#
+# Copyright 2024 John Kendrick & Andrew Burnett
+#
+# This file is part of PDielec
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the MIT License
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+#
+# You should have received a copy of the MIT License along with this program, if not see https://opensource.org/licenses/MIT
+#
 '''
 DielectricFunction
 
-Provides an interface to different mechanisms for providing dielectric information to pdielec and pdgui
+Provides an interface to different mechanisms for providing dielectric information
 
-Copyright 2024 John Kendrick
+- Base class :class:`DielectricFunction`
 
-This file is part of PDielec
-
-This program is free software; you can redistribute it and/or modify
-it under the terms of the MIT License
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-
-You should have received a copy of the MIT License
-along with this program, if not see https://opensource.org/licenses/MIT
+    - Subclass :class:`ConstantTensor`
+    - Subclass :class:`ConstantScalar`
+    - Subclass :class:`TabulateScalar`
+    - Subclass :class:`Tabulate1`
+    - Subclass :class:`Tabulate3`
+    - Subclass :class:`Tabulate6`
+    - Subclass :class:`DFT`
+    - Subclass :class:`DrudeLorentz`
+    - Subclass :class:`FPSQ`
+    - Subclass :class:`Sellmeier`
 '''
 
 import numpy as np
@@ -28,7 +41,7 @@ from scipy import interpolate
 
 class DielectricFunction:
     '''
-    Provide a base class to different dielectric functions.
+    A base class to different dielectric functions.
 
     There is a close relationship between the dielectric function and a material.
     The Material module allows data to be read in for different dielectric models.
@@ -415,7 +428,7 @@ class DielectricFunction:
 
 class ConstantTensor(DielectricFunction):
     '''
-    A class for a complex constant tensor dielectric function.
+    A complex constant tensor permittivity
 
     Inherits from DielectricFunction.
     Provides a calculate() function to return the permittivity.
@@ -462,7 +475,7 @@ class ConstantTensor(DielectricFunction):
 
 class ConstantScalar(DielectricFunction):
     '''
-    A class for a complex constant scalar dielectric function.
+    A complex constant scalar permittivity
 
     Inherits from DielectricFunction. Provides a calculate() function to return
     the permittivity.
@@ -501,7 +514,7 @@ class ConstantScalar(DielectricFunction):
 
 class TabulateScalar(DielectricFunction):
     '''
-    A class for a complex tabulated scalar dielectric function.
+    A complex tabulated scalar permittivity
 
     Inherits from DielectricFunction. Represents an isotropic material dielectric function. Provides a calculate() function to return the permittivity.
 
@@ -555,7 +568,7 @@ class TabulateScalar(DielectricFunction):
 
 class Tabulate1(DielectricFunction):
     '''
-    A class for a complex constant tensor dielectric function.
+    A complex tabulated isotropic tensor permittivity
 
     Inherits from DielectricFunction.
     Represents an isotropic dielectric function.
@@ -606,7 +619,7 @@ class Tabulate1(DielectricFunction):
 
 class Tabulate3(DielectricFunction):
     '''
-    A class for a complex constant tensor dielectric function.
+    A complex tabulated diagonal tensor permittivity
 
     Inherits from DielectricFunction.
     Represents an orthorhombic dielectric function.
@@ -666,7 +679,7 @@ class Tabulate3(DielectricFunction):
 
 class Tabulate6(DielectricFunction):
     '''
-    A class for a complex constant tensor dielectric function.
+    A complex tabulated, anisotropic tensor permittivity
 
     Inherits from DielectricFunction.
     Represents an non-isotropic dielectric function.
@@ -738,7 +751,7 @@ class Tabulate6(DielectricFunction):
 
 class DFT(DielectricFunction):
     '''
-    A class for a complex constant tensor dielectric function.
+    A complex tensor permittivity from a DFT calculation
 
     Inherits from DielectricFunction.
     Suitable for use in calculating the permittivity from DFT calculations.
@@ -930,7 +943,7 @@ class DFT(DielectricFunction):
 
 class DrudeLorentz(DielectricFunction):
     '''
-    A class for a complex constant tensor dielectric function.
+    A complex tensor Drude-Lorentz permittivity
 
     Inherits from DielectricFunction.
     Provides a calculate() function to return the permittivity.
@@ -1110,7 +1123,7 @@ class DrudeLorentz(DielectricFunction):
 
 class FPSQ(DielectricFunction):
     '''
-    A complex constant tensor FPSQ dielectric function.
+    A complex tensor FPSQ dielectric function.
 
     Inherits from DielectricFunction.
     Provides a calculate() function to return the permittivity.
@@ -1172,7 +1185,7 @@ class FPSQ(DielectricFunction):
 
 class Sellmeier(DielectricFunction):
     '''
-    A complex constant tensor Sellmeier dielectric function.
+    A real tensor Sellmeier permittivity
 
     Inherits from DielectricFunction. Provides a calculate() function to return the permittivity.
 

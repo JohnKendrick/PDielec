@@ -1,20 +1,20 @@
 #!/usr/bin/python
+#
+# Copyright 2024 John Kendrick & Andrew Burnett
+#
+# This file is part of PDielec
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the MIT License
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+#
+# You should have received a copy of the MIT License along with this program, if not see https://opensource.org/licenses/MIT
+#
 '''
-CASTEP output reader
-
-Copyright 2024 John Kendrick
-
-This file is part of PDielec
-
-This program is free software; you can redistribute it and/or modify
-it under the terms of the MIT License
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-
-You should have received a copy of the MIT License
-along with this program, if not see https://opensource.org/licenses/MIT
+CastepOutputReader module
 '''
 
 import re
@@ -28,7 +28,17 @@ class CastepOutputReader(GenericOutputReader):
     """
     Read the contents of a Castep output file.
 
-    Inherits from GenericOutputReader
+    Inherits from :class:`~PDielec.GenericOutputReader.GenericOutputReader`
+
+    Parameters
+    ----------
+    filenames : list
+        A list of filenames (strings) intended for initialization. The first filename in the list is used to determine the seedname and the types of files to be created (.castep and .phonon).
+
+    Notes
+    -----
+    - This method assumes that the filenames provided in the list relate to CASTEP calculation outputs. Specifically, it looks for filenames ending in '.castep' or '.phonon' to set up the necessary output files for the instance.
+    - The method does not return a value but initializes the instance with the necessary attributes for further processing and analysis of CASTEP output files.
     """
 
     def __init__(self, filenames):

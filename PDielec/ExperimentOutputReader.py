@@ -1,20 +1,20 @@
 #!/usr/bin/python
+#
+# Copyright 2024 John Kendrick & Andrew Burnett
+#
+# This file is part of PDielec
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the MIT License
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+#
+# You should have received a copy of the MIT License along with this program, if not see https://opensource.org/licenses/MIT
+#
 '''
 Read the contents of a directory containing Experiment input and output files.
-
-Copyright 2024 John Kendrick
-
-This file is part of PDielec
-
-This program is free software; you can redistribute it and/or modify
-it under the terms of the MIT License
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-
-You should have received a copy of the MIT License
-along with this program, if not see https://opensource.org/licenses/MIT
 '''
 import re
 import numpy as np
@@ -28,7 +28,27 @@ class ExperimentOutputReader(GenericOutputReader):
     """
     Read the contents of a directory containing Experiment input and output files.
 
-    Inherits from GenericOutputReader
+    Inherits from :class:`~PDielec.GenericOutputReader.GenericOutputReader`
+
+    Parameters
+    ----------
+    names : Various types
+        Initial parameter used for construction, typically a string or list of identifiers that this instance will process or hold.
+
+    Attributes
+    ----------
+    type : str
+        A string indicating the type of output, set to 'Experimental output'.
+    _ion_type_index : dict
+        A dictionary to index ion types, initialized as empty.
+    CrystalPermittivity : NoneType or Various types
+        Initially None, intended to hold information about crystal permittivity.
+    zerof_optical_dielectric : NoneType or Various types
+        Initially None, intended to hold zero-frequency optical dielectric information.
+    oscillator_strengths : NoneType or Various types
+        Initially None, intended for storing oscillator strengths data.
+    frequencies : NoneType or Various types
+        Initially None, intended for storing frequencies data.
     """
 
     def __init__(self, names):

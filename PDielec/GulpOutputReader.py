@@ -1,29 +1,20 @@
 #!/usr/bin/python
+#
+# Copyright 2024 John Kendrick & Andrew Burnett
+#
+# This file is part of PDielec
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the MIT License
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+#
+# You should have received a copy of the MIT License along with this program, if not see https://opensource.org/licenses/MIT
+#
 '''
-Read the contents of a Gulp output file
-
-It is quite difficult to work out what is a suitable set of commands for gulp
-The following seems to work OK, important are
-phon - a phonon calculation
-intens - calculate the IR intensities
-eigen - print the eigen vectors of the dynamical matrix
-cart - print the cartesian coordinates (this is the only way of see what all the atom types are)
-nosym - make sure the calculation is done in P1
-qeq molq optimise conp qok nomodcoord prop phon intens eigen cart
-
-Copyright 2014 John Kendrick
-
-This file is part of PDielec
-
-This program is free software; you can redistribute it and/or modify
-it under the terms of the MIT License
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-
-You should have received a copy of the MIT License
-along with this program, if not see https://opensource.org/licenses/MIT
+Module to read the contents of a Gulp output file
 '''
 
 import re
@@ -37,11 +28,49 @@ class GulpOutputReader(GenericOutputReader):
     """
     Read the contents of a Gulp output file.
 
+    Inherits from :class:`~PDielec.GenericOutputReader.GenericOutputReader`
+
     This function provides a way to read and interpret the contents of a Gulp output file, 
     advising on a suitable set of command parameters that can be used for various calculations 
     such as phonon calculations, IR intensity calculations, printing eigen vectors of the dynamical 
     matrix, and printing cartesian coordinates. It emphasizes the importance of certain parameters 
     to ensure accurate and comprehensive results.
+
+    Parameters
+    ----------
+    names : list
+        A list containing the name(s) of the Gulp output file(s).
+
+    Attributes
+    ----------
+    _gulpfile : str
+        The name of the first Gulp output file in the `names` list.
+    name : str
+        The absolute path of the `_gulpfile`.
+    type : str
+        A string indicating the type of the reader object, set to 'Gulp output'.
+    shells : int
+        Number of shells, initialized to 0.
+    ncores : int
+        Number of cores, initialized to 0.
+    _cartesian_coordinates : list
+        List to store cartesian coordinates, initially empty.
+    _fractional_coordinates : list
+        List to store fractional coordinates, initially empty.
+    atomic_charges : list
+        List to store atomic charges, initially empty.
+    _mass_dictionary : dict
+        Dictionary to store mass information, initially empty.
+    temperature : NoneType or float
+        Temperature, initialized as None.
+    elastic_constant_tensor : NoneType or ndarray
+        Elastic constant tensor, initialized as None.
+    nshells : NoneType or int
+        Number of shells, initialized as None (may be updated later).
+    nions_irreducible : NoneType or int
+        Number of irreducible ions, initialized as None.
+    _atom_types : NoneType or list
+        List of atom types, initialized as None.
 
     Notes
     -----

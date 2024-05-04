@@ -1,20 +1,22 @@
 #!/usr/bin/python
+#
+# Copyright 2024 John Kendrick & Andrew Burnett
+#
+# This file is part of PDielec
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the MIT License
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+#
+# You should have received a copy of the MIT License along with this program, if not see https://opensource.org/licenses/MIT
+#
 '''
-Helper Routines - Useful for scripting and Jupyter Notebooks
+Helper Routines - Useful for scripting and in Jupyter Notebooks
 
-Copyright 2024 John Kendrick
-
-This file is part of PDielec
-
-This program is free software; you can redistribute it and/or modify
-it under the terms of the MIT License
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-
-You should have received a copy of the MIT License
-along with this program, if not see https://opensource.org/licenses/MIT
+These routines are a useful starting point for investigating the way the code operates
 '''
 
 import numpy                      as np
@@ -42,7 +44,7 @@ def calculateDFTPermittivityObject(reader,sigma=5.0,eckart=True,mass_definition=
     Parameters
     ----------
     reader : outputReader object
-        An output reader object
+        An output reader object, see :class:`~PDielec.GenericOutputReader` and its sub-classes.
     sigma  : float
         Default Lorentzian widths in cm-1
     eckart  : boolean
@@ -57,7 +59,7 @@ def calculateDFTPermittivityObject(reader,sigma=5.0,eckart=True,mass_definition=
 
     Returns
     -------
-    permittivityObject
+    permittivityObject (see :class:`~PDielec.DielectricFunction.DielectricFunction` and its sub-classes)
 
     '''
     reader.eckart = eckart
@@ -124,6 +126,7 @@ def getMaterial(name,dataBaseName='MaterialsDataBase.xlsx',qmprogram='vasp',ecka
 
     If the name is a file name, it is treated as a DFT (Density Functional Theory) or experimental file.
     If the name is a material name in the material database, this is used instead.
+    Information about the material class can be found here (:class:`~PDielec.Materials.Material`)
 
     Parameters
     ----------
@@ -147,7 +150,7 @@ def getMaterial(name,dataBaseName='MaterialsDataBase.xlsx',qmprogram='vasp',ecka
 
     Returns
     -------
-    Material
+    Material (see :class:`~PDielec.Materials.Material`)
         The material obtained based on the given name.
 
     Examples
@@ -177,21 +180,22 @@ def calculateSingleCrystalSpectrum(frequencies_cm1, layers, incident_angle, glob
     '''
     Calculate a single crystal spectrum.
 
-    Calculate a single crystal spectrum from the frequencies, a list of layers, the incident angle
+    Calculate a single crystal spectrum from the frequencies, a list of layers (:class:`~PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer`), the incident angle
     the global azimuthal angle and optional specification of the method of calculation.
+    Information about the layer class can be found here (:class:`~PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer`)
 
     Parameters
     ----------
     frequencies_cm1 : list
         A list of frequencies in cm-1.
     layers : list
-        A list of layers.
+        A list of layers ( :class:`~PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer`)
     incident_angle : float
         The incident angle in degrees.
     global_azimuthal_angle : float
         The global azimuthal angle in degrees.
     method : str
-        The method for solving Maxwell's equation ('Scattering matrix' or 'Transfer matrix').
+        The method for solving Maxwell's equation either 'Scattering matrix' (the default) or 'Transfer matrix. See (:class:`~PDielec.GTMcore.ScatteringMatrixSystem` or :class:`~PDielec.GTMcore.TransferMatrixSystem`) for more information.
 
     Returns
     -------
@@ -318,63 +322,3 @@ def calculatePowderSpectrum(frequencies_cm1, dielectric, matrix, volume_fraction
          molarAbsorptionCoefficient.append(molar_absorption_coefficient)
          sp_atr.append(spatr)
     return np.array(absorptionCoefficient)
-
-def powderTest():
-    '''
-    Test powder calculation
-    '''
-    frequencies_cm1 = np.arange( 0, 200, 0.2 )
-    matrix = getMaterial('ptfe')
-    dielectric = getMaterial('Sapphire')
-    method = 'Maxwell-Garnett' 
-    shape = 'Sphere'
-    volume_fraction = 0.1
-    absorption = calculatePowderSpectrum(frequencies_cm1,dielectric, matrix, volume_fraction)
-    print('Powder absorption results')
-    print('      freq', ' absorption', '      r_s', '      t_p', '      t_s', '      a_p', '      a_s')
-    for f,a in zip(frequencies_cm1,absorption):
-        print('{:10.2f}{:12.5f}'.format(f,a))
-    
-def singleCrystalTest():
-    '''
-    Test single crystal calculation
-    '''
-    # Define the materials
-    air = getMaterial('air')
-    ptfe = getMaterial('ptfe')
-    Sapphire = getMaterial('Sapphire')
-    # Prepare the layers
-    layers = []
-    # Add a substrate
-    layers.append(SingleCrystalLayer(ptfe,thickness=1.0,thicknessUnit='um'))
-     # Add the dielectric layer
-    layers.append(SingleCrystalLayer(Sapphire,hkl=[0,0,1],azimuthal=0.0,thickness=1.0,thicknessUnit='um',
-                                     incoherentOption='Coherent'))
-     # Add the superstrate
-    layers.append(SingleCrystalLayer(air,thickness=1.0,thicknessUnit='um'))
-    frequencies_cm1 = np.arange( 0, 200, 0.2 )
-    incident_angle = 80.0
-    global_azimuthal_angle = 0.0
-    (reflectance, transmittance, absorptance) = calculateSingleCrystalSpectrum(frequencies_cm1,layers,incident_angle, global_azimuthal_angle, method='Scattering matrix')
-    # Print single crystal results
-    print('Single Crystal Results')
-    print('      freq', '      r_p', '      r_s', '      t_p', '      t_s', '      a_p', '      a_s')
-    for r_p,r_s,t_p,t_s,a_p,a_s,f in zip(reflectance[0],reflectance[1],transmittance[0],transmittance[1],absorptance[0],absorptance[1],frequencies_cm1):
-        print('{:10.2f}{:10.5f}{:10.5f}{:10.5f}{:10.5f}{:10.5f}{:10.5f}'.format(f,r_p , r_s , t_p , t_s , a_p , a_s ))
-
-def main():
-    """
-    Execute the main sequence of operations.
-
-    This function runs single crystal and powder tests in sequence.
-
-    Returns
-    -------
-    None
-    """    
-    singleCrystalTest()
-    powderTest()
-    return
-
-if __name__ == '__main__':
-    main()

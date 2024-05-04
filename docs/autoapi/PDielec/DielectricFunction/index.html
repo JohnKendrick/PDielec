@@ -276,16 +276,25 @@
           <section id="module-PDielec.DielectricFunction">
 <span id="pdielec-dielectricfunction"></span><h1><a class="reference internal" href="#module-PDielec.DielectricFunction" title="PDielec.DielectricFunction"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.DielectricFunction</span></code></a><a class="headerlink" href="#module-PDielec.DielectricFunction" title="Permalink to this heading">#</a></h1>
 <p>DielectricFunction</p>
-<p>Provides an interface to different mechanisms for providing dielectric information to pdielec and pdgui</p>
-<p>Copyright 2024 John Kendrick</p>
-<p>This file is part of PDielec</p>
-<p>This program is free software; you can redistribute it and/or modify
-it under the terms of the MIT License</p>
-<p>This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.</p>
-<p>You should have received a copy of the MIT License
-along with this program, if not see <a class="reference external" href="https://opensource.org/licenses/MIT">https://opensource.org/licenses/MIT</a></p>
+<p>Provides an interface to different mechanisms for providing dielectric information</p>
+<ul>
+<li><p>Base class <a class="reference internal" href="#PDielec.DielectricFunction.DielectricFunction" title="PDielec.DielectricFunction.DielectricFunction"><code class="xref py py-class docutils literal notranslate"><span class="pre">DielectricFunction</span></code></a></p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Subclass <a class="reference internal" href="#PDielec.DielectricFunction.ConstantTensor" title="PDielec.DielectricFunction.ConstantTensor"><code class="xref py py-class docutils literal notranslate"><span class="pre">ConstantTensor</span></code></a></p></li>
+<li><p>Subclass <a class="reference internal" href="#PDielec.DielectricFunction.ConstantScalar" title="PDielec.DielectricFunction.ConstantScalar"><code class="xref py py-class docutils literal notranslate"><span class="pre">ConstantScalar</span></code></a></p></li>
+<li><p>Subclass <a class="reference internal" href="#PDielec.DielectricFunction.TabulateScalar" title="PDielec.DielectricFunction.TabulateScalar"><code class="xref py py-class docutils literal notranslate"><span class="pre">TabulateScalar</span></code></a></p></li>
+<li><p>Subclass <a class="reference internal" href="#PDielec.DielectricFunction.Tabulate1" title="PDielec.DielectricFunction.Tabulate1"><code class="xref py py-class docutils literal notranslate"><span class="pre">Tabulate1</span></code></a></p></li>
+<li><p>Subclass <a class="reference internal" href="#PDielec.DielectricFunction.Tabulate3" title="PDielec.DielectricFunction.Tabulate3"><code class="xref py py-class docutils literal notranslate"><span class="pre">Tabulate3</span></code></a></p></li>
+<li><p>Subclass <a class="reference internal" href="#PDielec.DielectricFunction.Tabulate6" title="PDielec.DielectricFunction.Tabulate6"><code class="xref py py-class docutils literal notranslate"><span class="pre">Tabulate6</span></code></a></p></li>
+<li><p>Subclass <a class="reference internal" href="#PDielec.DielectricFunction.DFT" title="PDielec.DielectricFunction.DFT"><code class="xref py py-class docutils literal notranslate"><span class="pre">DFT</span></code></a></p></li>
+<li><p>Subclass <a class="reference internal" href="#PDielec.DielectricFunction.DrudeLorentz" title="PDielec.DielectricFunction.DrudeLorentz"><code class="xref py py-class docutils literal notranslate"><span class="pre">DrudeLorentz</span></code></a></p></li>
+<li><p>Subclass <a class="reference internal" href="#PDielec.DielectricFunction.FPSQ" title="PDielec.DielectricFunction.FPSQ"><code class="xref py py-class docutils literal notranslate"><span class="pre">FPSQ</span></code></a></p></li>
+<li><p>Subclass <a class="reference internal" href="#PDielec.DielectricFunction.Sellmeier" title="PDielec.DielectricFunction.Sellmeier"><code class="xref py py-class docutils literal notranslate"><span class="pre">Sellmeier</span></code></a></p></li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
 <section id="module-contents">
 <h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this heading">#</a></h2>
 <section id="classes">
@@ -294,37 +303,37 @@ along with this program, if not see <a class="reference external" href="https://
 <table class="autosummary longtable docutils align-default">
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#PDielec.DielectricFunction.ConstantScalar" title="PDielec.DielectricFunction.ConstantScalar"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ConstantScalar</span></code></a></p></td>
-<td><p>A class for a complex constant scalar dielectric function.</p></td>
+<td><p>A complex constant scalar permittivity</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#PDielec.DielectricFunction.ConstantTensor" title="PDielec.DielectricFunction.ConstantTensor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ConstantTensor</span></code></a></p></td>
-<td><p>A class for a complex constant tensor dielectric function.</p></td>
+<td><p>A complex constant tensor permittivity</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#PDielec.DielectricFunction.DFT" title="PDielec.DielectricFunction.DFT"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DFT</span></code></a></p></td>
-<td><p>A class for a complex constant tensor dielectric function.</p></td>
+<td><p>A complex tensor permittivity from a DFT calculation</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#PDielec.DielectricFunction.DielectricFunction" title="PDielec.DielectricFunction.DielectricFunction"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DielectricFunction</span></code></a></p></td>
 <td><p>Provide a base class to different dielectric functions.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#PDielec.DielectricFunction.DrudeLorentz" title="PDielec.DielectricFunction.DrudeLorentz"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DrudeLorentz</span></code></a></p></td>
-<td><p>A class for a complex constant tensor dielectric function.</p></td>
+<td><p>A complex tensor Drude-Lorentz permittivity</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#PDielec.DielectricFunction.FPSQ" title="PDielec.DielectricFunction.FPSQ"><code class="xref py py-obj docutils literal notranslate"><span class="pre">FPSQ</span></code></a></p></td>
-<td><p>A complex constant tensor FPSQ dielectric function.</p></td>
+<td><p>A complex tensor FPSQ dielectric function.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#PDielec.DielectricFunction.Sellmeier" title="PDielec.DielectricFunction.Sellmeier"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Sellmeier</span></code></a></p></td>
-<td><p>A complex constant tensor Sellmeier dielectric function.</p></td>
+<td><p>A real tensor Sellmeier permittivity</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#PDielec.DielectricFunction.Tabulate1" title="PDielec.DielectricFunction.Tabulate1"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Tabulate1</span></code></a></p></td>
-<td><p>A class for a complex constant tensor dielectric function.</p></td>
+<td><p>A complex tabulated isotropic tensor permittivity</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#PDielec.DielectricFunction.Tabulate3" title="PDielec.DielectricFunction.Tabulate3"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Tabulate3</span></code></a></p></td>
-<td><p>A class for a complex constant tensor dielectric function.</p></td>
+<td><p>A complex tabulated diagonal tensor permittivity</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#PDielec.DielectricFunction.Tabulate6" title="PDielec.DielectricFunction.Tabulate6"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Tabulate6</span></code></a></p></td>
-<td><p>A class for a complex constant tensor dielectric function.</p></td>
+<td><p>A complex tabulated, anisotropic tensor permittivity</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#PDielec.DielectricFunction.TabulateScalar" title="PDielec.DielectricFunction.TabulateScalar"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TabulateScalar</span></code></a></p></td>
-<td><p>A class for a complex tabulated scalar dielectric function.</p></td>
+<td><p>A complex tabulated scalar permittivity</p></td>
 </tr>
 </tbody>
 </table>
@@ -333,7 +342,7 @@ along with this program, if not see <a class="reference external" href="https://
 <dt class="sig sig-object py" id="PDielec.DielectricFunction.ConstantScalar">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PDielec.DielectricFunction.</span></span><span class="sig-name descname"><span class="pre">ConstantScalar</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/DielectricFunction.html#ConstantScalar"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.DielectricFunction.ConstantScalar" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#PDielec.DielectricFunction.DielectricFunction" title="PDielec.DielectricFunction.DielectricFunction"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DielectricFunction</span></code></a></p>
-<p>A class for a complex constant scalar dielectric function.</p>
+<p>A complex constant scalar permittivity</p>
 <p>Inherits from DielectricFunction. Provides a calculate() function to return
 the permittivity.</p>
 <section id="methods">
@@ -369,7 +378,7 @@ the permittivity.</p>
 <dt class="sig sig-object py" id="PDielec.DielectricFunction.ConstantTensor">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PDielec.DielectricFunction.</span></span><span class="sig-name descname"><span class="pre">ConstantTensor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/DielectricFunction.html#ConstantTensor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.DielectricFunction.ConstantTensor" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#PDielec.DielectricFunction.DielectricFunction" title="PDielec.DielectricFunction.DielectricFunction"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DielectricFunction</span></code></a></p>
-<p>A class for a complex constant tensor dielectric function.</p>
+<p>A complex constant tensor permittivity</p>
 <p>Inherits from DielectricFunction.
 Provides a calculate() function to return the permittivity.</p>
 <section id="id1">
@@ -412,7 +421,7 @@ Provides a calculate() function to return the permittivity.</p>
 <dt class="sig sig-object py" id="PDielec.DielectricFunction.DFT">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PDielec.DielectricFunction.</span></span><span class="sig-name descname"><span class="pre">DFT</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mode_list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode_frequencies</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode_sigmas</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode_oscillator_strengths</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">crystal_volume</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">drude</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">drude_plasma</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">drude_sigma</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/DielectricFunction.html#DFT"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.DielectricFunction.DFT" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#PDielec.DielectricFunction.DielectricFunction" title="PDielec.DielectricFunction.DielectricFunction"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DielectricFunction</span></code></a></p>
-<p>A class for a complex constant tensor dielectric function.</p>
+<p>A complex tensor permittivity from a DFT calculation</p>
 <p>Inherits from DielectricFunction.
 Suitable for use in calculating the permittivity from DFT calculations.
 Internal units for this function are atomic units.
@@ -912,7 +921,7 @@ Once the data has been read in a DielectricFunction is created which is appropri
 <dt class="sig sig-object py" id="PDielec.DielectricFunction.DrudeLorentz">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PDielec.DielectricFunction.</span></span><span class="sig-name descname"><span class="pre">DrudeLorentz</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vs_cm1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">strengths_cm1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigmas_cm1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/DielectricFunction.html#DrudeLorentz"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.DielectricFunction.DrudeLorentz" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#PDielec.DielectricFunction.DielectricFunction" title="PDielec.DielectricFunction.DielectricFunction"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DielectricFunction</span></code></a></p>
-<p>A class for a complex constant tensor dielectric function.</p>
+<p>A complex tensor Drude-Lorentz permittivity</p>
 <p>Inherits from DielectricFunction.
 Provides a calculate() function to return the permittivity.</p>
 <section id="id52">
@@ -1057,7 +1066,7 @@ Provides a calculate() function to return the permittivity.</p>
 <dt class="sig sig-object py" id="PDielec.DielectricFunction.FPSQ">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PDielec.DielectricFunction.</span></span><span class="sig-name descname"><span class="pre">FPSQ</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">omega_tos</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma_tos</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">omega_los</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma_los</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/DielectricFunction.html#FPSQ"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.DielectricFunction.FPSQ" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#PDielec.DielectricFunction.DielectricFunction" title="PDielec.DielectricFunction.DielectricFunction"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DielectricFunction</span></code></a></p>
-<p>A complex constant tensor FPSQ dielectric function.</p>
+<p>A complex tensor FPSQ dielectric function.</p>
 <p>Inherits from DielectricFunction.
 Provides a calculate() function to return the permittivity.</p>
 <dl class="py method">
@@ -1086,7 +1095,7 @@ Provides a calculate() function to return the permittivity.</p>
 <dt class="sig sig-object py" id="PDielec.DielectricFunction.Sellmeier">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PDielec.DielectricFunction.</span></span><span class="sig-name descname"><span class="pre">Sellmeier</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Bs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Cs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/DielectricFunction.html#Sellmeier"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.DielectricFunction.Sellmeier" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#PDielec.DielectricFunction.DielectricFunction" title="PDielec.DielectricFunction.DielectricFunction"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DielectricFunction</span></code></a></p>
-<p>A complex constant tensor Sellmeier dielectric function.</p>
+<p>A real tensor Sellmeier permittivity</p>
 <p>Inherits from DielectricFunction. Provides a calculate() function to return the permittivity.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.DielectricFunction.Sellmeier.calculate">
@@ -1118,7 +1127,7 @@ Provides a calculate() function to return the permittivity.</p>
 <dt class="sig sig-object py" id="PDielec.DielectricFunction.Tabulate1">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PDielec.DielectricFunction.</span></span><span class="sig-name descname"><span class="pre">Tabulate1</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vs_cm1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">permittivities</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/DielectricFunction.html#Tabulate1"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.DielectricFunction.Tabulate1" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#PDielec.DielectricFunction.DielectricFunction" title="PDielec.DielectricFunction.DielectricFunction"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DielectricFunction</span></code></a></p>
-<p>A class for a complex constant tensor dielectric function.</p>
+<p>A complex tabulated isotropic tensor permittivity</p>
 <p>Inherits from DielectricFunction.
 Represents an isotropic dielectric function.
 Provides a calculate() function to return the permittivity.</p>
@@ -1155,7 +1164,7 @@ Provides a calculate() function to return the permittivity.</p>
 <dt class="sig sig-object py" id="PDielec.DielectricFunction.Tabulate3">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PDielec.DielectricFunction.</span></span><span class="sig-name descname"><span class="pre">Tabulate3</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vs_cm1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epsxx</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epsyy</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epszz</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/DielectricFunction.html#Tabulate3"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.DielectricFunction.Tabulate3" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#PDielec.DielectricFunction.DielectricFunction" title="PDielec.DielectricFunction.DielectricFunction"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DielectricFunction</span></code></a></p>
-<p>A class for a complex constant tensor dielectric function.</p>
+<p>A complex tabulated diagonal tensor permittivity</p>
 <p>Inherits from DielectricFunction.
 Represents an orthorhombic dielectric function.
 Provides a calculate() function to return the permittivity.</p>
@@ -1192,7 +1201,7 @@ Provides a calculate() function to return the permittivity.</p>
 <dt class="sig sig-object py" id="PDielec.DielectricFunction.Tabulate6">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PDielec.DielectricFunction.</span></span><span class="sig-name descname"><span class="pre">Tabulate6</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vs_cm1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epsxx</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epsyy</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epszz</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epsxy</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epsxz</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epsyz</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/DielectricFunction.html#Tabulate6"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.DielectricFunction.Tabulate6" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#PDielec.DielectricFunction.DielectricFunction" title="PDielec.DielectricFunction.DielectricFunction"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DielectricFunction</span></code></a></p>
-<p>A class for a complex constant tensor dielectric function.</p>
+<p>A complex tabulated, anisotropic tensor permittivity</p>
 <p>Inherits from DielectricFunction.
 Represents an non-isotropic dielectric function.
 Provides a calculate() function to return the permittivity.</p>
@@ -1229,7 +1238,7 @@ Provides a calculate() function to return the permittivity.</p>
 <dt class="sig sig-object py" id="PDielec.DielectricFunction.TabulateScalar">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PDielec.DielectricFunction.</span></span><span class="sig-name descname"><span class="pre">TabulateScalar</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vs_cm1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">permittivities</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/DielectricFunction.html#TabulateScalar"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.DielectricFunction.TabulateScalar" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#PDielec.DielectricFunction.DielectricFunction" title="PDielec.DielectricFunction.DielectricFunction"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DielectricFunction</span></code></a></p>
-<p>A class for a complex tabulated scalar dielectric function.</p>
+<p>A complex tabulated scalar permittivity</p>
 <p>Inherits from DielectricFunction. Represents an isotropic material dielectric function. Provides a calculate() function to return the permittivity.</p>
 <section id="id81">
 <h4>Methods<a class="headerlink" href="#id81" title="Permalink to this heading">#</a></h4>
