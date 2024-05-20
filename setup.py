@@ -37,7 +37,7 @@ setuptools.setup(
         'matplotlib',
         'xlsxwriter',
         'openpyxl',
-        'sklearn',
+        'scikit-learn',
         'imageio',
         'imageio-ffmpeg',
         'PyYAML',
