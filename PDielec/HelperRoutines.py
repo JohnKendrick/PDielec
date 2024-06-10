@@ -272,8 +272,9 @@ def calculatePowderSpectrum(frequencies_cm1, dielectric, matrix, volume_fraction
 
     Returns
     -------
-    float
-        Absorption coefficient in cm-1.
+    absorption,permittivity : tuple of np.arrays
+        absorption: Absorption coefficients in cm-1.
+        permittivity: Complex permittivities
 
     Example
     -------
@@ -283,7 +284,7 @@ def calculatePowderSpectrum(frequencies_cm1, dielectric, matrix, volume_fraction
     dielectric = getMaterial('Sapphire')
     method = 'Maxwell-Garnett' 
     volume_fraction = 0.1
-    absorption = calculatePowderSpectrum(frequencies_cm1,dielectric, matrix, volume_fraction)
+    absorption,permittivity = calculatePowderSpectrum(frequencies_cm1,dielectric, matrix, volume_fraction)
     ```
     '''
     method = method.lower()
@@ -310,15 +311,13 @@ def calculatePowderSpectrum(frequencies_cm1, dielectric, matrix, volume_fraction
                        bubble_vf,bubble_radius,previous_solution_shared,(v_cm1,crystalPermittivity))
         results.append(result)
     # Prepare lists for results
-    realPermittivity = []
-    imagPermittivity = []
+    permittivity = []
     absorptionCoefficient = []
     molarAbsorptionCoefficient = []
     sp_atr = []
     for v,method,size_mu,size_sigma,shape,data,trace, absorption_coefficient,molar_absorption_coefficient,spatr in results:
-         realPermittivity.append(np.real(trace))
-         imagPermittivity.append(np.imag(trace))
+         permittivity.append(trace)
          absorptionCoefficient.append(absorption_coefficient)
          molarAbsorptionCoefficient.append(molar_absorption_coefficient)
          sp_atr.append(spatr)
-    return np.array(absorptionCoefficient)
+    return np.array(absorptionCoefficient), np.array(permittivity)
