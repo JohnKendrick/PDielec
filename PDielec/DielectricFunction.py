@@ -46,6 +46,8 @@ class DielectricFunction:
     There is a close relationship between the dielectric function and a material.
     The Material module allows data to be read in for different dielectric models.
     Once the data has been read in a DielectricFunction is created which is appropriate for the data.
+    The tensor and scalar versions of the functions behave differently with respect to 
+    epsilon infinity: tensor functions add epsilon infinity to the calculated permittivity, scalar functions do not.
 
     Attributes
     ----------
@@ -432,6 +434,7 @@ class ConstantTensor(DielectricFunction):
 
     Inherits from DielectricFunction.
     Provides a calculate() function to return the permittivity.
+    Epsilon infinity is used to calculate the total permittivity
 
     Methods
     -------
@@ -478,7 +481,7 @@ class ConstantScalar(DielectricFunction):
     A complex constant scalar permittivity
 
     Inherits from DielectricFunction. Provides a calculate() function to return
-    the permittivity.
+    the permittivity.  Epsilon infinity is not used for this function.
 
     Methods
     -------
@@ -489,7 +492,7 @@ class ConstantScalar(DielectricFunction):
         '''
         Parameters
         ----------
-        value : 3x3 numpy array
+        value : float
             Initialise the permittivity with this tensor
         '''
         DielectricFunction.__init__(self)
@@ -516,7 +519,10 @@ class TabulateScalar(DielectricFunction):
     '''
     A complex tabulated scalar permittivity
 
-    Inherits from DielectricFunction. Represents an isotropic material dielectric function. Provides a calculate() function to return the permittivity.
+    Inherits from DielectricFunction. 
+    Represents an isotropic material dielectric function. 
+    Provides a calculate() function to return the permittivity.
+    Epsilon infinity is not used in the calculation.
 
     Methods
     -------
@@ -573,6 +579,7 @@ class Tabulate1(DielectricFunction):
     Inherits from DielectricFunction.
     Represents an isotropic dielectric function.
     Provides a calculate() function to return the permittivity.
+    Epsilon infinity is included in the total permittivity
 
     Methods
     -------
@@ -624,6 +631,7 @@ class Tabulate3(DielectricFunction):
     Inherits from DielectricFunction.
     Represents an orthorhombic dielectric function.
     Provides a calculate() function to return the permittivity.
+    Epsilon infinity is included in the total permittivity
 
     Methods
     -------
@@ -646,16 +654,12 @@ class Tabulate3(DielectricFunction):
         DielectricFunction.__init__(self)
         self.isScalarFunction = False
         self.vs_cm1 = np.array(vs_cm1)
-        eps = [np.array(epsxx), np.array(epsyy), np.array(epszz)]
-        epsr = np.zeros(3)
-        epsi = np.zeros(3)
+        epsd = [np.array(epsxx), np.array(epsyy), np.array(epszz)]
         self.interpolater = []
         self.interpolatei = []
-        for i in enum(eps):
-            epsr[i] = np.real(eps)
-            epsi[i] = np.imag(eps)
-            self.interpolater.append(interpolate.CubicSpline(self.vs_cm1,epsr[i]))
-            self.interpolatei.append(interpolate.CubicSpline(self.vs_cm1,epsi[i]))
+        for i,eps in enumerate(epsd):
+            self.interpolater.append(interpolate.CubicSpline(self.vs_cm1,np.real(eps)))
+            self.interpolatei.append(interpolate.CubicSpline(self.vs_cm1,np.imag(eps)))
 
     def calculate(self,v):
         '''
@@ -684,6 +688,7 @@ class Tabulate6(DielectricFunction):
     Inherits from DielectricFunction.
     Represents an non-isotropic dielectric function.
     Provides a calculate() function to return the permittivity.
+    Epsilon infinity is included in the total permittivity
 
     Methods
     -------
@@ -757,6 +762,7 @@ class DFT(DielectricFunction):
     Suitable for use in calculating the permittivity from DFT calculations.
     Internal units for this function are atomic units.
     Provides a calculate() function to return the permittivity.
+    Epsilon infinity is included in the total permittivity
 
     Methods
     -------
@@ -947,6 +953,7 @@ class DrudeLorentz(DielectricFunction):
 
     Inherits from DielectricFunction.
     Provides a calculate() function to return the permittivity.
+    Epsilon infinity is included in the total permittivity
 
     Methods
     -------
@@ -1127,6 +1134,7 @@ class FPSQ(DielectricFunction):
 
     Inherits from DielectricFunction.
     Provides a calculate() function to return the permittivity.
+    Epsilon infinity is included in the total permittivity
     '''
     def __init__(self, omega_tos, gamma_tos, omega_los, gamma_los):
         '''
@@ -1188,6 +1196,7 @@ class Sellmeier(DielectricFunction):
     A real tensor Sellmeier permittivity
 
     Inherits from DielectricFunction. Provides a calculate() function to return the permittivity.
+    Epsilon infinity is not included in the total permittivity
 
     '''
     def __init__(self, Bs, Cs):
