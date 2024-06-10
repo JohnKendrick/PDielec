@@ -454,8 +454,13 @@ def longitudinal_modes(frequencies, normal_modes, born_charges, masses, epsilon_
         The born charges (Z) stored as
         `[[Z1x, Z1y, Z1z], [Z2x, Z2y, Z2z], [Z3x, Z3y, Z3z]]`,
         where 1, 2, 3 are the directions of the field and x, y, z are the coordinates of the atom.
+    masses : array_like
+        The atomic masses in atomic units
+    epsilon_inf : 3x3 array
+        Epsilon infinity
     qlist : list
         A list of direction vectors.
+    reader : a reader object
 
     Returns
     -------
