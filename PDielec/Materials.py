@@ -448,7 +448,6 @@ class MaterialsDataBase():
         # Lorentz-Drude model for permittivity
         epsilon_infinity = np.zeros( (3,3) )
         directions = [[], [], []]
-        epsinfs = [[], [], []]
         omegas = [[], [], []]
         strengths = [[], [], []]
         gammas = [[], [], []]
@@ -632,20 +631,22 @@ class Material():
         Checks and returns True if the material’s permittivity is scalar.
     isTensor()
         Checks and returns True if the material’s permittivity is tensor.
-    setPermittivityObject(permittivityObject)
-        Sets the permittivityObject for the material.
     getPermittivityObject()
         Returns the permittivityObject of the material.
     getPermittivityFunction()
         Returns the permittivity function from the permittivityObject.
-    setDensity(value)
-        Sets the density of the material.
     getDensity()
         Returns the density of the material.
     setCell(cell)
         Sets the cell of the material and updates the density if it was initially None.
     getCell()
         Returns the cell of the material.
+    setDensity(value)
+        Sets the density of the material.
+    setEpsilonInfinity(eps)
+        Sets the epsilon infinity of the material
+    setPermittivityObject(permittivityObject)
+        Sets the permittivityObject for the material.
     """    
     def __init__(self, name, density=None, permittivityObject=None, cell=None):
         '''
@@ -1258,15 +1259,35 @@ class Tabulated(Material):
         '''
         vs = np.array(vs_cm1)
         eps = np.array(permittivities)
-        if len(np.shape(eps)) ==2:
-            if np.shape(eps)[0] == 3:
-                permittivityObject = DielectricFunction.Tabulate3(vs,eps)
-            elif np.shape(eps)[0] == 6:
-                permittivityObject = DielectricFunction.Tabulate6(vs,eps)
+        if len(np.shape(eps)) == 2:
+            m,n = np.shape(eps)
+            if m == 3:
+                permittivityObject = DielectricFunction.Tabulate3(vs,eps[0], eps[1], eps[2])
+            elif m== 6:
+                permittivityObject = DielectricFunction.Tabulate6(vs,eps[0], eps[1], eps[2], eps[3], eps[4], eps[5])
             else:
                 print('Error in Tabulated, shape of parameters is wrong')
         else:
             permittivityObject = DielectricFunction.TabulateScalar(vs,eps)
         super().__init__(name, density=density, permittivityObject=permittivityObject,cell=cell)
         self.type = 'Tabulated permittivity'
+
+    def setEpsilonInfinity(self,eps):
+        '''
+        Sets the value of epsilon infinity for the material
+
+        Parameters
+        ----------
+        eps : float or 3x3 np array
+            The epsilon infinity tensor.  If a single float then an isotropic 3x3 np array is created
+
+        Returns
+        -------
+        None
+        '''
+        if isinstance(eps,float):
+            eps = eps*np.eye(3)
+        else:
+            eps = np.array(eps)
+        self.permittivityObject.setEpsilonInfinity(eps)
 
