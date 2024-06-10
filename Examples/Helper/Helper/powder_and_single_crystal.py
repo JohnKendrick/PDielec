@@ -14,7 +14,8 @@
 # You should have received a copy of the MIT License
 # along with this program, if not see https://opensource.org/licenses/MIT
 #
-
+import sys
+sys.path.insert(0, "../../..") 
 import numpy                      as np
 # Helper routines
 from PDielec.HelperRoutines   import getMaterial
