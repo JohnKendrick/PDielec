@@ -717,16 +717,14 @@ class Tabulate6(DielectricFunction):
         DielectricFunction.__init__(self)
         self.isScalarFunction = False
         self.vs_cm1 = np.array(vs_cm1)
-        eps = [np.array(epsxx), np.array(epsyy), np.array(epszz), np.array(epsxy), np.array(epsxz), np.array(epsyz)]
-        epsr = np.zeros(3)
-        epsi = np.zeros(3)
+        eps6 = [np.array(epsxx), np.array(epsyy), np.array(epszz), np.array(epsxy), np.array(epsxz), np.array(epsyz)]
         self.interpolater = []
         self.interpolatei = []
-        for i in enum(eps):
-            epsr[i] = np.real(eps)
-            epsi[i] = np.imag(eps)
-            self.interpolater.append(interpolate.CubicSpline(self.vs_cm1,epsr[i]))
-            self.interpolatei.append(interpolate.CubicSpline(self.vs_cm1,epsi[i]))
+        for eps in eps6:
+            epsr = np.real(eps)
+            epsi = np.imag(eps)
+            self.interpolater.append(interpolate.CubicSpline(self.vs_cm1,epsr))
+            self.interpolatei.append(interpolate.CubicSpline(self.vs_cm1,epsi))
 
     def calculate(self,v):
         '''
