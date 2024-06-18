@@ -1,8 +1,9 @@
 '''
 PDGui: GUI for processing DFT calculations for infrared and terahertz spectroscopy
+
 The MIT License (MIT)
 
-Copyright (c) 2024 John Kendrick
+Copyright (c) 2024 John Kendrick and Andrew Burnett
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

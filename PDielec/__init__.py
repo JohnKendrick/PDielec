@@ -1,5 +1,6 @@
 '''
 PDielec: library for processing DFT calculations for infrared and terahertz spectroscopy
+
 The MIT License (MIT)
 
 Copyright (c) 2024 John Kendrick and Andrew Burnett
