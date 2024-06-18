@@ -1,5 +1,5 @@
 <!doctype html>
-<html class="no-js" lang="en" data-content_root="./">
+<html class="no-js" lang="en" data-content_root="">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -7,11 +7,11 @@
 <meta content="Quantum Mechanics, Effective Field Theory, Maxwell, Garnett, Mie, Infrared, Terahertz, Castep, Abinit, VASP, GULP. QE" name="keywords" />
 <link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="Single Crystal Applications" href="application_notes_2.html" /><link rel="prev" title="Phonon Analysis" href="analysis.html" />
 
-    <!-- Generated with Sphinx 7.3.7 and Furo 2024.05.06 -->
+    <!-- Generated with Sphinx 7.1.2 and Furo 2024.01.29 -->
         <title>Applications of Effective Medium Theory - PDielec: John Kendrick &amp; Andrew Burnett</title>
-      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=92fd9be5" />
-    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=387cc868" />
-    <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=fd3f3429" />
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=135e06be" />
+    <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=eafc0fe6" />
     <link rel="stylesheet" type="text/css" href="_static/table_styling.css?v=a1a2a898" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?v=36a5483c" />
     <link rel="stylesheet" type="text/css" href="_static/css/custom.css?v=2e0a580d" />
@@ -73,7 +73,7 @@
   <symbol id="svg-sun" viewBox="0 0 24 24">
     <title>Light mode</title>
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
       <circle cx="12" cy="12" r="5"></circle>
       <line x1="12" y1="1" x2="12" y2="3"></line>
       <line x1="12" y1="21" x2="12" y2="23"></line>
@@ -88,7 +88,7 @@
   <symbol id="svg-moon" viewBox="0 0 24 24">
     <title>Dark mode</title>
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
       <path stroke="none" d="M0 0h24v24H0z" fill="none" />
       <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
     </svg>
@@ -96,7 +96,7 @@
   <symbol id="svg-sun-half" viewBox="0 0 24 24">
     <title>Auto light/dark mode</title>
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
       <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
       <circle cx="12" cy="12" r="9" />
       <path d="M13 12h5" />
@@ -104,60 +104,6 @@
       <path d="M13 18h1" />
       <path d="M13 9h4" />
       <path d="M13 6h1" />
-    </svg>
-  </symbol>
-  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
-    <title>Auto light/dark, in light mode</title>
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
-      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
-      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
-      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
-      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
-      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
-      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
-      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
-      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
-      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
-      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
-      <circle cx="14.5" cy="9.55" r="3.6"/>
-    </svg>
-  </symbol>
-  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
-    <title>Auto light/dark, in dark mode</title>
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
-      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
-      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
-      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
-      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
-      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
-      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
-      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
-      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
-      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
-      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
-      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
-    </svg>
-  </symbol>
-  <symbol id="svg-pencil" viewBox="0 0 24 24">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
-      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
-      <path d="M13.5 6.5l4 4" />
-      <path d="M20 21l2 -2l-2 -2" />
-      <path d="M17 17l-2 2l2 2" /
-    </svg>
-  </symbol>
-  <symbol id="svg-eye" viewBox="0 0 24 24">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
-      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
-      <path
-        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
-      <path d="M20 21l2 -2l-2 -2" />
-      <path d="M17 17l-2 2l2 2" />
     </svg>
   </symbol>
 </svg>
@@ -170,8 +116,6 @@
 <label class="overlay toc-overlay" for="__toc">
   <div class="visually-hidden">Hide table of contents sidebar</div>
 </label>
-
-<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
 
 
 
@@ -190,8 +134,7 @@
       <div class="theme-toggle-container theme-toggle-header">
         <button class="theme-toggle">
           <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
-          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
-          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+          <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
           <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
           <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
         </button>
@@ -237,63 +180,63 @@
 <p class="caption" role="heading"><span class="caption-text">API</span></p>
 <ul>
 <li class="toctree-l1 has-children"><a class="reference internal" href="autoapi/index.html">API Reference</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of API Reference</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
-<li class="toctree-l2 has-children"><a class="reference internal" href="autoapi/PDielec/index.html">PDielec</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of PDielec</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
-<li class="toctree-l3 has-children"><a class="reference internal" href="autoapi/PDielec/GUI/index.html">PDielec.GUI</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of PDielec.GUI</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
-<li class="toctree-l4"><a class="reference internal" href="autoapi/PDielec/GUI/AnalysisTab/index.html">PDielec.GUI.AnalysisTab</a></li>
-<li class="toctree-l4"><a class="reference internal" href="autoapi/PDielec/GUI/App/index.html">PDielec.GUI.App</a></li>
-<li class="toctree-l4"><a class="reference internal" href="autoapi/PDielec/GUI/FitterTab/index.html">PDielec.GUI.FitterTab</a></li>
-<li class="toctree-l4"><a class="reference internal" href="autoapi/PDielec/GUI/MainTab/index.html">PDielec.GUI.MainTab</a></li>
-<li class="toctree-l4"><a class="reference internal" href="autoapi/PDielec/GUI/NoteBook/index.html">PDielec.GUI.NoteBook</a></li>
-<li class="toctree-l4"><a class="reference internal" href="autoapi/PDielec/GUI/OpenGLWidget/index.html">PDielec.GUI.OpenGLWidget</a></li>
-<li class="toctree-l4"><a class="reference internal" href="autoapi/PDielec/GUI/PlottingTab/index.html">PDielec.GUI.PlottingTab</a></li>
-<li class="toctree-l4"><a class="reference internal" href="autoapi/PDielec/GUI/PowderScenarioTab/index.html">PDielec.GUI.PowderScenarioTab</a></li>
-<li class="toctree-l4"><a class="reference internal" href="autoapi/PDielec/GUI/ScenarioTab/index.html">PDielec.GUI.ScenarioTab</a></li>
-<li class="toctree-l4"><a class="reference internal" href="autoapi/PDielec/GUI/SettingsTab/index.html">PDielec.GUI.SettingsTab</a></li>
-<li class="toctree-l4"><a class="reference internal" href="autoapi/PDielec/GUI/SingleCrystalLayer/index.html">PDielec.GUI.SingleCrystalLayer</a></li>
-<li class="toctree-l4"><a class="reference internal" href="autoapi/PDielec/GUI/SingleCrystalScenarioTab/index.html">PDielec.GUI.SingleCrystalScenarioTab</a></li>
-<li class="toctree-l4"><a class="reference internal" href="autoapi/PDielec/GUI/SpreadSheetManager/index.html">PDielec.GUI.SpreadSheetManager</a></li>
-<li class="toctree-l4"><a class="reference internal" href="autoapi/PDielec/GUI/ViewerTab/index.html">PDielec.GUI.ViewerTab</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="autoapi/PDielec/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of PDielec</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="autoapi/PDielec/GUI/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of PDielec.GUI</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/PDielec/GUI/AnalysisTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.AnalysisTab</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/PDielec/GUI/App/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.App</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/PDielec/GUI/FitterTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.FitterTab</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/PDielec/GUI/MainTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.MainTab</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/PDielec/GUI/NoteBook/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.NoteBook</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/PDielec/GUI/OpenGLWidget/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.OpenGLWidget</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/PDielec/GUI/PlottingTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.PlottingTab</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/PDielec/GUI/PowderScenarioTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.PowderScenarioTab</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/PDielec/GUI/ScenarioTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.ScenarioTab</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/PDielec/GUI/SettingsTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.SettingsTab</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/PDielec/GUI/SingleCrystalLayer/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.SingleCrystalLayer</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/PDielec/GUI/SingleCrystalScenarioTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.SingleCrystalScenarioTab</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/PDielec/GUI/SpreadSheetManager/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.SpreadSheetManager</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="autoapi/PDielec/GUI/ViewerTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.ViewerTab</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/AbinitOutputReader/index.html">PDielec.AbinitOutputReader</a></li>
-<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/Calculator/index.html">PDielec.Calculator</a></li>
-<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/CastepOutputReader/index.html">PDielec.CastepOutputReader</a></li>
-<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/Constants/index.html">PDielec.Constants</a></li>
-<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/CrystalOutputReader/index.html">PDielec.CrystalOutputReader</a></li>
-<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/DielectricFunction/index.html">PDielec.DielectricFunction</a></li>
-<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/ExperimentOutputReader/index.html">PDielec.ExperimentOutputReader</a></li>
-<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/GTMcore/index.html">PDielec.GTMcore</a></li>
-<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/GenericOutputReader/index.html">PDielec.GenericOutputReader</a></li>
-<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/GulpOutputReader/index.html">PDielec.GulpOutputReader</a></li>
-<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/HelperRoutines/index.html">PDielec.HelperRoutines</a></li>
-<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/IO/index.html">PDielec.IO</a></li>
-<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/Materials/index.html">PDielec.Materials</a></li>
-<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/Mie/index.html">PDielec.Mie</a></li>
-<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/PhonopyOutputReader/index.html">PDielec.PhonopyOutputReader</a></li>
-<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/Plotter/index.html">PDielec.Plotter</a></li>
-<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/QEOutputReader/index.html">PDielec.QEOutputReader</a></li>
-<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/SuperCell/index.html">PDielec.SuperCell</a></li>
-<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/UnitCell/index.html">PDielec.UnitCell</a></li>
-<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/Utilities/index.html">PDielec.Utilities</a></li>
-<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/VaspOutputReader/index.html">PDielec.VaspOutputReader</a></li>
-<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/checkcsv/index.html">PDielec.checkcsv</a></li>
-<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/checkexcel/index.html">PDielec.checkexcel</a></li>
-<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/graphdatagenerator/index.html">PDielec.graphdatagenerator</a></li>
-<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/p1reader/index.html">PDielec.p1reader</a></li>
-<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/p2cif/index.html">PDielec.p2cif</a></li>
-<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/pdcompare/index.html">PDielec.pdcompare</a></li>
-<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/pdgui/index.html">PDielec.pdgui</a></li>
-<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/pdmake/index.html">PDielec.pdmake</a></li>
-<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/pickled_reader/index.html">PDielec.pickled_reader</a></li>
-<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/preader/index.html">PDielec.preader</a></li>
-<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/vibanalysis/index.html">PDielec.vibanalysis</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/AbinitOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.AbinitOutputReader</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/Calculator/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.Calculator</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/CastepOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.CastepOutputReader</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/Constants/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.Constants</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/CrystalOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.CrystalOutputReader</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/DielectricFunction/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.DielectricFunction</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/ExperimentOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.ExperimentOutputReader</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/GTMcore/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GTMcore</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/GenericOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GenericOutputReader</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/GulpOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GulpOutputReader</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/HelperRoutines/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.HelperRoutines</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/IO/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.IO</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/Materials/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.Materials</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/Mie/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.Mie</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/PhonopyOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.PhonopyOutputReader</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/Plotter/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.Plotter</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/QEOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.QEOutputReader</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/SuperCell/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.SuperCell</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/UnitCell/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.UnitCell</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/Utilities/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.Utilities</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/VaspOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.VaspOutputReader</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/checkcsv/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.checkcsv</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/checkexcel/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.checkexcel</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/graphdatagenerator/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.graphdatagenerator</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/p1reader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.p1reader</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/p2cif/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.p2cif</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/pdcompare/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.pdcompare</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/pdgui/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.pdgui</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/pdmake/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.pdmake</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/pickled_reader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.pickled_reader</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/preader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.preader</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="autoapi/PDielec/vibanalysis/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.vibanalysis</span></code></a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="autoapi/PDielec/pdgui/index.html">PDielec.pdgui</a></li>
-<li class="toctree-l1"><a class="reference internal" href="autoapi/PDielec/preader/index.html">PDielec.preader</a></li>
-<li class="toctree-l1"><a class="reference internal" href="autoapi/PDielec/pdmake/index.html">PDielec.pdmake</a></li>
+<li class="toctree-l1"><a class="reference internal" href="autoapi/PDielec/pdgui/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.pdgui</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="autoapi/PDielec/preader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.preader</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="autoapi/PDielec/pdmake/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.pdmake</span></code></a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">References</span></p>
 <ul>
@@ -317,17 +260,11 @@
           <span>Back to top</span>
         </a>
         <div class="content-icon-container">
-          <div class="view-this-page">
-  <a class="muted-link" href="_sources/application_notes_1.rst.txt" title="View this page">
-    <svg><use href="#svg-eye"></use></svg>
-    <span class="visually-hidden">View this page</span>
-  </a>
-</div>
+          
 <div class="theme-toggle-container theme-toggle-content">
             <button class="theme-toggle">
               <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
-              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
-              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+              <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
               <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
               <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
             </button>
@@ -337,18 +274,18 @@
             <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
           </label>
         </div>
-        <article role="main" id="furo-main-content">
+        <article role="main">
           <section id="applications-of-effective-medium-theory">
-<h1>Applications of Effective Medium Theory<a class="headerlink" href="#applications-of-effective-medium-theory" title="Link to this heading">¶</a></h1>
+<h1>Applications of Effective Medium Theory<a class="headerlink" href="#applications-of-effective-medium-theory" title="Permalink to this heading">#</a></h1>
 <p>Several examples are given to illustrate some applications of the package to the absorption of light in powdered dielectric materials.  The calculations used to provide the data for the permittivities are sufficiently accurate to illustrate aspects of the theory. The examples are chosen to show the package being used with the QM packages CASTEP and VASP and with the MM package GULP.
 The data used to generate the figures shown below are available in the Examples/ directory.
 The application_note.py file is a script that will generate and perform the calculations used in each application note and the application_note.xslx file is a spreadsheet containing the calculated data.</p>
 <section id="mgo-using-castep">
-<h2>MgO using CASTEP<a class="headerlink" href="#mgo-using-castep" title="Link to this heading">¶</a></h2>
+<h2>MgO using CASTEP<a class="headerlink" href="#mgo-using-castep" title="Permalink to this heading">#</a></h2>
 <p>Magnesium oxide is an isotropic medium, the initial unit cell and the space group symmetry (<span class="math notranslate nohighlight">\(Fm\overline{3}m\)</span>) were taken from the Inorganic Crystal Structure Database (ICSD) <span id="id1">[<a class="reference internal" href="zreferences.html#id22" title="Mariette Hellenbrandt. The Inorganic Crystal Structure Database ( ICSD )— Present and Future. Crystallography Reviews, 10:17-22, 2004. doi:10.1080/08893110410001664882.">56</a>]</span> reference number ICSD-52026 <span id="id2">[<a class="reference internal" href="zreferences.html#id36" title="V. G. Tsirelson, A. S. Avilov, Yu. A. Abramov, E. L. Belokoneva, R. Kitaneh, and D. Feil. X-ray and Electron Diffraction Study of MgO. Acta Crystallographica Section B Structural Science, 54(1):8-17, Feb 1998. doi:10.1107/S0108768197008963.">57</a>]</span>. The primitive cell was optimised using CASTEP. Norm-conserving pseudo-potentials were used to represent the core electrons of magnesium and oxygen. An energy cutoff of 1000 eV was used with the PBE <span id="id3">[<a class="reference internal" href="zreferences.html#id62" title="G Kresse and D Joubert. From ultrasoft pseudopotentials to the projector augmented-wave method. Physical Review B, 59(3):1758-1775, Jan 1999. doi:10.1103/PhysRevB.59.1758.">58</a>]</span> density functional and a k-point spacing for the Monkhorst-Pack grid of 0.04 Å<sup>-1</sup>. The primitive cell was optimised and a Density Functional Perturbation Theory (DFPT) calculation of the phonon spectrum at the gamma point was performed. The optimised lattice parameter was found to be 2.1234 Å, compared with the experimental value of 2.107 Å. Only 3 degenerate modes contribute to the permittivity. A summary of the results is presented in <a class="reference internal" href="#tab-mgo-properties"><span class="std std-numref">Table 9</span></a>.</p>
 <div class="table-wrapper colwidths-given styled-table docutils container" id="tab-mgo-properties">
 <table class="styled-table docutils align-default" id="tab-mgo-properties">
-<caption><span class="caption-number">Table 9 </span><span class="caption-text">Experimental and Calculated Properties of MgO</span><a class="headerlink" href="#tab-mgo-properties" title="Link to this table">¶</a></caption>
+<caption><span class="caption-number">Table 9 </span><span class="caption-text">Experimental and Calculated Properties of MgO</span><a class="headerlink" href="#tab-mgo-properties" title="Permalink to this table">#</a></caption>
 <colgroup>
 <col style="width: 33.3%" />
 <col style="width: 33.3%" />
@@ -404,13 +341,13 @@ The data for this calculation can be found by looking in the <a class="reference
 <figure class="align-default" id="id31">
 <span id="fig-mgo-permittivity"></span><a class="reference internal image-reference" href="_images/MgO_Permittivity.svg"><img alt="_images/MgO_Permittivity.svg" height="331" src="_images/MgO_Permittivity.svg" width="432" /></a>
 <figcaption>
-<p><span class="caption-number">Fig. 18 </span><span class="caption-text">Permittivity of MgO</span><a class="headerlink" href="#id31" title="Link to this image">¶</a></p>
+<p><span class="caption-number">Fig. 18 </span><span class="caption-text">Permittivity of MgO</span><a class="headerlink" href="#id31" title="Permalink to this image">#</a></p>
 </figcaption>
 </figure>
 <figure class="align-default" id="id32">
 <span id="fig-mgo-real"></span><a class="reference internal image-reference" href="_images/MgO_Real_Imaginary.svg"><img alt="_images/MgO_Real_Imaginary.svg" height="333" src="_images/MgO_Real_Imaginary.svg" width="422" /></a>
 <figcaption>
-<p><span class="caption-number">Fig. 19 </span><span class="caption-text">Real and imaginary permittivities of a 1% volume fraction of MgO spheres in PTFE using the Maxwell-Garnett method</span><a class="headerlink" href="#id32" title="Link to this image">¶</a></p>
+<p><span class="caption-number">Fig. 19 </span><span class="caption-text">Real and imaginary permittivities of a 1% volume fraction of MgO spheres in PTFE using the Maxwell-Garnett method</span><a class="headerlink" href="#id32" title="Permalink to this image">#</a></p>
 </figcaption>
 </figure>
 <p>Using the Maxwell-Garnett mixing rule, <a class="reference internal" href="#fig-mgo-real"><span class="std std-numref">Fig. 19</span></a> shows the calculated permittivities of a 1% volume fraction of MgO spheres in a supporting medium with a frequency-independent permittivity of 2.0, which would be typical of a material such as PTFE. Due to the dilution effect, the real component has shifted to a base-line value close to 2, and the absorption, as indicated by the maximum in the imaginary component has shifted by about 150 cm<sup>-1</sup> to 550 cm<sup>-1</sup>.</p>
@@ -419,7 +356,7 @@ The data for this calculation can be found by looking in the <a class="reference
 <figure class="align-default" id="id33">
 <span id="fig-mgo-vf"></span><a class="reference internal image-reference" href="_images/MgO_MG_Volume_Fraction.svg"><img alt="_images/MgO_MG_Volume_Fraction.svg" height="333" src="_images/MgO_MG_Volume_Fraction.svg" width="439" /></a>
 <figcaption>
-<p><span class="caption-number">Fig. 20 </span><span class="caption-text">Effect of volume fraction on the Maxwell-Garnett molar absorption coefficient of MgO spheres in PTFE</span><a class="headerlink" href="#id33" title="Link to this image">¶</a></p>
+<p><span class="caption-number">Fig. 20 </span><span class="caption-text">Effect of volume fraction on the Maxwell-Garnett molar absorption coefficient of MgO spheres in PTFE</span><a class="headerlink" href="#id33" title="Permalink to this image">#</a></p>
 </figcaption>
 </figure>
 <p><a class="reference internal" href="#fig-mgo-vf-bg"><span class="std std-numref">Fig. 21</span></a> shows the same plot for the Bruggeman mixing rule. At low
@@ -437,13 +374,13 @@ The data for this calculation can be found by looking in the <a class="reference
 <figure class="align-default" id="id34">
 <span id="fig-mgo-vf-bg"></span><a class="reference internal image-reference" href="_images/MgO_Bruggeman_Volume_Fraction.svg"><img alt="_images/MgO_Bruggeman_Volume_Fraction.svg" height="334" src="_images/MgO_Bruggeman_Volume_Fraction.svg" width="429" /></a>
 <figcaption>
-<p><span class="caption-number">Fig. 21 </span><span class="caption-text">Effect of volume fraction on the Bruggeman molar absorption coefficient of MgO spheres in PTFE</span><a class="headerlink" href="#id34" title="Link to this image">¶</a></p>
+<p><span class="caption-number">Fig. 21 </span><span class="caption-text">Effect of volume fraction on the Bruggeman molar absorption coefficient of MgO spheres in PTFE</span><a class="headerlink" href="#id34" title="Permalink to this image">#</a></p>
 </figcaption>
 </figure>
 <figure class="align-default" id="id35">
 <span id="fig-mgo-varying-permittivity"></span><a class="reference internal image-reference" href="_images/MgO_Varying_Permittivity.svg"><img alt="_images/MgO_Varying_Permittivity.svg" height="340" src="_images/MgO_Varying_Permittivity.svg" width="447" /></a>
 <figcaption>
-<p><span class="caption-number">Fig. 22 </span><span class="caption-text">The Maxwell-Garnett molar absorption of spherical MgO particles, 1% volume fraction embedded in a media of varying permittivity</span><a class="headerlink" href="#id35" title="Link to this image">¶</a></p>
+<p><span class="caption-number">Fig. 22 </span><span class="caption-text">The Maxwell-Garnett molar absorption of spherical MgO particles, 1% volume fraction embedded in a media of varying permittivity</span><a class="headerlink" href="#id35" title="Permalink to this image">#</a></p>
 </figcaption>
 </figure>
 <p><a class="reference internal" href="#fig-mgo-varying-permittivity"><span class="std std-numref">Fig. 22</span></a> shows the effect of varying the permittivity of the supporting medium. The calculations were performed on spherical MgO particles with a 1% volume fraction. The lowest permittivity is that of a vacuum (or air) and shows the highest shift of the absorption maximum to higher frequencies. Increasing the permittivity lowers the shift until it becomes quite small. A similar effect is seen in the Bruggeman mixing model. However, the absorption resulting from particles in a low dielectric medium is considerably broader than that seen in the Maxwell-Garnet case. This broadening reduces as the permittivity of the medium increases (see <a class="reference internal" href="#fig-mgo-varying-permittivity-brug"><span class="std std-numref">Fig. 23</span></a>).
@@ -451,17 +388,17 @@ The data for these calculations can be found by looking in the <a class="referen
 <figure class="align-default" id="id36">
 <span id="fig-mgo-varying-permittivity-brug"></span><a class="reference internal image-reference" href="_images/MgO_Varying_Permittivity_Bruggeman.svg"><img alt="_images/MgO_Varying_Permittivity_Bruggeman.svg" height="341" src="_images/MgO_Varying_Permittivity_Bruggeman.svg" width="443" /></a>
 <figcaption>
-<p><span class="caption-number">Fig. 23 </span><span class="caption-text">The Bruggeman molar absorption of spherical MgO particles, 1% volume fraction, embedded in media of varying permittivities</span><a class="headerlink" href="#id36" title="Link to this image">¶</a></p>
+<p><span class="caption-number">Fig. 23 </span><span class="caption-text">The Bruggeman molar absorption of spherical MgO particles, 1% volume fraction, embedded in media of varying permittivities</span><a class="headerlink" href="#id36" title="Permalink to this image">#</a></p>
 </figcaption>
 </figure>
 </section>
 <section id="zno-using-vasp">
-<h2>ZnO using VASP<a class="headerlink" href="#zno-using-vasp" title="Link to this heading">¶</a></h2>
+<h2>ZnO using VASP<a class="headerlink" href="#zno-using-vasp" title="Permalink to this heading">#</a></h2>
 <p>Zinc oxide crystallises in space group <span class="math notranslate nohighlight">\(P6_3mc\)</span> (wurtzite). All calculations were performed by VASP <span id="id5">[<a class="reference internal" href="zreferences.html#id57" title="Jurgen Hafner. Ab-initio simulations of materials using VASP: Density-functional theory and beyond. Journal of Computational Chemistry, 29(13):2044-2078, Oct 2008. arXiv:NIHMS150003, doi:10.1002/jcc.21057.">1</a>]</span> using projector augmented-wave PAW <span id="id6">[<a class="reference internal" href="zreferences.html#id62" title="G Kresse and D Joubert. From ultrasoft pseudopotentials to the projector augmented-wave method. Physical Review B, 59(3):1758-1775, Jan 1999. doi:10.1103/PhysRevB.59.1758.">58</a>]</span> pseudo-potentials, the PBE <span id="id7">[<a class="reference internal" href="zreferences.html#id28" title="John P. Perdew, Kieron Burke, and Matthias Ernzerhof. Generalized Gradient Approximation Made Simple. Physical Review Letters, 77(18):3865-3868, Oct 1996. doi:10.1103/PhysRevLett.77.3865.">59</a>]</span> density functional, an energy cutoff of 600 eV and a k-point resolution of approximately 0.1 Å<sup>-1</sup>. The initial unit cell was taken from the ICSD <span id="id8">[<a class="reference internal" href="zreferences.html#id22" title="Mariette Hellenbrandt. The Inorganic Crystal Structure Database ( ICSD )— Present and Future. Crystallography Reviews, 10:17-22, 2004. doi:10.1080/08893110410001664882.">56</a>]</span> with code ICSD-26170 <span id="id9">[<a class="reference internal" href="zreferences.html#id40" title="Ciara S. McNally, David P. Turner, Alex N. Kulak, Fiona C. Meldrum, and Geoffrey Hyett. The use of cationic surfactants to control the structure of zinc oxide films prepared by chemical vapour deposition. Chemical Communications, 48(10):1490, 2012. doi:10.1039/c2cc14468a.">60</a>]</span>. The unit cell and atom positions were optimised using
 VASP and the permittivity was calculated using DFPT and the results are reported in <a class="reference internal" href="#tab-zno-properties"><span class="std std-numref">Table 10</span></a>. Only two of the bands showed any significant intensity, a doubly degenerate band (E) with a TO frequency of 372.1 cm<sup>-1</sup> and a non-degenerate band (A) with a TO frequency of 350.0 cm<sup>-1</sup>. The LO frequency of the non-degenerate band is shifted to 502.0 cm<sup>-1</sup> for a wave-vector with direction (001), whilst the degenerate modes are unaffected. In the case of the (010) direction, the LO frequency of one of the E modes is shifted to 511.2 cm<sup>-1</sup>. It is known that ZnO can crystallise with a plate morphology <span id="id10">[<a class="reference internal" href="zreferences.html#id41" title="Keiichi Yamamoto, Chan-Dinh Tran, Hiroyasu Shimizu, and Kenji Abe. Optical Surface Phonon Modes in ZnO Small Crystals. Journal of the Physical Society of Japan, 42(2):587-590, Feb 1977. doi:10.1143/JPSJ.42.587.">61</a>]</span> with the (001) surface dominant. Calculations of the molar absorption were performed for a sphere, plate and needle-like shapes with the unique directions of the plate and the needle being normal to the (001) surface. A volume fraction of 1% was chosen for these calculations and the predicted molar absorption coefficients for the Maxwell-Garnett mixing rule are shown in <a class="reference internal" href="#fig-zno"><span class="std std-numref">Fig. 24</span></a>.</p>
 <div class="table-wrapper colwidths-given styled-table docutils container" id="tab-zno-properties">
 <table class="styled-table docutils align-default" id="tab-zno-properties">
-<caption><span class="caption-number">Table 10 </span><span class="caption-text">Experimental and Calculated Properties of ZnO</span><a class="headerlink" href="#tab-zno-properties" title="Link to this table">¶</a></caption>
+<caption><span class="caption-number">Table 10 </span><span class="caption-text">Experimental and Calculated Properties of ZnO</span><a class="headerlink" href="#tab-zno-properties" title="Permalink to this table">#</a></caption>
 <colgroup>
 <col style="width: 33.3%" />
 <col style="width: 33.3%" />
@@ -532,14 +469,14 @@ VASP and the permittivity was calculated using DFPT and the results are reported
 <figure class="align-default" id="id37">
 <span id="fig-zno"></span><a class="reference internal image-reference" href="_images/ZnO_Needle_Plate_Sphere.svg"><img alt="_images/ZnO_Needle_Plate_Sphere.svg" height="322" src="_images/ZnO_Needle_Plate_Sphere.svg" width="423" /></a>
 <figcaption>
-<p><span class="caption-number">Fig. 24 </span><span class="caption-text">ZnO: Effect of shape on absorption</span><a class="headerlink" href="#id37" title="Link to this image">¶</a></p>
+<p><span class="caption-number">Fig. 24 </span><span class="caption-text">ZnO: Effect of shape on absorption</span><a class="headerlink" href="#id37" title="Permalink to this image">#</a></p>
 </figcaption>
 </figure>
 <p>For the Maxwell-Garnett mixing rule the sphere morphology results in the two absorption peaks shifting from their TO positions to a higher wavenumber by about 80 cm<sup>-1</sup>. The plate morphology results in one of the peaks moving to higher wavenumber by about 130 cm<sup>-1</sup>, whilst the other remains at the TO position. The Maxwell-Garnett results are in close accord with some experimental results by Yamamoto et al <span id="id11">[<a class="reference internal" href="zreferences.html#id41" title="Keiichi Yamamoto, Chan-Dinh Tran, Hiroyasu Shimizu, and Kenji Abe. Optical Surface Phonon Modes in ZnO Small Crystals. Journal of the Physical Society of Japan, 42(2):587-590, Feb 1977. doi:10.1143/JPSJ.42.587.">61</a>]</span> who measured the infrared spectrum of ZnO smoke particles and observed peaks in the absorption at 380, 530 and 550 cm<sup>-1</sup>. Previous work <span id="id12">[<a class="reference internal" href="zreferences.html#id46" title="J.L. Rendon, J.E. Iglesias, and C.J. Serna. The efect of particle shape on the IR spectra of power oxides. Optica Pura Y Aplicada, 14:117-122, 1981.">62</a>, <a class="reference internal" href="zreferences.html#id51" title="Shinji Hayashi, Nobuyuki Nakamori, Junzo Hirono, and Hitoshi Kanamori. Infrared Study of Surface Vibration Modes in MgO Small Cubes. Journal of the Physical Society of Japan, 43(6):2006-2012, Dec 1977. doi:10.1143/JPSJ.43.2006.">63</a>]</span> has also used effective medium theory to explain the observed spectrum.
 The data for this calculation can be found by looking in the <a class="reference internal" href="installation.html#examples"><span class="std std-ref">Examples</span></a> section of the installation guide under the Vasp/ZnO/application_note example.</p>
 </section>
 <section id="calcite-using-gulp">
-<h2>Calcite using GULP<a class="headerlink" href="#calcite-using-gulp" title="Link to this heading">¶</a></h2>
+<h2>Calcite using GULP<a class="headerlink" href="#calcite-using-gulp" title="Permalink to this heading">#</a></h2>
 <p>Calcite is the most stable polymorph of calcium carbonate and the crystal structure belongs to the <span class="math notranslate nohighlight">\(R\overline{3}c\)</span> space group.
 The force field and atomic structures used here are described in detail in the work by Fisler <span id="id13">[<a class="reference internal" href="zreferences.html#id42" title="Diana K. Fisler, Julian D. Gale, and T. Cygan, Randall. A shell model for the simulation of rhombohedral carbonate minerals and their point defects. American Mineralogist, 2000. doi:10.2138/am-2000-0121.">64</a>]</span>.
 Briefly, the oxygen ions are described using a core-shell model <span id="id14">[<a class="reference internal" href="zreferences.html#id34" title="B. G. Dick and A. W. Overhauser. Theory of the Dielectric Constants of Alkali Halide Crystals. Physical Review, 112(1):90-103, Oct 1958. doi:10.1103/PhysRev.112.90.">65</a>]</span>.
@@ -552,7 +489,7 @@ A summary of the calculated properties is given in <a class="reference internal"
 The data for this calculation can be found by looking in the <a class="reference internal" href="installation.html#examples"><span class="std std-ref">Examples</span></a> section of the installation guide under the Gulp/calcite example.</p>
 <div class="table-wrapper colwidths-given styled-table docutils container" id="tab-calcite-properties">
 <table class="styled-table docutils align-default" id="tab-calcite-properties">
-<caption><span class="caption-number">Table 11 </span><span class="caption-text">Experimental and Calculated Properties of Calcite</span><a class="headerlink" href="#tab-calcite-properties" title="Link to this table">¶</a></caption>
+<caption><span class="caption-number">Table 11 </span><span class="caption-text">Experimental and Calculated Properties of Calcite</span><a class="headerlink" href="#tab-calcite-properties" title="Permalink to this table">#</a></caption>
 <colgroup>
 <col style="width: 33.3%" />
 <col style="width: 33.3%" />
@@ -637,18 +574,18 @@ The data for this calculation can be found by looking in the <a class="reference
 <figure class="align-default" id="id38">
 <span id="fig-calcite"></span><a class="reference internal image-reference" href="_images/Calcite_AP_Plate211_Sphere.svg"><img alt="_images/Calcite_AP_Plate211_Sphere.svg" height="339" src="_images/Calcite_AP_Plate211_Sphere.svg" width="442" /></a>
 <figcaption>
-<p><span class="caption-number">Fig. 25 </span><span class="caption-text">Calculated Maxwell-Garnett absorption spectrum of 10% volume fraction of calcite in PTFE</span><a class="headerlink" href="#id38" title="Link to this image">¶</a></p>
+<p><span class="caption-number">Fig. 25 </span><span class="caption-text">Calculated Maxwell-Garnett absorption spectrum of 10% volume fraction of calcite in PTFE</span><a class="headerlink" href="#id38" title="Permalink to this image">#</a></p>
 </figcaption>
 </figure>
 </section>
 <section id="fluorapatite-using-vasp">
-<h2>Fluorapatite using VASP<a class="headerlink" href="#fluorapatite-using-vasp" title="Link to this heading">¶</a></h2>
+<h2>Fluorapatite using VASP<a class="headerlink" href="#fluorapatite-using-vasp" title="Permalink to this heading">#</a></h2>
 <p>The line shapes of the infrared absorption of apatite and fluorapatite were examined extensively by Balan <em>et al</em> <span id="id16">[<a class="reference internal" href="zreferences.html#id55" title="Etienne Balan, Marc Blanchard, Jean-Francois Hochepied, and Michele Lazzeri. Surface modes in the infrared spectrum of hydrous minerals: the OH stretching modes of bayerite. Physics and Chemistry of Minerals, 35(5):279-285, Mar 2008. doi:10.1007/s00269-008-0221-y.">31</a>]</span>. Their calculations included the effect of crystallite habit on the spectrum and the results reported here are similar to their conclusions. The method used by Balan <em>et al</em>. is an infinitely dilute Maxwell-Garnett model, so the only difference between the methods used by them and those reported here using PDielec are the incorporation of the volume fraction into the theory and the use of an ellipsoidal shape for comparison with the other shapes.</p>
 <p>All calculations were performed by VASP <span id="id17">[<a class="reference internal" href="zreferences.html#id57" title="Jurgen Hafner. Ab-initio simulations of materials using VASP: Density-functional theory and beyond. Journal of Computational Chemistry, 29(13):2044-2078, Oct 2008. arXiv:NIHMS150003, doi:10.1002/jcc.21057.">1</a>]</span> using projector augmented-wave PAW <span id="id18">[<a class="reference internal" href="zreferences.html#id62" title="G Kresse and D Joubert. From ultrasoft pseudopotentials to the projector augmented-wave method. Physical Review B, 59(3):1758-1775, Jan 1999. doi:10.1103/PhysRevB.59.1758.">58</a>]</span> pseudo-potentials, the PBE <span id="id19">[<a class="reference internal" href="zreferences.html#id28" title="John P. Perdew, Kieron Burke, and Matthias Ernzerhof. Generalized Gradient Approximation Made Simple. Physical Review Letters, 77(18):3865-3868, Oct 1996. doi:10.1103/PhysRevLett.77.3865.">59</a>]</span> density functional, an energy cutoff of 600 eV and a k-point resolution of approximately 0.1 Å<sup>-1</sup>. <a class="reference internal" href="#tab-fluorapatite-properties"><span class="std std-numref">Table 12</span></a> summarises the results of the calculations. Only the 3 highest frequency bands are reported and discussed. The TO intensity of the highest frequency band at 1038 cm<sup>-1</sup> is low and will not be discussed further. The Bravais Friedel Donnay Harker (BFDH) <span id="id20">[<a class="reference internal" href="zreferences.html#id35" title="J. D. H. Donnay and D. Harker. A New Law of Crystal Morphology Extending the Law of Bravais. Am. Mineral., 22:446, 1937.">67</a>]</span> crystal habit of the optimised crystal is shown in <a class="reference internal" href="#fig-fluorapatite-morphology"><span class="std std-numref">Fig. 26</span></a>. The habit was calculated using the Mercury software package. <span id="id21">[<a class="reference internal" href="zreferences.html#id31" title="Clare F. Macrae, Ian J. Bruno, James A. Chisholm, Paul R. Edgington, Patrick McCabe, Elna Pidcock, Lucia Rodriguez-Monge, Robin Taylor, Jacco van de Streek, and Peter A. Wood. Mercury CSD 2.0 – new features for the visualization and investigation of crystal structures. Journal of Applied Crystallography, 41(2):466-470, Apr 2008. doi:10.1107/S0021889807067908.">68</a>]</span>. The BFDH crystal habit is often used to give an idea of the likely important faces of a crystal. It uses only the crystal lattice and space group to determine the crystal morphology. <a class="reference internal" href="#fig-fluorapatite-morphology"><span class="std std-numref">Fig. 26</span></a> shows that the {100} surfaces form a tube which are capped by the {011} surfaces. The effect of different particle shapes on the predicted spectrum is shown in <a class="reference internal" href="#fig-fluorapatite-absorption"><span class="std std-numref">Fig. 27</span></a>. The calculations of the spectra were performed with a damping parameter (σ) of 2 cm<sup>-1</sup>. The ellipsoid was chosen to have an aspect ratio, a/b, of 2 and a principle axis along [001], which was compatible with the morphology predicted by the BDFH method. The two TO absorption frequencies at 981 and 986 cm<sup>-1</sup> have A and E symmetry respectively. Spherical crystallites result in three absorption peaks at around 1000, 1010 and 1015 cm<sup>-1</sup>. Needle shaped crystallites leave the A symmetry TO absorption peak at 981 cm<sup>-1</sup> unaffected but shift and split the E symmetry TO peak to 1020 and 1046 cm<sup>-1</sup>. A plate morphology with (100) surfaces results in the A and one component of the E TO absorption peak remaining at the TO frequencies, with the other component of the E shifting 85 cm<sup>-1</sup> to 1075 cm<sup>-1</sup>. The ellipsoidal morphology shows three shifted peaks at 1000, 1018 and 1045 cm<sup>-1</sup>. These results are consistent with those of Balan <em>et al</em>. <span id="id22">[<a class="reference internal" href="zreferences.html#id55" title="Etienne Balan, Marc Blanchard, Jean-Francois Hochepied, and Michele Lazzeri. Surface modes in the infrared spectrum of hydrous minerals: the OH stretching modes of bayerite. Physics and Chemistry of Minerals, 35(5):279-285, Mar 2008. doi:10.1007/s00269-008-0221-y.">31</a>]</span>, who gave detailed results for hydroxyapatite.
 The data for this calculation can be found by looking in the <a class="reference internal" href="installation.html#examples"><span class="std std-ref">Examples</span></a> section of the installation guide under the Castep/F-Apatite example.</p>
 <div class="table-wrapper colwidths-given styled-table docutils container" id="tab-fluorapatite-properties">
 <table class="styled-table docutils align-default" id="tab-fluorapatite-properties">
-<caption><span class="caption-number">Table 12 </span><span class="caption-text">Experimental and Calculated Properties of Fluorapatite</span><a class="headerlink" href="#tab-fluorapatite-properties" title="Link to this table">¶</a></caption>
+<caption><span class="caption-number">Table 12 </span><span class="caption-text">Experimental and Calculated Properties of Fluorapatite</span><a class="headerlink" href="#tab-fluorapatite-properties" title="Permalink to this table">#</a></caption>
 <colgroup>
 <col style="width: 33.3%" />
 <col style="width: 33.3%" />
@@ -709,25 +646,24 @@ The data for this calculation can be found by looking in the <a class="reference
 </table>
 </div>
 <figure class="align-default" id="id39">
-<span id="fig-fluorapatite-morphology"></span><a class="reference internal image-reference" href="_images/Fluoroapatite_morphology.png"><img alt="_images/Fluoroapatite_morphology.png" src="_images/Fluoroapatite_morphology.png" style="width: 450.0px; height: 260.1px;" />
-</a>
+<span id="fig-fluorapatite-morphology"></span><a class="reference internal image-reference" href="_images/Fluoroapatite_morphology.png"><img alt="_images/Fluoroapatite_morphology.png" src="_images/Fluoroapatite_morphology.png" style="width: 450.0px; height: 260.1px;" /></a>
 <figcaption>
-<p><span class="caption-number">Fig. 26 </span><span class="caption-text">BFDH Morphology of fluorapatite</span><a class="headerlink" href="#id39" title="Link to this image">¶</a></p>
+<p><span class="caption-number">Fig. 26 </span><span class="caption-text">BFDH Morphology of fluorapatite</span><a class="headerlink" href="#id39" title="Permalink to this image">#</a></p>
 </figcaption>
 </figure>
 <figure class="align-default" id="id40">
 <span id="fig-fluorapatite-absorption"></span><a class="reference internal image-reference" href="_images/Fluoroapatite_absorption.svg"><img alt="_images/Fluoroapatite_absorption.svg" height="338" src="_images/Fluoroapatite_absorption.svg" width="450" /></a>
 <figcaption>
-<p><span class="caption-number">Fig. 27 </span><span class="caption-text">Calculated Maxwell-Garnett absorption spectra of 10% fluorapatite in PTFE</span><a class="headerlink" href="#id40" title="Link to this image">¶</a></p>
+<p><span class="caption-number">Fig. 27 </span><span class="caption-text">Calculated Maxwell-Garnett absorption spectra of 10% fluorapatite in PTFE</span><a class="headerlink" href="#id40" title="Permalink to this image">#</a></p>
 </figcaption>
 </figure>
 </section>
 <section id="l-aspartic-acid-using-castep">
-<h2>L-aspartic Acid using CASTEP<a class="headerlink" href="#l-aspartic-acid-using-castep" title="Link to this heading">¶</a></h2>
+<h2>L-aspartic Acid using CASTEP<a class="headerlink" href="#l-aspartic-acid-using-castep" title="Permalink to this heading">#</a></h2>
 <p>L-aspartic acid is a zwitterion in the solid state so the shape of the particles used in the measurement of IR and THz spectra may be important. The starting geometry for optimisation of the unit cell and molecular structure of L-aspartic acid was taken from Derissen et al <span id="id24">[<a class="reference internal" href="zreferences.html#id30" title="J. L. Derissen, H. J. Endeman, and A. F. Peerdeman. The crystal and molecular structure of L-aspartic acid. Acta Crystallographica Section B Structural Crystallography and Crystal Chemistry, 24(10):1349-1354, Oct 1968. doi:10.1107/S0567740868004280.">70</a>]</span>. The PBE <span id="id25">[<a class="reference internal" href="zreferences.html#id28" title="John P. Perdew, Kieron Burke, and Matthias Ernzerhof. Generalized Gradient Approximation Made Simple. Physical Review Letters, 77(18):3865-3868, Oct 1996. doi:10.1103/PhysRevLett.77.3865.">59</a>]</span> functional was used with a plane wave energy cutoff of 1000 eV and norm-conserving pseudo-potentials. A dispersion correction using the Tkatchenko-Scheffler scheme <span id="id26">[<a class="reference internal" href="zreferences.html#id61" title="Alexandre Tkatchenko and Matthias Scheffler. Accurate molecular van der Waals interactions from ground-state electron density and free-atom reference data. Physical review letters, 102(7):073005, Feb 2009. doi:10.1103/PhysRevLett.102.073005.">71</a>]</span> available in CASTEP was applied for both the geometry optimisation and the calculation of the phonon spectrum at the gamma point, with an S<sub>6</sub> scaling factor <span id="id27">[<a class="reference internal" href="zreferences.html#id21" title="TR Juliano and TM Korter. Origins of Hydration Differences in Homochiral and Racemic Crystals of Aspartic Acid. J. Phys. Chem. A, 119:1396-1403, 2015. doi:10.1021/jp512359p.">72</a>]</span> of 1.0. A summary of the results of the calculations is shown in <a class="reference internal" href="#tab-aspartic-properties"><span class="std std-numref">Table 13</span></a>.</p>
 <div class="table-wrapper colwidths-given styled-table docutils container" id="tab-aspartic-properties">
 <table class="styled-table docutils align-default" id="tab-aspartic-properties">
-<caption><span class="caption-number">Table 13 </span><span class="caption-text">Experimental and calculated properties of L-aspartic acid</span><a class="headerlink" href="#tab-aspartic-properties" title="Link to this table">¶</a></caption>
+<caption><span class="caption-number">Table 13 </span><span class="caption-text">Experimental and calculated properties of L-aspartic acid</span><a class="headerlink" href="#tab-aspartic-properties" title="Permalink to this table">#</a></caption>
 <colgroup>
 <col style="width: 33.3%" />
 <col style="width: 33.3%" />
@@ -831,37 +767,37 @@ The data for this calculation can be found by looking in the <a class="reference
 <figure class="align-default" id="id41">
 <span id="fig-aspartica"></span><a class="reference internal image-reference" href="_images/Aspartic_thz_a.svg"><img alt="_images/Aspartic_thz_a.svg" height="335" src="_images/Aspartic_thz_a.svg" width="430" /></a>
 <figcaption>
-<p><span class="caption-number">Fig. 28 </span><span class="caption-text">Aspartic Acid: Frequency range 60-130 cm<sup>-1</sup></span><a class="headerlink" href="#id41" title="Link to this image">¶</a></p>
+<p><span class="caption-number">Fig. 28 </span><span class="caption-text">Aspartic Acid: Frequency range 60-130 cm<sup>-1</sup></span><a class="headerlink" href="#id41" title="Permalink to this image">#</a></p>
 </figcaption>
 </figure>
 <figure class="align-default" id="id42">
 <span id="fig-asparticb"></span><a class="reference internal image-reference" href="_images/Aspartic_thz_b.svg"><img alt="_images/Aspartic_thz_b.svg" height="335" src="_images/Aspartic_thz_b.svg" width="443" /></a>
 <figcaption>
-<p><span class="caption-number">Fig. 29 </span><span class="caption-text">Aspartic Acid: Frequency range 1260-1340 cm<sup>-1</sup></span><a class="headerlink" href="#id42" title="Link to this image">¶</a></p>
+<p><span class="caption-number">Fig. 29 </span><span class="caption-text">Aspartic Acid: Frequency range 1260-1340 cm<sup>-1</sup></span><a class="headerlink" href="#id42" title="Permalink to this image">#</a></p>
 </figcaption>
 </figure>
 <figure class="align-default" id="id43">
 <span id="fig-asparticc"></span><a class="reference internal image-reference" href="_images/Aspartic_thz_c.svg"><img alt="_images/Aspartic_thz_c.svg" height="335" src="_images/Aspartic_thz_c.svg" width="445" /></a>
 <figcaption>
-<p><span class="caption-number">Fig. 30 </span><span class="caption-text">Aspartic Acid: Frequency range 2900-3100 cm<sup>-1</sup></span><a class="headerlink" href="#id43" title="Link to this image">¶</a></p>
+<p><span class="caption-number">Fig. 30 </span><span class="caption-text">Aspartic Acid: Frequency range 2900-3100 cm<sup>-1</sup></span><a class="headerlink" href="#id43" title="Permalink to this image">#</a></p>
 </figcaption>
 </figure>
 </section>
 <section id="mgo-example-using-mie-scattering">
-<h2>MgO Example using Mie Scattering<a class="headerlink" href="#mgo-example-using-mie-scattering" title="Link to this heading">¶</a></h2>
+<h2>MgO Example using Mie Scattering<a class="headerlink" href="#mgo-example-using-mie-scattering" title="Permalink to this heading">#</a></h2>
 <p><a class="reference internal" href="#fig-mgo-mie"><span class="std std-numref">Fig. 31</span></a> compares a Mie scattering calculation with the results from Maxwell-Garnett effective medium theory. The same data set was used for the CASTEP, MgO example. A volume fraction of 1% was used with a small sphere radius (0.1 μm) and a broadening of 5 cm<sup>-1</sup> embedded in a matrix of PTFE. A power expansion in the size parameter of the Mie expressions
 indicates that for small sizes of particles, the Mie and the Maxwell-Garnett methods should be the same. This is verified in Figure.
 The data for this calculation can be found by looking in the <a class="reference internal" href="installation.html#examples"><span class="std std-ref">Examples</span></a> section of the installation guide under the Mie/MgO example.</p>
 <figure class="align-default" id="id44">
 <span id="fig-mgo-mie"></span><a class="reference internal image-reference" href="_images/MgO_Mie_Maxwell.svg"><img alt="_images/MgO_Mie_Maxwell.svg" height="324" src="_images/MgO_Mie_Maxwell.svg" width="428" /></a>
 <figcaption>
-<p><span class="caption-number">Fig. 31 </span><span class="caption-text">Comparison of Mie and Maxwell methods. 1% volume fraction of MgO in PTFE, sphere radius of 0.1 μm and a broadening of 5 cm<sup>-1</sup></span><a class="headerlink" href="#id44" title="Link to this image">¶</a></p>
+<p><span class="caption-number">Fig. 31 </span><span class="caption-text">Comparison of Mie and Maxwell methods. 1% volume fraction of MgO in PTFE, sphere radius of 0.1 μm and a broadening of 5 cm<sup>-1</sup></span><a class="headerlink" href="#id44" title="Permalink to this image">#</a></p>
 </figcaption>
 </figure>
 <p>To better understand what makes particles large or small <a class="reference internal" href="#tab-mgo-mie-sizes"><span class="std std-numref">Table 14</span></a> shows the dimensionless size parameter, <span class="math notranslate nohighlight">\(x\)</span>, as a function of wavenumber and of sphere radius. It has been assumed that the supporting medium is PTFE. Since the power expansion of the size parameters leads to terms that are quadratic in <span class="math notranslate nohighlight">\(x\)</span>, it should be expected that when <span class="math notranslate nohighlight">\(x\)</span> is less than about 0.1 μm, the particles can be considered small. It can be seen that particles less than 0.01 μm are small over the range of frequencies considered. But while 0.1 μm particles are small in the THz regime, and low-frequency infrared, they should not be considered small over the more extended infrared frequencies. 1μm particles should be considered large for both the THz and the extended infrared.</p>
 <div class="table-wrapper colwidths-given styled-table docutils container" id="tab-mgo-mie-sizes">
 <table class="styled-table docutils align-default" id="tab-mgo-mie-sizes">
-<caption><span class="caption-number">Table 14 </span><span class="caption-text">Variation of size parameter with wavenumber and radius of sphere</span><a class="headerlink" href="#tab-mgo-mie-sizes" title="Link to this table">¶</a></caption>
+<caption><span class="caption-number">Table 14 </span><span class="caption-text">Variation of size parameter with wavenumber and radius of sphere</span><a class="headerlink" href="#tab-mgo-mie-sizes" title="Permalink to this table">#</a></caption>
 <colgroup>
 <col style="width: 16.7%" />
 <col style="width: 16.7%" />
@@ -960,7 +896,7 @@ The data for this calculation can be found by looking in the <a class="reference
 <figure class="align-default" id="id45">
 <span id="fig-mgo-mie-sizes"></span><a class="reference internal image-reference" href="_images/MgO_Mie_Sizes.svg"><img alt="_images/MgO_Mie_Sizes.svg" height="320" src="_images/MgO_Mie_Sizes.svg" width="429" /></a>
 <figcaption>
-<p><span class="caption-number">Fig. 32 </span><span class="caption-text">Variation in absorption calculated by the Mie method for different radii of spheres. 1% volume fraction of MgO in PTFE and a broadening of 5 cm<sup>-1</sup></span><a class="headerlink" href="#id45" title="Link to this image">¶</a></p>
+<p><span class="caption-number">Fig. 32 </span><span class="caption-text">Variation in absorption calculated by the Mie method for different radii of spheres. 1% volume fraction of MgO in PTFE and a broadening of 5 cm<sup>-1</sup></span><a class="headerlink" href="#id45" title="Permalink to this image">#</a></p>
 </figcaption>
 </figure>
 <p><a class="reference internal" href="#fig-mgo-mie-sizes-big"><span class="std std-numref">Fig. 33</span></a> shows the effect of increasing the particle size further. More structure appears in the absorption, with increasing absorption around
@@ -970,23 +906,23 @@ The data for this calculation can be found by looking in the <a class="reference
 <figure class="align-default" id="id46">
 <span id="fig-mgo-mie-sizes-big"></span><a class="reference internal image-reference" href="_images/MgO_Mie_Sizes_Big.svg"><img alt="_images/MgO_Mie_Sizes_Big.svg" height="347" src="_images/MgO_Mie_Sizes_Big.svg" width="437" /></a>
 <figcaption>
-<p><span class="caption-number">Fig. 33 </span><span class="caption-text">Variation in absorption calculated by the Mie method for larger sphere radii. 1% volume fraction of MgO in PTFE and a broadening of 5 cm<sup>-1</sup></span><a class="headerlink" href="#id46" title="Link to this image">¶</a></p>
+<p><span class="caption-number">Fig. 33 </span><span class="caption-text">Variation in absorption calculated by the Mie method for larger sphere radii. 1% volume fraction of MgO in PTFE and a broadening of 5 cm<sup>-1</sup></span><a class="headerlink" href="#id46" title="Permalink to this image">#</a></p>
 </figcaption>
 </figure>
 </section>
 <section id="zno-example-using-mie-scattering">
-<h2>ZnO Example using Mie Scattering<a class="headerlink" href="#zno-example-using-mie-scattering" title="Link to this heading">¶</a></h2>
+<h2>ZnO Example using Mie Scattering<a class="headerlink" href="#zno-example-using-mie-scattering" title="Permalink to this heading">#</a></h2>
 <p>ZnO is an anisotropic material, so the treatment described here using Mie scattering is an approximation. However, the permittivity constant tensor is diagonal due to the space group symmetry of the crystal.</p>
 <figure class="align-default" id="id47">
 <span id="fig-zno-maxwell-garnett"></span><a class="reference internal image-reference" href="_images/ZnO-Maxwell_Garnett.svg"><img alt="_images/ZnO-Maxwell_Garnett.svg" height="318" src="_images/ZnO-Maxwell_Garnett.svg" width="427" /></a>
 <figcaption>
-<p><span class="caption-number">Fig. 34 </span><span class="caption-text">ZnO spheres in PTFE using Maxwell Garnett</span><a class="headerlink" href="#id47" title="Link to this image">¶</a></p>
+<p><span class="caption-number">Fig. 34 </span><span class="caption-text">ZnO spheres in PTFE using Maxwell Garnett</span><a class="headerlink" href="#id47" title="Permalink to this image">#</a></p>
 </figcaption>
 </figure>
 <figure class="align-default" id="id48">
 <span id="fig-zno-mie"></span><a class="reference internal image-reference" href="_images/ZnO_Mie.svg"><img alt="_images/ZnO_Mie.svg" height="324" src="_images/ZnO_Mie.svg" width="434" /></a>
 <figcaption>
-<p><span class="caption-number">Fig. 35 </span><span class="caption-text">ZnO spheres using Mie</span><a class="headerlink" href="#id48" title="Link to this image">¶</a></p>
+<p><span class="caption-number">Fig. 35 </span><span class="caption-text">ZnO spheres using Mie</span><a class="headerlink" href="#id48" title="Permalink to this image">#</a></p>
 </figcaption>
 </figure>
 <p>Figures <a class="reference internal" href="#fig-zno-maxwell-garnett"><span class="std std-numref">Fig. 34</span></a> and <a class="reference internal" href="#fig-zno-mie"><span class="std std-numref">Fig. 35</span></a> compare the capabilities of the Maxwell-Garnett and Mie methods for describing volume fraction effects. <a class="reference internal" href="#fig-zno-maxwell-garnett"><span class="std std-numref">Fig. 34</span></a> shows that Maxwell-Garnett predicts a lowering of intensity and frequency of the high-frequency peak as the volume fraction is increased. <a class="reference internal" href="#fig-zno-mie"><span class="std std-numref">Fig. 35</span></a> illustrates that Mie theory shows no effect of the change in volume fraction. This is to be expected as the theory assumes that each sphere is isolated and does not affect the other spheres around it. It should be pointed out that the figures are plotting molar absorption coefficients. The actual absorption would increase with volume fraction of ZnO.</p>
@@ -996,22 +932,21 @@ The data for this calculation can be found by looking in the <a class="reference
 <span id="fig-zno-mie-sizes"></span><a class="reference internal image-reference" href="_images/ZnO_Mie_Sizes.svg"><img alt="_images/ZnO_Mie_Sizes.svg" height="317" src="_images/ZnO_Mie_Sizes.svg" width="424" /></a>
 <figcaption>
 <p><span class="caption-number">Fig. 36 </span><span class="caption-text">ZnO spheres using Mie
-Mie scattering of 10% volume fraction ZnO spheres in PTFE using a line broadening factor of 5 cm<sup>-1</sup>.</span><a class="headerlink" href="#id49" title="Link to this image">¶</a></p>
+Mie scattering of 10% volume fraction ZnO spheres in PTFE using a line broadening factor of 5 cm<sup>-1</sup>.</span><a class="headerlink" href="#id49" title="Permalink to this image">#</a></p>
 </figcaption>
 </figure>
 </section>
 <section id="fitting-the-atr-spectrum-of-na2-so4-2">
-<h2>Fitting the ATR Spectrum of Na<sub>2</sub>(SO<sub>4</sub>)<sub>2</sub><a class="headerlink" href="#fitting-the-atr-spectrum-of-na2-so4-2" title="Link to this heading">¶</a></h2>
+<h2>Fitting the ATR Spectrum of Na<sub>2</sub>(SO<sub>4</sub>)<sub>2</sub><a class="headerlink" href="#fitting-the-atr-spectrum-of-na2-so4-2" title="Permalink to this heading">#</a></h2>
 <p>To calculate the expected Attenuated Total Reflectance spectrum of Na<sub>2</sub>(SO<sub>4</sub>)<sub>2</sub> a VASP calculation was performed of the optimised structure followed by the dynamical matrix and the phonon spectrum at the <span class="math notranslate nohighlight">\(\Gamma\)</span> point.
 After reading in the OUTCAR with PDGui, the scenario tab is modified to reflect the materials used in an ATR experiment.  The support matrix is set to air and the volume fraction of the dielectric is set 80%.
 This value needs to be chosen to reflect the particle shape and size distribution.
 When looking at the plot with the plotting tab, ensure that the ‘Powder ATR’ plot type is used.  This ensures that the fitter tab uses that plot for the fitting.  For the case of non-polarised radiation the choice of 0.5 for the ‘ATR S polarisation fraction’ is appropriate.
 The settings tab will look like the tab shown below.</p>
 <figure class="align-default" id="id50">
-<span id="na2so42-scenario"></span><a class="reference internal image-reference" href="_images/Na2SO42_Scenario_Fitting.png"><img alt="_images/Na2SO42_Scenario_Fitting.png" src="_images/Na2SO42_Scenario_Fitting.png" style="width: 613.8000000000001px; height: 871.2px;" />
-</a>
+<span id="na2so42-scenario"></span><a class="reference internal image-reference" href="_images/Na2SO42_Scenario_Fitting.png"><img alt="_images/Na2SO42_Scenario_Fitting.png" src="_images/Na2SO42_Scenario_Fitting.png" style="width: 613.8000000000001px; height: 871.2px;" /></a>
 <figcaption>
-<p><span class="caption-number">Fig. 37 </span><span class="caption-text">Na<sub>2</sub>(SO<sub>4</sub>)<sub>2</sub> Scenario Tab for an ATR scenario</span><a class="headerlink" href="#id50" title="Link to this image">¶</a></p>
+<p><span class="caption-number">Fig. 37 </span><span class="caption-text">Na<sub>2</sub>(SO<sub>4</sub>)<sub>2</sub> Scenario Tab for an ATR scenario</span><a class="headerlink" href="#id50" title="Permalink to this image">#</a></p>
 </figcaption>
 </figure>
 <p>The initial fitter tab will look something like what is shown below.  A file has been specified holding the experimental ATR spectrum.  There is a list of Lorentzian widths for each phonon transition.  The <em>Replot</em> button re-plots the graph after any changes to the sigma widths of the transition.  Changes to the phonon transition widths made in the <em>Fitter Tab</em> are reflected in the <em>Settings tab</em>.</p>
@@ -1048,10 +983,9 @@ After a recalculation four items of data are show;</p>
 </li>
 </ul>
 <figure class="align-default" id="id51">
-<span id="na2so42-fitter"></span><a class="reference internal image-reference" href="_images/Na2SO42_Fitter.png"><img alt="_images/Na2SO42_Fitter.png" src="_images/Na2SO42_Fitter.png" style="width: 613.8000000000001px; height: 871.2px;" />
-</a>
+<span id="na2so42-fitter"></span><a class="reference internal image-reference" href="_images/Na2SO42_Fitter.png"><img alt="_images/Na2SO42_Fitter.png" src="_images/Na2SO42_Fitter.png" style="width: 613.8000000000001px; height: 871.2px;" /></a>
 <figcaption>
-<p><span class="caption-number">Fig. 38 </span><span class="caption-text">Na<sub>2</sub>(SO<sub>4</sub>)<sub>2</sub> Fitter Tab for fitting ATR spectra</span><a class="headerlink" href="#id51" title="Link to this image">¶</a></p>
+<p><span class="caption-number">Fig. 38 </span><span class="caption-text">Na<sub>2</sub>(SO<sub>4</sub>)<sub>2</sub> Fitter Tab for fitting ATR spectra</span><a class="headerlink" href="#id51" title="Permalink to this image">#</a></p>
 </figcaption>
 </figure>
 <p>In the situation above the calculated and experimental spectra have been plotted on the same scale, but very often the units used for absorption are confusing and if necessary a separate scale for the experimental and calculated spectra can be used by toggling ‘Independent y-axes’ on the Fitter settings tab.</p>
@@ -1060,7 +994,7 @@ Around 1200 cm<sup>-1</sup> there are two transitions with similar intensities.
 The values of both sigmas should be modified until the calculated peak height is similar to the experimental one.  Where possible the same values of sigma should be used for several transitions and this process repeated for the important frequency ranges.  The table below shows the changes that can be made to improve the fit.</p>
 <div class="table-wrapper colwidths-given styled-table docutils container" id="na2so42-sigma-values">
 <table class="styled-table docutils align-default" id="na2so42-sigma-values">
-<caption><span class="caption-number">Table 15 </span><span class="caption-text">Modified sigma parameters for Na<sub>2</sub>(SO<sub>4</sub>)<sub>2</sub> after fitting</span><a class="headerlink" href="#na2so42-sigma-values" title="Link to this table">¶</a></caption>
+<caption><span class="caption-number">Table 15 </span><span class="caption-text">Modified sigma parameters for Na<sub>2</sub>(SO<sub>4</sub>)<sub>2</sub> after fitting</span><a class="headerlink" href="#na2so42-sigma-values" title="Permalink to this table">#</a></caption>
 <colgroup>
 <col style="width: 25.0%" />
 <col style="width: 25.0%" />
@@ -1118,10 +1052,9 @@ It is possible to further improve the quality of the agreement of the fit by sel
 The problem with doing the fitting automatically is that maximising the correlation function may not lead to comparisons that ‘look’ as good as simply making sure the peak heights of the experimental and calculated spectra are similar.
 The data for this calculation can be found by looking in the <a class="reference internal" href="installation.html#examples"><span class="std std-ref">Examples</span></a> section of the installation guide under the ATR/Na2SO42_fit example.</p>
 <figure class="align-default" id="id52">
-<span id="na2so42-fitted"></span><a class="reference internal image-reference" href="_images/Na2SO42_Fitted.png"><img alt="_images/Na2SO42_Fitted.png" src="_images/Na2SO42_Fitted.png" style="width: 576.0px; height: 409.5px;" />
-</a>
+<span id="na2so42-fitted"></span><a class="reference internal image-reference" href="_images/Na2SO42_Fitted.png"><img alt="_images/Na2SO42_Fitted.png" src="_images/Na2SO42_Fitted.png" style="width: 576.0px; height: 409.5px;" /></a>
 <figcaption>
-<p><span class="caption-number">Fig. 39 </span><span class="caption-text">Na<sub>2</sub>(SO<sub>4</sub>)<sub>2</sub> Fitted Spectra</span><a class="headerlink" href="#id52" title="Link to this image">¶</a></p>
+<p><span class="caption-number">Fig. 39 </span><span class="caption-text">Na<sub>2</sub>(SO<sub>4</sub>)<sub>2</sub> Fitted Spectra</span><a class="headerlink" href="#id52" title="Permalink to this image">#</a></p>
 </figcaption>
 </figure>
 </section>
@@ -1202,10 +1135,10 @@ The data for this calculation can be found by looking in the <a class="reference
       
     </aside>
   </div>
-</div><script src="_static/documentation_options.js?v=23ce250a"></script>
-    <script src="_static/doctools.js?v=9a2dae69"></script>
-    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
-    <script src="_static/scripts/furo.js?v=4e2eecee"></script>
+</div><script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=01b4f342"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="_static/scripts/furo.js?v=32e29ea5"></script>
     <script type="text/x-mathjax-config">MathJax.Hub.Config({"extensions": ["AMSmath.js"], "TeX": {"Macros": {"tensor": ["{\\bar{\\bar{#1}}}", 1], "tensorbs": ["{\\bar{\\bar{\\boldsymbol{#1}}}}", 1], "tensorbf": ["{\\bar{\\bar{\\boldsymbol{#1}}}}", 1], "fieldbf": ["{\\bar{\\boldsymbol{#1}}}", 1], "water": "\\H_{2}O"}}})</script>
     <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     </body>

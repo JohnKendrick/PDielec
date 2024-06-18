@@ -1,5 +1,5 @@
-PDielec.checkexcel
-==================
+:py:mod:`PDielec.checkexcel`
+============================
 
 .. py:module:: PDielec.checkexcel
 
@@ -11,16 +11,18 @@ PDielec.checkexcel
 
 
 
+Module Contents
+---------------
+
+
 Functions
----------
+~~~~~~~~~
 
 .. autoapisummary::
 
    PDielec.checkexcel.main
 
 
-Module Contents
----------------
 
 .. py:function:: main()
 

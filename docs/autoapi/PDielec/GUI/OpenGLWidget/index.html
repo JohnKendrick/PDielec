@@ -1,15 +1,15 @@
 <!doctype html>
-<html class="no-js" lang="en" data-content_root="../../../../">
+<html class="no-js" lang="en" data-content_root="">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="index" title="Index" href="../../../../genindex.html" /><link rel="search" title="Search" href="../../../../search.html" /><link rel="next" title="PDielec.GUI.PlottingTab" href="../PlottingTab/index.html" /><link rel="prev" title="PDielec.GUI.NoteBook" href="../NoteBook/index.html" />
 
-    <!-- Generated with Sphinx 7.3.7 and Furo 2024.05.06 -->
+    <!-- Generated with Sphinx 7.1.2 and Furo 2024.01.29 -->
         <title>PDielec.GUI.OpenGLWidget - PDielec: John Kendrick &amp; Andrew Burnett</title>
-      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=92fd9be5" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?v=387cc868" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css?v=fd3f3429" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=80d5e7a1" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?v=135e06be" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css?v=eafc0fe6" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/table_styling.css?v=a1a2a898" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo-extensions.css?v=36a5483c" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/css/custom.css?v=2e0a580d" />
@@ -71,7 +71,7 @@
   <symbol id="svg-sun" viewBox="0 0 24 24">
     <title>Light mode</title>
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
       <circle cx="12" cy="12" r="5"></circle>
       <line x1="12" y1="1" x2="12" y2="3"></line>
       <line x1="12" y1="21" x2="12" y2="23"></line>
@@ -86,7 +86,7 @@
   <symbol id="svg-moon" viewBox="0 0 24 24">
     <title>Dark mode</title>
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
       <path stroke="none" d="M0 0h24v24H0z" fill="none" />
       <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
     </svg>
@@ -94,7 +94,7 @@
   <symbol id="svg-sun-half" viewBox="0 0 24 24">
     <title>Auto light/dark mode</title>
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
       <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
       <circle cx="12" cy="12" r="9" />
       <path d="M13 12h5" />
@@ -102,60 +102,6 @@
       <path d="M13 18h1" />
       <path d="M13 9h4" />
       <path d="M13 6h1" />
-    </svg>
-  </symbol>
-  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
-    <title>Auto light/dark, in light mode</title>
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
-      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
-      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
-      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
-      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
-      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
-      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
-      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
-      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
-      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
-      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
-      <circle cx="14.5" cy="9.55" r="3.6"/>
-    </svg>
-  </symbol>
-  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
-    <title>Auto light/dark, in dark mode</title>
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
-      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
-      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
-      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
-      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
-      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
-      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
-      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
-      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
-      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
-      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
-      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
-    </svg>
-  </symbol>
-  <symbol id="svg-pencil" viewBox="0 0 24 24">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
-      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
-      <path d="M13.5 6.5l4 4" />
-      <path d="M20 21l2 -2l-2 -2" />
-      <path d="M17 17l-2 2l2 2" /
-    </svg>
-  </symbol>
-  <symbol id="svg-eye" viewBox="0 0 24 24">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
-      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
-      <path
-        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
-      <path d="M20 21l2 -2l-2 -2" />
-      <path d="M17 17l-2 2l2 2" />
     </svg>
   </symbol>
 </svg>
@@ -168,8 +114,6 @@
 <label class="overlay toc-overlay" for="__toc">
   <div class="visually-hidden">Hide table of contents sidebar</div>
 </label>
-
-<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
 
 
 
@@ -188,8 +132,7 @@
       <div class="theme-toggle-container theme-toggle-header">
         <button class="theme-toggle">
           <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
-          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
-          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+          <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
           <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
           <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
         </button>
@@ -235,63 +178,63 @@
 <p class="caption" role="heading"><span class="caption-text">API</span></p>
 <ul class="current">
 <li class="toctree-l1 current has-children"><a class="reference internal" href="../../../index.html">API Reference</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of API Reference</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
-<li class="toctree-l2 current has-children"><a class="reference internal" href="../../index.html">PDielec</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of PDielec</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
-<li class="toctree-l3 current has-children"><a class="reference internal" href="../index.html">PDielec.GUI</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of PDielec.GUI</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
-<li class="toctree-l4"><a class="reference internal" href="../AnalysisTab/index.html">PDielec.GUI.AnalysisTab</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../App/index.html">PDielec.GUI.App</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../FitterTab/index.html">PDielec.GUI.FitterTab</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../MainTab/index.html">PDielec.GUI.MainTab</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../NoteBook/index.html">PDielec.GUI.NoteBook</a></li>
-<li class="toctree-l4 current current-page"><a class="current reference internal" href="#">PDielec.GUI.OpenGLWidget</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../PlottingTab/index.html">PDielec.GUI.PlottingTab</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../PowderScenarioTab/index.html">PDielec.GUI.PowderScenarioTab</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../ScenarioTab/index.html">PDielec.GUI.ScenarioTab</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../SettingsTab/index.html">PDielec.GUI.SettingsTab</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../SingleCrystalLayer/index.html">PDielec.GUI.SingleCrystalLayer</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../SingleCrystalScenarioTab/index.html">PDielec.GUI.SingleCrystalScenarioTab</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../SpreadSheetManager/index.html">PDielec.GUI.SpreadSheetManager</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../ViewerTab/index.html">PDielec.GUI.ViewerTab</a></li>
+<li class="toctree-l2 current has-children"><a class="reference internal" href="../../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec</span></code></a><input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of PDielec</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l3 current has-children"><a class="reference internal" href="../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI</span></code></a><input checked="" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of PDielec.GUI</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="../AnalysisTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.AnalysisTab</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../App/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.App</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../FitterTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.FitterTab</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../MainTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.MainTab</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../NoteBook/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.NoteBook</span></code></a></li>
+<li class="toctree-l4 current current-page"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.OpenGLWidget</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../PlottingTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.PlottingTab</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../PowderScenarioTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.PowderScenarioTab</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../ScenarioTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.ScenarioTab</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../SettingsTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.SettingsTab</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../SingleCrystalLayer/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.SingleCrystalLayer</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../SingleCrystalScenarioTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.SingleCrystalScenarioTab</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../SpreadSheetManager/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.SpreadSheetManager</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../ViewerTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.ViewerTab</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="../../AbinitOutputReader/index.html">PDielec.AbinitOutputReader</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../Calculator/index.html">PDielec.Calculator</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../CastepOutputReader/index.html">PDielec.CastepOutputReader</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../Constants/index.html">PDielec.Constants</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../CrystalOutputReader/index.html">PDielec.CrystalOutputReader</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../DielectricFunction/index.html">PDielec.DielectricFunction</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../ExperimentOutputReader/index.html">PDielec.ExperimentOutputReader</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../GTMcore/index.html">PDielec.GTMcore</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../GenericOutputReader/index.html">PDielec.GenericOutputReader</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../GulpOutputReader/index.html">PDielec.GulpOutputReader</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../HelperRoutines/index.html">PDielec.HelperRoutines</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../IO/index.html">PDielec.IO</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../Materials/index.html">PDielec.Materials</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../Mie/index.html">PDielec.Mie</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../PhonopyOutputReader/index.html">PDielec.PhonopyOutputReader</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../Plotter/index.html">PDielec.Plotter</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../QEOutputReader/index.html">PDielec.QEOutputReader</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../SuperCell/index.html">PDielec.SuperCell</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../UnitCell/index.html">PDielec.UnitCell</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../Utilities/index.html">PDielec.Utilities</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../VaspOutputReader/index.html">PDielec.VaspOutputReader</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../checkcsv/index.html">PDielec.checkcsv</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../checkexcel/index.html">PDielec.checkexcel</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../graphdatagenerator/index.html">PDielec.graphdatagenerator</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../p1reader/index.html">PDielec.p1reader</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../p2cif/index.html">PDielec.p2cif</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../pdcompare/index.html">PDielec.pdcompare</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../pdgui/index.html">PDielec.pdgui</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../pdmake/index.html">PDielec.pdmake</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../pickled_reader/index.html">PDielec.pickled_reader</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../preader/index.html">PDielec.preader</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../vibanalysis/index.html">PDielec.vibanalysis</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../AbinitOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.AbinitOutputReader</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../Calculator/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.Calculator</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../CastepOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.CastepOutputReader</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../Constants/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.Constants</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../CrystalOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.CrystalOutputReader</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../DielectricFunction/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.DielectricFunction</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ExperimentOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.ExperimentOutputReader</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../GTMcore/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GTMcore</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../GenericOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GenericOutputReader</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../GulpOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GulpOutputReader</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../HelperRoutines/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.HelperRoutines</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../IO/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.IO</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../Materials/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.Materials</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../Mie/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.Mie</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../PhonopyOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.PhonopyOutputReader</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../Plotter/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.Plotter</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../QEOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.QEOutputReader</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../SuperCell/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.SuperCell</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../UnitCell/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.UnitCell</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../Utilities/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.Utilities</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../VaspOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.VaspOutputReader</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../checkcsv/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.checkcsv</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../checkexcel/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.checkexcel</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../graphdatagenerator/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.graphdatagenerator</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../p1reader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.p1reader</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../p2cif/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.p2cif</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../pdcompare/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.pdcompare</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../pdgui/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.pdgui</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../pdmake/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.pdmake</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../pickled_reader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.pickled_reader</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../preader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.preader</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../vibanalysis/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.vibanalysis</span></code></a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../../pdgui/index.html">PDielec.pdgui</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../preader/index.html">PDielec.preader</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../pdmake/index.html">PDielec.pdmake</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../pdgui/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.pdgui</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../preader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.preader</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../pdmake/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.pdmake</span></code></a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">References</span></p>
 <ul>
@@ -315,17 +258,11 @@
           <span>Back to top</span>
         </a>
         <div class="content-icon-container">
-          <div class="view-this-page">
-  <a class="muted-link" href="../../../../_sources/autoapi/PDielec/GUI/OpenGLWidget/index.rst.txt" title="View this page">
-    <svg><use href="#svg-eye"></use></svg>
-    <span class="visually-hidden">View this page</span>
-  </a>
-</div>
+          
 <div class="theme-toggle-container theme-toggle-content">
             <button class="theme-toggle">
               <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
-              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
-              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+              <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
               <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
               <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
             </button>
@@ -335,12 +272,14 @@
             <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
           </label>
         </div>
-        <article role="main" id="furo-main-content">
+        <article role="main">
           <section id="module-PDielec.GUI.OpenGLWidget">
-<span id="pdielec-gui-openglwidget"></span><h1>PDielec.GUI.OpenGLWidget<a class="headerlink" href="#module-PDielec.GUI.OpenGLWidget" title="Link to this heading">¶</a></h1>
+<span id="pdielec-gui-openglwidget"></span><h1><a class="reference internal" href="#module-PDielec.GUI.OpenGLWidget" title="PDielec.GUI.OpenGLWidget"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.OpenGLWidget</span></code></a><a class="headerlink" href="#module-PDielec.GUI.OpenGLWidget" title="Permalink to this heading">#</a></h1>
 <p>OpenGLWidget module</p>
+<section id="module-contents">
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this heading">#</a></h2>
 <section id="classes">
-<h2>Classes<a class="headerlink" href="#classes" title="Link to this heading">¶</a></h2>
+<h3>Classes<a class="headerlink" href="#classes" title="Permalink to this heading">#</a></h3>
 <div class="table-wrapper autosummary longtable docutils container">
 <table class="autosummary longtable docutils align-default">
 <tbody>
@@ -350,31 +289,25 @@
 <tr class="row-even"><td><p><a class="reference internal" href="#PDielec.GUI.OpenGLWidget.Cylinder" title="PDielec.GUI.OpenGLWidget.Cylinder"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Cylinder</span></code></a></p></td>
 <td><p>A class representing a 3D cylinder.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#PDielec.GUI.OpenGLWidget.Debug" title="PDielec.GUI.OpenGLWidget.Debug"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Debug</span></code></a></p></td>
-<td><p>A class aimed at providing a structured way to include debug messages in code.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#PDielec.GUI.OpenGLWidget.OpenGLWidget" title="PDielec.GUI.OpenGLWidget.OpenGLWidget"><code class="xref py py-obj docutils literal notranslate"><span class="pre">OpenGLWidget</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#PDielec.GUI.OpenGLWidget.OpenGLWidget" title="PDielec.GUI.OpenGLWidget.OpenGLWidget"><code class="xref py py-obj docutils literal notranslate"><span class="pre">OpenGLWidget</span></code></a></p></td>
 <td><p>A widget for the Qt framework specialized in OpenGL graphics rendering.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#PDielec.GUI.OpenGLWidget.Sphere" title="PDielec.GUI.OpenGLWidget.Sphere"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Sphere</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#PDielec.GUI.OpenGLWidget.Sphere" title="PDielec.GUI.OpenGLWidget.Sphere"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Sphere</span></code></a></p></td>
 <td><p>A class representing a sphere.</p></td>
 </tr>
 </tbody>
 </table>
 </div>
-</section>
-<section id="module-contents">
-<h2>Module Contents<a class="headerlink" href="#module-contents" title="Link to this heading">¶</a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="PDielec.GUI.OpenGLWidget.Arrow">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PDielec.GUI.OpenGLWidget.</span></span><span class="sig-name descname"><span class="pre">Arrow</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">colour</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">radius</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">direction</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scale</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/OpenGLWidget.html#Arrow"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.OpenGLWidget.Arrow" title="Link to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PDielec.GUI.OpenGLWidget.</span></span><span class="sig-name descname"><span class="pre">Arrow</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">colour</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">radius</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">direction</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scale</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/OpenGLWidget.html#Arrow"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.OpenGLWidget.Arrow" title="Permalink to this definition">#</a></dt>
 <dd><p>A class to represent a 3D arrow for graphical display.</p>
 <p>This class encapsulates properties of a 3D arrow including its color,
 size (radius), direction, and scaling factor. It uses numpy for
 calculations to set up the appropriate direction, height, and rotation
 angle for the arrow based on the provided parameters.</p>
 <section id="parameters">
-<h3>Parameters<a class="headerlink" href="#parameters" title="Link to this heading">¶</a></h3>
+<h4>Parameters<a class="headerlink" href="#parameters" title="Permalink to this heading">#</a></h4>
 <dl class="simple">
 <dt>colour<span class="classifier">list of int</span></dt><dd><p>The RGB values of the arrow colour, where each value is in the range [0, 255].</p>
 </dd>
@@ -387,7 +320,7 @@ angle for the arrow based on the provided parameters.</p>
 </dl>
 </section>
 <section id="attributes">
-<h3>Attributes<a class="headerlink" href="#attributes" title="Link to this heading">¶</a></h3>
+<h4>Attributes<a class="headerlink" href="#attributes" title="Permalink to this heading">#</a></h4>
 <dl class="simple">
 <dt>colour<span class="classifier">numpy.ndarray</span></dt><dd><p>The normalized RGB colour of the arrow, with each channel value in the range [0.0, 1.0].</p>
 </dd>
@@ -407,10 +340,10 @@ angle for the arrow based on the provided parameters.</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="PDielec.GUI.OpenGLWidget.Cylinder">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PDielec.GUI.OpenGLWidget.</span></span><span class="sig-name descname"><span class="pre">Cylinder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">colour</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">radius</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pos1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pos2</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/OpenGLWidget.html#Cylinder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.OpenGLWidget.Cylinder" title="Link to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PDielec.GUI.OpenGLWidget.</span></span><span class="sig-name descname"><span class="pre">Cylinder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">colour</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">radius</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pos1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pos2</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/OpenGLWidget.html#Cylinder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.OpenGLWidget.Cylinder" title="Permalink to this definition">#</a></dt>
 <dd><p>A class representing a 3D cylinder.</p>
 <section id="id1">
-<h3>Parameters<a class="headerlink" href="#id1" title="Link to this heading">¶</a></h3>
+<h4>Parameters<a class="headerlink" href="#id1" title="Permalink to this heading">#</a></h4>
 <dl class="simple">
 <dt>colour<span class="classifier">array_like</span></dt><dd><p>The colour of the cylinder, expected to be a list or array of three elements (R, G, B) where each value is in the range 0-255.</p>
 </dd>
@@ -423,7 +356,7 @@ angle for the arrow based on the provided parameters.</p>
 </dl>
 </section>
 <section id="id2">
-<h3>Attributes<a class="headerlink" href="#id2" title="Link to this heading">¶</a></h3>
+<h4>Attributes<a class="headerlink" href="#id2" title="Permalink to this heading">#</a></h4>
 <dl class="simple">
 <dt>colour<span class="classifier">ndarray</span></dt><dd><p>The normalized colour of the cylinder (R, G, B) with values ranging from 0.0 to 1.0.</p>
 </dd>
@@ -444,70 +377,16 @@ angle for the arrow based on the provided parameters.</p>
 </dd></dl>
 
 <dl class="py class">
-<dt class="sig sig-object py" id="PDielec.GUI.OpenGLWidget.Debug">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PDielec.GUI.OpenGLWidget.</span></span><span class="sig-name descname"><span class="pre">Debug</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">debug</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">text</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">level</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/Utilities.html#Debug"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.OpenGLWidget.Debug" title="Link to this definition">¶</a></dt>
-<dd><p>A class aimed at providing a structured way to include debug messages in code.</p>
-<section id="methods">
-<h3>Methods<a class="headerlink" href="#methods" title="Link to this heading">¶</a></h3>
-<dl class="simple">
-<dt>print(args, level=0)</dt><dd><p>Prints debug messages based on the debug level provided as argument compared to the object’s debug level.</p>
-</dd>
-<dt>state()</dt><dd><p>Returns the current state (enabled or disabled) of debugging.</p>
-</dd>
-</dl>
-</section>
-<section id="notes">
-<h3>Notes<a class="headerlink" href="#notes" title="Link to this heading">¶</a></h3>
-<p>The <cite>print</cite> method provides a flexible way to include additional information along with the base debug message, allowing for a detailed and adjustable debugging output.</p>
-<dl class="py method">
-<dt class="sig sig-object py" id="PDielec.GUI.OpenGLWidget.Debug.print">
-<span class="sig-name descname"><span class="pre">print</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">level</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/Utilities.html#Debug.print"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.OpenGLWidget.Debug.print" title="Link to this definition">¶</a></dt>
-<dd><p>Prints message if debugging level allows.</p>
-<section id="id3">
-<h4>Parameters<a class="headerlink" href="#id3" title="Link to this heading">¶</a></h4>
-<dl class="simple">
-<dt>args</dt><dd><p>Variable length argument list for the message to be printed.</p>
-</dd>
-<dt>level<span class="classifier">int, optional</span></dt><dd><p>The level of the message that determines if it gets printed or not,
-based on the instance’s <cite>level</cite>. Default value is 0.</p>
-</dd>
-</dl>
-</section>
-<section id="id4">
-<h4>Notes<a class="headerlink" href="#id4" title="Link to this heading">¶</a></h4>
-<p>This method will only print the message if the instance’s <cite>debug</cite> flag is True
-and the provided <cite>level</cite> is less than or equal to the instance’s <cite>level</cite>.</p>
-</section>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="PDielec.GUI.OpenGLWidget.Debug.state">
-<span class="sig-name descname"><span class="pre">state</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/Utilities.html#Debug.state"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.OpenGLWidget.Debug.state" title="Link to this definition">¶</a></dt>
-<dd><p>Get the debug state.</p>
-<section id="id5">
-<h4>Parameters<a class="headerlink" href="#id5" title="Link to this heading">¶</a></h4>
-<p>None</p>
-</section>
-<section id="returns">
-<h4>Returns<a class="headerlink" href="#returns" title="Link to this heading">¶</a></h4>
-<p>The current debug state.</p>
-</section>
-</dd></dl>
-
-</section>
-</dd></dl>
-
-<dl class="py class">
 <dt class="sig sig-object py" id="PDielec.GUI.OpenGLWidget.OpenGLWidget">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PDielec.GUI.OpenGLWidget.</span></span><span class="sig-name descname"><span class="pre">OpenGLWidget</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">debug</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/OpenGLWidget.html#OpenGLWidget"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.OpenGLWidget.OpenGLWidget" title="Link to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PDielec.GUI.OpenGLWidget.</span></span><span class="sig-name descname"><span class="pre">OpenGLWidget</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">debug</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/OpenGLWidget.html#OpenGLWidget"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.OpenGLWidget.OpenGLWidget" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">PyQt5.QtWidgets.QOpenGLWidget</span></code></p>
 <p>A widget for the Qt framework specialized in OpenGL graphics rendering.</p>
 <p>This widget is designed to act as a capable 3D rendering environment
 for OpenGL within a Qt application. It supports a wide range of 3D
 visualization tasks, including rendering spheres, cylinders, and arrows
 to represent molecular structures or other 3D objects.</p>
-<section id="id6">
-<h3>Parameters<a class="headerlink" href="#id6" title="Link to this heading">¶</a></h3>
+<section id="id3">
+<h4>Parameters<a class="headerlink" href="#id3" title="Permalink to this heading">#</a></h4>
 <dl class="simple">
 <dt>parent<span class="classifier">QWidget</span></dt><dd><p>The parent widget.</p>
 </dd>
@@ -515,8 +394,8 @@ to represent molecular structures or other 3D objects.</p>
 </dd>
 </dl>
 </section>
-<section id="id7">
-<h3>Attributes<a class="headerlink" href="#id7" title="Link to this heading">¶</a></h3>
+<section id="id4">
+<h4>Attributes<a class="headerlink" href="#id4" title="Permalink to this heading">#</a></h4>
 <dl class="simple">
 <dt>format<span class="classifier">QSurfaceFormat</span></dt><dd><p>Specifies the format options for the rendering context. Common settings include
 samples for multisampling and the swap behavior for double buffering.</p>
@@ -533,8 +412,8 @@ samples for multisampling and the swap behavior for double buffering.</p>
 </dd>
 </dl>
 </section>
-<section id="id8">
-<h3>Methods<a class="headerlink" href="#id8" title="Link to this heading">¶</a></h3>
+<section id="methods">
+<h4>Methods<a class="headerlink" href="#methods" title="Permalink to this heading">#</a></h4>
 <dl class="simple">
 <dt>enterEvent(event)</dt><dd><p>Handles the mouse entering the widget’s area.</p>
 </dd>
@@ -591,12 +470,17 @@ samples for multisampling and the swap behavior for double buffering.</p>
 <dt>addSphere(colour, radius, pos, phase=0)</dt><dd><p>Adds a sphere to the scene.</p>
 </dd>
 </dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PDielec.GUI.OpenGLWidget.OpenGLWidget.format">
+<span class="sig-name descname"><span class="pre">format</span></span><a class="headerlink" href="#PDielec.GUI.OpenGLWidget.OpenGLWidget.format" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.OpenGLWidget.OpenGLWidget.addArrows">
-<span class="sig-name descname"><span class="pre">addArrows</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">colour</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">radius</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">direction</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">length</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phase</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/OpenGLWidget.html#OpenGLWidget.addArrows"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.OpenGLWidget.OpenGLWidget.addArrows" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">addArrows</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">colour</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">radius</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">direction</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">length</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phase</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/OpenGLWidget.html#OpenGLWidget.addArrows"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.OpenGLWidget.OpenGLWidget.addArrows" title="Permalink to this definition">#</a></dt>
 <dd><p>Add an arrow to the list of arrows.</p>
-<section id="id9">
-<h4>Parameters<a class="headerlink" href="#id9" title="Link to this heading">¶</a></h4>
+<section id="id5">
+<h5>Parameters<a class="headerlink" href="#id5" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>colour<span class="classifier">str</span></dt><dd><p>The color of the arrow.</p>
 </dd>
@@ -610,18 +494,18 @@ samples for multisampling and the swap behavior for double buffering.</p>
 </dd>
 </dl>
 </section>
-<section id="id10">
-<h4>Returns<a class="headerlink" href="#id10" title="Link to this heading">¶</a></h4>
+<section id="returns">
+<h5>Returns<a class="headerlink" href="#returns" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.OpenGLWidget.OpenGLWidget.addCylinder">
-<span class="sig-name descname"><span class="pre">addCylinder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">colour</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">radius</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pos1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pos2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phase</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/OpenGLWidget.html#OpenGLWidget.addCylinder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.OpenGLWidget.OpenGLWidget.addCylinder" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">addCylinder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">colour</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">radius</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pos1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pos2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phase</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/OpenGLWidget.html#OpenGLWidget.addCylinder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.OpenGLWidget.OpenGLWidget.addCylinder" title="Permalink to this definition">#</a></dt>
 <dd><p>Adds a Cylinder object to the specified phase collection of cylinders.</p>
-<section id="id11">
-<h4>Parameters<a class="headerlink" href="#id11" title="Link to this heading">¶</a></h4>
+<section id="id6">
+<h5>Parameters<a class="headerlink" href="#id6" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>colour<span class="classifier">str</span></dt><dd><p>The color of the cylinder.</p>
 </dd>
@@ -635,18 +519,18 @@ samples for multisampling and the swap behavior for double buffering.</p>
 </dd>
 </dl>
 </section>
-<section id="id12">
-<h4>Returns<a class="headerlink" href="#id12" title="Link to this heading">¶</a></h4>
+<section id="id7">
+<h5>Returns<a class="headerlink" href="#id7" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.OpenGLWidget.OpenGLWidget.addSphere">
-<span class="sig-name descname"><span class="pre">addSphere</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">colour</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">radius</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pos</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phase</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/OpenGLWidget.html#OpenGLWidget.addSphere"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.OpenGLWidget.OpenGLWidget.addSphere" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">addSphere</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">colour</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">radius</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pos</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phase</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/OpenGLWidget.html#OpenGLWidget.addSphere"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.OpenGLWidget.OpenGLWidget.addSphere" title="Permalink to this definition">#</a></dt>
 <dd><p>Add a sphere to a collection within an object.</p>
-<section id="id13">
-<h4>Parameters<a class="headerlink" href="#id13" title="Link to this heading">¶</a></h4>
+<section id="id8">
+<h5>Parameters<a class="headerlink" href="#id8" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>colour<span class="classifier">Any</span></dt><dd><p>The colour of the sphere, can vary depending on representation (e.g., string, tuple of RGB values).</p>
 </dd>
@@ -658,30 +542,30 @@ samples for multisampling and the swap behavior for double buffering.</p>
 </dd>
 </dl>
 </section>
-<section id="id14">
-<h4>Returns<a class="headerlink" href="#id14" title="Link to this heading">¶</a></h4>
+<section id="id9">
+<h5>Returns<a class="headerlink" href="#id9" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.OpenGLWidget.OpenGLWidget.createArrays">
-<span class="sig-name descname"><span class="pre">createArrays</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nphases</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/OpenGLWidget.html#OpenGLWidget.createArrays"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.OpenGLWidget.OpenGLWidget.createArrays" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">createArrays</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nphases</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/OpenGLWidget.html#OpenGLWidget.createArrays"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.OpenGLWidget.OpenGLWidget.createArrays" title="Permalink to this definition">#</a></dt>
 <dd><p>Create or reinitialize arrays for spheres and cylinders for each phase.</p>
 <p>This method creates or clears and then repopulates <cite>self.spheres</cite> and <cite>self.cylinders</cite> with an empty <cite>deque</cite> for each phase. It also sets <cite>self.number_of_phases</cite> to the given <cite>nphases</cite> and initializes <cite>self.current_phase</cite> to the midpoint of the range of phases (rounded down if <cite>nphases</cite> is an odd number).</p>
-<section id="id15">
-<h4>Parameters<a class="headerlink" href="#id15" title="Link to this heading">¶</a></h4>
+<section id="id10">
+<h5>Parameters<a class="headerlink" href="#id10" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>nphases<span class="classifier">int</span></dt><dd><p>The number of phases for which to create arrays.</p>
 </dd>
 </dl>
 </section>
-<section id="id16">
-<h4>Returns<a class="headerlink" href="#id16" title="Link to this heading">¶</a></h4>
+<section id="id11">
+<h5>Returns<a class="headerlink" href="#id11" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
-<section id="id17">
-<h4>Notes<a class="headerlink" href="#id17" title="Link to this heading">¶</a></h4>
+<section id="notes">
+<h5>Notes<a class="headerlink" href="#notes" title="Permalink to this heading">#</a></h5>
 <ul class="simple">
 <li><p>Assumes <cite>self.spheres</cite> and <cite>self.cylinders</cite> are already defined as lists.</p></li>
 <li><p>It uses the <cite>clear</cite> method on both <cite>self.spheres</cite> and <cite>self.cylinders</cite>, which is available for lists in Python 3.3 and later.</p></li>
@@ -691,19 +575,19 @@ samples for multisampling and the swap behavior for double buffering.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.OpenGLWidget.OpenGLWidget.defineLights">
-<span class="sig-name descname"><span class="pre">defineLights</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/OpenGLWidget.html#OpenGLWidget.defineLights"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.OpenGLWidget.OpenGLWidget.defineLights" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">defineLights</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/OpenGLWidget.html#OpenGLWidget.defineLights"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.OpenGLWidget.OpenGLWidget.defineLights" title="Permalink to this definition">#</a></dt>
 <dd><p>Define light configurations for the viewer.</p>
 <p>This method sets up the lighting for a 3D viewer by configuring ambient, diffuse, and specular light properties, as well as light positions. It also controls which lights are enabled or disabled based on the object’s <cite>light_switches</cite> attribute.</p>
-<section id="id18">
-<h4>Parameters<a class="headerlink" href="#id18" title="Link to this heading">¶</a></h4>
+<section id="id12">
+<h5>Parameters<a class="headerlink" href="#id12" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
-<section id="id19">
-<h4>Returns<a class="headerlink" href="#id19" title="Link to this heading">¶</a></h4>
+<section id="id13">
+<h5>Returns<a class="headerlink" href="#id13" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
-<section id="id20">
-<h4>Notes<a class="headerlink" href="#id20" title="Link to this heading">¶</a></h4>
+<section id="id14">
+<h5>Notes<a class="headerlink" href="#id14" title="Permalink to this heading">#</a></h5>
 <ul class="simple">
 <li><p><cite>self.light_switches</cite> needs to be initially set or inherited from <cite>self.viewerTab.light_switches</cite> if <cite>self.light_switches</cite> is None.</p></li>
 <li><p>Lighting is enabled globally with <cite>glEnable(GL_LIGHTING)</cite>.</p></li>
@@ -720,35 +604,35 @@ samples for multisampling and the swap behavior for double buffering.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.OpenGLWidget.OpenGLWidget.deleteArrows">
-<span class="sig-name descname"><span class="pre">deleteArrows</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/OpenGLWidget.html#OpenGLWidget.deleteArrows"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.OpenGLWidget.OpenGLWidget.deleteArrows" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">deleteArrows</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/OpenGLWidget.html#OpenGLWidget.deleteArrows"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.OpenGLWidget.OpenGLWidget.deleteArrows" title="Permalink to this definition">#</a></dt>
 <dd><p>Deletes all arrows from a collection.</p>
 <p>This method clears the collection of arrows by removing all elements from it.</p>
-<section id="id21">
-<h4>Parameters<a class="headerlink" href="#id21" title="Link to this heading">¶</a></h4>
+<section id="id15">
+<h5>Parameters<a class="headerlink" href="#id15" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
-<section id="id22">
-<h4>Returns<a class="headerlink" href="#id22" title="Link to this heading">¶</a></h4>
+<section id="id16">
+<h5>Returns<a class="headerlink" href="#id16" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.OpenGLWidget.OpenGLWidget.deleteCylinders">
-<span class="sig-name descname"><span class="pre">deleteCylinders</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/OpenGLWidget.html#OpenGLWidget.deleteCylinders"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.OpenGLWidget.OpenGLWidget.deleteCylinders" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">deleteCylinders</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/OpenGLWidget.html#OpenGLWidget.deleteCylinders"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.OpenGLWidget.OpenGLWidget.deleteCylinders" title="Permalink to this definition">#</a></dt>
 <dd><p>Deletes all cylinder objects from the storage.</p>
 <p>This method clears the list that stores cylinder objects, effectively
 removing all the cylinders managed by the instance.</p>
-<section id="id23">
-<h4>Parameters<a class="headerlink" href="#id23" title="Link to this heading">¶</a></h4>
+<section id="id17">
+<h5>Parameters<a class="headerlink" href="#id17" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
-<section id="id24">
-<h4>Returns<a class="headerlink" href="#id24" title="Link to this heading">¶</a></h4>
+<section id="id18">
+<h5>Returns<a class="headerlink" href="#id18" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
-<section id="id25">
-<h4>Notes<a class="headerlink" href="#id25" title="Link to this heading">¶</a></h4>
+<section id="id19">
+<h5>Notes<a class="headerlink" href="#id19" title="Permalink to this heading">#</a></h5>
 <p>This method should be used with caution as it irreversibly deletes all
 cylinder data from the instance.</p>
 </section>
@@ -756,34 +640,34 @@ cylinder data from the instance.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.OpenGLWidget.OpenGLWidget.deleteSpheres">
-<span class="sig-name descname"><span class="pre">deleteSpheres</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/OpenGLWidget.html#OpenGLWidget.deleteSpheres"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.OpenGLWidget.OpenGLWidget.deleteSpheres" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">deleteSpheres</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/OpenGLWidget.html#OpenGLWidget.deleteSpheres"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.OpenGLWidget.OpenGLWidget.deleteSpheres" title="Permalink to this definition">#</a></dt>
 <dd><p>Deletes all spheres from the current context.</p>
 <p>This method clears the collection of spheres.</p>
-<section id="id26">
-<h4>Parameters<a class="headerlink" href="#id26" title="Link to this heading">¶</a></h4>
+<section id="id20">
+<h5>Parameters<a class="headerlink" href="#id20" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
-<section id="id27">
-<h4>Returns<a class="headerlink" href="#id27" title="Link to this heading">¶</a></h4>
+<section id="id21">
+<h5>Returns<a class="headerlink" href="#id21" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.OpenGLWidget.OpenGLWidget.drawArrows">
-<span class="sig-name descname"><span class="pre">drawArrows</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/OpenGLWidget.html#OpenGLWidget.drawArrows"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.OpenGLWidget.OpenGLWidget.drawArrows" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">drawArrows</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/OpenGLWidget.html#OpenGLWidget.drawArrows"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.OpenGLWidget.OpenGLWidget.drawArrows" title="Permalink to this definition">#</a></dt>
 <dd><p>Draw the designated arrows with specified properties.</p>
 <p>This method draws a series of arrows based on the properties stored within instances of the class. The arrows are displayed on the viewer associated with <cite>self</cite>. Each arrow has an associated sphere from which it originates. These spheres have positional data that dictate where the arrow is drawn. Furthermore, arrows have several visual properties such as color and size that are applied when rendering. Error handling for absent arrows is included, halting the function early if no arrows are to be drawn.</p>
-<section id="id28">
-<h4>Parameters<a class="headerlink" href="#id28" title="Link to this heading">¶</a></h4>
+<section id="id22">
+<h5>Parameters<a class="headerlink" href="#id22" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
-<section id="id29">
-<h4>Returns<a class="headerlink" href="#id29" title="Link to this heading">¶</a></h4>
+<section id="id23">
+<h5>Returns<a class="headerlink" href="#id23" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
-<section id="id30">
-<h4>Notes<a class="headerlink" href="#id30" title="Link to this heading">¶</a></h4>
+<section id="id24">
+<h5>Notes<a class="headerlink" href="#id24" title="Permalink to this heading">#</a></h5>
 <ul class="simple">
 <li><p>The arrow drawing process involves translating and rotating the OpenGL context to the appropriate position and orientation before drawing cylinders to represent the arrows.</p></li>
 <li><p>Material properties such as diffuse, ambient, and specular colors are calculated from the arrow’s color and applied to the OpenGL material.</p></li>
@@ -795,21 +679,21 @@ cylinder data from the instance.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.OpenGLWidget.OpenGLWidget.drawCylinders">
-<span class="sig-name descname"><span class="pre">drawCylinders</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/OpenGLWidget.html#OpenGLWidget.drawCylinders"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.OpenGLWidget.OpenGLWidget.drawCylinders" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">drawCylinders</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/OpenGLWidget.html#OpenGLWidget.drawCylinders"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.OpenGLWidget.OpenGLWidget.drawCylinders" title="Permalink to this definition">#</a></dt>
 <dd><p>Draw the cylinders stored in the object.</p>
 <p>This method iterates through the list of cylinder objects for the current phase,
 computes the required material colors based on predefined factors, and renders
 each cylinder using OpenGL commands.</p>
-<section id="id31">
-<h4>Parameters<a class="headerlink" href="#id31" title="Link to this heading">¶</a></h4>
+<section id="id25">
+<h5>Parameters<a class="headerlink" href="#id25" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
-<section id="id32">
-<h4>Returns<a class="headerlink" href="#id32" title="Link to this heading">¶</a></h4>
+<section id="id26">
+<h5>Returns<a class="headerlink" href="#id26" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
-<section id="id33">
-<h4>Notes<a class="headerlink" href="#id33" title="Link to this heading">¶</a></h4>
+<section id="id27">
+<h5>Notes<a class="headerlink" href="#id27" title="Permalink to this heading">#</a></h5>
 <p>Each cylinder is represented by an object with attributes such as colour, radius,
 position1, position2, height, angle, and rotation. These attributes are used to
 determine the cylinder’s appearance and placement in the 3D space.</p>
@@ -825,79 +709,79 @@ phase is determined by <cite>self.current_phase</cite>.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.OpenGLWidget.OpenGLWidget.drawSpheres">
-<span class="sig-name descname"><span class="pre">drawSpheres</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/OpenGLWidget.html#OpenGLWidget.drawSpheres"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.OpenGLWidget.OpenGLWidget.drawSpheres" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">drawSpheres</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/OpenGLWidget.html#OpenGLWidget.drawSpheres"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.OpenGLWidget.OpenGLWidget.drawSpheres" title="Permalink to this definition">#</a></dt>
 <dd><p>Draw spheres based on the object’s current phase and spheres attributes.</p>
 <p>This method iterates through the spheres assigned to the current phase of the invoking object. For each sphere, it sets the material properties based on the sphere’s color and predefined material factors. Then, it translates the drawing location to the sphere’s position and draws the sphere using OpenGL functions.</p>
-<section id="id34">
-<h4>Parameters<a class="headerlink" href="#id34" title="Link to this heading">¶</a></h4>
+<section id="id28">
+<h5>Parameters<a class="headerlink" href="#id28" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
-<section id="id35">
-<h4>Returns<a class="headerlink" href="#id35" title="Link to this heading">¶</a></h4>
+<section id="id29">
+<h5>Returns<a class="headerlink" href="#id29" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
-<section id="id36">
-<h4>Notes<a class="headerlink" href="#id36" title="Link to this heading">¶</a></h4>
+<section id="id30">
+<h5>Notes<a class="headerlink" href="#id30" title="Permalink to this heading">#</a></h5>
 <p>Requires OpenGL (PyOpenGL) for rendering. The method modifies the OpenGL state to draw spheres at specified locations with given radii and colors. Assumes the presence of attributes like <cite>spheres</cite>, <cite>current_phase</cite>, <cite>diffuseMaterialFactor</cite>, <cite>ambientMaterialFactor</cite>, <cite>specularLightFactor</cite>, and methods or attributes for rendering parameters such as <cite>quadric</cite>, <cite>sphere_slices</cite>, <cite>sphere_stacks</cite>.</p>
 </section>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.OpenGLWidget.OpenGLWidget.enterEvent">
-<span class="sig-name descname"><span class="pre">enterEvent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">event</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/OpenGLWidget.html#OpenGLWidget.enterEvent"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.OpenGLWidget.OpenGLWidget.enterEvent" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">enterEvent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">event</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/OpenGLWidget.html#OpenGLWidget.enterEvent"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.OpenGLWidget.OpenGLWidget.enterEvent" title="Permalink to this definition">#</a></dt>
 <dd><p>Handle the entering of an event.</p>
-<section id="id37">
-<h4>Parameters<a class="headerlink" href="#id37" title="Link to this heading">¶</a></h4>
+<section id="id31">
+<h5>Parameters<a class="headerlink" href="#id31" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>event<span class="classifier">QEvent</span></dt><dd><p>The event that triggers the enterEvent.</p>
 </dd>
 </dl>
 </section>
-<section id="id38">
-<h4>Returns<a class="headerlink" href="#id38" title="Link to this heading">¶</a></h4>
+<section id="id32">
+<h5>Returns<a class="headerlink" href="#id32" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
-<section id="id39">
-<h4>Notes<a class="headerlink" href="#id39" title="Link to this heading">¶</a></h4>
+<section id="id33">
+<h5>Notes<a class="headerlink" href="#id33" title="Permalink to this heading">#</a></h5>
 <p>This function primarily ensures that the focus is set accordingly when an event occurs, and then it passes the event on to the viewerTab’s own enterEvent handler for further processing.</p>
 </section>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.OpenGLWidget.OpenGLWidget.initializeGL">
-<span class="sig-name descname"><span class="pre">initializeGL</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/OpenGLWidget.html#OpenGLWidget.initializeGL"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.OpenGLWidget.OpenGLWidget.initializeGL" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">initializeGL</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/OpenGLWidget.html#OpenGLWidget.initializeGL"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.OpenGLWidget.OpenGLWidget.initializeGL" title="Permalink to this definition">#</a></dt>
 <dd><p>Initializes OpenGL rendering context.</p>
 <p>This function sets up various OpenGL attributes and states including lighting, depth test, smooth shading, and anti-aliasing features to prepare for rendering in a GL context. It configures the viewport settings based on the associated viewer tab’s background color settings.</p>
-<section id="id40">
-<h4>Parameters<a class="headerlink" href="#id40" title="Link to this heading">¶</a></h4>
+<section id="id34">
+<h5>Parameters<a class="headerlink" href="#id34" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
-<section id="id41">
-<h4>Returns<a class="headerlink" href="#id41" title="Link to this heading">¶</a></h4>
+<section id="id35">
+<h5>Returns<a class="headerlink" href="#id35" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.OpenGLWidget.OpenGLWidget.keyPressEvent">
-<span class="sig-name descname"><span class="pre">keyPressEvent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">event</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/OpenGLWidget.html#OpenGLWidget.keyPressEvent"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.OpenGLWidget.OpenGLWidget.keyPressEvent" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">keyPressEvent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">event</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/OpenGLWidget.html#OpenGLWidget.keyPressEvent"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.OpenGLWidget.OpenGLWidget.keyPressEvent" title="Permalink to this definition">#</a></dt>
 <dd><p>Handle keyboard events for specific actions.</p>
 <p>This method is triggered whenever a keyboard event occurs.
 It interprets key presses to perform various actions such as rotating the molecule, zooming in or out,
 saving the current state, toggling between full screen mode, and resetting the view.</p>
-<section id="id42">
-<h4>Parameters<a class="headerlink" href="#id42" title="Link to this heading">¶</a></h4>
+<section id="id36">
+<h5>Parameters<a class="headerlink" href="#id36" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>event<span class="classifier">QKeyEvent</span></dt><dd><p>The event object that contains information about the key press event.</p>
 </dd>
 </dl>
 </section>
-<section id="id43">
-<h4>Returns<a class="headerlink" href="#id43" title="Link to this heading">¶</a></h4>
+<section id="id37">
+<h5>Returns<a class="headerlink" href="#id37" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
-<section id="id44">
-<h4>Notes<a class="headerlink" href="#id44" title="Link to this heading">¶</a></h4>
+<section id="id38">
+<h5>Notes<a class="headerlink" href="#id38" title="Permalink to this heading">#</a></h5>
 <p>This function checks for specific keys and their combinations with modifiers like Shift and Control to determine the required action.
 For rotation and zoom actions, the amount of change is determined based on whether
 any modifiers are pressed (larger rotation if Shift or Control is held).
@@ -916,25 +800,25 @@ Saving, toggling the full screen mode, and resetting the view do not require mod
 - This method modifies various attributes of the instance based on the key pressed, including rotation angles, zoom levels, screen mode, and view matrix.</p>
 </section>
 <section id="requires">
-<h4>Requires<a class="headerlink" href="#requires" title="Link to this heading">¶</a></h4>
+<h5>Requires<a class="headerlink" href="#requires" title="Permalink to this heading">#</a></h5>
 <p>This function requires <cite>Qt</cite>, <cite>GL_MODELVIEW</cite>, <cite>glLoadIdentity</cite>, <cite>np</cite>, and the instance methods
 <cite>myMakeCurrent</cite>, <cite>moleculeRotate</cite>, <cite>zoom</cite>, <cite>save_movie</cite>, <cite>showFullScreen</cite>, and <cite>showNormal</cite> to be properly defined.
 It also assumes an external debugger tool for logging.</p>
 </section>
 <section id="raises">
-<h4>Raises<a class="headerlink" href="#raises" title="Link to this heading">¶</a></h4>
+<h5>Raises<a class="headerlink" href="#raises" title="Permalink to this heading">#</a></h5>
 <p>This method does not explicitly raise any exceptions but might propagate exceptions from methods it calls.</p>
 </section>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.OpenGLWidget.OpenGLWidget.moleculeRotate">
-<span class="sig-name descname"><span class="pre">moleculeRotate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scale</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/OpenGLWidget.html#OpenGLWidget.moleculeRotate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.OpenGLWidget.OpenGLWidget.moleculeRotate" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">moleculeRotate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scale</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/OpenGLWidget.html#OpenGLWidget.moleculeRotate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.OpenGLWidget.OpenGLWidget.moleculeRotate" title="Permalink to this definition">#</a></dt>
 <dd><p>Rotate a molecule object around the specified axes.</p>
 <p>This method applies a rotation transformation to a molecule object
 around the x, y, and z axes, scaled by a given factor.</p>
-<section id="id45">
-<h4>Parameters<a class="headerlink" href="#id45" title="Link to this heading">¶</a></h4>
+<section id="id39">
+<h5>Parameters<a class="headerlink" href="#id39" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>scale<span class="classifier">float</span></dt><dd><p>The scaling factor for the rotation. Represents how much the rotation is amplified.</p>
 </dd>
@@ -946,12 +830,12 @@ around the x, y, and z axes, scaled by a given factor.</p>
 </dd>
 </dl>
 </section>
-<section id="id46">
-<h4>Returns<a class="headerlink" href="#id46" title="Link to this heading">¶</a></h4>
+<section id="id40">
+<h5>Returns<a class="headerlink" href="#id40" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
-<section id="id47">
-<h4>Notes<a class="headerlink" href="#id47" title="Link to this heading">¶</a></h4>
+<section id="id41">
+<h5>Notes<a class="headerlink" href="#id41" title="Permalink to this heading">#</a></h5>
 <ul class="simple">
 <li><p>This function assumes that the GL_MODELVIEW matrix mode is active and manipulates the current matrix stack accordingly.</p></li>
 <li><p>It first saves the current model view matrix, then resets it to the identity.</p></li>
@@ -961,7 +845,7 @@ around the x, y, and z axes, scaled by a given factor.</p>
 </ul>
 </section>
 <section id="examples">
-<h4>Examples<a class="headerlink" href="#examples" title="Link to this heading">¶</a></h4>
+<h5>Examples<a class="headerlink" href="#examples" title="Permalink to this heading">#</a></h5>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">mol_object</span> <span class="o">=</span> <span class="n">Molecule</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">mol_object</span><span class="o">.</span><span class="n">moleculeRotate</span><span class="p">(</span><span class="mi">45</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
 <span class="go">This would rotate the molecule 45 degrees around the x-axis.</span>
@@ -969,34 +853,34 @@ around the x, y, and z axes, scaled by a given factor.</p>
 </div>
 </section>
 <section id="see-also">
-<h4>See Also<a class="headerlink" href="#see-also" title="Link to this heading">¶</a></h4>
+<h5>See Also<a class="headerlink" href="#see-also" title="Permalink to this heading">#</a></h5>
 <p>glRotatef : Rotates the current matrix a specified number of degrees about a specified axis.
 glMultMatrixf : Multiplies the current matrix by the specified matrix.
 glLoadIdentity : Replaces the current matrix with the identity matrix.</p>
 </section>
-<section id="id48">
-<h4>Raises<a class="headerlink" href="#id48" title="Link to this heading">¶</a></h4>
+<section id="id42">
+<h5>Raises<a class="headerlink" href="#id42" title="Permalink to this heading">#</a></h5>
 <p>This function does not explicitly raise exceptions but relies on the OpenGL context and the <cite>update</cite> method’s implementation.</p>
 </section>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.OpenGLWidget.OpenGLWidget.mouseMoveEvent">
-<span class="sig-name descname"><span class="pre">mouseMoveEvent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">event</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/OpenGLWidget.html#OpenGLWidget.mouseMoveEvent"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.OpenGLWidget.OpenGLWidget.mouseMoveEvent" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">mouseMoveEvent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">event</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/OpenGLWidget.html#OpenGLWidget.mouseMoveEvent"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.OpenGLWidget.OpenGLWidget.mouseMoveEvent" title="Permalink to this definition">#</a></dt>
 <dd><p>Handle the mouse move events to perform various actions.</p>
-<section id="id49">
-<h4>Parameters<a class="headerlink" href="#id49" title="Link to this heading">¶</a></h4>
+<section id="id43">
+<h5>Parameters<a class="headerlink" href="#id43" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>event<span class="classifier">QMouseEvent</span></dt><dd><p>The mouse event that contains information about the state of the mouse.</p>
 </dd>
 </dl>
 </section>
-<section id="id50">
-<h4>Returns<a class="headerlink" href="#id50" title="Link to this heading">¶</a></h4>
+<section id="id44">
+<h5>Returns<a class="headerlink" href="#id44" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
-<section id="id51">
-<h4>Notes<a class="headerlink" href="#id51" title="Link to this heading">¶</a></h4>
+<section id="id45">
+<h5>Notes<a class="headerlink" href="#id45" title="Permalink to this heading">#</a></h5>
 <p>This method checks if the left or middle mouse button is pressed and applies different transformations (zoom, rotate, or translate) based on the mouse movement and whether certain modifier keys (Shift or Control) are pressed.
 - If the left mouse button is pressed:
 - With no modifiers or with Shift or Control modifier pressed: Performs rotation.
@@ -1008,50 +892,50 @@ glLoadIdentity : Replaces the current matrix with the identity matrix.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.OpenGLWidget.OpenGLWidget.mousePressEvent">
-<span class="sig-name descname"><span class="pre">mousePressEvent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">event</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/OpenGLWidget.html#OpenGLWidget.mousePressEvent"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.OpenGLWidget.OpenGLWidget.mousePressEvent" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">mousePressEvent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">event</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/OpenGLWidget.html#OpenGLWidget.mousePressEvent"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.OpenGLWidget.OpenGLWidget.mousePressEvent" title="Permalink to this definition">#</a></dt>
 <dd><p>Handle the mouse press event.</p>
-<section id="id52">
-<h4>Parameters<a class="headerlink" href="#id52" title="Link to this heading">¶</a></h4>
+<section id="id46">
+<h5>Parameters<a class="headerlink" href="#id46" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>event<span class="classifier">QMouseEvent</span></dt><dd><p>The mouse event instance containing data of the mouse press.</p>
 </dd>
 </dl>
 </section>
-<section id="id53">
-<h4>Returns<a class="headerlink" href="#id53" title="Link to this heading">¶</a></h4>
+<section id="id47">
+<h5>Returns<a class="headerlink" href="#id47" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.OpenGLWidget.OpenGLWidget.mouseReleaseEvent">
-<span class="sig-name descname"><span class="pre">mouseReleaseEvent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">event</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/OpenGLWidget.html#OpenGLWidget.mouseReleaseEvent"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.OpenGLWidget.OpenGLWidget.mouseReleaseEvent" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">mouseReleaseEvent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">event</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/OpenGLWidget.html#OpenGLWidget.mouseReleaseEvent"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.OpenGLWidget.OpenGLWidget.mouseReleaseEvent" title="Permalink to this definition">#</a></dt>
 <dd><p>Handles the mouse release event.</p>
-<section id="id54">
-<h4>Parameters<a class="headerlink" href="#id54" title="Link to this heading">¶</a></h4>
+<section id="id48">
+<h5>Parameters<a class="headerlink" href="#id48" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>event<span class="classifier">QMouseEvent</span></dt><dd><p>The event object containing information about the mouse release event.</p>
 </dd>
 </dl>
 </section>
-<section id="id55">
-<h4>Returns<a class="headerlink" href="#id55" title="Link to this heading">¶</a></h4>
+<section id="id49">
+<h5>Returns<a class="headerlink" href="#id49" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
-<section id="id56">
-<h4>Notes<a class="headerlink" href="#id56" title="Link to this heading">¶</a></h4>
+<section id="id50">
+<h5>Notes<a class="headerlink" href="#id50" title="Permalink to this heading">#</a></h5>
 <p>This method records the x and y coordinates of the mouse at the moment it is released.</p>
 </section>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.OpenGLWidget.OpenGLWidget.myMakeCurrent">
-<span class="sig-name descname"><span class="pre">myMakeCurrent</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/OpenGLWidget.html#OpenGLWidget.myMakeCurrent"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.OpenGLWidget.OpenGLWidget.myMakeCurrent" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">myMakeCurrent</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/OpenGLWidget.html#OpenGLWidget.myMakeCurrent"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.OpenGLWidget.OpenGLWidget.myMakeCurrent" title="Permalink to this definition">#</a></dt>
 <dd><p>Make the current OpenGL context active and clear any errors.</p>
 <p>This method activates the current OpenGL context by calling <cite>makeCurrent</cite>,
 then repeatedly calls <cite>glGetError</cite> to clear any accumulated OpenGL errors.</p>
-<section id="id57">
-<h4>Notes<a class="headerlink" href="#id57" title="Link to this heading">¶</a></h4>
+<section id="id51">
+<h5>Notes<a class="headerlink" href="#id51" title="Permalink to this heading">#</a></h5>
 <p>This function requires that an OpenGL context is available and that <cite>makeCurrent</cite>
 and <cite>glGetError</cite> are correctly implemented in the class this method belongs to.
 <cite>makeCurrent</cite> should make the OpenGL context current, and <cite>glGetError</cite> should
@@ -1063,26 +947,26 @@ ensure that the OpenGL context is error-free after making it current.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.OpenGLWidget.OpenGLWidget.paintGL">
-<span class="sig-name descname"><span class="pre">paintGL</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/OpenGLWidget.html#OpenGLWidget.paintGL"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.OpenGLWidget.OpenGLWidget.paintGL" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">paintGL</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/OpenGLWidget.html#OpenGLWidget.paintGL"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.OpenGLWidget.OpenGLWidget.paintGL" title="Permalink to this definition">#</a></dt>
 <dd><p>Render OpenGL graphics for the current scene.</p>
 <p>This method prepares the graphics context, clears the buffer, sets the background color,
 and draws the current scene which may include spheres, cylinders, and arrows based on the object’s state.</p>
-<section id="id58">
-<h4>Parameters<a class="headerlink" href="#id58" title="Link to this heading">¶</a></h4>
+<section id="id52">
+<h5>Parameters<a class="headerlink" href="#id52" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
-<section id="id59">
-<h4>Returns<a class="headerlink" href="#id59" title="Link to this heading">¶</a></h4>
+<section id="id53">
+<h5>Returns<a class="headerlink" href="#id53" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
-<section id="id60">
-<h4>Notes<a class="headerlink" href="#id60" title="Link to this heading">¶</a></h4>
+<section id="id54">
+<h5>Notes<a class="headerlink" href="#id54" title="Permalink to this heading">#</a></h5>
 <p>Requires access to OpenGL context and assumes that necessary OpenGL libraries
 and the debugger object are available in the scope. <cite>paintGL</cite> is typically called
 by the OpenGL rendering loop.</p>
 </section>
 <section id="attributes-modified">
-<h4>Attributes Modified<a class="headerlink" href="#attributes-modified" title="Link to this heading">¶</a></h4>
+<h5>Attributes Modified<a class="headerlink" href="#attributes-modified" title="Permalink to this heading">#</a></h5>
 <ul class="simple">
 <li><p>Utilizes several attributes of the instance (<cite>self</cite>), including <cite>background_colour</cite>,
 <cite>rotation_centre</cite>, and <cite>show_arrows</cite>, to determine how to render the scene.</p></li>
@@ -1093,14 +977,14 @@ by the OpenGL rendering loop.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.OpenGLWidget.OpenGLWidget.resizeGL">
-<span class="sig-name descname"><span class="pre">resizeGL</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">w</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">h</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/OpenGLWidget.html#OpenGLWidget.resizeGL"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.OpenGLWidget.OpenGLWidget.resizeGL" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">resizeGL</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">w</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">h</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/OpenGLWidget.html#OpenGLWidget.resizeGL"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.OpenGLWidget.OpenGLWidget.resizeGL" title="Permalink to this definition">#</a></dt>
 <dd><p>Resizes the OpenGL widget to a new width and height.</p>
-<section id="id61">
-<h4>Notes<a class="headerlink" href="#id61" title="Link to this heading">¶</a></h4>
+<section id="id55">
+<h5>Notes<a class="headerlink" href="#id55" title="Permalink to this heading">#</a></h5>
 <p>This is typically overridden in a subclass and used to adjust the OpenGL viewport or projection matrix when the widget is resized.</p>
 </section>
-<section id="id62">
-<h4>Parameters<a class="headerlink" href="#id62" title="Link to this heading">¶</a></h4>
+<section id="id56">
+<h5>Parameters<a class="headerlink" href="#id56" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>w<span class="classifier">int</span></dt><dd><p>The new width of the OpenGL widget.</p>
 </dd>
@@ -1108,31 +992,31 @@ by the OpenGL rendering loop.</p>
 </dd>
 </dl>
 </section>
-<section id="id63">
-<h4>Returns<a class="headerlink" href="#id63" title="Link to this heading">¶</a></h4>
+<section id="id57">
+<h5>Returns<a class="headerlink" href="#id57" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.OpenGLWidget.OpenGLWidget.save_movie">
-<span class="sig-name descname"><span class="pre">save_movie</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/OpenGLWidget.html#OpenGLWidget.save_movie"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.OpenGLWidget.OpenGLWidget.save_movie" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">save_movie</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/OpenGLWidget.html#OpenGLWidget.save_movie"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.OpenGLWidget.OpenGLWidget.save_movie" title="Permalink to this definition">#</a></dt>
 <dd><p>Save the current state as a movie file.</p>
 <p>This method captures snapshots of the current state at different phases,
 processes them, and compiles them into a movie file.</p>
-<section id="id64">
-<h4>Parameters<a class="headerlink" href="#id64" title="Link to this heading">¶</a></h4>
+<section id="id58">
+<h5>Parameters<a class="headerlink" href="#id58" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>filename<span class="classifier">str</span></dt><dd><p>The filename (including path) where the movie should be saved.</p>
 </dd>
 </dl>
 </section>
-<section id="id65">
-<h4>Returns<a class="headerlink" href="#id65" title="Link to this heading">¶</a></h4>
+<section id="id59">
+<h5>Returns<a class="headerlink" href="#id59" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
-<section id="id66">
-<h4>Notes<a class="headerlink" href="#id66" title="Link to this heading">¶</a></h4>
+<section id="id60">
+<h5>Notes<a class="headerlink" href="#id60" title="Permalink to this heading">#</a></h5>
 <p>Relies on <cite>imageio</cite> for writing the movie file and handling images.
 If a timer is present, it’s temporarily stopped to ensure snapshots are
 taken consistently, and then restarted once the movie is saved.
@@ -1142,98 +1026,98 @@ Temporary storage is used for intermediate images</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.OpenGLWidget.OpenGLWidget.setImageSize">
-<span class="sig-name descname"><span class="pre">setImageSize</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/OpenGLWidget.html#OpenGLWidget.setImageSize"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.OpenGLWidget.OpenGLWidget.setImageSize" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">setImageSize</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/OpenGLWidget.html#OpenGLWidget.setImageSize"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.OpenGLWidget.OpenGLWidget.setImageSize" title="Permalink to this definition">#</a></dt>
 <dd><p>Set the maximum image size based on the furthest object from the rotation center.</p>
 <p>This method evaluates the position of spheres and cylinders in the current phase, calculates their distance from a fixed point (rotation center), and updates the <cite>image_size</cite> attribute to the maximum distance found. It ensures the all objects will fit within the rendered image. Finally, it updates the projection matrix and logs the new image size.</p>
-<section id="id67">
-<h4>Parameters<a class="headerlink" href="#id67" title="Link to this heading">¶</a></h4>
+<section id="id61">
+<h5>Parameters<a class="headerlink" href="#id61" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
-<section id="id68">
-<h4>Returns<a class="headerlink" href="#id68" title="Link to this heading">¶</a></h4>
+<section id="id62">
+<h5>Returns<a class="headerlink" href="#id62" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
-<section id="id69">
-<h4>Notes<a class="headerlink" href="#id69" title="Link to this heading">¶</a></h4>
+<section id="id63">
+<h5>Notes<a class="headerlink" href="#id63" title="Permalink to this heading">#</a></h5>
 <p>The <cite>self</cite> parameter represents the instance of the class in which the function is called. This function relies on the <cite>math.sqrt</cite>, <cite>np.dot</cite> for calculations, and expects <cite>self.spheres</cite>, <cite>self.cylinders</cite>, <cite>self.current_phase</cite>, <cite>self.rotation_centre</cite>, and <cite>self.setProjectionMatrix</cite> to be defined.</p>
 </section>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.OpenGLWidget.OpenGLWidget.setProjectionMatrix">
-<span class="sig-name descname"><span class="pre">setProjectionMatrix</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/OpenGLWidget.html#OpenGLWidget.setProjectionMatrix"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.OpenGLWidget.OpenGLWidget.setProjectionMatrix" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">setProjectionMatrix</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/OpenGLWidget.html#OpenGLWidget.setProjectionMatrix"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.OpenGLWidget.OpenGLWidget.setProjectionMatrix" title="Permalink to this definition">#</a></dt>
 <dd><p>Set the projection matrix for rendering.</p>
 <p>This method configures the projection matrix based on the current image size, width, and height attributes of the object. It’s intended to set up an orthographic projection suited to the object’s dimensions. If any of the required attributes (<cite>image_size</cite>, <cite>my_width</cite>, or <cite>my_height</cite>) are not set, the method will exit early. The method also sets the view to the middle phase of an unspecified number of total phases and resets the model view matrix.</p>
-<section id="id70">
-<h4>Parameters<a class="headerlink" href="#id70" title="Link to this heading">¶</a></h4>
+<section id="id64">
+<h5>Parameters<a class="headerlink" href="#id64" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
-<section id="id71">
-<h4>Returns<a class="headerlink" href="#id71" title="Link to this heading">¶</a></h4>
+<section id="id65">
+<h5>Returns<a class="headerlink" href="#id65" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
-<section id="id72">
-<h4>Notes<a class="headerlink" href="#id72" title="Link to this heading">¶</a></h4>
+<section id="id66">
+<h5>Notes<a class="headerlink" href="#id66" title="Permalink to this heading">#</a></h5>
 <p>This method makes several OpenGL calls to configure the projection and model view matrices and assumes that <cite>self.myMakeCurrent()</cite> makes the required OpenGL context current. It also updates <cite>self.matrix</cite> with an identity matrix and sets <cite>self.current_phase</cite> based on the total number of phases.</p>
 </section>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.OpenGLWidget.OpenGLWidget.setRotationCentre">
-<span class="sig-name descname"><span class="pre">setRotationCentre</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pos</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/OpenGLWidget.html#OpenGLWidget.setRotationCentre"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.OpenGLWidget.OpenGLWidget.setRotationCentre" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">setRotationCentre</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pos</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/OpenGLWidget.html#OpenGLWidget.setRotationCentre"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.OpenGLWidget.OpenGLWidget.setRotationCentre" title="Permalink to this definition">#</a></dt>
 <dd><p>Set the rotation centre to a specified position.</p>
-<section id="id73">
-<h4>Parameters<a class="headerlink" href="#id73" title="Link to this heading">¶</a></h4>
+<section id="id67">
+<h5>Parameters<a class="headerlink" href="#id67" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>pos<span class="classifier">array_like</span></dt><dd><p>The position to set the rotation centre. Expected to be an iterable
 with numerical values that can be converted to a NumPy array.</p>
 </dd>
 </dl>
 </section>
-<section id="id74">
-<h4>Returns<a class="headerlink" href="#id74" title="Link to this heading">¶</a></h4>
+<section id="id68">
+<h5>Returns<a class="headerlink" href="#id68" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.OpenGLWidget.OpenGLWidget.showArrows">
-<span class="sig-name descname"><span class="pre">showArrows</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">show</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/OpenGLWidget.html#OpenGLWidget.showArrows"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.OpenGLWidget.OpenGLWidget.showArrows" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">showArrows</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">show</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/OpenGLWidget.html#OpenGLWidget.showArrows"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.OpenGLWidget.OpenGLWidget.showArrows" title="Permalink to this definition">#</a></dt>
 <dd><p>Set the visibility of arrows</p>
-<section id="id75">
-<h4>Parameters<a class="headerlink" href="#id75" title="Link to this heading">¶</a></h4>
+<section id="id69">
+<h5>Parameters<a class="headerlink" href="#id69" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>show<span class="classifier">bool</span></dt><dd><p>A boolean indicating whether to show arrows (True) or not (False).</p>
 </dd>
 </dl>
 </section>
-<section id="id76">
-<h4>Returns<a class="headerlink" href="#id76" title="Link to this heading">¶</a></h4>
+<section id="id70">
+<h5>Returns<a class="headerlink" href="#id70" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
-<section id="id77">
-<h4>Notes<a class="headerlink" href="#id77" title="Link to this heading">¶</a></h4>
+<section id="id71">
+<h5>Notes<a class="headerlink" href="#id71" title="Permalink to this heading">#</a></h5>
 <p>This function updates the <cite>show_arrows</cite> attribute based on the “show” parameter and prints the current status to the debugger.</p>
 </section>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.OpenGLWidget.OpenGLWidget.snapshot">
-<span class="sig-name descname"><span class="pre">snapshot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/OpenGLWidget.html#OpenGLWidget.snapshot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.OpenGLWidget.OpenGLWidget.snapshot" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">snapshot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/OpenGLWidget.html#OpenGLWidget.snapshot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.OpenGLWidget.OpenGLWidget.snapshot" title="Permalink to this definition">#</a></dt>
 <dd><p>Capture and save a snapshot of the current framebuffer to a file.</p>
-<section id="id78">
-<h4>Parameters<a class="headerlink" href="#id78" title="Link to this heading">¶</a></h4>
+<section id="id72">
+<h5>Parameters<a class="headerlink" href="#id72" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>filename<span class="classifier">str</span></dt><dd><p>The name of the file where the snapshot will be saved.</p>
 </dd>
 </dl>
 </section>
-<section id="id79">
-<h4>Returns<a class="headerlink" href="#id79" title="Link to this heading">¶</a></h4>
+<section id="id73">
+<h5>Returns<a class="headerlink" href="#id73" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
-<section id="id80">
-<h4>Examples<a class="headerlink" href="#id80" title="Link to this heading">¶</a></h4>
+<section id="id74">
+<h5>Examples<a class="headerlink" href="#id74" title="Permalink to this heading">#</a></h5>
 <p>Assuming an instance <cite>display</cite> of the class containing this method:</p>
 <p><code class="docutils literal notranslate"><span class="pre">`python</span>
 <span class="pre">display.snapshot('screenshot.png')</span>
@@ -1244,22 +1128,22 @@ with numerical values that can be converted to a NumPy array.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.OpenGLWidget.OpenGLWidget.startAnimation">
-<span class="sig-name descname"><span class="pre">startAnimation</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/OpenGLWidget.html#OpenGLWidget.startAnimation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.OpenGLWidget.OpenGLWidget.startAnimation" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">startAnimation</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/OpenGLWidget.html#OpenGLWidget.startAnimation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.OpenGLWidget.OpenGLWidget.startAnimation" title="Permalink to this definition">#</a></dt>
 <dd><p>Starts or restarts an animation timer.</p>
 <p>This method checks if an animation timer is already running.
 If so, it stops the current timer. If not, it initializes and starts a new timer
 with the interval specified in <cite>self.timer_interval</cite>. When the timer times out,
 it triggers <cite>self.timeoutHandler</cite>.</p>
-<section id="id81">
-<h4>Parameters<a class="headerlink" href="#id81" title="Link to this heading">¶</a></h4>
+<section id="id75">
+<h5>Parameters<a class="headerlink" href="#id75" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
-<section id="id82">
-<h4>Returns<a class="headerlink" href="#id82" title="Link to this heading">¶</a></h4>
+<section id="id76">
+<h5>Returns<a class="headerlink" href="#id76" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
-<section id="id83">
-<h4>Notes<a class="headerlink" href="#id83" title="Link to this heading">¶</a></h4>
+<section id="id77">
+<h5>Notes<a class="headerlink" href="#id77" title="Permalink to this heading">#</a></h5>
 <ul class="simple">
 <li><p><cite>self.timer</cite> is expected to be an attribute of the instance which either holds
 a QTimer object or None.</p></li>
@@ -1273,41 +1157,41 @@ timed events, utilizing a QTimer from the PyQt or PySide frameworks.</p></li>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.OpenGLWidget.OpenGLWidget.stopAnimation">
-<span class="sig-name descname"><span class="pre">stopAnimation</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/OpenGLWidget.html#OpenGLWidget.stopAnimation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.OpenGLWidget.OpenGLWidget.stopAnimation" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">stopAnimation</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/OpenGLWidget.html#OpenGLWidget.stopAnimation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.OpenGLWidget.OpenGLWidget.stopAnimation" title="Permalink to this definition">#</a></dt>
 <dd><p>Stop the ongoing animation.</p>
 <p>This method stops the animation by stopping the timer associated with it.</p>
-<section id="id84">
-<h4>Parameters<a class="headerlink" href="#id84" title="Link to this heading">¶</a></h4>
+<section id="id78">
+<h5>Parameters<a class="headerlink" href="#id78" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
-<section id="id85">
-<h4>Returns<a class="headerlink" href="#id85" title="Link to this heading">¶</a></h4>
+<section id="id79">
+<h5>Returns<a class="headerlink" href="#id79" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
-<section id="id86">
-<h4>Notes<a class="headerlink" href="#id86" title="Link to this heading">¶</a></h4>
+<section id="id80">
+<h5>Notes<a class="headerlink" href="#id80" title="Permalink to this heading">#</a></h5>
 <p>This function assumes that <cite>self.timer</cite> is an instance with a <cite>stop</cite> method, which is called to halt any ongoing animation. If <cite>self.timer</cite> is <cite>None</cite>, indicating no animation is currently active, this method does nothing.</p>
 </section>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.OpenGLWidget.OpenGLWidget.timeoutHandler">
-<span class="sig-name descname"><span class="pre">timeoutHandler</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/OpenGLWidget.html#OpenGLWidget.timeoutHandler"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.OpenGLWidget.OpenGLWidget.timeoutHandler" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">timeoutHandler</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/OpenGLWidget.html#OpenGLWidget.timeoutHandler"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.OpenGLWidget.OpenGLWidget.timeoutHandler" title="Permalink to this definition">#</a></dt>
 <dd><p>Handles the timeout event in a cyclic phase system by updating the current phase and direction.</p>
 <p>This function updates the <cite>current_phase</cite> by advancing or reversing it based on the <cite>phase_direction</cite>.
 When the end or the start of the phases is reached, the direction is reversed, ensuring cyclic behavior
 through the phases. After updating the phase and direction, the function logs the current phase and
 updates the system state.</p>
-<section id="id87">
-<h4>Parameters<a class="headerlink" href="#id87" title="Link to this heading">¶</a></h4>
+<section id="id81">
+<h5>Parameters<a class="headerlink" href="#id81" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
-<section id="id88">
-<h4>Returns<a class="headerlink" href="#id88" title="Link to this heading">¶</a></h4>
+<section id="id82">
+<h5>Returns<a class="headerlink" href="#id82" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
-<section id="id89">
-<h4>Notes<a class="headerlink" href="#id89" title="Link to this heading">¶</a></h4>
+<section id="id83">
+<h5>Notes<a class="headerlink" href="#id83" title="Permalink to this heading">#</a></h5>
 <ul class="simple">
 <li><p><cite>self.current_phase</cite> is the index of the current phase in the cycle.</p></li>
 <li><p><cite>self.number_of_phases</cite> indicates the total number of available phases.</p></li>
@@ -1319,10 +1203,10 @@ updates the system state.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.OpenGLWidget.OpenGLWidget.translate">
-<span class="sig-name descname"><span class="pre">translate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/OpenGLWidget.html#OpenGLWidget.translate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.OpenGLWidget.OpenGLWidget.translate" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">translate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/OpenGLWidget.html#OpenGLWidget.translate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.OpenGLWidget.OpenGLWidget.translate" title="Permalink to this definition">#</a></dt>
 <dd><p>Translate an object by modifying its current position.</p>
-<section id="id90">
-<h4>Parameters<a class="headerlink" href="#id90" title="Link to this heading">¶</a></h4>
+<section id="id84">
+<h5>Parameters<a class="headerlink" href="#id84" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>x<span class="classifier">float</span></dt><dd><p>The distance to translate along the x-axis.</p>
 </dd>
@@ -1330,12 +1214,12 @@ updates the system state.</p>
 </dd>
 </dl>
 </section>
-<section id="id91">
-<h4>Returns<a class="headerlink" href="#id91" title="Link to this heading">¶</a></h4>
+<section id="id85">
+<h5>Returns<a class="headerlink" href="#id85" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
-<section id="id92">
-<h4>Notes<a class="headerlink" href="#id92" title="Link to this heading">¶</a></h4>
+<section id="id86">
+<h5>Notes<a class="headerlink" href="#id86" title="Permalink to this heading">#</a></h5>
 <p>This method updates the current position of the object by adding the specified distances along the x and y axes, respectively. It does not return a value.</p>
 <p>This function involves a call to <cite>glTranslatef</cite>, which applies a translation transformation to the current matrix. Ensure that the appropriate OpenGL context is made current before calling this function by using <cite>self.myMakeCurrent()</cite>.</p>
 </section>
@@ -1343,21 +1227,21 @@ updates the system state.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.OpenGLWidget.OpenGLWidget.wheelEvent">
-<span class="sig-name descname"><span class="pre">wheelEvent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">event</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/OpenGLWidget.html#OpenGLWidget.wheelEvent"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.OpenGLWidget.OpenGLWidget.wheelEvent" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">wheelEvent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">event</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/OpenGLWidget.html#OpenGLWidget.wheelEvent"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.OpenGLWidget.OpenGLWidget.wheelEvent" title="Permalink to this definition">#</a></dt>
 <dd><p>Handles a wheel event to zoom in or out.</p>
-<section id="id93">
-<h4>Parameters<a class="headerlink" href="#id93" title="Link to this heading">¶</a></h4>
+<section id="id87">
+<h5>Parameters<a class="headerlink" href="#id87" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>event<span class="classifier">QWheelEvent</span></dt><dd><p>The wheel event containing information about the wheel movement.</p>
 </dd>
 </dl>
 </section>
-<section id="id94">
-<h4>Returns<a class="headerlink" href="#id94" title="Link to this heading">¶</a></h4>
+<section id="id88">
+<h5>Returns<a class="headerlink" href="#id88" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
-<section id="id95">
-<h4>Notes<a class="headerlink" href="#id95" title="Link to this heading">¶</a></h4>
+<section id="id89">
+<h5>Notes<a class="headerlink" href="#id89" title="Permalink to this heading">#</a></h5>
 <p>This function first logs the occurrence of a wheel event. It then sets
 the current context to this object before determining the direction and
 intensity of the zoom based on the vertical angle delta of the wheel event.
@@ -1367,21 +1251,21 @@ Lastly, it refreshes the display to reflect any changes.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.OpenGLWidget.OpenGLWidget.zoom">
-<span class="sig-name descname"><span class="pre">zoom</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">zoom</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/OpenGLWidget.html#OpenGLWidget.zoom"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.OpenGLWidget.OpenGLWidget.zoom" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">zoom</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">zoom</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/OpenGLWidget.html#OpenGLWidget.zoom"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.OpenGLWidget.OpenGLWidget.zoom" title="Permalink to this definition">#</a></dt>
 <dd><p>Zoom in or out on an object.</p>
-<section id="id96">
-<h4>Parameters<a class="headerlink" href="#id96" title="Link to this heading">¶</a></h4>
+<section id="id90">
+<h5>Parameters<a class="headerlink" href="#id90" title="Permalink to this heading">#</a></h5>
 <dl class="simple">
 <dt>zoom<span class="classifier">int or float</span></dt><dd><p>The zoom level. Positive values zoom in, negative values zoom out.</p>
 </dd>
 </dl>
 </section>
-<section id="id97">
-<h4>Returns<a class="headerlink" href="#id97" title="Link to this heading">¶</a></h4>
+<section id="id91">
+<h5>Returns<a class="headerlink" href="#id91" title="Permalink to this heading">#</a></h5>
 <p>None</p>
 </section>
-<section id="id98">
-<h4>Notes<a class="headerlink" href="#id98" title="Link to this heading">¶</a></h4>
+<section id="id92">
+<h5>Notes<a class="headerlink" href="#id92" title="Permalink to this heading">#</a></h5>
 <ul class="simple">
 <li><p>This function requires a current context and will make itself the current one before applying transformations.</p></li>
 <li><p>Updates the object’s state after zooming.</p></li>
@@ -1390,20 +1274,15 @@ Lastly, it refreshes the display to reflect any changes.</p>
 </section>
 </dd></dl>
 
-<dl class="py attribute">
-<dt class="sig sig-object py" id="PDielec.GUI.OpenGLWidget.OpenGLWidget.format">
-<span class="sig-name descname"><span class="pre">format</span></span><a class="headerlink" href="#PDielec.GUI.OpenGLWidget.OpenGLWidget.format" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
 </section>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="PDielec.GUI.OpenGLWidget.Sphere">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PDielec.GUI.OpenGLWidget.</span></span><span class="sig-name descname"><span class="pre">Sphere</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">colour</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">radius</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">position</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/OpenGLWidget.html#Sphere"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.OpenGLWidget.Sphere" title="Link to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PDielec.GUI.OpenGLWidget.</span></span><span class="sig-name descname"><span class="pre">Sphere</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">colour</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">radius</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">position</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/OpenGLWidget.html#Sphere"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.OpenGLWidget.Sphere" title="Permalink to this definition">#</a></dt>
 <dd><p>A class representing a sphere.</p>
-<section id="id99">
-<h3>Parameters<a class="headerlink" href="#id99" title="Link to this heading">¶</a></h3>
+<section id="id93">
+<h4>Parameters<a class="headerlink" href="#id93" title="Permalink to this heading">#</a></h4>
 <dl class="simple">
 <dt>colour<span class="classifier">list of int</span></dt><dd><p>The RGB colour of the sphere as a list of three integers ranging from 0 to 255.</p>
 </dd>
@@ -1413,8 +1292,8 @@ Lastly, it refreshes the display to reflect any changes.</p>
 </dd>
 </dl>
 </section>
-<section id="id100">
-<h3>Attributes<a class="headerlink" href="#id100" title="Link to this heading">¶</a></h3>
+<section id="id94">
+<h4>Attributes<a class="headerlink" href="#id94" title="Permalink to this heading">#</a></h4>
 <dl class="simple">
 <dt>colour<span class="classifier">ndarray</span></dt><dd><p>The normalized RGB colour of the sphere, with each element ranging from 0.0 to 1.0.</p>
 </dd>
@@ -1428,6 +1307,7 @@ Lastly, it refreshes the display to reflect any changes.</p>
 
 </section>
 </section>
+</section>
 
         </article>
       </div>
@@ -1439,7 +1319,7 @@ Lastly, it refreshes the display to reflect any changes.</p>
                 <div class="context">
                   <span>Next</span>
                 </div>
-                <div class="title">PDielec.GUI.PlottingTab</div>
+                <div class="title"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.PlottingTab</span></code></div>
               </div>
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
             </a>
@@ -1450,7 +1330,7 @@ Lastly, it refreshes the display to reflect any changes.</p>
                   <span>Previous</span>
                 </div>
                 
-                <div class="title">PDielec.GUI.NoteBook</div>
+                <div class="title"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.NoteBook</span></code></div>
                 
               </div>
             </a>
@@ -1484,17 +1364,13 @@ Lastly, it refreshes the display to reflect any changes.</p>
         <div class="toc-tree-container">
           <div class="toc-tree">
             <ul>
-<li><a class="reference internal" href="#">PDielec.GUI.OpenGLWidget</a><ul>
-<li><a class="reference internal" href="#classes">Classes</a></li>
+<li><a class="reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.OpenGLWidget</span></code></a><ul>
 <li><a class="reference internal" href="#module-contents">Module Contents</a><ul>
+<li><a class="reference internal" href="#classes">Classes</a><ul>
 <li><a class="reference internal" href="#PDielec.GUI.OpenGLWidget.Arrow"><code class="docutils literal notranslate"><span class="pre">Arrow</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.GUI.OpenGLWidget.Cylinder"><code class="docutils literal notranslate"><span class="pre">Cylinder</span></code></a></li>
-<li><a class="reference internal" href="#PDielec.GUI.OpenGLWidget.Debug"><code class="docutils literal notranslate"><span class="pre">Debug</span></code></a><ul>
-<li><a class="reference internal" href="#PDielec.GUI.OpenGLWidget.Debug.print"><code class="docutils literal notranslate"><span class="pre">Debug.print()</span></code></a></li>
-<li><a class="reference internal" href="#PDielec.GUI.OpenGLWidget.Debug.state"><code class="docutils literal notranslate"><span class="pre">Debug.state()</span></code></a></li>
-</ul>
-</li>
 <li><a class="reference internal" href="#PDielec.GUI.OpenGLWidget.OpenGLWidget"><code class="docutils literal notranslate"><span class="pre">OpenGLWidget</span></code></a><ul>
+<li><a class="reference internal" href="#PDielec.GUI.OpenGLWidget.OpenGLWidget.format"><code class="docutils literal notranslate"><span class="pre">OpenGLWidget.format</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.GUI.OpenGLWidget.OpenGLWidget.addArrows"><code class="docutils literal notranslate"><span class="pre">OpenGLWidget.addArrows()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.GUI.OpenGLWidget.OpenGLWidget.addCylinder"><code class="docutils literal notranslate"><span class="pre">OpenGLWidget.addCylinder()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.GUI.OpenGLWidget.OpenGLWidget.addSphere"><code class="docutils literal notranslate"><span class="pre">OpenGLWidget.addSphere()</span></code></a></li>
@@ -1528,10 +1404,11 @@ Lastly, it refreshes the display to reflect any changes.</p>
 <li><a class="reference internal" href="#PDielec.GUI.OpenGLWidget.OpenGLWidget.translate"><code class="docutils literal notranslate"><span class="pre">OpenGLWidget.translate()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.GUI.OpenGLWidget.OpenGLWidget.wheelEvent"><code class="docutils literal notranslate"><span class="pre">OpenGLWidget.wheelEvent()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.GUI.OpenGLWidget.OpenGLWidget.zoom"><code class="docutils literal notranslate"><span class="pre">OpenGLWidget.zoom()</span></code></a></li>
-<li><a class="reference internal" href="#PDielec.GUI.OpenGLWidget.OpenGLWidget.format"><code class="docutils literal notranslate"><span class="pre">OpenGLWidget.format</span></code></a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#PDielec.GUI.OpenGLWidget.Sphere"><code class="docutils literal notranslate"><span class="pre">Sphere</span></code></a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -1545,9 +1422,9 @@ Lastly, it refreshes the display to reflect any changes.</p>
       
     </aside>
   </div>
-</div><script src="../../../../_static/documentation_options.js?v=23ce250a"></script>
-    <script src="../../../../_static/doctools.js?v=9a2dae69"></script>
-    <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
-    <script src="../../../../_static/scripts/furo.js?v=4e2eecee"></script>
+</div><script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js?v=01b4f342"></script>
+    <script src="../../../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../../../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../../../../_static/scripts/furo.js?v=32e29ea5"></script>
     </body>
 </html>

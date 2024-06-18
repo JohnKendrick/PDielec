@@ -1,5 +1,5 @@
-PDielec.Calculator
-==================
+:py:mod:`PDielec.Calculator`
+============================
 
 .. py:module:: PDielec.Calculator
 
@@ -9,18 +9,12 @@ PDielec.Calculator
 
 
 
-Attributes
-----------
-
-.. autoapisummary::
-
-   PDielec.Calculator.d2byamuang2
-   PDielec.Calculator.speed_light_si
-   PDielec.Calculator.wavenumber
+Module Contents
+---------------
 
 
 Functions
----------
+~~~~~~~~~
 
 .. autoapisummary::
 
@@ -74,8 +68,6 @@ Functions
    PDielec.Calculator.waterman_truell_scattering
 
 
-Module Contents
----------------
 
 .. py:function:: _brug_iter_error(epsbr, eps1, eps2, shape, L, f1, size)
 
@@ -1133,12 +1125,4 @@ Module Contents
    wave propagation in the medium. This model is particularly useful in the study
    of wave scattering in composite materials and biological tissues.
 
-
-.. py:data:: d2byamuang2
-
-.. py:data:: speed_light_si
-   :value: 299792458.0
-
-
-.. py:data:: wavenumber
 

@@ -1,14 +1,14 @@
 <!doctype html>
-<html class="no-js" lang="en" data-content_root="../../">
+<html class="no-js" lang="en" data-content_root="">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" />
 
-    <!-- Generated with Sphinx 7.3.7 and Furo 2024.05.06 -->
+    <!-- Generated with Sphinx 7.1.2 and Furo 2024.01.29 -->
         <title>PDielec.Mie - PDielec: John Kendrick &amp; Andrew Burnett</title>
-      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=92fd9be5" />
-    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=387cc868" />
-    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=fd3f3429" />
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=135e06be" />
+    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=eafc0fe6" />
     <link rel="stylesheet" type="text/css" href="../../_static/table_styling.css?v=a1a2a898" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?v=36a5483c" />
     <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css?v=2e0a580d" />
@@ -70,7 +70,7 @@
   <symbol id="svg-sun" viewBox="0 0 24 24">
     <title>Light mode</title>
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
       <circle cx="12" cy="12" r="5"></circle>
       <line x1="12" y1="1" x2="12" y2="3"></line>
       <line x1="12" y1="21" x2="12" y2="23"></line>
@@ -85,7 +85,7 @@
   <symbol id="svg-moon" viewBox="0 0 24 24">
     <title>Dark mode</title>
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
       <path stroke="none" d="M0 0h24v24H0z" fill="none" />
       <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
     </svg>
@@ -93,7 +93,7 @@
   <symbol id="svg-sun-half" viewBox="0 0 24 24">
     <title>Auto light/dark mode</title>
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
       <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
       <circle cx="12" cy="12" r="9" />
       <path d="M13 12h5" />
@@ -101,60 +101,6 @@
       <path d="M13 18h1" />
       <path d="M13 9h4" />
       <path d="M13 6h1" />
-    </svg>
-  </symbol>
-  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
-    <title>Auto light/dark, in light mode</title>
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
-      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
-      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
-      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
-      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
-      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
-      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
-      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
-      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
-      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
-      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
-      <circle cx="14.5" cy="9.55" r="3.6"/>
-    </svg>
-  </symbol>
-  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
-    <title>Auto light/dark, in dark mode</title>
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
-      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
-      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
-      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
-      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
-      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
-      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
-      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
-      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
-      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
-      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
-      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
-    </svg>
-  </symbol>
-  <symbol id="svg-pencil" viewBox="0 0 24 24">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
-      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
-      <path d="M13.5 6.5l4 4" />
-      <path d="M20 21l2 -2l-2 -2" />
-      <path d="M17 17l-2 2l2 2" /
-    </svg>
-  </symbol>
-  <symbol id="svg-eye" viewBox="0 0 24 24">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
-      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
-      <path
-        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
-      <path d="M20 21l2 -2l-2 -2" />
-      <path d="M17 17l-2 2l2 2" />
     </svg>
   </symbol>
 </svg>
@@ -167,8 +113,6 @@
 <label class="overlay toc-overlay" for="__toc">
   <div class="visually-hidden">Hide table of contents sidebar</div>
 </label>
-
-<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
 
 
 
@@ -187,8 +131,7 @@
       <div class="theme-toggle-container theme-toggle-header">
         <button class="theme-toggle">
           <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
-          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
-          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+          <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
           <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
           <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
         </button>
@@ -234,63 +177,63 @@
 <p class="caption" role="heading"><span class="caption-text">API</span></p>
 <ul>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../autoapi/index.html">API Reference</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of API Reference</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
-<li class="toctree-l2 has-children"><a class="reference internal" href="../../autoapi/PDielec/index.html">PDielec</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of PDielec</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
-<li class="toctree-l3 has-children"><a class="reference internal" href="../../autoapi/PDielec/GUI/index.html">PDielec.GUI</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of PDielec.GUI</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
-<li class="toctree-l4"><a class="reference internal" href="../../autoapi/PDielec/GUI/AnalysisTab/index.html">PDielec.GUI.AnalysisTab</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../autoapi/PDielec/GUI/App/index.html">PDielec.GUI.App</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../autoapi/PDielec/GUI/FitterTab/index.html">PDielec.GUI.FitterTab</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../autoapi/PDielec/GUI/MainTab/index.html">PDielec.GUI.MainTab</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../autoapi/PDielec/GUI/NoteBook/index.html">PDielec.GUI.NoteBook</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../autoapi/PDielec/GUI/OpenGLWidget/index.html">PDielec.GUI.OpenGLWidget</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../autoapi/PDielec/GUI/PlottingTab/index.html">PDielec.GUI.PlottingTab</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../autoapi/PDielec/GUI/PowderScenarioTab/index.html">PDielec.GUI.PowderScenarioTab</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../autoapi/PDielec/GUI/ScenarioTab/index.html">PDielec.GUI.ScenarioTab</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../autoapi/PDielec/GUI/SettingsTab/index.html">PDielec.GUI.SettingsTab</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../autoapi/PDielec/GUI/SingleCrystalLayer/index.html">PDielec.GUI.SingleCrystalLayer</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../autoapi/PDielec/GUI/SingleCrystalScenarioTab/index.html">PDielec.GUI.SingleCrystalScenarioTab</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../autoapi/PDielec/GUI/SpreadSheetManager/index.html">PDielec.GUI.SpreadSheetManager</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../autoapi/PDielec/GUI/ViewerTab/index.html">PDielec.GUI.ViewerTab</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../autoapi/PDielec/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of PDielec</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../autoapi/PDielec/GUI/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of PDielec.GUI</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../autoapi/PDielec/GUI/AnalysisTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.AnalysisTab</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../autoapi/PDielec/GUI/App/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.App</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../autoapi/PDielec/GUI/FitterTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.FitterTab</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../autoapi/PDielec/GUI/MainTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.MainTab</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../autoapi/PDielec/GUI/NoteBook/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.NoteBook</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../autoapi/PDielec/GUI/OpenGLWidget/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.OpenGLWidget</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../autoapi/PDielec/GUI/PlottingTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.PlottingTab</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../autoapi/PDielec/GUI/PowderScenarioTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.PowderScenarioTab</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../autoapi/PDielec/GUI/ScenarioTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.ScenarioTab</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../autoapi/PDielec/GUI/SettingsTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.SettingsTab</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../autoapi/PDielec/GUI/SingleCrystalLayer/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.SingleCrystalLayer</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../autoapi/PDielec/GUI/SingleCrystalScenarioTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.SingleCrystalScenarioTab</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../autoapi/PDielec/GUI/SpreadSheetManager/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.SpreadSheetManager</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../autoapi/PDielec/GUI/ViewerTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.ViewerTab</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/AbinitOutputReader/index.html">PDielec.AbinitOutputReader</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/Calculator/index.html">PDielec.Calculator</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/CastepOutputReader/index.html">PDielec.CastepOutputReader</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/Constants/index.html">PDielec.Constants</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/CrystalOutputReader/index.html">PDielec.CrystalOutputReader</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/DielectricFunction/index.html">PDielec.DielectricFunction</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/ExperimentOutputReader/index.html">PDielec.ExperimentOutputReader</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/GTMcore/index.html">PDielec.GTMcore</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/GenericOutputReader/index.html">PDielec.GenericOutputReader</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/GulpOutputReader/index.html">PDielec.GulpOutputReader</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/HelperRoutines/index.html">PDielec.HelperRoutines</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/IO/index.html">PDielec.IO</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/Materials/index.html">PDielec.Materials</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/Mie/index.html">PDielec.Mie</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/PhonopyOutputReader/index.html">PDielec.PhonopyOutputReader</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/Plotter/index.html">PDielec.Plotter</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/QEOutputReader/index.html">PDielec.QEOutputReader</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/SuperCell/index.html">PDielec.SuperCell</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/UnitCell/index.html">PDielec.UnitCell</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/Utilities/index.html">PDielec.Utilities</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/VaspOutputReader/index.html">PDielec.VaspOutputReader</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/checkcsv/index.html">PDielec.checkcsv</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/checkexcel/index.html">PDielec.checkexcel</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/graphdatagenerator/index.html">PDielec.graphdatagenerator</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/p1reader/index.html">PDielec.p1reader</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/p2cif/index.html">PDielec.p2cif</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/pdcompare/index.html">PDielec.pdcompare</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/pdgui/index.html">PDielec.pdgui</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/pdmake/index.html">PDielec.pdmake</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/pickled_reader/index.html">PDielec.pickled_reader</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/preader/index.html">PDielec.preader</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/vibanalysis/index.html">PDielec.vibanalysis</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/AbinitOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.AbinitOutputReader</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/Calculator/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.Calculator</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/CastepOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.CastepOutputReader</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/Constants/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.Constants</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/CrystalOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.CrystalOutputReader</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/DielectricFunction/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.DielectricFunction</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/ExperimentOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.ExperimentOutputReader</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/GTMcore/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GTMcore</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/GenericOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GenericOutputReader</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/GulpOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GulpOutputReader</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/HelperRoutines/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.HelperRoutines</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/IO/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.IO</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/Materials/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.Materials</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/Mie/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.Mie</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/PhonopyOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.PhonopyOutputReader</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/Plotter/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.Plotter</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/QEOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.QEOutputReader</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/SuperCell/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.SuperCell</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/UnitCell/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.UnitCell</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/Utilities/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.Utilities</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/VaspOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.VaspOutputReader</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/checkcsv/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.checkcsv</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/checkexcel/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.checkexcel</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/graphdatagenerator/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.graphdatagenerator</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/p1reader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.p1reader</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/p2cif/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.p2cif</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/pdcompare/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.pdcompare</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/pdgui/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.pdgui</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/pdmake/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.pdmake</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/pickled_reader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.pickled_reader</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/preader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.preader</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/vibanalysis/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.vibanalysis</span></code></a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../../autoapi/PDielec/pdgui/index.html">PDielec.pdgui</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../autoapi/PDielec/preader/index.html">PDielec.preader</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../autoapi/PDielec/pdmake/index.html">PDielec.pdmake</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../autoapi/PDielec/pdgui/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.pdgui</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../autoapi/PDielec/preader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.preader</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../autoapi/PDielec/pdmake/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.pdmake</span></code></a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">References</span></p>
 <ul>
@@ -317,8 +260,7 @@
           <div class="theme-toggle-container theme-toggle-content">
             <button class="theme-toggle">
               <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
-              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
-              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+              <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
               <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
               <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
             </button>
@@ -328,7 +270,7 @@
             <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
           </label>
         </div>
-        <article role="main" id="furo-main-content">
+        <article role="main">
           <h1>Source code for PDielec.Mie</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">PyMieScatt package</span>
@@ -382,9 +324,7 @@
 <span class="c1"># long and short wavelengths</span>
 <span class="n">crossover</span> <span class="o">=</span> <span class="mf">0.01</span>
 
-<div class="viewcode-block" id="coerceDType">
-<a class="viewcode-back" href="../../autoapi/PDielec/Mie/index.html#PDielec.Mie.coerceDType">[docs]</a>
-<span class="k">def</span> <span class="nf">coerceDType</span><span class="p">(</span><span class="n">d</span><span class="p">):</span>
+<div class="viewcode-block" id="coerceDType"><a class="viewcode-back" href="../../autoapi/PDielec/Mie/index.html#PDielec.Mie.coerceDType">[docs]</a><span class="k">def</span> <span class="nf">coerceDType</span><span class="p">(</span><span class="n">d</span><span class="p">):</span>
 <span class="w">  </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Convert input data to a NumPy array if not already one.</span>
 
@@ -411,10 +351,7 @@
   <span class="k">else</span><span class="p">:</span>
     <span class="k">return</span> <span class="n">d</span></div>
 
-
-<div class="viewcode-block" id="MieQ">
-<a class="viewcode-back" href="../../autoapi/PDielec/Mie/index.html#PDielec.Mie.MieQ">[docs]</a>
-<span class="k">def</span> <span class="nf">MieQ</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">wavelength</span><span class="p">,</span> <span class="n">diameter</span><span class="p">,</span> <span class="n">nMedium</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">asDict</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">asCrossSection</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<div class="viewcode-block" id="MieQ"><a class="viewcode-back" href="../../autoapi/PDielec/Mie/index.html#PDielec.Mie.MieQ">[docs]</a><span class="k">def</span> <span class="nf">MieQ</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">wavelength</span><span class="p">,</span> <span class="n">diameter</span><span class="p">,</span> <span class="n">nMedium</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">asDict</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">asCrossSection</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">  </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Calculate Mie scattering efficiencies or cross sections for a spherical particle.</span>
 
@@ -512,10 +449,7 @@
     <span class="k">else</span><span class="p">:</span>
       <span class="k">return</span> <span class="n">qext</span><span class="p">,</span> <span class="n">qsca</span><span class="p">,</span> <span class="n">qabs</span><span class="p">,</span> <span class="n">g</span><span class="p">,</span> <span class="n">qpr</span><span class="p">,</span> <span class="n">qback</span><span class="p">,</span> <span class="n">qratio</span></div>
 
-
-<div class="viewcode-block" id="Mie_ab">
-<a class="viewcode-back" href="../../autoapi/PDielec/Mie/index.html#PDielec.Mie.Mie_ab">[docs]</a>
-<span class="k">def</span> <span class="nf">Mie_ab</span><span class="p">(</span><span class="n">m</span><span class="p">,</span><span class="n">x</span><span class="p">):</span>
+<div class="viewcode-block" id="Mie_ab"><a class="viewcode-back" href="../../autoapi/PDielec/Mie/index.html#PDielec.Mie.Mie_ab">[docs]</a><span class="k">def</span> <span class="nf">Mie_ab</span><span class="p">(</span><span class="n">m</span><span class="p">,</span><span class="n">x</span><span class="p">):</span>
 <span class="w">  </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Compute the Mie scattering coefficients a_n and b_n.</span>
 
@@ -580,10 +514,7 @@
 
   <span class="k">return</span> <span class="n">an</span><span class="p">,</span> <span class="n">bn</span></div>
 
-
-<div class="viewcode-block" id="Mie_cd">
-<a class="viewcode-back" href="../../autoapi/PDielec/Mie/index.html#PDielec.Mie.Mie_cd">[docs]</a>
-<span class="k">def</span> <span class="nf">Mie_cd</span><span class="p">(</span><span class="n">m</span><span class="p">,</span><span class="n">x</span><span class="p">):</span>
+<div class="viewcode-block" id="Mie_cd"><a class="viewcode-back" href="../../autoapi/PDielec/Mie/index.html#PDielec.Mie.Mie_cd">[docs]</a><span class="k">def</span> <span class="nf">Mie_cd</span><span class="p">(</span><span class="n">m</span><span class="p">,</span><span class="n">x</span><span class="p">):</span>
 <span class="w">  </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Calculate the Mie scattering coefficients for given size parameter and relative refractive index.</span>
 
@@ -660,10 +591,7 @@
 
   <span class="k">return</span> <span class="n">cn</span><span class="p">,</span> <span class="n">dn</span></div>
 
-
-<div class="viewcode-block" id="RayleighMieQ">
-<a class="viewcode-back" href="../../autoapi/PDielec/Mie/index.html#PDielec.Mie.RayleighMieQ">[docs]</a>
-<span class="k">def</span> <span class="nf">RayleighMieQ</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">wavelength</span><span class="p">,</span> <span class="n">diameter</span><span class="p">,</span> <span class="n">nMedium</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">asDict</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">asCrossSection</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<div class="viewcode-block" id="RayleighMieQ"><a class="viewcode-back" href="../../autoapi/PDielec/Mie/index.html#PDielec.Mie.RayleighMieQ">[docs]</a><span class="k">def</span> <span class="nf">RayleighMieQ</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">wavelength</span><span class="p">,</span> <span class="n">diameter</span><span class="p">,</span> <span class="n">nMedium</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">asDict</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">asCrossSection</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">  </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Calculate the optical properties of a sphere for a given refractive index, wavelength, and diameter according to the Rayleigh-Scattering approximation.</span>
 
@@ -744,10 +672,7 @@
       <span class="k">else</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">qext</span><span class="p">,</span> <span class="n">qsca</span><span class="p">,</span> <span class="n">qabs</span><span class="p">,</span> <span class="n">g</span><span class="p">,</span> <span class="n">qpr</span><span class="p">,</span> <span class="n">qback</span><span class="p">,</span> <span class="n">qratio</span></div>
 
-
-<div class="viewcode-block" id="AutoMieQ">
-<a class="viewcode-back" href="../../autoapi/PDielec/Mie/index.html#PDielec.Mie.AutoMieQ">[docs]</a>
-<span class="k">def</span> <span class="nf">AutoMieQ</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">wavelength</span><span class="p">,</span> <span class="n">diameter</span><span class="p">,</span> <span class="n">nMedium</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">asDict</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">asCrossSection</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<div class="viewcode-block" id="AutoMieQ"><a class="viewcode-back" href="../../autoapi/PDielec/Mie/index.html#PDielec.Mie.AutoMieQ">[docs]</a><span class="k">def</span> <span class="nf">AutoMieQ</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">wavelength</span><span class="p">,</span> <span class="n">diameter</span><span class="p">,</span> <span class="n">nMedium</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">asDict</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">asCrossSection</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">  </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Calculate the Mie scattering efficiencies for spheres, using either the Rayleigh, or the full Mie solution.</span>
 
@@ -807,10 +732,7 @@
   <span class="k">else</span><span class="p">:</span>
     <span class="k">return</span> <span class="n">MieQ</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">wavelength</span><span class="p">,</span> <span class="n">diameter</span><span class="p">,</span> <span class="n">nMedium</span><span class="p">,</span> <span class="n">asDict</span><span class="o">=</span><span class="n">asDict</span><span class="p">,</span> <span class="n">asCrossSection</span><span class="o">=</span><span class="n">asCrossSection</span><span class="p">)</span></div>
 
-
-<div class="viewcode-block" id="LowFrequencyMieQ">
-<a class="viewcode-back" href="../../autoapi/PDielec/Mie/index.html#PDielec.Mie.LowFrequencyMieQ">[docs]</a>
-<span class="k">def</span> <span class="nf">LowFrequencyMieQ</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">wavelength</span><span class="p">,</span> <span class="n">diameter</span><span class="p">,</span> <span class="n">nMedium</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">asDict</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">asCrossSection</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<div class="viewcode-block" id="LowFrequencyMieQ"><a class="viewcode-back" href="../../autoapi/PDielec/Mie/index.html#PDielec.Mie.LowFrequencyMieQ">[docs]</a><span class="k">def</span> <span class="nf">LowFrequencyMieQ</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">wavelength</span><span class="p">,</span> <span class="n">diameter</span><span class="p">,</span> <span class="n">nMedium</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">asDict</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">asCrossSection</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">  </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Calculate the Mie scattering efficiencies for low-frequency approximation.</span>
 
@@ -896,10 +818,7 @@
       <span class="k">else</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">qext</span><span class="p">,</span> <span class="n">qsca</span><span class="p">,</span> <span class="n">qabs</span><span class="p">,</span> <span class="n">g</span><span class="p">,</span> <span class="n">qpr</span><span class="p">,</span> <span class="n">qback</span><span class="p">,</span> <span class="n">qratio</span></div>
 
-
-<div class="viewcode-block" id="LowFrequencyMie_ab">
-<a class="viewcode-back" href="../../autoapi/PDielec/Mie/index.html#PDielec.Mie.LowFrequencyMie_ab">[docs]</a>
-<span class="k">def</span> <span class="nf">LowFrequencyMie_ab</span><span class="p">(</span><span class="n">m</span><span class="p">,</span><span class="n">x</span><span class="p">):</span>
+<div class="viewcode-block" id="LowFrequencyMie_ab"><a class="viewcode-back" href="../../autoapi/PDielec/Mie/index.html#PDielec.Mie.LowFrequencyMie_ab">[docs]</a><span class="k">def</span> <span class="nf">LowFrequencyMie_ab</span><span class="p">(</span><span class="n">m</span><span class="p">,</span><span class="n">x</span><span class="p">):</span>
 <span class="w">  </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Calculate the low-frequency Mie scattering coefficients.</span>
 
@@ -949,10 +868,7 @@
   <span class="n">bn</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">b1</span><span class="p">,</span><span class="n">b2</span><span class="p">)</span>
   <span class="k">return</span> <span class="n">an</span><span class="p">,</span><span class="n">bn</span></div>
 
-
-<div class="viewcode-block" id="AutoMie_ab">
-<a class="viewcode-back" href="../../autoapi/PDielec/Mie/index.html#PDielec.Mie.AutoMie_ab">[docs]</a>
-<span class="k">def</span> <span class="nf">AutoMie_ab</span><span class="p">(</span><span class="n">m</span><span class="p">,</span><span class="n">x</span><span class="p">):</span>
+<div class="viewcode-block" id="AutoMie_ab"><a class="viewcode-back" href="../../autoapi/PDielec/Mie/index.html#PDielec.Mie.AutoMie_ab">[docs]</a><span class="k">def</span> <span class="nf">AutoMie_ab</span><span class="p">(</span><span class="n">m</span><span class="p">,</span><span class="n">x</span><span class="p">):</span>
 <span class="w">  </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Calculate the Mie scattering coefficients a and b.</span>
 
@@ -977,10 +893,7 @@
   <span class="k">else</span><span class="p">:</span>
     <span class="k">return</span> <span class="n">Mie_ab</span><span class="p">(</span><span class="n">m</span><span class="p">,</span><span class="n">x</span><span class="p">)</span></div>
 
-
-<div class="viewcode-block" id="Mie_SD">
-<a class="viewcode-back" href="../../autoapi/PDielec/Mie/index.html#PDielec.Mie.Mie_SD">[docs]</a>
-<span class="k">def</span> <span class="nf">Mie_SD</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">wavelength</span><span class="p">,</span> <span class="n">dp</span><span class="p">,</span> <span class="n">ndp</span><span class="p">,</span> <span class="n">nMedium</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">SMPS</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">interpolate</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">asDict</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<div class="viewcode-block" id="Mie_SD"><a class="viewcode-back" href="../../autoapi/PDielec/Mie/index.html#PDielec.Mie.Mie_SD">[docs]</a><span class="k">def</span> <span class="nf">Mie_SD</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">wavelength</span><span class="p">,</span> <span class="n">dp</span><span class="p">,</span> <span class="n">ndp</span><span class="p">,</span> <span class="n">nMedium</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">SMPS</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">interpolate</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">asDict</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">  </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Calculate the Mie Scattering parameters based on a supplied size distribution.</span>
 
@@ -1070,10 +983,7 @@
   <span class="k">else</span><span class="p">:</span>
     <span class="k">return</span> <span class="n">Bext</span><span class="p">,</span> <span class="n">Bsca</span><span class="p">,</span> <span class="n">Babs</span><span class="p">,</span> <span class="n">bigG</span><span class="p">,</span> <span class="n">Bpr</span><span class="p">,</span> <span class="n">Bback</span><span class="p">,</span> <span class="n">Bratio</span></div>
 
-
-<div class="viewcode-block" id="ScatteringFunction">
-<a class="viewcode-back" href="../../autoapi/PDielec/Mie/index.html#PDielec.Mie.ScatteringFunction">[docs]</a>
-<span class="k">def</span> <span class="nf">ScatteringFunction</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">wavelength</span><span class="p">,</span> <span class="n">diameter</span><span class="p">,</span> <span class="n">nMedium</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">minAngle</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">maxAngle</span><span class="o">=</span><span class="mi">180</span><span class="p">,</span> <span class="n">angularResolution</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">space</span><span class="o">=</span><span class="s1">&#39;theta&#39;</span><span class="p">,</span> <span class="n">angleMeasure</span><span class="o">=</span><span class="s1">&#39;radians&#39;</span><span class="p">,</span> <span class="n">normalization</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="ScatteringFunction"><a class="viewcode-back" href="../../autoapi/PDielec/Mie/index.html#PDielec.Mie.ScatteringFunction">[docs]</a><span class="k">def</span> <span class="nf">ScatteringFunction</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">wavelength</span><span class="p">,</span> <span class="n">diameter</span><span class="p">,</span> <span class="n">nMedium</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">minAngle</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">maxAngle</span><span class="o">=</span><span class="mi">180</span><span class="p">,</span> <span class="n">angularResolution</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">space</span><span class="o">=</span><span class="s1">&#39;theta&#39;</span><span class="p">,</span> <span class="n">angleMeasure</span><span class="o">=</span><span class="s1">&#39;radians&#39;</span><span class="p">,</span> <span class="n">normalization</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">  </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Calculate the scattering function for given parameters using the Mie theory.</span>
 
@@ -1180,10 +1090,7 @@
     <span class="n">measure</span> <span class="o">=</span> <span class="p">(</span><span class="mi">4</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="n">wavelength</span><span class="p">)</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">measure</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">diameter</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span>
   <span class="k">return</span> <span class="n">measure</span><span class="p">,</span><span class="n">SL</span><span class="p">,</span><span class="n">SR</span><span class="p">,</span><span class="n">SU</span></div>
 
-
-<div class="viewcode-block" id="SF_SD">
-<a class="viewcode-back" href="../../autoapi/PDielec/Mie/index.html#PDielec.Mie.SF_SD">[docs]</a>
-<span class="k">def</span> <span class="nf">SF_SD</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">wavelength</span><span class="p">,</span> <span class="n">dp</span><span class="p">,</span> <span class="n">ndp</span><span class="p">,</span> <span class="n">nMedium</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">minAngle</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">maxAngle</span><span class="o">=</span><span class="mi">180</span><span class="p">,</span> <span class="n">angularResolution</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">space</span><span class="o">=</span><span class="s1">&#39;theta&#39;</span><span class="p">,</span> <span class="n">angleMeasure</span><span class="o">=</span><span class="s1">&#39;radians&#39;</span><span class="p">,</span> <span class="n">normalization</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="SF_SD"><a class="viewcode-back" href="../../autoapi/PDielec/Mie/index.html#PDielec.Mie.SF_SD">[docs]</a><span class="k">def</span> <span class="nf">SF_SD</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">wavelength</span><span class="p">,</span> <span class="n">dp</span><span class="p">,</span> <span class="n">ndp</span><span class="p">,</span> <span class="n">nMedium</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">minAngle</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">maxAngle</span><span class="o">=</span><span class="mi">180</span><span class="p">,</span> <span class="n">angularResolution</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">space</span><span class="o">=</span><span class="s1">&#39;theta&#39;</span><span class="p">,</span> <span class="n">angleMeasure</span><span class="o">=</span><span class="s1">&#39;radians&#39;</span><span class="p">,</span> <span class="n">normalization</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">  </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Calculate the scattering function SD for given parameters and return the scattering intensities for left, right, and unpolarized light.</span>
 
@@ -1266,10 +1173,7 @@
     <span class="n">SU</span> <span class="o">/=</span> <span class="n">trapz</span><span class="p">(</span><span class="n">SU</span><span class="p">,</span><span class="n">measure</span><span class="p">)</span>
   <span class="k">return</span> <span class="n">measure</span><span class="p">,</span><span class="n">SL</span><span class="p">,</span><span class="n">SR</span><span class="p">,</span><span class="n">SU</span></div>
 
-
-<div class="viewcode-block" id="MieS1S2">
-<a class="viewcode-back" href="../../autoapi/PDielec/Mie/index.html#PDielec.Mie.MieS1S2">[docs]</a>
-<span class="k">def</span> <span class="nf">MieS1S2</span><span class="p">(</span><span class="n">m</span><span class="p">,</span><span class="n">x</span><span class="p">,</span><span class="n">mu</span><span class="p">):</span>
+<div class="viewcode-block" id="MieS1S2"><a class="viewcode-back" href="../../autoapi/PDielec/Mie/index.html#PDielec.Mie.MieS1S2">[docs]</a><span class="k">def</span> <span class="nf">MieS1S2</span><span class="p">(</span><span class="n">m</span><span class="p">,</span><span class="n">x</span><span class="p">,</span><span class="n">mu</span><span class="p">):</span>
 <span class="w">  </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Calculate the scattering parameters S1 and S2 for Mie scattering.</span>
 
@@ -1309,10 +1213,7 @@
   <span class="n">S2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">n2</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="nb">len</span><span class="p">(</span><span class="n">an</span><span class="p">)]</span><span class="o">*</span><span class="p">(</span><span class="n">an</span><span class="o">*</span><span class="n">taun</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="nb">len</span><span class="p">(</span><span class="n">an</span><span class="p">)]</span><span class="o">+</span><span class="n">bn</span><span class="o">*</span><span class="n">pin</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="nb">len</span><span class="p">(</span><span class="n">bn</span><span class="p">)]))</span>
   <span class="k">return</span> <span class="n">S1</span><span class="p">,</span> <span class="n">S2</span></div>
 
-
-<div class="viewcode-block" id="MiePiTau">
-<a class="viewcode-back" href="../../autoapi/PDielec/Mie/index.html#PDielec.Mie.MiePiTau">[docs]</a>
-<span class="k">def</span> <span class="nf">MiePiTau</span><span class="p">(</span><span class="n">mu</span><span class="p">,</span><span class="n">nmax</span><span class="p">):</span>
+<div class="viewcode-block" id="MiePiTau"><a class="viewcode-back" href="../../autoapi/PDielec/Mie/index.html#PDielec.Mie.MiePiTau">[docs]</a><span class="k">def</span> <span class="nf">MiePiTau</span><span class="p">(</span><span class="n">mu</span><span class="p">,</span><span class="n">nmax</span><span class="p">):</span>
 <span class="w">  </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Calculate the Mie \(\pi\) and \(\tau\) functions for given argument and maximum order.</span>
 
@@ -1351,10 +1252,7 @@
     <span class="n">t</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">mu</span><span class="o">*</span><span class="n">p</span><span class="p">[</span><span class="n">n</span><span class="p">]</span><span class="o">-</span><span class="p">(</span><span class="n">n</span><span class="o">+</span><span class="mi">2</span><span class="p">)</span><span class="o">*</span><span class="n">p</span><span class="p">[</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
   <span class="k">return</span> <span class="n">p</span><span class="p">,</span> <span class="n">t</span></div>
 
-
-<div class="viewcode-block" id="MatrixElements">
-<a class="viewcode-back" href="../../autoapi/PDielec/Mie/index.html#PDielec.Mie.MatrixElements">[docs]</a>
-<span class="k">def</span> <span class="nf">MatrixElements</span><span class="p">(</span><span class="n">m</span><span class="p">,</span><span class="n">wavelength</span><span class="p">,</span><span class="n">diameter</span><span class="p">,</span><span class="n">mu</span><span class="p">,</span><span class="n">nMedium</span><span class="o">=</span><span class="mf">1.0</span><span class="p">):</span>
+<div class="viewcode-block" id="MatrixElements"><a class="viewcode-back" href="../../autoapi/PDielec/Mie/index.html#PDielec.Mie.MatrixElements">[docs]</a><span class="k">def</span> <span class="nf">MatrixElements</span><span class="p">(</span><span class="n">m</span><span class="p">,</span><span class="n">wavelength</span><span class="p">,</span><span class="n">diameter</span><span class="p">,</span><span class="n">mu</span><span class="p">,</span><span class="n">nMedium</span><span class="o">=</span><span class="mf">1.0</span><span class="p">):</span>
 <span class="w">  </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Calculate the scattering matrix elements for a spherical scatterer.</span>
 
@@ -1402,10 +1300,7 @@
   <span class="n">S34</span> <span class="o">=</span> <span class="mf">0.5</span><span class="n">j</span><span class="o">*</span><span class="p">(</span><span class="n">S1</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">conjugate</span><span class="p">(</span><span class="n">S2</span><span class="p">)</span><span class="o">-</span><span class="n">S2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">conjugate</span><span class="p">(</span><span class="n">S1</span><span class="p">))</span>
   <span class="k">return</span> <span class="n">S11</span><span class="p">,</span> <span class="n">S12</span><span class="p">,</span> <span class="n">S33</span><span class="p">,</span> <span class="n">S34</span></div>
 
-
-<div class="viewcode-block" id="MieQ_withDiameterRange">
-<a class="viewcode-back" href="../../autoapi/PDielec/Mie/index.html#PDielec.Mie.MieQ_withDiameterRange">[docs]</a>
-<span class="k">def</span> <span class="nf">MieQ_withDiameterRange</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">wavelength</span><span class="p">,</span> <span class="n">nMedium</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">diameterRange</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">1000</span><span class="p">),</span> <span class="n">nd</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">logD</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<div class="viewcode-block" id="MieQ_withDiameterRange"><a class="viewcode-back" href="../../autoapi/PDielec/Mie/index.html#PDielec.Mie.MieQ_withDiameterRange">[docs]</a><span class="k">def</span> <span class="nf">MieQ_withDiameterRange</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">wavelength</span><span class="p">,</span> <span class="n">nMedium</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">diameterRange</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">1000</span><span class="p">),</span> <span class="n">nd</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">logD</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">  </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Calculate Mie scattering parameters over a range of particle diameters.</span>
 
@@ -1487,10 +1382,7 @@
   <span class="n">qratio</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">q</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span> <span class="k">for</span> <span class="n">q</span> <span class="ow">in</span> <span class="n">_qD</span><span class="p">])</span>
   <span class="k">return</span> <span class="n">diameters</span><span class="p">,</span> <span class="n">qext</span><span class="p">,</span> <span class="n">qsca</span><span class="p">,</span> <span class="n">qabs</span><span class="p">,</span> <span class="n">g</span><span class="p">,</span> <span class="n">qpr</span><span class="p">,</span> <span class="n">qback</span><span class="p">,</span> <span class="n">qratio</span></div>
 
-
-<div class="viewcode-block" id="MieQ_withWavelengthRange">
-<a class="viewcode-back" href="../../autoapi/PDielec/Mie/index.html#PDielec.Mie.MieQ_withWavelengthRange">[docs]</a>
-<span class="k">def</span> <span class="nf">MieQ_withWavelengthRange</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">diameter</span><span class="p">,</span> <span class="n">nMedium</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">wavelengthRange</span><span class="o">=</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span><span class="mi">1600</span><span class="p">),</span> <span class="n">nw</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">logW</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<div class="viewcode-block" id="MieQ_withWavelengthRange"><a class="viewcode-back" href="../../autoapi/PDielec/Mie/index.html#PDielec.Mie.MieQ_withWavelengthRange">[docs]</a><span class="k">def</span> <span class="nf">MieQ_withWavelengthRange</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">diameter</span><span class="p">,</span> <span class="n">nMedium</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">wavelengthRange</span><span class="o">=</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span><span class="mi">1600</span><span class="p">),</span> <span class="n">nw</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">logW</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">  </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Calculate Mie scattering efficiencies for a range of wavelengths.</span>
 
@@ -1575,10 +1467,7 @@
   <span class="n">qratio</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">q</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span> <span class="k">for</span> <span class="n">q</span> <span class="ow">in</span> <span class="n">_qD</span><span class="p">])</span>
   <span class="k">return</span> <span class="n">wavelengths</span><span class="p">,</span> <span class="n">qext</span><span class="p">,</span> <span class="n">qsca</span><span class="p">,</span> <span class="n">qabs</span><span class="p">,</span> <span class="n">g</span><span class="p">,</span> <span class="n">qpr</span><span class="p">,</span> <span class="n">qback</span><span class="p">,</span> <span class="n">qratio</span></div>
 
-
-<div class="viewcode-block" id="MieQ_withSizeParameterRange">
-<a class="viewcode-back" href="../../autoapi/PDielec/Mie/index.html#PDielec.Mie.MieQ_withSizeParameterRange">[docs]</a>
-<span class="k">def</span> <span class="nf">MieQ_withSizeParameterRange</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">nMedium</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">xRange</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">10</span><span class="p">),</span> <span class="n">nx</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">logX</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<div class="viewcode-block" id="MieQ_withSizeParameterRange"><a class="viewcode-back" href="../../autoapi/PDielec/Mie/index.html#PDielec.Mie.MieQ_withSizeParameterRange">[docs]</a><span class="k">def</span> <span class="nf">MieQ_withSizeParameterRange</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">nMedium</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">xRange</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">10</span><span class="p">),</span> <span class="n">nx</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">logX</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">  </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Calculate optical properties over a range of size parameters using Mie theory.</span>
 
@@ -1658,10 +1547,7 @@
   <span class="n">qratio</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">q</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span> <span class="k">for</span> <span class="n">q</span> <span class="ow">in</span> <span class="n">_qD</span><span class="p">])</span>
   <span class="k">return</span> <span class="n">xValues</span><span class="p">,</span> <span class="n">qext</span><span class="p">,</span> <span class="n">qsca</span><span class="p">,</span> <span class="n">qabs</span><span class="p">,</span> <span class="n">g</span><span class="p">,</span> <span class="n">qpr</span><span class="p">,</span> <span class="n">qback</span><span class="p">,</span> <span class="n">qratio</span></div>
 
-
-<div class="viewcode-block" id="Mie_Lognormal">
-<a class="viewcode-back" href="../../autoapi/PDielec/Mie/index.html#PDielec.Mie.Mie_Lognormal">[docs]</a>
-<span class="k">def</span> <span class="nf">Mie_Lognormal</span><span class="p">(</span><span class="n">m</span><span class="p">,</span><span class="n">wavelength</span><span class="p">,</span><span class="n">geoStdDev</span><span class="p">,</span><span class="n">geoMean</span><span class="p">,</span><span class="n">numberOfParticles</span><span class="p">,</span><span class="n">nMedium</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">numberOfBins</span><span class="o">=</span><span class="mi">10000</span><span class="p">,</span><span class="n">lower</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">upper</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span><span class="n">gamma</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="n">returnDistribution</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span><span class="n">decomposeMultimodal</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span><span class="n">asDict</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<div class="viewcode-block" id="Mie_Lognormal"><a class="viewcode-back" href="../../autoapi/PDielec/Mie/index.html#PDielec.Mie.Mie_Lognormal">[docs]</a><span class="k">def</span> <span class="nf">Mie_Lognormal</span><span class="p">(</span><span class="n">m</span><span class="p">,</span><span class="n">wavelength</span><span class="p">,</span><span class="n">geoStdDev</span><span class="p">,</span><span class="n">geoMean</span><span class="p">,</span><span class="n">numberOfParticles</span><span class="p">,</span><span class="n">nMedium</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">numberOfBins</span><span class="o">=</span><span class="mi">10000</span><span class="p">,</span><span class="n">lower</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">upper</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span><span class="n">gamma</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="n">returnDistribution</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span><span class="n">decomposeMultimodal</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span><span class="n">asDict</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">  </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Perform Mie scattering calculations for lognormally distributed particles.</span>
 
@@ -1754,7 +1640,6 @@
       <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="n">Bext</span><span class="o">=</span><span class="n">Bext</span><span class="p">,</span> <span class="n">Bsca</span><span class="o">=</span><span class="n">Bsca</span><span class="p">,</span> <span class="n">Babs</span><span class="o">=</span><span class="n">Babs</span><span class="p">,</span> <span class="n">bigG</span><span class="o">=</span><span class="n">bigG</span><span class="p">,</span> <span class="n">Bpr</span><span class="o">=</span><span class="n">Bpr</span><span class="p">,</span> <span class="n">Bback</span><span class="o">=</span><span class="n">Bback</span><span class="p">,</span> <span class="n">Bratio</span><span class="o">=</span><span class="n">Bratio</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
       <span class="k">return</span> <span class="n">Bext</span><span class="p">,</span> <span class="n">Bsca</span><span class="p">,</span> <span class="n">Babs</span><span class="p">,</span> <span class="n">bigG</span><span class="p">,</span> <span class="n">Bpr</span><span class="p">,</span> <span class="n">Bback</span><span class="p">,</span> <span class="n">Bratio</span></div>
-
 </pre></div>
         </article>
       </div>
@@ -1787,9 +1672,9 @@
       
     </aside>
   </div>
-</div><script src="../../_static/documentation_options.js?v=23ce250a"></script>
-    <script src="../../_static/doctools.js?v=9a2dae69"></script>
-    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
-    <script src="../../_static/scripts/furo.js?v=4e2eecee"></script>
+</div><script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=01b4f342"></script>
+    <script src="../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../../_static/scripts/furo.js?v=32e29ea5"></script>
     </body>
 </html>

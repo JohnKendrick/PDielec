@@ -1,5 +1,5 @@
-PDielec.GUI.OpenGLWidget
-========================
+:py:mod:`PDielec.GUI.OpenGLWidget`
+==================================
 
 .. py:module:: PDielec.GUI.OpenGLWidget
 
@@ -9,22 +9,24 @@ PDielec.GUI.OpenGLWidget
 
 
 
+Module Contents
+---------------
+
 Classes
--------
+~~~~~~~
 
 .. autoapisummary::
 
    PDielec.GUI.OpenGLWidget.Arrow
    PDielec.GUI.OpenGLWidget.Cylinder
-   PDielec.GUI.OpenGLWidget.Debug
    PDielec.GUI.OpenGLWidget.OpenGLWidget
    PDielec.GUI.OpenGLWidget.Sphere
 
 
-Module Contents
----------------
+
 
 .. py:class:: Arrow(colour, radius, direction, scale)
+
 
    A class to represent a 3D arrow for graphical display.
 
@@ -62,6 +64,7 @@ Module Contents
 
 .. py:class:: Cylinder(colour, radius, pos1, pos2)
 
+
    A class representing a 3D cylinder.
 
    Parameters
@@ -93,59 +96,10 @@ Module Contents
        The 3D vector representing the axis of rotation to align the cylinder with the z-axis (used together with `angle` for setting the cylinder's orientation in 3D space).
 
 
-.. py:class:: Debug(debug, text, level=0)
-
-   A class aimed at providing a structured way to include debug messages in code.
-
-   Methods
-   -------
-   print(args, level=0)
-       Prints debug messages based on the debug level provided as argument compared to the object's debug level.
-   state()
-       Returns the current state (enabled or disabled) of debugging.
-
-   Notes
-   -----
-   The `print` method provides a flexible way to include additional information along with the base debug message, allowing for a detailed and adjustable debugging output.
-
-
-   .. py:method:: print(*args, level=0)
-
-      Prints message if debugging level allows.
-
-      Parameters
-      ----------
-      args
-          Variable length argument list for the message to be printed.
-      level : int, optional
-          The level of the message that determines if it gets printed or not,
-          based on the instance's `level`. Default value is 0.
-
-      Notes
-      -----
-      This method will only print the message if the instance's `debug` flag is True
-      and the provided `level` is less than or equal to the instance's `level`.
-
-
-
-   .. py:method:: state()
-
-      Get the debug state.
-
-      Parameters
-      ----------
-      None
-
-      Returns
-      -------
-      The current debug state.
-
-
-
 .. py:class:: OpenGLWidget(parent, debug=False)
 
-   Bases: :py:obj:`PyQt5.QtWidgets.QOpenGLWidget`
 
+   Bases: :py:obj:`PyQt5.QtWidgets.QOpenGLWidget`
 
    A widget for the Qt framework specialized in OpenGL graphics rendering.
 
@@ -234,6 +188,9 @@ Module Contents
    addSphere(colour, radius, pos, phase=0)
        Adds a sphere to the scene.
 
+   .. py:attribute:: format
+
+      
 
    .. py:method:: addArrows(colour, radius, direction, length, phase=0)
 
@@ -255,7 +212,6 @@ Module Contents
       Returns
       -------
       None
-
 
 
    .. py:method:: addCylinder(colour, radius, pos1, pos2, phase=0)
@@ -280,7 +236,6 @@ Module Contents
       None
 
 
-
    .. py:method:: addSphere(colour, radius, pos, phase=0)
 
       Add a sphere to a collection within an object.
@@ -299,7 +254,6 @@ Module Contents
       Returns
       -------
       None
-
 
 
    .. py:method:: createArrays(nphases)
@@ -321,7 +275,6 @@ Module Contents
       -----
       - Assumes `self.spheres` and `self.cylinders` are already defined as lists.
       - It uses the `clear` method on both `self.spheres` and `self.cylinders`, which is available for lists in Python 3.3 and later.
-
 
 
    .. py:method:: defineLights()
@@ -351,7 +304,6 @@ Module Contents
       - Each light in `self.lights` is either enabled or disabled based on its corresponding status in `self.light_switches`.
 
 
-
    .. py:method:: deleteArrows()
 
       Deletes all arrows from a collection.
@@ -365,7 +317,6 @@ Module Contents
       Returns
       -------
       None
-
 
 
    .. py:method:: deleteCylinders()
@@ -389,7 +340,6 @@ Module Contents
       cylinder data from the instance.
 
 
-
    .. py:method:: deleteSpheres()
 
       Deletes all spheres from the current context.
@@ -403,7 +353,6 @@ Module Contents
       Returns
       -------
       None
-
 
 
    .. py:method:: drawArrows()
@@ -427,7 +376,6 @@ Module Contents
       - Material properties such as diffuse, ambient, and specular colors are calculated from the arrow's color and applied to the OpenGL material.
       - Arrows consist of a cylindrical shaft and a conical tip, whose dimensions and orientations are based on the properties of each arrow (e.g., direction, length, angle, rotation, colour, and radius).
       - This method depends on the `self.arrows` list and the corresponding `self.spheres` for the current phase stored in `self.current_phase`. It leverages OpenGL functions and assumes that `self.viewerTab.settings['Arrow colour']`, along with other properties like `self.diffuseMaterialFactor`, `self.ambientMaterialFactor`, `self.specularLightFactor`, and `self.glintMaterialFactor` are predefined and correctly configured.
-
 
 
    .. py:method:: drawCylinders()
@@ -463,7 +411,6 @@ Module Contents
       phase is determined by `self.current_phase`.
 
 
-
    .. py:method:: drawSpheres()
 
       Draw spheres based on the object's current phase and spheres attributes.
@@ -484,7 +431,6 @@ Module Contents
       Requires OpenGL (PyOpenGL) for rendering. The method modifies the OpenGL state to draw spheres at specified locations with given radii and colors. Assumes the presence of attributes like `spheres`, `current_phase`, `diffuseMaterialFactor`, `ambientMaterialFactor`, `specularLightFactor`, and methods or attributes for rendering parameters such as `quadric`, `sphere_slices`, `sphere_stacks`.
 
 
-
    .. py:method:: enterEvent(event)
 
       Handle the entering of an event.
@@ -503,7 +449,6 @@ Module Contents
       This function primarily ensures that the focus is set accordingly when an event occurs, and then it passes the event on to the viewerTab's own enterEvent handler for further processing.
 
 
-
    .. py:method:: initializeGL()
 
       Initializes OpenGL rendering context.
@@ -517,7 +462,6 @@ Module Contents
       Returns
       -------
       None
-
 
 
    .. py:method:: keyPressEvent(event)
@@ -570,7 +514,6 @@ Module Contents
       This method does not explicitly raise any exceptions but might propagate exceptions from methods it calls.
 
 
-
    .. py:method:: moleculeRotate(scale, x, y, z)
 
       Rotate a molecule object around the specified axes.
@@ -618,7 +561,6 @@ Module Contents
       This function does not explicitly raise exceptions but relies on the OpenGL context and the `update` method's implementation.
 
 
-
    .. py:method:: mouseMoveEvent(event)
 
       Handle the mouse move events to perform various actions.
@@ -643,7 +585,6 @@ Module Contents
       Mouse coordinates are updated at the end of the method to reflect the current position.
 
 
-
    .. py:method:: mousePressEvent(event)
 
       Handle the mouse press event.
@@ -656,7 +597,6 @@ Module Contents
       Returns
       -------
       None
-
 
 
    .. py:method:: mouseReleaseEvent(event)
@@ -677,7 +617,6 @@ Module Contents
       This method records the x and y coordinates of the mouse at the moment it is released.
 
 
-
    .. py:method:: myMakeCurrent()
 
       Make the current OpenGL context active and clear any errors.
@@ -694,7 +633,6 @@ Module Contents
 
       This method does not return any value or raise exceptions. It is designed to
       ensure that the OpenGL context is error-free after making it current.
-
 
 
    .. py:method:: paintGL()
@@ -726,7 +664,6 @@ Module Contents
       - The OpenGL context is modified by setting the clear color and transforming the modelview matrix.
 
 
-
    .. py:method:: resizeGL(w, h)
 
       Resizes the OpenGL widget to a new width and height.
@@ -745,7 +682,6 @@ Module Contents
       Returns
       -------
       None
-
 
 
 
@@ -774,7 +710,6 @@ Module Contents
 
 
 
-
    .. py:method:: setImageSize()
 
       Set the maximum image size based on the furthest object from the rotation center.
@@ -792,7 +727,6 @@ Module Contents
       Notes
       -----
       The `self` parameter represents the instance of the class in which the function is called. This function relies on the `math.sqrt`, `np.dot` for calculations, and expects `self.spheres`, `self.cylinders`, `self.current_phase`, `self.rotation_centre`, and `self.setProjectionMatrix` to be defined.
-
 
 
    .. py:method:: setProjectionMatrix()
@@ -814,7 +748,6 @@ Module Contents
       This method makes several OpenGL calls to configure the projection and model view matrices and assumes that `self.myMakeCurrent()` makes the required OpenGL context current. It also updates `self.matrix` with an identity matrix and sets `self.current_phase` based on the total number of phases.
 
 
-
    .. py:method:: setRotationCentre(pos)
 
       Set the rotation centre to a specified position.
@@ -828,7 +761,6 @@ Module Contents
       Returns
       -------
       None
-
 
 
    .. py:method:: showArrows(show)
@@ -847,7 +779,6 @@ Module Contents
       Notes
       -----
       This function updates the `show_arrows` attribute based on the "show" parameter and prints the current status to the debugger.
-
 
 
    .. py:method:: snapshot(filename)
@@ -872,7 +803,6 @@ Module Contents
       ```
 
       This will grab the current framebuffer content and save it as 'screenshot.png'.
-
 
 
    .. py:method:: startAnimation()
@@ -903,7 +833,6 @@ Module Contents
         timed events, utilizing a QTimer from the PyQt or PySide frameworks.
 
 
-
    .. py:method:: stopAnimation()
 
       Stop the ongoing animation.
@@ -921,7 +850,6 @@ Module Contents
       Notes
       -----
       This function assumes that `self.timer` is an instance with a `stop` method, which is called to halt any ongoing animation. If `self.timer` is `None`, indicating no animation is currently active, this method does nothing.
-
 
 
    .. py:method:: timeoutHandler()
@@ -949,7 +877,6 @@ Module Contents
       - The `update` method is called at the end to apply any changes made to the state as a result of this timeout event.
 
 
-
    .. py:method:: translate(x, y)
 
       Translate an object by modifying its current position.
@@ -972,7 +899,6 @@ Module Contents
       This function involves a call to `glTranslatef`, which applies a translation transformation to the current matrix. Ensure that the appropriate OpenGL context is made current before calling this function by using `self.myMakeCurrent()`.
 
 
-
    .. py:method:: wheelEvent(event)
 
       Handles a wheel event to zoom in or out.
@@ -992,7 +918,6 @@ Module Contents
       the current context to this object before determining the direction and
       intensity of the zoom based on the vertical angle delta of the wheel event.
       Lastly, it refreshes the display to reflect any changes.
-
 
 
    .. py:method:: zoom(zoom)
@@ -1017,10 +942,8 @@ Module Contents
 
 
 
-   .. py:attribute:: format
-
-
 .. py:class:: Sphere(colour, radius, position)
+
 
    A class representing a sphere.
 

@@ -1,5 +1,5 @@
-PDielec.pdmake
-==============
+:py:mod:`PDielec.pdmake`
+========================
 
 .. py:module:: PDielec.pdmake
 
@@ -33,26 +33,12 @@ PDielec.pdmake
 
 
 
-Attributes
-----------
-
-.. autoapisummary::
-
-   PDielec.pdmake.benchmarks
-   PDielec.pdmake.debug
-   PDielec.pdmake.print
-   PDielec.pdmake.settings
-   PDielec.pdmake.test_p2cif
-   PDielec.pdmake.test_pdgui
-   PDielec.pdmake.test_preader
-   PDielec.pdmake.test_singlecrystal
-   PDielec.pdmake.test_vibanalysis
-   PDielec.pdmake.useLocal
-   PDielec.pdmake.viewing
+Module Contents
+---------------
 
 
 Functions
----------
+~~~~~~~~~
 
 .. autoapisummary::
 
@@ -63,12 +49,6 @@ Functions
    PDielec.pdmake.findRootDirectory
    PDielec.pdmake.install
    PDielec.pdmake.main
-   PDielec.pdmake.main_checkcsv
-   PDielec.pdmake.main_checkexcel
-   PDielec.pdmake.main_p2cif
-   PDielec.pdmake.main_pdgui
-   PDielec.pdmake.main_preader
-   PDielec.pdmake.main_vibanalysis
    PDielec.pdmake.mychdir
    PDielec.pdmake.readNmaFile
    PDielec.pdmake.readPdMakefile
@@ -86,8 +66,24 @@ Functions
    PDielec.pdmake.usage
 
 
-Module Contents
----------------
+
+Attributes
+~~~~~~~~~~
+
+.. autoapisummary::
+
+   PDielec.pdmake.benchmarks
+   PDielec.pdmake.debug
+   PDielec.pdmake.print
+   PDielec.pdmake.settings
+   PDielec.pdmake.test_p2cif
+   PDielec.pdmake.test_pdgui
+   PDielec.pdmake.test_preader
+   PDielec.pdmake.test_singlecrystal
+   PDielec.pdmake.test_vibanalysis
+   PDielec.pdmake.useLocal
+   PDielec.pdmake.viewing
+
 
 .. py:function:: changePadding(all)
 
@@ -264,196 +260,6 @@ Module Contents
    - Requires the `os`, `sys`, and specific project function imports to function.
    - The script changes the current working directory multiple times, which affects relative path usage.
 
-
-.. py:function:: main_checkcsv()
-
-   Compares two files line by line to check for significant changes based on a provided threshold.
-
-   This script takes at least two arguments that are file names along with optional arguments for
-   separator (`-sep`) and threshold value (`-thresh`). It compares numbers from corresponding lines
-   in the two files. A significant change is flagged if the specified comparison formula exceeds
-   a given threshold. Defaults to a threshold of 3.0E-2 and treats spaces as the default separator
-   for `.txt` and `.out` files, and commas for `.csv` files.
-
-   Parameters
-   ----------
-   None explicitly declared. The function operates on command-line arguments passed to the script.
-
-   - `-sep` : str, optional
-       Defines the separator to be used for splitting entries in a line.
-       Default is None, which then defaults to spaces for `.txt` and `.out` files,
-       and commas for `.csv` files.
-   - `-thresh` : float, optional
-       The threshold for flagging a difference between the corresponding numbers
-       from the two files as significant. Default is 3.0E-2.
-
-   Returns
-   -------
-   tuple
-       A tuple containing the number of errors found (`nerrors`), the line number with
-       the largest percentage difference (`keep_line_number`), the two values with the
-       largest difference (`keep_word1` and `keep_word2`), and the maximum percentage
-       difference found (`max_percentage_error`).
-
-   Raises
-   ------
-   FileNotFoundError
-       If one of the input files does not exist.
-
-   Notes
-   -----
-   The command-line arguments need to be parsed using `sys.argv`.
-   The comparison formula used is `2*abs(f1-f2)/(f1+f2+2)`.
-
-
-.. py:function:: main_checkexcel()
-
-   Compare two Excel files for any significant numerical changes and report discrepancies.
-
-   This script takes in two Excel files as arguments and optionally,
-   a threshold for numerical comparison and a flag for full sheet comparison.
-
-   Full comparison includes 'Settings' and 'Scenarios' sheets by default excluded.
-
-   Parameters
-   ----------
-   None directly to the function. Parses command line arguments:
-   - Two file paths.
-   - Optional `-thresh` followed by a float value for the threshold of numerical difference (default is 1.0E-3).
-   - Optional `-f` flag for forcing a full comparison including typically excluded sheets.
-
-   Returns
-   -------
-   tuple
-       A tuple containing the following elements:
-       - Number of errors (`nerrors`): int
-       - Row of the last error or discrepancy (`row`): int
-       - Column of the last error or discrepancy (`col`): int
-       - Sheet name where the last error or discrepancy was found (`sheet`): str
-       - First file name (`file1`): str
-       - Value from the first file associated with the last discrepancy (`value1`): float or str
-       - Second file name (`file2`): str
-       - Value from the second file associated with the last discrepancy (`value2`): float or str
-       - Maximum percentage error found during the comparison (`max_percentage_error`): float
-
-   Raises
-   ------
-   Depends on the Excel library used, typically:
-   - `openpyxl.utils.exceptions.InvalidFileException` if an invalid file or path is provided.
-   - Other exceptions related to file I/O or processing might be raised depending on the content and structure of the input Excel files.
-
-   Notes
-   -----
-   - The script will immediately exit with usage instructions if less than two file paths are provided.
-   - Numerical difference is calculated only for numeric data. For text data, a simplified equivalence check is done.
-   - The script output includes printing to standard error for usage, errors, or status, with optional ANSI color highlighting.
-
-
-.. py:function:: main_p2cif()
-
-   Main entry point for processing and converting files.
-
-   This script accepts command-line arguments to define the program used for generating output files, enables debug mode, and processes specified files. If no arguments are provided, it prints usage information. It sorts input files, processes them using a pool of workers equal to the number of logical processors available, and writes the results to standard output.
-
-   Notes
-   -----
-   Command-line arguments:
-   - `-debug`: Enable debug mode for more verbose output.
-   - `-program <program>`: Specify the program used to generate the output files. The program must be one of: 'abinit', 'castep', 'crystal', 'gulp', 'phonopy', 'qe', 'vasp', 'experiment', 'auto'. For 'phonopy', a quantum mechanics program must be specified immediately after.
-   - Files to process: Specify one or more filenames after the arguments.
-
-   This function uses multiprocessing to parallelize file processing, with the number of processes equal to the physical cores available on the machine.
-
-   Examples
-   --------
-   Command-line usage examples:
-
-   - Process files in automatic mode:
-       ```
-       python script_name.py file1 file2 ...
-       ```
-
-   - Specify a program and enable debug mode:
-       ```
-       python script_name.py -debug -program gulp file1 file2 ...
-       ```
-
-
-.. py:function:: main_pdgui()
-
-   Process command line arguments and start a GUI application with optional splash screen.
-
-   No explicit input parameters are taken by the function. Instead, it parses command line arguments (sys.argv) to configure application behavior. The command line arguments can control displaying a splash screen, application debugging, forcibly exiting, or showing the application version.
-
-   Notes
-   -----
-   - The -nosplash flag disables the splash screen.
-   - The -v, -version, or --version flags print the program version and exit.
-   - The -exit or --exit flag forces the program to exit immediately after processing arguments.
-   - The -d, -debug, or --debug flags enable debug messages.
-   - The function looks for a splash image file in several locations, starting with the executable's directory, and displays it if found unless the splash screen is disabled.
-   - If the splash screen is shown, it also includes a progress bar.
-
-   Side Effects
-   ------------
-   - May print the application version and exit if the corresponding flags are detected.
-   - May terminate the program execution before initializing the GUI if force_exit is true.
-   - Prints debug messages if the debug flag is enabled.
-   - Initializes and possibly displays a GUI application, potentially with a splash screen and progress bar.
-
-   Examples
-   --------
-   Command line usage examples:
-   - To run the application with a splash screen and debug messages:
-
-   >>>    pdgui dft_output_file -d
-
-   - To run the application without a splash screen:
-
-   >>>    pdgui dft_output_file -nosplash
-
-   - To print the version of the application and exit:
-
-   >>>    pdgui dft_output_file --version
-
-   - To run a script:
-
-   >>>    pdgui -script script.py
-
-
-.. py:function:: main_preader()
-
-   Process command line arguments
-
-
-   ::
-
-       preader -program program [-eckart] [-neutral] [-nocalculation] [-masses average] [-pickle name] [-version] filenames .....
-         "program" must be one of "abinit", "castep", "crystal", "gulp"
-                  "phonopy", "qe", "vasp", "experiment", "auto"
-                  The default is auto, so the program tries to guess the package from
-                  the contents of the directory.  However this is not fool-proof!
-                  If phonopy is used it must be followed by the QM package
-                  in auto mode if the file was created by a phonopy VASP is assumed
-         -masses [average|isotope|program]  chooses the atomic mass definition average
-                 The default is "average"
-         -mass  element mass
-                 Change the mass of the element specified
-         -eckart projects out the translational components. Default is no projection
-         -neutral imposes neutrality on the Born charges of the molecule.
-                  Default is no neutrality is imposed
-         -nocalculation requests no calculations are performed
-                  A single line is output with results obtained by reading the output
-                  any of -mass -masses -eckart -neutral or -crystal are ignored
-         -debug   to switch on more debug information
-         -pickle  write each file reader to a pickled dump file for later processing
-                  the name of the file to hold all the pickled readers is given
-                  If the file exists it is not overwritten
-         -version print the version of PDielec library being used
-
-
-
-.. py:function:: main_vibanalysis()
 
 .. py:function:: mychdir(directory)
 
@@ -729,40 +535,53 @@ Module Contents
 .. py:data:: benchmarks
    :value: ['Castep/AsparticAcid', 'Castep/Isoleucine', 'Castep/MgO', 'Castep/Bubbles', 'Castep/Na2SO42',...
 
+   
 
 .. py:data:: debug
    :value: False
 
+   
 
 .. py:data:: print
 
+   
+
 .. py:data:: settings
+
+   
 
 .. py:data:: test_p2cif
    :value: ['P2Cif/']
 
+   
 
 .. py:data:: test_pdgui
    :value: ['ATR/AlAs', 'ATR/Na2SO42', 'ATR/Na2SO42_fit', 'AbInit/AlAs', 'AbInit/BaTiO3',...
 
+   
 
 .. py:data:: test_preader
    :value: ['Castep/preader', 'Vasp/preader', 'Phonopy/preader', 'Gulp/preader', 'Crystal/preader',...
 
+   
 
 .. py:data:: test_singlecrystal
    :value: ['Experiment/fpsq', 'Experiment/Mayerhofer', 'SingleCrystal/Bi2Se3',...
 
+   
 
 .. py:data:: test_vibanalysis
    :value: ['VibAnalysis/AsparticAcid', 'VibAnalysis/BaTiO3', 'VibAnalysis/Cocaine',...
 
+   
 
 .. py:data:: useLocal
    :value: True
 
+   
 
 .. py:data:: viewing
    :value: False
 
+   
 

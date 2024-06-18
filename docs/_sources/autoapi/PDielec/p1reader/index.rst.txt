@@ -1,5 +1,5 @@
-PDielec.p1reader
-================
+:py:mod:`PDielec.p1reader`
+==========================
 
 .. py:module:: PDielec.p1reader
 
@@ -23,16 +23,12 @@ PDielec.p1reader
 
 
 
-Attributes
-----------
-
-.. autoapisummary::
-
-   PDielec.p1reader.version
+Module Contents
+---------------
 
 
 Functions
----------
+~~~~~~~~~
 
 .. autoapisummary::
 
@@ -40,8 +36,14 @@ Functions
    PDielec.p1reader.print_help
 
 
-Module Contents
----------------
+
+Attributes
+~~~~~~~~~~
+
+.. autoapisummary::
+
+   PDielec.p1reader.version
+
 
 .. py:function:: main()
 
@@ -97,4 +99,6 @@ Module Contents
 
 
 .. py:data:: version
+
+   
 

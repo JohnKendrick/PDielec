@@ -1,5 +1,5 @@
-PDielec.Materials
-=================
+:py:mod:`PDielec.Materials`
+===========================
 
 .. py:module:: PDielec.Materials
 
@@ -11,13 +11,15 @@ PDielec.Materials
 
 
 
+Module Contents
+---------------
+
 Classes
--------
+~~~~~~~
 
 .. autoapisummary::
 
    PDielec.Materials.Constant
-   PDielec.Materials.Debug
    PDielec.Materials.DrudeLorentz
    PDielec.Materials.External
    PDielec.Materials.FPSQ
@@ -25,16 +27,14 @@ Classes
    PDielec.Materials.MaterialsDataBase
    PDielec.Materials.Sellmeier
    PDielec.Materials.Tabulated
-   PDielec.Materials.UnitCell
 
 
-Module Contents
----------------
+
 
 .. py:class:: Constant(name, permittivity=None, density=None, cell=None)
 
-   Bases: :py:obj:`Material`
 
+   Bases: :py:obj:`Material`
 
    A class representing a material with constant scalar permittivity, inheriting from the `Material` class.
 
@@ -48,59 +48,10 @@ Module Contents
    Inherits methods from the `Material` class.
 
 
-.. py:class:: Debug(debug, text, level=0)
-
-   A class aimed at providing a structured way to include debug messages in code.
-
-   Methods
-   -------
-   print(args, level=0)
-       Prints debug messages based on the debug level provided as argument compared to the object's debug level.
-   state()
-       Returns the current state (enabled or disabled) of debugging.
-
-   Notes
-   -----
-   The `print` method provides a flexible way to include additional information along with the base debug message, allowing for a detailed and adjustable debugging output.
-
-
-   .. py:method:: print(*args, level=0)
-
-      Prints message if debugging level allows.
-
-      Parameters
-      ----------
-      args
-          Variable length argument list for the message to be printed.
-      level : int, optional
-          The level of the message that determines if it gets printed or not,
-          based on the instance's `level`. Default value is 0.
-
-      Notes
-      -----
-      This method will only print the message if the instance's `debug` flag is True
-      and the provided `level` is less than or equal to the instance's `level`.
-
-
-
-   .. py:method:: state()
-
-      Get the debug state.
-
-      Parameters
-      ----------
-      None
-
-      Returns
-      -------
-      The current debug state.
-
-
-
 .. py:class:: DrudeLorentz(name, epsinf, omegas, strengths, gammas, density=None, cell=None)
 
-   Bases: :py:obj:`Material`
 
+   Bases: :py:obj:`Material`
 
    A subclass representing a material with a Lorentz-Drude model permittivity.
 
@@ -141,8 +92,8 @@ Module Contents
 
 .. py:class:: External(name, permittivityObject=None, density=None, cell=None)
 
-   Bases: :py:obj:`Material`
 
+   Bases: :py:obj:`Material`
 
    A class for representing materials with externally specified permittivity.
 
@@ -153,8 +104,8 @@ Module Contents
 
 .. py:class:: FPSQ(name, epsinf, omega_tos, gamma_tos, omega_los, gamma_los, density=None, cell=None)
 
-   Bases: :py:obj:`Material`
 
+   Bases: :py:obj:`Material`
 
    Class representing a material with a FPSQ model for permittivity.
 
@@ -183,6 +134,7 @@ Module Contents
 
 
 .. py:class:: Material(name, density=None, permittivityObject=None, cell=None)
+
 
    A class for representing materials with properties like name, density, permittivity, and unit cell.
 
@@ -278,7 +230,6 @@ Module Contents
    setPermittivityObject(permittivityObject)
        Sets the permittivityObject for the material.
 
-
    .. py:method:: getCell()
 
       Return the cell
@@ -292,7 +243,6 @@ Module Contents
       self.cell
 
 
-
    .. py:method:: getDensity()
 
       Return the density
@@ -304,7 +254,6 @@ Module Contents
       Returns
       -------
       self.density
-
 
 
    .. py:method:: getFrequencies()
@@ -321,7 +270,6 @@ Module Contents
           Returns the frequencies for a Lorentzian function in cm-1
 
 
-
    .. py:method:: getInformation()
 
       Returns information about the material.
@@ -336,7 +284,6 @@ Module Contents
           A description of the material.
 
 
-
    .. py:method:: getName()
 
       Get the name attribute of the object.
@@ -349,7 +296,6 @@ Module Contents
       -------
       str
           The name attribute of the object.
-
 
 
    .. py:method:: getOscillatorStrengths()
@@ -368,7 +314,6 @@ Module Contents
           Returns the oscillator strengths for a Lorentzian permittivity function in cm-1
 
 
-
    .. py:method:: getPermittivityFunction()
 
       Returns the permittivity function.
@@ -381,7 +326,6 @@ Module Contents
       -------
       permittivityObjectFunction
           Return the permittivity object function
-
 
 
    .. py:method:: getPermittivityObject()
@@ -398,7 +342,6 @@ Module Contents
           Return the permittivity object (dielectric function object)
 
 
-
    .. py:method:: getSigmas()
 
       Gets the sigma parameters for a Lorentzian permittivity
@@ -411,7 +354,6 @@ Module Contents
       -------
       1d array of floats
           Returns the sigma parameters for a Lorentz permittivity function in cm-1
-
 
 
    .. py:method:: isScalar()
@@ -428,7 +370,6 @@ Module Contents
           True if the material returns a scalar permittivity, False otherwise.
 
 
-
    .. py:method:: isTensor()
 
       Returns true if the material returns a tensor permittivity.
@@ -441,7 +382,6 @@ Module Contents
       -------
       bool
           True if the material returns a tensor permittivity, False otherwise.
-
 
 
    .. py:method:: print()
@@ -457,7 +397,6 @@ Module Contents
       None
 
 
-
    .. py:method:: setCell(cell)
 
       Set the unit cell
@@ -469,7 +408,6 @@ Module Contents
       Returns
       -------
       None
-
 
 
    .. py:method:: setDensity(value)
@@ -485,7 +423,6 @@ Module Contents
       None
 
 
-
    .. py:method:: setFrequencies(frequencies)
 
       Sets the frequencies for a Lorentzian permittivity
@@ -498,7 +435,6 @@ Module Contents
       Returns
       -------
       None
-
 
 
 
@@ -517,7 +453,6 @@ Module Contents
 
 
 
-
    .. py:method:: setPermittivityObject(permittivityObject)
 
       Set the permittivity object.
@@ -529,7 +464,6 @@ Module Contents
       Returns
       -------
       None
-
 
 
    .. py:method:: setSigmas(sigmas)
@@ -549,6 +483,7 @@ Module Contents
 
 
 .. py:class:: MaterialsDataBase(filename, debug=False)
+
 
    A class for managing a database of materials' properties.
 
@@ -613,7 +548,6 @@ Module Contents
    readSellmeier(sheet, worksheet, density, unitCell)
        Reads Sellmeier model parameters for a given material from the spreadsheet.
 
-
    .. py:method:: getFileName()
 
       Return the filename
@@ -626,7 +560,6 @@ Module Contents
       -------
       str
           The filename.
-
 
 
    .. py:method:: getMaterial(sheet)
@@ -647,7 +580,6 @@ Module Contents
           The material object created from the excel sheet data.
 
 
-
    .. py:method:: getSheetNames()
 
       Returns a list of the sheetnames in the database.
@@ -663,7 +595,6 @@ Module Contents
       -------
       list
           A list of the sheet names present in the database.
-
 
 
    .. py:method:: readConstantPermittivity(sheet, worksheet, density)
@@ -684,7 +615,6 @@ Module Contents
       None
 
 
-
    .. py:method:: readConstantRefractiveIndex(sheet, worksheet, density)
 
       Read constant refractive index from the spreadsheet.
@@ -701,7 +631,6 @@ Module Contents
       Returns
       -------
       None
-
 
 
    .. py:method:: readFPSQ(sheet, worksheet, density, unitCell)
@@ -724,7 +653,6 @@ Module Contents
       None
 
 
-
    .. py:method:: readLorentzDrude(sheet, worksheet, density, unitCell)
 
       Read Drude-Lorentz data from the spreadsheet.
@@ -743,7 +671,6 @@ Module Contents
       Returns
       -------
       None
-
 
 
    .. py:method:: readSellmeier(sheet, worksheet, density, unitCell)
@@ -766,7 +693,6 @@ Module Contents
       None
 
 
-
    .. py:method:: readTabulatedPermittivity(sheet, worksheet, density)
 
       Read tabulated permittivity data from the spreadsheet.
@@ -785,7 +711,6 @@ Module Contents
       None
 
 
-
    .. py:method:: readTabulatedRefractiveIndex(sheet, worksheet, density)
 
       Read tabulated refractive index data from the spreadsheet.
@@ -802,7 +727,6 @@ Module Contents
       Returns
       -------
       None
-
 
 
    .. py:method:: valid()
@@ -826,8 +750,8 @@ Module Contents
 
 .. py:class:: Sellmeier(name, Bs, Cs, density=None, cell=None)
 
-   Bases: :py:obj:`Material`
 
+   Bases: :py:obj:`Material`
 
    A class to define materials using the Sellmeier model for permittivity.
 
@@ -857,8 +781,8 @@ Module Contents
 
 .. py:class:: Tabulated(name, vs_cm1=None, permittivities=None, density=None, cell=None)
 
-   Bases: :py:obj:`Material`
 
+   Bases: :py:obj:`Material`
 
    A class for materials with tabulated permittivities.
 
@@ -890,7 +814,6 @@ Module Contents
    >>> material1 = Tabulated("Quartz", vs_cm1=[500, 1000, 1500], permittivities=[2.1, 2.3, 2.5], density=2.65)
    >>> material2 = Tabulated("Synthetic", vs_cm1=[200, 400, 600], permittivities=[[2.1, 2.3, 2.5], [2.4, 2.6, 2.8], [3.0, 3.2, 3.4]], density=1.5)
 
-
    .. py:method:: setEpsilonInfinity(eps)
 
       Sets the value of epsilon infinity for the material
@@ -903,561 +826,6 @@ Module Contents
       Returns
       -------
       None
-
-
-
-.. py:class:: UnitCell(a=None, b=None, c=None, alpha=None, beta=None, gamma=None, units='Angstrom')
-
-   Hold unit cell information and its associated calculated properties.
-
-   Initialize the class instance with optional lattice parameters and calculate the reciprocal lattice.
-
-   Parameters
-   ----------
-   a, b, c : float or array, optional
-       Lattice vectors or cell lengths. If not specified, they default to [1.0, 0.0, 0.0], [0.0, 1.0, 0.0], and [0.0, 0.0, 1.0], respectively.
-   alpha, beta, gamma : float, optional
-       Lattice angles (in degrees). These are only used if all three angles are specified, otherwise, the default lattice (orthorhombic) is used.
-   units : str
-       An optional unit such as 'a.u., au bohr angs angstrom Angs Angstrom or nm'  The default is Angstrom.
-
-   Notes
-   -----
-   This constructor initializes an instance with empty lists for fractional coordinates, xyz coordinates, element names, atom labels, bonds, and molecules. It also initializes an empty list for atomic masses and zero for total mass. If the angles alpha, beta, and gamma are provided, it attempts to convert the provided lattice parameters (a, b, c, alpha, beta, gamma) into a 3x3 lattice matrix. If not, it directly assigns a, b, and c as lattice vectors. Finally, it calculates and sets the reciprocal lattice for the instance.
-
-   Examples
-   --------
-   ::
-
-       a = [2.853604, -1.647529, 0.0]
-       b = [0.0,       3.295058, 0.0]
-       c = [0.0,       0.0,      5.284824]
-       cell = UnitCell( a, b, c )
-       cell.set_element_names(['Zn', 'Zn', 'O', 'O'])
-       coords = [ [ 0.333333,    0.666667,    0.000900 ]
-                  [ 0.666667,    0.333333,    0.500900 ]
-                  [ 0.333333,    0.666667,    0.381600 ]
-                  [ 0.666667,    0.333333,    0.881600 ] ]
-       cell.set_fractional_coordinates(coords)
-       cell.print()
-
-
-   .. py:method:: _calculate_reciprocal_lattice(lattice)
-
-      Calculate the reciprocal lattice
-
-      Parameters
-      ----------
-      3x3 list of floats
-          Lattice as [a, b, c] where a/b/c are [x,y,z]
-
-      Returns
-      -------
-      None
-
-      Returns
-      -------
-      sets the reciprocal lattice vectors
-
-
-
-   .. py:method:: calculateCentreOfMass(atom_list=None, output='xyz')
-
-      Calculate the centre of mass for a given set of atoms.
-
-      Parameters
-      ----------
-      atom_list : list, optional
-          A list of atom indices for which the centre of mass should be calculated.
-          If None, the centre of mass will be calculated for all atoms in the system. Default is None.
-      output : {'xyz', 'mass', 'abc'}, optional
-          The output requested:
-          - 'xyz' returns the centre of mass coordinates in Cartesian (x, y, z) units.
-          - 'mass' returns the total mass of the atoms in `atom_list`.
-          - 'abc' returns the centre of mass in fractional (a, b, c) coordinates.
-          If not specified, 'xyz' is used as default.
-
-      Returns
-      -------
-      numpy.ndarray or float or tuple
-          The centre of mass as requested by output:
-          - If 'xyz', returns a numpy array with the x, y, z coordinates of the centre of mass.
-          - If 'mass', returns a float representing the total mass of the specified atoms.
-          - If 'abc', returns a numpy array with the a, b, c fractional coordinates of the centre of mass.
-          - If the ouput are not recognized, a tuple containing the total mass, Cartesian coordinates, and fractional coordinates of the centre of mass is returned.
-
-      See Also
-      --------
-      convert_xyz_to_abc : A method to convert Cartesian coordinates to fractional coordinates.
-
-      Examples
-      --------
-      >>> calculateCentreOfMass(atom_list=[1, 2, 3], output='xyz')
-      array([0.1, 0.2, 0.3])
-      >>> calculateCentreOfMass(output='mass')
-      50.2
-      >>> calculateCentreOfMass(output='abc')
-      array([0.4, 0.5, 0.6])
-
-
-
-   .. py:method:: calculate_molecular_contents(scale=1.1, tolerance=0.1, radii=None)
-
-      Finds whole molecules in the unit cell.
-
-      Does this by creating a supercell and exploring adjacent cells to see if there is any bonding to atoms in the adjacent cell
-      A new unit cell is created containing whole molecules, the order of the atoms in the new cell is different.
-      The routine returns the new unit cell, the number of molecules and the old ordering of the atoms.
-
-      Parameters
-      ----------
-      scale : float, optional
-          The scale factor applied to the covalent radii. Default is 1.1
-      tolerance : float, optional. Default is 0.1
-          The tolerance added to the scaled sum of radii to determine the maximum allowable distance between atoms i and j for them to be considered bonded.
-      radii : a dictionary, optional
-          A dictionary of covalent radii for the atoms, key is the element name.  If not given then the package radii are used from PDielec.Constants
-
-      Returns
-      -------
-      new_unit_cell, len(new_molecules), old_order
-
-      Notes
-      -----
-      The formula used to calculate the largest distance apart atoms i and j can be for a bond is:
-      `scale * (radi + radj) + tolerance`
-
-
-
-   .. py:method:: convert_abc_to_unitcell(a, b, c, alpha_degs, beta_degs, gamma_degs)
-
-      Convert a, b, c, alpha, beta, gamma to a unit cell
-
-      Parameters
-      ----------
-      a : type
-          Description of parameter `a`.
-      b : type
-          Description of parameter `b`.
-      c : type
-          Description of parameter `c`.
-      alpha : type
-          Description of parameter `alpha`.
-      beta : type
-          Description of parameter `beta`.
-      gamma : type
-          Description of parameter `gamma`.
-
-      Returns
-      -------
-      lattice : list of floats (3,3) list
-          The lattice parameters
-
-
-
-   .. py:method:: convert_abc_to_xyz(abc)
-
-      Convert abc coordinates to xyz coordinates.
-
-      Parameters
-      ----------
-      abc : list of fractional coordinates
-
-      Returns
-      -------
-      xyz : list of coordinates
-
-
-
-
-   .. py:method:: convert_hkl_to_xyz(hkl)
-
-      Convert hkl miller indices to xyz coordinates.
-
-      Parameters
-      ----------
-      hkl : list of hkl coordinates
-
-      Returns
-      -------
-      xyz : list of xyz coordinates
-
-
-
-   .. py:method:: convert_unitcell_to_abc()
-
-      Convert a unit cell to the equivalent a, b, c, alpha, beta, gamma designation.
-
-      Parameters
-      ----------
-      None
-
-      Returns
-      -------
-      a, b, c : float
-          The lengths of the cell edges.
-      alpha, beta, gamma : float
-          The angles between the edges in degrees.
-
-
-
-   .. py:method:: convert_xyz_to_abc(xyz)
-
-      Convert xyz coordinates to abc lattice coordinates.
-
-      Parameters
-      ----------
-      xyz: list of coordinates
-
-      Returns
-      -------
-      abc : list of fractional coordinates
-
-
-
-   .. py:method:: find_symmetry(symprec=1e-05, angle_tolerance=-1.0)
-
-      Find the space group symmetry of the unit cell.
-
-      Parameters
-      ----------
-      None
-
-      Returns
-      -------
-      a tuple
-          (international table symbol, number])
-
-
-
-   .. py:method:: getBoundingBox(units='Angstrom')
-
-      Generate the corners and edges of a bounding box.
-
-      This method calculates the corners and edges of a bounding box based on predefined coordinates. These coordinates are transformed using a conversion method before being paired into edges.
-
-      Parameters
-      ----------
-      units : str
-          An optional unit of length required for output, default is Angstrom
-
-      Returns
-      -------
-      tuple of list
-          A tuple containing two elements:
-          - The first element is a list of corners' coordinates after conversion (`list` of `np.ndarray`).
-          - The second element is a list of tuples, each consisting of a pair of corners representing an edge (`list` of `tuple`).
-
-      Example
-      -------
-      To fetch the bounding box coordinates and edges, simply call: ::
-
-          corners_xyz, edges = object.getBoundingBox()
-
-
-
-
-   .. py:method:: getDensity(units='cm')
-
-      Calculate the density of the crystal.
-
-      Returns the density in g/cc.  If the mass is not known, then returns 1.0
-
-      Parameters
-      ----------
-      units : str
-          Optional parameter giving the output unit of length, default is cm, so volume will be cm3
-
-      Returns
-      -------
-      float
-          The density in gms/cc
-
-
-
-   .. py:method:: getVolume(units='cm')
-
-      Calculate the volume
-
-      Parameters
-      ----------
-      units : str
-          An optional string indicating the required unit of length for the output value, default is cm
-
-      Returns
-      -------
-      volume : float
-
-
-
-   .. py:method:: get_atom_labels()
-
-      get the atom labels for a molecule.
-
-      If the labels have not been set, then a list of labels is created from the element names
-
-      Parameters
-      ----------
-      None
-          A list containing the labels of atoms.
-
-      Returns
-      -------
-      A list of atom labels
-
-
-
-   .. py:method:: get_atomic_masses()
-
-      Get the atomic masses for the elements.
-
-      Parameters
-      ----------
-      None
-
-      Returns
-      -------
-      masses : list
-          The atomic masses 
-
-
-
-   .. py:method:: get_atomic_numbers()
-
-      Get the atomic numbers for the elements.
-
-      Parameters
-      ----------
-      None
-
-      Returns
-      -------
-      list of ints
-          The atomic numbers
-
-
-
-   .. py:method:: get_bond_angles()
-
-      Returns a list of atoms that form bonded angles for the unit cell
-
-      It also returns a list of the angles in degrees
-
-      Parameters
-      ----------
-      None
-
-      Returns
-      -------
-      (list of 3 integer tuples, list of bond angles)
-          list of angles is a list of 3 integers denoting involved in the angle
-          list of angles is a list of floats
-
-
-
-   .. py:method:: get_bonds()
-
-      Returns a list of bonds for the unit cell
-
-      It also returns a list of the bond lengths in angstrom
-
-      Parameters
-      ----------
-      None
-
-      Returns
-      -------
-      (list of bonds, list of bondlengths)
-          list of bonds is a list of pairs of integers denoting a bond
-          list of bond lengths is a list of floats
-
-
-
-   .. py:method:: get_torsions()
-
-      Returns a list of atoms that form torsion angles for the unit cell
-
-      It also returns a list of the angles in degrees
-
-      Parameters
-      ----------
-      None
-
-      Returns
-      -------
-      (list of 4 integer tuples, list of torsion angles)
-          list of torsions is a list of 4 integers denoting involved in the angle
-          list of angles is a list of floats
-
-
-
-   .. py:method:: print()
-
-      Prints the details of the given unit cell.
-
-      This method prints formatted details of the unit cell object, including lattice parameters (a, b, c, alpha, beta, gamma), lattice vectors, element names, fractional coordinates, Cartesian coordinates, and molecular information if any molecules are defined within the unit cell.
-
-      Parameters
-      ----------
-      None
-
-      Returns
-      -------
-      None
-
-
-
-   .. py:method:: set_atom_labels(atom_labels)
-
-      Set the atom labels for a molecule.
-
-      Parameters
-      ----------
-      atom_labels : list
-          A list containing the labels of atoms.
-
-      Returns
-      -------
-      None
-
-      Notes
-      -----
-      This method updates the `atom_labels` attribute of the molecule with the
-      provided list of atom labels. Each element in the input `atom_labels` list 
-      is appended to the `self.atom_labels` attribute.
-
-
-
-   .. py:method:: set_atomic_masses(masses)
-
-      Set the atomic masses for the elements.
-
-      Parameters
-      ----------
-      masses : list
-          The atomic masses to be assigned. This can be a list or a dictionary of atomic masses.
-
-      Returns
-      -------
-      None
-
-
-
-   .. py:method:: set_bonds(bonds)
-
-      Define a list of bonds for the unit cell
-
-      Some checking is performed.  If the bonds has duplicates but in a different order, then they are removed.
-
-      Parameters
-      ----------
-      bonds : a list of integer tuple
-         The bonding list for the cell
-
-      Returns
-      -------
-      None
-
-
-
-   .. py:method:: set_element_names(element_names)
-
-      Set the names of elements in the object after cleaning them up.
-
-      Parameters
-      ----------
-      element_names : list
-          A list of strings representing element names to be cleaned and stored.
-
-      Returns
-      -------
-      None
-
-      Notes
-      -----
-      This function takes a list of element names, cleans each name using the 
-      `cleanup_symbol` function (not defined here), and then updates the object's 
-      `element_names` attribute with the cleaned names.
-
-
-
-   .. py:method:: set_fractional_coordinates(coords)
-
-      Set the fractional coordinates and calculate the xyz coordinates.
-
-      Parameters
-      ----------
-      coords : a list of fractional coordinates
-
-      Returns
-      -------
-      None
-
-
-
-   .. py:method:: set_molecules(molecules)
-
-      Define a list of molecules, each molecule is a list of atom coordinates.
-
-      Parameters
-      ----------
-      None
-
-      Returns
-      -------
-      None
-
-
-
-   .. py:method:: set_xyz_coordinates(coords, units='Angstrom')
-
-      Set the xyz coordinates and calculate the fractional coordinates.
-
-      Parameters
-      ----------
-      coords : a list of xyz coordinates
-          A list of xyz coordinates, the unit of length must agree with the lattice
-      units : str
-          A unit of length for the input values.  The default is Angstrom.
-
-      Returns
-      -------
-      None
-
-
-
-   .. py:method:: write_cif(filename=None, file_=sys.stdout)
-
-      Write the crystallographic information file (CIF) representation of a structure.
-
-      Parameters
-      ----------
-      filename : str, optional
-          The name of the file to be written. If not provided, the CIF data is printed to stdout.
-      file\_ : object, optional
-          An output stream object. Default is sys.stdout.
-
-      Returns
-      -------
-      None
-
-      Notes
-      -----
-      This method prints the CIF representation of a structure, including the space group,
-      cell dimensions, angles, volume, and the fractional coordinates of the atoms.
-      Any lengths are converted to Angstrom, the volumes is give as Angstrom^3
-      If a filename is provided, the CIF data will be written to that file. Otherwise,
-      it will be printed to standard output.
-
-      Examples
-      --------
-      To print the CIF representation to standard output, simply call the method without arguments:
-
-      >>> cell.write_cif()
-
-      To write the CIF representation to a file named "example.cif":
-
-      >>> cell.write_cif('example.cif')
 
 
 

@@ -1,5 +1,5 @@
-PDielec.Mie
-===========
+:py:mod:`PDielec.Mie`
+=====================
 
 .. py:module:: PDielec.Mie
 
@@ -48,16 +48,12 @@ PDielec.Mie
 
 
 
-Attributes
-----------
-
-.. autoapisummary::
-
-   PDielec.Mie.crossover
+Module Contents
+---------------
 
 
 Functions
----------
+~~~~~~~~~
 
 .. autoapisummary::
 
@@ -82,8 +78,14 @@ Functions
    PDielec.Mie.coerceDType
 
 
-Module Contents
----------------
+
+Attributes
+~~~~~~~~~~
+
+.. autoapisummary::
+
+   PDielec.Mie.crossover
+
 
 .. py:function:: AutoMieQ(m, wavelength, diameter, nMedium=1.0, asDict=False, asCrossSection=False)
 
@@ -916,4 +918,5 @@ Module Contents
 .. py:data:: crossover
    :value: 0.01
 
+   
 

@@ -1,5 +1,5 @@
-PDielec.GUI.MainTab
-===================
+:py:mod:`PDielec.GUI.MainTab`
+=============================
 
 .. py:module:: PDielec.GUI.MainTab
 
@@ -9,81 +9,23 @@ PDielec.GUI.MainTab
 
 
 
-Classes
--------
-
-.. autoapisummary::
-
-   PDielec.GUI.MainTab.Debug
-   PDielec.GUI.MainTab.MainTab
-   PDielec.GUI.MainTab.SpreadSheetManager
-
-
-Functions
----------
-
-.. autoapisummary::
-
-   PDielec.GUI.MainTab.find_program_from_name
-   PDielec.GUI.MainTab.pdgui_get_reader
-
-
 Module Contents
 ---------------
 
-.. py:class:: Debug(debug, text, level=0)
+Classes
+~~~~~~~
 
-   A class aimed at providing a structured way to include debug messages in code.
+.. autoapisummary::
 
-   Methods
-   -------
-   print(args, level=0)
-       Prints debug messages based on the debug level provided as argument compared to the object's debug level.
-   state()
-       Returns the current state (enabled or disabled) of debugging.
+   PDielec.GUI.MainTab.MainTab
 
-   Notes
-   -----
-   The `print` method provides a flexible way to include additional information along with the base debug message, allowing for a detailed and adjustable debugging output.
-
-
-   .. py:method:: print(*args, level=0)
-
-      Prints message if debugging level allows.
-
-      Parameters
-      ----------
-      args
-          Variable length argument list for the message to be printed.
-      level : int, optional
-          The level of the message that determines if it gets printed or not,
-          based on the instance's `level`. Default value is 0.
-
-      Notes
-      -----
-      This method will only print the message if the instance's `debug` flag is True
-      and the provided `level` is less than or equal to the instance's `level`.
-
-
-
-   .. py:method:: state()
-
-      Get the debug state.
-
-      Parameters
-      ----------
-      None
-
-      Returns
-      -------
-      The current debug state.
 
 
 
 .. py:class:: MainTab(parent, program, filename, excelfile, debug=False)
 
-   Bases: :py:obj:`PyQt5.QtWidgets.QWidget`
 
+   Bases: :py:obj:`PyQt5.QtWidgets.QWidget`
 
    MainTab is a comprehensive widget class designed to serve as a main interface tab within a Qt application. It is tailored for analyzing quantum chemistry or molecular dynamics simulation output files, offering functionalities such as file processing, data analysis, and settings management for quantum mechanics / molecular mechanics (QM/MM) programs.
 
@@ -148,7 +90,6 @@ Module Contents
    refresh(force=False)
        Refreshes the UI and data based on current settings and file contents, with an optional force parameter to enforce refreshing even if it's not marked as required.
 
-
    .. py:method:: getFullFileName()
 
       Return the full file name based on the directory and output file name settings.
@@ -161,7 +102,6 @@ Module Contents
       -------
       str
           The full path of the file, combining the directory and the output file name setting.
-
 
 
    .. py:method:: getRelativeFileName()
@@ -178,7 +118,6 @@ Module Contents
           The file name specified in the settings as 'Output file name'.
 
 
-
    .. py:method:: on_calculation_button_clicked()
 
       Handle the event triggered by the calculation button click.
@@ -192,7 +131,6 @@ Module Contents
       Returns
       -------
       None
-
 
 
 
@@ -215,7 +153,6 @@ Module Contents
       notebook.writeSpreadsheet : The method called to write data to the spreadsheet.
 
 
-
    .. py:method:: on_file_button_clicked()
 
       Handle the "Open file" button click event in the GUI.
@@ -229,7 +166,6 @@ Module Contents
       Returns
       -------
       None
-
 
 
    .. py:method:: on_file_le_changed(text)
@@ -246,7 +182,6 @@ Module Contents
       Returns
       -------
       None
-
 
 
 
@@ -276,7 +211,6 @@ Module Contents
       - Specific behaviors, such as how 'pdgui' program type is specially handled or the resetting of certain settings, is contingent on the broader application logic and requirements.
 
 
-
    .. py:method:: on_program_cb_activated(index)
 
       Handle program selection change in a combobox and update settings accordingly.
@@ -304,7 +238,6 @@ Module Contents
 
 
 
-
    .. py:method:: on_resultsfile_le_changed(text)
 
       Handle changes to the results file text input field.
@@ -317,7 +250,6 @@ Module Contents
       Returns
       -------
       None
-
 
 
    .. py:method:: on_script_button_clicked()
@@ -336,7 +268,6 @@ Module Contents
 
 
 
-
    .. py:method:: on_scriptsfile_le_changed(text)
 
       Respond to changes in the scripts file input field.
@@ -350,7 +281,6 @@ Module Contents
       None
 
           The new text of the scripts file input field. This parameter may not be used inside the function as the function retrieves the text from the QLineEdit widget directly.
-
 
 
    .. py:method:: read_output_file()
@@ -369,7 +299,6 @@ Module Contents
       Returns
       -------
       None
-
 
 
 
@@ -396,7 +325,6 @@ Module Contents
       - Unblocks signals for all child widgets after refresh.
 
 
-
    .. py:method:: requestRefresh()
 
       Request to refresh.
@@ -410,7 +338,6 @@ Module Contents
       Returns
       -------
       None
-
 
 
    .. py:method:: writeSpreadsheet()
@@ -432,266 +359,5 @@ Module Contents
       None
 
 
-
-
-.. py:class:: SpreadSheetManager(filename)
-
-   A manager for handling operations on an Excel workbook via xlsxwriter.
-
-   This class provides methods for managing a workbook with various tabs
-   (named worksheets), writing data to these worksheets, and handling complex
-   data types specifically tailored for scientific or engineering applications.
-
-   Parameters
-   ----------
-   filename : str
-       The name of the file to which the workbook will be saved.
-
-   Attributes
-   ----------
-   workbook : Workbook
-       The workbook object from xlsxwriter this manager operates on.
-   closed : bool
-       Boolean flag indicating whether the workbook has been closed.
-   tab_names : list of str
-       A list containing the names of the tabs (worksheets) to be managed.
-   worksheets : dict
-       A dictionary mapping tab names to worksheet objects.
-   positions : dict
-       A dictionary mapping tab names to their current write position (row, column).
-   max_col : dict
-       A dictionary mapping tab names to the maximum column index used.
-   max_row : dict
-       A dictionary mapping tab names to the maximum row index used.
-   opened : dict
-       A dictionary indicating whether a tab (worksheet) has been opened for writing.
-   name : str
-       The name of the currently selected work tab.
-
-   Methods
-   -------
-   openWorkSheet(tab)
-       Opens a new worksheet for the given tab if not already opened.
-   selectWorkSheet(name)
-       Selects the specified worksheet for further operations.
-   writeNextRow(items, row=None, col=None, check='')
-       Writes a series of items to the next row of the currently selected worksheet.
-   write(row, col, item)
-       Writes an item to the specified location in the currently selected worksheet.
-   delete()
-       Deletes all content from the currently selected worksheet.
-   close()
-       Closes the workbook, finalizing it for output.
-
-
-   .. py:method:: close()
-
-      Close the workbook if it hasn't been closed already.
-
-      Closes the workbook associated with an instance and sets its status as closed to prevent multiple close operations.
-
-      Parameters
-      ----------
-      None
-
-      Returns
-      -------
-      None
-
-
-
-   .. py:method:: delete()
-
-      Delete all the data in the current worksheet.
-
-      Clears all entries in the worksheet represented by `self` by setting each cell's value to an empty string.
-      After clearing the data, it resets the current position, maximum column, and maximum row counters for the worksheet.
-
-      Parameters
-      ----------
-      None
-
-      Returns
-      -------
-      None
-
-
-
-
-   .. py:method:: openWorkSheet(tab)
-
-      Open a new worksheet in a workbook.
-
-      Parameters
-      ----------
-      tab : str
-          The name of the worksheet to be opened.
-
-      Returns
-      -------
-      None
-
-      Notes
-      -----
-      If the worksheet identified by `tab` is already opened, this method does nothing. 
-      Otherwise, it creates a new worksheet with the name `tab`, initializes its position, 
-      maximum column, maximum row, and marks it as opened within the workbook data structures 
-      handled by the instance. 
-
-
-
-   .. py:method:: selectWorkSheet(name)
-
-      Selects or opens a worksheet by name.
-
-      Parameters
-      ----------
-      name : str
-          The name of the worksheet to select or open.
-
-      Returns
-      -------
-      None
-
-      Notes
-      -----
-      This method selects a worksheet if it is already opened. If the worksheet is not
-      currently open, it attempts to open the worksheet by calling `openWorkSheet` with
-      the worksheet name.
-
-
-
-   .. py:method:: write(row, col, item)
-
-      Writes an item to a specific position in the active worksheet, handling complex numbers.
-
-      Parameters
-      ----------
-      row : int
-          The row index where the item will be written.
-      col : int
-          The column index where the item will be written.
-      item : int, float, complex, str
-          The item to be written to the worksheet. If the item is a complex number,
-          its real and imaginary parts are written to adjacent columns.
-
-      Returns
-      -------
-      None
-
-      Notes
-      -----
-      - This method updates the worksheet's max column and row based on the provided indices.
-      - When writing a complex number, `col` is incremented before writing the imaginary part,
-        and the updated column is used for adjusting the max column.
-      - Updates the `positions` attribute with the next available position in the worksheet.
-
-
-
-
-   .. py:method:: writeNextRow(items, row=None, col=None, check='')
-
-      Writes a sequence of items as a row in a spread sheet, starting from a specified row and column into a grid structure.
-
-      Parameters
-      ----------
-      items : list
-          A list of items to be written. Items can be strings, numbers, or nested lists where each sub-item is written in subsequent columns.
-      row : int, optional
-          The row index to start writing from. If not specified, uses the current row position of the object.
-      col : int, optional
-          The column index to start writing from. If not specified, uses the current column position of the object.
-      check : str, optional
-          A check string written to the beginning of the row specified. Defaults to an empty string if not specified.
-
-      Returns
-      -------
-      None
-
-      Notes
-      -----
-      - If `col` is 0, a warning message is printed.
-      - The `row` and `col` are updated as items are written, and `row` is incremented after writing all items.
-      - For items that are lists, each element is written in subsequent columns. This is applied recursively for nested lists.
-      - `self.positions` is a dictionary holding the current positions (row, column) for different names, and `self.name` accesses the current object's name.
-
-
-
-.. py:function:: find_program_from_name(filename)
-
-   Determine the simulation program from a given filename.
-
-   Parameters
-   ----------
-   filename : str
-       The complete path (absolute or relative) to a file.
-
-   Returns
-   -------
-   str
-       A string representing the simulation program the file is associated with. Possible returns are 'phonopy', 'vasp', 'gulp', 'castep', 'abinit', 'qe', 'crystal', 'experiment', 'pdgui', or an empty string if the program cannot be determined.
-
-   Notes
-   -----
-   This function examines the file extension and, in some cases, the presence of specific files in the same directory, to determine the associated simulation program. It recognizes files from several popular materials simulation programs, such as 'phonopy', 'gulp', 'vasp', and others.
-
-   Examples
-   --------
-
-   ::
-
-       program = find_program_from_name('./data/structure.castep')
-       print(program)
-       # Output: 'castep'
-
-       program = find_program_from_name('path/to/simulation/OUTCAR')
-       print(program)
-       # Depends on the presence of 'phonopy.yaml', could be 'phonopy' or 'vasp'
-
-
-
-.. py:function:: pdgui_get_reader(program, names, qmprogram)
-
-   Get the appropriate reader based on the provided program and file names.
-
-   This function determines the correct output reader to use based on the program specified and the presence of certain files
-   in the provided directory or file names list. It supports various quantum mechanics and molecular dynamics
-   programs as well as experiment data.
-
-   Parameters
-   ----------
-   program : str
-       The name of the program or an empty string to attempt automatic detection. Supported programs include 'vasp',
-       'castep', 'gulp', 'crystal', 'abinit', 'qe', 'phonopy', and 'experiment'.
-   names : list of str
-       A list containing either directory names or file names to be read or analysed.
-   qmprogram : str
-       Specifies the quantum mechanics program used in conjunction with 'phonopy'. It is only relevant if 'program'
-       is set to 'phonopy'. Supported programs include 'castep', 'vasp', 'gulp', 'crystal', 'abinit', and 'qe'.
-
-   Returns
-   -------
-   object
-       Returns an instance of the correct output reader based on the specified program and available files. If the
-       necessary files are not found or if the program is not recognized, it returns None.
-
-   Notes
-   -----
-   - The readers returned are capable of parsing output files from their respective programs and extracting relevant data.
-   - For 'phonopy', additional handling is included to combine phonopy output with quantum mechanics results from another
-     specified program.
-   - This function also handles directory or file existence checks and will print errors if required files are missing.
-
-   Examples
-   --------
-   To get a VASP output reader for a directory containing VASP output files:
-
-   >>> reader = pdgui_get_reader('', ['path/to/vasp/output'], '')
-   >>> print(reader)
-
-   For phonopy with VASP as the quantum mechanics program:
-
-   >>> qm_reader = pdgui_get_reader('phonopy', ['path/to/phonopy/files'], 'vasp')
-   >>> print(qm_reader)
 
 
