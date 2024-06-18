@@ -1,4 +1,5 @@
 import setuptools
+import os
 
 # Update this for every PyPi release
 version = "8.1.1"
@@ -34,7 +35,7 @@ setuptools.setup(
     long_description_content_type="text/markdown",
     url="https://github.com/JohnKendrick/PDielec",
     # packages=setuptools.find_packages(include=['PDielec','PDielec.*']),
-    packages=['PDielec','PDielec/GUI'],
+    packages=['PDielec',os.path.join('PDielec','GUI')],
     #package_dir = { '' : 'PDielec' },
     include_package_data=True,
     package_data={'':['*.png','*.xlsx']},
