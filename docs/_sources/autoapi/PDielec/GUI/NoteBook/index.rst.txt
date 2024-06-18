@@ -1,5 +1,5 @@
-:py:mod:`PDielec.GUI.NoteBook`
-==============================
+PDielec.GUI.NoteBook
+====================
 
 .. py:module:: PDielec.GUI.NoteBook
 
@@ -9,23 +9,1507 @@
 
 
 
-Module Contents
----------------
-
 Classes
-~~~~~~~
+-------
 
 .. autoapisummary::
 
+   PDielec.GUI.NoteBook.AnalysisTab
+   PDielec.GUI.NoteBook.Debug
+   PDielec.GUI.NoteBook.FitterTab
+   PDielec.GUI.NoteBook.MainTab
    PDielec.GUI.NoteBook.NoteBook
+   PDielec.GUI.NoteBook.PlottingTab
+   PDielec.GUI.NoteBook.PowderScenarioTab
+   PDielec.GUI.NoteBook.SettingsTab
+   PDielec.GUI.NoteBook.SingleCrystalScenarioTab
+   PDielec.GUI.NoteBook.SpreadSheetManager
+   PDielec.GUI.NoteBook.ViewerTab
+
+
+Module Contents
+---------------
+
+.. py:class:: AnalysisTab(parent, debug=False)
+
+   Bases: :py:obj:`PyQt5.QtWidgets.QWidget`
+
+
+   A widget class for analyzing vibrational modes, molecular composition, and bonding configurations within a molecular dataset.
+
+   This class inherits from QWidget
+   Key features include plotting vibrational mode decompositions
+
+   Parameters
+   ----------
+   parent : QObject
+       The parent widget or object, typically the main application or main window in which this widget will be embedded.
+   debug : bool, optional
+       Indicates if debugging is enabled for this widget. The default is False.
+
+   Attributes
+   ----------
+   subplot : matplotlib subplot
+       A subplot attribute for plotting the analysis results. 
+   settings : dict
+       A dictionary for storing various settings related to analysis, like radii, frequencies, and plotting configurations.
+   settings['Radii'] : list 
+       Holds specific radii settings if provided; otherwise, set to None.
+   settings['Minimum frequency'] : int
+       The minimum frequency boundary for analysis, initialized to -1.
+   settings['Maximum frequency'] : int
+       The maximum frequency boundary for analysis, initialized to 400.
+   settings['title'] : str
+       The title for plots generated within the widget. Defaults to 'Analysis'.
+   settings['Covalent radius scaling'] : float
+       A scaling factor for adjusting covalent radii in bonding calculations. Defaults to 1.1.
+   settings['Bonding tolerance'] : float
+       The tolerance level used in bonding calculations, determining what is considered a bond. Defaults to 0.1.
+   settings['Bar width'] : float
+       Determines the width of bars in bar plots. Defaults to 0.5.
+   refreshRequired : bool
+       A flag indicating whether the widget needs to be refreshed to update the visuals or calculations. Defaults to True.
+   plot_types : list
+       A list of available plot types the user can select from.
+   plot_type_index : int
+       The index of the currently selected plot type in `plot_types` list.
+   number_of_molecules : int
+       The number of molecules identified during the last analysis. Defaults to 0.
+   frequency_units : str or None
+       String representing the units used for frequency measurements. Initially set to None.
+   cell_of_molecules : object or None
+       An object containing information about the cell of molecules, if analysis has been run. Initially set to None.
+   original_atomic_order : list or None
+       List maintaining the original order of atoms as read from the input. Initially set to None.
+   frequencies_cm1 : list
+       A list holding frequency values in cm-1 units.
+   mode_energies : list
+       Stores the calculated energies for different vibrational modes.
+   element_radii : dict
+       A dictionary mapping elements to their corresponding covalent radii used in the analysis.
+   species : list
+       A list of species involved in the current analysis.
+   notebook : object
+       A reference to the parent notebook-like structure which hosts this widget.
+   reader : object
+       An object responsible for reading and interpreting molecular data files.
+
+   Methods
+   -------
+   on_element_radii_tw_itemClicked(self, item)
+       Handler for click events on table widget items related to element radii.
+   on_element_radii_tw_itemChanged(self, item)
+       Handler for changes in the table widget items related to element radii.
+   set_radii_tw(self)
+       Updates the radii table widget based on current settings or data.
+   setCovalentRadius(self, element, radius)
+       Sets the covalent radius for a given element and updates the analysis.
+   writeSpreadsheet(self)
+       Writes the analysis results to a spreadsheet hosted by the parent structure.
+   on_width_changed(self, value)
+       Handler for changes in the bar width setting.
+   on_scale_changed(self, value)
+       Handler for changes in the covalent radius scaling setting.
+   on_tolerance_changed(self, value)
+       Handler for changes in the bonding tolerance setting.
+   on_title_changed(self, text)
+       Handler for changes in the plot title.
+   on_vmin_changed(self)
+       Handler for changes in the minimum frequency setting.
+   on_vmax_changed(self)
+       Handler for changes in the maximum frequency setting.
+   requestRefresh(self)
+       Requests a refresh of the analysis and visualization.
+   refresh(self, force=False)
+       Refreshes the widget based on current settings, optionally forcing a refresh.
+   on_plottype_cb_changed(self, index)
+       Handler for changes in the selected plot type.
+   calculate(self)
+       Performs calculations based on current settings, preparing data for visualization.
+   plot(self)
+       Invokes the plotting method corresponding to the current plot type selection.
+   plot_molecular(self)
+       Generates a plot based on molecular composition of vibrational energy.
+   plot_internal_external(self)
+       Generates a plot based on the decomposition of vibrational energy into internal and external movements.
+
+
+   .. py:method:: calculate()
+
+      Perform calculations for the current object state including molecular contents, normal modes, and energy distributions.
+
+      This method orchestrates the calculation process, setting up necessary parameters, processing molecular contents
+      based on the provided settings, calculating normal modes and their mass weighting, and finally computing the energy
+      distribution among the modes. It updates the UI and internal state as necessary based on the calculation results.
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      None
+
+      Notes
+      -----
+      The function interacts with several attributes of the object it belongs to, including:
+      - `self.notebook.mainTab.settings`: Access to settings specific to the main tab.
+      - `self.notebook.mainTab.reader`: The reader associated with the main tab for accessing file data.
+      - `self.species` and `self.settings['Radii']`: Used for setting up element radii.
+      - `self.notebook.settingsTab.settings`, `self.notebook.settingsTab.frequencies_cm1`, and 
+      - `self.notebook.settingsTab.mass_weighted_normal_modes`: Access to settings and data specific to the settings tab.
+      - `self.cell_of_molecules`, `self.original_atomic_order`, `self.number_of_molecules`: Modifies and utilizes these attributes
+      - to hold molecular content, order of atoms, and the number of molecules, respectively.
+
+
+
+
+   .. py:method:: on_element_radii_tw_itemChanged(item)
+
+      Respond to changes in element radii within a widget.
+
+      Parameters
+      ----------
+      item : QTableWidgetItem
+          The table widget item that was changed. This item contains the new radius value as its text, and its column indicates which element's radius was modified.
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: on_element_radii_tw_itemClicked(item)
+
+      Handle the item clicked event for a TableWidget related to element radii.
+
+      Parameters
+      ----------
+      item : QTableWidgetItem
+          The item from the TableWidget that was clicked.
+
+      Returns
+      -------
+      None
+
+      Notes
+      -----
+      This function unblocks signals for the `element_radii_tw` TableWidget after an item click
+      event has occurred, allowing subsequent events to be processed.
+
+
+
+   .. py:method:: on_plottype_cb_changed(index)
+
+      Handle a change in plot type selection.
+
+      Parameters
+      ----------
+      index : int
+          The new index that indicates the selected plot type.
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: on_scale_changed(value)
+
+      Handles the event when the scale setting is changed.
+
+      This function is typically connected to a signal that is emitted when the
+      scaling factor for the covalent radius is adjusted in a graphical user interface.
+      It updates the stored 'Covalent radius scaling' value, marks that a refresh is
+      required, calculates necessary data based on new settings, and finally triggers
+      a plot update.
+
+      Parameters
+      ----------
+      value : float
+          The new scale value for the covalent radius.
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: on_title_changed(text)
+
+      Handle title change events.
+
+      Parameters
+      ----------
+      text : str
+          The new title text.
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: on_tolerance_changed(value)
+
+      Handle the event when the tolerance value changes.
+
+      This function updates the 'Bonding tolerance' setting based on the provided value, marks the system as requiring a refresh, and then recalculates and replots the data.
+
+      Parameters
+      ----------
+      value : float
+          The new tolerance value.
+
+      Returns
+      -------
+      None
+
+
+
+
+   .. py:method:: on_vmax_changed()
+
+      Handle the change in maximum value for frequency.
+
+      Parameters
+      ----------
+      text : str
+          The new title text.
+
+      Returns
+      -------
+      None
+
+
+
+
+   .. py:method:: on_vmin_changed()
+
+      Handles the change in minimum value of frequency.
+
+      Parameters
+      ----------
+      text : str
+          The new title text.
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: on_width_changed(value)
+
+      Handle changes to the width property.
+
+      This method is called when the width property of an object is changed. It updates the stored width value in the object's settings and then re-plots the object to reflect the new width.
+
+      Parameters
+      ----------
+      value : int or float
+          The new value for the width.
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: plot()
+
+      Plot the spectroscopic data based on the selected plot type.
+
+      This method selects between two plotting strategies: 'internal_external'
+      or 'molecular', depending on the state of `plot_type_index`. If no data
+      reader is associated with the instance or if there are no frequencies
+      to plot, the function will terminate without plotting.
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      None
+
+      Notes
+      -----
+      This method relies on `self.reader` to be non-`None`, `self.frequencies_cm1` to
+      contain frequency data, and `self.plot_type_index` to determine the plotting
+      strategy. It calls `self.plot_internal_external()` or `self.plot_molecular()`
+      based on the value of `self.plot_type_index`.
+
+
+
+   .. py:method:: plot_internal_external()
+
+      Plot the internal and external composition of vibrational energy for modes within specified frequency ranges.
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      None
+
+      Notes
+      -----
+      - This method modifies the subplot attribute by adding the bar plots for the internal and external energy contributions of different vibrational modes within the specified frequency ranges.
+      - This method utilizes the 'Minimum frequency' and 'Maximum frequency' values from the settings attribute to filter modes for plotting.
+      - The method sets the X-axis labels to mode numbers and the Y-axis label to percentage energy.
+      - If the number of modes within the specified frequency range is less than 3, the method returns early without performing any plotting.
+      - The method updates the canvas with the newly plotted data.
+
+
+
+   .. py:method:: plot_molecular()
+
+      Plot the molecular composition of vibrational energy.
+
+      This method visualizes the distribution of vibrational energy across different molecules
+      within specified frequency limits. It creates a bar chart representing the percentage of 
+      energy attributed to each molecule per mode within the set frequency range.
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      None
+
+
+      Notes
+      -----
+      - `self.settings` should contain 'Minimum frequency', 'Maximum frequency', and 'Bar width' keys.
+      - `self.mode_energies` must be a list where each element is a tuple containing mode energies
+        (total energy, center of mass energy, rotational energy, vibrational energy, molecular energy).
+      - `self.frequencies_cm1` should be a list of mode frequencies in cm^-1.
+      - `self.number_of_molecules` indicates the number of different molecules considered in the analysis.
+      - The method updates `self.subplot` with the new plot and requires `self.figure` and `self.canvas`
+        for plotting and refreshing the plot display, respectively.
+      - Utilizes `matplotlib.axes.Axes.bar` for plotting and `matplotlib.ticker.MaxNLocator` for setting
+        tick locations on the x-axis.
+      - Assumes matplotlib, specifically the `matplotlib.pyplot` and `matplotlib.ticker.MaxNLocator` classes,
+        are appropriately imported or accessible within the scope.
+
+
+
+   .. py:method:: refresh(force=False)
+
+      Refresh the widget state, optionally enforcing refresh.
+
+      This method updates the widgets' states and values according to the current settings. It first checks if a refresh is required or if the `force` parameter is set to `True`. If neither condition is met, it exits early. Otherwise, it proceeds to block signals from all child QWidget instances to avoid unwanted signal emission during state update. It then updates various UI components with new settings values, calculates and plots according to the updated settings, and finally re-enables signals for all child QWidget instances.
+
+      Parameters
+      ----------
+      force : bool, optional
+          If set to `True`, the widget refresh is forced even if it is deemed not required. Defaults to `False`.
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: requestRefresh()
+
+      Marks the instance as requiring a refresh.
+
+      Sets the instance attribute `refreshRequired` to True, indicating that a refresh is necessary.
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      None
+
+
+
+
+   .. py:method:: setCovalentRadius(element, radius)
+
+      Set the covalent radius for a given element and update the plot.
+
+      Parameters
+      ----------
+      element : str
+          The chemical symbol of the element for which to set the covalent radius.
+      radius : float
+          The new covalent radius for the element.
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: set_radii_tw()
+
+      Set or update the atomic radii in the GUI's table widget based on the current settings and active file.
+
+      This method updates the radii configuration within the element radii table widget of the GUI. It first ensures that
+      a reader object, a program, and a filename are set and available. If any of these are missing, the process is aborted
+      with a message. It then checks if custom radii are set in the settings; if not, it defaults to using pre-defined radii.
+      The species and their corresponding radii are then used to populate the table widget. After the table is populated,
+      it updates the settings with the possibly new radii values.
+
+      Parameters
+      ----------
+      None 
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: writeSpreadsheet()
+
+      Write analysis data into a selected worksheet in the notebook's spreadsheet.
+
+      This method assumes the existence of a spreadsheet object within the notebook
+      attribute of the class instance. It selects a worksheet named 'Analysis',
+      writes a header row and data rows containing calculated percentages of
+      vibrational mode contributions for molecules and internal/external modes.
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      None
+
+
+
+.. py:class:: Debug(debug, text, level=0)
+
+   A class aimed at providing a structured way to include debug messages in code.
+
+   Methods
+   -------
+   print(args, level=0)
+       Prints debug messages based on the debug level provided as argument compared to the object's debug level.
+   state()
+       Returns the current state (enabled or disabled) of debugging.
+
+   Notes
+   -----
+   The `print` method provides a flexible way to include additional information along with the base debug message, allowing for a detailed and adjustable debugging output.
+
+
+   .. py:method:: print(*args, level=0)
+
+      Prints message if debugging level allows.
+
+      Parameters
+      ----------
+      args
+          Variable length argument list for the message to be printed.
+      level : int, optional
+          The level of the message that determines if it gets printed or not,
+          based on the instance's `level`. Default value is 0.
+
+      Notes
+      -----
+      This method will only print the message if the instance's `debug` flag is True
+      and the provided `level` is less than or equal to the instance's `level`.
+
+
+
+   .. py:method:: state()
+
+      Get the debug state.
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      The current debug state.
+
+
+
+.. py:class:: FitterTab(parent, debug=False)
+
+   Bases: :py:obj:`PyQt5.QtWidgets.QWidget`
+
+
+   A class for managing and displaying a spectroscopic fitting interface within a QWidget.
+   Initialize the main widget with its components and connect signals to slots.
+
+   This constructor sets up the UI for a spectral analysis widget, initializing all the GUI components such as buttons, combo boxes, spin boxes, and plotting canvases. It also sets up the initial state for various attributes related to the spectral analysis settings and data.
+
+   Parameters
+   ----------
+   parent : QWidget
+       The parent widget.
+   debug : bool, optional
+       Flag to indicate whether debugging messages should be printed, by default False.
+
+   Attributes
+   ----------
+   parent : QWidget
+       The parent QWidget within which this `FitterTab` is contained.
+   debug : bool, optional
+       A flag to activate debug mode which provides additional output for development and troubleshooting. Defaults to False.
+
+   Notes
+   -----
+   This class is designed to provide a user interface for spectral fitting tasks, allowing for adjustments of various fitting parameters and visualization of fitting results. It leverages Qt widgets for the graphical user interface components and matplotlib for plotting.
+
+   The class initializes with customizable settings related to spectral fitting including file names, fitting types, iterations, scaling factors, and baseline correction options. It supports reading experimental data from .xlsx or .csv files, setting fitting parameters through a dynamically generated form, and presenting the fitting results graphically with options to adjust the view.
+
+   Methods
+   -------
+   __init__(self, parent, debug=False)
+       Constructor to initialize the spectroscopic fitting interface with the given parent and debug settings.
+   on_iterations_sb_changed(self)
+       Handles changes to the number of iterations spinbox value.
+   on_independent_yaxes_cb_changed(self, value)
+       Handles changes to the independent y-axes checkbox state.
+   on_optimise_frequency_scaling_cb_changed(self, value)
+       Handles changes to the optimise frequency scaling checkbox state.
+   on_spectrum_scaling_cb_changed(self, value)
+       Handles changes to the spectrum scaling checkbox state.
+   on_hpfilter_lambda_sb_changed(self, value)
+       Handles changes to the HP filter lambda spinbox value.
+   on_spectrum_scaling_factor_sb_changed(self, value)
+       Handles changes to the spectrum scaling factor spinbox value.
+   on_baseline_cb_changed(self, value)
+       Handles changes to the baseline correction checkbox state.
+   on_spectral_difference_threshold_sb_changed(self, value)
+       Handles changes to the spectral difference threshold spinbox value.
+   on_frequency_scaling_factor_sb_changed(self, value)
+       Handles changes to the frequency scaling factor spinbox value.
+   replotButton1Clicked(self)
+       Handles the event when the first replot button is clicked.
+   replotButton2Clicked(self)
+       Handles the event when the second replot button with frequency shift is clicked.
+   plot(self, experiment, xs, ys, legends, label)
+       Plots the fitting results with optional experiment data overlay.
+   fittingButtonClicked(self)
+       Initiates the fitting process when the fitting button is clicked.
+   optimiseFit(self)
+       Optimises the fitting parameters.
+   optimiseFunction(self, variables)
+       Function to be optimised during the fitting process.
+   redraw_sigmas_tw(self)
+       Redraws the table widget for sigma values based on current settings.
+   on_fitting_type_cb_activated(self, index)
+       Handles changes to the fitting type combo box selection.
+   on_scenario_cb_activated(self, index)
+       Handles selection changes in the scenario combo box.
+   on_spectrafile_le_return(self)
+       Handles actions to take when the spectra file line edit has a return event.
+   on_spectrafile_le_changed(self, text)
+       Handles changes to the spectra file line edit text.
+   on_sigmas_tw_itemChanged(self, item)
+       Responds to item changes in the sigmas table widget.
+   print_settings(self)
+       Prints the current settings to the debugger.
+   replot(self)
+       Handles the replotting of spectra.
+   refresh(self, force=False)
+       Refreshes the interface based on current settings and data.
+   requestRefresh(self)
+       Requests a refresh of the interface.
+
+
+   .. py:method:: fittingButtonClicked()
+
+      Handles the click event on the fitting button.
+
+      This method toggles the fitting process on and off. When clicked,
+      it changes the button's text accordingly to reflect the current
+      state - either "Perform fitting" or "Interrupt fitting". It also
+      triggers re-plotting and refreshes the UI. If the fitting process
+      starts, it performs optimization and then resets the button's state
+      to allow a new fitting process.
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      None
+
+
+
+
+   .. py:method:: on_baseline_cb_changed(value)
+
+      Handle the change event of the baseline checkbox.
+
+      This method is called when the baseline checkbox state changes. It updates the setting for baseline removal and marks refresh as required.
+
+      Parameters
+      ----------
+      value : str
+          The new value or state of the baseline checkbox. The actual data type and use of this parameter depend on the specific implementation and could vary.
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: on_fitting_type_cb_activated(index)
+
+      Handle the activation of a fitting type option.
+
+      This method updates the current settings to reflect the selected fitting type based on the provided index. It also marks the state as requiring a refresh.
+
+      Parameters
+      ----------
+      index : int
+          The index of the selected fitting type in the fitting type definitions list.
+
+      Returns
+      -------
+      None
+
+
+
+
+   .. py:method:: on_frequency_scaling_factor_sb_changed(value)
+
+      Handle changes in the frequency scaling factor setting.
+
+      This function changes the frequency scaling factor setting. It updates the setting with the new value and marks a refresh as necessary. It also handles conversion errors gracefully.
+
+      Parameters
+      ----------
+      value : str
+          The new value for the frequency scaling factor setting. The function attempts to convert this to a float.
+
+      Returns
+      -------
+      None
+
+      Notes
+      -----
+      - The `self.refreshRequired` flag is set to True regardless of whether the conversion succeeds.
+
+
+
+   .. py:method:: on_hpfilter_lambda_sb_changed(value)
+
+      Handle changes to the high-pass filter lambda scrollbar value.
+
+      Parameters
+      ----------
+      value : str
+          The new value from the high-pass filter lambda scrollbar, intended to be converted to float.
+
+      Returns
+      -------
+      None
+
+
+
+
+   .. py:method:: on_independent_yaxes_cb_changed(value)
+
+      Handles the change of state for the independent Y-axes checkbox.
+
+      Parameters
+      ----------
+      value : bool
+          The new state of the checkbox. The actual value might not be used in the function but represents the change.
+
+      Returns
+      -------
+      None
+
+      Notes
+      -----
+      This function is triggered upon the change of the 'independent_yaxes_cb' checkbox state. It updates the settings dictionary with the new state of the 'Independent y-axes' option and sets the 'refreshRequired' flag to True, indicating that a refresh is needed to reflect the changes in the UI or data visualization.
+
+
+
+   .. py:method:: on_iterations_sb_changed()
+
+      Handle changes in the iterations spin box value.
+
+      This method is called when the iterations spin box value is changed. It updates the 'Number of iterations' setting with the new value and flags that a refresh is required.
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: on_optimise_frequency_scaling_cb_changed(value)
+
+      Handles changes in the frequency scaling optimization option.
+
+      This method updates the 'Optimise frequency scaling' setting based on the state of a checkbox and marks that a refresh is required based on the new setting.
+
+      Parameters
+      ----------
+      value : bool
+          The value or state that triggered the change. This parameter is logged but not directly used to set the 'Optimise frequency scaling' option.
+
+      Returns
+      -------
+      None
+
+
+
+
+   .. py:method:: on_scenario_cb_activated(index)
+
+      Handle scenario combobox activation.
+
+      This function is triggered when a scenario combobox option is selected. It logs the activation with the selected index, marks that a refresh is required, and updates the settings to reflect the new scenario.
+
+      Parameters
+      ----------
+      index : int
+          The index of the activated scenario.
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: on_sigmas_tw_itemChanged(item)
+
+      Handle item changed event in a table widget for sigma values.
+
+      This method updates mode fitting status and sigma values based on changes in a table widget,
+      redraws the table widget, and refreshes output based on the modifications. It also handles error
+      for invalid numeric input for sigma values. 
+
+      Parameters
+      ----------
+      item : QTableWidgetItem
+          The table widget item that has been changed.
+
+      Returns
+      -------
+      None
+
+      Side Effects
+      ------------
+      - Updates internal data structures storing mode fitting statuses and sigma values.
+      - Triggers UI update methods to reflect changes in the table widget and other dependent UI components.
+      - Blocks and unblocks signals from the table widget to prevent recursive item change events during updates.
+      - Processes all pending events for the application to ensure UI updates are immediately applied.
+
+
+
+   .. py:method:: on_spectrafile_le_changed(text)
+
+      Handle changes to the spectra file input field.
+
+      This method is triggered when the text of the spectrum file input field changes. It updates the 'Experimental file name' setting with the new text, marks the current experimental file as unread, and indicates that a refresh is required.
+
+      Parameters
+      ----------
+      text : str
+          The new text from the spectra file input field. Not directly used after method update.
+
+      Returns
+      -------
+      None
+
+      Notes
+      -----
+      The actual text used in processing is fetched directly from the `spectrafile_le` attribute, not from the `text` argument.
+
+
+
+   .. py:method:: on_spectrafile_le_return()
+
+      Handle file selection for experimental spectra.
+
+      This method is executed when an action associated with the `spectrafile_le` widget is performed. It prompts the user to select a file if the currently specified file does not exist or cannot be found. It updates the application's settings with the new file name, if a file is selected.
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      None
+
+      Notes
+      -----
+      The method first checks if the file specified in the `spectrafile_le` widget exists. If it does not, a file dialog is opened for the user to select a file. If a file is selected, the method updates the application's settings and the text of the `spectrafile_le` widget to reflect the new file name. Additionally, it sets a flag indicating that a refresh is required and that the experimental file needs to be read again. Finally, it triggers the last button pressed action.
+
+      This method utilizes `os.path.isfile` to check file existence, `QFileDialog` for file selection. 
+
+
+
+   .. py:method:: on_spectral_difference_threshold_sb_changed(value)
+
+      Handle changes in spectral difference threshold setting.
+
+      This function is called when the 'Spectral difference threshold' setting is changed.
+      It updates the setting value, converting it to a float, and sets a flag indicating that a refresh is required.
+
+      Parameters
+      ----------
+      value : str
+          The new value for the 'Spectral difference threshold' setting. The function attempts to convert this to a float.
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: on_spectrum_scaling_cb_changed(value)
+
+      Handles the change event of the spectrum scaling checkbox.
+
+      This method is triggered whenever the spectrum scaling checkbox's state changes. It updates the settings to reflect the current state of the checkbox and flags that a refresh is required.
+
+      Parameters
+      ----------
+      value : bool
+          The new value of the spectrum scaling checkbox. The specific type and significance can vary depending on the implementation details of the checkbox and its handlers.
+
+      Returns
+      -------
+      None
+
+
+
+
+   .. py:method:: on_spectrum_scaling_factor_sb_changed(value)
+
+      Handles the change in spectrum scaling factor.
+
+      Parameters
+      ----------
+      value : str
+          The new value for the spectrum scaling factor. Expected to be convertible to float.
+
+      Returns
+      -------
+      None
+
+      Notes
+      -----
+      This function attempts to update the 'Spectrum scaling factor' setting with the new value after converting it to float. If the conversion fails, a message is printed indicating the failure.
+
+
+
+   .. py:method:: optimiseFit()
+
+      Optimise the fit based on the initial and adjusted sigmas and potential frequency scaling.
+
+      Instructions for determining the best fitting parameters for the model are conducted
+      within the constraints of predefined modes. The function iterates to minimize the discrepancy
+      between modeled and experimental data. It employs the Nelder-Mead optimization method for
+      solving the problem.
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      list or OptimizeResult
+          The final optimization point as a list if no sigma has been selected for optimisation,
+          or as an `OptimizeResult` object returned by `scipy.optimize.minimize`. The return type
+          depends on whether the optimization process is executed.
+
+      Notes
+      -----
+      The function uses several attributes of the class instance it belongs to:
+      - `modes_fitted` to determine which modes are fitted.
+      - `sigmas_cm1` as initial sigma points for optimization.
+      - `settings` to check if frequency scaling should be optimised and to determine the number of iterations for the optimization.
+      - `optimiseFunction` as the function to be minimized.
+
+      It modifies the `functionCalls` attribute by setting it to 0 at the beginning and uses
+      `fit_list` to store the indexes of modes that are being fitted.
+
+
+
+   .. py:method:: optimiseFunction(variables)
+
+      Optimise the fitting function based on given variables.
+
+      This method adjusts internal settings based on an array of variables to
+      optimise the fitting function according to the predefined criteria
+      (e.g., minimize cross-correlation or spectral difference). It updates
+      GUI components and recalculates the function value based on the new
+      configuration.
+
+      Parameters
+      ----------
+      variables : list or array-like
+          The variables used for optimization. This could include sigma values
+          for each element to be fitted and optionally a scaling factor for
+          frequency scaling, depending on the configuration.
+
+      Returns
+      -------
+      float
+          The function value after optimization, which is either the negative
+          cross-correlation or the root mean square error (RMSE), based on the
+          fitting type setting.
+
+      Notes
+      -----
+      - `calculationInProgress` is a boolean attribute of the
+        object that indicates whether a calculation can proceed.
+      - Manipulates GUI components such as `fittingButton` and elements within
+        `notebook.settingsTab`, thus requires the GUI to be in a responsive state.
+      - Uses global `debugger` object for logging progress and results.
+      - The method updates the internal state of the object, such as the
+        `functionCalls` counter and sigma values for elements being fitted.
+
+      Raises
+      ------
+      Exception
+          If the calculation is not in progress (indicated by
+          `calculationInProgress` being `False`), it immediately returns a
+          predefined extremely negative value (e.g., -9.9e+99).
+
+
+
+   .. py:method:: plot(experiment, xs, ys, legends, label)
+
+      Plot experimental and calculated data on the same or separate y-axes.
+
+      This method plots provided experimental and calculated data sets using Matplotlib. It supports plotting
+      data with independent y-axes and applying frequency shift and scaling to the x-axis. The plot appearance,
+      including color mapping, line width, and labels, is customizable.
+
+      Parameters
+      ----------
+      experiment : array_like
+          The experimental data to be plotted. If empty, no experimental data is plotted.
+      xs : list of array_like
+          A list containing the x-axis data for each data set.
+      ys : list of array_like
+          A list containing the y-axis data for each data set to be plotted alongside the x data.
+      legends : list of str
+          A list containing the labels for each data set.
+      label : str
+          The label for the plot, typically used as a part of y-axis label.
+
+      Returns
+      -------
+      None
+
+      Raises
+      ------
+      ValueError
+          If `xs`, `ys`, and `legends` lists do not have the same length.
+
+
+
+   .. py:method:: print_settings()
+
+      Prints the settings attributes of the instance.
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      None
+
+      Prints the key and value of each setting in the instance's `settings` attribute, with the help of the `debugger` print method.
+
+
+
+   .. py:method:: redraw_sigmas_tw()
+
+      Redraw the table widget for sigmas.
+
+      This method updates the table widget `sigmas_tw` used for displaying sigma, frequency, and intensity
+      information. It checks if the data lists (`sigmas_cm1`, `frequencies_cm1`, and `intensities`) are non-empty
+      and then proceeds to populate the table. Each row in the table corresponds to a unique sigma, frequency,
+      and intensity value. The method also handles item selection and editing properties based on the state of
+      `modes_selected` and `modes_fitted` attributes.
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      None
+
+      Notes
+      -----
+      - `sigmas_cm1`, `frequencies_cm1`, and `intensities` are lists that store sigma, frequency, and intensity data, respectively.
+      - `modes_selected` and `modes_fitted` are lists that store boolean values indicating whether a mode is selected and
+        whether it is fitted, respectively.
+
+
+
+   .. py:method:: refresh(force=False)
+
+      Refreshes the state of the application based on user-defined conditions and settings.
+
+      Parameters
+      ----------
+      force : bool, optional
+          If True, the refresh proceeds regardless of whether it is deemed necessary based on the internal state. Defaults to False.
+
+      Returns
+      -------
+      None
+
+      Notes
+      -----
+      The refresh process involves several key steps including checking if a refresh is required, updating plotting data from settings, reading an experimental file, setting GUI components based on notebook scenarios, and recalculating spectra. If the refresh is aborted either due to being unnecessary or because there are no frequencies, it returns early. Additionally, if `force` is True, it ignores the check for whether a refresh is required and proceeds with the refresh.
+
+      After updating relevant class attributes and GUI components, the function recalculates cross-correlation, root-mean-square error (RMSE) between experimental and calculated spectra, and updates the display with these metrics.
+
+
+
+   .. py:method:: replot()
+
+      Replots the experimental spectrum along with calculated frequencies and spectra.
+
+      This method will initially check if there is a resampled experimental spectrum. If such a spectrum exists, the spectrum is resampled. Subsequently, it calls the plot method with the updated data along with other related information such as legends and labels.
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      None
+
+
+
+
+   .. py:method:: replotButton1Clicked()
+
+      Handle the click event on the replot button.
+
+      This method is triggered when the replot button is clicked. It sets up the necessary flags for the replot operation and invokes the refresh method to update the plot.
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      None
+
+      Notes
+      -----
+      This method modifies the instance attributes to reflect that a replot is required without a frequency shift, and it bookmarks the last button pressed as 'replotButton1Clicked'. It also calls the `self.refresh` method to initiate the replotting process.
+
+
+
+   .. py:method:: replotButton2Clicked()
+
+      Handle the event when the second replot button is clicked.
+
+      This method updates various attributes to indicate that a refresh of the plot is required,
+      specifically with a frequency shift. It records that this button was the last one pressed
+      and then initiates the refresh process.
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      None
+
+
+
+
+   .. py:method:: requestRefresh()
+
+      Request a refresh of the interface.
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      None
+
+
+
+
+.. py:class:: MainTab(parent, program, filename, excelfile, debug=False)
+
+   Bases: :py:obj:`PyQt5.QtWidgets.QWidget`
+
+
+   MainTab is a comprehensive widget class designed to serve as a main interface tab within a Qt application. It is tailored for analyzing quantum chemistry or molecular dynamics simulation output files, offering functionalities such as file processing, data analysis, and settings management for quantum mechanics / molecular mechanics (QM/MM) programs.
+
+   Parameters
+   ----------
+   parent : QWidget
+       The parent widget in which MainTab is contained.
+   program : str
+       The name of the quantum mechanics or molecular mechanics program related to the data being analyzed or processed.
+   filename : str
+       The path to the output file generated by the specified `program`. This file contains the results to be analyzed.
+   excelfile : str
+       The name of an Excel file where results are stored. If specified, results will be written to this file upon program exit.
+   debug : bool, optional
+       Determines whether debugging messages should be printed to the console. Debugging is off by default (False).
+
+   Attributes
+   ----------
+   debug : bool
+       Indicates whether debugging is enabled.
+   settings : dict
+       A dictionary containing various program settings, such as program name, file names, and compatibility mode.
+   directory : str
+       The directory path of the `filename`.
+   notebook : QWidget
+       The parent widget, typically representing the notebook interface this tab is part of.
+   reader : various, depending on the program
+       The file reader object tasked with parsing the output file specified by `filename`.
+   frequencies_cm1 : numpy.ndarray or None
+       An array containing frequency values extracted from the output file, if applicable.
+   refreshRequired : bool
+       Indicates whether the widget requires refreshing due to changes in its data or settings.
+   calculationRequired : bool
+       Indicates whether a re-calculation or re-analysis is necessary due to changes in data or settings.
+
+   Methods
+   -------
+   on_script_button_clicked()
+       Handles actions to be taken when the 'Save settings' button is clicked.
+   on_excel_button_clicked()
+       Handles actions to be taken when the 'Save results' button is clicked, typically involving writing data to an Excel file.
+   on_calculation_button_clicked()
+       Initiates the processing of the output file and the refreshing of related UI components and data representations.
+   writeSpreadsheet()
+       Writes the current settings and analysis results to an Excel file specified by `excelfile`.
+   read_output_file()
+       Reads and processes the output file specified at initialization, updating UI and data structures based on its content.
+   on_scriptsfile_le_changed(text)
+       Updates program settings based on changes to the script file name input field.
+   on_resultsfile_le_changed(text)
+       Updates program settings based on changes to the Excel file name input field.
+   on_file_button_clicked()
+       Opens a file dialog for the user to select a new output or script file, and updates settings based on the selection.
+   on_file_le_return()
+       Triggers actions similar to `on_file_button_clicked` but is specifically for handling manual text entry in the file path input field.
+   on_file_le_changed(text)
+       Updates the output file setting based on changes to the file input field.
+   on_program_cb_activated(index)
+       Updates program settings based on the selection made in the QM/MM program combo box.
+   requestRefresh()
+       Requests a refresh of the interface and data representation.
+   refresh(force=False)
+       Refreshes the UI and data based on current settings and file contents, with an optional force parameter to enforce refreshing even if it's not marked as required.
+
+
+   .. py:method:: getFullFileName()
+
+      Return the full file name based on the directory and output file name settings.
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      str
+          The full path of the file, combining the directory and the output file name setting.
+
+
+
+   .. py:method:: getRelativeFileName()
+
+      Get the relative filename specified in settings.
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      str
+          The file name specified in the settings as 'Output file name'.
+
+
+
+   .. py:method:: on_calculation_button_clicked()
+
+      Handle the event triggered by the calculation button click.
+
+      It proceeds to read an output file which is the result of a previous calculation. It checks if the settings tab exists within a notebook interface (e.g., a tabbed GUI component) and refreshes it if it does. Finally, it sets a flag indicating that a new calculation is not required anymore.
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      None
+
+
+
+
+   .. py:method:: on_excel_button_clicked()
+
+      Handles the event triggered when Excel button is clicked.
+
+      This function initiates the process of writing data to the Excel spreadsheet when the designated button is clicked in the UI. It prints log messages at the start and end of the operation.
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      None
+
+      See Also
+      --------
+      notebook.writeSpreadsheet : The method called to write data to the spreadsheet.
+
+
+
+   .. py:method:: on_file_button_clicked()
+
+      Handle the "Open file" button click event in the GUI.
+
+      This method is triggered upon clicking the "Open File" button in a graphical user interface. It facilitates the selection of an output file generated by various software tools (`castep`, `abinit`, `gulp`, `vasp`, `qe`, `crystal`, `phonopy`, `experiment`, `pdgui`, or any file type). Based on the selected file, it finds the corresponding program that generated the file, updates various settings in the application according to the detected program, sets the working directory to the location of the selected file, updates the GUI with the new output file name, and refreshes relevant parts of the application depending on whether the program is `pdgui` or another supported type.
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: on_file_le_changed(text)
+
+      Handles changes to the file location input field.
+
+      The new output file name is stored and a flag set to require re-calculations
+
+      Parameters
+      ----------
+      text : str
+          The new text of the file location input field.
+
+      Returns
+      -------
+      None
+
+
+
+
+   .. py:method:: on_file_le_return()
+
+      Handle the return action for a file entry line edit.
+
+      It performs a series of steps to process the specified file, including finding a program associated with the file, updating various settings related to the chosen file and potentially the program determined, and initiating different actions or calculations based on the program type.
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      None
+
+      Notes
+      -----
+      - The method performs an early return if the filename entered is an empty string.
+      - It searches for a program associated with the entered filename and returns if none is found.
+      - Updates the 'Program' and 'Output file name' settings based on the entered filename.
+      - Changes the GUI window title to the directory of the entered filename.
+      - Deletes all scenarios (if applicable) before proceeding with further settings updates or actions.
+      - Depending on the program associated with the filename, it might read the script or mark the interface for refresh and calculation.
+      - The actual actions, especially involving UI updates (e.g., setting window title, deleting scenarios, reading script) or marking for refresh and calculation, are dependent on the context and design of the surrounding application and GUI structure.
+      - Specific behaviors, such as how 'pdgui' program type is specially handled or the resetting of certain settings, is contingent on the broader application logic and requirements.
+
+
+
+   .. py:method:: on_program_cb_activated(index)
+
+      Handle program selection change in a combobox and update settings accordingly.
+
+      This method updates the program settings based on the user's selection from a combobox.
+      It specifically handles cases where the selected program is one of several predefined
+      options (`Phonopy - VASP`, `Phonopy - QE`, `Phonopy - Crystal`, `Quantum Espresso`),
+      adjusting both the general program setting and the more specific QM program setting
+      as necessary.
+
+      Parameters
+      ----------
+      index : int
+          The index of the selected item in the combobox.
+
+      Returns
+      -------
+      None
+
+      Side Effects
+      ------------
+      - Updates the `settings` dictionary with the selected program and, if applicable,
+        the corresponding QM program.
+      - Sets `calculationRequired` attribute to `True`.
+
+
+
+
+   .. py:method:: on_resultsfile_le_changed(text)
+
+      Handle changes to the results file text input field.
+
+      Parameters
+      ----------
+      text : str
+          The new text from the results file text input field.
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: on_script_button_clicked()
+
+      Handle the script button click event.
+
+      This function is executed when the script button is clicked. It checks if the specified script file exists in the specified directory. If it does, it prompts the user to either overwrite the existing file or cancel the action. If the file does not exist, it creates a new script file. It uses a debugger to log actions taken during the process.
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      None
+
+
+
+
+   .. py:method:: on_scriptsfile_le_changed(text)
+
+      Respond to changes in the scripts file input field.
+
+      Parameters
+      ----------
+      text : str
+
+      Returns
+      -------
+      None
+
+          The new text of the scripts file input field. This parameter may not be used inside the function as the function retrieves the text from the QLineEdit widget directly.
+
+
+
+   .. py:method:: read_output_file()
+
+      Reads the output file specified in the settings, processes it, and updates the UI elements accordingly.
+
+      Processes the output file indicated by the settings of the object. It performs several checks to ensure
+      the file exists, is accessible, and contains valid data that can be read and processed. It extracts
+      unit-cell parameters and vibrational frequencies from the output file, displaying them in the relevant
+      interface elements. It also triggers refresh actions on various tabs present in the notebook attribute if available.
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      None
+
+
+
+
+   .. py:method:: refresh(force=False)
+
+      Refresh the current interface or force it to refresh, applying settings changes.
+
+      Parameters
+      ----------
+      force : bool, optional
+          If `True`, force the refresh even if it is not required based on internal conditions. 
+          Defaults to `False`.
+
+      Returns
+      -------
+      None
+
+      Effects
+      -------
+      - Blocks signal for all child widgets during refresh.
+      - Adjusts program names based on settings, handling special case names.
+      - Sets the program combo box and filenames according to the updated settings.
+      - Triggers a recalculation if required after settings update.
+      - Unblocks signals for all child widgets after refresh.
+
+
+
+   .. py:method:: requestRefresh()
+
+      Request to refresh.
+
+      Marks the current instance as requiring a refresh.
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: writeSpreadsheet()
+
+      Writes data to the configured spreadsheet.
+
+      This method encompasses the process of selecting the 'Main' worksheet,
+      deleting the existing content on it, and writing down new settings and frequency
+      data onto it. It checks if
+      the spreadsheet object is valid, selects the appropriate worksheet, clears it,
+      and writes the settings and frequencies (if available) in a structured manner.
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      None
 
 
 
 
 .. py:class:: NoteBook(parent, program, filename, spreadsheet, debug=False, progressbar=None, scripting=False, default_scenario='powder', ncpus=0, threading=False)
 
-
    Bases: :py:obj:`PyQt5.QtWidgets.QWidget`
+
 
    A Qt widget that holds tabs for managing different aspects of a notebook-like interface. 
 
@@ -99,6 +1583,7 @@ Classes
    overwriting : bool
        State indicating if overwriting files without prompt is enabled.
 
+
    .. py:method:: addScenario(scenarioType=None, copyFromIndex=-2)
 
       Add a new scenario tab
@@ -120,6 +1605,7 @@ Classes
 
 
 
+
    .. py:method:: deleteAllScenarios()
 
       Delete all scenarios except the first one.
@@ -133,6 +1619,7 @@ Classes
       Returns
       -------
       None
+
 
 
    .. py:method:: deleteScenario(index)
@@ -156,6 +1643,7 @@ Classes
       moves to the next available scenario. Otherwise, it selects the previous scenario.
 
 
+
    .. py:method:: keyPressEvent(e)
 
       Handle key press events for the application.
@@ -174,6 +1662,7 @@ Classes
       This function checks for specific key combinations (Control + S, and Control + C) and performs actions accordingly:
       - Control + S: Calls the `print_settings` method.
       - Control + C: Prints a message and exits the program.
+
 
 
    .. py:method:: on_tabs_currentChanged(tabindex)
@@ -200,6 +1689,7 @@ Classes
       - For scenario-specific tabs, which are dynamically added based on the number of scenarios, the function calculates the appropriate scenario index and triggers a refresh for the selected scenario.
 
 
+
    .. py:method:: openSpreadSheet(filename)
 
       Open or create a spreadsheet file.
@@ -220,6 +1710,7 @@ Classes
       -----
       - The function relies on the 'SpreadSheetManager' class for handling spreadsheet operations.
       - The function raises no exceptions, but will print a message if the provided filename does not have a '.xlsx' extension.
+
 
 
    .. py:method:: open_excel_spreadsheet()
@@ -244,6 +1735,7 @@ Classes
           - If the spreadsheet name is empty.
 
 
+
    .. py:method:: print_settings(filename=None)
 
       Prints the current program settings to a file.
@@ -260,6 +1752,7 @@ Classes
       Returns
       -------
       None
+
 
 
    .. py:method:: print_tab_settings(tab, title, fd, new_scenario=False)
@@ -290,6 +1783,7 @@ Classes
       and formats string values and others appropriately for printing.
 
 
+
    .. py:method:: progressbars_add(bar)
 
       Add a progress bar to the list of progress bars.
@@ -310,6 +1804,7 @@ Classes
       maximum value defined in `self.progressbar_maximum`.
 
 
+
    .. py:method:: progressbars_set_maximum(maximum)
 
       Set the maximum value for all progress bars in an object and reset their current status.
@@ -328,6 +1823,7 @@ Classes
       This method sets the maximum value of all progress bars stored in the object's `progressbars` attribute. It also resets the progress to 0. 
 
 
+
    .. py:method:: progressbars_update(increment=1)
 
       Update the progress bars status by a specified increment.
@@ -342,6 +1838,7 @@ Classes
       None
 
       This method increments the progress bar status stored in `progressbar_status` by the specified `increment` amount. It then sets this updated value as the new value for all progress bars stored in the `progressbars` list attribute of the instance.
+
 
 
    .. py:method:: refresh(force=False)
@@ -362,6 +1859,7 @@ Classes
       This method initiates a refresh process on various components such as the main settings, scenarios, and several tabs including plotting, analysis, viewer, and fitter. It adjusts the active tab based on the current number of scenarios. If 'force' is set to True, the refresh process is executed disregarding any active scripting conditions.
 
 
+
    .. py:method:: requestRefresh()
 
       Request a refresh operation.
@@ -375,6 +1873,7 @@ Classes
       Returns
       -------
       None
+
 
 
 
@@ -398,6 +1897,7 @@ Classes
       - The pool is stored in the instance's `pool` attribute.
       - The method uses a global variable `debugger` which should be defined elsewhere in the global scope for debugging purposes.
       - The number of CPUs (`ncpus`) and the threading model (`threading`) are not parameters of this method, but are expected to be attributes of the instance (`self`).
+
 
 
    .. py:method:: switchScenario(index, scenarioType=None)
@@ -435,6 +1935,7 @@ Classes
 
 
 
+
    .. py:method:: writeSpreadsheet()
 
       Write data to an Excel spreadsheet.
@@ -450,6 +1951,3484 @@ Classes
       Notes
       -----
       This function assumes that the Excel spreadsheet is an attribute of the object this method belongs to. It attempts to write data to various tabs within the spreadsheet, namely 'mainTab', 'settingsTab', 'analysisTab', and 'plottingTab'. The method opens the spreadsheet, writes data to these tabs if the spreadsheet is not `None`, and then closes the spreadsheet. 
+
+
+
+.. py:class:: PlottingTab(parent, debug=False)
+
+   Bases: :py:obj:`PyQt5.QtWidgets.QWidget`
+
+
+   A class used for creating and managing a plotting tab in a graphical user interface. It inherits from QWidget.
+
+   This class is responsible for handling plotting functionalities like choosing plot types, setting molar definitions and frequency values, managing interactions with UI components such as spin boxes, combo boxes, and buttons, and plotting the data using matplotlib.
+
+   Parameters
+   ----------
+   parent : QWidget
+       The parent widget.
+   debug : bool, optional
+       Enables debug mode which provides additional logging details. Defaults to False.
+
+   Attributes
+   ----------
+   settings : dict
+       A dictionary containing settings related to plotting such as minimum frequency, maximum frequency, frequency increment, molar definitions, number of atoms, plot type, and frequency unit.
+   refreshRequired : bool
+       A flag indicating whether the plot needs to be refreshed.
+   subplot : matplotlib subplot object
+       The subplot used for plotting data.
+   vmin, vmax, vinc : float
+       Variables to store current minimum frequency, maximum frequency, and frequency increment values for the plot.
+   molar_cb_current_index : int
+       Tracks the current index of the molar definition combo box to handle changes.
+   notebook : QWidget
+       A reference to the parent widget which contains the widget structure.
+   reader : object
+       An object to read and handle data from different file formats or sources.
+   legends, vs_cm1 : list
+       Lists used for storing legends for the plots and frequency values respectively.
+   frequency_length : int
+       Stores the length of the frequency array to check for changes.
+   progressbar : QProgressBar
+       A progress bar widget to display operation progress.
+
+   Methods
+   -------
+   get_total_number_of_frequency_calculations()
+       Calculates the total number of frequency calculations required.
+   requestRefresh()
+       Requests a refresh for the plotting.
+   requestScenarioRefresh()
+       Requests a refresh for all scenarios in the application.
+   on_vmin_changed(), on_vmax_changed(), on_vinc_changed(value), on_funits_cb_activated(index), on_molar_cb_activated(index), on_natoms_changed(value), on_plot_type_cb_activated(index)
+       Event handlers for UI component changes.
+   refresh(force=False)
+       Refreshes the plot based on current settings and data.
+   plot()
+       Generates and displays the plot based on the selected plot type and data.
+   get_number_of_califications_required()
+       Returns the number of calculations needed for updating the plot.
+   greyed_out()
+       Greys out options in the UI that are not available.
+   writeSpreadsheet()
+       Writes results to a spreadsheet.
+   set_concentrations()
+       Sets the concentrations for the plotting based on the molar definition.
+
+
+   .. py:method:: get_number_of_calculations_required()
+
+      Return the total number of spectra that need to be calculated.
+
+      Only spectra that need a refresh are included.
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      int
+          The total number of spectra that require calculation.
+
+
+
+   .. py:method:: get_total_number_of_frequency_calculations()
+
+      Calculate and return the total number of frequency calculations required.
+
+      This method computes the total number of frequency calculations based on the current settings for minimum frequency, maximum frequency, and frequency increment. It updates the scenario if the frequency range or the increment has changed since the last update.
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      int
+          The total number of frequency calculations required, which is the product of the number of calculations required (as obtained from `get_number_of_calculations_required`) and the new length of frequency range computed.
+
+
+
+   .. py:method:: greyed_out()
+
+      Handle items that should be greyed out if they are not needed.
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      int
+
+
+
+   .. py:method:: on_funits_cb_activated(index)
+
+      Handle the activation of a frequency unit combo box item.
+
+      This method updates the active frequency unit in the settings, triggers necessary refresh processes and logs the change.
+
+      Parameters
+      ----------
+      index : int
+          The index of the activated item in the frequency units combo box.
+
+      Returns
+      -------
+      None
+
+      Notes
+      -----
+      This method is part of a GUI application where `self` refers to an instance of the application or a relevant widget. It manages updates to the application's settings and GUI components based on the user's selection of a frequency unit from a combo box.
+
+      - `self.settings` is a dictionary where application settings are stored.
+      - `self.refreshRequired` is a boolean flag used to indicate whether a refresh of certain GUI components is necessary.
+      - `self.notebook` appears to be a widget container (like a tab widget), with `fitterTab` being one of its child tabs.
+      - `self.vmin_sb` is another component (likely a spin box or similar input widget) that may need its signals blocked/unblocked during the process to avoid unwanted signal emission.
+      - The `debugger.print` calls are used for logging and are not a standard Python function; they imply the existence of a custom logging or debugging utility named `debugger`.
+
+      The actual refreshing of the GUI and handling of signal blocking is done within other methods not shown here, such as `self.refresh()` and `self.notebook.fitterTab.requestRefresh()`.
+
+      Raises
+      ------
+      This function does not explicitly raise any exceptions but depends on the proper functioning of the methods it calls and the state of `self` and its attributes.
+
+
+
+   .. py:method:: on_molar_cb_activated(index)
+
+      Handle the activation of the molar combobox option.
+
+      This method is tied to a GUI event where a selection from a molar combobox triggers various updates in the application state, including setting concentrations, refreshing UI elements, and potentially triggering further calculations or refreshes as needed.
+
+      Parameters
+      ----------
+      index : int
+          The index of the selected item in the molar combobox. This index corresponds to a specific molar definition and is used to update the application settings and state accordingly.
+
+      Returns
+      -------
+      None
+
+      See Also
+      --------
+      set_concentrations : A method to update the concentrations based on the selected molar definition.
+      refresh : A method to refresh the UI elements.
+
+
+
+   .. py:method:: on_natoms_changed(value)
+
+      Handle the change in the number of atoms.
+
+      This method is called when the number of atoms changes. It updates the relevant setting in the instance, recalculates the concentration based on the new number of atoms, flags that a refresh is required, and then triggers the refresh process.
+
+      Parameters
+      ----------
+      value : int or float
+          The new number of atoms. This value is used to update settings and recalculate concentrations.
+
+      Notes
+      -----
+      - `self.reader.volume` and `self.reader.nions` are expected to be available and contain the volume of the container and the number of ions, respectively.
+      - The method refreshes `self.notebook.fitterTab` object with a `requestRefresh` method to initiate the refresh process.
+
+
+
+   .. py:method:: on_plot_type_cb_activated(index)
+
+      Handle plot type change from a combo box.
+
+      This method gets triggered when the plot type in a combo box is changed.
+      It updates the plot type in the settings, marks the current state as needing a refresh,
+      requests the fitter tab to refresh, and finally refreshes the current view.
+
+      Parameters
+      ----------
+      index : int
+          The index of the selected item in the combo box.
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: on_vinc_changed(value)
+
+      Handle the change in frequency increment and update GUI accordingly.
+
+      This function is triggered when there's a change in the frequency increment value. It adjusts the number of GUI elements based on 
+      new values of minimum and maximum frequency and the changed frequency increment. It also updates the settings dict with the 
+      new frequency increment value.
+
+      Parameters
+      ----------
+      value : float
+          The new value of the frequency increment.
+
+      Returns
+      -------
+      None
+
+      Side Effects
+      ------------
+      - Temporarily blocks signals from the vinc_sb spin box to prevent recursive calls.
+      - Updates 'Frequency increment' in the settings dictionary with the new frequency increment value.
+      - Requests a refresh of the fitterTab if needed.
+
+
+
+   .. py:method:: on_vmax_changed()
+
+      Handles the event when the maximum frequency setting is changed.
+
+      This method is triggered whenever there is a change in the maximum frequency setting (`vmax`). It blocks signal emission from the `vmax_sb` spinner box (presumably, a GUI element for setting `vmax`), reads the current minimum (`vmin`) and maximum (`vmax`) frequency settings, and updates the corresponding setting based on the specified frequency unit. If the frequency unit denotes a frequency, `vmax` is converted and stored as the 'Maximum frequency' in the settings dictionary in the 'wavenumber' unit. Otherwise, it updates the 'Minimum frequency' with the converted value. This method also triggers any necessary refresh operations in the user interface and finally unblocks signal emissions from the `vmax_sb`.
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      None
+
+      Notes
+      -----
+      - This method assumes the existence of `vmin_sb` and `vmax_sb` attributes, which should be spinner box GUI elements (or similar) for setting minimum and maximum frequencies, respectively.
+      - The `settings` dictionary must have a 'Frequency unit' key, and possibly 'Maximum frequency' and 'Minimum frequency' keys which are updated based on the condition.
+
+
+
+   .. py:method:: on_vmin_changed()
+
+      Handle the change in the minimum frequency setting.
+
+      This method adjusts the stored minimum frequency in the settings according to the new
+      minimum frequency input by the user. It first blocks the signals of the minimum frequency spinbox
+      to prevent recursive calls during the adjustment process. It then updates the setting based
+      on whether the frequency units are compatible with a predefined list, converting the frequency
+      accordingly. After adjusting the settings, it triggers a refresh request for the application's
+      fitter tab and marks the need for a general refresh. Finally, it re-enables the signals for
+      the minimum frequency spinbox and logs the completion of the process.
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      None
+
+      Notes
+      -----
+      - Uses the `blockSignals` method on `self.vmin_sb` to prevent signal-slot recursion.
+      - Adjusts settings based on a unit conversion utility function, `convert_frequency_units`.
+      - The effect of this method extends beyond just the internal state changes; it influences the UI and possibly other components' states through the requested refresh.
+
+
+
+   .. py:method:: plot()
+
+      Plots the results based on specified settings and scenarios.
+
+      This function generates a plot for the given scenarios under the analysis settings
+      defined in the notebook object's tabs. It handles various conditions to properly format
+      the plot, including checking if necessary parameters and objects are set, converting
+      frequency units, and adjusting data for display based on plot type. The actual plotting
+      is done using matplotlib, and various attributes like plot legends, titles, and axes labels
+      are dynamically set based on the configuration.
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      None
+
+      Notes
+      -----
+      - self.notebook.mainTab.settings: Dictionary containing program settings.
+      - self.notebook.mainTab.getFullFileName(): Method that returns the currently selected filename.
+      - self.notebook.mainTab.reader: Object used for reading data files.
+      - self.notebook.settingsTab.CrystalPermittivityObject: Object containing crystal permittivity settings.
+      - self.settings: Dictionary containing plot-related settings such as frequency range and plot type.
+      - self.notebook.scenarios: List of scenarios to be plotted.
+
+
+
+   .. py:method:: refresh(force=False)
+
+      Refreshes the current state based on the changes in settings, forces refresh if needed.
+
+      This function updates the frequency settings (minimum frequency, maximum frequency, and frequency increment) based on the current settings. It ensures that these settings are within logical limits. The function updates GUI elements (spin boxes and combo boxes) with these new calculations. Additionally, it handles the conversion of frequency units, updates GUI tooltips based on the frequency unit, and builds or refreshes the visualization plot based on the refreshed data. If the 'force' flag is set or if a refresh is deemed necessary due to significant changes in the settings, it proceeds with the refresh operation, else it skips the refresh to optimize performance.
+
+      Parameters
+      ----------
+      force : bool, optional
+          A boolean flag indicating whether to forcefully execute a refresh regardless of whether it was deemed necessary based on internal conditions. The default is False.
+
+      Returns
+      -------
+      None
+
+      Notes
+      -----
+      - The actual refresh operation involves several steps:
+          - Checking if a refresh is required based on the current settings and the 'force' parameter.
+          - Temporarily blocking signals from all child widgets to prevent unintended side effects during settings updates.
+          - Verifying and updating frequency settings to maintain logical constraints.
+          - Updating GUI components with new settings values and tooltips based on the current frequency unit.
+          - Processing and plotting data based on the updated settings.
+          - Re-enabling signals for child widgets after modifications are complete.
+      - The processEvents call is used to ensure the UI remains responsive during long operations.
+
+
+
+   .. py:method:: requestRefresh()
+
+      Initiates a refresh request.
+
+      This function flags that a refresh is required
+      It doesn't return any value.
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: requestScenarioRefresh()
+
+      Request a refresh on all scenarios within a notebook.
+
+      This function triggers a refresh process for the settings tab and all scenarios within the notebook. 
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: set_concentrations()
+
+      Sets the concentration based on the molar definition in settings.
+
+      This method updates the concentration value in the settings dictionary based on the 'Molar definition' key. It calculates concentration values differently based on whether the molar definition is set to 'Molecules', 'Unit cells', or 'Atoms'. It also enables or disables the `natoms_sb` spin box accordingly.
+
+
+
+   .. py:method:: writeSpreadsheet()
+
+      Update and write the results of powder and crystal scenarios to a spreadsheet.
+
+      This function navigates through each scenario defined in the `notebook` attribute, extracts relevant data such as absorption coefficients, permittivities, and reflectances, and writes these along with scenario settings to a spreadsheet. It handles different types of scenarios (Powder or Crystal) and makes use of the spreadsheet object's methods for selecting worksheets, writing rows, and dealing with data transformation. The function also handles the calculation of molar absorption coefficients with unit conversion when necessary.
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: write_crystal_results(sp, name, vs, legends, yss)
+
+      Wrte single crystal results to a spread sheet
+
+      Parameters
+      ----------
+      sp : object
+          The spreadsheet object.
+      name : str
+          The worksheet name used for writing.
+      vs : np.array
+          An array of the frequencies.
+      yss : list of np.arrays
+          A list of numpy arrays of the reflections and transmittance.
+      headings : list
+          The heading names for the yss.
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: write_eps_results(sp, vs, dielecv)
+
+      Write real and imaginary parts of crystal permittivity to a spreadsheet.
+
+      Parameters
+      ----------
+      sp : object
+          An instance of a spreadsheet processing class with methods to manipulate data in a spreadsheet.
+      vs : list
+          A list containing frequency values.
+      dielecv : numpy.ndarray
+          A complex numpy array where the real parts represent the real permittivities and the imaginary parts represent the imaginary permittivities of a crystal. The array should have a shape of (N,3,3) where N is the number of frequency values, and the 3x3 inner arrays represent the permittivity tensor for each frequency.
+
+      Returns
+      -------
+      None
+
+      Notes
+      -----
+      The function does two main tasks:
+      1. Selects the 'Real Crystal Permittivity' sheet, deletes its current content if any, and writes the real parts of the permittivity tensor for each frequency along with the frequency values themselves.
+      2. Selects the 'Imag Crystal Permittivity' sheet, deletes its current content if any, and writes the imaginary parts of the permittivity tensor for each frequency along with the frequency values themselves.
+
+      Both sections write data in the format: frequencies (cm-1), xx, yy, zz, xy, xz, yz, where xx, yy, zz, xy, xz, and yz are components of the permittivity tensor.
+      The output data starts from the second column (index 1), and for each row written, a 'check' flag is set to 1.
+
+
+
+   .. py:method:: write_powder_results(sp, name, vs, legends, yss)
+
+      Writes the powder simulation results to a worksheet.
+
+      Parameters
+      ----------
+      sp : object
+          An object with methods for manipulating a worksheet.
+      name : str
+          The name of the worksheet to select or create.
+      vs : list
+          A list of frequency values (in cm-1).
+      legends : list of str
+          The legends to be used as headers, alongside 'frequencies (cm-1)'.
+      yss : list of lists
+          A list where each element is a list of intensities corresponding to each frequency in `vs`.
+
+      Returns
+      -------
+      None
+
+
+
+.. py:class:: PowderScenarioTab(parent, debug=False)
+
+   Bases: :py:obj:`PDielec.GUI.ScenarioTab.ScenarioTab`
+
+
+   A class for managing the Powder Scenario Tab
+
+   It inherits from :class:`~PDielec.GUI.ScenarioTab`, thus utilizing its layout and properties, 
+   with additional features and settings pertinent to powder scenarios.
+
+   Parameters
+   ----------
+   parent : QWidget
+       The parent widget to attach to this scenario tab.
+   debug : bool, optional
+       If set to True, debug messages will be printed. Defaults to False.
+
+   Attributes
+   ----------
+   scenarioType : str
+       Defines the type of scenario as 'Powder'.
+   settings : dict
+       Dictionary holding various settings related to the scenario.
+   methods : list
+       List of available effective medium methods.
+   shapes : list
+       List of available particle shapes.
+   materialNames : list
+       List of available material names.
+   materialDefined : bool
+       Indicates whether the material is defined manually or not.
+   direction : ndarray
+       Array defining the unique direction for particle shape.
+   depolarisation : ndarray (3x3)
+       Array defining the depolarisation factors.
+   scenarioIndex : any
+       Index associated with the current scenario.
+   refreshRequired : bool
+       Indicates if UI refresh is required.
+   calculationRequired : bool
+       Indicates if recalculation is required due to parameter changes.
+   reader : An dft output reader
+       Used to read external data.
+   realPermittivity : list
+       List holding real parts of permittivity values.
+   imagPermittivity : list
+       List holding imaginary parts of permittivity values.
+   absorptionCoefficient : list
+       List to hold absorption coefficient values.
+   molarAbsorptionCoefficient : list
+       List to hold molar absorption coefficient values.
+   sp_atr : list
+       List to hold ATR specific calculation results.
+
+   Methods
+   -------
+   crystal_density()
+       Compute and return the density of the crystal based on its volume and mass.
+   openDB_button_clicked()
+       Handler for the event where the database open button is clicked.
+   on_h_sb_changed(value)
+       Handler for changes in the 'h' dimension parameter of the crystal's unique direction.
+   on_k_sb_changed(value)
+       Handler for changes in the 'k' dimension parameter of the crystal's unique direction.
+   on_l_sb_changed(value)
+       Handler for changes in the 'l' dimension parameter of the crystal's unique direction.
+   on_shape_cb_activated(index)
+       Handler for changes in the selected shape of powder particles.
+   on_methods_cb_activated(index)
+       Handler to deal with changes in the selected calculation method for effective medium theory.
+   on_mf_sb_changed(value)
+       Handler for changes to the mass fraction value, updating the volume fraction value accordingly.
+   update_vf_sb()
+       Update the volume fraction spinbox according to the mass fraction and recalculates as necessary.
+   on_aoverb_sb_changed(value)
+       Handler for changes to the ellipsoid a/b ratio or eccentricity.
+   on_legend_le_changed(text)
+       Handler for changes to the legend label of the powder scenario.
+   on_sigma_sb_changed(value)
+       Handler for changes to the particle size distribution sigma.
+   on_size_sb_changed(value)
+       Handler for changes to the particle size.
+   on_vf_sb_changed(value)
+       Handle changes to the volume fraction spinbox, updating mass fraction accordingly.
+   update_mf_sb()
+       Update the mass fraction spinbox according to the volume fraction and recalculates as necessary.
+   on_matrix_cb_activated(index)
+       Handler for changes to the selected support matrix in the ComboBox.
+   on_density_sb_changed(value)
+       Handle changes to the density spinbox of the support matrix.
+   on_bubble_vf_sb_changed(value)
+       Handle changes to the bubble volume fraction spinbox.
+   on_bubble_radius_sb_changed(value)
+       Handle changes to the bubble radius spinbox.
+   on_permittivity_i_sb_changed(value)
+       Handle changes to the imaginary part of the support matrix permittivity.
+   on_permittivity_r_sb_changed(value)
+       Handle changes to the real part of the support matrix permittivity.
+   on_atr_index_sb_changed(value)
+       Handle changes to the ATR material refractive index spinbox.
+   on_atr_incident_ang_sb_changed(value)
+       Handle changes to the ATR incident angle spinbox.
+   on_atr_spolfrac_sb_changed(value)
+       Handle changes to the ATR s-polarisation fraction spinbox.
+   change_greyed_out()
+       Enable or disable elements of the GUI based on the current scenario settings.
+   calculate(vs_cm1)
+       Calculate the powder absorption for the given frequency range.
+   get_result(vs_cm1, plot_type)
+       Return the calculation result for the specified plot type.
+   get_results(vs_cm1)
+       Prepare the necessary results for displaying or processing.
+   refresh(force=False)
+       Refresh the GUI interface with up to date values.
+
+
+   .. py:method:: calculate(vs_cm1)
+
+      Calculate the powder absorption for the range of frequencies in vs_cm1.
+
+      Parameters
+      ----------
+      vs_cm1 : array_like
+          Array of frequencies for which to calculate the powder absorption.
+
+      Returns
+      -------
+      array_like
+          The calculated powder absorption for the given range of frequencies.
+
+
+
+   .. py:method:: change_greyed_out()
+
+      Modify UI elements based on the selected effective medium method.
+
+      This function updates the enabled status of UI elements such as size, sigma, and shape selection based on the currently selected effective medium method in the settings. It also updates the particle shape setting if necessary and adjusts the UI to reflect any changes.
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      int
+
+      Notes
+      -----
+      - The method checks the 'Effective medium method' and 'Particle shape' in the settings.
+      - For 'Mie' and 'Anisotropic-Mie' methods, it enables size and sigma spinboxes and sets the particle shape to 'Sphere', disabling all other shapes.
+      - For 'Averaged Permittivity', it disables size and sigma spinboxes and sets the particle shape to 'Sphere'.
+      - For 'Maxwell-Garnett' and 'Bruggeman', it enables the size spinbox and disables the sigma spinbox, allowing all shapes to be selected.
+      - If the particle shape is set to 'Ellipsoid', 'Plate', or 'Needle', it enables direction (h, k, l) spinboxes and adjusts the display label accordingly. For 'Sphere', it disables these spinboxes.
+
+
+
+   .. py:method:: crystal_density()
+
+      Find the crystal density from the current reader and return the density.
+
+      Returns
+      -------
+      float
+          The crystal density.
+
+
+
+   .. py:method:: get_result(vs_cm1, plot_type)
+
+      Parameters
+      ----------
+      vs_cm1 : list
+          A list of frequencies in cm-1
+      plot_type : str
+          A string indicating the type of result to return.
+          One of: 'Powder Molar Absorption', 'Powder Absorption', 'Powder Real Permittivity', 'Powder Imaginary Permittivity', 'Powder ATR'
+
+      Returns
+      -------
+      list
+          A list of the required results.
+
+
+
+   .. py:method:: get_results(vs_cm1)
+
+      Return the results of the effective medium theory calculation.
+
+      This routine jut causes a refresh and calculation if it is needed.
+      See get_result() for accessing the results themselves
+
+      Parameters
+      ----------
+      vs_cm1 : list
+          A list of frequencies in cm-1
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: on_aoverb_sb_changed(value)
+
+      Handle a change to the a/b ratio for an ellipsoid.
+
+      Parameters
+      ----------
+      value : float
+          The a/b ratio of the elllipsoid
+
+
+
+   .. py:method:: on_atr_incident_ang_sb_changed(value)
+
+      Handles the update to the ATR incident angle situation.
+
+      This method updates the ATR incident angle setting based on user inputs or changes. It also triggers an update to ensure the new settings are reflected across the application.
+
+      Parameters
+      ----------
+      value : float or int
+          The new value for the ATR incident angle.
+
+      Returns
+      -------
+      int
+
+
+
+   .. py:method:: on_atr_index_sb_changed(value)
+
+      Handle the change in settings for ATR material refractive index.
+
+      Parameters
+      ----------
+      value : float
+          The new value for the ATR material refractive index.
+
+      Returns
+      -------
+      int
+
+      Notes
+      -----
+      - This function updates the 'ATR material refractive index' in the settings dictionary.
+      - Marks the instance as requiring a refresh, possibly to update some UI elements or calculations.
+
+
+
+   .. py:method:: on_atr_spolfrac_sb_changed(value)
+
+      Updates the ATR S polarisation fraction setting and marks refresh as required.
+
+      Parameters
+      ----------
+      value : float
+          The new value for the ATR S polarisation fraction. 
+
+      Returns
+      -------
+      int
+
+      Notes
+      -----
+      - This function updates the settings dictionary on the `self` object with the new value for the key 'ATR S polarisation fraction'.
+      - The refresh flag `self.refreshRequired` is set to `True` to indicate that some action is needed to reflect the change in the application.
+
+
+
+   .. py:method:: on_bubble_radius_sb_changed(value)
+
+      Update the bubble radius setting and mark refresh as required.
+
+      This method updates the 'Bubble radius' in the settings dictionary and marks the instance for refresh.
+
+      Parameters
+      ----------
+      value : float 
+          The new value to update the bubble radius setting with.
+
+      Returns
+      -------
+      int
+
+
+
+   .. py:method:: on_bubble_vf_sb_changed(value)
+
+      Handle a change to the bubble volume fraction
+
+      A change in the bubble volume fraction causes changes in the volume and mass fractions
+      These are calculated according to the mass or volume fraction having priority and the spinboxed updated.
+      A refresh is forced
+
+      Parameters
+      ----------
+      value : float
+          The bubble volume fraction
+
+
+
+   .. py:method:: on_density_sb_changed(value)
+
+      Handle a change to the matrix density
+
+      Changes in density cause changes in the volume and mass fractions.  
+      These are calculated according to the mass or volume fraction having priority and the spinboxed updated.
+      A refresh is forced
+
+      Parameters
+      ----------
+      value : float
+          The density
+
+
+
+   .. py:method:: on_h_sb_changed(value)
+
+      Handle a change to the h parameter of the (hkl) surface.
+
+      Parameters
+      ----------
+      value : int
+
+
+
+   .. py:method:: on_k_sb_changed(value)
+
+      Handle a change to the k parameter of the (hkl) surface
+
+      Parameters
+      ----------
+      value : int
+
+
+
+   .. py:method:: on_l_sb_changed(value)
+
+      Handle a change to the l parameter of the (hkl) surface.
+
+      Parameters
+      ----------
+      value : int
+
+
+
+   .. py:method:: on_legend_le_changed(text)
+
+      Handle a legend change.
+
+      Parameters
+      ----------
+      text : str
+          The legend
+
+
+
+
+   .. py:method:: on_matrix_cb_activated(index)
+
+      Handle a change to the support matrix supplied by the materials' database.
+
+      A refresh is flagged and the matrix name set from the combobox.
+      QT signals are blocked while data is being updated.
+      A material object is defined on the basis of the matrix name and the database
+      A refresh is performed
+
+      Parameters
+      ----------
+      index : int
+          The index is not used but the associated text of the combobox is.
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: on_methods_cb_activated(index)
+
+      Handle changes in the calculation method for the effective medium theory
+
+      Parameters
+      ----------
+      index
+          The index in the list of methods
+
+
+
+   .. py:method:: on_mf_sb_changed(value)
+
+      Handle a mass fraction change and update the volume fraction.
+
+      The mass fraction is prioritized and stored.  The volume fraction is calculated.
+
+      Parameters
+      ----------
+      value : float
+          The mass fraction
+
+
+
+   .. py:method:: on_permittivity_i_sb_changed(value)
+
+      Update the imaginary part of the permittivity in the matrix material settings and trigger a refresh.
+
+      Parameters
+      ----------
+      value : float
+          The new imaginary part of the permittivity to be set.
+
+      Returns
+      -------
+      int
+
+      Notes
+      -----
+      - Updates the imaginary part of the `Matrix permittivity` in the settings dictionary with the new value, keeping the real part unchanged.
+      - Replaces the permittivity object of the matrix material with a new constant scalar permittivity object created using the updated `Matrix permittivity`.
+      - Marks the matrix material as manually defined and triggers a required refresh to update any dependent calculations or displays.
+
+
+
+   .. py:method:: on_permittivity_r_sb_changed(value)
+
+      Update the real part of the permittivity in the matrix material settings and refresh the material definition.
+
+      Parameters
+      ----------
+      value : float
+          The new real value of the matrix permittivity to be set.
+
+      Returns
+      -------
+      int
+
+
+
+
+   .. py:method:: on_shape_cb_activated(index)
+
+      Handle changes to the shape of the powder particles
+
+      Parameters
+      ----------
+      index
+          The index in the list of shapes
+
+
+
+
+   .. py:method:: on_sigma_sb_changed(value)
+
+      Handle a particle size distribution change
+
+      Parameters
+      ----------
+      value : float
+          The particle size distribution width in microns
+
+
+
+   .. py:method:: on_size_sb_changed(value)
+
+      Handle a particle size change
+
+      Parameters
+      ----------
+      value : float
+          The particle size in microns
+
+
+
+   .. py:method:: on_vf_sb_changed(value)
+
+      Handle a volume fraction change, alter the mass fraction accordingly.
+
+      Parameters
+      ----------
+      value : float
+          The volume fraction
+
+
+
+
+   .. py:method:: openDB_button_clicked()
+
+      Open a new materials' database.
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: refresh(force=False)
+
+      Refresh the GUI interface with up to date values.
+
+      Parameters
+      ----------
+      force : bool
+          If True, then a refresh is forced regardless of the state of the scenario.
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: update_mf_sb()
+
+      Update the mass fraction and according to the volume fraction.
+
+      Parameters
+      ----------
+      None
+
+
+
+   .. py:method:: update_vf_sb()
+
+      Update the volume fraction according to the mass fraction.
+
+      Parameters
+      ----------
+      None
+
+
+
+.. py:class:: SettingsTab(parent, debug=False)
+
+   Bases: :py:obj:`PyQt5.QtWidgets.QWidget`
+
+
+   A class for managing and displaying settings related to optical permittivity, mass calculation, and vibrational calculations for crystal structures within a GUI application.
+
+   This class allows for the configuration of various simulation parameters, such as Eckart conditions, Born charge neutrality, atomic mass definitions, and optical permittivity values. It also enables the calculation of infrared intensities, dielectric functions, and permittivity values based on these settings.
+
+   Parameters
+   ----------
+   parent : QWidget
+       The parent widget (container) of this widget.
+   debug : bool, optional
+       Flag indicating whether debugging messages should be printed. Defaults to False.
+
+   Attributes
+   ----------
+   notebook : parent
+       The notebook widget that contains this settings tab.
+   refreshRequired : bool
+       A flag indicating whether the displayed information needs to be refreshed.
+   calculationRequired : bool
+       A flag indicating whether new calculations are needed based on the current settings.
+   settings : dict
+       A dictionary of settings related to calculations. Includes flags for Eckart conditions, Born charge neutrality, mass definition, and sigma values.
+   mass_definition_options : list
+       A list of options for defining atomic masses.
+   masses_dictionary : dict
+       A dictionary where keys are element symbols and values are the corresponding atomic masses.
+   modes_selected : list
+       A list indicating which vibrational modes are selected for calculations.
+   frequencies_cm1 : list
+       A list of vibrational frequencies in cm^-1.
+   frequencies_have_been_edited : bool
+       A flag indicating if frequencies have been manually edited.
+   intensities : list
+       A list of calculated infrared intensities for the vibrational modes.
+   sigmas_cm1 : list
+       A list of Lorentzian width factors (σ) in cm^-1 for the vibrational modes.
+   oscillator_strengths : list
+       A list of oscillator strengths calculated for the vibrational modes.
+   mass_weighted_normal_modes : np.ndarray
+       An array of mass-weighted normal modes.
+   CrystalPermittivityObject : DielectricFunction
+       An object for calculating dielectric functions.
+   vs_cm1 : list
+       A list of frequencies in cm^-1 at which the crystal permittivity is calculated.
+   crystal_permittivity : list
+       A list of calculated crystal permittivity values.
+   recalculate_selected_modes : bool
+       A flag indicating whether selected modes should be recalculated.
+   reader : object
+       A reader object from the parent notebook, used for accessing and manipulating input data.
+
+   Methods
+   -------
+   setElementMass(element, mass)
+       Sets the mass for a specified element.
+   createIntensityTable()
+       Creates a table displaying calculated intensities for selected vibrational modes.
+   requestRefresh()
+       Requests a refresh of displayed data.
+   writeSpreadsheet()
+       Writes the current settings and calculated values to a spreadsheet.
+   redraw_output_tw()
+       Redraws the output table widget with updated values.
+   on_sigma_changed()
+       Handles changes to the sigma value.
+   on_mass_cb_activated(index)
+       Activates the specified mass definition option based on the selected index.
+   set_masses_tw()
+       Sets the masses in the table widget based on the current mass definition setting.
+   on_output_tw_itemChanged(item)
+       Handles changes to items in the output table widget.
+   on_element_masses_tw_itemClicked(item)
+       Handles item clicks in the element masses table widget.
+   on_element_masses_tw_itemChanged(item)
+       Handles changes to items in the element masses table widget.
+   on_optical_tw_itemChanged(item)
+       Handles changes to items in the optical permittivity table widget.
+   on_optical_tw_itemClicked(item)
+       Handles item clicks in the optical permittivity table widget.
+   refresh(force=False)
+       Refreshes the displayed information and recalculates values if necessary.
+   refresh_optical_permittivity_tw()
+       Refreshes the displayed optical permittivity values in the table widget.
+   set_optical_permittivity_tw()
+       Sets the optical permittivity values based on reader data.
+   on_born_changed()
+       Handles changes to the Born charge neutrality setting.
+   on_eckart_changed()
+       Handles changes to the Eckart condition setting.
+   calculate(vs_cm1)
+       Calculates the permittivity of the crystal over the specified range of frequencies.
+   getCrystalPermittivity(vs_cm1)
+       Returns the crystal permittivity for the specified frequencies.
+   getCrystalPermittivityObject()
+       Returns the crystal permittivity object used for calculations.
+
+
+   .. py:method:: calculate(vs_cm1)
+
+      Calculate the permittivity of the crystal over the range of frequencies in vs_cm1.
+
+      Parameters
+      ----------
+      vs_cm1 : list
+          Frequencies in cm-1
+
+      Returns
+      -------
+      None
+
+
+
+
+   .. py:method:: createIntensityTable()
+
+      Generate the intensity table for spectroscopy analysis.
+
+      This method is responsible for creating a table that includes calculated intensities, frequencies, oscillator strengths, 
+      and other related parameters required for spectroscopic analysis. It adapts based on reader settings, mass definitions, 
+      and whether to recalculate selected modes.
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      None
+
+      Notes
+      -----
+      This method relies on several external variables and settings, including:
+      - reader settings for neutralizing or resetting born charges
+      - mass definition settings to determine how masses are handled in calculations
+      - a check on if frequencies have been edited, which affects reading directly from the reader or not
+      - uses `Calculator` class methods to compute normal modes, oscillator strengths, infrared intensities, and ionic permittivity
+      - the method also determines the dielectric function based on the configuration and recalculates selected modes if necessary
+      - it finally populates a provided table widget (`self.output_tw`) with computed spectroscopic properties
+
+      See Also
+      --------
+      - `Calculator.normal_modes`: For calculation of normal modes.
+      - `Calculator.oscillator_strengths`: For calculating oscillator strengths based on normal modes and born charges.
+      - `Calculator.infrared_intensities`: For the calculation of infrared intensities from oscillator strengths.
+      - `Calculator.ionic_permittivity`: For calculating the ionic permittivity based on mode list, oscillator strengths, and frequencies.
+
+
+
+   .. py:method:: getCrystalPermittivity(vs_cm1)
+
+      Return the crystal permittivity
+
+      Parameters
+      ----------
+      vs_cm1 : list of floats
+          The frequencies in cm-1
+
+      Returns
+      -------
+      self.crystal_permittivity : array_like
+          The crystal permittivity (a 3x3 tensor) at each frequency
+
+
+
+   .. py:method:: getCrystalPermittivityObject()
+
+      Return the crystal permittivity object
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      self.CrystalPermittivityObject : a permittivity object
+          An instance of dielectric function
+       
+
+
+
+   .. py:method:: on_born_changed()
+
+      Handle changes in the Born checkbox state.
+
+      This method is triggered when the state of the Born checkbox changes. It updates the settings to reflect the new state, marks the session for refresh and recalculation, and then refreshes the UI.
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: on_eckart_changed()
+
+      Handles changes in the Eckart flag state.
+
+      This function is triggered when the state of the Eckart checkbox changes.
+      It logs the state change, updates the settings to reflect the new state,
+      marks refresh and recalculations as needed, and triggers a UI refresh.
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      None
+
+
+
+
+   .. py:method:: on_element_masses_tw_itemChanged(item)
+
+      Handle item changed event in the mass table widget.
+
+      This function is triggered whenever a cell in the masses table widget is edited. It updates the internal masses dictionary based on the new value provided in the table cell. Additionally, it sets some UI components to reflect the change and flags the need for recalculation and refresh.
+
+      Parameters
+      ----------
+      item : QTableWidgetItem
+          The table widget item that was changed.
+
+      Returns
+      -------
+      None
+
+      Notes
+      -----
+      - `self.reader.getSpecies()` returns a list of elements corresponding to table columns.
+      - `self.masses_dictionary` is a dict where keys are element symbols and values are their masses.
+      - `self.refreshRequired` and `self.recalculate_selected_modes` are boolean flags used to indicate that a refresh and a recalculation are necessary.
+      - `self.refresh()` is a method that refreshes or updates the UI components as needed based on the new changes.
+
+
+
+   .. py:method:: on_element_masses_tw_itemClicked(item)
+
+      Handles the item clicked event on the element mass table widget.
+
+      The only thing this function does is to make sure that signal from the `element_masses_tw` table widget are not blocked,
+
+      Parameters
+      ----------
+      item : QTableWidgetItem
+          The item in the table widget that was clicked.
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: on_mass_cb_activated(index)
+
+      Handles activation of a combobox option in a mass-related setting.
+
+      This method updates the current mass definition based on the selected option
+      from a combobox, updates related settings, and refreshes the GUI accordingly.
+      It disables the 4th option in the combobox if one of the first three options is selected.
+      Additionally, it processes all pending events to ensure the GUI is updated immediately.
+
+      Parameters
+      ----------
+      index : int
+          The index of the selected option in the combobox.
+
+      Returns
+      -------
+      None
+
+      Notes
+      -----
+      - `refresh()` is called to update the UI based on the new selection.
+      - It also makes use of `QCoreApplication.processEvents()` to ensure the UI is 
+        responsive by processing all pending events.
+
+      See Also
+      --------
+      set_masses_tw : A method to update the masses table widget based on the selection.
+      refresh : A method to refresh the UI components.
+
+
+
+   .. py:method:: on_optical_tw_itemChanged(item)
+
+      Handle item change events for an optical permittivity table.
+
+      This method updates the optical permittivity settings based on changes made to the table widget items. It enforces symmetry in the optical permittivity matrix, marks the settings as edited, and triggers a series of updates and recalculations.
+
+      Parameters
+      ----------
+      item : QTableWidgetItem
+          The table widget item that was changed. The item's row, column, and text are used to update the settings.
+
+      Returns
+      -------
+      None
+
+      Notes
+      -----
+      - Updates the 'Optical permittivity' matrix in the settings dictionary based on the row, column, and text of the changed item.
+      - Enforces symmetry by setting the [column][row] element equal to the [row][column] element.
+      - Marks the 'Optical permittivity edited' flag as True.
+      - Calls `refresh_optical_permittivity_tw` to refresh the optical permittivity table widget.
+      - Flags `refreshRequired`, `recalculate_selected_modes`, and `refresh` methods/attributes for further actions.
+      - Processes any pending events with `QCoreApplication.processEvents()` to ensure the UI remains responsive.
+
+
+
+   .. py:method:: on_optical_tw_itemClicked(item)
+
+      Handle item clicked event for an optical widget's table item.
+
+      This method is designed to be connected to the itemClicked signal of a table widget
+      in a graphical user interface built with PyQt or PySide. When a table widget item
+      is clicked, it first prints the start message along with the row and column of the
+      clicked item. It then unblocks signals for the table widget and processes any pending
+      GUI events, ensuring the application remains responsive. 
+
+      Parameters
+      ----------
+      item : QTableWidgetItem
+          The table widget item that was clicked.
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: on_output_tw_itemChanged(item)
+
+      Handle item changes in the output table widget.
+
+      This method is called when an item in the output table widget (`output_tw`) is changed. It manages the selection state of modes based on the state of checkbox items in the first column, updates the "sigmas_cm1" and "frequencies_cm1" lists based on the user input in the respective columns, refreshes the widget, and processes pending GUI events.
+
+      Parameters
+      ----------
+      item : QTableWidgetItem
+          The table widget item that was changed.
+
+      Returns
+      -------
+      None
+
+      Notes
+      -----
+      - This method blocks signals from the output table widget at the beginning to prevent recursive calls during its execution.
+      - It distinguishes between changes in the first column (selection state and mode sigma values) and the second column (frequency values).
+      - The method updates internal state to reflect the changes made by the user, including which modes are selected and the values for "sigmas_cm1" and "frequencies_cm1".
+      - After making changes, this method refreshes the output table widget and enforces a GUI update with `QCoreApplication.processEvents()`.
+
+      See Also
+      --------
+      redraw_output_tw : Redraws the output table widget.
+      refresh : Refreshes the internal state based on the latest changes.
+
+
+
+   .. py:method:: on_sigma_changed()
+
+      Updates the sigma value in settings and applies it across the frequency range, then refreshes the output.
+
+      This method is triggered when the sigma value has been changed. It updates the stored sigma value in the settings,
+      applies the new sigma value across the pre-defined frequency range, redraws the output table widget, and then
+      initiates a refresh to reflect the newly applied changes.
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: redraw_output_tw()
+
+      Redraws the output table widget with updated values.
+
+      This method loops through frequencies, sigmas, and intensities, updating the table widget rows
+      with new items representing these values and custom flags for item behavior. It also calculates
+      and displays additional derived values in the table. Selection flags for each item are set
+      based on whether the mode is selected or not. The table's columns are resized to content at the end.
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      None
+
+      Notes
+      -----
+      - This method assumes that `self.frequencies_cm1`, `self.sigmas_cm1`, `self.intensities`, and `self.modes_selected` contain iterable values that are indexed correspondingly.
+      - The method temporarily blocks signals from `self.output_tw` to prevent unwanted signal handling during updates.
+      - Table item flags are set to control their selectability, checkability, editability, and enablement based on whether the corresponding mode is selected.
+      - After updating, it ensures the table columns fit the content and re-enables the signals.
+      - Uses `Qt` enumeration for setting check state, item flags, and text alignment.
+
+
+
+
+   .. py:method:: refresh(force=False)
+
+      Refreshes the current state based on notebook content changes or user request.
+
+      This method updates the GUI components such as tables for masses, optical permittivity, sigma value, Eckart term checkbox, and Born charges checkbox based on the changes made in the notebook or when forced by the user. It also triggers refreshes for any associated scenarios, plotting, analysis, and fitting tabs. The method blocks all signals from widgets during the update process to prevent unwanted calls to event handlers.
+
+      Parameters
+      ----------
+      force : bool, optional
+          If True, forces the refresh even if it's deemed not necessary. The default is False.
+
+      Returns
+      -------
+      None
+
+      Notes
+      -----
+      - Blocks all QWidget signals before starting the update process to prevent unintended event handling.
+      - Updates various GUI components based on the current notebook's reader and settings information.
+      - Triggers refreshes on associated tabs and scenarios within the notebook.
+      - Unblocks all QWidget signals after updates are applied.
+      - Manages internal flags to keep track of the need for refreshes and calculations.
+      - Processes all pending Qt events with `QCoreApplication.processEvents()`.
+
+
+
+   .. py:method:: refresh_optical_permittivity_tw()
+
+      Refresh the table widget with optical permittivity values.
+
+      This function takes no parameters explicitly, it operates on the instance's attributes.
+      It updates the `optical_tw` table widget with optical permittivity values from the `settings` attribute.
+      Formatting of the values is to four decimal places and aligned both horizontally and vertically to the center.
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      None
+
+      Notes
+      -----
+      - Assumes: 
+          - `self.settings` is a dict containing the key 'Optical permittivity' which maps to a 2D list (i.e., list of lists) of numeric values.
+          - `self.optical_tw` is a Qt TableWidget or similar object with a `.setItem()` method accepting row, column, and QTableWidgetItem arguments.
+          - The table widget's signals are temporarily blocked to prevent unintended side-effects during the update.
+          - `Qt.AlignHCenter | Qt.AlignVCenter` is used to center-align the text, assuming `Qt` and `QTableWidgetItem` are properly imported and used.
+          - The `QCoreApplication.processEvents()` call forces the application to process all pending events, ensuring the UI updates in real-time.
+
+
+
+   .. py:method:: requestRefresh()
+
+      Request to refresh the environment or state.
+
+      This method sets a flag to indicate that a refresh is required, logging the start and end of its execution.
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: setElementMass(element, mass)
+
+      Set the mass value of a specific element in the GUI.
+
+      This method updates the mass value for a specified element in the graphical user interface (GUI). It also triggers various updates in the GUI to reflect this change, including updating the mass selection and recalculating modes if required.
+
+      Parameters
+      ----------
+      element : str
+          The element whose mass is to be set.
+      mass : float
+          The mass value to set for the specified element.
+
+      Returns
+      -------
+      None
+
+      Notes
+      -----
+      - This method assumes that `self.settings`, `self.masses_dict`, `self.mass_cb`, and other related attributes are already defined in the class.
+      - It triggers a refresh of the GUI and potentially recalculates selected modes based on the new mass settings.
+
+
+
+   .. py:method:: set_masses_tw()
+
+      Set the element masses in the table widget based on the mass_definition setting.
+
+      This method updates the element masses table widget with masses according to the selected mass definition mode ('average', 'program', 'isotope', 'gui'). It retrieves species information from the reader attribute, calculates or fetches the corresponding masses, and updates an internal dictionary and the table widget accordingly. Signals from the table widget are temporarily blocked to prevent unwanted event triggers during updates.
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: set_optical_permittivity_tw()
+
+      Set the optical permittivity in the current settings.
+
+      This method sets the 'Optical permittivity' value in the settings to the value of `zerof_optical_dielectric` from the reader, triggers a refresh for the optical permittivity widget, and marks the selected modes for recalculation. It also signals that a refresh is required in the application and ensures the GUI events are processed to keep the application responsive.
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      None
+
+
+
+
+   .. py:method:: writeSpreadsheet()
+
+      Writes the configuration and calculation results to the associated spreadsheet.
+
+      This function iterates through various settings and results stored within the object, such as optical permittivity, mass definitions, and vibrational mode calculations. For each setting or result, it writes the relevant information to a new row in the spreadsheet. The spreadsheet is expected to have a 'Settings' worksheet, which this function selects and updates with the provided values.
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      None
+
+
+
+.. py:class:: SingleCrystalScenarioTab(parent, debug=False)
+
+   Bases: :py:obj:`PDielec.GUI.ScenarioTab.ScenarioTab`
+
+
+   A tab class for handling a single crystal scenario.
+
+   This class extends a generic scenario tab (:class:`~PDielec.GUI.ScenarioTab.ScenarioTab`) with functionalities specific to handling single crystal scenarios, including setting up the scenario environment, defining the crystal orientation, layer information, and calculation modes (e.g., using Transfer Matrix or Scattering Matrix methods). It supports incoherence effects through partial incoherence simulations and provides tools for fine-tuning simulation parameters such as incidence angles, layer materials, thicknesses, and orientations.
+
+   Parameters
+   ----------
+   parent : QWidget
+       The parent widget (typically a main window or a larger container) to which this tab will belong.
+   debug : bool, optional
+       A flag to indicate whether debugging information should be printed to the console. Default is False.
+
+   Attributes
+   ----------
+   refreshRequired : bool
+       Flag indicating whether the widget's data needs to be refreshed.
+   calculationRequired : bool
+       Flag indicating whether a new calculation is required based on changes in parameters or settings.
+   scenarioType : str
+       A string representing the type of scenario. For this class, it is set to 'Single crystal'.
+   refreshRequired : bool
+       Indicates whether the scenario settings have been changed and thus require the scenario to be redrawn or recalculated.
+   noCalculationsRequired : int
+       The number of calculations required for the simulation. This value may change depending on the specifics of the scenario configuration (e.g., the inclusion of incoherent effects requiring multiple sample calculations).
+   settings : dict
+       A dictionary holding various scenario parameters and their values, which include settings for the type of analysis, material layers, angles, and method-specific parameters.
+   materialNames : list
+       A list of names for materials that can be used in the scenario layers.
+   p_reflectance, s_reflectance, p_transmittance, s_transmittance, p_absorbtance, s_absorbtance : list
+       Lists holding computed values for reflectance, transmittance, and absorbance for both P and S polarization modes.
+   epsilon : list
+       A list of dielectric function values computed during simulation.
+   layers : list
+       A list of layer configurations used in the simulation, each containing information about the material, thickness, orientation, and other layer-specific properties.
+
+   Methods
+   -------
+   There are several methods within the class for handling events (e.g., button clicks, combo box activations), performing calculations, redrawing tables, and managing layer settings. These include methods for adding, deleting, or altering layers; opening material databases; changing simulation settings; calculating and displaying results; and initializing the user interface components relevant to the single crystal scenario.
+
+   angleOfIncidenceWidget
+       Create a widget to set the angle of incidence
+   average_incoherent_calculator
+       Calculates the incoherent light reflectance and transmittance
+   calculate
+       Perform the calculations as define in the GUI
+   coherent_calculator
+       Calculate the coherent light reflectance and transmittance
+   createToolBar
+        Create the tool bar used for the material layer
+   createToolBarDeleteButton
+        Create the delete button in the tool bar
+   createToolBarMoveDownButton
+        Create the move down button in the tool bar
+   createToolBarMoveUpButton
+        Create the move up button in the tool bar
+   deleteLayer
+        Delete a layer from the list of layers
+   drawLayerTable
+        Draw the layer table widget, each layer has a line in the table
+   generateLayerSettings
+        Generate the settings dictionary with an item for each layer
+   getDielectricLayerIndex
+        Get the index of the dielectric layer
+   getMaterialFromDataBase
+        Get a material from the database, or define the material from the given permittivity
+   get_result
+        Return the request information
+   get_results
+        Calculate all the reflectance, transmittance and absorptance information
+   globalAzimuthalWidget
+        Set the global azimuthal angle
+   greyed_out
+        Grey out menu items according to the GUI settings
+   moveLayerDown
+        Move a layer up the layer table
+   moveLayerUp
+        Move a layer down the layer table
+   newLayerWidget
+        Create a combox widget for adding a new layer
+   on_angle_of_incidence_sb_changed
+        Handle a change to the angle of incidence spin box
+   on_azimuthal_angle_sb_changed
+        Handle a change to the azimuthal spin box
+   on_film_thickness_sb_changed
+        Handle a change to the film thickness spin box
+   on_global_azimuthal_angle_sb_changed
+        Handle a change to the global azimuthal angle spin box
+   on_hkl_sb_changed
+        Handle a change to the h,k or l spin boxes
+   on_layerTable_itemChanged
+        Handle a change to an item in the layer table
+   on_layer_button_clicked
+        Handle a click on a layer name
+   on_mode_cb_activated
+        Handle a click on the mode combobox
+   on_newLayer_cb_activated
+        Handle a click on the new combobox
+   on_option_cb_activated
+        Handle a change to the incoherent option comobox
+   on_partially_incoherent_kernel_sb_changed
+        Handle a change to the incoherent kernel spinbox
+   on_partially_incoherent_polynomial_sb_changed
+        Handle a change to the length of incoherent polynomial spinbox
+   on_partially_incoherent_samples_sb_changed
+        Handle a change to the number of samples in the averaged incoherent method
+   on_percentage_partial_incoherence_sb_changed
+        Handle a change to the maximum percentage incoherence
+   on_print_button_clicked
+        Handle a print button click
+   on_slice_thickness_sb_changed
+        Handle a change to the slice thickness
+   on_slice_thickness_unit_cb_activated
+        Handle a change the slice thickess unit
+   on_thickness_units_cb_activated
+        Activate the thickness units combobox
+   openDB_button_clicked
+        Handle a click on the opend database button
+   partialIncoherenceWidget
+        Create a partialIncoherence widget
+   partially_incoherent_calculator
+        Calculate incoherent light scattering using a partially incoherent method
+   printLayerSettings
+        Print out the layer settings dictionary
+   redrawLayerTable
+        Redraw the layer table
+   redrawLayerTableRow
+        Redraw a row of the layer table
+   refresh
+        Perform a refresh of the GUI
+   setMaterialNames
+        Read the material names from the database
+   set_noCalculationsRequired
+        Calculate the number of calculations required
+   settings2Layers
+        Read the settings dictionary and create the necessary layers
+   sliceThicknessWidget
+        A widget to the the slice thickness
+   smoothingWidget
+        A widget to handle the smoothing information
+
+
+   .. py:method:: angleOfIncidenceWidget()
+
+      Create an angle of incidence widget.
+
+      This widget is used in the layer table widget to control the azimuthal angle of a single layer.
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: average_incoherent_calculator(layers, mode, theta, phi, psi, angleOfIncidence, sliceThickness, exponent_threshold)
+
+      Calculates the incoherent component of light reflectance and transmission
+      by averaging over the phase shift.
+
+      Parameters
+      ----------
+      layers : a list of layers
+          A list of layers
+      mode : str
+          Specifies either 'Transfer matrix' or 'Scattering matrix'
+      theta : float
+          The angle theta
+      phi : float
+          The angle phi
+      psi : float
+          The angle psi
+      angleOfIncidence : float
+          The angle incidence
+      sliceThickness : float
+          The slice thickness
+      exponent_threshold: float
+          The exponent threshold
+
+      Returns
+      -------
+      A tuple of lists or nd.arrays
+          - p_reflectance
+          - s_reflectance
+          - p_transmittance
+          - s_transmittance
+          - p_absorbtance
+          - s_absorbtance
+          - epsilon
+
+
+
+   .. py:method:: calculate(vs_cm1)
+
+      Performs simulation for calculating various properties such as reflectance, transmittance, and absorbance for a given set of material layers and configurations.
+
+      Parameters
+      ----------
+      vs_cm1 : list or ndarray
+          List or array of wavenumbers (in cm^-1) for which the simulation is to be run.
+
+      Returns
+      -------
+      None
+
+      Notes
+      -----
+      This method updates the object's state by calculating and setting various optical properties (reflectance, transmittance, absorbtance) based on the input wavenumbers, layer configurations, and other settings such as the angle of incidence and slice thickness. It requires that settings, frequencies, and other parameters be previously defined and valid. The method also makes use of different calculator objects depending on the coherence conditions and partial incoherence percentage. It handles conditions such as missing program, file reader, or filename settings by aborting the calculations and logging appropriate messages through a `debugger`.
+
+
+
+   .. py:method:: coherent_calculator(layers, mode, theta, phi, psi, angleOfIncidence, sliceThickness, exponent_threshold)
+
+      Calculates the coherent component of light reflectance and transmission.
+
+      Parameters
+      ----------
+      layers : a list of layers
+          A list of layers
+      mode : str
+          Specifies either 'Transfer matrix' or 'Scattering matrix'
+      theta : float
+          The angle theta
+      phi : float
+          The angle phi
+      psi : float
+          The angle psi
+      angleOfIncidence : float
+          The angle incidence
+      sliceThickness : float
+          The slice thickness
+      exponent_threshold: float
+          The exponent threshold
+
+      Returns
+      -------
+      A tuple of lists or nd.arrays
+          - p_reflectance
+          - s_reflectance
+          - p_transmittance
+          - s_transmittance
+          - p_absorbtance
+          - s_absorbtance
+          - epsilon
+
+
+
+   .. py:method:: createToolBar(layer, layerIndex, nLayers)
+
+      Create the tool bar used for the material layer.
+
+      Parameters
+      ----------
+      layer : a layer object
+          Layer is the layer concerned.
+      layerIndex : int
+          Its index in the list.
+      nLayers : type
+          The number of layers in the list.
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: createToolBarDeleteButton(layer, layerIndex, nLayers)
+
+      Create the delete button as part of the layer toolbar.
+
+      Parameters
+      ----------
+      x : any
+          A dummy variable
+      layer : layer object
+          the layer to be deleted
+      layerIndex : int
+          index of the layer to be deleted
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: createToolBarMoveDownButton(layer, layerIndex, nLayers)
+
+      Create the move down button as part of the layer toolbar.
+
+      Parameters
+      ----------
+      x : any
+          A dummy variable
+      layer : layer object
+          the layer to be deleted
+      layerIndex : int
+          index of the layer to be deleted
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: createToolBarMoveUpButton(layer, layerIndex, nLayers)
+
+      Create the move up button as part of the layer toolbar.
+
+      Parameters
+      ----------
+      x : any
+          A dummy variable
+      layer : layer object
+          the layer to be deleted
+      layerIndex : int
+          index of the layer to be deleted
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: deleteLayer(x, layer, layerIndex)
+
+      Handle a delete layer button press.
+
+      Parameters
+      ----------
+      x : any
+          A dummy variable
+      layer : layer object
+          the layer to be deleted
+      layerIndex : int
+          index of the layer to be deleted
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: drawLayerTable()
+
+      Draw a table with all the layers in it.
+
+      Each layer has a row in the table showing, name, thickness, h,k,l, azimuthal angle, options and a toolbar
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      None
+
+
+
+
+   .. py:method:: generateLayerSettings()
+
+      Generate the settings dictionary for every layer
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      list
+          A list of dictionary settings for each layer.
+
+
+
+   .. py:method:: getDielectricLayerIndex()
+
+      Return the index of the dielectric layer in the list of layers.
+
+      - Sorts through the list of layers and reports the index of the first layer that came from the provided DFT calculation
+      - If there is no such layer then the value None is returned
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      int or None
+          The index of the dielectric layer in the list.
+
+
+
+   .. py:method:: getMaterialFromDataBase(name, permittivity=None)
+
+      Get the given material from the database.
+
+      - If name is 'DielectricLayer' then a material is defined from the crystal permittivity of the DFT information
+      - If name is 'Material defined manually' the the permittivity parameter is used
+      - Otherwise the name is used to get the material from the database
+
+      Parameters
+      ----------
+      name : str
+          The name of the material. It can also be 'Dielectric layer' or 'Material defined manually'.
+      permittivity : float
+          The permittivity of a 'Defined manually material' material.
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: get_result(vs_cm1, plot_type)
+
+      Return a particular result
+
+      Parameters
+      ----------
+      vs_cm1 : a list of floats
+          The frequencies
+      plot_type : str
+          The data needed for plotting one of:
+          - 'Crystal Reflectance (P polarisation)'
+          - 'Crystal Reflectance (S polarisation)'
+          - 'Crystal Transmittance (P polarisation)'
+          - 'Crystal Transmittance (S polarisation)'
+          - 'Crystal Absorbtance (P polarisation)'
+
+      Returns
+      -------
+      list of floats
+          The results to be plotted
+
+
+
+   .. py:method:: get_results(vs_cm1)
+
+      Return the results of the single crystal calculation
+
+      If a refresh has been requested it is performed before the calculate method is called.
+
+      Parameters
+      ----------
+      vs_cm1 : a list of floats
+          The frequencies in cm-1
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: globalAzimuthalWidget()
+
+      Create a global azimuthal angle widget.
+
+      This widget is shown in the main single crystal scenarion tab.
+      Any change in this angle affects all layers.
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: greyed_out()
+
+      Have a look through the settings and see if we need to grey anything out.
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: moveLayerDown(x, layer, layerIndex)
+
+      Move a layer down (sequence number gets larger by 1).
+
+      Parameters
+      ----------
+      x : any
+          A dummy variable
+      layer : layer object
+          the layer to be deleted
+      layerIndex : int
+          index of the layer to be deleted
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: moveLayerUp(x, layer, layerIndex)
+
+      Move a layer up (sequence number gets smaller by 1).
+
+      Parameters
+      ----------
+      x : any
+          A dummy variable
+      layer : layer object
+          the layer to be deleted
+      layerIndex : int
+          index of the layer to be deleted
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: newLayerWidget()
+
+      Create and return a new layer widget as a QComboBox.
+
+      Returns a QComboBox widget configured for creating a new layer in a graphical user interface.
+      The combo box is initialized with a default item for creating a new layer, followed by any existing layer names.
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      QComboBox
+          A QComboBox widget configured with an initial item for creating a new layer and any additional existing material layer names.
+
+      Notes
+      -----
+      - The first item in the combo box is a placeholder for creating a new layer, indicated by "New layer...".
+      - The combo box is connected to the `on_newLayer_cb_activated` method, which should handle the action performed upon selecting an item from the combo box.
+
+
+
+   .. py:method:: on_angle_of_incidence_sb_changed(value)
+
+      Updates the 'Angle of incidence' setting and marks refresh as required upon a change in the angle of incidence spinbox value.
+
+      A refresh is requested
+
+      Parameters
+      ----------
+      value : int or float
+          The new value of the angle of incidence from the spinbox.
+
+      Returns
+      -------
+      None
+
+
+
+
+   .. py:method:: on_azimuthal_angle_sb_changed(value, layer)
+
+      Handle azimuthal spin box change.
+
+      - The azimuthal angle of a layer is changed to the value given.
+      - The laboratory frame information is updated
+      - The settings dictionary is refreshed 
+      - A refresh of the GUI is requested
+
+      Parameters
+      ----------
+      value : float
+          The azimuthal angle in degress
+      layer : a layer object
+           The layer whose azimuthal angle has changed
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: on_film_thickness_sb_changed(value, layer)
+
+      Handle film thickness spin box change.
+
+      - The thickness of the film in this layer is changed
+      - The settings dictionary is regenerated
+      - A refresh is requested
+
+      Parameters
+      ----------
+      value : float
+          The thickness of the film in the current thickness units
+      layer : a layer object
+          The layer which will have its thickness changed
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: on_global_azimuthal_angle_sb_changed(value)
+
+      Handles the change in global azimuthal angle setting.
+
+      This method updates the 'Global azimuthal angle' in the settings 
+      based on the given value and marks a refresh as required.
+
+      Parameters
+      ----------
+      value : float
+          The new value for the global azimuthal angle to be set.
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: on_hkl_sb_changed(value, hkorl, layer)
+
+      Handle a change in h, k, or l
+
+      The h, k and l parameters determine the surface of the film
+      - determine the value of h, k or l
+      - set the layer's surface
+      - generate the settings dictionary
+      - flag that a refresh is necessary
+
+      Parameters
+      ----------
+      value : int
+          The value of h, k or l
+      hkorl : int
+          A int 0, 1 or 2 representing 'h', 'k', or 'l'
+      layer :  a layer object
+          The layer whose surface is to be changed
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: on_layerTable_itemChanged(item)
+
+      Handle a change to the layer table.
+
+      An empty routine as changes are handled by other routines
+
+      Parameters
+      ----------
+      item : the item changed
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: on_layer_button_clicked(x, layer, layerIndex)
+
+      Handle a click on the show layer widget.
+
+      A new window is shown with additional information about material in the layer.
+      For materials with a 3x3 tensor permittivity the window shows the relationship between the laboratory and crystal coordinates.
+
+      Parameters
+      ----------
+      x : any
+          A dummy variable
+      layer : a layer object
+          A layer object
+      layerIndex : int
+          The index of the layer object in the list
+
+      Returns
+      -------
+      None
+
+
+
+
+   .. py:method:: on_mode_cb_activated(index)
+
+      Handle the activation of the mode combo box in the GUI.
+
+      Parameters
+      ----------
+      index : int
+          The index of the selected mode in the combo box. This controls what mode the system will use. 
+          Index 0 corresponds to the 'Transfer matrix' mode, while index 1 corresponds to the 'Scattering matrix' mode.
+
+      Returns
+      -------
+      None
+
+      Notes
+      -----
+      This function performs several operations based on the selected mode:
+      - Sets the mode in the settings to either 'Transfer matrix' or 'Scattering matrix'.
+      - If 'Scattering matrix' mode is selected (index 1), it goes through all layers and changes any layer with the incoherent option set to 'Incoherent (intensity)' to be 'Coherent'.
+      - Invokes set_noCalculationsRequired to indicate that new calculations are necessary based on the changed settings.
+      - Calls generateLayerSettings to update the layer settings according to the new mode.
+      - Forces a refresh of the display to reflect any changes.
+      - Sets a flag indicating that a refresh is required.
+
+
+
+   .. py:method:: on_newLayer_cb_activated(index)
+
+      Handle a new layer button click
+
+      Based on the index chosen a new material is created and added to the list of layers.
+      The settings dictionary is updated and a refresh is forced.
+
+      Parameters
+      ----------
+      index : int
+          The index of the entry in the combobox
+
+      Returns
+      -------
+      None
+
+
+
+
+   .. py:method:: on_option_cb_activated(index, layer)
+
+      The incoherence option combo box has been activated.
+
+      - The layer's incoherent options are changed
+      - The number of calculations requested is updated
+      - The settings dictionary is regenerated
+      - A refresh is requested
+
+      Parameters
+      ----------
+      index : int
+          The index of the incoherent option combobox
+      layer : a layer object
+          The layer which will have its incoherent property changed
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: on_partially_incoherent_kernel_sb_changed(value)
+
+      Handles the change in the partially incoherent kernel spinbox value.
+
+      Parameters
+      ----------
+      value : int or float
+          The new value of the partially incoherent kernel spinbox.
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: on_partially_incoherent_polynomial_sb_changed(value)
+
+      Handles changes to the partially incoherent polynomial spinbox value.
+
+      This method updates the relevant setting based on the new value and marks
+      the need for refreshment. It also logs the change using the debugger.
+
+      Parameters
+      ----------
+      value : int
+          The new value for the partially incoherent polynomial spinbox.
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: on_partially_incoherent_samples_sb_changed(value)
+
+      Handles the change in partially incoherent samples setting.
+
+      Parameters
+      ----------
+      value : int or float
+          The new value for the partially incoherent samples setting.
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: on_percentage_partial_incoherence_sb_changed(value)
+
+      Handle changes in percentage partial incoherence spinner box value.
+
+      This method updates the 'Percentage partial incoherence' setting based on the new value provided by the relevant spinner box. It marks that a refresh is required and logs the change using the configured debugger.
+
+      Parameters
+      ----------
+      value : int or float
+          The new value from the percentage partial incoherence spinner box.
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: on_print_button_clicked(x, layer)
+
+      Print the permittivity for the layer
+
+      The print button is only visible if in debug mode.
+      The permittivity is printed to a csv file with a name containing the material involved.
+
+      Parameters
+      ----------
+      x : any
+          A dummy parameter
+      layer : a layer object
+          The layer object for which a print of the permittivity has been requested
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: on_slice_thickness_sb_changed(value)
+
+      Updates the 'Slice thickness' setting based on a new value and marks refresh as required.
+
+      Parameters
+      ----------
+      value : int or float
+          The new value for the slice thickness setting.
+
+      Returns
+      -------
+      None
+
+
+
+
+   .. py:method:: on_slice_thickness_unit_cb_activated(index)
+
+      Handles the activation of a slice thickness unit selection.
+
+      This method updates the settings to reflect the newly selected
+      slice thickness unit based on its index in the thickness_units list.
+      It also flags that a refresh is necessary.
+
+      Parameters
+      ----------
+      index : int
+          The index of the selected unit in the thickness_units list.
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: on_thickness_units_cb_activated(index, layer)
+
+      Handles the activation of a thickness unit option in a combo box.
+
+      - the thickness unit of this layer is changed
+      - the settings dictionary is updated
+      - a refresh is requested
+
+      Parameters
+      ----------
+      index : int
+          The index of the selected thickness unit in the combo box.
+      layer : a layer object
+          The layer object whose thickness unit is to be updated.
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: openDB_button_clicked()
+
+      Open a new materials' database.
+
+      After the database is opened a refresh is requested.
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: partialIncoherenceWidget()
+
+      Create a partial incoherence widget
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: partially_incoherent_calculator(layers, mode, theta, phi, psi, angleOfIncidence, sliceThickness, exponent_threshold)
+
+      Calculates the incoherent component of light reflectance and transmission
+      by sampling the path length in the incident medium.
+
+      Parameters
+      ----------
+      layers : a list of layers
+          A list of layers
+      mode : str
+          Specifies either 'Transfer matrix' or 'Scattering matrix'
+      theta : float
+          The angle theta
+      phi : float
+          The angle phi
+      psi : float
+          The angle psi
+      angleOfIncidence : float
+          The angle incidence
+      sliceThickness : float
+          The slice thickness
+      exponent_threshold: float
+          The exponent threshold
+
+      Returns
+      -------
+      A tuple of lists or nd.arrays
+          - p_reflectance
+          - s_reflectance
+          - p_transmittance
+          - s_transmittance
+          - p_absorbtance
+          - s_absorbtance
+          - epsilon
+
+
+
+   .. py:method:: printLayerSettings(message)
+
+      Print the settings related to the layers.
+
+      Parameters
+      ----------
+      message : str
+          Message to be printed before the layer settings.
+
+      Returns
+      -------
+      None
+
+      Notes
+      -----
+      This function prints the settings associated with layers, including material names, HKL values (Miller indices for the crystallographic planes), azimuthal angles, thicknesses with their units, flags indicating whether the layer is dielectric, and options for incoherent scattering, if applicable.
+
+      This function does not return any value. It is primarily used for debugging or informative purposes to quickly display the current configuration of layer settings within a class that has `settings` as an attribute storing these properties.
+
+
+
+   .. py:method:: redrawLayerTable()
+
+      Redraw the layer table widget.
+
+      Adds a row for each layer in the gadget.
+      The row is drawn using redrawLayerTableRow()
+
+
+
+   .. py:method:: redrawLayerTableRow(sequenceNumber, layer, rowCount, firstLayer, lastLayer)
+
+      Draw a row of the layer table.
+
+      Each row has a material name, a thickness (and unit), an h, k, l option and a toolbar
+      to move or delete the layer in the list.
+      Needed a separate routine for this as there are problems with the lambda code only keeping the last in a list.
+
+      Parameters
+      ----------
+      sequenceNumber : int
+          The sequence number of the layer in the list
+      Layer : layer object
+          The layer itself
+      rowCount : int
+          The row count
+      firstLayer : bool
+          True if this is the first layer in the list
+      LastLayer : bool
+          True if this is the last layer in the list
+
+      Returns
+      -------
+      None
+
+
+
+
+   .. py:method:: refresh(force=False)
+
+      Refresh the current state, optionally forcing a refresh.
+
+      This method updates the current state based on various settings and conditions. It checks
+      if a refresh is required or if a forceful refresh is requested. It then updates several
+      settings, including material database, layer settings, calculation requirements, UI elements states,
+      and more to reflect the current state. It also processes UI events to ensure the UI is responsive
+      during the update.
+
+      Parameters
+      ----------
+      force : bool, optional
+          A flag to force the refresh even if it's not required. Default is False.
+
+      Returns
+      -------
+      None
+
+
+
+
+   .. py:method:: setMaterialNames()
+
+      Set and append a material name to the list of material names.
+
+      This function retrieves the current list of material names from the database using
+      `self.DataBase.getSheetNames()`, appends 'Dielectric layer' to the list, and returns the updated list.
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      list
+          The list of material names including the appended default 'Dielectric layer'.
+
+
+
+   .. py:method:: set_noCalculationsRequired()
+
+      Determine the number of calculations required.
+
+      The routine first works out the number of layers needing phase averaging,
+      then it looks at the number of partial incoherent calculations being performed.
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: settings2Layers()
+
+      Read the layer settings and generate a list of layers.
+
+      This method reads all the entries in the settings dictionary
+      to create a list of layers
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      list
+          A list of layers generated from the layer settings.
+
+
+
+   .. py:method:: sliceThicknessWidget()
+
+      Create a widget for setting slice thickness and its units.
+
+      This method sets up a QSpinBox for specifying slice thickness in a range of 0 to 10000, with steps of 1 unit. It also sets up a QComboBox for selecting the unit of thickness (nm, um, mm, or cm). Both the spinbox and combobox values are initialized based on `self.settings`. The method arranges these widgets along with a descriptive label into a horizontal layout which is then returned. 
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      tuple
+          A tuple containing a QLabel and QHBoxLayout. The QLabel describes the purpose of the slice thickness setting, and the QHBoxLayout contains the QSpinBox and QComboBox for adjusting the slice thickness and selecting its unit, respectively.
+
+
+
+   .. py:method:: smoothingWidget()
+
+      Create a smoothing widget used by the partial incoherence method
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      None
+
+
+
+.. py:class:: SpreadSheetManager(filename)
+
+   A manager for handling operations on an Excel workbook via xlsxwriter.
+
+   This class provides methods for managing a workbook with various tabs
+   (named worksheets), writing data to these worksheets, and handling complex
+   data types specifically tailored for scientific or engineering applications.
+
+   Parameters
+   ----------
+   filename : str
+       The name of the file to which the workbook will be saved.
+
+   Attributes
+   ----------
+   workbook : Workbook
+       The workbook object from xlsxwriter this manager operates on.
+   closed : bool
+       Boolean flag indicating whether the workbook has been closed.
+   tab_names : list of str
+       A list containing the names of the tabs (worksheets) to be managed.
+   worksheets : dict
+       A dictionary mapping tab names to worksheet objects.
+   positions : dict
+       A dictionary mapping tab names to their current write position (row, column).
+   max_col : dict
+       A dictionary mapping tab names to the maximum column index used.
+   max_row : dict
+       A dictionary mapping tab names to the maximum row index used.
+   opened : dict
+       A dictionary indicating whether a tab (worksheet) has been opened for writing.
+   name : str
+       The name of the currently selected work tab.
+
+   Methods
+   -------
+   openWorkSheet(tab)
+       Opens a new worksheet for the given tab if not already opened.
+   selectWorkSheet(name)
+       Selects the specified worksheet for further operations.
+   writeNextRow(items, row=None, col=None, check='')
+       Writes a series of items to the next row of the currently selected worksheet.
+   write(row, col, item)
+       Writes an item to the specified location in the currently selected worksheet.
+   delete()
+       Deletes all content from the currently selected worksheet.
+   close()
+       Closes the workbook, finalizing it for output.
+
+
+   .. py:method:: close()
+
+      Close the workbook if it hasn't been closed already.
+
+      Closes the workbook associated with an instance and sets its status as closed to prevent multiple close operations.
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: delete()
+
+      Delete all the data in the current worksheet.
+
+      Clears all entries in the worksheet represented by `self` by setting each cell's value to an empty string.
+      After clearing the data, it resets the current position, maximum column, and maximum row counters for the worksheet.
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      None
+
+
+
+
+   .. py:method:: openWorkSheet(tab)
+
+      Open a new worksheet in a workbook.
+
+      Parameters
+      ----------
+      tab : str
+          The name of the worksheet to be opened.
+
+      Returns
+      -------
+      None
+
+      Notes
+      -----
+      If the worksheet identified by `tab` is already opened, this method does nothing. 
+      Otherwise, it creates a new worksheet with the name `tab`, initializes its position, 
+      maximum column, maximum row, and marks it as opened within the workbook data structures 
+      handled by the instance. 
+
+
+
+   .. py:method:: selectWorkSheet(name)
+
+      Selects or opens a worksheet by name.
+
+      Parameters
+      ----------
+      name : str
+          The name of the worksheet to select or open.
+
+      Returns
+      -------
+      None
+
+      Notes
+      -----
+      This method selects a worksheet if it is already opened. If the worksheet is not
+      currently open, it attempts to open the worksheet by calling `openWorkSheet` with
+      the worksheet name.
+
+
+
+   .. py:method:: write(row, col, item)
+
+      Writes an item to a specific position in the active worksheet, handling complex numbers.
+
+      Parameters
+      ----------
+      row : int
+          The row index where the item will be written.
+      col : int
+          The column index where the item will be written.
+      item : int, float, complex, str
+          The item to be written to the worksheet. If the item is a complex number,
+          its real and imaginary parts are written to adjacent columns.
+
+      Returns
+      -------
+      None
+
+      Notes
+      -----
+      - This method updates the worksheet's max column and row based on the provided indices.
+      - When writing a complex number, `col` is incremented before writing the imaginary part,
+        and the updated column is used for adjusting the max column.
+      - Updates the `positions` attribute with the next available position in the worksheet.
+
+
+
+
+   .. py:method:: writeNextRow(items, row=None, col=None, check='')
+
+      Writes a sequence of items as a row in a spread sheet, starting from a specified row and column into a grid structure.
+
+      Parameters
+      ----------
+      items : list
+          A list of items to be written. Items can be strings, numbers, or nested lists where each sub-item is written in subsequent columns.
+      row : int, optional
+          The row index to start writing from. If not specified, uses the current row position of the object.
+      col : int, optional
+          The column index to start writing from. If not specified, uses the current column position of the object.
+      check : str, optional
+          A check string written to the beginning of the row specified. Defaults to an empty string if not specified.
+
+      Returns
+      -------
+      None
+
+      Notes
+      -----
+      - If `col` is 0, a warning message is printed.
+      - The `row` and `col` are updated as items are written, and `row` is incremented after writing all items.
+      - For items that are lists, each element is written in subsequent columns. This is applied recursively for nested lists.
+      - `self.positions` is a dictionary holding the current positions (row, column) for different names, and `self.name` accesses the current object's name.
+
+
+
+.. py:class:: ViewerTab(parent, debug=False)
+
+   Bases: :py:obj:`PyQt5.QtWidgets.QWidget`
+
+
+   A class representing a viewer tab in a graphical user interface, specifically for visualizing 
+   molecular structures and vibrational modes.
+
+   This class integrates several widgets to enable the selection and visualization of various 
+   parameters relevant to molecular structures and their vibrational modes. It allows for 
+   interactive change of settings like atom scaling, super cell configuration, and visualization 
+   options such as showing arrows for vibrational modes or animation. It also includes functionalities
+   to save the visualization in different formats.
+
+   Parameters
+   ----------
+   parent : QWidget
+       The parent widget to which this widget belongs.
+   debug : bool, optional
+       Flag to enable debugging messages, by default False.
+
+   Attributes
+   ----------
+   debug : bool
+       If debug mode is enabled.
+   refreshRequired : bool
+       Indicates if a refresh of the visualization is needed due to settings changes.
+   UVW : deque
+       A deque containing the vibrational mode vectors.
+   settings : dict
+       Stores various visualization settings such as selected mode, atom scaling, cell color, etc.
+   light_switches : list of bool
+       A list indicating the state (on or off) of up to 8 light switches for visualization.
+   plot_types : list of str
+       Available types of plots for visualization.
+   plot_type_index : int
+       The index of the currently selected plot type.
+   number_of_molecules : int
+       The number of molecules in the visualization.
+   unit_cell, super_cell, cell_edges, cell_corners : Various
+       Attributes related to the molecular/crystalline structure and its visualization.
+   element_colours : dict
+       A mapping of elements to their colors used in the visualization.
+   element_names : list of str
+       Names of the elements present in the visualization.
+   species : list of str
+       The species of the elements/molecules considered in the visualization.
+   image_filename : str
+       The filename where the visualization can be saved.
+   notebook : QWidget
+       The parent notebook widget containing this ViewerTab.
+   reader : Reader
+       The reader object used for reading structural information.
+   frequencies_cm1 : list
+       List of frequencies of the vibrational modes in cm^-1.
+
+   Methods
+   -------
+   There are multiple methods for event handling (e.g., on_filename_le_return, on_super_cell_changed_a),
+   methods for recalculating visualization parameters (e.g., calculate, calculatePhasePositions),
+   and methods for changing visualization settings interactively and programatically (e.g., setColour, refresh).
+   Each method typically adjusts the ViewerTab's state or visualization output accordingly based on user interaction or programmatic changes.
+
+   calculate
+       Obtains frequencies, normal modes, unit cell of whole molecules and supercell
+   calculatePhasePositions
+       Calculates the positions of atoms during a vibration
+   on_arrow_radius_changed
+       Handles the change in arrow radius widget
+   on_atom_scaling_changed
+       Handles the change in atom scaling widget
+   on_bond_radius_changed
+       Handles the change in bond radius widget
+   on_cell_radius_changed
+       Handle the change in unit cell radius widget
+   on_coloured_button_clicked
+       Handles a click on the coloured button
+   on_coloured_element_clicked
+       Changes the colour of an element
+   on_filename_button_clicked
+       Handles a click on the file name button
+   on_filename_le_changed
+       Handles a change to the file name
+   on_filename_le_return
+       Handles a return press in the file name widget
+   on_light_switches_cb_activated
+       Activates the light switch combobox
+   on_maximum_displacement_changed
+       Handles a change in the maximum displace allowed in following molecular vibrations
+   on_plottype_cb_changed
+       Handles a change in the plot type combobox
+   on_selected_mode_changed
+       Handles a change in the vibrational mode which is being displayed
+   on_super_cell_changed_a
+       Handles the change in the a supercell parameter
+   on_super_cell_changed_b
+       Handles the change in the b supercell parameter
+   on_super_cell_changed_c
+       Handles the change in the c supercell parameter
+   plot
+       Plot the 3D view of the molecule
+   plot_animation
+       Plot an animated 3D view of the vibration being studied
+   plot_arrows
+       Plot an 3D view of the vibration being studied using arrows
+   plot_none
+       Plots the molecule only, no vibrations
+   refresh
+       Refresh the GUI with the latest information
+   requestRefresh
+       Something has changed in the GUI that will need a refresh
+   save_cif
+       Write out a cif file
+   setColour
+       Set the colour of the specified element
+
+
+   .. py:method:: calculate()
+
+      Perform calculations related to the notebook object, including processing program, file name, calculating frequencies, super cells, normal modes, bonds, center of mass, bounding box, element names, species, covalent radii, and updating the UI with calculated values.
+
+      Parameters
+      ----------
+      None 
+
+      Returns
+      -------
+      None
+
+
+
+
+   .. py:method:: calculatePhasePositions()
+
+      Calculate and update the phase positions for the normal mode of a molecular structure visualization.
+
+      This function calculates the phase positions for all atoms in a molecular structure over a range of phase steps. It updates the visualization by adding spheres and cylinders to represent atoms and bonds in different phase positions. The phase steps are adjusted to be odd in number, ensuring symmetry around zero phase. The function directly modifies the OpenGL widget used for visualization by deleting existing graphical representations and creating new ones based on the calculated positions.
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      None
+
+
+
+
+   .. py:method:: on_arrow_radius_changed(value)
+
+      Handle the event where the arrow's radius value is changed.
+
+      This method updates the setting for the arrow's radius, recalculates, and replots based on the new value.
+
+      Parameters
+      ----------
+      value : float
+          The new value for the arrow radius.
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: on_atom_scaling_changed(value)
+
+      Handle changes to atom scaling settings.
+
+      This method updates the atom scaling setting based on a new value,
+      recalculates relevant data, and triggers a plot update.
+
+      Parameters
+      ----------
+      value : float
+          The new value for atom scaling.
+
+      Returns
+      -------
+      None
+
+
+
+
+   .. py:method:: on_bond_radius_changed(value)
+
+      Handle bond radius change events.
+
+      This method updates the 'Bond radius' setting with the new value, recalculates 
+      the necessary data, and then replots the results.
+
+      Parameters
+      ----------
+      value : float
+          The new value for the bond radius.
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: on_cell_radius_changed(value)
+
+      Handle the event when the cell radius setting is changed.
+
+      This method updates the 'Cell radius' setting with the new value, recalculates 
+      the necessary data, and then replots the results.
+
+      Parameters
+      ----------
+      value : float
+          The new value for the cell radius.
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: on_coloured_button_clicked(boolean)
+
+      Handle the event when a coloured button is clicked.
+
+      This function triggers a color dialog upon the click of a designated button. It captures the selected color and applies it to a specific setting based on the button's label (e.g., Background, Cell, Bonds, Arrows). The settings are modified to include the chosen color, and a refresh is triggered to apply the changes.
+
+      Parameters
+      ----------
+      boolean : bool
+          This parameter is not used in the function.
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: on_coloured_element_clicked(boolean)
+
+      Handle a click event on an element with colour functionality.
+
+      A colour dialogue is invoked and the chosen colour is assigned to the element in question
+      The settings dictionary is updated with the new colours and a refresh requested
+
+      Parameters
+      ----------
+      boolean : any
+          This parameter is a dummy parameters
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: on_filename_button_clicked(boolean)
+
+      Handles the action triggered by clicking the filename button.
+
+      This method checks if the selected filename has a valid extension and exists. If any 
+      checks fail, it alerts the user and aborts the operation. Otherwise, it proceeds to 
+      save the current state or image of the OpenGL widget in the specified file format.
+
+      Parameters
+      ----------
+      boolean : any
+          This is a dummy parameter.
+
+      Returns
+      -------
+      None
+
+      Raises
+      ------
+      QMessageBox
+          Shows an alert if the filename is empty or has an invalid extension, indicating that the file name for the image is not valid.
+
+      Notes
+      -----
+      The valid file extensions are .mp4, .avi, .png, .gif, and .cif. The method modifies the `plot_type_index` 
+      attribute of the caller object, saves the data or image into the specified file format, and ensures 
+      the application's cursor is restored to its default state after the operation completes.
+
+
+
+   .. py:method:: on_filename_le_changed(text)
+
+      Handle changes to the filename line edit.
+
+      This method is triggered when the text in the filename line edit changes. It updates the internal state to reflect the new filename.
+
+      Parameters
+      ----------
+      text : str
+          The new text from the filename line edit.
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: on_filename_le_return()
+
+      Handles the event triggered by the return key press within the filename input field.
+
+      This method is typically invoked when the return (or enter) key is pressed while inputting a filename. It primarily invokes the filename button click event handler, simulating a click operation on the associated button.
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: on_light_switches_cb_activated(index)
+
+      Activate or deactivate the light switch based on the current state and updates the GUI accordingly.
+
+      Parameters
+      ----------
+      index : int
+          Index of the light switch in `self.light_switches` list that needs to be toggled.
+
+      Returns
+      -------
+      None
+
+
+
+
+   .. py:method:: on_maximum_displacement_changed(value)
+
+      Handle changes to the maximum displacement setting.
+
+      This method updates the 'Maximum displacement' setting, recalculates based on the new value, and then replots the relevant data or figures.
+
+      Parameters
+      ----------
+      value : float
+          The new value for the maximum displacement setting.
+
+      Returns
+      -------
+      None
+
+
+
+
+   .. py:method:: on_plottype_cb_changed(index)
+
+      Handle the change in plot type selection.
+
+      This method updates the plot type index based on the user's selection and then
+      re-plots the data according to the new plot type.
+      Plot types can be: 'Animation', 'Arrows', or 'No arrows or animation'.
+
+      Parameters
+      ----------
+      index : int
+          The index of the newly selected plot type.
+
+      Returns
+      -------
+      None
+
+
+
+
+   .. py:method:: on_selected_mode_changed()
+
+      Handle the changes when a new vibrational mode is selected in the UI.
+
+      This function updates the application state based on the newly selected vibrational mode. It
+      updates the displayed frequency, removes existing arrows from the OpenGL widget, 
+      computes maximum displacement for scaling, and plots new arrows with updated settings. 
+      It also invokes the calculate and plot functions to reflect changes in the UI.
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: on_super_cell_changed_a(newa)
+
+      Update the 'a' parameter of the 'Super Cell' setting and refresh the object state.
+
+      This function takes a new value for 'a', updates the 'Super Cell' setting of the object
+      accordingly (while keeping 'b' and 'c' parameters unchanged), marks the object as
+      requiring refresh, and finally calls the refresh method.
+
+      Parameters
+      ----------
+      newa : int
+          The new value for the 'a' parameter to be set in the 'Super Cell' setting.
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: on_super_cell_changed_b(newb)
+
+      Update the 'b' component of the 'Super Cell' setting and trigger a refresh.
+
+      This function takes a new value for 'b', updates the 'Super Cell' setting of the object
+      accordingly (while keeping 'a' and 'c' parameters unchanged), marks the object as
+      requiring refresh, and finally calls the refresh method.
+
+      Parameters
+      ----------
+      newb : int
+          The new value for the 'b' component of the 'Super Cell'.
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: on_super_cell_changed_c(newc)
+
+      Update the 'c' component of the 'Super Cell' setting and refresh the object.
+
+      This function takes a new value for 'c', updates the 'Super Cell' setting of the object
+      accordingly (while keeping 'a' and 'b' parameters unchanged), marks the object as
+      requiring refresh, and finally calls the refresh method.
+
+      Parameters
+      ----------
+      newc : int
+          The new value to set for the 'c' component of the 'Super Cell' setting.
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: plot()
+
+      Plot data based on the instance's current plot type.
+
+      This method selects a plotting routine based on the value of `self.plot_type_index`.
+      It does an early return if `self.reader` is None, indicating there might be no data
+      to plot. It logs the method's progress using a debugger's print function.
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      None
+
+
+
+
+   .. py:method:: plot_animation()
+
+      Initiates and displays an animation of a vibrational mode in an OpenGL widget.
+
+      This method controls the display of a predefined animation within 
+      an OpenGL widget. It hides any arrows, triggers a visual update, 
+      and starts the animation process. Debug messages are logged at the 
+      start and completion of the animation process.
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      None
+
+
+
+
+   .. py:method:: plot_arrows()
+
+      Plot arrows showing the vibrational mode of a molecule
+
+      This method enables the display of arrows on an associated OpenGL widget, halts any ongoing animations, and triggers a refresh of the widget to ensure the changes are visualized.
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: plot_none()
+
+      Hides arrow visuals, stops any ongoing animation, and updates the Open GL widget.
+
+      This method is intended to reset or clear the current state of the Open GL widget by disabling any arrow visuals, stopping any animations that might be running, and then updating the widget to reflect these changes.
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      None
+
+
+
+
+   .. py:method:: refresh(force=False)
+
+      Refresh the state of the object, optionally forcing the refresh.
+
+      This method updates the object's state by recalculating and refreshing its components. It checks whether a refresh is necessary or if it has been forced. It iterates through child widgets to block signals, updates settings from a notebook, adjusts visual elements based on these settings, and ultimately recalculates and replots data.
+
+      Parameters
+      ----------
+      force : bool, optional
+          If True, the refresh proceeds regardless of whether it is deemed necessary based on the object state. Default is False.
+
+      Returns
+      -------
+      None
+
+      Notes
+      -----
+      - The function begins by checking if a refresh is required or has been forced. If neither condition is met, it aborts the refresh.
+      - It temporarily changes the cursor to a waiting cursor to indicate processing.
+      - It blocks signals from all child widgets to prevent any unintended interaction during the refresh process.
+      - It updates various widget properties and settings based on attributes of the notebook associated with the object.
+      - The function finally recalculates and re-plots based on the latest data and settings, then restores the standard cursor and marks the refresh as complete.
+      - Debug statements are interspersed throughout for tracking the refresh process's progress.
+
+
+
+   .. py:method:: requestRefresh()
+
+      Initiates a refresh request.
+
+      This method sets an internal flag to indicate that a refresh is required.
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      None
+
+
+
+
+   .. py:method:: save_cif(filename)
+
+      Save the crystallographic information file (CIF) for different phases.
+
+      A copy is made of the current unit cell and a cell is wrtten out for each phase of the vibration
+
+      Parameters
+      ----------
+      filename : str
+          The name of the file where the CIF data will be saved.
+
+      Returns
+      -------
+      None
+
+      Notes
+      -----
+      This method relies on the `self.unit_cell` object, which should have a method `set_xyz_coordinates` and `write_cif`. It also uses `self.settings` to retrieve the number of phase steps and the selected mode for CIF generation. The function iterates over a calculated range of phases, updates the unit cell coordinates for each phase, and writes the CIF data to the provided filename. The function assumes that `self.newXYZ` is an iterable object containing new XYZ coordinates for each phase. The CIF files are saved with a description that includes the mode and phase.
+
+
+
+   .. py:method:: setColour(element, colour)
+
+      Set the colour of a specified element in the interface.
+
+      Parameters
+      ----------
+      element : str
+          The element whose colour is to be set. Can be 'Background', 'Cell', 'Arrow', or any other custom element defined in `element_colours`.
+      colour : str
+          The new colour to be set for the element. This should be a string describing the colour.
+
+      Returns
+      -------
+      None
+
+      Examples
+      --------
+      ```python
+      myObject.setColour('Background', '#FFFFFF')  # Sets the background colour to white
+      myObject.setColour('Cell', 'red')            # Sets the cell colour to red
+      myObject.setColour('customElement', 'blue')  # Sets a custom element's colour to blue
+      ```
 
 
 

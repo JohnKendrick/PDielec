@@ -1,5 +1,5 @@
-:py:mod:`PDielec.GUI.SettingsTab`
-=================================
+PDielec.GUI.SettingsTab
+=======================
 
 .. py:module:: PDielec.GUI.SettingsTab
 
@@ -9,24 +9,84 @@
 
 
 
-Module Contents
----------------
-
-Classes
-~~~~~~~
+Attributes
+----------
 
 .. autoapisummary::
 
+   PDielec.GUI.SettingsTab.amu
+   PDielec.GUI.SettingsTab.angstrom
+   PDielec.GUI.SettingsTab.average_masses
+   PDielec.GUI.SettingsTab.isotope_masses
+   PDielec.GUI.SettingsTab.wavenumber
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   PDielec.GUI.SettingsTab.Debug
    PDielec.GUI.SettingsTab.FixedQTableWidget
    PDielec.GUI.SettingsTab.SettingsTab
 
+
+Module Contents
+---------------
+
+.. py:class:: Debug(debug, text, level=0)
+
+   A class aimed at providing a structured way to include debug messages in code.
+
+   Methods
+   -------
+   print(args, level=0)
+       Prints debug messages based on the debug level provided as argument compared to the object's debug level.
+   state()
+       Returns the current state (enabled or disabled) of debugging.
+
+   Notes
+   -----
+   The `print` method provides a flexible way to include additional information along with the base debug message, allowing for a detailed and adjustable debugging output.
+
+
+   .. py:method:: print(*args, level=0)
+
+      Prints message if debugging level allows.
+
+      Parameters
+      ----------
+      args
+          Variable length argument list for the message to be printed.
+      level : int, optional
+          The level of the message that determines if it gets printed or not,
+          based on the instance's `level`. Default value is 0.
+
+      Notes
+      -----
+      This method will only print the message if the instance's `debug` flag is True
+      and the provided `level` is less than or equal to the instance's `level`.
+
+
+
+   .. py:method:: state()
+
+      Get the debug state.
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      The current debug state.
 
 
 
 .. py:class:: FixedQTableWidget(*args, parent=None, rows=None, columns=None)
 
-
    Bases: :py:obj:`PyQt5.QtWidgets.QTableWidget`
+
 
    A custom QTableWidget with fixed number of rows and columns.
 
@@ -52,6 +112,7 @@ Classes
    --------
    QTableWidget : The base class from which this class is derived.
 
+
    .. py:method:: sizeHint()
 
       Calculate the suggested dimensions for the widget based on its content.
@@ -71,8 +132,8 @@ Classes
 
 .. py:class:: SettingsTab(parent, debug=False)
 
-
    Bases: :py:obj:`PyQt5.QtWidgets.QWidget`
+
 
    A class for managing and displaying settings related to optical permittivity, mass calculation, and vibrational calculations for crystal structures within a GUI application.
 
@@ -169,6 +230,7 @@ Classes
    getCrystalPermittivityObject()
        Returns the crystal permittivity object used for calculations.
 
+
    .. py:method:: calculate(vs_cm1)
 
       Calculate the permittivity of the crystal over the range of frequencies in vs_cm1.
@@ -181,6 +243,7 @@ Classes
       Returns
       -------
       None
+
 
 
 
@@ -218,6 +281,7 @@ Classes
       - `Calculator.ionic_permittivity`: For calculating the ionic permittivity based on mode list, oscillator strengths, and frequencies.
 
 
+
    .. py:method:: getCrystalPermittivity(vs_cm1)
 
       Return the crystal permittivity
@@ -231,6 +295,7 @@ Classes
       -------
       self.crystal_permittivity : array_like
           The crystal permittivity (a 3x3 tensor) at each frequency
+
 
 
    .. py:method:: getCrystalPermittivityObject()
@@ -248,6 +313,7 @@ Classes
        
 
 
+
    .. py:method:: on_born_changed()
 
       Handle changes in the Born checkbox state.
@@ -261,6 +327,7 @@ Classes
       Returns
       -------
       None
+
 
 
    .. py:method:: on_eckart_changed()
@@ -278,6 +345,7 @@ Classes
       Returns
       -------
       None
+
 
 
 
@@ -304,6 +372,7 @@ Classes
       - `self.refresh()` is a method that refreshes or updates the UI components as needed based on the new changes.
 
 
+
    .. py:method:: on_element_masses_tw_itemClicked(item)
 
       Handles the item clicked event on the element mass table widget.
@@ -318,6 +387,7 @@ Classes
       Returns
       -------
       None
+
 
 
    .. py:method:: on_mass_cb_activated(index)
@@ -350,6 +420,7 @@ Classes
       refresh : A method to refresh the UI components.
 
 
+
    .. py:method:: on_optical_tw_itemChanged(item)
 
       Handle item change events for an optical permittivity table.
@@ -375,6 +446,7 @@ Classes
       - Processes any pending events with `QCoreApplication.processEvents()` to ensure the UI remains responsive.
 
 
+
    .. py:method:: on_optical_tw_itemClicked(item)
 
       Handle item clicked event for an optical widget's table item.
@@ -393,6 +465,7 @@ Classes
       Returns
       -------
       None
+
 
 
    .. py:method:: on_output_tw_itemChanged(item)
@@ -423,6 +496,7 @@ Classes
       refresh : Refreshes the internal state based on the latest changes.
 
 
+
    .. py:method:: on_sigma_changed()
 
       Updates the sigma value in settings and applies it across the frequency range, then refreshes the output.
@@ -438,6 +512,7 @@ Classes
       Returns
       -------
       None
+
 
 
    .. py:method:: redraw_output_tw()
@@ -467,6 +542,7 @@ Classes
 
 
 
+
    .. py:method:: refresh(force=False)
 
       Refreshes the current state based on notebook content changes or user request.
@@ -490,6 +566,7 @@ Classes
       - Unblocks all QWidget signals after updates are applied.
       - Manages internal flags to keep track of the need for refreshes and calculations.
       - Processes all pending Qt events with `QCoreApplication.processEvents()`.
+
 
 
    .. py:method:: refresh_optical_permittivity_tw()
@@ -518,6 +595,7 @@ Classes
           - The `QCoreApplication.processEvents()` call forces the application to process all pending events, ensuring the UI updates in real-time.
 
 
+
    .. py:method:: requestRefresh()
 
       Request to refresh the environment or state.
@@ -531,6 +609,7 @@ Classes
       Returns
       -------
       None
+
 
 
    .. py:method:: setElementMass(element, mass)
@@ -556,6 +635,7 @@ Classes
       - It triggers a refresh of the GUI and potentially recalculates selected modes based on the new mass settings.
 
 
+
    .. py:method:: set_masses_tw()
 
       Set the element masses in the table widget based on the mass_definition setting.
@@ -569,6 +649,7 @@ Classes
       Returns
       -------
       None
+
 
 
    .. py:method:: set_optical_permittivity_tw()
@@ -587,6 +668,7 @@ Classes
 
 
 
+
    .. py:method:: writeSpreadsheet()
 
       Writes the configuration and calculation results to the associated spreadsheet.
@@ -602,4 +684,14 @@ Classes
       None
 
 
+
+.. py:data:: amu
+
+.. py:data:: angstrom
+
+.. py:data:: average_masses
+
+.. py:data:: isotope_masses
+
+.. py:data:: wavenumber
 

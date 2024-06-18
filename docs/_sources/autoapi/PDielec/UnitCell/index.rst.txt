@@ -1,5 +1,5 @@
-:py:mod:`PDielec.UnitCell`
-==========================
+PDielec.UnitCell
+================
 
 .. py:module:: PDielec.UnitCell
 
@@ -9,29 +9,43 @@
 
 
 
-Module Contents
----------------
+Attributes
+----------
+
+.. autoapisummary::
+
+   PDielec.UnitCell.avogadro_si
+   PDielec.UnitCell.covalent_radii
+   PDielec.UnitCell.element_to_atomic_number
+
 
 Classes
-~~~~~~~
+-------
 
 .. autoapisummary::
 
    PDielec.UnitCell.UnitCell
 
 
-
 Functions
-~~~~~~~~~
+---------
 
 .. autoapisummary::
 
+   PDielec.UnitCell.calculate_angle
+   PDielec.UnitCell.calculate_distance
+   PDielec.UnitCell.calculate_torsion
+   PDielec.UnitCell.cleanup_symbol
    PDielec.UnitCell.convert_length_units
+   PDielec.UnitCell.print_ints
+   PDielec.UnitCell.print_reals
+   PDielec.UnitCell.print_strings
 
 
+Module Contents
+---------------
 
 .. py:class:: UnitCell(a=None, b=None, c=None, alpha=None, beta=None, gamma=None, units='Angstrom')
-
 
    Hold unit cell information and its associated calculated properties.
 
@@ -66,6 +80,7 @@ Functions
        cell.set_fractional_coordinates(coords)
        cell.print()
 
+
    .. py:method:: _calculate_reciprocal_lattice(lattice)
 
       Calculate the reciprocal lattice
@@ -82,6 +97,7 @@ Functions
       Returns
       -------
       sets the reciprocal lattice vectors
+
 
 
    .. py:method:: calculateCentreOfMass(atom_list=None, output='xyz')
@@ -123,6 +139,7 @@ Functions
       array([0.4, 0.5, 0.6])
 
 
+
    .. py:method:: calculate_molecular_contents(scale=1.1, tolerance=0.1, radii=None)
 
       Finds whole molecules in the unit cell.
@@ -150,6 +167,7 @@ Functions
       `scale * (radi + radj) + tolerance`
 
 
+
    .. py:method:: convert_abc_to_unitcell(a, b, c, alpha_degs, beta_degs, gamma_degs)
 
       Convert a, b, c, alpha, beta, gamma to a unit cell
@@ -175,6 +193,7 @@ Functions
           The lattice parameters
 
 
+
    .. py:method:: convert_abc_to_xyz(abc)
 
       Convert abc coordinates to xyz coordinates.
@@ -189,6 +208,7 @@ Functions
 
 
 
+
    .. py:method:: convert_hkl_to_xyz(hkl)
 
       Convert hkl miller indices to xyz coordinates.
@@ -200,6 +220,7 @@ Functions
       Returns
       -------
       xyz : list of xyz coordinates
+
 
 
    .. py:method:: convert_unitcell_to_abc()
@@ -218,6 +239,7 @@ Functions
           The angles between the edges in degrees.
 
 
+
    .. py:method:: convert_xyz_to_abc(xyz)
 
       Convert xyz coordinates to abc lattice coordinates.
@@ -229,6 +251,7 @@ Functions
       Returns
       -------
       abc : list of fractional coordinates
+
 
 
    .. py:method:: find_symmetry(symprec=1e-05, angle_tolerance=-1.0)
@@ -243,6 +266,7 @@ Functions
       -------
       a tuple
           (international table symbol, number])
+
 
 
    .. py:method:: getBoundingBox(units='Angstrom')
@@ -271,6 +295,7 @@ Functions
 
 
 
+
    .. py:method:: getDensity(units='cm')
 
       Calculate the density of the crystal.
@@ -288,6 +313,7 @@ Functions
           The density in gms/cc
 
 
+
    .. py:method:: getVolume(units='cm')
 
       Calculate the volume
@@ -300,6 +326,7 @@ Functions
       Returns
       -------
       volume : float
+
 
 
    .. py:method:: get_atom_labels()
@@ -318,6 +345,7 @@ Functions
       A list of atom labels
 
 
+
    .. py:method:: get_atomic_masses()
 
       Get the atomic masses for the elements.
@@ -332,6 +360,7 @@ Functions
           The atomic masses 
 
 
+
    .. py:method:: get_atomic_numbers()
 
       Get the atomic numbers for the elements.
@@ -344,6 +373,7 @@ Functions
       -------
       list of ints
           The atomic numbers
+
 
 
    .. py:method:: get_bond_angles()
@@ -363,6 +393,7 @@ Functions
           list of angles is a list of floats
 
 
+
    .. py:method:: get_bonds()
 
       Returns a list of bonds for the unit cell
@@ -378,6 +409,7 @@ Functions
       (list of bonds, list of bondlengths)
           list of bonds is a list of pairs of integers denoting a bond
           list of bond lengths is a list of floats
+
 
 
    .. py:method:: get_torsions()
@@ -397,6 +429,7 @@ Functions
           list of angles is a list of floats
 
 
+
    .. py:method:: print()
 
       Prints the details of the given unit cell.
@@ -410,6 +443,7 @@ Functions
       Returns
       -------
       None
+
 
 
    .. py:method:: set_atom_labels(atom_labels)
@@ -432,6 +466,7 @@ Functions
       is appended to the `self.atom_labels` attribute.
 
 
+
    .. py:method:: set_atomic_masses(masses)
 
       Set the atomic masses for the elements.
@@ -444,6 +479,7 @@ Functions
       Returns
       -------
       None
+
 
 
    .. py:method:: set_bonds(bonds)
@@ -460,6 +496,7 @@ Functions
       Returns
       -------
       None
+
 
 
    .. py:method:: set_element_names(element_names)
@@ -482,6 +519,7 @@ Functions
       `element_names` attribute with the cleaned names.
 
 
+
    .. py:method:: set_fractional_coordinates(coords)
 
       Set the fractional coordinates and calculate the xyz coordinates.
@@ -495,6 +533,7 @@ Functions
       None
 
 
+
    .. py:method:: set_molecules(molecules)
 
       Define a list of molecules, each molecule is a list of atom coordinates.
@@ -506,6 +545,7 @@ Functions
       Returns
       -------
       None
+
 
 
    .. py:method:: set_xyz_coordinates(coords, units='Angstrom')
@@ -522,6 +562,7 @@ Functions
       Returns
       -------
       None
+
 
 
    .. py:method:: write_cif(filename=None, file_=sys.stdout)
@@ -559,6 +600,82 @@ Functions
 
 
 
+.. py:function:: calculate_angle(a, b, c)
+
+   Calculate the angle between a, b and c in degrees
+
+   The bond is a-b-c, b is the central atom
+
+   Parameters
+   ----------
+   a : list of reals
+       Coordinates of a
+   b : list of reals
+       Coordinates of b
+   c : list of reals
+       Coordinates of c
+
+   Returns
+   -------
+   float
+       The angle between a-b-c in degrees
+
+
+
+.. py:function:: calculate_distance(a, b)
+
+   Calculate the distance between a and b.
+
+   Parameters
+   ----------
+   a : list of reals
+       Coordinates of a
+   b : list of reals
+       Coordinates of b
+
+   Returns
+   -------
+   float
+       The distance between a and b
+
+
+
+.. py:function:: calculate_torsion(a, b, c, d)
+
+   Calculate the torsion angle between a, b, c and d in degrees
+
+   Parameters
+   ----------
+   a : list of reals
+       Coordinates of a
+   b : list of reals
+       Coordinates of b
+   c : list of reals
+       Coordinates of c
+   d : list of reals
+       Coordinates of d
+
+   Returns
+   -------
+   float
+       The torsion angle between a-b-c-d in degrees
+
+
+
+.. py:function:: cleanup_symbol(s)
+
+   Return a true element from the symbol
+
+   Parameters
+   ----------
+   s : str
+
+   Returns
+   -------
+   str
+       The cleaned symbol
+
+
 .. py:function:: convert_length_units(value, units_in, units_out)
 
    "
@@ -585,4 +702,84 @@ Functions
    -----
    The input can be either a scalar value, a list or a numpy array of values. The function will return the converted value(s) in the output units specified.
 
+
+.. py:function:: print_ints(title, ints, no_per_line=8, format='{:9d}', file=sys.stdout, separator=' ')
+
+   Print ints data.
+
+   Parameters
+   ----------
+   title : str
+      A title for the print
+   ints : a list of ints
+      A list of integers to be printed
+   no_per_line : int, optional
+      The number of  integers per line of output
+   format : str, optional 
+       a format descriptor (defaults to 9d)
+   file : int, optional 
+       a file descriptor (defaults to stdout)
+   separator : str
+       the separator to use between ints (defaults to space)
+
+   Returns
+   -------
+   None
+
+
+.. py:function:: print_reals(title, reals, no_per_line=8, format='{:9.2f}', file=sys.stdout, separator=' ')
+
+   Print reals data
+
+   Parameters
+   ----------
+   title : str
+      A title for the print
+   reals : a list of reals
+      A list of reals to be printed
+   no_per_line : int, optional
+      The number of  integers per line of output (default is 8)
+   format : str, optional 
+       a format descriptor (defaults to 9.2f)
+   file : int, optional 
+       a file descriptor (defaults to stdout)
+   separator : str
+       the separator to use between ints (defaults to space)
+
+   Returns
+   -------
+   None
+
+
+.. py:function:: print_strings(title, strings, no_per_line=8, format='{:9s}', file=sys.stdout, separator=' ')
+
+   Print strings data.
+
+   Parameters
+   ----------
+   title : str
+      A title for the print
+   strings : a list of strings
+      A list of strings to be printed
+   no_per_line : int, optional
+      The number of  integers per line of output
+   format : str, optional 
+       a format descriptor (defaults to 9s)
+   file : int, optional 
+       a file descriptor (defaults to stdout)
+   separator : str
+       the separator to use between ints (defaults to space)
+
+   Returns
+   -------
+   None
+
+
+.. py:data:: avogadro_si
+   :value: 6.02214076e+23
+
+
+.. py:data:: covalent_radii
+
+.. py:data:: element_to_atomic_number
 

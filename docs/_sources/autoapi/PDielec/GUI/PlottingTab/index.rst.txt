@@ -1,5 +1,5 @@
-:py:mod:`PDielec.GUI.PlottingTab`
-=================================
+PDielec.GUI.PlottingTab
+=======================
 
 .. py:module:: PDielec.GUI.PlottingTab
 
@@ -9,20 +9,27 @@
 
 
 
-Module Contents
----------------
-
-Classes
-~~~~~~~
+Attributes
+----------
 
 .. autoapisummary::
 
+   PDielec.GUI.PlottingTab.angstrom
+   PDielec.GUI.PlottingTab.avogadro_si
+   PDielec.GUI.PlottingTab.possible_frequency_units
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   PDielec.GUI.PlottingTab.Debug
    PDielec.GUI.PlottingTab.PlottingTab
 
 
-
 Functions
-~~~~~~~~~
+---------
 
 .. autoapisummary::
 
@@ -30,19 +37,62 @@ Functions
    PDielec.GUI.PlottingTab.isThisAFrequencyUnit
 
 
+Module Contents
+---------------
 
-Attributes
-~~~~~~~~~~
+.. py:class:: Debug(debug, text, level=0)
 
-.. autoapisummary::
+   A class aimed at providing a structured way to include debug messages in code.
 
-   PDielec.GUI.PlottingTab.possible_frequency_units
+   Methods
+   -------
+   print(args, level=0)
+       Prints debug messages based on the debug level provided as argument compared to the object's debug level.
+   state()
+       Returns the current state (enabled or disabled) of debugging.
+
+   Notes
+   -----
+   The `print` method provides a flexible way to include additional information along with the base debug message, allowing for a detailed and adjustable debugging output.
+
+
+   .. py:method:: print(*args, level=0)
+
+      Prints message if debugging level allows.
+
+      Parameters
+      ----------
+      args
+          Variable length argument list for the message to be printed.
+      level : int, optional
+          The level of the message that determines if it gets printed or not,
+          based on the instance's `level`. Default value is 0.
+
+      Notes
+      -----
+      This method will only print the message if the instance's `debug` flag is True
+      and the provided `level` is less than or equal to the instance's `level`.
+
+
+
+   .. py:method:: state()
+
+      Get the debug state.
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      The current debug state.
+
 
 
 .. py:class:: PlottingTab(parent, debug=False)
 
-
    Bases: :py:obj:`PyQt5.QtWidgets.QWidget`
+
 
    A class used for creating and managing a plotting tab in a graphical user interface. It inherits from QWidget.
 
@@ -101,6 +151,7 @@ Attributes
    set_concentrations()
        Sets the concentrations for the plotting based on the molar definition.
 
+
    .. py:method:: get_number_of_calculations_required()
 
       Return the total number of spectra that need to be calculated.
@@ -115,6 +166,7 @@ Attributes
       -------
       int
           The total number of spectra that require calculation.
+
 
 
    .. py:method:: get_total_number_of_frequency_calculations()
@@ -133,6 +185,7 @@ Attributes
           The total number of frequency calculations required, which is the product of the number of calculations required (as obtained from `get_number_of_calculations_required`) and the new length of frequency range computed.
 
 
+
    .. py:method:: greyed_out()
 
       Handle items that should be greyed out if they are not needed.
@@ -144,6 +197,7 @@ Attributes
       Returns
       -------
       int
+
 
 
    .. py:method:: on_funits_cb_activated(index)
@@ -178,6 +232,7 @@ Attributes
       This function does not explicitly raise any exceptions but depends on the proper functioning of the methods it calls and the state of `self` and its attributes.
 
 
+
    .. py:method:: on_molar_cb_activated(index)
 
       Handle the activation of the molar combobox option.
@@ -199,6 +254,7 @@ Attributes
       refresh : A method to refresh the UI elements.
 
 
+
    .. py:method:: on_natoms_changed(value)
 
       Handle the change in the number of atoms.
@@ -214,6 +270,7 @@ Attributes
       -----
       - `self.reader.volume` and `self.reader.nions` are expected to be available and contain the volume of the container and the number of ions, respectively.
       - The method refreshes `self.notebook.fitterTab` object with a `requestRefresh` method to initiate the refresh process.
+
 
 
    .. py:method:: on_plot_type_cb_activated(index)
@@ -232,6 +289,7 @@ Attributes
       Returns
       -------
       None
+
 
 
    .. py:method:: on_vinc_changed(value)
@@ -258,6 +316,7 @@ Attributes
       - Requests a refresh of the fitterTab if needed.
 
 
+
    .. py:method:: on_vmax_changed()
 
       Handles the event when the maximum frequency setting is changed.
@@ -276,6 +335,7 @@ Attributes
       -----
       - This method assumes the existence of `vmin_sb` and `vmax_sb` attributes, which should be spinner box GUI elements (or similar) for setting minimum and maximum frequencies, respectively.
       - The `settings` dictionary must have a 'Frequency unit' key, and possibly 'Maximum frequency' and 'Minimum frequency' keys which are updated based on the condition.
+
 
 
    .. py:method:: on_vmin_changed()
@@ -303,6 +363,7 @@ Attributes
       - Uses the `blockSignals` method on `self.vmin_sb` to prevent signal-slot recursion.
       - Adjusts settings based on a unit conversion utility function, `convert_frequency_units`.
       - The effect of this method extends beyond just the internal state changes; it influences the UI and possibly other components' states through the requested refresh.
+
 
 
    .. py:method:: plot()
@@ -334,6 +395,7 @@ Attributes
       - self.notebook.scenarios: List of scenarios to be plotted.
 
 
+
    .. py:method:: refresh(force=False)
 
       Refreshes the current state based on the changes in settings, forces refresh if needed.
@@ -361,6 +423,7 @@ Attributes
       - The processEvents call is used to ensure the UI remains responsive during long operations.
 
 
+
    .. py:method:: requestRefresh()
 
       Initiates a refresh request.
@@ -375,6 +438,7 @@ Attributes
       Returns
       -------
       None
+
 
 
    .. py:method:: requestScenarioRefresh()
@@ -392,11 +456,13 @@ Attributes
       None
 
 
+
    .. py:method:: set_concentrations()
 
       Sets the concentration based on the molar definition in settings.
 
       This method updates the concentration value in the settings dictionary based on the 'Molar definition' key. It calculates concentration values differently based on whether the molar definition is set to 'Molecules', 'Unit cells', or 'Atoms'. It also enables or disables the `natoms_sb` spin box accordingly.
+
 
 
    .. py:method:: writeSpreadsheet()
@@ -412,6 +478,7 @@ Attributes
       Returns
       -------
       None
+
 
 
    .. py:method:: write_crystal_results(sp, name, vs, legends, yss)
@@ -434,6 +501,7 @@ Attributes
       Returns
       -------
       None
+
 
 
    .. py:method:: write_eps_results(sp, vs, dielecv)
@@ -461,6 +529,7 @@ Attributes
 
       Both sections write data in the format: frequencies (cm-1), xx, yy, zz, xy, xz, yz, where xx, yy, zz, xy, xz, and yz are components of the permittivity tensor.
       The output data starts from the second column (index 1), and for each row written, a 'check' flag is set to 1.
+
 
 
    .. py:method:: write_powder_results(sp, name, vs, legends, yss)
@@ -522,8 +591,13 @@ Attributes
        True if this is a frequency unit, False if a wavelength.
 
 
+.. py:data:: angstrom
+
+.. py:data:: avogadro_si
+   :value: 6.02214076e+23
+
+
 .. py:data:: possible_frequency_units
    :value: ['wavenumber', 'THz', 'GHz', 'ang', 'nm', 'um', 'mm', 'cm', 'm']
 
-   
 

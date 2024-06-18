@@ -1,5 +1,5 @@
-:py:mod:`PDielec.GUI.AnalysisTab`
-=================================
+PDielec.GUI.AnalysisTab
+=======================
 
 .. py:module:: PDielec.GUI.AnalysisTab
 
@@ -9,23 +9,31 @@
 
 
 
-Module Contents
----------------
+Attributes
+----------
+
+.. autoapisummary::
+
+   PDielec.GUI.AnalysisTab.covalent_radii
+
 
 Classes
-~~~~~~~
+-------
 
 .. autoapisummary::
 
    PDielec.GUI.AnalysisTab.AnalysisTab
+   PDielec.GUI.AnalysisTab.Debug
+   PDielec.GUI.AnalysisTab.FixedQTableWidget
 
 
-
+Module Contents
+---------------
 
 .. py:class:: AnalysisTab(parent, debug=False)
 
-
    Bases: :py:obj:`PyQt5.QtWidgets.QWidget`
+
 
    A widget class for analyzing vibrational modes, molecular composition, and bonding configurations within a molecular dataset.
 
@@ -125,6 +133,7 @@ Classes
    plot_internal_external(self)
        Generates a plot based on the decomposition of vibrational energy into internal and external movements.
 
+
    .. py:method:: calculate()
 
       Perform calculations for the current object state including molecular contents, normal modes, and energy distributions.
@@ -154,6 +163,7 @@ Classes
 
 
 
+
    .. py:method:: on_element_radii_tw_itemChanged(item)
 
       Respond to changes in element radii within a widget.
@@ -166,6 +176,7 @@ Classes
       Returns
       -------
       None
+
 
 
    .. py:method:: on_element_radii_tw_itemClicked(item)
@@ -187,6 +198,7 @@ Classes
       event has occurred, allowing subsequent events to be processed.
 
 
+
    .. py:method:: on_plottype_cb_changed(index)
 
       Handle a change in plot type selection.
@@ -199,6 +211,7 @@ Classes
       Returns
       -------
       None
+
 
 
    .. py:method:: on_scale_changed(value)
@@ -221,6 +234,7 @@ Classes
       None
 
 
+
    .. py:method:: on_title_changed(text)
 
       Handle title change events.
@@ -233,6 +247,7 @@ Classes
       Returns
       -------
       None
+
 
 
    .. py:method:: on_tolerance_changed(value)
@@ -252,6 +267,7 @@ Classes
 
 
 
+
    .. py:method:: on_vmax_changed()
 
       Handle the change in maximum value for frequency.
@@ -264,6 +280,7 @@ Classes
       Returns
       -------
       None
+
 
 
 
@@ -281,6 +298,7 @@ Classes
       None
 
 
+
    .. py:method:: on_width_changed(value)
 
       Handle changes to the width property.
@@ -295,6 +313,7 @@ Classes
       Returns
       -------
       None
+
 
 
    .. py:method:: plot()
@@ -322,6 +341,7 @@ Classes
       based on the value of `self.plot_type_index`.
 
 
+
    .. py:method:: plot_internal_external()
 
       Plot the internal and external composition of vibrational energy for modes within specified frequency ranges.
@@ -341,6 +361,7 @@ Classes
       - The method sets the X-axis labels to mode numbers and the Y-axis label to percentage energy.
       - If the number of modes within the specified frequency range is less than 3, the method returns early without performing any plotting.
       - The method updates the canvas with the newly plotted data.
+
 
 
    .. py:method:: plot_molecular()
@@ -375,6 +396,7 @@ Classes
         are appropriately imported or accessible within the scope.
 
 
+
    .. py:method:: refresh(force=False)
 
       Refresh the widget state, optionally enforcing refresh.
@@ -389,6 +411,7 @@ Classes
       Returns
       -------
       None
+
 
 
    .. py:method:: requestRefresh()
@@ -407,6 +430,7 @@ Classes
 
 
 
+
    .. py:method:: setCovalentRadius(element, radius)
 
       Set the covalent radius for a given element and update the plot.
@@ -421,6 +445,7 @@ Classes
       Returns
       -------
       None
+
 
 
    .. py:method:: set_radii_tw()
@@ -442,6 +467,7 @@ Classes
       None
 
 
+
    .. py:method:: writeSpreadsheet()
 
       Write analysis data into a selected worksheet in the notebook's spreadsheet.
@@ -460,4 +486,102 @@ Classes
       None
 
 
+
+.. py:class:: Debug(debug, text, level=0)
+
+   A class aimed at providing a structured way to include debug messages in code.
+
+   Methods
+   -------
+   print(args, level=0)
+       Prints debug messages based on the debug level provided as argument compared to the object's debug level.
+   state()
+       Returns the current state (enabled or disabled) of debugging.
+
+   Notes
+   -----
+   The `print` method provides a flexible way to include additional information along with the base debug message, allowing for a detailed and adjustable debugging output.
+
+
+   .. py:method:: print(*args, level=0)
+
+      Prints message if debugging level allows.
+
+      Parameters
+      ----------
+      args
+          Variable length argument list for the message to be printed.
+      level : int, optional
+          The level of the message that determines if it gets printed or not,
+          based on the instance's `level`. Default value is 0.
+
+      Notes
+      -----
+      This method will only print the message if the instance's `debug` flag is True
+      and the provided `level` is less than or equal to the instance's `level`.
+
+
+
+   .. py:method:: state()
+
+      Get the debug state.
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      The current debug state.
+
+
+
+.. py:class:: FixedQTableWidget(*args, parent=None, rows=None, columns=None)
+
+   Bases: :py:obj:`PyQt5.QtWidgets.QTableWidget`
+
+
+   A custom QTableWidget with fixed number of rows and columns.
+
+   This widget is designed to have a fixed size based on a specified number of rows and columns, rather than adjusting dynamically to the content it displays. If the number of rows and columns isn't specifically provided, it defaults to the current count of rows and columns in the widget.
+
+   Parameters
+   ----------
+   args
+       Variable length argument list.
+   parent : Optional[QWidget]
+       The parent widget. Default is None.
+   rows : Optional[int]
+       The fixed number of rows for the table. If None, the table's row count is used. Default is None.
+   columns : Optional[int]
+       The fixed number of columns for the table. If None, the table's column count is used. Default is None.
+
+   Methods
+   -------
+   sizeHint()
+       Calculates and returns the recommended size for the table widget based on the fixed number of rows and columns, or based on its current row and column counts if no fixed numbers are provided.
+
+   See Also
+   --------
+   QTableWidget : The base class from which this class is derived.
+
+
+   .. py:method:: sizeHint()
+
+      Calculate the suggested dimensions for the widget based on its content.
+
+      This method calculates the preferred size of the widget by summing up the widths of all columns and the heights of all rows, including any scrollbars, headers, and frame widths.
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      QSize
+          The calculated size that suggests the optimal dimensions for the widget. The width is determined by the total width of all columns, the vertical header width, the vertical scrollbar width, and twice the frame width. The height is determined by the total height of all rows, the horizontal header height, the horizontal scrollbar height, and twice the frame width.
+
+
+
+.. py:data:: covalent_radii
 

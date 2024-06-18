@@ -1,5 +1,5 @@
-:py:mod:`PDielec.GUI.SpreadSheetManager`
-========================================
+PDielec.GUI.SpreadSheetManager
+==============================
 
 .. py:module:: PDielec.GUI.SpreadSheetManager
 
@@ -9,21 +9,18 @@
 
 
 
-Module Contents
----------------
-
 Classes
-~~~~~~~
+-------
 
 .. autoapisummary::
 
    PDielec.GUI.SpreadSheetManager.SpreadSheetManager
 
 
-
+Module Contents
+---------------
 
 .. py:class:: SpreadSheetManager(filename)
-
 
    A manager for handling operations on an Excel workbook via xlsxwriter.
 
@@ -72,6 +69,7 @@ Classes
    close()
        Closes the workbook, finalizing it for output.
 
+
    .. py:method:: close()
 
       Close the workbook if it hasn't been closed already.
@@ -85,6 +83,7 @@ Classes
       Returns
       -------
       None
+
 
 
    .. py:method:: delete()
@@ -101,6 +100,7 @@ Classes
       Returns
       -------
       None
+
 
 
 
@@ -125,6 +125,7 @@ Classes
       handled by the instance. 
 
 
+
    .. py:method:: selectWorkSheet(name)
 
       Selects or opens a worksheet by name.
@@ -143,6 +144,7 @@ Classes
       This method selects a worksheet if it is already opened. If the worksheet is not
       currently open, it attempts to open the worksheet by calling `openWorkSheet` with
       the worksheet name.
+
 
 
    .. py:method:: write(row, col, item)
@@ -169,6 +171,7 @@ Classes
       - When writing a complex number, `col` is incremented before writing the imaginary part,
         and the updated column is used for adjusting the max column.
       - Updates the `positions` attribute with the next available position in the worksheet.
+
 
 
 

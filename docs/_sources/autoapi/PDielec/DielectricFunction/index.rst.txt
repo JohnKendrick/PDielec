@@ -1,5 +1,5 @@
-:py:mod:`PDielec.DielectricFunction`
-====================================
+PDielec.DielectricFunction
+==========================
 
 .. py:module:: PDielec.DielectricFunction
 
@@ -24,11 +24,18 @@
 
 
 
-Module Contents
----------------
+Attributes
+----------
+
+.. autoapisummary::
+
+   PDielec.DielectricFunction.angstrom
+   PDielec.DielectricFunction.speed_light_si
+   PDielec.DielectricFunction.wavenumber
+
 
 Classes
-~~~~~~~
+-------
 
 .. autoapisummary::
 
@@ -45,22 +52,24 @@ Classes
    PDielec.DielectricFunction.TabulateScalar
 
 
-
+Module Contents
+---------------
 
 .. py:class:: ConstantScalar(value)
 
-
    Bases: :py:obj:`DielectricFunction`
+
 
    A complex constant scalar permittivity
 
    Inherits from DielectricFunction. Provides a calculate() function to return
-   the permittivity.
+   the permittivity.  Epsilon infinity is not used for this function.
 
    Methods
    -------
    calculate()
        Calculates and returns the permittivity of the dielectric function.
+
 
    .. py:method:: calculate(v)
 
@@ -80,13 +89,14 @@ Classes
 
 .. py:class:: ConstantTensor(value)
 
-
    Bases: :py:obj:`DielectricFunction`
+
 
    A complex constant tensor permittivity
 
    Inherits from DielectricFunction.
    Provides a calculate() function to return the permittivity.
+   Epsilon infinity is used to calculate the total permittivity
 
    Methods
    -------
@@ -99,6 +109,7 @@ Classes
        permittivity = np.array([ [ 2.0, 0.0, 0.0 ] , [ 0.0, 3.0, 0.0 ], [ 0.0, 0.0, 4.0 ] ])
        df = ConstantTensor(permittivity)
        newMaterial = Material('New material name',permittivityObject=df,cell=UnitCell(2, 2, 2))
+
 
 
    .. py:method:: calculate(v)
@@ -119,8 +130,8 @@ Classes
 
 .. py:class:: DFT(mode_list, mode_frequencies, mode_sigmas, mode_oscillator_strengths, crystal_volume, drude, drude_plasma, drude_sigma)
 
-
    Bases: :py:obj:`DielectricFunction`
+
 
    A complex tensor permittivity from a DFT calculation
 
@@ -128,6 +139,7 @@ Classes
    Suitable for use in calculating the permittivity from DFT calculations.
    Internal units for this function are atomic units.
    Provides a calculate() function to return the permittivity.
+   Epsilon infinity is included in the total permittivity
 
    Methods
    -------
@@ -137,6 +149,7 @@ Classes
    Notes
    -----
    The internal units for all calculations within this class are atomic units.
+
 
    .. py:method:: calculate(v)
 
@@ -153,6 +166,7 @@ Classes
           The permittivity at frequency v as a 3x3 tensor.
 
 
+
    .. py:method:: getFrequencies()
 
       Returns the frequencies of a DFT permittivity
@@ -167,6 +181,7 @@ Classes
       -------
       1d array of floats
           The frequencies in cm-1
+
 
 
 
@@ -187,6 +202,7 @@ Classes
 
 
 
+
    .. py:method:: getSigmas()
 
       Returns the sigma parameters of a DFT permittivity
@@ -201,6 +217,7 @@ Classes
       -------
       1d array of floats
           The sigma parameters of  Drude-Lorentzian permittivity
+
 
 
 
@@ -221,6 +238,7 @@ Classes
 
 
 
+
    .. py:method:: setOscillatorStrengths(strengths)
 
       Sets the oscillator strengths of a DFT permittivity
@@ -235,6 +253,7 @@ Classes
       Returns
       -------
       None
+
 
 
 
@@ -258,12 +277,13 @@ Classes
 
 .. py:class:: DielectricFunction
 
-
-   Provide a base class to different dielectric functions.
+   A base class to different dielectric functions.
 
    There is a close relationship between the dielectric function and a material.
    The Material module allows data to be read in for different dielectric models.
    Once the data has been read in a DielectricFunction is created which is appropriate for the data.
+   The tensor and scalar versions of the functions behave differently with respect to 
+   epsilon infinity: tensor functions add epsilon infinity to the calculated permittivity, scalar functions do not.
 
    Attributes
    ----------
@@ -305,10 +325,6 @@ Classes
    dielectricContributionsFromModes(f, modes, frequencies, sigmas, strengths, volume)
        Calculates permittivity from a Drude-Lorentz model.
 
-   .. py:attribute:: possible_epsTypes
-      :value: ['dft', 'fpsq', 'drude-lorentz', 'sellmeier']
-
-      
 
    .. py:method:: dielectriContributionsFromDrude(f, frequency, sigma, volume)
 
@@ -331,6 +347,7 @@ Classes
       -------
       tensor (3x3)
           A complex scalar dielectric.
+
 
 
    .. py:method:: dielectriContributionsFromModes(f, modes, frequencies, sigmas, strengths, volume)
@@ -356,6 +373,7 @@ Classes
           A complex scalar representing the dielectric function.
 
 
+
    .. py:method:: function()
 
       Return the function used to calculate the permittivity.
@@ -367,6 +385,7 @@ Classes
       Returns
       -------
       a function
+
 
 
    .. py:method:: getFrequencies()
@@ -385,6 +404,7 @@ Classes
 
 
 
+
    .. py:method:: getHighestFrequency()
 
       Return the highest tabulated frequency in cm-1.
@@ -397,6 +417,7 @@ Classes
       -------
       float
           The highest tabulated frequency in cm-1.
+
 
 
    .. py:method:: getLowestFrequency()
@@ -412,6 +433,7 @@ Classes
       The lowest tabulated frequency in cm-1.
 
 
+
    .. py:method:: getOscillatorStrengths()
 
       Returns the oscillator strengths of a Lorentzian permittivity
@@ -425,6 +447,7 @@ Classes
       Returns
       -------
       None
+
 
 
 
@@ -444,6 +467,7 @@ Classes
 
 
 
+
    .. py:method:: isScalar()
 
       Returns true if the dielectric function is a scalar
@@ -458,6 +482,7 @@ Classes
           True if the dielectric function returns a scalar value, False otherwise.
 
 
+
    .. py:method:: isTensor()
 
       Returns true if the dielectric function is a tensor
@@ -470,6 +495,7 @@ Classes
       -------
       bool
           True if the dielectric function returns a tensor, otherwise False.
+
 
 
    .. py:method:: print(v1_cm1, v2_cm1, v_inc=1, diagonal_only=True, file=None)
@@ -494,6 +520,7 @@ Classes
       None
 
 
+
    .. py:method:: setEpsilonInfinity(eps)
 
       Set epsilon infinity for dielectric calculations.
@@ -506,6 +533,7 @@ Classes
       Returns
       -------
       None
+
 
 
    .. py:method:: setFrequencies(frequencies)
@@ -522,6 +550,7 @@ Classes
       Returns
       -------
       None
+
 
 
 
@@ -542,6 +571,7 @@ Classes
 
 
 
+
    .. py:method:: setSigmas(sigmas)
 
       Sets the sigma parameters of a Lorentzian permittivity
@@ -556,6 +586,7 @@ Classes
       Returns
       -------
       None
+
 
 
 
@@ -574,15 +605,21 @@ Classes
 
 
 
+   .. py:attribute:: possible_epsTypes
+      :value: ['dft', 'fpsq', 'drude-lorentz', 'sellmeier']
+
+
+
 .. py:class:: DrudeLorentz(vs_cm1, strengths_cm1, sigmas_cm1)
 
-
    Bases: :py:obj:`DielectricFunction`
+
 
    A complex tensor Drude-Lorentz permittivity
 
    Inherits from DielectricFunction.
    Provides a calculate() function to return the permittivity.
+   Epsilon infinity is included in the total permittivity
 
    Methods
    -------
@@ -592,6 +629,7 @@ Classes
    Examples
    --------
    None
+
 
    .. py:method:: calculate(v)
 
@@ -608,6 +646,7 @@ Classes
           The permittivity at frequency v as a diagonal 3x3 tensor.
 
 
+
    .. py:method:: getFrequencies()
 
       Returns the frequencies of a Drude-Lorentz permittivity
@@ -622,6 +661,7 @@ Classes
       -------
       1d array of floats
           The frequencies in cm-1
+
 
 
 
@@ -642,6 +682,7 @@ Classes
 
 
 
+
    .. py:method:: getSigmas()
 
       Returns the sigma parameters of a Lorentzian permittivity
@@ -655,6 +696,7 @@ Classes
       Returns
       -------
       1d array of floats
+
 
 
 
@@ -675,6 +717,7 @@ Classes
 
 
 
+
    .. py:method:: setOscillatorStrengths(strengths)
 
       Sets the oscillator strengths of a Drude-Lorentz permittivity
@@ -689,6 +732,7 @@ Classes
       Returns
       -------
       None
+
 
 
 
@@ -712,13 +756,15 @@ Classes
 
 .. py:class:: FPSQ(omega_tos, gamma_tos, omega_los, gamma_los)
 
-
    Bases: :py:obj:`DielectricFunction`
+
 
    A complex tensor FPSQ dielectric function.
 
    Inherits from DielectricFunction.
    Provides a calculate() function to return the permittivity.
+   Epsilon infinity is included in the total permittivity
+
 
    .. py:method:: calculate(v)
 
@@ -738,12 +784,14 @@ Classes
 
 .. py:class:: Sellmeier(Bs, Cs)
 
-
    Bases: :py:obj:`DielectricFunction`
+
 
    A real tensor Sellmeier permittivity
 
    Inherits from DielectricFunction. Provides a calculate() function to return the permittivity.
+   Epsilon infinity is not included in the total permittivity
+
 
 
    .. py:method:: calculate(v)
@@ -768,19 +816,21 @@ Classes
 
 .. py:class:: Tabulate1(vs_cm1, permittivities)
 
-
    Bases: :py:obj:`DielectricFunction`
+
 
    A complex tabulated isotropic tensor permittivity
 
    Inherits from DielectricFunction.
    Represents an isotropic dielectric function.
    Provides a calculate() function to return the permittivity.
+   Epsilon infinity is included in the total permittivity
 
    Methods
    -------
    calculate()
        Returns the permittivity of the dielectric function.
+
 
    .. py:method:: calculate(v)
 
@@ -800,19 +850,21 @@ Classes
 
 .. py:class:: Tabulate3(vs_cm1, epsxx, epsyy, epszz)
 
-
    Bases: :py:obj:`DielectricFunction`
+
 
    A complex tabulated diagonal tensor permittivity
 
    Inherits from DielectricFunction.
    Represents an orthorhombic dielectric function.
    Provides a calculate() function to return the permittivity.
+   Epsilon infinity is included in the total permittivity
 
    Methods
    -------
    calculate()
        Return the permittivity of the dielectric function.
+
 
    .. py:method:: calculate(v)
 
@@ -832,19 +884,21 @@ Classes
 
 .. py:class:: Tabulate6(vs_cm1, epsxx, epsyy, epszz, epsxy, epsxz, epsyz)
 
-
    Bases: :py:obj:`DielectricFunction`
+
 
    A complex tabulated, anisotropic tensor permittivity
 
    Inherits from DielectricFunction.
    Represents an non-isotropic dielectric function.
    Provides a calculate() function to return the permittivity.
+   Epsilon infinity is included in the total permittivity
 
    Methods
    -------
    calculate()
        Returns the permittivity of the dielectric.
+
 
    .. py:method:: calculate(v)
 
@@ -864,12 +918,15 @@ Classes
 
 .. py:class:: TabulateScalar(vs_cm1, permittivities)
 
-
    Bases: :py:obj:`DielectricFunction`
+
 
    A complex tabulated scalar permittivity
 
-   Inherits from DielectricFunction. Represents an isotropic material dielectric function. Provides a calculate() function to return the permittivity.
+   Inherits from DielectricFunction. 
+   Represents an isotropic material dielectric function. 
+   Provides a calculate() function to return the permittivity.
+   Epsilon infinity is not used in the calculation.
 
    Methods
    -------
@@ -883,6 +940,7 @@ Classes
    Examples
    --------
    None
+
 
    .. py:method:: calculate(v)
 
@@ -899,4 +957,12 @@ Classes
           The permittivity at frequency v as a scalar.
 
 
+
+.. py:data:: angstrom
+
+.. py:data:: speed_light_si
+   :value: 299792458.0
+
+
+.. py:data:: wavenumber
 

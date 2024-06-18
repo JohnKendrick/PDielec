@@ -1,15 +1,15 @@
 <!doctype html>
-<html class="no-js" lang="en" data-content_root="">
+<html class="no-js" lang="en" data-content_root="../../../../">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="index" title="Index" href="../../../../genindex.html" /><link rel="search" title="Search" href="../../../../search.html" /><link rel="next" title="PDielec.GUI.NoteBook" href="../NoteBook/index.html" /><link rel="prev" title="PDielec.GUI.FitterTab" href="../FitterTab/index.html" />
 
-    <!-- Generated with Sphinx 7.1.2 and Furo 2024.01.29 -->
+    <!-- Generated with Sphinx 7.3.7 and Furo 2024.05.06 -->
         <title>PDielec.GUI.MainTab - PDielec: John Kendrick &amp; Andrew Burnett</title>
-      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=80d5e7a1" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?v=135e06be" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css?v=eafc0fe6" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=92fd9be5" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?v=387cc868" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css?v=fd3f3429" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/table_styling.css?v=a1a2a898" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo-extensions.css?v=36a5483c" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/css/custom.css?v=2e0a580d" />
@@ -71,7 +71,7 @@
   <symbol id="svg-sun" viewBox="0 0 24 24">
     <title>Light mode</title>
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
       <circle cx="12" cy="12" r="5"></circle>
       <line x1="12" y1="1" x2="12" y2="3"></line>
       <line x1="12" y1="21" x2="12" y2="23"></line>
@@ -86,7 +86,7 @@
   <symbol id="svg-moon" viewBox="0 0 24 24">
     <title>Dark mode</title>
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
       <path stroke="none" d="M0 0h24v24H0z" fill="none" />
       <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
     </svg>
@@ -94,7 +94,7 @@
   <symbol id="svg-sun-half" viewBox="0 0 24 24">
     <title>Auto light/dark mode</title>
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
       <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
       <circle cx="12" cy="12" r="9" />
       <path d="M13 12h5" />
@@ -102,6 +102,60 @@
       <path d="M13 18h1" />
       <path d="M13 9h4" />
       <path d="M13 6h1" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
+      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+      <path d="M13.5 6.5l4 4" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" /
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path
+        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
     </svg>
   </symbol>
 </svg>
@@ -114,6 +168,8 @@
 <label class="overlay toc-overlay" for="__toc">
   <div class="visually-hidden">Hide table of contents sidebar</div>
 </label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
 
 
 
@@ -132,7 +188,8 @@
       <div class="theme-toggle-container theme-toggle-header">
         <button class="theme-toggle">
           <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
-          <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
           <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
           <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
         </button>
@@ -178,63 +235,63 @@
 <p class="caption" role="heading"><span class="caption-text">API</span></p>
 <ul class="current">
 <li class="toctree-l1 current has-children"><a class="reference internal" href="../../../index.html">API Reference</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of API Reference</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
-<li class="toctree-l2 current has-children"><a class="reference internal" href="../../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec</span></code></a><input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of PDielec</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
-<li class="toctree-l3 current has-children"><a class="reference internal" href="../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI</span></code></a><input checked="" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of PDielec.GUI</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
-<li class="toctree-l4"><a class="reference internal" href="../AnalysisTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.AnalysisTab</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../App/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.App</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../FitterTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.FitterTab</span></code></a></li>
-<li class="toctree-l4 current current-page"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.MainTab</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../NoteBook/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.NoteBook</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../OpenGLWidget/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.OpenGLWidget</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../PlottingTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.PlottingTab</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../PowderScenarioTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.PowderScenarioTab</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../ScenarioTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.ScenarioTab</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../SettingsTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.SettingsTab</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../SingleCrystalLayer/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.SingleCrystalLayer</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../SingleCrystalScenarioTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.SingleCrystalScenarioTab</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../SpreadSheetManager/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.SpreadSheetManager</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../ViewerTab/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.ViewerTab</span></code></a></li>
+<li class="toctree-l2 current has-children"><a class="reference internal" href="../../index.html">PDielec</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of PDielec</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l3 current has-children"><a class="reference internal" href="../index.html">PDielec.GUI</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of PDielec.GUI</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="../AnalysisTab/index.html">PDielec.GUI.AnalysisTab</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../App/index.html">PDielec.GUI.App</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../FitterTab/index.html">PDielec.GUI.FitterTab</a></li>
+<li class="toctree-l4 current current-page"><a class="current reference internal" href="#">PDielec.GUI.MainTab</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../NoteBook/index.html">PDielec.GUI.NoteBook</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../OpenGLWidget/index.html">PDielec.GUI.OpenGLWidget</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../PlottingTab/index.html">PDielec.GUI.PlottingTab</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../PowderScenarioTab/index.html">PDielec.GUI.PowderScenarioTab</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../ScenarioTab/index.html">PDielec.GUI.ScenarioTab</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../SettingsTab/index.html">PDielec.GUI.SettingsTab</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../SingleCrystalLayer/index.html">PDielec.GUI.SingleCrystalLayer</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../SingleCrystalScenarioTab/index.html">PDielec.GUI.SingleCrystalScenarioTab</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../SpreadSheetManager/index.html">PDielec.GUI.SpreadSheetManager</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../ViewerTab/index.html">PDielec.GUI.ViewerTab</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="../../AbinitOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.AbinitOutputReader</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../Calculator/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.Calculator</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../CastepOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.CastepOutputReader</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../Constants/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.Constants</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../CrystalOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.CrystalOutputReader</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../DielectricFunction/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.DielectricFunction</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../ExperimentOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.ExperimentOutputReader</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../GTMcore/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GTMcore</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../GenericOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GenericOutputReader</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../GulpOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GulpOutputReader</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../HelperRoutines/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.HelperRoutines</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../IO/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.IO</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../Materials/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.Materials</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../Mie/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.Mie</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../PhonopyOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.PhonopyOutputReader</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../Plotter/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.Plotter</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../QEOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.QEOutputReader</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../SuperCell/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.SuperCell</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../UnitCell/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.UnitCell</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../Utilities/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.Utilities</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../VaspOutputReader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.VaspOutputReader</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../checkcsv/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.checkcsv</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../checkexcel/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.checkexcel</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../graphdatagenerator/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.graphdatagenerator</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../p1reader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.p1reader</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../p2cif/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.p2cif</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../pdcompare/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.pdcompare</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../pdgui/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.pdgui</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../pdmake/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.pdmake</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../pickled_reader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.pickled_reader</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../preader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.preader</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../vibanalysis/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.vibanalysis</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../AbinitOutputReader/index.html">PDielec.AbinitOutputReader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../Calculator/index.html">PDielec.Calculator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../CastepOutputReader/index.html">PDielec.CastepOutputReader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../Constants/index.html">PDielec.Constants</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../CrystalOutputReader/index.html">PDielec.CrystalOutputReader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../DielectricFunction/index.html">PDielec.DielectricFunction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../ExperimentOutputReader/index.html">PDielec.ExperimentOutputReader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../GTMcore/index.html">PDielec.GTMcore</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../GenericOutputReader/index.html">PDielec.GenericOutputReader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../GulpOutputReader/index.html">PDielec.GulpOutputReader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../HelperRoutines/index.html">PDielec.HelperRoutines</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../IO/index.html">PDielec.IO</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../Materials/index.html">PDielec.Materials</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../Mie/index.html">PDielec.Mie</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../PhonopyOutputReader/index.html">PDielec.PhonopyOutputReader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../Plotter/index.html">PDielec.Plotter</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../QEOutputReader/index.html">PDielec.QEOutputReader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../SuperCell/index.html">PDielec.SuperCell</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../UnitCell/index.html">PDielec.UnitCell</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../Utilities/index.html">PDielec.Utilities</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../VaspOutputReader/index.html">PDielec.VaspOutputReader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../checkcsv/index.html">PDielec.checkcsv</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../checkexcel/index.html">PDielec.checkexcel</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../graphdatagenerator/index.html">PDielec.graphdatagenerator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../p1reader/index.html">PDielec.p1reader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../p2cif/index.html">PDielec.p2cif</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../pdcompare/index.html">PDielec.pdcompare</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../pdgui/index.html">PDielec.pdgui</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../pdmake/index.html">PDielec.pdmake</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../pickled_reader/index.html">PDielec.pickled_reader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../preader/index.html">PDielec.preader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../vibanalysis/index.html">PDielec.vibanalysis</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../../pdgui/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.pdgui</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../preader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.preader</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../pdmake/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.pdmake</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../pdgui/index.html">PDielec.pdgui</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../preader/index.html">PDielec.preader</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../pdmake/index.html">PDielec.pdmake</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">References</span></p>
 <ul>
@@ -258,11 +315,17 @@
           <span>Back to top</span>
         </a>
         <div class="content-icon-container">
-          
+          <div class="view-this-page">
+  <a class="muted-link" href="../../../../_sources/autoapi/PDielec/GUI/MainTab/index.rst.txt" title="View this page">
+    <svg><use href="#svg-eye"></use></svg>
+    <span class="visually-hidden">View this page</span>
+  </a>
+</div>
 <div class="theme-toggle-container theme-toggle-content">
             <button class="theme-toggle">
               <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
-              <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
               <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
               <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
             </button>
@@ -272,30 +335,106 @@
             <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
           </label>
         </div>
-        <article role="main">
+        <article role="main" id="furo-main-content">
           <section id="module-PDielec.GUI.MainTab">
-<span id="pdielec-gui-maintab"></span><h1><a class="reference internal" href="#module-PDielec.GUI.MainTab" title="PDielec.GUI.MainTab"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.MainTab</span></code></a><a class="headerlink" href="#module-PDielec.GUI.MainTab" title="Permalink to this heading">#</a></h1>
+<span id="pdielec-gui-maintab"></span><h1>PDielec.GUI.MainTab<a class="headerlink" href="#module-PDielec.GUI.MainTab" title="Link to this heading">¶</a></h1>
 <p>MainTab module</p>
-<section id="module-contents">
-<h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this heading">#</a></h2>
 <section id="classes">
-<h3>Classes<a class="headerlink" href="#classes" title="Permalink to this heading">#</a></h3>
+<h2>Classes<a class="headerlink" href="#classes" title="Link to this heading">¶</a></h2>
 <div class="table-wrapper autosummary longtable docutils container">
 <table class="autosummary longtable docutils align-default">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#PDielec.GUI.MainTab.MainTab" title="PDielec.GUI.MainTab.MainTab"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MainTab</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#PDielec.GUI.MainTab.Debug" title="PDielec.GUI.MainTab.Debug"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Debug</span></code></a></p></td>
+<td><p>A class aimed at providing a structured way to include debug messages in code.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#PDielec.GUI.MainTab.MainTab" title="PDielec.GUI.MainTab.MainTab"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MainTab</span></code></a></p></td>
 <td><p>MainTab is a comprehensive widget class designed to serve as a main interface tab within a Qt application. It is tailored for analyzing quantum chemistry or molecular dynamics simulation output files, offering functionalities such as file processing, data analysis, and settings management for quantum mechanics / molecular mechanics (QM/MM) programs.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#PDielec.GUI.MainTab.SpreadSheetManager" title="PDielec.GUI.MainTab.SpreadSheetManager"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SpreadSheetManager</span></code></a></p></td>
+<td><p>A manager for handling operations on an Excel workbook via xlsxwriter.</p></td>
 </tr>
 </tbody>
 </table>
 </div>
+</section>
+<section id="functions">
+<h2>Functions<a class="headerlink" href="#functions" title="Link to this heading">¶</a></h2>
+<div class="table-wrapper autosummary longtable docutils container">
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#PDielec.GUI.MainTab.find_program_from_name" title="PDielec.GUI.MainTab.find_program_from_name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">find_program_from_name</span></code></a>(filename)</p></td>
+<td><p>Determine the simulation program from a given filename.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#PDielec.GUI.MainTab.pdgui_get_reader" title="PDielec.GUI.MainTab.pdgui_get_reader"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pdgui_get_reader</span></code></a>(program, names, qmprogram)</p></td>
+<td><p>Get the appropriate reader based on the provided program and file names.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="module-contents">
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Link to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="PDielec.GUI.MainTab.Debug">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PDielec.GUI.MainTab.</span></span><span class="sig-name descname"><span class="pre">Debug</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">debug</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">text</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">level</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/Utilities.html#Debug"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.MainTab.Debug" title="Link to this definition">¶</a></dt>
+<dd><p>A class aimed at providing a structured way to include debug messages in code.</p>
+<section id="methods">
+<h3>Methods<a class="headerlink" href="#methods" title="Link to this heading">¶</a></h3>
+<dl class="simple">
+<dt>print(args, level=0)</dt><dd><p>Prints debug messages based on the debug level provided as argument compared to the object’s debug level.</p>
+</dd>
+<dt>state()</dt><dd><p>Returns the current state (enabled or disabled) of debugging.</p>
+</dd>
+</dl>
+</section>
+<section id="notes">
+<h3>Notes<a class="headerlink" href="#notes" title="Link to this heading">¶</a></h3>
+<p>The <cite>print</cite> method provides a flexible way to include additional information along with the base debug message, allowing for a detailed and adjustable debugging output.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="PDielec.GUI.MainTab.Debug.print">
+<span class="sig-name descname"><span class="pre">print</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">level</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/Utilities.html#Debug.print"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.MainTab.Debug.print" title="Link to this definition">¶</a></dt>
+<dd><p>Prints message if debugging level allows.</p>
+<section id="parameters">
+<h4>Parameters<a class="headerlink" href="#parameters" title="Link to this heading">¶</a></h4>
+<dl class="simple">
+<dt>args</dt><dd><p>Variable length argument list for the message to be printed.</p>
+</dd>
+<dt>level<span class="classifier">int, optional</span></dt><dd><p>The level of the message that determines if it gets printed or not,
+based on the instance’s <cite>level</cite>. Default value is 0.</p>
+</dd>
+</dl>
+</section>
+<section id="id1">
+<h4>Notes<a class="headerlink" href="#id1" title="Link to this heading">¶</a></h4>
+<p>This method will only print the message if the instance’s <cite>debug</cite> flag is True
+and the provided <cite>level</cite> is less than or equal to the instance’s <cite>level</cite>.</p>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PDielec.GUI.MainTab.Debug.state">
+<span class="sig-name descname"><span class="pre">state</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/Utilities.html#Debug.state"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.MainTab.Debug.state" title="Link to this definition">¶</a></dt>
+<dd><p>Get the debug state.</p>
+<section id="id2">
+<h4>Parameters<a class="headerlink" href="#id2" title="Link to this heading">¶</a></h4>
+<p>None</p>
+</section>
+<section id="returns">
+<h4>Returns<a class="headerlink" href="#returns" title="Link to this heading">¶</a></h4>
+<p>The current debug state.</p>
+</section>
+</dd></dl>
+
+</section>
+</dd></dl>
+
 <dl class="py class">
 <dt class="sig sig-object py" id="PDielec.GUI.MainTab.MainTab">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PDielec.GUI.MainTab.</span></span><span class="sig-name descname"><span class="pre">MainTab</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">program</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">excelfile</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">debug</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/MainTab.html#MainTab"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.MainTab.MainTab" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PDielec.GUI.MainTab.</span></span><span class="sig-name descname"><span class="pre">MainTab</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">program</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">excelfile</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">debug</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/MainTab.html#MainTab"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.MainTab.MainTab" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">PyQt5.QtWidgets.QWidget</span></code></p>
 <p>MainTab is a comprehensive widget class designed to serve as a main interface tab within a Qt application. It is tailored for analyzing quantum chemistry or molecular dynamics simulation output files, offering functionalities such as file processing, data analysis, and settings management for quantum mechanics / molecular mechanics (QM/MM) programs.</p>
-<section id="parameters">
-<h4>Parameters<a class="headerlink" href="#parameters" title="Permalink to this heading">#</a></h4>
+<section id="id3">
+<h3>Parameters<a class="headerlink" href="#id3" title="Link to this heading">¶</a></h3>
 <dl class="simple">
 <dt>parent<span class="classifier">QWidget</span></dt><dd><p>The parent widget in which MainTab is contained.</p>
 </dd>
@@ -310,7 +449,7 @@
 </dl>
 </section>
 <section id="attributes">
-<h4>Attributes<a class="headerlink" href="#attributes" title="Permalink to this heading">#</a></h4>
+<h3>Attributes<a class="headerlink" href="#attributes" title="Link to this heading">¶</a></h3>
 <dl class="simple">
 <dt>debug<span class="classifier">bool</span></dt><dd><p>Indicates whether debugging is enabled.</p>
 </dd>
@@ -330,8 +469,8 @@
 </dd>
 </dl>
 </section>
-<section id="methods">
-<h4>Methods<a class="headerlink" href="#methods" title="Permalink to this heading">#</a></h4>
+<section id="id4">
+<h3>Methods<a class="headerlink" href="#id4" title="Link to this heading">¶</a></h3>
 <dl class="simple">
 <dt>on_script_button_clicked()</dt><dd><p>Handles actions to be taken when the ‘Save settings’ button is clicked.</p>
 </dd>
@@ -362,14 +501,14 @@
 </dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.MainTab.MainTab.getFullFileName">
-<span class="sig-name descname"><span class="pre">getFullFileName</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/MainTab.html#MainTab.getFullFileName"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.MainTab.MainTab.getFullFileName" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">getFullFileName</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/MainTab.html#MainTab.getFullFileName"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.MainTab.MainTab.getFullFileName" title="Link to this definition">¶</a></dt>
 <dd><p>Return the full file name based on the directory and output file name settings.</p>
-<section id="id1">
-<h5>Parameters<a class="headerlink" href="#id1" title="Permalink to this heading">#</a></h5>
+<section id="id5">
+<h4>Parameters<a class="headerlink" href="#id5" title="Link to this heading">¶</a></h4>
 <p>None</p>
 </section>
-<section id="returns">
-<h5>Returns<a class="headerlink" href="#returns" title="Permalink to this heading">#</a></h5>
+<section id="id6">
+<h4>Returns<a class="headerlink" href="#id6" title="Link to this heading">¶</a></h4>
 <dl class="simple">
 <dt>str</dt><dd><p>The full path of the file, combining the directory and the output file name setting.</p>
 </dd>
@@ -379,14 +518,14 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.MainTab.MainTab.getRelativeFileName">
-<span class="sig-name descname"><span class="pre">getRelativeFileName</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/MainTab.html#MainTab.getRelativeFileName"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.MainTab.MainTab.getRelativeFileName" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">getRelativeFileName</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/MainTab.html#MainTab.getRelativeFileName"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.MainTab.MainTab.getRelativeFileName" title="Link to this definition">¶</a></dt>
 <dd><p>Get the relative filename specified in settings.</p>
-<section id="id2">
-<h5>Parameters<a class="headerlink" href="#id2" title="Permalink to this heading">#</a></h5>
+<section id="id7">
+<h4>Parameters<a class="headerlink" href="#id7" title="Link to this heading">¶</a></h4>
 <p>None</p>
 </section>
-<section id="id3">
-<h5>Returns<a class="headerlink" href="#id3" title="Permalink to this heading">#</a></h5>
+<section id="id8">
+<h4>Returns<a class="headerlink" href="#id8" title="Link to this heading">¶</a></h4>
 <dl class="simple">
 <dt>str</dt><dd><p>The file name specified in the settings as ‘Output file name’.</p>
 </dd>
@@ -396,86 +535,86 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.MainTab.MainTab.on_calculation_button_clicked">
-<span class="sig-name descname"><span class="pre">on_calculation_button_clicked</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/MainTab.html#MainTab.on_calculation_button_clicked"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.MainTab.MainTab.on_calculation_button_clicked" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">on_calculation_button_clicked</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/MainTab.html#MainTab.on_calculation_button_clicked"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.MainTab.MainTab.on_calculation_button_clicked" title="Link to this definition">¶</a></dt>
 <dd><p>Handle the event triggered by the calculation button click.</p>
 <p>It proceeds to read an output file which is the result of a previous calculation. It checks if the settings tab exists within a notebook interface (e.g., a tabbed GUI component) and refreshes it if it does. Finally, it sets a flag indicating that a new calculation is not required anymore.</p>
-<section id="id4">
-<h5>Parameters<a class="headerlink" href="#id4" title="Permalink to this heading">#</a></h5>
+<section id="id9">
+<h4>Parameters<a class="headerlink" href="#id9" title="Link to this heading">¶</a></h4>
 <p>None</p>
 </section>
-<section id="id5">
-<h5>Returns<a class="headerlink" href="#id5" title="Permalink to this heading">#</a></h5>
+<section id="id10">
+<h4>Returns<a class="headerlink" href="#id10" title="Link to this heading">¶</a></h4>
 <p>None</p>
 </section>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.MainTab.MainTab.on_excel_button_clicked">
-<span class="sig-name descname"><span class="pre">on_excel_button_clicked</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/MainTab.html#MainTab.on_excel_button_clicked"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.MainTab.MainTab.on_excel_button_clicked" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">on_excel_button_clicked</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/MainTab.html#MainTab.on_excel_button_clicked"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.MainTab.MainTab.on_excel_button_clicked" title="Link to this definition">¶</a></dt>
 <dd><p>Handles the event triggered when Excel button is clicked.</p>
 <p>This function initiates the process of writing data to the Excel spreadsheet when the designated button is clicked in the UI. It prints log messages at the start and end of the operation.</p>
-<section id="id6">
-<h5>Parameters<a class="headerlink" href="#id6" title="Permalink to this heading">#</a></h5>
+<section id="id11">
+<h4>Parameters<a class="headerlink" href="#id11" title="Link to this heading">¶</a></h4>
 <p>None</p>
 </section>
-<section id="id7">
-<h5>Returns<a class="headerlink" href="#id7" title="Permalink to this heading">#</a></h5>
+<section id="id12">
+<h4>Returns<a class="headerlink" href="#id12" title="Link to this heading">¶</a></h4>
 <p>None</p>
 </section>
 <section id="see-also">
-<h5>See Also<a class="headerlink" href="#see-also" title="Permalink to this heading">#</a></h5>
+<h4>See Also<a class="headerlink" href="#see-also" title="Link to this heading">¶</a></h4>
 <p>notebook.writeSpreadsheet : The method called to write data to the spreadsheet.</p>
 </section>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.MainTab.MainTab.on_file_button_clicked">
-<span class="sig-name descname"><span class="pre">on_file_button_clicked</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/MainTab.html#MainTab.on_file_button_clicked"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.MainTab.MainTab.on_file_button_clicked" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">on_file_button_clicked</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/MainTab.html#MainTab.on_file_button_clicked"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.MainTab.MainTab.on_file_button_clicked" title="Link to this definition">¶</a></dt>
 <dd><p>Handle the “Open file” button click event in the GUI.</p>
 <p>This method is triggered upon clicking the “Open File” button in a graphical user interface. It facilitates the selection of an output file generated by various software tools (<cite>castep</cite>, <cite>abinit</cite>, <cite>gulp</cite>, <cite>vasp</cite>, <cite>qe</cite>, <cite>crystal</cite>, <cite>phonopy</cite>, <cite>experiment</cite>, <cite>pdgui</cite>, or any file type). Based on the selected file, it finds the corresponding program that generated the file, updates various settings in the application according to the detected program, sets the working directory to the location of the selected file, updates the GUI with the new output file name, and refreshes relevant parts of the application depending on whether the program is <cite>pdgui</cite> or another supported type.</p>
-<section id="id8">
-<h5>Parameters<a class="headerlink" href="#id8" title="Permalink to this heading">#</a></h5>
+<section id="id13">
+<h4>Parameters<a class="headerlink" href="#id13" title="Link to this heading">¶</a></h4>
 <p>None</p>
 </section>
-<section id="id9">
-<h5>Returns<a class="headerlink" href="#id9" title="Permalink to this heading">#</a></h5>
+<section id="id14">
+<h4>Returns<a class="headerlink" href="#id14" title="Link to this heading">¶</a></h4>
 <p>None</p>
 </section>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.MainTab.MainTab.on_file_le_changed">
-<span class="sig-name descname"><span class="pre">on_file_le_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/MainTab.html#MainTab.on_file_le_changed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.MainTab.MainTab.on_file_le_changed" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">on_file_le_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/MainTab.html#MainTab.on_file_le_changed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.MainTab.MainTab.on_file_le_changed" title="Link to this definition">¶</a></dt>
 <dd><p>Handles changes to the file location input field.</p>
 <p>The new output file name is stored and a flag set to require re-calculations</p>
-<section id="id10">
-<h5>Parameters<a class="headerlink" href="#id10" title="Permalink to this heading">#</a></h5>
+<section id="id15">
+<h4>Parameters<a class="headerlink" href="#id15" title="Link to this heading">¶</a></h4>
 <dl class="simple">
 <dt>text<span class="classifier">str</span></dt><dd><p>The new text of the file location input field.</p>
 </dd>
 </dl>
 </section>
-<section id="id11">
-<h5>Returns<a class="headerlink" href="#id11" title="Permalink to this heading">#</a></h5>
+<section id="id16">
+<h4>Returns<a class="headerlink" href="#id16" title="Link to this heading">¶</a></h4>
 <p>None</p>
 </section>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.MainTab.MainTab.on_file_le_return">
-<span class="sig-name descname"><span class="pre">on_file_le_return</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/MainTab.html#MainTab.on_file_le_return"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.MainTab.MainTab.on_file_le_return" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">on_file_le_return</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/MainTab.html#MainTab.on_file_le_return"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.MainTab.MainTab.on_file_le_return" title="Link to this definition">¶</a></dt>
 <dd><p>Handle the return action for a file entry line edit.</p>
 <p>It performs a series of steps to process the specified file, including finding a program associated with the file, updating various settings related to the chosen file and potentially the program determined, and initiating different actions or calculations based on the program type.</p>
-<section id="id12">
-<h5>Parameters<a class="headerlink" href="#id12" title="Permalink to this heading">#</a></h5>
+<section id="id17">
+<h4>Parameters<a class="headerlink" href="#id17" title="Link to this heading">¶</a></h4>
 <p>None</p>
 </section>
-<section id="id13">
-<h5>Returns<a class="headerlink" href="#id13" title="Permalink to this heading">#</a></h5>
+<section id="id18">
+<h4>Returns<a class="headerlink" href="#id18" title="Link to this heading">¶</a></h4>
 <p>None</p>
 </section>
-<section id="notes">
-<h5>Notes<a class="headerlink" href="#notes" title="Permalink to this heading">#</a></h5>
+<section id="id19">
+<h4>Notes<a class="headerlink" href="#id19" title="Link to this heading">¶</a></h4>
 <ul class="simple">
 <li><p>The method performs an early return if the filename entered is an empty string.</p></li>
 <li><p>It searches for a program associated with the entered filename and returns if none is found.</p></li>
@@ -491,26 +630,26 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.MainTab.MainTab.on_program_cb_activated">
-<span class="sig-name descname"><span class="pre">on_program_cb_activated</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/MainTab.html#MainTab.on_program_cb_activated"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.MainTab.MainTab.on_program_cb_activated" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">on_program_cb_activated</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/MainTab.html#MainTab.on_program_cb_activated"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.MainTab.MainTab.on_program_cb_activated" title="Link to this definition">¶</a></dt>
 <dd><p>Handle program selection change in a combobox and update settings accordingly.</p>
 <p>This method updates the program settings based on the user’s selection from a combobox.
 It specifically handles cases where the selected program is one of several predefined
 options (<cite>Phonopy - VASP</cite>, <cite>Phonopy - QE</cite>, <cite>Phonopy - Crystal</cite>, <cite>Quantum Espresso</cite>),
 adjusting both the general program setting and the more specific QM program setting
 as necessary.</p>
-<section id="id14">
-<h5>Parameters<a class="headerlink" href="#id14" title="Permalink to this heading">#</a></h5>
+<section id="id20">
+<h4>Parameters<a class="headerlink" href="#id20" title="Link to this heading">¶</a></h4>
 <dl class="simple">
 <dt>index<span class="classifier">int</span></dt><dd><p>The index of the selected item in the combobox.</p>
 </dd>
 </dl>
 </section>
-<section id="id15">
-<h5>Returns<a class="headerlink" href="#id15" title="Permalink to this heading">#</a></h5>
+<section id="id21">
+<h4>Returns<a class="headerlink" href="#id21" title="Link to this heading">¶</a></h4>
 <p>None</p>
 </section>
 <section id="side-effects">
-<h5>Side Effects<a class="headerlink" href="#side-effects" title="Permalink to this heading">#</a></h5>
+<h4>Side Effects<a class="headerlink" href="#side-effects" title="Link to this heading">¶</a></h4>
 <ul class="simple">
 <li><p>Updates the <cite>settings</cite> dictionary with the selected program and, if applicable,
 the corresponding QM program.</p></li>
@@ -521,46 +660,46 @@ the corresponding QM program.</p></li>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.MainTab.MainTab.on_resultsfile_le_changed">
-<span class="sig-name descname"><span class="pre">on_resultsfile_le_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/MainTab.html#MainTab.on_resultsfile_le_changed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.MainTab.MainTab.on_resultsfile_le_changed" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">on_resultsfile_le_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/MainTab.html#MainTab.on_resultsfile_le_changed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.MainTab.MainTab.on_resultsfile_le_changed" title="Link to this definition">¶</a></dt>
 <dd><p>Handle changes to the results file text input field.</p>
-<section id="id16">
-<h5>Parameters<a class="headerlink" href="#id16" title="Permalink to this heading">#</a></h5>
+<section id="id22">
+<h4>Parameters<a class="headerlink" href="#id22" title="Link to this heading">¶</a></h4>
 <dl class="simple">
 <dt>text<span class="classifier">str</span></dt><dd><p>The new text from the results file text input field.</p>
 </dd>
 </dl>
 </section>
-<section id="id17">
-<h5>Returns<a class="headerlink" href="#id17" title="Permalink to this heading">#</a></h5>
+<section id="id23">
+<h4>Returns<a class="headerlink" href="#id23" title="Link to this heading">¶</a></h4>
 <p>None</p>
 </section>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.MainTab.MainTab.on_script_button_clicked">
-<span class="sig-name descname"><span class="pre">on_script_button_clicked</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/MainTab.html#MainTab.on_script_button_clicked"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.MainTab.MainTab.on_script_button_clicked" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">on_script_button_clicked</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/MainTab.html#MainTab.on_script_button_clicked"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.MainTab.MainTab.on_script_button_clicked" title="Link to this definition">¶</a></dt>
 <dd><p>Handle the script button click event.</p>
 <p>This function is executed when the script button is clicked. It checks if the specified script file exists in the specified directory. If it does, it prompts the user to either overwrite the existing file or cancel the action. If the file does not exist, it creates a new script file. It uses a debugger to log actions taken during the process.</p>
-<section id="id18">
-<h5>Parameters<a class="headerlink" href="#id18" title="Permalink to this heading">#</a></h5>
+<section id="id24">
+<h4>Parameters<a class="headerlink" href="#id24" title="Link to this heading">¶</a></h4>
 <p>None</p>
 </section>
-<section id="id19">
-<h5>Returns<a class="headerlink" href="#id19" title="Permalink to this heading">#</a></h5>
+<section id="id25">
+<h4>Returns<a class="headerlink" href="#id25" title="Link to this heading">¶</a></h4>
 <p>None</p>
 </section>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.MainTab.MainTab.on_scriptsfile_le_changed">
-<span class="sig-name descname"><span class="pre">on_scriptsfile_le_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/MainTab.html#MainTab.on_scriptsfile_le_changed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.MainTab.MainTab.on_scriptsfile_le_changed" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">on_scriptsfile_le_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/MainTab.html#MainTab.on_scriptsfile_le_changed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.MainTab.MainTab.on_scriptsfile_le_changed" title="Link to this definition">¶</a></dt>
 <dd><p>Respond to changes in the scripts file input field.</p>
-<section id="id20">
-<h5>Parameters<a class="headerlink" href="#id20" title="Permalink to this heading">#</a></h5>
+<section id="id26">
+<h4>Parameters<a class="headerlink" href="#id26" title="Link to this heading">¶</a></h4>
 <p>text : str</p>
 </section>
-<section id="id21">
-<h5>Returns<a class="headerlink" href="#id21" title="Permalink to this heading">#</a></h5>
+<section id="id27">
+<h4>Returns<a class="headerlink" href="#id27" title="Link to this heading">¶</a></h4>
 <p>None</p>
 <blockquote>
 <div><p>The new text of the scripts file input field. This parameter may not be used inside the function as the function retrieves the text from the QLineEdit widget directly.</p>
@@ -570,40 +709,40 @@ the corresponding QM program.</p></li>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.MainTab.MainTab.read_output_file">
-<span class="sig-name descname"><span class="pre">read_output_file</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/MainTab.html#MainTab.read_output_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.MainTab.MainTab.read_output_file" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">read_output_file</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/MainTab.html#MainTab.read_output_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.MainTab.MainTab.read_output_file" title="Link to this definition">¶</a></dt>
 <dd><p>Reads the output file specified in the settings, processes it, and updates the UI elements accordingly.</p>
 <p>Processes the output file indicated by the settings of the object. It performs several checks to ensure
 the file exists, is accessible, and contains valid data that can be read and processed. It extracts
 unit-cell parameters and vibrational frequencies from the output file, displaying them in the relevant
 interface elements. It also triggers refresh actions on various tabs present in the notebook attribute if available.</p>
-<section id="id22">
-<h5>Parameters<a class="headerlink" href="#id22" title="Permalink to this heading">#</a></h5>
+<section id="id28">
+<h4>Parameters<a class="headerlink" href="#id28" title="Link to this heading">¶</a></h4>
 <p>None</p>
 </section>
-<section id="id23">
-<h5>Returns<a class="headerlink" href="#id23" title="Permalink to this heading">#</a></h5>
+<section id="id29">
+<h4>Returns<a class="headerlink" href="#id29" title="Link to this heading">¶</a></h4>
 <p>None</p>
 </section>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.MainTab.MainTab.refresh">
-<span class="sig-name descname"><span class="pre">refresh</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">force</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/MainTab.html#MainTab.refresh"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.MainTab.MainTab.refresh" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">refresh</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">force</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/MainTab.html#MainTab.refresh"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.MainTab.MainTab.refresh" title="Link to this definition">¶</a></dt>
 <dd><p>Refresh the current interface or force it to refresh, applying settings changes.</p>
-<section id="id24">
-<h5>Parameters<a class="headerlink" href="#id24" title="Permalink to this heading">#</a></h5>
+<section id="id30">
+<h4>Parameters<a class="headerlink" href="#id30" title="Link to this heading">¶</a></h4>
 <dl class="simple">
 <dt>force<span class="classifier">bool, optional</span></dt><dd><p>If <cite>True</cite>, force the refresh even if it is not required based on internal conditions.
 Defaults to <cite>False</cite>.</p>
 </dd>
 </dl>
 </section>
-<section id="id25">
-<h5>Returns<a class="headerlink" href="#id25" title="Permalink to this heading">#</a></h5>
+<section id="id31">
+<h4>Returns<a class="headerlink" href="#id31" title="Link to this heading">¶</a></h4>
 <p>None</p>
 </section>
 <section id="effects">
-<h5>Effects<a class="headerlink" href="#effects" title="Permalink to this heading">#</a></h5>
+<h4>Effects<a class="headerlink" href="#effects" title="Link to this heading">¶</a></h4>
 <ul class="simple">
 <li><p>Blocks signal for all child widgets during refresh.</p></li>
 <li><p>Adjusts program names based on settings, handling special case names.</p></li>
@@ -616,34 +755,34 @@ Defaults to <cite>False</cite>.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.MainTab.MainTab.requestRefresh">
-<span class="sig-name descname"><span class="pre">requestRefresh</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/MainTab.html#MainTab.requestRefresh"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.MainTab.MainTab.requestRefresh" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">requestRefresh</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/MainTab.html#MainTab.requestRefresh"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.MainTab.MainTab.requestRefresh" title="Link to this definition">¶</a></dt>
 <dd><p>Request to refresh.</p>
 <p>Marks the current instance as requiring a refresh.</p>
-<section id="id26">
-<h5>Parameters<a class="headerlink" href="#id26" title="Permalink to this heading">#</a></h5>
+<section id="id32">
+<h4>Parameters<a class="headerlink" href="#id32" title="Link to this heading">¶</a></h4>
 <p>None</p>
 </section>
-<section id="id27">
-<h5>Returns<a class="headerlink" href="#id27" title="Permalink to this heading">#</a></h5>
+<section id="id33">
+<h4>Returns<a class="headerlink" href="#id33" title="Link to this heading">¶</a></h4>
 <p>None</p>
 </section>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PDielec.GUI.MainTab.MainTab.writeSpreadsheet">
-<span class="sig-name descname"><span class="pre">writeSpreadsheet</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/MainTab.html#MainTab.writeSpreadsheet"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.MainTab.MainTab.writeSpreadsheet" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">writeSpreadsheet</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/MainTab.html#MainTab.writeSpreadsheet"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.MainTab.MainTab.writeSpreadsheet" title="Link to this definition">¶</a></dt>
 <dd><p>Writes data to the configured spreadsheet.</p>
 <p>This method encompasses the process of selecting the ‘Main’ worksheet,
 deleting the existing content on it, and writing down new settings and frequency
 data onto it. It checks if
 the spreadsheet object is valid, selects the appropriate worksheet, clears it,
 and writes the settings and frequencies (if available) in a structured manner.</p>
-<section id="id28">
-<h5>Parameters<a class="headerlink" href="#id28" title="Permalink to this heading">#</a></h5>
+<section id="id34">
+<h4>Parameters<a class="headerlink" href="#id34" title="Link to this heading">¶</a></h4>
 <p>None</p>
 </section>
-<section id="id29">
-<h5>Returns<a class="headerlink" href="#id29" title="Permalink to this heading">#</a></h5>
+<section id="id35">
+<h4>Returns<a class="headerlink" href="#id35" title="Link to this heading">¶</a></h4>
 <p>None</p>
 </section>
 </dd></dl>
@@ -651,7 +790,291 @@ and writes the settings and frequencies (if available) in a structured manner.</
 </section>
 </dd></dl>
 
+<dl class="py class">
+<dt class="sig sig-object py" id="PDielec.GUI.MainTab.SpreadSheetManager">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PDielec.GUI.MainTab.</span></span><span class="sig-name descname"><span class="pre">SpreadSheetManager</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SpreadSheetManager.html#SpreadSheetManager"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.MainTab.SpreadSheetManager" title="Link to this definition">¶</a></dt>
+<dd><p>A manager for handling operations on an Excel workbook via xlsxwriter.</p>
+<p>This class provides methods for managing a workbook with various tabs
+(named worksheets), writing data to these worksheets, and handling complex
+data types specifically tailored for scientific or engineering applications.</p>
+<section id="id36">
+<h3>Parameters<a class="headerlink" href="#id36" title="Link to this heading">¶</a></h3>
+<dl class="simple">
+<dt>filename<span class="classifier">str</span></dt><dd><p>The name of the file to which the workbook will be saved.</p>
+</dd>
+</dl>
 </section>
+<section id="id37">
+<h3>Attributes<a class="headerlink" href="#id37" title="Link to this heading">¶</a></h3>
+<dl class="simple">
+<dt>workbook<span class="classifier">Workbook</span></dt><dd><p>The workbook object from xlsxwriter this manager operates on.</p>
+</dd>
+<dt>closed<span class="classifier">bool</span></dt><dd><p>Boolean flag indicating whether the workbook has been closed.</p>
+</dd>
+<dt>tab_names<span class="classifier">list of str</span></dt><dd><p>A list containing the names of the tabs (worksheets) to be managed.</p>
+</dd>
+<dt>worksheets<span class="classifier">dict</span></dt><dd><p>A dictionary mapping tab names to worksheet objects.</p>
+</dd>
+<dt>positions<span class="classifier">dict</span></dt><dd><p>A dictionary mapping tab names to their current write position (row, column).</p>
+</dd>
+<dt>max_col<span class="classifier">dict</span></dt><dd><p>A dictionary mapping tab names to the maximum column index used.</p>
+</dd>
+<dt>max_row<span class="classifier">dict</span></dt><dd><p>A dictionary mapping tab names to the maximum row index used.</p>
+</dd>
+<dt>opened<span class="classifier">dict</span></dt><dd><p>A dictionary indicating whether a tab (worksheet) has been opened for writing.</p>
+</dd>
+<dt>name<span class="classifier">str</span></dt><dd><p>The name of the currently selected work tab.</p>
+</dd>
+</dl>
+</section>
+<section id="id38">
+<h3>Methods<a class="headerlink" href="#id38" title="Link to this heading">¶</a></h3>
+<dl class="simple">
+<dt>openWorkSheet(tab)</dt><dd><p>Opens a new worksheet for the given tab if not already opened.</p>
+</dd>
+<dt>selectWorkSheet(name)</dt><dd><p>Selects the specified worksheet for further operations.</p>
+</dd>
+<dt>writeNextRow(items, row=None, col=None, check=’’)</dt><dd><p>Writes a series of items to the next row of the currently selected worksheet.</p>
+</dd>
+<dt>write(row, col, item)</dt><dd><p>Writes an item to the specified location in the currently selected worksheet.</p>
+</dd>
+<dt>delete()</dt><dd><p>Deletes all content from the currently selected worksheet.</p>
+</dd>
+<dt>close()</dt><dd><p>Closes the workbook, finalizing it for output.</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="PDielec.GUI.MainTab.SpreadSheetManager.close">
+<span class="sig-name descname"><span class="pre">close</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SpreadSheetManager.html#SpreadSheetManager.close"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.MainTab.SpreadSheetManager.close" title="Link to this definition">¶</a></dt>
+<dd><p>Close the workbook if it hasn’t been closed already.</p>
+<p>Closes the workbook associated with an instance and sets its status as closed to prevent multiple close operations.</p>
+<section id="id39">
+<h4>Parameters<a class="headerlink" href="#id39" title="Link to this heading">¶</a></h4>
+<p>None</p>
+</section>
+<section id="id40">
+<h4>Returns<a class="headerlink" href="#id40" title="Link to this heading">¶</a></h4>
+<p>None</p>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PDielec.GUI.MainTab.SpreadSheetManager.delete">
+<span class="sig-name descname"><span class="pre">delete</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SpreadSheetManager.html#SpreadSheetManager.delete"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.MainTab.SpreadSheetManager.delete" title="Link to this definition">¶</a></dt>
+<dd><p>Delete all the data in the current worksheet.</p>
+<p>Clears all entries in the worksheet represented by <cite>self</cite> by setting each cell’s value to an empty string.
+After clearing the data, it resets the current position, maximum column, and maximum row counters for the worksheet.</p>
+<section id="id41">
+<h4>Parameters<a class="headerlink" href="#id41" title="Link to this heading">¶</a></h4>
+<p>None</p>
+</section>
+<section id="id42">
+<h4>Returns<a class="headerlink" href="#id42" title="Link to this heading">¶</a></h4>
+<p>None</p>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PDielec.GUI.MainTab.SpreadSheetManager.openWorkSheet">
+<span class="sig-name descname"><span class="pre">openWorkSheet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tab</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SpreadSheetManager.html#SpreadSheetManager.openWorkSheet"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.MainTab.SpreadSheetManager.openWorkSheet" title="Link to this definition">¶</a></dt>
+<dd><p>Open a new worksheet in a workbook.</p>
+<section id="id43">
+<h4>Parameters<a class="headerlink" href="#id43" title="Link to this heading">¶</a></h4>
+<dl class="simple">
+<dt>tab<span class="classifier">str</span></dt><dd><p>The name of the worksheet to be opened.</p>
+</dd>
+</dl>
+</section>
+<section id="id44">
+<h4>Returns<a class="headerlink" href="#id44" title="Link to this heading">¶</a></h4>
+<p>None</p>
+</section>
+<section id="id45">
+<h4>Notes<a class="headerlink" href="#id45" title="Link to this heading">¶</a></h4>
+<p>If the worksheet identified by <cite>tab</cite> is already opened, this method does nothing.
+Otherwise, it creates a new worksheet with the name <cite>tab</cite>, initializes its position,
+maximum column, maximum row, and marks it as opened within the workbook data structures
+handled by the instance.</p>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PDielec.GUI.MainTab.SpreadSheetManager.selectWorkSheet">
+<span class="sig-name descname"><span class="pre">selectWorkSheet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SpreadSheetManager.html#SpreadSheetManager.selectWorkSheet"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.MainTab.SpreadSheetManager.selectWorkSheet" title="Link to this definition">¶</a></dt>
+<dd><p>Selects or opens a worksheet by name.</p>
+<section id="id46">
+<h4>Parameters<a class="headerlink" href="#id46" title="Link to this heading">¶</a></h4>
+<dl class="simple">
+<dt>name<span class="classifier">str</span></dt><dd><p>The name of the worksheet to select or open.</p>
+</dd>
+</dl>
+</section>
+<section id="id47">
+<h4>Returns<a class="headerlink" href="#id47" title="Link to this heading">¶</a></h4>
+<p>None</p>
+</section>
+<section id="id48">
+<h4>Notes<a class="headerlink" href="#id48" title="Link to this heading">¶</a></h4>
+<p>This method selects a worksheet if it is already opened. If the worksheet is not
+currently open, it attempts to open the worksheet by calling <cite>openWorkSheet</cite> with
+the worksheet name.</p>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PDielec.GUI.MainTab.SpreadSheetManager.write">
+<span class="sig-name descname"><span class="pre">write</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">row</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">col</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">item</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SpreadSheetManager.html#SpreadSheetManager.write"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.MainTab.SpreadSheetManager.write" title="Link to this definition">¶</a></dt>
+<dd><p>Writes an item to a specific position in the active worksheet, handling complex numbers.</p>
+<section id="id49">
+<h4>Parameters<a class="headerlink" href="#id49" title="Link to this heading">¶</a></h4>
+<dl class="simple">
+<dt>row<span class="classifier">int</span></dt><dd><p>The row index where the item will be written.</p>
+</dd>
+<dt>col<span class="classifier">int</span></dt><dd><p>The column index where the item will be written.</p>
+</dd>
+<dt>item<span class="classifier">int, float, complex, str</span></dt><dd><p>The item to be written to the worksheet. If the item is a complex number,
+its real and imaginary parts are written to adjacent columns.</p>
+</dd>
+</dl>
+</section>
+<section id="id50">
+<h4>Returns<a class="headerlink" href="#id50" title="Link to this heading">¶</a></h4>
+<p>None</p>
+</section>
+<section id="id51">
+<h4>Notes<a class="headerlink" href="#id51" title="Link to this heading">¶</a></h4>
+<ul class="simple">
+<li><p>This method updates the worksheet’s max column and row based on the provided indices.</p></li>
+<li><p>When writing a complex number, <cite>col</cite> is incremented before writing the imaginary part,
+and the updated column is used for adjusting the max column.</p></li>
+<li><p>Updates the <cite>positions</cite> attribute with the next available position in the worksheet.</p></li>
+</ul>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PDielec.GUI.MainTab.SpreadSheetManager.writeNextRow">
+<span class="sig-name descname"><span class="pre">writeNextRow</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">items</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">row</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">col</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">check</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/GUI/SpreadSheetManager.html#SpreadSheetManager.writeNextRow"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.MainTab.SpreadSheetManager.writeNextRow" title="Link to this definition">¶</a></dt>
+<dd><p>Writes a sequence of items as a row in a spread sheet, starting from a specified row and column into a grid structure.</p>
+<section id="id52">
+<h4>Parameters<a class="headerlink" href="#id52" title="Link to this heading">¶</a></h4>
+<dl class="simple">
+<dt>items<span class="classifier">list</span></dt><dd><p>A list of items to be written. Items can be strings, numbers, or nested lists where each sub-item is written in subsequent columns.</p>
+</dd>
+<dt>row<span class="classifier">int, optional</span></dt><dd><p>The row index to start writing from. If not specified, uses the current row position of the object.</p>
+</dd>
+<dt>col<span class="classifier">int, optional</span></dt><dd><p>The column index to start writing from. If not specified, uses the current column position of the object.</p>
+</dd>
+<dt>check<span class="classifier">str, optional</span></dt><dd><p>A check string written to the beginning of the row specified. Defaults to an empty string if not specified.</p>
+</dd>
+</dl>
+</section>
+<section id="id53">
+<h4>Returns<a class="headerlink" href="#id53" title="Link to this heading">¶</a></h4>
+<p>None</p>
+</section>
+<section id="id54">
+<h4>Notes<a class="headerlink" href="#id54" title="Link to this heading">¶</a></h4>
+<ul class="simple">
+<li><p>If <cite>col</cite> is 0, a warning message is printed.</p></li>
+<li><p>The <cite>row</cite> and <cite>col</cite> are updated as items are written, and <cite>row</cite> is incremented after writing all items.</p></li>
+<li><p>For items that are lists, each element is written in subsequent columns. This is applied recursively for nested lists.</p></li>
+<li><p><cite>self.positions</cite> is a dictionary holding the current positions (row, column) for different names, and <cite>self.name</cite> accesses the current object’s name.</p></li>
+</ul>
+</section>
+</dd></dl>
+
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="PDielec.GUI.MainTab.find_program_from_name">
+<span class="sig-prename descclassname"><span class="pre">PDielec.GUI.MainTab.</span></span><span class="sig-name descname"><span class="pre">find_program_from_name</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/Utilities.html#find_program_from_name"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.MainTab.find_program_from_name" title="Link to this definition">¶</a></dt>
+<dd><p>Determine the simulation program from a given filename.</p>
+<section id="id55">
+<h3>Parameters<a class="headerlink" href="#id55" title="Link to this heading">¶</a></h3>
+<dl class="simple">
+<dt>filename<span class="classifier">str</span></dt><dd><p>The complete path (absolute or relative) to a file.</p>
+</dd>
+</dl>
+</section>
+<section id="id56">
+<h3>Returns<a class="headerlink" href="#id56" title="Link to this heading">¶</a></h3>
+<dl class="simple">
+<dt>str</dt><dd><p>A string representing the simulation program the file is associated with. Possible returns are ‘phonopy’, ‘vasp’, ‘gulp’, ‘castep’, ‘abinit’, ‘qe’, ‘crystal’, ‘experiment’, ‘pdgui’, or an empty string if the program cannot be determined.</p>
+</dd>
+</dl>
+</section>
+<section id="id57">
+<h3>Notes<a class="headerlink" href="#id57" title="Link to this heading">¶</a></h3>
+<p>This function examines the file extension and, in some cases, the presence of specific files in the same directory, to determine the associated simulation program. It recognizes files from several popular materials simulation programs, such as ‘phonopy’, ‘gulp’, ‘vasp’, and others.</p>
+</section>
+<section id="examples">
+<h3>Examples<a class="headerlink" href="#examples" title="Link to this heading">¶</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">program</span> <span class="o">=</span> <span class="n">find_program_from_name</span><span class="p">(</span><span class="s1">&#39;./data/structure.castep&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">program</span><span class="p">)</span>
+<span class="c1"># Output: &#39;castep&#39;</span>
+
+<span class="n">program</span> <span class="o">=</span> <span class="n">find_program_from_name</span><span class="p">(</span><span class="s1">&#39;path/to/simulation/OUTCAR&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">program</span><span class="p">)</span>
+<span class="c1"># Depends on the presence of &#39;phonopy.yaml&#39;, could be &#39;phonopy&#39; or &#39;vasp&#39;</span>
+</pre></div>
+</div>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="PDielec.GUI.MainTab.pdgui_get_reader">
+<span class="sig-prename descclassname"><span class="pre">PDielec.GUI.MainTab.</span></span><span class="sig-name descname"><span class="pre">pdgui_get_reader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">program</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">names</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">qmprogram</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/PDielec/Utilities.html#pdgui_get_reader"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GUI.MainTab.pdgui_get_reader" title="Link to this definition">¶</a></dt>
+<dd><p>Get the appropriate reader based on the provided program and file names.</p>
+<p>This function determines the correct output reader to use based on the program specified and the presence of certain files
+in the provided directory or file names list. It supports various quantum mechanics and molecular dynamics
+programs as well as experiment data.</p>
+<section id="id58">
+<h3>Parameters<a class="headerlink" href="#id58" title="Link to this heading">¶</a></h3>
+<dl class="simple">
+<dt>program<span class="classifier">str</span></dt><dd><p>The name of the program or an empty string to attempt automatic detection. Supported programs include ‘vasp’,
+‘castep’, ‘gulp’, ‘crystal’, ‘abinit’, ‘qe’, ‘phonopy’, and ‘experiment’.</p>
+</dd>
+<dt>names<span class="classifier">list of str</span></dt><dd><p>A list containing either directory names or file names to be read or analysed.</p>
+</dd>
+<dt>qmprogram<span class="classifier">str</span></dt><dd><p>Specifies the quantum mechanics program used in conjunction with ‘phonopy’. It is only relevant if ‘program’
+is set to ‘phonopy’. Supported programs include ‘castep’, ‘vasp’, ‘gulp’, ‘crystal’, ‘abinit’, and ‘qe’.</p>
+</dd>
+</dl>
+</section>
+<section id="id59">
+<h3>Returns<a class="headerlink" href="#id59" title="Link to this heading">¶</a></h3>
+<dl class="simple">
+<dt>object</dt><dd><p>Returns an instance of the correct output reader based on the specified program and available files. If the
+necessary files are not found or if the program is not recognized, it returns None.</p>
+</dd>
+</dl>
+</section>
+<section id="id60">
+<h3>Notes<a class="headerlink" href="#id60" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>The readers returned are capable of parsing output files from their respective programs and extracting relevant data.</p></li>
+<li><p>For ‘phonopy’, additional handling is included to combine phonopy output with quantum mechanics results from another
+specified program.</p></li>
+<li><p>This function also handles directory or file existence checks and will print errors if required files are missing.</p></li>
+</ul>
+</section>
+<section id="id61">
+<h3>Examples<a class="headerlink" href="#id61" title="Link to this heading">¶</a></h3>
+<p>To get a VASP output reader for a directory containing VASP output files:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">reader</span> <span class="o">=</span> <span class="n">pdgui_get_reader</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;path/to/vasp/output&#39;</span><span class="p">],</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">reader</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>For phonopy with VASP as the quantum mechanics program:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">qm_reader</span> <span class="o">=</span> <span class="n">pdgui_get_reader</span><span class="p">(</span><span class="s1">&#39;phonopy&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;path/to/phonopy/files&#39;</span><span class="p">],</span> <span class="s1">&#39;vasp&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">qm_reader</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</dd></dl>
+
 </section>
 </section>
 
@@ -665,7 +1088,7 @@ and writes the settings and frequencies (if available) in a structured manner.</
                 <div class="context">
                   <span>Next</span>
                 </div>
-                <div class="title"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.NoteBook</span></code></div>
+                <div class="title">PDielec.GUI.NoteBook</div>
               </div>
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
             </a>
@@ -676,7 +1099,7 @@ and writes the settings and frequencies (if available) in a structured manner.</
                   <span>Previous</span>
                 </div>
                 
-                <div class="title"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.FitterTab</span></code></div>
+                <div class="title">PDielec.GUI.FitterTab</div>
                 
               </div>
             </a>
@@ -710,9 +1133,15 @@ and writes the settings and frequencies (if available) in a structured manner.</
         <div class="toc-tree-container">
           <div class="toc-tree">
             <ul>
-<li><a class="reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PDielec.GUI.MainTab</span></code></a><ul>
+<li><a class="reference internal" href="#">PDielec.GUI.MainTab</a><ul>
+<li><a class="reference internal" href="#classes">Classes</a></li>
+<li><a class="reference internal" href="#functions">Functions</a></li>
 <li><a class="reference internal" href="#module-contents">Module Contents</a><ul>
-<li><a class="reference internal" href="#classes">Classes</a><ul>
+<li><a class="reference internal" href="#PDielec.GUI.MainTab.Debug"><code class="docutils literal notranslate"><span class="pre">Debug</span></code></a><ul>
+<li><a class="reference internal" href="#PDielec.GUI.MainTab.Debug.print"><code class="docutils literal notranslate"><span class="pre">Debug.print()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.GUI.MainTab.Debug.state"><code class="docutils literal notranslate"><span class="pre">Debug.state()</span></code></a></li>
+</ul>
+</li>
 <li><a class="reference internal" href="#PDielec.GUI.MainTab.MainTab"><code class="docutils literal notranslate"><span class="pre">MainTab</span></code></a><ul>
 <li><a class="reference internal" href="#PDielec.GUI.MainTab.MainTab.getFullFileName"><code class="docutils literal notranslate"><span class="pre">MainTab.getFullFileName()</span></code></a></li>
 <li><a class="reference internal" href="#PDielec.GUI.MainTab.MainTab.getRelativeFileName"><code class="docutils literal notranslate"><span class="pre">MainTab.getRelativeFileName()</span></code></a></li>
@@ -731,8 +1160,17 @@ and writes the settings and frequencies (if available) in a structured manner.</
 <li><a class="reference internal" href="#PDielec.GUI.MainTab.MainTab.writeSpreadsheet"><code class="docutils literal notranslate"><span class="pre">MainTab.writeSpreadsheet()</span></code></a></li>
 </ul>
 </li>
+<li><a class="reference internal" href="#PDielec.GUI.MainTab.SpreadSheetManager"><code class="docutils literal notranslate"><span class="pre">SpreadSheetManager</span></code></a><ul>
+<li><a class="reference internal" href="#PDielec.GUI.MainTab.SpreadSheetManager.close"><code class="docutils literal notranslate"><span class="pre">SpreadSheetManager.close()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.GUI.MainTab.SpreadSheetManager.delete"><code class="docutils literal notranslate"><span class="pre">SpreadSheetManager.delete()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.GUI.MainTab.SpreadSheetManager.openWorkSheet"><code class="docutils literal notranslate"><span class="pre">SpreadSheetManager.openWorkSheet()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.GUI.MainTab.SpreadSheetManager.selectWorkSheet"><code class="docutils literal notranslate"><span class="pre">SpreadSheetManager.selectWorkSheet()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.GUI.MainTab.SpreadSheetManager.write"><code class="docutils literal notranslate"><span class="pre">SpreadSheetManager.write()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.GUI.MainTab.SpreadSheetManager.writeNextRow"><code class="docutils literal notranslate"><span class="pre">SpreadSheetManager.writeNextRow()</span></code></a></li>
 </ul>
 </li>
+<li><a class="reference internal" href="#PDielec.GUI.MainTab.find_program_from_name"><code class="docutils literal notranslate"><span class="pre">find_program_from_name()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.GUI.MainTab.pdgui_get_reader"><code class="docutils literal notranslate"><span class="pre">pdgui_get_reader()</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -746,9 +1184,9 @@ and writes the settings and frequencies (if available) in a structured manner.</
       
     </aside>
   </div>
-</div><script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js?v=01b4f342"></script>
-    <script src="../../../../_static/doctools.js?v=888ff710"></script>
-    <script src="../../../../_static/sphinx_highlight.js?v=4825356b"></script>
-    <script src="../../../../_static/scripts/furo.js?v=32e29ea5"></script>
+</div><script src="../../../../_static/documentation_options.js?v=23ce250a"></script>
+    <script src="../../../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../../_static/scripts/furo.js?v=4e2eecee"></script>
     </body>
 </html>

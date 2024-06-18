@@ -1,5 +1,5 @@
-:py:mod:`PDielec.Calculator`
-============================
+PDielec.Calculator
+==================
 
 .. py:module:: PDielec.Calculator
 
@@ -9,12 +9,18 @@
 
 
 
-Module Contents
----------------
+Attributes
+----------
+
+.. autoapisummary::
+
+   PDielec.Calculator.d2byamuang2
+   PDielec.Calculator.speed_light_si
+   PDielec.Calculator.wavenumber
 
 
 Functions
-~~~~~~~~~
+---------
 
 .. autoapisummary::
 
@@ -68,6 +74,8 @@ Functions
    PDielec.Calculator.waterman_truell_scattering
 
 
+Module Contents
+---------------
 
 .. py:function:: _brug_iter_error(epsbr, eps1, eps2, shape, L, f1, size)
 
@@ -824,8 +832,14 @@ Functions
        The born charges (Z) stored as
        `[[Z1x, Z1y, Z1z], [Z2x, Z2y, Z2z], [Z3x, Z3y, Z3z]]`,
        where 1, 2, 3 are the directions of the field and x, y, z are the coordinates of the atom.
+   masses : array_like
+       The atomic masses in atomic units
+   epsilon_inf : 3x3 array
+       Epsilon infinity
    qlist : list
        A list of direction vectors.
+   reader : a reader object
+       a reader object
 
    Returns
    -------
@@ -1119,4 +1133,12 @@ Functions
    wave propagation in the medium. This model is particularly useful in the study
    of wave scattering in composite materials and biological tissues.
 
+
+.. py:data:: d2byamuang2
+
+.. py:data:: speed_light_si
+   :value: 299792458.0
+
+
+.. py:data:: wavenumber
 

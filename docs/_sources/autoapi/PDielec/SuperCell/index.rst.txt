@@ -1,5 +1,5 @@
-:py:mod:`PDielec.SuperCell`
-===========================
+PDielec.SuperCell
+=================
 
 .. py:module:: PDielec.SuperCell
 
@@ -9,21 +9,28 @@
 
 
 
-Module Contents
----------------
-
 Classes
-~~~~~~~
+-------
 
 .. autoapisummary::
 
    PDielec.SuperCell.SuperCell
 
 
+Functions
+---------
 
+.. autoapisummary::
+
+   PDielec.SuperCell.print_ints
+   PDielec.SuperCell.print_reals
+   PDielec.SuperCell.print_strings
+
+
+Module Contents
+---------------
 
 .. py:class:: SuperCell(aUnitCell, anImageSpecifier)
-
 
    Hold super-cell information; the unit cell and the super-cell size.
 
@@ -54,6 +61,7 @@ Classes
 
    :class:`~PDielec.UnitCell.UnitCell`
 
+
    .. py:method:: calculateBonds()
 
       Calculate the bonding in the supercell.
@@ -73,6 +81,7 @@ Classes
       the bonds are not recalculated, just extended into the super-cell
 
 
+
    .. py:method:: calculateCentreOfBox()
 
       This is not the centre of mass. We calculate the centre of the super-cell in cartesian coordinates.
@@ -85,6 +94,7 @@ Classes
       -------
       vector
           The centre of the images in the box
+
 
 
    .. py:method:: calculateCentreOfMass(output='xyz')
@@ -110,6 +120,7 @@ Classes
           coordinates (numpy.ndarray), and fractional coordinates (numpy.ndarray) of the center of mass.
 
 
+
    .. py:method:: calculateNormalModes(modes)
 
       Calculate and return the normal modes of the supercell.
@@ -132,6 +143,7 @@ Classes
           number of images.
 
 
+
    .. py:method:: calculateXYZ()
 
       Calculate and return the cartesian coordinates of the supercell.
@@ -146,6 +158,7 @@ Classes
       -------
       output : array
           The Cartesian coordinates of the supercell.
+
 
 
    .. py:method:: createImages(anImageSpecifier)
@@ -163,6 +176,7 @@ Classes
       -------
       list
           A list of created images.
+
 
 
    .. py:method:: getBoundingBox(originABC=[0, 0, 0])
@@ -195,6 +209,7 @@ Classes
       The function calculates the center of the bounding box, re-centers the corners to the provided origin, and then builds edges between these corners in XYZ space.
 
 
+
    .. py:method:: getElementNames()
 
       Calculate and return the element names of the supercell.
@@ -207,6 +222,7 @@ Classes
       -------
       list
           The element names of the supercell.
+
 
 
    .. py:method:: print()
@@ -233,5 +249,77 @@ Classes
       sc.print()
       ```
 
+
+
+.. py:function:: print_ints(title, ints, no_per_line=8, format='{:9d}', file=sys.stdout, separator=' ')
+
+   Print ints data.
+
+   Parameters
+   ----------
+   title : str
+      A title for the print
+   ints : a list of ints
+      A list of integers to be printed
+   no_per_line : int, optional
+      The number of  integers per line of output
+   format : str, optional 
+       a format descriptor (defaults to 9d)
+   file : int, optional 
+       a file descriptor (defaults to stdout)
+   separator : str
+       the separator to use between ints (defaults to space)
+
+   Returns
+   -------
+   None
+
+
+.. py:function:: print_reals(title, reals, no_per_line=8, format='{:9.2f}', file=sys.stdout, separator=' ')
+
+   Print reals data
+
+   Parameters
+   ----------
+   title : str
+      A title for the print
+   reals : a list of reals
+      A list of reals to be printed
+   no_per_line : int, optional
+      The number of  integers per line of output (default is 8)
+   format : str, optional 
+       a format descriptor (defaults to 9.2f)
+   file : int, optional 
+       a file descriptor (defaults to stdout)
+   separator : str
+       the separator to use between ints (defaults to space)
+
+   Returns
+   -------
+   None
+
+
+.. py:function:: print_strings(title, strings, no_per_line=8, format='{:9s}', file=sys.stdout, separator=' ')
+
+   Print strings data.
+
+   Parameters
+   ----------
+   title : str
+      A title for the print
+   strings : a list of strings
+      A list of strings to be printed
+   no_per_line : int, optional
+      The number of  integers per line of output
+   format : str, optional 
+       a format descriptor (defaults to 9s)
+   file : int, optional 
+       a file descriptor (defaults to stdout)
+   separator : str
+       the separator to use between ints (defaults to space)
+
+   Returns
+   -------
+   None
 
 

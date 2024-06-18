@@ -461,6 +461,7 @@ def longitudinal_modes(frequencies, normal_modes, born_charges, masses, epsilon_
     qlist : list
         A list of direction vectors.
     reader : a reader object
+        a reader object
 
     Returns
     -------

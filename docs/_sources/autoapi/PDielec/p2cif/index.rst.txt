@@ -1,5 +1,5 @@
-:py:mod:`PDielec.p2cif`
-=======================
+PDielec.p2cif
+=============
 
 .. py:module:: PDielec.p2cif
 
@@ -32,18 +32,2836 @@
 
 
 
-Module Contents
----------------
+Classes
+-------
+
+.. autoapisummary::
+
+   PDielec.p2cif.AbinitOutputReader
+   PDielec.p2cif.CastepOutputReader
+   PDielec.p2cif.CrystalOutputReader
+   PDielec.p2cif.GulpOutputReader
+   PDielec.p2cif.PhonopyOutputReader
+   PDielec.p2cif.QEOutputReader
+   PDielec.p2cif.VaspOutputReader
 
 
 Functions
-~~~~~~~~~
+---------
 
 .. autoapisummary::
 
    PDielec.p2cif.main
    PDielec.p2cif.read_a_file
    PDielec.p2cif.set_affinity_on_worker
+
+
+Module Contents
+---------------
+
+.. py:class:: AbinitOutputReader(filenames)
+
+   Bases: :py:obj:`PDielec.GenericOutputReader.GenericOutputReader`
+
+
+   Read the contents of a directory containing Abinit input and output files.
+
+   Inherits from :class:`~PDielec.GenericOutputReader.GenericOutputReader`
+
+   Parameters
+   ----------
+   filenames : list or str
+       A list of filenames or a single filename string corresponding to the Abinit output files to be processed.
+
+   Attributes
+   ----------
+   type : str
+       A string descriptor for the type of files being dealt with, set to 'Abinit output files'.
+   _acell : NoneType
+       Initially set to None, this attribute is intended to store cell dimensions after being processed.
+   _charges : NoneType
+       Initially set to None, this attribute is intended to store charge information after being processed.
+
+   Notes
+   -----
+   This method calls the `__init__` method of its superclass, `GenericOutputReader`, passing the `filenames` to it for any necessary higher-level initialization tasks. It then sets the `type` attribute to describe the types of files it will process and initializes `_acell` and `_charges` attributes to `None`, indicating that they are yet to be defined or processed.
+
+
+   .. py:method:: _read_acell(line)
+
+      Read and convert cell parameters from bohr to Ångström.
+
+      Parameters
+      ----------
+      line : str
+          A string containing the cell parameters in Ångström units separated by spaces. This string should start with an identifier followed by three numerical values corresponding to the cell parameters.
+
+      Returns
+      -------
+      None
+          This function does not return a value but updates the `_acell` attribute of the object.
+
+
+
+   .. py:method:: _read_band(line)
+
+      Read the number of bands from a line and update the band count.
+
+      This private method parses a given line to extract the number of bands
+      and updates the `nbands` attribute of the object accordingly.
+
+      Parameters
+      ----------
+      line : str
+          The line containing the band information, expected to have the number
+          of bands as its second element when split by whitespace.
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: _read_born_charges(line)
+
+      Read the born charges from the output file.
+
+      Each row of the output refers to a given field direction.
+      Each column in the row refers to the atomic displacement,
+      so the output is arranged as follows: ::
+
+          [[a1x, a1y, a1z],
+           [a2x, a2y, a2z],
+           [a3x, a3y, a3z]]
+
+      where 1, 2, 3 are the field directions and x, y, z are the atomic displacements.
+
+      Parameters
+      ----------
+      line : str
+          Not used
+
+      Returns
+      -------
+      numpy.ndarray
+          A 2D array where each row represents a field direction and each column represents an atomic displacement in the x, y, and z directions.
+
+
+
+   .. py:method:: _read_dynamical(line)
+
+      Read and populate the Hessian matrix from a file.
+
+      This method takes a line from a file, reads the dynamical matrix data from subsequent lines, and computes the Hessian matrix from these data. 
+
+      Parameters
+      ----------
+      line : str
+          The current line being read from the file. This parameter is not directly used in the function but indicates the starting point in the file from where to read the dynamical matrix data.
+
+      Returns
+      -------
+      None
+
+      Notes
+      -----
+      This method assumes the file format is structured in a specific way, where each line after the first four lines (which are skipped) contains the indices and value needed to populate the Hessian matrix.
+      The Hessian matrix is used in molecular dynamics and vibrational analysis to describe the second-order interaction between atoms.
+
+      See Also
+      --------
+      _dynamical_matrix : Method called with the computed Hessian matrix.
+
+
+
+
+   .. py:method:: _read_electrons(line)
+
+      Read and set the number of electrons from a given line.
+
+      This method sets the number of electrons for the object based on the string input. It expects the string to be formatted in a specific way where the seventh item (index 6, as indexing is zero-based) when split by whitespace, is convertible to float and represents the number of electrons.
+
+      Parameters
+      ----------
+      line : str
+          The input string containing electron information. It's expected that the seventh item in this string, when split by whitespace, can be converted to a float.
+
+      Returns
+      -------
+      None
+
+      Notes
+      -----
+      This method modifies the object's state by setting the 'electrons' attribute.
+
+
+
+   .. py:method:: _read_energy_cutoff(line)
+
+      Process and update the energy cutoff value from a given line.
+
+      This function reads a line containing energy information, converts the energy value from Hartree to electron volts (eV), and updates the object's energy_cutoff attribute accordingly.
+
+      Parameters
+      ----------
+      line : str
+          A string containing the energy cutoff information. It is expected that the energy value is in Hartree units and is the second token in the string when split by whitespace.
+
+      Returns
+      -------
+      None
+
+
+
+
+   .. py:method:: _read_epsilon(line)
+
+      Read zero frequency optical permittivity
+
+      Parse epsilon related data, and populates the `zerof_optical_dielectric` array
+      based on the read data. 
+
+      Parameters
+      ----------
+      line : str
+          The current line being processed. This parameter is not directly used
+          in the function but typically represents the context in which this method is called.
+
+      Returns
+      -------
+      None
+
+      This method does not return any value.
+
+      See Also
+      --------
+      file_descriptor : An attribute that should be an open file object from which
+                        the data is read.
+
+      zerof_optical_dielectric : An attribute, typically a 2D list or an array, that this
+                                 method updates based on the data read from the file.
+
+
+
+   .. py:method:: _read_kpoint_grid(line)
+
+      Parse and set the k-point grid from a given line of text.
+
+      Parameters
+      ----------
+      line : str
+          A string containing k-point grid information, expected to have integers
+          at specific positions (1st, 5th, and 9th words).
+
+      Returns
+      -------
+      None
+
+      Notes
+      -----
+      This function is intended to be used internally within its class.
+      It reads a line of text, extracts integers from specific positions,
+      and sets them as the k-point grid dimensions for the instance.
+
+
+
+   .. py:method:: _read_kpoints(line)
+
+      Read and store the k-points from a line of text.
+
+      This method processes a line of text to extract the number of k-points
+      and stores it in the instance variable `kpoints`.
+
+      Parameters
+      ----------
+      line : str
+          A line of text that includes the number of k-points, expected to be
+          in a format where the number of k-points follows a keyword, separated
+          by spaces (e.g., "KPOINTS 100").
+
+      Returns
+      -------
+      None
+
+      Notes
+      -----
+      The method does not return any value but updates the instance variable
+      `kpoints` with the integer value of the k-points extracted from the input line.
+
+
+
+   .. py:method:: _read_lattice_vectors(line)
+
+      Read lattice vectors from a line of a file and update the object state.
+
+      Reads three lines starting from the given line from the file associated with the object's file descriptor, interprets them as lattice vectors, scales them according to the object's _acell attribute, and updates the object by appending a new `UnitCell` to its `unit_cells` list and updating the `ncells` and `volume` attributes.
+
+      Parameters
+      ----------
+      line : str
+          The line from which to start reading lattice vectors. This line should contain the first lattice vector.
+
+      Returns
+      -------
+      None
+
+      Notes
+      -----
+      This method modifies the internal state of the object by adding a new `UnitCell` to `unit_cells`, updating `ncells` to the new total number of unit cells, and updating `volume` to the volume of the most recently added `UnitCell`.
+
+      This method assumes that `line` is formatted correctly, with lattice vector components being float-convertible strings separated by spaces. It also assumes that `self.file_descriptor` is an open file object positioned appropriately to read the subsequent lines for the b and c vectors.
+
+      This method requires that `self._acell` is already set to an iterable of three scaling factors corresponding to each of the a, b, and c lattice vectors.
+
+      See Also
+      --------
+      UnitCell : The class used to represent a unit cell, which takes vectors a, b, and c as parameters to its constructor.
+
+
+
+   .. py:method:: _read_masses(line)
+
+      Parse and save masses from a given line of text.
+
+      Extracts and converts to float each mass value from a string,
+      excluding the first token, and saves them into `masses_per_type`.
+
+      Parameters
+      ----------
+      line : str
+          The input string containing mass values starting from the second token.
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: _read_natom(line)
+
+      Reads and processes the number of atoms from a given line.
+
+      This method reads the number of atoms from a given line of text, sets the object's 'nions' attribute to this number, and initializes the '_charges' attribute to a zero array with shape `(nions, 3, 3)`. This method does not return any value.
+
+      Parameters
+      ----------
+      line : str
+          A line of text containing the number of atoms.
+
+      Returns
+      -------
+      None
+
+      See Also
+      --------
+      numpy.zeros : Used to initialize the '_charges' attribute.
+
+
+
+   .. py:method:: _read_ntypat(line)
+
+      Read and set the number of species from a given line.
+
+      Parameters
+      ----------
+      line : str
+          A string containing the information of the number of species, 
+          where the relevant data is expected to be in the second token 
+          when splitting the string by whitespace.
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: _read_occupancy(line)
+
+      Read and calculate the total occupancy from a line or lines in a file.
+
+      This method reads occupancies from a given line, and if necessary, continues reading the next lines from the file until it gathers occupancies equal to the number of bands (`self.nbands`). It then calculates the sum of these occupancies and updates the total number of electrons.
+
+      Parameters
+      ----------
+      line : str
+          A string containing the occupancies for one or multiple bands. Each occupancy is expected to be separated by a space. The first item, if present, is ignored as it is not an occupancy value.
+
+      Returns
+      -------
+      None
+
+      Attributes Modified
+      -------------------
+      self.electrons : int
+          Sets the `self.electrons` attribute to the integer value closest to the total sum of the occupancies read. The total is slightly adjusted before conversion to ensure correct rounding.
+
+      Raises
+      ------
+      ValueError
+          If the input line does not contain the expected format or types for occupancies.
+
+      Notes
+      -----
+      - This method modifies the state of the object by setting `self.electrons` based on the read occupancies.
+      - It implicitly relies on `self.nbands` to know how many occupancy values need to be read.
+
+
+
+   .. py:method:: _read_output_files()
+
+      Define the strings to be used for searching and Read the Abinit file names
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: _read_pressure(line)
+
+      Read and update the pressure attribute from a line of text.
+
+      Parameters
+      ----------
+      line : str
+          A line of text containing pressure data. The pressure value is expected to be the eighth element (index 7) in a space-separated list.
+
+      Returns
+      -------
+      None
+
+      Notes
+      -----
+      The function expects `line` to be a well-formatted string containing at least 8 space-separated values. The eighth value is converted to a float and stored in the `pressure` attribute of the class instance. This function does not return any value.
+
+
+
+
+   .. py:method:: _read_total_energy(line)
+
+      Read and store total energy values from a line.
+
+      Parameters
+      ----------
+      line : str
+          A string containing energy information, expected to have a numeric value at the 5th position (index 4) which represents energy in Hartrees.
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: _read_typat(line)
+
+      Process and read atom type patterns from a line of text.
+
+      Parameters
+      ----------
+      line : str
+          The line of text containing atom type patterns to be processed.
+
+      Returns
+      -------
+      None
+
+      Attributes Set
+      --------------
+      atom_type_list : list of int
+          This list contains the atom type indices from the processed line, adjusted by -1.
+      masses : list of optional[float]
+          A list initialized with None values, set to the masses corresponding to the atom types
+          read from the input line. The length of the list is equal to the number of ions (`nions`).
+      ions_per_type : list of int
+          Initialized as a list of zeros with length equal to the number of species (`nspecies`). Each
+          entry represents the number of ions for each species, updated based on the atom types read.
+      species_list : list of str, optional
+          A list of species names corresponding to the atom types if the species attribute is set. This
+          list is used to assign element names to the unit cells.
+
+
+
+   .. py:method:: _read_xred(line)
+
+      Read the fractional coordinates from a file and update the last unit cell's fractional coordinates and element names.
+
+      Parameters
+      ----------
+      line : str
+          The initial line containing part of the fractional coordinates.
+
+      Returns
+      -------
+      None
+
+      Notes
+      -----
+      - This method assumes that the current context includes attributes for 'nions' (the number of ions),
+        'file_descriptor' (a file object for reading), 'unit_cells' (a list of unit cell objects),
+        and 'species' (a list of element species names) along with 'atom_type_list' (a list of indices for species).
+      - It is further assumed that the 'unit_cells' list has at least one unit cell object that supports
+        'set_fractional_coordinates' and 'set_element_names' methods for updating its state.
+      - The method reads a line, splits it to extract fractional coordinates, and then reads additional lines
+        corresponding to the remaining ions ('nions' - 1).
+      - The extracted fractional coordinates are stored in a nested list, which is passed to the last unit cell's
+        'set_fractional_coordinates' method.
+      - If the 'species' attribute is provided along with a coherent 'atom_type_list', the method will also set element names for the 
+        last unit cell using these mappings.
+
+      No direct returns but updates the state of the last unit cell in the 'unit_cells' list by setting its fractional coordinates and optionally, element names.
+
+
+
+
+   .. py:method:: _read_znucl(line)
+
+      Parse and store atomic species information from a line input.
+
+      This method extracts atomic species from a given line, converts them to 
+      their element representation using their atomic numbers, and stores them 
+      in a list. The total number of species processed is also updated.
+
+      Parameters
+      ----------
+      line : str
+          A string containing atomic numbers of elements, typically read from a file.
+
+      Returns
+      -------
+      None
+
+      Notes
+      -----
+      - Atomic numbers in the line are expected to be separated by space.
+      - The atomic numbers are converted to integers with a small increment to 
+        account for any floating-point representation issues.
+      - This method updates the instance attributes `species` with the element 
+        names capitalized, and `nspecies` with the count of unique species.
+
+      See Also
+      --------
+      atomic_number_to_element : Dictionary mapping atomic numbers to element symbols.
+
+
+
+.. py:class:: CastepOutputReader(filenames)
+
+   Bases: :py:obj:`PDielec.GenericOutputReader.GenericOutputReader`
+
+
+   Read the contents of a Castep output file.
+
+   Inherits from :class:`~PDielec.GenericOutputReader.GenericOutputReader`
+
+   Parameters
+   ----------
+   filenames : list
+       A list of filenames (strings) intended for initialization. The first filename in the list is used to determine the seedname and the types of files to be created (.castep and .phonon).
+
+   Notes
+   -----
+   - This method assumes that the filenames provided in the list relate to CASTEP calculation outputs. Specifically, it looks for filenames ending in '.castep' or '.phonon' to set up the necessary output files for the instance.
+   - The method does not return a value but initializes the instance with the necessary attributes for further processing and analysis of CASTEP output files.
+
+
+   .. py:method:: _read_born_charges(line)
+
+      Read the born charges from the castep file.
+
+      This function reads the born charges from a provided castep file and arranges the output tensor. Initially, each column of the output refers to a given field direction, and each row refers to the atomic displacement, organizing the numbers in the format `[[a1x a2x a3x], [a1y a2y a3y], [a1z a2z a3z]]`. The function then rearranges these numbers into the desired format: `[[a1x a1y a1z], [a2x a2y a2z], [a3x a3y a3z]]`, where 1, 2, 3 are the field directions, and x, y, z represent the atomic displacements.
+
+      Parameters
+      ----------
+      line : str
+          The initial line from which to start reading in the file. This parameter is part of the method signature for demonstration but is immediately overwritten by the next line read from the file, hence not directly used.
+
+      Returns
+      -------
+      ndarray
+          An array where each row represents the born charges for a particular atomic displacement arranged in the format `[[a1x a1y a1z], [a2x a2y a2z], [a3x a3y a3z]]`.
+
+
+
+   .. py:method:: _read_cellcontents(line)
+
+      Read the cell contents from an input file and updates the class attributes accordingly.
+
+      This method reads the real lattice vectors, current cell volume, total number of ions, 
+      species, and fractional coordinates from the input file, and updates the relevant class 
+      attributes including `unit_cells`, `volume`, `volumes`, `nions`, `nspecies`, 
+      `atom_type_list`, `species`, `ions_per_type`, along with setting the fractional 
+      coordinates and element names for the latest unit cell.
+
+      Parameters
+      ----------
+      line : str
+          The initial line from which to start reading. This parameter is not used in the 
+          current implementation and could be omitted or replaced depending on the method's 
+          usage context.
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: _read_convergence(line)
+
+      Reads convergence data from a file and updates internal lists with values.
+
+      This internal method reads specific lines from a file that is already opened and updates internal lists for de-ionization energy, maximum force (fmax), maximum displacement (dr_max), and maximum stress (smax) based on the values found in those lines.
+
+      Parameters
+      ----------
+      line : str
+          Not used but overwritten
+
+      Returns
+      -------
+      None
+
+      Notes
+      -----
+      This function assumes that the file being read follows a specific format where the required values are found at known line intervals and in a consistent column position (index 3 after splitting the line). 
+
+      The function does not return any value, but it updates the internal state of the object it is a part of.
+
+
+
+   .. py:method:: _read_dielectric(line)
+
+      Read and parse dielectric data from a file.
+
+      This method reads dielectric data from the currently opened file associated with the object. It updates the object's properties for zero-frequency optical and static dielectric constants.
+
+      Parameters
+      ----------
+      line : str
+          The initial line from which to start reading. Note: this parameter is actually unused in the function's current implementation, and reading starts from the next line of the file descriptor's current position.
+
+      Returns
+      -------
+      None
+
+      Notes
+      -----
+      The function assumes that the file's current position is at the correct start point for reading dielectric data. It reads three consecutive lines from the file, each expected to contain six floating point numbers. The first three numbers of each line are appended to 'zerof_optical_dielectric', and the latter three numbers to 'zerof_static_dielectric'. 
+
+      This method modifies the state of the object by updating the 'zerof_optical_dielectric' and 'zerof_static_dielectric' lists with new data read from the file. 
+
+
+
+   .. py:method:: _read_ediff(line)
+
+      Reads and sets the energy difference from a given line of text.
+
+      This is a private method intended to parse and store the energy difference
+      from a standardized formatted line of text.
+
+      Parameters
+      ----------
+      line : str
+          A line of text, expected to contain numerical values from which
+          the energy difference (ediff) is parsed. The value for ediff is
+          expected to be the third element when splitting the line by whitespace.
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: _read_energies(line)
+
+      Read and store energy values from a given line.
+
+      Extracts energy-related data from a specified line and updates relevant attributes of the object. Assumes that the sixth (index 5) element in the second line contains the final free energy, the fifth (index 4) element in the given line contains the DFT energy, which is appended to a list, and also set as the final energy without entropy. Additionally, updates the number of geometry steps based on the length of the energiesDFT list.
+
+      Parameters
+      ----------
+      line : str
+          The line from which energy values are extracted.
+
+      Returns
+      -------
+      None
+
+      Notes
+      -----
+      This method expects that 'line' follows a specific format, where the fifth (index 4) element is the final energy without entropy and, on the subsequent line, the sixth (index 5) element is the final free energy. It further assumes 'self.file_descriptor' to be an open file object positioned at the line immediately following the line containing energy information.
+
+      The method updates four attributes of the object:
+      - Appends the energy value to 'self.energiesDFT'.
+      - Sets 'self.final_energy_without_entropy' to the extracted energy value.
+      - Reads the next line and sets 'self.final_free_energy' to the extracted value.
+      - Updates 'self.geomsteps' to represent the total number of energy steps recorded.
+
+
+
+
+   .. py:method:: _read_energies2(line)
+
+      Parse a line of text to read energies and update properties.
+
+      This method reads energies from a given line of text and updates various energy
+      related properties of the object.
+
+      Parameters
+      ----------
+      line : str
+          A line of text that contains energy values.
+
+      Notes
+      -----
+      This method specifically updates the `energiesDFT`, `final_energy_without_entropy`,
+      `final_free_energy`, and `geomsteps` attributes of the object based on the energy
+      value parsed from the given line. The energy value is expected to be located at
+      the fourth position (index 3) when the line is split by spaces.
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: _read_energies3(line)
+
+      Read energy values from a line of text and append to class attributes.
+
+      This method parses a line of text, extracts the energy value from the sixth
+      position (index 5), converts it into a float, and appends it to the class's
+      energiesDFT_disp attribute. It also updates the class attributes for the final
+      energy without entropy, the final free energy, and the total number of geometry
+      steps (geomsteps) based on the current energy readings.
+
+      Parameters
+      ----------
+      line : str
+          A string containing energy information, expected to have at least six
+          words with the energy value at the sixth position.
+
+      Returns
+      -------
+      None
+
+      Notes
+      -----
+      This method directly modifies the attributes of the class instance it belongs
+      to. It does not return any value.
+
+
+
+   .. py:method:: _read_energy_cutoff(line)
+
+      Extract the energy cutoff value from a given line and store it in the object.
+
+      This method reads a line of text, expects to find a numeric value at the 7th position (0-indexed) in a space-separated list, converts this value to a float, and stores it as the energy cutoff property of the object.
+
+      Parameters
+      ----------
+      line : str
+          A string containing the energy cutoff value at the 7th position in a space-separated list.
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: _read_external_pressure(line)
+
+      Parse an external pressure value from a string and set it.
+
+      Parameters
+      ----------
+      line : str
+          A string containing the pressure value to parse and set. The expected format is unspecified in this context, but the pressure value should be at the third position (index 2) when the string is split by whitespace.
+
+      Returns
+      -------
+      None
+
+      Notes
+      -----
+      This function updates the `pressure` attribute of the class instance based on the value parsed from the input string. The specific use case and format of the input string are not detailed, assuming some domain-specific knowledge is required.
+
+
+
+   .. py:method:: _read_frequencies(line)
+
+      Read and process frequencies, intensities, and normal modes from  phonon file.
+
+      This method assumes a specific format of the input file, where frequencies, intensities, and normal mode coordinates are listed in a sequential order. Frequencies and intensities are read first, followed by normal mode vectors for each mode.
+
+      Parameters
+      ----------
+      line : str
+          The current line in the file from which to start reading the frequency data.
+
+      Returns
+      -------
+      None
+
+      Attributes Modified
+      -------------------
+      mass_weighted_normal_modes : list
+          A list of mass-weighted normal modes. Each normal mode is represented as a list of 3D vectors (lists) for each ion in the structure.
+      frequencies : list
+          A list of frequency values read from the file.
+      _intensities : list
+          A list of intensity values corresponding to each frequency.
+
+      Notes
+      -----
+      - This method directly modifies the instance attributes `mass_weighted_normal_modes`, `frequencies`, and `_intensities`.
+      - It is assumed that `self.file_descriptor` is an open file object from which the data is read.
+      - The method relies on the internal variable `self._nbranches` to determine the number of modes to read, and `self.nions` for the number of ions per mode.
+
+
+
+   .. py:method:: _read_kpoint_grid(line)
+
+      Parse and set the k-point grid dimensions from the given line.
+
+      This method updates the `kpoint_grid` attribute of the object with the k-point grid dimensions obtained from parsing the specified line. The k-point grid dimensions are expected to be located at the 8th, 9th, and 10th positions (1-based indexing) in the line, separated by spaces.
+
+      Parameters
+      ----------
+      line : str
+          The line from which the k-point grid dimensions are to be extracted.
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: _read_kpoints(line)
+
+      Extract number of k-points from a given line of text and update the instance variable.
+
+      Parameters
+      ----------
+      line : str
+          The line of text from which the number of k-points is extracted.
+
+      Returns
+      -------
+      None
+
+      Notes
+      -----
+      This function assumes the number of k-points is always located at the 6th position (index 5) when the line is split by whitespace. It directly updates the `kpoints` attribute of the class instance.
+
+
+
+   .. py:method:: _read_masses(line)
+
+      Read and parse masses from a file, categorizing them by species.
+
+      This method reads lines from an opened file associated with the instance, extracting the species name, its mass, and the number of ions per species. It updates instance attributes to store this information, organizing masses both by type and in total.
+
+      Parameters
+      ----------
+      line : str
+          The initial line from which to start reading in the file. This parameter is part of the method signature for demonstration but is immediately overwritten by the next line read from the file, hence not directly used.
+
+      Returns
+      -------
+      None
+
+
+
+
+   .. py:method:: _read_nbands(line)
+
+      Extracts the number of bands from a given line and sets it to the 'nbands' attribute of the class.
+
+      Parameters
+      ----------
+      line : str
+          The line from which the number of bands is to be extracted. It is expected that the fifth element (index 4) when splitting the line by spaces is an integer representing the number of bands.
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: _read_nbranches(line)
+
+      Parse the number of branches from a line of text from the phonon file and set it to an instance variable.
+
+      Parameters
+      ----------
+      line : str
+          The line of text containing the number of branches information. 
+          It is expected that the number of branches can be found at the fourth position 
+          (index 3) when splitting the line by whitespace.
+
+      Returns
+      -------
+      None
+
+      Notes
+      -----
+      This function does not return anything as it sets the parsed number directly to an instance variable named `_nbranches`.
+
+
+
+   .. py:method:: _read_nelect(line)
+
+      Extracts the number of electrons from a line and assigns it.
+
+      Extracts the number of electrons from a string (line) by parsing it and assigns the value to the instance variable `electrons`.
+
+      Parameters
+      ----------
+      line : str
+          A string (typically a line from a file) that contains the number of electrons among other text, expected to be found at the fifth position (index 4) when the string is split.
+
+      Returns
+      -------
+      None
+
+
+
+
+   .. py:method:: _read_output_files()
+
+      Define the strings needed for searching the files
+      process the output files
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: _read_pseudoatom(line)
+
+      Read and process a pseudoatom line from a data file.
+
+      Parameters
+      ----------
+      line : str
+          A string representing a line from a data file that contains information about a pseudoatom.
+
+      Returns
+      -------
+      None
+
+      Notes
+      -----
+      This method processes a line from a data file, extracting the species from the sixth (index 5) position in the whitespace-separated list. The species name is capitalized and stored, and indices related to the species and ion types are updated accordingly.
+
+
+
+   .. py:method:: _read_pspot(line)
+
+      Read potential spots from a file and store them.
+
+      This method reads a specific number of lines determined by the `nspecies` attribute from
+      the file associated with `file_descriptor`, processes them to extract potential spot
+      identifiers and their corresponding values, and stores them in the `_pspots` attribute.
+
+      Parameters
+      ----------
+      line : str
+          The line from which the reading starts. This initial line is often a header or
+          an indicator that the following lines contain the potential spots data.
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: _read_skip4(line)
+
+      Read and skip the next four lines from the current file position.
+
+      This method reads and discards the next four lines from the file
+      associated with this object's file_descriptor attribute.
+
+      Parameters
+      ----------
+      line : str
+          This parameter is not used in the function body and serves no purpose
+          in the context of this method's operation.
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: _read_spin(line)
+
+      Read and set the spin value from a given line of text.
+
+      The spin is extracted from the sixth element (index 5) of the splitted line.
+
+      Parameters
+      ----------
+      line : str
+          The input line from which the spin is extracted. Expected to have at least six space-separated elements, with the sixth element being a string representation of the spin value.
+
+      Returns
+      -------
+      None
+
+
+
+.. py:class:: CrystalOutputReader(filenames)
+
+   Bases: :py:obj:`PDielec.GenericOutputReader.GenericOutputReader`
+
+
+   Read contents of a directory containing Crystal input and output files.
+
+   Inherits from :class:`~PDielec.GenericOutputReader.GenericOutputReader`
+
+   Parameters
+   ----------
+   filenames : iterable
+       An iterable object (e.g., list or tuple) containing the file names to be processed.
+
+   Notes
+   -----
+   This function calls the initializer of the parent class 'GenericOutputReader' with the given filenames. It initializes several class attributes including the type of output (set to 'Crystal output'), the method for hessian symmetrisation (set to 'crystal'), and an empty list for fractional coordinates.
+
+
+   .. py:method:: _read_born_charges(line)
+
+      Read the born charges from the output file.
+
+      Parameters
+      ----------
+      line : str
+
+      Returns
+      -------
+      numpy.ndarray
+          A 3x3 array where each row of the output refers to a given field direction and each column in the row refers to the atomic displacement. The output is arranged as: ::
+
+              [[a1x a1y a1z]
+               [a2x a2y a2z]
+               [a3x a3y a3z]]
+
+          where 1, 2, 3 represent the field directions and x, y, z are the atomic displacements.
+
+
+
+   .. py:method:: _read_born_charges_from_born_dat(filename)
+
+      Read born charges from a .born.dat file and store them in the instance variable.
+
+      This method reads born charges for each ion from a specified file, which contains 
+      data in three lines per ion. It transposes the read charge matrix and stores 
+      the result in the `born_charges` instance variable.
+
+      Parameters
+      ----------
+      filename : str
+          The path to the .born.dat file to be read.
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: _read_born_charges_from_output(line)
+
+      Read Born charges from output file.
+
+      This method is responsible for parsing and reading Born effective charges from a given output file, beginning from the current line position of the file descriptor. It stores the read charges into the `born_charges` list attribute.
+
+      Parameters
+      ----------
+      line : str
+
+      Returns
+      -------
+      None
+
+      Note
+      ----
+      This method directly modifies the `born_charges` attribute of the class instance by appending the read Born charges. It assumes that the file is correctly positioned before the starts of the Born charges and that it's formatted in a specific way expected by the logic of this method.
+
+
+
+   .. py:method:: _read_eigenvectors(line)
+
+      Read eigenvectors from appropriate file.
+
+      This function attempts to read eigenvectors for a given molecular system. It first checks for
+      the file 'HESSFREQ.DAT' in the specified `open_directory`. If the file exists, it reads the
+      eigenvectors from this file using the method `_read_hessfreq_dat`. If the file does not exist,
+      it reads the eigenvectors from output data indicated by 'line' using the method
+      `_read_output_eigenvectors`.
+
+      Parameters
+      ----------
+      line : str
+          The line or identifier used to read the eigenvectors from output data, if 'HESSFREQ.DAT'
+          is not available.
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: _read_electrons(line)
+
+      Parse the number of electrons from a string and assign it to the instance variable.
+
+      Parameters
+      ----------
+      line : str
+          The number of electrons is the sixth element in a space-separated list.
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: _read_energy(line)
+
+      Reads and sets the free energy and energy without entropy from a line.
+
+      Parameters
+      ----------
+      line : str
+          A string containing the energy information, expected to be in a format
+          where the fourth element (index 3) after splitting contains the energy value
+          in Hartrees.
+
+      Returns
+      -------
+      None
+
+      Notes
+      -----
+      This method modifies the instance attributes `final_free_energy` and
+      `final_energy_without_entropy` by converting the energy value from Hartrees to
+      electronvolts (eV) using a conversion factor stored in `hartree2ev`.
+
+      There are no return values. Modifications are made directly to the instance attributes.
+
+
+
+   .. py:method:: _read_energy2(line)
+
+      Read and set the final free energy and final energy without entropy from a line of text.
+
+      This method reads a line of text that contains energy values and updates the
+      instance's final free energy and final energy without entropy attributes.
+      The energies are assumed to be in Hartree units and are converted to electronvolts (eV).
+
+      Parameters
+      ----------
+      line : str
+          A string containing the desired energy values. The sixth value in the line
+          (when split by whitespace) is assumed to be the energy in Hartree units.
+
+      Returns
+      -------
+      None
+
+
+
+
+   .. py:method:: _read_energy3(line)
+
+      Parse energy information from a given line of text and update object properties.
+
+      Parameters
+      ----------
+      line : str
+          A line of text containing energy information where the 3rd element (index 2)
+          after splitting by whitespace contains the energy value in Hartree units.
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: _read_epsilon(line)
+
+      Reads epsilon values from a formatted file and updates the optical dielectric matrix.
+
+      This internal method reads lines from a previously opened file (using the file_descriptor attribute of the object), interpreting data that specifies the components of the optical dielectric tensor. The method updates the object's `zerof_optical_dielectric` attribute with a 3x3 matrix representing the read optical dielectric values. Optical dielectric components are identified by their 'XX', 'YY', 'ZZ', 'XY', 'XZ', and 'YZ' labels in the file. The method expects the values in a specific format and parses them accordingly.
+
+
+      Parameters
+      ----------
+      line : str
+          The initial line passed to the method. Currently, this parameter is not used within the method.
+
+      Returns
+      -------
+      None
+
+      Notes
+      -----
+      - The method does not return any value but instead updates the `zerof_optical_dielectric` attribute of the object.
+      - This method assumes that the file being read is opened and managed elsewhere in the class and that the `file_descriptor` attribute contains a valid file object.
+      - The method reads lines sequentially from the `file_descriptor` and expects the file to be formatted in a specific way, with optical dielectric components starting from a certain line.
+      - Each line read corresponds to a different component of the optical dielectric tensor, and the method parses these lines to identify the component and its value.
+      - After reading and storing the components' values, the method also updates the symmetric components of the tensor (i.e., sets optical_dielectric[1][0], optical_dielectric[2][0], and optical_dielectric[2][1] to their corresponding symmetric values).
+
+
+
+
+   .. py:method:: _read_fractional_coordinates(line)
+
+      Read and store fractional coordinates from a file line.
+
+      This method processes a line in the file to extract the number of ions and 
+      then reads the successive lines to acquire the fractional coordinates, species, 
+      and other related atomic information, storing them into the class attributes.
+
+      Parameters
+      ----------
+      line : str
+          The initial line to be processed for extracting the total number of ions.
+
+      Returns
+      -------
+      None
+
+      Attributes Updated
+      ------------------
+      nions : int
+          The total number of ions.
+      _fractional_coordinates : list of list of float
+          The fractional coordinates of each ion.
+      species : list of str
+          The unique list of species types.
+      species_list : list of str
+          List of species corresponding to each ion.
+      atom_type_list : list of int
+          Index list specifying the species type for each ion.
+      nspecies : int
+          The total number of unique species.
+      ions_per_type : list of int
+          A count of ions per species type.
+
+
+
+   .. py:method:: _read_hessfreq_dat(filename)
+
+      Reads a Hessian frequency data from a given file and updates the dynamical matrix.
+
+      Parameters
+      ----------
+      filename : str
+          The path to the file containing Hessian frequency data.
+
+      Notes
+      -----
+      This function reads a Hessian frequency data file, processes the data by mass weighting the Hessian matrix, and then updates the dynamical matrix of the system. 
+
+      See Also
+      --------
+      _dynamical_matrix : Updates the dynamical matrix of the system using the processed Hessian matrix.
+
+
+
+
+   .. py:method:: _read_ionic_dielectric(line)
+
+      Read ionic dielectric data from the file and store in an instance variable.
+
+      This method reads the next four lines from the file associated with the
+      instance's file descriptor. The second, third, and fourth lines are expected 
+      to contain ionic dielectric data, each consisting of three floating-point 
+      numbers. These numbers are stored in a list of lists in the instance variable 
+      `zerof_static_dielectric`.
+
+      Parameters
+      ----------
+      line : str
+          This parameter is not used. The function reads lines directly from the
+          instance's file descriptor.
+
+      Returns
+      -------
+      None
+
+      Notes
+      -----
+      The method directly modifies the instance variable `zerof_static_dielectric`.
+      It is assumed that the file has been adequately positioned before this method
+      is called, as it starts reading from the current position of the file
+      descriptor's pointer.
+
+
+
+   .. py:method:: _read_kpoints(line)
+
+      Parse a line of text to extract k-point grid dimensions and the total number of k-points.
+
+      The function sets the object's kpoint_grid attribute to a list of three integers representing the grid dimensions, and the kpoints attribute to an integer representing the total number of k-points.
+
+      Parameters
+      ----------
+      line : str
+          A string from which k-point grid dimensions and the total number of k-points are extracted. The line is expected to have specific data at predefined positions: the k-point grid dimensions at indices 2, 3, and 4, and the total number of k-points at index 12, according to the split by whitespace.
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: _read_lattice_vectors(line)
+
+      Read lattice vectors from a file and update the corresponding properties.
+
+      This method reads three consecutive lattice vectors (a, b, c) from the current position in an open file, creates a new `UnitCell` object with these vectors, and updates the unit cell collection of the object. It also updates the number of cells, the volume of the last cell, and sets the fractional coordinates and element names for the last unit cell based on existing class attributes.
+
+      Modifications to the instance attributes include:
+      - Appending a new `UnitCell` object to the `unit_cells` list.
+      - Updating the `ncells` attribute to match the length of the `unit_cells` list.
+      - Setting the volume of the last unit cell in `unit_cells`.
+      - Updating the fractional coordinates and element names of the last unit cell.
+
+      Parameters
+      ----------
+      line : str
+          The current line from the file where the method starts reading. This parameter is actually not used as the method immediately reads new lines from the file, implying a design choice where the `line` parameter could be omitted or revised.
+
+
+
+
+   .. py:method:: _read_masses(line)
+
+      Read and parse the masses from a file descriptor line by line.
+
+      This private method reads mass information from consecutive lines of a
+      file, updating a list of masses and a list of masses per species type.
+
+      Notes
+      -----
+      The function uses a file descriptor (self.file_descriptor) that should
+      be opened before calling this function. It reads the masses from the
+      file, expecting the mass values to be placed at specific positions in
+      the lines (every third value starting from the third value on a new
+      line after skipping one line). The method updates the instance
+      variables `masses` (a list of all masses) and `masses_per_type` (a list
+      of masses indexed by species type).
+
+      The function assumes that the lines are formatted in a specific way and
+      that `self.nions`, `self.nspecies`, and `self.atom_type_list` are set
+      correctly before calling this method.
+
+      Parameters
+      ----------
+      line : str
+          The current line from which to start reading. Note that this
+          parameter is not used in the function body and the actual reading
+          starts from the next line of the file descriptor.
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: _read_output_eigenvectors(line)
+
+      Read and process output eigenvectors from a file descriptor.
+
+      This method reads eigenvector data for each frequency from a file, processes this data by scaling it with the square root of the atom's masses to generate mass-weighted normal modes, and normalizes these modes.
+
+      Parameters
+      ----------
+      line : str
+          The current line in the file from which to start reading eigenvectors. This parameter is not explicitly used in the processing inside the function but hints at expecting a certain positioning within the file content.
+
+      Returns
+      -------
+      None
+
+      Notes
+      -----
+      - This method directly modifies the `frequencies` and `mass_weighted_normal_modes` attributes of the class instance.
+      - Atoms' masses are used to compute mass-weighted normal modes
+      - Normalization of each mass-weighted mode is performed at the end of the method.
+
+
+
+   .. py:method:: _read_output_files()
+
+      Read the Crystal files in the directory.
+
+      Define the strings used to search for the required information and then process the file
+
+      Returns
+      -------
+      None
+
+
+
+.. py:class:: GulpOutputReader(names)
+
+   Bases: :py:obj:`PDielec.GenericOutputReader.GenericOutputReader`
+
+
+   Read the contents of a Gulp output file.
+
+   Inherits from :class:`~PDielec.GenericOutputReader.GenericOutputReader`
+
+   This function provides a way to read and interpret the contents of a Gulp output file, 
+   advising on a suitable set of command parameters that can be used for various calculations 
+   such as phonon calculations, IR intensity calculations, printing eigen vectors of the dynamical 
+   matrix, and printing cartesian coordinates. It emphasizes the importance of certain parameters 
+   to ensure accurate and comprehensive results.
+
+   Parameters
+   ----------
+   names : list
+       A list containing the name(s) of the Gulp output file(s).
+
+   Attributes
+   ----------
+   _gulpfile : str
+       The name of the first Gulp output file in the `names` list.
+   name : str
+       The absolute path of the `_gulpfile`.
+   type : str
+       A string indicating the type of the reader object, set to 'Gulp output'.
+   shells : int
+       Number of shells, initialized to 0.
+   ncores : int
+       Number of cores, initialized to 0.
+   _cartesian_coordinates : list
+       List to store cartesian coordinates, initially empty.
+   _fractional_coordinates : list
+       List to store fractional coordinates, initially empty.
+   atomic_charges : list
+       List to store atomic charges, initially empty.
+   _mass_dictionary : dict
+       Dictionary to store mass information, initially empty.
+   temperature : NoneType or float
+       Temperature, initialized as None.
+   elastic_constant_tensor : NoneType or ndarray
+       Elastic constant tensor, initialized as None.
+   nshells : NoneType or int
+       Number of shells, initialized as None (may be updated later).
+   nions_irreducible : NoneType or int
+       Number of irreducible ions, initialized as None.
+   _atom_types : NoneType or list
+       List of atom types, initialized as None.
+
+   Notes
+   -----
+   It is quite difficult to work out what is a suitable set of commands for Gulp. The following seems 
+   to work OK, with emphasis on these important parameters:
+   - phon: a phonon calculation.
+   - intens: calculate the IR intensities.
+   - eigen: print the eigen vectors of the dynamical matrix.
+   - cart: print the cartesian coordinates (this is the only way of seeing what all the atom types are).
+   - nosym: make sure the calculation is done in P1.
+   Also includes options for various modifications and optimizations like qeq, molq, optimise, conp, qok, 
+   nomodcoord, and prop.
+
+
+   .. py:method:: _read_born_charges(line)
+
+      Read the born charges from the gulp file.
+
+      This function reads the born charges as arranged in the gulp file. Each column 
+      in the output fetched refers to a given field direction, and each row refers 
+      to the atomic displacement. The function rearranges the output to match the 
+      required tensor format where 1, 2, and 3 are the field directions, and x, y, 
+      and z are the atomic displacements.
+
+      Parameters
+      ----------
+      line : str
+          Ignored
+
+      Returns
+      -------
+      numpy.ndarray
+          The born charges arranged in the tensor format as specified. The format
+          of the tensor is a square matrix where each row is [ax, ay, az] for atomic
+          displacements under a particular field direction.
+
+      Examples
+      --------
+      Consider the output format [[a1x a1y a1z]
+                                  [a2x a2y a2z]
+                                  [a3x a3y a3z]]
+
+      The function rearranges it to the required format:
+      [[a1x a1y a1z] [a2x a2y a2z] [a3x a3y a3z]]
+
+      Notes
+      -----
+      The original output from the gulp file is read line by line, with each line representing
+      the atomic displacement in each of the field directions. The reformatted output aligns
+      these displacements into a more conventional tensor format for further processing or
+      analysis.
+
+
+
+   .. py:method:: _read_cellcontents(line)
+
+      Read the cell contents in xyz space
+
+      Parameters
+      ----------
+      line : str (not used)
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: _read_cellcontentsf(line)
+
+      Read the cell contents in fractional space.
+
+      Parameters
+      ----------
+      line : str (not used)
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: _read_elastic_constants(line)
+
+      Read the elastic constants.
+
+      Parameters
+      ----------
+      line : str (not used)
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: _read_energies(line)
+
+      Read energies
+
+      Parameters
+      ----------
+      line : str
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: _read_external_pressure(line)
+
+      Read external pressure
+
+      Parameters
+      ----------
+      line : str
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: _read_frequencies(line)
+
+      Read the frequencies
+
+      Parameters
+      ----------
+      line : str (not used)
+
+
+
+   .. py:method:: _read_lattice(line)
+
+      Read the lattice vectors.
+
+      Parameters
+      ----------
+      line : str (not used)
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: _read_number_of_irreducible_atoms(line)
+
+      Read the number of irreducible atoms
+
+      Parameters
+      ----------
+      line : str 
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: _read_optical_dielectric(line)
+
+      Read optical dielectric constant
+
+      Parameters
+      ----------
+      line : str (not used)
+
+
+
+   .. py:method:: _read_output_files()
+
+      Initialise the phrases needed to search the .gout file and the routines to use when a match is found. Read the .gout file.
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: _read_species(line)
+
+      Read species information
+
+      Parameters
+      ----------
+      line : str (not used)
+
+      Returns
+      -------
+      None
+
+
+
+
+   .. py:method:: _read_static_dielectric(line)
+
+      Read static dielectric constant
+
+      Parameters
+      ----------
+      line : str (not used)
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: _read_temperature(line)
+
+      Read temperature
+
+      Parameters
+      ----------
+      line : str
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: _read_total_number_of_atoms(line)
+
+      Read the number of atoms.
+
+      Parameters
+      ----------
+      line : str 
+
+      Returns
+      -------
+      None
+
+
+
+.. py:class:: PhonopyOutputReader(names, qmreader)
+
+   Bases: :py:obj:`PDielec.GenericOutputReader.GenericOutputReader`
+
+
+   Read the contents of a directory containing Phonopy input and output files.
+
+   Inherits from :class:`~PDielec.GenericOutputReader.GenericOutputReader`
+
+   Parameters
+   ----------
+   names : list
+       A list of file names to be used.
+   qmreader : object
+       An instance of another class used for reading.
+
+   Notes
+   -----
+   This method sets the type of the output to 'Phonopy output' and 
+   associates a quantum mechanics (QM) reader object with the instance.
+
+
+   .. py:method:: _read_output_files()
+
+      Read the Phonopy files in the directory.
+
+      Uses the qmreader to read in the electronic structure information and copies it to the current object.
+      Then it reads the dynamical matrix from phonopy
+
+
+
+   .. py:method:: read_dynamical_matrix()
+
+      Read and process the dynamical matrix from output files.
+
+      This method reads the dynamical matrix and other relevant data from the specified
+      output files, calculates the Hessian matrix, converts its units, and computes the
+      eigenvalues and eigenvectors to determine frequencies and mass-weighted normal modes.
+
+      Parameters
+      ----------
+      None explicitly, but relies on the instance attributes `_outputfiles` and `nions` 
+      to determine the files to read and number of ions, respectively.
+
+      Returns
+      -------
+      None
+          This method directly modifies the instance attributes `_old_masses`, `frequencies`, 
+          and `mass_weighted_normal_modes` based on the data read and calculations performed.
+
+      Raises
+      ------
+      FileNotFoundError
+          If any of the specified output files cannot be found or opened.
+      YAMLError
+          If there is an error parsing the YAML files.
+      MemoryError
+          If there is insufficient memory to compute the eigendecomposition.
+
+      Notes
+      -----
+      - It first attempts to use the CLoader for parsing YAML files for performance reasons and falls
+        back to the standard Loader if CLoader is not available, issuing a warning in such cases.
+      - The dynamical matrix is processed to compute real-valued Hessian by considering only the real
+        parts. It is then converted to the desired units before computing the eigenvalues and eigenvectors.
+      - The method computes frequencies in THz by first converting the eigenvalues from the Hessian to
+        the correct units, then calculates the square root of their absolute values, preserving the sign
+        to distinguish between real and imaginary modes.
+      - Mass-weighted normal modes are then computed for each ion based on the eigenvectors, and the 
+        frequencies and normal modes are stored in corresponding instance attributes.
+
+
+
+.. py:class:: QEOutputReader(filenames)
+
+   Bases: :py:obj:`PDielec.GenericOutputReader.GenericOutputReader`
+
+
+   Read the contents of a QE output file containing QE dynamical matrix.
+
+   Inherits from :class:`~PDielec.GenericOutputReader.GenericOutputReader`
+
+   Parameters
+   ----------
+   filenames : str or list
+       The filename or a list of filenames for QE output files.
+
+   Notes
+   -----
+   This constructor initializes a ``GenericOutputReader`` with the given filenames,
+   sets the type attribute to 'QE output', and initializes `_alat` attribute to None.
+
+
+   .. py:method:: _read_alat(line)
+
+      Read and set the lattice parameter from a given line of text.
+
+      This method processes a line of text, aiming to extract and set the lattice parameter
+      for the current object. The value is directly sought from a specified position in the line,
+      then adjusted if necessary to match a predefined standard unit conversion threshold. 
+      This method does not return any value.
+
+      Parameters
+      ----------
+      line : str
+          The line of text from which the lattice parameter is to be read.
+
+      Returns
+      -------
+      None
+
+      Notes
+      -----
+      The function checks if the extracted lattice parameter is within a certain threshold (`0.0001`)
+      of a predefined conversion factor (`angs2bohr`). If so, it adjusts the lattice parameter to exactly
+      match this conversion factor. This functionality assumes that `angs2bohr` is defined elsewhere
+      and is accessible within the scope of this method. Also assumes that `self._alat` has been 
+      initialized prior, possibly as `None`, and `self.debug` is a boolean indicating whether debug
+      prints should be activated.
+
+
+
+   .. py:method:: _read_alat2(line)
+
+      Read and set the lattice parameter from a given line.
+
+      Parameters
+      ----------
+      line : str
+          The line from which the lattice parameter is read. It is assumed that the lattice parameter can be found at the third whitespace-separated value in the line.
+
+      Returns
+      -------
+      None
+
+      Attributes Modified
+      -------------------
+      _alat
+          The lattice parameter is set or adjusted within this instance based on the value read from `line`. It is adjusted to `angs2bohr` if the absolute difference between the read value and `angs2bohr` is less than 0.0001.
+
+      Notes
+      -----
+      This method does not return any value. It updates the `_alat` attribute of the class instance with the value read from the input line, after applying necessary conversions and checks.
+
+
+
+
+   .. py:method:: _read_born_charges(line)
+
+      Read and parse Born charges from a file.
+
+      This internal method reads the Born charges of `nions` ions from the file specified by `file_descriptor` and updates the `born_charges` attribute of the class instance.
+
+      Parameters
+      ----------
+      line : str
+          Dummy argument which is overwritten
+      self.nions : int
+          The number of ions to read Born charges for.
+
+      Returns
+      -------
+      None
+
+      Notes
+      -----
+      This method reads three lines for each ion, each line corresponding to one of the three Cartesian coordinates (x, y, z). It expects each line to contain three space-separated values, which represent the components of the Born charge tensor for that direction.
+
+      This method directly modifies the `born_charges` attribute of the class instance, appending a 3x3 list (representing the Born charge tensor) for each ion.
+
+      If `self.debug` is True, it prints a debug message upon completion.
+
+
+
+   .. py:method:: _read_cell_parameters(line)
+
+      Read and parse cell parameters from a given line in the input file.
+
+      This method parses the cell parameters from a specific line in the input file, updating the internal
+      state with the scaled lattice vectors and their corresponding unit cell added to the list of unit cells.
+      Additionally, this method updates the total number of cells and the volume of the last unit cell read.
+
+      Parameters
+      ----------
+      line : str
+          A string representing a line from the input file that contains cell parameters.
+
+      Returns
+      -------
+      None
+
+      Notes
+      -----
+      The function expects the `line` input to contain the lattice parameter as its third value after removing parentheses.
+      Each subsequent line read from the input file (after the parameter line) is expected to represent the lattice vectors,
+      scaled by the lattice parameter and converted from Angstroms to Bohr radii.
+      The method directly modifies the object's state by updating the `unit_cells` list, `ncells`, and `volume` attributes.
+
+
+
+   .. py:method:: _read_celldm1(line)
+
+      Process and update the class attribute _alat based on a line from a file.
+
+      This function is intended to read and process a line that contains a unit of length. It updates the class attribute `_alat` after converting the value properly and checks for conformity within a tolerance. If `debug` is set to True in the class, it also prints the updated `_alat` value.
+
+      Parameters
+      ----------
+      line : str
+          The line read from a file which contains the value to be processed. It's expected that the relevant value is the third element of the line when split by whitespace, and it may contain a comma which should be ignored.
+
+      Returns
+      -------
+      None
+
+      Notes
+      -----
+      - Presumes the existence of a class attribute `_alat` which is updated by this function.
+      - Assumes `angs2bohr` is a predefined constant available within the scope of this method for conversion or comparison purposes.
+      - Uses a tolerance of 0.0001 for deciding whether the processed value matches `angs2bohr`, in which case it precisely sets `_alat` to `angs2bohr`.
+      - The `debug` attribute of the class controls whether an update operation is printed or not.
+
+
+
+   .. py:method:: _read_dynamical(line)
+
+      Read and process the dynamical matrix from the dynG file.
+
+      This method reads a specific format from the current position of the file descriptor,
+      computes the Hessian matrix based on the read values, and updates the dynamical matrix.
+      The routine only reads the gamma point matrix
+
+      Parameters
+      ----------
+      line : str
+          The line from which to start reading. This parameter is not used in the function
+          and likely represents a legacy or placeholder parameter.
+
+      Returns
+      -------
+      None
+
+
+
+
+   .. py:method:: _read_dyng_coordinates(line)
+
+      Read dynamic coordinates from a dynG file and update related properties.
+
+      This method reads atomic positions from a line, updating the mass, atomic type list, ions per type, and species list. It scales the coordinates according to the conversion from Angstroms to Bohr units and updates the corresponding `unit_cells` properties.
+
+      Parameters
+      ----------
+      line : str
+          The line from which coordinates are read. This parameter is mentioned for clarity but technically does not exist in the function's arguments. The actual reading is from the object's file_descriptor attribute, thus assuming this function is part of a class handling file input.
+
+      Returns
+      -------
+      None
+
+      Attributes Updated
+      ------------------
+      self.masses : list
+          Updated list of masses based on the atomic positions read.
+      self.atom_type_list : list
+          Updated list of atom types corresponding to each atom based on the read positions.
+      self.ions_per_type : list
+          Updated list with the count of ions per type.
+      self.unit_cells : list
+          List of unit cells, where the last one is updated with new xyz coordinates and element names based on read data.
+      self.ncells : int
+          Updated count of unit cells.
+      self.volume : float
+          Updated volume of the last unit cell in the list.
+
+      See Also
+      --------
+      `set_xyz_coordinates` : Method used to update xyz coordinates of the last unit cell.
+      `set_element_names` : Method used to update element names of the last unit cell.
+
+
+
+   .. py:method:: _read_electrons(line)
+
+      Read and store the number of electrons from a line.
+
+      This private method extracts and stores the number of electrons 
+      from a given line, assuming the number of electrons is specified 
+      in the 5th position of the line when split by whitespace. 
+      If the debug attribute is set to True, it prints out the value 
+      of electrons read.
+
+      Parameters
+      ----------
+      line : str
+          The line from which to read the number of electrons.
+
+      Returns
+      -------
+      None
+
+      Notes
+      -----
+      This method modifies the state of the object by setting the 
+      'electrons' attribute based on the input line.
+
+
+
+   .. py:method:: _read_energy(line)
+
+      Parse the energy values from a given line and set them to the instance variables.
+
+      This function extracts energy-related values from a provided line of text, then calculates and assigns these values (in electron volts) to instance attributes for final energy without entropy and final free energy, while considering conversion factors. If debugging is enabled, it prints the final free energy.
+
+      Parameters
+      ----------
+      line : str
+          A string containing energy-related information, expected to follow a pre-determined format where the relevant energy value is the fourth element in a whitespace-separated list.
+
+      Returns
+      -------
+      None
+
+      See Also
+      --------
+      hartree2ev : Constant used for conversion from Hartree to electron volts.
+
+      Notes
+      -----
+      - Assumes that 'hartree2ev' is a predefined conversion constant available in the scope where this function is defined.
+      - Utilizes the fourth element in the whitespace-separated list from the input string, after splitting, for the relevant energy-related value.
+      - The energy value is converted to electron volts, halved, and then assigned to both 'final_energy_without_entropy' and 'final_free_energy' attributes of the object.
+      - If the 'debug' attribute of the object is True, the final free energy is printed.
+
+
+
+   .. py:method:: _read_energy_cutoff(line)
+
+      Internal method to parse and set the energy cutoff from a line of text.
+
+      Parameters
+      ----------
+      line : str
+          The line of text containing the energy cutoff information. The expected
+          format is such that the relevant numerical value is the fourth element (index 3)
+          of the whitespace-separated entries.
+
+      Returns
+      -------
+      None
+
+      Notes
+      -----
+      This method directly modifies the `energy_cutoff` attribute of the class instance
+      by setting it to the parsed value converted from Hartree to electron volts (eV) and
+      divided by 2. The conversion factor `hartree2ev` is expected to be defined elsewhere
+      in the code.
+
+      This method optionally prints a debug message with the new energy cutoff value if
+      the instance's `debug` attribute is `True`.
+
+
+
+   .. py:method:: _read_epsilon(line)
+
+      Read and process zero frequency optical permittivity data from the dynG file.
+
+      This method reads the next four lines from a file, processes them to extract optical dielectric constant data, and stores this data in the instance's `zerof_optical_dielectric` attribute. Specifically, it skips the first line, then reads three lines of numeric values, where each line contains at least three numeric values which are converted to floats and stored in a 2D list assigned to `zerof_optical_dielectric`.
+
+      Parameters
+      ----------
+      line : not used
+          This parameter is present but not used in the function.
+
+      Returns
+      -------
+      None
+
+      Notes
+      -----
+      - This method modifies the instance attribute `zerof_optical_dielectric` directly.
+      - If the instance attribute `debug` is set to True, this method prints the `zerof_optical_dielectric` attribute after it is updated.
+
+
+
+   .. py:method:: _read_fractional_coordinates(line)
+
+      Reads the log file and sets the fractional coordinates and element names for the last unit cell in the object.
+
+      This function iterates over a specified number of lines (defined by `self.nions`) from the object's file descriptor, parsing each line into species names and their fractional coordinates. These species names and coordinates are then used to set the corresponding properties for the last unit cell managed by the object. Additional side-effects include updating the total number of unit cells (`self.ncells`) and the volume of the last unit cell (`self.volume`), with the option to print the volume if debugging is enabled.
+
+      Parameters
+      ----------
+      line : str
+          The initial line from which to start reading the fractional coordinates. The actual parameter is not used within the function but symbolically represents the starting point for reading. 
+
+      Returns
+      -------
+      None
+
+      Notes
+      -----
+      - The function directly modifies the object's state by setting properties of the last unit cell (`self.unit_cells[-1]`) and updating `self.ncells` and `self.volume`.
+      - Only operates if `self.nions` is greater than 0.
+      - The function is intended to be called in a context where `self.file_descriptor` is already open and positioned correctly.
+
+
+
+   .. py:method:: _read_header(line)
+
+      Read and process the header line from the dynG file.
+
+      This method updates the object's state by reading the header line from the set file descriptor and parsing it to extract the number of species (nspecies), the number of ions (nions), and the lattice parameter (alat) after converting it to Bohr units if it is within a tolerance range of the conversion factor.
+
+      Parameters
+      ----------
+      line : str
+          The initial line to read from. Note: This parameter is not used in the current implementation and the function reads directly from the object's file_descriptor attribute.
+
+      Returns
+      -------
+      None
+
+      Notes
+      -----
+      The function assumes that the file has been opened and that the file descriptor is stored in `self.file_descriptor`. The header line is expected to contain at least four space-separated values, with the first, second, and fourth values being integers representing the number of species, the number of ions, and a float representing the lattice parameter, respectively. The `angs2bohr` constant is assumed to be defined elsewhere in the code and is used as a threshold for converting the lattice parameter to Bohr units. If the `debug` attribute of the object is set to True, it prints the lattice parameter after conversion or identification.
+
+      This method modifies the state of the object by setting `nspecies`, `nions`, and `_alat` based on the contents of the header line.
+
+
+
+   .. py:method:: _read_kpoint_grid(line)
+
+      Read and set the k-point grid from a line in a file.
+
+      This method reads a line from the file associated with the file_descriptor attribute, parses the first three elements of the line as floating-point numbers, and sets them as the k-point grid. If the debug attribute is set to True, it prints the k-point grid.
+
+      Parameters
+      ----------
+      line : str
+          The line from which to read the k-point grid. Note that while this parameter is named 'line', it is not used directly in the function as the function reads the next line from the file itself.
+
+      Returns
+      -------
+      None
+
+      Notes
+      -----
+      This function modifies the state of the object by setting the `kpoint_grid` attribute to the parsed k-point grid values.
+
+
+
+   .. py:method:: _read_kpoints(line)
+
+      Read and store the number of k-points from a given line.
+
+      This is an internal method that extracts the number of k-points from a provided line (assumed to contain this information in a predefined format) and stores it in the class instance. Optionally, it prints debug information if the debug mode is activated.
+
+      Parameters
+      ----------
+      line : str
+          The line from which the number of k-points is extracted. The line should contain the number of k-points at the 5th position (index 4 when split by whitespace).
+
+      Returns
+      -------
+      None
+
+      Notes
+      -----
+      This method modifies the state of the object by setting the `kpoints` attribute.
+
+
+
+   .. py:method:: _read_lattice_vectors(line)
+
+      Reads and processes lattice vectors from a synG file, then updates unit cell information.
+
+      This private method reads the next three lines from an open file, each representing the a, b, and c vectors of a unit cell, respectively. Each vector is scaled according to the attribute `_alat` and a conversion factor from Angstroms to Bohrs. It then updates the list of unit cells with a new `UnitCell` object created from these vectors, recalculates the total number of cells, updates the volume attribute to the volume of the latest unit cell, and, if debug mode is active, prints the volume. Finally, it calls another method to read masses.
+
+      Parameters
+      ----------
+      line : str
+          The initial line from which to start reading the lattice vectors. Note: This parameter is mentioned for consistency with the function signature, but its utility within the function body as described is not clear and appears to be a placeholder.
+
+      Returns
+      -------
+      None
+
+      Attributes Updated
+      ------------------
+      unit_cells : list
+          A list of `UnitCell` objects representing the unit cells read from the file. Updated by appending a new `UnitCell`.
+      ncells : int
+          The total number of unit cells, updated after reading new lattice vectors.
+      volume : float
+          The volume of the last read unit cell, updated after appending a new `UnitCell`.
+
+
+
+   .. py:method:: _read_masses()
+
+      Reads the masses of species from an dynG file and populates mass and species lists.
+
+      This method parses lines from an already opened file object (`file_descriptor`), extracting species names and their corresponding masses, which are then adjusted by multiplying by 2 and dividing by the atomic mass unit (amu). The extracted species names are capitalized and stored, along with the calculated masses, in their respective class attributes. If debugging is enabled, it prints the loaded masses. It also calls `_read_dyng_coordinates` method before finishing, passing an empty string as an argument.
+
+      Parameters
+      ----------
+      None 
+
+      Returns
+      -------
+      None
+
+      Attributes Modified
+      -------------------
+      - `masses_per_type` : list
+          A list that this method populates with the calculated masses for each species.
+      - `species` : list
+          A list that this method populates with the capitalized species names.
+
+      Notes
+      -----
+      - The atomic mass unit (`amu`) is defined elsewhere
+      - It's assumed that `_read_dyng_coordinates` is a method within the same class that takes a single string argument.
+
+
+
+   .. py:method:: _read_nions(line)
+
+      Read the number of ions from a line and update the object's nions attribute.
+
+      The number of ions is expected to be the fifth element in the line when split by space.
+
+      Parameters
+      ----------
+      line : str
+          The line from which to extract the number of ions.
+
+      Returns
+      -------
+      None
+
+      Notes
+      -----
+      If 'debug' attribute of the object is True, this method will print the number of ions found.
+
+
+
+   .. py:method:: _read_output_files()
+
+      Process the QE files.
+
+      Notes
+      -----
+      Defines the search patterns for QE output files
+
+
+
+   .. py:method:: _read_pressure(line)
+
+      Parse a pressure reading from a given line and update the object's pressure attribute.
+
+      Parameters
+      ----------
+      line : str
+          A string containing the pressure reading among other space-separated values. 
+          The pressure value is expected to be at the 6th position in this string 
+          (index 5 when zero-indexed) and will be divided by 10.0 to convert from kbar to GPa
+
+      Returns
+      -------
+      None
+
+      Notes
+      -----
+      This function updates the pressure attribute of the object it is called on and optionally prints the updated pressure value if the object's `debug` attribute is set to True.
+
+
+
+.. py:class:: VaspOutputReader(names)
+
+   Bases: :py:obj:`PDielec.GenericOutputReader.GenericOutputReader`
+
+
+   Read the contents of a directory containing VASP input and output files.
+
+   Inherits from :class:`~PDielec.GenericOutputReader.GenericOutputReader`
+
+   Parameters
+   ----------
+   names : list of str
+       A list of file names to be used in processing the DFT output files
+
+   Attributes
+   ----------
+   type : str
+       A string attribute that specifies the type of output, set to 'Vasp output'.
+   _pspots : dict
+       A private dictionary for the pseudo potentials
+   _ediff : float
+       A private float for the change in energy on each iteration
+   _pulay : float
+       The Pulay pressure
+   _ibrion : int
+       The value of ibrion
+   _potim : float
+       The value of potim
+
+
+   .. py:method:: _read_array_dimensions(line)
+
+      Read and set the array dimensions from a line in a file.
+
+      This method reads lines from a file pointed to by `self.file_descriptor`,
+      extracts dimensions for kpoints, nbands, and nions from these lines, and
+      sets the corresponding attributes of the class instance.
+
+      Parameters
+      ----------
+      line : str
+          The initial line read from the file, not used after modification.
+
+      Returns
+      -------
+      None
+
+      Notes
+      -----
+      Assumes specific formatting of the lines being read, where the required
+      numbers are located at fixed positions in the lines:
+      - `kpoints` is the 4th value in the first line read within the function.
+      - `nbands` is the 15th value in the same line.
+      - `nions` is the 12th value in the next line read.
+
+
+
+   .. py:method:: _read_born_charges(line)
+
+      Read the born charges from the OUTCAR file.
+
+      Each row of the output refers to a given field direction and each column in the row refers to the atomic displacement. The output is arranged as: ::
+
+          [[a1x a1y a1z]
+           [a2x a2y a2z]
+           [a3x a3y a3z]]
+
+      where 1, 2, 3 are the field directions and x, y, z are the atomic displacements.
+
+      Parameters
+      ----------
+      line : str 
+          Not used and overridden
+
+      Returns
+      -------
+      numpy.ndarray
+          A numpy array containing the born charges with its shape determined by the field directions and atomic displacements as described above.
+
+
+
+   .. py:method:: _read_ediff(line)
+
+      Read and set the energy difference value from a given line string.
+
+      Parameters
+      ----------
+      line : str
+          A string containing the energy difference information, where the
+          energy difference value is expected to be at the third position
+          (index 2) when split by whitespace.
+
+      Returns
+      -------
+      None
+
+
+
+
+   .. py:method:: _read_eigenvectors(line)
+
+      Read and process eigenvectors from a file.
+
+      This method extracts frequencies and mass-weighted normal modes from a read file, storing them in the class's frequencies and mass_weighted_normal_modes attributes, respectively. It assumes the file follows a specific format where frequencies and their corresponding eigenvectors are listed, considering imaginary frequencies if present.
+
+      Parameters
+      ----------
+      line : str
+          This method operates on the instance's file_descriptor and nions attributes, assuming they are correctly initialized.
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: _read_elastic_constants(line)
+
+      Read and process elastic constants from a file.
+
+      This method reads lines from an opened file pointed by the instance's file
+      descriptor, extracts numeric values assumed to be elastic constants, and
+      stores a processed version of these constants in the instance attribute
+      `elastic_constants`.
+
+      Parameters
+      ----------
+      line : str
+          The initial line from where to start reading the elastic constants in
+          the file. This parameter is somewhat misleading in this context, as the
+          function does not actually use this input variable but rather immediately
+          overrides it with `self.file_descriptor.readline()`.
+
+      Returns
+      -------
+      None
+
+      Notes
+      -----
+      Each line of interest contains numeric values, starting from the second
+      value up to the seventh one, inclusive. These values are converted to floats,
+      scaled down by a factor of 10 (to convert to GPa), assembled into a 2D array (list of lists),
+      converted into a NumPy array, scaled, and then stored as a list in the
+      `self.elastic_constants` attribute.
+
+
+
+   .. py:method:: _read_encut(line)
+
+      Parse and set the energy cutoff value from a given line.
+
+      Parameters
+      ----------
+      line : str
+          A string containing the energy cutoff value. The energy cutoff value is the third element in the string when split by whitespace.
+
+      Returns
+      -------
+      None
+
+      Notes
+      -----
+      This method does not return any value. It sets the value of `energy_cutoff` attribute of the instance based on the input line.
+
+
+
+   .. py:method:: _read_energy(line)
+
+      Reads the energy-related values from a file and updates the instance attributes with these values.
+
+      Parameters
+      ----------
+      line : str
+          The current line in the file from which to start reading. This parameter is not used in the function as the function reads new lines itself.
+
+      Returns
+      -------
+      None
+
+      Notes
+      -----
+      This method directly modifies the instance attributes `final_free_energy`, `final_free_energies`, `final_energy_without_entropy`, and `final_energies_without_entropy` by reading values from the file associated with `file_descriptor`. The relevant energy values can be extracted from the 5th and 4th positions (zero-indexed) of the line text split by spaces, on specific lines read in sequence.
+
+
+
+   .. py:method:: _read_external_pressure(line)
+
+      Read and parse external pressure from a given line of text, updating instance attributes.
+
+      Parameters
+      ----------
+      line : str
+          A line of text expected to contain pressure data at specific positions.
+
+      Returns
+      -------
+      None
+
+      Notes
+      -----
+      This method updates the instance's `pressure` and `_pulay` attributes based on values extracted from the input string. The `pressure` value is obtained from the fourth item in the split string (`line.split()[3]`), and the `_pulay` value is from the ninth item (`line.split()[8]`). Both values are divided by 10.0 to convert from kbar to GPa.
+
+
+
+   .. py:method:: _read_forces(line)
+
+      Read force data from a file and update the iterations datasets with maximum and RMS forces.
+
+      After execution, `self.iterations` will be updated with the new `max_force` and `rms_force` values for the current iteration.
+
+      Parameters
+      ----------
+      line : str
+          The current line of the file to start reading from.
+
+      Returns
+      -------
+      None
+
+
+
+
+   .. py:method:: _read_fractional_coordinates(line)
+
+      Read fractional coordinates from a file and set them for the current unit cell.
+
+      This function reads `nions` lines from the `file_descriptor` attribute, extracts
+      the first three space-separated values as fractional coordinates, and appends them
+      to the `ions` list. It then sets the fractional coordinates and element names for
+      the last unit cell in the `unit_cells` list.
+
+      Parameters
+      ----------
+      line : str
+          The line from which to start reading the fractional coordinates. This parameter
+          is passed but not used directly in the function; instead, subsequent lines are
+          read from the file.
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: _read_ibrion(line)
+
+      Read and set the IBRION parameter from a given line.
+
+      This method extracts the IBRION value from a formatted line and sets it to the object's _ibrion attribute.
+
+      Parameters
+      ----------
+      line : str
+
+      Returns
+      -------
+      None
+          The line of text containing the IBRION value, expected to be at the third position (index 2) when split by whitespace.
+
+
+
+   .. py:method:: _read_ionic_dielectric(line)
+
+      Reads ionic dielectric constants from a file and updates the zero-frequency static dielectric constant.
+
+      This method assumes the presence of two successive lines in the file corresponding to two dielectric constant values. If any of these lines are marked with an asterisk (*) as missing or do not contain at least three numeric values, default values are used instead. The method calculates the sum of the existing zero-frequency optical dielectric constants and the newly read ionic dielectric constants and updates the corresponding class attribute with this sum.
+
+      Parameters
+      ----------
+      line : str
+          The initial line from which to start reading the ionic dielectric constants. This parameter is not directly used as the method starts by reading a new line from the file, but it's implicitly assumed to represent the current position in the file.
+
+      Returns
+      -------
+      None
+
+      Notes
+      -----
+      - Requires that `self.file_descriptor` is an open file object positioned at the correct line where dielectric information starts.
+      - The method directly modifies `self.zerof_static_dielectric` based on read values and calculated sums.
+      - This method performs no direct output but modifies the class state.
+
+
+
+   .. py:method:: _read_ionspertype(line)
+
+      Reads and stores the number of ions per species from a given line.
+
+      This method processes a string that contains information about the number of ions for each type/species. It updates the attributes `ions_per_type` and `nspecies` of the class.
+
+      Parameters
+      ----------
+      line : str
+          The line from which the ions per type information will be extracted. The relevant data is expected to start from the fifth element when splitting the line by spaces.
+
+      Returns
+      -------
+      None
+
+
+
+
+   .. py:method:: _read_kpoint_grid(line)
+
+      Read and parse the k-point grid dimensions from a file line.
+
+      This method assumes that the current line from which `line` is read contains three integers that represent the dimensions of the k-point grid. These integers are read, converted to integers, and stored in the instance variable `kpoint_grid`.
+
+      Parameters
+      ----------
+      line : str
+          The current line of the file to read from. This parameter is not used, and the actual line reading happens from `self.file_descriptor`.
+
+      Returns
+      -------
+      None
+
+      Notes
+      -----
+      - This method modifies the state of the object by setting the `kpoint_grid` attribute.
+      - The method reads the next line from `self.file_descriptor`, not from the `line` parameter.
+
+
+
+   .. py:method:: _read_lattice_vectors(line)
+
+      Read and process lattice vectors from a line of a file.
+
+      This method reads the volume and lattice vectors from specified lines of an input file,
+      constructs a new `UnitCell` object from the read vectors, and appends it to the unit cells list.
+      If there is at least one `UnitCell` already present, it copies fractional coordinates and element
+      names from the last `UnitCell` in the list to the new one.
+
+      Parameters
+      ----------
+      line : str
+          The line from the input file containing the volume of the UnitCell.
+
+      Returns
+      -------
+      None
+
+      Attributes Modified
+      -------------------
+      volume : float
+          The volume of the UnitCell, updated by parsing the input line.
+      volumes : list of float
+          List of volumes, appended with the current UnitCell's volume.
+      unit_cells : list of UnitCell
+          List of `UnitCell` objects, appended with the newly constructed `UnitCell`.
+
+
+
+
+   .. py:method:: _read_magnet(line)
+
+      Read magnetization properties from a line and update the object attributes.
+
+      Parameters
+      ----------
+      line : str
+          A string expected to contain information about electrons and,
+          optionally, magnetization. The expected format is whitespace-separated
+          values where the fourth value is the number of electrons and the sixth
+
+      Returns
+      -------
+      None
+          value, if present, represents the magnetization.
+
+      Notes
+      -----
+      Modifies the object's `electrons` attribute by setting it to the value parsed
+      from the line. If magnetization information is present in the line, it also
+      updates the `magnetization` attribute with that value; otherwise, it sets
+      `magnetization` to 0.0.
+
+
+
+   .. py:method:: _read_masses(line)
+
+      Parse and store the mass value from a line of text.
+
+      This method extracts the third element from a whitespace-separated list (assumed
+      to be a mass), removes semicolons, converts it to a float, and appends it to the 
+      instance's list of masses.
+
+      Parameters
+      ----------
+      line : str
+          A string from which the mass value is to be extracted. It is expected to
+          be whitespace-separated with the mass as the third element, potentially
+          followed by a semicolon.
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: _read_nelect(line)
+
+      Reads and sets the number of electrons from a given line.
+
+      Parameters
+      ----------
+      line : str
+          A string representation possibly containing information about
+          the number of electrons.
+
+      Notes
+      -----
+      This method updates the object's 'electrons' attribute with the number of electrons
+      extracted from the given line. It assumes that the number of electrons is indicated
+      at the third position (index 2) in the list produced by splitting `line` on whitespace.
+      It also assumes that this number can be represented as a float, but converts it to
+      an integer before setting the 'electrons' attribute.
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: _read_newmasses(line)
+
+      Reads and processes the "newmasses" from a line in the file descriptor.
+
+      This internal method parses a single line from the file descriptor to read the masses associated with different atom types in a molecular system. Based on the number of species (`nspecies`) and ions per type, it updates `masses_per_type`, `masses`, `atom_type_list`, and `species_list` lists with the parsed and computed information.
+
+      Parameters
+      ----------
+      line : str
+
+      Returns
+      -------
+      None
+          The string line from which the new masses information is to be read. Note that this parameter is initially passed but not used directly, as the function immediately reads a new line from `self.file_descriptor`.
+
+
+
+   .. py:method:: _read_output_files()
+
+      Read the vasp files in the directory.
+
+      Define the search strings neeeded and the associated routines will read the required values
+      Process the files accordingly
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: _read_potim(line)
+
+      Parse and set the POTIM parameter from a line of text.
+
+      This method extracts the POTIM parameter value from a provided string
+      and sets it as a floating-point number within the object.
+
+      Parameters
+      ----------
+      line : str
+          A string typically representing a line from a file containing
+          the POTIM parameter. The expected format is: key-value pairs
+          separated by spaces with the POTIM value being the third element
+          in the sequence (index 2 when zero-indexed).
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: _read_pspot(line)
+
+      Read and store pseudopotential information from a line.
+
+      This method parses a line to extract pseudopotential information and stores it in the `_pspots` dictionary attribute of the object. The pseudopotential label is used as the key, and its corresponding value as the value in the `_pspots` dictionary.
+
+      Parameters
+      ----------
+      line : str
+          A string containing the pseudopotential information to be parsed and stored. Expected format: "any_text value label any_other_text", where "value" and "label" are the parts of interest for storage.
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: _read_skip4(line)
+
+      Read and skip the next 4 lines from the current position.
+
+      This method reads and discards the next four lines from the file
+      associated with the `file_descriptor` attribute of the calling object.
+
+      Parameters
+      ----------
+      line : not used
+          This parameter is not used but kept for function signature purposes.
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: _read_species(line)
+
+      Reads species from a file and updates species information.
+
+      This method reads the number of lines for a species, computes the total charge from these lines, and appends the corresponding element to the species list. It utilizes the atomic_number_to_element dictionary to map the computed total charge to an element symbol.
+
+      Parameters
+      ----------
+      line : str
+          The initial line to start processing from, typically provides the number of lines for a species.
+
+      Returns
+      -------
+      None
+
+      See Also
+      --------
+      atomic_number_to_element : A dictionary mapping total charges to element symbols.
+
+
+
+   .. py:method:: _read_spin(line)
+
+      Parse and set the spin from a given line.
+
+      Parameters
+      ----------
+      line : str
+          The line of text from which the spin value will be extracted.
+
+      Returns
+      -------
+      None
+
+      Notes
+      -----
+      This method expects the spin value to be at the third position in the line. The method doesn't return any value but sets the object's `spin` attribute based on the extracted integer value.
+
+
+
+   .. py:method:: _read_static_dielectric(line)
+
+      Read and parse static dielectric data from a file.
+
+      This method is designed to read lines from a file, which the instance's file_descriptor points to,
+      and parse the static dielectric data. It expects the data to be in specific line positions within the file.
+      If a line does not contain data in the expected format or contains an asterisk ('*') indicating missing
+      or invalid data, a default value is used instead. The parsed data is stored in the instance's
+      zerof_optical_dielectric attribute as a list of lists, where each sublist contains three floating-point numbers.
+
+      Parameters
+      ----------
+      line : str
+          The initial line from where to begin parsing. (This parameter is currently not used in the implementation
+          and the method reads lines directly using the object's file_descriptor.)
+
+      Returns
+      -------
+      None
 
 
 

@@ -79,4 +79,5 @@ Sphinx/autoapi
 # Andrew Burnett
 Data/
 *test*
+*.code-workspace
 

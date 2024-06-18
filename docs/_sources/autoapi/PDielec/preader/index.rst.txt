@@ -1,5 +1,5 @@
-:py:mod:`PDielec.preader`
-=========================
+PDielec.preader
+===============
 
 .. py:module:: PDielec.preader
 
@@ -34,12 +34,21 @@
 
 
 
-Module Contents
----------------
+Attributes
+----------
+
+.. autoapisummary::
+
+   PDielec.preader.amu
+   PDielec.preader.angstrom
+   PDielec.preader.average_masses
+   PDielec.preader.isotope_masses
+   PDielec.preader.version
+   PDielec.preader.wavenumber
 
 
 Functions
-~~~~~~~~~
+---------
 
 .. autoapisummary::
 
@@ -49,14 +58,8 @@ Functions
    PDielec.preader.set_affinity_on_worker
 
 
-
-Attributes
-~~~~~~~~~~
-
-.. autoapisummary::
-
-   PDielec.preader.version
-
+Module Contents
+---------------
 
 .. py:function:: main()
 
@@ -142,7 +145,15 @@ Attributes
    When a new worker process is created, the affinity is set to all CPUs.
 
 
+.. py:data:: amu
+
+.. py:data:: angstrom
+
+.. py:data:: average_masses
+
+.. py:data:: isotope_masses
+
 .. py:data:: version
 
-   
+.. py:data:: wavenumber
 

@@ -1,5 +1,5 @@
-:py:mod:`PDielec.GUI.FitterTab`
-===============================
+PDielec.GUI.FitterTab
+=====================
 
 .. py:module:: PDielec.GUI.FitterTab
 
@@ -9,20 +9,18 @@
 
 
 
-Module Contents
----------------
-
 Classes
-~~~~~~~
+-------
 
 .. autoapisummary::
 
+   PDielec.GUI.FitterTab.Debug
    PDielec.GUI.FitterTab.FitterTab
-
+   PDielec.GUI.FitterTab.FixedQTableWidget
 
 
 Functions
-~~~~~~~~~
+---------
 
 .. autoapisummary::
 
@@ -34,11 +32,62 @@ Functions
    PDielec.GUI.FitterTab.resample_experimental_spectrum
 
 
+Module Contents
+---------------
+
+.. py:class:: Debug(debug, text, level=0)
+
+   A class aimed at providing a structured way to include debug messages in code.
+
+   Methods
+   -------
+   print(args, level=0)
+       Prints debug messages based on the debug level provided as argument compared to the object's debug level.
+   state()
+       Returns the current state (enabled or disabled) of debugging.
+
+   Notes
+   -----
+   The `print` method provides a flexible way to include additional information along with the base debug message, allowing for a detailed and adjustable debugging output.
+
+
+   .. py:method:: print(*args, level=0)
+
+      Prints message if debugging level allows.
+
+      Parameters
+      ----------
+      args
+          Variable length argument list for the message to be printed.
+      level : int, optional
+          The level of the message that determines if it gets printed or not,
+          based on the instance's `level`. Default value is 0.
+
+      Notes
+      -----
+      This method will only print the message if the instance's `debug` flag is True
+      and the provided `level` is less than or equal to the instance's `level`.
+
+
+
+   .. py:method:: state()
+
+      Get the debug state.
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      The current debug state.
+
+
 
 .. py:class:: FitterTab(parent, debug=False)
 
-
    Bases: :py:obj:`PyQt5.QtWidgets.QWidget`
+
 
    A class for managing and displaying a spectroscopic fitting interface within a QWidget.
    Initialize the main widget with its components and connect signals to slots.
@@ -120,6 +169,7 @@ Functions
    requestRefresh(self)
        Requests a refresh of the interface.
 
+
    .. py:method:: fittingButtonClicked()
 
       Handles the click event on the fitting button.
@@ -141,6 +191,7 @@ Functions
 
 
 
+
    .. py:method:: on_baseline_cb_changed(value)
 
       Handle the change event of the baseline checkbox.
@@ -157,6 +208,7 @@ Functions
       None
 
 
+
    .. py:method:: on_fitting_type_cb_activated(index)
 
       Handle the activation of a fitting type option.
@@ -171,6 +223,7 @@ Functions
       Returns
       -------
       None
+
 
 
 
@@ -194,6 +247,7 @@ Functions
       - The `self.refreshRequired` flag is set to True regardless of whether the conversion succeeds.
 
 
+
    .. py:method:: on_hpfilter_lambda_sb_changed(value)
 
       Handle changes to the high-pass filter lambda scrollbar value.
@@ -206,6 +260,7 @@ Functions
       Returns
       -------
       None
+
 
 
 
@@ -227,6 +282,7 @@ Functions
       This function is triggered upon the change of the 'independent_yaxes_cb' checkbox state. It updates the settings dictionary with the new state of the 'Independent y-axes' option and sets the 'refreshRequired' flag to True, indicating that a refresh is needed to reflect the changes in the UI or data visualization.
 
 
+
    .. py:method:: on_iterations_sb_changed()
 
       Handle changes in the iterations spin box value.
@@ -240,6 +296,7 @@ Functions
       Returns
       -------
       None
+
 
 
    .. py:method:: on_optimise_frequency_scaling_cb_changed(value)
@@ -259,6 +316,7 @@ Functions
 
 
 
+
    .. py:method:: on_scenario_cb_activated(index)
 
       Handle scenario combobox activation.
@@ -273,6 +331,7 @@ Functions
       Returns
       -------
       None
+
 
 
    .. py:method:: on_sigmas_tw_itemChanged(item)
@@ -300,6 +359,7 @@ Functions
       - Processes all pending events for the application to ensure UI updates are immediately applied.
 
 
+
    .. py:method:: on_spectrafile_le_changed(text)
 
       Handle changes to the spectra file input field.
@@ -318,6 +378,7 @@ Functions
       Notes
       -----
       The actual text used in processing is fetched directly from the `spectrafile_le` attribute, not from the `text` argument.
+
 
 
    .. py:method:: on_spectrafile_le_return()
@@ -341,6 +402,7 @@ Functions
       This method utilizes `os.path.isfile` to check file existence, `QFileDialog` for file selection. 
 
 
+
    .. py:method:: on_spectral_difference_threshold_sb_changed(value)
 
       Handle changes in spectral difference threshold setting.
@@ -356,6 +418,7 @@ Functions
       Returns
       -------
       None
+
 
 
    .. py:method:: on_spectrum_scaling_cb_changed(value)
@@ -375,6 +438,7 @@ Functions
 
 
 
+
    .. py:method:: on_spectrum_scaling_factor_sb_changed(value)
 
       Handles the change in spectrum scaling factor.
@@ -391,6 +455,7 @@ Functions
       Notes
       -----
       This function attempts to update the 'Spectrum scaling factor' setting with the new value after converting it to float. If the conversion fails, a message is printed indicating the failure.
+
 
 
    .. py:method:: optimiseFit()
@@ -423,6 +488,7 @@ Functions
 
       It modifies the `functionCalls` attribute by setting it to 0 at the beginning and uses
       `fit_list` to store the indexes of modes that are being fitted.
+
 
 
    .. py:method:: optimiseFunction(variables)
@@ -467,6 +533,7 @@ Functions
           predefined extremely negative value (e.g., -9.9e+99).
 
 
+
    .. py:method:: plot(experiment, xs, ys, legends, label)
 
       Plot experimental and calculated data on the same or separate y-axes.
@@ -498,6 +565,7 @@ Functions
           If `xs`, `ys`, and `legends` lists do not have the same length.
 
 
+
    .. py:method:: print_settings()
 
       Prints the settings attributes of the instance.
@@ -511,6 +579,7 @@ Functions
       None
 
       Prints the key and value of each setting in the instance's `settings` attribute, with the help of the `debugger` print method.
+
 
 
    .. py:method:: redraw_sigmas_tw()
@@ -538,6 +607,7 @@ Functions
         whether it is fitted, respectively.
 
 
+
    .. py:method:: refresh(force=False)
 
       Refreshes the state of the application based on user-defined conditions and settings.
@@ -558,6 +628,7 @@ Functions
       After updating relevant class attributes and GUI components, the function recalculates cross-correlation, root-mean-square error (RMSE) between experimental and calculated spectra, and updates the display with these metrics.
 
 
+
    .. py:method:: replot()
 
       Replots the experimental spectrum along with calculated frequencies and spectra.
@@ -571,6 +642,7 @@ Functions
       Returns
       -------
       None
+
 
 
 
@@ -593,6 +665,7 @@ Functions
       This method modifies the instance attributes to reflect that a replot is required without a frequency shift, and it bookmarks the last button pressed as 'replotButton1Clicked'. It also calls the `self.refresh` method to initiate the replotting process.
 
 
+
    .. py:method:: replotButton2Clicked()
 
       Handle the event when the second replot button is clicked.
@@ -611,6 +684,7 @@ Functions
 
 
 
+
    .. py:method:: requestRefresh()
 
       Request a refresh of the interface.
@@ -623,6 +697,53 @@ Functions
       -------
       None
 
+
+
+
+.. py:class:: FixedQTableWidget(*args, parent=None, rows=None, columns=None)
+
+   Bases: :py:obj:`PyQt5.QtWidgets.QTableWidget`
+
+
+   A custom QTableWidget with fixed number of rows and columns.
+
+   This widget is designed to have a fixed size based on a specified number of rows and columns, rather than adjusting dynamically to the content it displays. If the number of rows and columns isn't specifically provided, it defaults to the current count of rows and columns in the widget.
+
+   Parameters
+   ----------
+   args
+       Variable length argument list.
+   parent : Optional[QWidget]
+       The parent widget. Default is None.
+   rows : Optional[int]
+       The fixed number of rows for the table. If None, the table's row count is used. Default is None.
+   columns : Optional[int]
+       The fixed number of columns for the table. If None, the table's column count is used. Default is None.
+
+   Methods
+   -------
+   sizeHint()
+       Calculates and returns the recommended size for the table widget based on the fixed number of rows and columns, or based on its current row and column counts if no fixed numbers are provided.
+
+   See Also
+   --------
+   QTableWidget : The base class from which this class is derived.
+
+
+   .. py:method:: sizeHint()
+
+      Calculate the suggested dimensions for the widget based on its content.
+
+      This method calculates the preferred size of the widget by summing up the widths of all columns and the heights of all rows, including any scrollbars, headers, and frame widths.
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      QSize
+          The calculated size that suggests the optimal dimensions for the widget. The width is determined by the total width of all columns, the vertical header width, the vertical scrollbar width, and twice the frame width. The height is determined by the total height of all rows, the horizontal header height, the horizontal scrollbar height, and twice the frame width.
 
 
 

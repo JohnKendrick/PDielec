@@ -1,14 +1,15 @@
-:py:mod:`PDielec.GUI`
-=====================
+PDielec.GUI
+===========
 
 .. py:module:: PDielec.GUI
 
 .. autoapi-nested-parse::
 
    PDGui: GUI for processing DFT calculations for infrared and terahertz spectroscopy
+
    The MIT License (MIT)
 
-   Copyright (c) 2024 John Kendrick
+   Copyright (c) 2024 John Kendrick and Andrew Burnett
 
    Permission is hereby granted, free of charge, to any person obtaining a copy
    of this software and associated documentation files (the "Software"), to deal
@@ -32,24 +33,32 @@
 
 Submodules
 ----------
+
 .. toctree::
-   :titlesonly:
    :maxdepth: 1
 
-   AnalysisTab/index.rst
-   App/index.rst
-   FitterTab/index.rst
-   MainTab/index.rst
-   NoteBook/index.rst
-   OpenGLWidget/index.rst
-   PlottingTab/index.rst
-   PowderScenarioTab/index.rst
-   ScenarioTab/index.rst
-   SettingsTab/index.rst
-   SingleCrystalLayer/index.rst
-   SingleCrystalScenarioTab/index.rst
-   SpreadSheetManager/index.rst
-   ViewerTab/index.rst
+   /autoapi/PDielec/GUI/AnalysisTab/index
+   /autoapi/PDielec/GUI/App/index
+   /autoapi/PDielec/GUI/FitterTab/index
+   /autoapi/PDielec/GUI/MainTab/index
+   /autoapi/PDielec/GUI/NoteBook/index
+   /autoapi/PDielec/GUI/OpenGLWidget/index
+   /autoapi/PDielec/GUI/PlottingTab/index
+   /autoapi/PDielec/GUI/PowderScenarioTab/index
+   /autoapi/PDielec/GUI/ScenarioTab/index
+   /autoapi/PDielec/GUI/SettingsTab/index
+   /autoapi/PDielec/GUI/SingleCrystalLayer/index
+   /autoapi/PDielec/GUI/SingleCrystalScenarioTab/index
+   /autoapi/PDielec/GUI/SpreadSheetManager/index
+   /autoapi/PDielec/GUI/ViewerTab/index
+
+
+Attributes
+----------
+
+.. autoapisummary::
+
+   PDielec.GUI.__version__
 
 
 Package Contents
@@ -58,5 +67,4 @@ Package Contents
 .. py:data:: __version__
    :value: '8.1.1'
 
-   
 

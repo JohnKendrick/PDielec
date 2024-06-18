@@ -1,5 +1,5 @@
-:py:mod:`PDielec.GenericOutputReader`
-=====================================
+PDielec.GenericOutputReader
+===========================
 
 .. py:module:: PDielec.GenericOutputReader
 
@@ -9,21 +9,41 @@
 
 
 
-Module Contents
----------------
+Attributes
+----------
+
+.. autoapisummary::
+
+   PDielec.GenericOutputReader.amu
+   PDielec.GenericOutputReader.avogadro_si
+   PDielec.GenericOutputReader.wavenumber
+
 
 Classes
-~~~~~~~
+-------
 
 .. autoapisummary::
 
    PDielec.GenericOutputReader.GenericOutputReader
+   PDielec.GenericOutputReader.pdielec_io
 
 
+Functions
+---------
 
+.. autoapisummary::
+
+   PDielec.GenericOutputReader.cleanup_symbol
+   PDielec.GenericOutputReader.print3x3
+   PDielec.GenericOutputReader.print_ints
+   PDielec.GenericOutputReader.print_reals
+   PDielec.GenericOutputReader.print_strings
+
+
+Module Contents
+---------------
 
 .. py:class:: GenericOutputReader(filenames)
-
 
    Generic reader of output files. Actual reader should inherit from this class.
    Examples of readers with this base class:
@@ -106,6 +126,7 @@ Classes
    original_born_charges_are_being_used : bool
        Signifies whether original Born charges are in use, defaults to True.
 
+
    .. py:method:: _born_charge_sum_rule()
 
       Apply a simple charge sum rule to all the elements of the born matrices
@@ -121,6 +142,7 @@ Classes
       Notes
       -----
       This function applies a straightforward summation rule to the elements of the born matrices,
+
 
 
    .. py:method:: _dynamical_matrix(hessian)
@@ -146,6 +168,7 @@ Classes
       - Finally, the frequencies and normal modes are stored.
 
 
+
    .. py:method:: _modify_mass_weighting(hessian, new)
 
       Modify the Hessian matrix based on new mass weighting.
@@ -166,6 +189,7 @@ Classes
 
 
 
+
    .. py:method:: _read_output_file(name)
 
       Read through the file 'name' for key words. The keywords are established in _read_output_files.
@@ -181,6 +205,7 @@ Classes
       Notes
       -----
       The actual implementation for identifying keywords is handled by the `_read_output_files` method.
+
 
 
    .. py:method:: _read_output_files()
@@ -200,6 +225,7 @@ Classes
       This method is over-ridden by the child class
 
 
+
    .. py:method:: _read_till_phrase(phrase)
 
       Read lines from the current file until a match with phrase is found.
@@ -214,6 +240,7 @@ Classes
       -------
       str
           The line from the file that matches the phrase.
+
 
 
    .. py:method:: _remove_mass_weighting(hessian, old)
@@ -247,6 +274,7 @@ Classes
       original Hessian matrix.
 
 
+
    .. py:method:: _symmetric_orthogonalisation(A)
 
       Private routine to perform symmetric orthogonalization.
@@ -259,6 +287,7 @@ Classes
       Returns
       -------
       None
+
 
 
 
@@ -278,6 +307,7 @@ Classes
       -------
       mass_weighted_normal_modes : np.array
          the mass weighted normal modes
+
 
 
    .. py:method:: change_masses(new_masses, mass_dictionary)
@@ -306,6 +336,7 @@ Classes
       - Debugging messages are conditionally printed based on the boolean attribute `self.debug`.
 
 
+
    .. py:method:: getSpecies()
 
       Return a list of cleaned species symbols.
@@ -321,6 +352,7 @@ Classes
       -------
       list
           A list of cleaned species symbols.
+
 
 
    .. py:method:: get_crystal_density()
@@ -340,6 +372,7 @@ Classes
 
 
 
+
    .. py:method:: get_unit_cell()
 
       Return the last unit cell in the reader
@@ -354,6 +387,7 @@ Classes
       -------
       unitCell object
           The last unit cell read by the reader
+
 
 
 
@@ -377,6 +411,7 @@ Classes
       Examples
       --------
       Assuming an object `molecule` with species `['H2', 'O']`, masses_per_type `[2.016, 15.999]`, and a debug attribute set to True, calling `molecule.mass_dictionary()` would print `{'H2': 2.016, 'O': 15.999}` and return this dictionary.
+
 
 
    .. py:method:: neutralise_born_charges()
@@ -404,6 +439,7 @@ Classes
       need to be neutralized or altered from their original state.
 
 
+
    .. py:method:: print()
 
       Print information about the reader.
@@ -421,6 +457,7 @@ Classes
       This function prints out detailed information about the reader it is run on.
 
 
+
    .. py:method:: project(hessian)
 
       Apply projection operators to remove translation.
@@ -436,6 +473,7 @@ Classes
           The matrix with translational modes projected out.
 
 
+
    .. py:method:: read_output()
 
       Interface to the private read output files methods.
@@ -447,6 +485,7 @@ Classes
       Returns
       -------
       None
+
 
 
    .. py:method:: reset_born_charges()
@@ -466,6 +505,7 @@ Classes
       Notes
       -----
       This method changes the state of the reader by modifying its `born_charges` attribute to match `original_born_charges`, under the condition that `original_born_charges_are_being_used` is `False`.
+
 
 
    .. py:method:: reset_masses()
@@ -504,6 +544,7 @@ Classes
       method to avoid setting the masses to an unintended state.
 
 
+
    .. py:method:: set_edited_masses(masses)
 
       Sets the edited masses attribute if the length matches the original masses attribute.
@@ -526,4 +567,194 @@ Classes
       None
 
 
+
+.. py:class:: pdielec_io(filename, mode)
+
+   A class for reading lines from a file and providing an interface similar to file objects.
+
+   The class opens a file upon initialization, reads its lines into memory,
+   and allows sequential reading of these lines through the readline method.
+   It also provides a close method to reset the reading process.
+   This speeds up the reading of a file using the usual python readline() method.
+
+   Parameters
+   ----------
+   filename : str
+       The path to the file to be read.
+   mode : str
+       The mode in which the file should be opened (e.g., 'r' for read).
+
+   Attributes
+   ----------
+   filename : str
+       The path to the file that was opened.
+   lines : list of str
+       The lines read from the file.
+   index : int
+       The current position (line) in the file being read, initialized at 0.
+   end : int
+       The total number of lines in the file.
+
+   Methods
+   -------
+   readline()
+       Reads the next line from the file. If the end of the file has been reached,
+       returns an empty string.
+   close()
+       Resets the reading process by resetting the current line index and
+       deleting all lines read from the file from memory.
+
+
+   .. py:method:: close()
+
+      Closes the current object session.
+
+      Resets the index to 0 and deletes the lines attribute from the object.
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      None
+
+      Notes
+      -----
+      This method is designed to perform cleanup tasks, such as resetting object state and freeing resources by deleting attributes. Calling this method on an object may render it unusable for certain operations that depend on the deleted attributes.
+
+
+
+   .. py:method:: readline()
+
+      Read and return the next line from the stored lines.
+
+      This method reads a line from the current position within an internal list of lines
+      and then advances the position so that subsequent calls will return subsequent lines.
+      If the end of the list is reached, it returns an empty string.
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      str
+          The next line in the internal list of lines, or an empty string if the end of the list is reached.
+
+
+
+.. py:function:: cleanup_symbol(s)
+
+   Return a true element from the symbol
+
+   Parameters
+   ----------
+   s : str
+
+   Returns
+   -------
+   str
+       The cleaned symbol
+
+
+.. py:function:: print3x3(title, array, format='{:14.6f}', file=sys.stdout, separator=' ')
+
+   Print a 3x3 matrix.
+
+   Parameters
+   ----------
+   array : tensor 3x3
+       The array to be printed
+   format : str, optional 
+       a format descriptor (defaults to 9.2f)
+   file : int, optional 
+       a file descriptor (defaults to stdout)
+   separator : str
+       the separator to use between ints (defaults to space)
+
+   Returns
+   -------
+   None
+
+
+.. py:function:: print_ints(title, ints, no_per_line=8, format='{:9d}', file=sys.stdout, separator=' ')
+
+   Print ints data.
+
+   Parameters
+   ----------
+   title : str
+      A title for the print
+   ints : a list of ints
+      A list of integers to be printed
+   no_per_line : int, optional
+      The number of  integers per line of output
+   format : str, optional 
+       a format descriptor (defaults to 9d)
+   file : int, optional 
+       a file descriptor (defaults to stdout)
+   separator : str
+       the separator to use between ints (defaults to space)
+
+   Returns
+   -------
+   None
+
+
+.. py:function:: print_reals(title, reals, no_per_line=8, format='{:9.2f}', file=sys.stdout, separator=' ')
+
+   Print reals data
+
+   Parameters
+   ----------
+   title : str
+      A title for the print
+   reals : a list of reals
+      A list of reals to be printed
+   no_per_line : int, optional
+      The number of  integers per line of output (default is 8)
+   format : str, optional 
+       a format descriptor (defaults to 9.2f)
+   file : int, optional 
+       a file descriptor (defaults to stdout)
+   separator : str
+       the separator to use between ints (defaults to space)
+
+   Returns
+   -------
+   None
+
+
+.. py:function:: print_strings(title, strings, no_per_line=8, format='{:9s}', file=sys.stdout, separator=' ')
+
+   Print strings data.
+
+   Parameters
+   ----------
+   title : str
+      A title for the print
+   strings : a list of strings
+      A list of strings to be printed
+   no_per_line : int, optional
+      The number of  integers per line of output
+   format : str, optional 
+       a format descriptor (defaults to 9s)
+   file : int, optional 
+       a file descriptor (defaults to stdout)
+   separator : str
+       the separator to use between ints (defaults to space)
+
+   Returns
+   -------
+   None
+
+
+.. py:data:: amu
+
+.. py:data:: avogadro_si
+   :value: 6.02214076e+23
+
+
+.. py:data:: wavenumber
 

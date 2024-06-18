@@ -1,5 +1,5 @@
-:py:mod:`PDielec.GUI.SingleCrystalLayer`
-========================================
+PDielec.GUI.SingleCrystalLayer
+==============================
 
 .. py:module:: PDielec.GUI.SingleCrystalLayer
 
@@ -9,24 +9,72 @@
 
 
 
-Module Contents
----------------
-
 Classes
-~~~~~~~
+-------
 
 .. autoapisummary::
 
+   PDielec.GUI.SingleCrystalLayer.Debug
    PDielec.GUI.SingleCrystalLayer.ShowLayerWindow
    PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer
 
+
+Module Contents
+---------------
+
+.. py:class:: Debug(debug, text, level=0)
+
+   A class aimed at providing a structured way to include debug messages in code.
+
+   Methods
+   -------
+   print(args, level=0)
+       Prints debug messages based on the debug level provided as argument compared to the object's debug level.
+   state()
+       Returns the current state (enabled or disabled) of debugging.
+
+   Notes
+   -----
+   The `print` method provides a flexible way to include additional information along with the base debug message, allowing for a detailed and adjustable debugging output.
+
+
+   .. py:method:: print(*args, level=0)
+
+      Prints message if debugging level allows.
+
+      Parameters
+      ----------
+      args
+          Variable length argument list for the message to be printed.
+      level : int, optional
+          The level of the message that determines if it gets printed or not,
+          based on the instance's `level`. Default value is 0.
+
+      Notes
+      -----
+      This method will only print the message if the instance's `debug` flag is True
+      and the provided `level` is less than or equal to the instance's `level`.
+
+
+
+   .. py:method:: state()
+
+      Get the debug state.
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      The current debug state.
 
 
 
 .. py:class:: ShowLayerWindow(layer, message='', parent=None, debug=False)
 
-
    Bases: :py:obj:`PyQt5.QtWidgets.QDialog`
+
 
    A GUI window for displaying and editing the properties of a layer in a project.
 
@@ -75,6 +123,7 @@ Classes
    on_thickness_units_cb_activated(index)
        Respond to thickness unit selection changes.
 
+
    .. py:method:: changeLabFrameInfo()
 
       Update the lab frame information in the labframe widget.
@@ -91,6 +140,7 @@ Classes
 
 
 
+
    .. py:method:: drawLayerWidget()
 
       Create a layer widget showing all the information about the layer.
@@ -102,6 +152,7 @@ Classes
       Returns
       -------
       None
+
 
 
    .. py:method:: drawLayerWidgetLine1()
@@ -119,6 +170,7 @@ Classes
       None
 
 
+
    .. py:method:: drawLayerWidgetLine2()
 
       Add the second line of the layer description
@@ -132,6 +184,7 @@ Classes
       Returns
       -------
       None
+
 
 
    .. py:method:: drawLayerWidgetLine3()
@@ -149,6 +202,7 @@ Classes
       None
 
 
+
    .. py:method:: getLayer()
 
       Return the edited layer
@@ -160,6 +214,7 @@ Classes
       Returns
       -------
       self.layer : An instance of a single crystal layer
+
 
 
    .. py:method:: on_azimuthal_angle_sb_changed(value)
@@ -175,6 +230,7 @@ Classes
       None
 
 
+
    .. py:method:: on_film_thickness_sb_changed(value)
 
       Handle film thickness spin box change.
@@ -186,6 +242,7 @@ Classes
       Returns
       -------
       None
+
 
 
    .. py:method:: on_hkl_sb_changed(value, hkorl)
@@ -202,6 +259,7 @@ Classes
       Returns
       -------
       None
+
 
 
 
@@ -222,7 +280,6 @@ Classes
 
 
 .. py:class:: SingleCrystalLayer(material, hkl=[0, 0, 1], azimuthal=0.0, thickness=0.0, thicknessUnit='nm', incoherentOption='Coherent', dielectricFlag=False)
-
 
    A class representing a single crystal layer.
 
@@ -335,6 +392,7 @@ Classes
    -----
    The class heavily relies on numpy for various calculations including matrix manipulations and rotation calculations.
 
+
    .. py:method:: azimuthalRotationMatrix(angle)
 
       Calculate a rotation matrix for the azimuthal angle (in degrees).
@@ -347,6 +405,7 @@ Classes
       -------
       ndarray 3x3
           The rotation matrix for the given azimuthal angle.
+
 
 
    .. py:method:: calculateLabFrameEpsilon(v)
@@ -368,6 +427,7 @@ Classes
           The permittivity of the material in the laboratory frame.
 
 
+
    .. py:method:: calculate_euler_matrix()
 
       Calculate the Euler angles for the crystal to lab transformation.
@@ -381,11 +441,13 @@ Classes
       None
 
 
+
    .. py:method:: changeLabFrameInfo()
 
       Change the Lab Frame Info panel.
 
       Information about the relationship between the crystal and labframe coordinate systems is presented.
+
 
 
    .. py:method:: getAzimuthal()
@@ -402,6 +464,7 @@ Classes
           The azimuthal angle.
 
 
+
    .. py:method:: getHKL()
 
       Get the hkl.
@@ -413,6 +476,7 @@ Classes
       Returns
       -------
       list of 3 ints
+
 
 
    .. py:method:: getIncoherentOption()
@@ -429,6 +493,7 @@ Classes
       -------
       type
           The value of the `incoherentOption` attribute of the object.
+
 
 
    .. py:method:: getLabFrame()
@@ -448,6 +513,7 @@ Classes
 
 
 
+
    .. py:method:: getMaterial()
 
       Return the material
@@ -459,6 +525,7 @@ Classes
       Returns
       -------
       an instance of a Materials object
+
 
 
    .. py:method:: getName()
@@ -475,6 +542,7 @@ Classes
           The name of the material.
 
 
+
    .. py:method:: getPermittivityFunction()
 
       Return the permittivity function associated with this material
@@ -486,6 +554,7 @@ Classes
       Returns
       -------
       A permittivity function
+
 
 
    .. py:method:: getPhaseShift()
@@ -502,6 +571,7 @@ Classes
           The phase shift used in the averaged phase shift method
 
 
+
    .. py:method:: getThickness()
 
       Get the thickness
@@ -513,6 +583,7 @@ Classes
       Returns
       -------
       float
+
 
 
    .. py:method:: getThicknessInMetres()
@@ -528,6 +599,7 @@ Classes
       float
 
 
+
    .. py:method:: getThicknessUnit()
 
       Get the thickness unit
@@ -539,6 +611,7 @@ Classes
       Returns
       -------
       str
+
 
 
    .. py:method:: invert(m)
@@ -556,6 +629,7 @@ Classes
           The inverse of `m` as a 3x3 complex numpy array.
 
 
+
    .. py:method:: isCoherent()
 
       Returns True if this is a coherent layer, False otherwise.
@@ -568,6 +642,7 @@ Classes
       -------
       bool
           True if this is a coherent layer, False otherwise.
+
 
 
    .. py:method:: isDielectric()
@@ -584,6 +659,7 @@ Classes
           True if the material of the layer is the dielectric material, otherwise False.
 
 
+
    .. py:method:: isScalar()
 
       Return true if the material of the layer is a scalar material.
@@ -596,6 +672,7 @@ Classes
       -------
       bool
           True if the material of the layer is a scalar material, False otherwise.
+
 
 
    .. py:method:: isTensor()
@@ -612,6 +689,7 @@ Classes
           True if the material of the layer is a tensor material, False otherwise.
 
 
+
    .. py:method:: print()
 
       Print the main attributes of the layer.
@@ -619,6 +697,7 @@ Classes
       Parameters
       ----------
       None
+
 
 
    .. py:method:: setAzimuthal(angle)
@@ -635,6 +714,7 @@ Classes
       None
 
 
+
    .. py:method:: setHKL(hkl)
 
       Set the hkl and recalculate the Euler matrix
@@ -648,6 +728,7 @@ Classes
       None
 
 
+
    .. py:method:: setIncoherentOption(option)
 
       Set the incoherent option
@@ -659,6 +740,7 @@ Classes
       Returns
       -------
       None
+
 
 
    .. py:method:: setPhaseShift(phaseShift)
@@ -675,6 +757,7 @@ Classes
       None
 
 
+
    .. py:method:: setThickness(thickness)
 
       Set the thickness.
@@ -686,6 +769,7 @@ Classes
       Returns
       -------
       None
+
 
 
    .. py:method:: setThicknessUnit(thicknessUnit)

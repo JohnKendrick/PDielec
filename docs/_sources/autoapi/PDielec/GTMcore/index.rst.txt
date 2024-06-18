@@ -1,5 +1,5 @@
-:py:mod:`PDielec.GTMcore`
-=========================
+PDielec.GTMcore
+===============
 
 .. py:module:: PDielec.GTMcore
 
@@ -92,11 +92,19 @@
 
 
 
-Module Contents
----------------
+Attributes
+----------
+
+.. autoapisummary::
+
+   PDielec.GTMcore.c_const
+   PDielec.GTMcore.eps0
+   PDielec.GTMcore.epsilon_0_si
+   PDielec.GTMcore.speed_light_si
+
 
 Classes
-~~~~~~~
+-------
 
 .. autoapisummary::
 
@@ -113,9 +121,8 @@ Classes
    PDielec.GTMcore.TransferMatrixSystem
 
 
-
 Functions
-~~~~~~~~~
+---------
 
 .. autoapisummary::
 
@@ -125,22 +132,16 @@ Functions
    PDielec.GTMcore.vacuum_eps
 
 
-
-Attributes
-~~~~~~~~~~
-
-.. autoapisummary::
-
-   PDielec.GTMcore.c_const
-   PDielec.GTMcore.eps0
-
+Module Contents
+---------------
 
 .. py:class:: CoherentLayer(layer, theta=0, phi=0, psi=0, exponent_threshold=700)
 
-
    Bases: :py:obj:`Layer`
 
+
    Define a coherent layer inherits from Layer class.
+
 
    .. py:method:: calculate_scattering_matrix(b)
 
@@ -167,12 +168,13 @@ Attributes
 
 .. py:class:: IncoherentAveragePhaseLayer(layer, percentage_incoherence=100, number_of_samples=4, theta=0, phi=0, psi=0, exponent_threshold=700)
 
-
    Bases: :py:obj:`CoherentLayer`
+
 
    Define an incoherent layer using an average phase in the propagation matrix.
 
    Inherits from CoherentLayer
+
 
    .. py:method:: calculate_propagation_exponents(f)
 
@@ -194,8 +196,8 @@ Attributes
 
 .. py:class:: IncoherentIntensityLayer(layer, theta=0, phi=0, psi=0, exponent_threshold=700)
 
-
    Bases: :py:obj:`CoherentLayer`
+
 
    Define an incoherent layer using intensity transfer matrices.
 
@@ -204,12 +206,13 @@ Attributes
 
 .. py:class:: IncoherentPhaseLayer(layer, theta=0, phi=0, psi=0, exponent_threshold=700)
 
-
    Bases: :py:obj:`CoherentLayer`
+
 
    Define an incoherent layer using Arteaga's modification of the phase in the propagation matrix.
 
    Inherits from CoherentLayer
+
 
    .. py:method:: calculate_propagation_exponents(f)
 
@@ -237,12 +240,13 @@ Attributes
 
 .. py:class:: IncoherentThickLayer(layer, theta=0, phi=0, psi=0, exponent_threshold=700)
 
-
    Bases: :py:obj:`CoherentLayer`
+
 
    Define an incoherent layer using the thick slab approximation.
 
    Inherits from CoherentLayer
+
 
    .. py:method:: calculate_propagation_matrix(f)
 
@@ -256,6 +260,7 @@ Attributes
       Returns
       -------
       None
+
 
 
    .. py:method:: calculate_scattering_matrix(b)
@@ -277,7 +282,6 @@ Attributes
 
 
 .. py:class:: Layer(thickness=1e-06, epsilon=None, theta=0, phi=0, psi=0, exponent_threshold=700)
-
 
    Layer class. An instance is a single layer:
 
@@ -308,19 +312,6 @@ Attributes
    If instantiated with default values, it generates a 1 µm thick layer of air.
    Properties can be checked/changed dynamically using the corresponding get/set methods.
 
-   .. py:attribute:: jk_shift
-
-      
-
-   .. py:attribute:: qsd_thr
-      :value: 1e-10
-
-      
-
-   .. py:attribute:: zero_thr
-      :value: 1e-10
-
-      
 
    .. py:method:: calculate_ai(zeta)
 
@@ -332,6 +323,7 @@ Attributes
       ----------
       zeta : float
           Reduced in-plane wavevector kx/k0.
+
 
 
    .. py:method:: calculate_epsilon(f_in)
@@ -357,6 +349,7 @@ Attributes
       Modification by JK to allow the use of a full dielectric tensor.
 
 
+
    .. py:method:: calculate_gamma(zeta)
 
       Calculate the gamma matrix
@@ -369,6 +362,7 @@ Attributes
       Returns
       -------
       None
+
 
 
    .. py:method:: calculate_matrices(zeta)
@@ -392,6 +386,7 @@ Attributes
       Requires prior execution of :py:func:`calculate_epsilon`.
 
 
+
    .. py:method:: calculate_propagation_exponents(f)
 
       Routine to calculate the propagation exponents
@@ -401,6 +396,7 @@ Attributes
 
       f : float
           The frequency
+
 
 
    .. py:method:: calculate_propagation_matrix(f)
@@ -416,6 +412,7 @@ Attributes
       -------
       Ki : ndarray
           A 4x4-array representing the boundary matrix :math:`K_i` of the layer.
+
 
 
    .. py:method:: calculate_q()
@@ -437,6 +434,7 @@ Attributes
       to a threshold value `qsd_thr` set at the beginning of the script.
 
 
+
    .. py:method:: calculate_transfer_matrix(f, zeta)
 
       Compute the transfer matrix of the whole layer :math:`T_i=A_iP_iA_i^{-1}`
@@ -453,6 +451,7 @@ Attributes
       None
 
 
+
    .. py:method:: isCoherent()
 
       Returns True if the layer is a coherent layer
@@ -467,6 +466,7 @@ Attributes
           True if the layer is coherent, False if not.
 
 
+
    .. py:method:: set_epsilon(epsilon_function)
 
       Sets the dielectric function.
@@ -479,6 +479,7 @@ Attributes
       Returns
       -------
       None
+
 
 
    .. py:method:: set_euler(theta, phi, psi)
@@ -499,6 +500,7 @@ Attributes
       None
 
 
+
    .. py:method:: set_thickness(thickness)
 
       Sets the layer thickness.
@@ -511,6 +513,7 @@ Attributes
       Returns
       -------
       None
+
 
 
    .. py:method:: update_sm(f, zeta)
@@ -539,6 +542,7 @@ Attributes
           Transfer matrix of the whole layer.
 
 
+
    .. py:method:: update_tm(f, zeta)
 
       Shortcut to recalculate all layer properties.
@@ -564,8 +568,20 @@ Attributes
 
 
 
-.. py:class:: SMatrix(S=None)
+   .. py:attribute:: jk_shift
 
+
+   .. py:attribute:: qsd_thr
+      :value: 1e-10
+
+
+
+   .. py:attribute:: zero_thr
+      :value: 1e-10
+
+
+
+.. py:class:: SMatrix(S=None)
 
    A class for storing and manipulating scattering matrices.
 
@@ -610,6 +626,7 @@ Attributes
    microwave engineering and quantum physics. It allows for the efficient calculation of
    the overall scattering matrix of the combined system.
 
+
    .. py:method:: calculateS()
 
       Calculate and assign the scattering parameter matrix, S
@@ -636,6 +653,7 @@ Attributes
 
 
 
+
    .. py:method:: redheffer(b)
 
       Routine to calculate the product of S-matrices.
@@ -649,6 +667,7 @@ Attributes
       -------
       Sab : ScatteringMatrix
           The product of Sa and Sb
+
 
 
    .. py:method:: unitMatrix()
@@ -673,12 +692,13 @@ Attributes
 
 .. py:class:: ScatteringMatrixSystem(substrate=None, superstrate=None, layers=[])
 
-
    Bases: :py:obj:`System`
+
 
    Define a system of layers which is described by a Scattering Matrix method.
 
    This implements additional routines needed for the scattering matrix method
+
 
 
    .. py:method:: calculate_GammaStar(f, zeta_sys)
@@ -698,6 +718,7 @@ Attributes
       -------
       Stotal : ndarray
           System scattering matrix :math:`S`
+
 
 
    .. py:method:: calculate_r_t(zeta_sys)
@@ -721,6 +742,7 @@ Attributes
           Complex *field* transmission coefficients (t=([tpp, tps, tsp, tss])).
       T_out : array_like, shape (4,)
           Real *intensity* transmission coefficients (T_out=([Tp,Ts])) (mode-inselective).
+
 
 
    .. py:method:: calculate_scattering_matrices()
@@ -747,10 +769,11 @@ Attributes
 
 .. py:class:: SemiInfiniteLayer(layer, theta=0, phi=0, psi=0, exponent_threshold=700)
 
-
    Bases: :py:obj:`CoherentLayer`
 
+
    Define a semi-infinite layer, inherits from CoherentLayer class.
+
 
    .. py:method:: calculate_propagation_exponents(f)
 
@@ -766,6 +789,7 @@ Attributes
       Returns
       -------
       None
+
 
 
    .. py:method:: calculate_propagation_matrix(f)
@@ -787,7 +811,6 @@ Attributes
 
 
 .. py:class:: System(substrate=None, superstrate=None, layers=[])
-
 
    System class. An instance is an optical system with substrate, superstrate, and layers.
 
@@ -813,6 +836,7 @@ Attributes
 
    The whole system's transfer matrix is computed using :py:func:`calculate_GammaStar`, which calls :py:func:`Layer.update` for each layer. General reflection and transmission coefficient functions are given; they require the prior execution of :py:func:`calculate_GammaStar`. The electric fields can be visualized in the case of an incident plane wave using :py:func:`calculate_Efield`.
 
+
    .. py:method:: add_layer(layer)
 
       Add a layer instance.
@@ -836,6 +860,7 @@ Attributes
       change something for one of them, it changes for all of them.
 
 
+
    .. py:method:: calculate_GammaStar(f, zeta_sys)
 
       Calculate the whole system's transfer matrix.
@@ -852,6 +877,7 @@ Attributes
       -------
       GammaStar : complex ndarray
           4x4 complex matrix representing the system transfer matrix :math:`\Gamma^{*}`
+
 
 
    .. py:method:: calculate_r_t(zeta_sys)
@@ -885,6 +911,7 @@ Attributes
       Note also the different ordering of the coefficients, for consistency with Passler's matlab code.
 
 
+
    .. py:method:: del_layer(pos)
 
       Remove a layer at given position. Does nothing for invalid position.
@@ -897,6 +924,7 @@ Attributes
       Returns
       -------
       None
+
 
 
 
@@ -914,6 +942,7 @@ Attributes
       None
 
 
+
    .. py:method:: get_layer(pos)
 
       Get the layer at a given position.
@@ -927,6 +956,7 @@ Attributes
       -------
       self.layers[pos] : Layer
           The layer at the position `pos`.
+
 
 
    .. py:method:: get_substrate()
@@ -943,6 +973,7 @@ Attributes
           The system substrate.
 
 
+
    .. py:method:: get_superstrate()
 
       Returns the System's superstrate.
@@ -955,6 +986,7 @@ Attributes
       -------
       self.superstrate : Layer
           The system superstrate.
+
 
 
    .. py:method:: initialize_sys(f)
@@ -976,6 +1008,7 @@ Attributes
       outside of the class, and thus to explore also guided modes of the system.
 
 
+
    .. py:method:: overflowErrors()
 
       Return the total number of overflow errors encountered.
@@ -990,6 +1023,7 @@ Attributes
           The total number of overflow errors encountered.
 
 
+
    .. py:method:: set_substrate(sub)
 
       Sets the substrate.
@@ -1002,6 +1036,7 @@ Attributes
       Returns
       -------
       None
+
 
 
 
@@ -1023,8 +1058,8 @@ Attributes
 
 .. py:class:: TransferMatrixSystem(substrate=None, superstrate=None, layers=[])
 
-
    Bases: :py:obj:`System`
+
 
    Define a system of layers which is described by a Transfer Matrix method.
 
@@ -1102,9 +1137,11 @@ Attributes
 
 .. py:data:: c_const
 
-   
-
 .. py:data:: eps0
 
-   
+.. py:data:: epsilon_0_si
+
+.. py:data:: speed_light_si
+   :value: 299792458.0
+
 
