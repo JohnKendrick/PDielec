@@ -1,0 +1,1506 @@
+PDielec.GUI.PowderScenarioTab
+=============================
+
+.. py:module:: PDielec.GUI.PowderScenarioTab
+
+.. autoapi-nested-parse::
+
+   PowderScenarioTab module
+
+
+
+Attributes
+----------
+
+.. autoapisummary::
+
+   PDielec.GUI.PowderScenarioTab.avogadro_si
+   PDielec.GUI.PowderScenarioTab.wavenumber
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   PDielec.GUI.PowderScenarioTab.Debug
+   PDielec.GUI.PowderScenarioTab.Material
+   PDielec.GUI.PowderScenarioTab.MaterialsDataBase
+   PDielec.GUI.PowderScenarioTab.PowderScenarioTab
+   PDielec.GUI.PowderScenarioTab.ScenarioTab
+
+
+Module Contents
+---------------
+
+.. py:class:: Debug(debug, text, level=0)
+
+   A class aimed at providing a structured way to include debug messages in code.
+
+   Methods
+   -------
+   print(args, level=0)
+       Prints debug messages based on the debug level provided as argument compared to the object's debug level.
+   state()
+       Returns the current state (enabled or disabled) of debugging.
+
+   Notes
+   -----
+   The `print` method provides a flexible way to include additional information along with the base debug message, allowing for a detailed and adjustable debugging output.
+
+
+   .. py:method:: print(*args, level=0)
+
+      Prints message if debugging level allows.
+
+      Parameters
+      ----------
+      args
+          Variable length argument list for the message to be printed.
+      level : int, optional
+          The level of the message that determines if it gets printed or not,
+          based on the instance's `level`. Default value is 0.
+
+      Notes
+      -----
+      This method will only print the message if the instance's `debug` flag is True
+      and the provided `level` is less than or equal to the instance's `level`.
+
+
+
+   .. py:method:: state()
+
+      Get the debug state.
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      The current debug state.
+
+
+
+.. py:class:: Material(name, density=None, permittivityObject=None, cell=None)
+
+   A class for representing materials with properties like name, density, permittivity, and unit cell.
+
+   The Material class also contains the permittivity object for the material.  
+   The permittivity object is an instance of :class:`~PDielec.DielectricFunction.DielectricFunction` or one its children.
+   The permittivity object is responsible for calculating the permittivity at the given frequency.
+   The subclasses which inherit from the Material class are: Constant, External, DrudeLorentz, FPSQ, Sellmeier, and Tabulated.
+   Each subclass has an initialisation routine which instantiates the permittivity object of the appropriate type for the material.
+   The relationship between the Material subclass and the DielectricFunction subclass of the permittivity object is shown below.
+
+   +---------------------------+-------------------------------------------------------------+
+   + Material subclass         + DielectricFunction subclass                                 +
+   +===========================+=============================================================+
+   + :class:`Constant`         + :class:`~PDielec.DielectricFunction.Constant`               +
+   +---------------------------+-------------------------------------------------------------+
+   + :class:`External`         + This class is passed a permittivity object which has been   +
+   +                           + defined externally                                          +
+   +---------------------------+-------------------------------------------------------------+
+   + :class:`DrudeLorentz`     + :class:`~PDielec.DielectricFunction.DrudeLorentz`           +
+   +---------------------------+-------------------------------------------------------------+
+   + :class:`FPSQ`             + :class:`~PDielec.DielectricFunction.FPSQ`                   +
+   +---------------------------+-------------------------------------------------------------+
+   + :class:`Sellmeier`        + :class:`~PDielec.DielectricFunction.Sellmeier`              +
+   +---------------------------+-------------------------------------------------------------+
+   + :class:`Tabulated`        +  - :class:`~PDielec.DielectricFunction.TabulateScalar`      +
+   +                           +  - :class:`~PDielec.DielectricFunction.Tabulate3`           +
+   +                           +  - :class:`~PDielec.DielectricFunction.Tabulate3`           +
+   +                           +  - :class:`~PDielec.DielectricFunction.Tabulate6`           +
+   +---------------------------+-------------------------------------------------------------+
+
+   Parameters
+   ----------
+   name : str
+       The name of the material.
+   density : float, optional
+       The density of the material. If not provided and a cell is given, it will be calculated based on the cell.
+   permittivityObject : :class:`~PDielec.DielectricFunction.DielectricFunction`, optional
+       An object representing the dielectric function of the material. This is intended to be passed by classes that inherit from Material, and it should contain methods for calculating scalar/tensor permittivity. (see :class:`~PDielec.DielectricFunction.DielectricFunction` and its sub-classes)
+   cell : :class:`~PDielec.UnitCell.UnitCell`, optional
+       An object representing the unit cell of the material. If provided without a density, the density will be calculated from this cell. (See :class:`~PDielec.UnitCell.UnitCell`)
+
+   Attributes
+   ----------
+   density : float
+       The density of the material, which may be calculated based on the cell if not provided initially.
+   cell : Cell or None
+       The unit cell of the material if provided.
+   name : str
+       The name of the material.
+   type : str
+       A string indicating the type of the object. Defaults to 'Base Class' for the base Material class.
+   permittivityObject : DielectricFunction or None
+       An object to handle the permittivity calculations for the material.
+
+   Methods
+   -------
+   getName()
+       Returns the name of the material.
+   getInformation()
+       Returns information about the material, including its type and, if applicable, its permittivity frequency range.
+   getSigmas()
+       If the material has a lorentzian dielectric this routine returns the sigma parameters
+   setSigmas()
+       If the material has a lorentzian dielectric this routine sets the sigma parameters
+   getFrequencies()
+       If the material has a lorentzian dielectric this routine returns the frequencies
+   setFrequencies()
+       If the material has a lorentzian dielectric this routine sets the frequencies
+   getOscillatorStrengths()
+       If the material has a lorentzian dielectric this routine returns the oscillator strengths
+   setOscillatorStrengths()
+       If the material has a lorentzian dielectric this routine sets the oscillator strengths
+   print()
+       Prints information about the material, such as its name, density, type, and permittivity details.
+   isScalar()
+       Checks and returns True if the material’s permittivity is scalar.
+   isTensor()
+       Checks and returns True if the material’s permittivity is tensor.
+   getPermittivityObject()
+       Returns the permittivityObject of the material.
+   getPermittivityFunction()
+       Returns the permittivity function from the permittivityObject.
+   getDensity()
+       Returns the density of the material.
+   setCell(cell)
+       Sets the cell of the material and updates the density if it was initially None.
+   getCell()
+       Returns the cell of the material.
+   setDensity(value)
+       Sets the density of the material.
+   setEpsilonInfinity(eps)
+       Sets the epsilon infinity of the material
+   setPermittivityObject(permittivityObject)
+       Sets the permittivityObject for the material.
+
+
+   .. py:method:: getCell()
+
+      Return the cell
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      self.cell
+
+
+
+   .. py:method:: getDensity()
+
+      Return the density
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      self.density
+
+
+
+   .. py:method:: getFrequencies()
+
+      Gets the frequencies for a Lorentzian permittivity
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      1d array of floats
+          Returns the frequencies for a Lorentzian function in cm-1
+
+
+
+   .. py:method:: getInformation()
+
+      Returns information about the material.
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      str
+          A description of the material.
+
+
+
+   .. py:method:: getName()
+
+      Get the name attribute of the object.
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      str
+          The name attribute of the object.
+
+
+
+   .. py:method:: getOscillatorStrengths()
+
+      Gets the oscillator strengths for a Lorentzian permittivity
+
+      The oscillator strength of each transition is a 3x3 matrix
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      list of 3x3 array of floats
+          Returns the oscillator strengths for a Lorentzian permittivity function in cm-1
+
+
+
+   .. py:method:: getPermittivityFunction()
+
+      Returns the permittivity function.
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      permittivityObjectFunction
+          Return the permittivity object function
+
+
+
+   .. py:method:: getPermittivityObject()
+
+      Returns the permittivity object.
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      permittivityObject
+          Return the permittivity object (dielectric function object)
+
+
+
+   .. py:method:: getSigmas()
+
+      Gets the sigma parameters for a Lorentzian permittivity
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      1d array of floats
+          Returns the sigma parameters for a Lorentz permittivity function in cm-1
+
+
+
+   .. py:method:: isScalar()
+
+      Returns true if the material returns a scalar permittivity.
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      bool
+          True if the material returns a scalar permittivity, False otherwise.
+
+
+
+   .. py:method:: isTensor()
+
+      Returns true if the material returns a tensor permittivity.
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      bool
+          True if the material returns a tensor permittivity, False otherwise.
+
+
+
+   .. py:method:: print()
+
+      Print information about the material.
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: setCell(cell)
+
+      Set the unit cell
+
+      Parameters
+      ----------
+      cell : a unit cell
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: setDensity(value)
+
+      Set the density
+
+      Parameters
+      ----------
+      value : float
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: setFrequencies(frequencies)
+
+      Sets the frequencies for a Lorentzian permittivity
+
+      Parameters
+      ----------
+      frequencies : 1D array of floats
+          The frequencies for a Drude-Lorentzian permittivity in cm-1
+
+      Returns
+      -------
+      None
+
+
+
+
+   .. py:method:: setOscillatorStrengths(strengths)
+
+      Sets the oscillator strengths for a Lorentzian permittivity
+
+      Parameters
+      ----------
+      strengths : a 3x3 array of floats for each frequency
+          The oscillator strengths for a Lorentzian permittivity function in cm-1
+
+      Returns
+      -------
+      None
+
+
+
+
+   .. py:method:: setPermittivityObject(permittivityObject)
+
+      Set the permittivity object.
+
+      Parameters
+      ----------
+      permittivityObject : a permittivity object (dielectric function object)
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: setSigmas(sigmas)
+
+      Sets the sigma parameters for a Lorentzian permittivity
+
+      Parameters
+      ----------
+      sigmas : 1D array of floats
+          The sigma parameters for a Lorentzian permittivity function in cm-1
+
+      Returns
+      -------
+      None
+
+
+
+
+.. py:class:: MaterialsDataBase(filename, debug=False)
+
+   A class for managing a database of materials' properties.
+
+   This database is initialized from an Excel spreadsheet which contains various material properties including names, densities, refractive indices, and permittivities, among others.
+   Additional functionalities include validation checks, retrieval of sheet names, material information, and specific data based on the property of interest (e.g., constant permittivity, tabulated refractive index).
+   The getMaterial() method returns a material with a dielectric function of the appropriate type.
+   There are routines which read (process) the data stored for the following dielectric functions:
+
+   - constant refractive index
+   - constant permittivity
+   - tabulated refractive index (may be 1, 3 or 6 parameters for isotropic, uniaxial or anisotropic)
+   - tabulated permittivity (may be 1, 3 or 6 parameters for isotropic, uniaxial or anisotropic)
+   - Lorentz-Drude
+   - FPSQ (Four parameters semi-quantum model)
+   - Sellmeier
+
+   Further information can be found in the following classes and their sub-classes:
+
+   - :class:`~PDielec.Materials.Material`
+   - :class:`~PDielec.DielectricFunction.DielectricFunction`
+
+   Parameters
+   ----------
+   filename : str
+       The filename of the spreadsheet/database.
+   debug : bool, optional
+       Set to true for additional debugging information
+
+   Attributes
+   ----------
+   filename : str
+       The path to the Excel spreadsheet containing materials data.
+   sheetNames : list
+       A list of strings representing the names of the sheets within the Excel spreadsheet.
+   debug : bool, optional
+       A flag indicating whether debugging information should be printed. Default is False.
+
+   Methods
+   -------
+   __init__(filename, debug=False)
+       Initializes the MaterialsDataBase class with a given Excel spreadsheet and a debug flag.
+   getFileName()
+       Returns the filename of the Excel spreadsheet being used as the database.
+   valid()
+       Checks if the spreadsheet is a valid materials database based on certain criteria.
+   getSheetNames()
+       Retrieves a sorted list of sheet names within the spreadsheet, including additional predefined names.
+   getMaterial(sheet)
+       Returns a material object based on the data in a given sheet of the Excel spreadsheet.
+   readConstantRefractiveIndex(sheet, worksheet, density)
+       Reads constant refractive index data for a given material from the spreadsheet.
+   readConstantPermittivity(sheet, worksheet, density)
+       Reads constant permittivity data for a given material from the spreadsheet.
+   readTabulatedRefractiveIndex(sheet, worksheet, density)
+       Reads tabulated refractive index data for a given material from the spreadsheet.
+   readTabulatedPermittivity(sheet, worksheet, density)
+       Reads tabulated permittivity data for a given material from the spreadsheet.
+   readLorentzDrude(sheet, worksheet, density, unitCell)
+       Reads Drude-Lorentz model parameters for a given material from the spreadsheet.
+   readFPSQ(sheet, worksheet, density, unitCell)
+       Reads FPSQ model parameters for a given material from the spreadsheet.
+   readSellmeier(sheet, worksheet, density, unitCell)
+       Reads Sellmeier model parameters for a given material from the spreadsheet.
+
+
+   .. py:method:: getFileName()
+
+      Return the filename
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      str
+          The filename.
+
+
+
+   .. py:method:: getMaterial(sheet)
+
+      Return a material object based on the data in sheet (an excel sheet).
+
+      If one of the following is requested: air, vacuum, ptfe, ldpe, mdpe, kbr, nujol, then
+      the material is created even if it is not in the database.
+
+      Parameters
+      ----------
+      sheet : Excel sheet
+          The excel sheet containing the material data.
+
+      Returns
+      -------
+      Material object
+          The material object created from the excel sheet data.
+
+
+
+   .. py:method:: getSheetNames()
+
+      Returns a list of the sheetnames in the database.
+
+      As well as the sheets in the database, there are some default materials which will be added
+      to the list of materials and which are provided internally by this module.
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      list
+          A list of the sheet names present in the database.
+
+
+
+   .. py:method:: readConstantPermittivity(sheet, worksheet, density)
+
+      Read constant permittivity data from the spreadsheet.
+
+      Parameters
+      ----------
+      sheet : str
+          The worksheet name.
+      worksheet : worksheet
+          The worksheet instance.
+      density : float
+          The density of the material.
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: readConstantRefractiveIndex(sheet, worksheet, density)
+
+      Read constant refractive index from the spreadsheet.
+
+      Parameters
+      ----------
+      sheet : str
+          The worksheet name.
+      worksheet : worksheet
+          The worksheet.
+      density : float
+          The density of the material.
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: readFPSQ(sheet, worksheet, density, unitCell)
+
+      Read FPSQ data from the spreadsheet.
+
+      Parameters
+      ----------
+      sheet : str
+          The worksheet name.
+      worksheet : worksheet
+          The actual worksheet object.
+      density : float
+          The density of the material.
+      unitCell : object
+          The unit cell.
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: readLorentzDrude(sheet, worksheet, density, unitCell)
+
+      Read Drude-Lorentz data from the spreadsheet.
+
+      Parameters
+      ----------
+      sheet : str
+          The worksheet name.
+      worksheet : worksheet
+          The worksheet.
+      density : float
+          The density of the material.
+      unitCell : object
+          The unit cell.
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: readSellmeier(sheet, worksheet, density, unitCell)
+
+      Read Sellmeier data from the spreadsheet.
+
+      Parameters
+      ----------
+      sheet : str
+          The worksheet name.
+      worksheet : worksheet
+          The worksheet.
+      density : float
+          The density of the material.
+      unitCell : object
+          The unit cell.
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: readTabulatedPermittivity(sheet, worksheet, density)
+
+      Read tabulated permittivity data from the spreadsheet.
+
+      Parameters
+      ----------
+      sheet : str
+          The worksheet name.
+      worksheet : worksheet
+          The worksheet.
+      density : float
+          The density of the material.
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: readTabulatedRefractiveIndex(sheet, worksheet, density)
+
+      Read tabulated refractive index data from the spreadsheet.
+
+      Parameters
+      ----------
+      sheet : str
+          The worksheet name.
+      worksheet : worksheet
+          The worksheet.
+      density : float
+          The density of the material.
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: valid()
+
+      Test to see if the spreadsheet is a valid materials database.
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      bool
+          True if the spreadshee is 'valid'
+
+      Notes
+      -----
+      None
+
+
+
+.. py:class:: PowderScenarioTab(parent, debug=False)
+
+   Bases: :py:obj:`PDielec.GUI.ScenarioTab.ScenarioTab`
+
+
+   A class for managing the Powder Scenario Tab
+
+   It inherits from :class:`~PDielec.GUI.ScenarioTab`, thus utilizing its layout and properties, 
+   with additional features and settings pertinent to powder scenarios.
+
+   Parameters
+   ----------
+   parent : QWidget
+       The parent widget to attach to this scenario tab.
+   debug : bool, optional
+       If set to True, debug messages will be printed. Defaults to False.
+
+   Attributes
+   ----------
+   scenarioType : str
+       Defines the type of scenario as 'Powder'.
+   settings : dict
+       Dictionary holding various settings related to the scenario.
+   methods : list
+       List of available effective medium methods.
+   shapes : list
+       List of available particle shapes.
+   materialNames : list
+       List of available material names.
+   materialDefined : bool
+       Indicates whether the material is defined manually or not.
+   direction : ndarray
+       Array defining the unique direction for particle shape.
+   depolarisation : ndarray (3x3)
+       Array defining the depolarisation factors.
+   scenarioIndex : any
+       Index associated with the current scenario.
+   refreshRequired : bool
+       Indicates if UI refresh is required.
+   calculationRequired : bool
+       Indicates if recalculation is required due to parameter changes.
+   reader : An dft output reader
+       Used to read external data.
+   realPermittivity : list
+       List holding real parts of permittivity values.
+   imagPermittivity : list
+       List holding imaginary parts of permittivity values.
+   absorptionCoefficient : list
+       List to hold absorption coefficient values.
+   molarAbsorptionCoefficient : list
+       List to hold molar absorption coefficient values.
+   sp_atr : list
+       List to hold ATR specific calculation results.
+
+   Methods
+   -------
+   crystal_density()
+       Compute and return the density of the crystal based on its volume and mass.
+   openDB_button_clicked()
+       Handler for the event where the database open button is clicked.
+   on_h_sb_changed(value)
+       Handler for changes in the 'h' dimension parameter of the crystal's unique direction.
+   on_k_sb_changed(value)
+       Handler for changes in the 'k' dimension parameter of the crystal's unique direction.
+   on_l_sb_changed(value)
+       Handler for changes in the 'l' dimension parameter of the crystal's unique direction.
+   on_shape_cb_activated(index)
+       Handler for changes in the selected shape of powder particles.
+   on_methods_cb_activated(index)
+       Handler to deal with changes in the selected calculation method for effective medium theory.
+   on_mf_sb_changed(value)
+       Handler for changes to the mass fraction value, updating the volume fraction value accordingly.
+   update_vf_sb()
+       Update the volume fraction spinbox according to the mass fraction and recalculates as necessary.
+   on_aoverb_sb_changed(value)
+       Handler for changes to the ellipsoid a/b ratio or eccentricity.
+   on_legend_le_changed(text)
+       Handler for changes to the legend label of the powder scenario.
+   on_sigma_sb_changed(value)
+       Handler for changes to the particle size distribution sigma.
+   on_size_sb_changed(value)
+       Handler for changes to the particle size.
+   on_vf_sb_changed(value)
+       Handle changes to the volume fraction spinbox, updating mass fraction accordingly.
+   update_mf_sb()
+       Update the mass fraction spinbox according to the volume fraction and recalculates as necessary.
+   on_matrix_cb_activated(index)
+       Handler for changes to the selected support matrix in the ComboBox.
+   on_density_sb_changed(value)
+       Handle changes to the density spinbox of the support matrix.
+   on_bubble_vf_sb_changed(value)
+       Handle changes to the bubble volume fraction spinbox.
+   on_bubble_radius_sb_changed(value)
+       Handle changes to the bubble radius spinbox.
+   on_permittivity_i_sb_changed(value)
+       Handle changes to the imaginary part of the support matrix permittivity.
+   on_permittivity_r_sb_changed(value)
+       Handle changes to the real part of the support matrix permittivity.
+   on_atr_index_sb_changed(value)
+       Handle changes to the ATR material refractive index spinbox.
+   on_atr_incident_ang_sb_changed(value)
+       Handle changes to the ATR incident angle spinbox.
+   on_atr_spolfrac_sb_changed(value)
+       Handle changes to the ATR s-polarisation fraction spinbox.
+   change_greyed_out()
+       Enable or disable elements of the GUI based on the current scenario settings.
+   calculate(vs_cm1)
+       Calculate the powder absorption for the given frequency range.
+   get_result(vs_cm1, plot_type)
+       Return the calculation result for the specified plot type.
+   get_results(vs_cm1)
+       Prepare the necessary results for displaying or processing.
+   refresh(force=False)
+       Refresh the GUI interface with up to date values.
+
+
+   .. py:method:: calculate(vs_cm1)
+
+      Calculate the powder absorption for the range of frequencies in vs_cm1.
+
+      Parameters
+      ----------
+      vs_cm1 : array_like
+          Array of frequencies for which to calculate the powder absorption.
+
+      Returns
+      -------
+      array_like
+          The calculated powder absorption for the given range of frequencies.
+
+
+
+   .. py:method:: change_greyed_out()
+
+      Modify UI elements based on the selected effective medium method.
+
+      This function updates the enabled status of UI elements such as size, sigma, and shape selection based on the currently selected effective medium method in the settings. It also updates the particle shape setting if necessary and adjusts the UI to reflect any changes.
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      int
+
+      Notes
+      -----
+      - The method checks the 'Effective medium method' and 'Particle shape' in the settings.
+      - For 'Mie' and 'Anisotropic-Mie' methods, it enables size and sigma spinboxes and sets the particle shape to 'Sphere', disabling all other shapes.
+      - For 'Averaged Permittivity', it disables size and sigma spinboxes and sets the particle shape to 'Sphere'.
+      - For 'Maxwell-Garnett' and 'Bruggeman', it enables the size spinbox and disables the sigma spinbox, allowing all shapes to be selected.
+      - If the particle shape is set to 'Ellipsoid', 'Plate', or 'Needle', it enables direction (h, k, l) spinboxes and adjusts the display label accordingly. For 'Sphere', it disables these spinboxes.
+
+
+
+   .. py:method:: crystal_density()
+
+      Find the crystal density from the current reader and return the density.
+
+      Returns
+      -------
+      float
+          The crystal density.
+
+
+
+   .. py:method:: get_result(vs_cm1, plot_type)
+
+      Parameters
+      ----------
+      vs_cm1 : list
+          A list of frequencies in cm-1
+      plot_type : str
+          A string indicating the type of result to return.
+          One of: 'Powder Molar Absorption', 'Powder Absorption', 'Powder Real Permittivity', 'Powder Imaginary Permittivity', 'Powder ATR'
+
+      Returns
+      -------
+      list
+          A list of the required results.
+
+
+
+   .. py:method:: get_results(vs_cm1)
+
+      Return the results of the effective medium theory calculation.
+
+      This routine jut causes a refresh and calculation if it is needed.
+      See get_result() for accessing the results themselves
+
+      Parameters
+      ----------
+      vs_cm1 : list
+          A list of frequencies in cm-1
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: on_aoverb_sb_changed(value)
+
+      Handle a change to the a/b ratio for an ellipsoid.
+
+      Parameters
+      ----------
+      value : float
+          The a/b ratio of the elllipsoid
+
+
+
+   .. py:method:: on_atr_incident_ang_sb_changed(value)
+
+      Handles the update to the ATR incident angle situation.
+
+      This method updates the ATR incident angle setting based on user inputs or changes. It also triggers an update to ensure the new settings are reflected across the application.
+
+      Parameters
+      ----------
+      value : float or int
+          The new value for the ATR incident angle.
+
+      Returns
+      -------
+      int
+
+
+
+   .. py:method:: on_atr_index_sb_changed(value)
+
+      Handle the change in settings for ATR material refractive index.
+
+      Parameters
+      ----------
+      value : float
+          The new value for the ATR material refractive index.
+
+      Returns
+      -------
+      int
+
+      Notes
+      -----
+      - This function updates the 'ATR material refractive index' in the settings dictionary.
+      - Marks the instance as requiring a refresh, possibly to update some UI elements or calculations.
+
+
+
+   .. py:method:: on_atr_spolfrac_sb_changed(value)
+
+      Updates the ATR S polarisation fraction setting and marks refresh as required.
+
+      Parameters
+      ----------
+      value : float
+          The new value for the ATR S polarisation fraction. 
+
+      Returns
+      -------
+      int
+
+      Notes
+      -----
+      - This function updates the settings dictionary on the `self` object with the new value for the key 'ATR S polarisation fraction'.
+      - The refresh flag `self.refreshRequired` is set to `True` to indicate that some action is needed to reflect the change in the application.
+
+
+
+   .. py:method:: on_bubble_radius_sb_changed(value)
+
+      Update the bubble radius setting and mark refresh as required.
+
+      This method updates the 'Bubble radius' in the settings dictionary and marks the instance for refresh.
+
+      Parameters
+      ----------
+      value : float 
+          The new value to update the bubble radius setting with.
+
+      Returns
+      -------
+      int
+
+
+
+   .. py:method:: on_bubble_vf_sb_changed(value)
+
+      Handle a change to the bubble volume fraction
+
+      A change in the bubble volume fraction causes changes in the volume and mass fractions
+      These are calculated according to the mass or volume fraction having priority and the spinboxed updated.
+      A refresh is forced
+
+      Parameters
+      ----------
+      value : float
+          The bubble volume fraction
+
+
+
+   .. py:method:: on_density_sb_changed(value)
+
+      Handle a change to the matrix density
+
+      Changes in density cause changes in the volume and mass fractions.  
+      These are calculated according to the mass or volume fraction having priority and the spinboxed updated.
+      A refresh is forced
+
+      Parameters
+      ----------
+      value : float
+          The density
+
+
+
+   .. py:method:: on_h_sb_changed(value)
+
+      Handle a change to the h parameter of the (hkl) surface.
+
+      Parameters
+      ----------
+      value : int
+
+
+
+   .. py:method:: on_k_sb_changed(value)
+
+      Handle a change to the k parameter of the (hkl) surface
+
+      Parameters
+      ----------
+      value : int
+
+
+
+   .. py:method:: on_l_sb_changed(value)
+
+      Handle a change to the l parameter of the (hkl) surface.
+
+      Parameters
+      ----------
+      value : int
+
+
+
+   .. py:method:: on_legend_le_changed(text)
+
+      Handle a legend change.
+
+      Parameters
+      ----------
+      text : str
+          The legend
+
+
+
+
+   .. py:method:: on_matrix_cb_activated(index)
+
+      Handle a change to the support matrix supplied by the materials' database.
+
+      A refresh is flagged and the matrix name set from the combobox.
+      QT signals are blocked while data is being updated.
+      A material object is defined on the basis of the matrix name and the database
+      A refresh is performed
+
+      Parameters
+      ----------
+      index : int
+          The index is not used but the associated text of the combobox is.
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: on_methods_cb_activated(index)
+
+      Handle changes in the calculation method for the effective medium theory
+
+      Parameters
+      ----------
+      index
+          The index in the list of methods
+
+
+
+   .. py:method:: on_mf_sb_changed(value)
+
+      Handle a mass fraction change and update the volume fraction.
+
+      The mass fraction is prioritized and stored.  The volume fraction is calculated.
+
+      Parameters
+      ----------
+      value : float
+          The mass fraction
+
+
+
+   .. py:method:: on_permittivity_i_sb_changed(value)
+
+      Update the imaginary part of the permittivity in the matrix material settings and trigger a refresh.
+
+      Parameters
+      ----------
+      value : float
+          The new imaginary part of the permittivity to be set.
+
+      Returns
+      -------
+      int
+
+      Notes
+      -----
+      - Updates the imaginary part of the `Matrix permittivity` in the settings dictionary with the new value, keeping the real part unchanged.
+      - Replaces the permittivity object of the matrix material with a new constant scalar permittivity object created using the updated `Matrix permittivity`.
+      - Marks the matrix material as manually defined and triggers a required refresh to update any dependent calculations or displays.
+
+
+
+   .. py:method:: on_permittivity_r_sb_changed(value)
+
+      Update the real part of the permittivity in the matrix material settings and refresh the material definition.
+
+      Parameters
+      ----------
+      value : float
+          The new real value of the matrix permittivity to be set.
+
+      Returns
+      -------
+      int
+
+
+
+
+   .. py:method:: on_shape_cb_activated(index)
+
+      Handle changes to the shape of the powder particles
+
+      Parameters
+      ----------
+      index
+          The index in the list of shapes
+
+
+
+
+   .. py:method:: on_sigma_sb_changed(value)
+
+      Handle a particle size distribution change
+
+      Parameters
+      ----------
+      value : float
+          The particle size distribution width in microns
+
+
+
+   .. py:method:: on_size_sb_changed(value)
+
+      Handle a particle size change
+
+      Parameters
+      ----------
+      value : float
+          The particle size in microns
+
+
+
+   .. py:method:: on_vf_sb_changed(value)
+
+      Handle a volume fraction change, alter the mass fraction accordingly.
+
+      Parameters
+      ----------
+      value : float
+          The volume fraction
+
+
+
+
+   .. py:method:: openDB_button_clicked()
+
+      Open a new materials' database.
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: refresh(force=False)
+
+      Refresh the GUI interface with up to date values.
+
+      Parameters
+      ----------
+      force : bool
+          If True, then a refresh is forced regardless of the state of the scenario.
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: update_mf_sb()
+
+      Update the mass fraction and according to the volume fraction.
+
+      Parameters
+      ----------
+      None
+
+
+
+   .. py:method:: update_vf_sb()
+
+      Update the volume fraction according to the mass fraction.
+
+      Parameters
+      ----------
+      None
+
+
+
+.. py:class:: ScenarioTab(parent, debug=False)
+
+   Bases: :py:obj:`PyQt5.QtWidgets.QWidget`
+
+
+   A class representing a tab for scenario configurations within a user interface.
+
+   This class provides functionalities for managing and interacting with scenarios.
+   It allows users to create, delete, and switch between different scenarios, as well as open and manipulate a materials database.
+   :class:`~PDielec.GUI.PowderScenarioTab.PowderScenarioTab` and :class:`~PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab` inherit from this class.
+
+   Attributes
+   ----------
+   refreshRequired : bool
+       Indicates whether a refresh is required.
+   noCalculationsRequired : int
+       The number of calculations that need to be performed.
+   settings : dict
+       A dictionary of settings for the scenario.
+   notebook : QWidget
+       The parent widget, which is expected to be the notebook container for the scenarios.
+   scenarioType : type, optional
+       The type of the scenario, e.g., powder, crystal.
+   vs_cm1 : list
+       List containing default values for some settings.
+   DataBase : MaterialsDataBase
+       An instance of a class for interacting with a materials database.
+   openDB_button : QPushButton
+       Button to open the materials database.
+   openDB_label : QLabel
+       Label associated with the openDB_button.
+   database_le : QLineEdit
+       Line edit showing the path/name of the current materials database.
+   database_le_label : QLabel
+       Label associated with the database_le.
+   legend_le : QLineEdit
+       Line edit for specifying a custom legend for the scenario.
+   addScenarioButton : QPushButton
+       Button to add another scenario.
+   deleteScenarioButton : QPushButton
+       Button to delete the current scenario.
+   switchScenarioButton : QPushButton
+       Button to switch between scenario types (e.g., powder to crystal).
+
+   Methods
+   -------
+   openDataBase()
+       Open the database and set the material names.
+
+   getNoCalculationsRequired()
+       Get the number of spectra that need recalculating from this scenario.
+
+   requestRefresh()
+       Request a refresh of the scenario
+
+   set_reader(reader)
+       Set the reader associated with this scenario
+
+   setScenarioIndex(index)
+       Set the index for the current scenario and a default legend name based on the index.
+
+   print_settings()
+       Print all the settings for this scenario.
+
+   on_legend_le_changed(text)
+       Handle a change in the scenario legend.
+
+   add_scenario_buttons()
+       Add a set of scenario buttons in an hbox. Return the hbox.
+
+   addScenarioButtonClicked()
+       Handle when the "add another scenario" button has been clicked.
+
+   deleteScenarioButtonClicked()
+       Handle when a delete button has been clicked.
+
+   switchScenarioButtonClicked()
+       Handle the scenario when a button has been clicked.
+
+
+
+   .. py:method:: addScenarioButtonClicked()
+
+      Handle when the "add another scenario" button has been clicked.
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: add_scenario_buttons()
+
+      Add a set of scenario buttons in an hbox. Return the hbox.
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      hbox
+          The hbox containing the scenario buttons.
+
+
+
+   .. py:method:: deleteScenarioButtonClicked()
+
+      Handle when a delete button has been clicked.
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: getNoCalculationsRequired()
+
+      Get the number of spectra that need recalculating from this scenario.
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      int
+          The number of spectra requiring recalculation.
+
+
+
+   .. py:method:: on_legend_le_changed(text)
+
+      Handle a change in the scenario legend.
+
+      Parameters
+      ----------
+      text : str
+          The new legend for this scenario
+
+      Returns
+      -------
+      None
+
+
+
+
+   .. py:method:: openDataBase()
+
+      Open the database and set the material names.
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      None
+
+
+
+
+   .. py:method:: print_settings()
+
+      Print all the settings for this scenario.
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: requestRefresh()
+
+      Request a refresh of the scenario
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: setScenarioIndex(index)
+
+      Set the index for the current scenario.  Also set a default legend name based on the index
+
+      Parameters
+      ----------
+      index : int
+          The scenario index.  
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: set_reader(reader)
+
+      Set the reader associated with this scenario
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: switchScenarioButtonClicked()
+
+      Handle the switch scenario when a button has been clicked.
+
+      Asks the notebook to change the scenario type (Powder or Crystal) to the other.
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      None
+
+
+
+.. py:data:: avogadro_si
+   :value: 6.02214076e+23
+
+
+.. py:data:: wavenumber
+

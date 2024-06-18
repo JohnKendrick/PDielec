@@ -72,7 +72,7 @@ which will analyse a VASP and a CASTEP phonon calculation output to produce a su
 
 pdmake
 ======
-The testing suite is run use the the pdmake command.  The command line options are summarised below.
+The testing suite is run using the the pdmake command.  The command line options are summarised below.
 
    +-----------------------+----------------------------------------+
    | Command line option   | Description                            |
@@ -130,14 +130,18 @@ The package used for the calculation is described by the -program option. In add
 VASP 
 -----
 The name provided on the command line is an OUTCAR file. The OUTCAR is read by PDielec to determine the unit-cell, atomic masses, frequencies, normal modes, Born charge tensors and optical permittivity. The VASP run can be a DFPT or numerical calculation of the response.
+The latest version of VASP tested with this package is VASP 5.4.4. VASP 6 is known to be incompatible.
 
 CASTEP 
 -------
 The name provided on the command line is the seedname for the calculation. The corresponding seedname.castep file in the current directory is read and processed to determine the unit-cell, atomic masses, optical permittivity and born charge tensors. The normal modes and their frequencies are determined from the seedname.phonon file. The CASTEP run needs to be a DFPT (phonon+efield) task.
+The latest version of CASTEP tested with the package is CASTEP 21, later versions of CASTEP may also be compatible.
 
 CRYSTAL 
 -------
-The name on the command line is a file ending in .out, containing the output of a CRYSTAL14 run. The contents of this file alone are sufficient to provide the unit-cell, atomic masses, frequencies, normal modes and Born charge tensors. However, the number of significant figures for the normal modes is not sufficient for an accurate calculation and it is therefore recommended that the HESSFREQ.DAT and BORN.DAT files are also made available. If they are present in the directory where PDielec is run from, it uses these files to calculate the Born charge tensors, frequencies and normal modes. The CRYSTAL calculation needs to be a frequency calculation (FREQCALC) with the infrared intensity (INTENS) selected. The default algorithm does not calculate the optical permittivity, so this needs to be provided on the command line. However, if the CPHF or CPKS algorithm is used for the frequency calculation, the optical permittivity is calculated and PDielec will automatically read it from the output file. By default CRYSTAL projects out the pure translational modes of the system before calculating the frequencies, this can also done by the PDielec package. Small differences in the calculated frequencies between the CRYSTAL program and PDielec have been observed. These have been found to be due to a slightly different method for symmetrising the 2\ :superscript:`nd` derivative matrix, because of this an optional directive "-hessian crystal" can be used to indicate that PDielec should use the same symmetrisation as CRYSTAL14.
+The name on the command line is a file ending in .out, containing the output of a CRYSTAL run. The contents of this file alone are sufficient to provide the unit-cell, atomic masses, frequencies, normal modes and Born charge tensors. However, the number of significant figures for the normal modes is not sufficient for an accurate calculation and it is therefore recommended that the HESSFREQ.DAT and BORN.DAT files are also made available. If they are present in the directory where PDielec is run from, it uses these files to calculate the Born charge tensors, frequencies and normal modes. The CRYSTAL calculation needs to be a frequency calculation (FREQCALC) with the infrared intensity (INTENS) selected. The default algorithm does not calculate the optical permittivity, so this needs to be provided on the command line. However, if the CPHF or CPKS algorithm is used for the frequency calculation, the optical permittivity is calculated and PDielec will automatically read it from the output file. By default CRYSTAL projects out the pure translational modes of the system before calculating the frequencies, this can also done by the PDielec package. Small differences in the calculated frequencies between the CRYSTAL program and PDielec have been observed. These have been found to be due to a slightly different method for symmetrising the 2\ :superscript:`nd` derivative matrix, because of this an optional directive "-hessian crystal" can be used to indicate that PDielec should use the same symmetrisation as CRYSTAL.
+
+Versions of CRYSTAL which are known to be compatible with the package are CRYSTAL14, 17 & 21, later versions may be compatible also.
 
 ABINIT
 ------

@@ -1,0 +1,120 @@
+PDielec.checkcsv
+================
+
+.. py:module:: PDielec.checkcsv
+
+.. autoapi-nested-parse::
+
+   The checkcsv command read in two csv files and check that the float contents are the same
+
+   It is used by the :mod:`~PDielec.pdmake` command to check the validity of the reference calculations in the test suite.
+
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   PDielec.checkcsv.compare_lines
+   PDielec.checkcsv.isfloat
+   PDielec.checkcsv.main
+
+
+Module Contents
+---------------
+
+.. py:function:: compare_lines(line1, line2, swapped)
+
+   Compare two lines of text to find and report differences in numerical values.
+
+   Parameters
+   ----------
+   line1 : str
+       The first line of text to be compared.
+   line2 : str
+       The second line of text to be compared.
+   swapped : bool
+       A flag indicating if the comparison allows for the first numerical value to be 
+       considered as swapped, i.e., if an absolute difference of 1 between the first
+       numerical values in each line should be ignored.
+
+   Returns
+   -------
+   tuple : A tuple containing the following elements:
+       - store_error : bool (A flag indicating if an error was stored during comparison.)
+       - nerrors : int (The total number of errors detected in the comparison.)
+       - max_percentage_error : float (The maximum percentage error found during comparisons.)
+       - keep_word1 : str (The word from line1 that resulted in the maximum percentage error.)
+       - keep_word2 : str (The word from line2 that resulted in the maximum percentage error.)
+
+   Notes
+   -----
+   - The function makes use of two globals: `separator`, a string defining how to split
+     the lines into words, and `threshold`, a float defining the percentage error
+     threshold above which a discrepancy is considered an error.
+   - The function compares corresponding numerical values in `line1` and `line2`. Non-numeric 
+     words are ignored in the error calculation, but they contribute to the discrepancy count
+     if one word is numeric and the corresponding word is not.
+   - Special consideration is given to the word "processors" in the fourth position; 
+     if present and matching in both lines, it's an immediate pass, regardless of subsequent content.
+   - The function also allows for a tolerance in the comparison of the first numeric values 
+     of the lines if `swapped` is True, ignoring a discrepancy of exactly 1.
+
+
+.. py:function:: isfloat(value)
+
+   Check if the given value can be converted to float.
+
+   Parameters
+   ----------
+   value : any
+       The value to be checked.
+
+   Returns
+   -------
+   bool
+       Returns True if value can be converted to float, False otherwise.
+
+
+.. py:function:: main()
+
+   Compares two files line by line to check for significant changes based on a provided threshold.
+
+   This script takes at least two arguments that are file names along with optional arguments for
+   separator (`-sep`) and threshold value (`-thresh`). It compares numbers from corresponding lines
+   in the two files. A significant change is flagged if the specified comparison formula exceeds
+   a given threshold. Defaults to a threshold of 3.0E-2 and treats spaces as the default separator
+   for `.txt` and `.out` files, and commas for `.csv` files.
+
+   Parameters
+   ----------
+   None explicitly declared. The function operates on command-line arguments passed to the script.
+
+   - `-sep` : str, optional
+       Defines the separator to be used for splitting entries in a line.
+       Default is None, which then defaults to spaces for `.txt` and `.out` files,
+       and commas for `.csv` files.
+   - `-thresh` : float, optional
+       The threshold for flagging a difference between the corresponding numbers
+       from the two files as significant. Default is 3.0E-2.
+
+   Returns
+   -------
+   tuple
+       A tuple containing the number of errors found (`nerrors`), the line number with
+       the largest percentage difference (`keep_line_number`), the two values with the
+       largest difference (`keep_word1` and `keep_word2`), and the maximum percentage
+       difference found (`max_percentage_error`).
+
+   Raises
+   ------
+   FileNotFoundError
+       If one of the input files does not exist.
+
+   Notes
+   -----
+   The command-line arguments need to be parsed using `sys.argv`.
+   The comparison formula used is `2*abs(f1-f2)/(f1+f2+2)`.
+
+

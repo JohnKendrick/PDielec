@@ -1,0 +1,2528 @@
+PDielec.GUI.SingleCrystalScenarioTab
+====================================
+
+.. py:module:: PDielec.GUI.SingleCrystalScenarioTab
+
+.. autoapi-nested-parse::
+
+   SingleCrystalScenarioTab module
+
+
+
+Attributes
+----------
+
+.. autoapisummary::
+
+   PDielec.GUI.SingleCrystalScenarioTab.angstrom
+   PDielec.GUI.SingleCrystalScenarioTab.avogadro_si
+   PDielec.GUI.SingleCrystalScenarioTab.gtmMethods
+   PDielec.GUI.SingleCrystalScenarioTab.incoherentOptions
+   PDielec.GUI.SingleCrystalScenarioTab.speed_light_si
+   PDielec.GUI.SingleCrystalScenarioTab.thickness_conversion_factors
+   PDielec.GUI.SingleCrystalScenarioTab.thickness_units
+   PDielec.GUI.SingleCrystalScenarioTab.wavenumber
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   PDielec.GUI.SingleCrystalScenarioTab.Debug
+   PDielec.GUI.SingleCrystalScenarioTab.MaterialsDataBase
+   PDielec.GUI.SingleCrystalScenarioTab.ScenarioTab
+   PDielec.GUI.SingleCrystalScenarioTab.ShowLayerWindow
+   PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalLayer
+   PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   PDielec.GUI.SingleCrystalScenarioTab.solve_single_crystal_equations
+
+
+Module Contents
+---------------
+
+.. py:class:: Debug(debug, text, level=0)
+
+   A class aimed at providing a structured way to include debug messages in code.
+
+   Methods
+   -------
+   print(args, level=0)
+       Prints debug messages based on the debug level provided as argument compared to the object's debug level.
+   state()
+       Returns the current state (enabled or disabled) of debugging.
+
+   Notes
+   -----
+   The `print` method provides a flexible way to include additional information along with the base debug message, allowing for a detailed and adjustable debugging output.
+
+
+   .. py:method:: print(*args, level=0)
+
+      Prints message if debugging level allows.
+
+      Parameters
+      ----------
+      args
+          Variable length argument list for the message to be printed.
+      level : int, optional
+          The level of the message that determines if it gets printed or not,
+          based on the instance's `level`. Default value is 0.
+
+      Notes
+      -----
+      This method will only print the message if the instance's `debug` flag is True
+      and the provided `level` is less than or equal to the instance's `level`.
+
+
+
+   .. py:method:: state()
+
+      Get the debug state.
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      The current debug state.
+
+
+
+.. py:class:: MaterialsDataBase(filename, debug=False)
+
+   A class for managing a database of materials' properties.
+
+   This database is initialized from an Excel spreadsheet which contains various material properties including names, densities, refractive indices, and permittivities, among others.
+   Additional functionalities include validation checks, retrieval of sheet names, material information, and specific data based on the property of interest (e.g., constant permittivity, tabulated refractive index).
+   The getMaterial() method returns a material with a dielectric function of the appropriate type.
+   There are routines which read (process) the data stored for the following dielectric functions:
+
+   - constant refractive index
+   - constant permittivity
+   - tabulated refractive index (may be 1, 3 or 6 parameters for isotropic, uniaxial or anisotropic)
+   - tabulated permittivity (may be 1, 3 or 6 parameters for isotropic, uniaxial or anisotropic)
+   - Lorentz-Drude
+   - FPSQ (Four parameters semi-quantum model)
+   - Sellmeier
+
+   Further information can be found in the following classes and their sub-classes:
+
+   - :class:`~PDielec.Materials.Material`
+   - :class:`~PDielec.DielectricFunction.DielectricFunction`
+
+   Parameters
+   ----------
+   filename : str
+       The filename of the spreadsheet/database.
+   debug : bool, optional
+       Set to true for additional debugging information
+
+   Attributes
+   ----------
+   filename : str
+       The path to the Excel spreadsheet containing materials data.
+   sheetNames : list
+       A list of strings representing the names of the sheets within the Excel spreadsheet.
+   debug : bool, optional
+       A flag indicating whether debugging information should be printed. Default is False.
+
+   Methods
+   -------
+   __init__(filename, debug=False)
+       Initializes the MaterialsDataBase class with a given Excel spreadsheet and a debug flag.
+   getFileName()
+       Returns the filename of the Excel spreadsheet being used as the database.
+   valid()
+       Checks if the spreadsheet is a valid materials database based on certain criteria.
+   getSheetNames()
+       Retrieves a sorted list of sheet names within the spreadsheet, including additional predefined names.
+   getMaterial(sheet)
+       Returns a material object based on the data in a given sheet of the Excel spreadsheet.
+   readConstantRefractiveIndex(sheet, worksheet, density)
+       Reads constant refractive index data for a given material from the spreadsheet.
+   readConstantPermittivity(sheet, worksheet, density)
+       Reads constant permittivity data for a given material from the spreadsheet.
+   readTabulatedRefractiveIndex(sheet, worksheet, density)
+       Reads tabulated refractive index data for a given material from the spreadsheet.
+   readTabulatedPermittivity(sheet, worksheet, density)
+       Reads tabulated permittivity data for a given material from the spreadsheet.
+   readLorentzDrude(sheet, worksheet, density, unitCell)
+       Reads Drude-Lorentz model parameters for a given material from the spreadsheet.
+   readFPSQ(sheet, worksheet, density, unitCell)
+       Reads FPSQ model parameters for a given material from the spreadsheet.
+   readSellmeier(sheet, worksheet, density, unitCell)
+       Reads Sellmeier model parameters for a given material from the spreadsheet.
+
+
+   .. py:method:: getFileName()
+
+      Return the filename
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      str
+          The filename.
+
+
+
+   .. py:method:: getMaterial(sheet)
+
+      Return a material object based on the data in sheet (an excel sheet).
+
+      If one of the following is requested: air, vacuum, ptfe, ldpe, mdpe, kbr, nujol, then
+      the material is created even if it is not in the database.
+
+      Parameters
+      ----------
+      sheet : Excel sheet
+          The excel sheet containing the material data.
+
+      Returns
+      -------
+      Material object
+          The material object created from the excel sheet data.
+
+
+
+   .. py:method:: getSheetNames()
+
+      Returns a list of the sheetnames in the database.
+
+      As well as the sheets in the database, there are some default materials which will be added
+      to the list of materials and which are provided internally by this module.
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      list
+          A list of the sheet names present in the database.
+
+
+
+   .. py:method:: readConstantPermittivity(sheet, worksheet, density)
+
+      Read constant permittivity data from the spreadsheet.
+
+      Parameters
+      ----------
+      sheet : str
+          The worksheet name.
+      worksheet : worksheet
+          The worksheet instance.
+      density : float
+          The density of the material.
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: readConstantRefractiveIndex(sheet, worksheet, density)
+
+      Read constant refractive index from the spreadsheet.
+
+      Parameters
+      ----------
+      sheet : str
+          The worksheet name.
+      worksheet : worksheet
+          The worksheet.
+      density : float
+          The density of the material.
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: readFPSQ(sheet, worksheet, density, unitCell)
+
+      Read FPSQ data from the spreadsheet.
+
+      Parameters
+      ----------
+      sheet : str
+          The worksheet name.
+      worksheet : worksheet
+          The actual worksheet object.
+      density : float
+          The density of the material.
+      unitCell : object
+          The unit cell.
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: readLorentzDrude(sheet, worksheet, density, unitCell)
+
+      Read Drude-Lorentz data from the spreadsheet.
+
+      Parameters
+      ----------
+      sheet : str
+          The worksheet name.
+      worksheet : worksheet
+          The worksheet.
+      density : float
+          The density of the material.
+      unitCell : object
+          The unit cell.
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: readSellmeier(sheet, worksheet, density, unitCell)
+
+      Read Sellmeier data from the spreadsheet.
+
+      Parameters
+      ----------
+      sheet : str
+          The worksheet name.
+      worksheet : worksheet
+          The worksheet.
+      density : float
+          The density of the material.
+      unitCell : object
+          The unit cell.
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: readTabulatedPermittivity(sheet, worksheet, density)
+
+      Read tabulated permittivity data from the spreadsheet.
+
+      Parameters
+      ----------
+      sheet : str
+          The worksheet name.
+      worksheet : worksheet
+          The worksheet.
+      density : float
+          The density of the material.
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: readTabulatedRefractiveIndex(sheet, worksheet, density)
+
+      Read tabulated refractive index data from the spreadsheet.
+
+      Parameters
+      ----------
+      sheet : str
+          The worksheet name.
+      worksheet : worksheet
+          The worksheet.
+      density : float
+          The density of the material.
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: valid()
+
+      Test to see if the spreadsheet is a valid materials database.
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      bool
+          True if the spreadshee is 'valid'
+
+      Notes
+      -----
+      None
+
+
+
+.. py:class:: ScenarioTab(parent, debug=False)
+
+   Bases: :py:obj:`PyQt5.QtWidgets.QWidget`
+
+
+   A class representing a tab for scenario configurations within a user interface.
+
+   This class provides functionalities for managing and interacting with scenarios.
+   It allows users to create, delete, and switch between different scenarios, as well as open and manipulate a materials database.
+   :class:`~PDielec.GUI.PowderScenarioTab.PowderScenarioTab` and :class:`~PDielec.GUI.SingleCrystalScenarioTab.SingleCrystalScenarioTab` inherit from this class.
+
+   Attributes
+   ----------
+   refreshRequired : bool
+       Indicates whether a refresh is required.
+   noCalculationsRequired : int
+       The number of calculations that need to be performed.
+   settings : dict
+       A dictionary of settings for the scenario.
+   notebook : QWidget
+       The parent widget, which is expected to be the notebook container for the scenarios.
+   scenarioType : type, optional
+       The type of the scenario, e.g., powder, crystal.
+   vs_cm1 : list
+       List containing default values for some settings.
+   DataBase : MaterialsDataBase
+       An instance of a class for interacting with a materials database.
+   openDB_button : QPushButton
+       Button to open the materials database.
+   openDB_label : QLabel
+       Label associated with the openDB_button.
+   database_le : QLineEdit
+       Line edit showing the path/name of the current materials database.
+   database_le_label : QLabel
+       Label associated with the database_le.
+   legend_le : QLineEdit
+       Line edit for specifying a custom legend for the scenario.
+   addScenarioButton : QPushButton
+       Button to add another scenario.
+   deleteScenarioButton : QPushButton
+       Button to delete the current scenario.
+   switchScenarioButton : QPushButton
+       Button to switch between scenario types (e.g., powder to crystal).
+
+   Methods
+   -------
+   openDataBase()
+       Open the database and set the material names.
+
+   getNoCalculationsRequired()
+       Get the number of spectra that need recalculating from this scenario.
+
+   requestRefresh()
+       Request a refresh of the scenario
+
+   set_reader(reader)
+       Set the reader associated with this scenario
+
+   setScenarioIndex(index)
+       Set the index for the current scenario and a default legend name based on the index.
+
+   print_settings()
+       Print all the settings for this scenario.
+
+   on_legend_le_changed(text)
+       Handle a change in the scenario legend.
+
+   add_scenario_buttons()
+       Add a set of scenario buttons in an hbox. Return the hbox.
+
+   addScenarioButtonClicked()
+       Handle when the "add another scenario" button has been clicked.
+
+   deleteScenarioButtonClicked()
+       Handle when a delete button has been clicked.
+
+   switchScenarioButtonClicked()
+       Handle the scenario when a button has been clicked.
+
+
+
+   .. py:method:: addScenarioButtonClicked()
+
+      Handle when the "add another scenario" button has been clicked.
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: add_scenario_buttons()
+
+      Add a set of scenario buttons in an hbox. Return the hbox.
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      hbox
+          The hbox containing the scenario buttons.
+
+
+
+   .. py:method:: deleteScenarioButtonClicked()
+
+      Handle when a delete button has been clicked.
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: getNoCalculationsRequired()
+
+      Get the number of spectra that need recalculating from this scenario.
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      int
+          The number of spectra requiring recalculation.
+
+
+
+   .. py:method:: on_legend_le_changed(text)
+
+      Handle a change in the scenario legend.
+
+      Parameters
+      ----------
+      text : str
+          The new legend for this scenario
+
+      Returns
+      -------
+      None
+
+
+
+
+   .. py:method:: openDataBase()
+
+      Open the database and set the material names.
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      None
+
+
+
+
+   .. py:method:: print_settings()
+
+      Print all the settings for this scenario.
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: requestRefresh()
+
+      Request a refresh of the scenario
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: setScenarioIndex(index)
+
+      Set the index for the current scenario.  Also set a default legend name based on the index
+
+      Parameters
+      ----------
+      index : int
+          The scenario index.  
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: set_reader(reader)
+
+      Set the reader associated with this scenario
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: switchScenarioButtonClicked()
+
+      Handle the switch scenario when a button has been clicked.
+
+      Asks the notebook to change the scenario type (Powder or Crystal) to the other.
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      None
+
+
+
+.. py:class:: ShowLayerWindow(layer, message='', parent=None, debug=False)
+
+   Bases: :py:obj:`PyQt5.QtWidgets.QDialog`
+
+
+   A GUI window for displaying and editing the properties of a layer in a project.
+
+   Parameters
+   ----------
+   layer : object
+       The layer object to be displayed or acted upon in the window. (see :class:`SingleCrystalLayer`)
+   message : str, optional
+       Custom message to display in the window. The default is an empty string.
+   parent : QWidget, optional
+       The parent widget of this window. The default is None.
+   debug : bool, optional
+       Flag to enable or disable debug mode. The default is False.
+
+   Attributes
+   ----------
+   layer : object
+       The :class:`SingleCrystalLayer` instance that is displayed or being edited in this window.
+   message : str
+       The message displayed at the top of the window.
+   layout : QVBoxLayout
+       The main layout of the window.
+   buttonBox : QDialogButtonBox
+       The dialog box containing Ok and Cancel buttons.
+
+   Methods
+   -------
+   getLayer()
+       Return the :class:`SingleCrystalLayer` instance being edited or displayed.
+   drawLayerWidget()
+       Create a QWidget displaying all information about the layer.
+   drawLayerWidgetLine1()
+       Add widgets to display the first line of layer properties.
+   drawLayerWidgetLine2()
+       Add widgets to display the second line of layer properties related to the crystallographic direction (hkl).
+   drawLayerWidgetLine3()
+       Add widgets for displaying the third line of layer properties related to lab frame information.
+   changeLabFrameInfo()
+       Update the displayed lab frame information based on the layer's current state.
+   on_film_thickness_sb_changed(value)
+       Respond to changes in the film thickness spin box.
+   on_azimuthal_angle_sb_changed(value)
+       Respond to changes in the azimuthal angle spin box.
+   on_hkl_sb_changed(value, hkorl)
+       Respond to changes in the h, k, or l spin boxes.
+   on_thickness_units_cb_activated(index)
+       Respond to thickness unit selection changes.
+
+
+   .. py:method:: changeLabFrameInfo()
+
+      Update the lab frame information in the labframe widget.
+
+      Shows a, b and c crystal axis in the labframe.
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      None
+
+
+
+
+   .. py:method:: drawLayerWidget()
+
+      Create a layer widget showing all the information about the layer.
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: drawLayerWidgetLine1()
+
+      Add the first line of the layer description
+
+      Shows the material name and the film thickness and units. 
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: drawLayerWidgetLine2()
+
+      Add the second line of the layer description
+
+      Shows the hkl specification and the azimuthal angle
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: drawLayerWidgetLine3()
+
+      Add the third line of the layer description
+
+      Shows the relationship between crystal and labframe coordinate systems
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: getLayer()
+
+      Return the edited layer
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      self.layer : An instance of a single crystal layer
+
+
+
+   .. py:method:: on_azimuthal_angle_sb_changed(value)
+
+      Handle azimuthal spin box change.
+
+      Parameters
+      ----------
+      value : float
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: on_film_thickness_sb_changed(value)
+
+      Handle film thickness spin box change.
+
+      Parameters
+      ----------
+      value : float
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: on_hkl_sb_changed(value, hkorl)
+
+      Handle h, k, or l change.
+
+      Parameters
+      ----------
+      value : int
+         The value of h, k or l
+      hkorl : int
+          0, 1, or 2 for h, k or l respectively.
+
+      Returns
+      -------
+      None
+
+
+
+
+   .. py:method:: on_thickness_units_cb_activated(index)
+
+      Handle activation of thickness units combobox.
+
+      Parameters
+      ----------
+      index : int
+          The index of the selected item in the combobox.
+          One of 'nm', 'um', 'mm', 'cm'
+
+      Returns
+      -------
+      None
+
+
+
+.. py:class:: SingleCrystalLayer(material, hkl=[0, 0, 1], azimuthal=0.0, thickness=0.0, thicknessUnit='nm', incoherentOption='Coherent', dielectricFlag=False)
+
+   A class representing a single crystal layer.
+
+   Parameters
+   ----------
+   material : Material
+       An instance of Material object (see :class:`~PDielec.Materials.Material`), which contains:
+         - name (str)
+         - density (float)
+         - permittivity (float)
+         - unit cell (UnitCell)
+   hkl : list of int
+       A list of 3 integers defining the plane of interest.
+   azimuthal : float
+       The azimuthal angle of rotation of the crystal about the z-axis.
+   thickness : float
+       The thickness of the layer in the specified thickness units.
+   thicknessUnits : {'ang','nm', 'um', 'mm', 'cm'}
+       The units of thickness measurement.
+   incoherentOption : {'Coherent', 'Incoherent (intensity)', 'Incoherent (phase cancelling)', 'Incoherent (phase averaging)', 'Incoherent non-reflective'}
+       The option for handling incoherent scattering. 
+   dielectricFlag : bool
+       True if the layer material is the dielectric being studied (ie it was read in as a DFT calculation), False otherwise.
+
+   Attributes
+   ----------
+   material : Material
+       The material of the layer. (See :class:`~PDielec.Materials.Material`)
+   hkl : list of int
+       The Miller indices of the plane of interest in the crystal.
+   incoherentOption : str
+       The incoherent option for the layer.
+   azimuthal : float
+       The azimuthal angle of rotation of the crystal about the z-axis, in degrees.
+   thickness : float
+       The thickness of the layer in the specified units.
+   thicknessUnit : str
+       The units used for the thickness measurement.
+   dielectricFlag : bool
+       A flag indicating if the layer material is the dielectric material.
+   euler : ndarray
+       The Euler rotation matrix for the crystal to laboratory frame transformation, stored as a 3x3 numpy array with `dtype=np.longdouble`.
+   euler_inverse : ndarray
+       The inverse of the Euler rotation matrix, stored as a 3x3 numpy array with `dtype=np.longdouble`.
+   labframe_w : 
+       Placeholder attribute for GUI interactions, not initialized within the class definition.
+   labframe : ndarray
+       The lattice vectors of the crystal in the laboratory frame, stored as a numpy array.
+   phaseShift : float
+       The phase shift for the layer.
+
+   Methods
+   -------
+   print()
+       Prints the main attributes of the layer.
+   getPhaseShift()
+       Returns the phase shift for the layer.
+   setPhaseShift(phaseShift)
+       Sets the phase shift for the layer.
+   setAzimuthal(angle)
+       Sets the azimuthal angle of the layer and recalculates the Euler matrix.
+   isCoherent()
+       Returns True if the layer is coherent, False otherwise.
+   getIncoherentOption()
+       Returns the incoherent interaction option for the layer.
+   setIncoherentOption(option)
+       Sets the incoherent interaction option for the layer.
+   getAzimuthal()
+       Returns the azimuthal angle.
+   setThickness(thickness)
+       Sets the thickness of the layer.
+   getThickness()
+       Returns the thickness of the layer.
+   getThicknessInMetres()
+       Converts and returns the thickness of the layer in meters.
+   setThicknessUnit(thicknessUnit)
+       Sets the unit of thickness measurement.
+   getThicknessUnit()
+       Returns the unit of thickness measurement.
+   setHKL(hkl)
+       Sets the Miller indices for the plane of interest in the crystal.
+   getHKL()
+       Returns the Miller indices of the plane of interest.
+   getName()
+       Returns the name of the material.
+   getMaterial()
+       Returns the material object associated with the layer.
+   getPermittivityFunction()
+       Returns the permittivity tensor for the crystal at the surface and azimuthal angle specified.
+   isTensor()
+       Returns True if the material of the layer is a tensor material, False otherwise.
+   isScalar()
+       Returns True if the material of the layer is a scalar material, False otherwise.
+   isDielectric()
+       Returns True if the material of the layer is the dielectric being studied.
+   calculate_euler_matrix()
+       Calculates the Euler angles for the crystal to lab frame transformation.
+   azimuthalRotationMatrix(angle)
+       Calculates a rotation matrix for the azimuthal angle.
+   changeLabFrameInfo()
+       Changes the Lab Frame Information, used with GUI interactions.
+   getLabFrame()
+       Returns the information of the crystal axes in the laboratory frame.
+   calculateLabFrameEpsilon(v)
+       Computes the permittivity tensor for the material at a given frequency and transforms it to the laboratory frame.
+   invert(m)
+       Calculates the inverse of a given 3x3 complex matrix.
+
+   Notes
+   -----
+   The class heavily relies on numpy for various calculations including matrix manipulations and rotation calculations.
+
+
+   .. py:method:: azimuthalRotationMatrix(angle)
+
+      Calculate a rotation matrix for the azimuthal angle (in degrees).
+
+      Parameters
+      ----------
+      angle : float
+
+      Returns
+      -------
+      ndarray 3x3
+          The rotation matrix for the given azimuthal angle.
+
+
+
+   .. py:method:: calculateLabFrameEpsilon(v)
+
+      Get the permittivity for this material at frequency v and transform it to the laboratory frame.
+
+      Parameters
+      ----------
+      None
+
+      Parameters
+      ----------
+      v : float
+          Frequency at which the permittivity is evaluated.
+
+      Returns
+      -------
+      float
+          The permittivity of the material in the laboratory frame.
+
+
+
+   .. py:method:: calculate_euler_matrix()
+
+      Calculate the Euler angles for the crystal to lab transformation.
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: changeLabFrameInfo()
+
+      Change the Lab Frame Info panel.
+
+      Information about the relationship between the crystal and labframe coordinate systems is presented.
+
+
+
+   .. py:method:: getAzimuthal()
+
+      Get the azimuthal angle
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      float
+          The azimuthal angle.
+
+
+
+   .. py:method:: getHKL()
+
+      Get the hkl.
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      list of 3 ints
+
+
+
+   .. py:method:: getIncoherentOption()
+
+      Returns the value of the incoherent option attribute.
+
+      This will return 'Coherent' for a coherent layer
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      type
+          The value of the `incoherentOption` attribute of the object.
+
+
+
+   .. py:method:: getLabFrame()
+
+      Return the a, b, and c cell axes in the laboratory frame coordinates.
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      (a, b, c) : 3 lists of floats each with 3 elements
+          - a, The a cell axis in the laboratory frame.
+          - b, The b cell axis in the laboratory frame.
+          - c, The c cell axis in the laboratory frame.
+
+
+
+
+   .. py:method:: getMaterial()
+
+      Return the material
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      an instance of a Materials object
+
+
+
+   .. py:method:: getName()
+
+      Return the material name
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      str
+          The name of the material.
+
+
+
+   .. py:method:: getPermittivityFunction()
+
+      Return the permittivity function associated with this material
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      A permittivity function
+
+
+
+   .. py:method:: getPhaseShift()
+
+      Get the phase shift for the layer
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      float
+          The phase shift used in the averaged phase shift method
+
+
+
+   .. py:method:: getThickness()
+
+      Get the thickness
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      float
+
+
+
+   .. py:method:: getThicknessInMetres()
+
+      Get the thickness in metres
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      float
+
+
+
+   .. py:method:: getThicknessUnit()
+
+      Get the thickness unit
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      str
+
+
+
+   .. py:method:: invert(m)
+
+      Calculate the inverse of m
+
+      Parameters
+      ----------
+      m : complex 3x3 array
+          The input matrix for which to calculate the inverse.
+
+      Returns
+      -------
+      numpy.ndarray
+          The inverse of `m` as a 3x3 complex numpy array.
+
+
+
+   .. py:method:: isCoherent()
+
+      Returns True if this is a coherent layer, False otherwise.
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      bool
+          True if this is a coherent layer, False otherwise.
+
+
+
+   .. py:method:: isDielectric()
+
+      Return true if the material of the layer is the dielectric material.
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      bool
+          True if the material of the layer is the dielectric material, otherwise False.
+
+
+
+   .. py:method:: isScalar()
+
+      Return true if the material of the layer is a scalar material.
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      bool
+          True if the material of the layer is a scalar material, False otherwise.
+
+
+
+   .. py:method:: isTensor()
+
+      Return true if the material of the layer is a tensor material.
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      bool
+          True if the material of the layer is a tensor material, False otherwise.
+
+
+
+   .. py:method:: print()
+
+      Print the main attributes of the layer.
+
+      Parameters
+      ----------
+      None
+
+
+
+   .. py:method:: setAzimuthal(angle)
+
+      Set the azimuthal angle of the layer and calculate the Euler matrix.
+
+      Parameters
+      ----------
+      angle : float
+         The azimuthal angle in degrees
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: setHKL(hkl)
+
+      Set the hkl and recalculate the Euler matrix
+
+      Parameters
+      ----------
+      hkl : list of 3 ints
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: setIncoherentOption(option)
+
+      Set the incoherent option
+
+      Parameters
+      ----------
+      option : string
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: setPhaseShift(phaseShift)
+
+      Set the phase shift for the layer
+
+      Parameters
+      ----------
+      phaseShift : float
+         The phase shift
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: setThickness(thickness)
+
+      Set the thickness.
+
+      Parameters
+      ----------
+      thickness : float
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: setThicknessUnit(thicknessUnit)
+
+      Set the thickness unit.
+
+      Parameters
+      ----------
+      thicknessUnit
+
+      Returns
+      -------
+      None
+
+
+
+.. py:class:: SingleCrystalScenarioTab(parent, debug=False)
+
+   Bases: :py:obj:`PDielec.GUI.ScenarioTab.ScenarioTab`
+
+
+   A tab class for handling a single crystal scenario.
+
+   This class extends a generic scenario tab (:class:`~PDielec.GUI.ScenarioTab.ScenarioTab`) with functionalities specific to handling single crystal scenarios, including setting up the scenario environment, defining the crystal orientation, layer information, and calculation modes (e.g., using Transfer Matrix or Scattering Matrix methods). It supports incoherence effects through partial incoherence simulations and provides tools for fine-tuning simulation parameters such as incidence angles, layer materials, thicknesses, and orientations.
+
+   Parameters
+   ----------
+   parent : QWidget
+       The parent widget (typically a main window or a larger container) to which this tab will belong.
+   debug : bool, optional
+       A flag to indicate whether debugging information should be printed to the console. Default is False.
+
+   Attributes
+   ----------
+   refreshRequired : bool
+       Flag indicating whether the widget's data needs to be refreshed.
+   calculationRequired : bool
+       Flag indicating whether a new calculation is required based on changes in parameters or settings.
+   scenarioType : str
+       A string representing the type of scenario. For this class, it is set to 'Single crystal'.
+   refreshRequired : bool
+       Indicates whether the scenario settings have been changed and thus require the scenario to be redrawn or recalculated.
+   noCalculationsRequired : int
+       The number of calculations required for the simulation. This value may change depending on the specifics of the scenario configuration (e.g., the inclusion of incoherent effects requiring multiple sample calculations).
+   settings : dict
+       A dictionary holding various scenario parameters and their values, which include settings for the type of analysis, material layers, angles, and method-specific parameters.
+   materialNames : list
+       A list of names for materials that can be used in the scenario layers.
+   p_reflectance, s_reflectance, p_transmittance, s_transmittance, p_absorbtance, s_absorbtance : list
+       Lists holding computed values for reflectance, transmittance, and absorbance for both P and S polarization modes.
+   epsilon : list
+       A list of dielectric function values computed during simulation.
+   layers : list
+       A list of layer configurations used in the simulation, each containing information about the material, thickness, orientation, and other layer-specific properties.
+
+   Methods
+   -------
+   There are several methods within the class for handling events (e.g., button clicks, combo box activations), performing calculations, redrawing tables, and managing layer settings. These include methods for adding, deleting, or altering layers; opening material databases; changing simulation settings; calculating and displaying results; and initializing the user interface components relevant to the single crystal scenario.
+
+   angleOfIncidenceWidget
+       Create a widget to set the angle of incidence
+   average_incoherent_calculator
+       Calculates the incoherent light reflectance and transmittance
+   calculate
+       Perform the calculations as define in the GUI
+   coherent_calculator
+       Calculate the coherent light reflectance and transmittance
+   createToolBar
+        Create the tool bar used for the material layer
+   createToolBarDeleteButton
+        Create the delete button in the tool bar
+   createToolBarMoveDownButton
+        Create the move down button in the tool bar
+   createToolBarMoveUpButton
+        Create the move up button in the tool bar
+   deleteLayer
+        Delete a layer from the list of layers
+   drawLayerTable
+        Draw the layer table widget, each layer has a line in the table
+   generateLayerSettings
+        Generate the settings dictionary with an item for each layer
+   getDielectricLayerIndex
+        Get the index of the dielectric layer
+   getMaterialFromDataBase
+        Get a material from the database, or define the material from the given permittivity
+   get_result
+        Return the request information
+   get_results
+        Calculate all the reflectance, transmittance and absorptance information
+   globalAzimuthalWidget
+        Set the global azimuthal angle
+   greyed_out
+        Grey out menu items according to the GUI settings
+   moveLayerDown
+        Move a layer up the layer table
+   moveLayerUp
+        Move a layer down the layer table
+   newLayerWidget
+        Create a combox widget for adding a new layer
+   on_angle_of_incidence_sb_changed
+        Handle a change to the angle of incidence spin box
+   on_azimuthal_angle_sb_changed
+        Handle a change to the azimuthal spin box
+   on_film_thickness_sb_changed
+        Handle a change to the film thickness spin box
+   on_global_azimuthal_angle_sb_changed
+        Handle a change to the global azimuthal angle spin box
+   on_hkl_sb_changed
+        Handle a change to the h,k or l spin boxes
+   on_layerTable_itemChanged
+        Handle a change to an item in the layer table
+   on_layer_button_clicked
+        Handle a click on a layer name
+   on_mode_cb_activated
+        Handle a click on the mode combobox
+   on_newLayer_cb_activated
+        Handle a click on the new combobox
+   on_option_cb_activated
+        Handle a change to the incoherent option comobox
+   on_partially_incoherent_kernel_sb_changed
+        Handle a change to the incoherent kernel spinbox
+   on_partially_incoherent_polynomial_sb_changed
+        Handle a change to the length of incoherent polynomial spinbox
+   on_partially_incoherent_samples_sb_changed
+        Handle a change to the number of samples in the averaged incoherent method
+   on_percentage_partial_incoherence_sb_changed
+        Handle a change to the maximum percentage incoherence
+   on_print_button_clicked
+        Handle a print button click
+   on_slice_thickness_sb_changed
+        Handle a change to the slice thickness
+   on_slice_thickness_unit_cb_activated
+        Handle a change the slice thickess unit
+   on_thickness_units_cb_activated
+        Activate the thickness units combobox
+   openDB_button_clicked
+        Handle a click on the opend database button
+   partialIncoherenceWidget
+        Create a partialIncoherence widget
+   partially_incoherent_calculator
+        Calculate incoherent light scattering using a partially incoherent method
+   printLayerSettings
+        Print out the layer settings dictionary
+   redrawLayerTable
+        Redraw the layer table
+   redrawLayerTableRow
+        Redraw a row of the layer table
+   refresh
+        Perform a refresh of the GUI
+   setMaterialNames
+        Read the material names from the database
+   set_noCalculationsRequired
+        Calculate the number of calculations required
+   settings2Layers
+        Read the settings dictionary and create the necessary layers
+   sliceThicknessWidget
+        A widget to the the slice thickness
+   smoothingWidget
+        A widget to handle the smoothing information
+
+
+   .. py:method:: angleOfIncidenceWidget()
+
+      Create an angle of incidence widget.
+
+      This widget is used in the layer table widget to control the azimuthal angle of a single layer.
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: average_incoherent_calculator(layers, mode, theta, phi, psi, angleOfIncidence, sliceThickness, exponent_threshold)
+
+      Calculates the incoherent component of light reflectance and transmission
+      by averaging over the phase shift.
+
+      Parameters
+      ----------
+      layers : a list of layers
+          A list of layers
+      mode : str
+          Specifies either 'Transfer matrix' or 'Scattering matrix'
+      theta : float
+          The angle theta
+      phi : float
+          The angle phi
+      psi : float
+          The angle psi
+      angleOfIncidence : float
+          The angle incidence
+      sliceThickness : float
+          The slice thickness
+      exponent_threshold: float
+          The exponent threshold
+
+      Returns
+      -------
+      A tuple of lists or nd.arrays
+          - p_reflectance
+          - s_reflectance
+          - p_transmittance
+          - s_transmittance
+          - p_absorbtance
+          - s_absorbtance
+          - epsilon
+
+
+
+   .. py:method:: calculate(vs_cm1)
+
+      Performs simulation for calculating various properties such as reflectance, transmittance, and absorbance for a given set of material layers and configurations.
+
+      Parameters
+      ----------
+      vs_cm1 : list or ndarray
+          List or array of wavenumbers (in cm^-1) for which the simulation is to be run.
+
+      Returns
+      -------
+      None
+
+      Notes
+      -----
+      This method updates the object's state by calculating and setting various optical properties (reflectance, transmittance, absorbtance) based on the input wavenumbers, layer configurations, and other settings such as the angle of incidence and slice thickness. It requires that settings, frequencies, and other parameters be previously defined and valid. The method also makes use of different calculator objects depending on the coherence conditions and partial incoherence percentage. It handles conditions such as missing program, file reader, or filename settings by aborting the calculations and logging appropriate messages through a `debugger`.
+
+
+
+   .. py:method:: coherent_calculator(layers, mode, theta, phi, psi, angleOfIncidence, sliceThickness, exponent_threshold)
+
+      Calculates the coherent component of light reflectance and transmission.
+
+      Parameters
+      ----------
+      layers : a list of layers
+          A list of layers
+      mode : str
+          Specifies either 'Transfer matrix' or 'Scattering matrix'
+      theta : float
+          The angle theta
+      phi : float
+          The angle phi
+      psi : float
+          The angle psi
+      angleOfIncidence : float
+          The angle incidence
+      sliceThickness : float
+          The slice thickness
+      exponent_threshold: float
+          The exponent threshold
+
+      Returns
+      -------
+      A tuple of lists or nd.arrays
+          - p_reflectance
+          - s_reflectance
+          - p_transmittance
+          - s_transmittance
+          - p_absorbtance
+          - s_absorbtance
+          - epsilon
+
+
+
+   .. py:method:: createToolBar(layer, layerIndex, nLayers)
+
+      Create the tool bar used for the material layer.
+
+      Parameters
+      ----------
+      layer : a layer object
+          Layer is the layer concerned.
+      layerIndex : int
+          Its index in the list.
+      nLayers : type
+          The number of layers in the list.
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: createToolBarDeleteButton(layer, layerIndex, nLayers)
+
+      Create the delete button as part of the layer toolbar.
+
+      Parameters
+      ----------
+      x : any
+          A dummy variable
+      layer : layer object
+          the layer to be deleted
+      layerIndex : int
+          index of the layer to be deleted
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: createToolBarMoveDownButton(layer, layerIndex, nLayers)
+
+      Create the move down button as part of the layer toolbar.
+
+      Parameters
+      ----------
+      x : any
+          A dummy variable
+      layer : layer object
+          the layer to be deleted
+      layerIndex : int
+          index of the layer to be deleted
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: createToolBarMoveUpButton(layer, layerIndex, nLayers)
+
+      Create the move up button as part of the layer toolbar.
+
+      Parameters
+      ----------
+      x : any
+          A dummy variable
+      layer : layer object
+          the layer to be deleted
+      layerIndex : int
+          index of the layer to be deleted
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: deleteLayer(x, layer, layerIndex)
+
+      Handle a delete layer button press.
+
+      Parameters
+      ----------
+      x : any
+          A dummy variable
+      layer : layer object
+          the layer to be deleted
+      layerIndex : int
+          index of the layer to be deleted
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: drawLayerTable()
+
+      Draw a table with all the layers in it.
+
+      Each layer has a row in the table showing, name, thickness, h,k,l, azimuthal angle, options and a toolbar
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      None
+
+
+
+
+   .. py:method:: generateLayerSettings()
+
+      Generate the settings dictionary for every layer
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      list
+          A list of dictionary settings for each layer.
+
+
+
+   .. py:method:: getDielectricLayerIndex()
+
+      Return the index of the dielectric layer in the list of layers.
+
+      - Sorts through the list of layers and reports the index of the first layer that came from the provided DFT calculation
+      - If there is no such layer then the value None is returned
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      int or None
+          The index of the dielectric layer in the list.
+
+
+
+   .. py:method:: getMaterialFromDataBase(name, permittivity=None)
+
+      Get the given material from the database.
+
+      - If name is 'DielectricLayer' then a material is defined from the crystal permittivity of the DFT information
+      - If name is 'Material defined manually' the the permittivity parameter is used
+      - Otherwise the name is used to get the material from the database
+
+      Parameters
+      ----------
+      name : str
+          The name of the material. It can also be 'Dielectric layer' or 'Material defined manually'.
+      permittivity : float
+          The permittivity of a 'Defined manually material' material.
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: get_result(vs_cm1, plot_type)
+
+      Return a particular result
+
+      Parameters
+      ----------
+      vs_cm1 : a list of floats
+          The frequencies
+      plot_type : str
+          The data needed for plotting one of:
+          - 'Crystal Reflectance (P polarisation)'
+          - 'Crystal Reflectance (S polarisation)'
+          - 'Crystal Transmittance (P polarisation)'
+          - 'Crystal Transmittance (S polarisation)'
+          - 'Crystal Absorbtance (P polarisation)'
+
+      Returns
+      -------
+      list of floats
+          The results to be plotted
+
+
+
+   .. py:method:: get_results(vs_cm1)
+
+      Return the results of the single crystal calculation
+
+      If a refresh has been requested it is performed before the calculate method is called.
+
+      Parameters
+      ----------
+      vs_cm1 : a list of floats
+          The frequencies in cm-1
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: globalAzimuthalWidget()
+
+      Create a global azimuthal angle widget.
+
+      This widget is shown in the main single crystal scenarion tab.
+      Any change in this angle affects all layers.
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: greyed_out()
+
+      Have a look through the settings and see if we need to grey anything out.
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: moveLayerDown(x, layer, layerIndex)
+
+      Move a layer down (sequence number gets larger by 1).
+
+      Parameters
+      ----------
+      x : any
+          A dummy variable
+      layer : layer object
+          the layer to be deleted
+      layerIndex : int
+          index of the layer to be deleted
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: moveLayerUp(x, layer, layerIndex)
+
+      Move a layer up (sequence number gets smaller by 1).
+
+      Parameters
+      ----------
+      x : any
+          A dummy variable
+      layer : layer object
+          the layer to be deleted
+      layerIndex : int
+          index of the layer to be deleted
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: newLayerWidget()
+
+      Create and return a new layer widget as a QComboBox.
+
+      Returns a QComboBox widget configured for creating a new layer in a graphical user interface.
+      The combo box is initialized with a default item for creating a new layer, followed by any existing layer names.
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      QComboBox
+          A QComboBox widget configured with an initial item for creating a new layer and any additional existing material layer names.
+
+      Notes
+      -----
+      - The first item in the combo box is a placeholder for creating a new layer, indicated by "New layer...".
+      - The combo box is connected to the `on_newLayer_cb_activated` method, which should handle the action performed upon selecting an item from the combo box.
+
+
+
+   .. py:method:: on_angle_of_incidence_sb_changed(value)
+
+      Updates the 'Angle of incidence' setting and marks refresh as required upon a change in the angle of incidence spinbox value.
+
+      A refresh is requested
+
+      Parameters
+      ----------
+      value : int or float
+          The new value of the angle of incidence from the spinbox.
+
+      Returns
+      -------
+      None
+
+
+
+
+   .. py:method:: on_azimuthal_angle_sb_changed(value, layer)
+
+      Handle azimuthal spin box change.
+
+      - The azimuthal angle of a layer is changed to the value given.
+      - The laboratory frame information is updated
+      - The settings dictionary is refreshed 
+      - A refresh of the GUI is requested
+
+      Parameters
+      ----------
+      value : float
+          The azimuthal angle in degress
+      layer : a layer object
+           The layer whose azimuthal angle has changed
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: on_film_thickness_sb_changed(value, layer)
+
+      Handle film thickness spin box change.
+
+      - The thickness of the film in this layer is changed
+      - The settings dictionary is regenerated
+      - A refresh is requested
+
+      Parameters
+      ----------
+      value : float
+          The thickness of the film in the current thickness units
+      layer : a layer object
+          The layer which will have its thickness changed
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: on_global_azimuthal_angle_sb_changed(value)
+
+      Handles the change in global azimuthal angle setting.
+
+      This method updates the 'Global azimuthal angle' in the settings 
+      based on the given value and marks a refresh as required.
+
+      Parameters
+      ----------
+      value : float
+          The new value for the global azimuthal angle to be set.
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: on_hkl_sb_changed(value, hkorl, layer)
+
+      Handle a change in h, k, or l
+
+      The h, k and l parameters determine the surface of the film
+      - determine the value of h, k or l
+      - set the layer's surface
+      - generate the settings dictionary
+      - flag that a refresh is necessary
+
+      Parameters
+      ----------
+      value : int
+          The value of h, k or l
+      hkorl : int
+          A int 0, 1 or 2 representing 'h', 'k', or 'l'
+      layer :  a layer object
+          The layer whose surface is to be changed
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: on_layerTable_itemChanged(item)
+
+      Handle a change to the layer table.
+
+      An empty routine as changes are handled by other routines
+
+      Parameters
+      ----------
+      item : the item changed
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: on_layer_button_clicked(x, layer, layerIndex)
+
+      Handle a click on the show layer widget.
+
+      A new window is shown with additional information about material in the layer.
+      For materials with a 3x3 tensor permittivity the window shows the relationship between the laboratory and crystal coordinates.
+
+      Parameters
+      ----------
+      x : any
+          A dummy variable
+      layer : a layer object
+          A layer object
+      layerIndex : int
+          The index of the layer object in the list
+
+      Returns
+      -------
+      None
+
+
+
+
+   .. py:method:: on_mode_cb_activated(index)
+
+      Handle the activation of the mode combo box in the GUI.
+
+      Parameters
+      ----------
+      index : int
+          The index of the selected mode in the combo box. This controls what mode the system will use. 
+          Index 0 corresponds to the 'Transfer matrix' mode, while index 1 corresponds to the 'Scattering matrix' mode.
+
+      Returns
+      -------
+      None
+
+      Notes
+      -----
+      This function performs several operations based on the selected mode:
+      - Sets the mode in the settings to either 'Transfer matrix' or 'Scattering matrix'.
+      - If 'Scattering matrix' mode is selected (index 1), it goes through all layers and changes any layer with the incoherent option set to 'Incoherent (intensity)' to be 'Coherent'.
+      - Invokes set_noCalculationsRequired to indicate that new calculations are necessary based on the changed settings.
+      - Calls generateLayerSettings to update the layer settings according to the new mode.
+      - Forces a refresh of the display to reflect any changes.
+      - Sets a flag indicating that a refresh is required.
+
+
+
+   .. py:method:: on_newLayer_cb_activated(index)
+
+      Handle a new layer button click
+
+      Based on the index chosen a new material is created and added to the list of layers.
+      The settings dictionary is updated and a refresh is forced.
+
+      Parameters
+      ----------
+      index : int
+          The index of the entry in the combobox
+
+      Returns
+      -------
+      None
+
+
+
+
+   .. py:method:: on_option_cb_activated(index, layer)
+
+      The incoherence option combo box has been activated.
+
+      - The layer's incoherent options are changed
+      - The number of calculations requested is updated
+      - The settings dictionary is regenerated
+      - A refresh is requested
+
+      Parameters
+      ----------
+      index : int
+          The index of the incoherent option combobox
+      layer : a layer object
+          The layer which will have its incoherent property changed
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: on_partially_incoherent_kernel_sb_changed(value)
+
+      Handles the change in the partially incoherent kernel spinbox value.
+
+      Parameters
+      ----------
+      value : int or float
+          The new value of the partially incoherent kernel spinbox.
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: on_partially_incoherent_polynomial_sb_changed(value)
+
+      Handles changes to the partially incoherent polynomial spinbox value.
+
+      This method updates the relevant setting based on the new value and marks
+      the need for refreshment. It also logs the change using the debugger.
+
+      Parameters
+      ----------
+      value : int
+          The new value for the partially incoherent polynomial spinbox.
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: on_partially_incoherent_samples_sb_changed(value)
+
+      Handles the change in partially incoherent samples setting.
+
+      Parameters
+      ----------
+      value : int or float
+          The new value for the partially incoherent samples setting.
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: on_percentage_partial_incoherence_sb_changed(value)
+
+      Handle changes in percentage partial incoherence spinner box value.
+
+      This method updates the 'Percentage partial incoherence' setting based on the new value provided by the relevant spinner box. It marks that a refresh is required and logs the change using the configured debugger.
+
+      Parameters
+      ----------
+      value : int or float
+          The new value from the percentage partial incoherence spinner box.
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: on_print_button_clicked(x, layer)
+
+      Print the permittivity for the layer
+
+      The print button is only visible if in debug mode.
+      The permittivity is printed to a csv file with a name containing the material involved.
+
+      Parameters
+      ----------
+      x : any
+          A dummy parameter
+      layer : a layer object
+          The layer object for which a print of the permittivity has been requested
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: on_slice_thickness_sb_changed(value)
+
+      Updates the 'Slice thickness' setting based on a new value and marks refresh as required.
+
+      Parameters
+      ----------
+      value : int or float
+          The new value for the slice thickness setting.
+
+      Returns
+      -------
+      None
+
+
+
+
+   .. py:method:: on_slice_thickness_unit_cb_activated(index)
+
+      Handles the activation of a slice thickness unit selection.
+
+      This method updates the settings to reflect the newly selected
+      slice thickness unit based on its index in the thickness_units list.
+      It also flags that a refresh is necessary.
+
+      Parameters
+      ----------
+      index : int
+          The index of the selected unit in the thickness_units list.
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: on_thickness_units_cb_activated(index, layer)
+
+      Handles the activation of a thickness unit option in a combo box.
+
+      - the thickness unit of this layer is changed
+      - the settings dictionary is updated
+      - a refresh is requested
+
+      Parameters
+      ----------
+      index : int
+          The index of the selected thickness unit in the combo box.
+      layer : a layer object
+          The layer object whose thickness unit is to be updated.
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: openDB_button_clicked()
+
+      Open a new materials' database.
+
+      After the database is opened a refresh is requested.
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: partialIncoherenceWidget()
+
+      Create a partial incoherence widget
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: partially_incoherent_calculator(layers, mode, theta, phi, psi, angleOfIncidence, sliceThickness, exponent_threshold)
+
+      Calculates the incoherent component of light reflectance and transmission
+      by sampling the path length in the incident medium.
+
+      Parameters
+      ----------
+      layers : a list of layers
+          A list of layers
+      mode : str
+          Specifies either 'Transfer matrix' or 'Scattering matrix'
+      theta : float
+          The angle theta
+      phi : float
+          The angle phi
+      psi : float
+          The angle psi
+      angleOfIncidence : float
+          The angle incidence
+      sliceThickness : float
+          The slice thickness
+      exponent_threshold: float
+          The exponent threshold
+
+      Returns
+      -------
+      A tuple of lists or nd.arrays
+          - p_reflectance
+          - s_reflectance
+          - p_transmittance
+          - s_transmittance
+          - p_absorbtance
+          - s_absorbtance
+          - epsilon
+
+
+
+   .. py:method:: printLayerSettings(message)
+
+      Print the settings related to the layers.
+
+      Parameters
+      ----------
+      message : str
+          Message to be printed before the layer settings.
+
+      Returns
+      -------
+      None
+
+      Notes
+      -----
+      This function prints the settings associated with layers, including material names, HKL values (Miller indices for the crystallographic planes), azimuthal angles, thicknesses with their units, flags indicating whether the layer is dielectric, and options for incoherent scattering, if applicable.
+
+      This function does not return any value. It is primarily used for debugging or informative purposes to quickly display the current configuration of layer settings within a class that has `settings` as an attribute storing these properties.
+
+
+
+   .. py:method:: redrawLayerTable()
+
+      Redraw the layer table widget.
+
+      Adds a row for each layer in the gadget.
+      The row is drawn using redrawLayerTableRow()
+
+
+
+   .. py:method:: redrawLayerTableRow(sequenceNumber, layer, rowCount, firstLayer, lastLayer)
+
+      Draw a row of the layer table.
+
+      Each row has a material name, a thickness (and unit), an h, k, l option and a toolbar
+      to move or delete the layer in the list.
+      Needed a separate routine for this as there are problems with the lambda code only keeping the last in a list.
+
+      Parameters
+      ----------
+      sequenceNumber : int
+          The sequence number of the layer in the list
+      Layer : layer object
+          The layer itself
+      rowCount : int
+          The row count
+      firstLayer : bool
+          True if this is the first layer in the list
+      LastLayer : bool
+          True if this is the last layer in the list
+
+      Returns
+      -------
+      None
+
+
+
+
+   .. py:method:: refresh(force=False)
+
+      Refresh the current state, optionally forcing a refresh.
+
+      This method updates the current state based on various settings and conditions. It checks
+      if a refresh is required or if a forceful refresh is requested. It then updates several
+      settings, including material database, layer settings, calculation requirements, UI elements states,
+      and more to reflect the current state. It also processes UI events to ensure the UI is responsive
+      during the update.
+
+      Parameters
+      ----------
+      force : bool, optional
+          A flag to force the refresh even if it's not required. Default is False.
+
+      Returns
+      -------
+      None
+
+
+
+
+   .. py:method:: setMaterialNames()
+
+      Set and append a material name to the list of material names.
+
+      This function retrieves the current list of material names from the database using
+      `self.DataBase.getSheetNames()`, appends 'Dielectric layer' to the list, and returns the updated list.
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      list
+          The list of material names including the appended default 'Dielectric layer'.
+
+
+
+   .. py:method:: set_noCalculationsRequired()
+
+      Determine the number of calculations required.
+
+      The routine first works out the number of layers needing phase averaging,
+      then it looks at the number of partial incoherent calculations being performed.
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: settings2Layers()
+
+      Read the layer settings and generate a list of layers.
+
+      This method reads all the entries in the settings dictionary
+      to create a list of layers
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      list
+          A list of layers generated from the layer settings.
+
+
+
+   .. py:method:: sliceThicknessWidget()
+
+      Create a widget for setting slice thickness and its units.
+
+      This method sets up a QSpinBox for specifying slice thickness in a range of 0 to 10000, with steps of 1 unit. It also sets up a QComboBox for selecting the unit of thickness (nm, um, mm, or cm). Both the spinbox and combobox values are initialized based on `self.settings`. The method arranges these widgets along with a descriptive label into a horizontal layout which is then returned. 
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      tuple
+          A tuple containing a QLabel and QHBoxLayout. The QLabel describes the purpose of the slice thickness setting, and the QHBoxLayout contains the QSpinBox and QComboBox for adjusting the slice thickness and selecting its unit, respectively.
+
+
+
+   .. py:method:: smoothingWidget()
+
+      Create a smoothing widget used by the partial incoherence method
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      None
+
+
+
+.. py:function:: solve_single_crystal_equations(layers, mode, theta, phi, psi, angleOfIncidence, sliceThickness, exponent_threshold, v)
+
+   This is a routine suitable for a parallel call to the single crystal equation solver, system is a GTM system.
+
+   Parameters
+   ----------
+   layers : list
+       A list of material layers (their permittivity functions).
+   mode : {'Transfer matrix', 'Scattering matrix'}
+       The mode of calculation.
+   theta : float
+       The theta angle of the slab.
+   phi : float
+       The phi angle of the slab.
+   psi : float
+       The psi angle of the slab.
+   angleOfIncidence : float
+       The angle of incidence.
+   sliceThickness : float
+       A thickness in meters, used to subdivide thicker films.
+       If zero, then the full thickness film is used.
+   exponent_threshold : float
+       The largest exponent allowed in the calculation of the propagation matrix.
+   v : float
+       The frequency of the light in cm^-1.
+
+   Returns
+   -------
+       A tuple of :
+           - v                 : the frequency
+           - r                 : the reflectance coefficients
+           - R                 : the reflectance 
+           - t                 : the transmittance coefficients
+           - T                 : the transmittance 
+           - epsilon           : the DFT permittivity
+           - errors            : a list of errors
+           - largest_exponent  : the largest exponent
+
+
+
+.. py:data:: angstrom
+
+.. py:data:: avogadro_si
+   :value: 6.02214076e+23
+
+
+.. py:data:: gtmMethods
+
+.. py:data:: incoherentOptions
+   :value: ['Coherent', 'Incoherent (intensity)', 'Incoherent (phase averaging)', 'Incoherent (non-reflective)']
+
+
+.. py:data:: speed_light_si
+   :value: 299792458.0
+
+
+.. py:data:: thickness_conversion_factors
+
+.. py:data:: thickness_units
+
+.. py:data:: wavenumber
+

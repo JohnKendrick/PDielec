@@ -1,6 +1,6 @@
 #!/usr/bin/python
 #
-# Copyright 2015 John Kendrick
+# Copyright 2024 John Kendrick & Andrew Burnett
 #
 # This file is part of PDielec
 #
@@ -11,18 +11,51 @@
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 #
-# You should have received a copy of the MIT License
-# along with this program, if not see https://opensource.org/licenses/MIT
+# You should have received a copy of the MIT License along with this program, if not see https://opensource.org/licenses/MIT
 #
-"""Read the contents of a directory containg Phonopy input and output files"""
+'''
+Read the contents of a directory containing Phonopy input and output files.
+'''
+
 import numpy as np
 from PDielec.GenericOutputReader import GenericOutputReader
 
 
 class PhonopyOutputReader(GenericOutputReader):
-    """Read the contents of a directory containg Phonopy input and output files"""
+    """
+    Read the contents of a directory containing Phonopy input and output files.
+
+    Inherits from :class:`~PDielec.GenericOutputReader.GenericOutputReader`
+
+    Parameters
+    ----------
+    names : list
+        A list of file names to be used.
+    qmreader : object
+        An instance of another class used for reading.
+
+    Notes
+    -----
+    This method sets the type of the output to 'Phonopy output' and 
+    associates a quantum mechanics (QM) reader object with the instance.
+    """
 
     def __init__(self, names, qmreader):
+        """
+        Constructor for creating a new instance of the class.
+
+        Parameters
+        ----------
+        names : list
+            A list of file names to be used.
+        qmreader : object
+            An instance of another class used for reading.
+
+        Notes
+        -----
+        This method sets the type of the output to 'Phonopy output' and 
+        associates a quantum mechanics (QM) reader object with the instance.
+        """        
         GenericOutputReader.__init__(self, names)
         # We have to use the qm reader to do the reading of the QM files
         self.type                    = 'Phonopy output'
@@ -30,7 +63,12 @@ class PhonopyOutputReader(GenericOutputReader):
         return
 
     def _read_output_files(self):
-        """Read the Phonopy files in the directory"""
+        """
+        Read the Phonopy files in the directory.
+
+        Uses the qmreader to read in the electronic structure information and copies it to the current object.
+	Then it reads the dynamical matrix from phonopy
+        """
         # Set the qm reader to have all the settings that phonopy reader has
         self.qmreader.eckart = self.eckart
         self.qmreader.debug = self.debug
@@ -70,6 +108,45 @@ class PhonopyOutputReader(GenericOutputReader):
         return
 
     def read_dynamical_matrix(self):
+        """
+        Read and process the dynamical matrix from output files.
+
+        This method reads the dynamical matrix and other relevant data from the specified
+        output files, calculates the Hessian matrix, converts its units, and computes the
+        eigenvalues and eigenvectors to determine frequencies and mass-weighted normal modes.
+
+        Parameters
+        ----------
+        None explicitly, but relies on the instance attributes `_outputfiles` and `nions` 
+        to determine the files to read and number of ions, respectively.
+
+        Returns
+        -------
+        None
+            This method directly modifies the instance attributes `_old_masses`, `frequencies`, 
+            and `mass_weighted_normal_modes` based on the data read and calculations performed.
+
+        Raises
+        ------
+        FileNotFoundError
+            If any of the specified output files cannot be found or opened.
+        YAMLError
+            If there is an error parsing the YAML files.
+        MemoryError
+            If there is insufficient memory to compute the eigendecomposition.
+
+        Notes
+        -----
+        - It first attempts to use the CLoader for parsing YAML files for performance reasons and falls
+          back to the standard Loader if CLoader is not available, issuing a warning in such cases.
+        - The dynamical matrix is processed to compute real-valued Hessian by considering only the real
+          parts. It is then converted to the desired units before computing the eigenvalues and eigenvectors.
+        - The method computes frequencies in THz by first converting the eigenvalues from the Hessian to
+          the correct units, then calculates the square root of their absolute values, preserving the sign
+          to distinguish between real and imaginary modes.
+        - Mass-weighted normal modes are then computed for each ion based on the eigenvectors, and the 
+          frequencies and normal modes are stored in corresponding instance attributes.
+        """        
         #
         # Yaml imports of large files are really slow....
         # Attempt to use the PyYaml C parser, using yaml.CLoader

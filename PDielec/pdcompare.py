@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 #
-# Copyright 2015 John Kendrick
+# Copyright 2024 John Kendrick & Andrew Burnett
 #
 # This file is part of PDielec
 #
@@ -11,10 +11,25 @@
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 #
-# You should have received a copy of the MIT License
-# along with this program, if not see https://opensource.org/licenses/MIT
+# You should have received a copy of the MIT License along with this program, if not see https://opensource.org/licenses/MIT
 #
-'''PDielec driver program to calculate dielectric response at infrared and THz frequencies'''
+'''
+PDielec driver program to compare a collection of spreadsheets with spectra
+
+        pdcompare file1 file2...
+            pdcompare: Calculates the cross-correlation of spectra calculated using pdielec
+                -column column  Take the data for cross correlation from column
+                C Averaged
+                D MG      
+                E Mie/0.1 
+                F Mie/1.0 
+                G Mie/2.0 
+                H Mie/3.0 
+                -rmax rmax  Use rows from rmin to rmax              
+                -rmin rmin  Use rows from rmin to rmax (rows start from 2)
+                -sheet [molar/absorption/real/imaginary/atr]
+                -excel filename
+'''
 from __future__ import print_function
 import sys
 import numpy as np
@@ -22,9 +37,31 @@ from openpyxl import load_workbook
 
 
 def main():
-    '''Main Driver routine for pdcompare - reads a collection of spreadsheets with spectra and compares the spectra'''
+    '''
+    Main Driver routine for pdcompare - reads a collection of spreadsheets with spectra and compares the spectra.
+
+        pdcompare file1 file2...
+            pdcompare: Calculates the cross-correlation of spectra calculated using pdielec
+                -column column  Take the data for cross correlation from column
+                C Averaged
+                D MG      
+                E Mie/0.1 
+                F Mie/1.0 
+                G Mie/2.0 
+                H Mie/3.0 
+                -rmax rmax  Use rows from rmin to rmax              
+                -rmin rmin  Use rows from rmin to rmax (rows start from 2)
+                -sheet [molar/absorption/real/imaginary/atr]
+                -excel filename
+    '''
     def show_usage():
-        '''Show pdcompare usage'''
+        '''
+        Show pdcompare usage
+
+        Examples
+        --------
+        >>> # Example usage of pdcompare
+        '''
         print('pdcompare file1 file2...')
         print('pdcompare: Calculates the cross-correlation of spectra calculated using pdielec')
         print('         -column column  Take the data for cross correlation from column')

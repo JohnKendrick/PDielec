@@ -154,7 +154,7 @@ The atomic masses can be specified in a variety of ways.  They can be chosen fro
 
 If necessary the mass of each element can be edited separately by clicking on the mass concerned and entering a new number.
 
-The width (:math:`\sigma`) of all the absorptions can be set using the *Lorentzian width(sigma)*  spin box. 
+The width (:math:`\sigma`) of all the absorptions can be set using the *Lorentzian width (sigma)*  spin box. 
 
 Finally, the optical permittivity at zero frequency is given in the *Optical permittivity* table.  In some cases, it is necessary to enter the optical permittivity by hand.  This can be done by clicking each element in the table that needs changing and typing the new matrix element.
 
@@ -164,7 +164,7 @@ The output table at the bottom of the tab shows the calculated frequencies and t
 
 Scenario Tabs
 =============
-There are two sorts of scenario tab, one for powder calculations and one for single-crystal calculations.  By default, it is assumed that powder calculations are being performed.  There is a button ( `Switch to crystal scenario` or `Switch to powder scenario`) at the bottom of the tabs which allows the user to switch between the two.
+There are two sorts of scenario tab, one for powder calculations and one for single-crystal calculations.  By default, it is assumed that powder calculations are being performed.  There is a button (`Switch to crystal scenario` or `Switch to powder scenario`) at the bottom of the tabs which allows the user to switch between the two.
 
 Scenarios can be added or removed using the push buttons at the bottom of each *Scenario Tab*.  When a new scenario is created the settings are copied from the current scenario.  
 
@@ -189,12 +189,12 @@ The open database is shown in the line below, followed by a line showing the sup
 
 Materials can have either a constant or frequency-dependent permittivity.  
 In the case of frequency-dependent entries the range of frequencies which the entry covers is displayed.
-A warning is appropriate here as all of the frequency-dependent materials have been extrapolated to be valid at 0\ |cm1| and above.  
+A warning is appropriate here as all of the frequency-dependent materials have been extrapolated to be valid at 0 |cm1| and above.  
 The extrapolated values are indicated in the database itself.
 
 The support matrix into which the active dielectric material is dispersed can be selected from the *Support matrix* drop-down menu.  
 The selected supporting material will change the density and permittivity shown in the respective text boxes.
-For frequency-dependent entries the value of the permittivity at 0\ |cm1| is used.
+For frequency-dependent entries the value of the permittivity at 0 |cm1| is used.
 The user can edit these values independently if necessary.  
 But if this is done the program assumes that the changes result in a frequency-independent permittivity.
 The *Support permittivity* consists of two inputs for the real and imaginary components of the permittivity.  
@@ -282,7 +282,7 @@ Finally, there is a legend that can be provided for the Plotting Tab.
 The Layer Editor
 ................
 
-To see more details of a crystalline layers in the system press the *Material* button of the material of interest.
+To see more details of a crystalline layer in the system press the *Material* button of the material of interest.
 This brings up a new window, which shows more information about the layer.
 A useful feature of the *layer editor* is that it shows the connection between the crystal and laboratory coordinate systems.
 The laboratory axes are defined with Z- being normal to the surface (hkl), and the incident and reflected beams lie in the XZ- plane, which means the laboratory Y- axis is perpendicular to the XZ- plane. 
@@ -323,7 +323,7 @@ The title of the plot can be supplied by entering it into the *Plot title* text 
 For powder scenarios, the molar absorption, the absorption, and the real or imaginary permittivity can be plotted.  Once a plot has been requested the calculation progress is shown in the progress bar.  Some settings can be changed without the whole plot being recalculated.
 
 For single-crystal plots, the crystal reflectance and transmittance for s and p polarised radiation can be plotted along with absorptance which is defined in terms of the reflectance (R) and the transmittance (T) as :math:`1-R-T`.
-For thick slabs, only the transmittance is of any relevance.  For thin films, absorptance is useful as it removes some of the oscillations that occur in the transmittance or reflectance due to the film thickness.
+For thick slabs, only the reflactance is of any relevance.  For thin films, absorptance is useful as it removes some of the oscillations that occur in the transmittance or reflectance due to the film thickness.
 
 .. _fig-plottingTab-SingleCrystal:
 
@@ -332,9 +332,7 @@ For thick slabs, only the transmittance is of any relevance.  For thin films, ab
 
    The Plotting Tab showing Single-Crystal results
 
-For the case of a thick slab, the permittivity of the incident can be specified, but the substrate permittivity is not used.  For the case of a thin film both permittivities are used.
-
-The title of the plot can be supplied by entering it into the *Plot title* text box and the frequency units used for the plot can also be changed from *wavenumber* to *THz*.  A default plot title is generated giving information about the type of plot being viewed.
+The title of the plot can be supplied by entering it into the *Plot title* text box and the frequency units used for the plot can also be changed other units including *wavenumber*, *THz* or a wavelength such as *cm*, *mm* or *um*.  A default plot title is generated giving information about the type of plot being viewed.
 
 
 Analysis Tab

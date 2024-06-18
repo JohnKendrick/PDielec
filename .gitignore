@@ -20,6 +20,8 @@ lib64/
 parts/
 sdist/
 var/
+API/_build
+.ipynb_checkpoints
 *.egg-info/
 .installed.cfg
 *.egg
@@ -72,8 +74,10 @@ jquery-3.5.1.js
 *.nma
 *.qti~
 ~$*
+Sphinx/autoapi
 
 # Andrew Burnett
 Data/
 *test*
+*.code-workspace
 

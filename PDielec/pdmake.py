@@ -1,5 +1,45 @@
 #!/usr/bin/env python
-"""Replace the old Makefile system for testing and installing """
+#
+# Copyright 2024 John Kendrick & Andrew Burnett
+#
+# This file is part of PDielec
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the MIT License
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+#
+# You should have received a copy of the MIT License along with this program, if not see https://opensource.org/licenses/MIT
+#
+"""
+A Makefile style system for testing and installing PDGui and PDielec
+
+This script accepts various command-line arguments to perform different actions such as running tests, benchmarks, cleaning build directories, and installing scripts.
+
+Command line options
+--------------------
+    - `test` or `tests`: Runs all test cases.
+    - `test-singlecrystal`: Runs tests for single crystal analysis.
+    - `test-preader`: Runs tests for the preader component.
+    - `test-p2cif`: Runs tests for the p2cif component.
+    - `test-pdgui`: Runs tests for the PDGUI component.
+    - `test-vibanalysis`: Runs tests for vibrational analysis.
+    - `benchmarks`: Executes benchmark tests.
+    - `pypi`: Runs commands for PyPI distribution.
+    - `clean`: Cleans up directories.
+    - `install`: Installs necessary scripts.
+    - `scripts` or `-scripts`: Specifies the directory for scripts (expects a directory path next).
+    - `-root` or `--root`: Specifies the root directory to operate in.
+    - `-debug` or `--debug` or `-d`: Enables debug mode.
+    - `-usesystem`: Use system installed binaries rather than local ones.
+    - `-view` or `--view` or `-v`: Enables viewing mode.
+    - `-regenerate`: Forces regeneration of test data.
+    - `-padding`: Sets padding for some operation (expects an integer value next).
+    - `-directory` or `--directory`: Sets the directory for some operation (expects a directory path next).
+    - `<filename>.pdmake`: Specifies a PDMakefile to execute.
+"""
 
 import os
 import sys
@@ -148,6 +188,14 @@ benchmarks = [
     ]
 
 def usage():
+    """
+    Print usage instructions for the command line tool.
+
+    This function outputs instructions to `sys.stderr` for using the command line tool, including available commands and options. It also handles platform-specific instructions for Linux systems.
+
+    SystemExit
+        This function will terminate the program after displaying the usage message.
+    """    
     print('pdmake:', file=sys.stderr)
     print('  test' , file=sys.stderr)
     print('  tests' , file=sys.stderr)
@@ -195,7 +243,20 @@ def usage():
     exit()
 
 def checkLocalExecutables():
-    '''Check to see if the rootDirectory has the executables we need'''
+    '''
+    Check to see if the rootDirectory has the executables we need.
+
+    Parameters
+    ----------
+    rootDirectory : str
+        The path to the root directory to check.
+
+    Returns
+    -------
+    bool
+        True if the executables are found, False otherwise.
+    '''
+    global rootDirectory
     os.chdir(rootDirectory)
     if not os.path.isfile('preader'):
         return False
@@ -208,6 +269,28 @@ def checkLocalExecutables():
     return True
 
 def install(scripts):
+    """
+    Install a set of scripts into a specified directory.
+
+    Parameters
+    ----------
+    scripts : str
+        The directory where the scripts will be copied to.
+
+    Notes
+    -----
+    This function copies a predefined list of scripts and directories into 
+    the specified `scripts` directory. It utilizes shell commands to perform the 
+    copy operation and to create necessary subdirectories. Global variable 
+    `rootDirectory` should be set before calling this function as it is used to 
+    determine the source directory of the scripts. The installation progress is 
+    printed to the console.
+
+    Raises
+    ------
+    This function does not explicitly raise exceptions, but subprocess.run 
+    may raise exceptions related to the execution of shell commands.
+    """    
     print('Performing installation of scripts into ',scripts)
     global rootDirectory
     mychdir(rootDirectory)
@@ -238,6 +321,38 @@ def install(scripts):
 @contextlib.contextmanager
 def redirect(file):
     # capture all outputs to a log file while still printing it
+    """
+    Redirect the standard output to a specified file.
+
+    This function is a context manager that redirects `sys.stdout` to a file,
+    optionally suppressing stderr output if not in debug mode. It is useful for
+    capturing the output of a block of code to a file.
+
+    Parameters
+    ----------
+    file : str
+        The path to the file where the stdout will be redirected.
+
+    Yields
+    ------
+    _io.TextIOWrapper
+        A writable stream associated with the log file.
+
+    Notes
+    -----
+    `sys.stderr` is redirected to `os.devnull` if `debug` is `False`, effectively
+    suppressing any error messages unless in debug mode. Ensure that debug status is
+    properly set before using this context manager.
+
+    Upon exiting the `with` block, stdout and stderr are restored to their original
+    state.
+
+    Raises
+    ------
+    AttributeError
+        If an attribute not supported by the `sys.stdout` is being accessed through
+        the Logger class.
+    """    
     class Logger:
         def __init__(self, file):
             fd = open(file,'w')
@@ -266,6 +381,35 @@ def redirect(file):
             sys.stderr = sys.__stderr__
 
 def readNmaFile(file):
+    """
+    Read and extract data from an NMA file.
+
+    Parameters
+    ----------
+    file : str
+        The path to the NMA file to be read.
+
+    Returns
+    -------
+    tuple
+        A tuple containing three elements:
+        - The sum of all frequencies excluding the first three.
+        - The sum of all R squared values excluding the first three.
+        - The sum of all explained variance values excluding the first three.
+
+    Notes
+    -----
+    This function reads an NMA (Normal Mode Analysis) file, looking for lines that contain
+    'Mode', 'R**2', or 'Explained'. For lines starting with 'Mode', it extracts the
+    frequency values, excluding the first three modes which are typically zero or negligible.
+    For 'R**2' and 'Explained' lines, it extracts their respective values under the same conditions.
+    All extracted values are then summed up and returned.
+
+    Raises
+    ------
+    FileNotFoundError
+        If the file specified by the 'file' parameter does not exist.
+    """    
     nmodes = 0
     frequencies = []
     rsquared = []
@@ -294,6 +438,29 @@ def readNmaFile(file):
     return np.sum(f),np.sum(r),np.sum(e)
 
 def compareNmaFiles(file1,file2):
+    """
+    Compare two NMA files for differences within a tolerance.
+
+    Parameters
+    ----------
+    file1 : str
+        The path to the first NMA file.
+    file2 : str
+        The path to the second NMA file.
+
+    Returns
+    -------
+    int
+        The number of differences detected in frequency, redox, and energy 
+        values between the two NMA files.
+
+    Notes
+    -----
+    This function reads two NMA files using the `readNmaFile` function, 
+    which returns the frequency (f), redox (r), and energy (e) values 
+    for each file. The comparison is done based on a tolerance of 1e-06, 
+    and the total number of differences in these values are counted and returned.
+    """    
     f1,r1,e1 = readNmaFile(file1)
     f2,r2,e2 = readNmaFile(file2)
     nerrors = 0
@@ -306,6 +473,39 @@ def compareNmaFiles(file1,file2):
     return nerrors
 
 def compareFiles(file1,file2):
+    """
+    Compare two text files for differences.
+
+    This function opens and reads two text files line by line and then compares them word by word,
+    ignoring certain punctuation marks. If any differences are found in either numeric values
+    (floating-point comparison) or text strings, they are counted as errors. Numeric differences
+    are considered errors if the relative difference between them is more than 0.0001, provided
+    both numbers are not insignificantly small. The total count of such errors is returned.
+    Optionally, if the global variable 'debug' is set to True, details of each difference are printed.
+
+    Parameters
+    ----------
+    file1 : str
+        The path to the first file to be compared.
+    file2 : str
+        The path to the second file to be compared.
+
+    Returns
+    -------
+    int
+        The total number of errors (differences) found.
+
+    Notes
+    -----
+    - The function makes use of a global variable 'debug' which, if set to True,
+      enables printing detailed information about each found difference directly to the console.
+    - It's assumed that both files can be opened and read successfully. The function 
+      does not explicitly handle I/O errors, such as a file not existing.
+    - Special characters '(', ')', '%', '/', and '\\' are ignored during the comparison.
+    - For numerical comparison, the function employs a relative difference check to
+      determine if two numbers should be considered different, taking into account
+      floating-point inaccuracies.
+    """    
     global debug
     fd1 = open(file1,'r')
     fd2 = open(file2,'r')
@@ -344,7 +544,18 @@ def compareFiles(file1,file2):
 
 
 def runP2CifTest(title, instructions, regenerate):
-    '''Run a test on p2cif'''
+    '''
+    Run a test on p2cif.
+
+    Parameters
+    ----------
+    title : str
+        The title of the test
+    instructions : str
+        The command line parameters.
+    regenerate : bool
+        Set to True if the reference file is overwritten.
+    '''
     global rootDirectory
     global useLocal
     print(title,end='',flush=True)
@@ -380,10 +591,18 @@ def runP2CifTest(title, instructions, regenerate):
     return
 
 def runVibAnalysis(title, instructions, regenerate):
-    '''Run a vibanalysis test
-    title is the title in the pdmake file
-    instructions are the command line parameters
-    regenerate is set to true if the reference file is overwritten'''
+    '''
+    Run a vibanalysis test.
+
+    Parameters
+    ----------
+    title : str
+        The title of the test
+    instructions : str
+        The command line parameters.
+    regenerate : bool
+        Set to True if the reference file is overwritten.
+    '''
     global rootDirectory
     global useLocal
     print(title,end='',flush=True)
@@ -423,10 +642,18 @@ def runVibAnalysis(title, instructions, regenerate):
     return
 
 def runPreaderTest(title, instructions, regenerate):
-    '''Run a preader test
-    title is the title in the pdmake file
-    instructions are the command line parameters
-    regenerate is set to true if the reference file is overwritten'''
+    '''
+    Run a preader test.
+
+    Parameters
+    ----------
+    title : str
+        The title of the test
+    instructions : str
+        The command line parameters.
+    regenerate : bool, optional
+        Set to true if the reference file is overwritten. Default is False.
+    '''
     global debug
     global rootDirectory
     global useLocal
@@ -468,10 +695,18 @@ def runPreaderTest(title, instructions, regenerate):
     return
 
 def runPDGuiTest(title, instructions, regenerate, benchmarks=False):
-    '''Run a pdgui test
-    title is the title in the pdmake file
-    instructions are the command line parameters
-    regenerate is set to true if the reference file is overwritten'''
+    '''
+    Run a pdgui test.
+
+    Parameters
+    ----------
+    title : str
+        The title of the test
+    instructions : str
+        The command line parameters.
+    regenerate : bool
+        Set to true if the reference file is overwritten.
+    '''
     global viewing
     global start_time
     global debug
@@ -518,6 +753,27 @@ def runPDGuiTest(title, instructions, regenerate, benchmarks=False):
     return
 
 def changePadding(all):
+    """
+    Change the padding based on the maximum length of elements in a list or the predefined setting.
+
+    Parameters
+    ----------
+    all : list
+        A list containing elements whose lengths are to be compared.
+
+    Returns
+    -------
+    int
+        The maximum length found in the list or the predefined padding value, whichever is greater.
+
+    Notes
+    -----
+    This function assumes the presence of a global dictionary named `settings` with a key 'padding'
+    that stores the default padding value. If the maximum length of an element in the list is
+    less than 'settings['padding']', the function returns 'settings['padding']'. Otherwise,
+    it returns the maximum length found.
+    """    
+    global settings
     maxlen = 0
     for d in all:
         maxlen = max(maxlen,len(d))
@@ -526,9 +782,18 @@ def changePadding(all):
     return maxlen
 
 def runTests(testlist, testType, regenerate):
-    '''Run the tests given in the directories stored in testlist
-       testType can be pdgui, preader, p2cif or benchmark
-       regenerate causes the test data to be regenerated'''
+    '''
+    Run the tests given in the directories stored in testlist.
+
+    Parameters
+    ----------
+    testlist : list of str
+        The directories where the tests are stored.
+    testType : {'pdgui', 'preader', 'p2cif', 'benchmark'}
+        The type of tests to run.
+    regenerate : bool
+        If True, the test data will be regenerated.
+    '''
     global start_time
     global debug
     mychdir(os.path.join(rootDirectory,'Examples'))
@@ -566,8 +831,47 @@ def runTests(testlist, testType, regenerate):
     print(convertTestType[testType],'completed in {:.3f}s'.format(elapsed_time))
 
 def readPdMakefile(directory,filename):
-    # Return a dictionary of instructions
     # The first word is the dictionary key, the rest is its value
+    """
+    Read a custom makefile and return the title and instructions.
+
+    Parameters
+    ----------
+    directory : str
+        The directory in which the makefile is located. If the directory name is
+        provided and the `settings['title']` is not 'title', the directory name is used as the title.
+        If the directory is not provided (empty string), the current working directory is used as the title.
+    filename : str
+        The name of the makefile to be read.
+
+    Returns
+    -------
+    tuple
+        A tuple returning a dictionary of instructions
+        - title (str): The title for the makefile, determined based on the `settings['title']` value or the directory name, or the current working directory.
+        - instructions (dict): A dictionary where each key is an instruction extracted from the makefile, and the value is a list of arguments for that instruction.
+
+    Raises
+    ------
+    FileNotFoundError
+        If the specified file cannot be found or read.
+
+    Notes
+    -----
+    - This function uses two global variables:
+        - `settings`: A dictionary that contains various settings, including 'title' and 'padding'.
+          'title' is used to determine if the title should be extracted from the makefile's first line,
+          and 'padding' determines how much padding the title should have when displayed.
+        - `debug`: A boolean flag used to control debugging output. If `True`, additional information
+          about the function's operation will be printed to the standard output.
+
+    - The function removes line continuation characters and treats the continued lines as a single line.
+
+    - Lines starting with `#` are treated as comments and ignored.
+
+    - It's assumed that `os` module has been imported for `os.getcwd()` to work, though it is not explicitly
+      stated in the function definition.
+    """    
     global settings
     global debug
     instructions = {}
@@ -600,7 +904,14 @@ def readPdMakefile(directory,filename):
     return title,instructions
 
 def mychdir(directory):
-    '''Local version of os.chdir with some testing'''
+    '''
+    Local version of os.chdir with some testing.
+
+    Notes
+    -----
+    This is a local implementation of os.chdir which includes
+    additional testing or functionality tailored to specific needs.
+    '''
     if directory != '':
         if os.path.isdir(directory):
             result = os.chdir(directory)
@@ -613,7 +924,25 @@ def mychdir(directory):
     return
 
 def runPdMakefile(directory,pdmakefile,regenerate,benchmarks=False):
-    '''Run specific pdMakefile'''
+    '''
+    Run a specific pdMakefile.
+
+    Parameters
+    ----------
+    directory : str
+        Directory where the pdmakefile will be run
+    pdmakefile : str
+        Name of the pdmakefile
+    regenerate : bool
+        True if this is a regeneration of data
+    benchmarks : bool (Option default is false)
+        True if this is a benchmark
+
+    Notes
+    -----
+    The routine reads the pdmakefile and determines the type of pdmakefile and the instructions
+    Then the instructions are processed according to the context (preader, pdgui, p2cif or vibanalysis)
+    '''
     global debug
     homedir = os.getcwd()
     if debug:
@@ -646,6 +975,22 @@ def runPdMakefile(directory,pdmakefile,regenerate,benchmarks=False):
     mychdir(homedir)
 
 def runClean():
+    """
+    Clean old results from the Examples directory.
+
+    This function navigates to the root directory and removes specific file types related to old results. Supported file types for deletion include .xlsx, .csv, .cif, and .nma files. This operation is not supported on Windows platforms and will return immediately if attempted.
+
+    Notes
+    -----
+    - The function checks the operating system and will not execute on Windows systems (`os.name == 'nt'`).
+    - It navigates to a directory specified by a global variable `rootDirectory`.
+    - Uses `subprocess.run` with `shell=True` to execute shell commands for deleting files. This operation involves running `find` commands to locate and remove files with specified extensions.
+    - It assumes that the `rootDirectory` global variable and necessary imports (`os`, `subprocess`) are correctly defined elsewhere.
+
+    Raises
+    ------
+    None
+    """    
     if os.name == 'nt':
         print('Unable to clean installation in Windows')
         return
@@ -659,6 +1004,11 @@ def runClean():
     print('Cleaning complete')
 
 def runPyInstaller():
+    """
+    Runs the PyInstaller command with specified options and handles platform specific adjustments.
+
+    This function attempts to create a standalone application using PyInstaller based on a given spec file. It also performs additional copying steps required for the application to run properly. If executed on a Windows platform, the function will halt and inform the user about the incompatibility.
+    """    
     if os.name == 'nt':
         print('Unable to create pyInstaller installation in Windows')
         return
@@ -668,6 +1018,13 @@ def runPyInstaller():
     subprocess.run('cp -r dist/pdgui/PyQt5/Qt/plugins/platforms dist/pdgui',shell=True)
 
 def runPyPi():
+    """
+    Creates PyPi distribution files, restricted by OS.
+
+    This function changes the current working directory to `rootDirectory` 
+    and runs a series of shell commands that clean up previous distribution files and 
+    create new PyPi distribution files. The function is not designed to run on Windows OS.
+    """    
     if os.name == 'nt':
         print('Unable to create PyPi installation in Windows')
         return
@@ -679,19 +1036,42 @@ def runPyPi():
     subprocess.run('rm -rf build dist PDielec.egg-info; python -m build ',shell=True)
 
 def testForRootDirectory(path):
+    """
+    Test if a given path contains a subdirectory named 'Examples'.
+
+    This function checks if the given path has a direct subdirectory
+    called 'Examples' and returns a boolean indicating the result.
+
+    Parameters
+    ----------
+    path : str
+        The directory path to test for the existence of a 'Examples' subdirectory.
+
+    Returns
+    -------
+    bool
+        Returns True if the 'Examples' subdirectory exists within the given path,
+        otherwise returns False.
+    """    
     test = os.path.join(path,'Examples')
     if not os.path.isdir(test):
         return False
-#    test = os.path.join(path,'PDielec')
-#    if not os.path.isdir(test):
-#        return False
-#    test = os.path.join(path,'Sphinx')
-#    if not os.path.isdir(test):
-#        return False
     return True
 
 def findRootDirectory(start):
-    '''Find the root directory starting from start'''
+    '''
+    Find the root directory starting from start.
+
+    Parameters
+    ----------
+    start : str
+        The starting directory path.
+
+    Returns
+    -------
+    str
+        The root directory path.
+    '''
     lastpath = start
     path = os.path.join(start,'Examples')
     while path != lastpath:
@@ -703,6 +1083,44 @@ def findRootDirectory(start):
     exit()
 
 def main():
+    """
+    Main routine to process command line arguments and execute actions.
+
+    This script accepts various command-line arguments to perform different actions such as running tests, benchmarks, cleaning build directories, and installing scripts.
+
+    Command line options
+    --------------------
+    - `test` or `tests`: Runs all test cases.
+    - `test-singlecrystal`: Runs tests for single crystal analysis.
+    - `test-preader`: Runs tests for the preader component.
+    - `test-p2cif`: Runs tests for the p2cif component.
+    - `test-pdgui`: Runs tests for the PDGUI component.
+    - `test-vibanalysis`: Runs tests for vibrational analysis.
+    - `benchmarks`: Executes benchmark tests.
+    - `pypi`: Runs commands for PyPI distribution.
+    - `clean`: Cleans up directories.
+    - `install`: Installs necessary scripts.
+    - `scripts` or `-scripts`: Specifies the directory for scripts (expects a directory path next).
+    - `-root` or `--root`: Specifies the root directory to operate in.
+    - `-debug` or `--debug` or `-d`: Enables debug mode.
+    - `-usesystem`: Use system installed binaries rather than local ones.
+    - `-view` or `--view` or `-v`: Enables viewing mode.
+    - `-regenerate`: Forces regeneration of test data.
+    - `-padding`: Sets padding for some operation (expects an integer value next).
+    - `-directory` or `--directory`: Sets the directory for some operation (expects a directory path next).
+    - `<filename>.pdmake`: Specifies a PDMakefile to execute.
+
+    Raises
+    ------
+    SystemExit
+        If an invalid command line argument is provided or certain conditions are not met (e.g., invalid root directory, command not executed in the PDielec home directory).
+
+    Notes
+    -----
+    - It uses global variables for configuration options like `debug`, `viewing`, `settings`, `rootDirectory`, and `useLocal`.
+    - Requires the `os`, `sys`, and specific project function imports to function.
+    - The script changes the current working directory multiple times, which affects relative path usage.
+    """    
     global debug
     global viewing
     global settings

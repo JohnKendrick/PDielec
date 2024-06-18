@@ -1,0 +1,117 @@
+PDielec.Plotter
+===============
+
+.. py:module:: PDielec.Plotter
+
+.. autoapi-nested-parse::
+
+   Do some pretty printing for the dielectric functions
+
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   PDielec.Plotter.print3x3
+   PDielec.Plotter.print_ints
+   PDielec.Plotter.print_reals
+   PDielec.Plotter.print_strings
+
+
+Module Contents
+---------------
+
+.. py:function:: print3x3(title, array, format='{:14.6f}', file=sys.stdout, separator=' ')
+
+   Print a 3x3 matrix.
+
+   Parameters
+   ----------
+   array : tensor 3x3
+       The array to be printed
+   format : str, optional 
+       a format descriptor (defaults to 9.2f)
+   file : int, optional 
+       a file descriptor (defaults to stdout)
+   separator : str
+       the separator to use between ints (defaults to space)
+
+   Returns
+   -------
+   None
+
+
+.. py:function:: print_ints(title, ints, no_per_line=8, format='{:9d}', file=sys.stdout, separator=' ')
+
+   Print ints data.
+
+   Parameters
+   ----------
+   title : str
+      A title for the print
+   ints : a list of ints
+      A list of integers to be printed
+   no_per_line : int, optional
+      The number of  integers per line of output
+   format : str, optional 
+       a format descriptor (defaults to 9d)
+   file : int, optional 
+       a file descriptor (defaults to stdout)
+   separator : str
+       the separator to use between ints (defaults to space)
+
+   Returns
+   -------
+   None
+
+
+.. py:function:: print_reals(title, reals, no_per_line=8, format='{:9.2f}', file=sys.stdout, separator=' ')
+
+   Print reals data
+
+   Parameters
+   ----------
+   title : str
+      A title for the print
+   reals : a list of reals
+      A list of reals to be printed
+   no_per_line : int, optional
+      The number of  integers per line of output (default is 8)
+   format : str, optional 
+       a format descriptor (defaults to 9.2f)
+   file : int, optional 
+       a file descriptor (defaults to stdout)
+   separator : str
+       the separator to use between ints (defaults to space)
+
+   Returns
+   -------
+   None
+
+
+.. py:function:: print_strings(title, strings, no_per_line=8, format='{:9s}', file=sys.stdout, separator=' ')
+
+   Print strings data.
+
+   Parameters
+   ----------
+   title : str
+      A title for the print
+   strings : a list of strings
+      A list of strings to be printed
+   no_per_line : int, optional
+      The number of  integers per line of output
+   format : str, optional 
+       a format descriptor (defaults to 9s)
+   file : int, optional 
+       a file descriptor (defaults to stdout)
+   separator : str
+       the separator to use between ints (defaults to space)
+
+   Returns
+   -------
+   None
+
+

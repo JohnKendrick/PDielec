@@ -1,3 +1,20 @@
+#
+# Copyright 2024 John Kendrick & Andrew Burnett
+#
+# This file is part of PDielec
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the MIT License
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+#
+# You should have received a copy of the MIT License along with this program, if not see https://opensource.org/licenses/MIT
+#
+'''
+PlottingTab module
+'''
 import os.path
 import os
 import numpy as np
@@ -8,7 +25,7 @@ from PyQt5.QtWidgets  import  QVBoxLayout, QHBoxLayout, QFormLayout
 from PyQt5.QtWidgets  import  QSpinBox,QDoubleSpinBox
 from PyQt5.QtWidgets  import  QSizePolicy
 from PyQt5.QtCore     import  QCoreApplication, Qt
-from PDielec.Constants import  PI, avogadro_si, angstrom
+from PDielec.Constants import  avogadro_si, angstrom
 # Import plotting requirements
 import matplotlib
 import matplotlib.figure
@@ -19,7 +36,17 @@ from PDielec.Utilities import Debug
 possible_frequency_units = ['wavenumber','THz','GHz','ang','nm','um','mm','cm','m']
 
 def isThisAFrequencyUnit(unit):
-    '''Return true if this is a frequency unit, false if a wavelength'''
+    '''
+    Return true if this is a frequency unit, false if a wavelength.
+
+    Units of frequency are 'wavenumber','THz','GHz'
+    Units of wavelength are 'ang','nm','um','mm','cm' or 'm'
+
+    Returns
+    -------
+    bool
+        True if this is a frequency unit, False if a wavelength.
+    '''
     index = possible_frequency_units.index(unit)
     if index <=2:
         result = True
@@ -28,19 +55,37 @@ def isThisAFrequencyUnit(unit):
     return result
 
 def convert_frequency_units( value, unit_in, unit_out ):
-    '''Convert between frequency and wavelength units
-       Input can be a scalar or a numpy array
-       unit_in  are the units of the input array
-       unit_out  are the units of the output array
-       unit can be one of 'cm-1', 'wavenumber', 'GHz', 'THz', 'nm', 'um','mm','cm','m'
     '''
+    Convert between frequency and wavelength units.
+
+    The input can be either a scalar value or a numpy array of values. The function will return the converted value(s) in the output units specified.
+    The unit strings are turned into lower-case so case is irrelevant
+
+    Parameters
+    ----------
+    unit_in : str
+        The units of the input value(s). Can be one of 'cm-1' (or 'wavenumber'), 'GHz', 'THz', 'nm', 'um', 'mm', 'cm', 'm'.
+    unit_out : str
+        The units of the output value(s). Must be one of 'cm-1' (or 'wavenumber'), 'GHz', 'THz', 'nm', 'um', 'mm', 'cm', 'm'.
+    input_value : scalar or numpy array
+        The value(s) for which the conversion is to be made.
+
+    Returns
+    -------
+    scalar or numpy array
+        The converted value(s) in the output units specified.
+
+    '''
+
+    unit_in  = unit_in.lower()
+    unit_out = unit_out.lower()
     # the conversion dictionary has a tuple for each unit
     # the first entry is the multiplicative factor, the second is the operator
     # To convert wavelength they have to be scaled and then inverted
     wavenumber = { 'cm-1'       : (1,'*'),
                    'wavenumber' : (1,'*'),
-                   'THz'        : (33.356,'*'),
-                   'GHz'        : (33.356E+3,'*'),
+                   'thz'        : (33.356,'*'),
+                   'ghz'        : (33.356E+3,'*'),
                    'ang'        : (1E-8,'/'),
                    'nm'         : (1E-7,'/'),
                    'um'         : (1E-4,'/'),
@@ -70,7 +115,104 @@ def convert_frequency_units( value, unit_in, unit_out ):
     return value
     
 class PlottingTab(QWidget):
+    """
+    A class used for creating and managing a plotting tab in a graphical user interface. It inherits from QWidget.
+
+    This class is responsible for handling plotting functionalities like choosing plot types, setting molar definitions and frequency values, managing interactions with UI components such as spin boxes, combo boxes, and buttons, and plotting the data using matplotlib.
+
+    Parameters
+    ----------
+    parent : QWidget
+        The parent widget.
+    debug : bool, optional
+        Enables debug mode which provides additional logging details. Defaults to False.
+
+    Attributes
+    ----------
+    settings : dict
+        A dictionary containing settings related to plotting such as minimum frequency, maximum frequency, frequency increment, molar definitions, number of atoms, plot type, and frequency unit.
+    refreshRequired : bool
+        A flag indicating whether the plot needs to be refreshed.
+    subplot : matplotlib subplot object
+        The subplot used for plotting data.
+    vmin, vmax, vinc : float
+        Variables to store current minimum frequency, maximum frequency, and frequency increment values for the plot.
+    molar_cb_current_index : int
+        Tracks the current index of the molar definition combo box to handle changes.
+    notebook : QWidget
+        A reference to the parent widget which contains the widget structure.
+    reader : object
+        An object to read and handle data from different file formats or sources.
+    legends, vs_cm1 : list
+        Lists used for storing legends for the plots and frequency values respectively.
+    frequency_length : int
+        Stores the length of the frequency array to check for changes.
+    progressbar : QProgressBar
+        A progress bar widget to display operation progress.
+
+    Methods
+    -------
+    get_total_number_of_frequency_calculations()
+        Calculates the total number of frequency calculations required.
+    requestRefresh()
+        Requests a refresh for the plotting.
+    requestScenarioRefresh()
+        Requests a refresh for all scenarios in the application.
+    on_vmin_changed(), on_vmax_changed(), on_vinc_changed(value), on_funits_cb_activated(index), on_molar_cb_activated(index), on_natoms_changed(value), on_plot_type_cb_activated(index)
+        Event handlers for UI component changes.
+    refresh(force=False)
+        Refreshes the plot based on current settings and data.
+    plot()
+        Generates and displays the plot based on the selected plot type and data.
+    get_number_of_califications_required()
+        Returns the number of calculations needed for updating the plot.
+    greyed_out()
+        Greys out options in the UI that are not available.
+    writeSpreadsheet()
+        Writes results to a spreadsheet.
+    set_concentrations()
+        Sets the concentrations for the plotting based on the molar definition.
+    """    
     def __init__(self, parent, debug=False ):
+        """
+        Initializes the Plotting tab within a given parent.
+
+        Parameters
+        ----------
+        parent : QWidget
+            The parent widget in which this plotting tab will be initialized.
+        debug : bool, optional
+            Determines whether debugging messages should be shown, by default False.
+
+        Attributes
+        ----------
+        settings : dict
+            A dictionary to store settings such as frequency range, molar definitions, etc.
+        refreshRequired : bool
+            Indicates whether the plot needs to be refreshed.
+        subplot : NoneType or matplotlib subplot
+            Placeholder for a future subplot object, initialized as None.
+        molar_definitions : list
+            A list of possible definitions for a mole, including 'Unit cells', 'Atoms', 'Molecules'.
+        legends : list
+            A list to store legend entries.
+        vs_cm1 : list
+            A list to store frequency data.
+        frequency_length : int
+            Stores the length of `vs_cm1` list.
+        vmin, vmax, vinc : float
+            Variables to store minimum, maximum, and increment values for frequency/wavelength after conversion.
+        molar_cb_current_index : int
+            Tracks the currently selected index in the molar definitions combo box.
+        notebook : QWidget
+            A reference to the parent widget, here it's assumed to be a notebook containing multiple tabs.
+        reader : Object
+            An object that deals with reading data, accessed through the `notebook`'s mainTab.
+
+        Notes
+        -----
+        Widget elements such as QDoubleSpinBox, QComboBox, QLabel, QPushButton, QProgressBar, and the matplotlib figure are also initialized and configured within this method. This involves setting up signal-slot connections for interactive behavior, tooltips for user guidance, and incorporating the matplotlib canvas and toolbar for plotting functionality. Additionally, the method is designed for setup within a Qt layout structure, ensuring proper arrangement and display of the interface components.
+        """        
         super(QWidget, self).__init__(parent)
         global debugger
         debugger = Debug(debug,'PlottingTab')
@@ -275,6 +417,20 @@ class PlottingTab(QWidget):
         return
 
     def get_total_number_of_frequency_calculations(self):
+        """
+        Calculate and return the total number of frequency calculations required.
+
+        This method computes the total number of frequency calculations based on the current settings for minimum frequency, maximum frequency, and frequency increment. It updates the scenario if the frequency range or the increment has changed since the last update.
+
+        Parameters
+        ----------
+        None
+
+        Returns
+        -------
+        int
+            The total number of frequency calculations required, which is the product of the number of calculations required (as obtained from `get_number_of_calculations_required`) and the new length of frequency range computed.
+        """        
         vmin = self.settings['Minimum frequency']
         vmax = self.settings['Maximum frequency']
         vinc = self.settings['Frequency increment']
@@ -290,12 +446,39 @@ class PlottingTab(QWidget):
         return n*new_length
 
     def requestRefresh(self):
+        """
+        Initiates a refresh request.
+
+        This function flags that a refresh is required
+        It doesn't return any value.
+
+        Parameters
+        ----------
+        None
+
+        Returns
+        -------
+        None
+        """        
         debugger.print('Start:: requestRefresh')
         self.refreshRequired
         debugger.print('Finished:: requestRefresh')
         return
 
     def requestScenarioRefresh(self):
+        """
+        Request a refresh on all scenarios within a notebook.
+
+        This function triggers a refresh process for the settings tab and all scenarios within the notebook. 
+
+        Parameters
+        ----------
+        None
+
+        Returns
+        -------
+        None
+        """        
         debugger.print('Start:: requestScenarioRefresh')
         self.notebook.settingsTab.requestRefresh()
         for scenario in self.notebook.scenarios:
@@ -304,6 +487,28 @@ class PlottingTab(QWidget):
         return
 
     def on_vinc_changed(self,value):
+        """
+        Handle the change in frequency increment and update GUI accordingly.
+
+        This function is triggered when there's a change in the frequency increment value. It adjusts the number of GUI elements based on 
+        new values of minimum and maximum frequency and the changed frequency increment. It also updates the settings dict with the 
+        new frequency increment value.
+
+        Parameters
+        ----------
+        value : float
+            The new value of the frequency increment.
+
+        Returns
+        -------
+        None
+
+        Side Effects
+        ------------
+        - Temporarily blocks signals from the vinc_sb spin box to prevent recursive calls.
+        - Updates 'Frequency increment' in the settings dictionary with the new frequency increment value.
+        - Requests a refresh of the fitterTab if needed.
+        """        
         debugger.print('Start:: on_vinc_changed', value)
         if value <=0 :
             return
@@ -327,6 +532,31 @@ class PlottingTab(QWidget):
         debugger.print('Finished:: on_vinc_changed', value)
 
     def on_vmin_changed(self):
+        """
+        Handle the change in the minimum frequency setting.
+
+        This method adjusts the stored minimum frequency in the settings according to the new
+        minimum frequency input by the user. It first blocks the signals of the minimum frequency spinbox
+        to prevent recursive calls during the adjustment process. It then updates the setting based
+        on whether the frequency units are compatible with a predefined list, converting the frequency
+        accordingly. After adjusting the settings, it triggers a refresh request for the application's
+        fitter tab and marks the need for a general refresh. Finally, it re-enables the signals for
+        the minimum frequency spinbox and logs the completion of the process.
+
+        Parameters
+        ----------
+        None
+
+        Returns
+        -------
+        None
+
+        Notes
+        -----
+        - Uses the `blockSignals` method on `self.vmin_sb` to prevent signal-slot recursion.
+        - Adjusts settings based on a unit conversion utility function, `convert_frequency_units`.
+        - The effect of this method extends beyond just the internal state changes; it influences the UI and possibly other components' states through the requested refresh.
+        """        
         debugger.print('Start:: on_vmin_changed')
         self.vmin_sb.blockSignals(True)
         vmin = self.vmin_sb.value()
@@ -342,6 +572,24 @@ class PlottingTab(QWidget):
         debugger.print('Finished:: on_vmin_changed')
 
     def on_vmax_changed(self):
+        """
+        Handles the event when the maximum frequency setting is changed.
+
+        This method is triggered whenever there is a change in the maximum frequency setting (`vmax`). It blocks signal emission from the `vmax_sb` spinner box (presumably, a GUI element for setting `vmax`), reads the current minimum (`vmin`) and maximum (`vmax`) frequency settings, and updates the corresponding setting based on the specified frequency unit. If the frequency unit denotes a frequency, `vmax` is converted and stored as the 'Maximum frequency' in the settings dictionary in the 'wavenumber' unit. Otherwise, it updates the 'Minimum frequency' with the converted value. This method also triggers any necessary refresh operations in the user interface and finally unblocks signal emissions from the `vmax_sb`.
+
+        Parameters
+        ----------
+        None
+
+        Returns
+        -------
+        None
+
+        Notes
+        -----
+        - This method assumes the existence of `vmin_sb` and `vmax_sb` attributes, which should be spinner box GUI elements (or similar) for setting minimum and maximum frequencies, respectively.
+        - The `settings` dictionary must have a 'Frequency unit' key, and possibly 'Maximum frequency' and 'Minimum frequency' keys which are updated based on the condition.
+        """        
         debugger.print('Start:: on_vmax_changed')
         self.vmax_sb.blockSignals(True)
         vmin = self.vmin_sb.value()
@@ -357,6 +605,31 @@ class PlottingTab(QWidget):
         debugger.print('Finished:: on_vmax_changed')
 
     def refresh(self,force=False):
+        """
+        Refreshes the current state based on the changes in settings, forces refresh if needed.
+
+        This function updates the frequency settings (minimum frequency, maximum frequency, and frequency increment) based on the current settings. It ensures that these settings are within logical limits. The function updates GUI elements (spin boxes and combo boxes) with these new calculations. Additionally, it handles the conversion of frequency units, updates GUI tooltips based on the frequency unit, and builds or refreshes the visualization plot based on the refreshed data. If the 'force' flag is set or if a refresh is deemed necessary due to significant changes in the settings, it proceeds with the refresh operation, else it skips the refresh to optimize performance.
+
+        Parameters
+        ----------
+        force : bool, optional
+            A boolean flag indicating whether to forcefully execute a refresh regardless of whether it was deemed necessary based on internal conditions. The default is False.
+
+        Returns
+        -------
+        None
+
+        Notes
+        -----
+        - The actual refresh operation involves several steps:
+            - Checking if a refresh is required based on the current settings and the 'force' parameter.
+            - Temporarily blocking signals from all child widgets to prevent unintended side effects during settings updates.
+            - Verifying and updating frequency settings to maintain logical constraints.
+            - Updating GUI components with new settings values and tooltips based on the current frequency unit.
+            - Processing and plotting data based on the updated settings.
+            - Re-enabling signals for child widgets after modifications are complete.
+        - The processEvents call is used to ensure the UI remains responsive during long operations.
+        """        
         debugger.print('Start:: refresh', force)
         if not self.refreshRequired and not force:
             debugger.print('Finished:: refreshing widget not required')
@@ -440,6 +713,21 @@ class PlottingTab(QWidget):
         return
 
     def on_natoms_changed(self, value):
+        """
+        Handle the change in the number of atoms.
+
+        This method is called when the number of atoms changes. It updates the relevant setting in the instance, recalculates the concentration based on the new number of atoms, flags that a refresh is required, and then triggers the refresh process.
+
+        Parameters
+        ----------
+        value : int or float
+            The new number of atoms. This value is used to update settings and recalculate concentrations.
+
+        Notes
+        -----
+        - `self.reader.volume` and `self.reader.nions` are expected to be available and contain the volume of the container and the number of ions, respectively.
+        - The method refreshes `self.notebook.fitterTab` object with a `requestRefresh` method to initiate the refresh process.
+        """        
         debugger.print('Start:: on_natoms_changed', value)
         self.settings['Number of atoms'] = value
         debugger.print('on natoms changed ', self.settings['Number of atoms'])
@@ -451,6 +739,22 @@ class PlottingTab(QWidget):
         debugger.print('Finished:: on_natoms_changed', value)
 
     def on_plot_type_cb_activated(self, index):
+        """
+        Handle plot type change from a combo box.
+
+        This method gets triggered when the plot type in a combo box is changed.
+        It updates the plot type in the settings, marks the current state as needing a refresh,
+        requests the fitter tab to refresh, and finally refreshes the current view.
+
+        Parameters
+        ----------
+        index : int
+            The index of the selected item in the combo box.
+
+        Returns
+        -------
+        None
+        """        
         debugger.print('Start:: on_plot_type_cb_activated', index)
         self.settings['Plot type'] = self.plot_type_cb.currentText()
         debugger.print('Changed plot type to ', self.settings['Plot type'])
@@ -460,6 +764,36 @@ class PlottingTab(QWidget):
         debugger.print('Finished:: on_plot_type_cb_activated', index)
 
     def on_funits_cb_activated(self, index):
+        """
+        Handle the activation of a frequency unit combo box item.
+
+        This method updates the active frequency unit in the settings, triggers necessary refresh processes and logs the change.
+
+        Parameters
+        ----------
+        index : int
+            The index of the activated item in the frequency units combo box.
+
+        Returns
+        -------
+        None
+
+        Notes
+        -----
+        This method is part of a GUI application where `self` refers to an instance of the application or a relevant widget. It manages updates to the application's settings and GUI components based on the user's selection of a frequency unit from a combo box.
+
+        - `self.settings` is a dictionary where application settings are stored.
+        - `self.refreshRequired` is a boolean flag used to indicate whether a refresh of certain GUI components is necessary.
+        - `self.notebook` appears to be a widget container (like a tab widget), with `fitterTab` being one of its child tabs.
+        - `self.vmin_sb` is another component (likely a spin box or similar input widget) that may need its signals blocked/unblocked during the process to avoid unwanted signal emission.
+        - The `debugger.print` calls are used for logging and are not a standard Python function; they imply the existence of a custom logging or debugging utility named `debugger`.
+
+        The actual refreshing of the GUI and handling of signal blocking is done within other methods not shown here, such as `self.refresh()` and `self.notebook.fitterTab.requestRefresh()`.
+
+        Raises
+        ------
+        This function does not explicitly raise any exceptions but depends on the proper functioning of the methods it calls and the state of `self` and its attributes.
+        """        
         debugger.print('Start:: on_funits_cb_activated', index)
         self.settings['Frequency unit'] = possible_frequency_units[index]
         self.refreshRequired = True
@@ -471,6 +805,25 @@ class PlottingTab(QWidget):
         debugger.print('Finished:: on_funits_cb_activated', index)
 
     def on_molar_cb_activated(self, index):
+        """
+        Handle the activation of the molar combobox option.
+
+        This method is tied to a GUI event where a selection from a molar combobox triggers various updates in the application state, including setting concentrations, refreshing UI elements, and potentially triggering further calculations or refreshes as needed.
+
+        Parameters
+        ----------
+        index : int
+            The index of the selected item in the molar combobox. This index corresponds to a specific molar definition and is used to update the application settings and state accordingly.
+
+        Returns
+        -------
+        None
+
+        See Also
+        --------
+        set_concentrations : A method to update the concentrations based on the selected molar definition.
+        refresh : A method to refresh the UI elements.
+        """        
         debugger.print('Start:: on_molar_cb_activated', index)
         self.molar_cb_current_index = index
         self.settings['Molar definition'] = self.molar_definitions[index]
@@ -483,6 +836,11 @@ class PlottingTab(QWidget):
         return
 
     def set_concentrations(self):
+        """
+        Sets the concentration based on the molar definition in settings.
+
+        This method updates the concentration value in the settings dictionary based on the 'Molar definition' key. It calculates concentration values differently based on whether the molar definition is set to 'Molecules', 'Unit cells', or 'Atoms'. It also enables or disables the `natoms_sb` spin box accordingly.
+        """        
         debugger.print('Start:: set_concentration')
         if self.settings['Molar definition'] == 'Molecules':
             self.settings['concentration'] = 1000.0 / (avogadro_si * self.reader.volume * 1.0e-24 * self.settings['Number of atoms'] / self.reader.nions)
@@ -498,6 +856,19 @@ class PlottingTab(QWidget):
         return
 
     def writeSpreadsheet(self):
+        """
+        Update and write the results of powder and crystal scenarios to a spreadsheet.
+
+        This function navigates through each scenario defined in the `notebook` attribute, extracts relevant data such as absorption coefficients, permittivities, and reflectances, and writes these along with scenario settings to a spreadsheet. It handles different types of scenarios (Powder or Crystal) and makes use of the spreadsheet object's methods for selecting worksheets, writing rows, and dealing with data transformation. The function also handles the calculation of molar absorption coefficients with unit conversion when necessary.
+
+        Parameters
+        ----------
+        None
+
+        Returns
+        -------
+        None
+        """        
         debugger.print('Start::writeSpreadsheet')
         if self.notebook.spreadsheet is None:
             debugger.print('Finished::writeSpreadsheet spreadsheet is None')
@@ -603,6 +974,31 @@ class PlottingTab(QWidget):
         return
 
     def write_eps_results(self, sp, vs, dielecv):
+        """
+        Write real and imaginary parts of crystal permittivity to a spreadsheet.
+
+        Parameters
+        ----------
+        sp : object
+            An instance of a spreadsheet processing class with methods to manipulate data in a spreadsheet.
+        vs : list
+            A list containing frequency values.
+        dielecv : numpy.ndarray
+            A complex numpy array where the real parts represent the real permittivities and the imaginary parts represent the imaginary permittivities of a crystal. The array should have a shape of (N,3,3) where N is the number of frequency values, and the 3x3 inner arrays represent the permittivity tensor for each frequency.
+
+        Returns
+        -------
+        None
+
+        Notes
+        -----
+        The function does two main tasks:
+        1. Selects the 'Real Crystal Permittivity' sheet, deletes its current content if any, and writes the real parts of the permittivity tensor for each frequency along with the frequency values themselves.
+        2. Selects the 'Imag Crystal Permittivity' sheet, deletes its current content if any, and writes the imaginary parts of the permittivity tensor for each frequency along with the frequency values themselves.
+
+        Both sections write data in the format: frequencies (cm-1), xx, yy, zz, xy, xz, yz, where xx, yy, zz, xy, xz, and yz are components of the permittivity tensor.
+        The output data starts from the second column (index 1), and for each row written, a 'check' flag is set to 1.
+        """        
         debugger.print('Start:: write_eps_results length vs',len(vs))
         sp.selectWorkSheet('Real Crystal Permittivity')
         sp.delete()
@@ -633,12 +1029,25 @@ class PlottingTab(QWidget):
         return
 
     def write_crystal_results(self, sp, name, vs, legends, yss):
-        """ 
-        sp        is the spreadsheet object
-        name      is the worksheet name used for writing
-        vs        an np.array of the frequencies
-        yss       a list of np.arrays of the reflections and transmittance ] 
-        headings  the heading names for the yss
+        """
+        Wrte single crystal results to a spread sheet
+
+        Parameters
+        ----------
+        sp : object
+            The spreadsheet object.
+        name : str
+            The worksheet name used for writing.
+        vs : np.array
+            An array of the frequencies.
+        yss : list of np.arrays
+            A list of numpy arrays of the reflections and transmittance.
+        headings : list
+            The heading names for the yss.
+
+        Returns
+        -------
+        None
         """
         debugger.print('Start:: write_crystal_results')
         debugger.print('write_crystal_results name',name)
@@ -658,6 +1067,26 @@ class PlottingTab(QWidget):
         return
 
     def write_powder_results(self, sp, name, vs, legends, yss):
+        """
+        Writes the powder simulation results to a worksheet.
+
+        Parameters
+        ----------
+        sp : object
+            An object with methods for manipulating a worksheet.
+        name : str
+            The name of the worksheet to select or create.
+        vs : list
+            A list of frequency values (in cm-1).
+        legends : list of str
+            The legends to be used as headers, alongside 'frequencies (cm-1)'.
+        yss : list of lists
+            A list where each element is a list of intensities corresponding to each frequency in `vs`.
+
+        Returns
+        -------
+        None
+        """        
         debugger.print('Start:: write powder results')
         debugger.print('write_powder_results name',name)
         debugger.print('write_powder_results legends',legends)
@@ -680,6 +1109,33 @@ class PlottingTab(QWidget):
     def plot(self):
         # import matplotlib.pyplot as pl
         # mp.use('Qt5Agg')
+        """
+        Plots the results based on specified settings and scenarios.
+
+        This function generates a plot for the given scenarios under the analysis settings
+        defined in the notebook object's tabs. It handles various conditions to properly format
+        the plot, including checking if necessary parameters and objects are set, converting
+        frequency units, and adjusting data for display based on plot type. The actual plotting
+        is done using matplotlib, and various attributes like plot legends, titles, and axes labels
+        are dynamically set based on the configuration.
+
+        Parameters
+        ----------
+        None
+
+        Returns
+        -------
+        None
+
+        Notes
+        -----
+        - self.notebook.mainTab.settings: Dictionary containing program settings.
+        - self.notebook.mainTab.getFullFileName(): Method that returns the currently selected filename.
+        - self.notebook.mainTab.reader: Object used for reading data files.
+        - self.notebook.settingsTab.CrystalPermittivityObject: Object containing crystal permittivity settings.
+        - self.settings: Dictionary containing plot-related settings such as frequency range and plot type.
+        - self.notebook.scenarios: List of scenarios to be plotted.
+        """        
         debugger.print('Start:: plot')
         # Assemble the mainTab settings
         settings = self.notebook.mainTab.settings
@@ -749,8 +1205,20 @@ class PlottingTab(QWidget):
         debugger.print('Finished:: plot')
 
     def get_number_of_calculations_required(self):
-        """Return the total number of spectra that need to be calculated.  
-           Only spectra that need a refresh are included"""
+        """
+        Return the total number of spectra that need to be calculated.
+
+        Only spectra that need a refresh are included.
+
+        Parameters
+        ----------
+        None
+
+        Returns
+        -------
+        int
+            The total number of spectra that require calculation.
+        """
         debugger.print('Start:: get_number_of_calculations_required')
         n = 0
         for scenario in self.notebook.scenarios:
@@ -759,7 +1227,17 @@ class PlottingTab(QWidget):
         return n
 
     def greyed_out(self):
-        """Handle items that should be greyed out if they are not needed"""
+        """
+        Handle items that should be greyed out if they are not needed.
+
+        Parameters
+        ----------
+        None
+
+        Returns
+        -------
+        int
+        """
         debugger.print('Start:: greyed_out')
         powder_scenarios_present = False
         crystal_scenarios_present = False

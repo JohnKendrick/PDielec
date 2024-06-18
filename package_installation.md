@@ -72,23 +72,23 @@ You only need to do this if there have been significant changes to the packages 
 
 ### Test installation in a new conda environment
 
-	mkdir Test; cd Test
+    mkdir Test; cd Test
     conda create -n test python
-	conda activate test
+    conda activate test
     pip install --index-url https://test.pypi.org/simple/ --extra-index-url https://pypi.org/simple/ PDielec
-	pdgui
+    pdgui
 
 ### Remove test installation
 
 pip installs pdgui and preader command scripts into ~./local/bin and the PDielec modules are put into ~/.local/lib
 To uninstall;
 
-	pip uninstall PDielec
+    pip uninstall PDielec
 
 To remove the conda testing environment;
  
-	conda deactivate
-	conda env remove --name test
+    conda deactivate
+    conda env remove --name test
 
 ## Final Installation
 
@@ -97,7 +97,7 @@ Edit the setup.py file and remove the development designation from the project v
     pdmake pypi
     # rm -r build dist
     # python setup.py sdist bdist_wheel
-	twine upload --repository pypi dist/*
+    twine upload --repository pypi dist/*
     # pip install PDielec
 
 The pdmake pypi command runs setup.py which creates a PDielec/\_\_init\_\_.py file with the version number in.
@@ -176,5 +176,13 @@ conda skeleton pypi PDielec
 git commit -a
 git push --set-upstream origin pdielec_3.6.1   # Not sure about this
 git status
+```
+
+# Install SPHINX for documentation
+
+```
+pip install sphinx
+pip install sphinx-autoapi
+pip install furo
 ```
 

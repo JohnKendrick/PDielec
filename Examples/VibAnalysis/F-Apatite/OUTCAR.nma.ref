@@ -486,56 +486,57 @@ Ending: Vibrational Mode Automatic Relevance Determination
 *** Vibrational Mode Automatic Relevance Determination (VMARD) ***
 
 Mode   0:    -0.00 cm-1 (IR:   0.0)
-  +0.8324 (  6.5%) TORSION P2 O1 Ca4 Ca3
-  -0.6293 (  4.9%) TORSION P2 Ca10 O27 Ca9
-  -0.5211 (  4.0%) TORSION O1 P2 Ca11 Ca24
-  +0.4195 (  3.3%) TORSION P2 Ca10 Ca24 Ca3
-  -0.3866 (  3.0%) TORSION P2 O1 Ca3 Ca14
-  +0.3754 (  2.9%) TORSION P2 Ca9 O27 Ca10
- Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT, 100.0% TOR
- Total Composition:   16.5% BOND,  18.6% ANGLE,   1.6% OUT,  63.2% TOR
- R**2 = 0.9998
- Explained Variance = 100.0 %
+  -0.5007 (  5.0%) ANGLE O1 Ca3 Ca14
+  -0.4402 (  4.4%) TORSION P2 O1 Ca3 Ca14
+  -0.4068 (  4.0%) TORSION P2 Ca9 P34 Ca14
+  -0.4012 (  4.0%) TORSION P2 Ca10 O27 Ca9
+  -0.3521 (  3.5%) TORSION O1 Ca4 O13 Ca3
+  +0.3202 (  3.2%) TORSION O1 Ca3 O20 Ca14
+  +0.3174 (  3.1%) TORSION P2 Ca9 O27 Ca10
+  +0.3103 (  3.1%) TORSION O1 Ca3 O18 Ca24
+ Shown Composition:    0.0% BOND,  16.4% ANGLE,   0.0% OUT,  83.6% TOR
+ Total Composition:   14.5% BOND,  17.1% ANGLE,   3.9% OUT,  64.5% TOR
+ R**2 = 0.9992
+ Explained Variance =  99.9 %
 
-Mode   1:     0.00 cm-1 (IR:   0.0)
-  +0.8978 (  5.5%) BOND O1 Ca3
-  +0.8602 (  5.2%) TORSION P2 O1 Ca4 Ca14
-  +0.8319 (  5.1%) TORSION P2 O1 Ca5 Ca4
-  -0.7521 (  4.6%) TORSION P2 O1 Ca4 Ca5
-  -0.7216 (  4.4%) TORSION O1 P2 O6 Ca10
-  -0.5514 (  3.4%) TORSION P2 Ca10 O27 Ca9
- Shown Composition:   19.5% BOND,   0.0% ANGLE,   0.0% OUT,  80.5% TOR
- Total Composition:   16.2% BOND,  16.4% ANGLE,   1.6% OUT,  65.8% TOR
- R**2 = 0.9996
+Mode   1:    -0.00 cm-1 (IR:   0.0)
+  +0.8477 (  5.7%) TORSION P2 O1 Ca5 Ca3
+  -0.6539 (  4.4%) TORSION Ca3 O1 P2 Ca9
+  +0.6275 (  4.2%) TORSION O1 P2 O6 Ca24
+  +0.6126 (  4.1%) TORSION O1 P2 Ca9 Ca11
+  -0.4282 (  2.9%) TORSION P2 Ca10 Ca24 Ca3
+ Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT, 100.0% TOR
+ Total Composition:   16.2% BOND,  21.9% ANGLE,   1.8% OUT,  60.1% TOR
+ R**2 = 0.9999
  Explained Variance = 100.0 %
 
 Mode   2:     0.00 cm-1 (IR:   0.0)
-  -0.5703 (  5.0%) TORSION P2 O1 Ca5 Ca3
-  +0.5341 (  4.7%) TORSION Ca3 O1 P2 Ca9
-  -0.4511 (  4.0%) TORSION P2 Ca10 Ca14 Ca3
-  -0.4039 (  3.6%) ANGLE O1 Ca5 Ca3
-  +0.3623 (  3.2%) TORSION O1 Ca3 O19 Ca26
-  -0.3254 (  2.9%) TORSION O1 P2 O6 Ca24
- Shown Composition:    0.0% BOND,  15.3% ANGLE,   0.0% OUT,  84.7% TOR
- Total Composition:   13.7% BOND,  20.5% ANGLE,   2.5% OUT,  63.3% TOR
- R**2 = 0.9993
- Explained Variance =  99.9 %
+  +0.7138 (  4.5%) BOND O1 Ca3
+  +0.6294 (  4.0%) TORSION P2 O1 Ca5 Ca4
+  -0.5622 (  3.6%) TORSION P2 O1 Ca3 Ca14
+  -0.4978 (  3.1%) TORSION P2 O1 Ca4 Ca5
+  -0.4761 (  3.0%) TORSION P2 Ca10 O27 Ca9
+ Shown Composition:   24.8% BOND,   0.0% ANGLE,   0.0% OUT,  75.2% TOR
+ Total Composition:   15.3% BOND,  13.3% ANGLE,   1.2% OUT,  70.2% TOR
+ R**2 = 0.9999
+ Explained Variance = 100.0 %
 
 Mode   3:    19.17 cm-1 (IR:   0.0)
-  +0.2658 (  3.0%) TORSION P2 O1 Ca3 Ca4
-  +0.2529 (  2.9%) BOND Ca4 O36
- Shown Composition:   48.8% BOND,   0.0% ANGLE,   0.0% OUT,  51.2% TOR
- Total Composition:   23.5% BOND,  29.2% ANGLE,   1.1% OUT,  46.2% TOR
+  +0.2650 (  3.0%) TORSION P2 O1 Ca3 Ca4
+  -0.2566 (  2.9%) TORSION O1 P2 Ca11 O27
+  +0.2553 (  2.9%) BOND Ca4 O36
+ Shown Composition:   32.9% BOND,   0.0% ANGLE,   0.0% OUT,  67.1% TOR
+ Total Composition:   24.1% BOND,  30.6% ANGLE,   1.5% OUT,  43.8% TOR
  R**2 = 0.9999
  Explained Variance = 100.0 %
 
 Mode   4:    19.17 cm-1 (IR:   0.0)
-  +0.3735 (  4.2%) TORSION Ca3 O1 P2 Ca5
-  +0.2683 (  3.0%) BOND Ca4 O37
-  -0.2680 (  3.0%) BOND Ca3 O19
- Shown Composition:   58.9% BOND,   0.0% ANGLE,   0.0% OUT,  41.1% TOR
- Total Composition:   28.2% BOND,  24.8% ANGLE,   5.3% OUT,  41.7% TOR
- R**2 = 1.0000
+  +0.3621 (  4.0%) TORSION Ca3 O1 P2 Ca5
+  +0.2666 (  3.0%) BOND Ca4 O37
+  -0.2659 (  3.0%) BOND Ca3 O19
+ Shown Composition:   59.5% BOND,   0.0% ANGLE,   0.0% OUT,  40.5% TOR
+ Total Composition:   28.8% BOND,  24.3% ANGLE,   4.9% OUT,  42.0% TOR
+ R**2 = 0.9999
  Explained Variance = 100.0 %
 
 Mode   5:    73.54 cm-1 (IR:   0.0)
@@ -602,19 +603,19 @@ Mode  10:    97.30 cm-1 (IR:   0.0)
  Explained Variance = 100.0 %
 
 Mode  11:   104.97 cm-1 (IR:   0.0)
-  +0.2266 (  3.3%) BOND Ca9 O33
-  -0.2061 (  3.0%) BOND Ca10 O39
-  -0.1996 (  2.9%) TORSION P2 O1 Ca3 Ca4
- Shown Composition:   68.4% BOND,   0.0% ANGLE,   0.0% OUT,  31.6% TOR
- Total Composition:   32.9% BOND,  32.4% ANGLE,   2.9% OUT,  31.8% TOR
- R**2 = 0.9999
+  -0.2265 (  3.3%) BOND Ca9 O33
+  +0.2064 (  3.0%) BOND Ca10 O39
+  +0.1979 (  2.8%) TORSION P2 O1 Ca3 Ca4
+ Shown Composition:   68.6% BOND,   0.0% ANGLE,   0.0% OUT,  31.4% TOR
+ Total Composition:   32.2% BOND,  33.5% ANGLE,   2.8% OUT,  31.5% TOR
+ R**2 = 0.9998
  Explained Variance = 100.0 %
 
 Mode  12:   104.97 cm-1 (IR:   0.0)
   +0.3380 (  4.8%) TORSION P2 Ca9 P34 Ca10
   -0.2948 (  4.2%) TORSION O1 Ca3 O13 Ca4
   +0.2120 (  3.0%) BOND O7 Ca9
-  -0.2057 (  2.9%) TORSION O1 Ca4 O13 Ca3
+  -0.2055 (  2.9%) TORSION O1 Ca4 O13 Ca3
  Shown Composition:   20.2% BOND,   0.0% ANGLE,   0.0% OUT,  79.8% TOR
  Total Composition:   27.7% BOND,  25.5% ANGLE,   3.1% OUT,  43.7% TOR
  R**2 = 0.9997
@@ -631,22 +632,22 @@ Mode  13:   129.33 cm-1 (IR:   0.0)
  Explained Variance = 100.0 %
 
 Mode  14:   129.37 cm-1 (IR:   0.0)
-  +0.2984 (  3.2%) TORSION O1 Ca3 Ca24 Ca5
-  -0.2729 (  3.0%) TORSION P2 Ca10 O27 Ca9
-  +0.2726 (  3.0%) ANGLE Ca3 Ca25 Ca14
-  +0.2718 (  3.0%) TORSION P2 O1 Ca5 Ca11
+  -0.2985 (  3.2%) TORSION O1 Ca3 Ca24 Ca5
+  +0.2729 (  3.0%) TORSION P2 Ca10 O27 Ca9
+  -0.2725 (  3.0%) ANGLE Ca3 Ca25 Ca14
+  -0.2717 (  3.0%) TORSION P2 O1 Ca5 Ca11
  Shown Composition:    0.0% BOND,  24.4% ANGLE,   0.0% OUT,  75.6% TOR
  Total Composition:   19.4% BOND,  25.8% ANGLE,   2.6% OUT,  52.2% TOR
  R**2 = 0.9999
  Explained Variance = 100.0 %
 
 Mode  15:   129.37 cm-1 (IR:   0.0)
-  +0.4973 (  4.7%) TORSION O1 Ca3 Ca24 Ca5
+  +0.4972 (  4.7%) TORSION O1 Ca3 Ca24 Ca5
   -0.4894 (  4.6%) TORSION O1 Ca3 O19 Ca26
   -0.4287 (  4.1%) TORSION O1 P2 Ca10 P31
   -0.4283 (  4.1%) ANGLE O1 Ca5 Ca24
   -0.3616 (  3.4%) TORSION P2 Ca10 O29 Ca9
-  -0.3025 (  2.9%) BOND Ca4 Ca5
+  -0.3026 (  2.9%) BOND Ca4 Ca5
   -0.2994 (  2.8%) TORSION P2 Ca9 O29 Ca10
  Shown Composition:   10.8% BOND,  15.3% ANGLE,   0.0% OUT,  74.0% TOR
  Total Composition:   18.2% BOND,  23.1% ANGLE,   5.5% OUT,  53.1% TOR
@@ -680,22 +681,22 @@ Mode  17:   133.79 cm-1 (IR:   0.0)
  Explained Variance =  99.9 %
 
 Mode  18:   141.70 cm-1 (IR:   0.0)
-  +0.7025 (  7.4%) TORSION P2 O1 Ca5 Ca3
-  +0.4263 (  4.5%) TORSION O1 Ca3 O19 Ca26
-  +0.4080 (  4.3%) ANGLE O1 Ca3 Ca24
-  -0.3576 (  3.8%) TORSION Ca3 O1 P2 Ca5
-  +0.3005 (  3.2%) TORSION O1 Ca3 Ca14 P34
-  -0.3002 (  3.1%) TORSION Ca9 P34 O39 Ca10
-  -0.2966 (  3.1%) ANGLE Ca3 Ca14 Ca9
-  +0.2943 (  3.1%) TORSION O1 Ca3 Ca25 P23
-  -0.2911 (  3.1%) TORSION O1 Ca3 Ca24 Ca10
+  -0.7025 (  7.4%) TORSION P2 O1 Ca5 Ca3
+  -0.4263 (  4.5%) TORSION O1 Ca3 O19 Ca26
+  -0.4080 (  4.3%) ANGLE O1 Ca3 Ca24
+  +0.3576 (  3.8%) TORSION Ca3 O1 P2 Ca5
+  -0.3005 (  3.2%) TORSION O1 Ca3 Ca14 P34
+  +0.3002 (  3.1%) TORSION Ca9 P34 O39 Ca10
+  +0.2966 (  3.1%) ANGLE Ca3 Ca14 Ca9
+  -0.2943 (  3.1%) TORSION O1 Ca3 Ca25 P23
+  +0.2911 (  3.1%) TORSION O1 Ca3 Ca24 Ca10
  Shown Composition:    0.0% BOND,  20.9% ANGLE,   0.0% OUT,  79.1% TOR
  Total Composition:   15.2% BOND,  27.1% ANGLE,   1.2% OUT,  56.5% TOR
  R**2 = 0.9995
  Explained Variance = 100.0 %
 
 Mode  19:   141.70 cm-1 (IR:   0.0)
-  +0.9449 (  7.9%) TORSION O1 Ca5 Ca11 P2
+  +0.9448 (  7.9%) TORSION O1 Ca5 Ca11 P2
   -0.6750 (  5.7%) TORSION O1 P2 Ca10 P31
   -0.5454 (  4.6%) TORSION O1 P2 Ca9 Ca10
   -0.4333 (  3.6%) BOND Ca14 Ca25
@@ -708,11 +709,11 @@ Mode  19:   141.70 cm-1 (IR:   0.0)
  Explained Variance = 100.0 %
 
 Mode  20:   142.53 cm-1 (IR: 409.3)
-  -0.5097 (  4.7%) ANGLE Ca3 Ca14 F40
-  +0.5069 (  4.7%) ANGLE Ca3 Ca24 F42
-  -0.4475 (  4.2%) OUT Ca3 Ca14 Ca9 F40
-  +0.3214 (  3.0%) TORSION O1 P2 O6 Ca24
-  -0.3122 (  2.9%) TORSION P2 Ca10 Ca14 Ca3
+  +0.5097 (  4.7%) ANGLE Ca3 Ca14 F40
+  -0.5069 (  4.7%) ANGLE Ca3 Ca24 F42
+  +0.4475 (  4.2%) OUT Ca3 Ca14 Ca9 F40
+  -0.3214 (  3.0%) TORSION O1 P2 O6 Ca24
+  +0.3122 (  2.9%) TORSION P2 Ca10 Ca14 Ca3
  Shown Composition:    0.0% BOND,  48.5% ANGLE,  21.3% OUT,  30.2% TOR
  Total Composition:   22.1% BOND,  36.6% ANGLE,   9.1% OUT,  32.2% TOR
  R**2 = 0.9999
@@ -731,12 +732,12 @@ Mode  21:   146.33 cm-1 (IR:   0.0)
  Explained Variance = 100.0 %
 
 Mode  22:   155.64 cm-1 (IR:   0.0)
-  -0.4675 (  5.1%) BOND Ca3 Ca4
-  -0.3631 (  3.9%) TORSION Ca3 Ca14 O33 Ca9
-  +0.3608 (  3.9%) TORSION O1 Ca3 O19 Ca26
-  +0.3112 (  3.4%) ANGLE Ca3 Ca24 Ca11
-  -0.2787 (  3.0%) TORSION O1 P2 Ca10 P31
-  -0.2718 (  2.9%) BOND Ca14 Ca25
+  +0.4675 (  5.1%) BOND Ca3 Ca4
+  +0.3631 (  3.9%) TORSION Ca3 Ca14 O33 Ca9
+  -0.3608 (  3.9%) TORSION O1 Ca3 O19 Ca26
+  -0.3112 (  3.4%) ANGLE Ca3 Ca24 Ca11
+  +0.2787 (  3.0%) TORSION O1 P2 Ca10 P31
+  +0.2718 (  2.9%) BOND Ca14 Ca25
  Shown Composition:   36.0% BOND,  15.2% ANGLE,   0.0% OUT,  48.8% TOR
  Total Composition:   23.3% BOND,  31.0% ANGLE,   7.5% OUT,  38.2% TOR
  R**2 = 0.9992
@@ -755,7 +756,7 @@ Mode  24:   162.47 cm-1 (IR:   0.0)
   +0.4015 (  4.3%) TORSION O1 Ca3 O16 Ca26
   +0.3759 (  4.0%) OUT O1 Ca3 Ca25 Ca26
   +0.2959 (  3.1%) TORSION O1 P2 O6 Ca24
-  -0.2848 (  3.0%) ANGLE P2 Ca11 Ca9
+  -0.2847 (  3.0%) ANGLE P2 Ca11 Ca9
   +0.2712 (  2.9%) TORSION O1 Ca3 O13 Ca14
  Shown Composition:    0.0% BOND,  13.1% ANGLE,  17.2% OUT,  69.7% TOR
  Total Composition:   25.2% BOND,  34.0% ANGLE,   6.1% OUT,  34.6% TOR
@@ -767,7 +768,7 @@ Mode  25:   162.47 cm-1 (IR:   0.0)
   +0.4677 (  4.3%) TORSION O1 P2 O7 Ca11
   -0.3915 (  3.6%) TORSION O1 Ca3 O15 Ca25
   +0.3314 (  3.1%) BOND Ca10 Ca24
-  +0.3065 (  2.8%) BOND Ca3 Ca14
+  +0.3064 (  2.8%) BOND Ca3 Ca14
  Shown Composition:   32.4% BOND,   0.0% ANGLE,   0.0% OUT,  67.6% TOR
  Total Composition:   23.7% BOND,  27.4% ANGLE,   2.5% OUT,  46.3% TOR
  R**2 = 0.9997
@@ -792,29 +793,29 @@ Mode  26:   163.99 cm-1 (IR:   0.0)
  Explained Variance = 100.0 %
 
 Mode  27:   173.68 cm-1 (IR: 6515.9)
-  -0.4835 (  5.6%) ANGLE O1 Ca3 Ca5
-  -0.4513 (  5.2%) TORSION O1 Ca3 Ca14 Ca9
-  +0.3838 (  4.4%) TORSION P2 O1 Ca5 Ca4
-  +0.3538 (  4.1%) TORSION O1 Ca3 O19 Ca26
-  +0.3448 (  4.0%) ANGLE P2 Ca9 Ca10
-  +0.3282 (  3.8%) TORSION Ca3 Ca14 O39 Ca10
-  -0.2924 (  3.4%) TORSION P2 O1 Ca5 Ca11
-  -0.2868 (  3.3%) ANGLE O1 Ca5 Ca24
-  +0.2788 (  3.2%) TORSION P2 O1 Ca3 Ca26
-  +0.2577 (  3.0%) TORSION O1 Ca3 P22 Ca24
+  +0.4835 (  5.6%) ANGLE O1 Ca3 Ca5
+  +0.4513 (  5.2%) TORSION O1 Ca3 Ca14 Ca9
+  -0.3838 (  4.4%) TORSION P2 O1 Ca5 Ca4
+  -0.3538 (  4.1%) TORSION O1 Ca3 O19 Ca26
+  -0.3448 (  4.0%) ANGLE P2 Ca9 Ca10
+  -0.3282 (  3.8%) TORSION Ca3 Ca14 O39 Ca10
+  +0.2924 (  3.4%) TORSION P2 O1 Ca5 Ca11
+  +0.2868 (  3.3%) ANGLE O1 Ca5 Ca24
+  -0.2788 (  3.2%) TORSION P2 O1 Ca3 Ca26
+  -0.2577 (  3.0%) TORSION O1 Ca3 P22 Ca24
  Shown Composition:    0.0% BOND,  32.2% ANGLE,   0.0% OUT,  67.8% TOR
  Total Composition:   11.6% BOND,  34.8% ANGLE,   1.6% OUT,  52.1% TOR
  R**2 = 0.9995
  Explained Variance =  99.9 %
 
 Mode  28:   174.17 cm-1 (IR:   0.0)
-  +0.4811 (  5.8%) TORSION Ca3 Ca14 O38 Ca4
-  -0.4304 (  5.2%) TORSION Ca3 O1 P2 Ca11
-  +0.4270 (  5.2%) TORSION O1 P2 O7 Ca9
-  +0.4049 (  4.9%) TORSION O1 Ca3 O19 Ca26
-  -0.3063 (  3.7%) TORSION P2 Ca10 O29 Ca9
-  +0.2778 (  3.4%) TORSION O1 Ca3 O20 Ca25
-  +0.2621 (  3.2%) TORSION Ca3 O1 P2 Ca5
+  -0.4814 (  5.8%) TORSION Ca3 Ca14 O38 Ca4
+  +0.4304 (  5.2%) TORSION Ca3 O1 P2 Ca11
+  -0.4270 (  5.2%) TORSION O1 P2 O7 Ca9
+  -0.4049 (  4.9%) TORSION O1 Ca3 O19 Ca26
+  +0.3063 (  3.7%) TORSION P2 Ca10 O29 Ca9
+  -0.2778 (  3.4%) TORSION O1 Ca3 O20 Ca25
+  -0.2623 (  3.2%) TORSION Ca3 O1 P2 Ca5
  Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT, 100.0% TOR
  Total Composition:   20.9% BOND,  17.8% ANGLE,   1.0% OUT,  60.4% TOR
  R**2 = 0.9997
@@ -823,7 +824,7 @@ Mode  28:   174.17 cm-1 (IR:   0.0)
 Mode  29:   174.17 cm-1 (IR:   0.0)
   +0.4328 (  5.1%) TORSION P2 O1 Ca3 Ca4
   -0.3410 (  4.0%) TORSION O1 Ca3 O13 Ca4
-  +0.2798 (  3.3%) ANGLE O1 Ca3 Ca26
+  +0.2799 (  3.3%) ANGLE O1 Ca3 Ca26
   -0.2609 (  3.1%) TORSION O1 P2 Ca11 O27
   +0.2416 (  2.8%) TORSION O1 P2 O8 Ca14
   -0.2410 (  2.8%) TORSION P2 O1 Ca3 Ca26
@@ -842,7 +843,7 @@ Mode  30:   180.18 cm-1 (IR: 95243.4)
  R**2 = 0.9994
  Explained Variance =  99.9 %
 
-Mode  31:   180.18 cm-1 (IR: 95242.1)
+Mode  31:   180.18 cm-1 (IR: 95242.2)
   +0.4248 (  4.6%) ANGLE P2 Ca9 Ca11
   +0.3619 (  3.9%) TORSION O1 Ca3 Ca14 Ca25
   +0.3526 (  3.8%) TORSION O1 P2 O6 Ca24
@@ -868,18 +869,18 @@ Mode  32:   187.96 cm-1 (IR:   0.0)
  Explained Variance = 100.0 %
 
 Mode  33:   195.98 cm-1 (IR:   0.0)
-  -0.6328 (  7.5%) TORSION O1 Ca3 O13 Ca4
-  +0.2914 (  3.4%) TORSION O1 Ca5 O18 Ca3
-  +0.2745 (  3.2%) TORSION P2 Ca10 P34 Ca9
-  -0.2410 (  2.8%) BOND Ca4 O37
+  +0.6327 (  7.5%) TORSION O1 Ca3 O13 Ca4
+  -0.2914 (  3.4%) TORSION O1 Ca5 O18 Ca3
+  -0.2746 (  3.2%) TORSION P2 Ca10 P34 Ca9
+  +0.2410 (  2.8%) BOND Ca4 O37
  Shown Composition:   16.7% BOND,   0.0% ANGLE,   0.0% OUT,  83.3% TOR
  Total Composition:   23.5% BOND,  28.0% ANGLE,   4.5% OUT,  44.0% TOR
  R**2 = 0.9999
  Explained Variance = 100.0 %
 
 Mode  34:   195.98 cm-1 (IR:   0.0)
-  -0.4312 (  5.0%) TORSION P2 O1 Ca3 Ca4
-  +0.4232 (  4.9%) TORSION Ca3 Ca14 O38 Ca4
+  -0.4313 (  5.0%) TORSION P2 O1 Ca3 Ca4
+  +0.4231 (  4.9%) TORSION Ca3 Ca14 O38 Ca4
   +0.4093 (  4.8%) TORSION O1 P2 Ca10 Ca9
   -0.2530 (  3.0%) TORSION P2 O1 Ca4 Ca3
  Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT, 100.0% TOR
@@ -900,8 +901,8 @@ Mode  35:   196.11 cm-1 (IR:   0.0)
 
 Mode  36:   200.35 cm-1 (IR:   0.0)
   +0.5639 (  5.8%) TORSION O1 P2 Ca9 O35
-  -0.3934 (  4.0%) ANGLE P2 O1 Ca3
-  -0.3689 (  3.8%) TORSION P2 Ca11 Ca24 Ca3
+  -0.3935 (  4.0%) ANGLE P2 O1 Ca3
+  -0.3688 (  3.8%) TORSION P2 Ca11 Ca24 Ca3
   +0.3077 (  3.2%) TORSION P2 Ca9 O27 Ca10
   -0.2766 (  2.8%) TORSION O1 Ca3 O13 Ca4
  Shown Composition:    0.0% BOND,  20.6% ANGLE,   0.0% OUT,  79.4% TOR
@@ -948,18 +949,18 @@ Mode  40:   208.59 cm-1 (IR:   0.0)
  Explained Variance = 100.0 %
 
 Mode  41:   213.14 cm-1 (IR:   0.0)
-  +0.3591 (  3.7%) TORSION O1 Ca3 O19 Ca26
-  -0.3190 (  3.3%) ANGLE P2 Ca9 O32
+  -0.3591 (  3.7%) TORSION O1 Ca3 O19 Ca26
+  +0.3190 (  3.3%) ANGLE P2 Ca9 O32
  Shown Composition:    0.0% BOND,  47.0% ANGLE,   0.0% OUT,  53.0% TOR
  Total Composition:   26.1% BOND,  30.1% ANGLE,   7.1% OUT,  36.7% TOR
  R**2 = 0.9999
  Explained Variance = 100.0 %
 
 Mode  42:   213.14 cm-1 (IR:   0.0)
-  +0.4059 (  4.3%) TORSION O1 P2 O8 Ca9
-  +0.3222 (  3.4%) TORSION O1 Ca3 P23 Ca25
-  -0.3006 (  3.1%) TORSION O1 Ca3 P21 Ca26
-  -0.2738 (  2.9%) TORSION O1 P2 Ca11 O27
+  -0.4059 (  4.3%) TORSION O1 P2 O8 Ca9
+  -0.3222 (  3.4%) TORSION O1 Ca3 P23 Ca25
+  +0.3006 (  3.1%) TORSION O1 Ca3 P21 Ca26
+  +0.2738 (  2.9%) TORSION O1 P2 Ca11 O27
  Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT, 100.0% TOR
  Total Composition:   23.6% BOND,  23.4% ANGLE,   3.5% OUT,  49.5% TOR
  R**2 = 0.9998
@@ -985,9 +986,9 @@ Mode  44:   222.84 cm-1 (IR:   0.0)
  Explained Variance = 100.0 %
 
 Mode  45:   223.21 cm-1 (IR:   0.0)
-  +0.3502 (  3.5%) TORSION O1 Ca3 Ca14 Ca9
-  -0.3194 (  3.2%) TORSION O1 P2 Ca9 O35
-  -0.2834 (  2.8%) TORSION O1 P2 O8 Ca14
+  -0.3502 (  3.5%) TORSION O1 Ca3 Ca14 Ca9
+  +0.3194 (  3.2%) TORSION O1 P2 Ca9 O35
+  +0.2834 (  2.8%) TORSION O1 P2 O8 Ca14
  Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT, 100.0% TOR
  Total Composition:   25.5% BOND,  24.5% ANGLE,   5.4% OUT,  44.6% TOR
  R**2 = 0.9999
@@ -1051,9 +1052,9 @@ Mode  51:   231.23 cm-1 (IR: 4241.1)
  Explained Variance = 100.0 %
 
 Mode  52:   241.58 cm-1 (IR: 217756.7)
-  -0.2626 (  3.6%) TORSION O1 Ca3 O19 Ca26
-  -0.2261 (  3.1%) ANGLE P2 Ca10 P34
-  +0.2033 (  2.8%) ANGLE P2 Ca9 P34
+  +0.2626 (  3.6%) TORSION O1 Ca3 O19 Ca26
+  +0.2261 (  3.1%) ANGLE P2 Ca10 P34
+  -0.2033 (  2.8%) ANGLE P2 Ca9 P34
  Shown Composition:    0.0% BOND,  62.1% ANGLE,   0.0% OUT,  37.9% TOR
  Total Composition:   19.5% BOND,  33.0% ANGLE,   3.5% OUT,  44.0% TOR
  R**2 = 0.9994
@@ -1114,7 +1115,7 @@ Mode  58:   262.55 cm-1 (IR:   0.0)
   -0.3027 (  4.5%) BOND Ca3 Ca25
   -0.2588 (  3.8%) BOND Ca14 F40
   -0.2491 (  3.7%) BOND Ca24 F42
-  -0.2229 (  3.3%) BOND Ca10 Ca11
+  -0.2230 (  3.3%) BOND Ca10 Ca11
   +0.1905 (  2.8%) TORSION P2 Ca10 P31 Ca9
  Shown Composition:   84.4% BOND,   0.0% ANGLE,   0.0% OUT,  15.6% TOR
  Total Composition:   47.4% BOND,  16.6% ANGLE,   2.9% OUT,  33.1% TOR
@@ -1127,7 +1128,7 @@ Mode  59:   262.55 cm-1 (IR:   0.0)
   -0.3765 (  4.1%) TORSION O1 Ca4 O12 Ca3
   -0.3662 (  4.0%) BOND P2 Ca5
   -0.3200 (  3.5%) TORSION O1 Ca3 O13 Ca4
-  -0.2862 (  3.1%) ANGLE Ca3 Ca14 F40
+  -0.2863 (  3.1%) ANGLE Ca3 Ca14 F40
   +0.2796 (  3.1%) ANGLE Ca3 Ca24 F42
  Shown Composition:   14.7% BOND,  22.7% ANGLE,   0.0% OUT,  62.6% TOR
  Total Composition:   31.6% BOND,  18.5% ANGLE,   3.0% OUT,  46.9% TOR
@@ -1147,7 +1148,7 @@ Mode  61:   264.71 cm-1 (IR:   0.0)
   -0.3501 (  3.7%) TORSION O1 Ca3 O20 Ca25
   -0.3201 (  3.4%) TORSION P2 O1 Ca4 O37
   -0.3170 (  3.3%) TORSION P2 O1 Ca3 O19
-  -0.2944 (  3.1%) TORSION Ca3 O1 P2 Ca11
+  -0.2945 (  3.1%) TORSION Ca3 O1 P2 Ca11
   +0.2799 (  2.9%) TORSION O1 Ca3 O13 Ca4
   -0.2798 (  2.9%) ANGLE O1 Ca4 O37
   +0.2769 (  2.9%) BOND Ca5 O41
@@ -1174,16 +1175,16 @@ Mode  63:   271.67 cm-1 (IR:   0.0)
   -0.3211 (  3.1%) ANGLE O1 Ca4 O37
   +0.3126 (  3.1%) TORSION O1 P2 Ca11 O27
   -0.3002 (  2.9%) TORSION O1 P2 Ca10 P31
-  -0.2981 (  2.9%) BOND Ca5 O41
+  -0.2980 (  2.9%) BOND Ca5 O41
  Shown Composition:   15.0% BOND,  16.1% ANGLE,   0.0% OUT,  68.9% TOR
  Total Composition:   20.7% BOND,  27.9% ANGLE,   4.7% OUT,  46.8% TOR
  R**2 = 0.9999
  Explained Variance = 100.0 %
 
 Mode  64:   271.67 cm-1 (IR:   0.0)
-  -0.4514 (  4.9%) TORSION P2 O1 Ca4 O36
-  -0.3078 (  3.3%) TORSION P2 O1 Ca3 Ca26
-  -0.2876 (  3.1%) TORSION O1 Ca3 O19 Ca26
+  +0.4514 (  4.9%) TORSION P2 O1 Ca4 O36
+  +0.3078 (  3.3%) TORSION P2 O1 Ca3 Ca26
+  +0.2876 (  3.1%) TORSION O1 Ca3 O19 Ca26
  Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT, 100.0% TOR
  Total Composition:   30.6% BOND,  23.5% ANGLE,   4.7% OUT,  41.2% TOR
  R**2 = 0.9996
@@ -1231,7 +1232,7 @@ Mode  68:   294.29 cm-1 (IR:   0.0)
   +0.5845 (  5.8%) ANGLE Ca3 Ca24 F42
   +0.4703 (  4.6%) BOND Ca14 F40
   +0.4568 (  4.5%) BOND Ca24 F42
-  +0.3627 (  3.6%) TORSION P2 O1 Ca3 Ca26
+  +0.3628 (  3.6%) TORSION P2 O1 Ca3 Ca26
   +0.3409 (  3.4%) ANGLE O1 P2 Ca5
   -0.3392 (  3.4%) TORSION P2 Ca10 O39 Ca14
   +0.3310 (  3.3%) BOND Ca3 Ca24
@@ -1286,23 +1287,23 @@ Mode  72:   398.10 cm-1 (IR:   0.0)
  Explained Variance = 100.0 %
 
 Mode  73:   405.24 cm-1 (IR:   0.0)
-  +0.4525 (  4.3%) TORSION O1 Ca5 O36 Ca4
-  +0.4361 (  4.2%) OUT O1 P2 O8 Ca11
-  -0.3568 (  3.4%) TORSION O1 P2 Ca9 O35
-  -0.3007 (  2.9%) BOND Ca9 O35
+  -0.4526 (  4.3%) TORSION O1 Ca5 O36 Ca4
+  -0.4361 (  4.2%) OUT O1 P2 O8 Ca11
+  +0.3568 (  3.4%) TORSION O1 P2 Ca9 O35
+  +0.3007 (  2.9%) BOND Ca9 O35
  Shown Composition:   19.4% BOND,   0.0% ANGLE,  28.2% OUT,  52.3% TOR
  Total Composition:   22.7% BOND,  34.2% ANGLE,   9.7% OUT,  33.4% TOR
  R**2 = 1.0000
  Explained Variance = 100.0 %
 
 Mode  74:   405.24 cm-1 (IR:   0.0)
-  -0.4399 (  4.1%) ANGLE P2 Ca9 O32
-  +0.3311 (  3.1%) TORSION P2 O1 Ca5 Ca4
-  -0.3276 (  3.1%) TORSION Ca3 Ca14 O38 Ca4
-  -0.3255 (  3.0%) BOND Ca4 O36
-  +0.3093 (  2.9%) BOND Ca9 O32
-  +0.3030 (  2.8%) BOND Ca4 O12
-  -0.3030 (  2.8%) BOND Ca3 O12
+  +0.4399 (  4.1%) ANGLE P2 Ca9 O32
+  -0.3311 (  3.1%) TORSION P2 O1 Ca5 Ca4
+  +0.3276 (  3.1%) TORSION Ca3 Ca14 O38 Ca4
+  +0.3255 (  3.0%) BOND Ca4 O36
+  -0.3094 (  2.9%) BOND Ca9 O32
+  -0.3030 (  2.8%) BOND Ca4 O12
+  +0.3030 (  2.8%) BOND Ca3 O12
  Shown Composition:   53.0% BOND,  18.8% ANGLE,   0.0% OUT,  28.2% TOR
  Total Composition:   31.1% BOND,  33.5% ANGLE,   3.8% OUT,  31.6% TOR
  R**2 = 1.0000
@@ -1324,16 +1325,16 @@ Mode  75:   407.71 cm-1 (IR:   0.0)
 Mode  76:   407.71 cm-1 (IR:   0.0)
   -0.6897 (  6.0%) TORSION O1 P2 Ca11 O27
   -0.6733 (  5.8%) TORSION O1 Ca4 Ca14 Ca3
-  +0.3731 (  3.2%) TORSION O1 P2 O8 Ca9
+  +0.3732 (  3.2%) TORSION O1 P2 O8 Ca9
  Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT, 100.0% TOR
  Total Composition:   26.9% BOND,  27.3% ANGLE,   8.8% OUT,  37.0% TOR
  R**2 = 1.0000
  Explained Variance = 100.0 %
 
 Mode  77:   420.81 cm-1 (IR:   0.0)
-  +0.4405 (  4.6%) TORSION O1 P2 Ca9 O35
+  +0.4406 (  4.6%) TORSION O1 P2 Ca9 O35
   +0.4297 (  4.5%) TORSION P2 O1 Ca3 O18
-  +0.2903 (  3.0%) TORSION P2 O6 Ca24 Ca3
+  +0.2902 (  3.0%) TORSION P2 O6 Ca24 Ca3
   +0.2887 (  3.0%) TORSION P2 O1 Ca3 O12
   -0.2874 (  3.0%) TORSION P2 O1 Ca3 O16
   -0.2710 (  2.8%) ANGLE P2 Ca10 O29
@@ -1346,9 +1347,9 @@ Mode  78:   420.81 cm-1 (IR:   0.0)
   -0.5615 (  5.2%) TORSION O1 Ca3 P21 O19
   +0.4219 (  3.9%) TORSION P2 O1 Ca4 O37
   +0.4006 (  3.7%) ANGLE P2 Ca9 O28
-  -0.3288 (  3.1%) ANGLE O1 Ca3 Ca5
+  -0.3288 (  3.0%) ANGLE O1 Ca3 Ca5
   -0.3217 (  3.0%) BOND Ca5 O41
- Shown Composition:   15.8% BOND,  35.9% ANGLE,   0.0% OUT,  48.3% TOR
+ Shown Composition:   15.8% BOND,  35.8% ANGLE,   0.0% OUT,  48.3% TOR
  Total Composition:   22.0% BOND,  27.5% ANGLE,   4.2% OUT,  46.3% TOR
  R**2 = 0.9996
  Explained Variance = 100.0 %
@@ -1386,7 +1387,7 @@ Mode  81:   437.74 cm-1 (IR: 248.3)
  Explained Variance = 100.0 %
 
 Mode  82:   447.52 cm-1 (IR: 4216.0)
-  -0.3260 (  3.1%) ANGLE P2 Ca9 O32
+  +0.3260 (  3.1%) ANGLE P2 Ca9 O32
  Shown Composition:    0.0% BOND, 100.0% ANGLE,   0.0% OUT,   0.0% TOR
  Total Composition:   44.2% BOND,  26.6% ANGLE,   3.3% OUT,  25.9% TOR
  R**2 = 0.9997
@@ -1421,12 +1422,12 @@ Mode  85:   534.50 cm-1 (IR:   0.0)
  Explained Variance = 100.0 %
 
 Mode  86:   534.50 cm-1 (IR:   0.0)
-  +0.3797 (  4.1%) TORSION O1 Ca3 Ca25 P23
-  -0.3346 (  3.6%) OUT O1 P2 O8 Ca11
-  +0.2815 (  3.0%) TORSION O1 Ca3 Ca14 O38
-  +0.2809 (  3.0%) TORSION O1 P2 Ca9 O35
-  +0.2739 (  3.0%) ANGLE P2 Ca9 O32
-  +0.2616 (  2.8%) TORSION P2 O1 Ca5 O36
+  -0.3797 (  4.1%) TORSION O1 Ca3 Ca25 P23
+  +0.3346 (  3.6%) OUT O1 P2 O8 Ca11
+  -0.2815 (  3.0%) TORSION O1 Ca3 Ca14 O38
+  -0.2809 (  3.0%) TORSION O1 P2 Ca9 O35
+  -0.2739 (  3.0%) ANGLE P2 Ca9 O32
+  -0.2616 (  2.8%) TORSION P2 O1 Ca5 O36
  Shown Composition:    0.0% BOND,  15.1% ANGLE,  18.5% OUT,  66.4% TOR
  Total Composition:   21.7% BOND,  30.8% ANGLE,   6.2% OUT,  41.3% TOR
  R**2 = 0.9999
@@ -1488,9 +1489,9 @@ Mode  92:   556.35 cm-1 (IR:   0.0)
 
 Mode  93:   559.05 cm-1 (IR:   0.0)
   +0.4952 (  4.9%) TORSION P2 O1 Ca5 Ca4
-  +0.4311 (  4.3%) TORSION O1 Ca3 Ca26 P21
+  +0.4312 (  4.3%) TORSION O1 Ca3 Ca26 P21
   -0.3937 (  3.9%) TORSION O1 P2 Ca10 P31
-  +0.2980 (  3.0%) ANGLE O1 Ca5 O41
+  +0.2981 (  3.0%) ANGLE O1 Ca5 O41
  Shown Composition:    0.0% BOND,  18.4% ANGLE,   0.0% OUT,  81.6% TOR
  Total Composition:   19.5% BOND,  33.2% ANGLE,   2.4% OUT,  44.8% TOR
  R**2 = 0.9994
@@ -1525,7 +1526,7 @@ Mode  96:   568.54 cm-1 (IR: 50766.3)
  Explained Variance = 100.0 %
 
 Mode  97:   572.44 cm-1 (IR:   0.0)
-  +0.4647 (  3.8%) TORSION Ca3 Ca14 P34 Ca9
+  -0.4647 (  3.8%) TORSION Ca3 Ca14 P34 Ca9
  Shown Composition:    0.0% BOND,   0.0% ANGLE,   0.0% OUT, 100.0% TOR
  Total Composition:   17.6% BOND,  34.9% ANGLE,   4.8% OUT,  42.8% TOR
  R**2 = 0.9999
@@ -1622,7 +1623,7 @@ Mode 106:   913.71 cm-1 (IR:   0.0)
   +0.7207 (  5.9%) TORSION O1 Ca3 Ca14 Ca9
   +0.4927 (  4.0%) TORSION P2 Ca11 O27 Ca9
   -0.4875 (  4.0%) BOND Ca3 Ca4
-  -0.4828 (  3.9%) ANGLE O1 Ca4 O37
+  -0.4827 (  3.9%) ANGLE O1 Ca4 O37
   -0.4794 (  3.9%) TORSION P2 O1 Ca4 O38
   -0.4092 (  3.3%) ANGLE O1 Ca5 O41
   -0.4057 (  3.3%) TORSION P2 O1 Ca3 O17
@@ -1646,27 +1647,27 @@ Mode 107:   913.71 cm-1 (IR:   0.0)
  Explained Variance = 100.0 %
 
 Mode 108:   980.06 cm-1 (IR:   0.0)
-  -0.4070 (  6.0%) BOND O17 P23
-  -0.2966 (  4.3%) BOND P2 O8
-  +0.2670 (  3.9%) BOND O27 P31
-  -0.2631 (  3.8%) ANGLE P2 O1 Ca4
-  +0.2500 (  3.7%) BOND O15 P21
-  +0.2294 (  3.4%) TORSION P2 O1 Ca4 O38
-  +0.2282 (  3.3%) ANGLE O1 Ca4 O37
-  +0.2171 (  3.2%) ANGLE P2 Ca9 O35
-  +0.1945 (  2.8%) TORSION P2 Ca11 Ca24 Ca3
-  +0.1936 (  2.8%) ANGLE O1 Ca5 O41
+  +0.4070 (  6.0%) BOND O17 P23
+  +0.2966 (  4.3%) BOND P2 O8
+  -0.2670 (  3.9%) BOND O27 P31
+  +0.2631 (  3.8%) ANGLE P2 O1 Ca4
+  -0.2500 (  3.7%) BOND O15 P21
+  -0.2294 (  3.4%) TORSION P2 O1 Ca4 O38
+  -0.2282 (  3.3%) ANGLE O1 Ca4 O37
+  -0.2171 (  3.2%) ANGLE P2 Ca9 O35
+  -0.1945 (  2.8%) TORSION P2 Ca11 Ca24 Ca3
+  -0.1936 (  2.8%) ANGLE O1 Ca5 O41
  Shown Composition:   47.9% BOND,  35.4% ANGLE,   0.0% OUT,  16.6% TOR
  Total Composition:   44.9% BOND,  29.4% ANGLE,   1.4% OUT,  24.4% TOR
  R**2 = 0.9989
  Explained Variance =  99.9 %
 
 Mode 109:   980.06 cm-1 (IR:   0.0)
-  -0.3864 (  5.9%) BOND O29 P34
-  -0.3821 (  5.8%) BOND O16 P22
-  +0.3105 (  4.7%) BOND O27 P31
-  +0.3054 (  4.6%) BOND O15 P21
-  +0.2509 (  3.8%) TORSION P2 Ca10 P31 Ca9
+  +0.3864 (  5.9%) BOND O29 P34
+  +0.3821 (  5.8%) BOND O16 P22
+  -0.3105 (  4.7%) BOND O27 P31
+  -0.3054 (  4.6%) BOND O15 P21
+  -0.2509 (  3.8%) TORSION P2 Ca10 P31 Ca9
  Shown Composition:   84.7% BOND,   0.0% ANGLE,   0.0% OUT,  15.3% TOR
  Total Composition:   45.7% BOND,  25.9% ANGLE,   2.3% OUT,  26.1% TOR
  R**2 = 0.9995
@@ -1692,34 +1693,34 @@ Mode 110:   981.77 cm-1 (IR: 479245.6)
  R**2 = 0.9993
  Explained Variance =  99.9 %
 
-Mode 111:   986.30 cm-1 (IR: 429924.0)
-  -0.3607 (  4.2%) TORSION P2 O1 Ca5 Ca4
-  +0.3182 (  3.7%) TORSION P2 Ca10 O27 Ca9
-  -0.3125 (  3.6%) BOND Ca9 P34
-  +0.2851 (  3.3%) TORSION P2 O1 Ca3 O12
-  +0.2765 (  3.2%) BOND O16 P22
-  +0.2762 (  3.2%) ANGLE P2 Ca9 O32
-  +0.2739 (  3.2%) BOND P2 O8
-  -0.2720 (  3.2%) TORSION O1 Ca3 O15 P21
-  -0.2547 (  3.0%) BOND O17 P23
-  +0.2475 (  2.9%) TORSION P2 Ca10 O29 Ca9
-  +0.2452 (  2.9%) ANGLE O1 Ca4 O37
+Mode 111:   986.30 cm-1 (IR: 429924.1)
+  +0.3607 (  4.2%) TORSION P2 O1 Ca5 Ca4
+  -0.3182 (  3.7%) TORSION P2 Ca10 O27 Ca9
+  +0.3125 (  3.6%) BOND Ca9 P34
+  -0.2851 (  3.3%) TORSION P2 O1 Ca3 O12
+  -0.2765 (  3.2%) BOND O16 P22
+  -0.2762 (  3.2%) ANGLE P2 Ca9 O32
+  -0.2739 (  3.2%) BOND P2 O8
+  +0.2720 (  3.2%) TORSION O1 Ca3 O15 P21
+  +0.2547 (  3.0%) BOND O17 P23
+  -0.2475 (  2.9%) TORSION P2 Ca10 O29 Ca9
+  -0.2452 (  2.9%) ANGLE O1 Ca4 O37
  Shown Composition:   35.8% BOND,  16.7% ANGLE,   0.0% OUT,  47.5% TOR
  Total Composition:   33.6% BOND,  24.3% ANGLE,   1.9% OUT,  40.2% TOR
  R**2 = 0.9994
  Explained Variance =  99.9 %
 
-Mode 112:   986.30 cm-1 (IR: 429925.4)
-  -0.3314 (  5.0%) BOND O15 P21
-  +0.3237 (  4.8%) BOND O27 P31
-  -0.2980 (  4.5%) ANGLE P2 Ca9 O35
-  +0.2698 (  4.0%) BOND O1 P2
-  +0.2413 (  3.6%) TORSION O1 P2 O7 Ca9
-  +0.2083 (  3.1%) BOND Ca9 O35
-  -0.2001 (  3.0%) BOND Ca3 P21
-  +0.1969 (  2.9%) TORSION O1 Ca3 O19 P21
-  +0.1950 (  2.9%) BOND Ca3 P23
-  +0.1889 (  2.8%) TORSION O1 Ca3 Ca14 O13
+Mode 112:   986.30 cm-1 (IR: 429925.5)
+  +0.3314 (  5.0%) BOND O15 P21
+  -0.3237 (  4.8%) BOND O27 P31
+  +0.2980 (  4.5%) ANGLE P2 Ca9 O35
+  -0.2698 (  4.0%) BOND O1 P2
+  -0.2413 (  3.6%) TORSION O1 P2 O7 Ca9
+  -0.2083 (  3.1%) BOND Ca9 O35
+  +0.2001 (  3.0%) BOND Ca3 P21
+  -0.1969 (  2.9%) TORSION O1 Ca3 O19 P21
+  -0.1950 (  2.9%) BOND Ca3 P23
+  -0.1889 (  2.8%) TORSION O1 Ca3 Ca14 O13
  Shown Composition:   62.3% BOND,  12.1% ANGLE,   0.0% OUT,  25.6% TOR
  Total Composition:   50.9% BOND,  19.7% ANGLE,   2.7% OUT,  26.6% TOR
  R**2 = 0.9990
@@ -1744,18 +1745,18 @@ Mode 113:   992.86 cm-1 (IR:   0.0)
  Explained Variance =  99.9 %
 
 Mode 114:   992.86 cm-1 (IR:   0.0)
-  -0.5311 (  7.4%) ANGLE O1 Ca4 O37
-  +0.4610 (  6.5%) ANGLE O1 Ca5 O41
-  -0.4326 (  6.1%) TORSION P2 O1 Ca4 O38
-  +0.3994 (  5.6%) TORSION P2 O1 Ca4 Ca5
-  -0.3444 (  4.8%) ANGLE O1 Ca3 P21
-  +0.3174 (  4.4%) BOND O20 P23
-  +0.3074 (  4.3%) BOND O30 P31
-  -0.2762 (  3.9%) TORSION O1 Ca3 O17 P23
-  -0.2665 (  3.7%) BOND Ca3 Ca4
-  +0.2618 (  3.7%) ANGLE O1 Ca4 Ca5
-  -0.2546 (  3.6%) BOND O19 P21
-  -0.2016 (  2.8%) TORSION Ca3 O1 P2 Ca5
+  +0.5311 (  7.4%) ANGLE O1 Ca4 O37
+  -0.4610 (  6.5%) ANGLE O1 Ca5 O41
+  +0.4326 (  6.1%) TORSION P2 O1 Ca4 O38
+  -0.3994 (  5.6%) TORSION P2 O1 Ca4 Ca5
+  +0.3444 (  4.8%) ANGLE O1 Ca3 P21
+  -0.3174 (  4.4%) BOND O20 P23
+  -0.3074 (  4.3%) BOND O30 P31
+  +0.2762 (  3.9%) TORSION O1 Ca3 O17 P23
+  +0.2665 (  3.7%) BOND Ca3 Ca4
+  -0.2618 (  3.7%) ANGLE O1 Ca4 Ca5
+  +0.2546 (  3.6%) BOND O19 P21
+  +0.2016 (  2.8%) TORSION Ca3 O1 P2 Ca5
  Shown Composition:   28.3% BOND,  39.4% ANGLE,   0.0% OUT,  32.3% TOR
  Total Composition:   30.7% BOND,  30.3% ANGLE,   0.4% OUT,  38.6% TOR
  R**2 = 0.9987

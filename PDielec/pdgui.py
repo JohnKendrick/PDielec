@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 #
-# Copyright 2015 John Kendrick
+# Copyright 2024 John Kendrick & Andrew Burnett
 #
 # This file is part of PDielec
 #
@@ -11,10 +11,26 @@
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 #
-# You should have received a copy of the MIT License
-# along with this program, if not see https://opensource.org/licenses/MIT
+# You should have received a copy of the MIT License along with this program, if not see https://opensource.org/licenses/MIT
 #
-"""PDgui driver program to calculate dielectric response at infrared and THz frequencies"""
+'''
+PDgui driver program to calculate dielectric response at infrared and THz frequencies
+
+Process command line arguments and start a GUI application with optional splash screen.
+
+No explicit input parameters are taken by the function. Instead, it parses command line arguments (sys.argv) to configure application behavior. The command line arguments can control displaying a splash screen, application debugging, forcibly exiting, or showing the application version.
+
+Notes
+-----
+
+    - The -nosplash flag disables the splash screen.
+    - The -v, -version, or --version flags print the program version and exit.
+    - The -exit or --exit flag forces the program to exit immediately after processing arguments.
+    - The -d, -debug, or --debug flags enable debug messages.
+    - The function looks for a splash image file in several locations, starting with the executable's directory, and displays it if found unless the splash screen is disabled.
+    - If the splash screen is shown, it also includes a progress bar.
+
+'''
 from __future__ import print_function
 import os
 import sys
@@ -27,6 +43,46 @@ version = PDielec.__init__.__version__
 
 
 def main():
+    """
+    Process command line arguments and start a GUI application with optional splash screen.
+
+    No explicit input parameters are taken by the function. Instead, it parses command line arguments (sys.argv) to configure application behavior. The command line arguments can control displaying a splash screen, application debugging, forcibly exiting, or showing the application version.
+
+    Notes
+    -----
+    - The -nosplash flag disables the splash screen.
+    - The -v, -version, or --version flags print the program version and exit.
+    - The -exit or --exit flag forces the program to exit immediately after processing arguments.
+    - The -d, -debug, or --debug flags enable debug messages.
+    - The function looks for a splash image file in several locations, starting with the executable's directory, and displays it if found unless the splash screen is disabled.
+    - If the splash screen is shown, it also includes a progress bar.
+
+    Side Effects
+    ------------
+    - May print the application version and exit if the corresponding flags are detected.
+    - May terminate the program execution before initializing the GUI if force_exit is true.
+    - Prints debug messages if the debug flag is enabled.
+    - Initializes and possibly displays a GUI application, potentially with a splash screen and progress bar.
+
+    Examples
+    --------
+    Command line usage examples:
+    - To run the application with a splash screen and debug messages:
+
+    >>>    pdgui dft_output_file -d
+
+    - To run the application without a splash screen:
+
+    >>>    pdgui dft_output_file -nosplash
+
+    - To print the version of the application and exit:
+
+    >>>    pdgui dft_output_file --version
+
+    - To run a script:
+
+    >>>    pdgui -script script.py
+    """    
     show_splash = True
     force_exit = False
     debug = False

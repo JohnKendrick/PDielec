@@ -1,0 +1,55 @@
+PDielec.pdcompare
+=================
+
+.. py:module:: PDielec.pdcompare
+
+.. autoapi-nested-parse::
+
+   PDielec driver program to compare a collection of spreadsheets with spectra
+
+           pdcompare file1 file2...
+               pdcompare: Calculates the cross-correlation of spectra calculated using pdielec
+                   -column column  Take the data for cross correlation from column
+                   C Averaged
+                   D MG      
+                   E Mie/0.1 
+                   F Mie/1.0 
+                   G Mie/2.0 
+                   H Mie/3.0 
+                   -rmax rmax  Use rows from rmin to rmax              
+                   -rmin rmin  Use rows from rmin to rmax (rows start from 2)
+                   -sheet [molar/absorption/real/imaginary/atr]
+                   -excel filename
+
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   PDielec.pdcompare.main
+
+
+Module Contents
+---------------
+
+.. py:function:: main()
+
+   Main Driver routine for pdcompare - reads a collection of spreadsheets with spectra and compares the spectra.
+
+       pdcompare file1 file2...
+           pdcompare: Calculates the cross-correlation of spectra calculated using pdielec
+               -column column  Take the data for cross correlation from column
+               C Averaged
+               D MG      
+               E Mie/0.1 
+               F Mie/1.0 
+               G Mie/2.0 
+               H Mie/3.0 
+               -rmax rmax  Use rows from rmin to rmax              
+               -rmin rmin  Use rows from rmin to rmax (rows start from 2)
+               -sheet [molar/absorption/real/imaginary/atr]
+               -excel filename
+
+

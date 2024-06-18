@@ -5,5 +5,6 @@ If it is remove all works properly
 Problems with table_styling extension.  Error in jinja2
 https://foss.heptapod.net/doc-utils/cloud_sptheme/-/issues/48
 See jinja_PatchFile
+cloud_sptheme-ext-index_styling.py needs to be copied to /home/john/.conda/envs/develop/lib/python3.11/site-packages/cloud_sptheme/ext/index_styling.py for instance.
 
 

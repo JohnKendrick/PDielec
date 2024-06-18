@@ -1,0 +1,1523 @@
+<!doctype html>
+<html class="no-js" lang="en" data-content_root="../../../">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" /><link rel="next" title="PDielec.PhonopyOutputReader" href="../PhonopyOutputReader/index.html" /><link rel="prev" title="PDielec.Materials" href="../Materials/index.html" />
+
+    <!-- Generated with Sphinx 7.3.7 and Furo 2024.05.06 -->
+        <title>PDielec.Mie - PDielec: John Kendrick &amp; Andrew Burnett</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=92fd9be5" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=387cc868" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=fd3f3429" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/table_styling.css?v=a1a2a898" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo-extensions.css?v=36a5483c" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/css/custom.css?v=2e0a580d" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f8f8f8;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-half" viewBox="0 0 24 24">
+    <title>Auto light/dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M13 12h5" />
+      <path d="M13 15h4" />
+      <path d="M13 18h1" />
+      <path d="M13 9h4" />
+      <path d="M13 6h1" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
+      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+      <path d="M13.5 6.5l4 4" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" /
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path
+        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../../../index.html"><div class="brand">PDielec: John Kendrick & Andrew Burnett</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../../../index.html">
+  
+  
+  <span class="sidebar-brand-text">PDielec: John Kendrick & Andrew Burnett</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../../../search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <p class="caption" role="heading"><span class="caption-text">Software</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pdgui.html">PDGui</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../software.html">Other Software Components</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Theory</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../theory_powder.html">Theory for Light Scattering from Powders</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../theory_single_crystal.html">Theory for Single Crystal Optics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../analysis.html">Phonon Analysis</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Applications</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../application_notes_1.html">Applications of Effective Medium Theory</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../application_notes_2.html">Single Crystal Applications</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API</span></p>
+<ul class="current">
+<li class="toctree-l1 current has-children"><a class="reference internal" href="../../index.html">API Reference</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of API Reference</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l2 current has-children"><a class="reference internal" href="../index.html">PDielec</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of PDielec</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l3 has-children"><a class="reference internal" href="../GUI/index.html">PDielec.GUI</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of PDielec.GUI</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../GUI/AnalysisTab/index.html">PDielec.GUI.AnalysisTab</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../GUI/App/index.html">PDielec.GUI.App</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../GUI/FitterTab/index.html">PDielec.GUI.FitterTab</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../GUI/MainTab/index.html">PDielec.GUI.MainTab</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../GUI/NoteBook/index.html">PDielec.GUI.NoteBook</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../GUI/OpenGLWidget/index.html">PDielec.GUI.OpenGLWidget</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../GUI/PlottingTab/index.html">PDielec.GUI.PlottingTab</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../GUI/PowderScenarioTab/index.html">PDielec.GUI.PowderScenarioTab</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../GUI/ScenarioTab/index.html">PDielec.GUI.ScenarioTab</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../GUI/SettingsTab/index.html">PDielec.GUI.SettingsTab</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../GUI/SingleCrystalLayer/index.html">PDielec.GUI.SingleCrystalLayer</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../GUI/SingleCrystalScenarioTab/index.html">PDielec.GUI.SingleCrystalScenarioTab</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../GUI/SpreadSheetManager/index.html">PDielec.GUI.SpreadSheetManager</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../GUI/ViewerTab/index.html">PDielec.GUI.ViewerTab</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../AbinitOutputReader/index.html">PDielec.AbinitOutputReader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Calculator/index.html">PDielec.Calculator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../CastepOutputReader/index.html">PDielec.CastepOutputReader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Constants/index.html">PDielec.Constants</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../CrystalOutputReader/index.html">PDielec.CrystalOutputReader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../DielectricFunction/index.html">PDielec.DielectricFunction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ExperimentOutputReader/index.html">PDielec.ExperimentOutputReader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../GTMcore/index.html">PDielec.GTMcore</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../GenericOutputReader/index.html">PDielec.GenericOutputReader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../GulpOutputReader/index.html">PDielec.GulpOutputReader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../HelperRoutines/index.html">PDielec.HelperRoutines</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../IO/index.html">PDielec.IO</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Materials/index.html">PDielec.Materials</a></li>
+<li class="toctree-l3 current current-page"><a class="current reference internal" href="#">PDielec.Mie</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PhonopyOutputReader/index.html">PDielec.PhonopyOutputReader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Plotter/index.html">PDielec.Plotter</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../QEOutputReader/index.html">PDielec.QEOutputReader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../SuperCell/index.html">PDielec.SuperCell</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../UnitCell/index.html">PDielec.UnitCell</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Utilities/index.html">PDielec.Utilities</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../VaspOutputReader/index.html">PDielec.VaspOutputReader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../checkcsv/index.html">PDielec.checkcsv</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../checkexcel/index.html">PDielec.checkexcel</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../graphdatagenerator/index.html">PDielec.graphdatagenerator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../p1reader/index.html">PDielec.p1reader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../p2cif/index.html">PDielec.p2cif</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../pdcompare/index.html">PDielec.pdcompare</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../pdgui/index.html">PDielec.pdgui</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../pdmake/index.html">PDielec.pdmake</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../pickled_reader/index.html">PDielec.pickled_reader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../preader/index.html">PDielec.preader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../vibanalysis/index.html">PDielec.vibanalysis</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../pdgui/index.html">PDielec.pdgui</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../preader/index.html">PDielec.preader</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pdmake/index.html">PDielec.pdmake</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">References</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../zreferences.html">References</a></li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="view-this-page">
+  <a class="muted-link" href="../../../_sources/autoapi/PDielec/Mie/index.rst.txt" title="View this page">
+    <svg><use href="#svg-eye"></use></svg>
+    <span class="visually-hidden">View this page</span>
+  </a>
+</div>
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main" id="furo-main-content">
+          <section id="module-PDielec.Mie">
+<span id="pdielec-mie"></span><h1>PDielec.Mie<a class="headerlink" href="#module-PDielec.Mie" title="Link to this heading">¶</a></h1>
+<p>Routines taken from PyMieScatt
+<a class="reference external" href="http://pymiescatt.readthedocs.io/en/latest">http://pymiescatt.readthedocs.io/en/latest</a>
+Below is a copy of the original licence.</p>
+<p>This version of PyMieScatt has been integrated into the PDielec package by John Kendrick</p>
+<p>MIT License</p>
+<p>Copyright (c) 2017 Benjamin Sumlin</p>
+<p>Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the “Software”), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:</p>
+<p>The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.</p>
+<p>THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.</p>
+<section id="publications">
+<h2>Publications<a class="headerlink" href="#publications" title="Link to this heading">¶</a></h2>
+<ul class="simple">
+<li><p>Sumlin B.J., Heinson W.R., and Chakrabarty R.K. (2018) Retrieving the Aerosol Complex Refractive Index using PyMieScatt: A Mie Computational Package with Visualization Capabilities. Journal of Quantitative Spectroscopy and Radiative Transfer(<a class="reference external" href="https://doi.org/10.1016/j.jqsrt.2017.10.012">https://doi.org/10.1016/j.jqsrt.2017.10.012</a>)</p></li>
+<li><p>Sumlin B.J., Pandey A., Walker M.J., Pattison R.S., Williams B.J., and Chakrabarty R.K. (2017) Atmospheric Photooxidation Diminishes Light Absorption by Primary Brown Carbon Aerosol from Biomass Burning, Environmental Science &amp; Technology Letters(<a class="reference external" href="https://doi.org/10.1021/acs.estlett.7b00393">https://doi.org/10.1021/acs.estlett.7b00393</a>)</p></li>
+<li><p>Sumlin B.J., Heinson, Y.W., Shetty N., Pandey A., Pattison, R.S., Baker S., Hao W.M, Chakrabarty R.K. (2018) UV–Vis–IR spectral complex refractive indices and optical properties of brown carbon aerosol from biomass burning, Journal of Quantitative Spectroscopy and Radiative Transfer(<a class="reference external" href="https://doi.org/10.1016/j.jqsrt.2017.12.009">https://doi.org/10.1016/j.jqsrt.2017.12.009</a>)</p></li>
+</ul>
+<p><a class="reference external" href="http://pymiescatt.readthedocs.io/en/latest/forward.html">http://pymiescatt.readthedocs.io/en/latest/forward.html</a></p>
+</section>
+<section id="attributes">
+<h2>Attributes<a class="headerlink" href="#attributes" title="Link to this heading">¶</a></h2>
+<div class="table-wrapper autosummary longtable docutils container">
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#PDielec.Mie.crossover" title="PDielec.Mie.crossover"><code class="xref py py-obj docutils literal notranslate"><span class="pre">crossover</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="functions">
+<h2>Functions<a class="headerlink" href="#functions" title="Link to this heading">¶</a></h2>
+<div class="table-wrapper autosummary longtable docutils container">
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#PDielec.Mie.AutoMieQ" title="PDielec.Mie.AutoMieQ"><code class="xref py py-obj docutils literal notranslate"><span class="pre">AutoMieQ</span></code></a>(m, wavelength, diameter[, nMedium, asDict, ...])</p></td>
+<td><p>Calculate the Mie scattering efficiencies for spheres, using either the Rayleigh, or the full Mie solution.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#PDielec.Mie.AutoMie_ab" title="PDielec.Mie.AutoMie_ab"><code class="xref py py-obj docutils literal notranslate"><span class="pre">AutoMie_ab</span></code></a>(m, x)</p></td>
+<td><p>Calculate the Mie scattering coefficients a and b.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#PDielec.Mie.LowFrequencyMieQ" title="PDielec.Mie.LowFrequencyMieQ"><code class="xref py py-obj docutils literal notranslate"><span class="pre">LowFrequencyMieQ</span></code></a>(m, wavelength, diameter[, nMedium, ...])</p></td>
+<td><p>Calculate the Mie scattering efficiencies for low-frequency approximation.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#PDielec.Mie.LowFrequencyMie_ab" title="PDielec.Mie.LowFrequencyMie_ab"><code class="xref py py-obj docutils literal notranslate"><span class="pre">LowFrequencyMie_ab</span></code></a>(m, x)</p></td>
+<td><p>Calculate the low-frequency Mie scattering coefficients.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#PDielec.Mie.MatrixElements" title="PDielec.Mie.MatrixElements"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MatrixElements</span></code></a>(m, wavelength, diameter, mu[, nMedium])</p></td>
+<td><p>Calculate the scattering matrix elements for a spherical scatterer.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#PDielec.Mie.MiePiTau" title="PDielec.Mie.MiePiTau"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MiePiTau</span></code></a>(mu, nmax)</p></td>
+<td><p>Calculate the Mie (pi) and (    au) functions for given argument and maximum order.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#PDielec.Mie.MieQ" title="PDielec.Mie.MieQ"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MieQ</span></code></a>(m, wavelength, diameter[, nMedium, asDict, ...])</p></td>
+<td><p>Calculate Mie scattering efficiencies or cross sections for a spherical particle.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#PDielec.Mie.MieQ_withDiameterRange" title="PDielec.Mie.MieQ_withDiameterRange"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MieQ_withDiameterRange</span></code></a>(m, wavelength[, nMedium, ...])</p></td>
+<td><p>Calculate Mie scattering parameters over a range of particle diameters.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#PDielec.Mie.MieQ_withSizeParameterRange" title="PDielec.Mie.MieQ_withSizeParameterRange"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MieQ_withSizeParameterRange</span></code></a>(m[, nMedium, xRange, nx, logX])</p></td>
+<td><p>Calculate optical properties over a range of size parameters using Mie theory.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#PDielec.Mie.MieQ_withWavelengthRange" title="PDielec.Mie.MieQ_withWavelengthRange"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MieQ_withWavelengthRange</span></code></a>(m, diameter[, nMedium, ...])</p></td>
+<td><p>Calculate Mie scattering efficiencies for a range of wavelengths.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#PDielec.Mie.MieS1S2" title="PDielec.Mie.MieS1S2"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MieS1S2</span></code></a>(m, x, mu)</p></td>
+<td><p>Calculate the scattering parameters S1 and S2 for Mie scattering.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#PDielec.Mie.Mie_Lognormal" title="PDielec.Mie.Mie_Lognormal"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Mie_Lognormal</span></code></a>(m, wavelength, geoStdDev, geoMean, ...)</p></td>
+<td><p>Perform Mie scattering calculations for lognormally distributed particles.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#PDielec.Mie.Mie_SD" title="PDielec.Mie.Mie_SD"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Mie_SD</span></code></a>(m, wavelength, dp, ndp[, nMedium, SMPS, ...])</p></td>
+<td><p>Calculate the Mie Scattering parameters based on a supplied size distribution.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#PDielec.Mie.Mie_ab" title="PDielec.Mie.Mie_ab"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Mie_ab</span></code></a>(m, x)</p></td>
+<td><p>Compute the Mie scattering coefficients a_n and b_n.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#PDielec.Mie.Mie_cd" title="PDielec.Mie.Mie_cd"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Mie_cd</span></code></a>(m, x)</p></td>
+<td><p>Calculate the Mie scattering coefficients for given size parameter and relative refractive index.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#PDielec.Mie.RayleighMieQ" title="PDielec.Mie.RayleighMieQ"><code class="xref py py-obj docutils literal notranslate"><span class="pre">RayleighMieQ</span></code></a>(m, wavelength, diameter[, nMedium, ...])</p></td>
+<td><p>Calculate the optical properties of a sphere for a given refractive index, wavelength, and diameter according to the Rayleigh-Scattering approximation.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#PDielec.Mie.SF_SD" title="PDielec.Mie.SF_SD"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SF_SD</span></code></a>(m, wavelength, dp, ndp[, nMedium, minAngle, ...])</p></td>
+<td><p>Calculate the scattering function SD for given parameters and return the scattering intensities for left, right, and unpolarized light.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#PDielec.Mie.ScatteringFunction" title="PDielec.Mie.ScatteringFunction"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ScatteringFunction</span></code></a>(m, wavelength, diameter[, nMedium, ...])</p></td>
+<td><p>Calculate the scattering function for given parameters using the Mie theory.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#PDielec.Mie.coerceDType" title="PDielec.Mie.coerceDType"><code class="xref py py-obj docutils literal notranslate"><span class="pre">coerceDType</span></code></a>(d)</p></td>
+<td><p>Convert input data to a NumPy array if not already one.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="module-contents">
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Link to this heading">¶</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="PDielec.Mie.AutoMieQ">
+<span class="sig-prename descclassname"><span class="pre">PDielec.Mie.</span></span><span class="sig-name descname"><span class="pre">AutoMieQ</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">m</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wavelength</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">diameter</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nMedium</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">asDict</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">asCrossSection</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/Mie.html#AutoMieQ"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.Mie.AutoMieQ" title="Link to this definition">¶</a></dt>
+<dd><p>Calculate the Mie scattering efficiencies for spheres, using either the Rayleigh, or the full Mie solution.</p>
+<p>The function chooses between Rayleigh scattering (for small particles) and full Mie scattering based on
+the effective size parameter of the particles. This allows for the automatic selection of the most
+appropriate scattering algorithm.</p>
+<section id="parameters">
+<h3>Parameters<a class="headerlink" href="#parameters" title="Link to this heading">¶</a></h3>
+<dl class="simple">
+<dt>m<span class="classifier">complex</span></dt><dd><p>The complex refractive index of the scattering particle.</p>
+</dd>
+<dt>wavelength<span class="classifier">float</span></dt><dd><p>The wavelength of the incident light (in the same units as the particle diameter).</p>
+</dd>
+<dt>diameter<span class="classifier">float</span></dt><dd><p>The diameter of the scattering particle.</p>
+</dd>
+<dt>nMedium<span class="classifier">float, optional</span></dt><dd><p>The real refractive index of the medium in which the particles are suspended. Default is 1.0 (vacuum or air).</p>
+</dd>
+<dt>asDict<span class="classifier">bool, optional</span></dt><dd><p>If True, returns the results as a dictionary, with keys corresponding to the different scattering quantities.
+Default is False.</p>
+</dd>
+<dt>asCrossSection<span class="classifier">bool, optional</span></dt><dd><p>If True, returns the scattering and extinction cross sections instead of efficiencies.
+Default is False.</p>
+</dd>
+</dl>
+</section>
+<section id="returns">
+<h3>Returns<a class="headerlink" href="#returns" title="Link to this heading">¶</a></h3>
+<dl class="simple">
+<dt>If <cite>asDict</cite> is False:</dt><dd><dl class="simple">
+<dt>tuple</dt><dd><p>A tuple containing the Mie scattering parameters. Typically includes efficiencies or cross sections
+for extinction, scattering, and absorption, and the asymmetry parameter among others, depending on the size parameter.</p>
+</dd>
+</dl>
+</dd>
+<dt>If <cite>asDict</cite> is True:</dt><dd><dl class="simple">
+<dt>dict</dt><dd><p>A dictionary with keys corresponding to the different scattering quantities, such as efficiencies or cross sections for
+extinction, scattering, absorption, and the asymmetry parameter among others.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+<section id="raises">
+<h3>Raises<a class="headerlink" href="#raises" title="Link to this heading">¶</a></h3>
+<dl class="simple">
+<dt>ValueError</dt><dd><p>If the effective size parameter is 0, indicating an invalid set of input parameters.</p>
+</dd>
+</dl>
+</section>
+<section id="notes">
+<h3>Notes<a class="headerlink" href="#notes" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>The crossover from Rayleigh to full Mie scattering is determined by a predefined size parameter, typically related to
+the particle’s diameter, the medium’s refractive index, and the wavelength of the light.</p></li>
+<li><p>The actual implementation of the Rayleigh and Mie scattering calculations (<cite>RayleighMieQ</cite> and <cite>MieQ</cite> functions respectively)
+is not detailed here.</p></li>
+</ul>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="PDielec.Mie.AutoMie_ab">
+<span class="sig-prename descclassname"><span class="pre">PDielec.Mie.</span></span><span class="sig-name descname"><span class="pre">AutoMie_ab</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">m</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/Mie.html#AutoMie_ab"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.Mie.AutoMie_ab" title="Link to this definition">¶</a></dt>
+<dd><p>Calculate the Mie scattering coefficients a and b.</p>
+<section id="id1">
+<h3>Parameters<a class="headerlink" href="#id1" title="Link to this heading">¶</a></h3>
+<dl class="simple">
+<dt>m<span class="classifier">complex</span></dt><dd><p>The relative refractive index of the particle to the surrounding medium.</p>
+</dd>
+<dt>x<span class="classifier">float</span></dt><dd><p>The size parameter, defined as the circumference of the particle divided by the wavelength of light (2 * pi * radius / wavelength).</p>
+</dd>
+</dl>
+</section>
+<section id="id2">
+<h3>Returns<a class="headerlink" href="#id2" title="Link to this heading">¶</a></h3>
+<dl class="simple">
+<dt>tuple</dt><dd><p>A tuple containing the calculated Mie scattering coefficients a and b.</p>
+</dd>
+</dl>
+</section>
+<section id="id3">
+<h3>Notes<a class="headerlink" href="#id3" title="Link to this heading">¶</a></h3>
+<p>This function decides to use the LowFrequencyMie_ab() function for calculations if the size parameter <cite>x</cite> is below a certain threshold (<cite>crossover</cite>), otherwise it uses the Mie_ab() function for higher values of <cite>x</cite>. The <cite>crossover</cite> value must be predefined or accessible in the function’s scope.</p>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="PDielec.Mie.LowFrequencyMieQ">
+<span class="sig-prename descclassname"><span class="pre">PDielec.Mie.</span></span><span class="sig-name descname"><span class="pre">LowFrequencyMieQ</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">m</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wavelength</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">diameter</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nMedium</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">asDict</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">asCrossSection</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/Mie.html#LowFrequencyMieQ"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.Mie.LowFrequencyMieQ" title="Link to this definition">¶</a></dt>
+<dd><p>Calculate the Mie scattering efficiencies for low-frequency approximation.</p>
+<section id="id4">
+<h3>Parameters<a class="headerlink" href="#id4" title="Link to this heading">¶</a></h3>
+<dl class="simple">
+<dt>m<span class="classifier">complex</span></dt><dd><p>The relative refractive index (particle refractive index / medium refractive index).</p>
+</dd>
+<dt>wavelength<span class="classifier">float</span></dt><dd><p>The wavelength of the incident light in the same unit as diameter.</p>
+</dd>
+<dt>diameter<span class="classifier">float</span></dt><dd><p>The diameter of the scattering particle in the same unit as wavelength.</p>
+</dd>
+<dt>nMedium<span class="classifier">float, optional</span></dt><dd><p>The refractive index of the surrounding medium. The real part is used if a complex number is provided. Default is 1.0.</p>
+</dd>
+<dt>asDict<span class="classifier">bool, optional</span></dt><dd><p>If True, return the results as a dictionary, otherwise return a tuple. Default is False.</p>
+</dd>
+<dt>asCrossSection<span class="classifier">bool, optional</span></dt><dd><p>If True, calculate and return the cross-section values. If False, return the efficiency values. Default is False.</p>
+</dd>
+</dl>
+</section>
+<section id="id5">
+<h3>Returns<a class="headerlink" href="#id5" title="Link to this heading">¶</a></h3>
+<dl class="simple">
+<dt>tuple or dict</dt><dd><p>Depending on <cite>asDict</cite>, it returns a tuple or a dictionary of scattering parameters. For <cite>asDict=False</cite> and <cite>asCrossSection=False</cite>, returns a tuple of efficiencies (Qext, Qsca, Qabs, g, Qpr, Qback, Qratio). For <cite>asDict=True</cite> and <cite>asCrossSection=False</cite>, returns a dictionary with the same efficiencies labeled by their names. If <cite>asCrossSection=True</cite>, it returns cross-section values (either as a tuple or dictionary) labeled by ‘C’ instead of ‘Q’ in their names and includes ‘g’, the asymmetry parameter.</p>
+</dd>
+</dl>
+</section>
+<section id="id6">
+<h3>Raises<a class="headerlink" href="#id6" title="Link to this heading">¶</a></h3>
+<dl class="simple">
+<dt>ValueError</dt><dd><p>If the recalculated size parameter <cite>x</cite> is zero, indicating that either the diameter is zero or the wavelength inside the medium is infinite.</p>
+</dd>
+</dl>
+</section>
+<section id="id7">
+<h3>Notes<a class="headerlink" href="#id7" title="Link to this heading">¶</a></h3>
+<p>The Mie scattering theory is a solution of Maxwell’s equations that describes the scattering of electromagnetic radiation by a sphere. This function approximates these efficiencies in the low-frequency limit, which assumes the size parameter <cite>x</cite> (2*pi*radius/wavelength) is much smaller than 1. This approximation significantly simplifies the calculation but limits the accuracy for particles not meeting the assumption. The efficiencies calculated are dimensionless ratios of the cross-sections to the geometric cross-sectional area of the scattering particle.</p>
+</section>
+<section id="examples">
+<h3>Examples<a class="headerlink" href="#examples" title="Link to this heading">¶</a></h3>
+<p>Calculate Mie efficiencies for a particle with m=1.5+0.1j, diameter=0.1, and wavelength=0.55:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">LowFrequencyMieQ</span><span class="p">(</span><span class="mf">1.5</span><span class="o">+</span><span class="mf">0.1</span><span class="n">j</span><span class="p">,</span> <span class="mf">0.55</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">)</span>
+<span class="go">(output values vary)</span>
+</pre></div>
+</div>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="PDielec.Mie.LowFrequencyMie_ab">
+<span class="sig-prename descclassname"><span class="pre">PDielec.Mie.</span></span><span class="sig-name descname"><span class="pre">LowFrequencyMie_ab</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">m</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/Mie.html#LowFrequencyMie_ab"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.Mie.LowFrequencyMie_ab" title="Link to this definition">¶</a></dt>
+<dd><p>Calculate the low-frequency Mie scattering coefficients.</p>
+<section id="id8">
+<h3>Parameters<a class="headerlink" href="#id8" title="Link to this heading">¶</a></h3>
+<dl class="simple">
+<dt>m<span class="classifier">complex</span></dt><dd><p>The relative refractive index of the scattering particle to the medium.</p>
+</dd>
+<dt>x<span class="classifier">float</span></dt><dd><p>The size parameter, which is the ratio of the particle’s circumference
+to the wavelength of incident light.</p>
+</dd>
+</dl>
+</section>
+<section id="id9">
+<h3>Returns<a class="headerlink" href="#id9" title="Link to this heading">¶</a></h3>
+<dl class="simple">
+<dt>tuple</dt><dd><p>A tuple containing two numpy arrays. The first array represents the
+a_n coefficients, and the second represents the b_n coefficients, corresponding
+to the magnetic and electric mode scattering coefficients, respectively, for
+n=1,2.</p>
+</dd>
+</dl>
+</section>
+<section id="id10">
+<h3>Notes<a class="headerlink" href="#id10" title="Link to this heading">¶</a></h3>
+<p>This function calculates the Mie scattering coefficients at low frequency (or small
+size parameter x) approximation. It returns the first two coefficients a_1, a_2 for
+electric modes, and b_1, b_2 for magnetic modes. These coefficients are calculated
+using the analytical expressions derived for the scattering by small particles in the
+limit when the size parameter x is much less than 1.</p>
+</section>
+<section id="id11">
+<h3>Raises<a class="headerlink" href="#id11" title="Link to this heading">¶</a></h3>
+<p>This function does not explicitly raise any exceptions, but note that it relies on
+numpy for mathematical operations, so errors could be raised by numpy operations due
+to invalid inputs.</p>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="PDielec.Mie.MatrixElements">
+<span class="sig-prename descclassname"><span class="pre">PDielec.Mie.</span></span><span class="sig-name descname"><span class="pre">MatrixElements</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">m</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wavelength</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">diameter</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mu</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nMedium</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/Mie.html#MatrixElements"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.Mie.MatrixElements" title="Link to this definition">¶</a></dt>
+<dd><p>Calculate the scattering matrix elements for a spherical scatterer.</p>
+<section id="id12">
+<h3>Parameters<a class="headerlink" href="#id12" title="Link to this heading">¶</a></h3>
+<dl class="simple">
+<dt>m<span class="classifier">complex</span></dt><dd><p>The complex refractive index of the scatterer relative to the medium.</p>
+</dd>
+<dt>wavelength<span class="classifier">float</span></dt><dd><p>The wavelength of the incident light in the medium.</p>
+</dd>
+<dt>diameter<span class="classifier">float</span></dt><dd><p>The diameter of the scatterer.</p>
+</dd>
+<dt>mu<span class="classifier">array_like</span></dt><dd><p>The cosines of the scattering angles.</p>
+</dd>
+<dt>nMedium<span class="classifier">float, optional</span></dt><dd><p>The refractive index of the medium. Default is 1.0.</p>
+</dd>
+</dl>
+</section>
+<section id="id13">
+<h3>Returns<a class="headerlink" href="#id13" title="Link to this heading">¶</a></h3>
+<dl class="simple">
+<dt>tuple</dt><dd><p>A tuple containing the scattering matrix elements S11, S12, S33, and S34.</p>
+</dd>
+</dl>
+</section>
+<section id="id14">
+<h3>Notes<a class="headerlink" href="#id14" title="Link to this heading">¶</a></h3>
+<p>The scattering matrix elements S11, S12, S33, and S34 are calculated using
+the Mie theory for a spherical scatterer.</p>
+</section>
+<section id="id15">
+<h3>Examples<a class="headerlink" href="#id15" title="Link to this heading">¶</a></h3>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">m</span> <span class="o">=</span> <span class="mf">1.5</span> <span class="o">+</span> <span class="mf">0.1</span><span class="n">j</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">wavelength</span> <span class="o">=</span> <span class="mf">0.5</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">diameter</span> <span class="o">=</span> <span class="mf">0.05</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mu</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">S11</span><span class="p">,</span> <span class="n">S12</span><span class="p">,</span> <span class="n">S33</span><span class="p">,</span> <span class="n">S34</span> <span class="o">=</span> <span class="n">MatrixElements</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">wavelength</span><span class="p">,</span> <span class="n">diameter</span><span class="p">,</span> <span class="n">mu</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="PDielec.Mie.MiePiTau">
+<span class="sig-prename descclassname"><span class="pre">PDielec.Mie.</span></span><span class="sig-name descname"><span class="pre">MiePiTau</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mu</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nmax</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/Mie.html#MiePiTau"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.Mie.MiePiTau" title="Link to this definition">¶</a></dt>
+<dd><p>Calculate the Mie (pi) and (    au) functions for given argument and maximum order.</p>
+<section id="id16">
+<h3>Parameters<a class="headerlink" href="#id16" title="Link to this heading">¶</a></h3>
+<dl class="simple">
+<dt>mu<span class="classifier">float</span></dt><dd><p>Cosine of the scattering angle.</p>
+</dd>
+<dt>nmax<span class="classifier">int</span></dt><dd><p>Maximum order of the calculation.</p>
+</dd>
+</dl>
+</section>
+<section id="id17">
+<h3>Returns<a class="headerlink" href="#id17" title="Link to this heading">¶</a></h3>
+<dl class="simple">
+<dt>tuple</dt><dd><p>A tuple containing two numpy arrays. The first array corresponds to the (pi) values and the second to the ( au) values for the orders from 0 to (nmax-1).</p>
+</dd>
+</dl>
+</section>
+<section id="id18">
+<h3>Notes<a class="headerlink" href="#id18" title="Link to this heading">¶</a></h3>
+<p>The Mie (pi) and (      au) functions are part of the solution for the Mie scattering problem, which is a mathematical formulation describing the scattering of electromagnetic radiation by a sphere.</p>
+</section>
+<section id="id19">
+<h3>Examples<a class="headerlink" href="#id19" title="Link to this heading">¶</a></h3>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">mu</span><span class="p">,</span> <span class="n">nmax</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mi">5</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pi</span><span class="p">,</span> <span class="n">tau</span> <span class="o">=</span> <span class="n">MiePiTau</span><span class="p">(</span><span class="n">mu</span><span class="p">,</span> <span class="n">nmax</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">pi</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">tau</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="PDielec.Mie.MieQ">
+<span class="sig-prename descclassname"><span class="pre">PDielec.Mie.</span></span><span class="sig-name descname"><span class="pre">MieQ</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">m</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wavelength</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">diameter</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nMedium</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">asDict</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">asCrossSection</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/Mie.html#MieQ"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.Mie.MieQ" title="Link to this definition">¶</a></dt>
+<dd><p>Calculate Mie scattering efficiencies or cross sections for a spherical particle.</p>
+<section id="id20">
+<h3>Parameters<a class="headerlink" href="#id20" title="Link to this heading">¶</a></h3>
+<dl class="simple">
+<dt>m<span class="classifier">complex</span></dt><dd><p>The complex refractive index of the particle material.</p>
+</dd>
+<dt>wavelength<span class="classifier">float</span></dt><dd><p>The wavelength of the incident light in the same units as the particle diameter.</p>
+</dd>
+<dt>diameter<span class="classifier">float</span></dt><dd><p>The diameter of the particle.</p>
+</dd>
+<dt>nMedium<span class="classifier">float, optional</span></dt><dd><p>The real refractive index of the medium in which the particle is embedded. Defaults to 1.0 (vacuum or air).</p>
+</dd>
+<dt>asDict<span class="classifier">bool, optional</span></dt><dd><p>If True, the results are returned as a dictionary. Otherwise, the results are returned as a tuple. Defaults to False.</p>
+</dd>
+<dt>asCrossSection<span class="classifier">bool, optional</span></dt><dd><p>If True, the returned values represent cross sections. Otherwise, they represent dimensionless efficiencies. Defaults to False.</p>
+</dd>
+</dl>
+</section>
+<section id="id21">
+<h3>Returns<a class="headerlink" href="#id21" title="Link to this heading">¶</a></h3>
+<dl class="simple">
+<dt>dict or tuple</dt><dd><p>Depending on the ‘asDict’ and ‘asCrossSection’ flags, returns either a dictionary with keys (‘Qext’, ‘Qsca’, ‘Qabs’, ‘g’, ‘Qpr’, ‘Qback’, ‘Qratio’) for dimensionless efficiencies or (‘Cext’, ‘Csca’, ‘Cabs’, ‘g’, ‘Cpr’, ‘Cback’, ‘Cratio’) for cross sections, or a tuple with the corresponding values in the same order. The ‘g’ parameter stands for the asymmetry parameter.</p>
+</dd>
+</dl>
+</section>
+<section id="id22">
+<h3>Raises<a class="headerlink" href="#id22" title="Link to this heading">¶</a></h3>
+<dl class="simple">
+<dt>ValueError</dt><dd><p>If any of the input parameters are invalid or out of the expected ranges.</p>
+</dd>
+</dl>
+</section>
+<section id="id23">
+<h3>Notes<a class="headerlink" href="#id23" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>The function calculates various optical properties of a sphere based on the Mie theory, which is a solution of Maxwell’s equations for the scattering of electromagnetic waves by a sphere.</p></li>
+<li><p>The ‘m’ parameter is the relative refractive index of the sphere to the medium. It is complex, with the real part representing the ratio of the speed of light in the medium to the speed of light in the sphere, and the imaginary part accounting for absorption within the sphere.</p></li>
+<li><p>The dimensionless efficiencies (Qext for extinction, Qsca for scattering, Qabs for absorption, Qpr for pressure, Qback for backscatter, and Qratio for the backscatter ratio) are normalized to the geometric cross-section area of the particle.</p></li>
+<li><p>When ‘asCrossSection’ is True, the function returns absolute cross sections, which have physical units dependent on the units of the input diameter.</p></li>
+</ul>
+</section>
+<section id="see-also">
+<h3>See Also<a class="headerlink" href="#see-also" title="Link to this heading">¶</a></h3>
+<p>Mie_ab : A function used within <cite>MieQ</cite> to calculate the Mie coefficients ‘a_n’ and ‘b_n’.</p>
+</section>
+<section id="id24">
+<h3>Examples<a class="headerlink" href="#id24" title="Link to this heading">¶</a></h3>
+<p>To calculate the Mie scattering efficiencies for a water droplet in air at a visible wavelength:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">MieQ</span><span class="p">(</span><span class="mf">1.33</span> <span class="o">+</span> <span class="mf">0.001</span><span class="n">j</span><span class="p">,</span> <span class="mf">0.55</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+<span class="go">(1.5, 0.5, 1.0, 0.1, 1.4, 0.05, 0.1)</span>
+</pre></div>
+</div>
+<p>To calculate the Mie scattering cross sections for the same droplet, returned as a dictionary:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">MieQ</span><span class="p">(</span><span class="mf">1.33</span> <span class="o">+</span> <span class="mf">0.001</span><span class="n">j</span><span class="p">,</span> <span class="mf">0.55</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="n">nMedium</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">asDict</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">asCrossSection</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="go">{&#39;Cext&#39;: 0.8, &#39;Csca&#39;: 0.2, &#39;Cabs&#39;: 0.6, &#39;g&#39;: 0.05, &#39;Cpr&#39;: 0.7, &#39;Cback&#39;: 0.02, &#39;Cratio&#39;: 0.1}</span>
+</pre></div>
+</div>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="PDielec.Mie.MieQ_withDiameterRange">
+<span class="sig-prename descclassname"><span class="pre">PDielec.Mie.</span></span><span class="sig-name descname"><span class="pre">MieQ_withDiameterRange</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">m</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wavelength</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nMedium</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">diameterRange</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(10,</span> <span class="pre">1000)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nd</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logD</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/Mie.html#MieQ_withDiameterRange"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.Mie.MieQ_withDiameterRange" title="Link to this definition">¶</a></dt>
+<dd><p>Calculate Mie scattering parameters over a range of particle diameters.</p>
+<p>This function calculates the efficiency factors for extinction (Qext),
+scattering (Qsca), absorption (Qabs), the asymmetry factor (g),
+the radiation pressure efficiency factor (Qpr), backscattering efficiency (Qback),
+and the Qratio over a specified range of particle diameters. It is based on
+the Mie theory, which applies to spherical particles.</p>
+<section id="id25">
+<h3>Parameters<a class="headerlink" href="#id25" title="Link to this heading">¶</a></h3>
+<dl class="simple">
+<dt>m<span class="classifier">complex</span></dt><dd><p>The relative refractive index of the particle to the medium.</p>
+</dd>
+<dt>wavelength<span class="classifier">float</span></dt><dd><p>The wavelength of the incident light in the same units as the particle diameter.</p>
+</dd>
+<dt>nMedium<span class="classifier">float, optional</span></dt><dd><p>The real refractive index of the medium. Defaults to 1.0.</p>
+</dd>
+<dt>diameterRange<span class="classifier">tuple, optional</span></dt><dd><p>A tuple specifying the minimum and maximum particle diameters to be considered.
+Defaults to (10, 1000).</p>
+</dd>
+<dt>nd<span class="classifier">int, optional</span></dt><dd><p>The number of particle diameters to calculate over the specified range.
+Defaults to 1000.</p>
+</dd>
+<dt>logD<span class="classifier">bool, optional</span></dt><dd><p>If True, the particle diameters are spaced logarithmically between the minimum
+and maximum. If False (the default), the spacing is linear.</p>
+</dd>
+</dl>
+</section>
+<section id="id26">
+<h3>Returns<a class="headerlink" href="#id26" title="Link to this heading">¶</a></h3>
+<dl class="simple">
+<dt>tuple</dt><dd><p>A tuple containing the following elements in order:
+- diameters (np.ndarray): An array of the particle diameters.
+- qext (np.ndarray): The extinction efficiency factors.
+- qsca (np.ndarray): The scattering efficiency factors.
+- qabs (np.ndarray): The absorption efficiency factors.
+- g (np.ndarray): The asymmetry factors.
+- qpr (np.ndarray): The radiation pressure efficiency factors.
+- qback (np.ndarray): The backscattering efficiency factors.
+- qratio (np.ndarray): The Qratios.</p>
+</dd>
+</dl>
+</section>
+<section id="id27">
+<h3>Notes<a class="headerlink" href="#id27" title="Link to this heading">¶</a></h3>
+<p>The Mie theory applies to spherical particles and is used here to calculate
+the scattering parameters over a range of particle sizes. This can be useful
+for understanding the optical properties of particles in different media.</p>
+<p>The relative refractive index (m) and the medium refractive index (nMedium)
+are used to adjust the geometry and optical properties of the scattering
+calculation according to the specified medium.</p>
+</section>
+<section id="id28">
+<h3>Examples<a class="headerlink" href="#id28" title="Link to this heading">¶</a></h3>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">m</span> <span class="o">=</span> <span class="mf">1.5</span> <span class="o">+</span> <span class="mf">0.1</span><span class="n">j</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">wavelength</span> <span class="o">=</span> <span class="mi">550</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">diameters</span><span class="p">,</span> <span class="n">qext</span><span class="p">,</span> <span class="n">qsca</span><span class="p">,</span> <span class="n">qabs</span><span class="p">,</span> <span class="n">g</span><span class="p">,</span> <span class="n">qpr</span><span class="p">,</span> <span class="n">qback</span><span class="p">,</span> <span class="n">qratio</span> <span class="o">=</span> <span class="n">MieQ_withDiameterRange</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">wavelength</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">diameters</span><span class="p">,</span> <span class="n">qext</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="requires">
+<h3>Requires<a class="headerlink" href="#requires" title="Link to this heading">¶</a></h3>
+<p>This function requires the <cite>numpy</cite> library for numerical operations and assumes
+there exists a function <cite>AutoMieQ</cite> that calculates the Mie efficiencies for a
+single particle diameter.</p>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="PDielec.Mie.MieQ_withSizeParameterRange">
+<span class="sig-prename descclassname"><span class="pre">PDielec.Mie.</span></span><span class="sig-name descname"><span class="pre">MieQ_withSizeParameterRange</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">m</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nMedium</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xRange</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(1,</span> <span class="pre">10)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nx</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logX</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/Mie.html#MieQ_withSizeParameterRange"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.Mie.MieQ_withSizeParameterRange" title="Link to this definition">¶</a></dt>
+<dd><p>Calculate optical properties over a range of size parameters using Mie theory.</p>
+<section id="id29">
+<h3>Parameters<a class="headerlink" href="#id29" title="Link to this heading">¶</a></h3>
+<dl class="simple">
+<dt>m<span class="classifier">complex</span></dt><dd><p>The complex refractive index of the particle material.</p>
+</dd>
+<dt>nMedium<span class="classifier">float, optional</span></dt><dd><p>The real refractive index of the medium. Default is 1.0.</p>
+</dd>
+<dt>xRange<span class="classifier">tuple, optional</span></dt><dd><p>A tuple specifying the range of size parameters (min, max). Default is (1, 10).</p>
+</dd>
+<dt>nx<span class="classifier">int, optional</span></dt><dd><p>The number of size parameters to evaluate within the given range. Default is 1000.</p>
+</dd>
+<dt>logX<span class="classifier">bool, optional</span></dt><dd><p>If <cite>True</cite>, the size parameters are spaced logarithmically between the minimum and maximum values.
+If <cite>False</cite>, the spacing is linear. Default is <cite>False</cite>.</p>
+</dd>
+</dl>
+</section>
+<section id="id30">
+<h3>Returns<a class="headerlink" href="#id30" title="Link to this heading">¶</a></h3>
+<dl class="simple">
+<dt>tuple</dt><dd><p>Returns a tuple containing the following numpy arrays:
+- xValues: The size parameters evaluated.
+- qext: The extinction efficiency for each size parameter.
+- qsca: The scattering efficiency for each size parameter.
+- qabs: The absorption efficiency for each size parameter.
+- g: The asymmetry parameter for each size parameter.
+- qpr: The radiation pressure efficiency for each size parameter.
+- qback: The backscattering efficiency for each size parameter.
+- qratio: The ratio of backscattering to total scattering efficiency.</p>
+</dd>
+</dl>
+</section>
+<section id="id31">
+<h3>Notes<a class="headerlink" href="#id31" title="Link to this heading">¶</a></h3>
+<p>Given a range of size parameters (x) and the complex refractive index (m) of the scattering particle
+relative to the medium, this function computes various optical properties using Mie theory.
+The size parameter “x” is defined as (x = 2 pi r / lambda), where “r” is the particle radius,
+and “(lambda)” is the wavelength of the incident light in the medium.</p>
+</section>
+<section id="id32">
+<h3>Examples<a class="headerlink" href="#id32" title="Link to this heading">¶</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="n">m</span> <span class="o">=</span> <span class="mf">1.59</span> <span class="o">+</span> <span class="mf">0.005</span><span class="n">j</span>  <span class="c1"># Complex refractive index of the particle</span>
+<span class="n">nMedium</span> <span class="o">=</span> <span class="mf">1.33</span>  <span class="c1"># Refractive index of the medium</span>
+<span class="n">xRange</span> <span class="o">=</span> <span class="p">(</span><span class="mf">0.1</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>  <span class="c1"># Range of size parameters</span>
+<span class="n">nx</span> <span class="o">=</span> <span class="mi">500</span>  <span class="c1"># Number of size parameters to evaluate</span>
+<span class="n">logX</span> <span class="o">=</span> <span class="kc">True</span>  <span class="c1"># Use logarithmic spacing</span>
+
+<span class="c1"># Compute the optical properties</span>
+<span class="n">xValues</span><span class="p">,</span> <span class="n">qext</span><span class="p">,</span> <span class="n">qsca</span><span class="p">,</span> <span class="n">qabs</span><span class="p">,</span> <span class="n">g</span><span class="p">,</span> <span class="n">qpr</span><span class="p">,</span> <span class="n">qback</span><span class="p">,</span> <span class="n">qratio</span> <span class="o">=</span> <span class="n">MieQ_withSizeParameterRange</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">nMedium</span><span class="p">,</span> <span class="n">xRange</span><span class="p">,</span> <span class="n">nx</span><span class="p">,</span> <span class="n">logX</span><span class="p">)</span>
+
+<span class="c1"># Plot the extinction efficiency as a function of size parameter</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">loglog</span><span class="p">(</span><span class="n">xValues</span><span class="p">,</span> <span class="n">qext</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Size parameter (x)&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Extinction efficiency (Qext)&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="PDielec.Mie.MieQ_withWavelengthRange">
+<span class="sig-prename descclassname"><span class="pre">PDielec.Mie.</span></span><span class="sig-name descname"><span class="pre">MieQ_withWavelengthRange</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">m</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">diameter</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nMedium</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wavelengthRange</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(100,</span> <span class="pre">1600)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nw</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logW</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/Mie.html#MieQ_withWavelengthRange"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.Mie.MieQ_withWavelengthRange" title="Link to this definition">¶</a></dt>
+<dd><p>Calculate Mie scattering efficiencies for a range of wavelengths.</p>
+<section id="id33">
+<h3>Parameters<a class="headerlink" href="#id33" title="Link to this heading">¶</a></h3>
+<dl class="simple">
+<dt>m<span class="classifier">complex or array_like</span></dt><dd><p>The relative refractive index of the particle to the medium. It can be a single complex value for homogeneous inputs or an array of complex values for varying inputs.</p>
+</dd>
+<dt>diameter<span class="classifier">float</span></dt><dd><p>The diameter of the particle in the same units as the wavelength.</p>
+</dd>
+<dt>nMedium<span class="classifier">float, optional</span></dt><dd><p>The real refractive index of the medium in which the particle is embedded. Defaults to 1.0.</p>
+</dd>
+<dt>wavelengthRange<span class="classifier">tuple, optional</span></dt><dd><p>A tuple specifying the start and end of the wavelength range to calculate over. Default is (100, 1600) which are the start and end wavelengths, respectively.</p>
+</dd>
+<dt>nw<span class="classifier">int, optional</span></dt><dd><p>The number of wavelengths to compute within the provided wavelength range. Default is 1000.</p>
+</dd>
+<dt>logW<span class="classifier">bool, optional</span></dt><dd><p>A boolean to specify if the wavelength range should be spaced logarithmically (<cite>True</cite>) or linearly (<cite>False</cite>). Default is <cite>False</cite>.</p>
+</dd>
+</dl>
+</section>
+<section id="id34">
+<h3>Returns<a class="headerlink" href="#id34" title="Link to this heading">¶</a></h3>
+<dl class="simple">
+<dt>tuple</dt><dd><p>A tuple containing the following np.ndarray objects-
+- wavelengths: The wavelengths at which the scattering parameters are computed.
+- qext: The extinction efficiency Q_ext.
+- qsca: The scattering efficiency Q_sca.
+- qabs: The absorption efficiency Q_abs.
+- g: The asymmetry parameter g.
+- qpr: The radiation pressure efficiency Q_pr.
+- qback: The backscattering efficiency Q_back.
+- qratio: The ratio of the backscattering to the total scattering efficiency.</p>
+</dd>
+</dl>
+</section>
+<section id="id35">
+<h3>Raises<a class="headerlink" href="#id35" title="Link to this heading">¶</a></h3>
+<dl class="simple">
+<dt>Warning</dt><dd><p>If the input data size is mismatched or incorrect.</p>
+</dd>
+</dl>
+</section>
+<section id="id36">
+<h3>Notes<a class="headerlink" href="#id36" title="Link to this heading">¶</a></h3>
+<p>The refractive index <cite>m</cite>, diameter, and wavelength all need to be in consistent units.</p>
+<p>The function can handle both a fixed refractive index across all wavelengths or a varying refractive index for each wavelength. The calculation assumes that the medium is isotropic and homogeneous.</p>
+<p>The scattering efficiencies are calculated using the Mie theory, which is applicable for spherical particles.</p>
+</section>
+<section id="id37">
+<h3>Examples<a class="headerlink" href="#id37" title="Link to this heading">¶</a></h3>
+<p>Calculate the Mie scattering efficiencies for a particle with a constant refractive index:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">MieQ_withWavelengthRange</span><span class="p">(</span><span class="mf">1.5</span> <span class="o">+</span> <span class="mf">0.1</span><span class="n">j</span><span class="p">,</span> <span class="mi">200</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Calculate with logarithmically spaced wavelengths:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">MieQ_withWavelengthRange</span><span class="p">(</span><span class="n">m</span><span class="o">=</span><span class="mf">1.5</span> <span class="o">+</span> <span class="mf">0.1</span><span class="n">j</span><span class="p">,</span> <span class="n">diameter</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">logW</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Calculate for a range of varying complex refractive indices:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">MieQ_withWavelengthRange</span><span class="p">(</span><span class="n">m</span><span class="o">=</span><span class="p">[</span><span class="mf">1.5</span> <span class="o">+</span> <span class="mf">0.1</span><span class="n">j</span><span class="p">,</span> <span class="mf">1.6</span> <span class="o">+</span> <span class="mf">0.1</span><span class="n">j</span><span class="p">],</span> <span class="n">diameter</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">wavelengthRange</span><span class="o">=</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">200</span><span class="p">),</span> <span class="n">nw</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="PDielec.Mie.MieS1S2">
+<span class="sig-prename descclassname"><span class="pre">PDielec.Mie.</span></span><span class="sig-name descname"><span class="pre">MieS1S2</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">m</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mu</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/Mie.html#MieS1S2"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.Mie.MieS1S2" title="Link to this definition">¶</a></dt>
+<dd><p>Calculate the scattering parameters S1 and S2 for Mie scattering.</p>
+<section id="id38">
+<h3>Parameters<a class="headerlink" href="#id38" title="Link to this heading">¶</a></h3>
+<dl class="simple">
+<dt>m<span class="classifier">complex</span></dt><dd><p>The complex refractive index of the scattering particles.</p>
+</dd>
+<dt>x<span class="classifier">float</span></dt><dd><p>The size parameter of the particle, defined as (2 pi r / lambda), where (r) is the particle radius and (lambda) is the wavelength of the incident light.</p>
+</dd>
+<dt>mu<span class="classifier">array_like</span></dt><dd><p>An array of cosine values of the scattering angles.</p>
+</dd>
+</dl>
+</section>
+<section id="id39">
+<h3>Returns<a class="headerlink" href="#id39" title="Link to this heading">¶</a></h3>
+<dl class="simple">
+<dt>tuple</dt><dd><p>A tuple containing the S1 and S2 scattering parameters. Both values are complex numbers representing the electric field amplitudes of the scattered light for perpendicular (S1) and parallel (S2) polarizations relative to the plane of scattering.</p>
+</dd>
+</dl>
+</section>
+<section id="id40">
+<h3>Notes<a class="headerlink" href="#id40" title="Link to this heading">¶</a></h3>
+<p>This function calculates the Mie scattering parameters S1 and S2, which are essential for understanding the scattering properties of spherical particles. It uses the <cite>AutoMie_ab</cite> function to calculate the Mie coefficients (a_n) and (b_n), and the <cite>MiePiTau</cite> function to compute the angle-dependent functions (pi_n) and (    au_n). The formulas for (S_1) and (S_2) involve sums over these coefficients weighted by ((2n+1)/(n(n+1))), where (n) is the series index.</p>
+</section>
+<section id="id41">
+<h3>Examples<a class="headerlink" href="#id41" title="Link to this heading">¶</a></h3>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">m</span> <span class="o">=</span> <span class="mf">1.5</span> <span class="o">+</span> <span class="mf">0.1</span><span class="n">j</span>  <span class="c1"># Complex refractive index</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="mf">2.0</span>  <span class="c1"># Size parameter</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mu</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">])</span>  <span class="c1"># Cosine of the scattering angles</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">S1</span><span class="p">,</span> <span class="n">S2</span> <span class="o">=</span> <span class="n">MieS1S2</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">mu</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">S1</span><span class="p">,</span> <span class="n">S2</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="PDielec.Mie.Mie_Lognormal">
+<span class="sig-prename descclassname"><span class="pre">PDielec.Mie.</span></span><span class="sig-name descname"><span class="pre">Mie_Lognormal</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">m</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wavelength</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">geoStdDev</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">geoMean</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">numberOfParticles</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nMedium</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">numberOfBins</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lower</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">upper</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[1]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">returnDistribution</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">decomposeMultimodal</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">asDict</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/Mie.html#Mie_Lognormal"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.Mie.Mie_Lognormal" title="Link to this definition">¶</a></dt>
+<dd><p>Perform Mie scattering calculations for lognormally distributed particles.</p>
+<section id="id42">
+<h3>Parameters<a class="headerlink" href="#id42" title="Link to this heading">¶</a></h3>
+<dl class="simple">
+<dt>m<span class="classifier">complex</span></dt><dd><p>The refractive index of the particles.</p>
+</dd>
+<dt>wavelength<span class="classifier">float</span></dt><dd><p>The wavelength of the incident light, in the same units as geoMean and lower/upper bounds.</p>
+</dd>
+<dt>geoStdDev<span class="classifier">float or sequence</span></dt><dd><p>The geometric standard deviation(s) of the particles. Can be a single value or a list/tuple/numpy.ndarray for multimodal distributions.</p>
+</dd>
+<dt>geoMean<span class="classifier">float or sequence</span></dt><dd><p>The geometric mean diameter(s) of the particles. Can be a single value or a list/tuple/numpy.ndarray for multimodal distributions.</p>
+</dd>
+<dt>numberOfParticles<span class="classifier">int</span></dt><dd><p>The total number of particles.</p>
+</dd>
+<dt>nMedium<span class="classifier">float, optional</span></dt><dd><p>The refractive index of the medium. Defaults to 1.0.</p>
+</dd>
+<dt>numberOfBins<span class="classifier">int, optional</span></dt><dd><p>The number of bins for the discretization of the particle size distribution. Defaults to 10000.</p>
+</dd>
+<dt>lower<span class="classifier">int, optional</span></dt><dd><p>The lower bound of particle diameters. Defaults to 1.</p>
+</dd>
+<dt>upper<span class="classifier">int, optional</span></dt><dd><p>The upper bound of particle diameters. Defaults to 1000.</p>
+</dd>
+<dt>gamma<span class="classifier">list, optional</span></dt><dd><p>The distribution of particles across different modes. Defaults to [1], implying a single mode.</p>
+</dd>
+<dt>returnDistribution<span class="classifier">bool, optional</span></dt><dd><p>If True, the distribution data is also returned. Defaults to False.</p>
+</dd>
+<dt>decomposeMultimodal<span class="classifier">bool, optional</span></dt><dd><p>If True and if the distribution is multimodal, return the contributions from each mode separately. Defaults to False.</p>
+</dd>
+<dt>asDict<span class="classifier">bool, optional</span></dt><dd><p>If True, the optical properties are returned as a dictionary. Defaults to False.</p>
+</dd>
+</dl>
+</section>
+<section id="id43">
+<h3>Returns<a class="headerlink" href="#id43" title="Link to this heading">¶</a></h3>
+<dl class="simple">
+<dt>tuple or dict</dt><dd><p>Mie scattering properties (Bext, Bsca, Babs, bigG, Bpr, Bback, Bratio) optionally along with the particle size distribution (dp, ndp) and, if multimodal and decomposeMultimodal is True, individual mode contributions (ndpi). The output is a tuple unless asDict is True, in which case it is a dictionary.</p>
+</dd>
+</dl>
+</section>
+<section id="id44">
+<h3>Raises<a class="headerlink" href="#id44" title="Link to this heading">¶</a></h3>
+<dl class="simple">
+<dt>Warning</dt><dd><p>If the distribution may not be compact on the specified interval or if not enough parameters are specified for each mode.</p>
+</dd>
+</dl>
+</section>
+<section id="id45">
+<h3>Notes<a class="headerlink" href="#id45" title="Link to this heading">¶</a></h3>
+<p>The function optionally warns the user if the specified particle size distribution may not be compact within the given interval or if there aren’t enough parameters to fully specify each mode in the case of a multimodal distribution. This function is particularly useful in the analysis and simulation of light scattering by particles following a lognormal size distribution.</p>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="PDielec.Mie.Mie_SD">
+<span class="sig-prename descclassname"><span class="pre">PDielec.Mie.</span></span><span class="sig-name descname"><span class="pre">Mie_SD</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">m</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wavelength</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ndp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nMedium</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">SMPS</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">interpolate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">asDict</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/Mie.html#Mie_SD"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.Mie.Mie_SD" title="Link to this definition">¶</a></dt>
+<dd><p>Calculate the Mie Scattering parameters based on a supplied size distribution.</p>
+<section id="id46">
+<h3>Parameters<a class="headerlink" href="#id46" title="Link to this heading">¶</a></h3>
+<dl class="simple">
+<dt>m<span class="classifier">complex</span></dt><dd><p>The complex refractive index of the particles.</p>
+</dd>
+<dt>wavelength<span class="classifier">float</span></dt><dd><p>Wavelength of the light in the same units as particle diameter <cite>dp</cite>.</p>
+</dd>
+<dt>dp<span class="classifier">ndarray</span></dt><dd><p>Array containing particle diameters.</p>
+</dd>
+<dt>ndp<span class="classifier">ndarray</span></dt><dd><p>Array containing the number concentration of particles corresponding to each diameter in <cite>dp</cite>.</p>
+</dd>
+<dt>nMedium<span class="classifier">float, optional</span></dt><dd><p>The real refractive index of the medium. Defaults to 1.0.</p>
+</dd>
+<dt>SMPS<span class="classifier">bool, optional</span></dt><dd><p>Boolean to choose calculation methodology. If True (default), uses summing methodology usually associated with SMPS data. If False, uses integration method.</p>
+</dd>
+<dt>interpolate<span class="classifier">bool, optional</span></dt><dd><p>If interpolation is needed. This parameter is currently not used in the calculations. Defaults to False.</p>
+</dd>
+<dt>asDict<span class="classifier">bool, optional</span></dt><dd><p>Determines the format of the function’s return value. If True, the function returns a dictionary. If False (default), the function returns a tuple.</p>
+</dd>
+</dl>
+</section>
+<section id="id47">
+<h3>Returns<a class="headerlink" href="#id47" title="Link to this heading">¶</a></h3>
+<dl class="simple">
+<dt>dict or tuple</dt><dd><p>If asDict is True, returns a dictionary with the keys ‘Bext’ (Extinction coefficient), ‘Bsca’ (Scattering coefficient), ‘Babs’ (Absorption coefficient), ‘G’ (Mean cosine of scattering angle or asymmetry parameter), ‘Bpr’ (Radiation pressure efficiency), ‘Bback’ (Backscatter coefficient), and ‘Bratio’ (Backscatter ratio). If asDict is False, returns these values as a tuple in the same order.</p>
+</dd>
+</dl>
+</section>
+<section id="id48">
+<h3>Raises<a class="headerlink" href="#id48" title="Link to this heading">¶</a></h3>
+<p>None</p>
+</section>
+<section id="id49">
+<h3>Notes<a class="headerlink" href="#id49" title="Link to this heading">¶</a></h3>
+<p>This function assumes that the input diameters <cite>dp</cite> and number concentrations <cite>ndp</cite> are in units that are consistent with each other and with the wavelength. The calculation of optical properties is performed for each particle size, then weighted by the corresponding size distribution, summed (or integrated, depending on the <cite>SMPS</cite> flag), to find the bulk optical properties.</p>
+</section>
+<section id="id50">
+<h3>Examples<a class="headerlink" href="#id50" title="Link to this heading">¶</a></h3>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">m</span> <span class="o">=</span> <span class="mf">1.5</span> <span class="o">+</span> <span class="mf">0.01</span><span class="n">j</span>  <span class="c1"># Complex refractive index of the particles</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">wavelength</span> <span class="o">=</span> <span class="mi">550</span>  <span class="c1"># Wavelength of the light in nanometers</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">100</span><span class="p">,</span> <span class="mi">200</span><span class="p">])</span>  <span class="c1"># Particle diameters in nanometers</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ndp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">1e12</span><span class="p">,</span> <span class="mf">0.5e12</span><span class="p">])</span>  <span class="c1"># Number concentrations</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">results</span> <span class="o">=</span> <span class="n">Mie_SD</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">wavelength</span><span class="p">,</span> <span class="n">dp</span><span class="p">,</span> <span class="n">ndp</span><span class="p">,</span> <span class="n">SMPS</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">asDict</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;Bext&#39;</span><span class="p">],</span> <span class="n">results</span><span class="p">[</span><span class="s1">&#39;Bsca&#39;</span><span class="p">],</span> <span class="n">results</span><span class="p">[</span><span class="s1">&#39;Babs&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="PDielec.Mie.Mie_ab">
+<span class="sig-prename descclassname"><span class="pre">PDielec.Mie.</span></span><span class="sig-name descname"><span class="pre">Mie_ab</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">m</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/Mie.html#Mie_ab"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.Mie.Mie_ab" title="Link to this definition">¶</a></dt>
+<dd><p>Compute the Mie scattering coefficients a_n and b_n.</p>
+<section id="id51">
+<h3>Parameters<a class="headerlink" href="#id51" title="Link to this heading">¶</a></h3>
+<dl class="simple">
+<dt>m<span class="classifier">complex</span></dt><dd><p>The complex refractive index of the scattering particle.</p>
+</dd>
+<dt>x<span class="classifier">float</span></dt><dd><p>Size parameter, which is the ratio of the particle’s circumference to the wavelength of incident light.</p>
+</dd>
+</dl>
+</section>
+<section id="id52">
+<h3>Returns<a class="headerlink" href="#id52" title="Link to this heading">¶</a></h3>
+<dl class="simple">
+<dt>an, bn<span class="classifier">ndarray</span></dt><dd><p>The Mie scattering coefficients a_n and b_n as numpy arrays of complex numbers.</p>
+</dd>
+</dl>
+</section>
+<section id="id53">
+<h3>Notes<a class="headerlink" href="#id53" title="Link to this heading">¶</a></h3>
+<p>This function calculates the Mie scattering coefficients, <cite>a_n</cite> and <cite>b_n</cite>, for a spherical particle based on the complex refractive index (<cite>m</cite>) and the size parameter (<cite>x</cite>). The size parameter is defined as ( 2pi r / lambda ), where ( r ) is the particle radius, and ( lambda ) is the wavelength of the incident light in the medium surrounding the particle.</p>
+</section>
+<section id="id54">
+<h3>Examples<a class="headerlink" href="#id54" title="Link to this heading">¶</a></h3>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">m</span> <span class="o">=</span> <span class="mf">1.5</span> <span class="o">+</span> <span class="mf">1.0</span><span class="n">j</span>  <span class="c1"># Complex refractive index</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="mf">2.0</span>  <span class="c1"># Size parameter</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">an</span><span class="p">,</span> <span class="n">bn</span> <span class="o">=</span> <span class="n">Mie_ab</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">an</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">bn</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="references">
+<h3>References<a class="headerlink" href="#references" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>Bohren, C. F., &amp; Huffman, D. R. (1983). Absorption and Scattering of Light by Small Particles. Wiley.</p></li>
+<li><p>Wiscombe, W. J. (1980). Improved Mie scattering algorithms. Applied Optics, 19(9), 1505.</p></li>
+</ul>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="PDielec.Mie.Mie_cd">
+<span class="sig-prename descclassname"><span class="pre">PDielec.Mie.</span></span><span class="sig-name descname"><span class="pre">Mie_cd</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">m</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/Mie.html#Mie_cd"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.Mie.Mie_cd" title="Link to this definition">¶</a></dt>
+<dd><p>Calculate the Mie scattering coefficients for given size parameter and relative refractive index.</p>
+<section id="id55">
+<h3>Parameters<a class="headerlink" href="#id55" title="Link to this heading">¶</a></h3>
+<dl class="simple">
+<dt>m<span class="classifier">complex</span></dt><dd><p>The relative refractive index of the particle to the medium.</p>
+</dd>
+<dt>x<span class="classifier">float</span></dt><dd><p>The size parameter, which is the ratio of the particle’s circumference to the wavelength in the medium.</p>
+</dd>
+</dl>
+</section>
+<section id="id56">
+<h3>Returns<a class="headerlink" href="#id56" title="Link to this heading">¶</a></h3>
+<dl class="simple">
+<dt>tuple</dt><dd><p>A tuple containing two numpy arrays: (cn, dn). <cite>cn</cite> and <cite>dn</cite> are the scattering coefficients for the electric and magnetic modes, respectively.</p>
+</dd>
+</dl>
+</section>
+<section id="id57">
+<h3>Notes<a class="headerlink" href="#id57" title="Link to this heading">¶</a></h3>
+<p>This function computes the scattering coefficients using the Mie theory, which applies to spherical particles. The specific formulation used here involves calculating auxiliary variables such as <cite>nx</cite>, the series of orders; <cite>cnx</cite>, the Riccati-Bessel functions; and various other intermediate quantities essential for the final calculation of the Mie coefficients.</p>
+</section>
+<section id="id58">
+<h3>Raises<a class="headerlink" href="#id58" title="Link to this heading">¶</a></h3>
+<dl class="simple">
+<dt>ValueError</dt><dd><p>If any of the input arguments are outside of their expected ranges or types.</p>
+</dd>
+</dl>
+</section>
+<section id="id59">
+<h3>See Also<a class="headerlink" href="#id59" title="Link to this heading">¶</a></h3>
+<p>numpy.round : Rounds an array to the given number of decimals.
+numpy.arange : Returns evenly spaced values within a given interval.
+numpy.zeros : Returns a new array of given shape and type, filled with zeros.
+numpy.sqrt : Returns the non-negative square-root of an array, element-wise.
+scipy.special.jv : Computes the first-kind Bessel function of real order and complex argument.
+scipy.special.yv : Computes the second-kind Bessel function of real order and complex argument.</p>
+</section>
+<section id="id60">
+<h3>Examples<a class="headerlink" href="#id60" title="Link to this heading">¶</a></h3>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">m</span> <span class="o">=</span> <span class="mf">1.5</span> <span class="o">+</span> <span class="mf">0.1</span><span class="n">j</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="mf">2.5</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cn</span><span class="p">,</span> <span class="n">dn</span> <span class="o">=</span> <span class="n">Mie_cd</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">cn</span><span class="p">,</span> <span class="n">dn</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="PDielec.Mie.RayleighMieQ">
+<span class="sig-prename descclassname"><span class="pre">PDielec.Mie.</span></span><span class="sig-name descname"><span class="pre">RayleighMieQ</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">m</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wavelength</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">diameter</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nMedium</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">asDict</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">asCrossSection</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/Mie.html#RayleighMieQ"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.Mie.RayleighMieQ" title="Link to this definition">¶</a></dt>
+<dd><p>Calculate the optical properties of a sphere for a given refractive index, wavelength, and diameter according to the Rayleigh-Scattering approximation.</p>
+<section id="id61">
+<h3>Parameters<a class="headerlink" href="#id61" title="Link to this heading">¶</a></h3>
+<dl class="simple">
+<dt>m<span class="classifier">complex</span></dt><dd><p>Complex refractive index of the scatterer.</p>
+</dd>
+<dt>wavelength<span class="classifier">float</span></dt><dd><p>Wavelength of the incident light in the same units as diameter.</p>
+</dd>
+<dt>diameter<span class="classifier">float</span></dt><dd><p>Diameter of the spherical particle.</p>
+</dd>
+<dt>nMedium<span class="classifier">float, optional</span></dt><dd><p>Real refractive index of the medium, default is 1.0 (e.g., vacuum or air).</p>
+</dd>
+<dt>asDict<span class="classifier">bool, optional</span></dt><dd><p>If True, return optical properties as a dictionary, otherwise returns a tuple. Default is False.</p>
+</dd>
+<dt>asCrossSection<span class="classifier">bool, optional</span></dt><dd><p>If True, returns cross-sectional values. Default is False.</p>
+</dd>
+</dl>
+</section>
+<section id="id62">
+<h3>Returns<a class="headerlink" href="#id62" title="Link to this heading">¶</a></h3>
+<dl class="simple">
+<dt>dict or tuple</dt><dd><p>If asDict is False and asCrossSection is False, returns a tuple: (Qext, Qsca, Qabs, g, Qpr, Qback, Qratio).
+If asDict is True and asCrossSection is False, returns a dictionary with keys: ‘Qext’, ‘Qsca’, ‘Qabs’, ‘g’, ‘Qpr’, ‘Qback’, ‘Qratio’.
+If asDict is False and asCrossSection is True, returns a tuple: (Cext, Csca, Cabs, g, Cpr, Cback, Cratio).
+If asDict is True and asCrossSection is True, returns a dictionary with keys: ‘Cext’, ‘Csca’, ‘Cabs’, ‘g’, ‘Cpr’, ‘Cback’, ‘Cratio’.</p>
+</dd>
+</dl>
+</section>
+<section id="id63">
+<h3>Notes<a class="headerlink" href="#id63" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>Qext, Qsca, Qabs, Qback, and Qratio represent the extinction, scattering, absorption, backscattering, and ratio of backscattering to total scattering efficiencies, respectively.</p></li>
+<li><p>Cext, Csca, Cabs, Cpr, Cback, and Cratio are the cross-sectional areas for extinction, scattering, absorption, total interaction, backscattering, and the ratio of backscattering to total scattering, respectively.</p></li>
+<li><p>The g parameter (asymmetry factor) is included for compatibility with other scattering code but is set to 0, as it is not applicable in the Rayleigh-Scattering regime.</p></li>
+<li><p>The calculation assumes the Rayleigh-Scattering regime, which is valid when the particle diameter is much smaller than the wavelength of the incident light.</p></li>
+</ul>
+</section>
+<section id="id64">
+<h3>Examples<a class="headerlink" href="#id64" title="Link to this heading">¶</a></h3>
+<p>Calculate optical properties without cross-section:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">RayleighMieQ</span><span class="p">(</span><span class="mf">1.5</span><span class="o">+</span><span class="mf">0.1</span><span class="n">j</span><span class="p">,</span> <span class="mi">550</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+<span class="go">(Qext, Qsca, Qabs, 0, Qpr, Qback, Qratio)</span>
+</pre></div>
+</div>
+<p>Calculate optical properties with cross-section values as a dictionary:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">RayleighMieQ</span><span class="p">(</span><span class="mf">1.5</span><span class="o">+</span><span class="mf">0.1</span><span class="n">j</span><span class="p">,</span> <span class="mi">550</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="n">asDict</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">asCrossSection</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="go">{&#39;Cext&#39;: cext, &#39;Csca&#39;: csca, &#39;Cabs&#39;: cabs, &#39;g&#39;: 0, &#39;Cpr&#39;: cpr, &#39;Cback&#39;: cback, &#39;Cratio&#39;: cratio}</span>
+</pre></div>
+</div>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="PDielec.Mie.SF_SD">
+<span class="sig-prename descclassname"><span class="pre">PDielec.Mie.</span></span><span class="sig-name descname"><span class="pre">SF_SD</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">m</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wavelength</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ndp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nMedium</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">minAngle</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">maxAngle</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">180</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">angularResolution</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">space</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'theta'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">angleMeasure</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'radians'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">normalization</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/Mie.html#SF_SD"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.Mie.SF_SD" title="Link to this definition">¶</a></dt>
+<dd><p>Calculate the scattering function SD for given parameters and return the scattering intensities for left, right, and unpolarized light.</p>
+<section id="id65">
+<h3>Parameters<a class="headerlink" href="#id65" title="Link to this heading">¶</a></h3>
+<dl class="simple">
+<dt>m<span class="classifier">complex</span></dt><dd><p>The complex refractive index of the scattering particles.</p>
+</dd>
+<dt>wavelength<span class="classifier">float</span></dt><dd><p>The wavelength of light in the medium.</p>
+</dd>
+<dt>dp<span class="classifier">array_like</span></dt><dd><p>The diameters of the particles.</p>
+</dd>
+<dt>ndp<span class="classifier">array_like</span></dt><dd><p>The number density of particles corresponding to <cite>dp</cite>.</p>
+</dd>
+<dt>nMedium<span class="classifier">float, optional</span></dt><dd><p>The real refractive index of the medium, by default 1.0.</p>
+</dd>
+<dt>minAngle<span class="classifier">float, optional</span></dt><dd><p>The minimum angle (inclusive) for calculating the scattering, by default 0.</p>
+</dd>
+<dt>maxAngle<span class="classifier">float, optional</span></dt><dd><p>The maximum angle (inclusive) for calculating the scattering, by default 180.</p>
+</dd>
+<dt>angularResolution<span class="classifier">float, optional</span></dt><dd><p>The resolution in angles for the scattering calculation, by default 0.5.</p>
+</dd>
+<dt>space<span class="classifier">str, optional</span></dt><dd><p>Defines the space for the scattering calculation, by default ‘theta’.</p>
+</dd>
+<dt>angleMeasure<span class="classifier">str, optional</span></dt><dd><p>Specifies the measure of angles (‘degrees’ or ‘radians’), by default ‘radians’.</p>
+</dd>
+<dt>normalization<span class="classifier">str, optional</span></dt><dd><p>Defines the normalization method applied to the scattering intensities. It can be ‘number’, ‘max’, ‘total’, or their corresponding single letter (‘n’, ‘m’, ‘t’) or uppercase variants. If None, no normalization is performed, by default None.</p>
+</dd>
+</dl>
+</section>
+<section id="id66">
+<h3>Returns<a class="headerlink" href="#id66" title="Link to this heading">¶</a></h3>
+<dl class="simple">
+<dt>tuple</dt><dd><p>A tuple containing the measured angles (dependent on <cite>angleMeasure</cite>), and arrays of scattering intensities for left (SL), right (SR), and unpolarized (SU) light.</p>
+</dd>
+</dl>
+</section>
+<section id="id67">
+<h3>Raises<a class="headerlink" href="#id67" title="Link to this heading">¶</a></h3>
+<dl class="simple">
+<dt>ValueError</dt><dd><p>If an invalid option is passed to parameters that have specific acceptable values (e.g., <cite>normalization</cite>).</p>
+</dd>
+</dl>
+</section>
+<section id="id68">
+<h3>Notes<a class="headerlink" href="#id68" title="Link to this heading">¶</a></h3>
+<p>The scattering function SD is calculated based on Mie theory. Each diameter in <cite>dp</cite> corresponds to a number density in <cite>ndp</cite>. The function adjusts the calculations based on the medium’s refractive index and applies the chosen normalization to the resulting scattering intensities.</p>
+</section>
+<section id="id69">
+<h3>See Also<a class="headerlink" href="#id69" title="Link to this heading">¶</a></h3>
+<p>ScatteringFunction : Another function (not detailed here) that is presumably used in this calculation for obtaining the scattering data based on the input parameters.</p>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="PDielec.Mie.ScatteringFunction">
+<span class="sig-prename descclassname"><span class="pre">PDielec.Mie.</span></span><span class="sig-name descname"><span class="pre">ScatteringFunction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">m</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wavelength</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">diameter</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nMedium</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">minAngle</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">maxAngle</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">180</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">angularResolution</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">space</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'theta'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">angleMeasure</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'radians'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">normalization</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/Mie.html#ScatteringFunction"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.Mie.ScatteringFunction" title="Link to this definition">¶</a></dt>
+<dd><p>Calculate the scattering function for given parameters using the Mie theory.</p>
+<section id="id70">
+<h3>Parameters<a class="headerlink" href="#id70" title="Link to this heading">¶</a></h3>
+<dl class="simple">
+<dt>m<span class="classifier">complex</span></dt><dd><p>The complex refractive index of the scattering particle.</p>
+</dd>
+<dt>wavelength<span class="classifier">float</span></dt><dd><p>The wavelength of the incident light in the same units as <cite>diameter</cite>.</p>
+</dd>
+<dt>diameter<span class="classifier">float</span></dt><dd><p>The diameter of the scattering particles.</p>
+</dd>
+<dt>nMedium<span class="classifier">float, optional</span></dt><dd><p>The real refractive index of the medium. Default is 1.0.</p>
+</dd>
+<dt>minAngle<span class="classifier">float, optional</span></dt><dd><p>The minimum scattering angle to compute, in degrees. Default is 0.</p>
+</dd>
+<dt>maxAngle<span class="classifier">float, optional</span></dt><dd><p>The maximum scattering angle to compute, in degrees. Default is 180.</p>
+</dd>
+<dt>angularResolution<span class="classifier">float, optional</span></dt><dd><p>The angular resolution for scattering calculations, in degrees. Default is 0.5.</p>
+</dd>
+<dt>space<span class="classifier">{‘theta’, ‘q’}, optional</span></dt><dd><p>The space in which to express the scattering angles. ‘theta’ for regular angular space, and
+‘q’ for q-space (momentum transfer space). Default is ‘theta’.</p>
+</dd>
+<dt>angleMeasure<span class="classifier">{‘radians’, ‘degrees’, ‘gradians’}, optional</span></dt><dd><p>The unit of the input and output angles. Default is ‘radians’.</p>
+</dd>
+<dt>normalization<span class="classifier">{None, ‘max’, ‘total’}, optional</span></dt><dd><p>The type of normalization applied to the scattering intensity. ‘max’ normalizes
+the intensities to their maximum value, ‘total’ normalizes the intensities
+to the total area under the curve. If None, no normalization is applied. Default is None.</p>
+</dd>
+</dl>
+</section>
+<section id="id71">
+<h3>Returns<a class="headerlink" href="#id71" title="Link to this heading">¶</a></h3>
+<dl class="simple">
+<dt>tuple of (ndarray, ndarray, ndarray, ndarray)</dt><dd><p>A tuple containing four arrays: the measure (angle or q-space), S_L (scattering intensity for left polarization),
+S_R (scattering intensity for right polarization), and S_U (unpolarized scattering intensity),
+respectively.</p>
+</dd>
+</dl>
+</section>
+<section id="id72">
+<h3>Raises<a class="headerlink" href="#id72" title="Link to this heading">¶</a></h3>
+<dl class="simple">
+<dt>ValueError</dt><dd><p>If <cite>angleMeasure</cite> or <cite>space</cite> parameters are given invalid values.</p>
+</dd>
+</dl>
+</section>
+<section id="id73">
+<h3>Notes<a class="headerlink" href="#id73" title="Link to this heading">¶</a></h3>
+<p>This function computes the scattering intensity based on Mie theory, considering
+angular ranges, resolution, and optional scattering space transformation (‘q’ space).
+It supports different normalization options for the scattering intensity as well.</p>
+</section>
+<section id="id74">
+<h3>Examples<a class="headerlink" href="#id74" title="Link to this heading">¶</a></h3>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">m</span> <span class="o">=</span> <span class="mf">1.5</span> <span class="o">+</span> <span class="mf">0.1</span><span class="n">j</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">wavelength</span> <span class="o">=</span> <span class="mf">0.632</span>  <span class="c1"># micrometers</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">diameter</span> <span class="o">=</span> <span class="mf">1.0</span>  <span class="c1"># micrometers</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">nMedium</span> <span class="o">=</span> <span class="mf">1.33</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">scattering</span> <span class="o">=</span> <span class="n">ScatteringFunction</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">wavelength</span><span class="p">,</span> <span class="n">diameter</span><span class="p">,</span> <span class="n">nMedium</span><span class="o">=</span><span class="n">nMedium</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">measure</span><span class="p">,</span> <span class="n">SL</span><span class="p">,</span> <span class="n">SR</span><span class="p">,</span> <span class="n">SU</span> <span class="o">=</span> <span class="n">scattering</span>
+</pre></div>
+</div>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="PDielec.Mie.coerceDType">
+<span class="sig-prename descclassname"><span class="pre">PDielec.Mie.</span></span><span class="sig-name descname"><span class="pre">coerceDType</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">d</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/Mie.html#coerceDType"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.Mie.coerceDType" title="Link to this definition">¶</a></dt>
+<dd><p>Convert input data to a NumPy array if not already one.</p>
+<section id="id75">
+<h3>Parameters<a class="headerlink" href="#id75" title="Link to this heading">¶</a></h3>
+<dl class="simple">
+<dt>d<span class="classifier">array_like</span></dt><dd><p>The input data to be converted to a NumPy array.</p>
+</dd>
+</dl>
+</section>
+<section id="id76">
+<h3>Returns<a class="headerlink" href="#id76" title="Link to this heading">¶</a></h3>
+<dl class="simple">
+<dt>ndarray</dt><dd><p>The input data as a NumPy array.</p>
+</dd>
+</dl>
+</section>
+<section id="id77">
+<h3>Examples<a class="headerlink" href="#id77" title="Link to this heading">¶</a></h3>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">coerceDType</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+<span class="go">array([1, 2, 3])</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">coerceDType</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]))</span>
+<span class="go">array([1, 2, 3])</span>
+</pre></div>
+</div>
+</section>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="PDielec.Mie.crossover">
+<span class="sig-prename descclassname"><span class="pre">PDielec.Mie.</span></span><span class="sig-name descname"><span class="pre">crossover</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0.01</span></em><a class="headerlink" href="#PDielec.Mie.crossover" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="../PhonopyOutputReader/index.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">PDielec.PhonopyOutputReader</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="../Materials/index.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">PDielec.Materials</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2024, John Kendrick and Andrew Burnett
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">PDielec.Mie</a><ul>
+<li><a class="reference internal" href="#publications">Publications</a></li>
+<li><a class="reference internal" href="#attributes">Attributes</a></li>
+<li><a class="reference internal" href="#functions">Functions</a></li>
+<li><a class="reference internal" href="#module-contents">Module Contents</a><ul>
+<li><a class="reference internal" href="#PDielec.Mie.AutoMieQ"><code class="docutils literal notranslate"><span class="pre">AutoMieQ()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.Mie.AutoMie_ab"><code class="docutils literal notranslate"><span class="pre">AutoMie_ab()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.Mie.LowFrequencyMieQ"><code class="docutils literal notranslate"><span class="pre">LowFrequencyMieQ()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.Mie.LowFrequencyMie_ab"><code class="docutils literal notranslate"><span class="pre">LowFrequencyMie_ab()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.Mie.MatrixElements"><code class="docutils literal notranslate"><span class="pre">MatrixElements()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.Mie.MiePiTau"><code class="docutils literal notranslate"><span class="pre">MiePiTau()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.Mie.MieQ"><code class="docutils literal notranslate"><span class="pre">MieQ()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.Mie.MieQ_withDiameterRange"><code class="docutils literal notranslate"><span class="pre">MieQ_withDiameterRange()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.Mie.MieQ_withSizeParameterRange"><code class="docutils literal notranslate"><span class="pre">MieQ_withSizeParameterRange()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.Mie.MieQ_withWavelengthRange"><code class="docutils literal notranslate"><span class="pre">MieQ_withWavelengthRange()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.Mie.MieS1S2"><code class="docutils literal notranslate"><span class="pre">MieS1S2()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.Mie.Mie_Lognormal"><code class="docutils literal notranslate"><span class="pre">Mie_Lognormal()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.Mie.Mie_SD"><code class="docutils literal notranslate"><span class="pre">Mie_SD()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.Mie.Mie_ab"><code class="docutils literal notranslate"><span class="pre">Mie_ab()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.Mie.Mie_cd"><code class="docutils literal notranslate"><span class="pre">Mie_cd()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.Mie.RayleighMieQ"><code class="docutils literal notranslate"><span class="pre">RayleighMieQ()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.Mie.SF_SD"><code class="docutils literal notranslate"><span class="pre">SF_SD()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.Mie.ScatteringFunction"><code class="docutils literal notranslate"><span class="pre">ScatteringFunction()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.Mie.coerceDType"><code class="docutils literal notranslate"><span class="pre">coerceDType()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.Mie.crossover"><code class="docutils literal notranslate"><span class="pre">crossover</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script src="../../../_static/documentation_options.js?v=23ce250a"></script>
+    <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/scripts/furo.js?v=4e2eecee"></script>
+    </body>
+</html>

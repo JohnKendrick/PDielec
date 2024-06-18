@@ -1,0 +1,1147 @@
+PDielec.GTMcore
+===============
+
+.. py:module:: PDielec.GTMcore
+
+.. autoapi-nested-parse::
+
+   This file is part of the pyGTM module.
+   It has been heavily modified by John Kendrick for inclusion in the PDielec library
+   Quite a lot has been removed as the fields spatial distribution was not needed
+   Thanks to the authors of the original code for all their hard work
+
+   This program is free software: you can redistribute it and/or modify
+   it under the terms of the GNU General Public License as published by
+   the Free Software Foundation, either version 3 of the License, or
+   (at your option) any later version.
+
+   This program is distributed in the hope that it will be useful,
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   GNU General Public License for more details.
+
+   You should have received a copy of the GNU General Public License
+   along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+   Copyright (C) Mathieu Jeannin 2019 2020 <math.jeannin@free.fr>.
+
+   This module implements the generalized 4x4 transfer matrix (GTM) method
+   poposed in `Passler, N. C. and Paarmann, A., JOSA B 34, 2128 (2017)
+   <http://doi.org/10.1364/JOSAB.34.002128>`_
+   and corrected in
+   `JOSA B 36, 3246 (2019) <http://doi.org/10.1364/JOSAB.36.003246>`_,
+   as well as the layer-resolved absorption proposed in
+   `Passler, Jeannin and Paarman <https://arxiv.org/abs/2002.03832>`_.
+   This code uses inputs from D. Dietze's FSRStools library
+   https://github.com/ddietze/FSRStools
+
+   Please cite the relevant associated publications if you use this code.
+
+   Author:
+       - Mathieu Jeannin math.jeannin@free.fr (permanent)
+
+   Affiliations:
+       - Laboratoire de Physique de l'Ecole Normale Superieure (2019)
+       - Centre de Nanosciences et Nanotechnologies (2020-2021)
+
+   Layers are represented by the :py:class:`Layer` class that holds all parameters
+   describing the optical properties of a single layer.
+   The optical system is assembled using the :py:class:`System` class.
+     
+              
+   **Change log:**
+
+       *01-01-2023*: 
+           
+           - Major changes introduced by John Kendrick to make the package compatible with PDielec and PDGUI.
+           - Allowed only full 3x3 tensors for the permittivity
+           - Changed from 64 to 128 bit arithmetic where possible
+           - Introduced a scattering matrix formalism
+           - Added treatment of incoherence
+       
+       *15-10-2021*:
+           
+           - Fixed rounding error bug in lag.eig() causing the program to crash randomly for negligibly small imaginary parts of the wavevectors
+           - Corrected a sign error in gamma32 that lead to field discontinuities
+
+       *23 June 2021*:
+           - integrated the code into pdielec and pdgui
+
+       *19-03-2020*:
+
+           - Adapted the code to compute the layer-resolved absorption as proposed
+             by Passler et al. (https://arxiv.org/abs/2002.03832), using
+             :py:func:`System.calculate_Poynting_Absorption_vs_z`.
+
+           - Include the correct calculation of intensity transmission coefficients
+             in :py:func:`System.calculate_r_t`.
+             **This BREAKS compatibility** with the previous definition of the function.
+
+           - Corrected bugs in :py:func:`System.calculate_Efield`
+             and added magnetic field option
+
+           - Adapted :py:func:`System.calculate_Efield` to allow hand-defined,
+             irregular grid and a shorthand to compute only at layers interfaces.
+             Regular grid with fixed resolution is left as an option.
+
+       *20-09-2019*:
+           - Added functions in the :py:class:`System` class to compute in-plane
+             wavevector of guided modes and dispersion relation for such guided surface modes.
+             This is *highly prospective* as it depends on the robustness of the minimization
+             procedure (or the lack of thereoff)
+
+
+
+Attributes
+----------
+
+.. autoapisummary::
+
+   PDielec.GTMcore.c_const
+   PDielec.GTMcore.eps0
+   PDielec.GTMcore.epsilon_0_si
+   PDielec.GTMcore.speed_light_si
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   PDielec.GTMcore.CoherentLayer
+   PDielec.GTMcore.IncoherentAveragePhaseLayer
+   PDielec.GTMcore.IncoherentIntensityLayer
+   PDielec.GTMcore.IncoherentPhaseLayer
+   PDielec.GTMcore.IncoherentThickLayer
+   PDielec.GTMcore.Layer
+   PDielec.GTMcore.SMatrix
+   PDielec.GTMcore.ScatteringMatrixSystem
+   PDielec.GTMcore.SemiInfiniteLayer
+   PDielec.GTMcore.System
+   PDielec.GTMcore.TransferMatrixSystem
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   PDielec.GTMcore.exact_inv_2x2
+   PDielec.GTMcore.exact_inv_3x3
+   PDielec.GTMcore.exact_inv_4x4
+   PDielec.GTMcore.vacuum_eps
+
+
+Module Contents
+---------------
+
+.. py:class:: CoherentLayer(layer, theta=0, phi=0, psi=0, exponent_threshold=700)
+
+   Bases: :py:obj:`Layer`
+
+
+   Define a coherent layer inherits from Layer class.
+
+
+   .. py:method:: calculate_scattering_matrix(b)
+
+      Calculate the scattering matrix of this layer with layer b.
+
+      This method calculates the scattering matrix based on equations 18-21 in the PyLama paper.
+      However, it's important to note that the definition of a scattering matrix used here 
+      differs from that in the paper.
+
+      Parameters
+      ----------
+      b : a pyGTM layer class
+
+      Returns
+      -------
+      None
+
+      Notes
+      -----
+      Explain any important details about the implementation, external references like the PyLama paper,
+      and any differences in definitions or approaches.
+
+
+
+.. py:class:: IncoherentAveragePhaseLayer(layer, percentage_incoherence=100, number_of_samples=4, theta=0, phi=0, psi=0, exponent_threshold=700)
+
+   Bases: :py:obj:`CoherentLayer`
+
+
+   Define an incoherent layer using an average phase in the propagation matrix.
+
+   Inherits from CoherentLayer
+
+
+   .. py:method:: calculate_propagation_exponents(f)
+
+      Routine to calculate the matrix Ki (or Pi depending on the paper).
+
+      A phase shift is included in the calculation.
+      The phase shift can vary between 0 and :math:`\pi`.
+
+      Parameters
+      ----------
+      f : float
+          Frequency
+
+      Returns
+      -------
+      None
+
+
+
+.. py:class:: IncoherentIntensityLayer(layer, theta=0, phi=0, psi=0, exponent_threshold=700)
+
+   Bases: :py:obj:`CoherentLayer`
+
+
+   Define an incoherent layer using intensity transfer matrices.
+
+   Inherits from the CoherentLayer class.
+
+
+.. py:class:: IncoherentPhaseLayer(layer, theta=0, phi=0, psi=0, exponent_threshold=700)
+
+   Bases: :py:obj:`CoherentLayer`
+
+
+   Define an incoherent layer using Arteaga's modification of the phase in the propagation matrix.
+
+   Inherits from CoherentLayer
+
+
+   .. py:method:: calculate_propagation_exponents(f)
+
+      Routine to calculate the matrix Ki (or Pi) depending on the paper.
+
+      This routine is taken from Arteaga et al., Thin Solid Films 2014, 571, 701-705.
+      The propagation matrix is suitable for incoherent films. In Passler, the ordering is:
+      Arteaga:
+      0 p/o -> p ->
+      1 s/e -> p <-
+      2 p/o <- s ->
+      3 s/e <- s <-
+
+      Parameters
+      ----------
+      f : float
+          Frequency
+
+      Returns
+      -------
+      None
+
+
+
+
+.. py:class:: IncoherentThickLayer(layer, theta=0, phi=0, psi=0, exponent_threshold=700)
+
+   Bases: :py:obj:`CoherentLayer`
+
+
+   Define an incoherent layer using the thick slab approximation.
+
+   Inherits from CoherentLayer
+
+
+   .. py:method:: calculate_propagation_matrix(f)
+
+      Routine to calculate the matrix Ki using the thick slab approximation.
+
+      Parameters
+      ----------
+      f : float
+          Frequency
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: calculate_scattering_matrix(b)
+
+      Calculate the scattering matrix of this layer with layer b.
+
+      This method calculates the scattering matrix based on equations 18-21 in the PyLama paper.
+      However, it's important to note that the definition of a scattering matrix used here 
+      differs from that in the paper.
+
+      Parameters
+      ----------
+      b : pyGTM layer
+
+      Returns
+      -------
+      None
+
+
+
+.. py:class:: Layer(thickness=1e-06, epsilon=None, theta=0, phi=0, psi=0, exponent_threshold=700)
+
+   Layer class. An instance is a single layer:
+
+   The inherited layer classes wich are used in PDielec are:
+
+       - :class:`CoherentLayer`
+       - :class:`SemiInfiniteLayer`
+       - :class:`IncoherentIntensityLayer`
+       - :class:`IncoherentAveragePhaseLayer`
+       - :class:`IncoherentPhaseLayer`
+       - :class:`IncoherentThickLayer`
+
+   Attributes
+   ----------
+   thickness : float
+       Thickness of the layer in meters (m).
+   epsilon : complex function
+       Function `epsilon(frequency)` representing the full dielectric constant tensor.
+   theta : float
+       Euler angle theta (colatitude) in radians (rad).
+   phi : float
+       Euler angle phi in radians (rad).
+   psi : float
+       Euler angle psi in radians (rad).
+
+   Notes
+   -----
+   If instantiated with default values, it generates a 1 µm thick layer of air.
+   Properties can be checked/changed dynamically using the corresponding get/set methods.
+
+
+   .. py:method:: calculate_ai(zeta)
+
+      Calculate A_i
+
+      Boundary matrix :math:`A_i` of the layer.
+
+      Parameters
+      ----------
+      zeta : float
+          Reduced in-plane wavevector kx/k0.
+
+
+
+   .. py:method:: calculate_epsilon(f_in)
+
+      Sets the value of epsilon in the (rotated) lab frame.
+
+      Parameters
+      ----------
+      f_in : float
+          frequency (in Hz)
+
+      Returns
+      -------
+      None
+
+      Notes
+      -----
+      The values are set according to the epsilon_fi (i=1..3) functions
+      defined using the :py:func:`set_epsilon` method, at the given frequency f.
+      The rotation with respect to the lab frame is computed using the Euler angles.
+
+      Use explicitly if you *don't* use the :py:func:`Layer.update` function!
+      Modification by JK to allow the use of a full dielectric tensor.
+
+
+
+   .. py:method:: calculate_gamma(zeta)
+
+      Calculate the gamma matrix
+
+      Parameters
+      ----------
+      zeta : complex
+          In-plane reduced wavevector kx/k0.
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: calculate_matrices(zeta)
+
+      Calculate the principal matrices necessary for the GTM algorithm.
+
+      Parameters
+      ----------
+      zeta : complex
+          In-plane reduced wavevector kx/k0 in the system.
+
+      Returns
+      -------
+      None
+
+      Notes
+      -----
+      Note that zeta is conserved through the whole system and set externally
+      using the angle of incidence and `System.superstrate.epsilon[0,0]` value.
+
+      Requires prior execution of :py:func:`calculate_epsilon`.
+
+
+
+   .. py:method:: calculate_propagation_exponents(f)
+
+      Routine to calculate the propagation exponents
+
+      Parameters
+      ----------
+
+      f : float
+          The frequency
+
+
+
+   .. py:method:: calculate_propagation_matrix(f)
+
+      Routine to calculate the matrix Ki (or Pi depending on the paper)
+
+      Parameters
+      ----------
+      f : float
+          Frequency
+
+      Returns
+      -------
+      Ki : ndarray
+          A 4x4-array representing the boundary matrix :math:`K_i` of the layer.
+
+
+
+   .. py:method:: calculate_q()
+
+      Calculates the 4 out-of-plane wavevectors for the current layer.
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      None
+
+      Notes
+      -----
+      From this we also get the Poynting vectors. Wavevectors are sorted according
+      to (trans-p, trans-s, refl-p, refl-s). Birefringence is determined according
+      to a threshold value `qsd_thr` set at the beginning of the script.
+
+
+
+   .. py:method:: calculate_transfer_matrix(f, zeta)
+
+      Compute the transfer matrix of the whole layer :math:`T_i=A_iP_iA_i^{-1}`
+
+      Parameters
+      ----------
+      f : float
+          Frequency (in Hz).
+      zeta : complex
+          Reduced in-plane wavevector kx/k0.
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: isCoherent()
+
+      Returns True if the layer is a coherent layer
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      bool
+          True if the layer is coherent, False if not.
+
+
+
+   .. py:method:: set_epsilon(epsilon_function)
+
+      Sets the dielectric function.
+
+      Parameters
+      ----------
+      epsilon : complex function
+          A complex function representing the dielectric function.
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: set_euler(theta, phi, psi)
+
+      Sets the values for the Euler rotations angles.
+
+      Parameters
+      ----------
+      theta : float
+          Euler angle theta (colatitude) in rad.
+      phi : float
+          Euler angle phi in rad.
+      psi : float
+          Euler angle psi in rad.
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: set_thickness(thickness)
+
+      Sets the layer thickness.
+
+      Parameters
+      ----------
+      thickness : float
+          The layer thickness (in m).
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: update_sm(f, zeta)
+
+      Shortcut to recalculate all layer properties for scattering method.
+
+      Appropriate for a scattering matrix method.
+      This avoids the calculation of the exponential; it just calculates the exponents.
+
+      Parameters
+      ----------
+      f : float
+          frequency (in Hz)
+      zeta : complex
+             reduced in-plane wavevector kx/k0
+
+      Calculates
+      ----------
+      Ai : array_like, shape (4, 4)
+          Boundary matrix :math:`A_i` of the layer.
+      Ki : array_like, shape (4, 4)
+          Propagation matrix :math:`K_i` of the layer.
+      Ai_inv : array_like, shape (4, 4)
+          Inverse of the :math:`A_i` matrix.
+      Ti : array_like, shape (4, 4)
+          Transfer matrix of the whole layer.
+
+
+
+   .. py:method:: update_tm(f, zeta)
+
+      Shortcut to recalculate all layer properties.
+      Appropriate for a transfer matrix method
+
+      Parameters
+      ----------
+      f : float
+          frequency (in Hz)
+      zeta : complex
+          reduced in-plane wavevector kx/k0
+
+      Returns
+      -------
+      Ai : 4x4-array
+          Boundary matrix :math:`A_i` of the layer
+      Ki : 4x4-array
+          Propagation matrix :math:`K_i` of the layer
+      Ai_inv : 4x4-array
+          Inverse of the :math:`A_i` matrix
+      Ti : 4x4-array
+          Transfer matrix of the whole layer
+
+
+
+   .. py:attribute:: jk_shift
+
+
+   .. py:attribute:: qsd_thr
+      :value: 1e-10
+
+
+
+   .. py:attribute:: zero_thr
+      :value: 1e-10
+
+
+
+.. py:class:: SMatrix(S=None)
+
+   A class for storing and manipulating scattering matrices.
+
+   S-matrices are square matrices used in physics and engineering to describe the 
+   scattering and reflection of waves or particles. They are especially useful in the
+   field of microwave engineering, quantum mechanics, and optical physics.
+
+   Attributes
+   ----------
+   S11 : np.ndarray
+       The top-left 2x2 submatrix of the S-matrix, representing input to input scattering.
+   S22 : np.ndarray
+       The bottom-right 2x2 submatrix of the S-matrix, representing output to output scattering.
+   S21 : np.ndarray
+       The bottom-left 2x2 submatrix of the S-matrix, representing input to output transmission.
+   S12 : np.ndarray
+       The top-right 2x2 submatrix of the S-matrix, representing output to input transmission.
+   S : np.ndarray
+       A 4x4 composite S-matrix combining S11, S22, S21, and S12.
+
+   Methods
+   -------
+   unitMatrix()
+       Initializes the S-matrix to a unit matrix with appropriate S11, S22, S21, and S12.
+   redheffer(b)
+       Performs the Redheffer star product, a specialized matrix multiplication for S-matrices, 
+       with another SMatrix instance `b`.
+   calculateS()
+       Reconstructs the composite 4x4 S-matrix from its constituent submatrices (S11, S22, S21, S12).
+
+   Examples
+   --------
+   >>> import numpy as np
+   >>> from smatrix import SMatrix  # Assuming this class is saved in smatrix.py
+   >>> s_matrix_data = np.array([[0, 1, 2, 3], [4, 5, 6, 7], [8, 9, 10, 11], [12, 13, 14, 15]])
+   >>> smatrix = SMatrix(S=s_matrix_data)
+   >>> print(smatrix.S)  # This displays the initialized S-matrix
+
+   Notes
+   -----
+   The Redheffer star product is particularly useful for cascading two-port networks in
+   microwave engineering and quantum physics. It allows for the efficient calculation of
+   the overall scattering matrix of the combined system.
+
+
+   .. py:method:: calculateS()
+
+      Calculate and assign the scattering parameter matrix, S
+
+      Fills a 4 by 4 matrix, `S`, with the sub-matrices `S11`, `S22`, `S12`, and `S21` representing the scattering parameters of a two-port network. The `S` matrix combines these sub-matrices as follows:
+
+      - `S11` is placed in the top-left quadrant.
+      - `S22` is placed in the bottom-right quadrant.
+      - `S12` is placed in the top-right quadrant.
+      - `S21` is placed in the bottom-left quadrant.
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      S : ndarray, shape (4, 4), dtype=np.clongdouble
+          The complete scattering parameter matrix of the two-port network.
+
+      Notes
+      -----
+      The scattering parameters (`S11`, `S22`, `S12`, `S21`) must be defined as attributes of the instance before calling this method.
+
+
+
+
+   .. py:method:: redheffer(b)
+
+      Routine to calculate the product of S-matrices.
+
+      Parameters
+      ----------
+      b : ScatteringMatrix
+         The second scattering matrix to be used the the multiplication
+
+      Returns
+      -------
+      Sab : ScatteringMatrix
+          The product of Sa and Sb
+
+
+
+   .. py:method:: unitMatrix()
+
+      Reset the scattering parameters to form a unit matrix.
+
+      Resets the scattering parameters S11, S22, S21, and S12 of the instance to represent a unit matrix, where S11 and S22 are set to zero matrices and S21 and S12 are set to identity matrices. After the reset, calculates the scattering parameters through `calculateS`.
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      None
+
+      Notes
+      -----
+      This method is typically used to initialize or reset the scattering parameters in a two-port network representation to a known state before performing further operations or calculations.
+
+
+
+.. py:class:: ScatteringMatrixSystem(substrate=None, superstrate=None, layers=[])
+
+   Bases: :py:obj:`System`
+
+
+   Define a system of layers which is described by a Scattering Matrix method.
+
+   This implements additional routines needed for the scattering matrix method
+
+
+
+   .. py:method:: calculate_GammaStar(f, zeta_sys)
+
+      Calculate the whole system's scattering matrix.
+
+      This replaces the equivalent routine used in the transfer matrix method.
+
+      Parameters
+      ----------
+      f : float
+          Frequency (Hz)
+      zeta_sys : complex
+          In-plane wavevector kx/k0
+
+      Returns
+      -------
+      Stotal : ndarray
+          System scattering matrix :math:`S`
+
+
+
+   .. py:method:: calculate_r_t(zeta_sys)
+
+      Calculate the reflectance and transmittance coefficients using scattering matrix information
+
+      Calculate various field and intensity reflection and transmission coefficients, as well as the 4-valued vector of transmitted field.
+
+      Parameters
+      ----------
+      zeta_sys : complex
+          Incident in-plane wavevector
+
+      Returns
+      -------
+      r_out : array_like, shape (4,)
+          Complex *field* reflection coefficients (r_out=([rpp,rps,rss,rsp])).
+      R_out : array_like, shape (4,)
+          Real *intensity* reflection coefficients (R_out=([Rpp,Rss,Rsp,Tps])).
+      t_out : array_like, shape (4,)
+          Complex *field* transmission coefficients (t=([tpp, tps, tsp, tss])).
+      T_out : array_like, shape (4,)
+          Real *intensity* transmission coefficients (T_out=([Tp,Ts])) (mode-inselective).
+
+
+
+   .. py:method:: calculate_scattering_matrices()
+
+      Calculate the scattering matrices in every layer.
+
+      Loop through all the layers calculating the scattering matrix of this layer with the next.
+      Care is taken when dealing with the superstrate and the substrate
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      None
+
+      Note
+      ----
+      The scattering matrix is stored as an attribute 
+      If the layer system is changed in anyway all the scattering matrices must be recomputed
+
+
+
+.. py:class:: SemiInfiniteLayer(layer, theta=0, phi=0, psi=0, exponent_threshold=700)
+
+   Bases: :py:obj:`CoherentLayer`
+
+
+   Define a semi-infinite layer, inherits from CoherentLayer class.
+
+
+   .. py:method:: calculate_propagation_exponents(f)
+
+      Routine to calculate the propagation exponents
+
+      For the semi-infinite case the propagation exponents are set to 0
+
+      Parameters
+      ----------
+      f : float
+          The frequency (ignored for this object)
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: calculate_propagation_matrix(f)
+
+      Routine to calculate the matrix Ki (or Pi) depending on the paper.
+
+      This routine makes the material transparent. It is therefore suitable for 
+      a semi-infinite layer.
+
+      Parameters
+      ----------
+      f : float
+          Frequency
+
+      Returns
+      -------
+      Ki : tensor (3x3)
+
+
+
+.. py:class:: System(substrate=None, superstrate=None, layers=[])
+
+   System class. An instance is an optical system with substrate, superstrate, and layers.
+
+    Derived classes used by PDielec are:
+
+       - :class:`TransferMatrixSystem`
+       - :class:`ScatteringMatrixSystem`
+
+   Attributes
+   ----------
+   theta : float
+       Angle of incidence, in radians.
+   substrate : Layer
+       The substrate layer. Defaults to vacuum (an empty layer instance).
+   superstrate : Layer
+       The superstrate layer, defaults to vacuum (an empty layer instance).
+   layers : list of Layer
+       List of the layers in the system.
+
+   Notes
+   -----
+   Layers can be added and removed (not inserted).
+
+   The whole system's transfer matrix is computed using :py:func:`calculate_GammaStar`, which calls :py:func:`Layer.update` for each layer. General reflection and transmission coefficient functions are given; they require the prior execution of :py:func:`calculate_GammaStar`. The electric fields can be visualized in the case of an incident plane wave using :py:func:`calculate_Efield`.
+
+
+   .. py:method:: add_layer(layer)
+
+      Add a layer instance.
+
+      Parameters
+      ----------
+      layer : Layer
+          The layer to be added on the stack.
+
+      Returns
+      -------
+      None
+
+      Notes
+      -----
+      The layers are added in *from superstrate to substrate* order.
+      Light is incident *from the superstrate*.
+
+      Note that this function adds a reference to `layer` to the list.
+      If you are adding the same layer several times, be aware that if you
+      change something for one of them, it changes for all of them.
+
+
+
+   .. py:method:: calculate_GammaStar(f, zeta_sys)
+
+      Calculate the whole system's transfer matrix.
+      If one layer is incoherent then intensities rather than amplitudes are used
+
+      Parameters
+      ----------
+      f : float
+          Frequency (Hz)
+      zeta_sys : complex
+          In-plane wavevector kx/k0
+
+      Returns
+      -------
+      GammaStar : complex ndarray
+          4x4 complex matrix representing the system transfer matrix :math:`\Gamma^{*}`
+
+
+
+   .. py:method:: calculate_r_t(zeta_sys)
+
+      Calculate various field and intensity reflection and transmission coefficients, as well as the 4-valued vector of transmitted field.
+
+      Parameters
+      ----------
+      zeta_sys : complex
+          Incident in-plane wavevector
+
+      Returns
+      -------
+      r_out : array_like, shape (4,)
+          Complex *field* reflection coefficients `r_out=([rpp,rps,rss,rsp])`
+      R_out : array_like, shape (4,)
+          Real *intensity* reflection coefficients `R_out=([Rpp,Rss,Rsp,Tps])`
+      t_out : array_like, shape (4,)
+          Complex *field* transmission coefficients `t=([tpp, tps, tsp, tss])`
+      T_out : array_like, shape (4,)
+          Real *intensity* transmission coefficients `T_out=([Tp,Ts])` (mode-inselective)
+
+      Notes
+      -----
+      **IMPORTANT**
+
+      - As of version 19-03-2020: All intensity coefficients are now well defined. Transmission is defined mode-independently. It could be defined mode-dependently for non-birefringent substrates in future versions. The new definition of this function **BREAKS compatibility** with the previous one.
+
+      - As of version 13-09-2019: Note that the field reflectivity and transmission coefficients r and t are well defined. The intensity reflection coefficient is also correct. However, the intensity transmission coefficients T are ill-defined so far. This will be corrected upon future publication of the correct intensity coefficients.
+
+      Note also the different ordering of the coefficients, for consistency with Passler's matlab code.
+
+
+
+   .. py:method:: del_layer(pos)
+
+      Remove a layer at given position. Does nothing for invalid position.
+
+      Parameters
+      ----------
+      pos : int
+          Index of layer to be removed.
+
+      Returns
+      -------
+      None
+
+
+
+
+   .. py:method:: get_all_layers()
+
+      Returns the list of all layers in the system.
+
+      Returns
+      -------
+      self.layers : list
+          A list of all layers.
+
+      Returns
+      -------
+      None
+
+
+
+   .. py:method:: get_layer(pos)
+
+      Get the layer at a given position.
+
+      Parameters
+      ----------
+      pos : int
+          Position in the stack.
+
+      Returns
+      -------
+      self.layers[pos] : Layer
+          The layer at the position `pos`.
+
+
+
+   .. py:method:: get_substrate()
+
+      Returns the System's substrate.
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      self.substrate : Layer
+          The system substrate.
+
+
+
+   .. py:method:: get_superstrate()
+
+      Returns the System's superstrate.
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      self.superstrate : Layer
+          The system superstrate.
+
+
+
+   .. py:method:: initialize_sys(f)
+
+      Sets the values of epsilon at the given frequency in all the layers.
+
+      Parameters
+      ----------
+      f : float
+          Frequency (Hz)
+
+      Returns
+      -------
+      None
+
+      Notes
+      -----
+      This function allows to define the in-plane wavevector (:math:`zeta`)
+      outside of the class, and thus to explore also guided modes of the system.
+
+
+
+   .. py:method:: overflowErrors()
+
+      Return the total number of overflow errors encountered.
+
+      Parameters
+      ----------
+      None
+
+      Returns
+      -------
+      int
+          The total number of overflow errors encountered.
+
+
+
+   .. py:method:: set_substrate(sub)
+
+      Sets the substrate.
+
+      Parameters
+      ----------
+      sub : Layer
+          Instance of the Layer class, serving as the substrate.
+
+      Returns
+      -------
+      None
+
+
+
+
+   .. py:method:: set_superstrate(sup)
+
+      Set the superstrate
+
+      Parameters
+      ----------
+      sup : Layer
+          Instance of the layer class, superstrate
+
+      Returns
+      -------
+      None
+
+
+
+
+.. py:class:: TransferMatrixSystem(substrate=None, superstrate=None, layers=[])
+
+   Bases: :py:obj:`System`
+
+
+   Define a system of layers which is described by a Transfer Matrix method.
+
+   This is basically a place holder for the original pyGTM methods and it is used
+   to distinguish itself from a system which uses the scattering matrix method
+
+
+.. py:function:: exact_inv_2x2(M)
+
+   Calculate the inverse of 2x2 complex matrix, M.
+
+   Parameters
+   ----------
+   m : complex 2x2 array
+       The matrix of which to find the inverse.
+
+   Returns
+   -------
+   ndarray
+       The inverse of M as a 2x2 complex numpy array.
+
+
+.. py:function:: exact_inv_3x3(M)
+
+   Calculate the inverse of a 3x3 complex matrix M
+
+   Parameters
+   ----------
+   m : complex 3x3 array
+       The matrix to be inverted.
+
+   Returns
+   -------
+   numpy.ndarray
+       The inverse of M as a 3x3 complex numpy array.
+
+
+.. py:function:: exact_inv_4x4(M)
+
+   Compute the 'exact' inverse of a 4x4 matrix using the analytical result.
+
+   Parameters
+   ----------
+   M : array-like, shape (4, 4)
+       Matrix to be inverted, consisting of float or complex numbers.
+
+   Returns
+   -------
+   array-like, shape (4, 4), complex
+       Inverse of this matrix or Moore-Penrose approximation if matrix cannot be inverted.
+
+   Notes
+   -----
+   This should give a higher precision and speed at a reduced noise, following D.Dietze's implementation in FSRStools. Modified to work with clongdouble by JK.
+
+   See Also
+   --------
+   http://www.cg.info.hiroshima-cu.ac.jp/~miyazaki/knowledge/teche23.html : For mathematical background related to this computation.
+
+
+.. py:function:: vacuum_eps(f)
+
+   Vacuum permittivity function
+
+   Parameters
+   ----------
+   f : float or 1D-array
+       Frequency (in Hz)
+
+   Returns
+   -------
+   eps : complex or 1D-array of complex
+       Complex value of the vacuum permittivity (1.0 + 0.0j)
+
+
+.. py:data:: c_const
+
+.. py:data:: eps0
+
+.. py:data:: epsilon_0_si
+
+.. py:data:: speed_light_si
+   :value: 299792458.0
+
+

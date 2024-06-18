@@ -1,0 +1,705 @@
+<!doctype html>
+<html class="no-js" lang="en" data-content_root="../../">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" />
+
+    <!-- Generated with Sphinx 7.3.7 and Furo 2024.05.06 -->
+        <title>PDielec.HelperRoutines - PDielec: John Kendrick &amp; Andrew Burnett</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=92fd9be5" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=387cc868" />
+    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=fd3f3429" />
+    <link rel="stylesheet" type="text/css" href="../../_static/table_styling.css?v=a1a2a898" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?v=36a5483c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css?v=2e0a580d" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f8f8f8;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-half" viewBox="0 0 24 24">
+    <title>Auto light/dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M13 12h5" />
+      <path d="M13 15h4" />
+      <path d="M13 18h1" />
+      <path d="M13 9h4" />
+      <path d="M13 6h1" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
+      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+      <path d="M13.5 6.5l4 4" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" /
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path
+        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../../index.html"><div class="brand">PDielec: John Kendrick & Andrew Burnett</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon no-toc" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../../index.html">
+  
+  
+  <span class="sidebar-brand-text">PDielec: John Kendrick & Andrew Burnett</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../../search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <p class="caption" role="heading"><span class="caption-text">Software</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../pdgui.html">PDGui</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../software.html">Other Software Components</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Theory</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../theory_powder.html">Theory for Light Scattering from Powders</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../theory_single_crystal.html">Theory for Single Crystal Optics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../analysis.html">Phonon Analysis</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Applications</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../application_notes_1.html">Applications of Effective Medium Theory</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../application_notes_2.html">Single Crystal Applications</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API</span></p>
+<ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../autoapi/index.html">API Reference</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of API Reference</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../autoapi/PDielec/index.html">PDielec</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of PDielec</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../autoapi/PDielec/GUI/index.html">PDielec.GUI</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of PDielec.GUI</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../autoapi/PDielec/GUI/AnalysisTab/index.html">PDielec.GUI.AnalysisTab</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../autoapi/PDielec/GUI/App/index.html">PDielec.GUI.App</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../autoapi/PDielec/GUI/FitterTab/index.html">PDielec.GUI.FitterTab</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../autoapi/PDielec/GUI/MainTab/index.html">PDielec.GUI.MainTab</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../autoapi/PDielec/GUI/NoteBook/index.html">PDielec.GUI.NoteBook</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../autoapi/PDielec/GUI/OpenGLWidget/index.html">PDielec.GUI.OpenGLWidget</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../autoapi/PDielec/GUI/PlottingTab/index.html">PDielec.GUI.PlottingTab</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../autoapi/PDielec/GUI/PowderScenarioTab/index.html">PDielec.GUI.PowderScenarioTab</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../autoapi/PDielec/GUI/ScenarioTab/index.html">PDielec.GUI.ScenarioTab</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../autoapi/PDielec/GUI/SettingsTab/index.html">PDielec.GUI.SettingsTab</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../autoapi/PDielec/GUI/SingleCrystalLayer/index.html">PDielec.GUI.SingleCrystalLayer</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../autoapi/PDielec/GUI/SingleCrystalScenarioTab/index.html">PDielec.GUI.SingleCrystalScenarioTab</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../autoapi/PDielec/GUI/SpreadSheetManager/index.html">PDielec.GUI.SpreadSheetManager</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../autoapi/PDielec/GUI/ViewerTab/index.html">PDielec.GUI.ViewerTab</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/AbinitOutputReader/index.html">PDielec.AbinitOutputReader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/Calculator/index.html">PDielec.Calculator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/CastepOutputReader/index.html">PDielec.CastepOutputReader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/Constants/index.html">PDielec.Constants</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/CrystalOutputReader/index.html">PDielec.CrystalOutputReader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/DielectricFunction/index.html">PDielec.DielectricFunction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/ExperimentOutputReader/index.html">PDielec.ExperimentOutputReader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/GTMcore/index.html">PDielec.GTMcore</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/GenericOutputReader/index.html">PDielec.GenericOutputReader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/GulpOutputReader/index.html">PDielec.GulpOutputReader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/HelperRoutines/index.html">PDielec.HelperRoutines</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/IO/index.html">PDielec.IO</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/Materials/index.html">PDielec.Materials</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/Mie/index.html">PDielec.Mie</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/PhonopyOutputReader/index.html">PDielec.PhonopyOutputReader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/Plotter/index.html">PDielec.Plotter</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/QEOutputReader/index.html">PDielec.QEOutputReader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/SuperCell/index.html">PDielec.SuperCell</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/UnitCell/index.html">PDielec.UnitCell</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/Utilities/index.html">PDielec.Utilities</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/VaspOutputReader/index.html">PDielec.VaspOutputReader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/checkcsv/index.html">PDielec.checkcsv</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/checkexcel/index.html">PDielec.checkexcel</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/graphdatagenerator/index.html">PDielec.graphdatagenerator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/p1reader/index.html">PDielec.p1reader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/p2cif/index.html">PDielec.p2cif</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/pdcompare/index.html">PDielec.pdcompare</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/pdgui/index.html">PDielec.pdgui</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/pdmake/index.html">PDielec.pdmake</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/pickled_reader/index.html">PDielec.pickled_reader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/preader/index.html">PDielec.preader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/vibanalysis/index.html">PDielec.vibanalysis</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../autoapi/PDielec/pdgui/index.html">PDielec.pdgui</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../autoapi/PDielec/preader/index.html">PDielec.preader</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../autoapi/PDielec/pdmake/index.html">PDielec.pdmake</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">References</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../zreferences.html">References</a></li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon no-toc" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main" id="furo-main-content">
+          <h1>Source code for PDielec.HelperRoutines</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!/usr/bin/python</span>
+<span class="c1">#</span>
+<span class="c1"># Copyright 2024 John Kendrick &amp; Andrew Burnett</span>
+<span class="c1">#</span>
+<span class="c1"># This file is part of PDielec</span>
+<span class="c1">#</span>
+<span class="c1"># This program is free software; you can redistribute it and/or modify</span>
+<span class="c1"># it under the terms of the MIT License</span>
+<span class="c1">#</span>
+<span class="c1"># This program is distributed in the hope that it will be useful,</span>
+<span class="c1"># but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="c1"># MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.</span>
+<span class="c1">#</span>
+<span class="c1"># You should have received a copy of the MIT License along with this program, if not see https://opensource.org/licenses/MIT</span>
+<span class="c1">#</span>
+<span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">Helper Routines - Useful for scripting and in Jupyter Notebooks</span>
+
+<span class="sd">These routines are a useful starting point for investigating the way the code operates</span>
+<span class="sd">&#39;&#39;&#39;</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span>                      <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">PDielec.Utilities</span>          <span class="k">as</span> <span class="nn">Utilities</span>
+<span class="kn">import</span> <span class="nn">PDielec.Calculator</span>         <span class="k">as</span> <span class="nn">Calculator</span>
+<span class="kn">import</span> <span class="nn">PDielec.DielectricFunction</span> <span class="k">as</span> <span class="nn">DielectricFunction</span>
+<span class="kn">import</span> <span class="nn">PDielec.GTMcore</span>            <span class="k">as</span> <span class="nn">GTMcore</span>
+
+<span class="kn">from</span> <span class="nn">PDielec.GUI.SingleCrystalLayer</span>        <span class="kn">import</span> <span class="n">SingleCrystalLayer</span>
+<span class="kn">from</span> <span class="nn">PDielec.GUI.SingleCrystalScenarioTab</span>  <span class="kn">import</span> <span class="n">solve_single_crystal_equations</span>
+<span class="kn">from</span> <span class="nn">PDielec.Materials</span>                     <span class="kn">import</span> <span class="n">Material</span><span class="p">,</span><span class="n">MaterialsDataBase</span><span class="p">,</span><span class="n">External</span>
+<span class="kn">from</span> <span class="nn">PDielec.Constants</span>                     <span class="kn">import</span> <span class="n">wavenumber</span><span class="p">,</span> <span class="n">angstrom</span><span class="p">,</span> <span class="n">amu</span>
+<span class="kn">from</span> <span class="nn">PDielec.Constants</span>                     <span class="kn">import</span> <span class="n">average_masses</span><span class="p">,</span> <span class="n">isotope_masses</span>
+
+
+<div class="viewcode-block" id="calculateDFTPermittivityObject">
+<a class="viewcode-back" href="../../autoapi/PDielec/HelperRoutines/index.html#PDielec.HelperRoutines.calculateDFTPermittivityObject">[docs]</a>
+<span class="k">def</span> <span class="nf">calculateDFTPermittivityObject</span><span class="p">(</span><span class="n">reader</span><span class="p">,</span><span class="n">sigma</span><span class="o">=</span><span class="mf">5.0</span><span class="p">,</span><span class="n">eckart</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span><span class="n">mass_definition</span><span class="o">=</span><span class="s1">&#39;Average&#39;</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Define a permittivity object for the DFT calculation from the given reader</span>
+
+<span class="sd">    This routine reads in the details of the DFT calculation</span>
+<span class="sd">    Calculates the hessian and normal modes</span>
+<span class="sd">    Calculates the oscillator strength</span>
+<span class="sd">    Finally it defines a permittivity object from which the permittivity can be calculated</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    reader : outputReader object</span>
+<span class="sd">        An output reader object, see :class:`~PDielec.GenericOutputReader` and its sub-classes.</span>
+<span class="sd">    sigma  : float</span>
+<span class="sd">        Default Lorentzian widths in cm-1</span>
+<span class="sd">    eckart  : boolean</span>
+<span class="sd">        If true apply eckart conditions in the reader</span>
+<span class="sd">    mass_definition : string or list of floats</span>
+<span class="sd">        Default is &#39;Average&#39;</span>
+<span class="sd">        If a list of floats it is a list of the masses to be used.</span>
+<span class="sd">        If a string it must be one of &#39;Average&#39;, &#39;Isotope&#39; or &#39;Program&#39; (case is irrelevant)</span>
+<span class="sd">        - Average causes the average weight for the element to be used</span>
+<span class="sd">        - Isotope causes the most common isotope weight to be used</span>
+<span class="sd">        - Program means use the mass used by the program</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    permittivityObject (see :class:`~PDielec.DielectricFunction.DielectricFunction` and its sub-classes)</span>
+
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">reader</span><span class="o">.</span><span class="n">eckart</span> <span class="o">=</span> <span class="n">eckart</span>
+    <span class="n">epsilon_inf</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">zerof_optical_dielectric</span>
+    <span class="n">cell</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">get_unit_cell</span><span class="p">()</span>
+    <span class="n">volume_au</span> <span class="o">=</span> <span class="n">cell</span><span class="o">.</span><span class="n">getVolume</span><span class="p">(</span><span class="s1">&#39;Bohr&#39;</span><span class="p">)</span>
+    <span class="n">mass_dictionary</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">reader</span><span class="o">.</span><span class="n">reset_masses</span><span class="p">()</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">mass_definition</span><span class="p">,</span><span class="nb">list</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">mass_definition</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+        <span class="n">reader</span><span class="o">.</span><span class="n">set_edited_masses</span><span class="p">(</span><span class="n">mass_definition</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">mass_definition</span> <span class="o">=</span> <span class="n">mass_definition</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">mass_definition</span> <span class="o">==</span> <span class="s1">&#39;average&#39;</span><span class="p">:</span>
+            <span class="n">reader</span><span class="o">.</span><span class="n">change_masses</span><span class="p">(</span><span class="n">average_masses</span><span class="p">,</span> <span class="n">mass_dictionary</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">mass_definition</span> <span class="o">==</span> <span class="s1">&#39;program&#39;</span><span class="p">:</span>
+            <span class="k">pass</span>
+        <span class="k">elif</span> <span class="n">mass_definition</span> <span class="o">==</span> <span class="s1">&#39;isotope&#39;</span><span class="p">:</span>
+            <span class="n">reader</span><span class="o">.</span><span class="n">change_masses</span><span class="p">(</span><span class="n">isotope_masses</span><span class="p">,</span> <span class="n">mass_dictionary</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Helper: Error unkown mass definition&#39;</span><span class="p">,</span> <span class="n">mass_definition</span> <span class="p">)</span>
+    <span class="n">masses</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">reader</span><span class="o">.</span><span class="n">masses</span><span class="p">)</span><span class="o">*</span><span class="n">amu</span>
+    <span class="c1"># The reader uses the internal masses to calculate the massweighted normal modes</span>
+    <span class="n">mass_weighted_normal_modes</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">calculate_mass_weighted_normal_modes</span><span class="p">()</span>
+    <span class="n">masses</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">reader</span><span class="o">.</span><span class="n">masses</span><span class="p">)</span><span class="o">*</span><span class="n">amu</span>
+    <span class="c1"># The frequencies will change if the masses change, so get them after changing the masses</span>
+    <span class="n">frequencies_cm1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">reader</span><span class="o">.</span><span class="n">frequencies</span><span class="p">)</span>
+    <span class="n">frequencies_au</span> <span class="o">=</span> <span class="n">wavenumber</span><span class="o">*</span><span class="n">frequencies_cm1</span>
+    <span class="n">sigmas_cm1</span> <span class="o">=</span> <span class="p">[</span> <span class="n">sigma</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">frequencies_cm1</span> <span class="p">]</span>
+    <span class="n">sigmas_au</span> <span class="o">=</span> <span class="n">wavenumber</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">sigmas_cm1</span><span class="p">)</span>
+    <span class="n">born_charges</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">reader</span><span class="o">.</span><span class="n">born_charges</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">reader</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s1">&#39;Experimental output&#39;</span><span class="p">:</span>
+        <span class="c1"># Obtain oscillator strength from reader</span>
+        <span class="n">oscillator_strengths</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">reader</span><span class="o">.</span><span class="n">oscillator_strengths</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c1"># Calculate oscillator strengths</span>
+        <span class="c1"># calculate normal modes in xyz coordinate space</span>
+        <span class="n">normal_modes</span> <span class="o">=</span> <span class="n">Calculator</span><span class="o">.</span><span class="n">normal_modes</span><span class="p">(</span><span class="n">masses</span><span class="p">,</span> <span class="n">mass_weighted_normal_modes</span><span class="p">)</span>
+        <span class="c1"># from the normal modes and the born charges calculate the oscillator strengths of each mode</span>
+        <span class="n">oscillator_strengths</span> <span class="o">=</span> <span class="n">Calculator</span><span class="o">.</span><span class="n">oscillator_strengths</span><span class="p">(</span><span class="n">normal_modes</span><span class="p">,</span> <span class="n">born_charges</span><span class="p">)</span>
+    <span class="c1"># calculate the intensities from the trace of the oscillator strengths</span>
+    <span class="n">intensities</span> <span class="o">=</span> <span class="n">Calculator</span><span class="o">.</span><span class="n">infrared_intensities</span><span class="p">(</span><span class="n">oscillator_strengths</span><span class="p">)</span>
+    <span class="c1"># Decide which modes to select</span>
+    <span class="n">modes_selected</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">mode_list</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">index</span><span class="p">,(</span><span class="n">f</span><span class="p">,</span><span class="n">intensity</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">frequencies_cm1</span><span class="p">,</span><span class="n">intensities</span><span class="p">)):</span>
+        <span class="k">if</span> <span class="n">f</span> <span class="o">&gt;</span> <span class="mf">10.0</span> <span class="ow">and</span> <span class="n">intensity</span> <span class="o">&gt;</span> <span class="mf">1.0E-6</span><span class="p">:</span>
+            <span class="n">modes_selected</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">modes_selected</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">mode_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">mode</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">modes_selected</span><span class="p">)</span> <span class="k">if</span> <span class="n">mode</span><span class="p">]</span>
+    <span class="n">drude</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">drude_plasma_au</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">drude_sigma_au</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">permittivityObject</span> <span class="o">=</span> <span class="n">DielectricFunction</span><span class="o">.</span><span class="n">DFT</span><span class="p">(</span>
+                                  <span class="n">mode_list</span><span class="p">,</span> <span class="n">frequencies_au</span><span class="p">,</span> <span class="n">sigmas_au</span><span class="p">,</span> <span class="n">oscillator_strengths</span><span class="p">,</span>
+                                  <span class="n">volume_au</span><span class="p">,</span> <span class="n">drude</span><span class="p">,</span> <span class="n">drude_plasma_au</span><span class="p">,</span> <span class="n">drude_sigma_au</span> <span class="p">)</span>
+    <span class="c1"># Add the optical permittivity to the dielctric function</span>
+    <span class="n">permittivityObject</span><span class="o">.</span><span class="n">setEpsilonInfinity</span><span class="p">(</span><span class="n">epsilon_inf</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">permittivityObject</span></div>
+
+
+<div class="viewcode-block" id="getMaterial">
+<a class="viewcode-back" href="../../autoapi/PDielec/HelperRoutines/index.html#PDielec.HelperRoutines.getMaterial">[docs]</a>
+<span class="k">def</span> <span class="nf">getMaterial</span><span class="p">(</span><span class="n">name</span><span class="p">,</span><span class="n">dataBaseName</span><span class="o">=</span><span class="s1">&#39;MaterialsDataBase.xlsx&#39;</span><span class="p">,</span><span class="n">qmprogram</span><span class="o">=</span><span class="s1">&#39;vasp&#39;</span><span class="p">,</span><span class="n">eckart</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span><span class="n">mass_definition</span><span class="o">=</span><span class="s1">&#39;Average&#39;</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Get a material with the given name.</span>
+
+<span class="sd">    If the name is a file name, it is treated as a DFT (Density Functional Theory) or experimental file.</span>
+<span class="sd">    If the name is a material name in the material database, this is used instead.</span>
+<span class="sd">    Information about the material class can be found here (:class:`~PDielec.Materials.Material`)</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    name : str</span>
+<span class="sd">        The name of the material, which can be a file name or a material name existing in the database.</span>
+<span class="sd">    dataBaseName : str</span>
+<span class="sd">        The name of the database which will be searched from the material</span>
+<span class="sd">    qmprogram : str, optional</span>
+<span class="sd">        The name of the QM program used in the case of Phonopy DFT calculations</span>
+<span class="sd">        Defaults to &#39;vasp&#39;</span>
+<span class="sd">    eckart  : boolean, optional</span>
+<span class="sd">        If true apply eckart conditions in the reader. Defaults to true.</span>
+<span class="sd">    mass_definition : string or list of floats, optional</span>
+<span class="sd">        Default is &#39;Average&#39;</span>
+<span class="sd">        If a list of floats it is a list of the masses to be used.</span>
+<span class="sd">        If a string it must be one of &#39;Average&#39;, &#39;Isotope&#39; or &#39;Program&#39; (case is irrelevant)</span>
+<span class="sd">        - Average causes the average weight for the element to be used</span>
+<span class="sd">        - Isotope causes the most common isotope weight to be used</span>
+<span class="sd">        - Program means use the mass used by the program</span>
+
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    Material (see :class:`~PDielec.Materials.Material`)</span>
+<span class="sd">        The material obtained based on the given name.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    ```</span>
+<span class="sd">    material1 = get_material(&quot;example.dft&quot;)</span>
+<span class="sd">    material2 = get_material(&quot;gold&quot;)</span>
+<span class="sd">    ```</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="c1"># Let&#39;s see if the name is a file name that can be read</span>
+    <span class="n">program</span> <span class="o">=</span> <span class="n">Utilities</span><span class="o">.</span><span class="n">find_program_from_name</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">program</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">reader</span> <span class="o">=</span> <span class="n">Utilities</span><span class="o">.</span><span class="n">get_reader</span><span class="p">(</span><span class="n">name</span><span class="p">,</span><span class="n">program</span><span class="p">,</span><span class="n">qmprogram</span><span class="p">)</span>
+        <span class="n">reader</span><span class="o">.</span><span class="n">read_output</span><span class="p">()</span>
+        <span class="n">permittivityObject</span><span class="o">=</span><span class="n">calculateDFTPermittivityObject</span><span class="p">(</span><span class="n">reader</span><span class="p">,</span><span class="n">sigma</span><span class="o">=</span><span class="mf">5.0</span><span class="p">,</span><span class="n">eckart</span><span class="o">=</span><span class="n">eckart</span><span class="p">,</span><span class="n">mass_definition</span><span class="o">=</span><span class="n">mass_definition</span><span class="p">)</span>
+        <span class="n">cell</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">get_unit_cell</span><span class="p">()</span>
+        <span class="n">material</span> <span class="o">=</span> <span class="n">External</span><span class="p">(</span><span class="s1">&#39;Dielectric layer&#39;</span><span class="p">,</span><span class="n">permittivityObject</span><span class="o">=</span><span class="n">permittivityObject</span><span class="p">,</span><span class="n">cell</span><span class="o">=</span><span class="n">cell</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">dataBase</span> <span class="o">=</span> <span class="n">MaterialsDataBase</span><span class="p">(</span><span class="n">dataBaseName</span><span class="p">)</span>
+        <span class="n">sheets</span> <span class="o">=</span> <span class="n">dataBase</span><span class="o">.</span><span class="n">getSheetNames</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">sheets</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Material name not valid &#39;</span><span class="p">,</span><span class="n">name</span><span class="p">)</span>
+        <span class="n">material</span> <span class="o">=</span> <span class="n">dataBase</span><span class="o">.</span><span class="n">getMaterial</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">material</span></div>
+
+
+<div class="viewcode-block" id="calculateSingleCrystalSpectrum">
+<a class="viewcode-back" href="../../autoapi/PDielec/HelperRoutines/index.html#PDielec.HelperRoutines.calculateSingleCrystalSpectrum">[docs]</a>
+<span class="k">def</span> <span class="nf">calculateSingleCrystalSpectrum</span><span class="p">(</span><span class="n">frequencies_cm1</span><span class="p">,</span> <span class="n">layers</span><span class="p">,</span> <span class="n">incident_angle</span><span class="p">,</span> <span class="n">global_azimuthal_angle</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;Scattering matrix&#39;</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Calculate a single crystal spectrum.</span>
+
+<span class="sd">    Calculate a single crystal spectrum from the frequencies, a list of layers (:class:`~PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer`), the incident angle</span>
+<span class="sd">    the global azimuthal angle and optional specification of the method of calculation.</span>
+<span class="sd">    Information about the layer class can be found here (:class:`~PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer`)</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    frequencies_cm1 : list</span>
+<span class="sd">        A list of frequencies in cm-1.</span>
+<span class="sd">    layers : list</span>
+<span class="sd">        A list of layers ( :class:`~PDielec.GUI.SingleCrystalLayer.SingleCrystalLayer`)</span>
+<span class="sd">    incident_angle : float</span>
+<span class="sd">        The incident angle in degrees.</span>
+<span class="sd">    global_azimuthal_angle : float</span>
+<span class="sd">        The global azimuthal angle in degrees.</span>
+<span class="sd">    method : str</span>
+<span class="sd">        The method for solving Maxwell&#39;s equation either &#39;Scattering matrix&#39; (the default) or &#39;Transfer matrix. See (:class:`~PDielec.GTMcore.ScatteringMatrixSystem` or :class:`~PDielec.GTMcore.TransferMatrixSystem`) for more information.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    ((reflp,refls) (tranp, trans) (absop, absos)) : list of nd.arrrays</span>
+<span class="sd">        - reflp the p- polarised reflection at each frequency as an np.array</span>
+<span class="sd">        - refls the s- polarised reflection at each frequency as an np.array</span>
+<span class="sd">        - tranp the p- polarised transmittance at each frequency as an np.array</span>
+<span class="sd">        - trans the s- polarised transmittance at each frequency as an np.array</span>
+<span class="sd">        - absop the p- polarised absorptance at each frequency as an np.array</span>
+<span class="sd">        - absos the s- polarised absorptance at each frequency as an np.array</span>
+
+<span class="sd">    Example</span>
+<span class="sd">    -------</span>
+
+<span class="sd">    ::</span>
+
+<span class="sd">        air = getMaterial(&#39;air&#39;)</span>
+<span class="sd">        ptfe = getMaterial(&#39;ptfe&#39;)</span>
+<span class="sd">        Sapphire = getMaterial(&#39;Sapphire&#39;)</span>
+<span class="sd">        layers = []</span>
+<span class="sd">        # Add a substrate</span>
+<span class="sd">        layers.append(SingleCrystalLayer(ptfe,thickness=1.0,thicknessUnit=&#39;um&#39;))</span>
+<span class="sd">         # Add the dielectric layer</span>
+<span class="sd">        layers.append(SingleCrystalLayer(Sapphire,hkl=[0,0,1],azimuthal=0.0,thickness=1.0,thicknessUnit=&#39;um&#39;,</span>
+<span class="sd">                                         incoherentOption=&#39;Coherent&#39;))</span>
+<span class="sd">         # Add the superstrate</span>
+<span class="sd">        layers.append(SingleCrystalLayer(air,thickness=1.0,thicknessUnit=&#39;um&#39;))</span>
+<span class="sd">        frequencies_cm1 = np.arange( 0, 200, 0.2 )</span>
+<span class="sd">        incident_angle = 80.0</span>
+<span class="sd">        global_azimuthal_angle = 0.0</span>
+<span class="sd">        (reflectance, transmittance, absorptance) = calculateSingleCrystalSpectrum(frequencies_cm1,layers,incident_angl e, global_azimuthal_angle, method=&#39;Scattering matrix&#39;)</span>
+
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">theta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="mf">0.0</span><span class="p">)</span>
+    <span class="n">phi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="mf">0.0</span><span class="p">)</span>
+    <span class="n">psi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">global_azimuthal_angle</span><span class="p">)</span>
+    <span class="n">incident_angle</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">incident_angle</span><span class="p">)</span>
+    <span class="n">slice_thickness</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">exponent_threshold</span> <span class="o">=</span> <span class="mi">700</span>
+    <span class="n">reflp</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">refls</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">tranp</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">trans</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">absop</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">absos</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">v_cm1</span> <span class="ow">in</span> <span class="n">frequencies_cm1</span><span class="p">:</span>
+        <span class="p">(</span><span class="n">v</span><span class="p">,</span><span class="n">r</span><span class="p">,</span><span class="n">R</span><span class="p">,</span><span class="n">t</span><span class="p">,</span><span class="n">T</span><span class="p">,</span><span class="n">epsilon</span><span class="p">,</span><span class="n">errors</span><span class="p">,</span><span class="n">largest_exponent</span><span class="p">)</span> <span class="o">=</span> <span class="n">solve_single_crystal_equations</span><span class="p">(</span><span class="n">layers</span><span class="p">,</span><span class="n">method</span><span class="p">,</span>
+                                                              <span class="n">theta</span><span class="p">,</span><span class="n">phi</span><span class="p">,</span><span class="n">psi</span><span class="p">,</span><span class="n">incident_angle</span><span class="p">,</span>
+                                                              <span class="n">slice_thickness</span><span class="p">,</span><span class="n">exponent_threshold</span><span class="p">,</span><span class="n">v_cm1</span><span class="p">)</span>
+        <span class="n">reflp</span><span class="o">.</span><span class="n">append</span><span class="p">(</span> <span class="n">R</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">R</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="p">)</span>
+        <span class="n">refls</span><span class="o">.</span><span class="n">append</span><span class="p">(</span> <span class="n">R</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">R</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="p">)</span>
+        <span class="n">tranp</span><span class="o">.</span><span class="n">append</span><span class="p">(</span> <span class="n">T</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="p">)</span>
+        <span class="n">trans</span><span class="o">.</span><span class="n">append</span><span class="p">(</span> <span class="n">T</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="p">)</span>
+        <span class="n">absop</span><span class="o">.</span><span class="n">append</span><span class="p">(</span> <span class="mf">1.0</span> <span class="o">-</span> <span class="n">R</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">R</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">T</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="p">)</span>
+        <span class="n">absos</span><span class="o">.</span><span class="n">append</span><span class="p">(</span> <span class="mf">1.0</span> <span class="o">-</span> <span class="n">R</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">R</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">-</span> <span class="n">T</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="p">)</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">reflp</span><span class="p">,</span><span class="n">refls</span><span class="p">]),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">tranp</span><span class="p">,</span><span class="n">trans</span><span class="p">]),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">absop</span><span class="p">,</span><span class="n">absos</span><span class="p">])</span></div>
+
+
+<div class="viewcode-block" id="calculatePowderSpectrum">
+<a class="viewcode-back" href="../../autoapi/PDielec/HelperRoutines/index.html#PDielec.HelperRoutines.calculatePowderSpectrum">[docs]</a>
+<span class="k">def</span> <span class="nf">calculatePowderSpectrum</span><span class="p">(</span><span class="n">frequencies_cm1</span><span class="p">,</span> <span class="n">dielectric</span><span class="p">,</span> <span class="n">matrix</span><span class="p">,</span> <span class="n">volume_fraction</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;Maxwell-Garnett&#39;</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Calculate the powder IR spectrum of a mixture of spherical dielectric particles in a matrix with a given volume fraction.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    frequencies_cm1 : list</span>
+<span class="sd">        A list of frequencies in cm-1.</span>
+<span class="sd">    dielectric : material</span>
+<span class="sd">        A material with a tensor permittivity.</span>
+<span class="sd">    matrix : material</span>
+<span class="sd">        A material with a scalar permittivity.</span>
+<span class="sd">    volume_fraction : float</span>
+<span class="sd">        The volume fraction of dielectric.</span>
+<span class="sd">    method : str</span>
+<span class="sd">        One of &#39;Maxwell-Garnett&#39;, &#39;Bruggeman&#39;.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    absorption,permittivity : tuple of np.arrays</span>
+<span class="sd">        absorption: Absorption coefficients in cm-1.</span>
+<span class="sd">        permittivity: Complex permittivities</span>
+
+<span class="sd">    Example</span>
+<span class="sd">    -------</span>
+<span class="sd">    ```</span>
+<span class="sd">    frequencies_cm1 = np.arange( 0, 200, 0.2 )</span>
+<span class="sd">    matrix = getMaterial(&#39;ptfe&#39;)</span>
+<span class="sd">    dielectric = getMaterial(&#39;Sapphire&#39;)</span>
+<span class="sd">    method = &#39;Maxwell-Garnett&#39; </span>
+<span class="sd">    volume_fraction = 0.1</span>
+<span class="sd">    absorption,permittivity = calculatePowderSpectrum(frequencies_cm1,dielectric, matrix, volume_fraction)</span>
+<span class="sd">    ```</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">method</span> <span class="o">=</span> <span class="n">method</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+    <span class="n">particle_size_mu</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">particle_sigma_mu</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">matrixPermittivityFunction</span> <span class="o">=</span> <span class="n">matrix</span><span class="o">.</span><span class="n">getPermittivityFunction</span><span class="p">()</span>
+    <span class="n">shape</span> <span class="o">=</span> <span class="s1">&#39;Sphere&#39;</span>
+    <span class="n">depolarisation</span> <span class="o">=</span> <span class="n">Calculator</span><span class="o">.</span><span class="n">initialise_sphere_depolarisation_matrix</span><span class="p">()</span>
+    <span class="n">concentration</span> <span class="o">=</span> <span class="mf">1.0</span>
+    <span class="n">atr_refractive_index</span> <span class="o">=</span> <span class="mf">5.0</span>
+    <span class="n">atr_theta</span> <span class="o">=</span> <span class="mi">45</span>
+    <span class="n">atr_spolfraction</span>  <span class="o">=</span> <span class="mf">1.0</span>
+    <span class="n">bubble_vf</span> <span class="o">=</span> <span class="mf">0.0</span>
+    <span class="n">bubble_radius</span> <span class="o">=</span> <span class="mf">0.0</span>
+    <span class="n">previous_solution_shared</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span> <span class="mi">3</span> <span class="p">)</span>
+    <span class="n">crystalPermittivityFunction</span> <span class="o">=</span> <span class="n">dielectric</span><span class="o">.</span><span class="n">getPermittivityFunction</span><span class="p">()</span>
+    <span class="n">results</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">v_cm1</span> <span class="ow">in</span> <span class="n">frequencies_cm1</span><span class="p">:</span>
+        <span class="n">crystalPermittivity</span> <span class="o">=</span> <span class="n">crystalPermittivityFunction</span><span class="p">(</span><span class="n">v_cm1</span><span class="p">)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">Calculator</span><span class="o">.</span><span class="n">solve_effective_medium_equations</span><span class="p">(</span><span class="n">method</span><span class="p">,</span><span class="n">volume_fraction</span><span class="p">,</span>
+                       <span class="n">particle_size_mu</span><span class="p">,</span><span class="n">particle_sigma_mu</span><span class="p">,</span><span class="n">matrixPermittivityFunction</span><span class="p">,</span>
+                       <span class="n">shape</span><span class="p">,</span><span class="n">depolarisation</span><span class="p">,</span><span class="n">concentration</span><span class="p">,</span>
+                       <span class="n">atr_refractive_index</span><span class="p">,</span><span class="n">atr_theta</span><span class="p">,</span><span class="n">atr_spolfraction</span><span class="p">,</span>
+                       <span class="n">bubble_vf</span><span class="p">,</span><span class="n">bubble_radius</span><span class="p">,</span><span class="n">previous_solution_shared</span><span class="p">,(</span><span class="n">v_cm1</span><span class="p">,</span><span class="n">crystalPermittivity</span><span class="p">))</span>
+        <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+    <span class="c1"># Prepare lists for results</span>
+    <span class="n">permittivity</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">absorptionCoefficient</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">molarAbsorptionCoefficient</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">sp_atr</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">v</span><span class="p">,</span><span class="n">method</span><span class="p">,</span><span class="n">size_mu</span><span class="p">,</span><span class="n">size_sigma</span><span class="p">,</span><span class="n">shape</span><span class="p">,</span><span class="n">data</span><span class="p">,</span><span class="n">trace</span><span class="p">,</span> <span class="n">absorption_coefficient</span><span class="p">,</span><span class="n">molar_absorption_coefficient</span><span class="p">,</span><span class="n">spatr</span> <span class="ow">in</span> <span class="n">results</span><span class="p">:</span>
+         <span class="n">permittivity</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">trace</span><span class="p">)</span>
+         <span class="n">absorptionCoefficient</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">absorption_coefficient</span><span class="p">)</span>
+         <span class="n">molarAbsorptionCoefficient</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">molar_absorption_coefficient</span><span class="p">)</span>
+         <span class="n">sp_atr</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">spatr</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">absorptionCoefficient</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">permittivity</span><span class="p">)</span></div>
+
+</pre></div>
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          
+          
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2024, John Kendrick and Andrew Burnett
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer no-toc">
+      
+      
+      
+    </aside>
+  </div>
+</div><script src="../../_static/documentation_options.js?v=23ce250a"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/scripts/furo.js?v=4e2eecee"></script>
+    </body>
+</html>

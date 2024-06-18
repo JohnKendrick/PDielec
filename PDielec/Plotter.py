@@ -1,12 +1,48 @@
 #!/usr/bin/python
-"""Do some plotting for the dielectric functions"""
-from __future__ import print_function, division
+#
+# Copyright 2024 John Kendrick & Andrew Burnett
+#
+# This file is part of PDielec
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the MIT License
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+#
+# You should have received a copy of the MIT License along with this program, if not see https://opensource.org/licenses/MIT
+#
+"""
+Do some pretty printing for the dielectric functions
+"""
 import sys
 import numpy as np
 
 
 def print_ints(title, ints, no_per_line=8, format="{:9d}", file=sys.stdout, separator=" "):
-    """Print ints data """
+    """
+    Print ints data.
+
+    Parameters
+    ----------
+    title : str
+       A title for the print
+    ints : a list of ints
+       A list of integers to be printed
+    no_per_line : int, optional
+       The number of  integers per line of output
+    format : str, optional 
+        a format descriptor (defaults to 9d)
+    file : int, optional 
+        a file descriptor (defaults to stdout)
+    separator : str
+        the separator to use between ints (defaults to space)
+
+    Returns
+    -------
+    None
+    """
     #
     # Print out a list of ints prettily
     #
@@ -26,7 +62,28 @@ def print_ints(title, ints, no_per_line=8, format="{:9d}", file=sys.stdout, sepa
     return
 
 def print_strings(title, strings, no_per_line=8, format="{:9s}", file=sys.stdout, separator=" "):
-    """Print strings data """
+    """
+    Print strings data.
+
+    Parameters
+    ----------
+    title : str
+       A title for the print
+    strings : a list of strings
+       A list of strings to be printed
+    no_per_line : int, optional
+       The number of  integers per line of output
+    format : str, optional 
+        a format descriptor (defaults to 9s)
+    file : int, optional 
+        a file descriptor (defaults to stdout)
+    separator : str
+        the separator to use between ints (defaults to space)
+
+    Returns
+    -------
+    None
+    """
     #
     # Print out a list of strings prettily
     #
@@ -47,7 +104,28 @@ def print_strings(title, strings, no_per_line=8, format="{:9s}", file=sys.stdout
 
 
 def print_reals(title, reals, no_per_line=8, format="{:9.2f}", file=sys.stdout, separator=" "):
-    """Print reals data """
+    """
+    Print reals data
+
+    Parameters
+    ----------
+    title : str
+       A title for the print
+    reals : a list of reals
+       A list of reals to be printed
+    no_per_line : int, optional
+       The number of  integers per line of output (default is 8)
+    format : str, optional 
+        a format descriptor (defaults to 9.2f)
+    file : int, optional 
+        a file descriptor (defaults to stdout)
+    separator : str
+        the separator to use between ints (defaults to space)
+
+    Returns
+    -------
+    None
+    """
     #
     # Print out a list of reals prettily
     #
@@ -68,7 +146,24 @@ def print_reals(title, reals, no_per_line=8, format="{:9.2f}", file=sys.stdout, 
 
 
 def print3x3(title, array, format="{:14.6f}", file=sys.stdout, separator=" "):
-    """Print 3x3 matrix"""
+    """
+    Print a 3x3 matrix.
+
+    Parameters
+    ----------
+    array : tensor 3x3
+        The array to be printed
+    format : str, optional 
+        a format descriptor (defaults to 9.2f)
+    file : int, optional 
+        a file descriptor (defaults to stdout)
+    separator : str
+        the separator to use between ints (defaults to space)
+
+    Returns
+    -------
+    None
+    """
     #
     # Print out a 3x3 tensor matrix
     #

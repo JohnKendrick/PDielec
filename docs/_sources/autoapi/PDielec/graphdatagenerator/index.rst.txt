@@ -1,0 +1,46 @@
+PDielec.graphdatagenerator
+==========================
+
+.. py:module:: PDielec.graphdatagenerator
+
+.. autoapi-nested-parse::
+
+   graphdatagenerator command
+
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   PDielec.graphdatagenerator.main
+
+
+Module Contents
+---------------
+
+.. py:function:: main()
+
+    Main driver routine for graphdatagenerator.
+
+    This routine reads a collection of spreadsheets containing spectra and generates a single spreadsheet that collates the results.
+    It is a utility programme and not part of the main PDielec or PDGui packages
+
+   ::
+
+       graphdatagenerator file1 file2...
+       graphdatagenerator: Calculates the cross-correlation of spectra calculated using pdielec
+                -column column  Take the data from column in each spreadsheet
+                                C Averaged
+                                D MG      
+                                E Mie/0.1 
+                                F Mie/1.0 
+                                G Mie/2.0 
+                                H Mie/3.0 
+                -sheet [molar/absorption/real/imaginary/atr]
+                -excel filename
+
+    
+
+

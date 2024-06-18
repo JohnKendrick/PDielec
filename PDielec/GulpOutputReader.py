@@ -1,6 +1,6 @@
 #!/usr/bin/python
 #
-# Copyright 2015 John Kendrick
+# Copyright 2024 John Kendrick & Andrew Burnett
 #
 # This file is part of PDielec
 #
@@ -11,19 +11,11 @@
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 #
-# You should have received a copy of the MIT License
-# along with this program, if not see https://opensource.org/licenses/MIT
+# You should have received a copy of the MIT License along with this program, if not see https://opensource.org/licenses/MIT
 #
-"""Read the contents of a Gulp output file
-   It is quite difficult to work out what is a suitable set of commands for gulp
-   The following seems to work OK, important are
-   phon - a phonon calculation
-   intens - calculate the IR intensities
-   eigen - print the eigen vectors of the dynamical matrix
-   cart - print the cartesian coordinates (this is the only way of see what all the atom types are)
-   nosym - make sure the calculation is done in P1
-   qeq molq optimise conp qok nomodcoord prop phon intens eigen cart
-"""
+'''
+Module to read the contents of a Gulp output file
+'''
 
 import re
 import os
@@ -33,18 +25,110 @@ from PDielec.GenericOutputReader import GenericOutputReader
 
 
 class GulpOutputReader(GenericOutputReader):
-    """Read the contents of a Gulp output file
-       It is quite difficult to work out what is a suitable set of commands for gulp
-       The following seems to work OK, important are
-       phon - a phonon calculation
-       intens - calculate the IR intensities
-       eigen - print the eigen vectors of the dynamical matrix
-       cart - print the cartesian coordinates (this is the only way of see what all the atom types are)
-       nosym - make sure the calculation is done in P1
-       qeq molq optimise conp qok nomodcoord prop phon intens eigen cart
+    """
+    Read the contents of a Gulp output file.
+
+    Inherits from :class:`~PDielec.GenericOutputReader.GenericOutputReader`
+
+    This function provides a way to read and interpret the contents of a Gulp output file, 
+    advising on a suitable set of command parameters that can be used for various calculations 
+    such as phonon calculations, IR intensity calculations, printing eigen vectors of the dynamical 
+    matrix, and printing cartesian coordinates. It emphasizes the importance of certain parameters 
+    to ensure accurate and comprehensive results.
+
+    Parameters
+    ----------
+    names : list
+        A list containing the name(s) of the Gulp output file(s).
+
+    Attributes
+    ----------
+    _gulpfile : str
+        The name of the first Gulp output file in the `names` list.
+    name : str
+        The absolute path of the `_gulpfile`.
+    type : str
+        A string indicating the type of the reader object, set to 'Gulp output'.
+    shells : int
+        Number of shells, initialized to 0.
+    ncores : int
+        Number of cores, initialized to 0.
+    _cartesian_coordinates : list
+        List to store cartesian coordinates, initially empty.
+    _fractional_coordinates : list
+        List to store fractional coordinates, initially empty.
+    atomic_charges : list
+        List to store atomic charges, initially empty.
+    _mass_dictionary : dict
+        Dictionary to store mass information, initially empty.
+    temperature : NoneType or float
+        Temperature, initialized as None.
+    elastic_constant_tensor : NoneType or ndarray
+        Elastic constant tensor, initialized as None.
+    nshells : NoneType or int
+        Number of shells, initialized as None (may be updated later).
+    nions_irreducible : NoneType or int
+        Number of irreducible ions, initialized as None.
+    _atom_types : NoneType or list
+        List of atom types, initialized as None.
+
+    Notes
+    -----
+    It is quite difficult to work out what is a suitable set of commands for Gulp. The following seems 
+    to work OK, with emphasis on these important parameters:
+    - phon: a phonon calculation.
+    - intens: calculate the IR intensities.
+    - eigen: print the eigen vectors of the dynamical matrix.
+    - cart: print the cartesian coordinates (this is the only way of seeing what all the atom types are).
+    - nosym: make sure the calculation is done in P1.
+    Also includes options for various modifications and optimizations like qeq, molq, optimise, conp, qok, 
+    nomodcoord, and prop.
     """
 
     def __init__(self, names):
+        """
+        Constructor for initializing the Gulp output reader object.
+
+        Parameters
+        ----------
+        names : list
+            A list containing the name(s) of the Gulp output file(s).
+
+        Attributes
+        ----------
+        _gulpfile : str
+            The name of the first Gulp output file in the `names` list.
+        name : str
+            The absolute path of the `_gulpfile`.
+        type : str
+            A string indicating the type of the reader object, set to 'Gulp output'.
+        shells : int
+            Number of shells, initialized to 0.
+        ncores : int
+            Number of cores, initialized to 0.
+        _cartesian_coordinates : list
+            List to store cartesian coordinates, initially empty.
+        _fractional_coordinates : list
+            List to store fractional coordinates, initially empty.
+        atomic_charges : list
+            List to store atomic charges, initially empty.
+        _mass_dictionary : dict
+            Dictionary to store mass information, initially empty.
+        temperature : NoneType or float
+            Temperature, initialized as None.
+        elastic_constant_tensor : NoneType or ndarray
+            Elastic constant tensor, initialized as None.
+        nshells : NoneType or int
+            Number of shells, initialized as None (may be updated later).
+        nions_irreducible : NoneType or int
+            Number of irreducible ions, initialized as None.
+        _atom_types : NoneType or list
+            List of atom types, initialized as None.
+
+        Notes
+        -----
+        This constructor inherits from `GenericOutputReader` and is designed specifically for reading and parsing Gulp output files.
+        """        
         GenericOutputReader.__init__(self, names)
         self._gulpfile               = names[0]
         self.name                    = os.path.abspath(self._gulpfile)
@@ -63,7 +147,17 @@ class GulpOutputReader(GenericOutputReader):
         return
 
     def _read_output_files(self):
-        """Read the .gout file"""
+        """
+        Initialise the phrases needed to search the .gout file and the routines to use when a match is found. Read the .gout file.
+
+        Parameters
+        ----------
+        None
+
+        Returns
+        -------
+        None
+        """
         self.manage = {}   # Empty the dictionary matching phrases
         self.manage['nions']  = (re.compile(' *Total number atoms'), self._read_total_number_of_atoms)
         self.manage['nions_irreducible']  = (re.compile(' *Number of irreducible atoms'), self._read_number_of_irreducible_atoms)
@@ -82,7 +176,17 @@ class GulpOutputReader(GenericOutputReader):
         self._read_output_file(self._gulpfile)
 
     def _read_elastic_constants(self, line):
-        """Read the elastic constants"""
+        """
+        Read the elastic constants.
+
+        Parameters
+        ----------
+        line : str (not used)
+
+        Returns
+        -------
+        None
+        """
         for skip in range(0, 5):
             line = self.file_descriptor.readline()
         elastic = []
@@ -96,7 +200,13 @@ class GulpOutputReader(GenericOutputReader):
         return
 
     def _read_frequencies(self, line):
-        """Read the frequencies"""
+        """
+        Read the frequencies
+
+        Parameters
+        ----------
+        line : str (not used)
+        """
         self.frequencies = []
         self.mass_weighted_normal_modes = []
         line = self.file_descriptor.readline()
@@ -139,15 +249,45 @@ class GulpOutputReader(GenericOutputReader):
             line = self.file_descriptor.readline()
 
     def _read_total_number_of_atoms(self, line):
-        """Read the number of atoms"""
+        """
+        Read the number of atoms.
+
+        Parameters
+        ----------
+        line : str 
+
+        Returns
+        -------
+        None
+        """
         self.nions = int(line.split()[4])
 
     def _read_number_of_irreducible_atoms(self, line):
-        """Read the number of irreducible atoms"""
+        """
+        Read the number of irreducible atoms
+
+        Parameters
+        ----------
+        line : str 
+
+        Returns
+        -------
+        None
+        """
         self.nions_irreducible = int(line.split()[5])
 
     def _read_lattice(self, line):
-        """Read the lattice vectors"""
+        """
+        Read the lattice vectors.
+
+        Parameters
+        ----------
+        line : str (not used)
+
+        Returns
+        -------
+        None
+        """
         line = self.file_descriptor.readline()
         line = self.file_descriptor.readline()
         x = float(line.split()[0])
@@ -164,10 +304,7 @@ class GulpOutputReader(GenericOutputReader):
         y = float(line.split()[1])
         z = float(line.split()[2])
         cvector = [x, y, z]
-        cell = UnitCell(avector, bvector, cvector)
-        self.unit_cells.append(cell)
-        self.volume = cell.volume
-        self.ncells = len(self.unit_cells)
+        cell = UnitCell(avector, bvector, cvector, 'Angstrom')
         # Convert fractional coordinates to cartesians
         if len(self._cartesian_coordinates) == 0:
             if len(self._fractional_coordinates) == 0:
@@ -178,11 +315,24 @@ class GulpOutputReader(GenericOutputReader):
                 self.cartesian_coordinates.append(atom_cart)
             # end for
         # end if
-        self.unit_cells[-1].set_fractional_coordinates(self._fractional_coordinates)
-        self.unit_cells[-1].set_element_names(self._atom_types)
+        cell.set_fractional_coordinates(self._fractional_coordinates)
+        cell.set_element_names(self._atom_types)
+        self.unit_cells.append(cell)
+        self.volume = cell.getVolume('Angstrom')
+        self.ncells = len(self.unit_cells)
 
     def _read_cellcontents(self, line):
-        """Read the cell contents in xyz space"""
+        """
+        Read the cell contents in xyz space
+
+        Parameters
+        ----------
+        line : str (not used)
+
+        Returns
+        -------
+        None
+        """
         self._atom_types = []
         self.masses = []
         self._cartesian_coordinates = []
@@ -223,7 +373,17 @@ class GulpOutputReader(GenericOutputReader):
         return
 
     def _read_cellcontentsf(self, line):
-        """Read the cell contents fractional space"""
+        """
+        Read the cell contents in fractional space.
+
+        Parameters
+        ----------
+        line : str (not used)
+
+        Returns
+        -------
+        None
+        """
         self._atom_types = []
         self.masses = []
         self._fractional_coordinates = []
@@ -259,7 +419,18 @@ class GulpOutputReader(GenericOutputReader):
         return
 
     def _read_species(self, line):
-        """Read species information"""
+        """
+        Read species information
+
+        Parameters
+        ----------
+        line : str (not used)
+
+        Returns
+        -------
+        None
+
+        """
         self.species = []
         self.mass_per_type = []
         self._mass_dictionary = {}
@@ -280,14 +451,43 @@ class GulpOutputReader(GenericOutputReader):
         return
 
     def _read_born_charges(self, line):
-        """Read the born charges from the gulp file.
-           Each column of the output refers to a given field direction
-           Each row in the row refers the atomic displacement
-           So the numbers in the output are arrange  [[a1x a1y a1z]
-                                                      [a2x a2y a3z]
-                                                      [a3x a3y a3z]]
-           The output tensor needs them arranged     [[a1x a1y a1z] [a2x a2y a2z] [a3x a3y a3z]]
-           where 1,2,3 are the field directions and x, y, z are the atomic displacements"""
+        """
+        Read the born charges from the gulp file.
+
+        This function reads the born charges as arranged in the gulp file. Each column 
+        in the output fetched refers to a given field direction, and each row refers 
+        to the atomic displacement. The function rearranges the output to match the 
+        required tensor format where 1, 2, and 3 are the field directions, and x, y, 
+        and z are the atomic displacements.
+
+        Parameters
+        ----------
+        line : str
+            Ignored
+
+        Returns
+        -------
+        numpy.ndarray
+            The born charges arranged in the tensor format as specified. The format
+            of the tensor is a square matrix where each row is [ax, ay, az] for atomic
+            displacements under a particular field direction.
+
+        Examples
+        --------
+        Consider the output format [[a1x a1y a1z]
+                                    [a2x a2y a2z]
+                                    [a3x a3y a3z]]
+
+        The function rearranges it to the required format:
+        [[a1x a1y a1z] [a2x a2y a2z] [a3x a3y a3z]]
+
+        Notes
+        -----
+        The original output from the gulp file is read line by line, with each line representing
+        the atomic displacement in each of the field directions. The reformatted output aligns
+        these displacements into a more conventional tensor format for further processing or
+        analysis.
+        """
         self.born_charges = []
         for skip in range(0, 5):
             line = self.file_descriptor.readline()
@@ -307,7 +507,13 @@ class GulpOutputReader(GenericOutputReader):
         return
 
     def _read_optical_dielectric(self, line):
-        """Read optical dielectric constant"""
+        """
+        Read optical dielectric constant
+
+        Parameters
+        ----------
+        line : str (not used)
+        """
         for skip in range(0, 5):
             line = self.file_descriptor.readline()
         # this is the zero frequency optical dielectric constant
@@ -320,7 +526,17 @@ class GulpOutputReader(GenericOutputReader):
         return
 
     def _read_static_dielectric(self, line):
-        """Read static dielectric constant"""
+        """
+        Read static dielectric constant
+
+        Parameters
+        ----------
+        line : str (not used)
+
+        Returns
+        -------
+        None
+        """
         for skip in range(0, 5):
             line = self.file_descriptor.readline()
         # this is the zero frequency static dielectric constant
@@ -333,17 +549,47 @@ class GulpOutputReader(GenericOutputReader):
         return
 
     def _read_temperature(self, line):
-        """Read temperature"""
+        """
+        Read temperature
+
+        Parameters
+        ----------
+        line : str
+
+        Returns
+        -------
+        None
+        """
         self.temperature = float(line.split()[4])
         return
 
     def _read_external_pressure(self, line):
-        """Read external pressure"""
+        """
+        Read external pressure
+
+        Parameters
+        ----------
+        line : str
+
+        Returns
+        -------
+        None
+        """
         self.pressure = float(line.split()[4])
         return
 
     def _read_energies(self, line):
-        """Read energies"""
+        """
+        Read energies
+
+        Parameters
+        ----------
+        line : str
+
+        Returns
+        -------
+        None
+        """
         #line = self.file_descriptor.readline()
         self.final_free_energy = float(line.split()[4])
         line = self.file_descriptor.readline()

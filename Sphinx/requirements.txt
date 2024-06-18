@@ -1,0 +1,6 @@
+sphinx
+sphinx-autoapi
+sphinxcontrib.bibtex
+cloud_sptheme
+furo
+ghp-import

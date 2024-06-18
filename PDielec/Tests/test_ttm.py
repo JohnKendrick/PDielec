@@ -1,4 +1,18 @@
 # -*- coding: utf-8 -*-
+#
+# Copyright 2024 John Kendrick & Andrew Burnett
+#
+# This file is part of PDielec
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the MIT License
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+#
+# You should have received a copy of the MIT License along with this program, if not see https://opensource.org/licenses/MIT
+#
 """
 Examples of plots and calculations using the tmm package.
 """
@@ -31,6 +45,24 @@ def sample0():
     Here's a thin non-absorbing layer, on top of a thick absorbing layer, with
     air on both sides. Plotting reflected intensity versus wavenumber, at two
     different incident angles.
+
+    Parameters
+    ----------
+    None
+
+    Returns
+    -------
+    None
+
+    Notes
+    -----
+    None
+
+    Examples
+    --------
+    The function will plot the reflected intensity as a function of wavenumber for two 
+    different incident angles, but since no specific parameters are given, and without a 
+    specific function signature, the detailed usage of the function cannot be described.
     """
     # list of layer thicknesses in nm
     d_list = [inf, 10*1.0E3, inf]
@@ -80,6 +112,24 @@ def sample1():
     Here's a thin non-absorbing layer, on top of a thick absorbing layer, with
     air on both sides. Plotting reflected intensity versus wavenumber, at two
     different incident angles.
+
+    Parameters
+    ----------
+    None
+
+    Returns
+    -------
+    None
+
+    Notes
+    -----
+    None
+
+    Examples
+    --------
+    The function will plot the reflected intensity as a function of wavenumber for two 
+    different incident angles, but since no specific parameters are given, and without a 
+    specific function signature, the detailed usage of the function cannot be described.
     """
     # list of layer thicknesses in nm
     d_list = [inf, 100, 300, inf]
@@ -106,11 +156,23 @@ def sample1():
 
 def sample2():
     """
-    Here's the transmitted intensity versus wavelength through a single-layer
-    film which has some complicated wavelength-dependent index of refraction.
-    (I made these numbers up, but in real life they could be read out of a
-    graph / table published in the literature.) Air is on both sides of the
-    film, and the light is normally incident.
+    Here's an explanation of the transmitted intensity versus wavelength through a single-layer film which has some complicated wavelength-dependent index of refraction. (I made these numbers up, but in real life they could be read out of a graph / table published in the literature.) Air is on both sides of the film, and the light is normally incident.
+
+    Parameters
+    ----------
+    None
+
+    Returns
+    -------
+    None
+
+    Notes
+    -----
+    The detailed explanation or description of the function or process should be elaborated here, along with any assumptions made or sources of the hypothetical data. Additionally, explain the significance of the transmitted intensity and the wavelength in the context of the single-layer film with a complicated wavelength-dependent index of refraction.
+
+    Examples
+    --------
+    None provided.
     """
     #index of refraction of my material: wavelength in nm versus index.
     material_nk_data = array([[200, 2.1+0.1j],
@@ -139,6 +201,23 @@ def sample3():
     Here is a calculation of the psi and Delta parameters measured in
     ellipsometry. This reproduces Fig. 1.14 in Handbook of Ellipsometry by
     Tompkins, 2005.
+
+    Parameters
+    ----------
+    None
+
+    Returns
+    -------
+    None
+
+    Notes
+    -----
+    None
+
+    References
+    ----------
+    - Tompkins, Harland G., and Eugene A. Irene, eds. Handbook of ellipsometry.
+      William Andrew, 2005.
     """
     n_list = [1, 1.46, 3.87+0.02j]
     ds = linspace(0, 1000, num=100) #in nm
@@ -162,6 +241,12 @@ def sample4():
     """
     Here is an example where we plot absorption and Poynting vector
     as a function of depth.
+
+    Examples
+    --------
+    ```python
+    # Example usage here
+    ```
     """
     d_list = [inf, 100, 300, inf] #in nm
     n_list = [1, 2.2+0.2j, 3.3+0.3j, 1]
@@ -191,6 +276,10 @@ def sample4():
 def sample5():
     """
     Color calculations: What color is a air / thin SiO2 / Si wafer?
+
+    Notes
+    -----
+    This function calculates the perceived color of a sandwich structure consisting of air, thin SiO2 (silicon dioxide), and silicon (Si) wafer layers by considering optical interference effects and the wavelength-dependent refractive indices of the materials involved. The calculation is based on the interference of light waves that are reflected at the interfaces between the different materials. The color observed is a result of constructive and destructive interference of these waves, which depends on the thickness of the SiO2 layer and the incident angle of light.
     """
     if not colors_were_imported:
         print('Colorpy was not detected (or perhaps an error occurred when',
@@ -278,10 +367,13 @@ def sample5():
 
 def sample6():
     """
-    An example reflection plot with a surface plasmon resonance (SPR) dip.
-    Compare with http://doi.org/10.2320/matertrans.M2010003 ("Spectral and
-    Angular Responses of Surface Plasmon Resonance Based on the Kretschmann
-    Prism Configuration") Fig 6a
+    An example reflection plot with a surface plasmon resonance (SPR) dip. Compare with http://doi.org/10.2320/matertrans.M2010003 ("Spectral and Angular Responses of Surface Plasmon Resonance Based on the Kretschmann Prism Configuration") Fig 6a.
+
+    Notes
+    -----
+    Compare with http://doi.org/10.2320/matertrans.M2010003
+    ("Spectral and Angular Responses of Surface Plasmon Resonance Based on the Kretschmann
+    Prism Configuration") Fig 6a.
     """
     # list of layer thicknesses in nm
     d_list = [inf, 5, 30, inf]

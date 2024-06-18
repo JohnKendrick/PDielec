@@ -25,7 +25,7 @@ Also a scattering matrix has been implemented as described in the PyLlama softwa
 A summary of the theory underlying the transfer and scattering matrix methods is given to aid in the understanding of the methods implemented and the range of their applications.
 
 In general PDGui can handle multilayered frequency-dependent films, sandwiched between a superstrate and a substrate.  
-For the sake of simplicity, the following will describe a system with a single dielectric (which is defined from the calculated permittivity from a DFT calculation or an experimental file. 
+For the sake of simplicity, the following will describe a system with a single dielectric (which is defined from the calculated permittivity from a DFT calculation or an experimental file). 
 The media will be indexed 0, 1 and 2 for the superstrate, dielectric and substrate respectively.
 A schematic illustrating this is shown in :numref:`fig-definition-of-RTA`.
 To aid understanding of the input and output and the limitations of the methods used, a brief summary of the transfer matrix method is given first, specific to its application in PDGui.

@@ -1,0 +1,1707 @@
+<!doctype html>
+<html class="no-js" lang="en" data-content_root="../../">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" />
+
+    <!-- Generated with Sphinx 7.3.7 and Furo 2024.05.06 -->
+        <title>PDielec.pdmake - PDielec: John Kendrick &amp; Andrew Burnett</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=92fd9be5" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=387cc868" />
+    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=fd3f3429" />
+    <link rel="stylesheet" type="text/css" href="../../_static/table_styling.css?v=a1a2a898" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?v=36a5483c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css?v=2e0a580d" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f8f8f8;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-half" viewBox="0 0 24 24">
+    <title>Auto light/dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M13 12h5" />
+      <path d="M13 15h4" />
+      <path d="M13 18h1" />
+      <path d="M13 9h4" />
+      <path d="M13 6h1" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
+      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+      <path d="M13.5 6.5l4 4" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" /
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path
+        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../../index.html"><div class="brand">PDielec: John Kendrick & Andrew Burnett</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon no-toc" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../../index.html">
+  
+  
+  <span class="sidebar-brand-text">PDielec: John Kendrick & Andrew Burnett</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../../search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <p class="caption" role="heading"><span class="caption-text">Software</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../pdgui.html">PDGui</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../software.html">Other Software Components</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Theory</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../theory_powder.html">Theory for Light Scattering from Powders</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../theory_single_crystal.html">Theory for Single Crystal Optics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../analysis.html">Phonon Analysis</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Applications</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../application_notes_1.html">Applications of Effective Medium Theory</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../application_notes_2.html">Single Crystal Applications</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API</span></p>
+<ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../autoapi/index.html">API Reference</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of API Reference</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../autoapi/PDielec/index.html">PDielec</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of PDielec</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../autoapi/PDielec/GUI/index.html">PDielec.GUI</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of PDielec.GUI</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../autoapi/PDielec/GUI/AnalysisTab/index.html">PDielec.GUI.AnalysisTab</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../autoapi/PDielec/GUI/App/index.html">PDielec.GUI.App</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../autoapi/PDielec/GUI/FitterTab/index.html">PDielec.GUI.FitterTab</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../autoapi/PDielec/GUI/MainTab/index.html">PDielec.GUI.MainTab</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../autoapi/PDielec/GUI/NoteBook/index.html">PDielec.GUI.NoteBook</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../autoapi/PDielec/GUI/OpenGLWidget/index.html">PDielec.GUI.OpenGLWidget</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../autoapi/PDielec/GUI/PlottingTab/index.html">PDielec.GUI.PlottingTab</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../autoapi/PDielec/GUI/PowderScenarioTab/index.html">PDielec.GUI.PowderScenarioTab</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../autoapi/PDielec/GUI/ScenarioTab/index.html">PDielec.GUI.ScenarioTab</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../autoapi/PDielec/GUI/SettingsTab/index.html">PDielec.GUI.SettingsTab</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../autoapi/PDielec/GUI/SingleCrystalLayer/index.html">PDielec.GUI.SingleCrystalLayer</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../autoapi/PDielec/GUI/SingleCrystalScenarioTab/index.html">PDielec.GUI.SingleCrystalScenarioTab</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../autoapi/PDielec/GUI/SpreadSheetManager/index.html">PDielec.GUI.SpreadSheetManager</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../autoapi/PDielec/GUI/ViewerTab/index.html">PDielec.GUI.ViewerTab</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/AbinitOutputReader/index.html">PDielec.AbinitOutputReader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/Calculator/index.html">PDielec.Calculator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/CastepOutputReader/index.html">PDielec.CastepOutputReader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/Constants/index.html">PDielec.Constants</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/CrystalOutputReader/index.html">PDielec.CrystalOutputReader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/DielectricFunction/index.html">PDielec.DielectricFunction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/ExperimentOutputReader/index.html">PDielec.ExperimentOutputReader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/GTMcore/index.html">PDielec.GTMcore</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/GenericOutputReader/index.html">PDielec.GenericOutputReader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/GulpOutputReader/index.html">PDielec.GulpOutputReader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/HelperRoutines/index.html">PDielec.HelperRoutines</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/IO/index.html">PDielec.IO</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/Materials/index.html">PDielec.Materials</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/Mie/index.html">PDielec.Mie</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/PhonopyOutputReader/index.html">PDielec.PhonopyOutputReader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/Plotter/index.html">PDielec.Plotter</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/QEOutputReader/index.html">PDielec.QEOutputReader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/SuperCell/index.html">PDielec.SuperCell</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/UnitCell/index.html">PDielec.UnitCell</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/Utilities/index.html">PDielec.Utilities</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/VaspOutputReader/index.html">PDielec.VaspOutputReader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/checkcsv/index.html">PDielec.checkcsv</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/checkexcel/index.html">PDielec.checkexcel</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/graphdatagenerator/index.html">PDielec.graphdatagenerator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/p1reader/index.html">PDielec.p1reader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/p2cif/index.html">PDielec.p2cif</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/pdcompare/index.html">PDielec.pdcompare</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/pdgui/index.html">PDielec.pdgui</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/pdmake/index.html">PDielec.pdmake</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/pickled_reader/index.html">PDielec.pickled_reader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/preader/index.html">PDielec.preader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/PDielec/vibanalysis/index.html">PDielec.vibanalysis</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../autoapi/PDielec/pdgui/index.html">PDielec.pdgui</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../autoapi/PDielec/preader/index.html">PDielec.preader</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../autoapi/PDielec/pdmake/index.html">PDielec.pdmake</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">References</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../zreferences.html">References</a></li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon no-toc" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main" id="furo-main-content">
+          <h1>Source code for PDielec.pdmake</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!/usr/bin/env python</span>
+<span class="c1">#</span>
+<span class="c1"># Copyright 2024 John Kendrick &amp; Andrew Burnett</span>
+<span class="c1">#</span>
+<span class="c1"># This file is part of PDielec</span>
+<span class="c1">#</span>
+<span class="c1"># This program is free software; you can redistribute it and/or modify</span>
+<span class="c1"># it under the terms of the MIT License</span>
+<span class="c1">#</span>
+<span class="c1"># This program is distributed in the hope that it will be useful,</span>
+<span class="c1"># but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="c1"># MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.</span>
+<span class="c1">#</span>
+<span class="c1"># You should have received a copy of the MIT License along with this program, if not see https://opensource.org/licenses/MIT</span>
+<span class="c1">#</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">A Makefile style system for testing and installing PDGui and PDielec</span>
+
+<span class="sd">This script accepts various command-line arguments to perform different actions such as running tests, benchmarks, cleaning build directories, and installing scripts.</span>
+
+<span class="sd">Command line options</span>
+<span class="sd">--------------------</span>
+<span class="sd">    - `test` or `tests`: Runs all test cases.</span>
+<span class="sd">    - `test-singlecrystal`: Runs tests for single crystal analysis.</span>
+<span class="sd">    - `test-preader`: Runs tests for the preader component.</span>
+<span class="sd">    - `test-p2cif`: Runs tests for the p2cif component.</span>
+<span class="sd">    - `test-pdgui`: Runs tests for the PDGUI component.</span>
+<span class="sd">    - `test-vibanalysis`: Runs tests for vibrational analysis.</span>
+<span class="sd">    - `benchmarks`: Executes benchmark tests.</span>
+<span class="sd">    - `pypi`: Runs commands for PyPI distribution.</span>
+<span class="sd">    - `clean`: Cleans up directories.</span>
+<span class="sd">    - `install`: Installs necessary scripts.</span>
+<span class="sd">    - `scripts` or `-scripts`: Specifies the directory for scripts (expects a directory path next).</span>
+<span class="sd">    - `-root` or `--root`: Specifies the root directory to operate in.</span>
+<span class="sd">    - `-debug` or `--debug` or `-d`: Enables debug mode.</span>
+<span class="sd">    - `-usesystem`: Use system installed binaries rather than local ones.</span>
+<span class="sd">    - `-view` or `--view` or `-v`: Enables viewing mode.</span>
+<span class="sd">    - `-regenerate`: Forces regeneration of test data.</span>
+<span class="sd">    - `-padding`: Sets padding for some operation (expects an integer value next).</span>
+<span class="sd">    - `-directory` or `--directory`: Sets the directory for some operation (expects a directory path next).</span>
+<span class="sd">    - `&lt;filename&gt;.pdmake`: Specifies a PDMakefile to execute.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">from</span> <span class="nn">PDielec.preader</span>     <span class="kn">import</span> <span class="n">main</span> <span class="k">as</span> <span class="n">main_preader</span>
+<span class="kn">from</span> <span class="nn">PDielec.pdgui</span>       <span class="kn">import</span> <span class="n">main</span> <span class="k">as</span> <span class="n">main_pdgui</span>
+<span class="kn">from</span> <span class="nn">PDielec.checkcsv</span>    <span class="kn">import</span> <span class="n">main</span> <span class="k">as</span> <span class="n">main_checkcsv</span>
+<span class="kn">from</span> <span class="nn">PDielec.checkexcel</span>  <span class="kn">import</span> <span class="n">main</span> <span class="k">as</span> <span class="n">main_checkexcel</span>
+<span class="kn">from</span> <span class="nn">PDielec.p2cif</span>       <span class="kn">import</span> <span class="n">main</span> <span class="k">as</span> <span class="n">main_p2cif</span>
+<span class="kn">from</span> <span class="nn">PDielec.vibanalysis</span> <span class="kn">import</span> <span class="n">main</span> <span class="k">as</span> <span class="n">main_vibanalysis</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">contextlib</span>
+<span class="kn">import</span> <span class="nn">functools</span>
+<span class="kn">from</span> <span class="nn">shutil</span> <span class="kn">import</span> <span class="n">copyfile</span>
+<span class="kn">import</span> <span class="nn">subprocess</span>
+<span class="kn">import</span> <span class="nn">time</span>
+
+<span class="c1"># Force a flush on print, needed for Windows</span>
+<span class="nb">print</span> <span class="o">=</span> <span class="n">functools</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span><span class="nb">print</span><span class="p">,</span> <span class="n">flush</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="n">settings</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="n">settings</span><span class="p">[</span><span class="s1">&#39;padding&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">50</span>
+<span class="n">settings</span><span class="p">[</span><span class="s1">&#39;title&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;title&#39;</span>
+
+<span class="n">debug</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="n">viewing</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="n">useLocal</span> <span class="o">=</span> <span class="kc">True</span>
+
+<span class="n">test_preader</span> <span class="o">=</span> <span class="p">[</span>
+	<span class="s1">&#39;Castep/preader&#39;</span><span class="p">,</span>
+	<span class="s1">&#39;Vasp/preader&#39;</span><span class="p">,</span>
+	<span class="s1">&#39;Phonopy/preader&#39;</span><span class="p">,</span>
+	<span class="s1">&#39;Gulp/preader&#39;</span><span class="p">,</span>
+	<span class="s1">&#39;Crystal/preader&#39;</span><span class="p">,</span>
+	<span class="s1">&#39;AbInit/preader&#39;</span><span class="p">,</span>
+	<span class="s1">&#39;QE/preader&#39;</span><span class="p">,</span>
+    <span class="p">]</span>
+
+<span class="n">test_p2cif</span> <span class="o">=</span> <span class="p">[</span>
+	<span class="s1">&#39;P2Cif/&#39;</span><span class="p">,</span>
+    <span class="p">]</span>
+
+<span class="n">test_pdgui</span> <span class="o">=</span> <span class="p">[</span>
+	<span class="s1">&#39;ATR/AlAs&#39;</span><span class="p">,</span>
+	<span class="s1">&#39;ATR/Na2SO42&#39;</span><span class="p">,</span>
+	<span class="s1">&#39;ATR/Na2SO42_fit&#39;</span><span class="p">,</span>
+	<span class="s1">&#39;AbInit/AlAs&#39;</span><span class="p">,</span>
+	<span class="s1">&#39;AbInit/BaTiO3&#39;</span><span class="p">,</span>
+	<span class="s1">&#39;AbInit/BaTiO3-phonana&#39;</span><span class="p">,</span>
+	<span class="s1">&#39;AbInit/Na2SO42&#39;</span><span class="p">,</span>
+	<span class="s1">&#39;Castep/AsparticAcid&#39;</span><span class="p">,</span>
+	<span class="s1">&#39;Castep/Bubbles&#39;</span><span class="p">,</span>
+	<span class="s1">&#39;Castep/Castep17&#39;</span><span class="p">,</span>
+	<span class="s1">&#39;Castep/Isoleucine&#39;</span><span class="p">,</span>
+	<span class="s1">&#39;Castep/MgO&#39;</span><span class="p">,</span>
+	<span class="s1">&#39;Castep/Na2SO42&#39;</span><span class="p">,</span>
+	<span class="s1">&#39;Crystal/Leucine&#39;</span><span class="p">,</span>
+	<span class="s1">&#39;Crystal/Na2SO42&#39;</span><span class="p">,</span>
+	<span class="s1">&#39;Crystal/Na2SO42_C17&#39;</span><span class="p">,</span>
+	<span class="s1">&#39;Crystal/Quartz&#39;</span><span class="p">,</span>
+	<span class="s1">&#39;Crystal/ZnO/CPHF&#39;</span><span class="p">,</span>
+	<span class="s1">&#39;Crystal/ZnO/Default&#39;</span><span class="p">,</span>
+	<span class="s1">&#39;Crystal/ZnO/NoEckart&#39;</span><span class="p">,</span>
+	<span class="s1">&#39;Experiment/AlN&#39;</span><span class="p">,</span>
+	<span class="s1">&#39;Experiment/Forsterite&#39;</span><span class="p">,</span>
+	<span class="s1">&#39;Experiment/constant&#39;</span><span class="p">,</span>
+	<span class="s1">&#39;Experiment/drude-lorentz&#39;</span><span class="p">,</span>
+	<span class="s1">&#39;Experiment/fpsq&#39;</span><span class="p">,</span>
+	<span class="s1">&#39;Experiment/interpolation&#39;</span><span class="p">,</span>
+	<span class="s1">&#39;Experiment/Mayerhofer&#39;</span><span class="p">,</span>
+	<span class="s1">&#39;Experiment/Sapphire&#39;</span><span class="p">,</span>
+	<span class="s1">&#39;Gulp/Na2SO42&#39;</span><span class="p">,</span>
+	<span class="s1">&#39;Gulp/calcite&#39;</span><span class="p">,</span>
+	<span class="s1">&#39;Mie/MgO&#39;</span><span class="p">,</span>
+	<span class="s1">&#39;Mie/MgO_lognormal&#39;</span><span class="p">,</span>
+	<span class="s1">&#39;Phonopy/ZnO&#39;</span><span class="p">,</span>
+	<span class="s1">&#39;Phonopy/Na2SO42&#39;</span><span class="p">,</span>
+	<span class="s1">&#39;QE/Cocaine&#39;</span><span class="p">,</span>
+	<span class="s1">&#39;QE/Na2SO42&#39;</span><span class="p">,</span>
+	<span class="s1">&#39;QE/Na2SO42-v7&#39;</span><span class="p">,</span>
+	<span class="s1">&#39;QE/ZnO&#39;</span><span class="p">,</span>
+	<span class="s1">&#39;SingleCrystal/Bi2Se3&#39;</span><span class="p">,</span>
+	<span class="s1">&#39;SingleCrystal/Bi2Se3_film&#39;</span><span class="p">,</span>
+	<span class="s1">&#39;SingleCrystal/L-alanine&#39;</span><span class="p">,</span>
+	<span class="s1">&#39;SingleCrystal/MgO&#39;</span><span class="p">,</span>
+	<span class="s1">&#39;SingleCrystal/ScatteringMatrix&#39;</span><span class="p">,</span>
+	<span class="s1">&#39;SizeEffects/BaTiO3&#39;</span><span class="p">,</span>
+	<span class="s1">&#39;SizeEffects/MgO&#39;</span><span class="p">,</span>
+	<span class="s1">&#39;SizeEffects/ZnO&#39;</span><span class="p">,</span>
+	<span class="s1">&#39;Vasp/F-Apatite&#39;</span><span class="p">,</span>
+	<span class="s1">&#39;Vasp/Na2SO42&#39;</span><span class="p">,</span>
+	<span class="s1">&#39;Vasp/Na2SO42_v&#39;</span><span class="p">,</span>
+	<span class="s1">&#39;Vasp/ZnO&#39;</span><span class="p">,</span>
+    <span class="p">]</span>
+
+<span class="n">test_singlecrystal</span> <span class="o">=</span> <span class="p">[</span>
+	<span class="s1">&#39;Experiment/fpsq&#39;</span><span class="p">,</span>
+	<span class="s1">&#39;Experiment/Mayerhofer&#39;</span><span class="p">,</span>
+	<span class="s1">&#39;SingleCrystal/Bi2Se3&#39;</span><span class="p">,</span>
+	<span class="s1">&#39;SingleCrystal/Bi2Se3_film&#39;</span><span class="p">,</span>
+	<span class="s1">&#39;SingleCrystal/L-alanine&#39;</span><span class="p">,</span>
+	<span class="s1">&#39;SingleCrystal/MgO&#39;</span><span class="p">,</span>
+	<span class="s1">&#39;SingleCrystal/ScatteringMatrix&#39;</span><span class="p">,</span>
+    <span class="p">]</span>
+
+<span class="n">test_vibanalysis</span> <span class="o">=</span> <span class="p">[</span>
+	<span class="s1">&#39;VibAnalysis/AsparticAcid&#39;</span><span class="p">,</span>
+	<span class="s1">&#39;VibAnalysis/BaTiO3&#39;</span><span class="p">,</span>
+	<span class="s1">&#39;VibAnalysis/Cocaine&#39;</span><span class="p">,</span>
+	<span class="s1">&#39;VibAnalysis/F-Apatite&#39;</span><span class="p">,</span>
+	<span class="s1">&#39;VibAnalysis/Isoleucine&#39;</span><span class="p">,</span>
+	<span class="s1">&#39;VibAnalysis/Leucine&#39;</span><span class="p">,</span>
+    <span class="p">]</span>
+
+<span class="n">benchmarks</span> <span class="o">=</span> <span class="p">[</span>
+	<span class="s1">&#39;Castep/AsparticAcid&#39;</span><span class="p">,</span>
+	<span class="s1">&#39;Castep/Isoleucine&#39;</span><span class="p">,</span>
+	<span class="s1">&#39;Castep/MgO&#39;</span><span class="p">,</span>
+	<span class="s1">&#39;Castep/Bubbles&#39;</span><span class="p">,</span>
+	<span class="s1">&#39;Castep/Na2SO42&#39;</span><span class="p">,</span>
+	<span class="s1">&#39;Vasp/F-Apatite&#39;</span><span class="p">,</span>
+	<span class="s1">&#39;Vasp/ZnO&#39;</span><span class="p">,</span>
+	<span class="s1">&#39;Vasp/Na2SO42&#39;</span><span class="p">,</span>
+	<span class="s1">&#39;Gulp/calcite&#39;</span><span class="p">,</span>
+	<span class="s1">&#39;Gulp/Na2SO42&#39;</span><span class="p">,</span>
+	<span class="s1">&#39;Crystal/Na2SO42&#39;</span><span class="p">,</span>
+	<span class="s1">&#39;Crystal/Leucine&#39;</span><span class="p">,</span>
+	<span class="s1">&#39;Crystal/Quartz&#39;</span><span class="p">,</span>
+	<span class="s1">&#39;Crystal/ZnO/Default&#39;</span><span class="p">,</span>
+	<span class="s1">&#39;Crystal/ZnO/CPHF&#39;</span><span class="p">,</span>
+	<span class="s1">&#39;Crystal/ZnO/NoEckart&#39;</span><span class="p">,</span>
+	<span class="s1">&#39;AbInit/AlAs&#39;</span><span class="p">,</span>
+	<span class="s1">&#39;AbInit/BaTiO3&#39;</span><span class="p">,</span>
+	<span class="s1">&#39;AbInit/Na2SO42&#39;</span><span class="p">,</span>
+	<span class="s1">&#39;QE/ZnO&#39;</span><span class="p">,</span>
+	<span class="s1">&#39;QE/Na2SO42&#39;</span><span class="p">,</span>
+	<span class="s1">&#39;QE/Cocaine&#39;</span><span class="p">,</span>
+	<span class="s1">&#39;Phonopy/ZnO&#39;</span><span class="p">,</span>
+	<span class="s1">&#39;Phonopy/Na2SO42&#39;</span><span class="p">,</span>
+	<span class="s1">&#39;SizeEffects/BaTiO3&#39;</span><span class="p">,</span>
+	<span class="s1">&#39;SizeEffects/MgO&#39;</span><span class="p">,</span>
+	<span class="s1">&#39;SizeEffects/ZnO&#39;</span><span class="p">,</span>
+	<span class="s1">&#39;Mie/MgO&#39;</span><span class="p">,</span>
+	<span class="s1">&#39;Mie/MgO_lognormal&#39;</span><span class="p">,</span>
+	<span class="s1">&#39;ATR/AlAs&#39;</span><span class="p">,</span>
+	<span class="s1">&#39;ATR/Na2SO42&#39;</span><span class="p">,</span>
+    <span class="p">]</span>
+
+<div class="viewcode-block" id="usage">
+<a class="viewcode-back" href="../../autoapi/PDielec/pdmake/index.html#PDielec.pdmake.usage">[docs]</a>
+<span class="k">def</span> <span class="nf">usage</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Print usage instructions for the command line tool.</span>
+
+<span class="sd">    This function outputs instructions to `sys.stderr` for using the command line tool, including available commands and options. It also handles platform-specific instructions for Linux systems.</span>
+
+<span class="sd">    SystemExit</span>
+<span class="sd">        This function will terminate the program after displaying the usage message.</span>
+<span class="sd">    &quot;&quot;&quot;</span>    
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;pdmake:&#39;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;  test&#39;</span> <span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;  tests&#39;</span> <span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;           run all the tests               &#39;</span> <span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;  test-preader&#39;</span> <span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;           run all the preader tests&#39;</span> <span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;  test-pdgui&#39;</span> <span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;           run all the pdgui tests&#39;</span> <span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;  test-singlecrystal&#39;</span> <span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;           run all the singlecrystal tests&#39;</span> <span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;  test-p2cif&#39;</span> <span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;           run all the p2cif tests&#39;</span> <span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;  test-vibanalysis&#39;</span> <span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;           run all the vibanalysis tests&#39;</span> <span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;  benchmarks      &#39;</span> <span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;           run the benchmarks   &#39;</span> <span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;  --regenerate      &#39;</span> <span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;           regenerate all the test reference data&#39;</span> <span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;  --root directory  &#39;</span> <span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;           sets the root directory for the installation&#39;</span> <span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;  --directory&#39;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;           Use the directory when listing the tests&#39;</span> <span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;  --padding 60&#39;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;           change the width of the output title field&#39;</span> <span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;  --view  &#39;</span> <span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;           run pdgui with windowing on&#39;</span> <span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;  --usesystem &#39;</span> <span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;           Force the use of system executables&#39;</span> <span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;  --debug &#39;</span> <span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;           run with debug options switched on&#39;</span> <span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">name</span> <span class="o">!=</span> <span class="s1">&#39;nt&#39;</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;  pypi      &#39;</span> <span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;           Only use on linux installations...          &#39;</span> <span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;           prepare for pypi uploading&#39;</span> <span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;  clean&#39;</span> <span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;           Only use on linux installations...          &#39;</span> <span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;           clean up&#39;</span> <span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;  install&#39;</span> <span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;           Only use on linux installations...          &#39;</span> <span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;           install the executables to the scripts directory&#39;</span> <span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;  --scripts directory&#39;</span> <span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;           Only use on linux installations...          &#39;</span> <span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;           Set the scripts directory to be used for installation&#39;</span> <span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;           the default is ~/bin                       &#39;</span> <span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+    <span class="n">exit</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="checkLocalExecutables">
+<a class="viewcode-back" href="../../autoapi/PDielec/pdmake/index.html#PDielec.pdmake.checkLocalExecutables">[docs]</a>
+<span class="k">def</span> <span class="nf">checkLocalExecutables</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Check to see if the rootDirectory has the executables we need.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    rootDirectory : str</span>
+<span class="sd">        The path to the root directory to check.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    bool</span>
+<span class="sd">        True if the executables are found, False otherwise.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">global</span> <span class="n">rootDirectory</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">chdir</span><span class="p">(</span><span class="n">rootDirectory</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="s1">&#39;preader&#39;</span><span class="p">):</span>
+        <span class="k">return</span> <span class="kc">False</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="s1">&#39;p2cif&#39;</span><span class="p">):</span>
+        <span class="k">return</span> <span class="kc">False</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="s1">&#39;pdgui&#39;</span><span class="p">):</span>
+        <span class="k">return</span> <span class="kc">False</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="s1">&#39;vibanalysis&#39;</span><span class="p">):</span>
+        <span class="k">return</span> <span class="kc">False</span>
+    <span class="k">return</span> <span class="kc">True</span></div>
+
+
+<div class="viewcode-block" id="install">
+<a class="viewcode-back" href="../../autoapi/PDielec/pdmake/index.html#PDielec.pdmake.install">[docs]</a>
+<span class="k">def</span> <span class="nf">install</span><span class="p">(</span><span class="n">scripts</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Install a set of scripts into a specified directory.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    scripts : str</span>
+<span class="sd">        The directory where the scripts will be copied to.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    This function copies a predefined list of scripts and directories into </span>
+<span class="sd">    the specified `scripts` directory. It utilizes shell commands to perform the </span>
+<span class="sd">    copy operation and to create necessary subdirectories. Global variable </span>
+<span class="sd">    `rootDirectory` should be set before calling this function as it is used to </span>
+<span class="sd">    determine the source directory of the scripts. The installation progress is </span>
+<span class="sd">    printed to the console.</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    This function does not explicitly raise exceptions, but subprocess.run </span>
+<span class="sd">    may raise exceptions related to the execution of shell commands.</span>
+<span class="sd">    &quot;&quot;&quot;</span>    
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Performing installation of scripts into &#39;</span><span class="p">,</span><span class="n">scripts</span><span class="p">)</span>
+    <span class="k">global</span> <span class="n">rootDirectory</span>
+    <span class="n">mychdir</span><span class="p">(</span><span class="n">rootDirectory</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Installing preader&#39;</span><span class="p">,</span><span class="n">end</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+    <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="s1">&#39;cp -P preader </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">scripts</span><span class="p">),</span><span class="n">shell</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;,p1reader&#39;</span><span class="p">,</span><span class="n">end</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+    <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="s1">&#39;cp -P p1reader </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">scripts</span><span class="p">),</span><span class="n">shell</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;,pdgui&#39;</span><span class="p">,</span><span class="n">end</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+    <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="s1">&#39;cp -P pdgui </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">scripts</span><span class="p">),</span><span class="n">shell</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;,p2cif&#39;</span><span class="p">,</span><span class="n">end</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+    <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="s1">&#39;cp -P p2cif </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">scripts</span><span class="p">),</span><span class="n">shell</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;,pdcompare&#39;</span><span class="p">,</span><span class="n">end</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+    <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="s1">&#39;cp -P pdcompare </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">scripts</span><span class="p">),</span><span class="n">shell</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;,graphdatagenerator&#39;</span><span class="p">,</span><span class="n">end</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+    <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="s1">&#39;cp -P graphdatagenerator </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">scripts</span><span class="p">),</span><span class="n">shell</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;,vibanalysis&#39;</span><span class="p">,</span><span class="n">end</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+    <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="s1">&#39;cp -P vibanalysis </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">scripts</span><span class="p">),</span><span class="n">shell</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;,pdmake&#39;</span><span class="p">,</span><span class="n">end</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+    <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="s1">&#39;cp -P pdmake </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">scripts</span><span class="p">),</span><span class="n">shell</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;,python scripts&#39;</span><span class="p">)</span>
+    <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="s1">&#39;mkdir -p </span><span class="si">{}</span><span class="s1">/PDielec&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">scripts</span><span class="p">),</span><span class="n">shell</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="s1">&#39;mkdir -p </span><span class="si">{}</span><span class="s1">/PDielec/GUI&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">scripts</span><span class="p">),</span><span class="n">shell</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="s1">&#39;cp -r PDielec/*.py </span><span class="si">{}</span><span class="s1">/PDielec&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">scripts</span><span class="p">),</span><span class="n">shell</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="s1">&#39;cp -r PDielec/GUI/*.py </span><span class="si">{}</span><span class="s1">/PDielec/GUI/&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">scripts</span><span class="p">),</span><span class="n">shell</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="s1">&#39;cp -r PDielec/GUI/*.png </span><span class="si">{}</span><span class="s1">/PDielec/GUI/&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">scripts</span><span class="p">),</span><span class="n">shell</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Finished installation of scripts into &#39;</span><span class="p">,</span><span class="n">scripts</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="redirect">
+<a class="viewcode-back" href="../../autoapi/PDielec/pdmake/index.html#PDielec.pdmake.redirect">[docs]</a>
+<span class="nd">@contextlib</span><span class="o">.</span><span class="n">contextmanager</span>
+<span class="k">def</span> <span class="nf">redirect</span><span class="p">(</span><span class="n">file</span><span class="p">):</span>
+    <span class="c1"># capture all outputs to a log file while still printing it</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Redirect the standard output to a specified file.</span>
+
+<span class="sd">    This function is a context manager that redirects `sys.stdout` to a file,</span>
+<span class="sd">    optionally suppressing stderr output if not in debug mode. It is useful for</span>
+<span class="sd">    capturing the output of a block of code to a file.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    file : str</span>
+<span class="sd">        The path to the file where the stdout will be redirected.</span>
+
+<span class="sd">    Yields</span>
+<span class="sd">    ------</span>
+<span class="sd">    _io.TextIOWrapper</span>
+<span class="sd">        A writable stream associated with the log file.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    `sys.stderr` is redirected to `os.devnull` if `debug` is `False`, effectively</span>
+<span class="sd">    suppressing any error messages unless in debug mode. Ensure that debug status is</span>
+<span class="sd">    properly set before using this context manager.</span>
+
+<span class="sd">    Upon exiting the `with` block, stdout and stderr are restored to their original</span>
+<span class="sd">    state.</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    AttributeError</span>
+<span class="sd">        If an attribute not supported by the `sys.stdout` is being accessed through</span>
+<span class="sd">        the Logger class.</span>
+<span class="sd">    &quot;&quot;&quot;</span>    
+    <span class="k">class</span> <span class="nc">Logger</span><span class="p">:</span>
+        <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file</span><span class="p">):</span>
+            <span class="n">fd</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">file</span><span class="p">,</span><span class="s1">&#39;w&#39;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">terminal</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">log</span> <span class="o">=</span> <span class="n">fd</span>
+
+        <span class="k">def</span> <span class="nf">write</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">):</span>
+            <span class="k">global</span> <span class="n">debug</span>
+            <span class="k">if</span> <span class="n">debug</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">terminal</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+
+        <span class="k">def</span> <span class="fm">__getattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attr</span><span class="p">):</span>
+            <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">terminal</span><span class="p">,</span> <span class="n">attr</span><span class="p">)</span>
+
+    <span class="n">logger</span> <span class="o">=</span> <span class="n">Logger</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
+
+    <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span> <span class="o">=</span> <span class="n">logger</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">debug</span><span class="p">:</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">devnull</span><span class="p">,</span><span class="s1">&#39;w&#39;</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">yield</span> <span class="n">logger</span><span class="o">.</span><span class="n">log</span>
+    <span class="k">finally</span><span class="p">:</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">__stdout__</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">debug</span><span class="p">:</span>
+            <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">__stderr__</span></div>
+
+
+<div class="viewcode-block" id="readNmaFile">
+<a class="viewcode-back" href="../../autoapi/PDielec/pdmake/index.html#PDielec.pdmake.readNmaFile">[docs]</a>
+<span class="k">def</span> <span class="nf">readNmaFile</span><span class="p">(</span><span class="n">file</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Read and extract data from an NMA file.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    file : str</span>
+<span class="sd">        The path to the NMA file to be read.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    tuple</span>
+<span class="sd">        A tuple containing three elements:</span>
+<span class="sd">        - The sum of all frequencies excluding the first three.</span>
+<span class="sd">        - The sum of all R squared values excluding the first three.</span>
+<span class="sd">        - The sum of all explained variance values excluding the first three.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    This function reads an NMA (Normal Mode Analysis) file, looking for lines that contain</span>
+<span class="sd">    &#39;Mode&#39;, &#39;R**2&#39;, or &#39;Explained&#39;. For lines starting with &#39;Mode&#39;, it extracts the</span>
+<span class="sd">    frequency values, excluding the first three modes which are typically zero or negligible.</span>
+<span class="sd">    For &#39;R**2&#39; and &#39;Explained&#39; lines, it extracts their respective values under the same conditions.</span>
+<span class="sd">    All extracted values are then summed up and returned.</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    FileNotFoundError</span>
+<span class="sd">        If the file specified by the &#39;file&#39; parameter does not exist.</span>
+<span class="sd">    &quot;&quot;&quot;</span>    
+    <span class="n">nmodes</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">frequencies</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">rsquared</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">explained</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">file</span><span class="p">,</span><span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fd</span><span class="p">:</span>
+        <span class="n">line</span> <span class="o">=</span> <span class="n">fd</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
+        <span class="k">while</span> <span class="n">line</span><span class="p">:</span>
+            <span class="n">splits</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">splits</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">splits</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;Mode&#39;</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">splits</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="s1">&#39;too&#39;</span><span class="p">:</span>
+                        <span class="n">nmodes</span> <span class="o">+=</span> <span class="mi">1</span>
+                        <span class="n">frequencies</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">splits</span><span class="p">[</span><span class="mi">2</span><span class="p">]))</span>
+                <span class="k">elif</span> <span class="n">splits</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;R**2&#39;</span><span class="p">:</span>
+                    <span class="n">rsquared</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">splits</span><span class="p">[</span><span class="mi">2</span><span class="p">]))</span>
+                <span class="k">elif</span> <span class="n">splits</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;Explained&#39;</span><span class="p">:</span>
+                    <span class="n">explained</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">splits</span><span class="p">[</span><span class="mi">3</span><span class="p">]))</span>
+                <span class="c1"># end if</span>
+            <span class="c1"># end if</span>
+            <span class="n">line</span> <span class="o">=</span> <span class="n">fd</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
+        <span class="c1">#end while</span>
+    <span class="c1">#end with open</span>
+    <span class="n">f</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">frequencies</span><span class="p">[</span><span class="mi">3</span><span class="p">:])</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">rsquared</span><span class="p">[</span><span class="mi">3</span><span class="p">:])</span>
+    <span class="n">e</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">explained</span><span class="p">[</span><span class="mi">3</span><span class="p">:])</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">f</span><span class="p">),</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">r</span><span class="p">),</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">e</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="compareNmaFiles">
+<a class="viewcode-back" href="../../autoapi/PDielec/pdmake/index.html#PDielec.pdmake.compareNmaFiles">[docs]</a>
+<span class="k">def</span> <span class="nf">compareNmaFiles</span><span class="p">(</span><span class="n">file1</span><span class="p">,</span><span class="n">file2</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Compare two NMA files for differences within a tolerance.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    file1 : str</span>
+<span class="sd">        The path to the first NMA file.</span>
+<span class="sd">    file2 : str</span>
+<span class="sd">        The path to the second NMA file.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    int</span>
+<span class="sd">        The number of differences detected in frequency, redox, and energy </span>
+<span class="sd">        values between the two NMA files.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    This function reads two NMA files using the `readNmaFile` function, </span>
+<span class="sd">    which returns the frequency (f), redox (r), and energy (e) values </span>
+<span class="sd">    for each file. The comparison is done based on a tolerance of 1e-06, </span>
+<span class="sd">    and the total number of differences in these values are counted and returned.</span>
+<span class="sd">    &quot;&quot;&quot;</span>    
+    <span class="n">f1</span><span class="p">,</span><span class="n">r1</span><span class="p">,</span><span class="n">e1</span> <span class="o">=</span> <span class="n">readNmaFile</span><span class="p">(</span><span class="n">file1</span><span class="p">)</span>
+    <span class="n">f2</span><span class="p">,</span><span class="n">r2</span><span class="p">,</span><span class="n">e2</span> <span class="o">=</span> <span class="n">readNmaFile</span><span class="p">(</span><span class="n">file2</span><span class="p">)</span>
+    <span class="n">nerrors</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">f1</span> <span class="o">-</span> <span class="n">f2</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mf">1.0e-6</span><span class="p">:</span>
+        <span class="n">nerrors</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">r1</span> <span class="o">-</span> <span class="n">r2</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mf">1.0e-6</span><span class="p">:</span>
+        <span class="n">nerrors</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">e1</span> <span class="o">-</span> <span class="n">e2</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mf">1.0e-6</span><span class="p">:</span>
+        <span class="n">nerrors</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="n">nerrors</span></div>
+
+
+<div class="viewcode-block" id="compareFiles">
+<a class="viewcode-back" href="../../autoapi/PDielec/pdmake/index.html#PDielec.pdmake.compareFiles">[docs]</a>
+<span class="k">def</span> <span class="nf">compareFiles</span><span class="p">(</span><span class="n">file1</span><span class="p">,</span><span class="n">file2</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Compare two text files for differences.</span>
+
+<span class="sd">    This function opens and reads two text files line by line and then compares them word by word,</span>
+<span class="sd">    ignoring certain punctuation marks. If any differences are found in either numeric values</span>
+<span class="sd">    (floating-point comparison) or text strings, they are counted as errors. Numeric differences</span>
+<span class="sd">    are considered errors if the relative difference between them is more than 0.0001, provided</span>
+<span class="sd">    both numbers are not insignificantly small. The total count of such errors is returned.</span>
+<span class="sd">    Optionally, if the global variable &#39;debug&#39; is set to True, details of each difference are printed.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    file1 : str</span>
+<span class="sd">        The path to the first file to be compared.</span>
+<span class="sd">    file2 : str</span>
+<span class="sd">        The path to the second file to be compared.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    int</span>
+<span class="sd">        The total number of errors (differences) found.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    - The function makes use of a global variable &#39;debug&#39; which, if set to True,</span>
+<span class="sd">      enables printing detailed information about each found difference directly to the console.</span>
+<span class="sd">    - It&#39;s assumed that both files can be opened and read successfully. The function </span>
+<span class="sd">      does not explicitly handle I/O errors, such as a file not existing.</span>
+<span class="sd">    - Special characters &#39;(&#39;, &#39;)&#39;, &#39;%&#39;, &#39;/&#39;, and &#39;\\&#39; are ignored during the comparison.</span>
+<span class="sd">    - For numerical comparison, the function employs a relative difference check to</span>
+<span class="sd">      determine if two numbers should be considered different, taking into account</span>
+<span class="sd">      floating-point inaccuracies.</span>
+<span class="sd">    &quot;&quot;&quot;</span>    
+    <span class="k">global</span> <span class="n">debug</span>
+    <span class="n">fd1</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">file1</span><span class="p">,</span><span class="s1">&#39;r&#39;</span><span class="p">)</span>
+    <span class="n">fd2</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">file2</span><span class="p">,</span><span class="s1">&#39;r&#39;</span><span class="p">)</span>
+    <span class="n">lines1</span> <span class="o">=</span> <span class="n">fd1</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
+    <span class="n">lines2</span> <span class="o">=</span> <span class="n">fd2</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
+    <span class="n">nerrors</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">line1</span><span class="p">,</span><span class="n">line2</span> <span class="ow">in</span>  <span class="nb">zip</span><span class="p">(</span><span class="n">lines1</span><span class="p">,</span><span class="n">lines2</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">word1</span><span class="p">,</span><span class="n">word2</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">line1</span><span class="o">.</span><span class="n">split</span><span class="p">(),</span><span class="n">line2</span><span class="o">.</span><span class="n">split</span><span class="p">()):</span>
+            <span class="n">word1</span> <span class="o">=</span> <span class="n">word1</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;(&#39;</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+            <span class="n">word1</span> <span class="o">=</span> <span class="n">word1</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;)&#39;</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+            <span class="n">word1</span> <span class="o">=</span> <span class="n">word1</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;%&#39;</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+            <span class="n">word1</span> <span class="o">=</span> <span class="n">word1</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+            <span class="n">word1</span> <span class="o">=</span> <span class="n">word1</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\\</span><span class="s1">&#39;</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+            <span class="n">word2</span> <span class="o">=</span> <span class="n">word2</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;(&#39;</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+            <span class="n">word2</span> <span class="o">=</span> <span class="n">word2</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;)&#39;</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+            <span class="n">word2</span> <span class="o">=</span> <span class="n">word2</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;%&#39;</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+            <span class="n">word2</span> <span class="o">=</span> <span class="n">word1</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">float1</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">word1</span><span class="p">)</span>
+                <span class="n">float2</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">word2</span><span class="p">)</span>
+                <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">float1</span><span class="p">)</span><span class="o">+</span><span class="nb">abs</span><span class="p">(</span><span class="n">float2</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mf">1.e-12</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="mi">2</span><span class="o">*</span><span class="nb">abs</span><span class="p">(</span><span class="n">float1</span><span class="o">-</span><span class="n">float2</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">float1</span><span class="p">)</span><span class="o">+</span><span class="nb">abs</span><span class="p">(</span><span class="n">float2</span><span class="p">))</span> <span class="o">&gt;</span> <span class="mf">1.0e-4</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="n">debug</span><span class="p">:</span>
+                            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Float difference&#39;</span><span class="p">,</span><span class="n">float1</span><span class="p">,</span><span class="n">float2</span><span class="p">)</span>
+                            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Line 1&#39;</span><span class="p">,</span><span class="n">line1</span><span class="p">)</span>
+                            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Line 2&#39;</span><span class="p">,</span><span class="n">line2</span><span class="p">)</span>
+                        <span class="n">nerrors</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="k">except</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">word1</span> <span class="o">!=</span> <span class="n">word2</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">debug</span><span class="p">:</span>
+                        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Word difference&#39;</span><span class="p">,</span><span class="n">word1</span><span class="p">,</span><span class="n">word2</span><span class="p">)</span>
+                        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Line 1&#39;</span><span class="p">,</span><span class="n">line1</span><span class="p">)</span>
+                        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Line 2&#39;</span><span class="p">,</span><span class="n">line2</span><span class="p">)</span>
+                    <span class="n">nerrors</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="n">nerrors</span></div>
+
+
+
+<div class="viewcode-block" id="runP2CifTest">
+<a class="viewcode-back" href="../../autoapi/PDielec/pdmake/index.html#PDielec.pdmake.runP2CifTest">[docs]</a>
+<span class="k">def</span> <span class="nf">runP2CifTest</span><span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="n">instructions</span><span class="p">,</span> <span class="n">regenerate</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Run a test on p2cif.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    title : str</span>
+<span class="sd">        The title of the test</span>
+<span class="sd">    instructions : str</span>
+<span class="sd">        The command line parameters.</span>
+<span class="sd">    regenerate : bool</span>
+<span class="sd">        Set to True if the reference file is overwritten.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">global</span> <span class="n">rootDirectory</span>
+    <span class="k">global</span> <span class="n">useLocal</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">title</span><span class="p">,</span><span class="n">end</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span><span class="n">flush</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">useLocal</span><span class="p">:</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">argv</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;python&#39;</span><span class="p">]</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">rootDirectory</span><span class="p">,</span><span class="s1">&#39;p2cif&#39;</span><span class="p">))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">argv</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;p2cif&#39;</span><span class="p">]</span>
+    <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">instructions</span><span class="p">)</span>
+    <span class="n">outputfile</span> <span class="o">=</span> <span class="s1">&#39;all.cif&#39;</span>
+    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="s1">&#39;all.cif&#39;</span><span class="p">):</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="s1">&#39;all.cif&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">regenerate</span><span class="p">:</span>
+        <span class="n">outputfile</span> <span class="o">=</span> <span class="s1">&#39;all.ref.cif&#39;</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">outputfile</span><span class="p">,</span><span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">stdout</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">debug</span><span class="p">:</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">,</span><span class="n">stdout</span><span class="o">=</span><span class="n">stdout</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">,</span><span class="n">stdout</span><span class="o">=</span><span class="n">stdout</span><span class="p">,</span><span class="n">stderr</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">DEVNULL</span><span class="p">)</span>
+        <span class="c1"># end if debug</span>
+    <span class="c1"># end with open</span>
+    <span class="c1"># If not doing a regeneration perform a check</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">regenerate</span><span class="p">:</span>
+        <span class="n">nerrors</span> <span class="o">=</span> <span class="n">compareFiles</span><span class="p">(</span><span class="s1">&#39;all.cif&#39;</span><span class="p">,</span> <span class="s1">&#39;all.ref.cif&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">nerrors</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39; </span><span class="si">{}</span><span class="s1"> ERRORS:&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">nerrors</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39; OK:&#39;</span><span class="p">)</span>
+        <span class="c1"># end if</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39; Regenerated:&#39;</span><span class="p">)</span>
+    <span class="c1"># end if</span>
+    <span class="k">return</span></div>
+
+
+<div class="viewcode-block" id="runVibAnalysis">
+<a class="viewcode-back" href="../../autoapi/PDielec/pdmake/index.html#PDielec.pdmake.runVibAnalysis">[docs]</a>
+<span class="k">def</span> <span class="nf">runVibAnalysis</span><span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="n">instructions</span><span class="p">,</span> <span class="n">regenerate</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Run a vibanalysis test.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    title : str</span>
+<span class="sd">        The title of the test</span>
+<span class="sd">    instructions : str</span>
+<span class="sd">        The command line parameters.</span>
+<span class="sd">    regenerate : bool</span>
+<span class="sd">        Set to True if the reference file is overwritten.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">global</span> <span class="n">rootDirectory</span>
+    <span class="k">global</span> <span class="n">useLocal</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">title</span><span class="p">,</span><span class="n">end</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span><span class="n">flush</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">useLocal</span><span class="p">:</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">argv</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;python&#39;</span><span class="p">]</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">rootDirectory</span><span class="p">,</span><span class="s1">&#39;vibanalysis&#39;</span><span class="p">))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">argv</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;vibanalysis&#39;</span><span class="p">]</span>
+    <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">instructions</span><span class="p">)</span>
+    <span class="n">filename</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">for</span> <span class="n">option</span> <span class="ow">in</span> <span class="n">instructions</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">option</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">):</span>
+            <span class="n">filename</span> <span class="o">=</span> <span class="n">option</span>
+        <span class="c1"># end if</span>
+    <span class="c1"># end for</span>
+    <span class="k">if</span> <span class="n">filename</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Error in runVibAnalysis: there is no filename specified&#39;</span><span class="p">)</span>
+    <span class="n">header</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">filename</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">nmafile</span> <span class="o">=</span> <span class="n">header</span><span class="o">+</span><span class="s1">&#39;.nma&#39;</span>
+    <span class="n">reffile</span> <span class="o">=</span> <span class="n">header</span><span class="o">+</span><span class="s1">&#39;.nma.ref&#39;</span>
+    <span class="k">if</span> <span class="n">debug</span><span class="p">:</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">,</span><span class="n">stdout</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">DEVNULL</span><span class="p">,</span><span class="n">stderr</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">DEVNULL</span><span class="p">)</span>
+    <span class="c1"># If not doing a regeneration perform a check</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">regenerate</span><span class="p">:</span>
+        <span class="n">nerrors</span> <span class="o">=</span> <span class="n">compareNmaFiles</span><span class="p">(</span><span class="n">nmafile</span><span class="p">,</span> <span class="n">reffile</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">nerrors</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39; </span><span class="si">{}</span><span class="s1"> ERRORS:&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">nerrors</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39; OK:&#39;</span><span class="p">)</span>
+        <span class="c1"># end if</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">copyfile</span><span class="p">(</span><span class="n">nmafile</span><span class="p">,</span><span class="n">reffile</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39; Regenerated:&#39;</span><span class="p">)</span>
+    <span class="c1"># end if</span>
+    <span class="k">return</span></div>
+
+
+<div class="viewcode-block" id="runPreaderTest">
+<a class="viewcode-back" href="../../autoapi/PDielec/pdmake/index.html#PDielec.pdmake.runPreaderTest">[docs]</a>
+<span class="k">def</span> <span class="nf">runPreaderTest</span><span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="n">instructions</span><span class="p">,</span> <span class="n">regenerate</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Run a preader test.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    title : str</span>
+<span class="sd">        The title of the test</span>
+<span class="sd">    instructions : str</span>
+<span class="sd">        The command line parameters.</span>
+<span class="sd">    regenerate : bool, optional</span>
+<span class="sd">        Set to true if the reference file is overwritten. Default is False.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">global</span> <span class="n">debug</span>
+    <span class="k">global</span> <span class="n">rootDirectory</span>
+    <span class="k">global</span> <span class="n">useLocal</span>
+    <span class="k">global</span> <span class="n">debug</span>
+    <span class="k">if</span> <span class="n">debug</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;runPreaderTest:&#39;</span><span class="p">,</span><span class="n">title</span><span class="p">,</span><span class="n">instructions</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">title</span><span class="p">,</span><span class="n">end</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span><span class="n">flush</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">useLocal</span><span class="p">:</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">argv</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;python&#39;</span><span class="p">]</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">rootDirectory</span><span class="p">,</span><span class="s1">&#39;preader&#39;</span><span class="p">))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">argv</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;preader&#39;</span><span class="p">]</span>
+    <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">instructions</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="s1">&#39;command.csv&#39;</span><span class="p">):</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="s1">&#39;command.csv&#39;</span><span class="p">)</span>
+    <span class="n">outputfile</span> <span class="o">=</span> <span class="s1">&#39;command.csv&#39;</span>
+    <span class="k">if</span> <span class="n">regenerate</span><span class="p">:</span>
+        <span class="n">outputfile</span> <span class="o">=</span> <span class="s1">&#39;command.ref.csv&#39;</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">outputfile</span><span class="p">,</span><span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fd</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">debug</span><span class="p">:</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">,</span><span class="n">stdout</span><span class="o">=</span><span class="n">fd</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">,</span><span class="n">stdout</span><span class="o">=</span><span class="n">fd</span><span class="p">,</span><span class="n">stderr</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">DEVNULL</span><span class="p">)</span>
+    <span class="c1"># end with</span>
+    <span class="c1"># If not doing a regeneration perform a check</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">regenerate</span><span class="p">:</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">argv</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;checkcsv&#39;</span><span class="p">,</span> <span class="s1">&#39;command.ref.csv&#39;</span><span class="p">,</span><span class="s1">&#39;command.csv&#39;</span><span class="p">]</span>
+        <span class="k">with</span> <span class="n">redirect</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">devnull</span><span class="p">):</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="n">main_checkcsv</span><span class="p">()</span>
+        <span class="n">nerrors</span><span class="p">,</span><span class="n">keep_line_number</span><span class="p">,</span><span class="n">keep_word1</span><span class="p">,</span><span class="n">keep_word2</span><span class="p">,</span><span class="n">max_percentage_error</span> <span class="o">=</span> <span class="n">result</span>
+        <span class="k">if</span> <span class="n">nerrors</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39; ERRORS:&#39;</span><span class="o">+</span><span class="s2">&quot;LARGEST ON LINE </span><span class="si">{}</span><span class="s2"> - max </span><span class="si">%e</span><span class="s2">rror=</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">nerrors</span><span class="p">,</span> <span class="n">keep_line_number</span><span class="p">,</span> <span class="n">max_percentage_error</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39; OK:&#39;</span><span class="o">+</span><span class="s2">&quot; - max </span><span class="si">%e</span><span class="s2">rror=</span><span class="si">{}</span><span class="s2">&quot;</span> <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">max_percentage_error</span><span class="p">))</span>
+        <span class="c1"># end if</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39; Regenerated:&#39;</span><span class="p">)</span>
+    <span class="c1"># end if</span>
+    <span class="k">return</span></div>
+
+
+<div class="viewcode-block" id="runPDGuiTest">
+<a class="viewcode-back" href="../../autoapi/PDielec/pdmake/index.html#PDielec.pdmake.runPDGuiTest">[docs]</a>
+<span class="k">def</span> <span class="nf">runPDGuiTest</span><span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="n">instructions</span><span class="p">,</span> <span class="n">regenerate</span><span class="p">,</span> <span class="n">benchmarks</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Run a pdgui test.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    title : str</span>
+<span class="sd">        The title of the test</span>
+<span class="sd">    instructions : str</span>
+<span class="sd">        The command line parameters.</span>
+<span class="sd">    regenerate : bool</span>
+<span class="sd">        Set to true if the reference file is overwritten.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">global</span> <span class="n">viewing</span>
+    <span class="k">global</span> <span class="n">start_time</span>
+    <span class="k">global</span> <span class="n">debug</span>
+    <span class="k">global</span> <span class="n">rootDirectory</span>
+    <span class="k">global</span> <span class="n">useLocal</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">title</span><span class="p">,</span><span class="n">end</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span><span class="n">flush</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">useLocal</span><span class="p">:</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">argv</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;python&#39;</span><span class="p">]</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">rootDirectory</span><span class="p">,</span><span class="s1">&#39;pdgui&#39;</span><span class="p">))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">argv</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;pdgui&#39;</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="s1">&#39;results.xlsx&#39;</span><span class="p">):</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="s1">&#39;results.xlsx&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="s1">&#39;results.csv&#39;</span><span class="p">):</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="s1">&#39;results.csv&#39;</span><span class="p">)</span>
+    <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">instructions</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">debug</span><span class="p">:</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">,</span><span class="n">stdout</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">DEVNULL</span><span class="p">,</span><span class="n">stderr</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">DEVNULL</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">viewing</span><span class="p">:</span>
+        <span class="c1"># If not doing a regeneration perform a check</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">regenerate</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">benchmarks</span><span class="p">:</span>
+            <span class="n">sys</span><span class="o">.</span><span class="n">argv</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;checkexcel&#39;</span><span class="p">,</span> <span class="s1">&#39;results.ref.xlsx&#39;</span><span class="p">,</span><span class="s1">&#39;results.xlsx&#39;</span><span class="p">]</span>
+            <span class="k">with</span> <span class="n">redirect</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">devnull</span><span class="p">):</span>
+                <span class="n">result</span> <span class="o">=</span> <span class="n">main_checkexcel</span><span class="p">()</span>
+            <span class="n">nerrors</span><span class="p">,</span><span class="n">row</span><span class="p">,</span><span class="n">col</span><span class="p">,</span><span class="n">sheet</span><span class="p">,</span><span class="n">file1</span><span class="p">,</span><span class="n">value1</span><span class="p">,</span><span class="n">file2</span><span class="p">,</span><span class="n">value2</span><span class="p">,</span><span class="n">max_percentage_error</span> <span class="o">=</span> <span class="n">result</span>
+            <span class="k">if</span> <span class="n">nerrors</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{}</span><span class="s1"> ERRORS:&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">nerrors</span><span class="p">)</span><span class="o">+</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2">@</span><span class="si">{}</span><span class="s2">,</span><span class="si">{}</span><span class="s2"> - max </span><span class="si">%e</span><span class="s2">rror=</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">sheet</span><span class="p">,</span><span class="n">row</span><span class="p">,</span><span class="n">col</span><span class="p">,</span> <span class="n">max_percentage_error</span><span class="p">))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39; OK:&#39;</span><span class="o">+</span><span class="s2">&quot; - max </span><span class="si">%e</span><span class="s2">rror=</span><span class="si">{}</span><span class="s2">&quot;</span> <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">max_percentage_error</span><span class="p">))</span>
+            <span class="c1"># end if</span>
+        <span class="k">elif</span> <span class="n">benchmarks</span><span class="p">:</span>
+            <span class="n">end_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+            <span class="n">elapsed_time</span> <span class="o">=</span> <span class="n">end_time</span> <span class="o">-</span> <span class="n">start_time</span>
+            <span class="n">start_time</span> <span class="o">=</span> <span class="n">end_time</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39; OK:&#39;</span><span class="o">+</span><span class="s2">&quot; - elapsed time </span><span class="si">{:.3f}</span><span class="s2">s&quot;</span> <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">elapsed_time</span><span class="p">))</span>
+        <span class="k">elif</span> <span class="ow">not</span> <span class="n">benchmarks</span><span class="p">:</span>
+            <span class="c1"># If we asked for a benchmarking then don&#39;t do a regenerate</span>
+            <span class="n">copyfile</span><span class="p">(</span><span class="s1">&#39;results.xlsx&#39;</span><span class="p">,</span><span class="s1">&#39;results.ref.xlsx&#39;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39; Regenerated:&#39;</span><span class="p">)</span>
+        <span class="c1"># end if not regenerate</span>
+    <span class="c1">#end if not viewing</span>
+    <span class="k">return</span></div>
+
+
+<div class="viewcode-block" id="changePadding">
+<a class="viewcode-back" href="../../autoapi/PDielec/pdmake/index.html#PDielec.pdmake.changePadding">[docs]</a>
+<span class="k">def</span> <span class="nf">changePadding</span><span class="p">(</span><span class="nb">all</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Change the padding based on the maximum length of elements in a list or the predefined setting.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    all : list</span>
+<span class="sd">        A list containing elements whose lengths are to be compared.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    int</span>
+<span class="sd">        The maximum length found in the list or the predefined padding value, whichever is greater.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    This function assumes the presence of a global dictionary named `settings` with a key &#39;padding&#39;</span>
+<span class="sd">    that stores the default padding value. If the maximum length of an element in the list is</span>
+<span class="sd">    less than &#39;settings[&#39;padding&#39;]&#39;, the function returns &#39;settings[&#39;padding&#39;]&#39;. Otherwise,</span>
+<span class="sd">    it returns the maximum length found.</span>
+<span class="sd">    &quot;&quot;&quot;</span>    
+    <span class="k">global</span> <span class="n">settings</span>
+    <span class="n">maxlen</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="nb">all</span><span class="p">:</span>
+        <span class="n">maxlen</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">maxlen</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">d</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">maxlen</span> <span class="o">&lt;</span> <span class="n">settings</span><span class="p">[</span><span class="s1">&#39;padding&#39;</span><span class="p">]:</span>
+        <span class="n">maxlen</span> <span class="o">=</span> <span class="n">settings</span><span class="p">[</span><span class="s1">&#39;padding&#39;</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">maxlen</span></div>
+
+
+<div class="viewcode-block" id="runTests">
+<a class="viewcode-back" href="../../autoapi/PDielec/pdmake/index.html#PDielec.pdmake.runTests">[docs]</a>
+<span class="k">def</span> <span class="nf">runTests</span><span class="p">(</span><span class="n">testlist</span><span class="p">,</span> <span class="n">testType</span><span class="p">,</span> <span class="n">regenerate</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Run the tests given in the directories stored in testlist.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    testlist : list of str</span>
+<span class="sd">        The directories where the tests are stored.</span>
+<span class="sd">    testType : {&#39;pdgui&#39;, &#39;preader&#39;, &#39;p2cif&#39;, &#39;benchmark&#39;}</span>
+<span class="sd">        The type of tests to run.</span>
+<span class="sd">    regenerate : bool</span>
+<span class="sd">        If True, the test data will be regenerated.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">global</span> <span class="n">start_time</span>
+    <span class="k">global</span> <span class="n">debug</span>
+    <span class="n">mychdir</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">rootDirectory</span><span class="p">,</span><span class="s1">&#39;Examples&#39;</span><span class="p">))</span>
+    <span class="n">homedir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">()</span>
+    <span class="n">convertTestType</span><span class="o">=</span><span class="p">{}</span>
+    <span class="n">convertTestType</span><span class="p">[</span><span class="s1">&#39;pdgui&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;PDGui tests&#39;</span>
+    <span class="n">convertTestType</span><span class="p">[</span><span class="s1">&#39;vibanalysis&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;VibAnalysis tests&#39;</span>
+    <span class="n">convertTestType</span><span class="p">[</span><span class="s1">&#39;preader&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;PReader tests&#39;</span>
+    <span class="n">convertTestType</span><span class="p">[</span><span class="s1">&#39;p2cif&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;P2Cif tests&#39;</span>
+    <span class="n">convertTestType</span><span class="p">[</span><span class="s1">&#39;benchmarks&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;BenchMarks&#39;</span>
+    <span class="n">convertTestType</span><span class="p">[</span><span class="s1">&#39;singlecrystal&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;Single Crystals&#39;</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;--------------------------------------------------&#39;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">convertTestType</span><span class="p">[</span><span class="n">testType</span><span class="p">],</span><span class="s1">&#39;starting&#39;</span> <span class="p">)</span>
+    <span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+    <span class="n">test_start_time</span> <span class="o">=</span> <span class="n">start_time</span>
+    <span class="k">if</span> <span class="n">debug</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;RunTests: homedir=&#39;</span><span class="p">,</span><span class="n">homedir</span><span class="p">)</span>
+    <span class="n">pdmakefile</span> <span class="o">=</span> <span class="s1">&#39;command.pdmake&#39;</span>
+    <span class="k">for</span> <span class="n">directory</span> <span class="ow">in</span> <span class="n">testlist</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">debug</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;RunTest: directory=&#39;</span><span class="p">,</span><span class="n">directory</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">directory</span><span class="p">):</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Error: command needs to be executed in the PDielec home directory&#39;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;       current directory is </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">homedir</span><span class="p">))</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;       required directory is </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">directory</span><span class="p">))</span>
+            <span class="n">exit</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">testType</span> <span class="o">==</span> <span class="s1">&#39;benchmarks&#39;</span><span class="p">:</span>
+            <span class="n">runPdMakefile</span><span class="p">(</span><span class="n">directory</span><span class="p">,</span><span class="n">pdmakefile</span><span class="p">,</span><span class="n">regenerate</span><span class="p">,</span><span class="n">benchmarks</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">runPdMakefile</span><span class="p">(</span><span class="n">directory</span><span class="p">,</span><span class="n">pdmakefile</span><span class="p">,</span><span class="n">regenerate</span><span class="p">)</span>
+    <span class="c1"># end for</span>
+    <span class="n">elapsed_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">test_start_time</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;--------------------------------------------------&#39;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">convertTestType</span><span class="p">[</span><span class="n">testType</span><span class="p">],</span><span class="s1">&#39;completed in </span><span class="si">{:.3f}</span><span class="s1">s&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">elapsed_time</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="readPdMakefile">
+<a class="viewcode-back" href="../../autoapi/PDielec/pdmake/index.html#PDielec.pdmake.readPdMakefile">[docs]</a>
+<span class="k">def</span> <span class="nf">readPdMakefile</span><span class="p">(</span><span class="n">directory</span><span class="p">,</span><span class="n">filename</span><span class="p">):</span>
+    <span class="c1"># The first word is the dictionary key, the rest is its value</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Read a custom makefile and return the title and instructions.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    directory : str</span>
+<span class="sd">        The directory in which the makefile is located. If the directory name is</span>
+<span class="sd">        provided and the `settings[&#39;title&#39;]` is not &#39;title&#39;, the directory name is used as the title.</span>
+<span class="sd">        If the directory is not provided (empty string), the current working directory is used as the title.</span>
+<span class="sd">    filename : str</span>
+<span class="sd">        The name of the makefile to be read.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    tuple</span>
+<span class="sd">        A tuple returning a dictionary of instructions</span>
+<span class="sd">        - title (str): The title for the makefile, determined based on the `settings[&#39;title&#39;]` value or the directory name, or the current working directory.</span>
+<span class="sd">        - instructions (dict): A dictionary where each key is an instruction extracted from the makefile, and the value is a list of arguments for that instruction.</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    FileNotFoundError</span>
+<span class="sd">        If the specified file cannot be found or read.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    - This function uses two global variables:</span>
+<span class="sd">        - `settings`: A dictionary that contains various settings, including &#39;title&#39; and &#39;padding&#39;.</span>
+<span class="sd">          &#39;title&#39; is used to determine if the title should be extracted from the makefile&#39;s first line,</span>
+<span class="sd">          and &#39;padding&#39; determines how much padding the title should have when displayed.</span>
+<span class="sd">        - `debug`: A boolean flag used to control debugging output. If `True`, additional information</span>
+<span class="sd">          about the function&#39;s operation will be printed to the standard output.</span>
+
+<span class="sd">    - The function removes line continuation characters and treats the continued lines as a single line.</span>
+
+<span class="sd">    - Lines starting with `#` are treated as comments and ignored.</span>
+
+<span class="sd">    - It&#39;s assumed that `os` module has been imported for `os.getcwd()` to work, though it is not explicitly</span>
+<span class="sd">      stated in the function definition.</span>
+<span class="sd">    &quot;&quot;&quot;</span>    
+    <span class="k">global</span> <span class="n">settings</span>
+    <span class="k">global</span> <span class="n">debug</span>
+    <span class="n">instructions</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">if</span> <span class="n">debug</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;ReadPdMakefile:&#39;</span><span class="p">,</span><span class="n">directory</span><span class="p">,</span><span class="n">filename</span><span class="p">)</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span><span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fd</span><span class="p">:</span>
+        <span class="n">line</span> <span class="o">=</span> <span class="n">fd</span><span class="o">.</span><span class="n">readline</span><span class="p">()[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">settings</span><span class="p">[</span><span class="s1">&#39;title&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;title&#39;</span><span class="p">:</span>
+            <span class="n">title</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">ljust</span><span class="p">(</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;padding&#39;</span><span class="p">])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">directory</span><span class="p">)</span><span class="o">&gt;</span><span class="mi">1</span><span class="p">:</span>
+                <span class="n">title</span> <span class="o">=</span> <span class="n">directory</span><span class="o">.</span><span class="n">ljust</span><span class="p">(</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;padding&#39;</span><span class="p">])</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">title</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">()</span><span class="o">.</span><span class="n">ljust</span><span class="p">(</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;padding&#39;</span><span class="p">])</span>
+        <span class="n">line</span> <span class="o">=</span> <span class="n">fd</span><span class="o">.</span><span class="n">readline</span><span class="p">()[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">while</span> <span class="n">line</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">line</span><span class="p">)</span><span class="o">&gt;</span><span class="mi">0</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;#&#39;</span><span class="p">):</span>
+                <span class="n">full_line</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\\</span><span class="s1">&#39;</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+                <span class="k">while</span> <span class="n">line</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\\</span><span class="s1">&#39;</span><span class="p">):</span>
+                    <span class="n">line</span> <span class="o">=</span> <span class="n">fd</span><span class="o">.</span><span class="n">readline</span><span class="p">()[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+                    <span class="n">full_line</span> <span class="o">+=</span> <span class="n">line</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\\</span><span class="s1">&#39;</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+                <span class="n">splits</span> <span class="o">=</span> <span class="n">full_line</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+                <span class="n">key</span> <span class="o">=</span> <span class="n">splits</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="n">value</span> <span class="o">=</span> <span class="n">splits</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
+                <span class="n">instructions</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+            <span class="c1"># end if</span>
+            <span class="n">line</span> <span class="o">=</span> <span class="n">fd</span><span class="o">.</span><span class="n">readline</span><span class="p">()[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="c1"># end while</span>
+    <span class="c1">#end open</span>
+    <span class="k">return</span> <span class="n">title</span><span class="p">,</span><span class="n">instructions</span></div>
+
+
+<div class="viewcode-block" id="mychdir">
+<a class="viewcode-back" href="../../autoapi/PDielec/pdmake/index.html#PDielec.pdmake.mychdir">[docs]</a>
+<span class="k">def</span> <span class="nf">mychdir</span><span class="p">(</span><span class="n">directory</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Local version of os.chdir with some testing.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    This is a local implementation of os.chdir which includes</span>
+<span class="sd">    additional testing or functionality tailored to specific needs.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">if</span> <span class="n">directory</span> <span class="o">!=</span> <span class="s1">&#39;&#39;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">directory</span><span class="p">):</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">chdir</span><span class="p">(</span><span class="n">directory</span><span class="p">)</span>
+            <span class="n">newdir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;mychdir: Error directory does not exist&#39;</span><span class="p">,</span><span class="n">directory</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;mychdir: Current directory is          &#39;</span><span class="p">,</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">())</span>
+        <span class="c1"># end if</span>
+    <span class="c1"># end if</span>
+    <span class="k">return</span></div>
+
+
+<div class="viewcode-block" id="runPdMakefile">
+<a class="viewcode-back" href="../../autoapi/PDielec/pdmake/index.html#PDielec.pdmake.runPdMakefile">[docs]</a>
+<span class="k">def</span> <span class="nf">runPdMakefile</span><span class="p">(</span><span class="n">directory</span><span class="p">,</span><span class="n">pdmakefile</span><span class="p">,</span><span class="n">regenerate</span><span class="p">,</span><span class="n">benchmarks</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Run a specific pdMakefile.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    directory : str</span>
+<span class="sd">        Directory where the pdmakefile will be run</span>
+<span class="sd">    pdmakefile : str</span>
+<span class="sd">        Name of the pdmakefile</span>
+<span class="sd">    regenerate : bool</span>
+<span class="sd">        True if this is a regeneration of data</span>
+<span class="sd">    benchmarks : bool (Option default is false)</span>
+<span class="sd">        True if this is a benchmark</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    The routine reads the pdmakefile and determines the type of pdmakefile and the instructions</span>
+<span class="sd">    Then the instructions are processed according to the context (preader, pdgui, p2cif or vibanalysis)</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">global</span> <span class="n">debug</span>
+    <span class="n">homedir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">debug</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;RunPdMakefile: directory =&#39;</span><span class="p">,</span><span class="n">directory</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;RunPdMakefile: pdmakefile =&#39;</span><span class="p">,</span><span class="n">pdmakefile</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;RunPdMakefile: cwd =&#39;</span><span class="p">,</span><span class="n">homedir</span><span class="p">)</span>
+    <span class="n">mychdir</span><span class="p">(</span><span class="n">directory</span><span class="p">)</span>
+    <span class="n">title</span><span class="p">,</span><span class="n">instructions</span> <span class="o">=</span> <span class="n">readPdMakefile</span><span class="p">(</span><span class="n">directory</span><span class="p">,</span><span class="n">pdmakefile</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">debug</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;RunPdMakefile: title =&#39;</span><span class="p">,</span><span class="n">title</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;RunPdMakefile: instructions =&#39;</span><span class="p">,</span><span class="n">instructions</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">instructions</span><span class="p">:</span>
+        <span class="n">parameters</span> <span class="o">=</span> <span class="n">instructions</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">key</span> <span class="o">==</span> <span class="s1">&#39;preader&#39;</span><span class="p">:</span>
+            <span class="n">runPreaderTest</span><span class="p">(</span><span class="n">title</span><span class="p">,</span><span class="n">parameters</span><span class="p">,</span><span class="n">regenerate</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">key</span> <span class="o">==</span> <span class="s1">&#39;vibanalysis&#39;</span><span class="p">:</span>
+            <span class="n">runVibAnalysis</span><span class="p">(</span><span class="n">title</span><span class="p">,</span><span class="n">parameters</span><span class="p">,</span><span class="n">regenerate</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">key</span> <span class="o">==</span> <span class="s1">&#39;p2cif&#39;</span><span class="p">:</span>
+            <span class="n">runP2CifTest</span><span class="p">(</span><span class="n">title</span><span class="p">,</span><span class="n">parameters</span><span class="p">,</span><span class="n">regenerate</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">key</span> <span class="o">==</span> <span class="s1">&#39;pdgui&#39;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">viewing</span><span class="p">:</span>
+                <span class="n">parameters</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="s1">&#39;-script&#39;</span><span class="p">,</span> <span class="s1">&#39;script.py&#39;</span><span class="p">])</span>
+            <span class="k">elif</span> <span class="n">benchmarks</span><span class="p">:</span>
+                <span class="n">parameters</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="s1">&#39;-nosplash&#39;</span><span class="p">,</span> <span class="s1">&#39;-exit&#39;</span><span class="p">,</span> <span class="s1">&#39;-script&#39;</span><span class="p">,</span> <span class="s1">&#39;script.py&#39;</span><span class="p">])</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">parameters</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="s1">&#39;-nosplash&#39;</span><span class="p">,</span> <span class="s1">&#39;results.xlsx&#39;</span><span class="p">,</span> <span class="s1">&#39;-exit&#39;</span><span class="p">,</span> <span class="s1">&#39;-script&#39;</span><span class="p">,</span> <span class="s1">&#39;script.py&#39;</span><span class="p">])</span>
+            <span class="k">if</span> <span class="n">debug</span><span class="p">:</span>
+                <span class="n">parameters</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;-d&#39;</span><span class="p">)</span>
+            <span class="n">runPDGuiTest</span><span class="p">(</span><span class="n">title</span><span class="p">,</span><span class="n">parameters</span><span class="p">,</span><span class="n">regenerate</span><span class="p">,</span><span class="n">benchmarks</span><span class="o">=</span><span class="n">benchmarks</span><span class="p">)</span>
+    <span class="n">mychdir</span><span class="p">(</span><span class="n">homedir</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="runClean">
+<a class="viewcode-back" href="../../autoapi/PDielec/pdmake/index.html#PDielec.pdmake.runClean">[docs]</a>
+<span class="k">def</span> <span class="nf">runClean</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Clean old results from the Examples directory.</span>
+
+<span class="sd">    This function navigates to the root directory and removes specific file types related to old results. Supported file types for deletion include .xlsx, .csv, .cif, and .nma files. This operation is not supported on Windows platforms and will return immediately if attempted.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    - The function checks the operating system and will not execute on Windows systems (`os.name == &#39;nt&#39;`).</span>
+<span class="sd">    - It navigates to a directory specified by a global variable `rootDirectory`.</span>
+<span class="sd">    - Uses `subprocess.run` with `shell=True` to execute shell commands for deleting files. This operation involves running `find` commands to locate and remove files with specified extensions.</span>
+<span class="sd">    - It assumes that the `rootDirectory` global variable and necessary imports (`os`, `subprocess`) are correctly defined elsewhere.</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    None</span>
+<span class="sd">    &quot;&quot;&quot;</span>    
+    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s1">&#39;nt&#39;</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Unable to clean installation in Windows&#39;</span><span class="p">)</span>
+        <span class="k">return</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Cleaning old results from the Examples directory&#39;</span><span class="p">)</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">chdir</span><span class="p">(</span><span class="n">rootDirectory</span><span class="p">)</span>
+    <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="s1">&#39;find . -name results.xlsx -exec rm -f </span><span class="si">{}</span><span class="s1"> \;&#39;</span><span class="p">,</span><span class="n">shell</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="s1">&#39;find . -name results.csv -exec rm -f </span><span class="si">{}</span><span class="s1"> \;&#39;</span><span class="p">,</span><span class="n">shell</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="s1">&#39;find . -name command.csv -exec rm -f </span><span class="si">{}</span><span class="s1"> \;&#39;</span><span class="p">,</span><span class="n">shell</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="s1">&#39;find . -name all.cif -exec rm -f </span><span class="si">{}</span><span class="s1"> \;&#39;</span><span class="p">,</span><span class="n">shell</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="s1">&#39;find . -name \*.nma -exec rm -f </span><span class="si">{}</span><span class="s1"> \;&#39;</span><span class="p">,</span><span class="n">shell</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Cleaning complete&#39;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="runPyInstaller">
+<a class="viewcode-back" href="../../autoapi/PDielec/pdmake/index.html#PDielec.pdmake.runPyInstaller">[docs]</a>
+<span class="k">def</span> <span class="nf">runPyInstaller</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Runs the PyInstaller command with specified options and handles platform specific adjustments.</span>
+
+<span class="sd">    This function attempts to create a standalone application using PyInstaller based on a given spec file. It also performs additional copying steps required for the application to run properly. If executed on a Windows platform, the function will halt and inform the user about the incompatibility.</span>
+<span class="sd">    &quot;&quot;&quot;</span>    
+    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s1">&#39;nt&#39;</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Unable to create pyInstaller installation in Windows&#39;</span><span class="p">)</span>
+        <span class="k">return</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Creating pyinstaller files in dis/pdgui         &#39;</span><span class="p">)</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">chdir</span><span class="p">(</span><span class="n">rootDirectory</span><span class="p">)</span>
+    <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="s1">&#39;pyinstaller pdgui.spec -y&#39;</span><span class="p">,</span><span class="n">shell</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="s1">&#39;cp -r dist/pdgui/PyQt5/Qt/plugins/platforms dist/pdgui&#39;</span><span class="p">,</span><span class="n">shell</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="runPyPi">
+<a class="viewcode-back" href="../../autoapi/PDielec/pdmake/index.html#PDielec.pdmake.runPyPi">[docs]</a>
+<span class="k">def</span> <span class="nf">runPyPi</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Creates PyPi distribution files, restricted by OS.</span>
+
+<span class="sd">    This function changes the current working directory to `rootDirectory` </span>
+<span class="sd">    and runs a series of shell commands that clean up previous distribution files and </span>
+<span class="sd">    create new PyPi distribution files. The function is not designed to run on Windows OS.</span>
+<span class="sd">    &quot;&quot;&quot;</span>    
+    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s1">&#39;nt&#39;</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Unable to create PyPi installation in Windows&#39;</span><span class="p">)</span>
+        <span class="k">return</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Creating PyPi distribution files&#39;</span><span class="p">)</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">chdir</span><span class="p">(</span><span class="n">rootDirectory</span><span class="p">)</span>
+    <span class="c1"># deprecated subprocess.run(&#39;rm -rf build dist PDielec.egg-info; python setup.py sdist bdist_wheel&#39;,shell=True)</span>
+    <span class="c1"># Following command needs an installed copy of setuptools</span>
+    <span class="c1"># pip install setuptools</span>
+    <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="s1">&#39;rm -rf build dist PDielec.egg-info; python -m build &#39;</span><span class="p">,</span><span class="n">shell</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="testForRootDirectory">
+<a class="viewcode-back" href="../../autoapi/PDielec/pdmake/index.html#PDielec.pdmake.testForRootDirectory">[docs]</a>
+<span class="k">def</span> <span class="nf">testForRootDirectory</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Test if a given path contains a subdirectory named &#39;Examples&#39;.</span>
+
+<span class="sd">    This function checks if the given path has a direct subdirectory</span>
+<span class="sd">    called &#39;Examples&#39; and returns a boolean indicating the result.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    path : str</span>
+<span class="sd">        The directory path to test for the existence of a &#39;Examples&#39; subdirectory.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    bool</span>
+<span class="sd">        Returns True if the &#39;Examples&#39; subdirectory exists within the given path,</span>
+<span class="sd">        otherwise returns False.</span>
+<span class="sd">    &quot;&quot;&quot;</span>    
+    <span class="n">test</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">path</span><span class="p">,</span><span class="s1">&#39;Examples&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">test</span><span class="p">):</span>
+        <span class="k">return</span> <span class="kc">False</span>
+    <span class="k">return</span> <span class="kc">True</span></div>
+
+
+<div class="viewcode-block" id="findRootDirectory">
+<a class="viewcode-back" href="../../autoapi/PDielec/pdmake/index.html#PDielec.pdmake.findRootDirectory">[docs]</a>
+<span class="k">def</span> <span class="nf">findRootDirectory</span><span class="p">(</span><span class="n">start</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Find the root directory starting from start.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    start : str</span>
+<span class="sd">        The starting directory path.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    str</span>
+<span class="sd">        The root directory path.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">lastpath</span> <span class="o">=</span> <span class="n">start</span>
+    <span class="n">path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">start</span><span class="p">,</span><span class="s1">&#39;Examples&#39;</span><span class="p">)</span>
+    <span class="k">while</span> <span class="n">path</span> <span class="o">!=</span> <span class="n">lastpath</span><span class="p">:</span>
+        <span class="n">lastpath</span> <span class="o">=</span> <span class="n">path</span>
+        <span class="n">path</span><span class="p">,</span><span class="n">tail</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">testForRootDirectory</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">path</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Unable to locate root directory&#39;</span><span class="p">)</span>
+    <span class="n">exit</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="main">
+<a class="viewcode-back" href="../../autoapi/PDielec/pdmake/index.html#PDielec.pdmake.main">[docs]</a>
+<span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Main routine to process command line arguments and execute actions.</span>
+
+<span class="sd">    This script accepts various command-line arguments to perform different actions such as running tests, benchmarks, cleaning build directories, and installing scripts.</span>
+
+<span class="sd">    Command line options</span>
+<span class="sd">    --------------------</span>
+<span class="sd">    - `test` or `tests`: Runs all test cases.</span>
+<span class="sd">    - `test-singlecrystal`: Runs tests for single crystal analysis.</span>
+<span class="sd">    - `test-preader`: Runs tests for the preader component.</span>
+<span class="sd">    - `test-p2cif`: Runs tests for the p2cif component.</span>
+<span class="sd">    - `test-pdgui`: Runs tests for the PDGUI component.</span>
+<span class="sd">    - `test-vibanalysis`: Runs tests for vibrational analysis.</span>
+<span class="sd">    - `benchmarks`: Executes benchmark tests.</span>
+<span class="sd">    - `pypi`: Runs commands for PyPI distribution.</span>
+<span class="sd">    - `clean`: Cleans up directories.</span>
+<span class="sd">    - `install`: Installs necessary scripts.</span>
+<span class="sd">    - `scripts` or `-scripts`: Specifies the directory for scripts (expects a directory path next).</span>
+<span class="sd">    - `-root` or `--root`: Specifies the root directory to operate in.</span>
+<span class="sd">    - `-debug` or `--debug` or `-d`: Enables debug mode.</span>
+<span class="sd">    - `-usesystem`: Use system installed binaries rather than local ones.</span>
+<span class="sd">    - `-view` or `--view` or `-v`: Enables viewing mode.</span>
+<span class="sd">    - `-regenerate`: Forces regeneration of test data.</span>
+<span class="sd">    - `-padding`: Sets padding for some operation (expects an integer value next).</span>
+<span class="sd">    - `-directory` or `--directory`: Sets the directory for some operation (expects a directory path next).</span>
+<span class="sd">    - `&lt;filename&gt;.pdmake`: Specifies a PDMakefile to execute.</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    SystemExit</span>
+<span class="sd">        If an invalid command line argument is provided or certain conditions are not met (e.g., invalid root directory, command not executed in the PDielec home directory).</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    - It uses global variables for configuration options like `debug`, `viewing`, `settings`, `rootDirectory`, and `useLocal`.</span>
+<span class="sd">    - Requires the `os`, `sys`, and specific project function imports to function.</span>
+<span class="sd">    - The script changes the current working directory multiple times, which affects relative path usage.</span>
+<span class="sd">    &quot;&quot;&quot;</span>    
+    <span class="k">global</span> <span class="n">debug</span>
+    <span class="k">global</span> <span class="n">viewing</span>
+    <span class="k">global</span> <span class="n">settings</span>
+    <span class="k">global</span> <span class="n">rootDirectory</span>
+    <span class="k">global</span> <span class="n">useLocal</span>
+    <span class="c1"># Start processing the directories</span>
+    <span class="n">originalDirectory</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">()</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">1</span> <span class="p">:</span>
+        <span class="n">usage</span><span class="p">()</span>
+    <span class="n">tokens</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
+    <span class="n">ntokens</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">tokens</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span>
+    <span class="n">itoken</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+    <span class="n">regenerate</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">scriptsDirectory</span><span class="o">=</span><span class="s1">&#39;~/bin&#39;</span>
+    <span class="n">command</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="c1">#rootDirectory,command = os.path.split(command)</span>
+    <span class="c1">#if rootDirectory == &#39;&#39;:</span>
+    <span class="c1">#    rootDirectory = originalDirectory</span>
+    <span class="n">rootDirectory</span> <span class="o">=</span> <span class="n">originalDirectory</span>
+    <span class="n">rootDirectory</span> <span class="o">=</span> <span class="n">findRootDirectory</span><span class="p">(</span><span class="n">rootDirectory</span><span class="p">)</span>
+    <span class="n">actions</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">pdmakefiles</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="c1"># Loop over the tokens on the command line</span>
+    <span class="k">while</span> <span class="n">itoken</span> <span class="o">&lt;</span> <span class="n">ntokens</span><span class="p">:</span>
+        <span class="n">itoken</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="n">token</span> <span class="o">=</span> <span class="n">tokens</span><span class="p">[</span><span class="n">itoken</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">token</span> <span class="o">==</span> <span class="s1">&#39;test&#39;</span> <span class="ow">or</span> <span class="n">token</span> <span class="o">==</span> <span class="s1">&#39;tests&#39;</span><span class="p">:</span>
+            <span class="n">actions</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;test all&#39;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">token</span> <span class="o">==</span> <span class="s1">&#39;test-singlecrystal&#39;</span><span class="p">:</span>
+            <span class="n">actions</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;test singlecrystal&#39;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">token</span> <span class="o">==</span> <span class="s1">&#39;test-preader&#39;</span><span class="p">:</span>
+            <span class="n">actions</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;test preader&#39;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">token</span> <span class="o">==</span> <span class="s1">&#39;test-p2cif&#39;</span><span class="p">:</span>
+            <span class="n">actions</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;test p2cif&#39;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">token</span> <span class="o">==</span> <span class="s1">&#39;test-pdgui&#39;</span><span class="p">:</span>
+            <span class="n">actions</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;test pdgui&#39;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">token</span> <span class="o">==</span> <span class="s1">&#39;test-vibanalysis&#39;</span><span class="p">:</span>
+            <span class="n">actions</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;test vibanalysis&#39;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">token</span> <span class="o">==</span> <span class="s1">&#39;benchmarks&#39;</span><span class="p">:</span>
+            <span class="n">actions</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;run benchmarks&#39;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">token</span> <span class="o">==</span> <span class="s1">&#39;-root&#39;</span> <span class="ow">or</span> <span class="n">token</span> <span class="o">==</span> <span class="s1">&#39;--root&#39;</span><span class="p">:</span>
+            <span class="n">itoken</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="n">rootDirectory</span> <span class="o">=</span> <span class="n">tokens</span><span class="p">[</span><span class="n">itoken</span><span class="p">]</span>
+        <span class="k">elif</span> <span class="n">token</span> <span class="o">==</span> <span class="s1">&#39;-debug&#39;</span> <span class="ow">or</span> <span class="n">token</span> <span class="o">==</span> <span class="s1">&#39;--debug&#39;</span> <span class="ow">or</span> <span class="n">token</span> <span class="o">==</span> <span class="s1">&#39;-d&#39;</span><span class="p">:</span>
+            <span class="n">debug</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">elif</span> <span class="n">token</span> <span class="o">==</span> <span class="s1">&#39;-usesystem&#39;</span><span class="p">:</span>
+            <span class="n">useLocal</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">elif</span> <span class="n">token</span> <span class="o">==</span> <span class="s1">&#39;-view&#39;</span> <span class="ow">or</span> <span class="n">token</span> <span class="o">==</span> <span class="s1">&#39;--view&#39;</span> <span class="ow">or</span> <span class="n">token</span> <span class="o">==</span> <span class="s1">&#39;-v&#39;</span><span class="p">:</span>
+            <span class="n">viewing</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">elif</span> <span class="n">token</span> <span class="o">==</span> <span class="s1">&#39;-regenerate&#39;</span> <span class="ow">or</span> <span class="n">token</span> <span class="o">==</span> <span class="s1">&#39;--regenerate&#39;</span><span class="p">:</span>
+            <span class="n">regenerate</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">elif</span> <span class="n">token</span> <span class="o">==</span> <span class="s1">&#39;-padding&#39;</span> <span class="ow">or</span> <span class="n">token</span> <span class="o">==</span> <span class="s1">&#39;--padding&#39;</span><span class="p">:</span>
+            <span class="n">itoken</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="n">settings</span><span class="p">[</span><span class="s1">&#39;padding&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">tokens</span><span class="p">[</span><span class="n">itoken</span><span class="p">])</span>
+        <span class="k">elif</span> <span class="n">token</span> <span class="o">==</span> <span class="s1">&#39;-directory&#39;</span> <span class="ow">or</span> <span class="n">token</span> <span class="o">==</span> <span class="s1">&#39;--directory&#39;</span><span class="p">:</span>
+            <span class="n">itoken</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="n">settings</span><span class="p">[</span><span class="s1">&#39;title&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;directory&#39;</span>
+        <span class="k">elif</span> <span class="n">token</span> <span class="o">==</span> <span class="s1">&#39;pypi&#39;</span><span class="p">:</span>
+            <span class="n">actions</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;run pypi&#39;</span><span class="p">)</span>
+<span class="c1">#        elif token == &#39;pyinstaller&#39;:</span>
+<span class="c1">#            actions.append(&#39;run pyinstaller&#39;)</span>
+        <span class="k">elif</span> <span class="n">token</span> <span class="o">==</span> <span class="s1">&#39;clean&#39;</span><span class="p">:</span>
+            <span class="n">actions</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;run clean&#39;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">token</span> <span class="o">==</span> <span class="s1">&#39;install&#39;</span><span class="p">:</span>
+            <span class="n">actions</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;install&#39;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">token</span> <span class="o">==</span> <span class="s1">&#39;scripts&#39;</span> <span class="ow">or</span> <span class="n">token</span> <span class="o">==</span> <span class="s1">&#39;-scripts&#39;</span><span class="p">:</span>
+            <span class="n">itoken</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="n">scriptsDirectory</span> <span class="o">=</span> <span class="n">tokens</span><span class="p">[</span><span class="n">itoken</span><span class="p">]</span>
+        <span class="k">elif</span> <span class="n">token</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;.pdmake&#39;</span><span class="p">):</span>
+            <span class="n">pdmakefiles</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">token</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">usage</span><span class="p">()</span>
+            <span class="n">exit</span><span class="p">();</span>
+        <span class="c1"># endif</span>
+    <span class="c1"># end while</span>
+    <span class="c1">#</span>
+    <span class="c1"># Change to the rootDirectory</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">rootDirectory</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Error: The root directory is not valid&#39;</span><span class="p">,</span><span class="n">rootDirectory</span><span class="p">)</span>
+        <span class="n">exit</span><span class="p">()</span>
+    <span class="n">mychdir</span><span class="p">(</span><span class="n">rootDirectory</span><span class="p">)</span>
+    <span class="c1">#</span>
+    <span class="c1"># Check to see if the required executables are present</span>
+    <span class="c1"># If the are then use them</span>
+    <span class="c1"># </span>
+    <span class="k">if</span> <span class="n">useLocal</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">checkLocalExecutables</span><span class="p">():</span>
+            <span class="n">useLocal</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">useLocal</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="c1"># Change directory to the Examples directory</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="s1">&#39;Examples&#39;</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Error: command needs to be executed in the PDielec home directory&#39;</span><span class="p">)</span>
+        <span class="n">exit</span><span class="p">()</span>
+    <span class="c1">#</span>
+    <span class="c1"># Handle any pdmake files there might be</span>
+    <span class="c1">#</span>
+    <span class="k">for</span> <span class="n">pdmakefile</span> <span class="ow">in</span> <span class="n">pdmakefiles</span><span class="p">:</span>
+        <span class="n">directory</span> <span class="o">=</span> <span class="n">originalDirectory</span>
+        <span class="n">runPdMakefile</span><span class="p">(</span><span class="n">directory</span><span class="p">,</span><span class="n">pdmakefile</span><span class="p">,</span><span class="n">regenerate</span><span class="p">)</span>
+    <span class="c1">#</span>
+    <span class="c1"># Now loop over the actions</span>
+    <span class="c1">#</span>
+    <span class="n">mychdir</span><span class="p">(</span><span class="s1">&#39;Examples&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">settings</span><span class="p">[</span><span class="s1">&#39;title&#39;</span><span class="p">]</span> <span class="o">!=</span> <span class="s1">&#39;title&#39;</span><span class="p">:</span>
+        <span class="n">test_all</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">test_all</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">test_p2cif</span><span class="p">)</span>
+        <span class="n">test_all</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">test_preader</span><span class="p">)</span>
+        <span class="n">test_all</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">test_pdgui</span><span class="p">)</span>
+        <span class="n">test_all</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">test_vibanalysis</span><span class="p">)</span>
+        <span class="n">settings</span><span class="p">[</span><span class="s1">&#39;padding&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">changePadding</span><span class="p">(</span><span class="n">test_all</span><span class="p">)</span>
+    <span class="c1">#</span>
+    <span class="k">for</span> <span class="n">action</span> <span class="ow">in</span> <span class="n">actions</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">action</span> <span class="o">==</span> <span class="s1">&#39;test all&#39;</span><span class="p">:</span>
+            <span class="n">runTests</span><span class="p">(</span><span class="n">test_p2cif</span>      <span class="p">,</span><span class="s1">&#39;p2cif&#39;</span>      <span class="p">,</span><span class="n">regenerate</span><span class="p">)</span>
+            <span class="n">runTests</span><span class="p">(</span><span class="n">test_preader</span>    <span class="p">,</span><span class="s1">&#39;preader&#39;</span>    <span class="p">,</span><span class="n">regenerate</span><span class="p">)</span>
+            <span class="n">runTests</span><span class="p">(</span><span class="n">test_pdgui</span>      <span class="p">,</span><span class="s1">&#39;pdgui&#39;</span>      <span class="p">,</span><span class="n">regenerate</span><span class="p">)</span>
+            <span class="n">runTests</span><span class="p">(</span><span class="n">test_vibanalysis</span><span class="p">,</span><span class="s1">&#39;vibanalysis&#39;</span><span class="p">,</span><span class="n">regenerate</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">action</span> <span class="o">==</span> <span class="s1">&#39;test preader&#39;</span><span class="p">:</span>
+            <span class="n">runTests</span><span class="p">(</span><span class="n">test_preader</span>    <span class="p">,</span><span class="s1">&#39;preader&#39;</span>    <span class="p">,</span><span class="n">regenerate</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">action</span> <span class="o">==</span> <span class="s1">&#39;test p2cif&#39;</span><span class="p">:</span>
+            <span class="n">runTests</span><span class="p">(</span><span class="n">test_p2cif</span>      <span class="p">,</span><span class="s1">&#39;p2cif&#39;</span>      <span class="p">,</span><span class="n">regenerate</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">action</span> <span class="o">==</span> <span class="s1">&#39;test pdgui&#39;</span><span class="p">:</span>
+            <span class="n">runTests</span><span class="p">(</span><span class="n">test_pdgui</span>      <span class="p">,</span><span class="s1">&#39;pdgui&#39;</span>      <span class="p">,</span><span class="n">regenerate</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">action</span> <span class="o">==</span> <span class="s1">&#39;test singlecrystal&#39;</span><span class="p">:</span>
+            <span class="n">runTests</span><span class="p">(</span><span class="n">test_singlecrystal</span>      <span class="p">,</span><span class="s1">&#39;singlecrystal&#39;</span>      <span class="p">,</span><span class="n">regenerate</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">action</span> <span class="o">==</span> <span class="s1">&#39;test vibanalysis&#39;</span><span class="p">:</span>
+            <span class="n">runTests</span><span class="p">(</span><span class="n">test_vibanalysis</span><span class="p">,</span><span class="s1">&#39;vibanalysis&#39;</span><span class="p">,</span><span class="n">regenerate</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">action</span> <span class="o">==</span> <span class="s1">&#39;run benchmarks&#39;</span><span class="p">:</span>
+            <span class="n">runTests</span><span class="p">(</span><span class="n">benchmarks</span><span class="p">,</span><span class="s1">&#39;benchmarks&#39;</span><span class="p">,</span><span class="n">regenerate</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">action</span> <span class="o">==</span> <span class="s1">&#39;run pypi&#39;</span><span class="p">:</span>
+            <span class="n">runPyPi</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="n">action</span> <span class="o">==</span> <span class="s1">&#39;run pyinstaller&#39;</span><span class="p">:</span>
+            <span class="n">runPyInstaller</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="n">action</span> <span class="o">==</span> <span class="s1">&#39;run clean&#39;</span><span class="p">:</span>
+            <span class="n">runClean</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="n">action</span> <span class="o">==</span> <span class="s1">&#39;install&#39;</span><span class="p">:</span>
+            <span class="n">install</span><span class="p">(</span><span class="n">scriptsDirectory</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">usage</span><span class="p">()</span>
+            <span class="n">exit</span><span class="p">();</span></div>
+
+        <span class="c1">#end if</span>
+    <span class="c1">#end for</span>
+
+<span class="c1"># end of def main</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">main</span><span class="p">(</span><span class="n">sys</span><span class="p">)</span>
+</pre></div>
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          
+          
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2024, John Kendrick and Andrew Burnett
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer no-toc">
+      
+      
+      
+    </aside>
+  </div>
+</div><script src="../../_static/documentation_options.js?v=23ce250a"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/scripts/furo.js?v=4e2eecee"></script>
+    </body>
+</html>

@@ -1,0 +1,1270 @@
+<!doctype html>
+<html class="no-js" lang="en" data-content_root="../../../">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" /><link rel="next" title="PDielec.GulpOutputReader" href="../GulpOutputReader/index.html" /><link rel="prev" title="PDielec.GTMcore" href="../GTMcore/index.html" />
+
+    <!-- Generated with Sphinx 7.3.7 and Furo 2024.05.06 -->
+        <title>PDielec.GenericOutputReader - PDielec: John Kendrick &amp; Andrew Burnett</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=92fd9be5" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=387cc868" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=fd3f3429" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/table_styling.css?v=a1a2a898" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo-extensions.css?v=36a5483c" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/css/custom.css?v=2e0a580d" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f8f8f8;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-half" viewBox="0 0 24 24">
+    <title>Auto light/dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M13 12h5" />
+      <path d="M13 15h4" />
+      <path d="M13 18h1" />
+      <path d="M13 9h4" />
+      <path d="M13 6h1" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
+      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+      <path d="M13.5 6.5l4 4" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" /
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path
+        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../../../index.html"><div class="brand">PDielec: John Kendrick & Andrew Burnett</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../../../index.html">
+  
+  
+  <span class="sidebar-brand-text">PDielec: John Kendrick & Andrew Burnett</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../../../search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <p class="caption" role="heading"><span class="caption-text">Software</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pdgui.html">PDGui</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../software.html">Other Software Components</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Theory</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../theory_powder.html">Theory for Light Scattering from Powders</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../theory_single_crystal.html">Theory for Single Crystal Optics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../analysis.html">Phonon Analysis</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Applications</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../application_notes_1.html">Applications of Effective Medium Theory</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../application_notes_2.html">Single Crystal Applications</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API</span></p>
+<ul class="current">
+<li class="toctree-l1 current has-children"><a class="reference internal" href="../../index.html">API Reference</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of API Reference</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l2 current has-children"><a class="reference internal" href="../index.html">PDielec</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of PDielec</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l3 has-children"><a class="reference internal" href="../GUI/index.html">PDielec.GUI</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of PDielec.GUI</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../GUI/AnalysisTab/index.html">PDielec.GUI.AnalysisTab</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../GUI/App/index.html">PDielec.GUI.App</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../GUI/FitterTab/index.html">PDielec.GUI.FitterTab</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../GUI/MainTab/index.html">PDielec.GUI.MainTab</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../GUI/NoteBook/index.html">PDielec.GUI.NoteBook</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../GUI/OpenGLWidget/index.html">PDielec.GUI.OpenGLWidget</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../GUI/PlottingTab/index.html">PDielec.GUI.PlottingTab</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../GUI/PowderScenarioTab/index.html">PDielec.GUI.PowderScenarioTab</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../GUI/ScenarioTab/index.html">PDielec.GUI.ScenarioTab</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../GUI/SettingsTab/index.html">PDielec.GUI.SettingsTab</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../GUI/SingleCrystalLayer/index.html">PDielec.GUI.SingleCrystalLayer</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../GUI/SingleCrystalScenarioTab/index.html">PDielec.GUI.SingleCrystalScenarioTab</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../GUI/SpreadSheetManager/index.html">PDielec.GUI.SpreadSheetManager</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../GUI/ViewerTab/index.html">PDielec.GUI.ViewerTab</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../AbinitOutputReader/index.html">PDielec.AbinitOutputReader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Calculator/index.html">PDielec.Calculator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../CastepOutputReader/index.html">PDielec.CastepOutputReader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Constants/index.html">PDielec.Constants</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../CrystalOutputReader/index.html">PDielec.CrystalOutputReader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../DielectricFunction/index.html">PDielec.DielectricFunction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ExperimentOutputReader/index.html">PDielec.ExperimentOutputReader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../GTMcore/index.html">PDielec.GTMcore</a></li>
+<li class="toctree-l3 current current-page"><a class="current reference internal" href="#">PDielec.GenericOutputReader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../GulpOutputReader/index.html">PDielec.GulpOutputReader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../HelperRoutines/index.html">PDielec.HelperRoutines</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../IO/index.html">PDielec.IO</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Materials/index.html">PDielec.Materials</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Mie/index.html">PDielec.Mie</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PhonopyOutputReader/index.html">PDielec.PhonopyOutputReader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Plotter/index.html">PDielec.Plotter</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../QEOutputReader/index.html">PDielec.QEOutputReader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../SuperCell/index.html">PDielec.SuperCell</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../UnitCell/index.html">PDielec.UnitCell</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Utilities/index.html">PDielec.Utilities</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../VaspOutputReader/index.html">PDielec.VaspOutputReader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../checkcsv/index.html">PDielec.checkcsv</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../checkexcel/index.html">PDielec.checkexcel</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../graphdatagenerator/index.html">PDielec.graphdatagenerator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../p1reader/index.html">PDielec.p1reader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../p2cif/index.html">PDielec.p2cif</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../pdcompare/index.html">PDielec.pdcompare</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../pdgui/index.html">PDielec.pdgui</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../pdmake/index.html">PDielec.pdmake</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../pickled_reader/index.html">PDielec.pickled_reader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../preader/index.html">PDielec.preader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../vibanalysis/index.html">PDielec.vibanalysis</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../pdgui/index.html">PDielec.pdgui</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../preader/index.html">PDielec.preader</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pdmake/index.html">PDielec.pdmake</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">References</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../zreferences.html">References</a></li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="view-this-page">
+  <a class="muted-link" href="../../../_sources/autoapi/PDielec/GenericOutputReader/index.rst.txt" title="View this page">
+    <svg><use href="#svg-eye"></use></svg>
+    <span class="visually-hidden">View this page</span>
+  </a>
+</div>
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main" id="furo-main-content">
+          <section id="module-PDielec.GenericOutputReader">
+<span id="pdielec-genericoutputreader"></span><h1>PDielec.GenericOutputReader<a class="headerlink" href="#module-PDielec.GenericOutputReader" title="Link to this heading">¶</a></h1>
+<p>Generic reader of output files. An actual reader should inherit from this class.</p>
+<section id="attributes">
+<h2>Attributes<a class="headerlink" href="#attributes" title="Link to this heading">¶</a></h2>
+<div class="table-wrapper autosummary longtable docutils container">
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#PDielec.GenericOutputReader.amu" title="PDielec.GenericOutputReader.amu"><code class="xref py py-obj docutils literal notranslate"><span class="pre">amu</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#PDielec.GenericOutputReader.avogadro_si" title="PDielec.GenericOutputReader.avogadro_si"><code class="xref py py-obj docutils literal notranslate"><span class="pre">avogadro_si</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#PDielec.GenericOutputReader.wavenumber" title="PDielec.GenericOutputReader.wavenumber"><code class="xref py py-obj docutils literal notranslate"><span class="pre">wavenumber</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="classes">
+<h2>Classes<a class="headerlink" href="#classes" title="Link to this heading">¶</a></h2>
+<div class="table-wrapper autosummary longtable docutils container">
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#PDielec.GenericOutputReader.GenericOutputReader" title="PDielec.GenericOutputReader.GenericOutputReader"><code class="xref py py-obj docutils literal notranslate"><span class="pre">GenericOutputReader</span></code></a></p></td>
+<td><p>Generic reader of output files. Actual reader should inherit from this class.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#PDielec.GenericOutputReader.pdielec_io" title="PDielec.GenericOutputReader.pdielec_io"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pdielec_io</span></code></a></p></td>
+<td><p>A class for reading lines from a file and providing an interface similar to file objects.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="functions">
+<h2>Functions<a class="headerlink" href="#functions" title="Link to this heading">¶</a></h2>
+<div class="table-wrapper autosummary longtable docutils container">
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#PDielec.GenericOutputReader.cleanup_symbol" title="PDielec.GenericOutputReader.cleanup_symbol"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cleanup_symbol</span></code></a>(s)</p></td>
+<td><p>Return a true element from the symbol</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#PDielec.GenericOutputReader.print3x3" title="PDielec.GenericOutputReader.print3x3"><code class="xref py py-obj docutils literal notranslate"><span class="pre">print3x3</span></code></a>(title, array[, format, file, separator])</p></td>
+<td><p>Print a 3x3 matrix.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#PDielec.GenericOutputReader.print_ints" title="PDielec.GenericOutputReader.print_ints"><code class="xref py py-obj docutils literal notranslate"><span class="pre">print_ints</span></code></a>(title, ints[, no_per_line, format, file, ...])</p></td>
+<td><p>Print ints data.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#PDielec.GenericOutputReader.print_reals" title="PDielec.GenericOutputReader.print_reals"><code class="xref py py-obj docutils literal notranslate"><span class="pre">print_reals</span></code></a>(title, reals[, no_per_line, format, file, ...])</p></td>
+<td><p>Print reals data</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#PDielec.GenericOutputReader.print_strings" title="PDielec.GenericOutputReader.print_strings"><code class="xref py py-obj docutils literal notranslate"><span class="pre">print_strings</span></code></a>(title, strings[, no_per_line, format, ...])</p></td>
+<td><p>Print strings data.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="module-contents">
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Link to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="PDielec.GenericOutputReader.GenericOutputReader">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PDielec.GenericOutputReader.</span></span><span class="sig-name descname"><span class="pre">GenericOutputReader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filenames</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/GenericOutputReader.html#GenericOutputReader"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GenericOutputReader.GenericOutputReader" title="Link to this definition">¶</a></dt>
+<dd><p>Generic reader of output files. Actual reader should inherit from this class.
+Examples of readers with this base class:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="../AbinitOutputReader/index.html#module-PDielec.AbinitOutputReader" title="PDielec.AbinitOutputReader"><code class="xref py py-class docutils literal notranslate"><span class="pre">AbinitOutputReader</span></code></a></p></li>
+<li><p><a class="reference internal" href="../CastepOutputReader/index.html#module-PDielec.CastepOutputReader" title="PDielec.CastepOutputReader"><code class="xref py py-class docutils literal notranslate"><span class="pre">CastepOutputReader</span></code></a></p></li>
+<li><p><a class="reference internal" href="../CrystalOutputReader/index.html#module-PDielec.CrystalOutputReader" title="PDielec.CrystalOutputReader"><code class="xref py py-class docutils literal notranslate"><span class="pre">CrystalOutputReader</span></code></a></p></li>
+<li><p><a class="reference internal" href="../ExperimentOutputReader/index.html#module-PDielec.ExperimentOutputReader" title="PDielec.ExperimentOutputReader"><code class="xref py py-class docutils literal notranslate"><span class="pre">ExperimentOutputReader</span></code></a></p></li>
+<li><p><a class="reference internal" href="../GulpOutputReader/index.html#module-PDielec.GulpOutputReader" title="PDielec.GulpOutputReader"><code class="xref py py-class docutils literal notranslate"><span class="pre">GulpOutputReader</span></code></a></p></li>
+<li><p><a class="reference internal" href="../PhonopyOutputReader/index.html#module-PDielec.PhonopyOutputReader" title="PDielec.PhonopyOutputReader"><code class="xref py py-class docutils literal notranslate"><span class="pre">PhonopyOutputReader</span></code></a></p></li>
+<li><p><a class="reference internal" href="../QEOutputReader/index.html#module-PDielec.QEOutputReader" title="PDielec.QEOutputReader"><code class="xref py py-class docutils literal notranslate"><span class="pre">QEOutputReader</span></code></a></p></li>
+<li><p><a class="reference internal" href="../VaspOutputReader/index.html#module-PDielec.VaspOutputReader" title="PDielec.VaspOutputReader"><code class="xref py py-class docutils literal notranslate"><span class="pre">VaspOutputReader</span></code></a></p></li>
+</ul>
+<section id="parameters">
+<h3>Parameters<a class="headerlink" href="#parameters" title="Link to this heading">¶</a></h3>
+<dl class="simple">
+<dt>filenames<span class="classifier">list</span></dt><dd><p>A list containing file names (strings) to be associated with the instance. These
+are converted into the absolute paths and stored.</p>
+</dd>
+</dl>
+</section>
+<section id="id1">
+<h3>Attributes<a class="headerlink" href="#id1" title="Link to this heading">¶</a></h3>
+<dl class="simple">
+<dt>_outputfiles<span class="classifier">list</span></dt><dd><p>Stores the initial filenames provided during instantiation.</p>
+</dd>
+<dt>names<span class="classifier">list</span></dt><dd><p>The absolute paths of the files specified in <cite>filenames</cite>. Computed by resolving
+each filename to its absolute path.</p>
+</dd>
+<dt>debug<span class="classifier">bool</span></dt><dd><p>Indicates if debug mode is on or off. Defaults to False.</p>
+</dd>
+<dt>type<span class="classifier">str</span></dt><dd><p>The type of the object, initially set as ‘Unkown’.</p>
+</dd>
+<dt>ncells, nsteps, electrons, spin, nbands, volume, nions, nspecies, geomsteps<span class="classifier">int</span></dt><dd><p>Attributes initialized as 0, representing various numerical properties.</p>
+</dd>
+<dt>unit_cells, volumes, species, energiesDFT, energiesDFT_disp, final_free_energies, final_energies_without_entropy, volumes, pressures, born_charges, frequencies, mass_weighted_normal_modes, ions_per_type, atom_type_list, masses, masses_per_type, elastic_constants, zerof_optical_dielectric, zerof_static_dielectric<span class="classifier">list</span></dt><dd><p>Various lists to store computational results related to the object. Initialized as empty lists.</p>
+</dd>
+<dt>final_free_energy, final_energy_without_entropy, magnetization, energy_cutoff, pressure<span class="classifier">float</span></dt><dd><p>Floating point attributes initialized to represent different scalar quantities. Defaults to 0 or 0.0.</p>
+</dd>
+<dt>kpoints<span class="classifier">int</span></dt><dd><p>The number of kpoints, initialized to 1.</p>
+</dd>
+<dt>kpoint_grid<span class="classifier">list</span></dt><dd><p>The kpoint grid dimensions, initialized as [1, 1, 1].</p>
+</dd>
+<dt>manage<span class="classifier">set</span></dt><dd><p>The set contains phrases which are matched when looking through a file</p>
+</dd>
+<dt>iterations<span class="classifier">dict</span></dt><dd><p>Holds the values of ‘max force’ and ‘rms force’ at each iteration</p>
+</dd>
+<dt>file_descriptor<span class="classifier">str</span></dt><dd><p>A string to hold file descriptor, initialized as an empty string.</p>
+</dd>
+<dt>eckart<span class="classifier">bool</span></dt><dd><p>A boolean flag to indicate the use of Eckart conditions, defaults to False.</p>
+</dd>
+<dt>hessian_symmetrisation<span class="classifier">str</span></dt><dd><p>The method for symmetrization of Hessian, defaults to ‘symm’.</p>
+</dd>
+<dt>open_filename, open_directory<span class="classifier">str</span></dt><dd><p>Strings for tracking open files or directories, initialized as empty strings.</p>
+</dd>
+<dt>_old_masses<span class="classifier">list</span></dt><dd><p>A list to keep track of old mass values, initialized as empty.</p>
+</dd>
+<dt>nomass_hessian<span class="classifier">type or None</span></dt><dd><p>Placeholder for hessian without mass contribution, initially None.</p>
+</dd>
+<dt>nomass_hessian_has_been_set<span class="classifier">bool</span></dt><dd><p>Indicates if the <cite>nomass_hessian</cite> has been provided, defaults to False.</p>
+</dd>
+<dt>original_born_charges, CrystalPermittivity, oscillator_strengths, edited_masses<span class="classifier">Various types</span></dt><dd><p>Attributes initialized as <cite>None</cite> to represent unassigned computational properties.</p>
+</dd>
+<dt>original_born_charges_are_being_used<span class="classifier">bool</span></dt><dd><p>Signifies whether original Born charges are in use, defaults to True.</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="PDielec.GenericOutputReader.GenericOutputReader._born_charge_sum_rule">
+<span class="sig-name descname"><span class="pre">_born_charge_sum_rule</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/GenericOutputReader.html#GenericOutputReader._born_charge_sum_rule"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GenericOutputReader.GenericOutputReader._born_charge_sum_rule" title="Link to this definition">¶</a></dt>
+<dd><p>Apply a simple charge sum rule to all the elements of the born matrices</p>
+<section id="id2">
+<h4>Parameters<a class="headerlink" href="#id2" title="Link to this heading">¶</a></h4>
+<p>None</p>
+</section>
+<section id="returns">
+<h4>Returns<a class="headerlink" href="#returns" title="Link to this heading">¶</a></h4>
+<p>None</p>
+</section>
+<section id="notes">
+<h4>Notes<a class="headerlink" href="#notes" title="Link to this heading">¶</a></h4>
+<p>This function applies a straightforward summation rule to the elements of the born matrices,</p>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PDielec.GenericOutputReader.GenericOutputReader._dynamical_matrix">
+<span class="sig-name descname"><span class="pre">_dynamical_matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hessian</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/GenericOutputReader.html#GenericOutputReader._dynamical_matrix"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GenericOutputReader.GenericOutputReader._dynamical_matrix" title="Link to this definition">¶</a></dt>
+<dd><p>Process the dynamical matrix.</p>
+<p>Processes the dynamical matrix by performing several steps: symmetrizing the Hessian, which is a nxn matrix of mass-weighted force constants, projecting out translational modes, diagonalizing the Hessian, and finally storing the frequencies and normal modes.</p>
+<section id="id3">
+<h4>Parameters<a class="headerlink" href="#id3" title="Link to this heading">¶</a></h4>
+<p>None</p>
+</section>
+<section id="id4">
+<h4>Returns<a class="headerlink" href="#id4" title="Link to this heading">¶</a></h4>
+<p>None</p>
+</section>
+<section id="id5">
+<h4>Notes<a class="headerlink" href="#id5" title="Link to this heading">¶</a></h4>
+<ul class="simple">
+<li><p>Hessian is a nxn matrix of the mass weighted force constants.</p></li>
+<li><p>The hessian is symmetrised.</p></li>
+<li><p>Translational modes are projected out.</p></li>
+<li><p>The hessian is diagonalised.</p></li>
+<li><p>Finally, the frequencies and normal modes are stored.</p></li>
+</ul>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PDielec.GenericOutputReader.GenericOutputReader._modify_mass_weighting">
+<span class="sig-name descname"><span class="pre">_modify_mass_weighting</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hessian</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">new</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/GenericOutputReader.html#GenericOutputReader._modify_mass_weighting"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GenericOutputReader.GenericOutputReader._modify_mass_weighting" title="Link to this definition">¶</a></dt>
+<dd><p>Modify the Hessian matrix based on new mass weighting.</p>
+<p>This function iterates over the elements of the Hessian matrix (<cite>hessian</cite>) and adjusts each element based on the square root of the product of elements from a new weighting (<cite>new</cite>).</p>
+<section id="id6">
+<h4>Parameters<a class="headerlink" href="#id6" title="Link to this heading">¶</a></h4>
+<dl class="simple">
+<dt>hessian<span class="classifier">numpy.ndarray</span></dt><dd><p>The original Hessian matrix whose elements are to be modified. It is assumed to be a square matrix with dimensions [3*nions, 3*nions], where nions is the number of ions (or atoms) in the system.</p>
+</dd>
+<dt>new<span class="classifier">numpy.ndarray or list</span></dt><dd><p>An array or list of new weighting factors, one per ion. Its length should be equal to <cite>nions</cite>. These factors are applied in the modification of the Hessian matrix elements.</p>
+</dd>
+</dl>
+</section>
+<section id="id7">
+<h4>Returns<a class="headerlink" href="#id7" title="Link to this heading">¶</a></h4>
+<dl class="simple">
+<dt>numpy.ndarray</dt><dd><p>The modified Hessian matrix with the same dimensions as the input matrix.</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PDielec.GenericOutputReader.GenericOutputReader._read_output_file">
+<span class="sig-name descname"><span class="pre">_read_output_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/GenericOutputReader.html#GenericOutputReader._read_output_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GenericOutputReader.GenericOutputReader._read_output_file" title="Link to this definition">¶</a></dt>
+<dd><p>Read through the file ‘name’ for key words. The keywords are established in _read_output_files.</p>
+<section id="id8">
+<h4>Parameters<a class="headerlink" href="#id8" title="Link to this heading">¶</a></h4>
+<p>name : str</p>
+</section>
+<section id="id9">
+<h4>Returns<a class="headerlink" href="#id9" title="Link to this heading">¶</a></h4>
+<p>None</p>
+</section>
+<section id="id10">
+<h4>Notes<a class="headerlink" href="#id10" title="Link to this heading">¶</a></h4>
+<p>The actual implementation for identifying keywords is handled by the <cite>_read_output_files</cite> method.</p>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PDielec.GenericOutputReader.GenericOutputReader._read_output_files">
+<span class="sig-name descname"><span class="pre">_read_output_files</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/GenericOutputReader.html#GenericOutputReader._read_output_files"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GenericOutputReader.GenericOutputReader._read_output_files" title="Link to this definition">¶</a></dt>
+<dd><p>Read the through the output files.</p>
+<section id="id11">
+<h4>Parameters<a class="headerlink" href="#id11" title="Link to this heading">¶</a></h4>
+<p>None</p>
+</section>
+<section id="id12">
+<h4>Returns<a class="headerlink" href="#id12" title="Link to this heading">¶</a></h4>
+<p>None</p>
+</section>
+<section id="id13">
+<h4>Notes<a class="headerlink" href="#id13" title="Link to this heading">¶</a></h4>
+<p>This method is over-ridden by the child class</p>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PDielec.GenericOutputReader.GenericOutputReader._read_till_phrase">
+<span class="sig-name descname"><span class="pre">_read_till_phrase</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">phrase</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/GenericOutputReader.html#GenericOutputReader._read_till_phrase"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GenericOutputReader.GenericOutputReader._read_till_phrase" title="Link to this definition">¶</a></dt>
+<dd><p>Read lines from the current file until a match with phrase is found.
+Once a match is found, return the matching line.</p>
+<section id="id14">
+<h4>Parameters<a class="headerlink" href="#id14" title="Link to this heading">¶</a></h4>
+<dl class="simple">
+<dt>phrase<span class="classifier">str</span></dt><dd><p>The phrase to match in each line of the file.</p>
+</dd>
+</dl>
+</section>
+<section id="id15">
+<h4>Returns<a class="headerlink" href="#id15" title="Link to this heading">¶</a></h4>
+<dl class="simple">
+<dt>str</dt><dd><p>The line from the file that matches the phrase.</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PDielec.GenericOutputReader.GenericOutputReader._remove_mass_weighting">
+<span class="sig-name descname"><span class="pre">_remove_mass_weighting</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hessian</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">old</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/GenericOutputReader.html#GenericOutputReader._remove_mass_weighting"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GenericOutputReader.GenericOutputReader._remove_mass_weighting" title="Link to this definition">¶</a></dt>
+<dd><p>Remove mass-weighting from a Hessian matrix.</p>
+<section id="id16">
+<h4>Parameters<a class="headerlink" href="#id16" title="Link to this heading">¶</a></h4>
+<dl class="simple">
+<dt>hessian<span class="classifier">ndarray</span></dt><dd><p>The Hessian matrix to be un-weighted, typically a square, 2D array where
+the dimension correlates with 3 times the number of ions (nions*3) since
+it includes the x, y, and z coordinates for each ion.</p>
+</dd>
+<dt>old<span class="classifier">ndarray or list</span></dt><dd><p>An array or list of mass weights for each ion.</p>
+</dd>
+</dl>
+</section>
+<section id="id17">
+<h4>Returns<a class="headerlink" href="#id17" title="Link to this heading">¶</a></h4>
+<dl class="simple">
+<dt>new_hessian<span class="classifier">ndarray</span></dt><dd><p>The mass-weighting removed (un-weighted) Hessian matrix.</p>
+</dd>
+</dl>
+</section>
+<section id="id18">
+<h4>Notes<a class="headerlink" href="#id18" title="Link to this heading">¶</a></h4>
+<p>This function assumes that the Hessian matrix is provided in a form that
+has been mass-weighted. Each element of the <cite>hessian</cite> input is divided by
+the square root of the product of the mass weights of the corresponding ions,
+adjusting it to an un-weighted form.</p>
+<p>The size of <cite>old</cite> must match the number of ions (<cite>nions</cite>). Each entry in <cite>old</cite>
+is used to compute the square root of the product of mass weights for the
+appropriate matrix element, thereby removing the mass weighting from the
+original Hessian matrix.</p>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PDielec.GenericOutputReader.GenericOutputReader._symmetric_orthogonalisation">
+<span class="sig-name descname"><span class="pre">_symmetric_orthogonalisation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/GenericOutputReader.html#GenericOutputReader._symmetric_orthogonalisation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GenericOutputReader.GenericOutputReader._symmetric_orthogonalisation" title="Link to this definition">¶</a></dt>
+<dd><p>Private routine to perform symmetric orthogonalization.</p>
+<section id="id19">
+<h4>Parameters<a class="headerlink" href="#id19" title="Link to this heading">¶</a></h4>
+<dl class="simple">
+<dt>A<span class="classifier">ndarray</span></dt><dd><p>matrix to be orthogonalised</p>
+</dd>
+</dl>
+</section>
+<section id="id20">
+<h4>Returns<a class="headerlink" href="#id20" title="Link to this heading">¶</a></h4>
+<p>None</p>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PDielec.GenericOutputReader.GenericOutputReader.calculate_mass_weighted_normal_modes">
+<span class="sig-name descname"><span class="pre">calculate_mass_weighted_normal_modes</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/GenericOutputReader.html#GenericOutputReader.calculate_mass_weighted_normal_modes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GenericOutputReader.GenericOutputReader.calculate_mass_weighted_normal_modes" title="Link to this definition">¶</a></dt>
+<dd><p>Calculate the mass weighted normal modes from the hessian.</p>
+<p>The hessian itself is constructed from the frequencies and normal modes
+Any changes to the atomic masses is applied
+Eckart conditions are applied if requested</p>
+<section id="id21">
+<h4>Parameters<a class="headerlink" href="#id21" title="Link to this heading">¶</a></h4>
+<p>None</p>
+</section>
+<section id="id22">
+<h4>Returns<a class="headerlink" href="#id22" title="Link to this heading">¶</a></h4>
+<dl class="simple">
+<dt>mass_weighted_normal_modes<span class="classifier">np.array</span></dt><dd><p>the mass weighted normal modes</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PDielec.GenericOutputReader.GenericOutputReader.change_masses">
+<span class="sig-name descname"><span class="pre">change_masses</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">new_masses</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mass_dictionary</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/GenericOutputReader.html#GenericOutputReader.change_masses"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GenericOutputReader.GenericOutputReader.change_masses" title="Link to this definition">¶</a></dt>
+<dd><p>Change the masses of elements in a output reader.</p>
+<p>This function updates the masses of the elements within the reader according to the new masses provided. If the object has already had its masses edited, those edited masses will be used. Otherwise, it sets up or updates the simulation’s internal mass dictionary based on the provided <cite>new_masses</cite> and an optional external <cite>mass_dictionary</cite> for overrides. If debugging is enabled, various diagnostic messages will be printed during the function’s execution.</p>
+<section id="id23">
+<h4>Parameters<a class="headerlink" href="#id23" title="Link to this heading">¶</a></h4>
+<dl class="simple">
+<dt>new_masses<span class="classifier">dict</span></dt><dd><p>A dictionary where keys are element symbols as strings and values are the new masses for these elements.</p>
+</dd>
+<dt>mass_dictionary<span class="classifier">dict, optional</span></dt><dd><p>An additional dictionary provided for mass overrides. If any element present in <cite>new_masses</cite> also exists in <cite>mass_dictionary</cite>, the mass from <cite>mass_dictionary</cite> will be used.</p>
+</dd>
+</dl>
+</section>
+<section id="id24">
+<h4>Returns<a class="headerlink" href="#id24" title="Link to this heading">¶</a></h4>
+<p>None</p>
+</section>
+<section id="id25">
+<h4>Notes<a class="headerlink" href="#id25" title="Link to this heading">¶</a></h4>
+<ul class="simple">
+<li><p>It assumes that <cite>cleanup_symbol()</cite> is a function used to standardize or validate the element symbols in <cite>self.species</cite>.</p></li>
+<li><p>It alters <cite>self.masses</cite> and <cite>self.masses_per_type</cite> to reflect changes in masses as per <cite>new_masses</cite> and <cite>mass_dictionary</cite>.</p></li>
+<li><p>If <cite>self.edited_masses</cite> is already set to a truthy value, it bypasses the update process and uses these values instead.</p></li>
+<li><p><cite>self.species</cite> and <cite>self.atom_type_list</cite> are expected to be iterable attributes of the object containing symbols for elements and types of atoms, respectively.</p></li>
+<li><p>Debugging messages are conditionally printed based on the boolean attribute <cite>self.debug</cite>.</p></li>
+</ul>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PDielec.GenericOutputReader.GenericOutputReader.getSpecies">
+<span class="sig-name descname"><span class="pre">getSpecies</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/GenericOutputReader.html#GenericOutputReader.getSpecies"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GenericOutputReader.GenericOutputReader.getSpecies" title="Link to this definition">¶</a></dt>
+<dd><p>Return a list of cleaned species symbols.</p>
+<p>This method applies a specified cleanup function to each element of
+the <cite>species</cite> attribute and returns the resulting list.</p>
+<section id="id26">
+<h4>Parameters<a class="headerlink" href="#id26" title="Link to this heading">¶</a></h4>
+<p>None</p>
+</section>
+<section id="id27">
+<h4>Returns<a class="headerlink" href="#id27" title="Link to this heading">¶</a></h4>
+<dl class="simple">
+<dt>list</dt><dd><p>A list of cleaned species symbols.</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PDielec.GenericOutputReader.GenericOutputReader.get_crystal_density">
+<span class="sig-name descname"><span class="pre">get_crystal_density</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/GenericOutputReader.html#GenericOutputReader.get_crystal_density"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GenericOutputReader.GenericOutputReader.get_crystal_density" title="Link to this definition">¶</a></dt>
+<dd><p>Return the crystal density in g/cc</p>
+<p>The volume is in angstrom^3, the masses are in atomic mass units, the density is in g/cc</p>
+<section id="id28">
+<h4>Parameters<a class="headerlink" href="#id28" title="Link to this heading">¶</a></h4>
+<p>None</p>
+</section>
+<section id="id29">
+<h4>Returns<a class="headerlink" href="#id29" title="Link to this heading">¶</a></h4>
+<dl class="simple">
+<dt>float</dt><dd><p>Density in g/cc</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PDielec.GenericOutputReader.GenericOutputReader.get_unit_cell">
+<span class="sig-name descname"><span class="pre">get_unit_cell</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/GenericOutputReader.html#GenericOutputReader.get_unit_cell"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GenericOutputReader.GenericOutputReader.get_unit_cell" title="Link to this definition">¶</a></dt>
+<dd><p>Return the last unit cell in the reader</p>
+<p>The routine adds the current set of masses to the unit cell</p>
+<section id="id30">
+<h4>Parameters<a class="headerlink" href="#id30" title="Link to this heading">¶</a></h4>
+<p>None</p>
+</section>
+<section id="id31">
+<h4>Returns<a class="headerlink" href="#id31" title="Link to this heading">¶</a></h4>
+<dl class="simple">
+<dt>unitCell object</dt><dd><p>The last unit cell read by the reader</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PDielec.GenericOutputReader.GenericOutputReader.mass_dictionary">
+<span class="sig-name descname"><span class="pre">mass_dictionary</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/GenericOutputReader.html#GenericOutputReader.mass_dictionary"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GenericOutputReader.GenericOutputReader.mass_dictionary" title="Link to this definition">¶</a></dt>
+<dd><p>Generate a dictionary mapping chemical species symbols to their masses.</p>
+<section id="id32">
+<h4>Parameters<a class="headerlink" href="#id32" title="Link to this heading">¶</a></h4>
+<p>None</p>
+</section>
+<section id="id33">
+<h4>Returns<a class="headerlink" href="#id33" title="Link to this heading">¶</a></h4>
+<dl class="simple">
+<dt>dictionary<span class="classifier">dict</span></dt><dd><p>A dictionary where keys are cleaned up species symbols and values are their corresponding masses.</p>
+</dd>
+</dl>
+</section>
+<section id="id34">
+<h4>Notes<a class="headerlink" href="#id34" title="Link to this heading">¶</a></h4>
+<p>The function uses a helper function <cite>cleanup_symbol</cite> to clean up the species symbols before using them as keys in the dictionary. If the instance’s <cite>debug</cite> attribute is set to True, the function will print the newly created mass dictionary.</p>
+</section>
+<section id="examples">
+<h4>Examples<a class="headerlink" href="#examples" title="Link to this heading">¶</a></h4>
+<p>Assuming an object <cite>molecule</cite> with species <cite>[‘H2’, ‘O’]</cite>, masses_per_type <cite>[2.016, 15.999]</cite>, and a debug attribute set to True, calling <cite>molecule.mass_dictionary()</cite> would print <cite>{‘H2’: 2.016, ‘O’: 15.999}</cite> and return this dictionary.</p>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PDielec.GenericOutputReader.GenericOutputReader.neutralise_born_charges">
+<span class="sig-name descname"><span class="pre">neutralise_born_charges</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/GenericOutputReader.html#GenericOutputReader.neutralise_born_charges"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GenericOutputReader.GenericOutputReader.neutralise_born_charges" title="Link to this definition">¶</a></dt>
+<dd><p>Neutralise Born charges within the object.</p>
+<p>Changes the state of <cite>original_born_charges_are_being_used</cite>
+to False and saves the current <cite>born_charges</cite> as <cite>original_born_charges</cite> if
+<cite>original_born_charges_are_being_used</cite> is True, indicating that the
+original Born charges are no longer being used directly. It then applies
+the Born charge sum rule by calling the <cite>_born_charge_sum_rule</cite> method.</p>
+<section id="id35">
+<h4>Parameters<a class="headerlink" href="#id35" title="Link to this heading">¶</a></h4>
+<p>None</p>
+</section>
+<section id="id36">
+<h4>Returns<a class="headerlink" href="#id36" title="Link to this heading">¶</a></h4>
+<p>None</p>
+</section>
+<section id="id37">
+<h4>Notes<a class="headerlink" href="#id37" title="Link to this heading">¶</a></h4>
+<p>This method is intended to be used within a context where Born charges
+(representative of the polarization of ions in a solid under an electric field)
+need to be neutralized or altered from their original state.</p>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PDielec.GenericOutputReader.GenericOutputReader.print">
+<span class="sig-name descname"><span class="pre">print</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/GenericOutputReader.html#GenericOutputReader.print"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GenericOutputReader.GenericOutputReader.print" title="Link to this definition">¶</a></dt>
+<dd><p>Print information about the reader.</p>
+<section id="id38">
+<h4>Parameters<a class="headerlink" href="#id38" title="Link to this heading">¶</a></h4>
+<p>None</p>
+</section>
+<section id="id39">
+<h4>Returns<a class="headerlink" href="#id39" title="Link to this heading">¶</a></h4>
+<p>None</p>
+</section>
+<section id="id40">
+<h4>Notes<a class="headerlink" href="#id40" title="Link to this heading">¶</a></h4>
+<p>This function prints out detailed information about the reader it is run on.</p>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PDielec.GenericOutputReader.GenericOutputReader.project">
+<span class="sig-name descname"><span class="pre">project</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hessian</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/GenericOutputReader.html#GenericOutputReader.project"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GenericOutputReader.GenericOutputReader.project" title="Link to this definition">¶</a></dt>
+<dd><p>Apply projection operators to remove translation.</p>
+<section id="id41">
+<h4>Parameters<a class="headerlink" href="#id41" title="Link to this heading">¶</a></h4>
+<dl class="simple">
+<dt>hessian<span class="classifier">np.array</span></dt><dd><p>The given matrix.</p>
+</dd>
+</dl>
+</section>
+<section id="id42">
+<h4>Returns<a class="headerlink" href="#id42" title="Link to this heading">¶</a></h4>
+<dl class="simple">
+<dt>np.array</dt><dd><p>The matrix with translational modes projected out.</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PDielec.GenericOutputReader.GenericOutputReader.read_output">
+<span class="sig-name descname"><span class="pre">read_output</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/GenericOutputReader.html#GenericOutputReader.read_output"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GenericOutputReader.GenericOutputReader.read_output" title="Link to this definition">¶</a></dt>
+<dd><p>Interface to the private read output files methods.</p>
+<section id="id43">
+<h4>Parameters<a class="headerlink" href="#id43" title="Link to this heading">¶</a></h4>
+<p>None</p>
+</section>
+<section id="id44">
+<h4>Returns<a class="headerlink" href="#id44" title="Link to this heading">¶</a></h4>
+<p>None</p>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PDielec.GenericOutputReader.GenericOutputReader.reset_born_charges">
+<span class="sig-name descname"><span class="pre">reset_born_charges</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/GenericOutputReader.html#GenericOutputReader.reset_born_charges"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GenericOutputReader.GenericOutputReader.reset_born_charges" title="Link to this definition">¶</a></dt>
+<dd><p>Resets the born charges to their original values if they are not currently being used.</p>
+<p>This method restores the <cite>born_charges</cite> attribute of the instance to the value stored in <cite>original_born_charges</cite>, but only if <cite>original_born_charges_are_being_used</cite> is <cite>False</cite>.</p>
+<section id="id45">
+<h4>Parameters<a class="headerlink" href="#id45" title="Link to this heading">¶</a></h4>
+<p>None</p>
+</section>
+<section id="id46">
+<h4>Returns<a class="headerlink" href="#id46" title="Link to this heading">¶</a></h4>
+<p>None</p>
+</section>
+<section id="id47">
+<h4>Notes<a class="headerlink" href="#id47" title="Link to this heading">¶</a></h4>
+<p>This method changes the state of the reader by modifying its <cite>born_charges</cite> attribute to match <cite>original_born_charges</cite>, under the condition that <cite>original_born_charges_are_being_used</cite> is <cite>False</cite>.</p>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PDielec.GenericOutputReader.GenericOutputReader.reset_masses">
+<span class="sig-name descname"><span class="pre">reset_masses</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/GenericOutputReader.html#GenericOutputReader.reset_masses"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GenericOutputReader.GenericOutputReader.reset_masses" title="Link to this definition">¶</a></dt>
+<dd><p>Reset the mass values to the program’s defaults.</p>
+<p>This function resets the mass dictionary of an object to the values specified
+by the object’s <cite>program_mass_dictionary</cite>. Typically used when needing to revert
+any runtime changes to the object’s mass values to their original state.</p>
+<section id="id48">
+<h4>Parameters<a class="headerlink" href="#id48" title="Link to this heading">¶</a></h4>
+<p>None</p>
+</section>
+<section id="id49">
+<h4>Returns<a class="headerlink" href="#id49" title="Link to this heading">¶</a></h4>
+<p>None</p>
+</section>
+<section id="id50">
+<h4>Notes<a class="headerlink" href="#id50" title="Link to this heading">¶</a></h4>
+<p>If <cite>debug</cite> attribute of the object is True, it prints a message indicating
+that the masses are being reset. This function does not return any value
+but modifies the object’s state by changing its mass dictionary to match
+the <cite>program_mass_dictionary</cite>.</p>
+</section>
+<section id="id51">
+<h4>Examples<a class="headerlink" href="#id51" title="Link to this heading">¶</a></h4>
+<p>Assuming an object <cite>obj</cite> of a class that has <cite>reset_masses</cite> method, <cite>debug</cite> attribute,
+and <cite>program_mass_dictionary</cite>:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">obj</span><span class="o">.</span><span class="n">debug</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">obj</span><span class="o">.</span><span class="n">reset_masses</span><span class="p">()</span>
+<span class="go">Re setting mass dictionary to the program values</span>
+</pre></div>
+</div>
+<p>Make sure that <cite>program_mass_dictionary</cite> is set properly before calling this
+method to avoid setting the masses to an unintended state.</p>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PDielec.GenericOutputReader.GenericOutputReader.set_edited_masses">
+<span class="sig-name descname"><span class="pre">set_edited_masses</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">masses</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/GenericOutputReader.html#GenericOutputReader.set_edited_masses"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GenericOutputReader.GenericOutputReader.set_edited_masses" title="Link to this definition">¶</a></dt>
+<dd><p>Sets the edited masses attribute if the length matches the original masses attribute.</p>
+<section id="id52">
+<h4>Parameters<a class="headerlink" href="#id52" title="Link to this heading">¶</a></h4>
+<dl class="simple">
+<dt>masses<span class="classifier">list</span></dt><dd><p>A list of mass values to be set as the edited masses.</p>
+</dd>
+</dl>
+</section>
+<section id="id53">
+<h4>Returns<a class="headerlink" href="#id53" title="Link to this heading">¶</a></h4>
+<p>None</p>
+</section>
+<section id="id54">
+<h4>Notes<a class="headerlink" href="#id54" title="Link to this heading">¶</a></h4>
+<p>The method updates the <cite>edited_masses</cite> attribute only if the length of the input list matches the length of the <cite>masses</cite> attribute of the object. If they do not match, an error message is printed, and <cite>edited_masses</cite> is set to <cite>None</cite>.</p>
+</section>
+<section id="id55">
+<h4>Returns<a class="headerlink" href="#id55" title="Link to this heading">¶</a></h4>
+<p>None</p>
+</section>
+</dd></dl>
+
+</section>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="PDielec.GenericOutputReader.pdielec_io">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">PDielec.GenericOutputReader.</span></span><span class="sig-name descname"><span class="pre">pdielec_io</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/IO.html#pdielec_io"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GenericOutputReader.pdielec_io" title="Link to this definition">¶</a></dt>
+<dd><p>A class for reading lines from a file and providing an interface similar to file objects.</p>
+<p>The class opens a file upon initialization, reads its lines into memory,
+and allows sequential reading of these lines through the readline method.
+It also provides a close method to reset the reading process.
+This speeds up the reading of a file using the usual python readline() method.</p>
+<section id="id56">
+<h3>Parameters<a class="headerlink" href="#id56" title="Link to this heading">¶</a></h3>
+<dl class="simple">
+<dt>filename<span class="classifier">str</span></dt><dd><p>The path to the file to be read.</p>
+</dd>
+<dt>mode<span class="classifier">str</span></dt><dd><p>The mode in which the file should be opened (e.g., ‘r’ for read).</p>
+</dd>
+</dl>
+</section>
+<section id="id57">
+<h3>Attributes<a class="headerlink" href="#id57" title="Link to this heading">¶</a></h3>
+<dl class="simple">
+<dt>filename<span class="classifier">str</span></dt><dd><p>The path to the file that was opened.</p>
+</dd>
+<dt>lines<span class="classifier">list of str</span></dt><dd><p>The lines read from the file.</p>
+</dd>
+<dt>index<span class="classifier">int</span></dt><dd><p>The current position (line) in the file being read, initialized at 0.</p>
+</dd>
+<dt>end<span class="classifier">int</span></dt><dd><p>The total number of lines in the file.</p>
+</dd>
+</dl>
+</section>
+<section id="methods">
+<h3>Methods<a class="headerlink" href="#methods" title="Link to this heading">¶</a></h3>
+<dl class="simple">
+<dt>readline()</dt><dd><p>Reads the next line from the file. If the end of the file has been reached,
+returns an empty string.</p>
+</dd>
+<dt>close()</dt><dd><p>Resets the reading process by resetting the current line index and
+deleting all lines read from the file from memory.</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="PDielec.GenericOutputReader.pdielec_io.close">
+<span class="sig-name descname"><span class="pre">close</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/IO.html#pdielec_io.close"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GenericOutputReader.pdielec_io.close" title="Link to this definition">¶</a></dt>
+<dd><p>Closes the current object session.</p>
+<p>Resets the index to 0 and deletes the lines attribute from the object.</p>
+<section id="id58">
+<h4>Parameters<a class="headerlink" href="#id58" title="Link to this heading">¶</a></h4>
+<p>None</p>
+</section>
+<section id="id59">
+<h4>Returns<a class="headerlink" href="#id59" title="Link to this heading">¶</a></h4>
+<p>None</p>
+</section>
+<section id="id60">
+<h4>Notes<a class="headerlink" href="#id60" title="Link to this heading">¶</a></h4>
+<p>This method is designed to perform cleanup tasks, such as resetting object state and freeing resources by deleting attributes. Calling this method on an object may render it unusable for certain operations that depend on the deleted attributes.</p>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PDielec.GenericOutputReader.pdielec_io.readline">
+<span class="sig-name descname"><span class="pre">readline</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/IO.html#pdielec_io.readline"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GenericOutputReader.pdielec_io.readline" title="Link to this definition">¶</a></dt>
+<dd><p>Read and return the next line from the stored lines.</p>
+<p>This method reads a line from the current position within an internal list of lines
+and then advances the position so that subsequent calls will return subsequent lines.
+If the end of the list is reached, it returns an empty string.</p>
+<section id="id61">
+<h4>Parameters<a class="headerlink" href="#id61" title="Link to this heading">¶</a></h4>
+<p>None</p>
+</section>
+<section id="id62">
+<h4>Returns<a class="headerlink" href="#id62" title="Link to this heading">¶</a></h4>
+<dl class="simple">
+<dt>str</dt><dd><p>The next line in the internal list of lines, or an empty string if the end of the list is reached.</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="PDielec.GenericOutputReader.cleanup_symbol">
+<span class="sig-prename descclassname"><span class="pre">PDielec.GenericOutputReader.</span></span><span class="sig-name descname"><span class="pre">cleanup_symbol</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">s</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/Calculator.html#cleanup_symbol"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GenericOutputReader.cleanup_symbol" title="Link to this definition">¶</a></dt>
+<dd><p>Return a true element from the symbol</p>
+<section id="id63">
+<h3>Parameters<a class="headerlink" href="#id63" title="Link to this heading">¶</a></h3>
+<p>s : str</p>
+</section>
+<section id="id64">
+<h3>Returns<a class="headerlink" href="#id64" title="Link to this heading">¶</a></h3>
+<dl class="simple">
+<dt>str</dt><dd><p>The cleaned symbol</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="PDielec.GenericOutputReader.print3x3">
+<span class="sig-prename descclassname"><span class="pre">PDielec.GenericOutputReader.</span></span><span class="sig-name descname"><span class="pre">print3x3</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">title</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">array</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">format</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'{:14.6f}'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">sys.stdout</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">separator</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'</span> <span class="pre">'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/Plotter.html#print3x3"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GenericOutputReader.print3x3" title="Link to this definition">¶</a></dt>
+<dd><p>Print a 3x3 matrix.</p>
+<section id="id65">
+<h3>Parameters<a class="headerlink" href="#id65" title="Link to this heading">¶</a></h3>
+<dl class="simple">
+<dt>array<span class="classifier">tensor 3x3</span></dt><dd><p>The array to be printed</p>
+</dd>
+<dt>format<span class="classifier">str, optional</span></dt><dd><p>a format descriptor (defaults to 9.2f)</p>
+</dd>
+<dt>file<span class="classifier">int, optional</span></dt><dd><p>a file descriptor (defaults to stdout)</p>
+</dd>
+<dt>separator<span class="classifier">str</span></dt><dd><p>the separator to use between ints (defaults to space)</p>
+</dd>
+</dl>
+</section>
+<section id="id66">
+<h3>Returns<a class="headerlink" href="#id66" title="Link to this heading">¶</a></h3>
+<p>None</p>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="PDielec.GenericOutputReader.print_ints">
+<span class="sig-prename descclassname"><span class="pre">PDielec.GenericOutputReader.</span></span><span class="sig-name descname"><span class="pre">print_ints</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">title</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ints</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">no_per_line</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">8</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">format</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'{:9d}'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">sys.stdout</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">separator</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'</span> <span class="pre">'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/Plotter.html#print_ints"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GenericOutputReader.print_ints" title="Link to this definition">¶</a></dt>
+<dd><p>Print ints data.</p>
+<section id="id67">
+<h3>Parameters<a class="headerlink" href="#id67" title="Link to this heading">¶</a></h3>
+<dl class="simple">
+<dt>title<span class="classifier">str</span></dt><dd><p>A title for the print</p>
+</dd>
+<dt>ints<span class="classifier">a list of ints</span></dt><dd><p>A list of integers to be printed</p>
+</dd>
+<dt>no_per_line<span class="classifier">int, optional</span></dt><dd><p>The number of  integers per line of output</p>
+</dd>
+<dt>format<span class="classifier">str, optional</span></dt><dd><p>a format descriptor (defaults to 9d)</p>
+</dd>
+<dt>file<span class="classifier">int, optional</span></dt><dd><p>a file descriptor (defaults to stdout)</p>
+</dd>
+<dt>separator<span class="classifier">str</span></dt><dd><p>the separator to use between ints (defaults to space)</p>
+</dd>
+</dl>
+</section>
+<section id="id68">
+<h3>Returns<a class="headerlink" href="#id68" title="Link to this heading">¶</a></h3>
+<p>None</p>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="PDielec.GenericOutputReader.print_reals">
+<span class="sig-prename descclassname"><span class="pre">PDielec.GenericOutputReader.</span></span><span class="sig-name descname"><span class="pre">print_reals</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">title</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reals</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">no_per_line</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">8</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">format</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'{:9.2f}'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">sys.stdout</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">separator</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'</span> <span class="pre">'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/Plotter.html#print_reals"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GenericOutputReader.print_reals" title="Link to this definition">¶</a></dt>
+<dd><p>Print reals data</p>
+<section id="id69">
+<h3>Parameters<a class="headerlink" href="#id69" title="Link to this heading">¶</a></h3>
+<dl class="simple">
+<dt>title<span class="classifier">str</span></dt><dd><p>A title for the print</p>
+</dd>
+<dt>reals<span class="classifier">a list of reals</span></dt><dd><p>A list of reals to be printed</p>
+</dd>
+<dt>no_per_line<span class="classifier">int, optional</span></dt><dd><p>The number of  integers per line of output (default is 8)</p>
+</dd>
+<dt>format<span class="classifier">str, optional</span></dt><dd><p>a format descriptor (defaults to 9.2f)</p>
+</dd>
+<dt>file<span class="classifier">int, optional</span></dt><dd><p>a file descriptor (defaults to stdout)</p>
+</dd>
+<dt>separator<span class="classifier">str</span></dt><dd><p>the separator to use between ints (defaults to space)</p>
+</dd>
+</dl>
+</section>
+<section id="id70">
+<h3>Returns<a class="headerlink" href="#id70" title="Link to this heading">¶</a></h3>
+<p>None</p>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="PDielec.GenericOutputReader.print_strings">
+<span class="sig-prename descclassname"><span class="pre">PDielec.GenericOutputReader.</span></span><span class="sig-name descname"><span class="pre">print_strings</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">title</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">strings</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">no_per_line</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">8</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">format</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'{:9s}'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">sys.stdout</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">separator</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'</span> <span class="pre">'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/PDielec/Plotter.html#print_strings"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PDielec.GenericOutputReader.print_strings" title="Link to this definition">¶</a></dt>
+<dd><p>Print strings data.</p>
+<section id="id71">
+<h3>Parameters<a class="headerlink" href="#id71" title="Link to this heading">¶</a></h3>
+<dl class="simple">
+<dt>title<span class="classifier">str</span></dt><dd><p>A title for the print</p>
+</dd>
+<dt>strings<span class="classifier">a list of strings</span></dt><dd><p>A list of strings to be printed</p>
+</dd>
+<dt>no_per_line<span class="classifier">int, optional</span></dt><dd><p>The number of  integers per line of output</p>
+</dd>
+<dt>format<span class="classifier">str, optional</span></dt><dd><p>a format descriptor (defaults to 9s)</p>
+</dd>
+<dt>file<span class="classifier">int, optional</span></dt><dd><p>a file descriptor (defaults to stdout)</p>
+</dd>
+<dt>separator<span class="classifier">str</span></dt><dd><p>the separator to use between ints (defaults to space)</p>
+</dd>
+</dl>
+</section>
+<section id="id72">
+<h3>Returns<a class="headerlink" href="#id72" title="Link to this heading">¶</a></h3>
+<p>None</p>
+</section>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="PDielec.GenericOutputReader.amu">
+<span class="sig-prename descclassname"><span class="pre">PDielec.GenericOutputReader.</span></span><span class="sig-name descname"><span class="pre">amu</span></span><a class="headerlink" href="#PDielec.GenericOutputReader.amu" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="PDielec.GenericOutputReader.avogadro_si">
+<span class="sig-prename descclassname"><span class="pre">PDielec.GenericOutputReader.</span></span><span class="sig-name descname"><span class="pre">avogadro_si</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">6.02214076e+23</span></em><a class="headerlink" href="#PDielec.GenericOutputReader.avogadro_si" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="PDielec.GenericOutputReader.wavenumber">
+<span class="sig-prename descclassname"><span class="pre">PDielec.GenericOutputReader.</span></span><span class="sig-name descname"><span class="pre">wavenumber</span></span><a class="headerlink" href="#PDielec.GenericOutputReader.wavenumber" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="../GulpOutputReader/index.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">PDielec.GulpOutputReader</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="../GTMcore/index.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">PDielec.GTMcore</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2024, John Kendrick and Andrew Burnett
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">PDielec.GenericOutputReader</a><ul>
+<li><a class="reference internal" href="#attributes">Attributes</a></li>
+<li><a class="reference internal" href="#classes">Classes</a></li>
+<li><a class="reference internal" href="#functions">Functions</a></li>
+<li><a class="reference internal" href="#module-contents">Module Contents</a><ul>
+<li><a class="reference internal" href="#PDielec.GenericOutputReader.GenericOutputReader"><code class="docutils literal notranslate"><span class="pre">GenericOutputReader</span></code></a><ul>
+<li><a class="reference internal" href="#PDielec.GenericOutputReader.GenericOutputReader._born_charge_sum_rule"><code class="docutils literal notranslate"><span class="pre">GenericOutputReader._born_charge_sum_rule()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.GenericOutputReader.GenericOutputReader._dynamical_matrix"><code class="docutils literal notranslate"><span class="pre">GenericOutputReader._dynamical_matrix()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.GenericOutputReader.GenericOutputReader._modify_mass_weighting"><code class="docutils literal notranslate"><span class="pre">GenericOutputReader._modify_mass_weighting()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.GenericOutputReader.GenericOutputReader._read_output_file"><code class="docutils literal notranslate"><span class="pre">GenericOutputReader._read_output_file()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.GenericOutputReader.GenericOutputReader._read_output_files"><code class="docutils literal notranslate"><span class="pre">GenericOutputReader._read_output_files()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.GenericOutputReader.GenericOutputReader._read_till_phrase"><code class="docutils literal notranslate"><span class="pre">GenericOutputReader._read_till_phrase()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.GenericOutputReader.GenericOutputReader._remove_mass_weighting"><code class="docutils literal notranslate"><span class="pre">GenericOutputReader._remove_mass_weighting()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.GenericOutputReader.GenericOutputReader._symmetric_orthogonalisation"><code class="docutils literal notranslate"><span class="pre">GenericOutputReader._symmetric_orthogonalisation()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.GenericOutputReader.GenericOutputReader.calculate_mass_weighted_normal_modes"><code class="docutils literal notranslate"><span class="pre">GenericOutputReader.calculate_mass_weighted_normal_modes()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.GenericOutputReader.GenericOutputReader.change_masses"><code class="docutils literal notranslate"><span class="pre">GenericOutputReader.change_masses()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.GenericOutputReader.GenericOutputReader.getSpecies"><code class="docutils literal notranslate"><span class="pre">GenericOutputReader.getSpecies()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.GenericOutputReader.GenericOutputReader.get_crystal_density"><code class="docutils literal notranslate"><span class="pre">GenericOutputReader.get_crystal_density()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.GenericOutputReader.GenericOutputReader.get_unit_cell"><code class="docutils literal notranslate"><span class="pre">GenericOutputReader.get_unit_cell()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.GenericOutputReader.GenericOutputReader.mass_dictionary"><code class="docutils literal notranslate"><span class="pre">GenericOutputReader.mass_dictionary()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.GenericOutputReader.GenericOutputReader.neutralise_born_charges"><code class="docutils literal notranslate"><span class="pre">GenericOutputReader.neutralise_born_charges()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.GenericOutputReader.GenericOutputReader.print"><code class="docutils literal notranslate"><span class="pre">GenericOutputReader.print()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.GenericOutputReader.GenericOutputReader.project"><code class="docutils literal notranslate"><span class="pre">GenericOutputReader.project()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.GenericOutputReader.GenericOutputReader.read_output"><code class="docutils literal notranslate"><span class="pre">GenericOutputReader.read_output()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.GenericOutputReader.GenericOutputReader.reset_born_charges"><code class="docutils literal notranslate"><span class="pre">GenericOutputReader.reset_born_charges()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.GenericOutputReader.GenericOutputReader.reset_masses"><code class="docutils literal notranslate"><span class="pre">GenericOutputReader.reset_masses()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.GenericOutputReader.GenericOutputReader.set_edited_masses"><code class="docutils literal notranslate"><span class="pre">GenericOutputReader.set_edited_masses()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#PDielec.GenericOutputReader.pdielec_io"><code class="docutils literal notranslate"><span class="pre">pdielec_io</span></code></a><ul>
+<li><a class="reference internal" href="#PDielec.GenericOutputReader.pdielec_io.close"><code class="docutils literal notranslate"><span class="pre">pdielec_io.close()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.GenericOutputReader.pdielec_io.readline"><code class="docutils literal notranslate"><span class="pre">pdielec_io.readline()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#PDielec.GenericOutputReader.cleanup_symbol"><code class="docutils literal notranslate"><span class="pre">cleanup_symbol()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.GenericOutputReader.print3x3"><code class="docutils literal notranslate"><span class="pre">print3x3()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.GenericOutputReader.print_ints"><code class="docutils literal notranslate"><span class="pre">print_ints()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.GenericOutputReader.print_reals"><code class="docutils literal notranslate"><span class="pre">print_reals()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.GenericOutputReader.print_strings"><code class="docutils literal notranslate"><span class="pre">print_strings()</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.GenericOutputReader.amu"><code class="docutils literal notranslate"><span class="pre">amu</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.GenericOutputReader.avogadro_si"><code class="docutils literal notranslate"><span class="pre">avogadro_si</span></code></a></li>
+<li><a class="reference internal" href="#PDielec.GenericOutputReader.wavenumber"><code class="docutils literal notranslate"><span class="pre">wavenumber</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script src="../../../_static/documentation_options.js?v=23ce250a"></script>
+    <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/scripts/furo.js?v=4e2eecee"></script>
+    </body>
+</html>

@@ -1,14 +1,13 @@
-data_../ATR/AlAs/AlAs.out
-_space_group_IT_number 1
-_symmetry_space_group_name_H-M 'P 1'
-_symmetry_Int_Tables_number        1  
+data_
+_symmetry_space_group_name_H-M 'F-43m'
+_symmetry_Int_Tables_number      216  
 _cell_length_a          3.970101
 _cell_length_b          3.970101
 _cell_length_c          3.970101
 _cell_angle_alpha      60.000000
 _cell_angle_beta       60.000000
 _cell_angle_gamma      60.000000
-_cell_volume           44.247583
+_cell_volume           44.247584
 loop_
 _atom_site_label
 _atom_site_type_symbol
@@ -20,10 +19,9 @@ As2 As     0.250000     0.250000     0.250000
  
 #END
  
-data_../ATR/Na2SO42/OUTCAR
-_space_group_IT_number 1
-_symmetry_space_group_name_H-M 'P 1'
-_symmetry_Int_Tables_number        1  
+data_
+_symmetry_space_group_name_H-M 'P-1'
+_symmetry_Int_Tables_number      2  
 _cell_length_a          4.780000
 _cell_length_b          5.575000
 _cell_length_c          6.091000
@@ -52,17 +50,16 @@ O12 O     0.226917     0.361128     0.607497
  
 #END
  
-data_../AbInit/AlAs/AlAs.out
-_space_group_IT_number 1
-_symmetry_space_group_name_H-M 'P 1'
-_symmetry_Int_Tables_number        1  
+data_
+_symmetry_space_group_name_H-M 'F-43m'
+_symmetry_Int_Tables_number      216  
 _cell_length_a          3.970101
 _cell_length_b          3.970101
 _cell_length_c          3.970101
 _cell_angle_alpha      60.000000
 _cell_angle_beta       60.000000
 _cell_angle_gamma      60.000000
-_cell_volume           44.247583
+_cell_volume           44.247584
 loop_
 _atom_site_label
 _atom_site_type_symbol
@@ -74,17 +71,16 @@ As2 As     0.250000     0.250000     0.250000
  
 #END
  
-data_../AbInit/BaTiO3-phonana/BaTiO3.out
-_space_group_IT_number 1
-_symmetry_space_group_name_H-M 'P 1'
-_symmetry_Int_Tables_number        1  
+data_
+_symmetry_space_group_name_H-M 'Pm-3m'
+_symmetry_Int_Tables_number      221  
 _cell_length_a          4.180959
 _cell_length_b          4.180959
 _cell_length_c          4.180959
 _cell_angle_alpha      90.000000
 _cell_angle_beta       90.000000
 _cell_angle_gamma      90.000000
-_cell_volume           73.084899
+_cell_volume           73.084900
 loop_
 _atom_site_label
 _atom_site_type_symbol
@@ -99,17 +95,16 @@ Ti5 Ti     0.500000     0.500000     0.500000
  
 #END
  
-data_../AbInit/BaTiO3/BaTiO3.out
-_space_group_IT_number 1
-_symmetry_space_group_name_H-M 'P 1'
-_symmetry_Int_Tables_number        1  
+data_
+_symmetry_space_group_name_H-M 'Pm-3m'
+_symmetry_Int_Tables_number      221  
 _cell_length_a          4.180959
 _cell_length_b          4.180959
 _cell_length_c          4.180959
 _cell_angle_alpha      90.000000
 _cell_angle_beta       90.000000
 _cell_angle_gamma      90.000000
-_cell_volume           73.084899
+_cell_volume           73.084900
 loop_
 _atom_site_label
 _atom_site_type_symbol
@@ -124,17 +119,16 @@ Ti5 Ti     0.500000     0.500000     0.500000
  
 #END
  
-data_../AbInit/Na2SO42/Na2SO42.out
-_space_group_IT_number 1
-_symmetry_space_group_name_H-M 'P 1'
-_symmetry_Int_Tables_number        1  
+data_
+_symmetry_space_group_name_H-M 'P-1'
+_symmetry_Int_Tables_number      2  
 _cell_length_a          4.780000
 _cell_length_b          5.575000
 _cell_length_c          6.091000
 _cell_angle_alpha     101.871000
 _cell_angle_beta      103.337000
 _cell_angle_gamma      97.418000
-_cell_volume          151.880420
+_cell_volume          151.880422
 loop_
 _atom_site_label
 _atom_site_type_symbol
@@ -156,10 +150,9 @@ O12 O     0.234806     0.366201     0.617981
  
 #END
  
-data_../Castep/AsparticAcid/phonon.castep
-_space_group_IT_number 1
-_symmetry_space_group_name_H-M 'P 1'
-_symmetry_Int_Tables_number        1  
+data_
+_symmetry_space_group_name_H-M 'P2_1'
+_symmetry_Int_Tables_number      4  
 _cell_length_a          7.596991
 _cell_length_b          7.028251
 _cell_length_c          5.112691
@@ -208,10 +201,9 @@ O32 O     0.914876     0.498650     0.610483
  
 #END
  
-data_../Castep/Bubbles/phonon.castep
-_space_group_IT_number 1
-_symmetry_space_group_name_H-M 'P 1'
-_symmetry_Int_Tables_number        1  
+data_
+_symmetry_space_group_name_H-M 'Fm-3m'
+_symmetry_Int_Tables_number      225  
 _cell_length_a          3.003030
 _cell_length_b          3.003030
 _cell_length_c          3.003030
@@ -230,10 +222,9 @@ Mg2 Mg     0.000000     0.000000     0.000000
  
 #END
  
-data_../Castep/Castep17/phonon.castep
-_space_group_IT_number 1
-_symmetry_space_group_name_H-M 'P 1'
-_symmetry_Int_Tables_number        1  
+data_
+_symmetry_space_group_name_H-M 'P2_1'
+_symmetry_Int_Tables_number      4  
 _cell_length_a          4.725350
 _cell_length_b         21.600266
 _cell_length_c          7.761126
@@ -346,10 +337,9 @@ O96 O     0.344636     0.701913     0.461625
  
 #END
  
-data_../Castep/Isoleucine/phonon.castep
-_space_group_IT_number 1
-_symmetry_space_group_name_H-M 'P 1'
-_symmetry_Int_Tables_number        1  
+data_
+_symmetry_space_group_name_H-M 'P2_1'
+_symmetry_Int_Tables_number      4  
 _cell_length_a          9.672761
 _cell_length_b          5.271751
 _cell_length_c         13.981405
@@ -454,10 +444,9 @@ O88 O     0.287797     0.465535     0.615243
  
 #END
  
-data_../Castep/MgO/phonon.castep
-_space_group_IT_number 1
-_symmetry_space_group_name_H-M 'P 1'
-_symmetry_Int_Tables_number        1  
+data_
+_symmetry_space_group_name_H-M 'Fm-3m'
+_symmetry_Int_Tables_number      225  
 _cell_length_a          3.003030
 _cell_length_b          3.003030
 _cell_length_c          3.003030
@@ -476,10 +465,9 @@ Mg2 Mg     0.000000     0.000000     0.000000
  
 #END
  
-data_../Castep/Na2SO42/phonon.castep
-_space_group_IT_number 1
-_symmetry_space_group_name_H-M 'P 1'
-_symmetry_Int_Tables_number        1  
+data_
+_symmetry_space_group_name_H-M 'P-1'
+_symmetry_Int_Tables_number      2  
 _cell_length_a          4.780000
 _cell_length_b          5.575000
 _cell_length_c          6.091000
@@ -508,10 +496,9 @@ S12 S     0.396770     0.214594     0.736234
  
 #END
  
-data_../Crystal/Leucine/LEUCINE_DIELECTRC_PBED_6311Gdp.out
-_space_group_IT_number 1
-_symmetry_space_group_name_H-M 'P 1'
-_symmetry_Int_Tables_number        1  
+data_
+_symmetry_space_group_name_H-M 'P2_1'
+_symmetry_Int_Tables_number      4  
 _cell_length_a          9.569164
 _cell_length_b          5.228749
 _cell_length_c         14.410556
@@ -616,10 +603,9 @@ H88 H    -0.342864    -0.277245     0.036000
  
 #END
  
-data_../Crystal/Leucine/LEUCINE_FREQUENCY_PBED3_631Gdp_FULLOPTIMIZATON.out
-_space_group_IT_number 1
-_symmetry_space_group_name_H-M 'P 1'
-_symmetry_Int_Tables_number        1  
+data_
+_symmetry_space_group_name_H-M 'P2_1'
+_symmetry_Int_Tables_number      4  
 _cell_length_a          9.557177
 _cell_length_b          5.189272
 _cell_length_c         14.342820
@@ -724,10 +710,9 @@ H88 H    -0.342146    -0.276830     0.034435
  
 #END
  
-data_../Crystal/Na2SO42/Na2SO42.out
-_space_group_IT_number 1
-_symmetry_space_group_name_H-M 'P 1'
-_symmetry_Int_Tables_number        1  
+data_
+_symmetry_space_group_name_H-M 'P-1'
+_symmetry_Int_Tables_number      2  
 _cell_length_a          4.780000
 _cell_length_b          5.575000
 _cell_length_c          6.091000
@@ -756,10 +741,9 @@ O12 O     0.214956     0.368399    -0.392770
  
 #END
  
-data_../Crystal/Na2SO42_C17/Na2SO42.out
-_space_group_IT_number 1
-_symmetry_space_group_name_H-M 'P 1'
-_symmetry_Int_Tables_number        1  
+data_
+_symmetry_space_group_name_H-M 'P-1'
+_symmetry_Int_Tables_number      2  
 _cell_length_a          4.778578
 _cell_length_b          5.589802
 _cell_length_c          6.172665
@@ -788,10 +772,9 @@ O12 O     0.230363     0.364729    -0.392058
  
 #END
  
-data_../Crystal/Quartz/qua_hf_2d_f_ir-int.out
-_space_group_IT_number 1
-_symmetry_space_group_name_H-M 'P 1'
-_symmetry_Int_Tables_number        1  
+data_
+_symmetry_space_group_name_H-M 'P3_221'
+_symmetry_Int_Tables_number      154  
 _cell_length_a          4.914579
 _cell_length_b          4.914579
 _cell_length_c          5.404859
@@ -817,10 +800,9 @@ O9 O     0.267097     0.415144    -0.453326
  
 #END
  
-data_../Crystal/Quartz/qua_hf_2d_f_lo-to.out
-_space_group_IT_number 1
-_symmetry_space_group_name_H-M 'P 1'
-_symmetry_Int_Tables_number        1  
+data_
+_symmetry_space_group_name_H-M 'P3_221'
+_symmetry_Int_Tables_number      154  
 _cell_length_a          4.914579
 _cell_length_b          4.914579
 _cell_length_c          5.404859
@@ -846,10 +828,9 @@ O9 O     0.267097     0.415144    -0.453326
  
 #END
  
-data_../Crystal/ZnO/CPHF/ZnO_CPHF.out
-_space_group_IT_number 1
-_symmetry_space_group_name_H-M 'P 1'
-_symmetry_Int_Tables_number        1  
+data_
+_symmetry_space_group_name_H-M 'P6_3mc'
+_symmetry_Int_Tables_number      186  
 _cell_length_a          3.283332
 _cell_length_b          3.283332
 _cell_length_c          5.266149
@@ -870,10 +851,9 @@ O4 O    -0.333333     0.333333    -0.118217
  
 #END
  
-data_../Crystal/ZnO/Default/ZnO_default.out
-_space_group_IT_number 1
-_symmetry_space_group_name_H-M 'P 1'
-_symmetry_Int_Tables_number        1  
+data_
+_symmetry_space_group_name_H-M 'P6_3mc'
+_symmetry_Int_Tables_number      186  
 _cell_length_a          3.283332
 _cell_length_b          3.283332
 _cell_length_c          5.266149
@@ -894,10 +874,9 @@ O4 O    -0.333333     0.333333    -0.118217
  
 #END
  
-data_../Crystal/ZnO/NoEckart/ZnO_noeckart.out
-_space_group_IT_number 1
-_symmetry_space_group_name_H-M 'P 1'
-_symmetry_Int_Tables_number        1  
+data_
+_symmetry_space_group_name_H-M 'P6_3mc'
+_symmetry_Int_Tables_number      186  
 _cell_length_a          3.283332
 _cell_length_b          3.283332
 _cell_length_c          5.266149
@@ -918,10 +897,9 @@ O4 O    -0.333333     0.333333    -0.118217
  
 #END
  
-data_../Gulp/Na2SO42/na2so42.gout
-_space_group_IT_number 1
-_symmetry_space_group_name_H-M 'P 1'
-_symmetry_Int_Tables_number        1  
+data_
+_symmetry_space_group_name_H-M 'P-1'
+_symmetry_Int_Tables_number      2  
 _cell_length_a          4.513499
 _cell_length_b          5.186619
 _cell_length_c          5.649542
@@ -950,10 +928,9 @@ O12 O     0.290297     0.312665     0.594740
  
 #END
  
-data_../Gulp/calcite/calcite.gout
-_space_group_IT_number 1
-_symmetry_space_group_name_H-M 'P 1'
-_symmetry_Int_Tables_number        1  
+data_
+_symmetry_space_group_name_H-M 'R-3c'
+_symmetry_Int_Tables_number      167  
 _cell_length_a          6.375694
 _cell_length_b          6.375694
 _cell_length_c          6.375693
@@ -980,10 +957,9 @@ O10 O     0.002654     0.750000     0.497346
  
 #END
  
-data_../Mie/MgO/phonon.castep
-_space_group_IT_number 1
-_symmetry_space_group_name_H-M 'P 1'
-_symmetry_Int_Tables_number        1  
+data_
+_symmetry_space_group_name_H-M 'Fm-3m'
+_symmetry_Int_Tables_number      225  
 _cell_length_a          3.003030
 _cell_length_b          3.003030
 _cell_length_c          3.003030
@@ -1002,10 +978,9 @@ Mg2 Mg     0.000000     0.000000     0.000000
  
 #END
  
-data_../Mie/MgO_lognormal/phonon.castep
-_space_group_IT_number 1
-_symmetry_space_group_name_H-M 'P 1'
-_symmetry_Int_Tables_number        1  
+data_
+_symmetry_space_group_name_H-M 'Fm-3m'
+_symmetry_Int_Tables_number      225  
 _cell_length_a          3.003030
 _cell_length_b          3.003030
 _cell_length_c          3.003030
@@ -1024,10 +999,9 @@ Mg2 Mg     0.000000     0.000000     0.000000
  
 #END
  
-data_../Phonopy/Na2SO42/OUTCAR.born
-_space_group_IT_number 1
-_symmetry_space_group_name_H-M 'P 1'
-_symmetry_Int_Tables_number        1  
+data_
+_symmetry_space_group_name_H-M 'P-1'
+_symmetry_Int_Tables_number      2  
 _cell_length_a          4.707103
 _cell_length_b          5.481444
 _cell_length_c          6.055731
@@ -1056,10 +1030,9 @@ O12 O     0.225702     0.366471     0.609246
  
 #END
  
-data_../Phonopy/ZnO/OUTCAR.born
-_space_group_IT_number 1
-_symmetry_space_group_name_H-M 'P 1'
-_symmetry_Int_Tables_number        1  
+data_
+_symmetry_space_group_name_H-M 'P6_3mc'
+_symmetry_Int_Tables_number      186  
 _cell_length_a          3.295058
 _cell_length_b          3.295058
 _cell_length_c          5.284824
@@ -1080,10 +1053,9 @@ O4 O     0.666667     0.333333     0.881600
  
 #END
  
-data_../QE/Cocaine/phonon.dynG
-_space_group_IT_number 1
-_symmetry_space_group_name_H-M 'P 1'
-_symmetry_Int_Tables_number        1  
+data_
+_symmetry_space_group_name_H-M 'P2_12_12_1'
+_symmetry_Int_Tables_number      19  
 _cell_length_a          7.622000
 _cell_length_b         10.285000
 _cell_length_c         21.428000
@@ -1280,17 +1252,16 @@ C180 C     0.986103     0.227984     0.322132
  
 #END
  
-data_../QE/Na2SO42/Na2SO42.dynG
-_space_group_IT_number 1
-_symmetry_space_group_name_H-M 'P 1'
-_symmetry_Int_Tables_number        1  
+data_
+_symmetry_space_group_name_H-M 'P-1'
+_symmetry_Int_Tables_number      2  
 _cell_length_a          4.780000
 _cell_length_b          5.575000
 _cell_length_c          6.091000
 _cell_angle_alpha     101.871000
 _cell_angle_beta      103.337000
 _cell_angle_gamma      97.418000
-_cell_volume          151.880427
+_cell_volume          151.880429
 loop_
 _atom_site_label
 _atom_site_type_symbol
@@ -1312,10 +1283,9 @@ O12 O     0.226363     0.362642     0.608058
  
 #END
  
-data_../QE/ZnO/zno.ph.dynG
-_space_group_IT_number 1
-_symmetry_space_group_name_H-M 'P 1'
-_symmetry_Int_Tables_number        1  
+data_
+_symmetry_space_group_name_H-M 'P1'
+_symmetry_Int_Tables_number      1  
 _cell_length_a          4.706998
 _cell_length_b          3.076141
 _cell_length_c          3.076348
@@ -1336,17 +1306,16 @@ O4 O     1.181336     0.230617     0.563947
  
 #END
  
-data_../SizeEffects/BaTiO3/BaTiO3.out
-_space_group_IT_number 1
-_symmetry_space_group_name_H-M 'P 1'
-_symmetry_Int_Tables_number        1  
+data_
+_symmetry_space_group_name_H-M 'Pm-3m'
+_symmetry_Int_Tables_number      221  
 _cell_length_a          4.180959
 _cell_length_b          4.180959
 _cell_length_c          4.180959
 _cell_angle_alpha      90.000000
 _cell_angle_beta       90.000000
 _cell_angle_gamma      90.000000
-_cell_volume           73.084899
+_cell_volume           73.084900
 loop_
 _atom_site_label
 _atom_site_type_symbol
@@ -1361,10 +1330,9 @@ Ti5 Ti     0.500000     0.500000     0.500000
  
 #END
  
-data_../SizeEffects/MgO/phonon.castep
-_space_group_IT_number 1
-_symmetry_space_group_name_H-M 'P 1'
-_symmetry_Int_Tables_number        1  
+data_
+_symmetry_space_group_name_H-M 'Fm-3m'
+_symmetry_Int_Tables_number      225  
 _cell_length_a          3.003030
 _cell_length_b          3.003030
 _cell_length_c          3.003030
@@ -1383,10 +1351,9 @@ Mg2 Mg     0.000000     0.000000     0.000000
  
 #END
  
-data_../SizeEffects/ZnO/OUTCAR
-_space_group_IT_number 1
-_symmetry_space_group_name_H-M 'P 1'
-_symmetry_Int_Tables_number        1  
+data_
+_symmetry_space_group_name_H-M 'P6_3mc'
+_symmetry_Int_Tables_number      186  
 _cell_length_a          3.295058
 _cell_length_b          3.295058
 _cell_length_c          5.284824
@@ -1407,10 +1374,9 @@ O4 O     0.666667     0.333333     0.881600
  
 #END
  
-data_../Vasp/F-Apatite/OUTCAR
-_space_group_IT_number 1
-_symmetry_space_group_name_H-M 'P 1'
-_symmetry_Int_Tables_number        1  
+data_
+_symmetry_space_group_name_H-M 'P6_3/m'
+_symmetry_Int_Tables_number      176  
 _cell_length_a          9.446644
 _cell_length_b          9.446644
 _cell_length_c          6.925793
@@ -1469,10 +1435,9 @@ F42 F     0.000000     0.000000     0.750000
  
 #END
  
-data_../Vasp/Na2SO42/OUTCAR
-_space_group_IT_number 1
-_symmetry_space_group_name_H-M 'P 1'
-_symmetry_Int_Tables_number        1  
+data_
+_symmetry_space_group_name_H-M 'P-1'
+_symmetry_Int_Tables_number      2  
 _cell_length_a          4.780000
 _cell_length_b          5.575000
 _cell_length_c          6.091000
@@ -1501,10 +1466,9 @@ O12 O     0.226917     0.361128     0.607497
  
 #END
  
-data_../Vasp/ZnO/OUTCAR
-_space_group_IT_number 1
-_symmetry_space_group_name_H-M 'P 1'
-_symmetry_Int_Tables_number        1  
+data_
+_symmetry_space_group_name_H-M 'P6_3mc'
+_symmetry_Int_Tables_number      186  
 _cell_length_a          3.295058
 _cell_length_b          3.295058
 _cell_length_c          5.284824
